@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './dn-icon.module.scss';
-import { DnIconProps } from './dn-icon.types';
+import styles from './ds-icon.module.scss';
+import { DsIconProps } from './ds-icon.types';
 
 /**
- * DnIcon component that renders Google Material Icons
+ * Design system Icon component that renders Google Material Icons
  */
-const DnIcon: React.FC<DnIconProps> = ({
+const DsIcon: React.FC<DsIconProps> = ({
   name,
   size = 'medium',
   variant = 'filled',
@@ -25,4 +25,4 @@ const DnIcon: React.FC<DnIconProps> = ({
   );
 };
 
-export default DnIcon;
+export default DsIcon;

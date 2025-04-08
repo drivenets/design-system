@@ -9,7 +9,7 @@ export type ButtonVariant = (typeof buttonVariants)[number];
 export const buttonSizes = ['large', 'medium', 'small'] as const;
 export type ButtonSize = (typeof buttonSizes)[number];
 
-export interface DnButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface DsButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * Color schema of the button
    * @default 'primary'

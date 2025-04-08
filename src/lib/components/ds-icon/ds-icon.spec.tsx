@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import DnGrid from './dn-grid';
+import DsIcon from './ds-icon';
 
-describe('DnGrid', () => {
+describe('DsIcon', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<DnGrid />);
+    const { baseElement } = render(<DsIcon />);
     expect(baseElement).toBeTruthy();
   });
 });

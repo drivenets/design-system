@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useEffect, useMemo, useState } from 'react';
-import './dn-icon.stories.scss';
+import './ds-icon.stories.scss';
 import materialIcons from './material-icons.json';
-import DnIcon from './dn-icon';
+import DsIcon from './ds-icon';
 
-const meta: Meta<typeof DnIcon> = {
-  title: 'Components/DnIcon',
-  component: DnIcon,
+const meta: Meta<typeof DsIcon> = {
+  title: 'Design System/Icon',
+  component: DsIcon,
   parameters: {
     layout: 'centered',
   },
@@ -31,7 +31,7 @@ const meta: Meta<typeof DnIcon> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof DnIcon>;
+type Story = StoryObj<typeof DsIcon>;
 
 export const Default: Story = {
   args: {
@@ -204,7 +204,7 @@ export const Showcase: Story = {
                       onClick={() => handleIconClick(iconName)}
                       title={`Click to copy: ${iconName}`}
                     >
-                      <DnIcon name={iconName} size="medium" />
+                      <DsIcon name={iconName} size="medium" />
                       <span className="icon-name">{iconName}</span>
                     </div>
                   ))}

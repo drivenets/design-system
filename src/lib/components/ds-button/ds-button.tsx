@@ -1,9 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './dn-button.module.scss';
-import { DnButtonProps } from './dn-button.types';
+import styles from './ds-button.module.scss';
+import { DsButtonProps } from './ds-button.types';
 
-const DnButton: React.FC<DnButtonProps> = ({
+/**
+ * Design system Button component
+ */
+const DsButton: React.FC<DsButtonProps> = ({
   schema = 'primary',
   variant = 'filled',
   size = 'medium',
@@ -27,4 +30,4 @@ const DnButton: React.FC<DnButtonProps> = ({
   );
 };
 
-export default DnButton;
+export default DsButton;

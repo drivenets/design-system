@@ -5,7 +5,7 @@ export type IconSize = (typeof iconSizes)[number];
 export const iconVariants = ['filled', 'outlined', 'rounded', 'sharp', 'two-tone'] as const;
 export type IconVariant = (typeof iconVariants)[number];
 
-export interface DnIconProps {
+export interface DsIconProps {
   /**
    * The name of the Material Icon to display
    */

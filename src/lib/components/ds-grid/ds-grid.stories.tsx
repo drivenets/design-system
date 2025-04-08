@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DNGrid, DNGridItem } from '@drivenets/web';
+import { DsGrid, DsGridItem } from '@design-system/ui';
 
 const meta = {
-  title: 'Components/Grid',
-  component: DNGrid,
+  title: 'Design System/Grid',
+  component: DsGrid,
   parameters: {},
   tags: ['autodocs'],
   argTypes: {
@@ -21,13 +21,13 @@ const meta = {
       description: 'Custom class names to apply to the grid container',
     },
   },
-} satisfies Meta<typeof DNGrid>;
+} satisfies Meta<typeof DsGrid>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * DNGridItem Props:
+ * DsGridItem Props:
  * - children: The content to be rendered inside the grid item
  * - colSpan: Number of columns the item spans (1-12 or 'full')
  * - colStart: Starting column for the item (1-11)
@@ -40,18 +40,18 @@ export const Default: Story = {
   args: {
     children: (
       <>
-        <DNGridItem colSpan={4}>
+        <DsGridItem colSpan={4}>
           <div>Element 1</div>
-        </DNGridItem>
-        <DNGridItem colSpan={4} rowSpan={2}>
+        </DsGridItem>
+        <DsGridItem colSpan={4} rowSpan={2}>
           <div>Element 2</div>
-        </DNGridItem>
-        <DNGridItem colSpan={4} rowSpan={2}>
+        </DsGridItem>
+        <DsGridItem colSpan={4} rowSpan={2}>
           <div>Element 3</div>
-        </DNGridItem>
-        <DNGridItem colSpan={4} rowSpan={2}>
+        </DsGridItem>
+        <DsGridItem colSpan={4} rowSpan={2}>
           <div>Element 4</div>
-        </DNGridItem>
+        </DsGridItem>
       </>
     ),
     rows: 6,

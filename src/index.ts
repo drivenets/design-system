@@ -1,3 +1,3 @@
-export * from './lib/components/dn-icon';
-export * from './lib/components/dn-button';
-export * from './lib/components/dn-grid';
+export * from './lib/components/ds-icon';
+export * from './lib/components/ds-button';
+export * from './lib/components/ds-grid';

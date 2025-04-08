@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface DNGridProps {
+export interface DsGridProps {
   /**
    * The content to be rendered inside the grid
    */
@@ -17,7 +17,7 @@ export interface DNGridProps {
   className?: string;
 }
 
-export interface DNGridItemProps {
+export interface DsGridItemProps {
   /**
    * The content to be rendered inside the grid item
    */

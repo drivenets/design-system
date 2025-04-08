@@ -6,15 +6,15 @@ import {
   buttonSizes,
   ButtonVariant,
   buttonVariants,
-  DnButton,
-  DnIcon,
+  DsButton,
+  DsIcon,
   IconSize,
-} from '@drivenets/web';
-import './dn-button.stories.scss';
+} from '@design-system/ui';
+import './ds-button.stories.scss';
 
-const meta: Meta<typeof DnButton> = {
-  title: 'components/Button',
-  component: DnButton,
+const meta: Meta<typeof DsButton> = {
+  title: 'Design System/Button',
+  component: DsButton,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
@@ -57,7 +57,7 @@ const meta: Meta<typeof DnButton> = {
   args: { onClick: fn() },
 };
 export default meta;
-type Story = StoryObj<typeof DnButton>;
+type Story = StoryObj<typeof DsButton>;
 
 const defaultButtonText = 'Button Text';
 
@@ -91,7 +91,7 @@ export const Showcase: Story = {
       return (
         <div className="row">
           {buttonSizes.map(size => (
-            <DnButton
+            <DsButton
               className="button-showcase"
               key={`${schema}-${variant}-${size}`}
               schema={schema}
@@ -99,9 +99,9 @@ export const Showcase: Story = {
               size={size}
               disabled={disabled}
             >
-              {showIcon && <DnIcon key={`${size}`} name="add" size={size as IconSize} />}
+              {showIcon && <DsIcon key={`${size}`} name="add" size={size as IconSize} />}
               {showTitle && <span>{size} Button</span>}
-            </DnButton>
+            </DsButton>
           ))}
         </div>
       );

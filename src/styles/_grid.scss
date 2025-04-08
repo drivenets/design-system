@@ -21,40 +21,40 @@ $grid-hd: (
 
 @mixin generate-grid-classes($grid-setup) {
   @for $i from 1 through $columns {
-    .dn-grid-col-span-#{$i} {
+    .ds-grid-col-span-#{$i} {
       --col-span: #{$i};
     }
     @if $i < $columns {
-      .dn-grid-col-start-#{$i} {
+      .ds-grid-col-start-#{$i} {
         --col-start: #{$i};
       }
     }
   }
   @for $i from 1 through $rows {
-    .dn-grid-row-span-#{$i} {
+    .ds-grid-row-span-#{$i} {
       --row-span: #{$i};
     }
     @if $i < $rows {
-      .dn-grid-row-start-#{$i} {
+      .ds-grid-row-start-#{$i} {
         --row-start: #{$i};
       }
     }
   }
   @for $i from 1 through math.floor(calc($rows / 2)) {
     $row-count: 2 * $i;
-    &.dn-grid-rows-#{$row-count} {
+    &.ds-grid-rows-#{$row-count} {
       grid-template-rows: repeat($row-count, 1fr);
     }
   }
-  .dn-grid-col-span-full {
+  .ds-grid-col-span-full {
     --col-span: #{$columns};
   }
-  .dn-grid-row-span-full {
+  .ds-grid-row-span-full {
     --row-span: #{$rows};
   }
 }
 
-.dn-grid {
+.ds-grid {
   display: grid;
   grid-template-columns: repeat($columns, 1fr);
   grid-template-rows: repeat($rows, 1fr);
@@ -68,7 +68,7 @@ $grid-hd: (
   */
 }
 
-.dn-grid > * {
+.ds-grid > * {
   grid-column: var(--col-start, auto) / span var(--col-span, 1);
   grid-row: var(--row-start, auto) / span var(--row-span, 1);
 }
