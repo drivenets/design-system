@@ -19,4 +19,9 @@ export interface DsDropdownProps {
    * Optional children to be rendered inside the component
    */
   children?: ReactNode | undefined;
+  /**
+   * The gap between the trigger and dropdown content in pixels
+   * @default 0
+   */
+  contentGap?: number;
 }

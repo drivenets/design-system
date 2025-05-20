@@ -1,8 +1,9 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import React from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import { IconType } from '../ds-icon';
 
 export interface Action<TData> {
-  icon: string | React.ReactNode;
+  icon: IconType;
   label: string;
   onClick: (rows: TData[]) => void;
 }

@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import classNames from 'classnames';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import styles from './ds-dropdown.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsDropdownProps } from './ds-dropdown.types';
 
+export interface DsDropdownRef {
+  reset: () => void;
+}
+
 /**
  * Design system Dropdown component
  */
-const DsDropdown: React.FC<DsDropdownProps> = ({ options, selectedHref, onSelect, children }) => {
+const DsDropdown = forwardRef<DsDropdownRef, DsDropdownProps>(({
+  options,
+  selectedHref,
+  onSelect,
+  children,
+  contentGap = 0,
+}, ref) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedItem, setSelectedItem] = useState('');
   const [open, setOpen] = useState(false);
@@ -19,6 +29,14 @@ const DsDropdown: React.FC<DsDropdownProps> = ({ options, selectedHref, onSelect
     }
   }, [selectedHref]);
 
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      setSelectedItem('');
+      setSearchTerm('');
+      onSelect?.('');
+    }
+  }));
+
   const filteredOptions = options.filter(option =>
     option.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
@@ -26,7 +44,7 @@ const DsDropdown: React.FC<DsDropdownProps> = ({ options, selectedHref, onSelect
   return (
     <DropdownMenu.Root open={open} onOpenChange={setOpen}>
       <DropdownMenu.Trigger asChild>{children}</DropdownMenu.Trigger>
-      <DropdownMenu.Content className={styles.content}>
+      <DropdownMenu.Content className={styles.content} sideOffset={contentGap}>
         <div className={styles.viewport}>
           <div className={styles.searchInput}>
             <input
@@ -64,6 +82,6 @@ const DsDropdown: React.FC<DsDropdownProps> = ({ options, selectedHref, onSelect
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   );
-};
+});
 
 export default DsDropdown;
