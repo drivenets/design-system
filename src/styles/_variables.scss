@@ -37,3 +37,23 @@ $line-height-action: 30px;
 $line-height-action-lg: 28px;
 $line-height-action-med: 24px;
 $line-height-action-small: 20px;
+
+// spacing
+$base-unit: 4px;
+
+:root {
+  // Spacing System
+  --base-unit: #{$base-unit};
+  --spacing-1: #{$base-unit};          /* 4px */
+  --spacing-2: #{$base-unit * 2};      /* 8px */
+  --spacing-3: #{$base-unit * 3};      /* 12px */
+  --spacing-4: #{$base-unit * 4};      /* 16px */
+  --spacing-5: #{$base-unit * 5};      /* 20px */
+  --spacing-6: #{$base-unit * 6};      /* 24px */
+  --spacing-8: #{$base-unit * 8};      /* 32px */
+  --spacing-10: #{$base-unit * 10};    /* 40px */
+  --spacing-12: #{$base-unit * 12};    /* 48px */
+  --spacing-16: #{$base-unit * 16};    /* 64px */
+  --spacing-20: #{$base-unit * 20};    /* 80px */
+  --spacing-24: #{$base-unit * 24};    /* 96px */
+}

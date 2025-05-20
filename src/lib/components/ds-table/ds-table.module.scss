@@ -133,6 +133,10 @@ $expand-toggle-icon-color: #6b7b8e;
   }
 }
 
+.expandedRow {
+  background-color: $expanded-row-bg-color;
+}
+
 .cellButton {
   width: $expand-column-width;
 }
@@ -147,6 +151,7 @@ $expand-toggle-icon-color: #6b7b8e;
   vertical-align: middle;
   padding-top: $cell-padding-standard-vertical;
   padding-bottom: $cell-padding-standard-vertical;
+  color: var(--neutral-2);
 }
 
 .expandToggleButton {
