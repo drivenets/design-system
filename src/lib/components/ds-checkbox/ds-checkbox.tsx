@@ -32,7 +32,7 @@ const DsCheckbox: React.FC<DsCheckboxProps> = ({
       >
         <div className={styles.checkboxWrapper}>
           <CheckboxPrimitive.Indicator className={styles.checkboxIndicator}>
-            <DsIcon icon={checked === 'indeterminate' ? 'remove' : 'check'} size="small" />
+            <DsIcon icon={checked === 'indeterminate' ? 'remove' : 'check'} size="tiny" />
           </CheckboxPrimitive.Indicator>
         </div>
       </CheckboxPrimitive.Root>

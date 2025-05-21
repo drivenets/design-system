@@ -1,7 +1,7 @@
 @use 'typography' as typography;
 
 .container {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 12px;
 
@@ -13,10 +13,10 @@
 .checkboxRoot {
   all: unset;
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 14px;
+  height: 14px;
   background-color: white;
-  border: 2px solid var(--action-cta1);
+  border: 1px solid var(--action-cta1);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -41,8 +41,8 @@
 
   &:not([data-disabled]) {
     .checkboxWrapper {
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       border-radius: 50%;
     }
   }

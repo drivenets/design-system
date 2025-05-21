@@ -113,11 +113,11 @@ $expand-toggle-icon-color: #6b7b8e;
   border-top: 1px solid var(--neutral-6);
 
   &:hover {
-    background-color: #e0eaff;
+    background-color: var(--action-hover-light);
   }
 
   &[data-state='selected'] {
-    background-color: var(--neutral-10);
+    background-color: var(--action-hover-light);
   }
 
   &.clickableRow {
@@ -140,6 +140,12 @@ $expand-toggle-icon-color: #6b7b8e;
 .cellCheckbox {
   width: $select-column-width;
   text-align: center;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tableCell {

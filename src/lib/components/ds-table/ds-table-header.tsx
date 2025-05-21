@@ -30,10 +30,7 @@ const DsTableHeader = <TData, >({
           {selectable && (
             <TableHead className={classnames(styles.headerCell, styles.selectColumn)}>
               <DsCheckbox
-                style={{
-                  height: 16,
-                  width: 16,
-                }}
+                className={styles.checkboxContainer}
                 checked={
                   table.getIsAllRowsSelected()
                     ? true
