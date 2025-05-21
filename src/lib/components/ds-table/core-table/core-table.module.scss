@@ -28,6 +28,7 @@
   border-top-width: 1px;
   background-color: rgba(241, 245, 249, 0.5);
   font-weight: 500;
+
   & > tr:last-child {
     border-bottom-width: 0;
   }
@@ -41,7 +42,6 @@
 
   &:has([role='checkbox']) {
     padding-right: 0;
-    padding-left: 24px;
   }
 }
 

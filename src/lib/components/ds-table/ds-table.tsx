@@ -148,10 +148,7 @@ const DsTable = <TData, TValue>({
           {selectable && (
             <TableCell className={classnames(styles.tableCell, styles.cellCheckbox)}>
               <DsCheckbox
-                style={{
-                  height: 16,
-                  width: 16,
-                }}
+                className={styles.checkboxContainer}
                 checked={row.getIsSelected()}
                 onClick={e => {
                   e.stopPropagation();
