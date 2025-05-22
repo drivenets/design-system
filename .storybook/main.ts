@@ -7,7 +7,6 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@chromatic-com/storybook',
     '@storybook/experimental-addon-test',
-    'storybook-addon-remix-react-router',
   ],
   framework: {
     name: '@storybook/react-vite',

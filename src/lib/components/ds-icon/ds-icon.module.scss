@@ -12,8 +12,10 @@ $sizes: (
   }
 }
 
-@each $name, $size in $sizes {
-  .#{$name} {
-    font-size: $size;
+.icon {
+  @each $name, $size in $sizes {
+    &.#{$name} {
+      font-size: $size;
+    }
   }
 }

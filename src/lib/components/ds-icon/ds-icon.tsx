@@ -16,7 +16,7 @@ const DsIcon: React.FC<DsIconProps> = ({
   ...rest
 }) => {
   const variantClass = variant !== 'filled' ? `material-icons-${variant}` : 'material-icons';
-  const iconClass = classNames(styles[size], className);
+  const iconClass = classNames(styles.icon, styles[size], className);
 
   if (typeof icon === 'function') {
     const SvgComponent = icon;

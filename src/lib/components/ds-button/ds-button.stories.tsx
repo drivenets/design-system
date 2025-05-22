@@ -26,7 +26,7 @@ const meta: Meta<typeof DsButton> = {
   argTypes: {
     schema: {
       control: { type: 'select' },
-      options: ['primary', 'secondary', 'error'],
+      options: buttonSchemas,
       description: 'Button color schema',
       table: {
         defaultValue: {
@@ -35,10 +35,8 @@ const meta: Meta<typeof DsButton> = {
       },
     },
     variant: {
-      type: {
-        name: 'enum',
-        value: ['filled', 'ghost', 'borderless', 'round', 'filled'],
-      },
+      control: { type: 'select' },
+      options: buttonVariants,
       table: {
         defaultValue: {
           summary: 'filled',
@@ -46,7 +44,8 @@ const meta: Meta<typeof DsButton> = {
       },
     },
     size: {
-      type: { name: 'enum', value: ['small', 'medium', 'large'] },
+      control: { type: 'select' },
+      options: buttonSizes,
       table: {
         defaultValue: {
           summary: 'medium',

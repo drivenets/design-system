@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import DsIcon from './ds-icon';
 import './ds-icon.stories.scss';
 import { materialIcons } from './material-icons';
-import { IconName } from '@design-system/ui';
+import { IconName, iconSizes, iconVariants } from '@design-system/ui';
 
 const meta: Meta<typeof DsIcon> = {
   title: 'Design System/Icon',
@@ -19,12 +19,12 @@ const meta: Meta<typeof DsIcon> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['small', 'medium', 'large'],
+      options: iconSizes,
       description: 'Size of the icon',
     },
     variant: {
       control: { type: 'select' },
-      options: ['filled', 'outlined', 'rounded', 'sharp', 'two-tone'],
+      options: iconVariants,
       description: 'Icon variant style',
     },
     onClick: { action: 'clicked' },
