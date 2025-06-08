@@ -1,22 +1,12 @@
 @use 'typography' as typography;
+@use 'shared/dropdown' as dropdown;
 
 .content {
-  border-radius: 4px;
-  border: 1px solid var(--action-cta1);
-  background: var(--white);
-  box-shadow: 0 12px 36px 0 rgba(4, 69, 204, 0.40);
-  z-index: 9999;
-
-  min-width: 200px;
-  width: var(--radix-select-trigger-width);
-  max-height: var(--radix-select-content-available-height);
+  @include dropdown.dropdown-content;
 }
 
 .viewport {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 4px;
+  @include dropdown.dropdown-viewport;
 }
 
 .searchInput {
@@ -49,30 +39,9 @@
 }
 
 .item {
-  @extend .p-special;
-  @include typography.ellipsis;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--neutral-1);
-  padding: 8px 16px;
-  border-radius: 2px;
-  border-left: 2px solid transparent;
-  cursor: pointer;
-  outline: none;
-
-  &[data-highlighted] {
-    border-left-color: var(--action-cta1);
-    background: var(--action-hover-light);
-
-    .indicator, .itemIcon {
-      color: var(--action-cta1);
-    }
-  }
+  @include dropdown.dropdown-item;
 }
 
 .indicator {
-  display: flex;
-  justify-content: end;
-  min-width: var(--icon-width-medium);
+  @include dropdown.dropdown-indicator;
 }

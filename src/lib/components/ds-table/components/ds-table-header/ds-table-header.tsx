@@ -1,17 +1,10 @@
-import { flexRender, type Table } from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
 import classnames from 'classnames';
-import { DsCheckbox } from '../ds-checkbox';
-import DsIcon from '../ds-icon/ds-icon';
-import { TableHead, TableHeader, TableRow } from './core-table';
-import styles from './ds-table.module.scss';
-
-interface DsTableHeaderProps<TData> {
-  table: Table<TData>;
-  stickyHeader?: boolean;
-  bordered?: boolean;
-  expandable?: boolean;
-  selectable?: boolean;
-}
+import { DsCheckbox, DsIcon } from '@design-system/ui';
+import { TableHead, TableHeader, TableRow } from '../core-table';
+import styles from './ds-table-header.module.scss';
+import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
+import { DsTableHeaderProps } from './ds-table-header.types';
 
 const DsTableHeader = <TData, >({
   table,
@@ -30,7 +23,7 @@ const DsTableHeader = <TData, >({
           {selectable && (
             <TableHead className={classnames(styles.headerCell, styles.selectColumn)}>
               <DsCheckbox
-                className={styles.checkboxContainer}
+                className={stylesShared.checkboxContainer}
                 checked={
                   table.getIsAllRowsSelected()
                     ? true
@@ -67,10 +60,22 @@ const DsTableHeader = <TData, >({
                     {header.column.getCanSort() && (
                       <div className={styles.pageButtonIconContainer}>
                         {{
-                          asc: <DsIcon icon="arrow_drop_up" className={styles.pageButtonIcon} />,
-                          desc: <DsIcon icon="arrow_drop_down" className={styles.pageButtonIcon} />,
+                          asc: (
+                            <DsIcon
+                              icon="arrow_drop_up"
+                              className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
+                            />
+                          ),
+                          desc: (
+                            <DsIcon
+                              icon="arrow_drop_down"
+                              className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
+                            />
+                          ),
                         }[header.column.getIsSorted() as string] ?? (
-                          <div className={styles.pageButtonIcon} />
+                          <div
+                            className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
+                          />
                         )}
                       </div>
                     )}

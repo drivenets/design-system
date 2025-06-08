@@ -1,0 +1,62 @@
+@use 'typography' as typography;
+@use '../../styles/variables' as vars;
+
+.stickyHeader {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--background);
+}
+
+.headerRow {
+  border-bottom: 1px solid var(--neutral-6);
+
+  &.headerRowNoBorder {
+    border-bottom-width: 0;
+  }
+}
+
+.expandColumn {
+  width: vars.$expand-column-width;
+}
+
+.selectColumn {
+  width: vars.$select-column-width;
+  text-align: center;
+}
+
+.headerCell {
+  @extend .p-base, .regular;
+  color: var(--neutral-4);
+  padding-left: vars.$cell-padding;
+  padding-right: vars.$cell-padding;
+  text-align: left;
+  vertical-align: middle;
+  padding-top: vars.$cell-padding-standard-vertical;
+  padding-bottom: vars.$cell-padding-standard-vertical;
+
+  &.sortableHeader {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .pageButtonIconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    &.pageButtonIcon {
+      color: var(--neutral-4);
+      transition: transform 0.2s ease-in-out;
+    }
+  }
+}
+
+.headerSortContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: vars.$header-sort-gap;
+}

@@ -1,0 +1,21 @@
+// Variables
+// TODO: @danielamram - move to DS theme variables
+$border-radius: 4px;
+$border-width: 1px;
+$virtualized-height: 600px;
+$cell-padding: 12px;
+$cell-padding-standard-vertical: 22px;
+$expand-column-width: 40px;
+$select-column-width: 40px;
+$container-margin-vertical: 1rem;
+$filter-input-gap: 0.5rem;
+$filter-input-max-width: 24rem;
+$header-sort-gap: 0.5rem;
+$empty-state-height: 6rem;
+
+$hover-bg-color: var(--action-hover-light);
+$hover-border-color: var(--neutral-6);
+$expanded-row-bg-color: var(--neutral-10);
+$expand-toggle-hover-bg-color: var(--neutral-9);
+// TODO: @danielamram - update to DS theme variables #infra
+$expand-toggle-icon-color: #6b7b8e;

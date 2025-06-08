@@ -1,21 +1,8 @@
-import classnames from 'classnames';
 import React, { useEffect, useState } from 'react';
-import { IconType } from '@design-system/ui';
-import Button from '../ds-button/ds-button';
-import DsIcon from '../ds-icon/ds-icon';
-import styles from './ds-table.module.scss';
-
-interface Action {
-  icon: IconType;
-  label: string;
-  onClick: () => void;
-}
-
-interface BulkActionsProps {
-  numSelectedRows: number;
-  actions: Action[];
-  onClearSelection: () => void;
-}
+import classnames from 'classnames';
+import { DsButton, DsIcon } from '@design-system/ui';
+import styles from './ds-table-bulk-actions.module.scss';
+import { BulkActionsProps } from './ds-table-bulk-actions.types';
 
 const DsTableBulkActions: React.FC<BulkActionsProps> = ({
   numSelectedRows,
@@ -53,7 +40,7 @@ const DsTableBulkActions: React.FC<BulkActionsProps> = ({
 
         <div className={styles.bulkActionsActions}>
           {actions.map((action, index) => (
-            <Button
+            <DsButton
               key={index}
               variant="borderless"
               size="small"
@@ -63,11 +50,11 @@ const DsTableBulkActions: React.FC<BulkActionsProps> = ({
             >
               <DsIcon icon={action.icon} />
               <span className={(styles['p-s'], styles.medium)}>{action.label}</span>
-            </Button>
+            </DsButton>
           ))}
         </div>
 
-        <Button
+        <DsButton
           variant="borderless"
           size="small"
           color="neutral-2"
@@ -76,7 +63,7 @@ const DsTableBulkActions: React.FC<BulkActionsProps> = ({
         >
           <DsIcon icon="close" />
           <span className={(styles['p-s'], styles.medium)}>Esc</span>
-        </Button>
+        </DsButton>
       </div>
     </div>
   );

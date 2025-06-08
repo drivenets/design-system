@@ -1,0 +1,18 @@
+@use 'typography' as typography;
+@use 'shared/dropdown' as dropdown;
+
+.content {
+  @include dropdown.dropdown-content;
+}
+
+.viewport {
+  @include dropdown.dropdown-viewport;
+}
+
+.item {
+  @include dropdown.dropdown-item;
+}
+
+.indicator {
+  @include dropdown.dropdown-indicator;
+}

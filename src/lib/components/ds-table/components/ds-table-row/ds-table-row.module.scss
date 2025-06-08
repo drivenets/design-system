@@ -1,0 +1,65 @@
+@use 'typography' as typography;
+@use '../../styles/variables' as vars;
+
+.tableRow {
+  border-bottom-width: vars.$border-width;
+  border-bottom-style: solid;
+  border-color: var(--neutral-6);
+  transition-property: color, background-color, border-color;
+  border-bottom: 1px solid var(--neutral-6);
+  border-top: 1px solid var(--neutral-6);
+
+  &:hover {
+    background-color: var(--action-hover-light);
+  }
+
+  &[data-state='selected'] {
+    background-color: var(--action-hover-light);
+  }
+
+  &.clickableRow {
+    cursor: pointer;
+  }
+
+  &.rowNoBorder {
+    border-bottom-width: 0;
+  }
+
+  &.expandedRow {
+    background-color: vars.$expanded-row-bg-color;
+  }
+}
+
+.expandedRow {
+  background-color: vars.$expanded-row-bg-color;
+}
+
+.cellButton {
+  width: vars.$expand-column-width;
+}
+
+.cellCheckbox {
+  width: vars.$select-column-width;
+  text-align: center;
+}
+
+.tableCell {
+  padding: vars.$cell-padding;
+  vertical-align: middle;
+  padding-top: vars.$cell-padding-standard-vertical;
+  padding-bottom: vars.$cell-padding-standard-vertical;
+  color: var(--neutral-2);
+}
+
+.expandToggleButton {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition-property: opacity, background-color;
+}

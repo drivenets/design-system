@@ -2,10 +2,54 @@ import React from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { IconType } from '../ds-icon';
 
+/**
+ * Represents a bulk action that can be performed on multiple selected rows
+ */
 export interface Action<TData> {
+  /**
+   * Icon to be displayed for the action
+   */
   icon: IconType;
+
+  /**
+   * Label text for the action
+   */
   label: string;
+
+  /**
+   * Function to be called when the action is clicked, receives the selected rows as parameter
+   */
   onClick: (rows: TData[]) => void;
+}
+
+/**
+ * Represents an action that can be performed on a single row
+ */
+export interface RowAction<TData> {
+  /**
+   * Icon to be displayed for the action
+   */
+  icon: IconType;
+
+  /**
+   * Label text for the action
+   */
+  label: string;
+
+  /**
+   * Optional tooltip text to show on hover
+   */
+  tooltip?: string;
+
+  /**
+   * Optional function to determine if the action should be disabled for a specific row
+   */
+  disabled?: (row: TData) => boolean;
+
+  /**
+   * Function to be called when the action is clicked, receives the row data as parameter
+   */
+  onClick: (row: TData) => void;
 }
 
 export interface DataTableProps<TData, TValue> {
@@ -132,4 +176,14 @@ export interface DataTableProps<TData, TValue> {
    * Actions to be shown in the bulk actions
    */
   actions?: Action<TData>[];
+
+  /**
+   * Primary actions to be shown on each row (on hover)
+   */
+  primaryRowActions?: RowAction<TData>[];
+
+  /**
+   * Secondary actions to be shown in a dropdown on each row (on hover)
+   */
+  secondaryRowActions?: RowAction<TData>[];
 }

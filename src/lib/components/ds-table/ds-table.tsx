@@ -1,11 +1,10 @@
+import * as React from 'react';
 import {
   type ColumnFiltersState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  Row,
   RowSelectionState,
   type SortingState,
   useReactTable,
@@ -13,17 +12,13 @@ import {
 } from '@tanstack/react-table';
 import { useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import classnames from 'classnames';
-import * as React from 'react';
-import { CSSProperties } from 'react';
 
-import DsIcon from '../ds-icon/ds-icon';
-import { Table, TableBody, TableCell, TableRow } from './core-table';
-import DsTableBulkActions from './ds-table-bulk-actions';
-import DsTableHeader from './ds-table-header';
-import Button from '../ds-button/ds-button';
-import { DsCheckbox } from '../ds-checkbox';
+import { Table, TableBody, TableCell, TableRow } from './components/core-table';
+import { DsTableBulkActions } from './components/ds-table-bulk-actions';
+import { DsTableHeader } from './components/ds-table-header';
 import styles from './ds-table.module.scss';
 import type { DataTableProps } from './ds-table.types';
+import { DsTableRow } from './components/ds-table-row';
 
 /**
  * Design system Table component
@@ -53,6 +48,8 @@ const DsTable = <TData, TValue>({
   onSelectionChange,
   actions = [],
   onRowDoubleClick,
+  primaryRowActions = [],
+  secondaryRowActions,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -118,109 +115,6 @@ const DsTable = <TData, TValue>({
   const virtualItems = virtualized ? rowVirtualizer.getVirtualItems() : null;
   const totalSize = virtualized ? rowVirtualizer.getTotalSize() : null;
 
-  const renderRow = (row: Row<TData>, virtualRow?: VirtualItem) => {
-    const isExpanded = expandable && expandedRows[row.id];
-
-    const rowStyle: CSSProperties = virtualRow
-      ? {
-          height: `${virtualRow.size}px`,
-          transform: `translateY(${virtualRow.start}px)`,
-          position: 'absolute',
-          width: '100%',
-        }
-      : {};
-
-    return (
-      <React.Fragment key={row.id}>
-        <TableRow
-          data-state={row.getIsSelected() && 'selected'}
-          className={classnames(
-            styles.tableRow,
-            virtualized && styles.virtualizedRow,
-            onRowClick && styles.clickableRow,
-            highlightOnHover && styles.highlightHoverRow,
-            !bordered && styles.rowNoBorder,
-          )}
-          style={rowStyle}
-          onClick={() => onRowClick && onRowClick(row.original)}
-          onDoubleClick={() => onRowDoubleClick && onRowDoubleClick(row.original)}
-        >
-          {selectable && (
-            <TableCell className={classnames(styles.tableCell, styles.cellCheckbox)}>
-              <DsCheckbox
-                className={styles.checkboxContainer}
-                checked={row.getIsSelected()}
-                onClick={e => {
-                  e.stopPropagation();
-                  const toggleHandler = row.getToggleSelectedHandler();
-                  toggleHandler(e);
-                }}
-              />
-            </TableCell>
-          )}
-          {expandable && (
-            <TableCell className={classnames(styles.tableCell, styles.cellButton)}>
-              <Button
-                variant={virtualized ? 'ghost' : 'borderless'}
-                size="small"
-                onClick={(e: React.MouseEvent) => {
-                  e.stopPropagation();
-                  toggleRowExpanded(row.id);
-                }}
-                className={styles.expandToggleButton}
-              >
-                <DsIcon
-                  icon={virtualized ? (isExpanded ? 'arrow_drop_down' : 'arrow_right') : 'chevron_right'}
-                  className={classnames(
-                    styles.pageButtonIcon,
-                    !virtualized && isExpanded && 'rotate-90',
-                  )}
-                />
-              </Button>
-            </TableCell>
-          )}
-          {row.getVisibleCells().map((cell: any) => (
-            <TableCell
-              key={cell.id}
-              className={styles.tableCell}
-              style={
-                virtualized
-                  ? {
-                      width: cell.column.getSize(),
-                      minWidth: cell.column.getSize(),
-                    }
-                  : undefined
-              }
-            >
-              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-            </TableCell>
-          ))}
-        </TableRow>
-        {isExpanded && renderExpandedRow && (
-          <TableRow
-            style={
-              virtualRow
-                ? {
-                    transform: `translateY(${virtualRow.start + virtualRow.size}px)`,
-                    position: 'absolute',
-                    width: '100%',
-                  }
-                : undefined
-            }
-            className={styles.expandedRow}
-          >
-            <TableCell
-              colSpan={row.getVisibleCells().length + (selectable ? 1 : 0) + (expandable ? 1 : 0)}
-              className={styles.tableCell}
-            >
-              {renderExpandedRow(row.original)}
-            </TableCell>
-          </TableRow>
-        )}
-      </React.Fragment>
-    );
-  };
-
   const renderEmptyState = () => (
     <TableRow>
       <TableCell
@@ -263,7 +157,25 @@ const DsTable = <TData, TValue>({
                 {virtualItems &&
                   virtualItems.map((virtualRow: VirtualItem) => {
                     const row = rows[virtualRow.index];
-                    return renderRow(row, virtualRow);
+                    return (
+                      <DsTableRow
+                        key={row.id}
+                        row={row}
+                        virtualRow={virtualRow}
+                        expandable={expandable}
+                        expandedRows={expandedRows}
+                        selectable={selectable}
+                        onRowClick={onRowClick}
+                        onRowDoubleClick={onRowDoubleClick}
+                        renderExpandedRow={renderExpandedRow}
+                        virtualized={virtualized}
+                        bordered={bordered}
+                        highlightOnHover={highlightOnHover}
+                        toggleRowExpanded={toggleRowExpanded}
+                        primaryRowActions={primaryRowActions}
+                        secondaryRowActions={secondaryRowActions}
+                      />
+                    );
                   })}
               </TableBody>
             </table>
@@ -279,7 +191,28 @@ const DsTable = <TData, TValue>({
               expandable={expandable}
               selectable={selectable}
             />
-            <TableBody>{rows.length ? rows.map(row => renderRow(row)) : renderEmptyState()}</TableBody>
+            <TableBody>
+              {rows.length
+                ? rows.map(row => (
+                  <DsTableRow
+                    key={row.id}
+                    row={row}
+                    expandable={expandable}
+                    expandedRows={expandedRows}
+                    selectable={selectable}
+                    onRowClick={onRowClick}
+                    onRowDoubleClick={onRowDoubleClick}
+                    renderExpandedRow={renderExpandedRow}
+                    virtualized={virtualized}
+                    bordered={bordered}
+                    highlightOnHover={highlightOnHover}
+                    toggleRowExpanded={toggleRowExpanded}
+                    primaryRowActions={primaryRowActions}
+                    secondaryRowActions={secondaryRowActions}
+                  />
+                ))
+                : renderEmptyState()}
+            </TableBody>
           </Table>
         )}
       </div>

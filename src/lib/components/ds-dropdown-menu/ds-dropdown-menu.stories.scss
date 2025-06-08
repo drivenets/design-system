@@ -1,0 +1,25 @@
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--neutral-4);
+  border-radius: 4px;
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: var(--action-cta1);
+  }
+
+  .label {
+    flex: 1;
+    font-size: 14px;
+    color: var(--neutral-1);
+    margin: 0 20px;
+  }
+
+  .arrow {
+    color: var(--neutral-3);
+  }
+}

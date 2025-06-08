@@ -305,6 +305,43 @@ export const Selectable: Story = {
   },
 };
 
+export const WithRowActions: Story = {
+  args: {
+    primaryRowActions: [
+      {
+        icon: 'visibility',
+        label: 'Edit',
+        disabled: data => {
+          return data.firstName === 'Tanner'; // Example condition to disable action
+        },
+        onClick: data => {
+          console.log('Row clicked', data);
+          alert(`Row clicked ${JSON.stringify(data)}`);
+        },
+      },
+    ],
+    secondaryRowActions: [
+      {
+        icon: 'delete_outline',
+        label: 'Delete',
+        tooltip: 'Delete this row',
+        disabled: data => data.status === 'single',
+        onClick: data => {
+          alert(`Delete action for ${data.firstName}`);
+        },
+      },
+      {
+        icon: 'info',
+        label: 'Details',
+        tooltip: 'Show details',
+        onClick: data => {
+          alert(`Details for ${data.firstName}`);
+        },
+      },
+    ],
+  },
+};
+
 export const WithBulkActions: Story = {
   args: {
     selectable: true,
