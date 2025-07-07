@@ -1,0 +1,149 @@
+@use 'typography' as typography;
+
+.colorsContainer {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.pageTitle {
+	@extend .heading1;
+	margin-bottom: 1rem;
+	color: var(--color-primary-950);
+}
+
+.pageDescription {
+	@extend .body-md-reg;
+	margin-bottom: 3rem;
+	color: var(--color-secondary-500-net-4);
+}
+
+.colorGroup {
+	margin-bottom: 2.5rem;
+}
+
+.groupLabel {
+	@extend .heading3;
+	margin-bottom: 1rem;
+	color: var(--color-secondary-700-net-1);
+}
+
+.swatchRow {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1.5rem;
+}
+
+.swatchItem {
+	width: 80px;
+	height: 80px;
+	border-radius: 10px;
+	box-shadow: 0 2px 8px rgba(8, 59, 197, 0.06);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	position: relative;
+	transition: box-shadow 0.2s;
+	cursor: pointer;
+	border: 1px solid var(--color-primary-200);
+	margin-bottom: 0.5rem;
+
+	&:hover {
+		box-shadow: 0 4px 16px rgba(30, 131, 255, 0.12);
+		border: 1.5px solid var(--color-primary-400);
+	}
+}
+
+.toneName {
+	@extend .body-xs-semi-bold;
+	color: var(--color-secondary-700-net-1);
+	margin-bottom: 2px;
+	margin-top: 8px;
+	text-shadow: 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.toneCode {
+	@extend .code-xs-reg;
+	color: var(--color-secondary-700-net-1);
+	margin-bottom: 8px;
+	background: var(--color-secondary-white);
+	border-radius: 4px;
+	padding: 0 6px;
+	font-size: 12px;
+}
+
+.copiedTooltip {
+	position: absolute;
+	top: 8px;
+	left: 50%;
+	transform: translateX(-50%);
+	background: var(--color-positive-100);
+	color: var(--color-positive-700);
+	padding: 4px 10px;
+	border-radius: 4px;
+	font-size: 12px;
+	pointer-events: none;
+	opacity: 0;
+	animation: fadeInOut 1.5s;
+	z-index: 2;
+}
+
+@keyframes fadeInOut {
+	0% {
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+	}
+	90% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+.swatchCol {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 80px;
+}
+
+.toneNumber {
+	@extend .body-xs-semi-bold;
+	color: var(--color-secondary-500-net-4);
+	margin-top: 0.5rem;
+	text-align: center;
+	font-size: 15px;
+	letter-spacing: 0.01em;
+}
+
+.swatchItem-gradient {
+	background: none !important;
+	position: relative;
+	overflow: hidden;
+}
+
+.swatchItem-gradient::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: 10px;
+	z-index: 0;
+}
+
+.swatchItem-rgba {
+	background: none !important;
+	position: relative;
+	overflow: hidden;
+}
+
+.swatchItem-rgba::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	border-radius: 10px;
+	z-index: 0;
+}
