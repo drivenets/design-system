@@ -1,4 +1,3 @@
-// TODO: Use `--sizing-*` tokens for all sizes.
 .root {
 	position: relative;
 	background: var(--white);
@@ -8,48 +7,48 @@
 
 	&[data-state='open']:hover,
 	&[data-state='open']:focus-within {
-		border-color: var(--neutral-7);
+		border-color: var(--color-border);
 	}
 
-	&.variantCollapsed {
-		&[data-state='closed'] {
-			display: none;
-		}
+	&[data-state='closed'] {
+		display: none;
 	}
 
-	&.variantMinimized {
-		&[data-state='closed'] {
-			position: absolute;
-			height: 56px;
-			width: 292px;
-			inset-inline-start: var(--spacing-3);
-			top: var(--spacing-3);
-			padding: var(--spacing-3);
-			border-radius: var(--spacing-2);
-			filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.22));
-		}
+	&.variantFloating {
+		position: absolute;
+		inset-inline-start: var(--spacing-3);
+		top: var(--spacing-3);
+		border: none;
+		border-radius: var(--spacing-2);
+		filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.22));
+	}
+
+	&.disablePadding {
+		padding: 0;
 	}
 }
 
 .trigger {
+	--size: 28px;
+
 	position: absolute;
 	cursor: pointer;
 	user-select: none;
 	display: none;
-	padding: calc(var(--spacing-1) / 2);
+	height: var(--size);
+	width: var(--size);
+	padding: 1px;
+	border: 1px solid var(--color-border-secondary);
 	border-radius: 100%;
-	border: none;
 	background: var(--white);
-	color: var(--action-cta3);
-	top: var(--spacing-4);
+	color: var(--color-icon-secondary);
+	top: var(--spacing-6);
 	inset-inline-start: 100%;
-	margin-inline-start: -14px; // TODO: Find a token for this.
+	margin-inline-start: calc(var(--size) / -2);
 
-	// Hack to create an inline border that doesn't take space.
-	box-shadow: 0 0 0 1px var(--neutral-7) inset;
-
-	&[data-state='closed'] {
-		transform: rotate(180deg);
+	&[data-state='closed'],
+	&.triggerCollapsed {
+		rotate: y 180deg;
 	}
 
 	.root:hover &,
@@ -59,8 +58,27 @@
 
 	&:hover,
 	&:focus {
-		color: var(--action-cta1);
+		color: var(--color-icon-primary);
+		border-color: var(--color-border-action-primary);
 		outline: none;
+		background: var(--color-background-action-tertiary);
+
+		.root:has(&) {
+			border-color: var(--color-border-action-primary);
+
+			// Add an inset single-sided border on hover without affecting the layout.
+			&.variantDocked[data-state='open']::before {
+				content: '';
+				display: block;
+				position: absolute;
+				height: 100%;
+				width: 1px;
+				top: 0;
+				inset-inline-end: 0;
+				background: var(--color-border-action-primary);
+				pointer-events: none;
+			}
+		}
 	}
 
 	// Increase surface size for better clickability.
@@ -68,5 +86,10 @@
 		content: '';
 		position: absolute;
 		inset: calc(-1 * var(--spacing-1));
+	}
+
+	.root.variantFloating & {
+		top: 50%;
+		transform: translateY(-50%);
 	}
 }

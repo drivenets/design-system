@@ -1,2 +1,2 @@
-export { DsPanel, DsPanelContent, DsPanelMinimizedContent } from './ds-panel';
-export type { DsPanelProps } from './ds-panel.types';
+export { DsPanel } from './ds-panel';
+export type { DsPanelProps, DsPanelVariant, DsPanelCollapseButtonProps } from './ds-panel.types';

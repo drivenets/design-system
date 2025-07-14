@@ -1,0 +1,134 @@
+.step {
+	padding: 12px;
+	display: flex;
+	gap: 16px;
+	background: none;
+	border: none;
+	text-align: start;
+	font-family: inherit;
+
+	.root.variantSingle & {
+		padding-block: 16px;
+		padding-inline-start: 12px;
+		padding-inline-end: 20px;
+		border-radius: 8px;
+	}
+
+	.root:not(.variantSingle) &[data-complete] {
+		cursor: pointer;
+	}
+
+	&[data-current] {
+		border-radius: 4px;
+		background: var(--color-background-action-secondary-hover);
+	}
+
+	.indicatorContainer {
+		padding: 0 2px;
+		position: relative;
+		display: flex;
+
+		.indicator {
+			height: 36px;
+			width: 36px;
+			border: 2px solid var(--color-border);
+			display: grid;
+			place-items: center;
+			border-radius: 100%;
+
+			.variantSingle & {
+				height: 32px;
+				width: 32px;
+			}
+		}
+
+		&[data-complete] .indicator {
+			color: var(--color-background-selected);
+			border-color: var(--color-background-selected);
+		}
+
+		&[data-current] .indicator {
+			background: var(--color-background-selected);
+			color: var(--white);
+			border: 3px solid var(--white);
+		}
+
+		.separator {
+			position: absolute;
+			width: 2px;
+			height: calc(100% - 12px);
+			top: 36px;
+			left: 50%;
+			margin-left: -1px;
+			background: var(--color-border);
+
+			&[data-complete] {
+				background: var(--color-background-selected);
+			}
+		}
+	}
+
+	&:last-child .indicatorContainer .separator {
+		display: none;
+	}
+
+	.stepContent {
+		display: flex;
+		flex-direction: column;
+		flex-grow: 1;
+
+		&.stepContentSingle {
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+
+	.stepLabel {
+		padding: 2px 0;
+		font-size: 16px;
+		line-height: 1.5;
+		font-weight: 500;
+		color: var(--color-font-secondary);
+
+		.root.variantSingle & {
+			font-size: 14px;
+		}
+	}
+
+	.stepDescription {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.4;
+		color: var(--color-background-deselected);
+	}
+
+	&[data-current] {
+		.stepLabel {
+			color: var(--color-font-action);
+		}
+
+		.stepDescription {
+			color: var(--color-font-main);
+		}
+	}
+
+	&[data-complete] {
+		.stepLabel {
+			color: var(--color-font-main);
+		}
+
+		.stepDescription {
+			color: var(--color-font-secondary);
+		}
+	}
+
+	.stepContent:not(.stepContentSingle) .stepActions {
+		margin-top: 12px;
+	}
+
+	.stepActions {
+		margin-inline-start: auto;
+		display: flex;
+		gap: 4px;
+	}
+}

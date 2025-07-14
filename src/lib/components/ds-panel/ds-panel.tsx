@@ -1,70 +1,46 @@
-import { createContext, PropsWithChildren, useContext } from 'react';
 import * as Collapsible from '@radix-ui/react-collapsible';
-import classNames from 'classnames';
+import classnames from 'classnames';
 import styles from './ds-panel.module.scss';
 import { DsIcon } from '../ds-icon';
-import type { Context, DsPanelProps } from './ds-panel.types';
-
-const PanelContext = createContext<Context | null>(null);
+import type { DsPanelCollapseButtonProps, DsPanelProps } from './ds-panel.types';
 
 export function DsPanel({
 	open,
 	onOpenChange,
 	children,
 	className,
-	variant = 'collapsed',
+	slotProps,
+	variant = 'docked',
+	disablePadding = false,
 	...props
 }: DsPanelProps) {
 	return (
 		<Collapsible.Root
 			open={open}
 			onOpenChange={onOpenChange}
-			className={classNames(styles.root, className, {
-				[styles.variantCollapsed]: variant === 'collapsed',
-				[styles.variantMinimized]: variant === 'minimized',
+			className={classnames(styles.root, className, {
+				[styles.variantDocked]: variant === 'docked',
+				[styles.variantFloating]: variant === 'floating',
+				[styles.disablePadding]: disablePadding,
 			})}
 			{...props}
 		>
-			<DsPanelTrigger />
-			<PanelContext.Provider value={{ variant, open }}>{children}</PanelContext.Provider>
+			<DsPanelCollapseButton {...slotProps?.collapseButton} />
+			{children}
 		</Collapsible.Root>
 	);
 }
 
-function DsPanelTrigger() {
+function DsPanelCollapseButton({ collapsed, ...props }: DsPanelCollapseButtonProps) {
 	return (
-		<Collapsible.Trigger className={styles.trigger} aria-label="Toggle panel">
+		<Collapsible.Trigger
+			className={classnames(styles.trigger, {
+				[styles.triggerCollapsed]: collapsed,
+			})}
+			aria-label="Toggle panel"
+			{...props}
+		>
 			<DsIcon icon="arrow_circle_left" variant="outlined" />
 		</Collapsible.Trigger>
 	);
-}
-
-export function DsPanelContent({ children }: PropsWithChildren) {
-	const context = usePanel();
-
-	if (context.variant === 'minimized' && !context.open) {
-		return null;
-	}
-
-	return <Collapsible.Content>{children}</Collapsible.Content>;
-}
-
-export function DsPanelMinimizedContent({ children }: PropsWithChildren) {
-	const context = usePanel();
-
-	if (context.variant !== 'minimized' || context.open) {
-		return null;
-	}
-
-	return <Collapsible.Content forceMount>{children}</Collapsible.Content>;
-}
-
-function usePanel() {
-	const context = useContext(PanelContext);
-
-	if (!context) {
-		throw new Error('usePanel must be used within a DsPanel');
-	}
-
-	return context;
 }
