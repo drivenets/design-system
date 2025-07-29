@@ -1,26 +1,26 @@
 @use 'typography' as typography;
 
 .trigger {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  height: 40px;
-  width: 210px;
-  justify-content: center;
-  align-self: stretch;
-  border-radius: 4px;
-  border: 1px solid var(--action-cta3);
-  background: var(--white);
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	height: 40px;
+	width: 210px;
+	justify-content: center;
+	align-self: stretch;
+	border-radius: 4px;
+	border: 1px solid var(--action-cta3);
+	background: var(--white);
 }
 
 .selected {
-  @extend .p-base;
-  flex: 1;
-  padding: 12px 16px;
-  color: var(--neutral-1);
+	@extend .p-base;
+	flex: 1;
+	padding: 12px 16px;
+	color: var(--neutral-1);
 }
 
 .arrow {
-  padding: 7px 11px;
-  border-left: 1px solid var(--action-cta3);
+	padding: 7px 11px;
+	border-left: 1px solid var(--action-cta3);
 }

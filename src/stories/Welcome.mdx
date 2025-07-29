@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/blocks';
 import path from 'path';
 
-<Meta title="Introduction"/>
+<Meta title="Introduction" />
 
 # Welcome to the DAP Design System
 
@@ -14,12 +14,14 @@ Welcome to our design system documentation! This guide will help you understand 
 1. **Using the Design System**
 
 **Within the Monorepo**
+
 ```tsx
 // No installation needed! Just import directly:
 import { DsButton, DsIcon } from '@design-system/ui';
-   ```
+```
 
 **Outside the Monorepo**
+
 ```bash
 # The library is available as an NPM package
 npm install @design-system/ui
@@ -27,19 +29,20 @@ npm install @design-system/ui
 yarn add @design-system/ui
 # or
 pnpm add @design-system/ui
-   ```
+```
 
 2. **Example Usage**
+
 ```tsx
 import { DsButton, DsIcon } from '@design-system/ui';
 
 function MyComponent() {
-  return (
-    <DsButton>
-      <DsIcon name="check" />
-      Click me
-    </DsButton>
-  );
+	return (
+		<DsButton>
+			<DsIcon name="check" />
+			Click me
+		</DsButton>
+	);
 }
 ```
 
@@ -48,42 +51,44 @@ function MyComponent() {
    To use the design system styles in your project, you need to configure your build tool to import them globally. Here's how to set it up:
 
    **Vite Configuration**
+
    ```ts
    // vite.config.ts
    export default defineConfig({
-     css: {
-       preprocessorOptions: {
-         scss: {
-           loadPaths: ['libs/web/src/styles'],
-           additionalData: '@use "@design-system/ui/styles/styles.scss" as *;',
-         },
-       },
-     },
+   	css: {
+   		preprocessorOptions: {
+   			scss: {
+   				loadPaths: ['libs/web/src/styles'],
+   				additionalData: '@use "@design-system/ui/styles/styles.scss" as *;',
+   			},
+   		},
+   	},
    });
    ```
 
    **Webpack Configuration**
+
    ```js
    // webpack.config.js
    module.exports = {
-     module: {
-       rules: [
-         {
-           test: /\.scss$/,
-           use: [
-             'style-loader',
-             'css-loader',
-             {
-               loader: 'sass-loader',
-               options: {
-                 loadPaths: ['libs/web/src/styles'],
-                 additionalData: '@use "@design-system/ui/styles/styles.scss" as *;',
-               },
-             },
-           ],
-         },
-       ],
-     },
+   	module: {
+   		rules: [
+   			{
+   				test: /\.scss$/,
+   				use: [
+   					'style-loader',
+   					'css-loader',
+   					{
+   						loader: 'sass-loader',
+   						options: {
+   							loadPaths: ['libs/web/src/styles'],
+   							additionalData: '@use "@design-system/ui/styles/styles.scss" as *;',
+   						},
+   					},
+   				],
+   			},
+   		],
+   	},
    };
    ```
 
@@ -96,19 +101,22 @@ function MyComponent() {
 ### Development Workflow
 
 1. **Creating New Components**
+
 ```bash
 npx nx generate @dap-workspace/dap-plugin:ds-component my-component
-   ```
+```
 
 2. **Running Tests**
+
 ```bash
 nx test web
-   ```
+```
 
 3. **Storybook Development**
+
 ```bash
 nx run web:storybook
-   ```
+```
 
 ### Best Practices
 
@@ -123,10 +131,12 @@ nx run web:storybook
 ### Design Resources
 
 1. **Figma Design System**
+
 - [Main Design System](https://www.figma.com/design/5BjP3KnzlfAxTbdx1srK48/%F0%9F%A6%BE-DAP-Design-System)
 - [Typography Styles](https://www.figma.com/design/XJwVCvDPhD0dMTP4vr3xY3/%F0%9F%A6%95-%F0%9F%AA%86Style-%26-Design-System)
 
 2. **Design Tokens**
+
 - Colors
 - Typography
 - Breakpoints
@@ -136,6 +146,7 @@ nx run web:storybook
 ### Component Guidelines
 
 1. **Component States**
+
 - Default
 - Hover
 - Active
@@ -144,11 +155,13 @@ nx run web:storybook
 - Error
 
 2. **Component Variants**
+
 - Size variations
 - Color variations
 - Style variations
 
 3. **Component Composition**
+
 - How to combine components
 - Layout patterns
 - Spacing rules
@@ -156,6 +169,7 @@ nx run web:storybook
 ## Design System Features
 
 ### 1. Component Library
+
 - 20+ reusable components
 - Fully accessible (WCAG 2.1 compliant)
 - Responsive design
@@ -163,6 +177,7 @@ nx run web:storybook
 - Customizable themes
 
 ### 2. Development Tools
+
 - TypeScript support
 - Storybook documentation
 - Unit testing with Vitest
@@ -170,6 +185,7 @@ nx run web:storybook
 - Automated accessibility testing
 
 ### 3. Design Integration
+
 - Figma plugin for Storybook
 - Design token synchronization
 - Component variant mapping
@@ -187,12 +203,14 @@ nx run web:storybook
 We welcome contributions! Please follow our contribution guidelines:
 
 1. **For Developers**
+
 - Fork the repository
 - Create a feature branch
 - Write tests
 - Submit a pull request
 
 2. **For Designers**
+
 - Use the Figma design system
 - Follow the design guidelines
 - Document component specifications

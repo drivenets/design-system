@@ -4,8 +4,8 @@ import React from 'react';
 import DsTable from './ds-table';
 
 describe('DsTable', () => {
-  it('should render successfully', () => {
-    const { baseElement } = render(<DsTable />);
-    expect(baseElement).toBeTruthy();
-  });
+	it('should render successfully', () => {
+		const { baseElement } = render(<DsTable />);
+		expect(baseElement).toBeTruthy();
+	});
 });

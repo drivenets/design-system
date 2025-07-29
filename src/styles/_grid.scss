@@ -7,61 +7,61 @@ $columns: 12;
 $rows: 8;
 
 $grid-hd: (
-  gutter: 16px,
-  margin: 16px 20px
+	gutter: 16px,
+	margin: 16px 20px,
 );
 
 @mixin grid-setup($grid-setup) {
-  gap: map.get($grid-setup, 'gutter');
-  padding: map.get($grid-setup, 'margin');
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
+	gap: map.get($grid-setup, 'gutter');
+	padding: map.get($grid-setup, 'margin');
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
 }
 
 @mixin generate-grid-classes($grid-setup) {
-  @for $i from 1 through $columns {
-    .ds-grid-col-span-#{$i} {
-      --col-span: #{$i};
-    }
-    @if $i < $columns {
-      .ds-grid-col-start-#{$i} {
-        --col-start: #{$i};
-      }
-    }
-  }
-  @for $i from 1 through $rows {
-    .ds-grid-row-span-#{$i} {
-      --row-span: #{$i};
-    }
-    @if $i < $rows {
-      .ds-grid-row-start-#{$i} {
-        --row-start: #{$i};
-      }
-    }
-  }
-  @for $i from 1 through math.floor(calc($rows / 2)) {
-    $row-count: 2 * $i;
-    &.ds-grid-rows-#{$row-count} {
-      grid-template-rows: repeat($row-count, 1fr);
-    }
-  }
-  .ds-grid-col-span-full {
-    --col-span: #{$columns};
-  }
-  .ds-grid-row-span-full {
-    --row-span: #{$rows};
-  }
+	@for $i from 1 through $columns {
+		.ds-grid-col-span-#{$i} {
+			--col-span: #{$i};
+		}
+		@if $i < $columns {
+			.ds-grid-col-start-#{$i} {
+				--col-start: #{$i};
+			}
+		}
+	}
+	@for $i from 1 through $rows {
+		.ds-grid-row-span-#{$i} {
+			--row-span: #{$i};
+		}
+		@if $i < $rows {
+			.ds-grid-row-start-#{$i} {
+				--row-start: #{$i};
+			}
+		}
+	}
+	@for $i from 1 through math.floor(calc($rows / 2)) {
+		$row-count: 2 * $i;
+		&.ds-grid-rows-#{$row-count} {
+			grid-template-rows: repeat($row-count, 1fr);
+		}
+	}
+	.ds-grid-col-span-full {
+		--col-span: #{$columns};
+	}
+	.ds-grid-row-span-full {
+		--row-span: #{$rows};
+	}
 }
 
 .ds-grid {
-  display: grid;
-  grid-template-columns: repeat($columns, 1fr);
-  grid-template-rows: repeat($rows, 1fr);
-  @include grid-setup($grid-hd);
-  @include generate-grid-classes($grid-hd);
+	display: grid;
+	grid-template-columns: repeat($columns, 1fr);
+	grid-template-rows: repeat($rows, 1fr);
+	@include grid-setup($grid-hd);
+	@include generate-grid-classes($grid-hd);
 
-  /*
+	/*
     @media screen and (min-width: $qhd) {
       @include grid-setup($grid-qhd);
     }
@@ -69,6 +69,6 @@ $grid-hd: (
 }
 
 .ds-grid > * {
-  grid-column: var(--col-start, auto) / span var(--col-span, 1);
-  grid-row: var(--row-start, auto) / span var(--row-span, 1);
+	grid-column: var(--col-start, auto) / span var(--col-span, 1);
+	grid-row: var(--row-start, auto) / span var(--row-span, 1);
 }

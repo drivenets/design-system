@@ -1,132 +1,132 @@
 .storyPadding {
-  padding: 1rem;
+	padding: 1rem;
 }
 
 .progressInfographic {
-  width: 100%;
-  height: 20px;
-  background-color: var(--neutral-10);
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid var(--neutral-6);
+	width: 100%;
+	height: 20px;
+	background-color: var(--neutral-10);
+	border-radius: 4px;
+	overflow: hidden;
+	border: 1px solid var(--neutral-6);
 
-  & > .bar {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 10px;
-    font-weight: bold;
-    transition: width 0.3s ease-in-out;
+	& > .bar {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: white;
+		font-size: 10px;
+		font-weight: bold;
+		transition: width 0.3s ease-in-out;
 
-    &--low {
-      background-color: var(--system-status-error);
-    }
+		&--low {
+			background-color: var(--system-status-error);
+		}
 
-    &--medium {
-      background-color: var(--system-status-info);
-    }
+		&--medium {
+			background-color: var(--system-status-info);
+		}
 
-    &--high {
-      background-color: var(--system-status-ok);
-    }
-  }
+		&--high {
+			background-color: var(--system-status-ok);
+		}
+	}
 }
 
 .expandedRowDetails {
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-left: 3px solid lightblue;
+	padding: 10px;
+	background-color: #f9f9f9;
+	border-left: 3px solid lightblue;
 }
 
 .emptyStateContainer {
-  padding: 20px;
-  text-align: center;
-  border: 1px dashed #ccc;
+	padding: 20px;
+	text-align: center;
+	border: 1px dashed #ccc;
 
-  &__text {
-    margin-top: 10px;
-  }
+	&__text {
+		margin-top: 10px;
+	}
 }
 
 .statusCell {
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--white);
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--white);
 
-  &--single {
-    background-color: var(--system-status-ok);
-  }
+	&--single {
+		background-color: var(--system-status-ok);
+	}
 
-  &--relationship {
-    background-color: var(--system-status-info);
-  }
+	&--relationship {
+		background-color: var(--system-status-info);
+	}
 
-  &--complicated {
-    background-color: var(--system-status-error);
-  }
+	&--complicated {
+		background-color: var(--system-status-error);
+	}
 }
 
 .tableFilterContainer {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  flex: 1;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	flex: 1;
 
-  .table {
-    margin: 20px;
-  }
+	.table {
+		margin: 20px;
+	}
 }
 
 .tabFilterContainer {
-  display: flex;
-  margin: 20px 20px 0 20px;
-  gap: 8px;
+	display: flex;
+	margin: 20px 20px 0 20px;
+	gap: 8px;
 
-  .tab {
-    display: flex;
-    height: 48px;
-    padding: 18px 16px;
-    align-items: center;
-    gap: 4px;
-    border-radius: 4px;
-    border: 1px solid #dee2e6;
-    background: #fff;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
+	.tab {
+		display: flex;
+		height: 48px;
+		padding: 18px 16px;
+		align-items: center;
+		gap: 4px;
+		border-radius: 4px;
+		border: 1px solid #dee2e6;
+		background: #fff;
+		cursor: pointer;
+		transition: all 0.2s ease-in-out;
 
-    &.active {
-      background: #e7f5ff;
-      border: 1px solid #1c7ed6;
+		&.active {
+			background: #e7f5ff;
+			border: 1px solid #1c7ed6;
 
-      * {
-        color: #1c7ed6;
-      }
-    }
+			* {
+				color: #1c7ed6;
+			}
+		}
 
-    .title {
-      flex: 1;
-      padding-left: 4px;
-      white-space: nowrap;
-    }
+		.title {
+			flex: 1;
+			padding-left: 4px;
+			white-space: nowrap;
+		}
 
-    .total {
-      background-color: #f1f3f5;
-      padding: 2px 8px;
-      border-radius: 10px;
-      font-size: 12px;
-      margin-left: 8px;
-      color: #495057;
-      font-weight: 600;
-    }
-  }
+		.total {
+			background-color: #f1f3f5;
+			padding: 2px 8px;
+			border-radius: 10px;
+			font-size: 12px;
+			margin-left: 8px;
+			color: #495057;
+			font-weight: 600;
+		}
+	}
 }
 
 .customTabRow {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+	display: flex;
+	gap: 8px;
+	align-items: center;
 }

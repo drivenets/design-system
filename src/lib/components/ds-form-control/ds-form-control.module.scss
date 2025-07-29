@@ -1,154 +1,154 @@
 @use 'typography' as typography;
 
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 
-  &.info {
-    .message {
-      color: var(--action-cta1);
-    }
-  }
+	&.info {
+		.message {
+			color: var(--action-cta1);
+		}
+	}
 
-  &.success {
-    .control {
-      border-color: var(--system-status-ok);
-    }
+	&.success {
+		.control {
+			border-color: var(--system-status-ok);
+		}
 
-    .message {
-      color: var(--system-status-ok);
-      background: var(--utility-ok);
-    }
-  }
+		.message {
+			color: var(--system-status-ok);
+			background: var(--utility-ok);
+		}
+	}
 
-  &.warning {
-    .control {
-      border-color: var(--system-status-alert);
-    }
+	&.warning {
+		.control {
+			border-color: var(--system-status-alert);
+		}
 
-    .message {
-      color: var(--system-status-alert);
-      background: var(--utility-alert);
-    }
-  }
+		.message {
+			color: var(--system-status-alert);
+			background: var(--utility-alert);
+		}
+	}
 
-  &.error {
-    .control {
-      border-color: var(--system-status-error);
-    }
+	&.error {
+		.control {
+			border-color: var(--system-status-error);
+		}
 
-    .message {
-      color: var(--system-status-error);
-      background: var(--utility-error);
-    }
-  }
+		.message {
+			color: var(--system-status-error);
+			background: var(--utility-error);
+		}
+	}
 }
 
 .label {
-  @extend .p-base;
-  color: var(--neutral-1);
-  display: inline-block;
+	@extend .p-base;
+	color: var(--neutral-1);
+	display: inline-block;
 
-  &.required::after {
-    @extend .p-base, .medium;
-    content: '*';
-    position: relative;
-    top: -3px;
-    left: 1px;
-    color: var(--system-status-error);
-  }
+	&.required::after {
+		@extend .p-base, .medium;
+		content: '*';
+		position: relative;
+		top: -3px;
+		left: 1px;
+		color: var(--system-status-error);
+	}
 
-  &.disabled {
-    color: var(--neutral-3);
+	&.disabled {
+		color: var(--neutral-3);
 
-    &::after {
-      color: var(--neutral-8);
-    }
-  }
+		&::after {
+			color: var(--neutral-8);
+		}
+	}
 }
 
 .controlWrapper {
-  position: relative;
+	position: relative;
 
-  &.input {
-    .control {
-      padding: 7px 16px;
-      line-height: 24px;
-      font-style: normal;
-    }
+	&.input {
+		.control {
+			padding: 7px 16px;
+			line-height: 24px;
+			font-style: normal;
+		}
 
-    .icon {
-      top: 50%;
-      transform: translateY(-50%);
-    }
-  }
+		.icon {
+			top: 50%;
+			transform: translateY(-50%);
+		}
+	}
 
-  &.textarea {
-    .control {
-      padding: 12px 16px;
-      min-height: 100px;
+	&.textarea {
+		.control {
+			padding: 12px 16px;
+			min-height: 100px;
 
-      &:disabled {
-        resize: none;
-      }
-    }
+			&:disabled {
+				resize: none;
+			}
+		}
 
-    .icon {
-      top: 10px;
-    }
-  }
+		.icon {
+			top: 10px;
+		}
+	}
 
-  .control.withIcon {
-    padding-left: 40px;
-  }
+	.control.withIcon {
+		padding-left: 40px;
+	}
 
-  .icon {
-    position: absolute;
-    pointer-events: none;
-    color: var(--neutral-3);
-  }
+	.icon {
+		position: absolute;
+		pointer-events: none;
+		color: var(--neutral-3);
+	}
 
-  .icon {
-    left: 12px;
-  }
+	.icon {
+		left: 12px;
+	}
 }
 
 .control {
-  @extend .p-special;
-  width: 100%;
-  border: 1px solid var(--neutral-4);
-  border-radius: 4px;
-  transition: border-color 0.2s;
+	@extend .p-special;
+	width: 100%;
+	border: 1px solid var(--neutral-4);
+	border-radius: 4px;
+	transition: border-color 0.2s;
 
-  &:focus {
-    outline: none;
-    border-color: var(--action-cta1);
-  }
+	&:focus {
+		outline: none;
+		border-color: var(--action-cta1);
+	}
 
-  &:disabled {
-    background-color: var(--neutral-10);
-    border-color: var(--neutral-10);
-    color: var(--neutral-4);
-    cursor: not-allowed;
+	&:disabled {
+		background-color: var(--neutral-10);
+		border-color: var(--neutral-10);
+		color: var(--neutral-4);
+		cursor: not-allowed;
 
-    &::placeholder {
-      color: var(--neutral-4);
-    }
-  }
+		&::placeholder {
+			color: var(--neutral-4);
+		}
+	}
 }
 
 .message {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--action-hover-light);
-  color: var(--neutral-1);
-  padding: 6px 8px;
-  border-radius: 4px;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	background: var(--action-hover-light);
+	color: var(--neutral-1);
+	padding: 6px 8px;
+	border-radius: 4px;
 
-  .messageText {
-    @extend .p-s;
-    color: var(--neutral-2);
-  }
+	.messageText {
+		@extend .p-s;
+		color: var(--neutral-2);
+	}
 }

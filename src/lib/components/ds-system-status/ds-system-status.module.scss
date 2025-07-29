@@ -1,77 +1,77 @@
 @use 'typography' as typography;
 
 .container {
-  @extend .p-special, .medium;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  width: max-content;
-  text-transform: uppercase;
+	@extend .p-special, .medium;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 8px;
+	border-radius: 4px;
+	width: max-content;
+	text-transform: uppercase;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 1px solid var(--white);
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: 1px solid var(--white);
 }
 
 .label {
-  @extend .p-special;
+	@extend .p-special;
 }
 
 .healthy {
-  background: var(--utility-ok);
-  color: var(--system-status-ok);
+	background: var(--utility-ok);
+	color: var(--system-status-ok);
 
-  .dot {
-    background: var(--system-status-ok);
-  }
+	.dot {
+		background: var(--system-status-ok);
+	}
 }
 
 .neutral {
-  background: var(--utility-info);
-  color: var(--system-status-info);
+	background: var(--utility-info);
+	color: var(--system-status-info);
 
-  .dot {
-    background: var(--system-status-info);
-  }
+	.dot {
+		background: var(--system-status-info);
+	}
 }
 
 .error {
-  background: var(--utility-error);
-  color: var(--system-status-error);
+	background: var(--utility-error);
+	color: var(--system-status-error);
 
-  .dot {
-    background: var(--system-status-error);
-  }
+	.dot {
+		background: var(--system-status-error);
+	}
 }
 
 .in-progress {
-  background: var(--utility-in-progress);
-  color: var(--system-status-in-progress);
+	background: var(--utility-in-progress);
+	color: var(--system-status-in-progress);
 
-  .dot {
-    background: var(--system-status-in-progress);
-  }
+	.dot {
+		background: var(--system-status-in-progress);
+	}
 }
 
 .pending {
-  background: var(--utility-pending);
-  color: var(--system-status-pending);
+	background: var(--utility-pending);
+	color: var(--system-status-pending);
 
-  .dot {
-    background: var(--system-status-pending);
-  }
+	.dot {
+		background: var(--system-status-pending);
+	}
 }
 
 .alert {
-  background: var(--utility-alert);
-  color: var(--system-status-alert);
+	background: var(--utility-alert);
+	color: var(--system-status-alert);
 
-  .dot {
-    background: var(--system-status-alert);
-  }
+	.dot {
+		background: var(--system-status-alert);
+	}
 }

@@ -42,18 +42,13 @@ const DsTableHeader = <TData,>({
 					)}
 					{expandable && <TableHead className={styles.expandColumn} />}
 					{reorderable && (
-						<TableHead className={classnames(styles.headerCell, styles.reorderColumn)}>
-							Order
-						</TableHead>
+						<TableHead className={classnames(styles.headerCell, styles.reorderColumn)}>Order</TableHead>
 					)}
 					{headerGroup.headers.map((header) => {
 						return (
 							<TableHead
 								key={header.id}
-								className={classnames(
-									styles.headerCell,
-									header.column.getCanSort() && styles.sortableHeader,
-								)}
+								className={classnames(styles.headerCell, header.column.getCanSort() && styles.sortableHeader)}
 								onClick={header.column.getToggleSortingHandler()}
 								style={{
 									width: header.getSize(),
@@ -62,40 +57,24 @@ const DsTableHeader = <TData,>({
 							>
 								{header.isPlaceholder ? null : (
 									<div className={styles.headerSortContainer}>
-										<div>
-											{flexRender(
-												header.column.columnDef.header,
-												header.getContext(),
-											)}
-										</div>
+										<div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
 										{header.column.getCanSort() && (
 											<div className={styles.pageButtonIconContainer}>
 												{{
 													asc: (
 														<DsIcon
 															icon="arrow_drop_up"
-															className={classnames(
-																styles.pageButtonIcon,
-																stylesShared.pageButtonIcon,
-															)}
+															className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
 														/>
 													),
 													desc: (
 														<DsIcon
 															icon="arrow_drop_down"
-															className={classnames(
-																styles.pageButtonIcon,
-																stylesShared.pageButtonIcon,
-															)}
+															className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
 														/>
 													),
 												}[header.column.getIsSorted() as string] ?? (
-													<div
-														className={classnames(
-															styles.pageButtonIcon,
-															stylesShared.pageButtonIcon,
-														)}
-													/>
+													<div className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)} />
 												)}
 											</div>
 										)}

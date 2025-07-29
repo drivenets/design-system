@@ -1,15 +1,15 @@
 @use 'typography' as typography;
 
 .dialogContent {
-  padding: 20px;
-  min-width: 300px;
+	padding: 20px;
+	min-width: 300px;
 }
 
 .menuIcon {
-  cursor: pointer;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1;
-  color: var(--action-cta1);
+	cursor: pointer;
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	z-index: 1;
+	color: var(--action-cta1);
 }

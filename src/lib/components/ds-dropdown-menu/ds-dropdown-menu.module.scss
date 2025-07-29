@@ -2,17 +2,17 @@
 @use 'shared/dropdown' as dropdown;
 
 .content {
-  @include dropdown.dropdown-content;
+	@include dropdown.dropdown-content;
 }
 
 .viewport {
-  @include dropdown.dropdown-viewport;
+	@include dropdown.dropdown-viewport;
 }
 
 .item {
-  @include dropdown.dropdown-item;
+	@include dropdown.dropdown-item;
 }
 
 .indicator {
-  @include dropdown.dropdown-indicator;
+	@include dropdown.dropdown-indicator;
 }

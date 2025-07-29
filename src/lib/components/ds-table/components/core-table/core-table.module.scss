@@ -1,62 +1,62 @@
 .tableWrapper {
-  position: relative;
-  width: 100%;
-  overflow: auto;
+	position: relative;
+	width: 100%;
+	overflow: auto;
 }
 
 .table {
-  width: 100%;
-  caption-side: bottom;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  border-collapse: collapse;
+	width: 100%;
+	caption-side: bottom;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	border-collapse: collapse;
 }
 
 .tableHeader {
-  & tr {
-    border-bottom-width: 1px;
-  }
+	& tr {
+		border-bottom-width: 1px;
+	}
 }
 
 .tableBody {
-  & tr:last-child {
-    border-bottom-width: 0;
-  }
+	& tr:last-child {
+		border-bottom-width: 0;
+	}
 }
 
 .tableFooter {
-  border-top-width: 1px;
-  background-color: rgba(241, 245, 249, 0.5);
-  font-weight: 500;
+	border-top-width: 1px;
+	background-color: rgba(241, 245, 249, 0.5);
+	font-weight: 500;
 
-  & > tr:last-child {
-    border-bottom-width: 0;
-  }
+	& > tr:last-child {
+		border-bottom-width: 0;
+	}
 }
 
 .tableHead {
-  text-align: left;
-  vertical-align: middle;
-  font-weight: 500;
-  color: rgb(100, 116, 139);
+	text-align: left;
+	vertical-align: middle;
+	font-weight: 500;
+	color: rgb(100, 116, 139);
 
-  &:has([role='checkbox']) {
-    padding-right: 0;
-  }
+	&:has([role='checkbox']) {
+		padding-right: 0;
+	}
 }
 
 .tableCell {
-  padding: 1rem;
-  vertical-align: middle;
+	padding: 1rem;
+	vertical-align: middle;
 
-  &:has([role='checkbox']) {
-    padding-right: 0;
-  }
+	&:has([role='checkbox']) {
+		padding-right: 0;
+	}
 }
 
 .tableCaption {
-  margin-top: 1rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  color: rgb(100, 116, 139);
+	margin-top: 1rem;
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	color: rgb(100, 116, 139);
 }

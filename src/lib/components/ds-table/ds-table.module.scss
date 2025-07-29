@@ -3,44 +3,44 @@
 @use './styles/variables' as vars;
 
 .container {
-  margin-top: vars.$container-margin-vertical;
-  margin-bottom: vars.$container-margin-vertical;
-  position: relative;
+	margin-top: vars.$container-margin-vertical;
+	margin-bottom: vars.$container-margin-vertical;
+	position: relative;
 }
 
 .dataTableContainer {
-  border-radius: vars.$border-radius;
-  border-width: vars.$border-width;
-  border-style: solid;
-  border-color: var(--neutral-6);
+	border-radius: vars.$border-radius;
+	border-width: vars.$border-width;
+	border-style: solid;
+	border-color: var(--neutral-6);
 }
 
 .virtualized {
-  height: vars.$virtualized-height;
-  overflow: auto;
+	height: vars.$virtualized-height;
+	overflow: auto;
 }
 
 .virtualRowContainer {
-  position: relative;
-  width: 100%;
+	position: relative;
+	width: 100%;
 }
 
 .table {
-  width: 100%;
-  caption-side: bottom;
-  @extend .p-base;
+	width: 100%;
+	caption-side: bottom;
+	@extend .p-base;
 
-  &.tableNoBorder {
-    border-collapse: collapse;
-    border: none;
-  }
+	&.tableNoBorder {
+		border-collapse: collapse;
+		border: none;
+	}
 }
 
 .fullWidth {
-  width: 100%;
+	width: 100%;
 }
 
 .emptyState {
-  height: vars.$empty-state-height;
-  text-align: center;
+	height: vars.$empty-state-height;
+	text-align: center;
 }

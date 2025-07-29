@@ -1,46 +1,47 @@
 @use 'typography' as typography;
 
 .tableCellEllipsis {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .lastCell {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
 
-  .cellActions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+	.cellActions {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
 }
 
 .rowActionIcon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: none;
-  cursor: pointer;
-  transition: background 0.15s;
-  color: var(--neutral-4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: none;
+	cursor: pointer;
+	transition: background 0.15s;
+	color: var(--neutral-4);
 
-  &.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-  }
+	&.disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
 
-  &:hover, &:focus {
-    background: var(--action-hover-light);
-    color: var(--action-cta1);
-  }
+	&:hover,
+	&:focus {
+		background: var(--action-hover-light);
+		color: var(--action-cta1);
+	}
 }
