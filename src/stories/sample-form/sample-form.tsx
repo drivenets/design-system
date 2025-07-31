@@ -7,6 +7,8 @@ const defaultValues = {
 	name: '',
 	email: '',
 	description: '',
+	acceptTerms: false as never,
+	subscription: undefined,
 	contactMethod: '',
 };
 
