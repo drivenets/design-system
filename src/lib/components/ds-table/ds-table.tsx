@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import {
 	type ColumnFiltersState,
 	getCoreRowModel,
@@ -19,6 +20,7 @@ import styles from './ds-table.module.scss';
 import type { DataTableProps } from './ds-table.types';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
+import { DsTableContext, DsTableContextType } from './context/ds-table-context';
 
 /**
  * Design system Table component
@@ -121,7 +123,10 @@ const DsTable = <TData extends { id: string }, TValue>({
 		},
 		enableRowSelection: selectable,
 	});
-	onTableCreated?.(table);
+
+	useEffect(() => {
+		onTableCreated?.(table);
+	}, []);
 
 	const { rows } = table.getRowModel();
 
@@ -157,110 +162,79 @@ const DsTable = <TData extends { id: string }, TValue>({
 		.filter(([, selected]) => selected)
 		.map(([key]) => table.getRow(key).original);
 
+	const contextValue: DsTableContextType<TData, TValue> = {
+		stickyHeader,
+		bordered,
+		fullWidth,
+		highlightOnHover,
+		virtualized,
+		expandable,
+		selectable,
+		reorderable,
+		showSelectAllCheckbox,
+		onRowClick,
+		onRowDoubleClick,
+		primaryRowActions,
+		secondaryRowActions,
+		isRowExpandable,
+		renderExpandedRow,
+		expandedRows,
+		toggleRowExpanded,
+	};
+
 	return (
-		<div className={classnames(styles.container, className)}>
-			{filterElement}
-			<div
-				ref={tableContainerRef}
-				className={classnames(styles.dataTableContainer, virtualized && styles.virtualized)}
-			>
-				{virtualized && totalSize ? (
-					<div
-						className={styles.virtualRowContainer}
-						style={{
-							height: `${totalSize}px`,
-						}}
-					>
-						<table className={classnames(styles.table, !bordered && styles.tableNoBorder)}>
-							<DsTableHeader
-								table={table}
-								stickyHeader={stickyHeader}
-								bordered={bordered}
-								expandable={expandable}
-								selectable={selectable}
-								showSelectAllCheckbox={showSelectAllCheckbox}
-							/>
-							<TableBody>
-								{virtualItems &&
-									virtualItems.map((virtualRow: VirtualItem) => {
-										const row = rows[virtualRow.index];
-										return (
-											<DsTableRow
-												key={row.id}
-												row={row}
-												virtualRow={virtualRow}
-												expandable={expandable}
-												isRowExpandable={isRowExpandable}
-												expandedRows={expandedRows}
-												selectable={selectable}
-												onRowClick={onRowClick}
-												onRowDoubleClick={onRowDoubleClick}
-												renderExpandedRow={renderExpandedRow}
-												virtualized={virtualized}
-												bordered={bordered}
-												highlightOnHover={highlightOnHover}
-												toggleRowExpanded={toggleRowExpanded}
-												primaryRowActions={primaryRowActions}
-												secondaryRowActions={secondaryRowActions}
-											/>
-										);
-									})}
-							</TableBody>
-						</table>
-					</div>
-				) : (
-					<DragWrapper>
-						<Table className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}>
-							<DsTableHeader
-								table={table}
-								stickyHeader={stickyHeader}
-								bordered={bordered}
-								expandable={expandable}
-								selectable={selectable}
-								reorderable={reorderable}
-								showSelectAllCheckbox={showSelectAllCheckbox}
-							/>
-							<TableBody>
-								<SortableWrapper>
-									{rows.length
-										? rows.map((row) => (
-												<DsTableRow
-													key={row.id}
-													row={row}
-													expandable={expandable}
-													isRowExpandable={isRowExpandable}
-													expandedRows={expandedRows}
-													selectable={selectable}
-													reorderable={reorderable}
-													onRowClick={onRowClick}
-													onRowDoubleClick={onRowDoubleClick}
-													renderExpandedRow={renderExpandedRow}
-													virtualized={virtualized}
-													bordered={bordered}
-													highlightOnHover={highlightOnHover}
-													toggleRowExpanded={toggleRowExpanded}
-													primaryRowActions={primaryRowActions}
-													secondaryRowActions={secondaryRowActions}
-												/>
-											))
-										: renderEmptyState()}
-								</SortableWrapper>
-							</TableBody>
-						</Table>
-					</DragWrapper>
+		<DsTableContext.Provider value={contextValue}>
+			<div className={classnames(styles.container, className)}>
+				{filterElement}
+				<div
+					ref={tableContainerRef}
+					className={classnames(styles.dataTableContainer, virtualized && styles.virtualized)}
+				>
+					{virtualized && totalSize ? (
+						<div
+							className={styles.virtualRowContainer}
+							style={{
+								height: `${totalSize}px`,
+							}}
+						>
+							<table className={classnames(styles.table, !bordered && styles.tableNoBorder)}>
+								<DsTableHeader table={table} />
+								<TableBody>
+									{virtualItems &&
+										virtualItems.map((virtualRow: VirtualItem) => {
+											const row = rows[virtualRow.index];
+											return <DsTableRow key={row.id} row={row} virtualRow={virtualRow} />;
+										})}
+								</TableBody>
+							</table>
+						</div>
+					) : (
+						<DragWrapper>
+							<Table className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}>
+								<DsTableHeader table={table} />
+								<TableBody>
+									<SortableWrapper>
+										{rows.length
+											? rows.map((row) => <DsTableRow key={row.id} row={row} />)
+											: renderEmptyState()}
+									</SortableWrapper>
+								</TableBody>
+							</Table>
+						</DragWrapper>
+					)}
+				</div>
+				{selectable && actions.length > 0 && (
+					<DsTableBulkActions
+						numSelectedRows={selectedRows.length}
+						actions={actions.map((action) => ({
+							...action,
+							onClick: () => action.onClick(selectedRows),
+						}))}
+						onClearSelection={table.resetRowSelection}
+					/>
 				)}
 			</div>
-			{selectable && actions.length > 0 && (
-				<DsTableBulkActions
-					numSelectedRows={selectedRows.length}
-					actions={actions.map((action) => ({
-						...action,
-						onClick: () => action.onClick(selectedRows),
-					}))}
-					onClearSelection={table.resetRowSelection}
-				/>
-			)}
-		</div>
+		</DsTableContext.Provider>
 	);
 };
 

@@ -9,6 +9,7 @@ import { DsTableCell } from '../ds-table-cell';
 import { TableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
+import { useDsTableContext } from '../../context/ds-table-context';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
@@ -35,24 +36,24 @@ const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleP
 	);
 };
 
-const DsTableRow = <TData, TValue>({
-	row,
-	virtualRow,
-	expandable,
-	isRowExpandable,
-	expandedRows,
-	selectable,
-	reorderable,
-	onRowClick,
-	onRowDoubleClick,
-	renderExpandedRow,
-	virtualized,
-	bordered,
-	highlightOnHover,
-	toggleRowExpanded,
-	primaryRowActions,
-	secondaryRowActions,
-}: TableRowProps<TData, TValue>) => {
+const DsTableRow = <TData, TValue>({ row, virtualRow }: TableRowProps<TData>) => {
+	const {
+		expandable,
+		isRowExpandable,
+		expandedRows,
+		selectable,
+		reorderable,
+		onRowClick,
+		onRowDoubleClick,
+		renderExpandedRow,
+		virtualized,
+		bordered,
+		highlightOnHover,
+		toggleRowExpanded,
+		primaryRowActions,
+		secondaryRowActions,
+	} = useDsTableContext<TData>();
+
 	const isExpanded = expandable && expandedRows[row.id];
 	const isExpandable = isRowExpandable ? isRowExpandable(row.original) : expandable;
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
