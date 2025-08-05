@@ -18,10 +18,6 @@ export interface DsTextareaProps {
 	 */
 	style?: React.CSSProperties;
 	/**
-	 * The tooltip text to be displayed on hover
-	 */
-	tooltip?: string;
-	/**
 	 * The placeholder text
 	 */
 	placeholder?: string;

@@ -8,7 +8,6 @@ const DsTextarea: React.FC<DsTextareaProps> = ({
 	onValueChange,
 	className,
 	style = {},
-	tooltip,
 	value,
 	disabled = false,
 	rows = 3,
@@ -26,7 +25,6 @@ const DsTextarea: React.FC<DsTextareaProps> = ({
 		<textarea
 			className={classNames(styles.textarea, className)}
 			style={style}
-			title={tooltip}
 			value={value}
 			placeholder={placeholder}
 			disabled={disabled}
