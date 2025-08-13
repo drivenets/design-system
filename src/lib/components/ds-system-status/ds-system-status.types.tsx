@@ -1,4 +1,12 @@
-export const systemStatuses = ['healthy', 'neutral', 'error', 'in-progress', 'pending', 'alert'] as const;
+export const systemStatuses = [
+	'healthy',
+	'neutral',
+	'error',
+	'in-progress',
+	'pending',
+	'alert',
+	'disabled',
+] as const;
 
 export type SystemStatus = (typeof systemStatuses)[number];
 

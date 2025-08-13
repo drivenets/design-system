@@ -75,3 +75,12 @@
 		background: var(--system-status-alert);
 	}
 }
+
+.disabled {
+	background: var(--utility-disabled);
+	color: var(--neutral-2);
+
+	.dot {
+		background: var(--neutral-2);
+	}
+}

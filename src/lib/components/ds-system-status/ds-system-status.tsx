@@ -10,6 +10,7 @@ const defaultLabels: Record<DsSystemStatusProps['status'], string> = {
 	'in-progress': 'IN PROGRESS',
 	pending: 'PENDING',
 	alert: 'ALERT',
+	disabled: 'DISABLED',
 };
 
 const DsSystemStatus: React.FC<DsSystemStatusProps> = ({ status, label, className }) => {

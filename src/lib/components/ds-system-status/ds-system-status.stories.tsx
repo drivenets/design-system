@@ -11,7 +11,7 @@ const meta: Meta<typeof DsSystemStatus> = {
 	argTypes: {
 		status: {
 			control: { type: 'select' },
-			options: ['healthy', 'neutral', 'error', 'in-progress', 'pending', 'alert'],
+			options: ['healthy', 'neutral', 'error', 'in-progress', 'pending', 'alert', 'disabled'],
 		},
 		label: {
 			control: 'text',
