@@ -1,12 +1,8 @@
-import React from 'react';
-import { DsTextInputProps } from '../ds-text-input';
-import { DsTextareaProps } from '../ds-textarea';
-import { DsSelectProps } from '../ds-select';
-import { DsNumberInputProps } from '../ds-number-input';
-import { DsPasswordInputProps } from '../ds-password-input';
+import React, { ReactNode } from 'react';
+import { IconType } from '../ds-icon';
 
-export const controlSchemas = ['info', 'success', 'error', 'warning'] as const;
-export type ControlSchema = (typeof controlSchemas)[number];
+export const controlStatuses = ['info', 'success', 'error', 'warning'] as const;
+export type ControlStatus = (typeof controlStatuses)[number];
 
 export interface DsFormControlProps extends React.PropsWithChildren {
 	/**
@@ -14,9 +10,9 @@ export interface DsFormControlProps extends React.PropsWithChildren {
 	 */
 	id?: string;
 	/**
-	 * Visual schema
+	 * Visual status
 	 */
-	schema?: ControlSchema;
+	status?: ControlStatus;
 	/**
 	 * Label text
 	 */
@@ -40,7 +36,7 @@ export interface DsFormControlProps extends React.PropsWithChildren {
 	/**
 	 * Icon shown next to message
 	 */
-	messageIcon?: string;
+	messageIcon?: IconType;
 	/**
 	 * Additional CSS class names
 	 */
@@ -55,36 +51,9 @@ export interface DsFormControlDescriptionProps {
 	/**
 	 * The description content
 	 */
-	children: React.ReactNode;
+	children: ReactNode;
 	/**
 	 * Additional CSS class names
 	 */
 	className?: string;
-}
-
-export interface DsFormControlCompound extends React.FC<DsFormControlProps> {
-	/**
-	 * Text input component
-	 */
-	TextInput: React.FC<Omit<DsTextInputProps, 'id'>>;
-	/**
-	 * Number input component
-	 */
-	NumberInput: React.FC<Omit<DsNumberInputProps, 'id'>>;
-	/**
-	 * Password input component
-	 */
-	PasswordInput: React.FC<Omit<DsPasswordInputProps, 'id'>>;
-	/**
-	 * Textarea component
-	 */
-	Textarea: React.FC<Omit<DsTextareaProps, 'id'>>;
-	/**
-	 * Select component
-	 */
-	Select: React.FC<Omit<DsSelectProps, 'id'>>;
-	/**
-	 * Description component
-	 */
-	Description: React.FC<DsFormControlDescriptionProps>;
 }

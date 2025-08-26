@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { controlSchemas } from '@design-system/ui';
+import { controlStatuses, DsIcon } from '@design-system/ui';
 import DsFormControl from './ds-form-control';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
 
@@ -11,13 +11,13 @@ const meta: Meta<typeof DsFormControl> = {
 	},
 	tags: ['autodocs'],
 	argTypes: {
-		schema: {
+		status: {
 			control: { type: 'select' },
-			options: controlSchemas,
-			description: 'Form control color schema',
+			options: controlStatuses,
+			description: 'Form control color status',
 			table: {
 				defaultValue: {
-					summary: controlSchemas[0],
+					summary: controlStatuses[0],
 				},
 			},
 		},
@@ -162,7 +162,7 @@ export const WithDescription: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput placeholder="Search" leftIcon="search" />
+				<DsFormControl.TextInput placeholder="Search" startAdornment={<DsIcon icon="search" size="tiny" />} />
 			</>
 		),
 	},
@@ -200,7 +200,7 @@ export const WithHelpIcon: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput placeholder="Search" leftIcon="search" />
+				<DsFormControl.TextInput placeholder="Search" startAdornment={<DsIcon icon="search" size="tiny" />} />
 			</>
 		),
 	},
@@ -214,7 +214,9 @@ export const WithIcon: Story = {
 		label: 'Input label',
 		required: true,
 		message: 'This is a message',
-		children: <DsFormControl.TextInput placeholder="Input" leftIcon="call" />,
+		children: (
+			<DsFormControl.TextInput placeholder="Input" startAdornment={<DsIcon icon="call" size="tiny" />} />
+		),
 	},
 	play: async ({ canvasElement }) => {
 		await sanityCheck(canvasElement);
@@ -223,7 +225,7 @@ export const WithIcon: Story = {
 
 export const Success: Story = {
 	args: {
-		schema: 'success',
+		status: 'success',
 		label: 'Input label',
 		message: 'This is a success caption under a text input.',
 		messageIcon: 'check_circle',
@@ -250,7 +252,7 @@ export const Success: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput type="text" rightIcon="visibility" />
+				<DsFormControl.TextInput type="text" endAdornment={<DsIcon icon="visibility" size="tiny" />} />
 			</>
 		),
 	},
@@ -261,7 +263,7 @@ export const Success: Story = {
 
 export const Error: Story = {
 	args: {
-		schema: 'error',
+		status: 'error',
 		label: 'Input label',
 		message: 'This is an error caption under a text input.',
 		messageIcon: 'error',
@@ -288,7 +290,10 @@ export const Error: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput leftIcon="search" rightIcon="error" />
+				<DsFormControl.TextInput
+					startAdornment={<DsIcon icon="search" size="tiny" />}
+					endAdornment={<DsIcon icon="error" size="tiny" />}
+				/>
 			</>
 		),
 	},
@@ -299,7 +304,7 @@ export const Error: Story = {
 
 export const Warning: Story = {
 	args: {
-		schema: 'warning',
+		status: 'warning',
 		label: 'Input label',
 		message: 'This is a warning caption under a text input.',
 		messageIcon: 'info',
@@ -397,7 +402,7 @@ export const TextareaWithDescription: Story = {
 
 export const TextareaWarning: Story = {
 	args: {
-		schema: 'warning',
+		status: 'warning',
 		label: 'Input label',
 		required: true,
 		message: 'This is a message',
@@ -594,15 +599,15 @@ export const SchemaStyling: Story = {
 		label: 'Form Controls with Schema Styling',
 		children: (
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-				<DsFormControl schema="error" label="Error State" message="This field has an error">
+				<DsFormControl status="error" label="Error State" message="This field has an error">
 					<DsFormControl.TextInput placeholder="Error input" />
 				</DsFormControl>
 
-				<DsFormControl schema="warning" label="Warning State" message="This field has a warning">
+				<DsFormControl status="warning" label="Warning State" message="This field has a warning">
 					<DsFormControl.NumberInput placeholder="Warning number" />
 				</DsFormControl>
 
-				<DsFormControl schema="success" label="Success State" message="This field is valid">
+				<DsFormControl status="success" label="Success State" message="This field is valid">
 					<DsFormControl.PasswordInput placeholder="Success password" />
 				</DsFormControl>
 

@@ -14,7 +14,7 @@ $textarea-height-default: 120px;
 	transition: all 0.2s ease;
 	width: 100%;
 	background: var(--color-background);
-	border: 1px solid var(--color-border);
+	border: 1px solid var(--form-control-border-color, var(--color-border));
 	padding: var(--spacing-xs) var(--spacing-sm);
 }
 
@@ -38,21 +38,21 @@ $textarea-height-default: 120px;
 	}
 
 	&::selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 
 	&::-moz-selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 }
 
 @mixin input-container-states {
-	&:hover:not(:has(.input:disabled)):not(:has(:focus-within)) {
-		border: 1px solid var(--color-background-action-hover);
+	&:hover:not(:has(.input:disabled)) {
+		border: 1px solid var(--form-control-border-color, var(--color-background-action-hover));
 	}
 
 	&:has(:focus-within) {
-		border: 1px solid var(--color-border-action-primary);
+		border: 1px solid var(--form-control-border-color, var(--color-border-action-primary));
 	}
 
 	&:has(.input:disabled) {
@@ -71,11 +71,11 @@ $textarea-height-default: 120px;
 
 @mixin input-states {
 	&:hover:not(:disabled):not(:focus) {
-		border-color: var(--form-control-focus-border-color, var(--color-background-action-hover));
+		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 	}
 
 	&:focus {
-		border-color: var(--form-control-focus-border-color, var(--color-border-action-primary));
+		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 	}
 
 	&:disabled {
@@ -91,11 +91,11 @@ $textarea-height-default: 120px;
 
 @mixin form-control-states {
 	&:hover:not(:disabled) {
-		border-color: var(--form-control-focus-border-color, var(--color-background-action-hover));
+		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 	}
 
 	&:focus {
-		border-color: var(--form-control-focus-border-color, var(--color-border-action-primary));
+		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 		outline: none;
 	}
 
@@ -108,7 +108,7 @@ $textarea-height-default: 120px;
 
 @mixin select-trigger-states {
 	&:hover:not(:disabled) {
-		border-color: var(--form-control-focus-border-color, var(--color-background-action-hover));
+		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 
 		.triggerIcon {
 			color: var(--color-background-deselected-hover);
@@ -117,7 +117,7 @@ $textarea-height-default: 120px;
 	}
 
 	&:focus {
-		border-color: var(--form-control-focus-border-color, var(--color-border-action-primary));
+		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 		outline: none;
 
 		.triggerIcon {

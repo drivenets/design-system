@@ -1,12 +1,12 @@
-import { ComponentType, createContext, FC, useContext, useId } from 'react';
+import React, { ComponentType, createContext, useContext, useId } from 'react';
 import classNames from 'classnames';
-import { DsIcon, IconType } from '../ds-icon';
+import { DsIcon } from '../ds-icon';
 import { DsSelect } from '../ds-select';
 import { DsTextInput } from '../ds-text-input';
 import { DsTextarea } from '../ds-textarea';
 import { DsNumberInput } from '../ds-number-input';
 import { DsPasswordInput } from '../ds-password-input';
-import { DsFormControlCompound, DsFormControlDescriptionProps } from './ds-form-control.types';
+import { DsFormControlDescriptionProps, DsFormControlProps } from './ds-form-control.types';
 import styles from './ds-form-control.module.scss';
 
 const FormControlContext = createContext<{ controlId: string } | null>(null);
@@ -33,13 +33,13 @@ export const controlify = <TProps extends { id?: string }>(Component: ComponentT
 	};
 };
 
-const DsFormControlDescription: FC<DsFormControlDescriptionProps> = ({ children, className }) => {
+const DsFormControlDescription: React.FC<DsFormControlDescriptionProps> = ({ children, className }) => {
 	return <div className={classNames(styles.description, className)}>{children}</div>;
 };
 
-const DsFormControl: DsFormControlCompound = ({
+const DsFormControl = ({
 	id,
-	schema,
+	status,
 	label,
 	required = false,
 	showHelpIcon = false,
@@ -49,14 +49,14 @@ const DsFormControl: DsFormControlCompound = ({
 	className,
 	style,
 	children,
-}) => {
+}: DsFormControlProps) => {
 	const generatedId = useId();
 	const controlId = id || generatedId;
 
 	return (
 		<FormControlContext.Provider value={{ controlId }}>
 			<div
-				className={classNames(styles.container, schema && message && styles[schema], className)}
+				className={classNames(styles.container, status && message && styles[status], className)}
 				style={style}
 			>
 				<div className={styles.labelContainer}>
@@ -79,7 +79,7 @@ const DsFormControl: DsFormControlCompound = ({
 
 				{message && (
 					<div className={styles.message}>
-						<DsIcon icon={messageIcon as IconType} size="tiny" filled />
+						<DsIcon icon={messageIcon} size="tiny" filled />
 						<span className={styles.messageText}>{message}</span>
 					</div>
 				)}

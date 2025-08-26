@@ -54,6 +54,12 @@ const DsSelect: FC<DsSelectProps> = ({
 					</div>
 					<div className={styles.triggerIcons}>
 						{selectedOption && (
+							/*
+							 * Using a div instead of a button because:
+							 *
+							 * 1. The Trigger itself is a button so we can't render nested buttons
+							 * 2. The Trigger listens for `keyDown` event which overrides the clear behavior
+							 */
 							<div
 								role="button"
 								tabIndex={0}
@@ -61,7 +67,7 @@ const DsSelect: FC<DsSelectProps> = ({
 								onClick={onClear}
 								onKeyDown={(e) => {
 									if (e.key === 'Enter' || e.key === ' ') {
-										e.preventDefault();
+										e.stopPropagation();
 										onClear?.();
 									}
 								}}
