@@ -4,20 +4,28 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	flex-shrink: 0;
 }
 
 .progressCircle {
+	button &,
+	[role='button'] & {
+		width: 1em;
+		height: 1em;
+	}
 }
 
 .spin {
 	animation: spin 2s linear infinite;
-	animation-delay: 1ms;
 }
 
 .progressArc {
 	transition: stroke-dasharray 0.3s ease-in-out;
-	stroke: var(--spinner-color, var(--color-background-selected));
+	stroke: var(--color-background-selected);
+
+	button &,
+	[role='button'] & {
+		stroke: currentColor;
+	}
 }
 
 @keyframes spin {

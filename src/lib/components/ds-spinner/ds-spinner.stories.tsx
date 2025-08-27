@@ -42,7 +42,7 @@ export const AllSizes: Story = {
 				<span>Small</span>
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-				<DsSpinner size="default" />
+				<DsSpinner size="medium" />
 				<span>Default</span>
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
@@ -57,26 +57,26 @@ export const ColorCustomization: Story = {
 	render: () => (
 		<div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
 			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-				<div style={{ '--spinner-color': 'var(--color-icon-success)' } as React.CSSProperties}>
-					<DsSpinner size="default" />
+				<div role="button" style={{ color: 'var(--color-icon-success)' }}>
+					<DsSpinner size="medium" />
 				</div>
 				<span>Success</span>
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-				<div style={{ '--spinner-color': 'var(--color-icon-warning)' } as React.CSSProperties}>
-					<DsSpinner size="default" />
+				<div role="button" style={{ color: 'var(--color-icon-warning)' }}>
+					<DsSpinner size="medium" />
 				</div>
 				<span>Warning</span>
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-				<div style={{ '--spinner-color': 'var(--color-icon-danger)' } as React.CSSProperties}>
-					<DsSpinner size="default" />
+				<div role="button" style={{ color: 'var(--color-icon-danger)' }}>
+					<DsSpinner size="medium" />
 				</div>
 				<span>Danger</span>
 			</div>
 			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-				<div style={{ '--spinner-color': 'var(--color-border-action-primary)' } as React.CSSProperties}>
-					<DsSpinner size="default" />
+				<div role="button" style={{ color: 'var(--color-border-action-primary)' }}>
+					<DsSpinner size="medium" />
 				</div>
 				<span>Primary</span>
 			</div>

@@ -618,7 +618,7 @@ export const Virtualized: Story = {
 	render: function Render(args) {
 		// Simulate API call using the utility function
 		const fetchData = async (start: number, size: number, sorting: SortingState) => {
-			return simulateApiCall(() => generatePersonData(start, size, sorting), 1000000);
+			return simulateApiCall(() => generatePersonData(start, size, sorting));
 		};
 
 		const pageSize = 50;
@@ -710,7 +710,7 @@ export const Virtualized: Story = {
 					{isLoading && (
 						<div className={styles.loadingOverlay}>
 							<div className={styles.loadingContent}>
-								<DsSpinner size={32} width={4} />
+								<DsSpinner size="small" />
 								<span className={styles.loadingText}>Loading data...</span>
 							</div>
 						</div>

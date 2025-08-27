@@ -1,31 +1,29 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-spinner.module.scss';
-import { DsSpinnerProps } from './ds-spinner.types';
+import { DsSpinnerProps, SpinnerSize } from './ds-spinner.types';
 
-const sizeMap = {
+const sizeMap: Record<SpinnerSize, number> = {
 	small: 50,
-	default: 75,
+	medium: 75,
 	large: 100,
 };
 
-const widthMap = {
+const widthMap: Record<SpinnerSize, number> = {
 	small: 4,
-	default: 7,
+	medium: 7,
 	large: 9,
 };
 
 /**
  * Design system Spinner component
  */
-const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'default', className, style = {}, ...props }) => {
-	const progress = 25;
+const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'medium', className, style = {}, ...props }) => {
 	const actualSize = sizeMap[size];
 	const actualWidth = widthMap[size];
 	const radius = (actualSize - actualWidth) / 2;
 	const circumference = 2 * Math.PI * radius;
-	const strokeDashoffset = 2 * (progress / 100) * circumference;
-	const strokeDasharray = `${(progress / 100) * circumference} ${circumference}`;
+	const strokeDasharray = `${0.25 * circumference} ${circumference}`;
 
 	return (
 		<div className={classNames(styles.spinnerContainer, styles[size], className)} style={style} {...props}>
@@ -36,15 +34,14 @@ const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'default', className, styl
 				viewBox={`0 0 ${actualSize} ${actualSize}`}
 			>
 				<circle
+					className={styles.progressArc}
 					cx={actualSize / 2}
 					cy={actualSize / 2}
 					r={radius}
 					fill="none"
 					strokeWidth={actualWidth}
 					strokeDasharray={strokeDasharray}
-					strokeDashoffset={strokeDashoffset}
 					strokeLinecap="round"
-					className={styles.progressArc}
 				/>
 			</svg>
 		</div>
