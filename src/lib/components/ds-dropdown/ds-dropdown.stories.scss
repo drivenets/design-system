@@ -14,7 +14,7 @@
 }
 
 .selected {
-	@extend .p-base;
+	@include typography.p-base;
 	flex: 1;
 	padding: 12px 16px;
 	color: var(--neutral-1);

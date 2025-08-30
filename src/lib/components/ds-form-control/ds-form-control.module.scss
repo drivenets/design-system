@@ -46,12 +46,13 @@
 }
 
 .label {
-	@extend .p-base;
+	@include typography.p-base;
 	color: var(--neutral-1);
 	display: inline-block;
 
 	&.required::after {
-		@extend .p-base, .medium;
+		@include typography.p-base;
+		@include typography.medium;
 		content: '*';
 		position: relative;
 		top: -3px;
@@ -115,7 +116,7 @@
 }
 
 .control {
-	@extend .p-special;
+	@include typography.p-special;
 	width: 100%;
 	border: 1px solid var(--neutral-4);
 	border-radius: 4px;
@@ -148,7 +149,7 @@
 	border-radius: 4px;
 
 	.messageText {
-		@extend .p-s;
+		@include typography.p-s;
 		color: var(--neutral-2);
 	}
 }

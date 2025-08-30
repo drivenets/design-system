@@ -23,7 +23,7 @@
 .table {
 	width: 100%;
 	caption-side: bottom;
-	@extend .p-base;
+	@include typography.p-base;
 
 	&.tableNoBorder {
 		border-collapse: separate;

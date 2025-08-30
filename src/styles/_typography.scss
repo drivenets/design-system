@@ -26,122 +26,115 @@ body {
 	overflow: hidden;
 }
 
-h1,
-.h1 {
+@mixin h1 {
 	@include base-font;
 	font-size: var.$font-size-h1;
 	line-height: var.$line-height-h1;
 }
 
-h2,
-.h2 {
+@mixin h2 {
 	@include base-font;
 	font-size: var.$font-size-h2;
 	line-height: var.$line-height-h2;
 }
 
-h3,
-.h3 {
+@mixin h3 {
 	@include base-font;
 	font-size: var.$font-size-h3;
 	line-height: var.$line-height-h3;
 }
 
-h4,
-.h4 {
+@mixin h4 {
 	@include base-font;
 	font-size: var.$font-size-h4;
 	line-height: var.$line-height-h4;
 }
 
-h5,
-.h5 {
+@mixin h5 {
 	@include base-font;
 	font-size: var.$font-size-h5;
 	line-height: var.$line-height-h5;
 }
 
-h6,
-.h6 {
+@mixin h6 {
 	@include base-font;
 	font-size: var.$font-size-h6;
 	line-height: var.$line-height-h6;
 }
 
-h7,
-.h7 {
+@mixin h7 {
 	@include base-font;
 	font-size: var.$font-size-h7;
 	line-height: var.$line-height-h7;
 }
 
-.p-xl {
+@mixin p-xl {
 	@include base-font;
 	font-size: var.$font-size-p-xl;
 	line-height: var.$line-height-p-xl;
 }
 
-.p-lg {
+@mixin p-lg {
 	@include base-font;
 	font-size: var.$font-size-p-lg;
 	line-height: var.$line-height-p-lg;
 }
 
-.p-base {
+@mixin p-base {
 	@include base-font;
 	font-size: var.$font-size-p-base;
 	line-height: var.$line-height-p-base;
 }
 
-.p-special {
+@mixin p-special {
 	@include base-font;
 	font-size: var.$font-size-p-special;
 	line-height: var.$line-height-p-special;
 }
 
-.p-s {
+@mixin p-s {
 	@include base-font;
 	font-size: var.$font-size-p-s;
 	line-height: var.$line-height-p-s;
 }
 
-.action {
+@mixin action {
 	@include base-font;
 	font-size: var.$font-size-action;
 	line-height: var.$line-height-action;
 }
 
-.action-lg {
+@mixin action-lg {
 	@include base-font;
 	font-size: var.$font-size-action-lg;
 	line-height: var.$line-height-action-lg;
 }
 
-.action-med {
+@mixin action-med {
 	@include base-font;
 	font-size: var.$font-size-action-med;
 	line-height: var.$line-height-action-med;
 }
 
-.action-small {
+@mixin action-small {
 	@include base-font;
 	font-size: var.$font-size-action-small;
 	line-height: var.$line-height-action-small;
 }
 
-.bold {
+@mixin bold {
 	font-weight: var.$font-weight-bold;
 }
 
-.medium {
+@mixin medium {
 	font-weight: var.$font-weight-medium;
 }
 
-.regular {
+@mixin regular {
 	font-weight: var.$font-weight-regular;
 }
 
-.light {
+@mixin light {
 	font-weight: var.$font-weight-light;
 }
 
