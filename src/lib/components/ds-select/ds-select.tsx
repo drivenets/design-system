@@ -37,7 +37,7 @@ const DsSelect: React.FC<DsSelectProps> = ({
 	const selectedOption = options.find((option) => option.value === value);
 
 	return (
-		<div className={classNames('container', className)} style={style}>
+		<div className={`${styles.container} ${className}`} style={style}>
 			<Select.Root
 				value={value}
 				onValueChange={onValueChange}
