@@ -1,11 +1,5 @@
 // typography is defined in: https://www.figma.com/design/XJwVCvDPhD0dMTP4vr3xY3/%F0%9F%A6%95-%F0%9F%AA%86Style-%26-Design-System?node-id=4804-91960&node-type=frame&t=6LW93tAe2no6Rhgx-0
 @use 'variables' as var;
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
-
-body {
-	font-family: var.$font-family-primary;
-}
 
 @mixin base-font {
 	font-family: var.$font-family-base;
@@ -26,176 +20,121 @@ body {
 	overflow: hidden;
 }
 
-h1,
-.h1 {
+@mixin h1 {
 	@include base-font;
 	font-size: var.$font-size-h1;
 	line-height: var.$line-height-h1;
 }
 
-h2,
-.h2 {
+@mixin h2 {
 	@include base-font;
 	font-size: var.$font-size-h2;
 	line-height: var.$line-height-h2;
 }
 
-h3,
-.h3 {
+@mixin h3 {
 	@include base-font;
 	font-size: var.$font-size-h3;
 	line-height: var.$line-height-h3;
 }
 
-h4,
-.h4 {
+@mixin h4 {
 	@include base-font;
 	font-size: var.$font-size-h4;
 	line-height: var.$line-height-h4;
 }
 
-h5,
-.h5 {
+@mixin h5 {
 	@include base-font;
 	font-size: var.$font-size-h5;
 	line-height: var.$line-height-h5;
 }
 
-h6,
-.h6 {
+@mixin h6 {
 	@include base-font;
 	font-size: var.$font-size-h6;
 	line-height: var.$line-height-h6;
 }
 
-h7,
-.h7 {
+@mixin h7 {
 	@include base-font;
 	font-size: var.$font-size-h7;
 	line-height: var.$line-height-h7;
 }
 
-.p-xl {
+@mixin p-xl {
 	@include base-font;
 	font-size: var.$font-size-p-xl;
 	line-height: var.$line-height-p-xl;
 }
 
-.p-lg {
+@mixin p-lg {
 	@include base-font;
 	font-size: var.$font-size-p-lg;
 	line-height: var.$line-height-p-lg;
 }
 
-.p-base {
+@mixin p-base {
 	@include base-font;
 	font-size: var.$font-size-p-base;
 	line-height: var.$line-height-p-base;
 }
 
-.p-special {
+@mixin p-special {
 	@include base-font;
 	font-size: var.$font-size-p-special;
 	line-height: var.$line-height-p-special;
 }
 
-.p-s {
+@mixin p-s {
 	@include base-font;
 	font-size: var.$font-size-p-s;
 	line-height: var.$line-height-p-s;
 }
 
-.action {
+@mixin action {
 	@include base-font;
 	font-size: var.$font-size-action;
 	line-height: var.$line-height-action;
 }
 
-.action-lg {
+@mixin action-lg {
 	@include base-font;
 	font-size: var.$font-size-action-lg;
 	line-height: var.$line-height-action-lg;
 }
 
-.action-med {
+@mixin action-med {
 	@include base-font;
 	font-size: var.$font-size-action-med;
 	line-height: var.$line-height-action-med;
 }
 
-.action-small {
+@mixin action-small {
 	@include base-font;
 	font-size: var.$font-size-action-small;
 	line-height: var.$line-height-action-small;
 }
 
-.bold {
+@mixin bold {
 	font-weight: var.$font-weight-bold;
 }
 
-.medium {
+@mixin medium {
 	font-weight: var.$font-weight-medium;
 }
 
-.regular {
+@mixin regular {
 	font-weight: var.$font-weight-regular;
 }
 
-.light {
+@mixin light {
 	font-weight: var.$font-weight-light;
 }
 
 // New for DS v1.2
 
-:root {
-	/* Family */
-	--font-family-base: 'Roboto', sans-serif;
-	--font-family-code: 'Fira Mono', monospace;
-
-	/* Font weight */
-	--font-weight-regular: 400;
-	--font-weight-medium: 500;
-	--font-weight-semi-bold: 600;
-	--font-weight-bold: 700;
-	--font-weight-extra-bold: 800;
-
-	/* Font size / heading */
-	--font-size-3xl: 32px;
-	--font-size-2xl: 24px;
-	--font-size-xl: 20px;
-	--font-size-large: 18px;
-
-	/* Font size / body */
-	--font-size-md: 16px;
-	--font-size-sm: 14px;
-	--font-size-xs: 12px;
-
-	/* Line height / heading */
-	--line-height-3xl: 40px;
-	--line-height-2xl: 32px;
-	--line-height-xl: 26px;
-	--line-height-large: 24px;
-
-	/* Line height / body */
-	--line-height-md: 24px;
-	--line-height-sm: 20px;
-	--line-height-xs: 16px;
-
-	/* Paragraph spacing / heading */
-	--paragraph-spacing-3xl: 40;
-	--paragraph-spacing-2xl: 24;
-	--paragraph-spacing-xl: 20;
-	--paragraph-spacing-large: 20;
-
-	/* Paragraph spacing / body */
-	--paragraph-spacing-md: 20;
-	--paragraph-spacing-sm: 16;
-	--paragraph-spacing-xs: 8;
-
-	/* Letter spacing */
-	--letter-spacing--1percent: -0.01em; // -1% letter spacing for headings
-}
-
+// TODO below needs to be removed
 @mixin font-base {
 	font-family: var(--font-family-base);
 	font-style: normal;
@@ -216,42 +155,30 @@ h7,
 	font-style: normal;
 	letter-spacing: 0;
 	text-align: left;
-	// Enable ligatures for better code readability
-	font-feature-settings:
-		'liga' 1,
-		'calt' 1;
 }
 
-.heading1 {
+@mixin heading($font-weight: var(--font-size-3xl), $line-height: var(--line-height-3xl)) {
 	@include font-base;
-	font-size: var(--font-size-3xl);
+	font-size: $font-weight;
 	font-weight: var(--font-weight-semi-bold);
-	line-height: var(--line-height-3xl);
+	line-height: $line-height;
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
-.heading2 {
-	@include font-base;
-	font-size: var(--font-size-2xl);
-	font-weight: var(--font-weight-semi-bold);
-	line-height: var(--line-height-2xl);
-	letter-spacing: var(--letter-spacing--1percent);
+@mixin heading1 {
+	@include heading;
 }
 
-.heading3 {
-	@include font-base;
-	font-size: var(--font-size-xl);
-	font-weight: var(--font-weight-semi-bold);
-	line-height: var(--line-height-xl);
-	letter-spacing: var(--letter-spacing--1percent);
+@mixin heading2 {
+	@include heading(var(--font-size-2xl), var(--line-height-2xl));
 }
 
-.heading4 {
-	@include font-base;
-	font-size: var(--font-size-large);
-	font-weight: var(--font-weight-semi-bold);
-	line-height: var(--line-height-large);
-	letter-spacing: var(--letter-spacing--1percent);
+@mixin heading3 {
+	@include heading(var(--font-size-xl), var(--line-height-xl));
+}
+
+@mixin heading4 {
+	@include heading(var(--font-size-large), var(--line-height-large));
 }
 
 @mixin body-md($font-weight: var(--font-weight-regular)) {
@@ -262,23 +189,23 @@ h7,
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
-.body-md-reg {
+@mixin body-md-reg {
 	@include body-md;
 }
 
-.body-md-md {
+@mixin body-md-md {
 	@include body-md(var(--font-weight-medium));
 }
 
-.body-md-semi-bold {
+@mixin body-md-semi-bold {
 	@include body-md(var(--font-weight-semi-bold));
 }
 
-.body-md-bold {
+@mixin body-md-bold {
 	@include body-md(var(--font-weight-bold));
 }
 
-.body-md-link {
+@mixin body-md-link {
 	@include body-md;
 	@include link-base;
 }
@@ -291,23 +218,23 @@ h7,
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
-.body-sm-reg {
+@mixin body-sm-reg {
 	@include body-sm;
 }
 
-.body-sm-md {
+@mixin body-sm-md {
 	@include body-sm(var(--font-weight-medium));
 }
 
-.body-sm-semi-bold {
+@mixin body-sm-semi-bold {
 	@include body-sm(var(--font-weight-semi-bold));
 }
 
-.body-sm-bold {
+@mixin body-sm-bold {
 	@include body-sm(var(--font-weight-bold));
 }
 
-.body-sm-link {
+@mixin body-sm-link {
 	@include body-sm;
 	@include link-base;
 }
@@ -319,23 +246,23 @@ h7,
 	line-height: var(--line-height-xs);
 }
 
-.body-xs-reg {
+@mixin body-xs-reg {
 	@include body-xs;
 }
 
-.body-xs-md {
+@mixin body-xs-md {
 	@include body-xs(var(--font-weight-medium));
 }
 
-.body-xs-semi-bold {
+@mixin body-xs-semi-bold {
 	@include body-xs(var(--font-weight-semi-bold));
 }
 
-.body-xs-bold {
+@mixin body-xs-bold {
 	@include body-xs(var(--font-weight-bold));
 }
 
-.body-xs-link {
+@mixin body-xs-link {
 	@include body-xs;
 	@include link-base;
 }
@@ -348,11 +275,11 @@ h7,
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
-.code-sm-reg {
+@mixin code-sm-reg {
 	@include code-sm;
 }
 
-.code-sm-semi-bold {
+@mixin code-sm-semi-bold {
 	@include code-sm(var(--font-weight-semi-bold));
 }
 
@@ -364,10 +291,10 @@ h7,
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
-.code-xs-reg {
+@mixin code-xs-reg {
 	@include code-xs;
 }
 
-.code-xs-semi-bold {
+@mixin code-xs-semi-bold {
 	@include code-xs(var(--font-weight-semi-bold));
 }

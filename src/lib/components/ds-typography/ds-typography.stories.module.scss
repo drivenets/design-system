@@ -1,5 +1,3 @@
-@use 'typography';
-
 .typographyContainer {
 	max-width: 1200px;
 	margin: 0 auto;
@@ -7,13 +5,11 @@
 }
 
 .pageTitle {
-	@extend .heading1;
 	margin-bottom: 1rem;
 	color: var(--neutral-1);
 }
 
 .pageDescription {
-	@extend .body-md-reg;
 	margin-bottom: 3rem;
 	color: var(--neutral-3);
 }
@@ -37,19 +33,16 @@
 }
 
 .typographyName {
-	@extend .body-md-bold;
 	margin-bottom: 0.5rem;
 	color: var(--neutral-1);
 }
 
 .typographyDescription {
-	@extend .body-sm-reg;
 	margin-bottom: 0.5rem;
 	color: var(--neutral-4);
 }
 
 .typographyClass {
-	@extend .code-sm-reg;
 	background-color: var(--neutral-10);
 	padding: 0.25rem 0.5rem;
 	border-radius: 4px;
@@ -68,7 +61,6 @@
 }
 
 .sectionTitle {
-	@extend .heading3;
 	margin-bottom: 1.5rem;
 	color: var(--neutral-1);
 }
@@ -83,92 +75,10 @@
 }
 
 .comparisonLabel {
-	@extend .code-sm-reg;
 	min-width: 200px;
 	margin-right: 1rem;
 	color: var(--neutral-4);
 	background-color: var(--neutral-10);
 	padding: 0.25rem 0.5rem;
 	border-radius: 4px;
-}
-
-// Import all typography classes for use in the stories
-.heading1 {
-	@extend .heading1;
-}
-
-.heading2 {
-	@extend .heading2;
-}
-
-.heading3 {
-	@extend .heading3;
-}
-
-.heading4 {
-	@extend .heading4;
-}
-
-.body-md-reg {
-	@extend .body-md-reg;
-}
-
-.body-md-semi-bold {
-	@extend .body-md-semi-bold;
-}
-
-.body-md-bold {
-	@extend .body-md-bold;
-}
-
-.body-md-link {
-	@extend .body-md-link;
-}
-
-.body-sm-reg {
-	@extend .body-sm-reg;
-}
-
-.body-sm-semi-bold {
-	@extend .body-sm-semi-bold;
-}
-
-.body-sm-bold {
-	@extend .body-sm-bold;
-}
-
-.body-sm-link {
-	@extend .body-sm-link;
-}
-
-.body-xs-reg {
-	@extend .body-xs-reg;
-}
-
-.body-xs-semi-bold {
-	@extend .body-xs-semi-bold;
-}
-
-.body-xs-bold {
-	@extend .body-xs-bold;
-}
-
-.body-xs-link {
-	@extend .body-xs-link;
-}
-
-.code-sm-reg {
-	@extend .code-sm-reg;
-}
-
-.code-sm-semi-bold {
-	@extend .code-sm-semi-bold;
-}
-
-.code-xs-reg {
-	@extend .code-xs-reg;
-}
-
-.code-xs-semi-bold {
-	@extend .code-xs-semi-bold;
 }

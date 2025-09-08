@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 .modalOverlay {
 	position: fixed;
@@ -29,11 +29,11 @@
 }
 
 .modalTextPrimary {
-	@extend .body-sm-reg;
+	@include typography.body-sm-reg;
 	color: var(--color-font-main);
 }
 
 .modalTextSecondary {
-	@extend .body-xs-reg;
+	@include typography.body-xs-reg;
 	color: var(--color-font-secondary);
 }

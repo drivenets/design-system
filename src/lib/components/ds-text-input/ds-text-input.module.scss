@@ -1,15 +1,15 @@
-@use 'shared/input' as input;
+@use '@design-system/ui/src/styles/shared/input' as input;
 
 .textInputContainer {
-	@extend .inputContainer;
+	@include input.inputContainer;
 }
 
 .input {
-	@extend .input;
+	@include input.input;
 }
 
 .iconButton {
-	@extend .iconButton;
+	@include input.iconButton;
 }
 
 .adornment {
@@ -26,6 +26,6 @@
 	}
 
 	button {
-		@extend .iconButton;
+		@include input.iconButton;
 	}
 }

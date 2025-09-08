@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 @use '../../styles/variables' as vars;
 
 .stickyHeader {
@@ -44,7 +44,8 @@
 }
 
 .headerCell {
-	@extend .p-base, .regular;
+	@include typography.p-base;
+	@include typography.regular;
 	color: var(--neutral-4);
 	text-align: left;
 	vertical-align: middle;

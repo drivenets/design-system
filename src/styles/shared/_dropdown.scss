@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 @mixin dropdown-content {
 	border-radius: 4px;
@@ -18,7 +18,7 @@
 }
 
 @mixin dropdown-item {
-	@extend .p-special;
+	@include typography.p-special;
 	@include typography.ellipsis;
 	display: flex;
 	align-items: center;

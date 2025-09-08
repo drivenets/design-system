@@ -173,8 +173,8 @@ $textarea-height-default: 120px;
 	}
 }
 
-// Common classes
-.inputContainer {
+// Common mixins
+@mixin inputContainer {
 	@include base-input-container;
 	@include input-container-states;
 	max-height: $input-text-height-default;
@@ -207,7 +207,7 @@ $textarea-height-default: 120px;
 	}
 }
 
-.input {
+@mixin input {
 	@include base-input;
 	min-width: 0;
 
@@ -216,12 +216,12 @@ $textarea-height-default: 120px;
 	}
 }
 
-.iconButton {
+@mixin iconButton {
 	@include icon-button;
 }
 
 // Textarea specific styles
-.textarea {
+@mixin textarea {
 	@include base-input;
 	border: 1px solid var(--form-control-border-color, var(--color-border));
 	border-radius: 4px;
@@ -232,32 +232,32 @@ $textarea-height-default: 120px;
 	@include input-states;
 
 	&::selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 
 	&::-moz-selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 }
 
 // Form control base styles
-.formControl {
+@mixin formControl {
 	@include base-input-container;
 	@include form-control-states;
 	cursor: pointer;
 	justify-content: space-between;
 }
 
-.formControlSmall {
+@mixin formControlSmall {
 	max-height: $input-text-height-small;
 }
 
-.formControlDefault {
+@mixin formControlDefault {
 	max-height: $input-text-height-default;
 }
 
 // Select trigger styles
-.selectTrigger {
+@mixin selectTrigger {
 	display: flex;
 	justify-content: space-between;
 	padding: calc(var(--spacing-xs) - 3px) var(--spacing-sm);
@@ -299,7 +299,7 @@ $textarea-height-default: 120px;
 }
 
 // Search input styles
-.searchInput {
+@mixin searchInput {
 	position: relative;
 	padding: var(--spacing-3xs);
 

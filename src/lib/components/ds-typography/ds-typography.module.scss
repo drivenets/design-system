@@ -1,0 +1,93 @@
+@use '@design-system/ui/src/styles/typography';
+
+.heading1 {
+	@include typography.heading1;
+}
+
+.heading2 {
+	@include typography.heading2;
+}
+
+.heading3 {
+	@include typography.heading3;
+}
+
+.heading4 {
+	@include typography.heading4;
+}
+
+.body-md-reg {
+	@include typography.body-md-reg;
+}
+
+.body-md-md {
+	@include typography.body-md-reg;
+}
+
+.body-md-semi-bold {
+	@include typography.body-md-semi-bold;
+}
+
+.body-md-bold {
+	@include typography.body-md-bold;
+}
+
+.body-md-link {
+	@include typography.body-md-link;
+}
+
+.body-sm-reg {
+	@include typography.body-sm-reg;
+}
+
+.body-sm-md {
+	@include typography.body-sm-md;
+}
+
+.body-sm-semi-bold {
+	@include typography.body-sm-semi-bold;
+}
+
+.body-sm-bold {
+	@include typography.body-sm-bold;
+}
+
+.body-sm-link {
+	@include typography.body-sm-link;
+}
+
+.body-xs-reg {
+	@include typography.body-xs-reg;
+}
+
+.body-xs-md {
+	@include typography.body-xs-md;
+}
+
+.body-xs-semi-bold {
+	@include typography.body-xs-semi-bold;
+}
+
+.body-xs-bold {
+	@include typography.body-xs-bold;
+}
+
+.body-xs-link {
+	@include typography.body-xs-link;
+}
+
+.code-sm-reg {
+	@include typography.code-sm-reg;
+}
+
+.code-sm-semi-bold {
+	@include typography.code-sm-semi-bold;
+}
+
+.code-xs-reg {
+	@include typography.code-xs-reg;
+}
+
+.code-xs-semi-bold {
+	@include typography.code-xs-semi-bold;
+}

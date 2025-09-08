@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 $form-control-description-max-lines: 2;
 $form-control-description-line-height: 1.4;
@@ -40,11 +40,11 @@ $form-control-description-max-height: calc(
 }
 
 .label {
-	@extend .body-sm-reg;
+	@include typography.body-sm-reg;
 	color: var(--color-font-main);
 
 	&.required::after {
-		@extend .body-sm-reg;
+		@include typography.body-sm-reg;
 		content: '*';
 		position: relative;
 		top: -1px;
@@ -68,7 +68,7 @@ $form-control-description-max-height: calc(
 }
 
 .description {
-	@extend .p-s;
+	@include typography.p-s;
 	color: var(--neutral-2);
 	line-height: $form-control-description-line-height;
 	max-height: $form-control-description-max-height;
@@ -126,7 +126,7 @@ $form-control-description-max-height: calc(
 }
 
 .message {
-	@extend .body-xs-reg;
+	@include typography.body-xs-reg;
 	color: var(--color-font-secondary);
 	display: flex;
 	align-items: center;

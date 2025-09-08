@@ -1,7 +1,7 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 @mixin breadcrumb-item {
-	@extend .body-sm-reg;
+	@include typography.body-sm-reg;
 	color: var(--color-background-action);
 	text-decoration: none;
 	outline: none;
@@ -47,7 +47,7 @@
 
 	&:not(:last-child)::after {
 		content: '/';
-		@extend .body-sm-reg;
+		@include typography.body-sm-reg;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -59,7 +59,7 @@
 	&:last-child {
 		.link,
 		.trigger {
-			@extend .body-sm-md;
+			@include typography.body-sm-md;
 		}
 	}
 }
@@ -69,7 +69,7 @@
 }
 
 .active {
-	@extend .body-sm-md;
+	@include typography.body-sm-md;
 }
 
 .trigger {

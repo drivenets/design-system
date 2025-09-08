@@ -1,7 +1,8 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 .container {
-	@extend .p-special, .medium;
+	@include typography.p-special;
+	@include typography.medium;
 	display: inline-flex;
 	align-items: center;
 	gap: 4px;
@@ -19,7 +20,7 @@
 }
 
 .label {
-	@extend .p-special;
+	@include typography.p-special;
 }
 
 .healthy {

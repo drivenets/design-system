@@ -7,7 +7,8 @@
     ".": {
       "import": "./index.mjs",
       "require": "./index.js"
-    }
+    },
+    "./src/styles/*": "./src/styles/*"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3",
@@ -47,11 +48,13 @@
     "@radix-ui/react-popover": "^1.1.11",
     "@radix-ui/react-radio-group": "^1.2.4",
     "@radix-ui/react-select": "^2.1.7",
+    "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.4",
     "@radix-ui/react-visually-hidden": "^1.2.2",
     "@tanstack/react-table": "^8.21.3",
     "@tanstack/react-virtual": "^3.13.6",
     "@zag-js/react": "^1.17.4",
-    "@zag-js/steps": "^1.17.4"
+    "@zag-js/steps": "^1.17.4",
+    "@design-system/ui": "workspace:*"
   }
 }

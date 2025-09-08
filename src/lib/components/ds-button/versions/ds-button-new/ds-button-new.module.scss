@@ -1,11 +1,11 @@
-@use 'typography';
+@use '@design-system/ui/src/styles/typography';
 
 $button-size-small: 28px;
 $button-size-default: 32px;
 $button-size-large: 40px;
 
 .button {
-	@extend .body-sm-md;
+	@include typography.body-sm-md;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -33,7 +33,7 @@ $button-size-large: 40px;
 	}
 
 	&.small {
-		@extend .body-xs-md;
+		@include typography.body-xs-md;
 		max-height: $button-size-small;
 	}
 
@@ -42,7 +42,7 @@ $button-size-large: 40px;
 	}
 
 	&.large {
-		@extend .body-md-md;
+		@include typography.body-md-md;
 		max-height: $button-size-large;
 	}
 

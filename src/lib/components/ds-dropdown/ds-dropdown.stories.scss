@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 .trigger {
 	display: flex;
@@ -14,7 +14,7 @@
 }
 
 .selected {
-	@extend .p-base;
+	@include typography.p-base;
 	flex: 1;
 	padding: 12px 16px;
 	color: var(--neutral-1);
