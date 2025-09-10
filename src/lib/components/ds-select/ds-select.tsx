@@ -14,6 +14,7 @@ const DsSelect: FC<DsSelectProps> = ({
 	style,
 	size,
 	onClear,
+	className,
 	onValueChange,
 	onBlur,
 	placeholder = 'Click to select a value',
@@ -37,7 +38,7 @@ const DsSelect: FC<DsSelectProps> = ({
 	console.log('selected', selectedOption);
 
 	return (
-		<div className={styles.container} style={style}>
+		<div className={`${styles.container} ${className}`} style={style}>
 			<Select.Root
 				value={value}
 				onValueChange={onValueChange}
