@@ -21,12 +21,17 @@ const DsFormControl: React.FC<DsFormControlProps> = ({
 }) => {
 	const generatedId = useId();
 	const controlId = id || generatedId;
-
 	const renderControl = () => {
 		if (as === 'select') {
 			const value = props.value;
 			return (
-				<DsSelect id={controlId} value={value as string} disabled={disabled} {...(props as DsSelectProps)} />
+				<DsSelect
+					className={className}
+					id={controlId}
+					value={value as string}
+					disabled={disabled}
+					{...(props as DsSelectProps)}
+				/>
 			);
 		}
 
