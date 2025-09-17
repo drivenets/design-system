@@ -65,3 +65,16 @@ export const LongText: Story = {
 		await sanityCheck(canvasElement, longTooltipText);
 	},
 };
+
+export const RichContent: Story = {
+	args: {
+		content: (
+			<div>
+				<strong>Multi-line</strong> tooltip with <em>JSX</em>
+				<br />
+				<span style={{ color: '#9cdcfe' }}>No truncation should occur.</span>
+			</div>
+		),
+		children: <DsIcon icon="info" />,
+	},
+};

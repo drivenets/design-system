@@ -4,7 +4,7 @@ export interface DsTooltipProps {
 	/**
 	 * Tooltip content
 	 */
-	content: string;
+	content: string | React.ReactNode;
 	/**
 	 * The content to be rendered inside the tooltip
 	 */

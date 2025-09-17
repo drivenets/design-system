@@ -23,6 +23,15 @@
 	z-index: 9999;
 }
 
+.noClamp {
+	max-height: none;
+	display: block;
+	-webkit-line-clamp: initial;
+	overflow: visible;
+	text-overflow: initial;
+	white-space: normal;
+}
+
 .arrow {
 	fill: var(--neutral-1);
 }
