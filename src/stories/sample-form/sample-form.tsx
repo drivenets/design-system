@@ -1,12 +1,13 @@
-import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DsButton, DsCheckbox, DsCheckboxProps, DsFormControl, DsRadioGroup } from '@design-system/ui';
-import { sampleFormSchema, SampleFormValues, SubscriptionType } from './sampleFormSchema';
+import { DsButton, DsCheckbox, DsFormControl, DsRadioGroup } from '@design-system/ui';
+import { sampleFormSchema, SampleFormValues } from './sampleFormSchema';
 
 const defaultValues = {
 	name: '',
 	email: '',
 	description: '',
+	quantity: undefined,
 	acceptTerms: false,
 	subscription: undefined,
 	contactMethod: '',
@@ -35,24 +36,15 @@ const SampleForm = () => {
 		reset(defaultValues);
 	};
 
-	const handleSelectChange = (val: string) => {
-		setValue('contactMethod', val, {
+	const handleValueChange = (
+		field: ControllerRenderProps<SampleFormValues> | keyof SampleFormValues,
+		value: string | number | true,
+	) => {
+		const name = typeof field === 'string' ? field : field.name;
+		setValue(name, value, {
 			shouldValidate: true,
 			shouldTouch: true,
-		});
-	};
-
-	const handleRadioChange = (val: string) => {
-		setValue('subscription', val as SubscriptionType, {
-			shouldValidate: true,
-			shouldTouch: true,
-		});
-	};
-
-	const handleCheckboxChange = (checked: DsCheckboxProps['checked']) => {
-		setValue('acceptTerms', checked as never, {
-			shouldValidate: true,
-			shouldTouch: true,
+			shouldDirty: true,
 		});
 	};
 
@@ -63,62 +55,114 @@ const SampleForm = () => {
 				style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}
 			>
 				<DsFormControl
+					id="name"
 					label="Name"
-					placeholder="Enter your name"
 					required
-					{...register('name', {
-						onBlur: () => trigger('name'),
-						onChange: () => trigger('name'),
-					})}
+					status="error"
+					messageIcon="cancel"
 					message={touchedFields.name ? errors.name?.message : undefined}
-				/>
+				>
+					<Controller
+						name="name"
+						control={control}
+						render={({ field }) => (
+							<DsFormControl.TextInput
+								value={field.value}
+								placeholder="Enter your name"
+								onChange={(event) => handleValueChange(field, event.target.value)}
+								onBlur={(event) => handleValueChange(field, event.target.value)}
+							/>
+						)}
+					/>
+				</DsFormControl>
 
 				<DsFormControl
 					label="Email"
-					placeholder="Enter your email"
 					required
-					type="email"
-					{...register('email', {
-						onBlur: () => trigger('email'),
-						onChange: () => trigger('email'),
-					})}
+					status="error"
+					messageIcon="cancel"
 					message={touchedFields.email ? errors.email?.message : undefined}
-				/>
-
-				<Controller
-					name="contactMethod"
-					control={control}
-					render={({ field }) => (
-						<DsFormControl
-							as="select"
-							label="Preferred Contact Method"
-							placeholder="Select a contact method"
-							options={[
-								{ label: 'Phone Call', value: 'phone', icon: 'call' },
-								{ label: 'Email', value: 'email', icon: 'email' },
-								{ label: 'SMS', value: 'sms', icon: 'sms' },
-								{ label: 'In-App Notification', value: 'in_app', icon: 'notifications' },
-							]}
-							required
-							value={field.value}
-							onValueChange={handleSelectChange}
-							onBlur={() => handleSelectChange(field.value)}
-							message={touchedFields.contactMethod ? errors.contactMethod?.message : undefined}
-						/>
-					)}
-				/>
+				>
+					<Controller
+						name="email"
+						control={control}
+						render={({ field }) => (
+							<DsFormControl.TextInput
+								type="email"
+								value={field.value}
+								placeholder="Enter your email"
+								onChange={(event) => handleValueChange(field, event.target.value)}
+								onBlur={(event) => handleValueChange(field, event.target.value)}
+							/>
+						)}
+					/>
+				</DsFormControl>
 
 				<DsFormControl
-					as="textarea"
-					label="Description"
-					placeholder="Enter your description"
+					label="Quantity"
 					required
-					{...register('description', {
-						onBlur: () => trigger('description'),
-						onChange: () => trigger('description'),
-					})}
+					status="error"
+					messageIcon="cancel"
+					message={touchedFields.quantity ? errors.quantity?.message : undefined}
+				>
+					<Controller
+						name="quantity"
+						control={control}
+						render={({ field }) => (
+							<DsFormControl.NumberInput
+								placeholder="Enter quantity"
+								min={1}
+								max={100}
+								step={1}
+								onValueChange={(value) => handleValueChange(field, value)}
+							/>
+						)}
+					/>
+				</DsFormControl>
+
+				<DsFormControl
+					label="Preferred Contact Method"
+					required
+					status="error"
+					messageIcon="cancel"
+					message={touchedFields.contactMethod ? errors.contactMethod?.message : undefined}
+				>
+					<Controller
+						name="contactMethod"
+						control={control}
+						render={({ field }) => (
+							<DsFormControl.Select
+								value={field.value}
+								placeholder="Select a contact method"
+								options={[
+									{ label: 'Phone Call', value: 'phone', icon: 'call' },
+									{ label: 'Email', value: 'email', icon: 'email' },
+									{ label: 'SMS', value: 'sms', icon: 'sms' },
+									{ label: 'In-App Notification', value: 'in_app', icon: 'notifications' },
+								]}
+								onClear={() => handleValueChange(field, '')}
+								onValueChange={(value) => handleValueChange(field, value)}
+								onBlur={() => handleValueChange(field, field.value)}
+							/>
+						)}
+					/>
+				</DsFormControl>
+
+				<DsFormControl
+					label="Description"
+					required
+					status="error"
+					messageIcon="cancel"
 					message={touchedFields.description ? errors.description?.message : undefined}
-				/>
+				>
+					<DsFormControl.Textarea
+						placeholder="Enter your description"
+						{...register('description', {
+							onBlur: () => trigger('description'),
+							onChange: () => trigger('description'),
+						})}
+					/>
+				</DsFormControl>
 
 				<DsRadioGroup
 					options={[
@@ -127,7 +171,7 @@ const SampleForm = () => {
 						{ label: 'Enterprise', value: 'enterprise' },
 					]}
 					value={watch('subscription') || ''}
-					onValueChange={handleRadioChange}
+					onValueChange={(value) => handleValueChange('subscription', value)}
 				/>
 				{errors.subscription && (
 					<span style={{ color: 'red', fontSize: '12px' }}>{errors.subscription.message}</span>
@@ -136,7 +180,7 @@ const SampleForm = () => {
 				<DsCheckbox
 					label="I accept the terms and conditions"
 					checked={watch('acceptTerms')}
-					onCheckedChange={handleCheckboxChange}
+					onCheckedChange={(value) => handleValueChange('acceptTerms', value as true)}
 				/>
 				{errors.acceptTerms && (
 					<span style={{ color: 'red', fontSize: '12px' }}>{errors.acceptTerms.message}</span>

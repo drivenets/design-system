@@ -1,72 +1,82 @@
 @use '@design-system/ui/src/styles/typography';
 
+$form-control-description-max-lines: 2;
+$form-control-description-line-height: 1.4;
+$form-control-description-max-height: calc(
+	$form-control-description-line-height * $form-control-description-max-lines * 1em
+);
+
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: 8px;
-
-	&.info {
-		.message {
-			color: var(--action-cta1);
-		}
-	}
+	gap: var(--spacing-4xs);
 
 	&.success {
-		.control {
-			border-color: var(--system-status-ok);
-		}
-
 		.message {
-			color: var(--system-status-ok);
-			background: var(--utility-ok);
+			color: var(--color-background-success-strong);
 		}
 	}
 
 	&.warning {
-		.control {
-			border-color: var(--system-status-alert);
-		}
-
 		.message {
-			color: var(--system-status-alert);
-			background: var(--utility-alert);
+			color: var(--color-font-warning);
 		}
 	}
 
 	&.error {
-		.control {
-			border-color: var(--system-status-error);
-		}
+		--form-control-border-color: var(--color-background-danger-strong);
+		--form-control-selection-color: var(--color-background-danger-weak);
 
 		.message {
-			color: var(--system-status-error);
-			background: var(--utility-error);
+			color: var(--color-background-danger-strong);
 		}
 	}
 }
 
+.labelContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-4xs);
+}
+
 .label {
-	@include typography.p-base;
-	color: var(--neutral-1);
-	display: inline-block;
+	@include typography.body-sm-reg;
+	color: var(--color-font-main);
 
 	&.required::after {
-		@include typography.p-base;
-		@include typography.medium;
+		@include typography.body-sm-reg;
 		content: '*';
 		position: relative;
-		top: -3px;
-		left: 1px;
-		color: var(--system-status-error);
+		top: -1px;
+		right: -1px;
+		color: var(--color-icon-danger);
 	}
 
 	&.disabled {
-		color: var(--neutral-3);
+		color: var(--color-background-disabled);
 
 		&::after {
-			color: var(--neutral-8);
+			color: var(--color-font-disabled);
 		}
 	}
+}
+
+.endAdornment {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.description {
+	@include typography.p-s;
+	color: var(--neutral-2);
+	line-height: $form-control-description-line-height;
+	max-height: $form-control-description-max-height;
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: $form-control-description-max-lines;
+	-webkit-box-orient: vertical;
+	word-wrap: break-word;
 }
 
 .controlWrapper {
@@ -115,41 +125,11 @@
 	}
 }
 
-.control {
-	@include typography.p-special;
-	width: 100%;
-	border: 1px solid var(--neutral-4);
-	border-radius: 4px;
-	transition: border-color 0.2s;
-
-	&:focus {
-		outline: none;
-		border-color: var(--action-cta1);
-	}
-
-	&:disabled {
-		background-color: var(--neutral-10);
-		border-color: var(--neutral-10);
-		color: var(--neutral-4);
-		cursor: not-allowed;
-
-		&::placeholder {
-			color: var(--neutral-4);
-		}
-	}
-}
-
 .message {
+	@include typography.body-xs-reg;
+	color: var(--color-font-secondary);
 	display: flex;
 	align-items: center;
 	gap: 4px;
-	background: var(--action-hover-light);
-	color: var(--neutral-1);
-	padding: 6px 8px;
-	border-radius: 4px;
-
-	.messageText {
-		@include typography.p-s;
-		color: var(--neutral-2);
-	}
+	padding-top: 2px;
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import * as Select from '@radix-ui/react-select';
 import classNames from 'classnames';
 import styles from './ds-select.module.scss';
@@ -7,7 +7,7 @@ import { DsIcon } from '../ds-icon';
 
 const SEARCH_THRESHOLD = 13;
 
-const DsSelect: React.FC<DsSelectProps> = ({
+const DsSelect: FC<DsSelectProps> = ({
 	id,
 	options,
 	value,
@@ -55,14 +55,31 @@ const DsSelect: React.FC<DsSelectProps> = ({
 					</div>
 					<div className={styles.triggerIcons}>
 						{selectedOption && (
-							<button
+							/*
+							 * Using a div instead of a button because:
+							 *
+							 * 1. The Trigger itself is a button so we can't render nested buttons
+							 * 2. The Trigger listens for `keyDown` event which overrides the clear behavior
+							 */
+							<div
+								role="button"
+								tabIndex={0}
 								onPointerDown={(e) => e.stopPropagation()}
-								onClick={onClear}
+								onClick={(event) => {
+									event.preventDefault();
+									onClear?.();
+								}}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter' || e.key === ' ') {
+										e.stopPropagation();
+										onClear?.();
+									}
+								}}
 								className={styles.clearIcon}
 								aria-label="Clear value"
 							>
 								<DsIcon icon="close" />
-							</button>
+							</div>
 						)}
 						<Select.Icon className={styles.triggerIcon}>
 							<DsIcon

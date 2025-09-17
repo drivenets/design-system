@@ -1,17 +1,25 @@
-import React from 'react';
+import { ChangeEvent, FC } from 'react';
 import classNames from 'classnames';
 import styles from './ds-text-input.module.scss';
 import { DsTextInputProps } from './ds-text-input.types';
 
-const DsTextInput: React.FC<DsTextInputProps> = ({
+const DsTextInput: FC<DsTextInputProps> = ({
+	id,
+	ref,
+	name,
 	size = 'default',
 	type = 'text',
+	onBlur,
 	onChange,
 	onValueChange,
 	className,
 	style = {},
 	value,
 	defaultValue,
+	min,
+	max,
+	minLength,
+	maxLength,
 	placeholder,
 	disabled = false,
 	startAdornment,
@@ -26,7 +34,7 @@ const DsTextInput: React.FC<DsTextInputProps> = ({
 		className,
 	);
 
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
 		const newValue = event.target.value;
 		onChange?.(event);
 		onValueChange?.(newValue);
@@ -36,12 +44,20 @@ const DsTextInput: React.FC<DsTextInputProps> = ({
 		<div className={containerClass} style={style}>
 			{startAdornment && <div className={classNames(styles.adornment, styles.start)}>{startAdornment}</div>}
 			<input
+				id={id}
+				ref={ref}
+				name={name}
 				className={classNames(styles.input)}
 				type={type}
 				value={value}
 				defaultValue={defaultValue}
+				min={min}
+				max={max}
+				minLength={minLength}
+				maxLength={maxLength}
 				placeholder={placeholder}
 				disabled={disabled}
+				onBlur={onBlur}
 				onChange={handleChange}
 			/>
 			{endAdornment && <div className={classNames(styles.adornment, styles.end)}>{endAdornment}</div>}

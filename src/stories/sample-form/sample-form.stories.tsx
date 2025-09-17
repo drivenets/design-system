@@ -123,6 +123,7 @@ export const Default: Story = {
 				name: fakeName,
 				email: fakeEmail,
 				description: fakeDescription,
+				quantity: 1,
 				acceptTerms: true,
 				subscription: 'pro',
 				contactMethod: 'email',
