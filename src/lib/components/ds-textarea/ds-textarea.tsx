@@ -4,6 +4,10 @@ import styles from './ds-textarea.module.scss';
 import { DsTextareaProps } from './ds-textarea.types';
 
 const DsTextarea: React.FC<DsTextareaProps> = ({
+	id,
+	ref,
+	name,
+	onBlur,
 	onChange,
 	onValueChange,
 	className,
@@ -24,6 +28,9 @@ const DsTextarea: React.FC<DsTextareaProps> = ({
 
 	return (
 		<textarea
+			id={id}
+			ref={ref}
+			name={name}
 			className={classNames(styles.textarea, className)}
 			style={style}
 			value={value}
@@ -31,6 +38,7 @@ const DsTextarea: React.FC<DsTextareaProps> = ({
 			placeholder={placeholder}
 			disabled={disabled}
 			rows={rows}
+			onBlur={onBlur}
 			onChange={handleChange}
 			minLength={minLength}
 			maxLength={maxLength}

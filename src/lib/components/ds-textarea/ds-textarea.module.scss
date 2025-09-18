@@ -1,5 +1,5 @@
 @use '@design-system/ui/src/styles/shared/input' as input;
 
 .textarea {
-	@extend .textarea;
+	@include input.textarea;
 }

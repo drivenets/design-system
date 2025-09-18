@@ -1,12 +1,16 @@
-import React from 'react';
+import { FC } from 'react';
 import classNames from 'classnames';
 import { NumberInput } from '@ark-ui/react';
 import styles from './ds-number-input.module.scss';
 import { DsNumberInputProps } from './ds-number-input.types';
 import { DsIcon } from '../ds-icon';
 
-const DsNumberInput: React.FC<DsNumberInputProps> = ({
+const DsNumberInput: FC<DsNumberInputProps> = ({
+	id,
+	ref,
+	name,
 	size = 'default',
+	onBlur,
 	onChange,
 	onValueChange,
 	className,
@@ -30,6 +34,7 @@ const DsNumberInput: React.FC<DsNumberInputProps> = ({
 
 	return (
 		<NumberInput.Root
+			id={id}
 			min={min}
 			max={max}
 			step={step}
@@ -46,14 +51,15 @@ const DsNumberInput: React.FC<DsNumberInputProps> = ({
 						</button>
 					</NumberInput.DecrementTrigger>
 
-					<NumberInput.Input asChild>
-						<input
-							type="number"
-							className={classNames(styles.input)}
-							placeholder={placeholder}
-							onChange={onChange}
-						/>
-					</NumberInput.Input>
+					<NumberInput.Input
+						ref={ref}
+						name={name}
+						type="number"
+						className={classNames(styles.input)}
+						placeholder={placeholder}
+						onBlur={onBlur}
+						onChange={onChange}
+					></NumberInput.Input>
 
 					<NumberInput.IncrementTrigger asChild>
 						<button type="button" className={classNames(styles.iconButton)} aria-label="Increase value">

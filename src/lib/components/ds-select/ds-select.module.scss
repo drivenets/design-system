@@ -9,7 +9,7 @@
 }
 
 .trigger {
-	@extend .selectTrigger;
+	@include input.selectTrigger;
 }
 
 .content {
@@ -17,7 +17,7 @@
 }
 
 .searchInput {
-	@extend .searchInput;
+	@include input.searchInput;
 }
 
 .viewport {

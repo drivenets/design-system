@@ -1,20 +1,18 @@
 import React from 'react';
-import { DsSelectOption } from '../ds-select';
 import { IconType } from '../ds-icon';
 
-export const controlTypes = ['input', 'textarea', 'select'] as const;
-export type ControlType = (typeof controlTypes)[number];
+export const controlStatuses = ['info', 'success', 'error', 'warning'] as const;
+export type ControlStatus = (typeof controlStatuses)[number];
 
-export const controlSchemas = ['info', 'success', 'error', 'warning'] as const;
-export type ControlSchema = (typeof controlSchemas)[number];
-
-export interface DsFormControlProps
-	extends React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+export interface DsFormControlProps extends React.PropsWithChildren {
 	/**
-	 * Visual schema
-	 * @default 'info'
+	 * Unique identifier for the control
 	 */
-	schema?: ControlSchema;
+	id?: string;
+	/**
+	 * Visual status
+	 */
+	status?: ControlStatus;
 	/**
 	 * Label text
 	 */
@@ -24,13 +22,9 @@ export interface DsFormControlProps
 	 */
 	required?: boolean;
 	/**
-	 * Disables the control
+	 * Adornment to display at the end of the label
 	 */
-	disabled?: boolean;
-	/**
-	 * Icon to display on the left side of the text field
-	 */
-	icon?: IconType;
+	endAdornment?: React.ReactNode;
 	/**
 	 * Message under the control
 	 */
@@ -38,25 +32,24 @@ export interface DsFormControlProps
 	/**
 	 * Icon shown next to message
 	 */
-	messageIcon?: string;
+	messageIcon?: IconType;
 	/**
-	 * Options for select control
+	 * Additional CSS class names
 	 */
-	options?: DsSelectOption[];
+	className?: string;
 	/**
-	 * Value change event handler
-	 * @param value
+	 * Additional styles to apply to the component
 	 */
-	onValueChange?: (value: string) => void;
+	style?: React.CSSProperties;
+}
+
+export interface DsFormControlDescriptionProps {
 	/**
-	 * Event handler called when the select loses focus
-	 *
-	 * @param event
+	 * The description content
 	 */
-	onBlur?: (event: React.FocusEvent) => void;
+	children: React.ReactNode;
 	/**
-	 * Element type to render: 'input' or 'textarea'
-	 * @default 'input'
+	 * Additional CSS class names
 	 */
-	as?: ControlType;
+	className?: string;
 }

@@ -11,7 +11,7 @@
 }
 
 .searchInput {
-	@extend .searchInput;
+	@include input.searchInput;
 }
 
 .items {
