@@ -1,16 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
-import { FileUpload, FileUploadFileAcceptDetails } from '@ark-ui/react';
+import { FileUpload } from '@ark-ui/react';
 import { DsIcon } from '../ds-icon';
 import { Dropzone } from './components/dropzone';
 import { FileItem } from './components/file-item';
-import { useFileUpload } from './hooks/use-file-upload';
-import { validateFiles } from './utils/file-validation';
 import styles from './ds-file-upload.module.scss';
 import { DsFileUploadProps } from './ds-file-upload.types';
+import { ALLOWED_FILE_TYPES, MAX_FILES } from './utils';
 
 /**
- * Design system FileUpload component
+ * Clean file upload component - minimal UI only
+ * User handles all upload logic externally
  */
 const DsFileUpload: React.FC<DsFileUploadProps> = ({
 	label,
@@ -20,42 +20,16 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 	triggerText = 'Choose files',
 	showProgress = false,
 	allowDrop = true,
-	onUpload,
 	onFileAccept,
 	onFileReject,
 	className,
 	style = {},
 	hasError = false,
-	maxFiles = 5,
-	accept = {
-		'application/pdf': ['.pdf'],
-		'text/csv': ['.csv'],
-		'application/zip': ['.zip'],
-		'application/x-zip-compressed': ['.zip'],
-	},
+	maxFiles = MAX_FILES,
+	accept = ALLOWED_FILE_TYPES,
 	disabled = false,
 	...props
 }) => {
-	const { files, addFiles, removeFile, isUploading, hasFiles } = useFileUpload({
-		onUpload,
-		onFileAccept: (files) => onFileAccept?.(files),
-		onFileReject: (validation) => onFileReject?.(validation),
-		maxFiles,
-	});
-
-	const handleFileAccept = (details: FileUploadFileAcceptDetails) => {
-		const acceptedFiles = details?.files || [];
-		const validation = validateFiles(acceptedFiles);
-
-		if (!validation.isValid) {
-			onFileReject?.(validation);
-			return;
-		}
-
-		addFiles(acceptedFiles);
-		onFileAccept?.(acceptedFiles);
-	};
-
 	const rootClass = classNames(
 		styles.fileUploadRoot,
 		{
@@ -72,7 +46,8 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 				accept={accept}
 				disabled={disabled}
 				allowDrop={allowDrop}
-				onFileAccept={handleFileAccept}
+				onFileAccept={onFileAccept}
+				onFileReject={onFileReject}
 				{...props}
 			>
 				<Dropzone
@@ -83,13 +58,13 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 					hasError={hasError || !!errorText}
 				/>
 
-				{hasFiles && (
+				{props.files && props.files.length > 0 && (
 					<div className={styles.fileList}>
-						{files.map((fileState) => (
+						{props.files.map((fileState) => (
 							<FileItem
 								key={fileState.id}
 								fileState={fileState}
-								onRemove={removeFile}
+								onRemove={props.onRemove || (() => {})}
 								showProgress={showProgress}
 							/>
 						))}

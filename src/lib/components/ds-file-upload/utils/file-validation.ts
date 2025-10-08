@@ -15,7 +15,7 @@ export interface FileValidationResult {
 /**
  * Allowed file types for the file upload component
  */
-export const ALLOWED_FILE_TYPES = {
+export const ALLOWED_FILE_TYPES: Record<string, string[]> = {
 	'application/pdf': ['.pdf'],
 	'text/csv': ['.csv'],
 	'application/zip': ['.zip'],

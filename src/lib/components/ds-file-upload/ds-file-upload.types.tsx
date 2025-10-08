@@ -1,6 +1,6 @@
-import { FileUploadRootProps } from '@ark-ui/react';
 import React from 'react';
-import { FileValidationResult } from './utils/file-validation';
+import { FileUploadFileAcceptDetails, FileUploadFileRejectDetails, FileUploadRootProps } from '@ark-ui/react';
+import { FileUploadState } from './hooks/use-file-upload';
 
 export interface DsFileUploadProps extends Omit<FileUploadRootProps, 'children'> {
 	/**
@@ -34,17 +34,13 @@ export interface DsFileUploadProps extends Omit<FileUploadRootProps, 'children'>
 	 */
 	allowDrop?: boolean;
 	/**
-	 * Callback when files are uploaded
-	 */
-	onUpload?: (files: File[]) => Promise<void>;
-	/**
 	 * Callback when files are accepted
 	 */
-	onFileAccept?: (files: File[]) => void;
+	onFileAccept?: (details: FileUploadFileAcceptDetails) => void;
 	/**
 	 * Callback when files are rejected
 	 */
-	onFileReject?: (validation: FileValidationResult) => void;
+	onFileReject?: (details: FileUploadFileRejectDetails) => void;
 	/**
 	 * Additional CSS class names
 	 */
@@ -57,4 +53,12 @@ export interface DsFileUploadProps extends Omit<FileUploadRootProps, 'children'>
 	 * Whether the component is in an error state
 	 */
 	hasError?: boolean;
+	/**
+	 * File states to display (managed externally)
+	 */
+	files?: FileUploadState[];
+	/**
+	 * Callback to remove a file
+	 */
+	onRemove?: (fileId: string) => void;
 }

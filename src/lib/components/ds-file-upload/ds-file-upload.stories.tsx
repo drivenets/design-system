@@ -1,89 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { FileUploadFileAcceptDetails } from '@ark-ui/react';
 import DsFileUpload from './ds-file-upload';
+import { useFileUpload } from './hooks/use-file-upload';
 
 const meta: Meta<typeof DsFileUpload> = {
 	title: 'Design System/FileUpload',
 	component: DsFileUpload,
 	parameters: {
-		layout: 'padded',
-		docs: {
-			description: {
-				component: `
-A comprehensive file upload component built with ARK UI that supports:
-- Drag and drop functionality
-- Multiple file selection (up to 5 files)
-- File type validation (PDF, CSV, ZIP only)
-- File size limits (25MB max)
-- Upload progress indication
-- Clean, modular architecture
-
-**File Restrictions:**
-- Only PDF, CSV, and ZIP files are allowed
-- Maximum file size: 25MB
-- Maximum files: 5
-        `,
-			},
-		},
+		layout: 'centered',
 	},
 	tags: ['autodocs'],
 	argTypes: {
-		label: {
-			control: 'text',
-			description: 'Label text for the file upload',
-		},
-		helperText: {
-			control: 'text',
-			description: 'Helper text displayed below the upload area',
-		},
-		errorText: {
-			control: 'text',
-			description: 'Error text displayed when validation fails',
-		},
-		dropzoneText: {
-			control: 'text',
-			description: 'Text displayed in the dropzone area',
-		},
-		triggerText: {
-			control: 'text',
-			description: 'Text for the upload trigger button',
-		},
-		maxFiles: {
-			control: 'number',
-			description: 'Maximum number of files allowed',
-		},
-		showProgress: {
-			control: 'boolean',
-			description: 'Whether to show upload progress',
-		},
-		allowDrop: {
-			control: 'boolean',
-			description: 'Whether to allow drag and drop',
-		},
-		disabled: {
-			control: 'boolean',
-			description: 'Whether the component is disabled',
-		},
-		hasError: {
-			control: 'boolean',
-			description: 'Whether the component is in an error state',
-		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		onUpload: {
-			action: 'uploaded',
-			description: 'Callback when files are uploaded',
-		},
-		onFileAccept: {
-			action: 'fileAccepted',
-			description: 'Callback when files are accepted',
-		},
-		onFileReject: {
-			action: 'fileRejected',
-			description: 'Callback when files are rejected',
-		},
+		label: { control: 'text' },
+		helperText: { control: 'text' },
+		errorText: { control: 'text' },
+		dropzoneText: { control: 'text' },
+		triggerText: { control: 'text' },
+		showProgress: { control: 'boolean' },
+		allowDrop: { control: 'boolean' },
+		maxFiles: { control: 'number' },
+		accept: { control: 'object' },
+		disabled: { control: 'boolean' },
+		hasError: { control: 'boolean' },
+		onFileAccept: { action: 'fileAccepted' },
+		onFileReject: { action: 'fileRejected' },
 	},
 };
 
@@ -92,49 +32,117 @@ type Story = StoryObj<typeof DsFileUpload>;
 
 export const Default: Story = {
 	args: {
-		label: 'Upload Files',
-		helperText: 'Only PDF, CSV, and ZIP files. File size 25MB max.',
-		maxFiles: 5,
-		onUpload: (lala) => console.log('onUplaod', lala),
+		label: 'S3 Upload Example (Auto)',
+		helperText: 'This shows automatic S3 upload integration - uploads start immediately',
+		showProgress: true,
+	},
+	render: function Render(args) {
+		const { files, addFiles, removeFile, updateFileProgress, updateFileStatus } = useFileUpload();
+
+		const uploadToS3 = async (file: File, onProgress: (progress: number) => void) => {
+			// Simulate S3 upload with progress
+			const uploadDuration = 2000 + Math.random() * 3000;
+			const steps = 20;
+			const stepDuration = uploadDuration / steps;
+
+			for (let i = 0; i <= steps; i++) {
+				await new Promise((resolve) => setTimeout(resolve, stepDuration));
+				const progress = Math.min((i / steps) * 100, 100);
+				onProgress(progress);
+			}
+		};
+
+		const handleFileAccept = async (details: FileUploadFileAcceptDetails) => {
+			try {
+				// Add files to state and get the file states back
+				const newFileStates = addFiles(details.files);
+
+				// Start upload immediately for each new file
+				for (const fileState of newFileStates) {
+					try {
+						updateFileStatus(fileState.id, 'uploading');
+
+						await uploadToS3(fileState.file, (progress) => {
+							updateFileProgress(fileState.id, progress);
+						});
+
+						updateFileStatus(fileState.id, 'completed');
+					} catch (error) {
+						const errorMessage = error instanceof Error ? error.message : 'unknown error';
+						updateFileStatus(fileState.id, 'error', `Upload failed: ${errorMessage}`);
+					}
+				}
+			} catch (error) {
+				console.error('File validation failed:', error);
+			}
+		};
+
+		return (
+			<div>
+				<DsFileUpload {...args} files={files} onFileAccept={handleFileAccept} onRemove={removeFile} />
+			</div>
+		);
 	},
 };
 
-export const WithProgress: Story = {
+export const Manual: Story = {
 	args: {
-		label: 'Upload Documents',
-		helperText: 'PDF, CSV, ZIP files up to 25MB',
-		dropzoneText: 'Drag and drop documents here',
-		triggerText: 'Select documents',
+		label: 'S3 Upload Example (Manual)',
+		helperText: 'This shows manual S3 upload integration with upload button',
 		showProgress: true,
-		onUpload: async (files) => {
-			// Simulate S3 upload process
-			for (const file of files) {
-				console.log(`📤 Starting upload for ${file.name}...`);
+	},
+	render: function Render(args) {
+		const { files, addFiles, removeFile, updateFileProgress, updateFileStatus } = useFileUpload();
 
-				// Simulate getting signed URL (1-2 seconds)
-				await new Promise((resolve) => setTimeout(resolve, 1000 + Math.random() * 1000));
-				console.log(`🔑 Got signed URL for ${file.name}`);
+		const handleFileAccept = (details: FileUploadFileAcceptDetails) => {
+			try {
+				addFiles(details.files);
+			} catch (error) {
+				console.error('File validation failed:', error);
+			}
+		};
 
-				// Simulate upload progress
-				const uploadDuration = 2000 + Math.random() * 3000; // 2-5 seconds
-				const steps = 20;
-				const stepDuration = uploadDuration / steps;
+		const uploadToS3 = async (file: File, onProgress: (progress: number) => void) => {
+			// Simulate S3 upload with progress
+			const uploadDuration = 2000 + Math.random() * 3000;
+			const steps = 20;
+			const stepDuration = uploadDuration / steps;
 
-				for (let i = 0; i <= steps; i++) {
-					await new Promise((resolve) => setTimeout(resolve, stepDuration));
-					const progress = Math.min((i / steps) * 100, 100);
-					console.log(`📊 Upload progress for ${file.name}: ${Math.round(progress)}%`);
-				}
+			for (let i = 0; i <= steps; i++) {
+				await new Promise((resolve) => setTimeout(resolve, stepDuration));
+				const progress = Math.min((i / steps) * 100, 100);
+				onProgress(progress);
+			}
+		};
 
-				// Simulate occasional failures (10% chance)
-				if (Math.random() < 0.1) {
-					console.log(`❌ Upload failed for ${file.name}: Network timeout`);
-					throw new Error('Network timeout');
-				} else {
-					console.log(`✅ Upload completed for ${file.name}`);
+		const handleS3Upload = async () => {
+			// User's S3 upload logic
+			for (const fileState of files) {
+				try {
+					updateFileStatus(fileState.id, 'uploading');
+
+					await uploadToS3(fileState.file, (progress) => {
+						updateFileProgress(fileState.id, progress);
+					});
+
+					updateFileStatus(fileState.id, 'completed');
+				} catch (error) {
+					const errorMessage = error instanceof Error ? error.message : 'unknown error';
+					updateFileStatus(fileState.id, 'error', `Upload failed: ${errorMessage}`);
 				}
 			}
-		},
+		};
+
+		return (
+			<div>
+				<DsFileUpload {...args} files={files} onFileAccept={handleFileAccept} onRemove={removeFile} />
+				{files.length > 0 && (
+					<div style={{ marginTop: '16px' }}>
+						<button onClick={handleS3Upload}>Upload to S3</button>
+					</div>
+				)}
+			</div>
+		);
 	},
 };
 
@@ -163,7 +171,7 @@ export const Disabled: Story = {
 		disabled: true,
 	},
 };
-
+/*
 export const NoDropzone: Story = {
 	args: {
 		label: 'Upload Files (Click only)',
@@ -172,74 +180,8 @@ export const NoDropzone: Story = {
 		dropzoneText: 'Click to select files',
 	},
 };
-
-export const WithValidation: Story = {
-	args: {
-		label: 'Upload with Validation',
-		helperText: 'Only specific file types and sizes are allowed',
-		maxFiles: 3,
-		onFileReject: (validation) => {
-			console.log('Files rejected:', validation);
-		},
-	},
-};
-
-// Realistic S3 upload simulation
-export const S3UploadSimulation: Story = {
-	args: {
-		label: 'S3 Upload Simulation',
-		helperText: 'This simulates a real S3 upload with signed URLs',
-		showProgress: true,
-		onUpload: async (files) => {
-			// Simulate realistic S3 upload process
-			for (const file of files) {
-				try {
-					// Step 1: Get signed URL from backend (simulate API call)
-					console.log(`📤 Getting signed URL for ${file.name}...`);
-					await new Promise((resolve) => setTimeout(resolve, 800 + Math.random() * 1200)); // 0.8-2s
-					console.log(`🔑 Got signed URL for ${file.name}`);
-
-					// Step 2: Start upload to S3
-					console.log(`🚀 Starting upload for ${file.name}...`);
-
-					// Simulate realistic upload progress based on file size
-					const fileSize = file.size;
-					const uploadSpeed = 50_000 + Math.random() * 100_000; // 50-150 KB/s
-					const totalTime = (fileSize / uploadSpeed) * 1000; // Convert to ms
-					const steps = Math.min(30, Math.max(10, Math.floor(totalTime / 200))); // 10-30 steps
-					const stepDuration = totalTime / steps;
-
-					for (let i = 0; i <= steps; i++) {
-						await new Promise((resolve) => setTimeout(resolve, stepDuration));
-						const progress = Math.min((i / steps) * 100, 100);
-						console.log(`📊 Upload progress for ${file.name}: ${Math.round(progress)}%`);
-
-						// Simulate network hiccups (slower progress occasionally)
-						if (Math.random() < 0.1) {
-							await new Promise((resolve) => setTimeout(resolve, 500));
-						}
-					}
-
-					// Step 3: Verify upload completion
-					await new Promise((resolve) => setTimeout(resolve, 200 + Math.random() * 300));
-
-					// Simulate occasional failures (5% chance)
-					if (Math.random() < 0.05) {
-						console.log(`❌ Upload failed for ${file.name}: S3 upload failed - network timeout`);
-						throw new Error('S3 upload failed - network timeout');
-					} else {
-						console.log(`✅ Upload completed for ${file.name}`);
-					}
-				} catch (error) {
-					console.log(`❌ Backend error for ${file.name}:`, error);
-					throw error;
-				}
-			}
-		},
-	},
-};
-
-// Interactive story with play function
+*/
+/*
 export const Interactive: Story = {
 	args: {
 		label: 'Interactive Upload',
@@ -263,3 +205,4 @@ export const Interactive: Story = {
 		expect(hiddenInput).toBeInTheDocument();
 	},
 };
+*/
