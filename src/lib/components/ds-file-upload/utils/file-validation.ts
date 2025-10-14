@@ -100,6 +100,6 @@ export function getErrorMessage(error: FileError): string {
 		case 'FILE_EXISTS':
 			return `File already exists`;
 		default:
-			return 'File validation failed';
+			return error || 'File validation failed';
 	}
 }

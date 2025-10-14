@@ -126,7 +126,17 @@ export function useFileUpload(): UseFileUploadReturn {
 	};
 
 	const updateFileStatus = (fileId: string, status: UploadFileStatus, error?: string) => {
-		setFiles((prev) => prev.map((file) => (file.id === fileId ? { ...file, status, error } : file)));
+		setFiles((prev) =>
+			prev.map((file) =>
+				file.id === fileId
+					? {
+							...file,
+							status,
+							errors: error ? [...(file.errors || []), error] : file.errors,
+						}
+					: file,
+			),
+		);
 	};
 
 	const clearFiles = () => {
