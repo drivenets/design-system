@@ -130,16 +130,10 @@ const DsTable = <TData extends { id: string }, TValue>({
 		ref,
 		() => ({
 			selectRow: (rowId: string) => {
-				const row = table.getRow(rowId);
-				if (row) {
-					row.toggleSelected(true);
-				}
+				table.getRow(rowId).toggleSelected(true);
 			},
 			deselectRow: (rowId: string) => {
-				const row = table.getRow(rowId);
-				if (row) {
-					row.toggleSelected(false);
-				}
+				table.getRow(rowId).toggleSelected(false);
 			},
 			selectAllRows: () => {
 				table.toggleAllRowsSelected(true);
