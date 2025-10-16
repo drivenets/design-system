@@ -1,0 +1,13 @@
+@mixin bounding-box-vars {
+	// Element bounding box including shadows.
+	--_left-bound: min(0px, calc(-1 * var(--_shadow-size, 0px) + var(--_shadow-x-offset, 0px)));
+	--_right-bound: max(100%, calc(100% + var(--_shadow-size, 0px) + var(--_shadow-x-offset, 0px)));
+	--_top-bound: min(0px, calc(-1 * var(--_shadow-size, 0px) + var(--_shadow-y-offset, 0px)));
+	--_bottom-bound: max(100%, calc(100% + var(--_shadow-size, 0px) + var(--_shadow-y-offset, 0px)));
+
+	// Element bounding box corners including shadows.
+	--_top-left: var(--_left-bound) var(--_top-bound);
+	--_top-right: var(--_right-bound) var(--_top-bound);
+	--_bottom-right: var(--_right-bound) var(--_right-bound);
+	--_bottom-left: var(--_left-bound) var(--_bottom-bound);
+}

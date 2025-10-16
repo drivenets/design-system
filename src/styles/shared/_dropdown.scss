@@ -1,15 +1,57 @@
 @use '@design-system/ui/src/styles/typography';
+@use '@design-system/ui/src/styles/mixins/bounding-box';
 
 @mixin dropdown-content {
+	--_shadow-size: 15px;
+	--_shadow-y-offset: 5px;
+
+	@include bounding-box.bounding-box-vars;
+
 	border-radius: 4px;
 	border: 1px solid var(--color-border-secondary);
 	background: var(--color-background);
-	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(0, 0, 0, 0.15);
 	z-index: 9999;
 
 	min-width: 200px;
 	width: var(--radix-select-trigger-width);
 	max-height: var(--radix-select-content-available-height);
+
+	&[data-state='open'] {
+		animation: expand 0.25s both;
+	}
+
+	&[data-state='closed'] {
+		animation: collapse 0.2s both;
+	}
+
+	@keyframes expand {
+		0% {
+			opacity: 0;
+			clip-path: polygon(var(--_top-left), var(--_top-right), var(--_top-right), var(--_top-left));
+		}
+
+		100% {
+			opacity: 1;
+			clip-path: polygon(var(--_top-left), var(--_top-right), var(--_bottom-right), var(--_bottom-left));
+		}
+	}
+
+	@keyframes collapse {
+		0% {
+			opacity: 1;
+			clip-path: polygon(var(--_top-left), var(--_top-right), var(--_bottom-right), var(--_bottom-left));
+		}
+
+		20% {
+			opacity: 1;
+		}
+
+		100% {
+			opacity: 0;
+			clip-path: polygon(var(--_top-left), var(--_top-right), var(--_top-right), var(--_top-left));
+		}
+	}
 }
 
 @mixin dropdown-viewport {
