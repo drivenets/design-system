@@ -1,5 +1,5 @@
-import { FileError } from '../ds-file-upload.types';
 import { FileMeta } from '../hooks/use-file-upload';
+import { FileError } from '../components/file-upload';
 
 /**
  * Default allowed file types for the file upload component
@@ -83,7 +83,7 @@ export function generateHelperText(
 }
 
 /**
- * Map Ark UI FileUploadFileError to user-friendly error message
+ * Map FileUploadFileError to user-friendly error message
  */
 export function getErrorMessage(error: FileError): string {
 	switch (error) {

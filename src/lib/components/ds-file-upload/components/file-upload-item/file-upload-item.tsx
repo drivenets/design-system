@@ -22,12 +22,15 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 	onRetry,
 	onRemove,
 	onDelete,
+	onPause,
+	onResume,
 }) => {
 	const fileItemClass = classNames(styles.fileItemContent, {
 		[styles.fileItemError]: status === 'error',
 		[styles.fileItemCompleted]: status === 'completed',
 		[styles.fileItemUploading]: status === 'uploading',
-		[styles.fileItemInterrupted]: status === 'interrupted',
+		// [styles.fileItemPaused]: status === 'paused',
+		[styles.fileItemInterrupted]: status === 'cancelled',
 	});
 
 	return (
@@ -47,7 +50,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					</Progress.Root>
 				</div>
 
-				{(status === 'pending' || status === 'error') && (
+				{(status === 'pending' || status === 'error' || status === 'cancelled') && (
 					<DsButton
 						type="button"
 						design="v1.2"
@@ -59,25 +62,49 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					</DsButton>
 				)}
 
-				{status === 'interrupted' && (
+				{status === 'uploading' && onPause && (
+					<DsButton
+						type="button"
+						design="v1.2"
+						buttonType="tertiary"
+						aria-label={`Pause ${name} upload`}
+						onClick={() => onPause(id)}
+					>
+						<DsIcon icon="pause" size="small" />
+					</DsButton>
+				)}
+
+				{status === 'paused' && onResume && (
+					<DsButton
+						type="button"
+						design="v1.2"
+						buttonType="tertiary"
+						aria-label={`Resume ${name} upload`}
+						onClick={() => onResume(id)}
+					>
+						<DsIcon icon="play_arrow" size="small" />
+					</DsButton>
+				)}
+
+				{(status === 'error' || status === 'cancelled') && onRetry && (
 					<DsButton
 						type="button"
 						design="v1.2"
 						buttonType="tertiary"
 						aria-label={`Retry ${name} upload`}
-						onClick={() => onRetry?.(id)}
+						onClick={() => onRetry(id)}
 					>
 						<DsIcon icon="refresh" size="small" />
 					</DsButton>
 				)}
 
-				{(status === 'uploading' || status === 'interrupted') && (
+				{(status === 'uploading' || status === 'paused') && onCancel && (
 					<DsButton
 						type="button"
 						design="v1.2"
 						buttonType="tertiary"
 						aria-label={`Cancel ${name} upload`}
-						onClick={() => onCancel?.(id)}
+						onClick={() => onCancel(id)}
 					>
 						<DsIcon icon="close" size="small" />
 					</DsButton>
@@ -103,10 +130,10 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 				</div>
 			)}
 
-			{status === 'interrupted' && (
+			{status === 'cancelled' && (
 				<div className={styles.interruptedText}>
 					<DsIcon icon="info" size="tiny" filled />
-					Upload interrupted
+					Upload cancelled
 				</div>
 			)}
 

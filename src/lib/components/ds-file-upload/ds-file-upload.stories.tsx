@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { FileUploadFileAcceptDetails, FileUploadFileRejectDetails } from '@ark-ui/react';
+import DsButton from '../ds-button/ds-button';
 import DsFileUpload from './ds-file-upload';
 import { useFileUpload } from './hooks/use-file-upload';
-import { createTestPlayFunction, createUploadHandler } from './ds-file-upload.stories.util';
+import { createTestPlayFunction } from './ds-file-upload.stories.util';
+import { MockAdapterPresets } from './adapters/mock-file-upload-adapter';
+import { FileUpload } from './components/file-upload';
 
 const meta: Meta<typeof DsFileUpload> = {
 	title: 'Design System/FileUpload',
@@ -20,114 +22,99 @@ const meta: Meta<typeof DsFileUpload> = {
 		maxFiles: { control: 'number' },
 		accept: { control: 'object' },
 		disabled: { control: 'boolean' },
-		hasError: { control: 'boolean' },
-		onFileAccept: { action: 'fileAccepted' },
-		onFileReject: { action: 'fileRejected' },
+		compact: { control: 'boolean' },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFileUpload>;
 
+/**
+ * Default auto-upload behavior
+ * Files automatically upload when dropped or selected
+ */
 export const Default: Story = {
 	args: {
+		adapter: MockAdapterPresets.normal(),
+		style: { width: '500px' },
+		autoUpload: true,
 		showProgress: true,
-	},
-	render: function Render(args) {
-		const hook = useFileUpload();
-		const { files, acceptedFiles, removeFile } = hook;
-		const { handleFileAccept, handleFileReject } = createUploadHandler(hook, {
-			scenario: 'normal',
-			duration: 2000 + Math.random() * 3000,
-			steps: 20,
-		});
-
-		return (
-			<div>
-				<DsFileUpload
-					{...args}
-					files={files}
-					acceptedFiles={acceptedFiles}
-					onFileAccept={handleFileAccept}
-					onFileReject={handleFileReject}
-					onFileRemove={removeFile}
-				/>
-			</div>
-		);
+		onFilesAdded: (files) => {
+			console.log(
+				'📁 Files added:',
+				files.map((f) => f.name),
+			);
+		},
+		onUploadComplete: (fileId, result) => {
+			console.log('✅ Upload complete:', fileId, result.url);
+		},
+		onUploadError: (fileId, error) => {
+			console.error('❌ Upload failed:', fileId, error);
+		},
+		onFileRemoved: (fileId) => {
+			console.log('🗑️ File removed:', fileId);
+		},
+		onAllUploadsComplete: () => {
+			console.log('🎉 All uploads complete!');
+		},
 	},
 };
 
+/**
+ * Manual upload mode - files must be uploaded manually
+ * Good for review workflows or batch operations
+ * Advance use case which demonstrates use of (base) FileUpload with useFileUpload
+ */
 export const Manual: Story = {
 	args: {
+		adapter: MockAdapterPresets.normal(),
+		autoUpload: false,
 		showProgress: true,
+		style: { width: '500px' },
 	},
 	render: function Render(args) {
-		const {
-			files,
-			acceptedFiles,
-			addFiles,
-			addRejectedFiles,
-			removeFile,
-			updateFileProgress,
-			updateFileStatus,
-		} = useFileUpload();
-
-		const handleFileAccept = (details: FileUploadFileAcceptDetails) => {
-			try {
-				addFiles(details.files);
-			} catch (error) {
-				console.error('File validation failed:', error);
-			}
-		};
-
-		const handleFileReject = (details: FileUploadFileRejectDetails) => {
-			addRejectedFiles(details.files);
-		};
-
-		const uploadToS3 = async (file: File, onProgress: (progress: number) => void) => {
-			// Simulate S3 upload with progress
-			const uploadDuration = 2000 + Math.random() * 3000;
-			const steps = 20;
-			const stepDuration = uploadDuration / steps;
-
-			for (let i = 0; i <= steps; i++) {
-				await new Promise((resolve) => setTimeout(resolve, stepDuration));
-				const progress = Math.min((i / steps) * 100, 100);
-				onProgress(progress);
-			}
-		};
-
-		const handleS3Upload = async () => {
-			// User's S3 upload logic
-			for (const fileState of acceptedFiles) {
-				try {
-					updateFileStatus(fileState.id, 'uploading');
-
-					await uploadToS3(fileState, (progress) => {
-						updateFileProgress(fileState.id, progress);
-					});
-
-					updateFileStatus(fileState.id, 'completed');
-				} catch (error) {
-					const errorMessage = error instanceof Error ? error.message : 'unknown error';
-					updateFileStatus(fileState.id, 'error', `Upload failed: ${errorMessage}`);
-				}
-			}
-		};
+		const fileUpload = useFileUpload({
+			adapter: MockAdapterPresets.normal(),
+			autoUpload: false, // Manual upload
+		});
 
 		return (
-			<div>
-				<DsFileUpload
+			<div style={{ width: '500px' }}>
+				<FileUpload
 					{...args}
-					files={files}
-					acceptedFiles={acceptedFiles}
-					onFileAccept={handleFileAccept}
-					onFileReject={handleFileReject}
-					onFileRemove={removeFile}
+					files={fileUpload.files}
+					acceptedFiles={fileUpload.acceptedFiles}
+					onFileAccept={(details) => fileUpload.addFiles(details.files)}
+					onFileReject={(details) =>
+						fileUpload.addRejectedFiles(
+							details.files.map((f) => ({
+								file: f.file,
+								errors: f.errors,
+							})),
+						)
+					}
+					onFileRemove={(fileId) => fileUpload.removeFile(fileId)}
 				/>
-				{files.length > 0 && (
-					<div style={{ marginTop: '16px' }}>
-						<button onClick={handleS3Upload}>Upload to S3</button>
+
+				{fileUpload.hasFiles && (
+					<div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
+						<DsButton
+							design="v1.2"
+							size="small"
+							onClick={() => fileUpload.uploadAll()}
+							disabled={fileUpload.isUploading}
+						>
+							{fileUpload.isUploading ? 'Uploading...' : 'Upload All'}
+						</DsButton>
+						<DsButton
+							design="v1.2"
+							variant="ghost"
+							size="small"
+							onClick={() => fileUpload.clearFiles()}
+							disabled={fileUpload.isUploading}
+						>
+							Clear All
+						</DsButton>
 					</div>
 				)}
 			</div>
@@ -135,70 +122,56 @@ export const Manual: Story = {
 	},
 };
 
+/**
+ * Compact mode for inline or constrained layouts
+ */
 export const Compact: Story = {
 	args: {
-		style: { width: '500px' },
+		adapter: MockAdapterPresets.fast(),
+		autoUpload: true,
 		compact: true,
 		maxFiles: 1,
+		showProgress: true,
 		dropzoneText: 'Drag and drop your document here or',
 		triggerText: 'Choose document',
+		style: { width: '400px' },
 	},
 };
 
+/**
+ * Disabled state
+ */
 export const Disabled: Story = {
 	args: {
+		adapter: MockAdapterPresets.normal(),
 		disabled: true,
-		style: { width: '300px' },
+		style: { width: '500px' },
 	},
 };
 
+/**
+ * Upload error scenario - file fails validation immediately
+ */
 export const UploadError: Story = {
 	args: {
+		adapter: MockAdapterPresets.error('Unsupported file type'),
+		autoUpload: true,
 		showProgress: true,
-	},
-	render: function Render(args) {
-		const hook = useFileUpload();
-		const { files, acceptedFiles, removeFile } = hook;
-		const { handleFileAccept, handleFileReject } = createUploadHandler(hook, {
-			scenario: 'error',
-		});
-
-		return (
-			<DsFileUpload
-				{...args}
-				files={files}
-				acceptedFiles={acceptedFiles}
-				onFileAccept={handleFileAccept}
-				onFileReject={handleFileReject}
-				onFileRemove={removeFile}
-			/>
-		);
+		style: { width: '500px' },
 	},
 	play: createTestPlayFunction('error'),
 };
 
+/**
+ * Upload interrupted scenario - network fails mid-upload
+ * Demonstrates retry functionality
+ */
 export const UploadInterrupted: Story = {
 	args: {
+		adapter: MockAdapterPresets.interrupted(30),
+		autoUpload: true,
 		showProgress: true,
-	},
-	render: function Render(args) {
-		const hook = useFileUpload();
-		const { files, acceptedFiles, removeFile } = hook;
-		const { handleFileAccept, handleFileReject, handleFileRetry } = createUploadHandler(hook, {
-			scenario: 'interrupted',
-		});
-
-		return (
-			<DsFileUpload
-				{...args}
-				files={files}
-				acceptedFiles={acceptedFiles}
-				onFileAccept={handleFileAccept}
-				onFileReject={handleFileReject}
-				onFileRetry={handleFileRetry}
-				onFileDelete={removeFile}
-			/>
-		);
+		style: { width: '500px' },
 	},
 	play: createTestPlayFunction('interrupted'),
 };

@@ -1,18 +1,15 @@
-import { FileUploadFileAcceptDetails, FileUploadFileRejectDetails } from '@ark-ui/react';
 import { expect, userEvent, waitFor, within } from '@storybook/test';
-import { useFileUpload } from './hooks/use-file-upload';
 
-export type UploadScenario = 'normal' | 'interrupted' | 'error';
+export type TestScenario = 'normal' | 'interrupted' | 'error';
 
-export interface UploadConfig {
-	scenario: UploadScenario;
-	duration?: number;
-	steps?: number;
-	interruptAt?: number;
-	errorMessage?: string;
-}
-
-export const createMockFile = (name: string, type: string = 'text/plain', size: number = 1024) => {
+/**
+ * Creates a mock file for testing
+ */
+export const createMockFile = (
+	name: string,
+	type: string = 'application/pdf',
+	size: number = 1024 * 100, // 100KB
+): File => {
 	const file = new File(['test content'], name, { type });
 	Object.defineProperty(file, 'size', {
 		value: size,
@@ -21,161 +18,133 @@ export const createMockFile = (name: string, type: string = 'text/plain', size: 
 	return file;
 };
 
-export const createUploadHandler = (hook: ReturnType<typeof useFileUpload>, config: UploadConfig) => {
-	const { addFiles, addRejectedFiles, updateFileProgress, updateFileStatus } = hook;
-
-	const uploadToS3 = async (
-		file: File,
-		onProgress: (progress: number) => void,
-		shouldInterrupt = false,
-		shouldError = false,
-	) => {
-		const duration = config.duration || 2000;
-		const steps = config.steps || 10;
-		const stepDuration = duration / steps;
-
-		for (let i = 0; i <= steps; i++) {
-			await new Promise((resolve) => setTimeout(resolve, stepDuration));
-			const progress = Math.min((i / steps) * 100, 100);
-			onProgress(progress);
-
-			// Interrupt upload at specified progress
-			if (shouldInterrupt && progress >= (config.interruptAt || 30)) {
-				throw new Error(config.errorMessage || 'Network connection lost');
-			}
-
-			// Error immediately
-			if (shouldError) {
-				throw new Error(config.errorMessage || 'Unsupported file type');
-			}
-		}
-	};
-
-	const handleFileAccept = async (details: FileUploadFileAcceptDetails) => {
-		const uploadFiles = addFiles(details.files);
-		const uploadPromises = uploadFiles.map(async (uploadFile) => {
-			try {
-				updateFileStatus(uploadFile.id, 'uploading');
-
-				await uploadToS3(
-					uploadFile,
-					(progress) => {
-						updateFileProgress(uploadFile.id, progress);
-					},
-					config.scenario === 'interrupted',
-					config.scenario === 'error',
-				);
-
-				updateFileStatus(uploadFile.id, 'completed');
-			} catch (error) {
-				const errorMessage = error instanceof Error ? error.message : 'unknown error';
-
-				if (config.scenario === 'interrupted') {
-					updateFileStatus(uploadFile.id, 'interrupted', `Upload interrupted: ${errorMessage}`);
-				} else {
-					updateFileStatus(uploadFile.id, 'error', `Upload failed: ${errorMessage}`);
-				}
-			}
-		});
-		await Promise.all(uploadPromises);
-	};
-
-	const handleFileReject = (details: FileUploadFileRejectDetails) => {
-		addRejectedFiles(details.files);
-	};
-
-	const handleFileRetry = async (fileId: string) => {
-		const { files, acceptedFiles } = hook;
-		const fileToRetry = acceptedFiles.find((f) => f.id === fileId);
-		if (!fileToRetry) return;
-
-		try {
-			updateFileStatus(fileId, 'uploading');
-			updateFileProgress(fileId, 0);
-			await uploadToS3(
-				fileToRetry,
-				(progress) => {
-					updateFileProgress(fileId, progress);
-				},
-				false, // Don't interrupt retry
-				false, // Don't error retry
-			);
-			updateFileStatus(fileId, 'completed');
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : 'unknown error';
-			updateFileStatus(fileId, 'error', `Upload failed: ${errorMessage}`);
-		}
-	};
-
-	return {
-		handleFileAccept,
-		handleFileReject,
-		handleFileRetry,
-	};
-};
-
-export const createTestPlayFunction = (scenario: UploadScenario) => {
+/**
+ * Creates a test play function for Storybook interaction testing
+ * Tests the complete upload lifecycle including success, error, and retry scenarios
+ */
+export const createTestPlayFunction = (scenario: TestScenario) => {
 	return async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		const mockFile = createMockFile('test-file.pdf', 'application/pdf');
+		const mockFile = createMockFile('test-document.pdf', 'application/pdf');
 
+		// Find and upload file
 		const fileInput = canvasElement.querySelector('input[type="file"]') as HTMLInputElement;
-		await userEvent.upload(fileInput, mockFile);
 
-		if (scenario === 'normal') {
-			// Wait for upload to complete
-			await waitFor(
-				() => {
-					expect(canvas.getByText('Upload complete')).toBeInTheDocument();
-				},
-				{ timeout: 5000 },
-			);
-		} else if (scenario === 'interrupted') {
-			// Wait for upload to start
-			await waitFor(
-				() => {
-					expect(canvas.getByText(/Uploading/)).toBeInTheDocument();
-				},
-				{ timeout: 3000 },
-			);
-
-			// Wait for upload to be interrupted
-			await waitFor(
-				() => {
-					expect(canvas.getByText('Upload interrupted')).toBeInTheDocument();
-				},
-				{ timeout: 5000 },
-			);
-
-			// Test retry button
-			const retryButton = canvas.getByLabelText(/Retry.*upload/);
-			await userEvent.click(retryButton);
-
-			// Wait for retry to complete
-			await waitFor(
-				() => {
-					expect(canvas.getByText('Upload complete')).toBeInTheDocument();
-				},
-				{ timeout: 5000 },
-			);
-		} else if (scenario === 'error') {
-			// Wait for error to appear immediately
-			await waitFor(
-				() => {
-					expect(canvas.getByText(/Upload failed/)).toBeInTheDocument();
-				},
-				{ timeout: 3000 },
-			);
+		if (!fileInput) {
+			throw new Error('File input not found');
 		}
 
-		if (scenario === 'error') {
-			// Test remove button
-			const removeButton = canvas.getByLabelText(/Remove.*upload/);
-			await userEvent.click(removeButton);
-		} else {
-			// Test delete button
-			const deleteButton = canvas.getByLabelText(/Delete.*/);
-			await userEvent.click(deleteButton);
+		await userEvent.upload(fileInput, mockFile);
+
+		// Test based on scenario
+		switch (scenario) {
+			case 'normal':
+				await testNormalUpload(canvas);
+				break;
+			case 'interrupted':
+				await testInterruptedUpload(canvas);
+				break;
+			case 'error':
+				await testErrorUpload(canvas);
+				break;
 		}
 	};
 };
+
+/**
+ * Test normal upload flow - file uploads successfully
+ */
+async function testNormalUpload(canvas: ReturnType<typeof within>) {
+	// Wait for upload to start
+	await waitFor(
+		() => {
+			const uploadingText = canvas.queryByText(/Uploading/i);
+			expect(uploadingText).toBeInTheDocument();
+		},
+		{ timeout: 1000 },
+	);
+
+	// Wait for upload to complete
+	await waitFor(
+		() => {
+			const completeText = canvas.queryByText(/complete/i);
+			expect(completeText).toBeInTheDocument();
+		},
+		{ timeout: 5000 },
+	);
+
+	// Test delete button
+	const deleteButton = canvas.getByLabelText(/delete/i);
+	await userEvent.click(deleteButton);
+
+	// Verify file was removed
+	await waitFor(() => {
+		const fileName = canvas.queryByText('test-document.pdf');
+		expect(fileName).not.toBeInTheDocument();
+	});
+}
+
+/**
+ * Test interrupted upload flow - upload fails mid-way and can be retried
+ */
+async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
+	// Wait for upload to start
+	await waitFor(
+		() => {
+			const uploadingText = canvas.queryByText(/Uploading/i);
+			expect(uploadingText).toBeInTheDocument();
+		},
+		{ timeout: 1000 },
+	);
+
+	// Wait for interruption
+	await waitFor(
+		() => {
+			const interruptedText = canvas.queryByText(/interrupted|lost|failed/i);
+			expect(interruptedText).toBeInTheDocument();
+		},
+		{ timeout: 5000 },
+	);
+
+	// Find and click retry button
+	const retryButton = canvas.getByLabelText(/retry/i);
+	await userEvent.click(retryButton);
+
+	// Wait for retry to complete
+	// Note: Retry uses normal adapter so it should succeed
+	await waitFor(
+		() => {
+			const completeText = canvas.queryByText(/complete/i);
+			expect(completeText).toBeInTheDocument();
+		},
+		{ timeout: 5000 },
+	);
+
+	// Test delete button
+	const deleteButton = canvas.getByLabelText(/delete/i);
+	await userEvent.click(deleteButton);
+}
+
+/**
+ * Test error upload flow - upload fails immediately
+ */
+async function testErrorUpload(canvas: ReturnType<typeof within>) {
+	// Wait for error to appear
+	await waitFor(
+		() => {
+			const errorText = canvas.queryByText(/failed|error|unsupported/i);
+			expect(errorText).toBeInTheDocument();
+		},
+		{ timeout: 2000 },
+	);
+
+	// Test remove button
+	const removeButton = canvas.getByLabelText(/remove/i);
+	await userEvent.click(removeButton);
+
+	// Verify file was removed
+	await waitFor(() => {
+		const fileName = canvas.queryByText('test-document.pdf');
+		expect(fileName).not.toBeInTheDocument();
+	});
+}
