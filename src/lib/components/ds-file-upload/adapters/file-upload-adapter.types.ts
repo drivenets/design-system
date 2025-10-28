@@ -11,6 +11,7 @@ export interface FileUploadResult {
 	success: boolean;
 	url?: string;
 	error?: string;
+	isRetryable?: boolean;
 	metadata?: Record<string, never>;
 }
 

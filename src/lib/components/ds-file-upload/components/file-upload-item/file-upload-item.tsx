@@ -27,7 +27,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 		[styles.fileItemError]: status === 'error',
 		[styles.fileItemCompleted]: status === 'completed',
 		[styles.fileItemUploading]: status === 'uploading',
-		[styles.fileItemInterrupted]: status === 'cancelled',
+		[styles.fileItemInterrupted]: status === 'interrupted' || status === 'cancelled',
 	});
 
 	return (
@@ -47,7 +47,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					</Progress.Root>
 				</div>
 
-				{(status === 'pending' || status === 'error' || status === 'cancelled') && (
+				{(status === 'pending' || status === 'error') && (
 					<DsButton
 						type="button"
 						design="v1.2"
@@ -59,7 +59,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					</DsButton>
 				)}
 
-				{(status === 'error' || status === 'cancelled') && onRetry && (
+				{(status === 'interrupted' || status === 'cancelled') && onRetry && (
 					<DsButton
 						type="button"
 						design="v1.2"
@@ -100,6 +100,13 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 				<div className={styles.completedText}>
 					<DsIcon icon="check_circle" size="tiny" filled />
 					Upload complete
+				</div>
+			)}
+
+			{status === 'interrupted' && (
+				<div className={styles.interruptedText}>
+					<DsIcon icon="info" size="tiny" filled />
+					Upload interrupted
 				</div>
 			)}
 

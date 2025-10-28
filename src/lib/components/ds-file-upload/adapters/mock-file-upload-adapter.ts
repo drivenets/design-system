@@ -53,7 +53,7 @@ export class MockAdapter implements FileUploadAdapter {
 		if (delay > 0) {
 			await this.sleep(delay);
 			if (checkCancelled()) {
-				return { success: false, error: 'Upload cancelled' };
+				return { success: false, error: 'Upload cancelled', isRetryable: true };
 			}
 		}
 
@@ -62,6 +62,7 @@ export class MockAdapter implements FileUploadAdapter {
 			return {
 				success: false,
 				error: errorMessage || 'Unsupported file type',
+				isRetryable: false,
 			};
 		}
 
@@ -70,7 +71,7 @@ export class MockAdapter implements FileUploadAdapter {
 
 		for (let i = 0; i <= steps; i++) {
 			if (checkCancelled()) {
-				return { success: false, error: 'Upload cancelled' };
+				return { success: false, error: 'Upload cancelled', isRetryable: true };
 			}
 
 			await this.sleep(stepDuration);
@@ -86,6 +87,7 @@ export class MockAdapter implements FileUploadAdapter {
 				return {
 					success: false,
 					error: errorMessage || 'Network connection lost',
+					isRetryable: true,
 				};
 			}
 		}

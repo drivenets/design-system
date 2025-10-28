@@ -8,7 +8,7 @@ export interface FileWithErrors {
 	errors: FileError[];
 }
 
-export type UploadFileStatus = 'pending' | 'uploading' | 'completed' | 'error' | 'cancelled';
+export type UploadFileStatus = 'pending' | 'uploading' | 'interrupted' | 'completed' | 'error' | 'cancelled';
 export type FileMeta = Pick<File, 'name' | 'type' | 'size'>;
 
 export interface UploadFileMeta extends FileMeta {
@@ -179,12 +179,15 @@ export function useFileUpload(config: UseFileUploadConfig): UseFileUploadReturn 
 				updateFileProgress(fileId, 100);
 				config.onUploadComplete?.(fileId, result);
 			} else {
-				updateFileStatus(fileId, 'error', result.error);
+				// Determine status based on retryability
+				const status = result.isRetryable ? 'interrupted' : 'error';
+				updateFileStatus(fileId, status, result.error);
 				config.onUploadError?.(fileId, result.error || 'Upload failed');
 			}
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Upload failed';
-			updateFileStatus(fileId, 'error', errorMessage);
+			// Network/unexpected errors are retryable
+			updateFileStatus(fileId, 'interrupted', errorMessage);
 			config.onUploadError?.(fileId, errorMessage);
 		} finally {
 			setAbortControllers((prev) => {
