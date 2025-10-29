@@ -1,5 +1,5 @@
 import React, { CSSProperties } from 'react';
-import { Cell, defaultColumnSizing } from '@tanstack/react-table';
+import { Cell } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -11,6 +11,7 @@ import styles from './ds-table-row.module.scss';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../utils/merge-refs';
+import { getColumnStyle } from '../../utils/column-styling';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
@@ -148,31 +149,25 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 				{reorderable && (
 					<DsRowDragHandle isDragging={isDragging} attributes={attributes} listeners={listeners} />
 				)}
-				{row.getVisibleCells().map((cell, idx) => (
-					<TableCell
-						key={cell.id}
-						className={styles.tableCell}
-						style={
-							virtualized && cell.column.getSize() !== defaultColumnSizing.size
-								? {
-										flexBasis: cell.column.getSize(),
-										flexGrow: idx === row.getVisibleCells().length - 1 ? 1 : 0,
-									}
-								: undefined
-						}
-					>
-						{idx === row.getVisibleCells().length - 1 ? (
-							<DsTableCell
-								row={row}
-								cell={cell as Cell<TData, TValue>}
-								primaryRowActions={primaryRowActions}
-								secondaryRowActions={secondaryRowActions}
-							/>
-						) : (
-							<DsTableCell row={row} cell={cell as Cell<TData, TValue>} />
-						)}
-					</TableCell>
-				))}
+				{row.getVisibleCells().map((cell, idx) => {
+					const isLastColumn = idx === row.getVisibleCells().length - 1;
+					const cellStyle = getColumnStyle(cell.column.getSize(), virtualized, isLastColumn);
+
+					return (
+						<TableCell key={cell.id} className={styles.tableCell} style={cellStyle}>
+							{isLastColumn ? (
+								<DsTableCell
+									row={row}
+									cell={cell as Cell<TData, TValue>}
+									primaryRowActions={primaryRowActions}
+									secondaryRowActions={secondaryRowActions}
+								/>
+							) : (
+								<DsTableCell row={row} cell={cell as Cell<TData, TValue>} />
+							)}
+						</TableCell>
+					);
+				})}
 			</TableRow>
 			{isExpanded && renderExpandedRow && (
 				<TableRow
