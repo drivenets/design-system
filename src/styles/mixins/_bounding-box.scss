@@ -48,6 +48,6 @@
 	// Element bounding box corners including shadows.
 	--_top-left: var(--_left-bound) var(--_top-bound);
 	--_top-right: var(--_right-bound) var(--_top-bound);
-	--_bottom-right: var(--_right-bound) var(--_right-bound);
+	--_bottom-right: var(--_right-bound) var(--_bottom-bound);
 	--_bottom-left: var(--_left-bound) var(--_bottom-bound);
 }
