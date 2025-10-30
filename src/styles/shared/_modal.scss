@@ -6,17 +6,76 @@
 	background: var(--color-background-brand);
 	opacity: 0.4;
 	z-index: 1199;
+
+	&[data-state='open'] {
+		animation: fade-in-overlay 0.2s ease-in-out both;
+	}
+
+	&[data-state='closed'] {
+		animation: fade-out-overlay 0.2s 0.1s ease-in-out both;
+	}
+}
+
+@keyframes fade-in-overlay {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0.4;
+	}
+}
+
+@keyframes fade-out-overlay {
+	0% {
+		opacity: 0.4;
+	}
+
+	100% {
+		opacity: 0;
+	}
 }
 
 @mixin modal-base {
 	position: fixed;
 	inset: 50% auto auto 50%;
-	transform: translate(-50%, -50%);
 	background: var(--color-background);
 	border-radius: 4px;
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
 	z-index: 1200;
 	overflow: hidden;
+
+	&[data-state='open'] {
+		animation: scale-in-modal 0.2s 0.1s ease-in-out both;
+	}
+
+	&[data-state='closed'] {
+		animation: scale-out-modal 0.2s ease-in-out both;
+	}
+}
+
+@keyframes scale-in-modal {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.9);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+@keyframes scale-out-modal {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.9);
+	}
 }
 
 @mixin content-base {

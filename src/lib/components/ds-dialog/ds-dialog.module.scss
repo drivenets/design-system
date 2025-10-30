@@ -1,4 +1,5 @@
 @use '@design-system/ui/src/styles/typography';
+@use '@design-system/ui/src/styles/mixins/bounding-box';
 
 .overlay {
 	position: fixed;
@@ -8,9 +9,14 @@
 }
 
 .dialog {
+	@include bounding-box.bounding-box-vars;
+
+	--_shadow-size: 18px;
+	--_shadow-y-offset: 6px;
+
 	background: var(--white, #fff);
 	border-radius: 8px;
-	box-shadow: 0 6px 18px 0 rgba(4, 69, 204, 0.3);
+	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(4, 69, 204, 0.3);
 	padding: 12px;
 	min-width: 320px;
 	min-height: 120px;

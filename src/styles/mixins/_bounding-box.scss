@@ -1,0 +1,53 @@
+/**
+ * Inject element bounding box values as variables.
+ * Uses internal variables of the element itself to calculate the box.
+ *
+ * USE WITH CAUTION:
+ *	Can break in cases where an element has blur, drop-shadow, multiple box-shadows, borders,
+ * 	transforms, shadow variables inherited from parents, etc.
+ *
+ * Usage:
+ *
+ * ```css
+ *	.element {
+ *		@include bounding-box.bounding-box-vars;
+ *
+ *		--_shadow-size: 15px;
+ *		--_shadow-x-offset: 5px;
+ *		--_shadow-y-offset: 10px;
+ *
+ *		box-shadow:
+ * 			var(--_shadow-x-offset)
+ * 			var(--_shadow-y-offset)
+ * 			var(--_shadow-size)
+ * 			10px
+ * 			rgba(0, 0, 0, 0.15);
+ *	}
+ * ```
+ *
+ * Then, you'll have these bounding box variables available:
+ * - `--_left-bound`
+ * - `--_right-bound`
+ * - `--_top-bound`
+ * - `--_bottom-bound`
+ *
+ * For convenient usage inside `polygon(...)`, the corners are also available:
+ * - `--_top-left`
+ * - `--_top-right`
+ * - `--_bottom-right`
+ * - `--_bottom-left`
+ *
+ */
+@mixin bounding-box-vars {
+	// Element bounding box including shadows.
+	--_left-bound: min(0px, calc(-1 * var(--_shadow-size, 0px) + var(--_shadow-x-offset, 0px)));
+	--_right-bound: max(100%, calc(100% + var(--_shadow-size, 0px) + var(--_shadow-x-offset, 0px)));
+	--_top-bound: min(0px, calc(-1 * var(--_shadow-size, 0px) + var(--_shadow-y-offset, 0px)));
+	--_bottom-bound: max(100%, calc(100% + var(--_shadow-size, 0px) + var(--_shadow-y-offset, 0px)));
+
+	// Element bounding box corners including shadows.
+	--_top-left: var(--_left-bound) var(--_top-bound);
+	--_top-right: var(--_right-bound) var(--_top-bound);
+	--_bottom-right: var(--_right-bound) var(--_bottom-bound);
+	--_bottom-left: var(--_left-bound) var(--_bottom-bound);
+}
