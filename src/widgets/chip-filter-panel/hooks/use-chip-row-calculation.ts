@@ -21,25 +21,23 @@ export const useChipRowCalculation = ({ chipsWrapperRef, totalFilters }: UseChip
 
 			if (children.length === 0) return;
 
-			let index = 0;
+			const cs = getComputedStyle(wrapper);
+			const gap = parseFloat(cs.columnGap || cs.gap || '0') || 8;
+			let index;
 			let line = 0;
 			let total = 0;
 
-			while (line < 2) {
-				total = 0;
-				if (index >= children.length) break;
-				let current = children[index];
-				while (total < wrapper.clientWidth) {
-					const offset = current.offsetWidth === wrapper.clientWidth ? 0 : 8;
-					const next = offset + current.offsetWidth;
-					if (total + next >= wrapper.clientWidth) {
-						line++;
-						break;
-					}
+			for (index = 0; index < children.length; index++) {
+				const current = children[index];
+				const offset = current.offsetWidth === wrapper.clientWidth ? 0 : gap;
+				const next = offset + current.offsetWidth;
+
+				if (total + next >= wrapper.clientWidth) {
+					line++;
+					if (line >= 2) break;
+					total = next;
+				} else {
 					total += next;
-					index++;
-					if (index >= children.length) break;
-					current = children[index];
 				}
 			}
 
