@@ -44,6 +44,7 @@
 
 .label {
 	@include typography.ellipsis;
+	padding: var(--spacing-4xs) var(--spacing-3xs);
 	flex: 1;
 }
 
@@ -51,7 +52,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: var(--spacing-3xs);
 	border: none;
 	background: transparent;
 	color: var(--color-icon-information-main);
