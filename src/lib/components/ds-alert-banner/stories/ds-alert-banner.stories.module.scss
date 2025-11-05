@@ -1,0 +1,118 @@
+.globalMessages {
+	position: fixed;
+	inset: var(--spacing-md);
+	bottom: auto;
+
+	.customBody {
+		align-items: flex-start;
+	}
+
+	[data-close] {
+		display: flex;
+		align-items: center;
+		height: 32px;
+	}
+}
+
+.trigger {
+	margin-bottom: var(--spacing-standard);
+}
+
+.inlineAlertBanner {
+	position: absolute;
+	transform: translateX(-125px);
+	width: 400px;
+}
+
+.inlineActions {
+	display: flex;
+	gap: var(--spacing-xs);
+	margin-top: var(--spacing-xs);
+
+	button.primary {
+		display: flex;
+		padding: var(---exo-spacing-2x-small, 4px) var(--sm, 12px);
+		align-items: center;
+		gap: var(---exo-spacing-2x-small, 4px);
+		align-self: stretch;
+		border-radius: var(---exo-spacing-2x-small, 4px);
+		border: 1px solid var(--color-border);
+		background: var(--color-background);
+	}
+}
+
+.customBodyContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.customBodyText {
+	margin: 0;
+	color: var(--color-font-secondary);
+}
+
+.customBodyList {
+	margin: 0;
+	padding-left: 20px;
+	color: var(--color-font-secondary);
+}
+
+.infoBox {
+	background: var(--color-background-secondary);
+	padding: 12px;
+	border-radius: 6px;
+	font-size: 14px;
+	color: var(--color-font-secondary);
+	border: 1px solid var(--color-border-secondary);
+}
+
+.securityCard {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+	border-radius: 4px;
+}
+
+.securityCardCritical {
+	background: var(--color-background-danger);
+	border: 1px solid var(--color-border-danger);
+}
+
+.securityCardHigh {
+	background: var(--color-background-warning);
+	border: 1px solid var(--color-border-warning);
+}
+
+.securityCardTitle {
+	font-weight: 600;
+}
+
+.securityCardTitleCritical {
+	color: var(--color-font-danger);
+}
+
+.securityCardTitleHigh {
+	color: var(--color-font-warning);
+}
+
+.securityCardScore {
+	font-size: 12px;
+	color: var(--color-font-secondary);
+}
+
+.recommendationsBox {
+	background: var(--color-background-secondary);
+	padding: 12px;
+	border-radius: 6px;
+	font-size: 14px;
+	color: var(--color-font-secondary);
+	border: 1px solid var(--color-border-secondary);
+}
+
+.securityCardsContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}

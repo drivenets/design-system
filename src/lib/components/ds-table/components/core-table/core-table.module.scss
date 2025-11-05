@@ -13,20 +13,12 @@
 }
 
 .tableHead {
-	text-align: left;
-	vertical-align: middle;
-	font-weight: 500;
-	color: rgb(100, 116, 139);
-
 	&:has([role='checkbox']) {
 		padding-right: 0;
 	}
 }
 
 .tableCell {
-	padding: 1rem;
-	vertical-align: middle;
-
 	&:has([role='checkbox']) {
 		padding-right: 0;
 	}

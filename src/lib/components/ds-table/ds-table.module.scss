@@ -1,5 +1,5 @@
-@use 'typography' as typography;
-@use 'utilities' as utils;
+@use '@design-system/ui/src/styles/typography';
+@use '@design-system/ui/src/styles/utilities' as utils;
 @use './styles/variables' as vars;
 
 .container {
@@ -23,7 +23,7 @@
 .table {
 	width: 100%;
 	caption-side: bottom;
-	@extend .p-base;
+	@include typography.p-base;
 
 	&.tableNoBorder {
 		border-collapse: separate;

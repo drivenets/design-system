@@ -1,10 +1,15 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 @use '../../styles/variables' as vars;
 
 .tableRow {
 	&:not(.virtualizedRow):not(:last-child) {
 		.tableCell {
-			border-bottom: vars.$border-width solid var(--neutral-6);
+			border-bottom: vars.$border-width solid var(--color-border-secondary);
+
+			&.cellCheckbox {
+				padding: 0;
+				width: vars.$select-column-width;
+			}
 		}
 	}
 
@@ -14,13 +19,21 @@
 		width: 100%;
 
 		&:not(:last-child) {
-			border-bottom: vars.$border-width solid var(--neutral-6);
+			border-bottom: vars.$border-width solid var(--color-border-secondary);
 		}
 
 		.tableCell {
 			display: flex;
+			align-items: center;
 			flex-basis: 0;
 			flex-grow: 1;
+
+			&.cellCheckbox {
+				text-align: center;
+				padding: 0;
+				flex-grow: 0;
+				flex-basis: vars.$select-column-width;
+			}
 		}
 	}
 
@@ -43,6 +56,18 @@
 	&.expandedRow {
 		background-color: vars.$expanded-row-bg-color;
 	}
+
+	&.sizeSmall {
+		height: var(--ds-table-row-small);
+	}
+
+	&.sizeMedium {
+		height: var(--ds-table-row-medium);
+	}
+
+	&.sizeLarge {
+		height: var(--ds-table-row-large);
+	}
 }
 
 .expandedRow {
@@ -51,11 +76,6 @@
 
 .cellButton {
 	width: vars.$expand-column-width;
-}
-
-.cellCheckbox {
-	width: vars.$select-column-width;
-	text-align: center;
 }
 
 .cellReorder {
@@ -72,9 +92,10 @@
 }
 
 .tableCell {
+	@include typography.body-sm-reg;
 	vertical-align: middle;
-	color: var(--neutral-2);
-	padding: vars.$cell-padding-standard-vertical vars.$cell-padding;
+	color: var(--color-font-main);
+	padding: 0 var(--spacing-standard);
 }
 
 .expandToggleButton {

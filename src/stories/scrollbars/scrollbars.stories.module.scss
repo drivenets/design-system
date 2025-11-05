@@ -1,0 +1,60 @@
+.container {
+	display: flex;
+	gap: 20px;
+}
+
+.section {
+	width: 300px;
+}
+
+.sectionWide {
+	width: 400px;
+}
+
+.sectionExtraWide {
+	width: 600px;
+}
+
+.scrollableContainer {
+	height: 300px;
+	overflow: auto;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 16px;
+}
+
+.scrollableContainerTall {
+	height: 400px;
+	overflow: auto;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	padding: 16px;
+}
+
+.contentContainer {
+	display: flex;
+	white-space: nowrap;
+}
+
+.contentItem {
+	padding: 16px;
+	margin: 8px;
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+.contentItemHorizontal {
+	padding: 16px;
+	margin: 8px;
+	background-color: #f5f5f5;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	display: inline-block;
+	width: 200px;
+	margin-right: 16px;
+}
+
+.wideContent {
+	width: 800px;
+}

@@ -1,13 +1,21 @@
 import React from 'react';
+import classNames from 'classnames';
 import { DsGridItemProps, DsGridProps } from './ds-grid.types';
 
 /**
  * Design system Grid component
  */
-export const DsGrid: React.FC<DsGridProps> = ({ children, rows, className = '' }) => {
-	const rowsClass = rows ? `ds-grid-rows-${rows}` : '';
+export const DsGrid: React.FC<DsGridProps> = ({ children, columns, rows, className }) => {
+	const gridClass = classNames(
+		'ds-grid',
+		{
+			[`ds-grid-cols-${columns}`]: columns,
+			[`ds-grid-rows-${rows}`]: rows,
+		},
+		className,
+	);
 
-	return <div className={`ds-grid ${rowsClass} ${className}`.trim()}>{children}</div>;
+	return <div className={gridClass}>{children}</div>;
 };
 
 /**
@@ -19,25 +27,17 @@ export const DsGridItem: React.FC<DsGridItemProps> = ({
 	colStart,
 	rowSpan,
 	rowStart,
-	className = '',
+	className,
 }) => {
-	const classes = [className];
+	const gridItemClass = classNames(
+		{
+			[`ds-grid-col-span-${colSpan}`]: colSpan,
+			[`ds-grid-col-start-${colStart}`]: colStart,
+			[`ds-grid-row-span-${rowSpan}`]: rowSpan,
+			[`ds-grid-row-start-${rowStart}`]: rowStart,
+		},
+		className,
+	);
 
-	if (colSpan) {
-		classes.push(`ds-grid-col-span-${colSpan}`);
-	}
-
-	if (colStart) {
-		classes.push(`ds-grid-col-start-${colStart}`);
-	}
-
-	if (rowSpan) {
-		classes.push(`ds-grid-row-span-${rowSpan}`);
-	}
-
-	if (rowStart) {
-		classes.push(`ds-grid-row-start-${rowStart}`);
-	}
-
-	return <div className={classes.join(' ').trim()}>{children}</div>;
+	return <div className={gridItemClass}>{children}</div>;
 };

@@ -1,12 +1,12 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
 export interface DsTooltipProps {
 	/**
 	 * Tooltip content
 	 */
-	content: string;
+	content?: string | ReactNode;
 	/**
 	 * The content to be rendered inside the tooltip
 	 */
-	children: React.ReactNode;
+	children: ReactNode;
 }

@@ -1,6 +1,6 @@
-@use 'typography' as typography;
-@use 'shared/dropdown' as dropdown;
-@use 'shared/input' as input;
+@use '@design-system/ui/src/styles/typography';
+@use '@design-system/ui/src/styles/shared/dropdown';
+@use '@design-system/ui/src/styles/shared/input';
 
 .container {
 	display: flex;
@@ -9,7 +9,7 @@
 }
 
 .trigger {
-	@extend .selectTrigger;
+	@include input.selectTrigger;
 }
 
 .content {
@@ -17,7 +17,7 @@
 }
 
 .searchInput {
-	@extend .searchInput;
+	@include input.searchInput;
 }
 
 .viewport {
@@ -42,7 +42,7 @@
 
 	&[data-state='checked'] {
 		.itemValue {
-			@extend .body-sm-md;
+			@include typography.body-sm-md;
 		}
 	}
 
@@ -56,7 +56,7 @@
 }
 
 .itemValue {
-	@extend .body-sm-reg;
+	@include typography.body-sm-reg;
 	@include typography.ellipsis;
 	display: flex;
 	align-items: center;

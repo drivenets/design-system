@@ -1,0 +1,162 @@
+.storyContainer {
+	padding: 20px;
+	max-width: 800px;
+}
+
+.storyHeader {
+	margin-bottom: 20px;
+}
+
+.formResults {
+	background: #f6f8fa;
+	border: 1px solid #d0d7de;
+	border-radius: 6px;
+	padding: 16px;
+	margin-top: 20px;
+}
+
+.formResultsTitle {
+	margin: 0 0 12px 0;
+	color: #24292f;
+}
+
+.formResultsGrid {
+	display: grid;
+	gap: 8px;
+}
+
+.clearResultsButton {
+	margin-top: 12px;
+}
+
+.formSection {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.formSectionTitle {
+	margin: 0 0 16px 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #24292f;
+}
+
+.formGrid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+}
+
+.formGridThree {
+	display: grid;
+	grid-template-columns: 1fr 1fr auto;
+	gap: 16px;
+	align-items: end;
+}
+
+.inputLabel {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 12px;
+}
+
+.inputField {
+	width: 100%;
+	padding: 8px 12px;
+	border: 1px solid #d0d7de;
+	border-radius: 6px;
+	font-size: 14px;
+}
+
+.customHeader {
+	display: flex;
+	gap: 8px;
+	justify-self: start;
+	margin-left: auto;
+}
+
+.headerButton {
+	padding: 4px;
+	border: none;
+	background: none;
+	cursor: pointer;
+}
+
+.customFooter {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	flex: 1;
+}
+
+.customActions {
+	gap: 12px;
+}
+
+.statusBadge {
+	background: #e6f4ea;
+	color: #1e4620;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	margin-right: auto;
+}
+
+.footerButton {
+	padding: 8px 16px;
+	border: 1px solid #d0d7de;
+	background: white;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.footerButtonPrimary {
+	padding: 8px 16px;
+	border: none;
+	background: #0969da;
+	color: white;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.fileUploadArea {
+	border: 2px dashed #d0d7de;
+	border-radius: 6px;
+	padding: 40px;
+	text-align: center;
+	background: #f6f8fa;
+}
+
+.uploadButton {
+	padding: 12px 24px;
+	border: none;
+	background: #0969da;
+	color: white;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 14px;
+	margin-bottom: 8px;
+}
+
+.uploadText {
+	color: #656d76;
+	font-size: 14px;
+}
+
+.addButton {
+	width: 40px;
+	height: 40px;
+	border: 1px solid #d0d7de;
+	background: white;
+	border-radius: 6px;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.errorMessage {
+	color: red;
+	font-size: 12px;
+}

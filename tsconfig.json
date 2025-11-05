@@ -3,7 +3,7 @@
   "compilerOptions": {
     "jsx": "preserve",
     "types": ["vite/client"],
-
+    "moduleResolution": "bundler",
     // TODO: Remove when base config will be stricter.
     "strictNullChecks": true
   }

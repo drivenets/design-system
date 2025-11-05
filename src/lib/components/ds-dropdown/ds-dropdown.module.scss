@@ -1,6 +1,6 @@
-@use 'typography' as typography;
-@use 'shared/dropdown' as dropdown;
-@use 'shared/input' as input;
+@use '@design-system/ui/src/styles/typography';
+@use '@design-system/ui/src/styles/shared/dropdown';
+@use '@design-system/ui/src/styles/shared/input';
 
 .content {
 	@include dropdown.dropdown-content;
@@ -11,7 +11,7 @@
 }
 
 .searchInput {
-	@extend .searchInput;
+	@include input.searchInput;
 }
 
 .items {

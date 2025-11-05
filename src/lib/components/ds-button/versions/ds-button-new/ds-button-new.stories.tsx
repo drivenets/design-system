@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import { DsIcon } from '@design-system/ui';
+import DsSpinner from '../../../ds-spinner/ds-spinner';
 import DsButtonNew from './ds-button-new';
 import { buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types';
 import styles from './ds-button-new.stories.module.scss';
@@ -62,6 +63,28 @@ export const DefaultButton: Story = {
 		children: (
 			<>
 				<DsIcon icon="check_circle" size="tiny" aria-hidden="true" />
+				{defaultButtonText}
+				<DsIcon icon="keyboard_arrow_down" size="tiny" aria-hidden="true" />
+			</>
+		),
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const button = canvas.getByRole('button', { name: defaultButtonText });
+		await userEvent.click(button);
+		await expect(button).toBeInTheDocument();
+	},
+};
+
+export const WithSpinner: Story = {
+	args: {
+		buttonType: 'primary',
+		variant: 'filled',
+		size: 'large',
+		disabled: false,
+		children: (
+			<>
+				<DsSpinner />
 				{defaultButtonText}
 				<DsIcon icon="keyboard_arrow_down" size="tiny" aria-hidden="true" />
 			</>

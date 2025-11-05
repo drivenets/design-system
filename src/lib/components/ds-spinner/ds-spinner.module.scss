@@ -1,0 +1,39 @@
+@use '@design-system/ui/src/styles/typography';
+
+.spinnerContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.progressCircle {
+	button &,
+	[role='button'] & {
+		width: 1em;
+		height: 1em;
+	}
+}
+
+.spin {
+	animation: spin 2s linear infinite;
+}
+
+.progressArc {
+	transition: stroke-dasharray 0.3s ease-in-out;
+	stroke: var(--color-background-selected);
+
+	button &,
+	[role='button'] & {
+		stroke: currentColor;
+	}
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
+}

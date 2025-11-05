@@ -12,8 +12,9 @@ $textarea-height-default: 120px;
 	align-items: center;
 	border-radius: 4px;
 	transition: all 0.2s ease;
+	width: 100%;
 	background: var(--color-background);
-	border: 1px solid var(--color-border);
+	border: 1px solid var(--form-control-border-color, var(--color-border));
 	padding: var(--spacing-xs) var(--spacing-sm);
 }
 
@@ -37,24 +38,26 @@ $textarea-height-default: 120px;
 	}
 
 	&::selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 
 	&::-moz-selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 }
 
 @mixin input-container-states {
-	&:hover:not(:has(.input:disabled)):not(:has(:focus-within)) {
-		border: 1px solid var(--color-background-action-hover);
+	&:hover:not(:has(.input:disabled)) {
+		border: 1px solid var(--form-control-border-color, var(--color-background-action-hover));
 	}
 
 	&:has(:focus-within) {
-		border: 1px solid var(--color-border-action-primary);
+		border: 1px solid var(--form-control-border-color, var(--color-border-action-primary));
 	}
 
 	&:has(.input:disabled) {
+		color: var(--color-background-deselected);
+		background: var(--color-background-secondary);
 		border-color: var(--color-border-disabled);
 		cursor: not-allowed;
 
@@ -70,36 +73,34 @@ $textarea-height-default: 120px;
 
 @mixin input-states {
 	&:hover:not(:disabled):not(:focus) {
-		border-color: var(--form-control-focus-border-color, var(--color-background-action-hover));
+		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 	}
 
 	&:focus {
-		border-color: var(--form-control-focus-border-color, var(--color-border-action-primary));
+		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 	}
 
 	&:disabled {
+		color: var(--color-background-deselected);
+		background: var(--color-background-secondary);
 		border-color: var(--color-border-disabled);
-		color: var(--color-background-disable);
 		cursor: not-allowed;
-	}
-
-	&:read-only {
-		cursor: default;
 	}
 }
 
 @mixin form-control-states {
 	&:hover:not(:disabled) {
-		border-color: var(--form-control-focus-border-color, var(--color-background-action-hover));
+		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 	}
 
 	&:focus {
-		border-color: var(--form-control-focus-border-color, var(--color-border-action-primary));
+		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 		outline: none;
 	}
 
 	&:disabled {
-		color: var(--color-font-disabled);
+		color: var(--color-background-deselected);
+		background: var(--color-background-secondary);
 		border-color: var(--color-border-disabled);
 		cursor: not-allowed;
 	}
@@ -107,7 +108,7 @@ $textarea-height-default: 120px;
 
 @mixin select-trigger-states {
 	&:hover:not(:disabled) {
-		border-color: var(--form-control-focus-border-color, var(--color-background-action-hover));
+		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 
 		.triggerIcon {
 			color: var(--color-background-deselected-hover);
@@ -116,7 +117,7 @@ $textarea-height-default: 120px;
 	}
 
 	&:focus {
-		border-color: var(--form-control-focus-border-color, var(--color-border-action-primary));
+		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 		outline: none;
 
 		.triggerIcon {
@@ -126,7 +127,8 @@ $textarea-height-default: 120px;
 	}
 
 	&:disabled {
-		color: var(--color-font-disabled);
+		color: var(--color-background-deselected);
+		background: var(--color-background-secondary);
 		border-color: var(--color-border-disabled);
 		cursor: not-allowed;
 
@@ -171,8 +173,8 @@ $textarea-height-default: 120px;
 	}
 }
 
-// Common classes
-.inputContainer {
+// Common mixins
+@mixin inputContainer {
 	@include base-input-container;
 	@include input-container-states;
 	max-height: $input-text-height-default;
@@ -205,7 +207,7 @@ $textarea-height-default: 120px;
 	}
 }
 
-.input {
+@mixin input {
 	@include base-input;
 	min-width: 0;
 
@@ -214,12 +216,12 @@ $textarea-height-default: 120px;
 	}
 }
 
-.iconButton {
+@mixin iconButton {
 	@include icon-button;
 }
 
 // Textarea specific styles
-.textarea {
+@mixin textarea {
 	@include base-input;
 	border: 1px solid var(--form-control-border-color, var(--color-border));
 	border-radius: 4px;
@@ -230,36 +232,36 @@ $textarea-height-default: 120px;
 	@include input-states;
 
 	&::selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 
 	&::-moz-selection {
-		background: var(--color-background-selected-weak);
+		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
 }
 
 // Form control base styles
-.formControl {
+@mixin formControl {
 	@include base-input-container;
 	@include form-control-states;
 	cursor: pointer;
 	justify-content: space-between;
 }
 
-.formControlSmall {
+@mixin formControlSmall {
 	max-height: $input-text-height-small;
 }
 
-.formControlDefault {
+@mixin formControlDefault {
 	max-height: $input-text-height-default;
 }
 
 // Select trigger styles
-.selectTrigger {
+@mixin selectTrigger {
 	display: flex;
 	justify-content: space-between;
 	padding: calc(var(--spacing-xs) - 3px) var(--spacing-sm);
-	border: 1px solid var(--form-control-border-color, var(--color-border-secondary));
+	border: 1px solid var(--form-control-border-color, var(--color-border));
 	border-radius: 4px;
 	background-color: var(--color-background);
 	cursor: pointer;
@@ -297,7 +299,7 @@ $textarea-height-default: 120px;
 }
 
 // Search input styles
-.searchInput {
+@mixin searchInput {
 	position: relative;
 	padding: var(--spacing-3xs);
 

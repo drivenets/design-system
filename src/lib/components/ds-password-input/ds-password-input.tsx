@@ -1,12 +1,16 @@
-import React from 'react';
+import { FC } from 'react';
 import classNames from 'classnames';
 import { PasswordInput } from '@ark-ui/react';
 import styles from './ds-password-input.module.scss';
 import { DsPasswordInputProps } from './ds-password-input.types';
 import { DsIcon } from '../ds-icon';
 
-const DsPasswordInput: React.FC<DsPasswordInputProps> = ({
+const DsPasswordInput: FC<DsPasswordInputProps> = ({
+	id,
+	ref,
+	name,
 	size = 'default',
+	onBlur,
 	onChange,
 	onValueChange,
 	className,
@@ -31,10 +35,14 @@ const DsPasswordInput: React.FC<DsPasswordInputProps> = ({
 				<div className={containerClass} style={style}>
 					<PasswordInput.Input asChild>
 						<input
+							id={id}
+							ref={ref}
+							name={name}
 							className={classNames(styles.input)}
 							value={value}
 							defaultValue={defaultValue}
 							placeholder={placeholder}
+							onBlur={onBlur}
 							onChange={(event) => {
 								onChange?.(event);
 								onValueChange?.(event.target.value);

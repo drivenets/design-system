@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { DsDataTableProps } from '@design-system/ui';
+import { DsDataTableProps, DsTableRowSize } from '@design-system/ui';
 
 export interface DsTableContextType<TData, TValue> extends Partial<DsDataTableProps<TData, TValue>> {
 	/**
@@ -16,6 +16,11 @@ export interface DsTableContextType<TData, TValue> extends Partial<DsDataTablePr
 	 * @default false
 	 */
 	virtualized?: boolean;
+	/**
+	 * Row size variant
+	 * @default 'medium'
+	 */
+	rowSize: DsTableRowSize;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

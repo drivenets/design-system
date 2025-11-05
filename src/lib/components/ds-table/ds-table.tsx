@@ -16,10 +16,17 @@ import { Table, TableBody, TableCell, TableRow } from './components/core-table';
 import { DsTableBulkActions } from './components/ds-table-bulk-actions';
 import { DsTableHeader } from './components/ds-table-header';
 import styles from './ds-table.module.scss';
-import type { DsDataTableProps } from './ds-table.types';
+import type { DsDataTableProps, DsTableRowSize } from './ds-table.types';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { DsTableContext, DsTableContextType } from './context/ds-table-context';
+
+// Row size to pixel height mapping (matches CSS variables)
+const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
+	small: 36,
+	medium: 48,
+	large: 64,
+};
 
 /**
  * Design system Table component
@@ -37,6 +44,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	bordered = true,
 	fullWidth = true,
 	highlightOnHover = true,
+	rowSize = 'medium',
 	expandable = false,
 	renderExpandedRow,
 	selectable = false,
@@ -145,13 +153,13 @@ const DsTable = <TData extends { id: string }, TValue>({
 		[table],
 	);
 
-	const { rows } = table.getRowModel();
+	const { rows, rowsById } = table.getRowModel();
 
 	const rowVirtualizer = useVirtualizer({
 		count: rows.length,
 		getScrollElement: () => tableContainerRef.current,
 		// estimate row height for accurate scrollbar dragging
-		estimateSize: () => virtualizedOptions?.estimateSize || 65,
+		estimateSize: () => virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize],
 		overscan: virtualizedOptions?.overscan || 5,
 		onChange: (instance, sync) => {
 			if (sync && onScroll) {
@@ -186,13 +194,15 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const selectedRows = Object.entries(rowSelection)
 		.filter(([, selected]) => selected)
-		.map(([key]) => table.getRow(key).original);
+		.map(([key]) => rowsById[key]?.original)
+		.filter(Boolean);
 
 	const contextValue: DsTableContextType<TData, TValue> = {
 		stickyHeader,
 		bordered,
 		fullWidth,
 		highlightOnHover,
+		rowSize,
 		expandable,
 		selectable,
 		reorderable,

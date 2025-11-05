@@ -1,0 +1,134 @@
+[data-scope='toast'][data-part='root'] {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	grid-template-rows: auto 1fr auto;
+	grid-template-areas:
+		'icon title close'
+		'description description description'
+		'actions actions actions';
+	align-items: start;
+	padding: var(--spacing-standard);
+	border-radius: 4px;
+	column-gap: var(--spacing-xs);
+	row-gap: var(--spacing-4xs);
+	color: var(--color-font-on-action);
+	box-shadow: 0 1.25px 4px 0 rgba(0, 0, 0, 0.25);
+	// approx. 6 columns (64 * 2)
+	min-width: 384px;
+	// approx. 10 columns (64 * 10)
+	max-width: 640px;
+	overflow-wrap: anywhere;
+	translate: var(--x) var(--y);
+	z-index: var(--z-index);
+
+	will-change: translate, opacity, scale;
+
+	&[data-state='open'] {
+		animation: slide-in 0.35s ease-in-out both;
+		transition: 0.35s all;
+	}
+
+	&[data-state='closed'] {
+		animation: fade-out 0.25s ease-out forwards;
+	}
+
+	&[data-type='success'] {
+		background: var(--color-background-success-strong);
+	}
+
+	&[data-type='info'] {
+		background: var(--color-background-info-strong);
+	}
+
+	&[data-type='warning'] {
+		background: var(--color-background-warning-strong);
+	}
+
+	&[data-type='error'] {
+		background: var(--color-background-danger-strong);
+	}
+
+	&:not(:has([data-scope='toast'][data-part='title'])) {
+		grid-template-columns: auto 1fr auto auto;
+		grid-template-areas: 'icon description actions close';
+		align-items: center;
+
+		.actions {
+			margin: 0;
+		}
+	}
+}
+
+[data-scope='toast'][data-part='close-trigger'] {
+	grid-area: close;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: var(--spacing-4xs);
+
+	&:hover {
+		background: rgba(0, 0, 0, 0.05);
+	}
+
+	&:focus-visible {
+		outline: 2px solid currentColor;
+		outline-offset: 1px;
+	}
+}
+
+[data-scope='toast'][data-part='title'] {
+	grid-area: title;
+}
+
+[data-scope='toast'][data-part='description'] {
+	grid-area: description;
+}
+
+.icon {
+	grid-area: icon;
+	color: var(--color-icon-inverse);
+}
+
+.actions {
+	grid-area: actions;
+	margin-top: var(--spacing-sm);
+}
+
+@media (max-width: 640px) {
+	[data-scope='toast'][data-part='group'] {
+		width: 100%;
+	}
+
+	[data-scope='toast'][data-part='root'] {
+		inset-inline: 0;
+		width: calc(100% - var(--gap) * 2);
+	}
+}
+
+@keyframes slide-in {
+	0% {
+		opacity: 0;
+		scale: 0.9;
+	}
+
+	60% {
+		scale: 1.05;
+	}
+
+	100% {
+		opacity: 1;
+		scale: 1;
+	}
+}
+
+@keyframes fade-out {
+	0% {
+		opacity: 1;
+		translate: 0 var(--offset);
+	}
+
+	100% {
+		opacity: 0;
+		translate: 0 var(--offset);
+	}
+}

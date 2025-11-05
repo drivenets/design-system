@@ -61,4 +61,9 @@ export interface DsDropdownMenuProps {
 	 * @default 'bottom'
 	 */
 	side?: 'top' | 'right' | 'bottom' | 'left';
+	/**
+	 * Whether to rendering in place instead of appending the drawer to the body (using portals)
+	 * @default false
+	 */
+	disablePortal?: boolean;
 }

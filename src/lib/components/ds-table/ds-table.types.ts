@@ -4,6 +4,11 @@ import { IconType } from '../ds-icon';
 import { RowAction, SecondaryRowAction } from './components/ds-table-cell';
 
 /**
+ * Row size variants based on Figma design specifications
+ */
+export type DsTableRowSize = 'small' | 'medium' | 'large';
+
+/**
  * Parameters passed to the onScroll callback in virtualized tables.
  */
 export interface ScrollParams {
@@ -209,6 +214,12 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Whether the table has highlight on hover
 	 */
 	highlightOnHover?: boolean;
+
+	/**
+	 * Row size variant (small: 36px, medium: 48px, large: 64px)
+	 * @default 'medium'
+	 */
+	rowSize?: DsTableRowSize;
 
 	/**
 	 * Whether the table is expandable or if an individual row should be expandable

@@ -1,0 +1,31 @@
+.customBodyContainer {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.customBodyText {
+	margin: 0;
+	color: var(--color-font-secondary);
+}
+
+.radioGroup {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.radioLabel {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+}
+
+.infoNote {
+	background: var(--color-background-secondary);
+	padding: 12px;
+	border-radius: 6px;
+	font-size: 14px;
+	color: var(--color-font-secondary);
+}

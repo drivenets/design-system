@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 .radioGroupRoot {
 	display: flex;
@@ -106,13 +106,13 @@
 }
 
 .radioLabel {
-	@extend .body-sm-reg;
+	@include typography.body-sm-reg;
 	color: var(--color-secondary-800);
 	cursor: pointer;
 }
 
 .labelInfo {
-	@extend .body-xs-reg;
+	@include typography.body-xs-reg;
 	@include typography.ellipsis;
 	position: absolute;
 	color: var(--color-secondary-600-net-2);

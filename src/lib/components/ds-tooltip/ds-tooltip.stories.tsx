@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, within } from '@storybook/test';
+import { useState } from 'react';
 import { DsIcon } from '@design-system/ui';
+import { DsCheckbox } from '../ds-checkbox';
 import DsTooltip from './ds-tooltip';
+import styles from './ds-tooltip.stories.module.scss';
 
 const meta: Meta<typeof DsTooltip> = {
 	title: 'Design System/Tooltip',
@@ -63,5 +66,79 @@ export const LongText: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		await sanityCheck(canvasElement, longTooltipText);
+	},
+};
+
+export const ConditionalOpenWithBoolean: Story = {
+	render: function Render() {
+		const [isFeatureEnabled, setFeatureEnabled] = useState(false);
+
+		return (
+			<div className={styles.storyContainer}>
+				<DsTooltip
+					content={isFeatureEnabled ? 'This tooltip is controlled by the checkbox below' : undefined}
+				>
+					<DsIcon icon="info" />
+				</DsTooltip>
+				<DsCheckbox
+					label="Enable tooltip"
+					checked={isFeatureEnabled}
+					onCheckedChange={(checked) => setFeatureEnabled(checked === true)}
+				/>
+			</div>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		// Initially tooltip should not show (checkbox is unchecked)
+		let trigger = await canvas.findByText(/info/i);
+		await userEvent.hover(trigger);
+		await expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+		await userEvent.unhover(trigger);
+
+		// Check the checkbox to enable tooltip
+		const checkbox = canvas.getByRole('checkbox');
+		await userEvent.click(checkbox);
+
+		// Now tooltip should show
+		trigger = await canvas.findByText(/info/i);
+		await userEvent.hover(trigger);
+		await expect(await screen.findByRole('tooltip')).toBeVisible();
+		await userEvent.unhover(trigger);
+
+		// Uncheck the checkbox
+		await userEvent.click(checkbox);
+
+		// Tooltip should not show again
+		trigger = await canvas.findByText(/info/i);
+		await userEvent.hover(trigger);
+		await expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
+	},
+};
+
+export const RichContent: Story = {
+	args: {
+		content: (
+			<div>
+				<strong>Multi-line</strong> tooltip with <em>JSX</em>
+				<br />
+				<span style={{ color: '#9cdcfe' }}>No truncation should occur.</span>
+			</div>
+		),
+		children: <DsIcon icon="info" />,
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = await canvas.findByText(/info/i);
+		await userEvent.hover(trigger);
+
+		const tooltip = await screen.findByRole('tooltip');
+		await expect(tooltip).toBeVisible();
+		await expect(within(tooltip).getByText(/Multi-line/i)).toBeInTheDocument();
+		await expect(within(tooltip).getByText(/JSX/i)).toBeInTheDocument();
+		await expect(within(tooltip).getByText(/No truncation should occur\./i)).toBeInTheDocument();
+		await userEvent.unhover(trigger);
+		await expect(screen.queryByRole('tooltip')).not.toBeInTheDocument();
 	},
 };

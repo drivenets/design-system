@@ -1,15 +1,15 @@
-import React from 'react';
-import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
+import { ComponentPropsWithoutRef, ReactNode } from 'react';
+import { Root } from '@radix-ui/react-checkbox';
 
-export interface DsCheckboxProps extends React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root> {
+export interface DsCheckboxProps extends ComponentPropsWithoutRef<typeof Root> {
 	/**
 	 * Label for the checkbox
 	 */
-	label?: string;
+	label?: ReactNode;
 	/**
 	 * Additional label info for the checkbox
 	 */
-	labelInfo?: string;
+	labelInfo?: ReactNode;
 	/**
 	 * The controlled checked state of the checkbox
 	 */

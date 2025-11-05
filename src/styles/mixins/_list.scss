@@ -1,4 +1,4 @@
-@import 'typography';
+@use '@design-system/ui/src/styles/typography';
 
 @mixin list-item {
 	cursor: pointer;
@@ -22,7 +22,7 @@
 }
 
 @mixin list-item-text {
-	@extend .p-base;
+	@include typography.p-base;
 	@include ellipsis;
 	padding-left: 8px;
 	flex: 1;

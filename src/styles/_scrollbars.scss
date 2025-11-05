@@ -1,0 +1,41 @@
+$scrollbar-border-radius: 100px;
+$scrollbar-default-size: 12px;
+$scrollbar-thin-size: 4px;
+
+@mixin scrollbar-base($size) {
+	&::-webkit-scrollbar {
+		width: $size;
+		height: $size;
+		background: var(--color-background-secondary);
+	}
+
+	&::-webkit-scrollbar-track {
+		background: var(--color-background-secondary);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: var(--color-background-deselected-hover);
+		border-radius: $scrollbar-border-radius;
+	}
+
+	&::-webkit-scrollbar-corner {
+		background: var(--color-background-secondary);
+	}
+}
+
+@mixin firefox-scrollbar($size) {
+	@-moz-document url-prefix() {
+		scrollbar-width: if($size == $scrollbar-thin-size, thin, auto);
+		scrollbar-color: var(--color-background-deselected-hover) var(--color-background-secondary);
+	}
+}
+
+* {
+	@include scrollbar-base($scrollbar-default-size);
+	@include firefox-scrollbar($scrollbar-default-size);
+}
+
+.scrollbar-thin {
+	@include scrollbar-base($scrollbar-thin-size);
+	@include firefox-scrollbar($scrollbar-thin-size);
+}

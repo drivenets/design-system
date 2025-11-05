@@ -7,9 +7,14 @@ export interface DsGridProps {
 	children: ReactNode;
 
 	/**
-	 * Number of rows in the grid (defaults to 8)
+	 * Number of rows in the grid (defaults to 1)
 	 */
-	rows?: 2 | 4 | 6 | 8;
+	rows?: 1 | 2 | 4 | 6 | 8;
+
+	/**
+	 * Number of columns in the grid (defaults to 12)
+	 */
+	columns?: 2 | 4 | 6 | 8 | 10 | 12;
 
 	/**
 	 * Custom class names to apply to the grid

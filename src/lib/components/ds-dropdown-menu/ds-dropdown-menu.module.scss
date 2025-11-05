@@ -1,5 +1,5 @@
-@use 'typography' as typography;
-@use 'shared/dropdown' as dropdown;
+@use '@design-system/ui/src/styles/typography';
+@use '@design-system/ui/src/styles/shared/dropdown';
 
 .content {
 	@include dropdown.dropdown-content;

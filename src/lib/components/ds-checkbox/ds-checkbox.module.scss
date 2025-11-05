@@ -1,4 +1,4 @@
-@use 'typography' as typography;
+@use '@design-system/ui/src/styles/typography';
 
 .container {
 	position: relative;
@@ -14,16 +14,16 @@
 		pointer-events: none;
 
 		.labelInfo {
-			color: var(--color-secondary-500-net-4);
+			color: var(--color-font-disabled);
 		}
 	}
 
-	&:has(.checkboxRoot:focus) {
-		border-color: var(--color-primary-700-default);
+	&:has(.checkboxRoot:focus-visible) {
+		border-color: var(--color-background-selected);
 	}
 
-	&:has([data-state='unchecked']:focus) {
-		border-color: var(--color-primary-800);
+	&:has([data-state='unchecked']:focus-visible) {
+		border-color: var(--color-background-selected-hover);
 	}
 }
 
@@ -38,53 +38,53 @@
 	cursor: pointer;
 
 	&[data-disabled] {
-		border-color: var(--color-secondary-300);
+		border-color: var(--color-background-disable);
 		pointer-events: none;
 
 		&[data-state='unchecked'] {
 			.checkboxWrapper {
-				border-color: var(--color-secondary-300);
+				border-color: var(--color-background-disable);
 			}
 		}
 
 		&[data-state='checked'],
 		&[data-state='indeterminate'] {
 			.checkboxWrapper {
-				border-color: var(--color-secondary-300);
-				background-color: var(--color-secondary-300);
+				border-color: var(--color-background-disable);
+				background-color: var(--color-background-disable);
 			}
 		}
 	}
 
 	&[data-state='checked'] {
 		.checkboxWrapper {
-			border-color: var(--color-primary-500);
-			background-color: var(--color-primary-500);
+			border-color: var(--color-background-selected);
+			background-color: var(--color-background-selected);
 		}
 
 		&:hover {
-			background: var(--color-primary-100);
+			background: var(--color-background-action-secondary-hover);
 		}
 	}
 
 	&[data-state='unchecked'] {
 		.checkboxWrapper {
-			border-color: var(--color-secondary-500-net-4);
+			border-color: var(--color-background-deselected);
 		}
 
 		&:hover {
-			background: var(--color-secondary-100);
+			background: var(--color-background-action-hover-weak);
 		}
 	}
 
 	&[data-state='indeterminate'] {
 		.checkboxWrapper {
-			border-color: var(--color-primary-500);
-			background-color: var(--color-primary-500);
+			border-color: var(--color-background-selected);
+			background-color: var(--color-background-selected);
 		}
 
 		&:hover {
-			background: var(--color-primary-100);
+			background: var(--color-background-action-secondary-hover);
 		}
 	}
 
@@ -115,16 +115,16 @@
 }
 
 .label {
-	@extend .body-sm-reg;
-	color: var(--color-secondary-800);
+	@include typography.body-sm-reg;
+	color: var(--color-font-main);
 	cursor: pointer;
 }
 
 .labelInfo {
-	@extend .body-xs-reg;
+	@include typography.body-xs-reg;
 	@include typography.ellipsis;
 	position: absolute;
-	color: var(--color-secondary-600-net-2);
+	color: var(--color-font-secondary);
 	cursor: pointer;
 	width: 100%;
 }

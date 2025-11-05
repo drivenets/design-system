@@ -5,8 +5,10 @@ import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react
 import classnames from 'classnames';
 import DsIcon from '../ds-icon/ds-icon';
 import { IconType } from '../ds-icon/ds-icon.types';
+import { DsSmartTabs } from '../ds-smart-tabs';
 import DsTable from './ds-table';
 import { DsTableApi, ScrollParams } from './ds-table.types';
+import { DsSpinner } from '../ds-spinner';
 import { generatePersonData, simulateApiCall } from './utils/story-data-generator';
 import styles from './ds-table.stories.module.scss';
 
@@ -527,30 +529,14 @@ export const TabFilters: Story = {
 		const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 		const [activeTab, setActiveTab] = useState<Status | 'all'>('all');
 
-		const tabs: { name: string; value: Status | 'all'; icon: IconType }[] = useMemo(
-			() => [
-				{ name: 'All People', value: 'all', icon: 'groups' },
-				{ name: 'In a Relationship', value: Status.Relationship, icon: 'favorite' },
-				{ name: "It's Complicated", value: Status.Complicated, icon: 'psychology' },
-				{ name: 'Single', value: Status.Single, icon: 'person' },
-			],
-			[],
-		);
-
-		const handleTabClick = (tabValue: Status | 'all') => {
-			setActiveTab(tabValue);
-			if (tabValue === 'all') {
+		const handleTabClick = (tabValue: string) => {
+			const typedValue = tabValue as Status | 'all';
+			setActiveTab(typedValue);
+			if (typedValue === 'all') {
 				setColumnFilters([]);
 			} else {
-				setColumnFilters([{ id: 'status', value: tabValue }]);
+				setColumnFilters([{ id: 'status', value: typedValue }]);
 			}
-		};
-
-		const getTabTotal = (tabValue: Status | 'all') => {
-			if (tabValue === 'all') {
-				return defaultData.length;
-			}
-			return defaultData.filter((row) => row.status === tabValue).length;
 		};
 
 		const getStatusIcon = (status: Status): IconType => {
@@ -585,29 +571,42 @@ export const TabFilters: Story = {
 
 		return (
 			<div className={styles.tableFilterContainer}>
-				<div className={styles.tabFilterContainer}>
-					{tabs.map((tab) => (
-						<button
-							key={tab.name}
-							className={classnames(styles.tab, {
-								[styles.active]: activeTab === tab.value,
-							})}
-							onClick={() => handleTabClick(tab.value)}
-						>
-							<DsIcon icon={tab.icon} size="small" />
-							<span className={styles.title}>{tab.name}</span>
-							<span className={styles.total}>{getTabTotal(tab.value)}</span>
-						</button>
-					))}
-				</div>
-				<div className={styles.table}>
-					<DsTable
-						{...args}
-						columns={tableColumns}
-						columnFilters={columnFilters}
-						onColumnFiltersChange={setColumnFilters}
+				<DsSmartTabs activeTab={activeTab} onTabClick={handleTabClick}>
+					<DsSmartTabs.Tab
+						label="All People"
+						value="all"
+						icon="groups"
+						color="dark-blue"
+						content={defaultData.length}
 					/>
-				</div>
+					<DsSmartTabs.Tab
+						label="In a Relationship"
+						value={Status.Relationship}
+						icon="favorite"
+						color="green"
+						content={defaultData.filter((row) => row.status === Status.Relationship).length}
+					/>
+					<DsSmartTabs.Tab
+						label="It's Complicated"
+						value={Status.Complicated}
+						icon="psychology"
+						color="red"
+						content={defaultData.filter((row) => row.status === Status.Complicated).length}
+					/>
+					<DsSmartTabs.Tab
+						label="Single"
+						value={Status.Single}
+						icon="person"
+						color="gray"
+						content={defaultData.filter((row) => row.status === Status.Single).length}
+					/>
+				</DsSmartTabs>
+				<DsTable
+					{...args}
+					columns={tableColumns}
+					columnFilters={columnFilters}
+					onColumnFiltersChange={setColumnFilters}
+				/>
 			</div>
 		);
 	},
@@ -711,7 +710,7 @@ export const Virtualized: Story = {
 					{isLoading && (
 						<div className={styles.loadingOverlay}>
 							<div className={styles.loadingContent}>
-								<div className={styles.spinner} />
+								<DsSpinner size="small" />
 								<span className={styles.loadingText}>Loading data...</span>
 							</div>
 						</div>

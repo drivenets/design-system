@@ -2,10 +2,28 @@ import React from 'react';
 
 export interface DsNumberInputProps {
 	/**
+	 * Unique identifier for the input field
+	 */
+	id?: string;
+	/**
+	 * The ref to the input field
+	 */
+	ref?: React.Ref<HTMLInputElement>;
+	/**
+	 * The name of the input field
+	 */
+	name?: string;
+	/**
 	 * The size of the input field
 	 * @default default
 	 */
 	size?: 'small' | 'default';
+	/**
+	 * Event handler called when the input field loses focus
+	 *
+	 * @param event
+	 */
+	onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 	/**
 	 * Callback when the value changes (native input onChange event)
 	 * This is provided for compatibility but onValueChange is preferred

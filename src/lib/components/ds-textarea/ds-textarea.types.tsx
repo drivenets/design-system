@@ -2,6 +2,24 @@ import React from 'react';
 
 export interface DsTextareaProps {
 	/**
+	 * Unique identifier for the textarea element
+	 */
+	id?: string;
+	/**
+	 * The ref to the textarea element
+	 */
+	ref?: React.Ref<HTMLTextAreaElement>;
+	/**
+	 * The name of the textarea
+	 */
+	name?: string;
+	/**
+	 * Event handler called when the textarea loses focus
+	 *
+	 * @param event
+	 */
+	onBlur?: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
+	/**
 	 * Callback when the value changes
 	 */
 	onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
