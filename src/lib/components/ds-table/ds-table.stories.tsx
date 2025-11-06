@@ -11,6 +11,8 @@ import { DsTableApi, ScrollParams } from './ds-table.types';
 import { DsSpinner } from '../ds-spinner';
 import { generatePersonData, simulateApiCall } from './utils/story-data-generator';
 import styles from './ds-table.stories.module.scss';
+import DsButton from '../ds-button/ds-button';
+import { TableFilterModal, TableFilterNavItem } from './stories/components/table-filter-modal';
 
 export enum Status {
 	Relationship = 'relationship',
@@ -607,6 +609,74 @@ export const TabFilters: Story = {
 					columnFilters={columnFilters}
 					onColumnFiltersChange={setColumnFilters}
 				/>
+			</div>
+		);
+	},
+	args: {},
+};
+
+export const FiltersPanel: Story = {
+	name: 'With Filters Panel',
+	render: function Render(args) {
+		const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+		const [isOpen, setIsOpen] = useState(false);
+		const [modalFilters, setModalFilters] = useState<TableFilterNavItem>(
+			args.columns.map((col) => ({
+				id: col.accessorKey,
+				label: col.header,
+				count: 0,
+			})),
+		);
+
+		const getStatusIcon = (status: Status): IconType => {
+			switch (status) {
+				case Status.Relationship:
+					return 'favorite';
+				case Status.Complicated:
+					return 'psychology';
+				default:
+					return 'person';
+			}
+		};
+
+		const statusColumnDef: ColumnDef<Person> = {
+			accessorKey: 'status',
+			header: 'Status',
+			cell: (info) => {
+				const status = info.getValue() as Status;
+				const icon = getStatusIcon(status);
+				return (
+					<div className={styles.customTabRow}>
+						<DsIcon icon={icon} size="small" />
+						<span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+					</div>
+				);
+			},
+		};
+
+		const tableColumns = args.columns.map((col) =>
+			(col as { accessorKey: string }).accessorKey === 'status' ? statusColumnDef : col,
+		);
+
+		return (
+			<div className={styles.tableFilterContainer}>
+				<div className={styles.toolbar}>
+					<DsButton design="v1.2" buttonType="secondary" onClick={() => setIsOpen(true)}>
+						<DsIcon size="tiny" icon="filter_list" />
+					</DsButton>
+				</div>
+				<DsTable
+					{...args}
+					columns={tableColumns}
+					columnFilters={columnFilters}
+					onColumnFiltersChange={setColumnFilters}
+				/>
+				<TableFilterModal
+					open={isOpen}
+					onOpenChange={setIsOpen}
+					columns={8}
+					filterNavItems={modalFilters}
+				></TableFilterModal>
 			</div>
 		);
 	},
