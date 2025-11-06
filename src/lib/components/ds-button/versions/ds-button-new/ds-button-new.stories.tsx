@@ -123,6 +123,9 @@ export const Showcase: Story = {
 			'tertiary-filled',
 			'tertiary-ghost',
 			'tertiary-danger',
+			'tertiary-dark',
+			'primary-dark',
+			'secondary-dark',
 		];
 		const isSupported = (buttonType: string, variant: string) =>
 			supportedCombos.includes(`${buttonType}-${variant}`);
@@ -134,9 +137,12 @@ export const Showcase: Story = {
 			{ label: 'Icon Primary', buttonType: 'primary', icon: true },
 			{ label: 'Icon Secondary', buttonType: 'secondary', icon: true },
 			{ label: 'Icon Tertiary', buttonType: 'tertiary', icon: true },
+			{ label: 'Icon Primary Dark', buttonType: 'primary', icon: true, variant: 'dark' },
+			{ label: 'Icon Secondary Dark', buttonType: 'secondary', icon: true, variant: 'dark' },
+			{ label: 'Icon Tertiary Dark', buttonType: 'tertiary', icon: true, variant: 'dark' },
 		];
 
-		const variants = ['filled', 'ghost', 'danger'];
+		const variants = ['filled', 'ghost', 'danger', 'dark'];
 		const sizes = ['small', 'medium', 'large'];
 		const states = [false, true]; // false = default, true = disabled
 
