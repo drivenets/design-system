@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DsChip from './ds-chip';
+import { chipSizes } from './ds-chip.types';
 
 const meta: Meta<typeof DsChip> = {
 	title: 'Design System/Chip',
@@ -29,9 +30,10 @@ const meta: Meta<typeof DsChip> = {
 			action: 'deleted',
 			description: 'Function called when delete icon is clicked',
 		},
-		compact: {
-			control: 'boolean',
-			description: 'Whether the chip should be compact (small size)',
+		size: {
+			control: 'select',
+			options: chipSizes,
+			description: 'Size of the chip',
 		},
 		deleteIcon: {
 			control: false,

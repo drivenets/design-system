@@ -30,7 +30,7 @@
 		}
 	}
 
-	&.compact {
+	&.small {
 		padding: 0 var(--spacing-4xs) 0 var(--spacing-3xs);
 		gap: var(--spacing-4xs);
 	}
@@ -65,7 +65,7 @@
 		color: var(--color-icon-secondary);
 	}
 
-	.chip.compact & {
+	.chip.small & {
 		padding: 1px var(--spacing-4xs);
 	}
 }

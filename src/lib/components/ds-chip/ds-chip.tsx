@@ -15,7 +15,7 @@ const DsChip: React.FC<DsChipProps> = ({
 	style = {},
 	onClick,
 	onDelete,
-	compact = false,
+	size = 'medium',
 	deleteIcon,
 	selected = false,
 }) => {
@@ -23,29 +23,26 @@ const DsChip: React.FC<DsChipProps> = ({
 		styles.chip,
 		{
 			[styles.clickable]: onClick !== undefined,
-			[styles.compact]: compact,
+			[styles.small]: size === 'small',
 		},
 		className,
 	);
 
-	const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleDeleteClick = (event: React.MouseEvent<HTMLElement>) => {
 		event.stopPropagation();
 		onDelete?.(event);
 	};
 
-	const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
 		if (onDelete && (event.key === 'Backspace' || event.key === 'Delete')) {
 			event.preventDefault();
-			onDelete(event as unknown as React.MouseEvent<HTMLButtonElement>);
-		}
-		if (event.key === 'Escape') {
-			(event.currentTarget as HTMLElement).blur();
+			onDelete(event);
 		}
 	};
 
 	return (
 		<div
-			ref={ref}
+			ref={ref as React.Ref<HTMLDivElement>}
 			className={chipClass}
 			style={style}
 			onClick={onClick}
@@ -55,7 +52,7 @@ const DsChip: React.FC<DsChipProps> = ({
 			aria-label={label}
 			aria-pressed={onClick && selected ? 'true' : undefined}
 		>
-			<DsTypography variant={compact ? 'body-xs-reg' : 'body-sm-reg'} className={styles.label}>
+			<DsTypography variant={size === 'small' ? 'body-xs-reg' : 'body-sm-reg'} className={styles.label}>
 				{label}
 			</DsTypography>
 			{onDelete && (
@@ -66,7 +63,7 @@ const DsChip: React.FC<DsChipProps> = ({
 					aria-label="Delete chip"
 					tabIndex={-1}
 				>
-					{deleteIcon || <DsIcon icon="cancel" size="tiny" />}
+					<DsIcon icon={deleteIcon || 'cancel'} size="tiny" />
 				</button>
 			)}
 		</div>

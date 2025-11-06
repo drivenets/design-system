@@ -1,2 +1,2 @@
 export { default as DsStatusBadge } from './ds-status-badge';
-export * from './ds-status-badge.types';
+export type { DsStatus, StatusBadgeSize, DsStatusBadgeProps } from './ds-status-badge.types';

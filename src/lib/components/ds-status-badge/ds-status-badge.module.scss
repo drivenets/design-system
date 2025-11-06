@@ -1,21 +1,21 @@
 @use '@design-system/ui/src/styles/typography';
 
-@mixin status-base($color, $background) {
+@mixin status-filled($color, $background, $label-color: var(--color-font-on-action)) {
 	color: $color;
 	background: $background;
 
 	.label {
-		color: var(--color-font-main);
+		color: $label-color;
 	}
 }
 
-@mixin status-filled($color, $background, $label-color: var(--color-font-on-action)) {
-	&.filled {
+@mixin status-ghost($color, $background) {
+	&.ghost {
 		color: $color;
 		background: $background;
 
 		.label {
-			color: $label-color;
+			color: var(--color-font-main);
 		}
 	}
 }
@@ -29,49 +29,49 @@
 	gap: var(--spacing-3xs);
 	border-radius: 100vmax;
 
-	&.compact {
+	&.small {
 		padding: var(--spacing-4xs) var(--spacing-xs) var(--spacing-4xs) var(--spacing-3xs);
 		gap: var(--spacing-4xs);
 	}
 }
 
 .active {
-	@include status-base(var(--color-background-success-strong), var(--color-status-bg-success));
 	@include status-filled(var(--color-font-on-action), var(--color-background-success-strong));
+	@include status-ghost(var(--color-background-success-strong), var(--color-status-bg-success));
 }
 
 .running {
-	@include status-base(var(--color-icon-information-secondary), var(--color-status-bg-progress));
 	@include status-filled(var(--color-font-on-action), var(--color-background-active-moderate));
+	@include status-ghost(var(--color-icon-information-secondary), var(--color-status-bg-progress));
 }
 
 .pending {
-	@include status-base(var(--color-data-purple), var(--color-data-light-purple));
 	@include status-filled(var(--color-font-on-action), var(--color-data-fuchsia));
+	@include status-ghost(var(--color-data-purple), var(--color-data-light-purple));
 }
 
 .draft {
-	@include status-base(var(--color-icon-secondary), var(--color-status-bg-neutral));
 	@include status-filled(var(--color-font-on-action), var(--color-icon-information-main));
+	@include status-ghost(var(--color-icon-secondary), var(--color-status-bg-neutral));
 }
 
 .inactive {
-	@include status-base(var(--color-icon-secondary), var(--color-status-bg-inactive));
 	@include status-filled(
 		var(--color-icon-secondary),
 		var(--color-background-disable),
 		var(--color-font-on-disabled)
 	);
+	@include status-ghost(var(--color-icon-secondary), var(--color-status-bg-inactive));
 }
 
 .warning {
-	@include status-base(var(--color-background-warning-strong), var(--color-status-bg-warning));
 	@include status-filled(var(--color-font-on-action), var(--color-background-warning-strong));
+	@include status-ghost(var(--color-background-warning-strong), var(--color-status-bg-warning));
 }
 
 .failed {
-	@include status-base(var(--color-background-danger-strong-hover), var(--color-status-bg-failed));
 	@include status-filled(var(--color-font-on-action), var(--color-background-danger-strong));
+	@include status-ghost(var(--color-background-danger-strong-hover), var(--color-status-bg-failed));
 }
 
 .label {

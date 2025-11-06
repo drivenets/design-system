@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
 import DsStatusBadge from './ds-status-badge';
-import { DsStatus } from './ds-status-badge.types';
+import { DsStatus, dsStatuses, statusBadgeSizes } from './ds-status-badge.types';
 import { IconType } from '../ds-icon';
 import styles from './ds-status-badge.stories.module.scss';
 
@@ -19,20 +19,17 @@ const meta: Meta<typeof DsStatusBadge> = {
 		},
 		status: {
 			control: 'select',
-			options: ['active', 'running', 'pending', 'draft', 'inactive', 'warning', 'failed'],
+			options: dsStatuses,
 			description: 'Status type of the badge',
 		},
-		label: {
-			control: 'text',
-			description: 'Optional label to display instead of the default status text',
-		},
-		filled: {
+		ghost: {
 			control: 'boolean',
-			description: 'Whether the badge has a filled background',
+			description: 'Whether the badge should use ghost style (light background)',
 		},
-		compact: {
-			control: 'boolean',
-			description: 'Whether to use compact size (20px height)',
+		size: {
+			control: 'select',
+			options: statusBadgeSizes,
+			description: 'Size of the status badge',
 		},
 		className: {
 			control: 'text',
@@ -52,8 +49,6 @@ export const Default: Story = {
 	args: {
 		icon: 'check_circle',
 		status: 'active',
-		filled: true,
-		compact: false,
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
@@ -66,18 +61,15 @@ export const Default: Story = {
 
 export const All: Story = {
 	render: () => {
-		const statuses: Array<{
-			status: DsStatus;
-			icon: IconType;
-		}> = [
-			{ status: 'active', icon: 'check_circle' },
-			{ status: 'running', icon: 'change_circle' },
-			{ status: 'pending', icon: 'pause_circle' },
-			{ status: 'draft', icon: 'stylus_note' },
-			{ status: 'inactive', icon: 'stop_circle' },
-			{ status: 'warning', icon: 'warning' },
-			{ status: 'failed', icon: 'cancel' },
-		];
+		const statuses: Record<DsStatus, IconType> = {
+			active: 'check_circle',
+			running: 'change_circle',
+			pending: 'pause_circle',
+			draft: 'stylus_note',
+			inactive: 'stop_circle',
+			warning: 'warning',
+			failed: 'cancel',
+		};
 
 		return (
 			<div className={styles.storiesContainer}>
@@ -86,29 +78,22 @@ export const All: Story = {
 					<div className={styles.storiesSection}>
 						<div className={styles.sectionTitle}>Filled</div>
 						<div className={styles.storiesList}>
-							{statuses.map(({ status, icon }) => (
-								<DsStatusBadge
-									key={`filled-24-${status}`}
-									icon={icon}
-									status={status}
-									filled={true}
-									compact={false}
-								/>
+							{dsStatuses.map((status) => (
+								<DsStatusBadge key={`filled-24-${status}`} icon={statuses[status]} status={status} />
 							))}
 						</div>
 					</div>
 
-					{/* Light variants - Default */}
+					{/* Ghost variants - Default */}
 					<div className={styles.storiesSection}>
-						<div className={styles.sectionTitle}>Light</div>
+						<div className={styles.sectionTitle}>Ghost</div>
 						<div className={styles.storiesList}>
-							{statuses.map(({ status, icon }) => (
+							{dsStatuses.map((status) => (
 								<DsStatusBadge
-									key={`light-24-${status}`}
-									icon={icon}
+									key={`ghost-24-${status}`}
+									icon={statuses[status]}
 									status={status}
-									filled={false}
-									compact={false}
+									ghost={true}
 								/>
 							))}
 						</div>
@@ -116,33 +101,32 @@ export const All: Story = {
 				</div>
 
 				<div className={styles.storiesRow}>
-					{/* Filled variants - Compact */}
+					{/* Filled variants - Small */}
 					<div className={styles.storiesSection}>
-						<div className={styles.sectionTitle}>Filled - Compact</div>
+						<div className={styles.sectionTitle}>Filled - Small</div>
 						<div className={styles.storiesList}>
-							{statuses.map(({ status, icon }) => (
+							{dsStatuses.map((status) => (
 								<DsStatusBadge
 									key={`filled-20-${status}`}
-									icon={icon}
+									icon={statuses[status]}
 									status={status}
-									filled={true}
-									compact={true}
+									size="small"
 								/>
 							))}
 						</div>
 					</div>
 
-					{/* Light variants - Compact */}
+					{/* Ghost variants - Small */}
 					<div className={styles.storiesSection}>
-						<div className={styles.sectionTitle}>Light - Compact</div>
+						<div className={styles.sectionTitle}>Ghost - Small</div>
 						<div className={styles.storiesList}>
-							{statuses.map(({ status, icon }) => (
+							{dsStatuses.map((status) => (
 								<DsStatusBadge
-									key={`light-20-${status}`}
-									icon={icon}
+									key={`ghost-20-${status}`}
+									icon={statuses[status]}
 									status={status}
-									filled={false}
-									compact={true}
+									ghost={true}
+									size="small"
 								/>
 							))}
 						</div>

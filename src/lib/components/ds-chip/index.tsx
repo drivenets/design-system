@@ -1,2 +1,2 @@
 export { default as DsChip } from './ds-chip';
-export * from './ds-chip.types';
+export type { ChipSize, DsChipProps } from './ds-chip.types';

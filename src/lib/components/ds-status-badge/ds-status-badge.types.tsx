@@ -5,6 +5,9 @@ export const dsStatuses = ['active', 'running', 'pending', 'draft', 'inactive', 
 
 export type DsStatus = (typeof dsStatuses)[number];
 
+export const statusBadgeSizes = ['medium', 'small'] as const;
+export type StatusBadgeSize = (typeof statusBadgeSizes)[number];
+
 export interface DsStatusBadgeProps {
 	/**
 	 * The icon of the status badge
@@ -23,19 +26,15 @@ export interface DsStatusBadgeProps {
 	 */
 	style?: CSSProperties;
 	/**
-	 * Optional label to display instead of the default status text
-	 */
-	label?: string;
-	/**
-	 * Whether the status badge color should be filled
-	 * @default true
-	 */
-	filled?: boolean;
-	/**
-	 * Whether the status badge size should be small
+	 * Whether the status badge should use ghost style (light background)
 	 * @default false
 	 */
-	compact?: boolean;
+	ghost?: boolean;
+	/**
+	 * Size of the status badge
+	 * @default 'medium'
+	 */
+	size?: StatusBadgeSize;
 	/**
 	 * Accessible label for screen readers, if provided, will override default label/status text.
 	 */
