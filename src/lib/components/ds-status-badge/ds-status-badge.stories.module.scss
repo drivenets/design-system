@@ -1,0 +1,21 @@
+.storiesContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xl);
+}
+
+.storiesRow {
+	display: flex;
+	gap: var(--spacing-3xl);
+}
+
+.sectionTitle {
+	margin-bottom: var(--spacing-sm);
+	font-weight: 500;
+}
+
+.storiesList {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+}

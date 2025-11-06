@@ -2,13 +2,23 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DsSystemStatus from './ds-system-status';
 import { systemStatuses } from './ds-system-status.types';
 
+/**
+ * @deprecated This component is deprecated. Use `DsStatusBadge` instead.
+ * @see {@link ../ds-status-badge/ds-status-badge.stories} for examples of the replacement component.
+ */
 const meta: Meta<typeof DsSystemStatus> = {
-	title: 'Design System/System Status',
+	title: 'Design System/System Status (Deprecated)',
 	component: DsSystemStatus,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'**Deprecated**: This component is deprecated. Please use `DsStatusBadge` instead. See the StatusBadge stories for the replacement component.',
+			},
+		},
 	},
-	tags: ['autodocs'],
+	tags: ['autodocs', 'deprecated'],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
