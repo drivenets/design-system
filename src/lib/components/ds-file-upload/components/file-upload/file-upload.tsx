@@ -6,12 +6,8 @@ import { DsTypography } from '../../../ds-typography';
 import { DsButton } from '../../../ds-button';
 import { FileUploadItem } from '../file-upload-item';
 import { FileUploadProps } from './file-upload.types';
-import {
-	DEFAULT_ALLOWED_FILE_TYPES,
-	DEFAULT_MAX_FILE_SIZE,
-	DEFAULT_MAX_FILES,
-	generateHelperText,
-} from '../../utils';
+import { DEFAULT_ALLOWED_FILE_TYPES, DEFAULT_MAX_FILE_SIZE, DEFAULT_MAX_FILES } from '../../utils/constants';
+import { generateHelperText } from '../../utils/generate-helper-text';
 import styles from './file-upload.module.scss';
 
 /**
@@ -27,7 +23,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 	dropzoneText = 'Drag and drop files here or ',
 	triggerText = 'Select file...',
 	hideProgress = false,
-	allowDrop = true,
+	disableDrop = false,
 	onFileAccept,
 	onFileReject,
 	onFileRemove,
@@ -50,7 +46,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 			maxFileSize={maxFileSize}
 			accept={accept}
 			disabled={disabled}
-			allowDrop={allowDrop}
+			allowDrop={!disableDrop}
 			acceptedFiles={acceptedFiles}
 			onFileAccept={onFileAccept}
 			onFileReject={onFileReject}
@@ -83,7 +79,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 				</DsTypography>
 			)}
 
-			{files && files.length > 0 && (
+			{!!files?.length && (
 				<div className={styles.fileList}>
 					{files.map((uploadFile) => (
 						<FileUploadItem

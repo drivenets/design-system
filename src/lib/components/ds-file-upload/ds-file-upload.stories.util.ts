@@ -3,16 +3,12 @@ import { expect, userEvent, waitFor, within } from '@storybook/test';
 export type TestScenario = 'normal' | 'interrupted' | 'error';
 
 /**
- * Creates a mock file for testing
+ * Returns a mock file for testing
  */
-export const createMockFile = (
-	name: string,
-	type: string = 'application/pdf',
-	size: number = 1024 * 100, // 100KB
-): File => {
-	const file = new File(['test content'], name, { type });
+export const getMockFile = (): File => {
+	const file = new File(['test content'], 'test-document.pdf', { type: 'application/pdf' });
 	Object.defineProperty(file, 'size', {
-		value: size,
+		value: 1024 * 100, // 100KB
 		writable: false,
 	});
 	return file;
@@ -25,7 +21,7 @@ export const createMockFile = (
 export const createTestPlayFunction = (scenario: TestScenario) => {
 	return async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 		const canvas = within(canvasElement);
-		const mockFile = createMockFile('test-document.pdf', 'application/pdf');
+		const mockFile = getMockFile();
 
 		// Find and upload file
 		const fileInput = canvasElement.querySelector('input[type="file"]') as HTMLInputElement;

@@ -4,43 +4,41 @@ import {
 	FileUploadFileRejectDetails,
 	FileUploadFileRejection,
 } from '@ark-ui/react';
-import { isFileEqual } from '../utils';
+import { createUploadedFile } from '../utils/file-factory';
+import { isFileEqual } from '../utils/is-file-equal';
 import {
 	FileError,
+	FileMetadata,
 	FileUploadAdapter,
 	FileUploadResult,
-	UploadFile,
+	UploadedFile,
 	UploadFileStatus,
 } from '../ds-file-upload-api.types';
+import { FileUploadError } from '../errors/file-upload-errors';
 import { FileUploadProps } from '../components/file-upload';
-
-export interface FileUploadState {
-	id: string;
-	file: File;
-	progress: number;
-	status: 'pending' | 'uploading' | 'completed' | 'error';
-	errors?: FileError[];
-}
 
 export interface UseFileUploadConfig {
 	adapter: FileUploadAdapter;
 	autoUpload?: boolean;
 	maxConcurrent?: number;
-	metadata?: Record<string, string>;
-	onUploadComplete?: (fileId: string, result: FileUploadResult) => void;
-	onUploadError?: (fileId: string, error: string) => void;
-	onAllUploadsComplete?: () => void;
+	metadata?: FileMetadata;
+	onFileUploadComplete?: (fileId: string, result: FileUploadResult) => void;
+	onFileUploadError?: (fileId: string, error: string) => void;
+	onAllFileUploadsComplete?: () => void;
 }
 
 export interface UseFileUploadUserCallbacks {
 	onFilesAdded?: (files: File[]) => void;
 	onFileRemoved?: (fileId: string) => void;
+	onFileDeleted?: (fileId: string) => void;
+	onFileUploadCanceled?: (fileId: string) => void;
+	onFileUploadRetried?: (fileId: string) => void;
 }
 
 export interface UseFileUploadReturn {
-	files: UploadFile[];
-	acceptedFiles: UploadFile[];
-	addFiles: (newFiles: File[]) => UploadFile[];
+	files: UploadedFile[];
+	acceptedFiles: UploadedFile[];
+	addFiles: (newFiles: File[]) => UploadedFile[];
 	addRejectedFiles: (filesWithErrors: { file: File; errors: FileError[] }[]) => void;
 	removeFile: (fileId: string) => void;
 	uploadFile: (fileId: string) => Promise<void>;
@@ -76,72 +74,72 @@ export function useFileUpload({
 	autoUpload = true,
 	maxConcurrent = 3,
 	metadata,
-	onUploadComplete,
-	onUploadError,
-	onAllUploadsComplete,
+	onFileUploadComplete,
+	onFileUploadError,
+	onAllFileUploadsComplete,
 }: UseFileUploadConfig): UseFileUploadReturn {
 	const [abortControllers] = useState(() => new Map<string, AbortController>());
-	const [files, setFiles] = useState<UploadFile[]>([]);
+	const [files, setFiles] = useState<UploadedFile[]>([]);
 	const acceptedFiles = files.filter((file) => file.status !== 'error');
 
 	if (files.length && !files.some((f) => f.status === 'uploading')) {
-		onAllUploadsComplete?.();
+		onAllFileUploadsComplete?.();
 	}
 
-	const addFiles = (newFiles: File[]): UploadFile[] => {
+	const getNewAndDuplicateFiles = (newFiles: File[]) => {
 		const newFilesOnly = newFiles.filter(
 			(file) => !acceptedFiles.some((existing) => isFileEqual(existing, file)),
 		);
+		const duplicates = newFiles.filter((file) => {
+			const uploadedFile = file as UploadedFile;
+			if (!uploadedFile.id) {
+				const found = files.filter((existing) => isFileEqual(existing, file));
+				if (found.length) {
+					const alreadyAdded = found.some((existing) => existing.errors?.includes('FILE_EXISTS'));
+					return !alreadyAdded;
+				}
+			}
+		});
 
-		const duplicateFiles = newFiles.filter(
-			(file) => !(file as UploadFile).id && files.find((otherFile) => isFileEqual(file, otherFile)),
-		);
+		return { newFilesOnly, duplicates };
+	};
 
-		if (duplicateFiles.length > 0) {
-			const duplicateFilesWithErrors = duplicateFiles.map((file) => ({
-				file,
-				errors: ['FILE_EXISTS'],
-			}));
+	const markDuplicates = (duplicates: File[]) => {
+		const duplicateFilesWithErrors = duplicates.map((file) => ({
+			file,
+			errors: ['FILE_EXISTS'],
+		}));
+		if (duplicateFilesWithErrors.length) {
 			addRejectedFiles(duplicateFilesWithErrors);
 		}
+	};
 
-		const newUploadFiles = newFilesOnly.map(
-			(file) =>
-				({
-					id: `${file.name}-${Date.now()}-${Math.random()}`,
-					name: file.name,
-					size: file.size,
-					type: file.type,
-					progress: 0,
-					status: 'pending',
-				}) as UploadFile,
-		);
+	const addNewFiles = (filesToUpload: File[]): UploadedFile[] => {
+		const uploadedFiles = filesToUpload.map((file) => createUploadedFile(file, 'pending'));
+		setFiles((prev) => [...prev, ...uploadedFiles]);
+		return uploadedFiles;
+	};
 
-		setFiles((prev) => [...prev, ...newUploadFiles]);
-
+	const uploadNewFiles = (uploadedFiles: UploadedFile[]) => {
 		if (autoUpload) {
-			newUploadFiles.forEach((file) => {
+			uploadedFiles.forEach((file) => {
 				uploadSingleFile(file);
 			});
 		}
+	};
 
-		return newUploadFiles;
+	const addFiles = (newFiles: File[]): UploadedFile[] => {
+		const { newFilesOnly, duplicates } = getNewAndDuplicateFiles(newFiles);
+		markDuplicates(duplicates);
+		const uploadedFiles = addNewFiles(newFilesOnly);
+		uploadNewFiles(uploadedFiles);
+		return uploadedFiles;
 	};
 
 	const addRejectedFiles = (filesWithErrors: { file: File; errors: FileError[] }[]) => {
-		const newFileStates = filesWithErrors.map(
-			({ file, errors }) =>
-				({
-					id: `${file.name}-${Date.now()}-${Math.random()}`,
-					progress: 0,
-					status: 'error',
-					errors,
-					name: file.name,
-					size: file.size,
-					type: file.type,
-				}) as UploadFile,
+		const newFileStates = filesWithErrors.map(({ file, errors }) =>
+			createUploadedFile(file, 'error', errors),
 		);
-
 		setFiles((prev) => [...prev, ...newFileStates]);
 	};
 
@@ -170,7 +168,7 @@ export function useFileUpload({
 		}
 	};
 
-	const uploadSingleFile = async (file: UploadFile) => {
+	const uploadSingleFile = async (file: UploadedFile) => {
 		const fileId = file.id;
 		const abortController = new AbortController();
 		abortControllers.set(fileId, abortController);
@@ -188,21 +186,19 @@ export function useFileUpload({
 				},
 			});
 
-			if (result.success) {
-				updateFileStatus(fileId, 'completed');
-				updateFileProgress(fileId, 100);
-				onUploadComplete?.(fileId, result);
-			} else {
-				// Determine status based on retryability
-				const status = result.isRetryable ? 'interrupted' : 'error';
-				updateFileStatus(fileId, status, result.error);
-				onUploadError?.(fileId, result.error || 'Upload failed');
-			}
+			updateFileStatus(fileId, 'completed');
+			updateFileProgress(fileId, 100);
+			onFileUploadComplete?.(fileId, result);
 		} catch (error) {
 			const errorMessage = error instanceof Error ? error.message : 'Upload failed';
-			// Network/unexpected errors are retryable
-			updateFileStatus(fileId, 'interrupted', errorMessage);
-			onUploadError?.(fileId, errorMessage);
+			// Determine status based on error type
+			// Unknown errors are treated as retryable (network errors, etc.)
+			let status: UploadFileStatus = 'interrupted';
+			if (error instanceof FileUploadError) {
+				status = error.isRetryable ? 'interrupted' : 'error';
+			}
+			updateFileStatus(fileId, status, errorMessage);
+			onFileUploadError?.(fileId, errorMessage);
 		} finally {
 			abortControllers.delete(fileId);
 		}
@@ -268,15 +264,30 @@ export function useFileUpload({
 			userCallbacks?.onFileRemoved?.(fileId);
 		};
 
+		const handleFileDelete = (fileId: string) => {
+			removeFile(fileId);
+			userCallbacks?.onFileDeleted?.(fileId);
+		};
+
+		const handleFileUploadCanceled = async (fileId: string) => {
+			await cancelUpload(fileId);
+			userCallbacks?.onFileUploadCanceled?.(fileId);
+		};
+
+		const handleFileUploadRetried = async (fileId: string) => {
+			await retryUpload(fileId);
+			userCallbacks?.onFileUploadRetried?.(fileId);
+		};
+
 		return {
 			files,
 			acceptedFiles,
 			onFileAccept: handleFileAccept,
 			onFileReject: handleFileReject,
 			onFileRemove: handleFileRemove,
-			onFileDelete: handleFileRemove,
-			onFileCancel: cancelUpload,
-			onFileRetry: retryUpload,
+			onFileDelete: handleFileDelete,
+			onFileCancel: handleFileUploadCanceled,
+			onFileRetry: handleFileUploadRetried,
 		};
 	};
 

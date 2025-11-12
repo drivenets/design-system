@@ -11,11 +11,14 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 	autoUpload = true,
 	maxConcurrent = 3,
 	metadata,
-	onUploadComplete,
-	onUploadError,
+	onFileUploadComplete,
+	onFileUploadError,
 	onFilesAdded,
 	onFileRemoved,
-	onAllUploadsComplete,
+	onFileDeleted,
+	onFileUploadCanceled,
+	onFileUploadRetried,
+	onAllFileUploadsComplete,
 	...props
 }) => {
 	const { getProps } = useFileUpload({
@@ -23,14 +26,17 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 		autoUpload,
 		maxConcurrent,
 		metadata,
-		onUploadComplete,
-		onUploadError,
-		onAllUploadsComplete,
+		onFileUploadComplete,
+		onFileUploadError,
+		onAllFileUploadsComplete,
 	});
 
 	const fileUploadProps = getProps({
 		onFilesAdded,
 		onFileRemoved,
+		onFileDeleted,
+		onFileUploadCanceled,
+		onFileUploadRetried,
 	});
 
 	return <FileUpload {...fileUploadProps} {...props} />;

@@ -4,13 +4,12 @@ import code from './simple-file-upload-adapter.ts?raw';
 
 # File Upload
 
-To use the file upload component you need to add an adapter that implements the `FileUploadAdapter` interface using the native
-[`XMLHttpRequest`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
-API. See `getSimpleFileUploadAdapter` sample code below.
+To use the file upload component you need to provide an adapter that implements the `FileUploadAdapter` interface.
+See sample adapter below implemented using the native [`XMLHttpRequest`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) API but you can also use fetch, axios etc.
 
 ---
 
-This is a minimal interactive story showing how the adapter can be used. Click on **Show code** to see adapter usage.
+This is a minimal interactive story showing how to write and use a simple adapter. Click on **Show code** to see how to use.
 
 <Canvas>
 	<Story name="Default"></Story>

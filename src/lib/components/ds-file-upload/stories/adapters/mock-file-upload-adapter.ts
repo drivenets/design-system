@@ -1,8 +1,5 @@
-import {
-	FileUploadAdapter,
-	FileUploadOptions,
-	FileUploadResult,
-} from '../../adapters/file-upload-adapter.types';
+import { FileUploadAdapter, FileUploadOptions, FileUploadResult } from '../../ds-file-upload-api.types';
+import { FatalFileUploadError, RetryableFileUploadError } from '../../errors/file-upload-errors';
 
 export type MockScenario = 'success' | 'error' | 'interrupted' | 'slow' | 'fast';
 
@@ -19,7 +16,7 @@ export interface MockAdapterConfig {
  * Mock adapter for testing and Storybook demonstrations
  * Simulates various upload scenarios without real network calls
  */
-export class MockAdapter implements FileUploadAdapter {
+export class MockFileUploadAdapter implements FileUploadAdapter {
 	private interruptedRuns = -1;
 	private uploads = new Map<string, { cancelled: boolean }>();
 
@@ -53,17 +50,13 @@ export class MockAdapter implements FileUploadAdapter {
 		if (delay > 0) {
 			await this.sleep(delay);
 			if (checkCancelled()) {
-				return { success: false, error: 'Upload cancelled', isRetryable: true };
+				throw new RetryableFileUploadError('Upload cancelled');
 			}
 		}
 
 		// Immediate error scenario
 		if (scenario === 'error') {
-			return {
-				success: false,
-				error: errorMessage || 'Unsupported file type',
-				isRetryable: false,
-			};
+			throw new FatalFileUploadError(errorMessage || 'Unsupported file type');
 		}
 
 		// Simulate upload progress
@@ -71,7 +64,7 @@ export class MockAdapter implements FileUploadAdapter {
 
 		for (let i = 0; i <= steps; i++) {
 			if (checkCancelled()) {
-				return { success: false, error: 'Upload cancelled', isRetryable: true };
+				throw new RetryableFileUploadError('Upload cancelled');
 			}
 
 			await this.sleep(stepDuration);
@@ -84,11 +77,7 @@ export class MockAdapter implements FileUploadAdapter {
 			if (scenario === 'interrupted' && percentage >= interruptAt && this.interruptedRuns % 2) {
 				this.uploads.delete(fileId);
 				this.interruptedRuns++;
-				return {
-					success: false,
-					error: errorMessage || 'Network connection lost',
-					isRetryable: true,
-				};
+				throw new RetryableFileUploadError(errorMessage || 'Network connection lost');
 			}
 		}
 
@@ -97,7 +86,6 @@ export class MockAdapter implements FileUploadAdapter {
 		// Success!
 		this.uploads.delete(fileId);
 		return {
-			success: true,
 			url: `mock://uploaded/${file.name}`,
 			metadata: {
 				fileName: file.name,
@@ -123,32 +111,32 @@ export class MockAdapter implements FileUploadAdapter {
 // Preset configurations for common scenarios
 export const MockAdapterPresets = {
 	/** Normal upload - completes successfully in 2-3 seconds */
-	normal: (): MockAdapter =>
-		new MockAdapter({
+	normal: (): MockFileUploadAdapter =>
+		new MockFileUploadAdapter({
 			scenario: 'success',
 			duration: 2000 + Math.random() * 1000,
 			steps: 20,
 		}),
 
 	/** Fast upload - completes quickly (good for demos) */
-	fast: (): MockAdapter =>
-		new MockAdapter({
+	fast: (): MockFileUploadAdapter =>
+		new MockFileUploadAdapter({
 			scenario: 'success',
 			duration: 800,
 			steps: 10,
 		}),
 
 	/** Slow upload - takes longer (good for testing cancel) */
-	slow: (): MockAdapter =>
-		new MockAdapter({
+	slow: (): MockFileUploadAdapter =>
+		new MockFileUploadAdapter({
 			scenario: 'success',
 			duration: 10_000,
 			steps: 30,
 		}),
 
 	/** Upload that fails at 30% progress */
-	interrupted: (atProgress = 30): MockAdapter =>
-		new MockAdapter({
+	interrupted: (atProgress = 30): MockFileUploadAdapter =>
+		new MockFileUploadAdapter({
 			scenario: 'interrupted',
 			duration: 2000,
 			steps: 20,
@@ -157,12 +145,12 @@ export const MockAdapterPresets = {
 		}),
 
 	/** Upload that fails immediately with validation error */
-	error: (message?: string): MockAdapter =>
-		new MockAdapter({
+	error: (message?: string): MockFileUploadAdapter =>
+		new MockFileUploadAdapter({
 			scenario: 'error',
 			errorMessage: message || 'Unsupported file type',
 		}),
 
 	/** Upload with custom configuration */
-	custom: (config: MockAdapterConfig): MockAdapter => new MockAdapter(config),
+	custom: (config: MockAdapterConfig): MockFileUploadAdapter => new MockFileUploadAdapter(config),
 };

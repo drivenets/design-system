@@ -2,8 +2,9 @@ import { FileUploadFileError } from '@ark-ui/react';
 
 export type FileError = FileUploadFileError;
 export type UploadFileStatus = 'pending' | 'uploading' | 'interrupted' | 'completed' | 'error' | 'cancelled';
+export type FileMetadata = Record<string, unknown>;
 
-export interface UploadFile extends File {
+export interface UploadedFile extends File {
 	id: string;
 	progress: number;
 	status: UploadFileStatus;
@@ -13,23 +14,23 @@ export interface UploadFile extends File {
 export interface FileUploadOptions {
 	file: File;
 	fileId: string;
-	metadata?: Record<string, string>;
+	metadata?: FileMetadata;
 	onProgress?: (progress: number) => void;
 	signal?: AbortSignal;
 }
 
-export type FileUploadResult =
-	| {
-			success: true;
-			url: string;
-			metadata?: Record<string, string | number>;
-	  }
-	| {
-			success: false;
-			error: string;
-			isRetryable?: boolean;
-	  };
+export interface FileUploadResult {
+	url: string;
+	metadata?: FileMetadata;
+}
 
+/**
+ * File upload adapter interface
+ * The upload method should:
+ * - resolve with FileUploadResult on success
+ * - reject with RetryableFileUploadError for transient failures
+ * - reject with FatalFileUploadError for permanent failures
+ */
 export interface FileUploadAdapter {
 	upload: (options: FileUploadOptions) => Promise<FileUploadResult>;
 	cancel?: (fileId: string) => Promise<void>;

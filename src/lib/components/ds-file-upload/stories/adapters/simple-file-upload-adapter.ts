@@ -1,45 +1,86 @@
 import {
+	FatalFileUploadError,
 	FileUploadAdapter,
 	FileUploadOptions,
 	FileUploadResult,
-} from '../../adapters/file-upload-adapter.types';
+	RetryableFileUploadError,
+} from '@design-system/ui';
 
-interface SimpleFileUploadAdapterConfig {
-	presignedUrl: string;
-}
-
-export function getSimpleFileUploadAdapter(config: SimpleFileUploadAdapterConfig): FileUploadAdapter {
+/**
+ * Simple file upload adapter example using XMLHttpRequest
+ * This adapter posts files to a backend endpoint using FormData
+ *
+ * @param uploadEndpoint - backend URL to POST files to
+ * @returns a FileUploadAdapter implementation
+ *
+ * Expected backend response format:
+ * {
+ *   "url": "https://example.com/files/uploaded-file.pdf",
+ *   "metadata": { ... } // optional
+ * }
+ */
+export function getSimpleFileUploadAdapter(uploadEndpoint: string): FileUploadAdapter {
 	return {
-		async upload(options: FileUploadOptions): Promise<FileUploadResult> {
+		upload(options: FileUploadOptions): Promise<FileUploadResult> {
 			const xhr = new XMLHttpRequest();
+			const formData = new FormData();
+
+			// Add file to form data
+			formData.append('file', options.file);
+
+			// Add metadata if provided
+			if (options.metadata) {
+				formData.append('metadata', JSON.stringify(options.metadata));
+			}
 
 			return new Promise((resolve, reject) => {
+				// Track upload progress
 				xhr.upload.addEventListener('progress', (e) => {
 					if (e.lengthComputable && options.onProgress) {
 						options.onProgress((e.loaded / e.total) * 100);
 					}
 				});
 
+				// Handle successful completion
 				xhr.addEventListener('load', () => {
 					if (xhr.status >= 200 && xhr.status < 300) {
-						resolve({ success: true, url: config.presignedUrl });
+						try {
+							const response = JSON.parse(xhr.responseText);
+							resolve({
+								url: response.url,
+								metadata: response.metadata,
+							});
+						} catch (error) {
+							reject(new FatalFileUploadError('Invalid server response'));
+						}
+					} else if (xhr.status >= 400 && xhr.status < 500) {
+						// Client errors (bad request, unauthorized, etc.) are fatal
+						reject(new FatalFileUploadError(`Upload failed: ${xhr.statusText}`));
 					} else {
-						reject(new Error(`Upload failed: ${xhr.statusText}`));
+						// Server errors (5xx) are retryable
+						reject(new RetryableFileUploadError(`Server error: ${xhr.statusText}`));
 					}
 				});
 
+				// Handle network errors (retryable)
 				xhr.addEventListener('error', () => {
-					reject(new Error('Network error'));
+					reject(new RetryableFileUploadError('Network error occurred'));
 				});
 
+				// Handle timeout (retryable)
+				xhr.addEventListener('timeout', () => {
+					reject(new RetryableFileUploadError('Upload timeout'));
+				});
+
+				// Handle cancellation (retryable - user can retry after canceling)
 				options.signal?.addEventListener('abort', () => {
 					xhr.abort();
-					resolve({ success: false, error: 'Upload cancelled' });
+					reject(new RetryableFileUploadError('Upload cancelled'));
 				});
 
-				xhr.open('PUT', config.presignedUrl);
-				xhr.setRequestHeader('Content-Type', options.file.type || 'application/octet-stream');
-				xhr.send(options.file);
+				// Send request
+				xhr.open('POST', uploadEndpoint);
+				xhr.send(formData);
 			});
 		},
 	};

@@ -5,7 +5,6 @@ import { useFileUpload } from './hooks/use-file-upload';
 import { createTestPlayFunction } from './ds-file-upload.stories.util';
 import { MockAdapterPresets } from './stories/adapters/mock-file-upload-adapter';
 import { FileUpload } from './components/file-upload';
-// @ts-expect-error mdx file (needed for story)
 import DocsPage from './stories/adapters/simple-file-upload-adapter.docs.mdx';
 
 const meta: Meta<typeof DsFileUpload> = {
@@ -17,17 +16,19 @@ const meta: Meta<typeof DsFileUpload> = {
 			page: DocsPage,
 			source: {
 				code: `
-const presignedUrl = await getPresignedUrl(fileName);
-const adapter = getSimpleFileUploadAdapter({ presignedUrl });
+const adapter = getSimpleFileUploadAdapter('/api/upload');
 
 return (
 	<DsFileUpload
 		adapter={adapter}
-		onFilesAdded={(files) => console.log('📁 Files added:', files.map((f) => f.name))}
-		onUploadComplete={(fileId, result) => console.log('✅ Upload complete:', fileId, result.url)}
-		onUploadError={(fileId, error) => console.error('❌ Upload failed:', fileId, error)}
-		onFileRemoved={(fileId) => console.log('🗑️ File removed:', fileId)}
-		onAllUploadsComplete={() => console.log('🎉 All uploads complete!')}
+		onFilesAdded={(files) => console.log('Files added:', files.map((f) => f.name))}
+		onFileUploadComplete={(fileId, result) => console.log('File upload complete:', fileId, result.url)}
+		onFileUploadError={(fileId, error) => console.error('File upload failed:', fileId, error)}
+		onFileRemoved={(fileId) => console.log('File removed:', fileId)}
+		onFileDeleted={(fileId) => console.log('File deleted:', fileId)}
+		onFileUploadCanceled={(fileId) => console.log('File upload canceled:', fileId)}
+		onFileUploadRetried={(fileId) => console.log('File upload retried:', fileId)}
+		onAllFileUploadsComplete={() => console.log('All file uploads complete!')}
 	/>
 );`,
 			},
@@ -39,7 +40,7 @@ return (
 		dropzoneText: { control: 'text' },
 		triggerText: { control: 'text' },
 		hideProgress: { control: 'boolean' },
-		allowDrop: { control: 'boolean' },
+		disableDrop: { control: 'boolean' },
 		maxFiles: { control: 'number' },
 		accept: { control: 'object' },
 		disabled: { control: 'boolean' },
@@ -60,25 +61,30 @@ export const Default: Story = {
 		style: { width: '500px' },
 		onFilesAdded: (files) => {
 			console.log(
-				'📁 Files added:',
+				'Files added:',
 				files.map((f) => f.name),
 			);
 		},
-		onUploadComplete: (fileId, result) => {
-			if (result.success) {
-				console.log('✅ Upload complete:', fileId, result.url);
-			} else {
-				console.error('❌ Upload failed:', fileId, result.error);
-			}
+		onFileUploadComplete: (fileId, result) => {
+			console.log('File upload complete:', fileId, result.url);
 		},
-		onUploadError: (fileId, error) => {
-			console.error('❌ Upload failed:', fileId, error);
+		onFileUploadError: (fileId, error) => {
+			console.error('File upload failed:', fileId, error);
 		},
 		onFileRemoved: (fileId) => {
-			console.log('🗑️ File removed:', fileId);
+			console.log('File removed:', fileId);
 		},
-		onAllUploadsComplete: () => {
-			console.log('🎉 All uploads complete!');
+		onFileDeleted: (fileId) => {
+			console.log('File deleted:', fileId);
+		},
+		onFileUploadCanceled: (fileId) => {
+			console.log('File upload canceled:', fileId);
+		},
+		onFileUploadRetried: (fileId) => {
+			console.log('File upload retried:', fileId);
+		},
+		onAllFileUploadsComplete: () => {
+			console.log('All file uploads complete!');
 		},
 	},
 };

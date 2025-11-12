@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "types": ["vite/client"],
+    "types": ["vite/client", "./src/stories/types.ts"],
     "moduleResolution": "bundler",
     // TODO: Remove when base config will be stricter.
     "strictNullChecks": true

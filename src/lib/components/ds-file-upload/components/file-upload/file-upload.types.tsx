@@ -1,10 +1,10 @@
-import React from 'react';
+import { CSSProperties } from 'react';
 import {
 	FileUploadFileAcceptDetails,
 	FileUploadFileMimeType,
 	FileUploadFileRejectDetails,
 } from '@ark-ui/react';
-import { UploadFile } from '../../ds-file-upload-api.types';
+import { UploadedFile } from '../../ds-file-upload-api.types';
 
 export interface FileUploadProps {
 	/**
@@ -25,10 +25,10 @@ export interface FileUploadProps {
 	 */
 	hideProgress?: boolean;
 	/**
-	 * Whether to allow drag and drop
-	 * @default true
+	 * Whether to disable drag and drop functionality
+	 * @default false
 	 */
-	allowDrop?: boolean;
+	disableDrop?: boolean;
 	/**
 	 * The maximum number of files that can be uploaded
 	 */
@@ -53,15 +53,17 @@ export interface FileUploadProps {
 	/**
 	 * Additional styles
 	 */
-	style?: React.CSSProperties;
+	style?: CSSProperties;
 	/**
 	 * The file types that are accepted
+	 * Maps MIME types to their file extensions
+	 * @example { 'application/pdf': ['.pdf'], 'image/png': ['.png'] }
 	 */
-	accept?: Record<string, string[]> | FileUploadFileMimeType | FileUploadFileMimeType[] | undefined;
+	accept?: Record<FileUploadFileMimeType, string[]>;
 	/**
 	 * File states to display (managed externally)
 	 */
-	files?: UploadFile[];
+	files?: UploadedFile[];
 	/**
 	 * Callback when files are removed
 	 */

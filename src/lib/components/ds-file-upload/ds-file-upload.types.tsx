@@ -1,5 +1,5 @@
 import { FileUploadProps } from './components/file-upload';
-import { FileUploadAdapter, FileUploadResult } from './ds-file-upload-api.types';
+import { FileMetadata, FileUploadAdapter, FileUploadResult } from './ds-file-upload-api.types';
 
 export interface DsFileUploadProps
 	extends Omit<
@@ -14,7 +14,7 @@ export interface DsFileUploadProps
 		| 'onFileRetry'
 		| 'uploadProgress'
 	> {
-	/** Upload adapter (S3, Azure, custom backend, etc.) */
+	/** Upload adapter implementation */
 	adapter: FileUploadAdapter;
 
 	/**
@@ -27,13 +27,13 @@ export interface DsFileUploadProps
 	maxConcurrent?: number;
 
 	/** Additional metadata to attach to uploads */
-	metadata?: Record<string, string>;
+	metadata?: FileMetadata;
 
 	/** Called when a file upload completes successfully */
-	onUploadComplete?: (fileId: string, result: FileUploadResult) => void;
+	onFileUploadComplete?: (fileId: string, result: FileUploadResult) => void;
 
 	/** Called when a file upload fails */
-	onUploadError?: (fileId: string, error: string) => void;
+	onFileUploadError?: (fileId: string, error: string) => void;
 
 	/** Called when files are added (before upload) */
 	onFilesAdded?: (files: File[]) => void;
@@ -41,6 +41,15 @@ export interface DsFileUploadProps
 	/** Called when a file is removed */
 	onFileRemoved?: (fileId: string) => void;
 
-	/** Called when all uploads are complete */
-	onAllUploadsComplete?: () => void;
+	/** Called when a file is deleted */
+	onFileDeleted?: (fileId: string) => void;
+
+	/** Called when a file upload is canceled */
+	onFileUploadCanceled?: (fileId: string) => void;
+
+	/** Called when a file upload is retried */
+	onFileUploadRetried?: (fileId: string) => void;
+
+	/** Called when all file uploads are complete */
+	onAllFileUploadsComplete?: () => void;
 }
