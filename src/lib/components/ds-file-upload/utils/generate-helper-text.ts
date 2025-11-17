@@ -32,7 +32,9 @@ export function generateHelperText(
 		parts.push(`File size ${maxSizeText} max`);
 	}
 
-	if (maxFiles > 1) {
+	if (maxFiles === 1) {
+		parts.push('Only 1 file');
+	} else if (maxFiles > 1) {
 		parts.push(`Up to ${maxFiles} files`);
 	}
 

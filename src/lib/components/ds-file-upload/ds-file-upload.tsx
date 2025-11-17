@@ -25,6 +25,7 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 		adapter,
 		autoUpload,
 		maxConcurrent,
+		maxFiles: props.maxFiles,
 		metadata,
 		onFileUploadComplete,
 		onFileUploadError,

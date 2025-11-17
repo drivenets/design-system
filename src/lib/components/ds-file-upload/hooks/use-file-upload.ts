@@ -21,6 +21,7 @@ export interface UseFileUploadConfig {
 	adapter: FileUploadAdapter;
 	autoUpload?: boolean;
 	maxConcurrent?: number;
+	maxFiles?: number;
 	metadata?: FileMetadata;
 	onFileUploadComplete?: (fileId: string, result: FileUploadResult) => void;
 	onFileUploadError?: (fileId: string, error: string) => void;
@@ -73,6 +74,7 @@ export function useFileUpload({
 	adapter,
 	autoUpload = true,
 	maxConcurrent = 3,
+	maxFiles,
 	metadata,
 	onFileUploadComplete,
 	onFileUploadError,
@@ -114,6 +116,36 @@ export function useFileUpload({
 		}
 	};
 
+	const markMaxFiles = (files: File[]): File[] => {
+		if (maxFiles === undefined) {
+			return files;
+		}
+
+		const currentAcceptedCount = acceptedFiles.length;
+		const availableSlots = maxFiles - currentAcceptedCount;
+
+		let filesToAdd: File[];
+		let rejectedFiles: File[];
+
+		if (availableSlots <= 0) {
+			filesToAdd = [];
+			rejectedFiles = files;
+		} else if (files.length > availableSlots) {
+			filesToAdd = files.slice(0, availableSlots);
+			rejectedFiles = files.slice(availableSlots);
+		} else {
+			return files;
+		}
+
+		const rejectedFilesWithErrors = rejectedFiles.map((file) => ({
+			file,
+			errors: ['TOO_MANY_FILES'],
+		}));
+		addRejectedFiles(rejectedFilesWithErrors);
+
+		return filesToAdd;
+	};
+
 	const addNewFiles = (filesToUpload: File[]): UploadedFile[] => {
 		const uploadedFiles = filesToUpload.map((file) => createUploadedFile(file, 'pending'));
 		setFiles((prev) => [...prev, ...uploadedFiles]);
@@ -131,7 +163,8 @@ export function useFileUpload({
 	const addFiles = (newFiles: File[]): UploadedFile[] => {
 		const { newFilesOnly, duplicates } = getNewAndDuplicateFiles(newFiles);
 		markDuplicates(duplicates);
-		const uploadedFiles = addNewFiles(newFilesOnly);
+		const filesToAdd = markMaxFiles(newFilesOnly);
+		const uploadedFiles = addNewFiles(filesToAdd);
 		uploadNewFiles(uploadedFiles);
 		return uploadedFiles;
 	};
