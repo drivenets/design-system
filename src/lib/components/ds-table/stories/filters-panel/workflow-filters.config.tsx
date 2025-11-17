@@ -2,12 +2,8 @@ import { ReactNode } from 'react';
 import DsStatusBadge from '../../../ds-status-badge/ds-status-badge';
 import { DsStatus } from '../../../ds-status-badge/ds-status-badge.types';
 import { IconType } from '../../../ds-icon/ds-icon.types';
-import {
-	CheckboxFilterItem,
-	createCheckboxFilterAdapter,
-	createDualRangeFilterAdapter,
-	FilterAdapter,
-} from '../../filters';
+import { createCheckboxFilterAdapter, createDualRangeFilterAdapter, FilterAdapter } from '../../filters';
+import { CheckboxFilterItem } from '../components/select-filter/select-filter';
 
 /**
  * Workflow data type

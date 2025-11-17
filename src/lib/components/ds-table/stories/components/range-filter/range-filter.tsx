@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import DsTextInput from '../../../../ds-text-input/ds-text-input';
 import DsButton from '../../../../ds-button/ds-button';
+import DsTypography from '../../../../ds-typography/ds-typography';
 import styles from './range-filter.module.scss';
 
 export interface RangeFilterValue {
@@ -42,18 +43,18 @@ export const RangeFilter = ({ label, value, onChange, onClear }: RangeFilterProp
 	const hasValue = value.from !== undefined || value.to !== undefined;
 
 	return (
-		<div className={styles.rangeFilter}>
-			<div className={styles.rangeFilter__header}>
-				<div className={styles.rangeFilter__label}>{label}</div>
+		<div className={styles.container}>
+			<div className={styles.header}>
+				<DsTypography variant="body-md-md">{label}</DsTypography>
 				{hasValue && onClear && (
 					<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleClear}>
 						Clear
 					</DsButton>
 				)}
 			</div>
-			<div className={styles.rangeFilter__inputs}>
-				<div className={styles.rangeFilter__inputGroup}>
-					<label className={styles.rangeFilter__inputLabel}>From</label>
+			<div className={styles.inputs}>
+				<div className={styles.inputGroup}>
+					<DsTypography variant="body-sm-reg">From</DsTypography>
 					<DsTextInput
 						type="number"
 						placeholder=""
@@ -62,8 +63,8 @@ export const RangeFilter = ({ label, value, onChange, onClear }: RangeFilterProp
 						size="default"
 					/>
 				</div>
-				<div className={styles.rangeFilter__inputGroup}>
-					<label className={styles.rangeFilter__inputLabel}>To</label>
+				<div className={styles.inputGroup}>
+					<DsTypography variant="body-sm-reg">To</DsTypography>
 					<DsTextInput
 						type="number"
 						placeholder=""
