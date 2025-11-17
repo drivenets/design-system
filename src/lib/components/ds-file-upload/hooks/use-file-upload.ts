@@ -42,6 +42,7 @@ export interface UseFileUploadReturn {
 	addFiles: (newFiles: File[]) => UploadedFile[];
 	addRejectedFiles: (filesWithErrors: { file: File; errors: FileError[] }[]) => void;
 	removeFile: (fileId: string) => void;
+	deleteFile: (fileId: string) => Promise<void>;
 	uploadFile: (fileId: string) => Promise<void>;
 	uploadAll: () => Promise<void>;
 	cancelUpload: (fileId: string) => Promise<void>;
@@ -268,6 +269,14 @@ export function useFileUpload({
 		setFiles((prev) => prev.filter((file) => file.id !== fileId));
 	};
 
+	const deleteFile = async (fileId: string) => {
+		if (adapter.delete) {
+			await adapter.delete(fileId);
+		}
+
+		removeFile(fileId);
+	};
+
 	const clearFiles = () => {
 		abortControllers.forEach((controller) => controller.abort());
 		abortControllers.clear();
@@ -295,8 +304,8 @@ export function useFileUpload({
 			userCallbacks?.onFileRemoved?.(fileId);
 		};
 
-		const handleFileDelete = (fileId: string) => {
-			removeFile(fileId);
+		const handleFileDelete = async (fileId: string) => {
+			await deleteFile(fileId);
 			userCallbacks?.onFileDeleted?.(fileId);
 		};
 
@@ -328,6 +337,7 @@ export function useFileUpload({
 		addFiles,
 		addRejectedFiles,
 		removeFile,
+		deleteFile,
 		uploadFile,
 		uploadAll,
 		cancelUpload,

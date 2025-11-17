@@ -21,55 +21,85 @@ export type AcceptedFileType =
 /**
  * Built-in extensions map for common MIME types
  */
-export const EXTENSIONS_MAP: Partial<Record<FileUploadFileMimeType, FileExtension[]>> = {
-	// Documents
+export const EXTENSIONS_MAP: Record<FileUploadFileMimeType, FileExtension[]> = {
+	// Images - specific types
+	'image/png': ['.png'],
+	'image/gif': ['.gif'],
+	'image/jpeg': ['.jpg', '.jpeg'],
+	'image/svg+xml': ['.svg'],
+	'image/webp': ['.webp'],
+	'image/avif': ['.avif'],
+	'image/heic': ['.heic', '.heif'],
+	'image/bmp': ['.bmp'],
+
+	// Applications
 	'application/pdf': ['.pdf'],
-	'text/plain': ['.txt'],
-	'text/csv': ['.csv'],
+	'application/zip': ['.zip'],
 	'application/json': ['.json'],
 	'application/xml': ['.xml'],
-	'text/html': ['.html', '.htm'],
-
-	// Archives
-	'application/zip': ['.zip'],
-	'application/x-zip-compressed': ['.zip'],
-	'application/x-rar-compressed': ['.rar'],
-	'application/x-7z-compressed': ['.7z'],
-	'application/gzip': ['.gz'],
-	'application/x-tar': ['.tar'],
-
-	// Microsoft Office
 	'application/msword': ['.doc'],
 	'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
 	'application/vnd.ms-excel': ['.xls'],
 	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx'],
 	'application/vnd.ms-powerpoint': ['.ppt'],
 	'application/vnd.openxmlformats-officedocument.presentationml.presentation': ['.pptx'],
+	'application/rtf': ['.rtf'],
+	'application/x-rar': ['.rar'],
+	'application/x-7z-compressed': ['.7z'],
+	'application/x-tar': ['.tar'],
+	'application/vnd.microsoft.portable-executable': ['.exe', '.dll'],
 
-	// Images - specific types
-	'image/png': ['.png'],
-	'image/jpeg': ['.jpg', '.jpeg'],
-	'image/gif': ['.gif'],
-	'image/webp': ['.webp'],
-	'image/svg+xml': ['.svg'],
-	'image/bmp': ['.bmp'],
-	'image/tiff': ['.tiff', '.tif'],
-	'image/x-icon': ['.ico'],
+	// Text
+	'text/css': ['.css'],
+	'text/csv': ['.csv'],
+	'text/html': ['.html', '.htm'],
+	'text/markdown': ['.md', '.markdown'],
+	'text/plain': ['.txt'],
 
-	// Images - wildcard
-	'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.bmp', '.tiff', '.tif'],
-
-	// Audio
-	'audio/mpeg': ['.mp3'],
-	'audio/wav': ['.wav'],
-	'audio/ogg': ['.ogg'],
-	'audio/*': ['.mp3', '.wav', '.ogg', '.m4a', '.flac'],
+	// Fonts
+	'font/ttf': ['.ttf'],
+	'font/otf': ['.otf'],
+	'font/woff': ['.woff'],
+	'font/woff2': ['.woff2'],
+	'font/eot': ['.eot'],
+	'font/svg': ['.svg'],
 
 	// Video
 	'video/mp4': ['.mp4'],
-	'video/mpeg': ['.mpeg', '.mpg'],
+	'video/webm': ['.webm'],
+	'video/ogg': ['.ogv'],
 	'video/quicktime': ['.mov'],
 	'video/x-msvideo': ['.avi'],
-	'video/webm': ['.webm'],
-	'video/*': ['.mp4', '.mpeg', '.mpg', '.mov', '.avi', '.webm', '.mkv'],
+
+	// Audio
+	'audio/mpeg': ['.mp3'],
+	'audio/ogg': ['.ogg', '.oga'],
+	'audio/wav': ['.wav'],
+	'audio/webm': ['.weba'],
+	'audio/aac': ['.aac'],
+	'audio/flac': ['.flac'],
+	'audio/x-m4a': ['.m4a'],
+
+	// Wildcards
+	'image/*': ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.svg', '.bmp', '.avif', '.heic', '.heif'],
+	'audio/*': ['.mp3', '.wav', '.ogg', '.oga', '.m4a', '.flac', '.aac', '.weba'],
+	'video/*': ['.mp4', '.webm', '.ogv', '.mov', '.avi'],
+	'text/*': ['.txt', '.html', '.htm', '.css', '.csv', '.md', '.markdown'],
+	'application/*': [
+		'.pdf',
+		'.zip',
+		'.json',
+		'.xml',
+		'.doc',
+		'.docx',
+		'.xls',
+		'.xlsx',
+		'.ppt',
+		'.pptx',
+		'.rtf',
+		'.rar',
+		'.7z',
+		'.tar',
+	],
+	'font/*': ['.ttf', '.otf', '.woff', '.woff2', '.eot'],
 } as const;

@@ -6,7 +6,7 @@ import { formatFileSize } from './format-file-size';
  * Generate helper text based on validation props
  */
 export function generateHelperText(
-	accept: AcceptedFileType[] | undefined,
+	accept: AcceptedFileType[],
 	maxFileSize: number,
 	maxFiles: number,
 ): string {

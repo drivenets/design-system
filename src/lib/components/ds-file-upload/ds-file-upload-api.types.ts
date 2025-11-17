@@ -34,4 +34,5 @@ export interface FileUploadResult {
 export interface FileUploadAdapter {
 	upload: (options: FileUploadOptions) => Promise<FileUploadResult>;
 	cancel?: (fileId: string) => Promise<void>;
+	delete?: (fileId: string) => Promise<void>;
 }
