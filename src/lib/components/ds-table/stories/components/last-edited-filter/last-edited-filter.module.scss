@@ -1,0 +1,83 @@
+.container {
+	display: flex;
+	gap: 24px;
+	width: 100%;
+}
+
+.section {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.searchWrapper {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+
+.searchIcon {
+	position: absolute;
+	left: 12px;
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+	z-index: 1;
+	color: var(--color-font-secondary);
+}
+
+.searchInput {
+	padding-left: 36px;
+}
+
+.editorList {
+	max-height: 300px;
+	overflow-y: auto;
+}
+
+.editorItem {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.timeRangeOptions {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.radioOption {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	cursor: pointer;
+
+	input[type='radio'] {
+		width: 16px;
+		height: 16px;
+		cursor: pointer;
+	}
+}
+
+.customDateRange {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	margin-top: 8px;
+	padding-top: 12px;
+	border-top: 1px solid var(--color-border);
+}
+
+.dateInput {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}

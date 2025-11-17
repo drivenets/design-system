@@ -8,7 +8,6 @@ import { TableFilterModal } from './components/table-filter-modal';
 import { ChipFilterPanel } from '../../../../widgets';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
 import { Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
-import { LastEditedCell } from './components/last-edited-cell/last-edited-cell';
 import styles from '../ds-table.stories.module.scss';
 
 export enum WorkflowCategory {
@@ -18,9 +17,12 @@ export enum WorkflowCategory {
 }
 
 const sampleUsers = [
-	{ name: 'Neil Sims', colorIndex: 0 },
-	{ name: 'Bonnie Green', colorIndex: 1 },
-	{ name: 'Michael Gough', colorIndex: 2 },
+	{ name: 'Maren Levin', colorIndex: 0 },
+	{ name: 'Emery Franci', colorIndex: 1 },
+	{ name: 'Ryan Francy', colorIndex: 2 },
+	{ name: 'Roger Dias', colorIndex: 0 },
+	{ name: 'Lindsey Westervelt', colorIndex: 1 },
+	{ name: 'Neil Sims', colorIndex: 2 },
 ];
 
 const columns: ColumnDef<Workflow>[] = [
@@ -55,12 +57,6 @@ const columns: ColumnDef<Workflow>[] = [
 	{
 		accessorKey: 'lastEdited',
 		header: 'Last edited',
-		cell: (info) => {
-			const value = info.getValue() as { editor: string; timestamp: string; colorIndex: number };
-			return (
-				<LastEditedCell editor={value.editor} timestamp={value.timestamp} colorIndex={value.colorIndex} />
-			);
-		},
 	},
 ];
 
@@ -112,9 +108,9 @@ const defaultData: Workflow[] = [
 		category: WorkflowCategory.NetworkBuilt,
 		version: '000.0001',
 		lastEdited: {
-			editor: sampleUsers[0].name,
+			editor: sampleUsers[3].name,
 			timestamp: '23-05-2024 02:20 PM',
-			colorIndex: sampleUsers[0].colorIndex,
+			colorIndex: sampleUsers[3].colorIndex,
 		},
 	},
 	{
@@ -125,9 +121,9 @@ const defaultData: Workflow[] = [
 		category: WorkflowCategory.OpticalOptimization,
 		version: '000.0022',
 		lastEdited: {
-			editor: sampleUsers[1].name,
+			editor: sampleUsers[4].name,
 			timestamp: '23-05-2024 01:05 PM',
-			colorIndex: sampleUsers[1].colorIndex,
+			colorIndex: sampleUsers[4].colorIndex,
 		},
 	},
 	{
@@ -138,9 +134,9 @@ const defaultData: Workflow[] = [
 		category: WorkflowCategory.OpticalOptimization,
 		version: '000.0001',
 		lastEdited: {
-			editor: sampleUsers[2].name,
+			editor: sampleUsers[5].name,
 			timestamp: '21-05-2024 09:30 AM',
-			colorIndex: sampleUsers[2].colorIndex,
+			colorIndex: sampleUsers[5].colorIndex,
 		},
 	},
 	{
@@ -190,9 +186,9 @@ const defaultData: Workflow[] = [
 		category: WorkflowCategory.ServiceProvisioning,
 		version: '000.0001',
 		lastEdited: {
-			editor: sampleUsers[0].name,
+			editor: sampleUsers[3].name,
 			timestamp: '20-05-2024 03:15 PM',
-			colorIndex: sampleUsers[0].colorIndex,
+			colorIndex: sampleUsers[3].colorIndex,
 		},
 	},
 	{
@@ -203,9 +199,9 @@ const defaultData: Workflow[] = [
 		category: WorkflowCategory.ServiceProvisioning,
 		version: '000.0001',
 		lastEdited: {
-			editor: sampleUsers[1].name,
+			editor: sampleUsers[4].name,
 			timestamp: '19-05-2024 08:40 AM',
-			colorIndex: sampleUsers[1].colorIndex,
+			colorIndex: sampleUsers[4].colorIndex,
 		},
 	},
 	{
@@ -216,9 +212,9 @@ const defaultData: Workflow[] = [
 		category: WorkflowCategory.NetworkBuilt,
 		version: '000.0001',
 		lastEdited: {
-			editor: sampleUsers[2].name,
+			editor: sampleUsers[5].name,
 			timestamp: '03-05-2024 04:47 PM',
-			colorIndex: sampleUsers[2].colorIndex,
+			colorIndex: sampleUsers[5].colorIndex,
 		},
 	},
 ];
