@@ -2,7 +2,7 @@ import { ReactNode, useState } from 'react';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
 import { ColumnFilterState, FilterAdapter, FilterState } from '../types/filter-adapter.types';
 import { FilterChipItem } from '../../../../../widgets';
-import { FilterNavItem } from '../../components/filter-modal';
+import { FilterNavItem } from '../components/filter-modal';
 
 export interface UseTableFiltersResult<TData, TValue> {
 	/**

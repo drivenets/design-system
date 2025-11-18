@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { DsButton, DsIcon, DsTextInput, DsTypography } from '@design-system/ui';
 import { UserAvatar } from '../user-avatar/user-avatar';
-import { CheckboxFilter, CheckboxFilterItem } from '../../../../components/checkbox-filter';
+import { CheckboxFilter, CheckboxFilterItem } from '../../../../filters/components/checkbox-filter';
 import styles from './last-edited-filter.module.scss';
 
 export interface LastEditedFilterValue {

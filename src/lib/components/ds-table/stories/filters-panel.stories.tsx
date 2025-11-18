@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import DsIcon from '../../ds-icon/ds-icon';
 import DsTable from '../ds-table';
 import DsButton from '../../ds-button/ds-button';
-import { FilterModal } from '../components/filter-modal';
+import { FilterModal } from '../filters/components/filter-modal';
 import { ChipFilterPanel } from '../../../../widgets';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
 import { Workflow, workflowFilters } from './filters-panel/workflow-filters.config';

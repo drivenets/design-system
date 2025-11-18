@@ -1,7 +1,7 @@
 import { Row } from '@tanstack/react-table';
 import { FilterAdapter } from '../types/filter-adapter.types';
 import { FilterChipItem } from '../../../../../widgets';
-import { RangeFilter } from '../../components/range-filter';
+import { RangeFilter } from '../components/range-filter';
 
 export interface RangeValue {
 	from?: number;
