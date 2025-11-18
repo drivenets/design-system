@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-export interface TableFilterNavItem {
+export interface FilterNavItem {
 	/**
 	 * Unique identifier for the filter category
 	 */
@@ -19,7 +19,7 @@ export interface TableFilterNavItem {
 	disabled?: boolean;
 }
 
-export interface TableFilterModalProps {
+export interface FilterModalProps {
 	/**
 	 * Whether the modal is open
 	 */
@@ -48,7 +48,7 @@ export interface TableFilterModalProps {
 	/**
 	 * Array of filter navigation items
 	 */
-	filterNavItems?: TableFilterNavItem[];
+	filterNavItems?: FilterNavItem[];
 	/**
 	 * Currently selected filter category ID
 	 */
@@ -60,7 +60,7 @@ export interface TableFilterModalProps {
 	/**
 	 * Content to display in the filter panel (right side)
 	 */
-	children?: (item: TableFilterNavItem) => ReactNode;
+	children?: (item: FilterNavItem) => ReactNode;
 	/**
 	 * Whether apply button is disabled
 	 */

@@ -7,10 +7,10 @@ import {
 	createCustomFilterAdapter,
 	createDualRangeFilterAdapter,
 	FilterAdapter,
+	CheckboxFilterItem,
 } from '../../filters';
-import { CheckboxFilterItem } from '../components/select-filter/select-filter';
-import { LastEditedFilter, LastEditedFilterValue } from '../components/last-edited-filter/last-edited-filter';
-import { LastEditedCell } from '../components/last-edited-cell/last-edited-cell';
+import { LastEditedFilter, LastEditedFilterValue } from './components/last-edited-filter/last-edited-filter';
+import { LastEditedCell } from './components/last-edited-cell/last-edited-cell';
 
 /**
  * Workflow data type

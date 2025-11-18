@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import DsTextInput from '../../../../ds-text-input/ds-text-input';
-import DsTypography from '../../../../ds-typography/ds-typography';
-import DsButton from '../../../../ds-button/ds-button';
-import DsIcon from '../../../../ds-icon/ds-icon';
+import { DsButton, DsIcon, DsTextInput, DsTypography } from '@design-system/ui';
 import { UserAvatar } from '../user-avatar/user-avatar';
-import { CheckboxFilter, CheckboxFilterItem } from '../select-filter/select-filter';
+import { CheckboxFilter, CheckboxFilterItem } from '../../../../components/checkbox-filter';
 import styles from './last-edited-filter.module.scss';
 
 export interface LastEditedFilterValue {
@@ -109,7 +106,11 @@ export const LastEditedFilter = ({ value, onChange, availableEditors }: LastEdit
 						onSelectionChange={handleEditorChange}
 						renderer={(item) => (
 							<div className={styles.editorItem}>
-								<UserAvatar name={item.label} size="small" colorIndex={item.metadata?.colorIndex || 0} />
+								<UserAvatar
+									name={item.label}
+									size="small"
+									colorIndex={(item.metadata?.colorIndex as number) || 0}
+								/>
 								<DsTypography variant="body-sm-reg">{item.label}</DsTypography>
 							</div>
 						)}

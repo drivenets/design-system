@@ -1,25 +1,26 @@
 import { ReactNode } from 'react';
 import { DsCheckbox } from '@design-system/ui';
 
-export interface CheckboxFilterItem<TValue = any> {
+export interface CheckboxFilterItem<TValue = string> {
 	value: TValue;
 	label: string;
+	metadata?: Record<string, unknown>;
 }
 
-export interface CheckboxFilterProps {
-	items: CheckboxFilterItem[];
-	renderer?: (item: CheckboxFilterItem) => ReactNode;
-	selectedItems: CheckboxFilterItem[];
-	onSelectionChange: (selectedItems: CheckboxFilterItem[]) => void;
+export interface CheckboxFilterProps<TValue> {
+	items: CheckboxFilterItem<TValue>[];
+	renderer?: (item: CheckboxFilterItem<TValue>) => ReactNode;
+	selectedItems: CheckboxFilterItem<TValue>[];
+	onSelectionChange: (selectedItems: CheckboxFilterItem<TValue>[]) => void;
 }
 
-export const CheckboxFilter = ({
+export const CheckboxFilter = <TValue,>({
 	items,
 	renderer,
 	selectedItems,
 	onSelectionChange,
-}: CheckboxFilterProps) => {
-	const handleCheckedChange = (selected: CheckboxFilterItem, checked: boolean) => {
+}: CheckboxFilterProps<TValue>) => {
+	const handleCheckedChange = (selected: CheckboxFilterItem<TValue>, checked: boolean) => {
 		if (checked) {
 			onSelectionChange([...selectedItems, selected]);
 		} else {
@@ -32,7 +33,7 @@ export const CheckboxFilter = ({
 		const checked = selectedItems.findIndex((selectedItem) => selectedItem.value === item.value) > -1;
 		return (
 			<DsCheckbox
-				key={item.value}
+				key={item.value as string}
 				label={label}
 				checked={checked}
 				onCheckedChange={(newState) => handleCheckedChange(item, newState === true)}

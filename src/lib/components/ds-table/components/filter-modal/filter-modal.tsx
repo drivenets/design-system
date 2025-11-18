@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 import { DsButton, DsIcon, DsModal } from '@design-system/ui';
-import { TableFilterModalProps, TableFilterNavItem } from './table-filter-modal.types';
-import styles from './table-filter-modal.module.scss';
+import { FilterModalProps, FilterNavItem } from './filter-modal.types';
+import styles from './filter-modal.module.scss';
 
 /**
  * Specialized filter modal with built-in filter navigation
  */
-const TableFilterModal = ({
+const FilterModal = ({
 	open,
 	onOpenChange,
 	columns,
@@ -18,8 +18,8 @@ const TableFilterModal = ({
 	children,
 	applyDisabled = false,
 	clearAllDisabled = false,
-}: TableFilterModalProps) => {
-	const [selectedFilter, setSelectedFilter] = useState<TableFilterNavItem>(filterNavItems[0]);
+}: FilterModalProps) => {
+	const [selectedFilter, setSelectedFilter] = useState<FilterNavItem>(filterNavItems[0]);
 
 	return (
 		<DsModal
@@ -73,9 +73,9 @@ const FilterNav = ({
 	selectedItem,
 	onSelect,
 }: {
-	items: TableFilterNavItem[];
-	selectedItem?: TableFilterNavItem;
-	onSelect?: (item: TableFilterNavItem) => void;
+	items: FilterNavItem[];
+	selectedItem?: FilterNavItem;
+	onSelect?: (item: FilterNavItem) => void;
 }) => (
 	<nav className={styles.filterNav}>
 		{items.map((item) => (
@@ -97,4 +97,4 @@ const FilterNav = ({
 	</nav>
 );
 
-export default TableFilterModal;
+export default FilterModal;

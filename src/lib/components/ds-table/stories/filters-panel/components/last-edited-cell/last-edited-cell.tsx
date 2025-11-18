@@ -1,4 +1,4 @@
-import DsTypography from '../../../../ds-typography/ds-typography';
+import { DsTypography } from '@design-system/ui';
 import { UserAvatar } from '../user-avatar/user-avatar';
 import styles from './last-edited-cell.module.scss';
 

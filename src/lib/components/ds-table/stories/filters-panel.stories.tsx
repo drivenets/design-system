@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import DsIcon from '../../ds-icon/ds-icon';
 import DsTable from '../ds-table';
 import DsButton from '../../ds-button/ds-button';
-import { TableFilterModal } from './components/table-filter-modal';
+import { FilterModal } from '../components/filter-modal';
 import { ChipFilterPanel } from '../../../../widgets';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
 import { Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
@@ -293,7 +293,7 @@ export const FiltersPanel: Story = {
 					/>
 				)}
 				<DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
-				<TableFilterModal
+				<FilterModal
 					open={isOpen}
 					onOpenChange={setIsOpen}
 					columns={8}
@@ -302,7 +302,7 @@ export const FiltersPanel: Story = {
 					onClearAll={handleClearAll}
 				>
 					{(selectedFilter) => renderFilterContent(selectedFilter)}
-				</TableFilterModal>
+				</FilterModal>
 			</div>
 		);
 	},
