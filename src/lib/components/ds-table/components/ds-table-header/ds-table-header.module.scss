@@ -50,8 +50,8 @@
 	@include typography.body-sm-md;
 	color: var(--color-font-main);
 	text-align: left;
-	vertical-align: middle;
-	padding: var(--spacing-sm) var(--spacing-standard);
+	padding: 0 var(--spacing-standard);
+	height: var(--ds-table-header-height);
 
 	&.sortableHeader {
 		cursor: pointer;
@@ -69,18 +69,6 @@
 			color: var(--neutral-4);
 			transition: transform 0.2s ease-in-out;
 		}
-	}
-
-	&.sizeSmall {
-		height: var(--ds-table-row-small);
-	}
-
-	&.sizeMedium {
-		height: var(--ds-table-row-medium);
-	}
-
-	&.sizeLarge {
-		height: var(--ds-table-row-large);
 	}
 }
 
