@@ -11,14 +11,16 @@ export interface DsSelectOption {
 	/**
 	 * Value to return when the option is selected
 	 */
-	value: string;
+	value: OptionValue;
 	/**
 	 * Optional icon to display next to the label
 	 */
 	icon?: IconName;
 }
 
-export interface DsSelectProps {
+type OptionValue = string;
+
+export type DsSelectProps = {
 	/**
 	 * Unique identifier for the select component
 	 */
@@ -35,20 +37,6 @@ export interface DsSelectProps {
 	 * Additional CSS class names
 	 */
 	className?: string;
-	/**
-	 * Value of the selected option (controlled mode)
-	 */
-	value?: string;
-	/**
-	 * Value change event handler
-	 *
-	 * @param value
-	 */
-	onValueChange?: (value: string) => void;
-	/**
-	 * Clear selection event handler
-	 */
-	onClear?: () => void;
 	/**
 	 * Event handler called when the select loses focus
 	 *
@@ -68,4 +56,25 @@ export interface DsSelectProps {
 	 * @default 'default'
 	 */
 	size?: SelectSize;
-}
+} & (
+	| {
+			clearable?: undefined | false;
+			onClear?: never;
+	  }
+	| {
+			clearable: true;
+			onClear?: () => void;
+	  }
+) &
+	(
+		| {
+				multiple?: undefined | false;
+				value: OptionValue;
+				onValueChange?: (value: OptionValue) => void;
+		  }
+		| {
+				multiple: true;
+				value: OptionValue[];
+				onValueChange?: (value: OptionValue[]) => void;
+		  }
+	);

@@ -12,10 +12,8 @@
 	background: var(--color-background);
 	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(0, 0, 0, 0.15);
 	z-index: 9999;
-
 	min-width: 200px;
-	width: var(--radix-select-trigger-width);
-	max-height: var(--radix-select-content-available-height);
+	width: calc(var(--reference-width) + var(--spacing-sm) * 2);
 
 	&[data-state='open'] {
 		animation: expand 0.25s both;

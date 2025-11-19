@@ -35,32 +35,46 @@ const meta: Meta<typeof DsSelect> = {
 			control: 'object',
 			description: 'Additional styles to apply to the select container',
 		},
+		multiple: {
+			control: 'boolean',
+			description: 'Whether multiple selections are allowed',
+		},
+		clearable: {
+			control: 'boolean',
+			description: 'Whether the selection can be cleared',
+		},
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsSelect>;
 
-const ControlledSelectWrapper = ({ options, style, size, placeholder }: DsSelectProps) => {
-	const [value, setValue] = useState<string>('');
+const ControlledSelectWrapper = ({
+	options,
+	style,
+	size,
+	placeholder,
+	clearable,
+	multiple,
+	disabled,
+}: DsSelectProps) => {
+	const [value, setValue] = useState<string | string[]>('');
 
-	const handleValueChange = (newValue: string) => {
+	const handleValueChange = (newValue: string | string[]) => {
 		setValue(newValue);
-	};
-
-	const handleClearSelection = () => {
-		setValue('');
 	};
 
 	return (
 		<DsSelect
 			options={options}
-			value={value}
-			onClear={handleClearSelection}
-			onValueChange={handleValueChange}
+			value={value as never}
+			onValueChange={handleValueChange as never}
 			style={style}
 			size={size}
 			placeholder={placeholder}
+			disabled={disabled}
+			multiple={multiple as never}
+			clearable={clearable as never}
 		/>
 	);
 };
@@ -111,17 +125,28 @@ const sanityCheck = async (canvasElement: HTMLElement) => {
 	await expect(trigger).toHaveTextContent('Click to select a value');
 };
 
+const mockOptions = [
+	{ value: 'apple', label: 'Apple' },
+	{ value: 'banana', label: 'Banana' },
+	{ value: 'cherry', label: 'Cherry' },
+	{ value: 'date', label: 'Date' },
+	{ value: 'elderberry', label: 'Elderberry' },
+	{ value: 'fig', label: 'Fig' },
+	{ value: 'grape', label: 'Grape' },
+	{ value: 'honeydew', label: 'Honeydew' },
+	{ value: 'indian-fig', label: 'Indian fig' },
+	{ value: 'jackfruit', label: 'Jackfruit' },
+	{ value: 'kiwi', label: 'Kiwi' },
+	{ value: 'lemon', label: 'Lemon' },
+];
+
 export const Default: Story = {
 	render: (args) => <ControlledSelectWrapper {...args} />,
 	args: {
-		options: Array.from({ length: 14 }, (_, i) => ({
-			label: `Option ${i + 1}`,
-			value: `option${i + 1}`,
-		})),
+		options: mockOptions,
 		style: {
-			width: '200px',
+			width: '250px',
 		},
-		size: 'small',
 	},
 	play: async ({ canvasElement }) => {
 		await sanityCheck(canvasElement);
@@ -142,5 +167,35 @@ export const WithIcons: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		await sanityCheck(canvasElement);
+	},
+};
+
+export const MultiSelect: Story = {
+	render: (args) => <ControlledSelectWrapper {...args} />,
+	args: {
+		options: mockOptions,
+		style: {
+			width: '250px',
+		},
+		multiple: true,
+		clearable: true,
+	},
+};
+
+export const MultiSelectWithSearch: Story = {
+	render: (args) => <ControlledSelectWrapper {...args} />,
+	args: {
+		options: [
+			...mockOptions,
+			{
+				value: 'melon',
+				label: 'Melon',
+			},
+		],
+		style: {
+			width: '250px',
+		},
+		multiple: true,
+		clearable: true,
 	},
 };

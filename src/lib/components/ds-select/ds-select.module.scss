@@ -2,10 +2,8 @@
 @use '@design-system/ui/src/styles/shared/dropdown';
 @use '@design-system/ui/src/styles/shared/input';
 
-.container {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
+.control {
+	@include input.selectControl;
 }
 
 .trigger {
@@ -23,9 +21,11 @@
 .viewport {
 	@include dropdown.dropdown-viewport;
 	max-height: 256px;
-	border-top: 1px solid var(--color-border-secondary);
+	margin-inline-start: calc(-1 * var(--spacing-sm));
 
-	&[data-radix-select-viewport] {
+	& > .content {
+		overflow-y: auto;
+		overflow-x: hidden;
 		scrollbar-width: thin;
 	}
 }
@@ -46,13 +46,23 @@
 		}
 	}
 
-	&[data-highlighted] {
+	&[data-highlighted],
+	&:hover {
 		background: var(--color-background-selected-weak);
 
 		.itemIcon {
 			color: var(--color-background-selected);
 		}
 	}
+}
+
+.valueText {
+	@include typography.body-sm-reg;
+	@include typography.ellipsis;
+	grid-column: 1;
+	grid-row: 1;
+	color: var(--color-font-secondary);
+	text-align: start;
 }
 
 .itemValue {
@@ -67,4 +77,12 @@
 	span {
 		@include typography.ellipsis;
 	}
+}
+
+.multiSelectItemsContainer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-3xs);
+	padding: var(--spacing-3xs);
+	border-bottom: 1px solid var(--color-border-secondary);
 }

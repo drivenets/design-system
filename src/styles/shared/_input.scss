@@ -107,7 +107,7 @@ $textarea-height-default: 120px;
 }
 
 @mixin select-trigger-states {
-	&:hover:not(:disabled) {
+	&:hover:not([data-disabled]) {
 		border-color: var(--form-control-border-color, var(--color-background-action-hover));
 
 		.triggerIcon {
@@ -116,7 +116,8 @@ $textarea-height-default: 120px;
 		}
 	}
 
-	&:focus {
+	&:has(:focus-visible),
+	&[data-state='open'] {
 		border-color: var(--form-control-border-color, var(--color-border-action-primary));
 		outline: none;
 
@@ -126,11 +127,15 @@ $textarea-height-default: 120px;
 		}
 	}
 
-	&:disabled {
+	&[data-disabled] {
 		color: var(--color-background-deselected);
 		background: var(--color-background-secondary);
 		border-color: var(--color-border-disabled);
-		cursor: not-allowed;
+
+		&,
+		& * {
+			cursor: not-allowed;
+		}
 
 		.triggerIcon {
 			color: var(--color-background-disable);
@@ -257,44 +262,68 @@ $textarea-height-default: 120px;
 }
 
 // Select trigger styles
-@mixin selectTrigger {
-	display: flex;
-	justify-content: space-between;
-	padding: calc(var(--spacing-xs) - 3px) var(--spacing-sm);
+@mixin selectControl {
+	display: grid;
+	grid-template-columns: auto min-content min-content;
+	gap: var(--spacing-3xs);
+	padding: var(--spacing-3xs) var(--spacing-sm);
 	border: 1px solid var(--form-control-border-color, var(--color-border));
 	border-radius: 4px;
 	background-color: var(--color-background);
 	cursor: pointer;
-	max-height: $input-text-height-default;
+	height: $input-text-height-default;
+	min-width: 200px;
 	@include select-trigger-states;
 
 	&.small {
-		max-height: $input-text-height-small;
-	}
-
-	.triggerIcons {
-		display: flex;
-		align-items: center;
-		gap: 4px;
-	}
-
-	.triggerIcon {
-		display: flex;
-		align-items: center;
-		border-radius: 4px;
-		color: var(--color-background-deselected);
+		height: $input-text-height-small;
+		padding: var(--spacing-4xs) var(--spacing-sm);
 	}
 
 	.clearIcon {
-		display: flex;
+		grid-column: 2;
+		grid-row: 1;
 		align-items: center;
 		color: var(--color-background-deselected-hover);
 		margin-right: 2px;
+		visibility: hidden;
+
+		&:not([hidden]) {
+			display: flex;
+		}
 	}
 
-	.iconRotated {
+	&:not([data-disabled]):where(:hover, :has(:focus-visible), [data-state='open']) {
+		.clearIcon {
+			visibility: visible;
+		}
+	}
+}
+
+@mixin selectTrigger {
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-row: 1;
+	grid-column: 1 / -1;
+	outline: none;
+	align-items: center;
+
+	.triggerIcon {
+		grid-column: 3;
+		grid-row: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 4px;
+		color: var(--color-background-deselected);
+
+		& > * {
+			transition: transform 0.2s ease-in-out;
+		}
+	}
+
+	&[data-state='open'] .triggerIcon > * {
 		transform: rotate(180deg);
-		transition: transform 0.2s ease-in-out;
 	}
 }
 
@@ -302,6 +331,7 @@ $textarea-height-default: 120px;
 @mixin searchInput {
 	position: relative;
 	padding: var(--spacing-3xs);
+	border-bottom: 1px solid var(--color-border-secondary);
 
 	.searchInputField {
 		@include typography.body-sm;
@@ -311,7 +341,7 @@ $textarea-height-default: 120px;
 		border-radius: 4px;
 		transition: border-color 0.2s;
 		padding: var(--spacing-xs) var(--spacing-sm);
-		padding-left: calc(var(--spacing-sm) + var(--icon-width-tiny) + var(--spacing-sm));
+		padding-left: calc(var(--spacing-sm) + var(--icon-width-tiny) + var(--spacing-xs));
 
 		&:focus {
 			outline: none;
