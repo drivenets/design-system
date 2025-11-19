@@ -1,0 +1,32 @@
+.navHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	height: 54px;
+	padding: var(--spacing-xs) var(--spacing-standard);
+	background: var(--color-gradient-radial-1);
+	color: var(--color-font-on-action);
+	gap: var(--spacing-xs);
+}
+
+.start {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	flex-shrink: 0;
+}
+
+.content {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	min-width: 0;
+}
+
+.end {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	flex-shrink: 0;
+}

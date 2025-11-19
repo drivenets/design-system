@@ -397,4 +397,184 @@ $button-size-large: 40px;
 			color: var(--color-background-disable);
 		}
 	}
+
+	&.primary-dark {
+		border: 2px solid transparent;
+		color: var(--color-font-on-action);
+
+		.content {
+			background: var(--color-dark-buttons-primary);
+		}
+
+		&:hover:not(:disabled) {
+			.content {
+				background: var(--color-dark-buttons-primary-hover);
+			}
+		}
+
+		&:active:not(:disabled) {
+			.content {
+				background: var(--color-dark-buttons-primary-hover);
+			}
+		}
+
+		&:focus-visible {
+			background: var(--color-background-brand);
+			border-color: var(--color-dark-buttons-primary);
+
+			.content {
+				border-color: var(--color-font-on-action);
+				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+			}
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+
+			.content {
+				background: var(--color-background-action-inverse);
+				color: var(--color-background-deselected);
+			}
+		}
+	}
+
+	&.secondary-dark {
+		background: transparent;
+		border: 2px solid transparent;
+		color: var(--color-dark-buttons-primary-hover);
+
+		.content {
+			background: transparent;
+			border-color: var(--color-dark-buttons-primary-hover);
+		}
+
+		&:hover:not(:disabled) {
+			.content {
+				background: var(--color-dark-buttons-secondary-background);
+				border-color: var(--color-dark-buttons-secondary-hover);
+				color: var(--color-dark-buttons-secondary-hover);
+			}
+		}
+
+		&:active:not(:disabled) {
+			.content {
+				background: transparent;
+				border-color: var(--color-dark-buttons-secondary-hover);
+				color: var(--color-dark-buttons-secondary-hover);
+			}
+		}
+
+		&:focus-visible {
+			background: transparent;
+			border-color: var(--color-dark-buttons-secondary-hover);
+
+			.content {
+				border-color: transparent;
+				background: var(--color-dark-buttons-secondary-background);
+				color: var(--color-dark-buttons-secondary-hover);
+				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+			}
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			color: var(--color-background-deselected);
+
+			.content {
+				border-color: var(--color-background-deselected);
+			}
+		}
+	}
+
+	&.secondary-light-dark {
+		background: transparent;
+		border: 2px solid transparent;
+		color: var(--color-dark-buttons-secondary-light);
+
+		.content {
+			background: transparent;
+			border-color: var(--color-dark-buttons-secondary-light);
+		}
+
+		&:hover:not(:disabled) {
+			.content {
+				background: var(--color-dark-buttons-secondary-light-hover-background);
+				border-color: var(--color-border);
+				color: var(--color-dark-buttons-tertiary);
+			}
+		}
+
+		&:active:not(:disabled) {
+			.content {
+				background: transparent;
+				border-color: var(--color-background-secondary);
+				color: var(--color-font-on-action);
+			}
+		}
+
+		&:focus-visible {
+			background: transparent;
+			border-color: var(--color-dark-buttons-tertiary);
+			border-radius: var(--spacing-2xs);
+
+			.content {
+				background: var(--Dark-Buttons-secondary-light-hover-background);
+				color: var(--color-dark-buttons-tertiary);
+				border-radius: var(--exo-spacing-2x-small);
+			}
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			color: var(--color-background-deselected);
+
+			.content {
+				border-color: var(--color-background-deselected);
+			}
+		}
+	}
+
+	&.tertiary-dark {
+		background: transparent;
+		border: 2px solid transparent;
+		color: var(--color-dark-buttons-tertiary);
+
+		.content {
+			background: transparent;
+			border-color: transparent;
+		}
+
+		&:hover:not(:disabled) {
+			.content {
+				background: var(--color-dark-buttons-secondary-light-hover-background);
+				border-color: var(--color-border);
+				color: var(--color-dark-buttons-tertiary);
+			}
+		}
+
+		&:active:not(:disabled) {
+			.content {
+				background: transparent;
+				border-color: var(--color-background-secondary);
+				color: var(--color-font-on-action);
+			}
+		}
+
+		&:focus-visible {
+			background: transparent;
+			border-color: var(--color-dark-buttons-tertiary);
+			border-radius: var(--spacing-2xs);
+
+			.content {
+				background: var(--Dark-Buttons-secondary-light-hover-background);
+				color: var(--color-dark-buttons-tertiary);
+				border-radius: var(--exo-spacing-2x-small);
+			}
+		}
+
+		&:disabled {
+			cursor: not-allowed;
+			color: var(--color-background-deselected);
+		}
+	}
 }

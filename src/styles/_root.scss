@@ -303,7 +303,7 @@
 	--color-dark-buttons-primary-hover: var(--color-darks-300);
 	--color-dark-buttons-secondary-hover: var(--color-darks-200);
 	--color-dark-buttons-secondary-background: var(--color-darks-500);
-	--color-dark-buttons-secondary-light: var(--color-dark-gray-050);
+	--color-dark-buttons-secondary-light: var(--color-dark-gray-50);
 	--color-dark-buttons-secondary-light-hover-background: var(--color-darks-600);
 	--color-dark-buttons-tertiary: var(--color-darks-050);
 	--color-dark-buttons-tertiary-hover-background: var(--color-dark-gray-100);
@@ -316,6 +316,9 @@
 		rgba(0, 27, 72, 0.16) 100%
 	);
 	--color-gradient-blue-light: linear-gradient(116deg, #e9eefc 22.81%, #d6e2ff 99.14%);
+	// TODO pending clarification
+	//--color-gradient-radial-1: radial-gradient(2967.19% 98.91% at 1.09% 100%, #014BFD 0%, #0A3CC2 59.92%, #152A7E 100%);
+	--color-gradient-radial-1: linear-gradient(90deg, #014afb 0%, #152a7e 100%);
 
 	/* Markers */
 	--color-marker-magenta-12: rgba(255, 0, 183, 0.12);

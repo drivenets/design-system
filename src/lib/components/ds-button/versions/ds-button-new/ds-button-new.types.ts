@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const buttonTypes = ['primary', 'secondary', 'tertiary'] as const;
+export const buttonTypes = ['primary', 'secondary', 'secondary-light', 'tertiary'] as const;
 export type ButtonType = (typeof buttonTypes)[number];
 
-export const buttonVariants = ['filled', 'ghost', 'danger'] as const;
+export const buttonVariants = ['filled', 'ghost', 'danger', 'dark'] as const;
 export type ButtonVariant = (typeof buttonVariants)[number];
 
 export const buttonSizes = ['large', 'medium', 'small'] as const;
