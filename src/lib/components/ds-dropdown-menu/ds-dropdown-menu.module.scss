@@ -1,8 +1,18 @@
 @use '@design-system/ui/src/styles/typography';
 @use '@design-system/ui/src/styles/shared/dropdown';
+@use '@design-system/ui/src/styles/shared/input';
 
 .content {
 	@include dropdown.dropdown-content;
+
+	.searchInput {
+		margin: 3px;
+		width: auto;
+
+		& + .item {
+			border-top: 1px solid var(--color-border-secondary);
+		}
+	}
 }
 
 .viewport {
@@ -15,4 +25,8 @@
 
 .indicator {
 	@include dropdown.dropdown-indicator;
+}
+
+.label {
+	flex: 1;
 }

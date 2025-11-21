@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import styles from './ds-breadcrumb.module.scss';
 import { DsBreadcrumbProps } from './ds-breadcrumb.types';
 import { DsIcon } from '../ds-icon';
-import { DsDropdown } from '../ds-dropdown';
+import { DsDropdownMenu } from '../ds-dropdown-menu';
 
 /**
  * Design system Breadcrumb component
@@ -34,13 +34,17 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 									{item.label}
 								</Link>
 							) : (
-								<DsDropdown options={item.options} selectedHref={selectedOption?.href} onSelect={onSelect}>
+								<DsDropdownMenu
+									options={item.options.map((opt) => ({ label: opt.label, value: opt.href }))}
+									selected={selectedOption?.href}
+									onSelect={onSelect}
+								>
 									<button className={classNames(styles.trigger)}>
 										{item.icon && <DsIcon icon={item.icon} className={styles.icon} size="small" />}
 										{selectedOption?.label || item.label}
 										<DsIcon icon="arrow_drop_down" className={styles.dropdownIcon} />
 									</button>
-								</DsDropdown>
+								</DsDropdownMenu>
 							)}
 						</li>
 					);

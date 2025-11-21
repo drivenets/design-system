@@ -10,6 +10,10 @@ export interface DsDropdownMenuOption {
 	 */
 	label: string;
 	/**
+	 * Optional unique value for this option (used for selection tracking)
+	 */
+	value?: string;
+	/**
 	 * Optional icon to display next to the option
 	 * Uses the IconType from the design system
 	 */
@@ -66,4 +70,18 @@ export interface DsDropdownMenuProps {
 	 * @default false
 	 */
 	disablePortal?: boolean;
+	/**
+	 * Whether to disable the search input
+	 * @default false
+	 */
+	disableSearch?: boolean;
+	/**
+	 * The currently selected option value
+	 */
+	selected?: string;
+	/**
+	 * The event handler to be called when an option is selected
+	 * @param value - The value of the selected option
+	 */
+	onSelect?: (value: string) => void;
 }
