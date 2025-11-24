@@ -92,3 +92,17 @@
 	display: flex;
 	align-items: center;
 }
+
+.dropdownMenuItem {
+	.indicator {
+		display: flex;
+		min-width: var(--icon-width-medium);
+		margin-left: auto;
+	}
+
+	&:hover {
+		.indicator {
+			color: var(--color-background-selected);
+		}
+	}
+}

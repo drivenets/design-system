@@ -12,6 +12,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	onBlur,
 	onChange,
 	onValueChange,
+	onKeyDown,
 	className,
 	style = {},
 	value,
@@ -59,6 +60,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 				disabled={disabled}
 				onBlur={onBlur}
 				onChange={handleChange}
+				onKeyDown={onKeyDown}
 			/>
 			{endAdornment && <div className={classNames(styles.adornment, styles.end)}>{endAdornment}</div>}
 		</div>

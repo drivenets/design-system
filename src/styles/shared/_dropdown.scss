@@ -92,9 +92,3 @@
 		}
 	}
 }
-
-@mixin dropdown-indicator {
-	display: flex;
-	justify-content: end;
-	min-width: var(--icon-width-medium);
-}

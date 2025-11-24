@@ -1,60 +1,54 @@
-import React, { MouseEvent, ReactNode } from 'react';
-import { IconType } from '../ds-icon';
+import { CSSProperties, MouseEvent, ReactNode } from 'react';
 
 /**
- * Represents a single option in the dropdown menu
+ * Props for the DsDropdownMenu Root component
  */
-export interface DsDropdownMenuOption {
+export interface DsDropdownMenuRootProps {
 	/**
-	 * The text label to display for this option
+	 * Whether the dropdown is open (controlled)
 	 */
-	label: string;
+	open?: boolean;
 	/**
-	 * Optional unique value for this option (used for selection tracking)
+	 * Callback when open state changes
 	 */
-	value?: string;
+	onOpenChange?: (open: boolean) => void;
 	/**
-	 * Optional icon to display next to the option
-	 * Uses the IconType from the design system
+	 * The children to render (Trigger, Content, etc.)
 	 */
-	icon?: IconType;
-	/**
-	 * Whether this option is disabled
-	 * @default false
-	 */
-	disabled?: boolean;
-	/**
-	 * The event handler to be called when this option is clicked
-	 */
-	onClick?: (e: MouseEvent<HTMLElement>) => void;
+	children: ReactNode;
 }
 
 /**
- * Props for the DsDropdownMenu component
+ * Props for the DsDropdownMenu Trigger component
  */
-export interface DsDropdownMenuProps {
+export interface DsDropdownMenuTriggerProps {
 	/**
-	 * The options to be displayed in the dropdown menu
+	 * Use the provided child element as the trigger
 	 */
-	options: DsDropdownMenuOption[];
+	asChild?: boolean;
 	/**
-	 * Optional children to be rendered inside the component
-	 * Typically used for the trigger element
+	 * The trigger element
 	 */
-	children?: ReactNode | undefined;
+	children: ReactNode;
 	/**
-	 * Optional CSS class name to apply to the component
+	 * Optional CSS class name
 	 */
 	className?: string;
 	/**
-	 * Optional inline styles to apply to the component
+	 * Optional inline styles
 	 */
-	style?: React.CSSProperties;
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu Content component
+ */
+export interface DsDropdownMenuContentProps {
 	/**
 	 * The gap between the trigger and dropdown content in pixels
 	 * @default 0
 	 */
-	contentGap?: number;
+	sideOffset?: number;
 	/**
 	 * The alignment of the dropdown content
 	 * @default 'center'
@@ -66,22 +60,162 @@ export interface DsDropdownMenuProps {
 	 */
 	side?: 'top' | 'right' | 'bottom' | 'left';
 	/**
-	 * Whether to rendering in place instead of appending the drawer to the body (using portals)
+	 * Whether to render in place instead of using portals
 	 * @default false
 	 */
 	disablePortal?: boolean;
 	/**
-	 * Whether to disable the search input
-	 * @default false
+	 * The content to render
 	 */
-	disableSearch?: boolean;
+	children: ReactNode;
 	/**
-	 * The currently selected option value
+	 * Optional CSS class name
 	 */
-	selected?: string;
+	className?: string;
 	/**
-	 * The event handler to be called when an option is selected
-	 * @param value - The value of the selected option
+	 * Optional inline styles
 	 */
-	onSelect?: (value: string) => void;
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu Item component
+ */
+export interface DsDropdownMenuItemProps {
+	/**
+	 * Whether the item is disabled
+	 */
+	disabled?: boolean;
+	/**
+	 * Whether the item is selected (shows check indicator)
+	 */
+	selected?: boolean;
+	/**
+	 * Click handler
+	 */
+	onClick?: (e: MouseEvent<HTMLElement>) => void;
+	/**
+	 * The item content
+	 */
+	children: ReactNode;
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu Search component
+ */
+export interface DsDropdownMenuSearchProps {
+	/**
+	 * The search input or custom search component
+	 */
+	children: ReactNode;
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu Actions component
+ */
+export interface DsDropdownMenuActionsProps {
+	/**
+	 * The action buttons or elements
+	 */
+	children: ReactNode;
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu Group component
+ */
+export interface DsDropdownMenuGroupProps {
+	/**
+	 * The group content (GroupLabel + Items)
+	 */
+	children: ReactNode;
+	/**
+	 * Whether the group is collapsed
+	 */
+	collapsed?: boolean;
+	/**
+	 * Callback when collapse state changes
+	 */
+	onCollapsedChange?: (collapsed: boolean) => void;
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu GroupLabel component
+ */
+export interface DsDropdownMenuGroupLabelProps {
+	/**
+	 * The label text or content
+	 */
+	children: ReactNode;
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu GroupContent component
+ */
+export interface DsDropdownMenuGroupContentProps {
+	/**
+	 * The content to show/hide based on collapsed state
+	 */
+	children: ReactNode;
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
+}
+
+/**
+ * Props for the DsDropdownMenu Separator component
+ */
+export interface DsDropdownMenuSeparatorProps {
+	/**
+	 * Optional CSS class name
+	 */
+	className?: string;
+	/**
+	 * Optional inline styles
+	 */
+	style?: CSSProperties;
 }

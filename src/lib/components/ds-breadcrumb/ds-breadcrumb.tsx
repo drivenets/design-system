@@ -34,17 +34,35 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 									{item.label}
 								</Link>
 							) : (
-								<DsDropdownMenu
-									options={item.options.map((opt) => ({ label: opt.label, value: opt.href }))}
-									selected={selectedOption?.href}
-									onSelect={onSelect}
-								>
-									<button className={classNames(styles.trigger)}>
-										{item.icon && <DsIcon icon={item.icon} className={styles.icon} size="small" />}
-										{selectedOption?.label || item.label}
-										<DsIcon icon="arrow_drop_down" className={styles.dropdownIcon} />
-									</button>
-								</DsDropdownMenu>
+								<DsDropdownMenu.Root>
+									<DsDropdownMenu.Trigger>
+										<button className={classNames(styles.trigger)}>
+											{item.icon && <DsIcon icon={item.icon} className={styles.icon} size="small" />}
+											{selectedOption?.label || item.label}
+											<DsIcon icon="arrow_drop_down" className={styles.dropdownIcon} />
+										</button>
+									</DsDropdownMenu.Trigger>
+									<DsDropdownMenu.Content sideOffset={4}>
+										{item.options.map((opt) => {
+											const selected = selectedOption?.href === opt.href;
+											return (
+												<DsDropdownMenu.Item
+													key={opt.href}
+													className={styles.dropdownMenuItem}
+													selected={selected}
+													onClick={() => onSelect?.(opt.href)}
+												>
+													{opt.label}
+													{selected && (
+														<span className={styles.indicator}>
+															<DsIcon icon="check" />
+														</span>
+													)}
+												</DsDropdownMenu.Item>
+											);
+										})}
+									</DsDropdownMenu.Content>
+								</DsDropdownMenu.Root>
 							)}
 						</li>
 					);

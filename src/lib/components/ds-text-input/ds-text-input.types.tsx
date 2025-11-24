@@ -41,6 +41,10 @@ export interface DsTextInputProps {
 	 */
 	onValueChange?: (value: string) => void;
 	/**
+	 * Callback when the value changes
+	 */
+	onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+	/**
 	 * Additional CSS class names
 	 */
 	className?: string;
