@@ -1,8 +1,9 @@
-import { useSelectContext } from '@ark-ui/react/select';
+import { useSelectContext, type UseSelectContext } from '@ark-ui/react/select';
 import styles from './ds-select.module.scss';
 import DsButton from '../ds-button/ds-button';
 import DsChip from '../ds-chip/ds-chip';
 import { SelectOptionValue } from './ds-select.types';
+import { type InternalOption } from './ds-select';
 
 type SelectItemsChipsProps = {
 	showAll: boolean;
@@ -12,7 +13,7 @@ type SelectItemsChipsProps = {
 };
 
 export function SelectItemsChips({ showAll, onShowAll, onValueChange, count }: SelectItemsChipsProps) {
-	const { collection, value: selectedItems } = useSelectContext();
+	const { collection, value: selectedItems }: UseSelectContext<InternalOption> = useSelectContext();
 
 	if (!selectedItems.length) {
 		return null;
@@ -30,7 +31,7 @@ export function SelectItemsChips({ showAll, onShowAll, onValueChange, count }: S
 				}
 
 				const onDelete = () => {
-					const filteredValue = selectedItems.filter((v) => v !== item?.value);
+					const filteredValue = selectedItems.filter((v) => v !== item.value);
 
 					onValueChange(filteredValue);
 				};

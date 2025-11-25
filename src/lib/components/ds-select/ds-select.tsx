@@ -8,7 +8,7 @@ import { DsIcon } from '../ds-icon';
 import { DsCheckbox, DsCheckboxProps } from '../ds-checkbox';
 import { SelectItemsChips } from './select-items-chips';
 
-type InternalOption = Omit<DsSelectOption, 'value'> & {
+export type InternalOption = Omit<DsSelectOption, 'value'> & {
 	value: string | typeof SELECT_ALL_SYMBOL;
 };
 
@@ -130,12 +130,7 @@ const DsSelect = ({
 				</Select.Trigger>
 
 				{clearable && (
-					<Select.ClearTrigger
-						className={styles.clearIcon}
-						onClick={() => {
-							onClear?.();
-						}}
-					>
+					<Select.ClearTrigger className={styles.clearIcon} onClick={onClear}>
 						<DsIcon icon="close" size={size === 'small' ? 'small' : 'medium'} />
 					</Select.ClearTrigger>
 				)}
@@ -174,7 +169,7 @@ const DsSelect = ({
 							return (
 								<Select.Item key={collection.getItemValue(item)} item={item} className={styles.item}>
 									{multiple && <DsCheckbox checked={checked} />}
-									{item.icon && <DsIcon className={styles.itemIcon} icon={item.icon} aria-hidden={true} />}
+									{item.icon && <DsIcon className={styles.itemIcon} icon={item.icon} aria-hidden="true" />}
 									<Select.ItemText>{item.label}</Select.ItemText>
 								</Select.Item>
 							);
