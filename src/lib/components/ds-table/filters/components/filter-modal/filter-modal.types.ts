@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { VerticalTabItem } from '@design-system/ui';
 
 export interface FilterModalProps {
@@ -15,6 +15,10 @@ export interface FilterModalProps {
 	 * @default 2
 	 */
 	columns?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+	/**
+	 * Optional inline styles to apply to the component
+	 */
+	style?: CSSProperties;
 	/**
 	 * Optional className for the modal container
 	 */

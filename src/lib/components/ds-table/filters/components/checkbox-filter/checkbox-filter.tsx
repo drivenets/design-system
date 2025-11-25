@@ -33,7 +33,7 @@ export const CheckboxFilter = <TValue,>({
 		const checked = selectedItems.findIndex((selectedItem) => selectedItem.value === item.value) > -1;
 		return (
 			<DsCheckbox
-				key={item.value as string}
+				key={JSON.stringify(item.value)}
 				label={label}
 				checked={checked}
 				onCheckedChange={(newState) => handleCheckedChange(item, newState === true)}

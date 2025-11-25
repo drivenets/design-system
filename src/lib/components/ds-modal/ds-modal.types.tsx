@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 import { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
 
 /**
@@ -26,6 +26,10 @@ export interface DsModalProps
 	 * @default 6
 	 */
 	columns?: DsModalColumns;
+	/**
+	 * Optional inline styles to apply to the component
+	 */
+	style?: CSSProperties;
 	/**
 	 * Additional CSS class name
 	 */

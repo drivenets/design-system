@@ -33,7 +33,7 @@ export interface CheckboxFilterAdapterConfig<TData, TValue> {
 	/**
 	 * Optional custom cell renderer for table column
 	 */
-	cellRenderer?: (value: any) => ReactNode;
+	cellRenderer?: (value: TValue) => ReactNode;
 
 	/**
 	 * How to extract the value from a row for comparison

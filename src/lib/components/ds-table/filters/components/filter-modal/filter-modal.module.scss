@@ -1,31 +1,10 @@
 @use '@design-system/ui/src/styles/typography';
 
-$modal-width: 952px;
-$modal-height: 600px;
-
-.filterModal {
-	width: $modal-width;
-	min-width: $modal-width;
-	max-width: $modal-width;
-
-	> div {
-		// Target the content wrapper
-		display: flex;
-		flex-direction: column;
-		height: $modal-height;
-		max-height: $modal-height;
-		padding: 0;
-	}
-}
-
 .filterHeader {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 0 var(--spacing-standard);
-	height: 64px;
-	min-height: 64px;
-	flex-shrink: 0;
+	padding: var(--spacing-md) var(--spacing-standard);
 }
 
 .headerLeft {
@@ -43,11 +22,9 @@ $modal-height: 600px;
 }
 
 .filterNav {
-	width: 364px;
 	border-right: 1px solid var(--color-border-secondary);
 	background: var(--color-background-secondary);
-	flex-shrink: 0;
-	height: 100%;
+	flex-basis: 40%;
 }
 
 .filterContent {
@@ -61,8 +38,6 @@ $modal-height: 600px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 0 var(--spacing-standard);
-	height: 60px;
-	min-height: 60px;
+	padding: var(--spacing-sm) var(--spacing-standard);
 	flex-shrink: 0;
 }

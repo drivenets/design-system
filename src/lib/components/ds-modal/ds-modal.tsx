@@ -16,6 +16,7 @@ export const DsModal = ({
 	open,
 	onOpenChange,
 	columns = 6,
+	style,
 	className,
 	modal = true,
 	closeOnEscape,
@@ -37,7 +38,10 @@ export const DsModal = ({
 			<Portal>
 				<Dialog.Backdrop className={styles.overlay} />
 				<Dialog.Positioner>
-					<Dialog.Content className={classNames(styles.modal, styles[`cols-${columns}`], className)}>
+					<Dialog.Content
+						style={style}
+						className={classNames(styles.modal, styles[`cols-${columns}`], className)}
+					>
 						<div className={classNames(styles.content)}>{children}</div>
 					</Dialog.Content>
 				</Dialog.Positioner>

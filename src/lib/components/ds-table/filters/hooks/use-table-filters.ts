@@ -1,19 +1,18 @@
 import { ReactNode, useState } from 'react';
 import { CellContext, ColumnDef } from '@tanstack/react-table';
-import { ChipItem } from '@design-system/ui';
+import { ChipItem, VerticalTabItem } from '@design-system/ui';
 import { ColumnFilterState, FilterAdapter, FilterState } from '../types/filter-adapter.types';
-import { FilterNavItem } from '../components/filter-modal';
 
 export interface UseTableFiltersResult<TData, TValue> {
 	/**
 	 * Current filter state
 	 */
-	filterState: FilterState;
+	filterState: FilterState<TValue>;
 
 	/**
 	 * Column filters for TanStack Table
 	 */
-	columnFilters: ColumnFilterState[];
+	columnFilters: ColumnFilterState<TValue>[];
 
 	/**
 	 * Filter chips for display
@@ -23,7 +22,7 @@ export interface UseTableFiltersResult<TData, TValue> {
 	/**
 	 * Filter navigation items with counts
 	 */
-	filterNavItems: FilterNavItem[];
+	filterNavItems: VerticalTabItem[];
 
 	/**
 	 * Enhanced column definitions with filter functions
@@ -58,7 +57,7 @@ export interface UseTableFiltersResult<TData, TValue> {
 	/**
 	 * Render function for filter modal content
 	 */
-	renderFilterContent: (selectedFilter: FilterNavItem) => ReactNode;
+	renderFilterContent: (selectedFilter: VerticalTabItem) => ReactNode;
 }
 
 /**
@@ -70,21 +69,21 @@ export interface UseTableFiltersResult<TData, TValue> {
  * @returns Complete filter management system
  */
 export function useTableFilters<TData, TValue>(
-	filterAdapters: FilterAdapter<TData>[],
+	filterAdapters: FilterAdapter<TData, TValue>[],
 	baseColumns?: ColumnDef<TData>[],
 ): UseTableFiltersResult<TData, TValue> {
 	// Initialize filter state from adapters
-	const initialState: FilterState = {};
+	const initialState: FilterState<TValue> = {};
 	filterAdapters.forEach((adapter) => {
 		initialState[adapter.id] = adapter.initialValue;
 	});
 
-	const [filterState, setFilterState] = useState<FilterState>(initialState);
-	const [columnFilters, setColumnFilters] = useState<ColumnFilterState[]>([]);
+	const [filterState, setFilterState] = useState<FilterState<TValue>>(initialState);
+	const [columnFilters, setColumnFilters] = useState<ColumnFilterState<TValue>[]>([]);
 	const [filterChips, setFilterChips] = useState<ChipItem[]>([]);
 
 	// Generate filter nav items with counts (updates as user changes filters in modal)
-	const filterNavItems: FilterNavItem[] = filterAdapters.map((adapter) => ({
+	const filterNavItems: VerticalTabItem[] = filterAdapters.map((adapter) => ({
 		id: adapter.id,
 		label: adapter.label,
 		count: adapter.getActiveCount(filterState[adapter.id]),
@@ -119,7 +118,7 @@ export function useTableFilters<TData, TValue>(
 	};
 
 	const applyFilters = () => {
-		const filters: ColumnFilterState[] = [];
+		const filters: ColumnFilterState<TValue>[] = [];
 		const chips: ChipItem[] = [];
 
 		filterAdapters.forEach((adapter) => {
@@ -142,7 +141,7 @@ export function useTableFilters<TData, TValue>(
 	};
 
 	const clearAll = () => {
-		const resetState: FilterState = {};
+		const resetState: FilterState<TValue> = {};
 		filterAdapters.forEach((adapter) => {
 			resetState[adapter.id] = adapter.reset();
 		});
@@ -193,7 +192,7 @@ export function useTableFilters<TData, TValue>(
 		setFilterChips(chips);
 	};
 
-	const renderFilterContent = (selectedFilter: FilterNavItem) => {
+	const renderFilterContent = (selectedFilter: VerticalTabItem) => {
 		const adapter = filterAdapters.find((a) => a.id === selectedFilter.id);
 		if (!adapter) return null;
 

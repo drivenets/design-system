@@ -6,7 +6,7 @@ import { ChipItem } from '@design-system/ui';
  * Base filter adapter interface that all filters must implement
  * This provides a consistent contract for filter behavior
  */
-export interface FilterAdapter<TData = any, TFilterValue = any> {
+export interface FilterAdapter<TData, TFilterValue> {
 	/**
 	 * Unique identifier for the filter (should match column accessorKey)
 	 */
@@ -32,7 +32,7 @@ export interface FilterAdapter<TData = any, TFilterValue = any> {
 	 * Optional custom cell renderer for the table column
 	 * If not provided, default rendering will be used
 	 */
-	cellRenderer?: (value: any) => ReactNode;
+	cellRenderer?: (value: TFilterValue) => ReactNode;
 
 	/**
 	 * Convert filter value to filter chips for display
@@ -73,14 +73,14 @@ export interface FilterAdapter<TData = any, TFilterValue = any> {
 /**
  * Filter state managed by useTableFilters hook
  */
-export interface FilterState {
-	[filterId: string]: any;
+export interface FilterState<TValue> {
+	[filterId: string]: TValue;
 }
 
 /**
  * Column filter for TanStack Table
  */
-export interface ColumnFilterState {
+export interface ColumnFilterState<TValue> {
 	id: string;
-	value: any;
+	value: TValue;
 }

@@ -11,6 +11,7 @@ const FilterModal = ({
 	open,
 	onOpenChange,
 	columns,
+	style,
 	className,
 	onClearAll,
 	onApply,
@@ -23,10 +24,11 @@ const FilterModal = ({
 
 	return (
 		<DsModal
+			style={style}
+			className={classNames(styles.filterModal, className)}
 			open={open}
 			onOpenChange={onOpenChange}
 			columns={columns}
-			className={classNames(styles.filterModal, className)}
 		>
 			<DsModal.Header className={styles.filterHeader}>
 				<div className={styles.headerLeft}>

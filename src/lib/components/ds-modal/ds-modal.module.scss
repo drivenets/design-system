@@ -15,7 +15,7 @@ $max-height: 90vh;
 
 .content {
 	@include shared.content-base;
-	max-height: $max-height;
+	height: 100%;
 }
 
 .header,

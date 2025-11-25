@@ -496,6 +496,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 
 				{/* Filter modal (renders filter UI for selected category) */}
 				<FilterModal
+					style={{ height: '600px' }}
 					open={isOpen}
 					onOpenChange={setIsOpen}
 					columns={8}

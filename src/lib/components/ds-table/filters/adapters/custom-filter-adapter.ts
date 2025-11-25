@@ -50,7 +50,7 @@ export interface CustomFilterAdapterConfig<TData, TFilterValue> {
 	/**
 	 * Optional custom cell renderer
 	 */
-	cellRenderer?: (value: any) => ReactNode;
+	cellRenderer?: (value: TFilterValue) => ReactNode;
 }
 
 /**
