@@ -47,6 +47,7 @@ import {
 	createCheckboxFilterAdapter,
 	createDualRangeFilterAdapter,
 	createFilterAdapter,
+	FilterAdapter,
 } from '../../filters';
 import { LastEditedFilter, LastEditedFilterValue } from './components/last-edited-filter/last-edited-filter';
 import { LastEditedCell } from './components/last-edited-cell/last-edited-cell';
@@ -365,4 +366,4 @@ export const workflowFilters = [
 	statusFilterAdapter,
 	runningCompletedFilterAdapter,
 	lastEditedFilterAdapter,
-] as const;
+] as const as FilterAdapter<Workflow, unknown>[];
