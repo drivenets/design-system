@@ -37,9 +37,11 @@ const DsDropdownMenu: React.FC<DsDropdownMenuProps> = ({
 							disabled={option.disabled}
 							className={classNames(styles.item, className)}
 							style={style}
-							onClick={() => {
+							onClick={(e) => {
+								e.stopPropagation();
+
 								if (!option.disabled) {
-									option.onClick?.();
+									option.onClick?.(e);
 									setOpen(false);
 								}
 							}}

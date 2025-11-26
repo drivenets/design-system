@@ -27,3 +27,8 @@
 .showcaseCellInline {
 	display: inline-block;
 }
+
+.showcaseCellDark {
+	background: var(--color-brand-500-default);
+	color: var(--color-secondary-white);
+}

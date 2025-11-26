@@ -1,0 +1,59 @@
+.container {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-standard);
+	padding: var(--spacing-xs) var(--spacing-standard);
+	background: var(--color-background-selected-weak);
+	border: 1px solid var(--color-outline-weak);
+	border-radius: var(--spacing-3xs);
+}
+
+.chipsWrapper {
+	display: flex;
+	flex: 1;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--spacing-xs);
+	max-height: var(--spacing-3xl);
+	overflow: hidden;
+
+	.hidden {
+		visibility: hidden;
+		position: absolute;
+		pointer-events: none;
+	}
+}
+
+.label {
+	color: var(--color-font-secondary);
+	white-space: nowrap;
+}
+
+.expandChip {
+	cursor: pointer;
+}
+
+.dialog {
+	position: fixed;
+	background: var(--color-background);
+	border: 1px solid var(--color-border-secondary);
+	border-radius: var(--spacing-3xs);
+	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+	padding: var(--spacing-xs);
+	max-height: 80vh;
+	overflow-y: auto;
+	z-index: 1001;
+	min-width: 300px;
+	max-width: 500px;
+}
+
+.dialogContent {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.itemCheckbox {
+	display: flex;
+	align-items: center;
+}

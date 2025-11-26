@@ -11,6 +11,7 @@ import { DsTableApi, ScrollParams } from './ds-table.types';
 import { DsSpinner } from '../ds-spinner';
 import { generatePersonData, simulateApiCall } from './utils/story-data-generator';
 import styles from './ds-table.stories.module.scss';
+import { StatusItem } from './stories/components/status-item/status-item';
 
 export enum Status {
 	Relationship = 'relationship',
@@ -423,12 +424,15 @@ export const Reorderable: Story = {
 
 export const WithRowActions: Story = {
 	args: {
+		onRowClick: (data) => {
+			console.log('Row clicked', data);
+		},
 		primaryRowActions: [
 			{
 				icon: 'edit',
 				label: 'Edit',
 				onClick: (data) => {
-					alert(`Row clicked ${JSON.stringify(data)}`);
+					alert(`Row edit ${JSON.stringify(data)}`);
 				},
 			},
 			{
@@ -438,8 +442,8 @@ export const WithRowActions: Story = {
 					return data.firstName === 'Tanner'; // Example condition to disable action
 				},
 				onClick: (data) => {
-					console.log('Row clicked', data);
-					alert(`Row clicked ${JSON.stringify(data)}`);
+					console.log('Open in New Window', data);
+					alert(`Open in New Window ${JSON.stringify(data)}`);
 				},
 			},
 		],
@@ -589,12 +593,7 @@ export const TabFilters: Story = {
 			cell: (info) => {
 				const status = info.getValue() as Status;
 				const icon = getStatusIcon(status);
-				return (
-					<div className={styles.customTabRow}>
-						<DsIcon icon={icon} size="small" />
-						<span>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
-					</div>
-				);
+				return <StatusItem icon={icon} label={status} />;
 			},
 		};
 

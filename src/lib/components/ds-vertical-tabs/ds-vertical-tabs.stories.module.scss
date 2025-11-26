@@ -1,0 +1,59 @@
+@use '@design-system/ui/src/styles/typography';
+
+// Story container styles
+.storyContainer {
+	width: 364px;
+	height: 400px;
+	border: 1px solid #e0e0e0;
+}
+
+.storyContainerShort {
+	width: 364px;
+	height: 200px;
+	border: 1px solid #e0e0e0;
+}
+
+.storyContainerMedium {
+	width: 364px;
+	height: 300px;
+	border: 1px solid #e0e0e0;
+}
+
+// Tab content pattern styles
+.tabItemLabel {
+	@include typography.ellipsis;
+	flex: 1;
+	color: inherit;
+}
+
+.tabItemCount {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+}
+
+.tabItemDot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background: var(--color-background-selected);
+	border: 1px solid var(--color-background);
+	flex-shrink: 0;
+}
+
+.tabItemCountText {
+	color: var(--color-font-secondary);
+}
+
+// Interactive story footer
+.interactiveFooter {
+	padding: 16px;
+	border-top: 1px solid #e0e0e0;
+	background: #f5f5f5;
+}
+
+.interactiveText {
+	margin: 0;
+	font-size: 14px;
+	color: #666;
+}

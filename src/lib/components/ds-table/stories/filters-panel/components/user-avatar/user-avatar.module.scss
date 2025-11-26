@@ -1,0 +1,18 @@
+.avatar {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 100px;
+	flex-shrink: 0;
+	user-select: none;
+
+	&.small {
+		width: 24px;
+		height: 24px;
+	}
+
+	&.medium {
+		width: 32px;
+		height: 32px;
+	}
+}

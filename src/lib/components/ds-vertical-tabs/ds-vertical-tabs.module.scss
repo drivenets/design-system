@@ -1,0 +1,60 @@
+@use '@design-system/ui/src/styles/typography';
+
+.tabList {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	overflow-y: auto;
+
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+
+	&::-webkit-scrollbar {
+		width: 0;
+		display: none;
+	}
+}
+
+.tabItem {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 var(--spacing-lg);
+	min-height: var(--spacing-3xl);
+	height: var(--spacing-3xl);
+	flex-shrink: 0;
+	border: none;
+	border-bottom: 1px solid var(--color-border);
+	background: var(--color-background-secondary);
+	cursor: pointer;
+	text-align: left;
+	color: var(--color-font-secondary);
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+	gap: var(--spacing-xs);
+
+	&:hover:not(:disabled):not(.selected):not([data-disabled]) {
+		background: var(--color-background-action-tertiary);
+		color: var(--color-font-main);
+	}
+
+	&.selected,
+	&[data-state='active'] {
+		background: var(--color-background-action-secondary-hover);
+		color: var(--color-font-main);
+	}
+
+	&:disabled,
+	&[data-disabled] {
+		cursor: not-allowed;
+		color: var(--color-font-secondary);
+		opacity: 0.5;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--color-background-selected);
+		outline-offset: -2px;
+		z-index: 1;
+	}
+}
