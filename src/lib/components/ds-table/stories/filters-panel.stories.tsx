@@ -549,7 +549,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 		};
 
 		// Helper component for filter tab content (label + count badge)
-		const FilterTabContent = ({ item }: { item: FilterNavItem }) => (
+		const TabLabel = ({ item }: { item: FilterNavItem }) => (
 			<>
 				<DsTypography variant="body-sm-md" className={styles.filterTabLabel}>
 					{item.label}
@@ -601,7 +601,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 							<DsVerticalTabs.List className={styles.filterTabList}>
 								{filterNavItems.map((item) => (
 									<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-										<FilterTabContent item={item} />
+										<TabLabel item={item} />
 									</DsVerticalTabs.Tab>
 								))}
 							</DsVerticalTabs.List>

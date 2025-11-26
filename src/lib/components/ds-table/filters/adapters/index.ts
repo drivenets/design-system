@@ -1,12 +1,12 @@
-export { createFilterAdapter } from './filter-adapter';
-export type { FilterAdapterConfig } from './filter-adapter';
+export { createFilterAdapter } from './create-filter-adapter';
+export type { FilterAdapterConfig } from './create-filter-adapter';
 
-export { createCheckboxFilterAdapter } from './checkbox-filter-adapter';
-export type { CheckboxFilterAdapterConfig } from './checkbox-filter-adapter';
+export { createCheckboxFilterAdapter } from './create-checkbox-filter-adapter';
+export type { CheckboxFilterAdapterConfig } from './create-checkbox-filter-adapter';
 
-export { createDualRangeFilterAdapter } from './dual-range-filter-adapter';
+export { createDualRangeFilterAdapter } from './create-dual-range-filter-adapter';
 export type {
 	RangeValue,
 	DualRangeFilterValue,
 	DualRangeFilterAdapterConfig,
-} from './dual-range-filter-adapter';
+} from './create-dual-range-filter-adapter';

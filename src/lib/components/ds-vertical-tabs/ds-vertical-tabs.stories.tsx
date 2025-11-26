@@ -91,7 +91,7 @@ const itemsWithLongLabels: TabItem[] = [
 ];
 
 // Helper component for consistent tab rendering with count badge
-const FilterTabContent = ({ item }: { item: TabItem }) => (
+const TabLabel = ({ item }: { item: TabItem }) => (
 	<>
 		<DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
 			{item.label}
@@ -114,7 +114,7 @@ export const Default: Story = {
 				<DsVerticalTabs.List>
 					{sampleItems.map((item) => (
 						<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-							<FilterTabContent item={item} />
+							<TabLabel item={item} />
 						</DsVerticalTabs.Tab>
 					))}
 				</DsVerticalTabs.List>
@@ -135,7 +135,7 @@ export const WithDisabledItems: Story = {
 				<DsVerticalTabs.List>
 					{sampleItemsWithDisabled.map((item) => (
 						<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-							<FilterTabContent item={item} />
+							<TabLabel item={item} />
 						</DsVerticalTabs.Tab>
 					))}
 				</DsVerticalTabs.List>
@@ -157,7 +157,7 @@ export const LongLabels: Story = {
 					<DsVerticalTabs.List>
 						{itemsWithLongLabels.map((item) => (
 							<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-								<FilterTabContent item={item} />
+								<TabLabel item={item} />
 							</DsVerticalTabs.Tab>
 						))}
 					</DsVerticalTabs.List>
@@ -180,7 +180,7 @@ export const HighCounts: Story = {
 					<DsVerticalTabs.List>
 						{itemsWithHighCounts.map((item) => (
 							<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-								<FilterTabContent item={item} />
+								<TabLabel item={item} />
 							</DsVerticalTabs.Tab>
 						))}
 					</DsVerticalTabs.List>

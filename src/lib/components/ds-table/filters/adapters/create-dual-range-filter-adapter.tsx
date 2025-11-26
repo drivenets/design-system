@@ -2,7 +2,7 @@ import { Row } from '@tanstack/react-table';
 import { ChipItem } from '@design-system/ui';
 import { FilterAdapter } from '../types/filter-adapter.types';
 import { RangeFilter } from '../components/range-filter';
-import { createFilterAdapter } from './filter-adapter';
+import { createFilterAdapter } from './create-filter-adapter';
 
 export interface RangeValue {
 	from?: number;
