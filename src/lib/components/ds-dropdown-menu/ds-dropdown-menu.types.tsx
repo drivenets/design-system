@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { MouseEvent, ReactNode } from 'react';
 import { IconType } from '../ds-icon';
 
 /**
@@ -22,7 +22,7 @@ export interface DsDropdownMenuOption {
 	/**
 	 * The event handler to be called when this option is clicked
 	 */
-	onClick?: () => void;
+	onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
 /**

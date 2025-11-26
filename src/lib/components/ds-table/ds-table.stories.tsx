@@ -418,12 +418,15 @@ export const Reorderable: Story = {
 
 export const WithRowActions: Story = {
 	args: {
+		onRowClick: (data) => {
+			console.log('Row clicked', data);
+		},
 		primaryRowActions: [
 			{
 				icon: 'edit',
 				label: 'Edit',
 				onClick: (data) => {
-					alert(`Row clicked ${JSON.stringify(data)}`);
+					alert(`Row edit ${JSON.stringify(data)}`);
 				},
 			},
 			{
@@ -433,8 +436,8 @@ export const WithRowActions: Story = {
 					return data.firstName === 'Tanner'; // Example condition to disable action
 				},
 				onClick: (data) => {
-					console.log('Row clicked', data);
-					alert(`Row clicked ${JSON.stringify(data)}`);
+					console.log('Open in New Window', data);
+					alert(`Open in New Window ${JSON.stringify(data)}`);
 				},
 			},
 		],
