@@ -55,9 +55,9 @@ const Root: React.FC<DsDropdownMenuRootProps> = ({ open, onOpenChange, children 
 /**
  * Trigger component - wraps the trigger element
  */
-const Trigger: React.FC<DsDropdownMenuTriggerProps> = ({ asChild = true, children, className, style }) => {
+const Trigger: React.FC<DsDropdownMenuTriggerProps> = ({ asChild, children, className, style, ...props }) => {
 	return (
-		<DropdownMenu.Trigger asChild={asChild} className={className} style={style}>
+		<DropdownMenu.Trigger asChild={asChild} className={className} style={style} {...props}>
 			{children}
 		</DropdownMenu.Trigger>
 	);
@@ -117,6 +117,7 @@ const Item: React.FC<DsDropdownMenuItemProps> = ({
 			onClick={onClick}
 		>
 			{children}
+			{selected && <DsIcon className={styles.indicator} icon="check" />}
 		</DropdownMenu.Item>
 	);
 };
@@ -197,18 +198,13 @@ const GroupLabel: React.FC<DsDropdownMenuGroupLabelProps> = ({ children, classNa
 	const { collapsed, toggle } = context;
 
 	return (
-		<button
-			type="button"
-			className={classNames(styles.groupLabel, styles.groupLabelClickable, className)}
-			style={style}
-			onClick={toggle}
-		>
-			<DsTypography variant="body-sm-md" className={styles.groupLabelText}>
-				{children}
-			</DsTypography>
+		<button type="button" className={classNames(styles.groupLabel, className)} style={style} onClick={toggle}>
+			<DsTypography variant="body-sm-md">{children}</DsTypography>
 			<DsIcon
-				icon={collapsed ? 'keyboard_arrow_down' : 'keyboard_arrow_up'}
-				className={styles.groupLabelIcon}
+				icon="keyboard_arrow_down"
+				className={classNames(styles.groupLabelIcon, {
+					[styles.groupLabelIconRotated]: !collapsed,
+				})}
 			/>
 		</button>
 	);
@@ -279,17 +275,16 @@ export const DsDropdownMenuLegacy: React.FC<DsDropdownMenuLegacyProps> = ({
 
 	return (
 		<DropdownMenu.Root open={open} onOpenChange={setOpen}>
-			<DropdownMenu.Trigger asChild>{children}</DropdownMenu.Trigger>
+			<DropdownMenu.Trigger>{children}</DropdownMenu.Trigger>
 			<Wrapper>
 				<DropdownMenu.Content
-					className={classNames(styles.content, styles.viewport)}
+					className={classNames(styles.contentLegacy, styles.viewportLegacy)}
 					sideOffset={contentGap}
 					align={align}
 					side={side}
 				>
 					{!disableSearch && (
 						<DsTextInput
-							className={styles.searchInput}
 							placeholder="Search"
 							value={searchTerm}
 							onValueChange={setSearchTerm}
@@ -302,7 +297,7 @@ export const DsDropdownMenuLegacy: React.FC<DsDropdownMenuLegacyProps> = ({
 							key={option.label}
 							disabled={option.disabled}
 							className={classNames(
-								styles.item,
+								styles.itemLegacy,
 								{
 									[styles.selected]: selected === option.value,
 								},

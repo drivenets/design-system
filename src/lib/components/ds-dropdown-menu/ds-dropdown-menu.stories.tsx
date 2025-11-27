@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DsDropdownMenu } from './ds-dropdown-menu';
-import { DsButton, DsCheckbox, DsIcon, DsRadioGroup, DsTextInput } from '@design-system/ui';
+import { DsButton, DsCheckbox, DsIcon, DsRadioGroup, DsTextInput, DsTypography } from '@design-system/ui';
 import './ds-dropdown-menu.stories.scss';
 
 const meta: Meta = {
@@ -144,8 +144,7 @@ export const Default: Story = {
 	},
 };
 
-export const MenuWithSeparator: Story = {
-	name: 'With Danger and Separator',
+export const WithSeparator: Story = {
 	parameters: {
 		docs: {
 			description: {
@@ -209,7 +208,7 @@ export const SelectableList: Story = {
 			<DsDropdownMenu.Root>
 				<DsDropdownMenu.Trigger>
 					<button className="trigger">
-						<span>{options.find((o) => o.value === selected)?.label || 'Select an option'}</span>
+						<span>{selected || 'Select an option'}</span>
 						<DsIcon icon="arrow_drop_down" />
 					</button>
 				</DsDropdownMenu.Trigger>
@@ -251,7 +250,7 @@ export const CheckboxList: Story = {
 	render: function Render() {
 		const [open, setOpen] = useState(false);
 		const [search, setSearch] = useState('');
-		const [selected, setSelected] = useState<Set<string>>(new Set(['item1']));
+		const [selected, setSelected] = useState(new Set(['item1']));
 
 		const items = [
 			{ id: 'item1', label: 'Menu text 1', description: 'Info Text' },
@@ -262,6 +261,8 @@ export const CheckboxList: Story = {
 			{ id: 'item3', label: 'Menu text 3', description: 'Info Text' },
 			{ id: 'item4', label: 'Menu text 4', description: 'Info Text' },
 			{ id: 'item5', label: 'Menu text 5', description: 'Info Text' },
+			{ id: 'item6', label: 'Menu text 6', description: 'Info Text' },
+			{ id: 'item7', label: 'Menu text 7', description: 'Info Text' },
 		];
 
 		const filteredItems = items.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
@@ -317,13 +318,19 @@ export const CheckboxList: Story = {
 						>
 							<DsCheckbox checked={selected.has(item.id)} onCheckedChange={() => toggleSelection(item.id)} />
 							<div className="item-content">
-								<div className="item-label">{item.label}</div>
-								<div className="item-description">{item.description}</div>
+								<DsTypography className="item-label" variant="body-sm-reg">
+									{item.label}
+								</DsTypography>
+								<DsTypography className="item-description" variant="body-xs-reg">
+									{item.description}
+								</DsTypography>
 							</div>
 						</DsDropdownMenu.Item>
 					))}
 					<DsDropdownMenu.Group>
-						<DsDropdownMenu.GroupLabel>Group Name</DsDropdownMenu.GroupLabel>
+						{!!filteredGroupedItems.length && (
+							<DsDropdownMenu.GroupLabel>Group Name</DsDropdownMenu.GroupLabel>
+						)}
 						<DsDropdownMenu.GroupContent>
 							{filteredGroupedItems.map((item) => (
 								<DsDropdownMenu.Item
@@ -338,8 +345,12 @@ export const CheckboxList: Story = {
 										onCheckedChange={() => toggleSelection(item.id)}
 									/>
 									<div className="item-content">
-										<div className="item-label">{item.label}</div>
-										<div className="item-description">{item.description}</div>
+										<DsTypography className="item-label" variant="body-sm-reg">
+											{item.label}
+										</DsTypography>
+										<DsTypography className="item-description" variant="body-xs-reg">
+											{item.description}
+										</DsTypography>
 									</div>
 								</DsDropdownMenu.Item>
 							))}
@@ -428,8 +439,12 @@ export const RadioList: Story = {
 							>
 								<DsRadioGroup.Item value={option.value} id={option.value} />
 								<div className="item-content">
-									<div className="item-label">{option.label}</div>
-									<div className="item-description">{option.description}</div>
+									<DsTypography className="item-label" variant="body-sm-reg">
+										{option.label}
+									</DsTypography>
+									<DsTypography className="item-description" variant="body-xs-reg">
+										{option.description}
+									</DsTypography>
 								</div>
 							</DsDropdownMenu.Item>
 						))}

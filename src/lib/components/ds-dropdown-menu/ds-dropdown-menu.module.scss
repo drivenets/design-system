@@ -3,22 +3,38 @@
 
 .content {
 	@include dropdown.dropdown-content;
-}
-
-.viewport {
-	@include dropdown.dropdown-viewport;
+	max-height: var(--radix-dropdown-menu-content-available-height);
+	overflow-y: auto;
 }
 
 .search {
-	padding: 4px;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	padding: var(--spacing-3xs);
 	border-bottom: 1px solid var(--color-border-secondary);
+	background-color: var(--color-background);
 }
 
 .item {
 	@include dropdown.dropdown-item;
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: var(--spacing-xs);
+
+	&.selected {
+		.indicator {
+			display: flex;
+			min-width: var(--icon-width-medium);
+			margin-left: auto;
+		}
+
+		&:hover {
+			.indicator {
+				color: var(--color-background-selected);
+			}
+		}
+	}
 }
 
 .itemIcon {
@@ -32,44 +48,59 @@
 .separator {
 	height: 1px;
 	background-color: var(--color-border-secondary);
-	margin: 2px 8px;
+	margin: var(--spacing-4xs) var(--spacing-xs);
 }
 
 .actions {
+	position: sticky;
+	bottom: -1px;
+	z-index: 1;
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	gap: 8px;
-	padding: 4px 8px;
+	gap: var(--spacing-xs);
+	padding: var(--spacing-3xs) var(--spacing-xs);
 	border-top: 1px solid var(--color-border-secondary);
+	background-color: var(--color-background);
 }
 
 .groupLabel {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 4px 8px;
+	padding: var(--spacing-3xs) var(--spacing-xs);
 	background-color: var(--color-background);
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	border: none;
+	transition: background-color 0.15s ease;
 
-	&Clickable {
-		cursor: pointer;
-		border: none;
-		background: none;
-		width: 100%;
-		text-align: left;
-		transition: background-color 0.15s ease;
-
-		&:hover {
-			background-color: var(--color-background-action-hover-weak);
-		}
+	&:hover {
+		background-color: var(--color-background-action-hover-weak);
 	}
+}
 
-	&Text {
-		flex: 1;
-	}
+.groupLabelIcon {
+	flex-shrink: 0;
 
-	&Icon {
-		flex-shrink: 0;
-		transition: transform 0.15s ease;
+	&Rotated {
+		transform: rotate(180deg);
+		transition: transform 0.2s ease-in-out;
 	}
+}
+
+/** Legacy classes */
+.content-legacy {
+	@include dropdown.dropdown-content;
+}
+
+.viewport-legacy {
+	@include dropdown.dropdown-viewport;
+}
+
+.item-legacy {
+	@include dropdown.dropdown-item;
+	@include typography.p-special;
+	@include typography.ellipsis;
 }
