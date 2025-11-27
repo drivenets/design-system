@@ -22,8 +22,6 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	maxLength,
 	placeholder,
 	disabled = false,
-	startAdornment,
-	endAdornment,
 	tabIndex,
 	slots,
 }) => {
@@ -46,7 +44,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 
 	return (
 		<div className={containerClass} style={style}>
-			{startAdornment && <div className={styles.adornment}>{startAdornment}</div>}
+			{slots?.startAdornment && <div className={styles.adornment}>{slots.startAdornment}</div>}
 			<InputWrapper>
 				<input
 					id={id}
@@ -67,7 +65,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 					tabIndex={tabIndex}
 				/>
 			</InputWrapper>
-			{endAdornment && <div className={styles.adornment}>{endAdornment}</div>}
+			{slots?.endAdornment && <div className={styles.adornment}>{slots.endAdornment}</div>}
 		</div>
 	);
 };

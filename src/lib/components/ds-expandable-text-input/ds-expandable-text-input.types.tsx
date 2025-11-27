@@ -1,7 +1,6 @@
 import { DsTextInputProps, IconType } from '@design-system/ui';
 
-export interface DsExpandableTextInputProps
-	extends Omit<DsTextInputProps, 'startAdornment' | 'endAdornment' | 'tabIndex' | 'slots'> {
+export interface DsExpandableTextInputProps extends Omit<DsTextInputProps, 'tabIndex' | 'slots'> {
 	/**
 	 * The icon to display inside the expandable input trigger button
 	 */

@@ -42,7 +42,7 @@ const DsFormControl = ({
 	status,
 	label,
 	required = false,
-	endAdornment,
+	slots,
 	message,
 	messageIcon = 'info',
 	className,
@@ -67,7 +67,7 @@ const DsFormControl = ({
 					>
 						{label}
 					</label>
-					{endAdornment && <div className={styles.endAdornment}>{endAdornment}</div>}
+					{slots?.endAdornment && <div className={styles.endAdornment}>{slots.endAdornment}</div>}
 				</div>
 
 				{children}

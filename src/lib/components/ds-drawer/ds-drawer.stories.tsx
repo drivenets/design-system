@@ -98,7 +98,7 @@ export const Default: Story = {
 					<DsTextInput
 						placeholder="Search..."
 						style={{ flex: 1 }}
-						startAdornment={<DsIcon icon="search" size="tiny" />}
+						slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
 					/>
 					<DsIcon icon="filter_list" size="tiny" />
 				</DsDrawer.Toolbar>

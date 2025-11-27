@@ -30,10 +30,6 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'boolean',
 			description: 'Indicates if the field is required',
 		},
-		endAdornment: {
-			control: 'object',
-			description: 'Adornment to display at the end of the label',
-		},
 		message: {
 			control: 'text',
 			description: 'Message to display below the form control',
@@ -128,7 +124,10 @@ export const WithDescription: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput placeholder="Search" startAdornment={<DsIcon icon="search" size="tiny" />} />
+				<DsFormControl.TextInput
+					placeholder="Search"
+					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+				/>
 			</>
 		),
 	},
@@ -141,28 +140,30 @@ export const WithHelpIcon: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		endAdornment: (
-			<button
-				type="button"
-				onClick={() => alert('Help clicked!')}
-				aria-label="Help"
-				style={{
-					background: 'none',
-					border: 'none',
-					padding: '4px',
-					cursor: 'pointer',
-					color: 'var(--neutral-3)',
-					display: 'flex',
-					alignItems: 'center',
-					justifyContent: 'center',
-					width: '16px',
-					height: '16px',
-					borderRadius: '50%',
-				}}
-			>
-				<DsIcon icon="info" size="small" />
-			</button>
-		),
+		slots: {
+			endAdornment: (
+				<button
+					type="button"
+					onClick={() => alert('Help clicked!')}
+					aria-label="Help"
+					style={{
+						background: 'none',
+						border: 'none',
+						padding: '4px',
+						cursor: 'pointer',
+						color: 'var(--neutral-3)',
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						width: '16px',
+						height: '16px',
+						borderRadius: '50%',
+					}}
+				>
+					<DsIcon icon="info" size="small" />
+				</button>
+			),
+		},
 		children: (
 			<>
 				<DsFormControl.Description>
@@ -186,7 +187,10 @@ export const WithHelpIcon: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput placeholder="Search" startAdornment={<DsIcon icon="search" size="tiny" />} />
+				<DsFormControl.TextInput
+					placeholder="Search"
+					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+				/>
 			</>
 		),
 	},
@@ -201,7 +205,10 @@ export const WithIcon: Story = {
 		required: true,
 		message: 'This is a message',
 		children: (
-			<DsFormControl.TextInput placeholder="Input" startAdornment={<DsIcon icon="call" size="tiny" />} />
+			<DsFormControl.TextInput
+				placeholder="Input"
+				slots={{ startAdornment: <DsIcon icon="call" size="tiny" /> }}
+			/>
 		),
 	},
 	play: async ({ canvasElement }) => {
@@ -238,7 +245,10 @@ export const Success: Story = {
 					</button>{' '}
 					can be added.
 				</DsFormControl.Description>
-				<DsFormControl.TextInput type="text" endAdornment={<DsIcon icon="visibility" size="tiny" />} />
+				<DsFormControl.TextInput
+					type="text"
+					slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
+				/>
 			</>
 		),
 	},
@@ -277,8 +287,10 @@ export const Error: Story = {
 					can be added.
 				</DsFormControl.Description>
 				<DsFormControl.TextInput
-					startAdornment={<DsIcon icon="search" size="tiny" />}
-					endAdornment={<DsIcon icon="error" size="tiny" />}
+					slots={{
+						startAdornment: <DsIcon icon="search" size="tiny" />,
+						endAdornment: <DsIcon icon="error" size="tiny" />,
+					}}
 				/>
 			</>
 		),

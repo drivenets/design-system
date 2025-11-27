@@ -32,10 +32,6 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'boolean',
 			description: 'Indicates if the field is required',
 		},
-		endAdornment: {
-			control: 'object',
-			description: 'Adornment to display at the end of the label',
-		},
 		message: {
 			control: 'text',
 			description: 'Message to display below the form control',
@@ -255,16 +251,18 @@ export const WithHelpIcon: Story = {
 			<DsFormControl
 				label="Input"
 				required={true}
-				endAdornment={
-					<button
-						type="button"
-						className={styles.helpIcon}
-						onClick={() => alert('Help clicked!')}
-						aria-label="Help"
-					>
-						<DsIcon icon="info" size="small" />
-					</button>
-				}
+				slots={{
+					endAdornment: (
+						<button
+							type="button"
+							className={styles.helpIcon}
+							onClick={() => alert('Help clicked!')}
+							aria-label="Help"
+						>
+							<DsIcon icon="info" size="small" />
+						</button>
+					),
+				}}
 			>
 				<DsFormControl.Description>
 					<DefaultDescription />

@@ -52,50 +52,51 @@ export function DsExpandableTextInput({
 			}}
 			slots={{
 				inputWrapper: InputExpander,
+				startAdornment: (
+					<button
+						type="button"
+						className={styles.trigger}
+						aria-label="Open text input"
+						aria-hidden={expanded}
+						tabIndex={expanded ? -1 : 0}
+						onClick={() => {
+							if (props.disabled) {
+								return;
+							}
+
+							setExpanded(true);
+
+							ref.current?.focus();
+						}}
+					>
+						<DsIcon icon={icon} size="small" />
+					</button>
+				),
+
+				endAdornment: (
+					<DsButton
+						design="v1.2"
+						size="small"
+						buttonType="tertiary"
+						variant="filled"
+						className={styles.clearTrigger}
+						onClick={() => {
+							setExpanded(false);
+
+							if (ref.current) {
+								ref.current.blur();
+
+								// Manually clear the input in uncontrolled mode.
+								ref.current.value = '';
+							}
+
+							onClear?.();
+						}}
+					>
+						Clear
+					</DsButton>
+				),
 			}}
-			startAdornment={
-				<button
-					type="button"
-					className={styles.trigger}
-					aria-label="Open text input"
-					aria-hidden={expanded}
-					tabIndex={expanded ? -1 : 0}
-					onClick={() => {
-						if (props.disabled) {
-							return;
-						}
-
-						setExpanded(true);
-
-						ref.current?.focus();
-					}}
-				>
-					<DsIcon icon={icon} size="small" />
-				</button>
-			}
-			endAdornment={
-				<DsButton
-					design="v1.2"
-					size="small"
-					buttonType="tertiary"
-					variant="filled"
-					className={styles.clearTrigger}
-					onClick={() => {
-						setExpanded(false);
-
-						if (ref.current) {
-							ref.current.blur();
-
-							// Manually clear the input in uncontrolled mode.
-							ref.current.value = '';
-						}
-
-						onClear?.();
-					}}
-				>
-					Clear
-				</DsButton>
-			}
 		/>
 	);
 }

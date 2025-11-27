@@ -81,14 +81,6 @@ export interface DsTextInputProps {
 	 * Whether the input is disabled
 	 */
 	disabled?: boolean;
-	/**
-	 * Adornment to display at the start of the input
-	 */
-	startAdornment?: React.ReactNode;
-	/**
-	 * Adornment to display at the end of the input
-	 */
-	endAdornment?: React.ReactNode;
 
 	/**
 	 * The tabIndex of the input
@@ -100,5 +92,14 @@ export interface DsTextInputProps {
 		 * Custom component to wrap the input element
 		 */
 		inputWrapper?: ComponentType<{ children: React.ReactNode }>;
+
+		/**
+		 * Adornment to display at the start of the input
+		 */
+		startAdornment?: React.ReactNode;
+		/**
+		 * Adornment to display at the end of the input
+		 */
+		endAdornment?: React.ReactNode;
 	};
 }

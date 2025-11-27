@@ -21,10 +21,13 @@ export interface DsFormControlProps extends React.PropsWithChildren {
 	 * Marks the field as required
 	 */
 	required?: boolean;
-	/**
-	 * Adornment to display at the end of the label
-	 */
-	endAdornment?: React.ReactNode;
+
+	slots?: {
+		/**
+		 * Adornment to display at the end of the label
+		 */
+		endAdornment?: React.ReactNode;
+	};
 	/**
 	 * Message under the control
 	 */

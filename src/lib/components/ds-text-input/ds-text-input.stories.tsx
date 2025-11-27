@@ -36,14 +36,6 @@ const meta: Meta<typeof DsTextInput> = {
 			control: 'text',
 			description: 'The current value',
 		},
-		startAdornment: {
-			control: false,
-			description: 'Adornment to display at the start of the input',
-		},
-		endAdornment: {
-			control: false,
-			description: 'Adornment to display at the end of the input',
-		},
 		onChange: { action: 'changed' },
 		onValueChange: { action: 'value changed' },
 	},
@@ -149,17 +141,19 @@ export const Controlled: Story = {
 export const WithStartAdornment: Story = {
 	args: {
 		placeholder: 'Enter amount...',
-		startAdornment: (
-			<span
-				style={{
-					color: 'var(--color-font-secondary)',
-					fontSize: '12px',
-					fontWeight: 'bold',
-				}}
-			>
-				$
-			</span>
-		),
+		slots: {
+			startAdornment: (
+				<span
+					style={{
+						color: 'var(--color-font-secondary)',
+						fontSize: '12px',
+						fontWeight: 'bold',
+					}}
+				>
+					$
+				</span>
+			),
+		},
 		style: { width: '200px' },
 	},
 };
@@ -173,11 +167,13 @@ export const WithEndAdornment: Story = {
 				placeholder="Enter text..."
 				value={value}
 				onValueChange={setValue}
-				endAdornment={
-					<button type="button" onClick={() => setValue('')}>
-						<DsIcon icon="close" size="tiny" />
-					</button>
-				}
+				slots={{
+					endAdornment: (
+						<button type="button" onClick={() => setValue('')}>
+							<DsIcon icon="close" size="tiny" />
+						</button>
+					),
+				}}
 				style={{ width: '200px' }}
 			/>
 		);
@@ -193,12 +189,14 @@ export const WithBothAdornments: Story = {
 				placeholder="Search..."
 				value={value}
 				onValueChange={setValue}
-				startAdornment={<DsIcon icon="search" size="tiny" />}
-				endAdornment={
-					<button type="button" onClick={() => setValue('')}>
-						<DsIcon icon="close" size="tiny" />
-					</button>
-				}
+				slots={{
+					startAdornment: <DsIcon icon="search" size="tiny" />,
+					endAdornment: (
+						<button type="button" onClick={() => setValue('')}>
+							<DsIcon icon="close" size="tiny" />
+						</button>
+					),
+				}}
 				style={{ width: '200px' }}
 			/>
 		);
@@ -217,25 +215,27 @@ export const CustomEmailAdornments: Story = {
 				placeholder="Enter email address..."
 				value={value}
 				onValueChange={setValue}
-				startAdornment={
-					<span
-						style={{
-							backgroundColor: 'var(--color-background-action-weak)',
-							borderRadius: '4px',
-							padding: '2px 6px',
-							fontSize: '12px',
-							color: 'var(--color-font-secondary)',
-							fontWeight: 'bold',
-						}}
-					>
-						@
-					</span>
-				}
-				endAdornment={
-					<button type="button" onClick={() => console.log('Send clicked')}>
-						<DsIcon icon="send" size="tiny" filled={!!value} />
-					</button>
-				}
+				slots={{
+					startAdornment: (
+						<span
+							style={{
+								backgroundColor: 'var(--color-background-action-weak)',
+								borderRadius: '4px',
+								padding: '2px 6px',
+								fontSize: '12px',
+								color: 'var(--color-font-secondary)',
+								fontWeight: 'bold',
+							}}
+						>
+							@
+						</span>
+					),
+					endAdornment: (
+						<button type="button" onClick={() => console.log('Send clicked')}>
+							<DsIcon icon="send" size="tiny" filled={!!value} />
+						</button>
+					),
+				}}
 				style={{ width: '250px' }}
 			/>
 		);
@@ -258,16 +258,18 @@ export const DisabledAdornments: Story = {
 	args: {
 		value: 'Disabled value',
 		disabled: true,
-		startAdornment: (
-			<button type="button" disabled={true}>
-				<DsIcon icon="lock" size="tiny" />
-			</button>
-		),
-		endAdornment: (
-			<button type="button" disabled={true}>
-				<DsIcon icon="visibility" size="tiny" />
-			</button>
-		),
+		slots: {
+			startAdornment: (
+				<button type="button" disabled={true}>
+					<DsIcon icon="lock" size="tiny" />
+				</button>
+			),
+			endAdornment: (
+				<button type="button" disabled={true}>
+					<DsIcon icon="visibility" size="tiny" />
+				</button>
+			),
+		},
 		style: { width: '200px' },
 	},
 };
@@ -291,14 +293,14 @@ export const Interactive: Story = {
 					placeholder="Type something..."
 					value={value}
 					onValueChange={handleValueChange}
-					startAdornment={<DsIcon icon="search" size="tiny" />}
-					endAdornment={
-						showClear && (
+					slots={{
+						startAdornment: <DsIcon icon="search" size="tiny" />,
+						endAdornment: showClear && (
 							<button type="button" onClick={handleClear}>
 								<DsIcon icon="close" size="tiny" />
 							</button>
-						)
-					}
+						),
+					}}
 					style={{ width: '200px' }}
 				/>
 				<div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--color-font-secondary)' }}>
