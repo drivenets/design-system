@@ -50,7 +50,9 @@ export function DsExpandableTextInput({
 					setExpanded(false);
 				}
 			}}
-			InputWrapper={InputExpander}
+			slots={{
+				inputWrapper: InputExpander,
+			}}
 			startAdornment={
 				<button
 					type="button"

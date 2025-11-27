@@ -90,7 +90,15 @@ export interface DsTextInputProps {
 	 */
 	endAdornment?: React.ReactNode;
 
+	/**
+	 * The tabIndex of the input
+	 */
 	tabIndex?: number;
 
-	InputWrapper?: ComponentType<{ children: React.ReactNode }>;
+	slots?: {
+		/**
+		 * Custom component to wrap the input element
+		 */
+		inputWrapper?: ComponentType<{ children: React.ReactNode }>;
+	};
 }

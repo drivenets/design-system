@@ -1,6 +1,6 @@
 .expandableInput {
 	width: max-content;
-	transition: 0.3s all;
+	transition: 0.3s padding;
 
 	&:not(.expanded) {
 		gap: 0;
@@ -33,7 +33,7 @@
 	}
 
 	.clearTrigger {
-		transition: 0.3s all;
+		transition: 0.3s opacity;
 	}
 
 	&:not(.expanded) .clearTrigger {
@@ -50,12 +50,12 @@
 		display: grid;
 		grid-template-columns: 0fr;
 		overflow: hidden;
-		transition: 0.3s all;
+		transition: 0.3s grid-template-columns;
 
 		input {
 			min-width: 0;
 			opacity: 0;
-			transition: 0.15s all;
+			transition: 0.15s opacity;
 		}
 	}
 
@@ -64,7 +64,7 @@
 
 		input {
 			opacity: 1;
-			transition: 0.3s all 0.15s;
+			transition: 0.3s opacity 0.15s;
 		}
 	}
 }

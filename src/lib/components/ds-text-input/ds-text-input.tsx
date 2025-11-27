@@ -25,8 +25,10 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	startAdornment,
 	endAdornment,
 	tabIndex,
-	InputWrapper = Fragment,
+	slots,
 }) => {
+	const InputWrapper = slots?.inputWrapper ?? Fragment;
+
 	const containerClass = classNames(
 		styles.textInputContainer,
 		{
