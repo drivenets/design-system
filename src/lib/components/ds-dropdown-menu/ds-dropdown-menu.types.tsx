@@ -132,21 +132,6 @@ export interface DsDropdownMenuTriggerProps {
  */
 export interface DsDropdownMenuContentProps {
 	/**
-	 * The gap between the trigger and dropdown content in pixels
-	 * @default 0
-	 */
-	sideOffset?: number;
-	/**
-	 * The alignment of the dropdown content
-	 * @default 'center'
-	 */
-	align?: 'start' | 'center' | 'end';
-	/**
-	 * The side of the dropdown content
-	 * @default 'bottom'
-	 */
-	side?: 'top' | 'right' | 'bottom' | 'left';
-	/**
 	 * Whether to render in place instead of using portals
 	 * @default false
 	 */
@@ -177,6 +162,17 @@ export interface DsDropdownMenuItemProps {
 	 * Whether the item is selected (shows check indicator)
 	 */
 	selected?: boolean;
+	/**
+	 * Prevents the menu from closing when this item is clicked
+	 * Useful for checkbox/radio items that should allow multiple selections
+	 * @default false
+	 */
+	preventClose?: boolean;
+	/**
+	 * Optional unique value for the menu item
+	 * If not provided, a stable ID will be generated automatically
+	 */
+	value?: string;
 	/**
 	 * Click handler
 	 */

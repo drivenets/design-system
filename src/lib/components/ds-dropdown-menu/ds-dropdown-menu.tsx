@@ -1,5 +1,7 @@
-import React, { createContext, Fragment, useContext, useState } from 'react';
+import React, { createContext, Fragment, useContext, useId, useState } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { Menu } from '@ark-ui/react/menu';
+import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import styles from './ds-dropdown-menu.module.scss';
 import { DsIcon } from '../ds-icon';
@@ -38,17 +40,23 @@ const Root: React.FC<DsDropdownMenuRootProps> = ({ open, onOpenChange, children 
 	const isControlled = open !== undefined;
 	const isOpen = isControlled ? open : internalOpen;
 
-	const handleOpenChange = (newOpen: boolean) => {
+	const handleOpenChange = (details: { open: boolean }) => {
 		if (!isControlled) {
-			setInternalOpen(newOpen);
+			setInternalOpen(details.open);
 		}
-		onOpenChange?.(newOpen);
+		onOpenChange?.(details.open);
+	};
+
+	// Default positioning for dropdown menus
+	const positioning = {
+		placement: 'bottom-start' as const,
+		gutter: 4,
 	};
 
 	return (
-		<DropdownMenu.Root open={isOpen} onOpenChange={handleOpenChange}>
+		<Menu.Root open={isOpen} onOpenChange={handleOpenChange} positioning={positioning}>
 			{children}
-		</DropdownMenu.Root>
+		</Menu.Root>
 	);
 };
 
@@ -57,9 +65,9 @@ const Root: React.FC<DsDropdownMenuRootProps> = ({ open, onOpenChange, children 
  */
 const Trigger: React.FC<DsDropdownMenuTriggerProps> = ({ asChild, children, className, style, ...props }) => {
 	return (
-		<DropdownMenu.Trigger asChild={asChild} className={className} style={style} {...props}>
+		<Menu.Trigger asChild={asChild} className={className} style={style} {...props}>
 			{children}
-		</DropdownMenu.Trigger>
+		</Menu.Trigger>
 	);
 };
 
@@ -67,29 +75,24 @@ const Trigger: React.FC<DsDropdownMenuTriggerProps> = ({ asChild, children, clas
  * Content component - wraps the dropdown content
  */
 const Content: React.FC<DsDropdownMenuContentProps> = ({
-	sideOffset = 0,
-	align = 'center',
-	side = 'bottom',
 	disablePortal = false,
 	children,
 	className,
 	style,
 }) => {
-	const Wrapper = disablePortal ? Fragment : DropdownMenu.Portal;
-
-	return (
-		<Wrapper>
-			<DropdownMenu.Content
-				className={classNames(styles.content, styles.viewport, className)}
-				sideOffset={sideOffset}
-				align={align}
-				side={side}
-				style={style}
-			>
+	const content = (
+		<Menu.Positioner>
+			<Menu.Content className={classNames(styles.content, className)} style={style}>
 				{children}
-			</DropdownMenu.Content>
-		</Wrapper>
+			</Menu.Content>
+		</Menu.Positioner>
 	);
+
+	if (disablePortal) {
+		return content;
+	}
+
+	return <Portal>{content}</Portal>;
 };
 
 /**
@@ -98,14 +101,33 @@ const Content: React.FC<DsDropdownMenuContentProps> = ({
 const Item: React.FC<DsDropdownMenuItemProps> = ({
 	disabled,
 	selected,
+	preventClose = false,
+	value,
 	onClick,
 	children,
 	className,
 	style,
 }) => {
+	const generatedId = useId();
+	const itemValue = value ?? generatedId;
+
+	const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+		if (onClick) {
+			onClick(e);
+		}
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+		if ((e.key === 'Enter' || e.key === ' ') && onClick) {
+			e.preventDefault();
+			onClick(e as unknown as React.MouseEvent<HTMLElement>);
+		}
+	};
+
 	return (
-		<DropdownMenu.Item
+		<Menu.Item
 			disabled={disabled}
+			closeOnSelect={!preventClose}
 			className={classNames(
 				styles.item,
 				{
@@ -114,11 +136,13 @@ const Item: React.FC<DsDropdownMenuItemProps> = ({
 				className,
 			)}
 			style={style}
-			onClick={onClick}
+			value={itemValue}
+			onClick={handleClick}
+			onKeyDown={handleKeyDown}
 		>
 			{children}
 			{selected && <DsIcon className={styles.indicator} icon="check" />}
-		</DropdownMenu.Item>
+		</Menu.Item>
 	);
 };
 
@@ -138,7 +162,14 @@ const Search: React.FC<DsDropdownMenuSearchProps> = ({ children, className, styl
  */
 const Actions: React.FC<DsDropdownMenuActionsProps> = ({ children, className, style }) => {
 	return (
-		<div className={classNames(styles.actions, className)} style={style}>
+		<div
+			className={classNames(styles.actions, className)}
+			style={style}
+			role="menu"
+			aria-label="Menu actions"
+			tabIndex={-1}
+			onKeyDown={(e) => e.stopPropagation()}
+		>
 			{children}
 		</div>
 	);
@@ -197,8 +228,25 @@ const GroupLabel: React.FC<DsDropdownMenuGroupLabelProps> = ({ children, classNa
 
 	const { collapsed, toggle } = context;
 
+	const handleClick = () => {
+		toggle();
+	};
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			toggle();
+		}
+	};
+
 	return (
-		<button type="button" className={classNames(styles.groupLabel, className)} style={style} onClick={toggle}>
+		<button
+			type="button"
+			className={classNames(styles.groupLabel, className)}
+			style={style}
+			onClick={handleClick}
+			onKeyDown={handleKeyDown}
+		>
 			<DsTypography variant="body-sm-md">{children}</DsTypography>
 			<DsIcon
 				icon="keyboard_arrow_down"
@@ -243,7 +291,7 @@ const GroupContent: React.FC<DsDropdownMenuGroupContentProps> = ({ children, cla
  * Separator component - renders a visual divider
  */
 const Separator: React.FC<DsDropdownMenuSeparatorProps> = ({ className, style }) => {
-	return <DropdownMenu.Separator className={classNames(styles.separator, className)} style={style} />;
+	return <Menu.Separator className={classNames(styles.separator, className)} style={style} />;
 };
 
 /**

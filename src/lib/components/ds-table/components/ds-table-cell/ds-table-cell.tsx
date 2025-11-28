@@ -49,30 +49,34 @@ export const DsTableCell = <TData, TValue>({
 					})}
 					{hasSecondaryRowActions && (
 						<DsDropdownMenu.Root>
-							<DsDropdownMenu.Trigger>
-								<span
-									className={classnames(styles.rowActionIcon, styles.secondaryActionsTrigger)}
+							<DsDropdownMenu.Trigger
+								className={classnames(styles.rowActionIcon, styles.secondaryActionsTrigger)}
+								aria-label="More actions"
+								asChild
+							>
+								<button
+									type="button"
 									title="More actions"
-									tabIndex={0}
-									role="button"
 									aria-label="More actions"
+									onClick={(e) => e.stopPropagation()}
 								>
 									<DsIcon icon="more_vert" size="tiny" />
-								</span>
+								</button>
 							</DsDropdownMenu.Trigger>
-							<DsDropdownMenu.Content sideOffset={4} align="end" side="bottom">
-								{secondaryRowActions.map((action, i) => {
+							<DsDropdownMenu.Content>
+								{secondaryRowActions.map((action) => {
 									const isDisabled = action.disabled?.(row.original);
 									return (
 										<DsDropdownMenu.Item
-											key={action.label || i}
+											key={action.label}
 											disabled={isDisabled}
 											onClick={(e) => {
 												e.stopPropagation();
 
-												if (!isDisabled) {
-													action.onClick(row.original);
+												if (isDisabled) {
+													return;
 												}
+												action.onClick(row.original);
 											}}
 										>
 											{action.icon && <DsIcon icon={action.icon} />}

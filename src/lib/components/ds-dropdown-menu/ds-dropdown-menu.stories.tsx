@@ -23,38 +23,6 @@ const meta: Meta = {
 			table: { category: 'Root' },
 		},
 		// Content component props
-		sideOffset: {
-			control: 'number',
-			description: 'The distance in pixels from the trigger',
-			table: {
-				category: 'Content',
-				defaultValue: {
-					summary: '0',
-				},
-			},
-		},
-		align: {
-			control: 'select',
-			options: ['start', 'center', 'end'],
-			description: 'The preferred alignment against the trigger',
-			table: {
-				category: 'Content',
-				defaultValue: {
-					summary: 'center',
-				},
-			},
-		},
-		side: {
-			control: 'select',
-			options: ['top', 'right', 'bottom', 'left'],
-			description: 'The preferred side of the trigger to render against',
-			table: {
-				category: 'Content',
-				defaultValue: {
-					summary: 'bottom',
-				},
-			},
-		},
 		disablePortal: {
 			control: 'boolean',
 			description: 'Whether to disable rendering in a portal',
@@ -115,13 +83,11 @@ export const Default: Story = {
 
 		return (
 			<DsDropdownMenu.Root>
-				<DsDropdownMenu.Trigger>
-					<button className="trigger">
-						<span>Actions</span>
-						<DsIcon icon="more_vert" />
-					</button>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>Actions</span>
+					<DsIcon icon="more_vert" />
 				</DsDropdownMenu.Trigger>
-				<DsDropdownMenu.Content sideOffset={4}>
+				<DsDropdownMenu.Content>
 					<DsDropdownMenu.Item onClick={handleEdit}>
 						<DsIcon icon="edit" />
 						<span>Edit</span>
@@ -155,13 +121,11 @@ export const WithSeparator: Story = {
 	render: function Render() {
 		return (
 			<DsDropdownMenu.Root>
-				<DsDropdownMenu.Trigger>
-					<button className="trigger">
-						<span>Actions</span>
-						<DsIcon icon="more_vert" />
-					</button>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>Actions</span>
+					<DsIcon icon="more_vert" />
 				</DsDropdownMenu.Trigger>
-				<DsDropdownMenu.Content sideOffset={4}>
+				<DsDropdownMenu.Content>
 					<DsDropdownMenu.Item onClick={() => console.log('Edit')}>
 						<DsIcon icon="edit" />
 						<span>Edit</span>
@@ -206,13 +170,11 @@ export const SelectableList: Story = {
 
 		return (
 			<DsDropdownMenu.Root>
-				<DsDropdownMenu.Trigger>
-					<button className="trigger">
-						<span>{selected || 'Select an option'}</span>
-						<DsIcon icon="arrow_drop_down" />
-					</button>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>{selected || 'Select an option'}</span>
+					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>
-				<DsDropdownMenu.Content sideOffset={4}>
+				<DsDropdownMenu.Content>
 					<DsDropdownMenu.Search>
 						<DsTextInput
 							placeholder="Search"
@@ -292,13 +254,11 @@ export const CheckboxList: Story = {
 
 		return (
 			<DsDropdownMenu.Root open={open} onOpenChange={setOpen}>
-				<DsDropdownMenu.Trigger>
-					<button className="trigger">
-						<span>Multi Select ({selected.size})</span>
-						<DsIcon icon="arrow_drop_down" />
-					</button>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>Multi Select ({selected.size})</span>
+					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>
-				<DsDropdownMenu.Content sideOffset={4}>
+				<DsDropdownMenu.Content>
 					<DsDropdownMenu.Search>
 						<DsTextInput
 							placeholder="Search"
@@ -309,13 +269,7 @@ export const CheckboxList: Story = {
 						/>
 					</DsDropdownMenu.Search>
 					{filteredItems.map((item) => (
-						<DsDropdownMenu.Item
-							key={item.id}
-							onClick={(e) => {
-								e.preventDefault();
-								toggleSelection(item.id);
-							}}
-						>
+						<DsDropdownMenu.Item key={item.id} preventClose onClick={() => toggleSelection(item.id)}>
 							<DsCheckbox checked={selected.has(item.id)} onCheckedChange={() => toggleSelection(item.id)} />
 							<div className="item-content">
 								<DsTypography className="item-label" variant="body-sm-reg">
@@ -333,13 +287,7 @@ export const CheckboxList: Story = {
 						)}
 						<DsDropdownMenu.GroupContent>
 							{filteredGroupedItems.map((item) => (
-								<DsDropdownMenu.Item
-									key={item.id}
-									onClick={(e) => {
-										e.preventDefault();
-										toggleSelection(item.id);
-									}}
-								>
+								<DsDropdownMenu.Item key={item.id} preventClose onClick={() => toggleSelection(item.id)}>
 									<DsCheckbox
 										checked={selected.has(item.id)}
 										onCheckedChange={() => toggleSelection(item.id)}
@@ -414,13 +362,11 @@ export const RadioList: Story = {
 
 		return (
 			<DsDropdownMenu.Root open={open} onOpenChange={setOpen}>
-				<DsDropdownMenu.Trigger>
-					<button className="trigger">
-						<span>{options.find((o) => o.value === tempSelected)?.label || 'Select an option'}</span>
-						<DsIcon icon="arrow_drop_down" />
-					</button>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>{tempSelected || 'Select an option'}</span>
+					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>
-				<DsDropdownMenu.Content sideOffset={4}>
+				<DsDropdownMenu.Content>
 					<DsDropdownMenu.Search>
 						<DsTextInput
 							placeholder="Search"
@@ -434,6 +380,7 @@ export const RadioList: Story = {
 						{filteredOptions.map((option) => (
 							<DsDropdownMenu.Item
 								key={option.value}
+								preventClose
 								onClick={() => setTempSelected(option.value)}
 								className={tempSelected === option.value ? 'radio-selected' : ''}
 							>

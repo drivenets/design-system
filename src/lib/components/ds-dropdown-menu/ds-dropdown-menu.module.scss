@@ -3,7 +3,9 @@
 
 .content {
 	@include dropdown.dropdown-content;
-	max-height: var(--radix-dropdown-menu-content-available-height);
+	display: flex;
+	flex-direction: column;
+	max-height: var(--available-height, 400px);
 	overflow-y: auto;
 }
 

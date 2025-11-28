@@ -43,7 +43,7 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 										{selectedOption?.label || item.label}
 										<DsIcon icon="arrow_drop_down" className={styles.dropdownIcon} />
 									</DsDropdownMenu.Trigger>
-									<DsDropdownMenu.Content sideOffset={4}>
+									<DsDropdownMenu.Content>
 										<DsDropdownMenu.Search>
 											<DsTextInput
 												placeholder="Search"
