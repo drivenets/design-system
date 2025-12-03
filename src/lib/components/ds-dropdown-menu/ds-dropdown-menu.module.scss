@@ -7,9 +7,14 @@
 	flex-direction: column;
 	max-height: var(--available-height, 400px);
 	overflow-y: auto;
+	width: auto;
 
 	&:focus-visible {
 		outline-offset: 2px;
+	}
+
+	&:is([hidden]) {
+		display: none;
 	}
 }
 

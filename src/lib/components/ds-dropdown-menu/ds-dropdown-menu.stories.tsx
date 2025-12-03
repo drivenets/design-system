@@ -89,8 +89,8 @@ export const SelectableList: Story = {
 		const filteredOptions = options.filter((opt) => opt.label.toLowerCase().includes(search.toLowerCase()));
 
 		return (
-			<DsDropdownMenu.Root onSelect={setSelected}>
-				<DsDropdownMenu.Trigger className="trigger">
+			<DsDropdownMenu.Root onSelect={setSelected} positioning={{ sameWidth: true }}>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
 					<span>{selected || 'Select an option'}</span>
 					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>
@@ -172,8 +172,14 @@ export const CheckboxList: Story = {
 		};
 
 		return (
-			<DsDropdownMenu.Root open={open} onOpenChange={setOpen} onSelect={toggleSelection} preventCloseOnSelect>
-				<DsDropdownMenu.Trigger className="trigger">
+			<DsDropdownMenu.Root
+				open={open}
+				onOpenChange={setOpen}
+				onSelect={toggleSelection}
+				positioning={{ sameWidth: true }}
+				preventCloseOnSelect
+			>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
 					<span>Multi Select ({selected.size})</span>
 					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>
@@ -287,8 +293,14 @@ export const RadioList: Story = {
 		};
 
 		return (
-			<DsDropdownMenu.Root open={open} onOpenChange={setOpen} onSelect={setTempSelected} preventCloseOnSelect>
-				<DsDropdownMenu.Trigger className="trigger">
+			<DsDropdownMenu.Root
+				open={open}
+				onOpenChange={setOpen}
+				onSelect={setTempSelected}
+				positioning={{ sameWidth: true }}
+				preventCloseOnSelect
+			>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
 					<span>{tempSelected || 'Select an option'}</span>
 					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>

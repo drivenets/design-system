@@ -69,15 +69,10 @@ export const DsTableCell = <TData, TValue>({
 									return (
 										<DsDropdownMenu.Item
 											key={action.label}
+											value={action.label}
 											disabled={isDisabled}
-											onClick={(e) => {
-												e.stopPropagation();
-
-												if (isDisabled) {
-													return;
-												}
-												action.onClick(row.original);
-											}}
+											onClick={(e) => e.stopPropagation()}
+											onSelect={() => action.onClick(row.original)}
 										>
 											{action.icon && <DsIcon icon={action.icon} />}
 											<span>{action.label}</span>

@@ -32,6 +32,11 @@ interface GroupContextValue {
 
 const GroupContext = createContext<GroupContextValue | null>(null);
 
+const DEFAULT_POSITIONING = {
+	placement: 'bottom-start' as const,
+	gutter: 4,
+};
+
 /**
  * Root component - manages dropdown state
  */
@@ -40,13 +45,15 @@ const Root: React.FC<DsDropdownMenuRootProps> = ({
 	onOpenChange,
 	onSelect,
 	onHighlightChange,
-	positioning = {
-		placement: 'bottom-start' as const,
-		gutter: 4,
-	},
+	positioning: customPositioning,
 	preventCloseOnSelect = false,
 	children,
 }) => {
+	const positioning = {
+		...DEFAULT_POSITIONING,
+		...customPositioning,
+	};
+
 	return (
 		<Menu.Root
 			open={open}
@@ -96,6 +103,7 @@ const Item: React.FC<DsDropdownMenuItemProps> = ({
 	selected,
 	value,
 	asChild,
+	onClick,
 	onSelect,
 	children,
 	className,
@@ -114,6 +122,7 @@ const Item: React.FC<DsDropdownMenuItemProps> = ({
 			style={style}
 			value={value}
 			asChild={asChild}
+			onClick={onClick}
 			onSelect={onSelect}
 		>
 			{children}

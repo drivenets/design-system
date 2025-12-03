@@ -11,7 +11,10 @@
 	background: var(--white);
 	cursor: pointer;
 	transition: border-color 0.2s;
-	width: 250px;
+
+	&.fixedWidth {
+		width: 250px;
+	}
 
 	&:hover {
 		border-color: var(--action-cta1);

@@ -169,6 +169,10 @@ export interface DsDropdownMenuItemProps
 	 * Callback when this specific item is selected
 	 */
 	onSelect?: () => void;
+	/**
+	 * Callback when this specific item is clicked
+	 */
+	onClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
 /**
