@@ -86,12 +86,13 @@ export const SelectableList: Story = {
 			{ value: 'option4', label: 'Option 4' },
 		];
 
+		const selectedOption = options.find((opt) => opt.value === selected)?.label;
 		const filteredOptions = options.filter((opt) => opt.label.toLowerCase().includes(search.toLowerCase()));
 
 		return (
 			<DsDropdownMenu.Root onSelect={setSelected} positioning={{ sameWidth: true }}>
 				<DsDropdownMenu.Trigger className="trigger fixedWidth">
-					<span>{selected || 'Select an option'}</span>
+					<span>{selectedOption || 'Select an option'}</span>
 					<DsIcon icon="arrow_drop_down" />
 				</DsDropdownMenu.Trigger>
 				<DsDropdownMenu.Content>

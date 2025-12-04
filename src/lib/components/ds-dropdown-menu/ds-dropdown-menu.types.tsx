@@ -3,9 +3,14 @@ import type { Menu } from '@ark-ui/react/menu';
 import { IconType } from '../ds-icon';
 
 /**
+ * Base positioning type
+ */
+type BasePositioning = NonNullable<Menu.RootProps['positioning']>;
+
+/**
  * Positioning options for dropdown menu
  */
-export type DsDropdownMenuPositioning = Menu.RootProps['positioning'];
+export type DsDropdownMenuPositioning = Pick<BasePositioning, 'placement' | 'gutter' | 'sameWidth'>;
 
 /**
  * DEPRECATED: Legacy dropdown menu option configuration
