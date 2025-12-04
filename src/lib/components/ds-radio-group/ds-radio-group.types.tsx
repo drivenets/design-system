@@ -1,29 +1,26 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import { type RadioGroupItemProps, type RadioGroupRootProps } from '@ark-ui/react/radio-group';
 
 /**
  * Props for the DsRadioGroup Root component
  */
 export interface DsRadioGroupRootProps
 	extends Pick<
-		RadioGroupPrimitive.RadioGroupProps,
-		'value' | 'defaultValue' | 'disabled' | 'name' | 'required' | 'className' | 'style'
+		RadioGroupRootProps,
+		'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'orientation' | 'children'
 	> {
 	/**
 	 * Event handler called when the selected value changes
 	 */
-	onValueChange?: (value: string) => void;
-	/**
-	 * The children to render (Radio items)
-	 */
-	children: ReactNode;
+	onValueChange?: (value: string | null) => void;
 }
 
 /**
  * Props for the DsRadioGroup Item component
  */
 export interface DsRadioGroupItemProps
-	extends Pick<RadioGroupPrimitive.RadioGroupItemProps, 'value' | 'disabled' | 'className' | 'style' | 'id'> {
+	extends Pick<RadioGroupItemProps, 'value' | 'disabled' | 'className' | 'style' | 'children'> {
 	/**
 	 * Optional label text for the radio item
 	 */

@@ -1,5 +1,6 @@
 import React from 'react';
 import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import { RadioGroup } from '@ark-ui/react/radio-group';
 import classNames from 'classnames';
 import styles from './ds-radio-group.module.scss';
 import {
@@ -11,21 +12,15 @@ import {
 /**
  * Root component - provides radio group context
  */
-const Root: React.FC<DsRadioGroupRootProps> = ({ className, children, ...props }) => (
-	<RadioGroupPrimitive.Root className={classNames(styles.radioGroupRoot, className)} {...props}>
+const Root: React.FC<DsRadioGroupRootProps> = ({ className, children, onValueChange, ...props }) => (
+	<RadioGroup.Root
+		className={classNames(styles.radioGroupRoot, className)}
+		onValueChange={(details) => onValueChange?.(details.value)}
+		{...props}
+	>
 		{children}
-	</RadioGroupPrimitive.Root>
+	</RadioGroup.Root>
 );
-
-const ItemPrimitive: React.FC<DsRadioGroupItemProps> = ({ className, ...props }) => {
-	return (
-		<RadioGroupPrimitive.Item className={classNames(styles.radioItem, className)} {...props}>
-			<div className={styles.radioItemWrapper}>
-				<RadioGroupPrimitive.Indicator className={styles.radioIndicator} />
-			</div>
-		</RadioGroupPrimitive.Item>
-	);
-};
 
 /**
  * Item component - renders a single radio button with optional label
@@ -35,25 +30,33 @@ const Item: React.FC<DsRadioGroupItemProps> = ({
 	label,
 	labelInfo,
 	className,
-	id,
 	style,
+	children,
 	...props
 }) => {
-	const itemId = id || value;
-
-	if (label) {
-		return (
-			<div className={classNames(styles.radioItemContainer, className)} style={style}>
-				<ItemPrimitive id={itemId} value={value} {...props} />
-				<label className={styles.radioLabel} htmlFor={itemId}>
+	return (
+		<RadioGroup.Item
+			value={value}
+			className={classNames(styles.radioItemContainer, className)}
+			style={style}
+			{...props}
+		>
+			<RadioGroup.ItemControl className={styles.radioItem}>
+				<div className={styles.radioItemWrapper}>
+					<div className={styles.radioIndicator} data-part="indicator" />
+				</div>
+			</RadioGroup.ItemControl>
+			<RadioGroup.ItemHiddenInput />
+			{label ? (
+				<RadioGroup.ItemText className={styles.radioLabel}>
 					{label}
 					{labelInfo && <div className={styles.labelInfo}>{labelInfo}</div>}
-				</label>
-			</div>
-		);
-	}
-
-	return <ItemPrimitive id={itemId} style={style} className={className} value={value} {...props} />;
+				</RadioGroup.ItemText>
+			) : (
+				children
+			)}
+		</RadioGroup.Item>
+	);
 };
 
 /**
@@ -102,14 +105,8 @@ export const DsRadioGroupLegacy: React.FC<DsRadioGroupLegacyProps> = ({
  *
  * @example
  * <DsRadioGroup.Root value={value} onValueChange={setValue}>
- *   <div>
- *     <DsRadioGroup.Item value="option1" id="option1" />
- *     <label htmlFor="option1">Option 1</label>
- *   </div>
- *   <div>
- *     <DsRadioGroup.Item value="option2" id="option2" />
- *     <label htmlFor="option2">Option 2</label>
- *   </div>
+ *   <DsRadioGroup.Item value="option1" label="Option 1" />
+ *   <DsRadioGroup.Item value="option2" label="Option 2" />
  * </DsRadioGroup.Root>
  */
 export const DsRadioGroup = {
