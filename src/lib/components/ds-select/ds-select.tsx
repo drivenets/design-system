@@ -8,6 +8,7 @@ import { DsIcon } from '../ds-icon';
 import { DsCheckbox, DsCheckboxProps } from '../ds-checkbox';
 import { SelectItemsChips } from './select-items-chips';
 import { DsTypography } from '../ds-typography';
+import { DsTextInput } from '../ds-text-input';
 
 const SEARCH_THRESHOLD = 13;
 const SELECT_ALL_VALUE = '__INTERNAL_SELECT_ALL_VALUE__';
@@ -144,13 +145,19 @@ const DsSelect = ({
 					<Select.Content className={styles.content}>
 						{userOptions.length > SEARCH_THRESHOLD && (
 							<div className={styles.searchInput}>
-								<DsIcon className={styles.searchIcon} icon="search" size="tiny" />
-								<input
-									type="text"
-									className={styles.searchInputField}
+								<DsTextInput
 									placeholder="Search"
 									value={searchTerm}
 									onChange={(e) => setSearchTerm(e.target.value)}
+									onKeyDown={(e) => {
+										// Prevent the select from opening/closing when pressing space in the search input.
+										if (e.key === ' ') {
+											e.stopPropagation();
+										}
+									}}
+									slots={{
+										startAdornment: <DsIcon icon="search" size="tiny" />,
+									}}
 								/>
 							</div>
 						)}

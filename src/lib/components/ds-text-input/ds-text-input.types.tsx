@@ -33,6 +33,10 @@ export interface DsTextInputProps {
 	 */
 	onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
 	/**
+	 * Callback when a key is pressed down
+	 */
+	onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+	/**
 	 * Callback when the value changes
 	 */
 	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -40,10 +44,6 @@ export interface DsTextInputProps {
 	 * Value change event handler (provides just the value)
 	 */
 	onValueChange?: (value: string) => void;
-	/**
-	 * Callback when the value changes
-	 */
-	onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 	/**
 	 * Additional CSS class names
 	 */
