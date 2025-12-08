@@ -241,7 +241,7 @@ export const Default: Story = {
 															{ label: 'Sales', value: 'sales' },
 															{ label: 'HR', value: 'hr' },
 														]}
-														onClear={() => handleValueChange('department', '')}
+														clearable
 														onValueChange={(value) => handleValueChange('department', value)}
 														onBlur={() => handleValueChange('department', field.value)}
 													/>
@@ -269,7 +269,7 @@ export const Default: Story = {
 															{ label: 'Junior', value: 'junior' },
 															{ label: 'Intern', value: 'intern' },
 														]}
-														onClear={() => handleValueChange('role', '')}
+														clearable
 														onValueChange={(value) => handleValueChange('role', value)}
 														onBlur={() => handleValueChange('role', field.value)}
 													/>
@@ -383,14 +383,12 @@ export const Default: Story = {
 		// Test department field validation
 		const departmentSelect = screen.getByLabelText('Department');
 		await userEvent.click(departmentSelect);
-		// await userEvent.keyboard('{Escape}');
 		await userEvent.tab();
 		await waitForMessage('Please select a department');
 
 		// Test role field validation
 		const roleSelect = screen.getByLabelText('Role');
 		await userEvent.click(roleSelect);
-		// await userEvent.keyboard('{Escape}');
 		await userEvent.tab();
 		await waitForMessage('Please select a role');
 

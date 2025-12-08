@@ -70,7 +70,6 @@ const DsSelect = ({
 				return;
 			}
 
-			console.log(details.value);
 			// "Select All" clicked in multi select mode.
 			const isSelectAllClicked = details.value.includes(SELECT_ALL_VALUE);
 
@@ -92,7 +91,14 @@ const DsSelect = ({
 	});
 
 	return (
-		<Select.RootProvider value={select}>
+		<Select.RootProvider
+			value={select}
+			// When rendering the Select inside a Modal, it has an `aria-hidden="true"` attribute
+			// which causes screen readers to ignore it.
+			//
+			// See: https://github.com/chakra-ui/ark/issues/3728
+			lazyMount
+		>
 			<Select.Control
 				className={classNames(styles.control, size === 'small' && styles.small, className)}
 				style={style}
