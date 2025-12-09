@@ -42,7 +42,7 @@
 	}
 
 	&:hover,
-	&:focus {
+	&:focus-within {
 		background: var(--action-hover-light);
 		color: var(--action-cta1);
 	}

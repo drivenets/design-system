@@ -306,6 +306,7 @@ $textarea-height-default: 120px;
 	grid-column: 1 / -1;
 	outline: none;
 	align-items: center;
+	padding: var(--spacing-3xs) var(--spacing-sm);
 
 	.triggerIcon {
 		grid-column: 3;

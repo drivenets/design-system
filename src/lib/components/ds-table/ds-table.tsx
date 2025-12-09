@@ -61,11 +61,13 @@ const DsTable = <TData extends { id: string }, TValue>({
 	onOrderChange,
 	columnFilters: externalColumnFilters,
 	onColumnFiltersChange,
+	columnVisibility: externalColumnVisibility,
+	onColumnVisibilityChange,
 }: DsDataTableProps<TData, TValue>) => {
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
-	const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
 	const [expandedRows, setExpandedRows] = React.useState<Record<string, boolean>>({});
 
@@ -92,6 +94,20 @@ const DsTable = <TData extends { id: string }, TValue>({
 		}
 	};
 
+	const columnVisibility = externalColumnVisibility ?? internalColumnVisibility;
+	const handleColumnVisibilityChange = (
+		updaterOrValue: VisibilityState | ((old: VisibilityState) => VisibilityState),
+	) => {
+		const newVisibility =
+			typeof updaterOrValue === 'function' ? updaterOrValue(columnVisibility) : updaterOrValue;
+
+		if (onColumnVisibilityChange) {
+			onColumnVisibilityChange(newVisibility);
+		} else {
+			setInternalColumnVisibility(newVisibility);
+		}
+	};
+
 	const handleSortingChange = (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
 		const newSorting = typeof updaterOrValue === 'function' ? updaterOrValue(sorting) : updaterOrValue;
 		setSorting(newSorting);
@@ -115,7 +131,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 		getSortedRowModel: getSortedRowModel(),
 		onColumnFiltersChange: handleColumnFiltersChange,
 		getFilteredRowModel: getFilteredRowModel(),
-		onColumnVisibilityChange: setColumnVisibility,
+		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onRowSelectionChange: handleRowSelectionChange,
 		getRowId: (row) => row.id,
 		state: {
@@ -124,7 +140,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 			columnVisibility,
 			rowSelection,
 		},
-		enableRowSelection: selectable,
+		enableRowSelection: typeof selectable === 'function' ? (row) => selectable(row.original) : selectable,
 	});
 
 	useImperativeHandle(
@@ -237,7 +253,10 @@ const DsTable = <TData extends { id: string }, TValue>({
 						style={
 							virtualized
 								? ({
-										'--ds-table-columns-template': createColumnsGridTemplate({ columns, selectable }),
+										'--ds-table-columns-template': createColumnsGridTemplate({
+											columns,
+											selectable: !!selectable,
+										}),
 									} as React.CSSProperties)
 								: undefined
 						}

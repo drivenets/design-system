@@ -32,10 +32,11 @@ export const DsTableCell = <TData, TValue>({
 								className={classnames(styles.rowActionIcon, { [styles.disabled]: isDisabled })}
 								title={action.tooltip || action.label}
 								onClick={(e) => {
+									e.stopPropagation();
+
 									if (isDisabled) {
 										return;
 									}
-									e.stopPropagation();
 									action.onClick(row.original);
 								}}
 								tabIndex={isDisabled ? -1 : 0}
@@ -47,27 +48,39 @@ export const DsTableCell = <TData, TValue>({
 						);
 					})}
 					{hasSecondaryRowActions && (
-						<DsDropdownMenu
-							options={secondaryRowActions.map((action) => ({
-								label: action.label,
-								icon: action.icon,
-								disabled: action.disabled?.(row.original),
-								onClick: () => action.onClick(row.original),
-							}))}
-							contentGap={4}
-							align="end"
-							side="bottom"
-						>
-							<span
+						<DsDropdownMenu.Root>
+							<DsDropdownMenu.Trigger
 								className={classnames(styles.rowActionIcon, styles.secondaryActionsTrigger)}
-								title="More actions"
-								tabIndex={0}
-								role="button"
 								aria-label="More actions"
+								asChild
 							>
-								<DsIcon icon="more_vert" size="tiny" />
-							</span>
-						</DsDropdownMenu>
+								<button
+									type="button"
+									title="More actions"
+									aria-label="More actions"
+									onClick={(e) => e.stopPropagation()}
+								>
+									<DsIcon icon="more_vert" size="tiny" />
+								</button>
+							</DsDropdownMenu.Trigger>
+							<DsDropdownMenu.Content>
+								{secondaryRowActions.map((action) => {
+									const isDisabled = action.disabled?.(row.original);
+									return (
+										<DsDropdownMenu.Item
+											key={action.label}
+											value={action.label}
+											disabled={isDisabled}
+											onClick={(e) => e.stopPropagation()}
+											onSelect={() => action.onClick(row.original)}
+										>
+											{action.icon && <DsIcon icon={action.icon} />}
+											<span>{action.label}</span>
+										</DsDropdownMenu.Item>
+									);
+								})}
+							</DsDropdownMenu.Content>
+						</DsDropdownMenu.Root>
 					)}
 				</div>
 			</div>

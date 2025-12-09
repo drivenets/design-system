@@ -1,5 +1,11 @@
 import React from 'react';
-import type { ColumnDef, ColumnFiltersState, SortingState, Table } from '@tanstack/react-table';
+import type {
+	ColumnDef,
+	ColumnFiltersState,
+	SortingState,
+	Table,
+	VisibilityState,
+} from '@tanstack/react-table';
 import { IconType } from '../ds-icon';
 import { RowAction, SecondaryRowAction } from './components/ds-table-cell';
 
@@ -237,10 +243,25 @@ export interface DsDataTableProps<TData, TValue> {
 	onTableCreated?: (table: Table<TData>) => void;
 
 	/**
-	 * Whether the table rows are selectable
+	 * Whether the table rows are selectable. Can be a boolean or a function that receives row data and returns whether it can be selected.
 	 * @default false
+	 * @example
+	 * ```tsx
+	 * // Enable selection for all rows
+	 * selectable={true}
+	 *
+	 * // Disable selection for rows where status is 'archived'
+	 * selectable={(rowData) => rowData.status !== 'archived'}
+	 *
+	 * // Limit selection to max 3 rows (note: use state to track current selection)
+	 * selectable={(rowData) => {
+	 *   // This will be called for each row during render
+	 *   const selectedIds = Object.keys(rowSelection).filter(id => rowSelection[id]);
+	 *   return selectedIds.includes(rowData.id) || selectedIds.length < 3;
+	 * }}
+	 * ```
 	 */
-	selectable?: boolean;
+	selectable?: boolean | ((rowData: TData) => boolean);
 
 	/**
 	 * Whether to show the select/deselect all checkbox in the header
@@ -312,4 +333,26 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Callback when column filters change
 	 */
 	onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
+
+	/**
+	 * External column visibility state
+	 * @example
+	 * ```tsx
+	 * const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+	 *   age: false, // hide age column
+	 *   status: true, // show status column
+	 * });
+	 *
+	 * <DsTable
+	 *   columnVisibility={columnVisibility}
+	 *   onColumnVisibilityChange={setColumnVisibility}
+	 * />
+	 * ```
+	 */
+	columnVisibility?: VisibilityState;
+
+	/**
+	 * Callback when column visibility changes
+	 */
+	onColumnVisibilityChange?: (visibility: VisibilityState) => void;
 }

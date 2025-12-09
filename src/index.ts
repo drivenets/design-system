@@ -13,7 +13,6 @@ export * from './lib/components/ds-tooltip';
 export * from './lib/components/ds-popover';
 export * from './lib/components/ds-system-status';
 export * from './lib/components/ds-breadcrumb';
-export * from './lib/components/ds-dropdown';
 export * from './lib/components/ds-dropdown-menu';
 export * from './lib/components/ds-dialog';
 export * from './lib/components/ds-panel';

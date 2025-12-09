@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useMemo, useRef, useState } from 'react';
-import { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table';
+import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import classnames from 'classnames';
 import DsIcon from '../ds-icon/ds-icon';
 import { IconType } from '../ds-icon/ds-icon.types';
 import { DsSmartTabs } from '../ds-smart-tabs';
+import { DsCheckbox } from '../ds-checkbox';
 import DsTable from './ds-table';
 import { DsTableApi, ScrollParams } from './ds-table.types';
 import { DsSpinner } from '../ds-spinner';
@@ -414,6 +415,48 @@ export const ProgrammaticRowSelection: Story = {
 	},
 };
 
+export const MaxSelectionLimit: Story = {
+	name: 'Max N Selections',
+	args: {
+		showSelectAllCheckbox: false,
+		onSelectionChange: (selectedRows) => console.log('Selected rows:', selectedRows),
+	},
+	render: function Render(args) {
+		const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+		const maxSelections = 2;
+
+		const selectedCount = Object.keys(rowSelection).filter((id) => rowSelection[id]).length;
+
+		const handleSelectionChange = (selection: Record<string, boolean>) => {
+			setRowSelection(selection);
+			args.onSelectionChange?.(selection);
+		};
+
+		return (
+			<div>
+				<div className={styles.programmaticSelectionDemo}>
+					<h4 className={styles.programmaticSelectionDemo__title}>Max Selection Limit Demo</h4>
+					<p className={styles.programmaticSelectionDemo__description}>
+						You can select at most {maxSelections} rows. Once the limit is reached, checkboxes for other rows
+						are disabled.
+					</p>
+					<p className={styles.programmaticSelectionDemo__selectedRows}>
+						Selected: {selectedCount} / {maxSelections}
+					</p>
+				</div>
+
+				<DsTable
+					{...args}
+					onSelectionChange={handleSelectionChange}
+					selectable={(rowData) => {
+						return rowSelection[rowData.id] || selectedCount < maxSelections;
+					}}
+				/>
+			</div>
+		);
+	},
+};
+
 export const Reorderable: Story = {
 	args: {
 		data: defaultData.slice(0, 5),
@@ -638,6 +681,56 @@ export const TabFilters: Story = {
 					columns={tableColumns}
 					columnFilters={columnFilters}
 					onColumnFiltersChange={setColumnFilters}
+				/>
+			</div>
+		);
+	},
+	args: {},
+};
+
+export const ColumnHiding: Story = {
+	render: function Render(args) {
+		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+		const toggleColumn = (columnId: string) => {
+			setColumnVisibility((prev) => ({
+				...prev,
+				[columnId]: !prev[columnId],
+			}));
+		};
+
+		const columnsToToggle = [
+			{ id: 'age', label: 'Age' },
+			{ id: 'visits', label: 'Visits' },
+			{ id: 'status', label: 'Status' },
+			{ id: 'progress', label: 'Profile Progress' },
+		];
+
+		return (
+			<div>
+				<div className={styles.programmaticSelectionDemo}>
+					<h4 className={styles.programmaticSelectionDemo__title}>Column Hiding Demo</h4>
+					<p className={styles.programmaticSelectionDemo__description}>
+						Use the checkboxes below to show or hide specific columns dynamically. This is useful for
+						customizable table views or responsive layouts.
+					</p>
+				</div>
+
+				<div className={styles.programmaticSelectionControls}>
+					{columnsToToggle.map((column) => (
+						<DsCheckbox
+							key={column.id}
+							label={column.label}
+							checked={columnVisibility[column.id] !== false}
+							onCheckedChange={() => toggleColumn(column.id)}
+						/>
+					))}
+				</div>
+
+				<DsTable
+					{...args}
+					columnVisibility={columnVisibility}
+					onColumnVisibilityChange={setColumnVisibility}
 				/>
 			</div>
 		);

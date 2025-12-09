@@ -57,8 +57,6 @@
 }
 
 @mixin dropdown-item {
-	@include typography.p-special;
-	@include typography.ellipsis;
 	display: flex;
 	align-items: center;
 	gap: 10px;
@@ -88,10 +86,4 @@
 			pointer-events: none;
 		}
 	}
-}
-
-@mixin dropdown-indicator {
-	display: flex;
-	justify-content: end;
-	min-width: var(--icon-width-medium);
 }

@@ -110,6 +110,7 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 						<DsCheckbox
 							className={stylesShared.checkboxContainer}
 							checked={row.getIsSelected()}
+							disabled={!row.getCanSelect()}
 							onClick={(e) => {
 								e.stopPropagation();
 								const toggleHandler = row.getToggleSelectedHandler();

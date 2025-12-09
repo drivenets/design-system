@@ -1,25 +1,60 @@
+@use '@design-system/ui/src/styles/typography';
+
 .trigger {
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	justify-content: space-between;
+	gap: var(--spacing-xs);
+	padding: var(--spacing-xs) var(--spacing-sm);
 	border: 1px solid var(--neutral-4);
 	border-radius: 4px;
 	background: var(--white);
 	cursor: pointer;
 	transition: border-color 0.2s;
 
+	&.fixedWidth {
+		width: 250px;
+	}
+
 	&:hover {
 		border-color: var(--action-cta1);
 	}
 
-	.label {
-		flex: 1;
+	span {
 		font-size: 14px;
 		color: var(--neutral-1);
-		margin: 0 20px;
 	}
+}
 
-	.arrow {
-		color: var(--neutral-3);
+.danger {
+	color: var(--color-background-danger-strong-hover);
+
+	&:hover {
+		background-color: var(--color-background-danger-weak);
 	}
+}
+
+.item-content {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	flex-grow: 1;
+}
+
+.item-label {
+	@include typography.ellipsis;
+	color: var(--color-font-main);
+}
+
+.item-description {
+	@include typography.ellipsis;
+	color: var(--color-font-secondary);
+}
+
+.radio-group {
+	gap: 0;
+}
+
+.radio-selected {
+	background-color: var(--color-background-selected-weak);
 }

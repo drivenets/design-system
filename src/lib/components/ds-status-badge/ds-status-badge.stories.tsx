@@ -22,6 +22,10 @@ const meta: Meta<typeof DsStatusBadge> = {
 			options: dsStatuses,
 			description: 'Status type of the badge',
 		},
+		label: {
+			control: 'text',
+			description: 'Optional label to display instead of the default status text',
+		},
 		ghost: {
 			control: 'boolean',
 			description: 'Whether the badge should use ghost style (light background)',

@@ -92,3 +92,8 @@
 	display: flex;
 	align-items: center;
 }
+
+.itemLabel {
+	@include typography.ellipsis;
+	color: var(--color-font-main);
+}

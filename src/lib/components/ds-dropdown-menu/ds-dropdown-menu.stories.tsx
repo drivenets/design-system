@@ -1,30 +1,19 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
-import DsDropdownMenu from './ds-dropdown-menu';
-import { delay, DsIcon } from '@design-system/ui';
+import { DsDropdownMenu } from './ds-dropdown-menu';
+import { DsButton, DsCheckbox, DsIcon, DsRadioGroup, DsTextInput, DsTypography } from '@design-system/ui';
 import './ds-dropdown-menu.stories.scss';
 
 const meta: Meta<typeof DsDropdownMenu> = {
 	title: 'Design System/DropdownMenu',
-	component: DsDropdownMenu,
 	parameters: {
 		layout: 'centered',
 	},
 	tags: ['autodocs'],
-	argTypes: {
-		children: {
-			control: 'text',
-			description: 'Content to display inside the component',
-		},
-		contentGap: {
-			control: 'number',
-			description: 'The gap between the trigger and dropdown content in pixels',
-		},
-	},
 };
 
 export default meta;
+
 type Story = StoryObj<typeof DsDropdownMenu>;
 
 export const Default: Story = {
@@ -32,83 +21,334 @@ export const Default: Story = {
 		docs: {
 			description: {
 				story:
-					'Dropdown menu with a custom trigger styled to match the design. The menu items can include icons and can be disabled.',
+					'A basic dropdown menu with action items. Each item can have an icon and onSelect handler. Items can be disabled. Use separators to divide different action groups.',
 			},
 		},
 	},
-	args: {
-		options: [
-			{ label: 'Edit', icon: 'edit', onClick: () => console.log('Edit clicked') },
-			{ label: 'Delete', icon: 'delete', onClick: () => console.log('Delete clicked') },
-			{ label: 'Share', icon: 'share', onClick: () => console.log('Share clicked') },
-			{
-				label: 'Disabled Option',
-				icon: 'block',
-				disabled: true,
-				onClick: () => console.log('Disabled clicked'),
-			},
-		],
-		contentGap: 4,
-	},
-	render: function Render(args) {
-		const [, setClicked] = useState<string>('');
+	render: () => {
+		const handleEdit = () => console.log('Edit clicked');
+		const handleDuplicate = () => console.log('Duplicate clicked');
+		const handleShare = () => console.log('Share clicked');
+		const handleDelete = () => console.log('Delete clicked');
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(args as any).__reset = async () => {
-			setClicked('');
-			await delay(100);
+		return (
+			<DsDropdownMenu.Root>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>Actions</span>
+					<DsIcon icon="more_vert" />
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Item value="edit" onSelect={handleEdit}>
+						<DsIcon icon="edit" />
+						<span>Edit</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Item value="duplicate" onSelect={handleDuplicate}>
+						<DsIcon icon="content_copy" />
+						<span>Duplicate</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Item value="share" onSelect={handleShare}>
+						<DsIcon icon="share" />
+						<span>Share</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Separator />
+					<DsDropdownMenu.Item value="delete" onSelect={handleDelete} className="danger">
+						<DsIcon icon="delete" />
+						<span>Delete</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Item value="disabled" disabled>
+						<DsIcon icon="block" />
+						<span>Disabled Option</span>
+					</DsDropdownMenu.Item>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
+	},
+};
+
+export const SelectableList: Story = {
+	name: 'Selectable List with Search',
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Dropdown with search functionality and selection tracking. Users can filter items and see which item is selected with a check indicator.',
+			},
+		},
+	},
+	render: function Render() {
+		const [search, setSearch] = useState('');
+		const [selected, setSelected] = useState<string | undefined>('option1');
+
+		const options = [
+			{ value: 'option1', label: 'Option 1' },
+			{ value: 'option2', label: 'Option 2' },
+			{ value: 'option3', label: 'Option 3' },
+			{ value: 'option4', label: 'Option 4' },
+		];
+
+		const selectedOption = options.find((opt) => opt.value === selected)?.label;
+		const filteredOptions = options.filter((opt) => opt.label.toLowerCase().includes(search.toLowerCase()));
+
+		return (
+			<DsDropdownMenu.Root onSelect={setSelected} positioning={{ sameWidth: true }}>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
+					<span>{selectedOption || 'Select an option'}</span>
+					<DsIcon icon="arrow_drop_down" />
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Header>
+						<DsTextInput
+							placeholder="Search"
+							value={search}
+							onValueChange={setSearch}
+							onKeyDown={(e) => e.stopPropagation()}
+							slots={{
+								startAdornment: <DsIcon icon="search" size="tiny" />,
+							}}
+						/>
+					</DsDropdownMenu.Header>
+					{filteredOptions.map((option) => (
+						<DsDropdownMenu.Item key={option.value} value={option.value} selected={selected === option.value}>
+							{option.label}
+							{selected === option.value && <DsDropdownMenu.ItemIndicator />}
+						</DsDropdownMenu.Item>
+					))}
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
+	},
+};
+
+export const CheckboxList: Story = {
+	name: 'Checkbox List with Groups',
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Dropdown with checkbox items in collapsible groups. Uses DsCheckbox component for each item. Includes search and action buttons.',
+			},
+		},
+	},
+	render: function Render() {
+		const [open, setOpen] = useState(false);
+		const [search, setSearch] = useState('');
+		const [selected, setSelected] = useState(new Set(['item1']));
+
+		const items = [
+			{ id: 'item1', label: 'Menu text 1', description: 'Info Text' },
+			{ id: 'item2', label: 'Menu text 2', description: 'Info Text' },
+		];
+
+		const groupedItems = [
+			{ id: 'item3', label: 'Menu text 3', description: 'Info Text' },
+			{ id: 'item4', label: 'Menu text 4', description: 'Info Text' },
+			{ id: 'item5', label: 'Menu text 5', description: 'Info Text' },
+			{ id: 'item6', label: 'Menu text 6', description: 'Info Text' },
+			{ id: 'item7', label: 'Menu text 7', description: 'Info Text' },
+		];
+
+		const filteredItems = items.filter((item) => item.label.toLowerCase().includes(search.toLowerCase()));
+		const filteredGroupedItems = groupedItems.filter((item) =>
+			item.label.toLowerCase().includes(search.toLowerCase()),
+		);
+
+		const toggleSelection = (id: string) => {
+			const newSelected = new Set(selected);
+			if (newSelected.has(id)) {
+				newSelected.delete(id);
+			} else {
+				newSelected.add(id);
+			}
+			setSelected(newSelected);
+		};
+
+		const handleApply = () => {
+			console.log('Applied selections:', Array.from(selected));
+		};
+
+		const handleCancel = () => {
+			console.log('Cancelled');
+			setOpen(false);
+			setSearch('');
 		};
 
 		return (
-			<DsDropdownMenu {...args}>
-				<div className="trigger" role="button">
-					<span className="label">Actions</span>
-					<DsIcon className="arrow" icon="more_vert" />
-				</div>
-			</DsDropdownMenu>
+			<DsDropdownMenu.Root
+				open={open}
+				onOpenChange={setOpen}
+				onSelect={toggleSelection}
+				positioning={{ sameWidth: true }}
+				preventCloseOnSelect
+			>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
+					<span>Multi Select ({selected.size})</span>
+					<DsIcon icon="arrow_drop_down" />
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Header>
+						<DsTextInput
+							placeholder="Search"
+							value={search}
+							onValueChange={setSearch}
+							onKeyDown={(e) => e.stopPropagation()}
+							slots={{
+								startAdornment: <DsIcon icon="search" size="tiny" />,
+							}}
+						/>
+					</DsDropdownMenu.Header>
+					{filteredItems.map((item) => (
+						<DsDropdownMenu.Item key={item.id} value={item.id}>
+							<DsCheckbox
+								tabIndex={-1}
+								checked={selected.has(item.id)}
+								onCheckedChange={() => toggleSelection(item.id)}
+							/>
+							<div className="item-content">
+								<DsTypography className="item-label" variant="body-sm-reg">
+									{item.label}
+								</DsTypography>
+								<DsTypography className="item-description" variant="body-xs-reg">
+									{item.description}
+								</DsTypography>
+							</div>
+						</DsDropdownMenu.Item>
+					))}
+					{!!filteredGroupedItems.length && (
+						<DsDropdownMenu.ItemGroup>
+							<DsDropdownMenu.ItemGroupLabel>Group Name</DsDropdownMenu.ItemGroupLabel>
+							<DsDropdownMenu.ItemGroupContent>
+								{filteredGroupedItems.map((item) => (
+									<DsDropdownMenu.Item key={item.id} value={item.id}>
+										<DsCheckbox
+											tabIndex={-1}
+											checked={selected.has(item.id)}
+											onCheckedChange={() => toggleSelection(item.id)}
+										/>
+										<div className="item-content">
+											<DsTypography className="item-label" variant="body-sm-reg">
+												{item.label}
+											</DsTypography>
+											<DsTypography className="item-description" variant="body-xs-reg">
+												{item.description}
+											</DsTypography>
+										</div>
+									</DsDropdownMenu.Item>
+								))}
+							</DsDropdownMenu.ItemGroupContent>
+						</DsDropdownMenu.ItemGroup>
+					)}
+					<DsDropdownMenu.Actions>
+						<DsButton design="v1.2" buttonType="secondary" size="small" onClick={handleCancel}>
+							Cancel
+						</DsButton>
+						<DsButton design="v1.2" buttonType="primary" size="small" onClick={handleApply}>
+							Apply
+						</DsButton>
+					</DsDropdownMenu.Actions>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
 		);
 	},
-	play: async ({ canvasElement, args }) => {
-		const canvas = within(canvasElement);
+};
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const reset = (args as any).__reset;
+export const RadioList: Story = {
+	name: 'Radio List with Actions',
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Dropdown with radio items using DsRadioGroup. Single selection with search and action buttons. Blue background for selected items.',
+			},
+		},
+	},
+	render: function Render() {
+		const [open, setOpen] = useState(false);
+		const [search, setSearch] = useState('');
+		const [tempSelected, setTempSelected] = useState<string>('');
 
-		// Check initial state
-		await expect(canvas.getByText('Actions')).toBeInTheDocument();
+		const options = [
+			{ value: 'option1', label: 'Menu text 1', description: 'Info Text' },
+			{ value: 'option2', label: 'Menu text 2', description: 'Info Text' },
+			{ value: 'option3', label: 'Menu text 3', description: 'Info Text' },
+			{ value: 'option4', label: 'Menu text 4', description: 'Info Text' },
+		];
 
-		// Open dropdown menu
-		await userEvent.click(canvas.getByText('Actions'));
+		const filteredOptions = options.filter((opt) => opt.label.toLowerCase().includes(search.toLowerCase()));
 
-		// Check all menu items are present
-		await expect(canvas.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
+		const handleApply = () => {
+			setOpen(false);
+			console.log(`Applied: ${JSON.stringify(tempSelected)}`);
+		};
 
-		// Check disabled state
-		const disabledOption = canvas.getByRole('menuitem', { name: /Disabled Option/ });
-		await expect(disabledOption).toHaveAttribute('aria-disabled', 'true');
+		const handleCancel = () => {
+			console.log('Cancelled');
+			setOpen(false);
+			setSearch('');
+		};
 
-		// Click an option
-		await userEvent.click(canvas.getByRole('menuitem', { name: /Edit/ }));
+		const handleReset = () => {
+			console.log('Reset');
+			setTempSelected('');
+			setOpen(false);
+			setSearch('');
+		};
 
-		// Close dropdown with Escape key
-		await userEvent.keyboard('{Escape}');
-
-		// Reset using the wrapper's reset method
-		await reset();
-
-		// Open dropdown again
-		await userEvent.click(canvas.getByText('Actions'));
-
-		// Check all options are shown again
-		await expect(canvas.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
-
-		// Close dropdown with Escape key
-		await userEvent.keyboard('{Escape}');
+		return (
+			<DsDropdownMenu.Root
+				open={open}
+				onOpenChange={setOpen}
+				onSelect={setTempSelected}
+				positioning={{ sameWidth: true }}
+				preventCloseOnSelect
+			>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
+					<span>{tempSelected || 'Select an option'}</span>
+					<DsIcon icon="arrow_drop_down" />
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Header>
+						<DsTextInput
+							placeholder="Search"
+							value={search}
+							onValueChange={setSearch}
+							onKeyDown={(e) => e.stopPropagation()}
+							slots={{
+								startAdornment: <DsIcon icon="search" size="tiny" />,
+							}}
+						/>
+					</DsDropdownMenu.Header>
+					<DsRadioGroup.Root className="radio-group" value={tempSelected} onValueChange={setTempSelected}>
+						{filteredOptions.map((option) => (
+							<DsDropdownMenu.Item
+								key={option.value}
+								value={option.value}
+								className={tempSelected === option.value ? 'radio-selected' : ''}
+							>
+								<DsRadioGroup.Item value={option.value} id={option.value} />
+								<div className="item-content">
+									<DsTypography className="item-label" variant="body-sm-reg">
+										{option.label}
+									</DsTypography>
+									<DsTypography className="item-description" variant="body-xs-reg">
+										{option.description}
+									</DsTypography>
+								</div>
+							</DsDropdownMenu.Item>
+						))}
+					</DsRadioGroup.Root>
+					<DsDropdownMenu.Actions>
+						<DsButton design="v1.2" variant="danger" size="small" onClick={handleReset}>
+							Reset
+						</DsButton>
+						<DsButton design="v1.2" buttonType="secondary" size="small" onClick={handleCancel}>
+							Cancel
+						</DsButton>
+						<DsButton design="v1.2" buttonType="primary" size="small" onClick={handleApply}>
+							Apply
+						</DsButton>
+					</DsDropdownMenu.Actions>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
 	},
 };
