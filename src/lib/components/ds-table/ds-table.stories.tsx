@@ -653,7 +653,7 @@ export const ColumnHiding: Story = {
 		const toggleColumn = (columnId: string) => {
 			setColumnVisibility((prev) => ({
 				...prev,
-				[columnId]: prev[columnId] === false ? true : false,
+				[columnId]: !prev[columnId],
 			}));
 		};
 
@@ -669,7 +669,7 @@ export const ColumnHiding: Story = {
 				<div className={styles.programmaticSelectionDemo}>
 					<h4 className={styles.programmaticSelectionDemo__title}>Column Hiding Demo</h4>
 					<p className={styles.programmaticSelectionDemo__description}>
-						Use the buttons below to show or hide specific columns dynamically. This is useful for
+						Use the checkboxes below to show or hide specific columns dynamically. This is useful for
 						customizable table views or responsive layouts.
 					</p>
 				</div>

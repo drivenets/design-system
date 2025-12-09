@@ -100,6 +100,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	) => {
 		const newVisibility =
 			typeof updaterOrValue === 'function' ? updaterOrValue(columnVisibility) : updaterOrValue;
+
 		if (onColumnVisibilityChange) {
 			onColumnVisibilityChange(newVisibility);
 		} else {
