@@ -797,7 +797,18 @@ export const TabFilters: Story = {
 
 export const ColumnHiding: Story = {
 	render: function Render(args) {
-		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+		const columnsToToggle = [
+			{ id: 'age', label: 'Age' },
+			{ id: 'visits', label: 'Visits' },
+			{ id: 'status', label: 'Status' },
+			{ id: 'progress', label: 'Profile Progress' },
+		];
+		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+			age: true,
+			visits: true,
+			status: true,
+			progress: true,
+		});
 
 		const toggleColumn = (columnId: string) => {
 			setColumnVisibility((prev) => ({
@@ -805,13 +816,6 @@ export const ColumnHiding: Story = {
 				[columnId]: !prev[columnId],
 			}));
 		};
-
-		const columnsToToggle = [
-			{ id: 'age', label: 'Age' },
-			{ id: 'visits', label: 'Visits' },
-			{ id: 'status', label: 'Status' },
-			{ id: 'progress', label: 'Profile Progress' },
-		];
 
 		return (
 			<div>
@@ -828,7 +832,7 @@ export const ColumnHiding: Story = {
 						<DsCheckbox
 							key={column.id}
 							label={column.label}
-							checked={columnVisibility[column.id] !== false}
+							checked={columnVisibility[column.id]}
 							onCheckedChange={() => toggleColumn(column.id)}
 						/>
 					))}
