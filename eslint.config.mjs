@@ -23,5 +23,5 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(['!.storybook'], 'Include Storybook Directory'),
+	globalIgnores(['storybook-static', '!.storybook']),
 );
