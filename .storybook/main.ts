@@ -1,7 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { vitePluginDsMaterialIconsFont } from '../src/plugins/vite-plugin-ds-material-icons-font.ts';
+import { vitePluginDsMaterialIconsFont } from '../src/plugins/vite-plugin-ds-material-icons-font';
 
-export default {
+const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 	addons: [
 		'@chromatic-com/storybook',
@@ -11,13 +11,15 @@ export default {
 		'@storybook/addon-onboarding',
 	],
 	framework: '@storybook/react-vite',
-	viteFinal: async (config) => {
-		if (!Array.isArray(config.plugins)) {
-			config.plugins = [];
+	viteFinal: async (viteConfig) => {
+		if (!Array.isArray(viteConfig.plugins)) {
+			viteConfig.plugins = [];
 		}
 
-		config.plugins.push(vitePluginDsMaterialIconsFont());
+		viteConfig.plugins.push(vitePluginDsMaterialIconsFont() as never);
 
-		return config;
+		return viteConfig;
 	},
-} satisfies StorybookConfig;
+};
+
+export default config;
