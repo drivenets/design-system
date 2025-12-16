@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, userEvent, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, screen, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import { DsCheckbox } from '../ds-checkbox';
 import DsTooltip from './ds-tooltip';

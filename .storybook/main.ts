@@ -1,30 +1,25 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { vitePluginDsMaterialIconsFont } from '../src/plugins';
-import { withoutVitePlugins } from '@storybook/builder-vite';
+import { vitePluginDsMaterialIconsFont } from '../src/plugins/vite-plugin-ds-material-icons-font';
 
 const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 	addons: [
-		'@storybook/addon-essentials',
-		'@storybook/addon-onboarding',
 		'@chromatic-com/storybook',
-		'@storybook/experimental-addon-test',
+		'@storybook/addon-vitest',
+		'@storybook/addon-a11y',
+		'@storybook/addon-docs',
+		'@storybook/addon-onboarding',
 	],
-	framework: {
-		name: '@storybook/react-vite',
-		options: {},
-	},
-	viteFinal: async (config) => {
-		if (!Array.isArray(config.plugins)) {
-			config.plugins = [];
+	framework: '@storybook/react-vite',
+	viteFinal: async (viteConfig) => {
+		if (!Array.isArray(viteConfig.plugins)) {
+			viteConfig.plugins = [];
 		}
 
-		config.plugins.push(vitePluginDsMaterialIconsFont() as never);
+		viteConfig.plugins.push(vitePluginDsMaterialIconsFont() as never);
 
-		// Exclude plugins that clash with Storybook.
-		config.plugins = await withoutVitePlugins(config.plugins, ['vite:dts', 'nx-copy-assets-plugin']);
-
-		return config;
+		return viteConfig;
 	},
 };
+
 export default config;

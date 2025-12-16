@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsSpinner from './ds-spinner';
 import { spinnerSizes } from './ds-spinner.types';
 import styles from './ds-spinner.stories.module.scss';

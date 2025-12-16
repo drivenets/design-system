@@ -1,7 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
-import { expect, userEvent, waitFor, within } from '@storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { DsToast } from './ds-toast';
 import { DsToastProvider, useToaster } from './ds-toast-context';
 import { DsButton } from '../ds-button';

@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, spyOn, userEvent, waitFor, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, screen, spyOn, userEvent, waitFor, within } from 'storybook/test';
 import { faker } from '@faker-js/faker';
 import SampleForm from './sample-form';
 

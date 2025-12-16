@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsDropdownMenu } from './ds-dropdown-menu';
 import { DsIcon } from '../ds-icon';
 import { DsTextInput } from '../ds-text-input';

@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { controlStatuses } from '../ds-form-control.types';
 import { DsIcon } from '../../ds-icon';
 import DsFormControl from '../ds-form-control';
 import { DefaultDescription } from './ds-form-control-stories-shared';
-import { expect, screen, userEvent, waitFor, within } from '@storybook/test';
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
 import styles from './ds-form-control.stories.module.scss';
 

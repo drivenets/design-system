@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import classNames from 'classnames';
 import { DsIcon, type IconSize } from '../../../ds-icon';
 import styles from './ds-button-legacy.stories.module.scss';

@@ -1,11 +1,10 @@
-// @ts-check
-
 import eslint from '@eslint/js';
-import { defineConfig } from 'eslint/config';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
+import storybook from 'eslint-plugin-storybook';
 
 export default defineConfig(
 	// Base rules.
@@ -20,6 +19,10 @@ export default defineConfig(
 
 	jsxA11y.flatConfigs.recommended,
 
+	// Storybook rules.
+	storybook.configs['flat/recommended'],
+
+	// Overrides.
 	{
 		settings: {
 			react: {
@@ -49,4 +52,6 @@ export default defineConfig(
 			'no-console': 'error',
 		},
 	},
+
+	globalIgnores(['storybook-static', '!.storybook', '**/dist']),
 );

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsStepper, DsStep, DsNextStepButton, DsStepContent } from './index';
 import { DsPanel, type DsPanelVariant } from '../ds-panel';
-import { expect, userEvent } from '@storybook/test';
+import { expect, userEvent } from 'storybook/test';
 
 export default {
 	title: 'Design System/Stepper',

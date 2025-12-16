@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import DsIcon from '../../ds-icon/ds-icon';

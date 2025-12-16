@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsPanel } from './ds-panel';
 import { DsButton } from '../ds-button/';
 import { useState } from 'react';
-import { expect, userEvent } from '@storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import type { DsPanelVariant } from './ds-panel.types';
 
 export default {

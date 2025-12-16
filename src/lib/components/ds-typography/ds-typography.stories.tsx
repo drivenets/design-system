@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsTypography from './ds-typography';
 import styles from './ds-typography.stories.module.scss';
 import type { SemanticVariant } from './ds-typography.types';
