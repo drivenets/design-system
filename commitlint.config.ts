@@ -5,6 +5,6 @@ export default {
 	extends: ['@commitlint/config-conventional'],
 	plugins: [commitlintPluginDesignSystem],
 	rules: {
-		'editor/require-jira-ticket': [RuleConfigSeverity.Error, 'always', { prefix: 'AR' }],
+		'design-system/require-jira-ticket': [RuleConfigSeverity.Error, 'always', { prefix: 'AR' }],
 	},
 };
