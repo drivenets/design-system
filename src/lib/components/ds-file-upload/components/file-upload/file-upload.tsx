@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import { FileUpload as ArkUiFileUpload } from '@ark-ui/react';
 import { DsIcon } from '../../../ds-icon';

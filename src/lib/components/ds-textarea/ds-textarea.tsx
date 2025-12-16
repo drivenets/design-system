@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import styles from './ds-textarea.module.scss';
 import type { DsTextareaProps } from './ds-textarea.types';

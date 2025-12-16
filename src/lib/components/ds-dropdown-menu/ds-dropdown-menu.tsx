@@ -1,4 +1,5 @@
-import React, { createContext, Fragment, useContext, useState } from 'react';
+import type React from 'react';
+import { createContext, Fragment, useContext, useState } from 'react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Menu } from '@ark-ui/react/menu';
 import { Portal } from '@ark-ui/react/portal';

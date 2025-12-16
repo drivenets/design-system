@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import styles from './ds-chip.module.scss';
 import type { DsChipProps } from './ds-chip.types';

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { CreateToasterReturn } from '@ark-ui/react';
 import { Toast, Toaster } from '@ark-ui/react';
 import styles from './ds-toast.module.scss';

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import type { DsGridItemProps, DsGridProps } from './ds-grid.types';
 

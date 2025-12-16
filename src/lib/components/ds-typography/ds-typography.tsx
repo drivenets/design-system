@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import classNames from 'classnames';
 import type { DsTypographyProps } from './ds-typography.types';
