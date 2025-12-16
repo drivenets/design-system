@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, fn, userEvent, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { DsIcon } from '../../../ds-icon';
 import DsSpinner from '../../../ds-spinner/ds-spinner';
 import DsButtonNew from './ds-button-new';

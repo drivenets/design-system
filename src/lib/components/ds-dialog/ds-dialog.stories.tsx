@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, screen, userEvent, waitFor, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { DsIcon } from '../ds-icon';
 import { DsButton } from '../ds-button';
 import DsDialog from '../ds-dialog/ds-dialog';

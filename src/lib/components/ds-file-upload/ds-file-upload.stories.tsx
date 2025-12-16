@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsButton from '../ds-button/ds-button';
 import DsFileUpload from './ds-file-upload';
 import { useFileUpload } from './hooks/use-file-upload';

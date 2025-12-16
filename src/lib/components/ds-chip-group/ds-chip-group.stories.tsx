@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsChipGroup from './ds-chip-group';
 import type { ChipItem } from './ds-chip-group.types';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsIcon } from '../../ds-icon';
 import DsFormControl from '../ds-form-control';
 import { controlStatuses } from '../ds-form-control.types';

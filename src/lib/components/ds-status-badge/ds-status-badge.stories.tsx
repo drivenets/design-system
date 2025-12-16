@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, within } from 'storybook/test';
 import DsStatusBadge from './ds-status-badge';
 import type { DsStatus } from './ds-status-badge.types';
 import { dsStatuses, statusBadgeSizes } from './ds-status-badge.types';

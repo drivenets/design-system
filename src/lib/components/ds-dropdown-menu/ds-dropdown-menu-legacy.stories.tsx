@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
-import { expect, userEvent, within } from '@storybook/test';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { DsDropdownMenuLegacy } from './ds-dropdown-menu';
 import './ds-dropdown-menu.stories.scss';
 import { DsIcon } from '../ds-icon';

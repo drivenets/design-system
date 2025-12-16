@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsVerticalTabs from './ds-vertical-tabs';
 import { DsTypography } from '../ds-typography';
 import styles from './ds-vertical-tabs.stories.module.scss';
