@@ -1,6 +1,3 @@
-export * from './lib/utils/common.util';
-export * from './lib/utils/string.util';
-
 export * from './lib/components/ds-button';
 export * from './lib/components/ds-checkbox';
 export * from './lib/components/ds-form-control';

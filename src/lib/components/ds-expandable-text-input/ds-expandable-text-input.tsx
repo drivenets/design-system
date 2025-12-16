@@ -1,10 +1,11 @@
-import { ReactNode, useRef, useState } from 'react';
+import type { ReactNode } from 'react';
+import { useRef, useState } from 'react';
 import { DsTextInput } from '../ds-text-input';
 import { DsIcon } from '../ds-icon';
 import classNames from 'classnames';
 import styles from './ds-expandable-text-input.module.scss';
 import { mergeRefs } from '../ds-table/utils/merge-refs';
-import { DsExpandableTextInputProps } from './ds-expandable-text-input.types';
+import type { DsExpandableTextInputProps } from './ds-expandable-text-input.types';
 import { DsButton } from '../ds-button';
 
 export function DsExpandableTextInput({

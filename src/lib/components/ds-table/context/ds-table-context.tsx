@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { DsDataTableProps, DsTableRowSize } from '@design-system/ui';
+import type { DsDataTableProps, DsTableRowSize } from '../ds-table.types';
 
 export interface DsTableContextType<TData, TValue> extends Partial<DsDataTableProps<TData, TValue>> {
 	/**

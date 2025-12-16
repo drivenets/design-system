@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import classNames from 'classnames';
 import { NumberInput } from '@ark-ui/react';
 import styles from './ds-number-input.module.scss';
-import { DsNumberInputProps } from './ds-number-input.types';
+import type { DsNumberInputProps } from './ds-number-input.types';
 import { DsIcon } from '../ds-icon';
 
 const DsNumberInput: FC<DsNumberInputProps> = ({

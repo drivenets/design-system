@@ -1,16 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import DsIcon from '../../ds-icon/ds-icon';
 import DsTable from '../ds-table';
 import DsButton from '../../ds-button/ds-button';
 import { DsModal } from '../../ds-modal';
-import { DsVerticalTabs } from '@design-system/ui';
+import { DsVerticalTabs } from '../../ds-vertical-tabs';
 import { DsTypography } from '../../ds-typography';
 import { DsChipGroup } from '../../ds-chip-group';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
-import { FilterNavItem } from '../filters/types/filter-adapter.types';
-import { Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
+import type { FilterNavItem } from '../filters/types/filter-adapter.types';
+import type { Workflow } from './filters-panel/workflow-filters.config';
+import { workflowFilters } from './filters-panel/workflow-filters.config';
 import styles from '../ds-table.stories.module.scss';
 
 export enum WorkflowCategory {

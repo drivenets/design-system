@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { controlStatuses, DsIcon } from '@design-system/ui';
+import { controlStatuses } from '../ds-form-control.types';
+import { DsIcon } from '../../ds-icon';
 import DsFormControl from '../ds-form-control';
 import { DefaultDescription } from './ds-form-control-stories-shared';
 import { expect, userEvent, waitFor, within } from '@storybook/test';

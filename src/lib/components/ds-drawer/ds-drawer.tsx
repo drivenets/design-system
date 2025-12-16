@@ -1,8 +1,9 @@
-import { CSSProperties, Fragment, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { Fragment } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
-import { DsDrawerProps } from './ds-drawer.types';
+import type { DsDrawerProps } from './ds-drawer.types';
 import styles from './ds-drawer.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';

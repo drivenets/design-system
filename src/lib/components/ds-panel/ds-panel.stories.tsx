@@ -3,7 +3,7 @@ import { DsPanel } from './ds-panel';
 import { DsButton } from '../ds-button/';
 import { useState } from 'react';
 import { expect, userEvent } from '@storybook/test';
-import { DsPanelVariant } from '@design-system/ui';
+import type { DsPanelVariant } from './ds-panel.types';
 
 export default {
 	title: 'Design System/Panel',

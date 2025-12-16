@@ -17,24 +17,24 @@ Welcome to our design system documentation! This guide will help you understand 
 
 ```tsx
 // No installation needed! Just import directly:
-import { DsButton, DsIcon } from '@design-system/ui';
+import { DsButton, DsIcon } from '@drivenets/design-system';
 ```
 
 **Outside the Monorepo**
 
 ```bash
 # The library is available as an NPM package
-npm install @design-system/ui
+npm install @drivenets/design-system
 # or
-yarn add @design-system/ui
+yarn add @drivenets/design-system
 # or
-pnpm add @design-system/ui
+pnpm add @drivenets/design-system
 ```
 
 2. **Example Usage**
 
 ```tsx
-import { DsButton, DsIcon } from '@design-system/ui';
+import { DsButton, DsIcon } from '@drivenets/design-system';
 
 function MyComponent() {
 	return (
@@ -59,7 +59,7 @@ function MyComponent() {
    		preprocessorOptions: {
    			scss: {
    				loadPaths: ['libs/web/src/styles'],
-   				additionalData: '@use "@design-system/ui/styles/styles.scss" as *;',
+   				additionalData: '@use "@drivenets/design-system/styles/styles.scss" as *;',
    			},
    		},
    	},
@@ -82,7 +82,7 @@ function MyComponent() {
    						loader: 'sass-loader',
    						options: {
    							loadPaths: ['libs/web/src/styles'],
-   							additionalData: '@use "@design-system/ui/styles/styles.scss" as *;',
+   							additionalData: '@use "@drivenets/design-system/styles/styles.scss" as *;',
    						},
    					},
    				],

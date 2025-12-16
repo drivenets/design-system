@@ -1,19 +1,18 @@
-import { FileUploadProps } from './components/file-upload';
-import { FileMetadata, FileUploadAdapter, FileUploadResult } from './ds-file-upload-api.types';
+import type { FileUploadProps } from './components/file-upload';
+import type { FileMetadata, FileUploadAdapter, FileUploadResult } from './ds-file-upload-api.types';
 
-export interface DsFileUploadProps
-	extends Omit<
-		FileUploadProps,
-		| 'files'
-		| 'acceptedFiles'
-		| 'onFileAccept'
-		| 'onFileReject'
-		| 'onFileRemove'
-		| 'onFileDelete'
-		| 'onFileCancel'
-		| 'onFileRetry'
-		| 'uploadProgress'
-	> {
+export interface DsFileUploadProps extends Omit<
+	FileUploadProps,
+	| 'files'
+	| 'acceptedFiles'
+	| 'onFileAccept'
+	| 'onFileReject'
+	| 'onFileRemove'
+	| 'onFileDelete'
+	| 'onFileCancel'
+	| 'onFileRetry'
+	| 'uploadProgress'
+> {
 	/** Upload adapter implementation */
 	adapter: FileUploadAdapter;
 

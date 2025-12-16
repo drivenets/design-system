@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import styles from '../ds-stepper.module.scss';
 
 export function DsStepDescription({ children }: PropsWithChildren) {

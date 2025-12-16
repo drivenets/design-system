@@ -1,6 +1,6 @@
-import { Row } from '@tanstack/react-table';
-import { ChipItem } from '@design-system/ui';
-import { FilterAdapter } from '../types/filter-adapter.types';
+import type { Row } from '@tanstack/react-table';
+import type { ChipItem } from '../../../ds-chip-group';
+import type { FilterAdapter } from '../types/filter-adapter.types';
 import { RangeFilter } from '../components/range-filter';
 import { createFilterAdapter } from './create-filter-adapter';
 

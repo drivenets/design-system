@@ -1,4 +1,4 @@
-import { FieldError, UseFormRegister } from 'react-hook-form';
+import type { FieldError, UseFormRegister } from 'react-hook-form';
 
 export type FormData = {
 	name: string;

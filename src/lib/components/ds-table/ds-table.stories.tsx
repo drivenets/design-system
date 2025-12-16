@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useMemo, useRef, useState } from 'react';
-import { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
+import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import classnames from 'classnames';
 import DsIcon from '../ds-icon/ds-icon';
-import { IconType } from '../ds-icon/ds-icon.types';
+import type { IconType } from '../ds-icon/ds-icon.types';
 import { DsSmartTabs } from '../ds-smart-tabs';
 import { DsCheckbox } from '../ds-checkbox';
 import { DsDrawer } from '../ds-drawer';
 import DsTable from './ds-table';
-import { DsTableApi, ScrollParams } from './ds-table.types';
+import type { DsTableApi, ScrollParams } from './ds-table.types';
 import { DsSpinner } from '../ds-spinner';
 import { generatePersonData, simulateApiCall } from './utils/story-data-generator';
 import styles from './ds-table.stories.module.scss';
@@ -928,7 +928,7 @@ export const Virtualized: Story = {
 					</p>
 				</div>
 
-				{process.env.NODE_ENV === 'development' && (
+				{import.meta.env.NODE_ENV === 'development' && (
 					<p className={styles.developmentNotice}>
 						<strong>Notice:</strong> You are currently running React in development mode. Virtualized
 						rendering performance will be slightly degraded until this application is built for production.

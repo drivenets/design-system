@@ -1,4 +1,5 @@
-import { DsTextInputProps, IconType } from '@design-system/ui';
+import type { IconType } from '../ds-icon';
+import type { DsTextInputProps } from '../ds-text-input';
 
 export interface DsExpandableTextInputProps extends Omit<DsTextInputProps, 'tabIndex' | 'slots'> {
 	/**

@@ -1,5 +1,5 @@
-@use '@design-system/ui/src/styles/typography';
-@use '@design-system/ui/src/styles/shared/dropdown';
+@use '@drivenets/design-system/src/styles/typography';
+@use '@drivenets/design-system/src/styles/shared/dropdown';
 
 .content {
 	@include dropdown.dropdown-content;

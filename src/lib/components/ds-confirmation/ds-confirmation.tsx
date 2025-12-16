@@ -1,9 +1,9 @@
-import { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';
-import { DsConfirmationProps } from './ds-confirmation.types';
+import type { DsConfirmationProps } from './ds-confirmation.types';
 import styles from './ds-confirmation.module.scss';
 import DsTypography from '../ds-typography/ds-typography';
 

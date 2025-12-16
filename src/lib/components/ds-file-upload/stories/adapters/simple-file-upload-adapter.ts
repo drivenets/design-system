@@ -1,10 +1,5 @@
-import {
-	FatalFileUploadError,
-	FileUploadAdapter,
-	FileUploadOptions,
-	FileUploadResult,
-	RetryableFileUploadError,
-} from '@design-system/ui';
+import type { FileUploadAdapter, FileUploadOptions, FileUploadResult } from '../../ds-file-upload-api.types';
+import { FatalFileUploadError, RetryableFileUploadError } from '../../errors/file-upload-errors';
 
 /**
  * Simple file upload adapter example using XMLHttpRequest

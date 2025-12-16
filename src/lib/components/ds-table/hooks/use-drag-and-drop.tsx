@@ -1,12 +1,11 @@
 import React from 'react';
+import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
 import {
 	closestCenter,
 	DndContext,
-	DragEndEvent,
 	KeyboardSensor,
 	MouseSensor,
 	TouchSensor,
-	UniqueIdentifier,
 	useSensor,
 	useSensors,
 } from '@dnd-kit/core';

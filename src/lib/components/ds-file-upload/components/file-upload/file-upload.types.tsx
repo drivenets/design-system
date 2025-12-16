@@ -1,7 +1,7 @@
-import { CSSProperties } from 'react';
-import { FileUploadFileAcceptDetails, FileUploadFileRejectDetails } from '@ark-ui/react';
-import { UploadedFile } from '../../ds-file-upload-api.types';
-import { AcceptedFileType } from '../../types/accept-types';
+import type { CSSProperties } from 'react';
+import type { FileUploadFileAcceptDetails, FileUploadFileRejectDetails } from '@ark-ui/react';
+import type { UploadedFile } from '../../ds-file-upload-api.types';
+import type { AcceptedFileType } from '../../types/accept-types';
 
 export interface FileUploadProps {
 	/**

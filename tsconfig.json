@@ -1,10 +1,24 @@
 {
-  "extends": "../../tsconfig.base.json",
-  "compilerOptions": {
-    "jsx": "preserve",
-    "types": ["vite/client", "./src/stories/types.ts"],
-    "moduleResolution": "bundler",
-    // TODO: Remove when base config will be stricter.
-    "strictNullChecks": true
-  }
+	"compilerOptions": {
+		// Environment Settings
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"target": "esnext",
+		"types": ["vite/client"],
+
+		// Other Outputs
+		"sourceMap": true,
+		"declaration": true,
+		"declarationMap": true,
+		"noEmit": true,
+
+		// Recommended Options
+		"strict": true,
+		"jsx": "react-jsx",
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"noUncheckedSideEffectImports": true,
+		"moduleDetection": "force",
+		"skipLibCheck": true
+	}
 }

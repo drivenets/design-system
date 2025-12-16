@@ -1,5 +1,4 @@
-import { SortingState } from '@tanstack/react-table';
-import { delay } from '@design-system/ui';
+import type { SortingState } from '@tanstack/react-table';
 import { Status } from '../ds-table.stories';
 
 export type Person = {
@@ -88,3 +87,5 @@ export const simulateApiCall = async <T>(dataGenerator: () => T, delayMs: number
 	await delay(delayMs);
 	return dataGenerator();
 };
+
+export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { DsCheckbox } from '@design-system/ui';
+import type { ReactNode } from 'react';
+import { DsCheckbox } from '../../../../ds-checkbox';
 
 export interface CheckboxFilterItem<TValue = string> {
 	value: TValue;

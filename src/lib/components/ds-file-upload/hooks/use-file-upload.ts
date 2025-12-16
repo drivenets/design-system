@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import {
+import type {
 	FileUploadFileAcceptDetails,
 	FileUploadFileRejectDetails,
 	FileUploadFileRejection,
 } from '@ark-ui/react';
 import { createUploadedFile } from '../utils/file-factory';
 import { isFileEqual } from '../utils/is-file-equal';
-import {
+import type {
 	FileError,
 	FileMetadata,
 	FileUploadAdapter,
@@ -15,7 +15,7 @@ import {
 	UploadFileStatus,
 } from '../ds-file-upload-api.types';
 import { FileUploadError } from '../errors/file-upload-errors';
-import { FileUploadProps } from '../components/file-upload';
+import type { FileUploadProps } from '../components/file-upload';
 
 export interface UseFileUploadConfig {
 	adapter: FileUploadAdapter;

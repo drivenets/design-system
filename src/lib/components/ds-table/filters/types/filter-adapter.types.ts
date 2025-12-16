@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
-import { Row } from '@tanstack/react-table';
-import { ChipItem } from '@design-system/ui';
+import type { ReactNode } from 'react';
+import type { Row } from '@tanstack/react-table';
+import type { ChipItem } from '../../../ds-chip-group';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyAdapter = FilterAdapter<any, any, any>;

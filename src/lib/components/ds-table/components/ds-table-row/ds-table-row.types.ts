@@ -1,6 +1,6 @@
-import { Ref } from 'react';
-import { Row } from '@tanstack/react-table';
-import { VirtualItem } from '@tanstack/react-virtual';
+import type { Ref } from 'react';
+import type { Row } from '@tanstack/react-table';
+import type { VirtualItem } from '@tanstack/react-virtual';
 
 /**
  * Props for the table row component

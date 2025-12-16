@@ -1,10 +1,11 @@
 import { flexRender } from '@tanstack/react-table';
 import classnames from 'classnames';
-import { DsCheckbox, DsIcon } from '@design-system/ui';
+import { DsCheckbox } from '../../../ds-checkbox';
+import { DsIcon } from '../../../ds-icon';
 import { TableHead, TableHeader, TableRow } from '../core-table';
 import styles from './ds-table-header.module.scss';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
-import { DsTableHeaderProps } from './ds-table-header.types';
+import type { DsTableHeaderProps } from './ds-table-header.types';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getColumnStyle } from '../../utils/column-styling';
 

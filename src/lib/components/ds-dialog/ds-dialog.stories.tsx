@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, waitFor, within } from '@storybook/test';
-import { DsButton, DsIcon } from '@design-system/ui';
+import { DsIcon } from '../ds-icon';
+import { DsButton } from '../ds-button';
 import DsDialog from '../ds-dialog/ds-dialog';
 import styles from './ds-dialog.stories.module.scss';
 

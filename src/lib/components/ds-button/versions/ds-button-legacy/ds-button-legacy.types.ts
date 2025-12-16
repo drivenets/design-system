@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 export const buttonSchemas = ['primary', 'secondary', 'error'] as const;
 export type ButtonSchema = (typeof buttonSchemas)[number];

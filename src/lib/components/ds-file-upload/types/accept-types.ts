@@ -1,4 +1,4 @@
-import { FileUploadFileMimeType } from '@ark-ui/react';
+import type { FileUploadFileMimeType } from '@ark-ui/react';
 
 /**
  * File extension with leading dot

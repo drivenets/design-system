@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconPrefix, materialIcons } from './material-icons';
+import type React from 'react';
+import type { IconPrefix, materialIcons } from './material-icons';
 
 export const iconSizes = ['tiny', 'small', 'medium', 'large', 'extra-large'] as const;
 export type IconSize = (typeof iconSizes)[number];

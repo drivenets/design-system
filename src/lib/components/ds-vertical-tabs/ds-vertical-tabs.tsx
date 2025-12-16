@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { Tabs } from '@ark-ui/react/tabs';
-import {
+import type {
 	DsVerticalTabsContentProps,
 	DsVerticalTabsListProps,
 	DsVerticalTabsRootProps,

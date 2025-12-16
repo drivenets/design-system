@@ -1,4 +1,4 @@
-import * as Collapsible from '@radix-ui/react-collapsible';
+import type * as Collapsible from '@radix-ui/react-collapsible';
 
 export type DsPanelVariant = 'docked' | 'floating';
 

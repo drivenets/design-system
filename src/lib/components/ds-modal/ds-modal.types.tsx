@@ -1,5 +1,5 @@
-import { CSSProperties, ReactNode } from 'react';
-import { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
+import type { CSSProperties, ReactNode } from 'react';
+import type { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
 
 /**
  * Available column sizes for modal width
@@ -9,8 +9,10 @@ export type DsModalColumns = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 /**
  * Props for the DsModal component
  */
-export interface DsModalProps
-	extends Pick<DialogProps, 'modal' | 'closeOnEscape' | 'closeOnInteractOutside'> {
+export interface DsModalProps extends Pick<
+	DialogProps,
+	'modal' | 'closeOnEscape' | 'closeOnInteractOutside'
+> {
 	/**
 	 * Whether the modal is open
 	 */

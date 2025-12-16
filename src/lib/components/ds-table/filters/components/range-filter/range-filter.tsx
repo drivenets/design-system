@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { DsButton, DsTextInput, DsTypography } from '@design-system/ui';
+import { DsTypography } from '../../../../ds-typography';
+import { DsButton } from '../../../../ds-button';
+import { DsTextInput } from '../../../../ds-text-input';
 import styles from './range-filter.module.scss';
 
 export interface RangeFilterValue {

@@ -1,5 +1,5 @@
-import { ReactNode } from 'react';
-import { FilterAdapter } from '../types/filter-adapter.types';
+import type { ReactNode } from 'react';
+import type { FilterAdapter } from '../types/filter-adapter.types';
 
 export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> {
 	/**

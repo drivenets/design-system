@@ -1,7 +1,8 @@
-import { ChangeEvent, FC, Fragment } from 'react';
+import type { ChangeEvent, FC } from 'react';
+import { Fragment } from 'react';
 import classNames from 'classnames';
 import styles from './ds-text-input.module.scss';
-import { DsTextInputProps } from './ds-text-input.types';
+import type { DsTextInputProps } from './ds-text-input.types';
 
 const DsTextInput: FC<DsTextInputProps> = ({
 	id,

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-chip.module.scss';
-import { DsChipProps } from './ds-chip.types';
+import type { DsChipProps } from './ds-chip.types';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 

@@ -1,8 +1,8 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import classNames from 'classnames';
 import { PasswordInput } from '@ark-ui/react';
 import styles from './ds-password-input.module.scss';
-import { DsPasswordInputProps } from './ds-password-input.types';
+import type { DsPasswordInputProps } from './ds-password-input.types';
 import { DsIcon } from '../ds-icon';
 
 const DsPasswordInput: FC<DsPasswordInputProps> = ({

@@ -1,7 +1,7 @@
-import { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import classNames from 'classnames';
 import styles from './ds-alert-banner.module.scss';
-import { DsAlertBannerProps } from './ds-alert-banner.types';
+import type { DsAlertBannerProps } from './ds-alert-banner.types';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 

@@ -1,4 +1,4 @@
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 
 type Args = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

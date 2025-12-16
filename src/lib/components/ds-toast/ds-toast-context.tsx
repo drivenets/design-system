@@ -1,7 +1,9 @@
-import { createContext, FC, ReactNode, useContext } from 'react';
-import { createToaster, CreateToasterReturn } from '@ark-ui/react';
+import type { FC, ReactNode } from 'react';
+import { createContext, useContext } from 'react';
+import type { CreateToasterReturn } from '@ark-ui/react';
+import { createToaster } from '@ark-ui/react';
 import { DsToastGroup } from './ds-toast';
-import { DsToastProps } from './ds-toast.types';
+import type { DsToastProps } from './ds-toast.types';
 
 export interface DsToastProviderProps {
 	/**

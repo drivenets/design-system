@@ -1,5 +1,5 @@
-import { Cell, Row } from '@tanstack/react-table';
-import type { IconType } from '@design-system/ui';
+import type { Cell, Row } from '@tanstack/react-table';
+import type { IconType } from '../../../ds-icon';
 
 /**
  * Represents an action that can be performed on a single row

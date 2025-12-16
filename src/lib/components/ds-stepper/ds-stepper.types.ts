@@ -1,5 +1,5 @@
-import { PropsWithChildren } from 'react';
-import * as steps from '@zag-js/steps';
+import type { PropsWithChildren } from 'react';
+import type * as steps from '@zag-js/steps';
 
 export type DsStepperVariant = 'single';
 

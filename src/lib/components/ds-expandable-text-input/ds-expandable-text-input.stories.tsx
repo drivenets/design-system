@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DsExpandableTextInput } from './ds-expandable-text-input';
-import { textInputSizes } from '@design-system/ui';
+import { textInputSizes } from '../ds-text-input';
 import { useState } from 'react';
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table/ds-table';
 import DsButton from '../ds-button/ds-button';
 

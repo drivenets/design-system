@@ -1,4 +1,4 @@
-import { FileUploadFileError } from '@ark-ui/react';
+import type { FileUploadFileError } from '@ark-ui/react';
 
 export type FileError = FileUploadFileError;
 export type UploadFileStatus = 'pending' | 'uploading' | 'interrupted' | 'completed' | 'error' | 'cancelled';

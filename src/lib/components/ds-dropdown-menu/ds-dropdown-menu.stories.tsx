@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { DsDropdownMenu } from './ds-dropdown-menu';
-import { DsButton, DsCheckbox, DsIcon, DsRadioGroup, DsTextInput, DsTypography } from '@design-system/ui';
+import { DsIcon } from '../ds-icon';
+import { DsTextInput } from '../ds-text-input';
+import { DsCheckbox } from '../ds-checkbox';
+import { DsTypography } from '../ds-typography';
+import { DsButton } from '../ds-button';
+import { DsRadioGroup } from '../ds-radio-group';
 import './ds-dropdown-menu.stories.scss';
 
 const meta: Meta<typeof DsDropdownMenu> = {
@@ -264,7 +269,7 @@ export const RadioList: Story = {
 	render: function Render() {
 		const [open, setOpen] = useState(false);
 		const [search, setSearch] = useState('');
-		const [tempSelected, setTempSelected] = useState<string>('');
+		const [tempSelected, setTempSelected] = useState<string | null>(null);
 
 		const options = [
 			{ value: 'option1', label: 'Menu text 1', description: 'Info Text' },
@@ -324,7 +329,7 @@ export const RadioList: Story = {
 								value={option.value}
 								className={tempSelected === option.value ? 'radio-selected' : ''}
 							>
-								<DsRadioGroup.Item value={option.value} id={option.value} />
+								<DsRadioGroup.Item value={option.value} />
 								<div className="item-content">
 									<DsTypography className="item-label" variant="body-sm-reg">
 										{option.label}

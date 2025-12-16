@@ -1,4 +1,4 @@
-import { DsIcon, IconType } from '@design-system/ui';
+import { DsIcon, type IconType } from '../../../../ds-icon';
 import styles from './status-item.module.scss';
 
 export interface StatusItemProps {

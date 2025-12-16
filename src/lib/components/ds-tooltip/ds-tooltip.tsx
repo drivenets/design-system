@@ -1,8 +1,9 @@
-import { FC, isValidElement } from 'react';
+import type { FC } from 'react';
+import { isValidElement } from 'react';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import classNames from 'classnames';
 import styles from './ds-tooltip.module.scss';
-import { DsTooltipProps } from './ds-tooltip.types';
+import type { DsTooltipProps } from './ds-tooltip.types';
 import { DsTypography } from '../ds-typography';
 
 const DsTooltip: FC<DsTooltipProps> = ({ content, children }) => {

@@ -1,6 +1,6 @@
-import { CSSProperties, MouseEvent, ReactNode } from 'react';
+import type { CSSProperties, MouseEvent, ReactNode } from 'react';
 import type { Menu } from '@ark-ui/react/menu';
-import { IconType } from '../ds-icon';
+import type { IconType } from '../ds-icon';
 
 /**
  * Base positioning type
@@ -141,8 +141,10 @@ export type DsDropdownMenuTriggerProps = Menu.TriggerProps;
 /**
  * Props for the DsDropdownMenu Content component
  */
-export interface DsDropdownMenuContentProps
-	extends Pick<Menu.ContentProps, 'className' | 'style' | 'children'> {
+export interface DsDropdownMenuContentProps extends Pick<
+	Menu.ContentProps,
+	'className' | 'style' | 'children'
+> {
 	/**
 	 * Whether to render in place instead of using portals
 	 * @default false
@@ -153,11 +155,10 @@ export interface DsDropdownMenuContentProps
 /**
  * Props for the DsDropdownMenu Item component
  */
-export interface DsDropdownMenuItemProps
-	extends Pick<
-		Menu.ItemProps,
-		'disabled' | 'asChild' | 'className' | 'style' | 'onSelect' | 'onClick' | 'value' | 'children'
-	> {
+export interface DsDropdownMenuItemProps extends Pick<
+	Menu.ItemProps,
+	'disabled' | 'asChild' | 'className' | 'style' | 'onSelect' | 'onClick' | 'value' | 'children'
+> {
 	/**
 	 * Whether the item is selected (applies selected styling)
 	 */

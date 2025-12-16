@@ -1,4 +1,4 @@
-import { DsTypography } from '@design-system/ui';
+import { DsTypography } from '../../../../../ds-typography';
 import styles from './user-avatar.module.scss';
 
 export interface UserAvatarProps {

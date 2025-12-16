@@ -1,5 +1,5 @@
-import { CSSProperties, ReactNode } from 'react';
-import { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
+import type { CSSProperties, ReactNode } from 'react';
+import type { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
 
 /**
  * Available positions for the drawer

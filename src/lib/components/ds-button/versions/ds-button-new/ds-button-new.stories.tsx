@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
-import { DsIcon } from '@design-system/ui';
+import { DsIcon } from '../../../ds-icon';
 import DsSpinner from '../../../ds-spinner/ds-spinner';
 import DsButtonNew from './ds-button-new';
 import { buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types';
@@ -195,7 +195,9 @@ export const Showcase: Story = {
 												return (
 													<td
 														key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}
-														className={`${styles.showcaseCell} ${variant === 'dark' ? styles.showcaseCellDark : ''}`}
+														className={`${styles.showcaseCell} ${
+															variant === 'dark' ? styles.showcaseCellDark : ''
+														}`}
 													>
 														<div className={styles.showcaseCellInline}>
 															<DsButtonNew

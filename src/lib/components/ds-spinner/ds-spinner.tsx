@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-spinner.module.scss';
-import { DsSpinnerProps, SpinnerSize } from './ds-spinner.types';
+import type { DsSpinnerProps, SpinnerSize } from './ds-spinner.types';
 
 const sizeMap: Record<SpinnerSize, number> = {
 	small: 50,

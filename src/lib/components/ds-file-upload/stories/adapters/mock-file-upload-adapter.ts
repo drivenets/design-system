@@ -1,4 +1,4 @@
-import { FileUploadAdapter, FileUploadOptions, FileUploadResult } from '../../ds-file-upload-api.types';
+import type { FileUploadAdapter, FileUploadOptions, FileUploadResult } from '../../ds-file-upload-api.types';
 import { FatalFileUploadError, RetryableFileUploadError } from '../../errors/file-upload-errors';
 
 export type MockScenario = 'success' | 'error' | 'interrupted' | 'slow' | 'fast';

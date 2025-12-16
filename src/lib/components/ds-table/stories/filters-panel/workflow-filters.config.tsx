@@ -38,18 +38,18 @@
  * No changes needed in the component!
  */
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import DsStatusBadge from '../../../ds-status-badge/ds-status-badge';
-import { DsStatus } from '../../../ds-status-badge/ds-status-badge.types';
-import { IconType } from '../../../ds-icon/ds-icon.types';
+import type { DsStatus } from '../../../ds-status-badge/ds-status-badge.types';
+import type { IconType } from '../../../ds-icon/ds-icon.types';
+import type { AnyAdapter, CheckboxFilterItem } from '../../filters';
 import {
-	AnyAdapter,
-	CheckboxFilterItem,
 	createCheckboxFilterAdapter,
 	createDualRangeFilterAdapter,
 	createFilterAdapter,
 } from '../../filters';
-import { LastEditedFilter, LastEditedFilterValue } from './components/last-edited-filter/last-edited-filter';
+import type { LastEditedFilterValue } from './components/last-edited-filter/last-edited-filter';
+import { LastEditedFilter } from './components/last-edited-filter/last-edited-filter';
 import { LastEditedCell } from './components/last-edited-cell/last-edited-cell';
 
 /**

@@ -1,8 +1,9 @@
-import React, { createContext, CSSProperties, useContext } from 'react';
+import type { CSSProperties } from 'react';
+import React, { createContext, useContext } from 'react';
 import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';
 import styles from './ds-smart-tabs.module.scss';
-import { Color, DsSmartTabProps, DsSmartTabsProps } from './ds-smart-tabs.types';
+import type { Color, DsSmartTabProps, DsSmartTabsProps } from './ds-smart-tabs.types';
 
 const colorMap: Record<Color, string> = {
 	'dark-blue': 'var(--color-background-info-strong)',

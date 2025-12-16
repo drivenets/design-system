@@ -1,4 +1,4 @@
-import { AcceptedFileType } from '../types/accept-types';
+import type { AcceptedFileType } from '../types/accept-types';
 import { getFileExtensions } from './accept-utils';
 import { formatFileSize } from './format-file-size';
 

@@ -1,5 +1,5 @@
-@use '@design-system/ui/src/styles/typography';
-@use '@design-system/ui/src/styles/mixins/bounding-box';
+@use '@drivenets/design-system/src/styles/typography';
+@use '@drivenets/design-system/src/styles/mixins/bounding-box';
 
 @mixin dropdown-content {
 	--_shadow-size: 15px;

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
 import DsSelect from './ds-select';
-import { DsSelectProps } from '@design-system/ui';
+import type { DsSelectProps } from './ds-select.types';
 
 const meta: Meta<typeof DsSelect> = {
 	title: 'Design System/Select',

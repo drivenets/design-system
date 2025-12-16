@@ -1,7 +1,7 @@
 import React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import classNames from 'classnames';
-import { DsTypographyProps } from './ds-typography.types';
+import type { DsTypographyProps } from './ds-typography.types';
 import { semanticElementMap } from './ds-typography.config';
 import styles from './ds-typography.module.scss';
 

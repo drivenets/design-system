@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { DsButton, DsGrid, DsGridItem } from '@design-system/ui';
+import { DsGrid, DsGridItem } from './ds-grid';
+import { DsButton } from '../ds-button';
 import './ds-grid.stories.scss';
 
 const meta = {

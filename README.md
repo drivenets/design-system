@@ -17,7 +17,7 @@ npx nx generate @dap-workspace/dap-plugin:ds-component my-component
 ## How this library was created
 
 ```bash
-dap-workspace git:(andrei/storybook) ✗ nx g @nx/react:library web --directory=libs/web --importPath=@design-system/ui --publishable
+dap-workspace git:(andrei/storybook) ✗ nx g @nx/react:library web --directory=libs/web --importPath=@drivenets/design-system --publishable
 ```
 
 Add Storybook support:

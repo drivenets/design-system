@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DsTypography from './ds-typography';
 import styles from './ds-typography.stories.module.scss';
-import { SemanticVariant } from './ds-typography.types';
+import type { SemanticVariant } from './ds-typography.types';
 import { semanticElementMap } from './ds-typography.config';
 
 const semanticVariants = Object.keys(semanticElementMap);

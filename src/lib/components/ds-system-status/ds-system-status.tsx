@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-system-status.module.scss';
-import { DsSystemStatusProps } from './ds-system-status.types';
+import type { DsSystemStatusProps } from './ds-system-status.types';
 
 /**
  * @deprecated This component is deprecated. Use `DsStatusBadge` instead.

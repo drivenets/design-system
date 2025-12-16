@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, within } from '@storybook/test';
 import { useState } from 'react';
-import { DsIcon } from '@design-system/ui';
 import { DsCheckbox } from '../ds-checkbox';
 import DsTooltip from './ds-tooltip';
 import styles from './ds-tooltip.stories.module.scss';
+import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsTooltip> = {
 	title: 'Design System/Tooltip',

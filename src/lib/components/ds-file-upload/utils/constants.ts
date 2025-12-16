@@ -1,4 +1,4 @@
-import { AcceptedFileType } from '../types/accept-types';
+import type { AcceptedFileType } from '../types/accept-types';
 
 /**
  * Default allowed file types for the file upload component

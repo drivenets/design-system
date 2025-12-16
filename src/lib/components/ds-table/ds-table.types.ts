@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type {
 	ColumnDef,
 	ColumnFiltersState,
@@ -6,8 +6,8 @@ import type {
 	Table,
 	VisibilityState,
 } from '@tanstack/react-table';
-import { IconType } from '../ds-icon';
-import { RowAction, SecondaryRowAction } from './components/ds-table-cell';
+import type { IconType } from '../ds-icon';
+import type { RowAction, SecondaryRowAction } from './components/ds-table-cell';
 
 /**
  * Row size variants based on Figma design specifications

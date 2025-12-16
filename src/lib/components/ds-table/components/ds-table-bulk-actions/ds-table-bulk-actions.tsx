@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
-import { DsButton, DsIcon } from '@design-system/ui';
+import { DsButton } from '../../../ds-button';
+import { DsIcon } from '../../../ds-icon';
 import styles from './ds-table-bulk-actions.module.scss';
-import { BulkActionsProps } from './ds-table-bulk-actions.types';
+import type { BulkActionsProps } from './ds-table-bulk-actions.types';
 
 const DsTableBulkActions: React.FC<BulkActionsProps> = ({ numSelectedRows, actions, onClearSelection }) => {
 	const [isRendered, setIsRendered] = useState(false);

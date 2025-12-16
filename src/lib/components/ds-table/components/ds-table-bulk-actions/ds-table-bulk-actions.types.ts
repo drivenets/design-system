@@ -1,4 +1,4 @@
-import { IconType } from '@design-system/ui';
+import type { IconType } from '../../../ds-icon';
 
 /**
  * Represents a bulk action that can be performed on selected table rows

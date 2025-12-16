@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { useStepper } from '../hooks/use-stepper';
 import DsButton from '../../ds-button/ds-button';
 

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
 import type { DsStepperVariant } from '../ds-stepper.types';
-import { useSteps } from './use-steps';
+import type { useSteps } from './use-steps';
 
 type StepsContext = {
 	stepsApi: ReturnType<typeof useSteps>;

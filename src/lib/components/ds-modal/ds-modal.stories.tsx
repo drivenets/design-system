@@ -3,12 +3,16 @@ import { expect, screen, userEvent, waitFor, within } from '@storybook/test';
 import { useState } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { faker } from '@faker-js/faker';
-import { Controller, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { DsButton, DsCheckbox, DsFormControl, DsRadioGroup } from '@design-system/ui';
 import DsModal from './ds-modal';
 import styles from './ds-modal.stories.module.scss';
+import { DsButton } from '../ds-button';
+import { DsFormControl } from '../ds-form-control';
+import { DsRadioGroup } from '../ds-radio-group';
+import { DsCheckbox } from '../ds-checkbox';
 
 const meta: Meta<typeof DsModal> = {
 	title: 'Design System/Modal',
@@ -100,7 +104,10 @@ export const Default: Story = {
 			reset(defaultFormValues);
 		};
 
-		const handleValueChange = (field: keyof ModalFormValues, value: string | boolean | 'indeterminate') => {
+		const handleValueChange = (
+			field: keyof ModalFormValues,
+			value: string | boolean | 'indeterminate' | null,
+		) => {
 			setValue(field, value === 'indeterminate' ? false : (value as ModalFormValues[typeof field]), {
 				shouldValidate: true,
 				shouldTouch: true,

@@ -1,8 +1,10 @@
-import { Cell, flexRender } from '@tanstack/react-table';
+import type { Cell } from '@tanstack/react-table';
+import { flexRender } from '@tanstack/react-table';
 import classnames from 'classnames';
-import { DsDropdownMenu, DsIcon } from '@design-system/ui';
+import { DsIcon } from '../../../ds-icon';
+import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import styles from './ds-table-cell.module.scss';
-import { DsTableCellProps } from './ds-table-cell.types';
+import type { DsTableCellProps } from './ds-table-cell.types';
 
 export const DsDefaultTableCell = <TData, TValue>({ cell }: { cell: Cell<TData, TValue> }) => {
 	return (
@@ -66,7 +68,8 @@ export const DsTableCell = <TData, TValue>({
 							</DsDropdownMenu.Trigger>
 							<DsDropdownMenu.Content>
 								{secondaryRowActions.map((action, i) => {
-									const label = typeof action.label === 'function' ? action.label(row.original) : action.label;
+									const label =
+										typeof action.label === 'function' ? action.label(row.original) : action.label;
 									const isDisabled = action.disabled?.(row.original);
 									return (
 										<DsDropdownMenu.Item

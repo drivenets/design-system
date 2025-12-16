@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useStepper } from '../hooks/use-stepper';
 import { DsStepLabel } from './ds-step-label';
 import { DsStepDescription } from './ds-step-description';

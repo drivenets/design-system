@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import DsChipGroup from './ds-chip-group';
-import { ChipItem } from './ds-chip-group.types';
+import type { ChipItem } from './ds-chip-group.types';
 import styles from './ds-chip-group.stories.module.scss';
 
 const meta: Meta<typeof DsChipGroup> = {

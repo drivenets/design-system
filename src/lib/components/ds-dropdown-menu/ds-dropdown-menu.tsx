@@ -7,7 +7,7 @@ import styles from './ds-dropdown-menu.module.scss';
 import { DsIcon } from '../ds-icon';
 import DsTypography from '../ds-typography/ds-typography';
 import DsTextInput from '../ds-text-input/ds-text-input';
-import {
+import type {
 	DsDropdownMenuActionsProps,
 	DsDropdownMenuContentProps,
 	DsDropdownMenuHeaderProps,

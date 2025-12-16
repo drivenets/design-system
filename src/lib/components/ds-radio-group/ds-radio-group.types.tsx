@@ -1,15 +1,14 @@
-import React from 'react';
-import * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
+import type React from 'react';
+import type * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { type RadioGroupItemProps, type RadioGroupRootProps } from '@ark-ui/react/radio-group';
 
 /**
  * Props for the DsRadioGroup Root component
  */
-export interface DsRadioGroupRootProps
-	extends Pick<
-		RadioGroupRootProps,
-		'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'orientation' | 'children'
-	> {
+export interface DsRadioGroupRootProps extends Pick<
+	RadioGroupRootProps,
+	'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'orientation' | 'children'
+> {
 	/**
 	 * Event handler called when the selected value changes
 	 */
@@ -19,8 +18,10 @@ export interface DsRadioGroupRootProps
 /**
  * Props for the DsRadioGroup Item component
  */
-export interface DsRadioGroupItemProps
-	extends Pick<RadioGroupItemProps, 'value' | 'disabled' | 'className' | 'style' | 'children'> {
+export interface DsRadioGroupItemProps extends Pick<
+	RadioGroupItemProps,
+	'value' | 'disabled' | 'className' | 'style' | 'children'
+> {
 	/**
 	 * Optional label text for the radio item
 	 */
@@ -60,8 +61,9 @@ export interface DsRadioOptionLegacy<ValueType = string> {
  * Use compound component pattern instead
  * @deprecated
  */
-export interface DsRadioGroupLegacyProps<TOption extends DsRadioOptionLegacy = DsRadioOptionLegacy>
-	extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+export interface DsRadioGroupLegacyProps<
+	TOption extends DsRadioOptionLegacy = DsRadioOptionLegacy,
+> extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
 	/**
 	 * The radio group options
 	 */

@@ -2,10 +2,14 @@ import React, { useRef, useState } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
 import { Root as VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import classNames from 'classnames';
-import { DsButton, DsCheckbox, DsChip, DsIcon, DsTypography } from '@design-system/ui';
 import styles from './ds-chip-group.module.scss';
-import { DsChipGroupProps } from './ds-chip-group.types';
+import type { DsChipGroupProps } from './ds-chip-group.types';
 import { useChipRowCalculation } from './hooks/use-chip-row-calculation';
+import { DsTypography } from '../ds-typography';
+import DsChip from '../ds-chip/ds-chip';
+import { DsCheckbox } from '../ds-checkbox';
+import { DsButton } from '../ds-button';
+import { DsIcon } from '../ds-icon';
 
 /**
  * Design system chip group component displays a collection of chips with overflow handling

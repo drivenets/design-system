@@ -1,4 +1,4 @@
-import { FileError } from '../ds-file-upload-api.types';
+import type { FileError } from '../ds-file-upload-api.types';
 
 const FILE_ERROR_MESSAGES: Record<FileError, string> = {
 	FILE_TOO_LARGE: 'File size exceeds the maximum limit',

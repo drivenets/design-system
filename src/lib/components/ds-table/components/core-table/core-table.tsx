@@ -1,4 +1,4 @@
-import { HTMLAttributes, Ref, TdHTMLAttributes, ThHTMLAttributes } from 'react';
+import type { HTMLAttributes, Ref, TdHTMLAttributes, ThHTMLAttributes } from 'react';
 import classnames from 'classnames';
 import styles from './core-table.module.scss';
 

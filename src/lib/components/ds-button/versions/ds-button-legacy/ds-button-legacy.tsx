@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import styles from './ds-button-legacy.module.scss';
-import { DsButtonProps } from './ds-button-legacy.types';
+import type { DsButtonProps } from './ds-button-legacy.types';
 
 /**
  * Design system Button component

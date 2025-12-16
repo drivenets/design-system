@@ -1,5 +1,6 @@
-import React, { ReactNode } from 'react';
-import { IconType } from '../ds-icon';
+import type { ReactNode } from 'react';
+import type React from 'react';
+import type { IconType } from '../ds-icon';
 
 export const alertBannerVariants = ['info-neutral', 'info-blue', 'warning', 'error', 'success'] as const;
 export type AlertBannerVariant = (typeof alertBannerVariants)[number];

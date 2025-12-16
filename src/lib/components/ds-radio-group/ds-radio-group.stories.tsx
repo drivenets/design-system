@@ -25,7 +25,7 @@ export const Default: Story = {
 		},
 	},
 	render: function Render() {
-		const [value, setValue] = useState('option2');
+		const [value, setValue] = useState<string | null>('option2');
 
 		return (
 			<DsRadioGroup.Root value={value} onValueChange={setValue}>
@@ -73,7 +73,7 @@ export const WithDisabledItems: Story = {
 		},
 	},
 	render: function Render() {
-		const [value, setValue] = useState('option2');
+		const [value, setValue] = useState<string | null>('option2');
 
 		return (
 			<DsRadioGroup.Root value={value} onValueChange={setValue}>
@@ -122,7 +122,7 @@ export const CustomComposition: Story = {
 		},
 	},
 	render: function Render() {
-		const [value, setValue] = useState('custom2');
+		const [value, setValue] = useState<string | null>('custom2');
 
 		return (
 			<DsRadioGroup.Root value={value} onValueChange={setValue}>

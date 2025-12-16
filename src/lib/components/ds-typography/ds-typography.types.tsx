@@ -1,5 +1,5 @@
-import React from 'react';
-import { semanticElementMap } from './ds-typography.config';
+import type React from 'react';
+import type { semanticElementMap } from './ds-typography.config';
 
 export type SemanticVariant = keyof typeof semanticElementMap;
 

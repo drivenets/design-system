@@ -2,8 +2,8 @@ import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, userEvent, within } from '@storybook/test';
 import { DsDropdownMenuLegacy } from './ds-dropdown-menu';
-import { delay, DsIcon } from '@design-system/ui';
 import './ds-dropdown-menu.stories.scss';
+import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsDropdownMenuLegacy> = {
 	title: 'Design System/DropdownMenu (Legacy)',
@@ -112,3 +112,7 @@ export const Default: Story = {
 		await userEvent.keyboard('{Escape}');
 	},
 };
+
+function delay(ms: number) {
+	return new Promise((resolve) => setTimeout(resolve, ms));
+}

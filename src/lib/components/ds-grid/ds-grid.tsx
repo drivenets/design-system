@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { DsGridItemProps, DsGridProps } from './ds-grid.types';
+import type { DsGridItemProps, DsGridProps } from './ds-grid.types';
 
 /**
  * Design system Grid component

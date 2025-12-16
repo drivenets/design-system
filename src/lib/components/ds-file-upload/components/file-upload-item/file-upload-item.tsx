@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Progress } from '@ark-ui/react';
-import { DsTooltip } from '@design-system/ui';
+import { DsTooltip } from '../../../ds-tooltip';
 import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';
 import { getErrorMessage } from '../../utils/get-error-message';
-import { FileUploadItemProps } from './file-upload-item.types';
+import type { FileUploadItemProps } from './file-upload-item.types';
 import styles from './file-upload-item.module.scss';
 
 /**

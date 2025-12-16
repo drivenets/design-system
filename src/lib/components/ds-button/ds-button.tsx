@@ -1,6 +1,6 @@
 import { DsButtonLegacy } from './versions/ds-button-legacy';
 import { DsButtonNew } from './versions/ds-button-new';
-import { DsButtonUnifiedProps } from './ds-button.types';
+import type { DsButtonUnifiedProps } from './ds-button.types';
 
 const DsButton = (props: DsButtonUnifiedProps) => {
 	if (props.design === 'v1.2') {

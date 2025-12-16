@@ -1,5 +1,5 @@
-import { CSSProperties, KeyboardEvent, MouseEvent, Ref } from 'react';
-import { IconType } from '../ds-icon';
+import type { CSSProperties, KeyboardEvent, MouseEvent, Ref } from 'react';
+import type { IconType } from '../ds-icon';
 
 export const chipSizes = ['medium', 'small'] as const;
 export type ChipSize = (typeof chipSizes)[number];

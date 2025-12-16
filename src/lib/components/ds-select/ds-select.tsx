@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Select, createListCollection, useSelect, UseSelectReturn } from '@ark-ui/react/select';
+import type { UseSelectReturn } from '@ark-ui/react/select';
+import { Select, createListCollection, useSelect } from '@ark-ui/react/select';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import styles from './ds-select.module.scss';
-import { DsSelectOption, DsSelectProps } from './ds-select.types';
+import type { DsSelectOption, DsSelectProps } from './ds-select.types';
 import { DsIcon } from '../ds-icon';
-import { DsCheckbox, DsCheckboxProps } from '../ds-checkbox';
+import type { DsCheckboxProps } from '../ds-checkbox';
+import { DsCheckbox } from '../ds-checkbox';
 import { SelectItemsChips } from './select-items-chips';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';

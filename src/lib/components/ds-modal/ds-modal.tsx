@@ -1,8 +1,8 @@
-import { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
-import { DsModalProps } from './ds-modal.types';
+import type { DsModalProps } from './ds-modal.types';
 import styles from './ds-modal.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';

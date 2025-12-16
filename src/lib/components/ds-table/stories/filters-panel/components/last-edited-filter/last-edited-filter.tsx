@@ -1,8 +1,12 @@
 import { useState } from 'react';
-import { DsButton, DsIcon, DsTextInput, DsTypography } from '@design-system/ui';
 import { UserAvatar } from '../user-avatar/user-avatar';
-import { CheckboxFilter, CheckboxFilterItem } from '../../../../filters/components/checkbox-filter';
+import type { CheckboxFilterItem } from '../../../../filters/components/checkbox-filter';
+import { CheckboxFilter } from '../../../../filters/components/checkbox-filter';
 import styles from './last-edited-filter.module.scss';
+import { DsTypography } from '../../../../../ds-typography';
+import { DsButton } from '../../../../../ds-button';
+import { DsIcon } from '../../../../../ds-icon';
+import { DsTextInput } from '../../../../../ds-text-input';
 
 export interface LastEditedFilterValue {
 	editors: string[];

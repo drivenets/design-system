@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, within } from '@storybook/test';
 import DsStatusBadge from './ds-status-badge';
-import { DsStatus, dsStatuses, statusBadgeSizes } from './ds-status-badge.types';
-import { IconType } from '../ds-icon';
+import type { DsStatus } from './ds-status-badge.types';
+import { dsStatuses, statusBadgeSizes } from './ds-status-badge.types';
+import type { IconType } from '../ds-icon';
 import styles from './ds-status-badge.stories.module.scss';
 
 const meta: Meta<typeof DsStatusBadge> = {

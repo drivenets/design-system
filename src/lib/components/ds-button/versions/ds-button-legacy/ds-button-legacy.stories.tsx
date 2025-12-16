@@ -1,16 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, fn, userEvent, within } from '@storybook/test';
 import classNames from 'classnames';
-import { DsIcon, IconSize } from '@design-system/ui';
+import { DsIcon, type IconSize } from '../../../ds-icon';
 import styles from './ds-button-legacy.stories.module.scss';
 import DsButtonLegacy from './ds-button-legacy';
-import {
-	ButtonSchema,
-	buttonSchemas,
-	buttonSizes,
-	ButtonVariant,
-	buttonVariants,
-} from './ds-button-legacy.types';
+import type { ButtonSchema, ButtonVariant } from './ds-button-legacy.types';
+import { buttonSchemas, buttonSizes, buttonVariants } from './ds-button-legacy.types';
 
 const meta: Meta<typeof DsButtonLegacy> = {
 	title: 'Design System/Button (Legacy)',

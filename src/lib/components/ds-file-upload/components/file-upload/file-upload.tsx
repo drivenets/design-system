@@ -5,7 +5,7 @@ import { DsIcon } from '../../../ds-icon';
 import { DsTypography } from '../../../ds-typography';
 import { DsButton } from '../../../ds-button';
 import { FileUploadItem } from '../file-upload-item';
-import { FileUploadProps } from './file-upload.types';
+import type { FileUploadProps } from './file-upload.types';
 import { DEFAULT_ALLOWED_FILE_TYPES, DEFAULT_MAX_FILE_SIZE, DEFAULT_MAX_FILES } from '../../utils/constants';
 import { generateHelperText } from '../../utils/generate-helper-text';
 import { getMimeTypes } from '../../utils/accept-utils';

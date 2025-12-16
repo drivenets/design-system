@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconName } from '../ds-icon';
+import type React from 'react';
+import type { IconName } from '../ds-icon';
 
 export type SelectSize = 'default' | 'small';
 

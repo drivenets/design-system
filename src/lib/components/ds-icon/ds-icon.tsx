@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-icon.module.scss';
-import { DsIconProps } from './ds-icon.types';
+import type { DsIconProps } from './ds-icon.types';
 
 /**
  * Design system Icon component that renders Google Material Icons or inline SVGs

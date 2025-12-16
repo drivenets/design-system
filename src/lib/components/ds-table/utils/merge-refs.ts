@@ -1,4 +1,4 @@
-import { Ref, RefCallback } from 'react';
+import type { Ref, RefCallback } from 'react';
 
 export const mergeRefs = <T>(...refs: Array<Ref<T> | undefined>): RefCallback<T> => {
 	return (value) => {

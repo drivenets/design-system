@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 
 export const spinnerSizes = ['small', 'medium', 'large'] as const;
 export type SpinnerSize = (typeof spinnerSizes)[number];

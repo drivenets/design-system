@@ -1,5 +1,5 @@
-import { CSSProperties } from 'react';
-import { IconType } from '../ds-icon';
+import type { CSSProperties } from 'react';
+import type { IconType } from '../ds-icon';
 
 export const dsStatuses = ['active', 'running', 'pending', 'draft', 'inactive', 'warning', 'failed'] as const;
 

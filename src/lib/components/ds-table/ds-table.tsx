@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useImperativeHandle } from 'react';
+import type { RowSelectionState } from '@tanstack/react-table';
 import {
 	type ColumnFiltersState,
 	getCoreRowModel,
 	getFilteredRowModel,
 	getSortedRowModel,
-	RowSelectionState,
 	type SortingState,
 	useReactTable,
 	type VisibilityState,
@@ -19,7 +19,8 @@ import styles from './ds-table.module.scss';
 import type { DsDataTableProps, DsTableRowSize } from './ds-table.types';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
-import { DsTableContext, DsTableContextType } from './context/ds-table-context';
+import type { DsTableContextType } from './context/ds-table-context';
+import { DsTableContext } from './context/ds-table-context';
 import { createColumnsGridTemplate } from './utils/create-columns-grid-template';
 
 // Row size to pixel height mapping (matches CSS variables)

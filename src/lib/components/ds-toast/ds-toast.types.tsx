@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 export const toastVariants = ['info', 'success', 'warning', 'error'] as const;
 export type ToastVariant = (typeof toastVariants)[number];

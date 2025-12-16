@@ -1,5 +1,5 @@
-import React from 'react';
-import { IconType } from '../ds-icon';
+import type React from 'react';
+import type { IconType } from '../ds-icon';
 
 export const controlStatuses = ['info', 'success', 'error', 'warning'] as const;
 export type ControlStatus = (typeof controlStatuses)[number];

@@ -1,7 +1,8 @@
-import { ReactNode, useState } from 'react';
-import { CellContext, ColumnDef } from '@tanstack/react-table';
-import { ChipItem } from '@design-system/ui';
-import {
+import type { ReactNode } from 'react';
+import { useState } from 'react';
+import type { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { ChipItem } from '../../../ds-chip-group';
+import type {
 	AnyAdapter,
 	ColumnFilterState,
 	FilterAdapter,

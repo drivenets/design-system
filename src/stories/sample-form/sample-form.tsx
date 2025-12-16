@@ -1,7 +1,13 @@
-import { Controller, ControllerRenderProps, FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import {
+	type ControllerRenderProps,
+	type SubmitHandler,
+	Controller,
+	FormProvider,
+	useForm,
+} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DsButton, DsCheckbox, DsFormControl, DsRadioGroup } from '@design-system/ui';
-import { sampleFormSchema, SampleFormValues } from './sampleFormSchema';
+import { DsButton, DsCheckbox, DsFormControl, DsRadioGroup } from '../../index';
+import { sampleFormSchema, type SampleFormValues } from './sampleFormSchema';
 
 const defaultValues = {
 	name: '',
@@ -16,7 +22,7 @@ const defaultValues = {
 const SampleForm = () => {
 	const methods = useForm<SampleFormValues>({
 		resolver: zodResolver(sampleFormSchema),
-		defaultValues,
+		defaultValues: defaultValues as never,
 		mode: 'onChange',
 	});
 
@@ -33,12 +39,13 @@ const SampleForm = () => {
 
 	const onSubmit: SubmitHandler<SampleFormValues> = (data: SampleFormValues) => {
 		alert(JSON.stringify(data, null, 2));
-		reset(defaultValues);
+		reset(defaultValues as never);
 	};
 
 	const handleValueChange = (
 		field: ControllerRenderProps<SampleFormValues> | keyof SampleFormValues,
-		value: string | number | true,
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		value: any,
 	) => {
 		const name = typeof field === 'string' ? field : field.name;
 		setValue(name, value, {
@@ -60,7 +67,7 @@ const SampleForm = () => {
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.name ? errors.name?.message : undefined}
+					message={touchedFields.name ? errors.name?.message : ''}
 				>
 					<Controller
 						name="name"
@@ -81,7 +88,7 @@ const SampleForm = () => {
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.email ? errors.email?.message : undefined}
+					message={touchedFields.email ? errors.email?.message : ''}
 				>
 					<Controller
 						name="email"
@@ -103,7 +110,7 @@ const SampleForm = () => {
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.quantity ? errors.quantity?.message : undefined}
+					message={touchedFields.quantity ? errors.quantity?.message : ''}
 				>
 					<Controller
 						name="quantity"
@@ -125,7 +132,7 @@ const SampleForm = () => {
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.contactMethod ? errors.contactMethod?.message : undefined}
+					message={touchedFields.contactMethod ? errors.contactMethod?.message : ''}
 				>
 					<Controller
 						name="contactMethod"
@@ -140,6 +147,7 @@ const SampleForm = () => {
 									{ label: 'SMS', value: 'sms', icon: 'sms' },
 									{ label: 'In-App Notification', value: 'in_app', icon: 'notifications' },
 								]}
+								clearable
 								onClear={() => handleValueChange(field, '')}
 								onValueChange={(value) => handleValueChange(field, value)}
 								onBlur={() => handleValueChange(field, field.value)}
@@ -153,7 +161,7 @@ const SampleForm = () => {
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.description ? errors.description?.message : undefined}
+					message={touchedFields.description ? errors.description?.message : ''}
 				>
 					<DsFormControl.Textarea
 						placeholder="Enter your description"

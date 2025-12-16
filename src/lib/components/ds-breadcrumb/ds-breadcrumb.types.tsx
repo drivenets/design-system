@@ -1,4 +1,4 @@
-import { IconType } from '../ds-icon';
+import type { IconType } from '../ds-icon';
 
 export type DsBreadcrumbItem =
 	| {

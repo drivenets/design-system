@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { expect, screen, userEvent, within } from '@storybook/test';
-import { DsButton, DsIcon } from '@design-system/ui';
+import { DsButton } from '../ds-button';
+import { DsIcon } from '../ds-icon';
 import { Close as PopoverClose } from '@radix-ui/react-popover';
 import DsPopover from './ds-popover';
 import './ds-popover.stories.scss';

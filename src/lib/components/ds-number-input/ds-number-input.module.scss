@@ -1,4 +1,4 @@
-@use '@design-system/ui/src/styles/shared/input' as input;
+@use '@drivenets/design-system/src/styles/shared/input' as input;
 
 .textInputContainer {
 	@include input.inputContainer;

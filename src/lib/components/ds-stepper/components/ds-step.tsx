@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { useStepper } from '../hooks/use-stepper';
 import classnames from 'classnames';
 import styles from '../ds-stepper.module.scss';

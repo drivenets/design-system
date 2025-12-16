@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-textarea.module.scss';
-import { DsTextareaProps } from './ds-textarea.types';
+import type { DsTextareaProps } from './ds-textarea.types';
 
 const DsTextarea: React.FC<DsTextareaProps> = ({
 	id,

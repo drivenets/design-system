@@ -1,5 +1,5 @@
-import { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { Root } from '@radix-ui/react-checkbox';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import type { Root } from '@radix-ui/react-checkbox';
 
 export interface DsCheckboxProps extends ComponentPropsWithoutRef<typeof Root> {
 	/**

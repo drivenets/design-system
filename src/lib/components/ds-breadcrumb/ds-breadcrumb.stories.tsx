@@ -11,7 +11,7 @@ import {
 	useNavigate,
 } from '@tanstack/react-router';
 import DsBreadcrumb from './ds-breadcrumb';
-import { DsBreadcrumbItem } from '@design-system/ui';
+import type { DsBreadcrumbItem } from './ds-breadcrumb.types';
 import styles from './ds-breadcrumb.module.scss';
 
 const createTestRouter = (Story: React.ComponentType, initialPath: string) => {

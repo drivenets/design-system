@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import styles from './ds-status-badge.module.scss';
-import { DsStatusBadgeProps } from './ds-status-badge.types';
+import type { DsStatusBadgeProps } from './ds-status-badge.types';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 

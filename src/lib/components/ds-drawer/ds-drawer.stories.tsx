@@ -8,7 +8,7 @@ import { DsIcon } from '../ds-icon';
 import DsSystemStatus from '../ds-system-status/ds-system-status';
 import styles from './ds-drawer.stories.module.scss';
 import { DsTypography } from '../ds-typography';
-import { DsDrawerProps } from './ds-drawer.types';
+import type { DsDrawerProps } from './ds-drawer.types';
 
 const meta: Meta<typeof DsDrawer> = {
 	title: 'Design System/Drawer',
