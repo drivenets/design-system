@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import styles from './ds-system-status.module.scss';
 import type { DsSystemStatusProps } from './ds-system-status.types';

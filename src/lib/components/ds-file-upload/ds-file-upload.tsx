@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import type { DsFileUploadProps } from './ds-file-upload.types';
 import { FileUpload } from './components/file-upload';
 import { useFileUpload } from './hooks';

@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import styles from './ds-status-badge.module.scss';
 import type { DsStatusBadgeProps } from './ds-status-badge.types';

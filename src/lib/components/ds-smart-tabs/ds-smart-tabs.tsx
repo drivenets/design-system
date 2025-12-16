@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
-import React, { createContext, useContext } from 'react';
+import type React from 'react';
+import { createContext, useContext } from 'react';
 import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';
 import styles from './ds-smart-tabs.module.scss';

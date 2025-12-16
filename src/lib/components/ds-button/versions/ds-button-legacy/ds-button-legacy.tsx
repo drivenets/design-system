@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import type React from 'react';
 import styles from './ds-button-legacy.module.scss';
 import type { DsButtonProps } from './ds-button-legacy.types';
 

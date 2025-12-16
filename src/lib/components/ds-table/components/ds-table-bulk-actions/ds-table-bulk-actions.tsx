@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';

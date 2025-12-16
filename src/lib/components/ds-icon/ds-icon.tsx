@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import styles from './ds-icon.module.scss';
 import type { DsIconProps } from './ds-icon.types';

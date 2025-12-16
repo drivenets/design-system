@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import classNames from 'classnames';
 import { Progress } from '@ark-ui/react';
 import { DsTooltip } from '../../../ds-tooltip';
