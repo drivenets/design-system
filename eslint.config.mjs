@@ -35,7 +35,7 @@ export default defineConfig(
 			// The default is set to `warn`, but we're strict.
 			'react-hooks/exhaustive-deps': 'error',
 
-			// Temporarily turning off some React compiler rules that are failing:
+			// Temporarily turning off some React Compiler rules that are failing:
 			'react-hooks/incompatible-library': 'off',
 			'react-hooks/set-state-in-effect': 'off',
 			'react-hooks/refs': 'off',
