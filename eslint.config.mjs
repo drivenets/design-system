@@ -23,5 +23,5 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(['storybook-static', '!.storybook']),
+	globalIgnores(['storybook-static', '!.storybook', '**/dist']),
 );
