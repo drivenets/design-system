@@ -2,7 +2,10 @@ import { type Rule } from '@commitlint/types';
 
 export const requireJiraTicket: Rule = ({ subject }, _, value: undefined | { prefix?: string }) => {
 	if (!subject) {
-		return [false, 'Your commit should contain a subject'];
+		return [
+			false,
+			'Your commit should contain a subject (e.g., `<type>(<scope>): <subject>`, for example: feat(package): add feature)',
+		];
 	}
 
 	const prefix = value?.prefix?.trim();
