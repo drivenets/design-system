@@ -16,7 +16,7 @@ export const requireJiraTicket: Rule = ({ subject }, _, value: undefined | { pre
 	return [
 		ticketRegex.test(subject),
 		`Your subject should contain a JIRA issue prefixed with '${prefix}-', ` +
-			'have a single space before the issue number, and no spaces afterwards.' +
+			'have a single space before the issue number, and no spaces afterwards. ' +
 			`Example: 'feat(package): add feature [${prefix}-1234]'`,
 	];
 };
