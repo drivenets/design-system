@@ -9,7 +9,7 @@ concurrency:
 
 jobs:
   lint-format:
-    name: Lint & Formatting Check
+    name: Lint & Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
