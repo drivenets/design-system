@@ -119,4 +119,3 @@ DsConfirmation.CloseTrigger = CloseTrigger;
 DsConfirmation.Body = Body;
 DsConfirmation.Footer = Footer;
 DsConfirmation.Actions = Actions;
-

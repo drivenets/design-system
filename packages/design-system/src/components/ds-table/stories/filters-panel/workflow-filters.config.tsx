@@ -242,11 +242,7 @@ const parseTimestamp = (timestamp: string): Date => {
  * This is a reference implementation for building custom filters
  * that don't fit the checkbox or dual-range patterns.
  */
-const lastEditedFilterAdapter = createFilterAdapter<
-	Workflow,
-	LastEditedFilterValue,
-	Workflow['lastEdited']
->({
+const lastEditedFilterAdapter = createFilterAdapter<Workflow, LastEditedFilterValue, Workflow['lastEdited']>({
 	id: 'lastEdited',
 	label: 'Last edited',
 	initialValue: {

@@ -80,4 +80,4 @@ function TableCaption({ className, ref, ...props }: TableCaptionProps) {
 
 TableCaption.displayName = 'TableCaption';
 
-export { Table, TableBody,  TableCell,  TableHead, TableHeader, TableRow };
+export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow };
