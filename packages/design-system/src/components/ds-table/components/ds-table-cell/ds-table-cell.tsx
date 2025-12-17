@@ -6,7 +6,7 @@ import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import styles from './ds-table-cell.module.scss';
 import type { DsTableCellProps } from './ds-table-cell.types';
 
-export const DsDefaultTableCell = <TData, TValue>({ cell }: { cell: Cell<TData, TValue> }) => {
+const DsDefaultTableCell = <TData, TValue>({ cell }: { cell: Cell<TData, TValue> }) => {
 	return (
 		<div className={styles.tableCellEllipsis}>
 			{flexRender(cell.column.columnDef.cell, cell.getContext())}

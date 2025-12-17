@@ -113,5 +113,3 @@ export const DsRadioGroup = {
 	Root,
 	Item,
 };
-
-export default DsRadioGroup;

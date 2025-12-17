@@ -392,5 +392,3 @@ export const DsDropdownMenu = {
 	ItemGroupContent,
 	Separator,
 };
-
-export default DsDropdownMenu;

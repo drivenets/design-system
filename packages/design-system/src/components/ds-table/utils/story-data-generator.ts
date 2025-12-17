@@ -88,4 +88,4 @@ export const simulateApiCall = async <T>(dataGenerator: () => T, delayMs: number
 	return dataGenerator();
 };
 
-export const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
