@@ -1,0 +1,3 @@
+export { default as DsCheckbox } from './ds-checkbox';
+export * from './ds-checkbox.types';
+//# sourceMappingURL=index.d.ts.map
