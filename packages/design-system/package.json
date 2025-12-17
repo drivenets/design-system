@@ -9,7 +9,7 @@
 			"import": "./dist/index.mjs",
 			"require": "./dist/index.js"
 		},
-		"./styles/*": "./src/styles/*"
+		"./src/styles/*": "./src/styles/*"
 	},
 	"scripts": {
 		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",

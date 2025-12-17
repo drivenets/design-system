@@ -1,4 +1,4 @@
-@use '@drivenets/design-system/styles/typography';
+@use '@drivenets/design-system/src/styles/typography';
 
 @mixin status-filled($color, $background, $label-color: var(--color-font-on-action)) {
 	color: $color;
