@@ -1,0 +1,81 @@
+@use '@drivenets/design-system/styles/typography';
+@use '../../styles/variables' as vars;
+
+.stickyHeader {
+	position: sticky;
+	top: 0;
+	z-index: 10;
+	background-color: var(--color-background);
+}
+
+.virtualizedHeader {
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
+}
+
+.headerRow {
+	.headerCell {
+		border-bottom: 1px solid var(--neutral-6);
+
+		&.selectColumn {
+			width: vars.$select-column-width;
+			padding: 0;
+		}
+	}
+
+	&.headerRowNoBorder {
+		.headerCell {
+			border-bottom: none;
+		}
+	}
+}
+
+.headerRowVirtualized {
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
+	align-items: center;
+}
+
+.expandColumn {
+	width: vars.$expand-column-width;
+}
+
+.reorderColumn {
+	width: vars.$reorder-column-width;
+}
+
+.headerCell {
+	@include typography.body-sm-md;
+	color: var(--color-font-main);
+	text-align: left;
+	padding: 0 var(--spacing-standard);
+	height: var(--ds-table-header-height);
+
+	&.sortableHeader {
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.pageButtonIconContainer {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+
+		&.pageButtonIcon {
+			color: var(--neutral-4);
+			transition: transform 0.2s ease-in-out;
+		}
+	}
+}
+
+.headerSortContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: vars.$header-sort-gap;
+	height: 100%;
+}

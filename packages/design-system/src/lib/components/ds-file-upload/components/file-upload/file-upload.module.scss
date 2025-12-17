@@ -1,0 +1,90 @@
+@use '@drivenets/design-system/styles/typography';
+
+.fileUploadRoot {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.dropzone {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: var(--exo-spacing-small) var(--exo-spacing-standard);
+	border: var(--exo-spacing-4x-small) dashed var(--color-border);
+	border-radius: var(--exo-spacing-2x-small);
+	background-color: var(--color-background);
+	transition: all 0.2s ease;
+	cursor: pointer;
+
+	&.dropzoneCompact {
+		flex-direction: row;
+		justify-content: space-between;
+
+		.dropzoneIcon {
+			display: none;
+		}
+
+		.dropzoneText {
+			padding: 0;
+		}
+	}
+
+	.dropzoneIcon {
+		color: var(--color-icon-secondary);
+	}
+
+	.dropzoneText {
+		color: var(--color-background-deselected);
+		text-align: center;
+		padding: var(--spacing-3xs) 0 var(--spacing-sm) 0;
+	}
+
+	[data-part='trigger'] {
+		align-self: center;
+	}
+
+	&:hover:not([data-disabled]) {
+		border-color: var(--color-background-selected);
+		background-color: var(--color-background-selected-weak);
+	}
+
+	&[data-dragging] {
+		border-color: var(--color-background-selected);
+		background-color: var(--color-background-selected-weak);
+		border-style: solid;
+	}
+
+	&[data-disabled] {
+		cursor: not-allowed;
+
+		.dropzoneIcon,
+		.dropzoneText {
+			color: var(--color-background-disable);
+		}
+	}
+}
+
+.fileList {
+	display: flex;
+	flex-direction: column;
+	gap: var(--exo-spacing-x-small);
+	margin-top: var(--exo-spacing-x-small);
+	padding: var(--spacing-xs);
+	border-radius: var(--exo-spacing-2x-small);
+	background: var(--color-background-secondary);
+}
+
+.infoText {
+	color: var(--color-font-secondary);
+	margin-top: var(--spacing-2xs);
+}
+
+.errorText {
+	color: var(--color-background-danger-strong);
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	margin-top: var(--spacing-2xs);
+}

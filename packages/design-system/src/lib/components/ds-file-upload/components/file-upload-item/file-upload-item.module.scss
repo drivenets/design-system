@@ -1,0 +1,125 @@
+@use '@drivenets/design-system/styles/typography';
+
+.fileItem {
+	display: flex;
+	flex-direction: column;
+
+	.fileItemContent {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-2xs);
+		width: 100%;
+		background-color: var(--color-background);
+		padding: var(--spacing-4xs) var(--exo-spacing-x-small);
+		border: 1px solid transparent;
+		border-radius: var(--exo-spacing-2x-small);
+		transition: all 0.2s ease;
+
+		&:hover {
+			border-color: var(--color-border-secondary);
+		}
+
+		&[data-disabled] {
+			opacity: 0.5;
+		}
+
+		&.fileItemError {
+			background-color: var(--color-background-danger-weak);
+
+			.progressRange {
+				background: var(--color-background-danger-strong);
+			}
+		}
+
+		&.fileItemCompleted {
+			.progressRange {
+				background: var(--color-background-success-strong);
+			}
+		}
+
+		&.fileItemUploading {
+			.progressRange {
+				background: var(--color-background-selected);
+			}
+		}
+
+		&.fileItemInterrupted {
+			.progressRange {
+				background: var(--color-background-warning-strong);
+			}
+		}
+	}
+}
+
+.filePreview {
+	color: var(--color-background-deselected);
+}
+
+.fileInfo {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-2xs);
+	flex: 1;
+	min-width: 0;
+}
+
+.fileName {
+	@include typography.body-sm-reg;
+	@include typography.ellipsis;
+	color: var(--color-font-main);
+	flex: 1 0 75%;
+}
+
+.progressContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+	width: 100%;
+}
+
+.progressBar {
+	width: 100%;
+	height: 2px;
+}
+
+.progressTrack {
+	width: 100%;
+	height: 100%;
+	background-color: var(--color-background-tertiary);
+	border-radius: var(--exo-spacing-2x-small);
+	overflow: hidden;
+}
+
+.progressRange {
+	height: 100%;
+	background-color: var(--color-background-selected);
+	border-radius: 2px;
+	transition: width 0.3s ease;
+}
+
+@mixin infoText {
+	@include typography.body-xs-reg;
+	display: flex;
+	gap: var(--spacing-3xs);
+	padding: var(--spacing-3xs) var(--spacing-sm);
+}
+
+.progressText {
+	@include infoText;
+	color: var(--color-font-secondary);
+}
+
+.completedText {
+	@include infoText;
+	color: var(--color-background-success-strong);
+}
+
+.interruptedText {
+	@include infoText;
+	color: var(--color-font-warning);
+}
+
+.errorMessage {
+	@include infoText;
+	color: var(--color-background-danger-strong);
+}

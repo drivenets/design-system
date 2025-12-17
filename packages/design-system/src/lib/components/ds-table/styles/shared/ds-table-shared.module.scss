@@ -1,0 +1,16 @@
+@use '@drivenets/design-system/styles/utilities' as utils;
+@use '../variables' as vars;
+
+.checkboxContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: fit-content;
+	margin: auto;
+	height: 100%;
+}
+
+.pageButtonIcon {
+	color: vars.$expand-toggle-icon-color;
+	@extend .rotate;
+}

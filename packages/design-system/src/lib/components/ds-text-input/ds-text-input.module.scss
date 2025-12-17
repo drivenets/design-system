@@ -1,0 +1,27 @@
+@use '@drivenets/design-system/styles/shared/input' as input;
+
+.textInputContainer {
+	@include input.inputContainer;
+	gap: var(--spacing-xs);
+}
+
+.input {
+	@include input.input;
+}
+
+.iconButton {
+	@include input.iconButton;
+}
+
+.adornment {
+	display: flex;
+	align-items: center;
+
+	&:last-child {
+		color: var(--form-control-border-color);
+	}
+
+	button {
+		@include input.iconButton;
+	}
+}

@@ -1,0 +1,137 @@
+@use '@drivenets/design-system/styles/typography';
+@use '../../styles/variables' as vars;
+
+@mixin expanded-row-border($side) {
+	$border: 1px solid var(--color-border-action-primary);
+
+	// Prevent double border with adjacent expanded rows.
+	&:not(.expandedRow + &) > td {
+		border-#{$side}: $border;
+	}
+
+	& > td:first-child {
+		border-inline-start: $border;
+	}
+
+	& > td:last-child {
+		border-inline-end: $border;
+	}
+}
+
+.tableRow {
+	&:not(.virtualizedRow) {
+		&:not(:last-child) {
+			.tableCell {
+				border-bottom: vars.$border-width solid var(--color-border-secondary);
+			}
+		}
+
+		.cellCheckbox.tableCell {
+			padding: 0;
+			width: vars.$select-column-width;
+		}
+	}
+
+	&.virtualizedRow {
+		display: grid;
+		grid-template-columns: subgrid;
+		grid-column: 1 / -1;
+		grid-row: 1;
+		align-items: center;
+
+		&:not(:last-child) {
+			border-bottom: vars.$border-width solid var(--color-border-secondary);
+		}
+
+		.tableCell {
+			&.cellCheckbox {
+				text-align: center;
+				padding: 0;
+				width: vars.$select-column-width;
+			}
+		}
+	}
+
+	&:hover {
+		background-color: var(--color-background-secondary);
+	}
+
+	&[data-state='selected'] {
+		background-color: var(--color-background-selected-weak);
+	}
+
+	&[data-state='active'] {
+		background-color: var(--color-background-selected-weak);
+	}
+
+	&.clickableRow {
+		cursor: pointer;
+	}
+
+	&.rowNoBorder {
+		border-bottom: none;
+	}
+
+	&.expanded {
+		@include expanded-row-border('top');
+	}
+
+	&.sizeSmall {
+		height: var(--ds-table-row-small);
+	}
+
+	&.sizeMedium {
+		height: var(--ds-table-row-medium);
+	}
+
+	&.sizeLarge {
+		height: var(--ds-table-row-large);
+	}
+}
+
+.expandedRow {
+	background-color: var(--color-background-secondary);
+
+	& > td {
+		padding: var(--spacing-standard);
+	}
+
+	@include expanded-row-border('bottom');
+}
+
+.cellButton {
+	width: vars.$expand-column-width;
+}
+
+.cellReorder {
+	width: vars.$reorder-column-width;
+	text-align: center;
+
+	&.isDragging {
+		background: var(--color-background-action);
+
+		.rowDragHandle {
+			color: var(--color-secondary-white);
+		}
+	}
+}
+
+.tableCell {
+	@include typography.body-sm-reg;
+	vertical-align: middle;
+	color: var(--color-font-main);
+	padding: 0 var(--spacing-standard);
+}
+
+.expandToggleButton {
+	background: none;
+	border: none;
+	padding: 0;
+	margin: 0;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	opacity: 1;
+	transition-property: opacity, background-color;
+}

@@ -1,0 +1,87 @@
+@use '@drivenets/design-system/styles/typography';
+
+.container {
+	@include typography.p-special;
+	@include typography.medium;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 8px;
+	border-radius: 4px;
+	width: max-content;
+	text-transform: uppercase;
+}
+
+.dot {
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	border: 1px solid var(--white);
+}
+
+.label {
+	@include typography.p-special;
+}
+
+.healthy {
+	background: var(--utility-ok);
+	color: var(--system-status-ok);
+
+	.dot {
+		background: var(--system-status-ok);
+	}
+}
+
+.neutral {
+	background: var(--utility-info);
+	color: var(--system-status-info);
+
+	.dot {
+		background: var(--system-status-info);
+	}
+}
+
+.error {
+	background: var(--utility-error);
+	color: var(--system-status-error);
+
+	.dot {
+		background: var(--system-status-error);
+	}
+}
+
+.in-progress {
+	background: var(--utility-in-progress);
+	color: var(--system-status-in-progress);
+
+	.dot {
+		background: var(--system-status-in-progress);
+	}
+}
+
+.pending {
+	background: var(--utility-pending);
+	color: var(--system-status-pending);
+
+	.dot {
+		background: var(--system-status-pending);
+	}
+}
+
+.alert {
+	background: var(--utility-alert);
+	color: var(--system-status-alert);
+
+	.dot {
+		background: var(--system-status-alert);
+	}
+}
+
+.disabled {
+	background: var(--utility-disabled);
+	color: var(--neutral-2);
+
+	.dot {
+		background: var(--neutral-2);
+	}
+}

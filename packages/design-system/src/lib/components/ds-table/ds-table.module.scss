@@ -1,0 +1,60 @@
+@use '@drivenets/design-system/styles/typography';
+@use '@drivenets/design-system/styles/utilities' as utils;
+@use './styles/variables' as vars;
+
+.container {
+	border-radius: vars.$border-radius;
+	border-width: vars.$border-width;
+	border-style: solid;
+	border-color: var(--neutral-6);
+	background: var(--color-background);
+}
+
+.virtualizedContainer {
+	position: relative;
+	height: vars.$virtualized-height;
+	overflow: auto;
+}
+
+.dataTableContainer {
+	max-height: 100%;
+	overflow: auto;
+}
+
+.table {
+	width: 100%;
+	caption-side: bottom;
+	@include typography.p-base;
+
+	&.tableNoBorder {
+		border-collapse: separate;
+		border-spacing: 0;
+		border: none;
+	}
+}
+
+.fullWidth {
+	width: 100%;
+}
+
+.emptyState {
+	height: vars.$empty-state-height;
+	text-align: center;
+}
+
+.emptyStateVirtualized {
+	position: absolute;
+	inset: 0;
+	top: var(--ds-table-header-height);
+}
+
+.virtualized {
+	display: grid;
+	grid-template-columns: var(--ds-table-columns-template);
+}
+
+.virtualizedBody {
+	display: grid;
+	grid-template-columns: subgrid;
+	grid-column: 1 / -1;
+}

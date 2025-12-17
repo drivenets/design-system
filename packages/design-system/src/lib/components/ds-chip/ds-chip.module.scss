@@ -1,0 +1,71 @@
+@use '@drivenets/design-system/styles/typography';
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	padding: 1px var(--spacing-3xs) 1px var(--spacing-xs);
+	background: var(--color-background);
+	border: 1px solid var(--color-border-contrast);
+	border-radius: 100vmax;
+	color: var(--color-font-main);
+	cursor: default;
+	overflow: hidden;
+	transition:
+		background-color 0.2s,
+		border-color 0.2s,
+		color 0.2s;
+
+	&.clickable {
+		cursor: pointer;
+
+		&:hover {
+			background: var(--color-background-action-hover-weak);
+			border-color: var(--color-border-action-secondary-hover);
+		}
+
+		&:focus-visible {
+			outline: 2px solid var(--color-background-selected);
+			outline-offset: 2px;
+		}
+	}
+
+	&.small {
+		padding: 0 var(--spacing-4xs) 0 var(--spacing-3xs);
+		gap: var(--spacing-4xs);
+	}
+
+	&[aria-pressed='true'] {
+		background: var(--color-background-selected-weak);
+		border-color: var(--color-border-action-primary);
+		color: var(--color-font-action);
+	}
+}
+
+.label {
+	@include typography.ellipsis;
+	padding: var(--spacing-4xs) var(--spacing-3xs);
+	flex: 1;
+}
+
+.deleteButton {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: none;
+	background: transparent;
+	color: var(--color-icon-information-main);
+	cursor: pointer;
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+	flex-shrink: 0;
+
+	&:hover {
+		color: var(--color-icon-secondary);
+	}
+
+	.chip.small & {
+		padding: 1px var(--spacing-4xs);
+	}
+}

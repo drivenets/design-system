@@ -1,0 +1,5 @@
+@use '@drivenets/design-system/styles/shared/input' as input;
+
+.textarea {
+	@include input.textarea;
+}
