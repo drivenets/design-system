@@ -1,0 +1,17 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"lint": {
+			"dependsOn": []
+		},
+		"//#lint:root": {},
+		"test": {
+			"dependsOn": []
+		},
+		"build": {
+			"outputs": ["dist/**"],
+			"dependsOn": ["^build"]
+		}
+	}
+}
