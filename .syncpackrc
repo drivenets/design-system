@@ -12,7 +12,7 @@
 			"pinVersion": "workspace:*"
 		},
 		{
-			"label": "Allow peer dependencies different than what's used in the package",
+			"label": "Allow different peer dependencies versions than what's used in the package",
 			"dependencyTypes": [
 				"peer"
 			],
