@@ -48,8 +48,8 @@ export const Default: Story = {
 		const visibilityButton = canvas.getByRole('button', { name: /toggle password visibility/i });
 
 		// Test password visibility toggle
-		await userEvent.type(input, 'secretpassword');
-		await expect(input).toHaveValue('secretpassword');
+		await userEvent.type(input, 'secret-password');
+		await expect(input).toHaveValue('secret-password');
 		await expect(input).toHaveAttribute('type', 'password');
 
 		// Click the eye icon to show password
@@ -71,13 +71,13 @@ export const Default: Story = {
 
 export const Controlled: Story = {
 	render: function Render(args) {
-		const [value, setValue] = useState('initialpassword');
+		const [value, setValue] = useState('initial-password');
 
 		return (
 			<div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
 				<DsPasswordInput {...args} value={value} onValueChange={(newValue) => setValue(newValue)} />
 				<div>Current value: {value}</div>
-				<button onClick={() => setValue('newpassword')}>Set new password</button>
+				<button onClick={() => setValue('new-password')}>Set new password</button>
 				<button onClick={() => setValue('')}>Clear password</button>
 			</div>
 		);
@@ -91,24 +91,24 @@ export const Controlled: Story = {
 		const input = canvas.getByPlaceholderText('Enter password');
 		const setNewButton = canvas.getByText('Set new password');
 		const clearButton = canvas.getByText('Clear password');
-		const valueDisplay = canvas.getByText('Current value: initialpassword');
+		const valueDisplay = canvas.getByText('Current value: initial-password');
 
 		// Test initial value
-		await expect(input).toHaveValue('initialpassword');
-		await expect(valueDisplay).toHaveTextContent('Current value: initialpassword');
+		await expect(input).toHaveValue('initial-password');
+		await expect(valueDisplay).toHaveTextContent('Current value: initial-password');
 
 		// Test external control
 		await userEvent.click(setNewButton);
 		await waitFor(async () => {
-			await expect(input).toHaveValue('newpassword');
-			await expect(valueDisplay).toHaveTextContent('Current value: newpassword');
+			await expect(input).toHaveValue('new-password');
+			await expect(valueDisplay).toHaveTextContent('Current value: new-password');
 		});
 
 		// Test user input
 		await userEvent.clear(input);
-		await userEvent.type(input, 'userinput');
+		await userEvent.type(input, 'user-input');
 		await waitFor(async () => {
-			await expect(valueDisplay).toHaveTextContent('Current value: userinput');
+			await expect(valueDisplay).toHaveTextContent('Current value: user-input');
 		});
 
 		// Test clear

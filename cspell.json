@@ -1,0 +1,31 @@
+{
+	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+	"enableGlobDot": true,
+	"words": [
+		"autodocs",
+		"borderless",
+		"clickability",
+		"controlify",
+		"drivenets",
+		"evenodd",
+		"Linsley",
+		"overscan",
+		"reorderable",
+		"retryable",
+		"subcomponents",
+		"syncpack",
+		"unhover"
+	],
+	"ignorePaths": [
+		".git",
+		".github",
+		".idea",
+		".vscode",
+		".cspell",
+		".turbo",
+		".DS_Store",
+		"**/dist/**",
+		"**/node_modules/**",
+		"pnpm-lock.yaml"
+	]
+}

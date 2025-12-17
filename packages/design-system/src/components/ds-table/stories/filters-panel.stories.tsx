@@ -21,11 +21,11 @@ export enum WorkflowCategory {
 }
 
 const sampleUsers = [
-	{ name: 'Maren Levin', colorIndex: 0 },
-	{ name: 'Emery Franci', colorIndex: 1 },
-	{ name: 'Ryan Francy', colorIndex: 2 },
+	{ name: 'Marry Levin', colorIndex: 0 },
+	{ name: 'Emery Frank', colorIndex: 1 },
+	{ name: 'Ryan Franco', colorIndex: 2 },
 	{ name: 'Roger Dias', colorIndex: 0 },
-	{ name: 'Lindsey Westervelt', colorIndex: 1 },
+	{ name: 'Lindsey Westerner', colorIndex: 1 },
 	{ name: 'Neil Sims', colorIndex: 2 },
 ];
 
@@ -151,7 +151,7 @@ const defaultData: Workflow[] = [
 	},
 	{
 		id: '7',
-		name: 'Deploy Layer 2 EVPN Instance',
+		name: 'Deploy Layer 2 VPN Instance',
 		status: 'pending',
 		runningCompleted: { running: 49, completed: 100 },
 		category: WorkflowCategory.OpticalOptimization,
