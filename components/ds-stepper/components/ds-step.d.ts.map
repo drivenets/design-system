@@ -1,1 +1,0 @@
-{"version":3,"file":"ds-step.d.ts","sourceRoot":"","sources":["../../../../src/components/ds-stepper/components/ds-step.tsx"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,iBAAiB,EAAE,MAAM,OAAO,CAAC;AAM/C,KAAK,WAAW,GAAG,iBAAiB,CAAC;IACpC,KAAK,EAAE,MAAM,CAAC;IACd,SAAS,CAAC,EAAE,MAAM,CAAC;CACnB,CAAC,CAAC;AAEH,wBAAgB,MAAM,CAAC,EAAE,KAAK,EAAE,QAAQ,EAAE,SAAS,EAAE,EAAE,WAAW,kDA+CjE"}
