@@ -2,13 +2,14 @@
 	"name": "@drivenets/design-system-monorepo",
 	"version": "0.0.0",
 	"private": true,
+	"packageManager": "pnpm@10.0.0",
 	"scripts": {
-		"lint": "pnpm lint:root && pnpm -r run lint",
+		"lint": "turbo run lint:root lint",
 		"lint:root": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"test": "pnpm -r run test",
-		"build": "pnpm -r run build"
+		"test": "turbo run test",
+		"build": "turbo run build"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^20.2.0",
@@ -19,6 +20,7 @@
 		"concurrently": "^9.2.1",
 		"eslint": "^9.39.2",
 		"prettier": "^3.7.4",
+		"turbo": "^2.6.3",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.50.0"
 	}
