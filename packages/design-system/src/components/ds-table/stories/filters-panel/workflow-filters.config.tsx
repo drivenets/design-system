@@ -163,7 +163,7 @@ const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workflow>({
 /**
  * Available editors for filtering
  */
-export const availableEditors = [
+const availableEditors = [
 	{ name: 'Marry Levin', colorIndex: 0 },
 	{ name: 'Emery Frank', colorIndex: 1 },
 	{ name: 'Ryan Franco', colorIndex: 2 },
