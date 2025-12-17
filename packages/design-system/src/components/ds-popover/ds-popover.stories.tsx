@@ -65,7 +65,7 @@ export const Default: Story = {
 		),
 		children: (
 			<div>
-				<strong>ID:</strong> NSVLOKBWOEW, Dallas, USA
+				<strong>ID:</strong> 123456, Dallas, USA
 				<p>Facility Types: Tier 1, Tier 2</p>
 				<p>Devices: 11, 2898</p>
 				<div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>
