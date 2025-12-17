@@ -1,8 +1,8 @@
 import type { Plugin } from 'vite';
 
-export function vitePluginDsMaterialIconsFont(): Plugin {
+export function vitePluginDesignSystem(): Plugin {
 	return {
-		name: 'vite-plugin-ds-material-icons-font',
+		name: 'vite-plugin-design-system',
 		transformIndexHtml(html) {
 			const stylesheets = [
 				'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,400,0..1,0&display=block',

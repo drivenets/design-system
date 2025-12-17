@@ -9,7 +9,8 @@
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
 		"test": "turbo run test",
-		"build": "turbo run build"
+		"build": "turbo run build",
+		"start": "pnpm run --filter @drivenets/design-system storybook"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^20.2.0",

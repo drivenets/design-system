@@ -1,5 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { vitePluginDsMaterialIconsFont } from '../src/plugins/vite-plugin-ds-material-icons-font';
+import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
 
 const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -16,7 +16,7 @@ const config: StorybookConfig = {
 			viteConfig.plugins = [];
 		}
 
-		viteConfig.plugins.push(vitePluginDsMaterialIconsFont() as never);
+		viteConfig.plugins.push(vitePluginDesignSystem() as never);
 
 		return viteConfig;
 	},
