@@ -1,0 +1,22 @@
+{
+	"$schema": "./node_modules/syncpack/dist/schema.json",
+	"versionGroups": [
+		{
+			"label": "Use workspace protocol for local packages",
+			"dependencies": [
+				"$LOCAL"
+			],
+			"dependencyTypes": [
+				"!local"
+			],
+			"pinVersion": "workspace:*"
+		},
+		{
+			"label": "Allow peer dependencies different than what's used in the package",
+			"dependencyTypes": [
+				"peer"
+			],
+			"isIgnored": true
+		}
+	]
+}
