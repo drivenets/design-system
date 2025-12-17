@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/react-vite';
+import { withoutVitePlugins } from '@storybook/builder-vite';
 import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
 
 const config: StorybookConfig = {
@@ -17,6 +18,9 @@ const config: StorybookConfig = {
 		}
 
 		viteConfig.plugins.push(vitePluginDesignSystem() as never);
+
+		// Storybook build doesn't need to generate d.ts files.
+		viteConfig.plugins = await withoutVitePlugins(viteConfig.plugins, ['vite:dts']);
 
 		return viteConfig;
 	},
