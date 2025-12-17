@@ -42,8 +42,7 @@
 		"classnames": "^2.5.1"
 	},
 	"peerDependencies": {
-		"react": "^19",
-		"typescript": "^5"
+		"react": "^19"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^4.1.3",
