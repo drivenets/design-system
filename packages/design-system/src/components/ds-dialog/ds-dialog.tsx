@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import styles from './ds-dialog.module.scss';
 import type { DsDialogProps } from './ds-dialog.types';
 
-export const DsDialog: React.FC<DsDialogProps> = ({
+const DsDialog: React.FC<DsDialogProps> = ({
 	open,
 	onOpenChange,
 	title,

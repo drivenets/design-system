@@ -75,7 +75,7 @@ export interface Workflow {
 /**
  * Status filter items
  */
-export const statusItems: CheckboxFilterItem<DsStatus>[] = [
+const statusItems: CheckboxFilterItem<DsStatus>[] = [
 	{ value: 'active', label: 'Active' },
 	{ value: 'running', label: 'Running' },
 	{ value: 'pending', label: 'Pending' },
@@ -101,14 +101,14 @@ const statusIconMap: Record<DsStatus, IconType> = {
 /**
  * Get icon for status
  */
-export const getStatusIcon = (status: DsStatus): IconType => {
+const getStatusIcon = (status: DsStatus): IconType => {
 	return statusIconMap[status] ?? 'check_circle';
 };
 
 /**
  * Render status badge
  */
-export const renderStatusBadge = (status: DsStatus): ReactNode => {
+const renderStatusBadge = (status: DsStatus): ReactNode => {
 	const icon = getStatusIcon(status);
 	return <DsStatusBadge icon={icon} status={status} size="small" />;
 };
@@ -126,7 +126,7 @@ export const renderStatusBadge = (status: DsStatus): ReactNode => {
  * - Selected items = show only those items
  * - Automatic chip generation for each selected status
  */
-export const statusFilterAdapter = createCheckboxFilterAdapter<Workflow, DsStatus>({
+const statusFilterAdapter = createCheckboxFilterAdapter<Workflow, DsStatus>({
 	id: 'status',
 	label: 'Status',
 	items: statusItems,
@@ -149,7 +149,7 @@ export const statusFilterAdapter = createCheckboxFilterAdapter<Workflow, DsStatu
  * - Automatic chip generation for each active range
  * - Formatted numbers in chips
  */
-export const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workflow>({
+const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workflow>({
 	id: 'runningCompleted',
 	label: 'Running/Completed',
 	fields: {
@@ -163,7 +163,7 @@ export const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workfl
 /**
  * Available editors for filtering
  */
-export const availableEditors = [
+const availableEditors = [
 	{ name: 'Maren Levin', colorIndex: 0 },
 	{ name: 'Emery Franci', colorIndex: 1 },
 	{ name: 'Ryan Francy', colorIndex: 2 },
@@ -242,7 +242,7 @@ const parseTimestamp = (timestamp: string): Date => {
  * This is a reference implementation for building custom filters
  * that don't fit the checkbox or dual-range patterns.
  */
-export const lastEditedFilterAdapter = createFilterAdapter<
+const lastEditedFilterAdapter = createFilterAdapter<
 	Workflow,
 	LastEditedFilterValue,
 	Workflow['lastEdited']

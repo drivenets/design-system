@@ -393,4 +393,3 @@ export const DsDropdownMenu = {
 	Separator,
 };
 
-export default DsDropdownMenu;

@@ -13,7 +13,7 @@ import styles from './ds-form-control.module.scss';
 
 const FormControlContext = createContext<{ controlId: string } | null>(null);
 
-export const useFormControlContext = () => {
+const useFormControlContext = () => {
 	const context = useContext(FormControlContext);
 	if (!context) {
 		throw new Error('useFormControlContext must be used within DsFormControl');
@@ -28,7 +28,7 @@ export const useFormControlContext = () => {
  * @param Component - The component to wrap with form control context
  * @returns A new component that automatically receives the controlId
  */
-export const controlify = <TProps extends { id?: string }>(Component: ComponentType<TProps>) => {
+const controlify = <TProps extends { id?: string }>(Component: ComponentType<TProps>) => {
 	return function WrappedFormControl(props: TProps) {
 		const { controlId } = useFormControlContext();
 		return <Component id={controlId} {...props} />;

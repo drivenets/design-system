@@ -120,4 +120,3 @@ DsConfirmation.Body = Body;
 DsConfirmation.Footer = Footer;
 DsConfirmation.Actions = Actions;
 
-export default DsConfirmation;

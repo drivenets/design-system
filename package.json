@@ -11,7 +11,8 @@
 		"test": "turbo run test",
 		"build": "turbo run build",
 		"start": "pnpm run --filter @drivenets/design-system storybook",
-		"lint:versions": "syncpack list-mismatches"
+		"lint:versions": "syncpack list-mismatches",
+		"lint:unused": "knip"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^20.2.0",
@@ -22,6 +23,8 @@
 		"@types/node": "^25.0.3",
 		"concurrently": "^9.2.1",
 		"eslint": "^9.39.2",
+		"knip": "^5.75.0",
+		"playwright": "^1.57.0",
 		"prettier": "^3.7.4",
 		"syncpack": "^13.0.4",
 		"turbo": "^2.6.3",

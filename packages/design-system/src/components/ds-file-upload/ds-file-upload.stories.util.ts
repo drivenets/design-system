@@ -5,7 +5,7 @@ export type TestScenario = 'normal' | 'interrupted' | 'error';
 /**
  * Returns a mock file for testing
  */
-export const getMockFile = (): File => {
+const getMockFile = (): File => {
 	const file = new File(['test content'], 'test-document.pdf', { type: 'application/pdf' });
 	Object.defineProperty(file, 'size', {
 		value: 1024 * 100, // 100KB
