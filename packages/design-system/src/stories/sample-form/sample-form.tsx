@@ -6,7 +6,10 @@ import {
 	useForm,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DsButton, DsCheckbox, DsFormControl, DsRadioGroup } from '../../index';
+import { DsFormControl } from '../../components/ds-form-control';
+import { DsRadioGroup } from '../../components/ds-radio-group';
+import { DsCheckbox } from '../../components/ds-checkbox';
+import { DsButton } from '../../components/ds-button';
 import { sampleFormSchema, type SampleFormValues } from './sampleFormSchema';
 
 const defaultValues = {
