@@ -42,8 +42,8 @@ const sampleFilters: ChipItem[] = [
 	{ id: '9', label: 'Version: 000.0001-4' },
 	{ id: '10', label: 'Version: 000.0001-5' },
 	{ id: '11', label: 'Version: 000.0001-6' },
-	{ id: '12', label: 'Last editor: Maren Levin' },
-	{ id: '13', label: 'Last editor: Emery Franci' },
+	{ id: '12', label: 'Last editor: Mary Levin' },
+	{ id: '13', label: 'Last editor: Emery Franco' },
 ];
 
 export const Default: Story = {

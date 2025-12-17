@@ -93,7 +93,7 @@ const defaultData: Person[] = [
 	{
 		id: '2',
 		firstName: 'Kevin',
-		lastName: 'Vonderheide',
+		lastName: 'Fine',
 		age: 28,
 		visits: 200,
 		status: Status.Relationship,

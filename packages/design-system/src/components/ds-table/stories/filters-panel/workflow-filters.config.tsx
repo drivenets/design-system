@@ -164,14 +164,14 @@ export const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workfl
  * Available editors for filtering
  */
 export const availableEditors = [
-	{ name: 'Maren Levin', colorIndex: 0 },
-	{ name: 'Emery Franci', colorIndex: 1 },
-	{ name: 'Ryan Francy', colorIndex: 2 },
+	{ name: 'Marry Levin', colorIndex: 0 },
+	{ name: 'Emery Frank', colorIndex: 1 },
+	{ name: 'Ryan Franco', colorIndex: 2 },
 	{ name: 'Roger Dias', colorIndex: 0 },
-	{ name: 'Chance Botosh', colorIndex: 1 },
-	{ name: 'Lindsey Westervelt', colorIndex: 2 },
+	{ name: 'Chance Booths', colorIndex: 1 },
+	{ name: 'Lindsey Westerner', colorIndex: 2 },
 	{ name: 'Ruben Stanton', colorIndex: 0 },
-	{ name: 'Erin Vetrovs', colorIndex: 1 },
+	{ name: 'Erin Vertus', colorIndex: 1 },
 	{ name: 'Neil Sims', colorIndex: 2 },
 ];
 

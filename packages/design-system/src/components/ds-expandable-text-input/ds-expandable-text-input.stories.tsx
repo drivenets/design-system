@@ -117,7 +117,7 @@ const people: Person[] = [
 	{
 		id: '2',
 		firstName: 'Kevin',
-		lastName: 'Vonderheide',
+		lastName: 'Fine',
 		age: 28,
 	},
 	{
