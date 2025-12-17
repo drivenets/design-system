@@ -1,9 +1,9 @@
 {
 	"name": "@drivenets/vite-plugin-design-system",
 	"version": "0.0.0",
+	"type": "module",
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
-	"type": "module",
 	"exports": {
 		".": {
 			"types": "./src/index.ts",
@@ -24,12 +24,12 @@
 	},
 	"scripts": {
 		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint ./' 'tsc'",
-		"build": "tsup"
+		"build": "tsdown"
 	},
 	"peerDependencies": {
 		"vite": "*"
 	},
 	"devDependencies": {
-		"tsup": "^8.5.1"
+		"tsdown": "^0.18.0"
 	}
 }
