@@ -4,5 +4,6 @@ import baseConfig from './eslint.config.base.mjs';
 export default defineConfig(
 	...baseConfig,
 
+	// Exclude packages since they have their own ESLint configuration.
 	globalIgnores(['./packages/**']),
 );
