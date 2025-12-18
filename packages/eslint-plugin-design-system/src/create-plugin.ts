@@ -14,6 +14,8 @@ type Plugin<TRules extends string> = Omit<BasePlugin, 'rules'> & {
 
 /**
  * Typed wrapper around `createNoRestrictedSyntax`.
+ *
+ * See: https://github.com/bradzacher/eslint-no-restricted/issues/13
  */
 export function createPlugin<TRules extends string>(
 	name: string,
@@ -24,6 +26,8 @@ export function createPlugin<TRules extends string>(
 
 /**
  * Hacky way to rename the plugin so the rules won't have generic names of `no-restricted-syntax/*`.
+ *
+ * See: https://github.com/bradzacher/eslint-no-restricted/issues/12
  */
 function renamePlugin<TRules extends string>(plugin: Plugin<TRules>, newName: string): Plugin<TRules> {
 	const oldName = plugin.meta.name;
