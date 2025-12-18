@@ -8,7 +8,7 @@ type RuleConfig<TName extends string> = Omit<create.RuleConfig, 'name'> & {
 
 type BasePlugin = ReturnType<typeof createNoRestrictedSyntax>;
 
-type Plugin<TRules extends string> = Omit<BasePlugin, 'rules'> & {
+export type Plugin<TRules extends string> = Omit<BasePlugin, 'rules'> & {
 	rules: Record<TRules, RuleDefinition>;
 };
 
