@@ -31,5 +31,5 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(['**/dist']),
+	globalIgnores(['**/dist', '**/.turbo']),
 );
