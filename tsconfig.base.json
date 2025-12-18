@@ -1,0 +1,24 @@
+{
+	"compilerOptions": {
+		// Environment Settings
+		"module": "preserve",
+		"moduleResolution": "bundler",
+		"target": "esnext",
+		"types": [],
+
+		// Other Outputs
+		"sourceMap": true,
+		"declaration": true,
+		"declarationMap": true,
+		"noEmit": true,
+
+		// Recommended Options
+		"strict": true,
+		"jsx": "react-jsx",
+		"verbatimModuleSyntax": true,
+		"isolatedModules": true,
+		"noUncheckedSideEffectImports": true,
+		"moduleDetection": "force",
+		"skipLibCheck": true
+	}
+}
