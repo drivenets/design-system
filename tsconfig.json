@@ -21,5 +21,6 @@
 		"moduleDetection": "force",
 		"skipLibCheck": true
 	},
-	"include": ["./*.config.*"]
+	"include": ["**/*"],
+	"exclude": ["./packages/**"]
 }
