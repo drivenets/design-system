@@ -1,0 +1,32 @@
+{
+	"name": "@drivenets/eslint-plugin-design-system",
+	"version": "0.0.0",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.mjs",
+			"require": "./dist/index.js"
+		}
+	},
+	"scripts": {
+		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
+		"test": "vitest",
+		"build": "tsdown"
+	},
+	"dependencies": {
+		"eslint-no-restricted": "^0.0.8"
+	},
+	"devDependencies": {
+		"@eslint/core": "^1.0.0",
+		"tsdown": "^0.18.0",
+		"vitest": "^4.0.16"
+	},
+	"peerDependencies": {
+		"@typescript-eslint/parser": "^8.50.0",
+		"eslint": "^9.0.0",
+		"typescript": "^5.0.0"
+	}
+}
