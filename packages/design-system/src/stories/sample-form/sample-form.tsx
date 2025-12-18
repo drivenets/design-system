@@ -10,7 +10,7 @@ import { DsFormControl } from '../../components/ds-form-control';
 import { DsRadioGroup } from '../../components/ds-radio-group';
 import { DsCheckbox } from '../../components/ds-checkbox';
 import { DsButton } from '../../components/ds-button';
-import { sampleFormSchema, type SampleFormValues } from './sampleFormSchema';
+import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
 
 const defaultValues = {
 	name: '',
