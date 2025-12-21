@@ -1,10 +1,8 @@
 import type React from 'react';
-import type { CreateToasterReturn } from '@ark-ui/react';
-import { Toast, Toaster } from '@ark-ui/react';
+import { type CreateToasterReturn, Toast, Toaster  } from '@ark-ui/react';
 import styles from './ds-toast.module.scss';
 import type { DsToastProps, ToastVariant } from './ds-toast.types';
-import type { IconType } from '../ds-icon';
-import { DsIcon } from '../ds-icon';
+import { type IconType, DsIcon  } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
 const variantIcons = {

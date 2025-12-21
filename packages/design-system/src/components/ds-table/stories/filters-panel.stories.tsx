@@ -10,8 +10,7 @@ import { DsTypography } from '../../ds-typography';
 import { DsChipGroup } from '../../ds-chip-group';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
 import type { FilterNavItem } from '../filters/types/filter-adapter.types';
-import type { Workflow } from './filters-panel/workflow-filters.config';
-import { workflowFilters } from './filters-panel/workflow-filters.config';
+import { type Workflow, workflowFilters  } from './filters-panel/workflow-filters.config';
 import styles from '../ds-table.stories.module.scss';
 
 export enum WorkflowCategory {

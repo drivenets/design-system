@@ -1,12 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ReactNode } from 'react';
-import { useState } from 'react';
+import { type ReactNode, useState  } from 'react';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { DsToast } from './ds-toast';
 import { DsToastProvider, useToaster } from './ds-toast-context';
 import { DsButton } from '../ds-button';
-import type { DsToastProps, ToastVariant } from './ds-toast.types';
-import { toastVariants } from './ds-toast.types';
+import { type DsToastProps, type ToastVariant, toastVariants  } from './ds-toast.types';
 import styles from './ds-toast.stories.module.scss';
 
 const meta: Meta<typeof DsToast> = {

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { UserAvatar } from '../user-avatar/user-avatar';
-import type { CheckboxFilterItem } from '../../../../filters/components/checkbox-filter';
-import { CheckboxFilter } from '../../../../filters/components/checkbox-filter';
+import { type CheckboxFilterItem, CheckboxFilter  } from '../../../../filters/components/checkbox-filter';
 import styles from './last-edited-filter.module.scss';
 import { DsTypography } from '../../../../../ds-typography';
 import { DsButton } from '../../../../../ds-button';

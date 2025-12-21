@@ -42,14 +42,11 @@ import type { ReactNode } from 'react';
 import DsStatusBadge from '../../../ds-status-badge/ds-status-badge';
 import type { DsStatus } from '../../../ds-status-badge/ds-status-badge.types';
 import type { IconType } from '../../../ds-icon/ds-icon.types';
-import type { AnyAdapter, CheckboxFilterItem } from '../../filters';
-import {
+import { type AnyAdapter, type CheckboxFilterItem,
 	createCheckboxFilterAdapter,
 	createDualRangeFilterAdapter,
-	createFilterAdapter,
-} from '../../filters';
-import type { LastEditedFilterValue } from './components/last-edited-filter/last-edited-filter';
-import { LastEditedFilter } from './components/last-edited-filter/last-edited-filter';
+	createFilterAdapter } from '../../filters';
+import { type LastEditedFilterValue, LastEditedFilter  } from './components/last-edited-filter/last-edited-filter';
 import { LastEditedCell } from './components/last-edited-cell/last-edited-cell';
 
 /**
