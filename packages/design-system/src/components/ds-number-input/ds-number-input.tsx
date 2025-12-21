@@ -54,7 +54,6 @@ const DsNumberInput: FC<DsNumberInputProps> = ({
 					<NumberInput.Input
 						ref={ref}
 						name={name}
-						type="number"
 						className={classNames(styles.input)}
 						placeholder={placeholder}
 						onBlur={onBlur}

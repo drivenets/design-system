@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, screen, userEvent, within } from 'storybook/test';
 import { DsDropdownMenuLegacy } from './ds-dropdown-menu';
 import './ds-dropdown-menu.stories.scss';
 import { DsIcon } from '../ds-icon';
@@ -51,14 +50,6 @@ export const Default: Story = {
 		contentGap: 4,
 	},
 	render: function Render(args) {
-		const [, setClicked] = useState<string>('');
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		(args as any).__reset = async () => {
-			setClicked('');
-			await delay(100);
-		};
-
 		return (
 			<DsDropdownMenuLegacy {...args}>
 				<div className="trigger" role="button">
@@ -68,11 +59,8 @@ export const Default: Story = {
 			</DsDropdownMenuLegacy>
 		);
 	},
-	play: async ({ canvasElement, args }) => {
+	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const reset = (args as any).__reset;
 
 		// Check initial state
 		await expect(canvas.getByText('Actions')).toBeInTheDocument();
@@ -81,38 +69,31 @@ export const Default: Story = {
 		await userEvent.click(canvas.getByText('Actions'));
 
 		// Check all menu items are present
-		await expect(canvas.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
 
 		// Check disabled state
-		const disabledOption = canvas.getByRole('menuitem', { name: /Disabled Option/ });
+		const disabledOption = screen.getByRole('menuitem', { name: /Disabled Option/ });
 		await expect(disabledOption).toHaveAttribute('aria-disabled', 'true');
 
 		// Click an option
-		await userEvent.click(canvas.getByRole('menuitem', { name: /Edit/ }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /Edit/ }));
 
 		// Close dropdown with Escape key
 		await userEvent.keyboard('{Escape}');
-
-		// Reset using the wrapper's reset method
-		await reset();
 
 		// Open dropdown again
 		await userEvent.click(canvas.getByText('Actions'));
 
 		// Check all options are shown again
-		await expect(canvas.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
-		await expect(canvas.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
+		await expect(screen.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
 
 		// Close dropdown with Escape key
 		await userEvent.keyboard('{Escape}');
 	},
 };
-
-function delay(ms: number) {
-	return new Promise((resolve) => setTimeout(resolve, ms));
-}
