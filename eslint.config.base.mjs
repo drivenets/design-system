@@ -20,7 +20,20 @@ export default defineConfig(
 		},
 		plugins: { unicorn },
 		rules: {
-			'@typescript-eslint/consistent-type-imports': 'error',
+			'@typescript-eslint/consistent-type-imports': [
+				'error',
+				{
+					fixStyle: 'inline-type-imports',
+				},
+			],
+
+			'@typescript-eslint/naming-convention': [
+				'error',
+				{
+					selector: 'typeLike',
+					format: ['PascalCase'],
+				},
+			],
 
 			'no-restricted-syntax': [
 				'error',
