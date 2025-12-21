@@ -19,6 +19,8 @@
 		"@commitlint/lint": "^20.2.0"
 	},
 	"devDependencies": {
-		"@commitlint/types": "^20.2.0"
+		"@commitlint/types": "^20.2.0",
+		"eslint": "^9.39.2",
+		"typescript": "^5.9.3"
 	}
 }

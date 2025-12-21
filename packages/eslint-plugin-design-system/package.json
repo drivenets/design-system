@@ -21,7 +21,9 @@
 	},
 	"devDependencies": {
 		"@eslint/core": "^1.0.0",
+		"eslint": "^9.39.2",
 		"tsdown": "^0.18.0",
+		"typescript": "^5.9.3",
 		"vitest": "^4.0.16"
 	},
 	"peerDependencies": {

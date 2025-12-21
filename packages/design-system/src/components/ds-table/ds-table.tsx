@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useImperativeHandle } from 'react';
-import type { RowSelectionState } from '@tanstack/react-table';
 import {
+	type RowSelectionState,
 	type ColumnFiltersState,
 	getCoreRowModel,
 	getFilteredRowModel,
