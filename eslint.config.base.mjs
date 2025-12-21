@@ -48,5 +48,20 @@ export default defineConfig(
 		},
 	},
 
+	// Production files.
+	{
+		files: ['**/src/*.[tj]s?(x)'],
+		rules: {
+			// Disallow importing dev dependencies in production files.
+			'import-x/no-extraneous-dependencies': [
+				'error',
+				{
+					devDependencies: false,
+					includeTypes: true,
+				},
+			],
+		},
+	},
+
 	globalIgnores(['**/dist', '**/.turbo']),
 );
