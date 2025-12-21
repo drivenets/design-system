@@ -63,7 +63,7 @@ export interface Workflow {
 		running: number;
 		completed: number;
 	};
-	category: string;
+	category: WorkflowCategory;
 	version: string;
 	lastEdited: {
 		editor: string;
@@ -71,6 +71,8 @@ export interface Workflow {
 		colorIndex: number;
 	};
 }
+
+type WorkflowCategory = 'Network Built' | 'Optical Optimization' | 'Service Provisioning';
 
 /**
  * Status filter items

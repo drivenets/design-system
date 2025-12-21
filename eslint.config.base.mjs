@@ -22,6 +22,14 @@ export default defineConfig(
 		rules: {
 			'@typescript-eslint/consistent-type-imports': 'error',
 
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: 'TSEnumDeclaration',
+					message: 'Enums are not allowed. Use union types instead.',
+				},
+			],
+
 			'unicorn/filename-case': [
 				'error',
 				{
