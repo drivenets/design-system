@@ -1,5 +1,5 @@
-import baseConfig from '../../eslint.config.base.mjs';
-import { defineConfig, globalIgnores } from 'eslint/config';
+import baseConfig from '../../eslint.config.base';
+import { defineConfig, globalIgnores, type Config } from 'eslint/config';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
@@ -14,10 +14,10 @@ export default defineConfig(
 
 	reactHooks.configs.flat.recommended,
 
-	jsxA11y.flatConfigs.recommended,
+	jsxA11y.flatConfigs.recommended as Config,
 
 	// Storybook rules.
-	storybook.configs['flat/recommended'],
+	storybook.configs['flat/recommended'] as Config,
 
 	// Overrides.
 	{
