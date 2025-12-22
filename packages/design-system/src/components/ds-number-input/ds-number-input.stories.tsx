@@ -79,7 +79,7 @@ export const WithMinMax: Story = {
 
 		// Test number input functionality
 		await userEvent.clear(input);
-		await userEvent.type(input, '75');
+		await userEvent.type(input, '75', { delay: 10 });
 		// Wait for the input to be updated
 		await waitFor(async () => {
 			await expect(input).toHaveValue('75');
@@ -87,7 +87,7 @@ export const WithMinMax: Story = {
 
 		// Test min/max validation
 		await userEvent.clear(input);
-		await userEvent.type(input, '150'); // Above max
+		await userEvent.type(input, '150', { delay: 10 }); // Above max
 		await userEvent.tab(); // Blur input to trigger validation
 		// Wait for validation to complete
 		await waitFor(async () => {
@@ -128,7 +128,7 @@ export const WithMinMax: Story = {
 
 		// Set to max value
 		await userEvent.clear(input);
-		await userEvent.type(input, '100');
+		await userEvent.type(input, '100', { delay: 10 });
 		await userEvent.tab(); // Blur input to trigger validation
 		// Wait for validation to complete
 		await waitFor(async () => {
@@ -201,7 +201,7 @@ export const Controlled: Story = {
 
 		// Test user input
 		await userEvent.clear(input);
-		await userEvent.type(input, '50');
+		await userEvent.type(input, '50', { delay: 10 });
 		await userEvent.tab(); // Blur input
 		// Wait for state update
 		await waitFor(async () => {
