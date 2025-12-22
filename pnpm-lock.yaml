@@ -77,10 +77,10 @@ importers:
       '@commitlint/lint':
         specifier: ^20.2.0
         version: 20.2.0
-    devDependencies:
       '@commitlint/types':
         specifier: ^20.2.0
         version: 20.2.0
+    devDependencies:
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1
@@ -250,6 +250,9 @@ importers:
 
   packages/eslint-plugin-design-system:
     dependencies:
+      '@eslint/core':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@typescript-eslint/parser':
         specifier: ^8.50.0
         version: 8.50.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
@@ -257,9 +260,6 @@ importers:
         specifier: ^0.0.8
         version: 0.0.8(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
     devDependencies:
-      '@eslint/core':
-        specifier: ^1.0.0
-        version: 1.0.0
       concurrently:
         specifier: ^9.2.1
         version: 9.2.1

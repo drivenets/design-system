@@ -32,5 +32,3 @@ export * from './components/ds-file-upload';
 export * from './components/ds-chip';
 export * from './components/ds-chip-group';
 export * from './components/ds-vertical-tabs';
-
-import {} from 'eslint';
