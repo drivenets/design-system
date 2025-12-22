@@ -20,12 +20,13 @@ const defaultValues = {
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
+	notificationsEnabled: true,
 };
 
 const SampleForm = () => {
 	const methods = useForm<SampleFormValues>({
 		resolver: zodResolver(sampleFormSchema),
-		defaultValues: defaultValues as never,
+		defaultValues,
 		mode: 'onChange',
 	});
 
@@ -40,9 +41,9 @@ const SampleForm = () => {
 		control,
 	} = methods;
 
-	const onSubmit: SubmitHandler<SampleFormValues> = (data: SampleFormValues) => {
+	const onSubmit: SubmitHandler<SampleFormValues> = (data) => {
 		alert(JSON.stringify(data, null, 2));
-		reset(defaultValues as never);
+		reset(defaultValues);
 	};
 
 	const handleValueChange = (
@@ -194,6 +195,27 @@ const SampleForm = () => {
 				{errors.acceptTerms && (
 					<span style={{ color: 'red', fontSize: '12px' }}>{errors.acceptTerms.message}</span>
 				)}
+
+				<DsFormControl
+					label="Notifications"
+					required
+					status="error"
+					messageIcon="cancel"
+					message={touchedFields.notificationsEnabled ? errors.notificationsEnabled?.message : undefined}
+				>
+					<Controller
+						name="notificationsEnabled"
+						control={control}
+						render={({ field }) => (
+							<DsFormControl.Toggle
+								name={field.name}
+								label="Enable notifications"
+								checked={!!field.value}
+								onValueChange={(checked) => handleValueChange(field, checked)}
+							/>
+						)}
+					/>
+				</DsFormControl>
 
 				<DsButton type="submit" disabled={!isDirty || !isValid}>
 					Submit
