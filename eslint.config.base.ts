@@ -21,6 +21,11 @@ export default defineConfig(
 
 		languageOptions: {
 			globals: globals.builtin,
+
+			parserOptions: {
+				// Use the tsconfig relative to each package root.
+				tsconfigRootDir: process.cwd(),
+			},
 		},
 
 		plugins: {
