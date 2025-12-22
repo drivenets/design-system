@@ -44,9 +44,6 @@ importers:
       knip:
         specifier: ^5.75.0
         version: 5.75.0(@types/node@25.0.3)(typescript@5.9.3)
-      playwright:
-        specifier: ^1.57.0
-        version: 1.57.0
       prettier:
         specifier: ^3.7.4
         version: 3.7.4
