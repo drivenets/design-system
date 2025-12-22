@@ -234,7 +234,6 @@ export const WithDropdown: Story = {
 
 		// 1. Check last item (Router A) is selected
 		const lastItem = canvas.getByRole('button', { name: /Router A/ });
-		console.log('lastItem', lastItem);
 		await expect(lastItem).toHaveAttribute('aria-current', 'page');
 
 		// 2. Check Router A is selected in dropdown
