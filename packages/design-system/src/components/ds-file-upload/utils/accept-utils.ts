@@ -1,6 +1,5 @@
 import type { FileUploadFileMimeType } from '@ark-ui/react';
-import type { AcceptedFileType, FileExtension } from '../types/accept-types';
-import { EXTENSIONS_MAP } from '../types/accept-types';
+import { type AcceptedFileType, type FileExtension, EXTENSIONS_MAP } from '../types/accept-types';
 
 /**
  * Extract file extensions from accept configuration

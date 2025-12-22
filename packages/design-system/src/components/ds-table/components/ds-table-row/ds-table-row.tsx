@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import React from 'react';
 import type { Cell } from '@tanstack/react-table';
 import classnames from 'classnames';
@@ -67,7 +66,7 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 		id: row.id,
 		disabled: !reorderable,
 	});
-	const rowStyle: CSSProperties =
+	const rowStyle: React.CSSProperties =
 		virtualRow && virtualized
 			? {
 					transform: `translateY(${virtualRow.start}px)`,

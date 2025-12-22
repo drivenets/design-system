@@ -1,4 +1,4 @@
-@use '@drivenets/design-system/src/styles/shared/input' as input;
+@use '../../styles/shared/input';
 
 .textInputContainer {
 	@include input.inputContainer;
@@ -6,6 +6,8 @@
 
 .input {
 	@include input.input;
+
+	text-align: center;
 }
 
 .iconButton {

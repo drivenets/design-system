@@ -1,6 +1,7 @@
 import React from 'react';
-import type { DragEndEvent, UniqueIdentifier } from '@dnd-kit/core';
 import {
+	type DragEndEvent,
+	type UniqueIdentifier,
 	closestCenter,
 	DndContext,
 	KeyboardSensor,
