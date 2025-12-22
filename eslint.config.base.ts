@@ -1,4 +1,5 @@
 import eslint from '@eslint/js';
+import { type Plugin } from '@eslint/core';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import unicorn from 'eslint-plugin-unicorn';
@@ -24,7 +25,7 @@ export default defineConfig(
 
 		plugins: {
 			unicorn,
-			'import-x': importX,
+			'import-x': importX as unknown as Plugin,
 		},
 
 		settings: {
