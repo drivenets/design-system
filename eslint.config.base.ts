@@ -1,7 +1,10 @@
 import eslint from '@eslint/js';
+import { type Plugin } from '@eslint/core';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import unicorn from 'eslint-plugin-unicorn';
+import importX, { createNodeResolver } from 'eslint-plugin-import-x';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import globals from 'globals';
 
 export default defineConfig(
@@ -15,10 +18,20 @@ export default defineConfig(
 			reportUnusedDisableDirectives: 'error',
 			reportUnusedInlineConfigs: 'error',
 		},
+
 		languageOptions: {
 			globals: globals.builtin,
 		},
-		plugins: { unicorn },
+
+		plugins: {
+			unicorn,
+			'import-x': importX as unknown as Plugin,
+		},
+
+		settings: {
+			'import-x/resolver-next': [createTypeScriptImportResolver(), createNodeResolver()],
+		},
+
 		rules: {
 			'@typescript-eslint/consistent-type-imports': 'error',
 
@@ -26,6 +39,26 @@ export default defineConfig(
 				'error',
 				{
 					case: 'kebabCase',
+				},
+			],
+
+			'import-x/no-cycle': 'error',
+			'import-x/no-unresolved': 'error',
+			'import-x/no-extraneous-dependencies': 'error',
+			'import-x/no-duplicates': ['error', { 'prefer-inline': true }],
+		},
+	},
+
+	// Production files.
+	{
+		files: ['**/src/*.[tj]s?(x)'],
+		rules: {
+			// Disallow importing dev dependencies in production files.
+			'import-x/no-extraneous-dependencies': [
+				'error',
+				{
+					devDependencies: false,
+					includeTypes: true,
 				},
 			],
 		},
