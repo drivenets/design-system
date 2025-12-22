@@ -43,7 +43,7 @@ jobs:
           cache-name: lint
 
       - name: Run Lint
-        run: pnpm lint --affected --force
+        run: pnpm lint --force
 
       - name: Run Format Check
         run: pnpm format:check
@@ -68,7 +68,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Run Tests
-        run: pnpm test --affected --force
+        run: pnpm test --force
 
   build:
     name: Build
@@ -87,7 +87,7 @@ jobs:
           cache-name: build
 
       - name: Run Build
-        run: pnpm build --affected --force
+        run: pnpm build --force
 
   packages-versions:
     name: Check Packages Versions
