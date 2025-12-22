@@ -43,7 +43,7 @@ jobs:
             ${{ runner.os }}-turbo-lint-
 
       - name: Run Lint
-        run: pnpm lint --affected
+        run: pnpm lint --force
 
       - name: Run Format Check
         run: pnpm format:check
@@ -81,7 +81,7 @@ jobs:
             ${{ runner.os }}-turbo-test-
 
       - name: Run Tests
-        run: pnpm test --affected
+        run: pnpm test --force
 
   build:
     name: Build
@@ -114,7 +114,7 @@ jobs:
             ${{ runner.os }}-turbo-build-
 
       - name: Run Build
-        run: pnpm build --affected
+        run: pnpm build --force
 
   packages-versions:
     name: Check Packages Versions
