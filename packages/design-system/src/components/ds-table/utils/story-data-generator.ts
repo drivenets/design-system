@@ -1,5 +1,5 @@
 import type { SortingState } from '@tanstack/react-table';
-import { Status } from '../ds-table.stories';
+import type { Status } from '../ds-table.stories';
 
 export type Person = {
 	id: string;
@@ -40,7 +40,7 @@ export const generatePersonData = (
 		'Rodriguez',
 		'Martinez',
 	];
-	const statuses = [Status.Single, Status.Relationship, Status.Complicated];
+	const statuses: Status[] = ['single', 'relationship', 'complicated'];
 
 	// Generate all data first for sorting
 	const allData: Person[] = Array.from({ length: totalRows }).map((_, index) => {

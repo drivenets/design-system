@@ -13,12 +13,6 @@ import type { FilterNavItem } from '../filters/types/filter-adapter.types';
 import { type Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
 import styles from '../ds-table.stories.module.scss';
 
-export enum WorkflowCategory {
-	NetworkBuilt = 'Network Built',
-	OpticalOptimization = 'Optical Optimization',
-	ServiceProvisioning = 'Service Provisioning',
-}
-
 const sampleUsers = [
 	{ name: 'Marry Levin', colorIndex: 0 },
 	{ name: 'Emery Frank', colorIndex: 1 },
@@ -75,7 +69,7 @@ const defaultData: Workflow[] = [
 		name: 'Scheduled Config Backup',
 		status: 'active',
 		runningCompleted: { running: 3, completed: 41 },
-		category: WorkflowCategory.NetworkBuilt,
+		category: 'Network Built',
 		version: '000.0003',
 		lastEdited: {
 			editor: sampleUsers[0].name,
@@ -88,7 +82,7 @@ const defaultData: Workflow[] = [
 		name: 'Network Provisioning',
 		status: 'running',
 		runningCompleted: { running: 8, completed: 14 },
-		category: WorkflowCategory.NetworkBuilt,
+		category: 'Network Built',
 		version: '000.0002',
 		lastEdited: {
 			editor: sampleUsers[1].name,
@@ -101,7 +95,7 @@ const defaultData: Workflow[] = [
 		name: 'Service Provisioning',
 		status: 'inactive',
 		runningCompleted: { running: 0, completed: 243 },
-		category: WorkflowCategory.NetworkBuilt,
+		category: 'Network Built',
 		version: '000.0033',
 		lastEdited: {
 			editor: sampleUsers[2].name,
@@ -114,7 +108,7 @@ const defaultData: Workflow[] = [
 		name: 'Assign IPv4 Address',
 		status: 'active',
 		runningCompleted: { running: 14, completed: 123 },
-		category: WorkflowCategory.NetworkBuilt,
+		category: 'Network Built',
 		version: '000.0001',
 		lastEdited: {
 			editor: sampleUsers[3].name,
@@ -127,7 +121,7 @@ const defaultData: Workflow[] = [
 		name: 'Shutdown Decommissioned Device',
 		status: 'active',
 		runningCompleted: { running: 45, completed: 45 },
-		category: WorkflowCategory.OpticalOptimization,
+		category: 'Optical Optimization',
 		version: '000.0022',
 		lastEdited: {
 			editor: sampleUsers[4].name,
@@ -140,7 +134,7 @@ const defaultData: Workflow[] = [
 		name: 'Optical Power Level Calibration',
 		status: 'draft',
 		runningCompleted: { running: 99, completed: 23 },
-		category: WorkflowCategory.OpticalOptimization,
+		category: 'Optical Optimization',
 		version: '000.0001',
 		lastEdited: {
 			editor: sampleUsers[5].name,
@@ -153,7 +147,7 @@ const defaultData: Workflow[] = [
 		name: 'Deploy Layer 2 VPN Instance',
 		status: 'pending',
 		runningCompleted: { running: 49, completed: 100 },
-		category: WorkflowCategory.OpticalOptimization,
+		category: 'Optical Optimization',
 		version: '000.0012',
 		lastEdited: {
 			editor: sampleUsers[0].name,
@@ -166,7 +160,7 @@ const defaultData: Workflow[] = [
 		name: 'Initiate Scheduled Firmware Upgrade',
 		status: 'active',
 		runningCompleted: { running: 25, completed: 75 },
-		category: WorkflowCategory.ServiceProvisioning,
+		category: 'Service Provisioning',
 		version: '000.0010',
 		lastEdited: {
 			editor: sampleUsers[1].name,
@@ -179,7 +173,7 @@ const defaultData: Workflow[] = [
 		name: 'Enable High Availability Mode',
 		status: 'running',
 		runningCompleted: { running: 77, completed: 88 },
-		category: WorkflowCategory.ServiceProvisioning,
+		category: 'Service Provisioning',
 		version: '000.0001',
 		lastEdited: {
 			editor: sampleUsers[2].name,
@@ -192,7 +186,7 @@ const defaultData: Workflow[] = [
 		name: 'Audit Access Control Policies',
 		status: 'active',
 		runningCompleted: { running: 65, completed: 200 },
-		category: WorkflowCategory.ServiceProvisioning,
+		category: 'Service Provisioning',
 		version: '000.0001',
 		lastEdited: {
 			editor: sampleUsers[3].name,
@@ -205,7 +199,7 @@ const defaultData: Workflow[] = [
 		name: 'Synchronize NTP Across Network Nodes',
 		status: 'warning',
 		runningCompleted: { running: 49, completed: 142 },
-		category: WorkflowCategory.ServiceProvisioning,
+		category: 'Service Provisioning',
 		version: '000.0001',
 		lastEdited: {
 			editor: sampleUsers[4].name,
@@ -218,7 +212,7 @@ const defaultData: Workflow[] = [
 		name: 'Validate Optical Link Integrity',
 		status: 'failed',
 		runningCompleted: { running: 90, completed: 300 },
-		category: WorkflowCategory.NetworkBuilt,
+		category: 'Network Built',
 		version: '000.0001',
 		lastEdited: {
 			editor: sampleUsers[5].name,

@@ -169,9 +169,6 @@ importers:
       '@storybook/addon-docs':
         specifier: ^10.1.9
         version: 10.1.9(@types/react@19.2.7)(esbuild@0.27.2)(rollup@4.53.5)(storybook@10.1.9(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(sass-embedded@1.97.0)(sass@1.97.0)(yaml@2.8.2))
-      '@storybook/addon-onboarding':
-        specifier: ^10.1.9
-        version: 10.1.9(storybook@10.1.9(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@storybook/addon-vitest':
         specifier: ^10.1.9
         version: 10.1.9(@vitest/browser-playwright@4.0.16)(@vitest/browser@4.0.16(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(sass-embedded@1.97.0)(sass@1.97.0)(yaml@2.8.2))(vitest@4.0.16))(@vitest/runner@4.0.16)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(storybook@10.1.9(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vitest@4.0.16)
@@ -1873,11 +1870,6 @@ packages:
 
   '@storybook/addon-docs@10.1.9':
     resolution: {integrity: sha512-SvwEZ32lyk5p3PRmE3pmfAhs4HMiVo5zxjTBVmK9kgz9zGgWCTlikb56tJ998hVe52CFyCvt3I9rkHeYMCKPww==}
-    peerDependencies:
-      storybook: ^10.1.9
-
-  '@storybook/addon-onboarding@10.1.9':
-    resolution: {integrity: sha512-9f0F5DBA01jZSZXrOzhiuubMdQrej8C15mrIcXoPFNPNbvx9IBYsAiVWv3Tj76mF1IuvVy0J7vzNtGT+kMvKzg==}
     peerDependencies:
       storybook: ^10.1.9
 
@@ -6713,10 +6705,6 @@ snapshots:
       - rollup
       - vite
       - webpack
-
-  '@storybook/addon-onboarding@10.1.9(storybook@10.1.9(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
-    dependencies:
-      storybook: 10.1.9(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
   '@storybook/addon-vitest@10.1.9(@vitest/browser-playwright@4.0.16)(@vitest/browser@4.0.16(vite@7.3.0(@types/node@25.0.3)(jiti@2.6.1)(sass-embedded@1.97.0)(sass@1.97.0)(yaml@2.8.2))(vitest@4.0.16))(@vitest/runner@4.0.16)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(storybook@10.1.9(@testing-library/dom@10.4.1)(prettier@3.7.4)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vitest@4.0.16)':
     dependencies:
