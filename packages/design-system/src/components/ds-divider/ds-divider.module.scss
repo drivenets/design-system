@@ -1,25 +1,25 @@
 .divider {
-  display: block;
+	display: block;
 
-  border: 0;
-  padding: 0;
-  color: transparent;
+	border: 0;
+	padding: 0;
+	color: transparent;
 
-  --divider-thickness: 1px;
-  --divider-color: var(--color-brand-500-default);
+	--divider-thickness: 1px;
+	--divider-color: var(--color-brand-500-default);
 
-  background-color: var(--divider-color);
-  flex-shrink: 0;
+	background-color: var(--divider-color);
+	flex-shrink: 0;
 }
 .horizontal {
-  width: 100%;
-  height: var(--divider-thickness);
-  margin: 16px 0;
+	width: 100%;
+	height: var(--divider-thickness);
+	margin: 16px 0;
 }
 
 .vertical {
-  width: var(--divider-thickness);
-  height: auto;
-  align-self: stretch;
-  margin: 0 16px;
+	width: var(--divider-thickness);
+	height: auto;
+	align-self: stretch;
+	margin: 0 16px;
 }

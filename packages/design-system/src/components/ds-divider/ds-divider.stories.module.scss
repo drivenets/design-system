@@ -1,34 +1,34 @@
 .showcaseContainer {
-  padding: 24px;
+	padding: 24px;
 }
 
 .showcaseTable {
-  border-collapse: collapse;
-  width: 100%;
+	border-collapse: collapse;
+	width: 100%;
 }
 
 .showcaseHeader {
-  text-align: center;
-  vertical-align: middle;
-  padding: 16px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 16px;
 }
 
 .showcaseCell {
-  padding: 16px;
-  text-align: center;
-  vertical-align: middle;
+	padding: 16px;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .showcaseCellBold {
-  font-weight: bold;
-  padding-right: 8px;
+	font-weight: bold;
+	padding-right: 8px;
 }
 
 .showcaseCellInline {
-  display: inline-block;
+	display: inline-block;
 }
 
 .showcaseCellDark {
-  background: var(--color-brand-500-default);
-  color: var(--color-secondary-white);
+	background: var(--color-brand-500-default);
+	color: var(--color-secondary-white);
 }
