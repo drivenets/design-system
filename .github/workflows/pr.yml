@@ -12,40 +12,35 @@ env:
   TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha }}
 
 jobs:
+  # This job should watrm warm up the caches.
   install-deps:
-    name: Install Dependencies
+    name: Checkout and Install
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout source code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           filter: 'blob:none'
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm i
+      - name: Prepare and Install Dependencies
+        uses: ./.github/actions/prepare-install
 
   lint-format:
-    name: Lint & Format
+    name: Lint and Format
     runs-on: ubuntu-latest
-    needs: install-deps
+    needs: [install-deps]
     steps:
-      - name: Cache turbo
-        uses: actions/cache@v4
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
         with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-lint-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-lint-
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - name: Install Dependencies
+        uses: ./.github/actions/prepare-install
+        with:
+          cache-name: lint
 
       - name: Run Lint
         run: pnpm lint --affected
@@ -56,15 +51,21 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
-    needs: install-deps
+    needs: [install-deps]
     steps:
-      - name: Cache turbo
-        uses: actions/cache@v4
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
         with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-test-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-test-
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - name: Install Dependencies
+        uses: ./.github/actions/prepare-install
+        with:
+          cache-name: test
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install
 
       - name: Run Tests
         run: pnpm test --affected
@@ -72,15 +73,18 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: install-deps
+    needs: [install-deps]
     steps:
-      - name: Cache turbo
-        uses: actions/cache@v4
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
         with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-build-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-build-
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - name: Install Dependencies
+        uses: ./.github/actions/prepare-install
+        with:
+          cache-name: build
 
       - name: Run Build
         run: pnpm build --affected
@@ -88,23 +92,50 @@ jobs:
   packages-versions:
     name: Check Packages Versions
     runs-on: ubuntu-latest
-    needs: install-deps
+    needs: [install-deps]
     steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - name: Install Dependencies
+        uses: ./.github/actions/prepare-install
+
       - name: Run Packages Versions Check
         run: pnpm lint:versions
 
   spell-check:
     name: Spell Check
     runs-on: ubuntu-latest
-    needs: install-deps
+    needs: [install-deps]
     steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - name: Install Dependencies
+        uses: ./.github/actions/prepare-install
+
       - name: Run Spell Check
         run: pnpm lint:spell
 
   unused:
     name: Check Unused Code
     runs-on: ubuntu-latest
-    needs: install-deps
+    needs: [install-deps]
     steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+
+      - name: Install Dependencies
+        uses: ./.github/actions/prepare-install
+
       - name: Run Unused Code Check
         run: pnpm lint:unused
