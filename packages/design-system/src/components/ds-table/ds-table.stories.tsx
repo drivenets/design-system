@@ -15,11 +15,7 @@ import { generatePersonData, simulateApiCall } from './utils/story-data-generato
 import styles from './ds-table.stories.module.scss';
 import { StatusItem } from './stories/components/status-item/status-item';
 
-export enum Status {
-	Relationship = 'relationship',
-	Complicated = 'complicated',
-	Single = 'single',
-}
+export type Status = 'relationship' | 'complicated' | 'single';
 
 type Person = {
 	id: string;
@@ -87,7 +83,7 @@ const defaultData: Person[] = [
 		lastName: 'Linsley',
 		age: 33,
 		visits: 100,
-		status: Status.Single,
+		status: 'single',
 		progress: 75,
 	},
 	{
@@ -96,7 +92,7 @@ const defaultData: Person[] = [
 		lastName: 'Fine',
 		age: 28,
 		visits: 200,
-		status: Status.Relationship,
+		status: 'relationship',
 		progress: 50,
 	},
 	{
@@ -105,7 +101,7 @@ const defaultData: Person[] = [
 		lastName: 'Doe',
 		age: 45,
 		visits: 50,
-		status: Status.Complicated,
+		status: 'complicated',
 		progress: 90,
 	},
 	{
@@ -114,7 +110,7 @@ const defaultData: Person[] = [
 		lastName: 'Smith',
 		age: 30,
 		visits: 150,
-		status: Status.Single,
+		status: 'single',
 		progress: 60,
 	},
 	{
@@ -123,7 +119,7 @@ const defaultData: Person[] = [
 		lastName: 'Jones',
 		age: 22,
 		visits: 250,
-		status: Status.Relationship,
+		status: 'relationship',
 		progress: 30,
 	},
 	{
@@ -132,7 +128,7 @@ const defaultData: Person[] = [
 		lastName: 'Jane',
 		age: 38,
 		visits: 80,
-		status: Status.Complicated,
+		status: 'complicated',
 		progress: 85,
 	},
 	{
@@ -141,7 +137,7 @@ const defaultData: Person[] = [
 		lastName: 'Williams',
 		age: 50,
 		visits: 120,
-		status: Status.Single,
+		status: 'single',
 		progress: 40,
 	},
 	{
@@ -150,7 +146,7 @@ const defaultData: Person[] = [
 		lastName: 'Brown',
 		age: 25,
 		visits: 180,
-		status: Status.Relationship,
+		status: 'relationship',
 		progress: 70,
 	},
 	{
@@ -159,7 +155,7 @@ const defaultData: Person[] = [
 		lastName: 'Davis',
 		age: 41,
 		visits: 95,
-		status: Status.Complicated,
+		status: 'complicated',
 		progress: 20,
 	},
 	{
@@ -168,7 +164,7 @@ const defaultData: Person[] = [
 		lastName: 'Miller',
 		age: 36,
 		visits: 110,
-		status: Status.Single,
+		status: 'single',
 		progress: 55,
 	},
 	{
@@ -177,7 +173,7 @@ const defaultData: Person[] = [
 		lastName: 'Wilson',
 		age: 29,
 		visits: 220,
-		status: Status.Relationship,
+		status: 'relationship',
 		progress: 80,
 	},
 	{
@@ -186,7 +182,7 @@ const defaultData: Person[] = [
 		lastName: 'Moore',
 		age: 48,
 		visits: 65,
-		status: Status.Complicated,
+		status: 'complicated',
 		progress: 15,
 	},
 	{
@@ -195,7 +191,7 @@ const defaultData: Person[] = [
 		lastName: 'Taylor',
 		age: 31,
 		visits: 135,
-		status: Status.Single,
+		status: 'single',
 		progress: 95,
 	},
 	{
@@ -204,7 +200,7 @@ const defaultData: Person[] = [
 		lastName: 'Anderson',
 		age: 27,
 		visits: 170,
-		status: Status.Relationship,
+		status: 'relationship',
 		progress: 25,
 	},
 	{
@@ -213,7 +209,7 @@ const defaultData: Person[] = [
 		lastName: 'Thomas',
 		age: 43,
 		visits: 88,
-		status: Status.Complicated,
+		status: 'complicated',
 		progress: 50,
 	},
 ];
@@ -496,7 +492,7 @@ export const WithRowActions: Story = {
 				icon: 'delete_outline',
 				label: 'Delete',
 				tooltip: 'Delete this row',
-				disabled: (data) => data.status === Status.Single,
+				disabled: (data) => data.status === 'single',
 				onClick: (data) => {
 					alert(`Delete action for ${data.firstName}`);
 				},
@@ -728,9 +724,9 @@ export const TabFilters: Story = {
 
 		const getStatusIcon = (status: Status): IconType => {
 			switch (status) {
-				case Status.Relationship:
+				case 'relationship':
 					return 'favorite';
-				case Status.Complicated:
+				case 'complicated':
 					return 'psychology';
 				default:
 					return 'person';
@@ -763,24 +759,24 @@ export const TabFilters: Story = {
 					/>
 					<DsSmartTabs.Tab
 						label="In a Relationship"
-						value={Status.Relationship}
+						value={'relationship'}
 						icon="favorite"
 						color="green"
-						content={defaultData.filter((row) => row.status === Status.Relationship).length}
+						content={defaultData.filter((row) => row.status === 'relationship').length}
 					/>
 					<DsSmartTabs.Tab
 						label="It's Complicated"
-						value={Status.Complicated}
+						value={'complicated'}
 						icon="psychology"
 						color="red"
-						content={defaultData.filter((row) => row.status === Status.Complicated).length}
+						content={defaultData.filter((row) => row.status === 'complicated').length}
 					/>
 					<DsSmartTabs.Tab
 						label="Single"
-						value={Status.Single}
+						value={'single'}
 						icon="person"
 						color="gray"
-						content={defaultData.filter((row) => row.status === Status.Single).length}
+						content={defaultData.filter((row) => row.status === 'single').length}
 					/>
 				</DsSmartTabs>
 				<DsTable

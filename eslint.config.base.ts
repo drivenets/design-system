@@ -38,7 +38,28 @@ export default defineConfig(
 		},
 
 		rules: {
-			'@typescript-eslint/consistent-type-imports': 'error',
+			'@typescript-eslint/consistent-type-imports': [
+				'error',
+				{
+					fixStyle: 'inline-type-imports',
+				},
+			],
+
+			'@typescript-eslint/naming-convention': [
+				'error',
+				{
+					selector: 'typeLike',
+					format: ['PascalCase'],
+				},
+			],
+
+			'no-restricted-syntax': [
+				'error',
+				{
+					selector: 'TSEnumDeclaration',
+					message: 'Enums are not allowed. Use union types instead.',
+				},
+			],
 
 			'unicorn/filename-case': [
 				'error',

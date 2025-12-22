@@ -19,8 +19,11 @@ export interface MockAdapterConfig {
 export class MockFileUploadAdapter implements FileUploadAdapter {
 	private interruptedRuns = -1;
 	private uploads = new Map<string, { cancelled: boolean }>();
+	private config: MockAdapterConfig;
 
-	constructor(private config: MockAdapterConfig = {}) {}
+	constructor(config: MockAdapterConfig = {}) {
+		this.config = config;
+	}
 
 	async upload(options: FileUploadOptions): Promise<FileUploadResult> {
 		const {
