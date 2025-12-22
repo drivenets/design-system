@@ -14,7 +14,7 @@ env:
 jobs:
   # This job will warm up the caches.
   install-deps:
-    name: Checkout and Install
+    name: Checkout & Install
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -24,7 +24,7 @@ jobs:
         uses: ./.github/actions/prepare-install
 
   lint-format:
-    name: Lint and Format
+    name: Lint & Format
     runs-on: ubuntu-latest
     needs: [install-deps]
     steps:
