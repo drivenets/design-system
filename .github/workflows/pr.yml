@@ -12,7 +12,7 @@ env:
   TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha }}
 
 jobs:
-  # This job should watrm warm up the caches.
+  # This job will warm up the caches.
   install-deps:
     name: Checkout and Install
     runs-on: ubuntu-latest
