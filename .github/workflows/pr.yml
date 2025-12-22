@@ -19,9 +19,6 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: 'blob:none'
 
       - name: Install Dependencies
         uses: ./.github/actions/prepare-install
@@ -43,7 +40,7 @@ jobs:
           cache-name: lint
 
       - name: Run Lint
-        run: pnpm lint --force
+        run: pnpm lint --affected
 
       - name: Run Format Check
         run: pnpm format:check
@@ -68,7 +65,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Run Tests
-        run: pnpm test --force
+        run: pnpm test --affected
 
   build:
     name: Build
@@ -87,7 +84,7 @@ jobs:
           cache-name: build
 
       - name: Run Build
-        run: pnpm build --force
+        run: pnpm build --affected
 
   packages-versions:
     name: Check Packages Versions
@@ -96,9 +93,6 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: 'blob:none'
 
       - name: Install Dependencies
         uses: ./.github/actions/prepare-install
@@ -113,9 +107,6 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: 'blob:none'
 
       - name: Install Dependencies
         uses: ./.github/actions/prepare-install
@@ -130,9 +121,6 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: 'blob:none'
 
       - name: Install Dependencies
         uses: ./.github/actions/prepare-install
