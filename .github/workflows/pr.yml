@@ -81,7 +81,7 @@ jobs:
             ${{ runner.os }}-turbo-test-
 
       - name: Run Tests
-        run: pnpm test --affected
+        run: pnpm test --affected --force
 
   build:
     name: Build
