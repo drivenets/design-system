@@ -75,14 +75,14 @@ export const WithMinMax: Story = {
 		const input = canvas.getByPlaceholderText('Enter number');
 
 		// Test initial value
-		await expect(input).toHaveValue(50);
+		await expect(input).toHaveValue('50');
 
 		// Test number input functionality
 		await userEvent.clear(input);
 		await userEvent.type(input, '75');
 		// Wait for the input to be updated
 		await waitFor(async () => {
-			await expect(input).toHaveValue(75);
+			await expect(input).toHaveValue('75');
 		});
 
 		// Test min/max validation
@@ -91,7 +91,7 @@ export const WithMinMax: Story = {
 		await userEvent.tab(); // Blur input to trigger validation
 		// Wait for validation to complete
 		await waitFor(async () => {
-			await expect(input).toHaveValue(100); // Should be clamped to max
+			await expect(input).toHaveValue('100'); // Should be clamped to max
 		});
 
 		await userEvent.clear(input);
@@ -99,7 +99,7 @@ export const WithMinMax: Story = {
 		await userEvent.tab(); // Blur input to trigger validation
 		// Wait for validation to complete
 		await waitFor(async () => {
-			await expect(input).toHaveValue(0); // Should be clamped to min
+			await expect(input).toHaveValue('0'); // Should be clamped to min
 		});
 
 		// Test stepper buttons
@@ -113,13 +113,13 @@ export const WithMinMax: Story = {
 		await userEvent.click(incrementButton);
 		// Wait for stepper update
 		await waitFor(async () => {
-			await expect(input).toHaveValue(1);
+			await expect(input).toHaveValue('1');
 		});
 
 		await userEvent.click(decrementButton);
 		// Wait for stepper update
 		await waitFor(async () => {
-			await expect(input).toHaveValue(0);
+			await expect(input).toHaveValue('0');
 		});
 
 		// Test stepper button disabled states
@@ -181,21 +181,21 @@ export const Controlled: Story = {
 		const valueDisplay = canvas.getByText('Current value: 42');
 
 		// Test initial value
-		await expect(input).toHaveValue(42);
+		await expect(input).toHaveValue('42');
 		await expect(valueDisplay).toHaveTextContent('Current value: 42');
 
 		// Test external control
 		await userEvent.click(resetButton);
 		// Wait for state update
 		await waitFor(async () => {
-			await expect(input).toHaveValue(0);
+			await expect(input).toHaveValue('0');
 			await expect(valueDisplay).toHaveTextContent('Current value: 0');
 		});
 
 		await userEvent.click(setTo100Button);
 		// Wait for state update
 		await waitFor(async () => {
-			await expect(input).toHaveValue(100);
+			await expect(input).toHaveValue('100');
 			await expect(valueDisplay).toHaveTextContent('Current value: 100');
 		});
 
@@ -205,7 +205,7 @@ export const Controlled: Story = {
 		await userEvent.tab(); // Blur input
 		// Wait for state update
 		await waitFor(async () => {
-			await expect(input).toHaveValue(50);
+			await expect(input).toHaveValue('50');
 			await expect(valueDisplay).toHaveTextContent('Current value: 50');
 		});
 
@@ -213,7 +213,7 @@ export const Controlled: Story = {
 		await userEvent.click(resetButton);
 		// Wait for state update
 		await waitFor(async () => {
-			await expect(input).toHaveValue(0);
+			await expect(input).toHaveValue('0');
 		});
 	},
 };

@@ -4,8 +4,13 @@ import classNames from 'classnames';
 import { DsIcon, type IconSize } from '../../../ds-icon';
 import styles from './ds-button-legacy.stories.module.scss';
 import DsButtonLegacy from './ds-button-legacy';
-import type { ButtonSchema, ButtonVariant } from './ds-button-legacy.types';
-import { buttonSchemas, buttonSizes, buttonVariants } from './ds-button-legacy.types';
+import {
+	type ButtonSchema,
+	type ButtonVariant,
+	buttonSchemas,
+	buttonSizes,
+	buttonVariants,
+} from './ds-button-legacy.types';
 
 const meta: Meta<typeof DsButtonLegacy> = {
 	title: 'Design System/Button (Legacy)',

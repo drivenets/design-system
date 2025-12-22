@@ -114,7 +114,7 @@ const sanityCheck = async (canvasElement: HTMLElement) => {
 	await expect(updatedOption2).toHaveAttribute('data-state', 'checked');
 
 	// Close the dropdown first by pressing Escape
-	await userEvent.keyboard('{Escape}');
+	await userEvent.click(trigger);
 
 	// Test clear value button functionality
 	const closeButton = canvas.getByRole('button', { name: 'Clear value' });

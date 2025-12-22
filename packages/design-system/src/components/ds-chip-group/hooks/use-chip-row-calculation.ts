@@ -1,5 +1,4 @@
-import type { RefObject } from 'react';
-import { useLayoutEffect, useState } from 'react';
+import { type RefObject, useLayoutEffect, useState } from 'react';
 
 interface UseChipRowCalculationProps {
 	chipsWrapperRef: RefObject<HTMLDivElement | null>;

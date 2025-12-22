@@ -17,11 +17,14 @@
 		"build": "tsdown"
 	},
 	"dependencies": {
+		"@eslint/core": "^1.0.0",
 		"eslint-no-restricted": "^0.0.8"
 	},
 	"devDependencies": {
-		"@eslint/core": "^1.0.0",
+		"concurrently": "^9.2.1",
+		"eslint": "^9.39.2",
 		"tsdown": "^0.18.0",
+		"typescript": "^5.9.3",
 		"vitest": "^4.0.16"
 	},
 	"peerDependencies": {

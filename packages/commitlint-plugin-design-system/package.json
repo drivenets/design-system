@@ -16,9 +16,12 @@
 		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint ./' 'tsc'"
 	},
 	"peerDependencies": {
-		"@commitlint/lint": "^20.2.0"
+		"@commitlint/lint": "^20.2.0",
+		"@commitlint/types": "^20.2.0"
 	},
 	"devDependencies": {
-		"@commitlint/types": "^20.2.0"
+		"concurrently": "^9.2.1",
+		"eslint": "^9.39.2",
+		"typescript": "^5.9.3"
 	}
 }
