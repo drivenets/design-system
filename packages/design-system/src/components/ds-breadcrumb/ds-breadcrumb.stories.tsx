@@ -1,5 +1,5 @@
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { act, useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, screen, userEvent, within } from 'storybook/test';
 import {
@@ -13,7 +13,6 @@ import {
 } from '@tanstack/react-router';
 import DsBreadcrumb from './ds-breadcrumb';
 import type { DsBreadcrumbItem } from './ds-breadcrumb.types';
-import styles from './ds-breadcrumb.module.scss';
 
 const createTestRouter = (Story: React.ComponentType, initialPath: string) => {
 	const rootRoute = createRootRoute({
@@ -195,18 +194,15 @@ export const Default: Story = {
 
 		// 1. Check last item is selected
 		const lastItemElement = canvas.getByText(initialItems[initialItems.length - 1].label);
-		await expect(lastItemElement).toHaveClass(styles.active);
+		await expect(lastItemElement).toHaveAttribute('aria-current', 'page');
 
 		// 2. Click on previous item and verify last item is hidden
 		const previousItem = canvas.getByText(initialItems[initialItems.length - 2].label);
 		await userEvent.click(previousItem);
 
-		// Wait for navigation
-		await new Promise((resolve) => setTimeout(resolve, 100));
-
 		// Verify previous item is now last and selected
 		const updatedLastItem = canvas.getByText(initialItems[initialItems.length - 2].label);
-		await expect(updatedLastItem).toHaveClass(styles.active);
+		await expect(updatedLastItem).toHaveAttribute('aria-current', 'page');
 
 		// Verify original last item is not visible
 		const originalLastItem = screen.queryByText(initialItems[initialItems.length - 1].label);
@@ -217,10 +213,9 @@ export const Default: Story = {
 		const lastItemHref =
 			lastBreadcrumbItem.type === 'link' ? lastBreadcrumbItem.href : lastBreadcrumbItem.options[0].href;
 
-		extendedWindow.resetBreadcrumbItems?.(lastItemHref);
-
-		// Wait for state update
-		await new Promise((resolve) => setTimeout(resolve, 100));
+		act(() => {
+			extendedWindow.resetBreadcrumbItems?.(lastItemHref);
+		});
 
 		// Verify we're back to initial state
 		const resetLastItem = canvas.getByText(initialItems[initialItems.length - 1].label);
@@ -239,7 +234,7 @@ export const WithDropdown: Story = {
 
 		// 1. Check last item (Router A) is selected
 		const lastItem = canvas.getByRole('button', { name: /Router A/ });
-		await expect(lastItem).toHaveClass(styles.active);
+		await expect(lastItem).toHaveAttribute('aria-current', 'page');
 
 		// 2. Check Router A is selected in dropdown
 		const routerDropdown = canvas.getByRole('button', { name: /Router A/ });
@@ -254,7 +249,7 @@ export const WithDropdown: Story = {
 
 		// 4. Verify Switch B is now selected
 		const updatedLastItem = canvas.getByRole('button', { name: /Switch B/ });
-		await expect(updatedLastItem).toHaveClass(styles.active);
+		await expect(updatedLastItem).toHaveAttribute('aria-current', 'page');
 
 		// 5. Click on Vienna HQ dropdown
 		const viennaDropdown = canvas.getByRole('button', { name: /Vienna HQ/ });
@@ -282,10 +277,9 @@ export const WithDropdown: Story = {
 
 		// 11. Reset to initial state
 
-		extendedWindow.resetBreadcrumbItems?.('/network/vienna/router-a');
-
-		// Wait for state update
-		await new Promise((resolve) => setTimeout(resolve, 100));
+		act(() => {
+			extendedWindow.resetBreadcrumbItems?.('/network/vienna/router-a');
+		});
 
 		// Verify we're back to initial state
 		const resetLastItem = canvas.getByRole('button', { name: /Router A/ });

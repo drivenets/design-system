@@ -61,24 +61,26 @@ const sanityCheck = async (canvasElement: HTMLElement) => {
 	const decrementButton = canvas.getByRole('button', { name: /decrease/i });
 
 	// Test initial value
-	await expect(input).toHaveValue(10);
+	await expect(input).toHaveValue('10');
 
 	// Test increment
 	await userEvent.click(incrementButton);
 	await waitFor(async () => {
-		await expect(input).toHaveValue(11);
+		await expect(input).toHaveValue('11');
 	});
 
 	// Test decrement
 	await userEvent.click(decrementButton);
 	await waitFor(async () => {
-		await expect(input).toHaveValue(10);
+		await expect(input).toHaveValue('10');
 	});
 
 	// Test typing
 	await userEvent.clear(input);
 	await userEvent.type(input, '25');
-	await expect(input).toHaveValue(25);
+	await waitFor(async () => {
+		await expect(input).toHaveValue('25');
+	});
 };
 
 const checkDisabled = async (canvasElement: HTMLElement) => {
