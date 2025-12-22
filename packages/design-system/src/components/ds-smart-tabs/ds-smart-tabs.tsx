@@ -1,4 +1,4 @@
-import { type CSSProperties, createContext, useContext  } from 'react';
+import { type CSSProperties, createContext, useContext } from 'react';
 import type React from 'react';
 import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';

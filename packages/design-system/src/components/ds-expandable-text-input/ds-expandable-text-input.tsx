@@ -1,4 +1,4 @@
-import { type ReactNode, useRef, useState  } from 'react';
+import { type ReactNode, useRef, useState } from 'react';
 import { DsTextInput } from '../ds-text-input';
 import { DsIcon } from '../ds-icon';
 import classNames from 'classnames';

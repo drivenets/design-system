@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode, Fragment  } from 'react';
+import { type CSSProperties, type ReactNode, Fragment } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';

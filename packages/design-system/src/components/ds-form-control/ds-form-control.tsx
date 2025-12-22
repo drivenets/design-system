@@ -1,4 +1,4 @@
-import { type ComponentType, createContext, useContext, useId  } from 'react';
+import { type ComponentType, createContext, useContext, useId } from 'react';
 import type React from 'react';
 import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';

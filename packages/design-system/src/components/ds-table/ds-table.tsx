@@ -19,7 +19,7 @@ import styles from './ds-table.module.scss';
 import type { DsDataTableProps, DsTableRowSize } from './ds-table.types';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
-import { type DsTableContextType, DsTableContext  } from './context/ds-table-context';
+import { type DsTableContextType, DsTableContext } from './context/ds-table-context';
 import { createColumnsGridTemplate } from './utils/create-columns-grid-template';
 
 // Row size to pixel height mapping (matches CSS variables)

@@ -1,12 +1,15 @@
 import React from 'react';
-import { type DragEndEvent, type UniqueIdentifier,
+import {
+	type DragEndEvent,
+	type UniqueIdentifier,
 	closestCenter,
 	DndContext,
 	KeyboardSensor,
 	MouseSensor,
 	TouchSensor,
 	useSensor,
-	useSensors } from '@dnd-kit/core';
+	useSensors,
+} from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 

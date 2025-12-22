@@ -1,4 +1,4 @@
-import { type ChangeEvent, type FC, Fragment  } from 'react';
+import { type ChangeEvent, type FC, Fragment } from 'react';
 import classNames from 'classnames';
 import styles from './ds-text-input.module.scss';
 import type { DsTextInputProps } from './ds-text-input.types';

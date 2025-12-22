@@ -1,4 +1,4 @@
-import { type Cell, flexRender  } from '@tanstack/react-table';
+import { type Cell, flexRender } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';

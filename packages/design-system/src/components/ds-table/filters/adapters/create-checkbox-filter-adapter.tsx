@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import type { Row } from '@tanstack/react-table';
 import type { FilterAdapter } from '../types/filter-adapter.types';
-import { type CheckboxFilterItem, CheckboxFilter  } from '../components/checkbox-filter';
+import { type CheckboxFilterItem, CheckboxFilter } from '../components/checkbox-filter';
 import { createFilterAdapter } from './create-filter-adapter';
 
 export interface CheckboxFilterAdapterConfig<TData, TValue> {
