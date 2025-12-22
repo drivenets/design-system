@@ -13,6 +13,7 @@
 		"./src/styles/*": "./src/styles/*"
 	},
 	"scripts": {
+		"prepare": "pnpm exec playwright install",
 		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest --project=storybook",

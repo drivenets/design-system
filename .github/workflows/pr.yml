@@ -12,8 +12,8 @@ env:
   TURBO_SCM_BASE: ${{ github.event.pull_request.base.sha }}
 
 jobs:
-  lint-format:
-    name: Lint & Format
+  install-deps:
+    name: Install Dependencies
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
@@ -34,6 +34,11 @@ jobs:
       - name: Install Dependencies
         run: pnpm i
 
+  lint-format:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    needs: install-deps
+    steps:
       - name: Cache turbo
         uses: actions/cache@v4
         with:
@@ -51,27 +56,8 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    needs: install-deps
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: 'blob:none'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: |
-          pnpm i
-          pnpm exec playwright install
-
       - name: Cache turbo
         uses: actions/cache@v4
         with:
@@ -86,25 +72,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    needs: install-deps
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          filter: 'blob:none'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm i
-
       - name: Cache turbo
         uses: actions/cache@v4
         with:
@@ -119,65 +88,23 @@ jobs:
   packages-versions:
     name: Check Packages Versions
     runs-on: ubuntu-latest
+    needs: install-deps
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm i
-
       - name: Run Packages Versions Check
         run: pnpm lint:versions
 
   spell-check:
     name: Spell Check
     runs-on: ubuntu-latest
+    needs: install-deps
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm i
-
       - name: Run Spell Check
         run: pnpm lint:spell
 
   unused:
     name: Check Unused Code
     runs-on: ubuntu-latest
+    needs: install-deps
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v4
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm i
-
       - name: Run Unused Code Check
         run: pnpm lint:unused
