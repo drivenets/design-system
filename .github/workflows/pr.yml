@@ -23,7 +23,7 @@ jobs:
           fetch-depth: 0
           filter: 'blob:none'
 
-      - name: Prepare and Install Dependencies
+      - name: Install Dependencies
         uses: ./.github/actions/prepare-install
 
   lint-format:
@@ -43,7 +43,7 @@ jobs:
           cache-name: lint
 
       - name: Run Lint
-        run: pnpm lint --affected
+        run: pnpm lint --affected --force
 
       - name: Run Format Check
         run: pnpm format:check
@@ -68,7 +68,7 @@ jobs:
         run: pnpm exec playwright install
 
       - name: Run Tests
-        run: pnpm test --affected
+        run: pnpm test --affected --force
 
   build:
     name: Build
@@ -87,7 +87,7 @@ jobs:
           cache-name: build
 
       - name: Run Build
-        run: pnpm build --affected
+        run: pnpm build --affected --force
 
   packages-versions:
     name: Check Packages Versions
