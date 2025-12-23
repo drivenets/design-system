@@ -4,7 +4,7 @@
 	"tasks": {
 		"lint": {
 			"dependsOn": [],
-			"inputs": ["./eslint.config.base.ts", "./tsconfig.base.json"]
+			"inputs": ["$TURBO_ROOT$/eslint.config.base.ts", "$TURBO_ROOT$/tsconfig.base.json"]
 		},
 		"//#lint:root": {},
 		"test": {
