@@ -3,9 +3,7 @@ import classNames from 'classnames';
 import styles from './ds-divider.module.scss';
 import { type DsDividerProps } from './ds-divider.types';
 
-type DsDividerBaseProps = DsDividerProps & Omit<React.HTMLAttributes<HTMLElement>, 'color'>;
-
-const DsDivider: React.FC<DsDividerBaseProps> = ({
+const DsDivider: React.FC<DsDividerProps> = ({
 	orientation = 'horizontal',
 	component,
 	style,

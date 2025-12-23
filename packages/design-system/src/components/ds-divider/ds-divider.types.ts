@@ -1,7 +1,6 @@
-import { type CSSProperties } from 'react';
 import type React from 'react';
 
-export interface DsDividerProps {
+export interface DsDividerProps extends Omit<React.HTMLAttributes<HTMLElement>, 'color'> {
 	/**
 	 * Controls orientation of the divider. Horizontal by default.
 	 */
@@ -11,8 +10,4 @@ export interface DsDividerProps {
 	 * Examples: "hr", "div", "span", Link, etc.
 	 */
 	component?: React.ElementType;
-	/**
-	 * Additional CSS styles
-	 */
-	style?: CSSProperties;
 }
