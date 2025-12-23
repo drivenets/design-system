@@ -118,14 +118,7 @@ export const Default: Story = {
 			await expect(submitButton).toBeEnabled();
 		});
 
-		// 15. When notifications are disabled, will show the error message. Check again to allow to submit.
-		const notificationsToggle = canvas.getByLabelText('Enable notifications');
-		// initial: true
-		await userEvent.click(notificationsToggle);
-		await waitForMessage('You must enable notifications to receive updates');
-		await userEvent.click(notificationsToggle);
-
-		// 16. Clicking submit will show an alert containing stringified JSON of the values
+		// 15. Clicking submit will show an alert containing stringified JSON of the values
 		await userEvent.click(submitButton);
 		const expectedData = JSON.stringify(
 			{
@@ -136,7 +129,6 @@ export const Default: Story = {
 				acceptTerms: true,
 				subscription: 'pro',
 				contactMethod: 'email',
-				notificationsEnabled: true,
 			},
 			null,
 			2,

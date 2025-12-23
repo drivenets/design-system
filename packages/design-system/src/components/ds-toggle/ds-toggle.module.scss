@@ -1,21 +1,19 @@
 .root {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	position: relative;
 	width: fit-content;
 
 	--switch-track-width: 36px;
-	--switch-track-height: 16px;
+	--thumb-size: 16px;
 	--thumb-gap: 2px;
 	--transition-duration: 200ms;
-	--thumb-size: 16px;
-	--switch-track-diff: calc(var(--switch-track-width) - var(--switch-track-height));
+	--switch-track-diff: calc(var(--switch-track-width) - var(--thumb-size));
 	--switch-thumb-x: var(--switch-track-diff);
 	--icon-spacing: 2px;
 
 	&.small {
 		--switch-track-width: 26px;
-		--switch-track-height: 12px;
 		--thumb-size: 12px;
 		--icon-spacing: 1px;
 	}
@@ -25,17 +23,15 @@
 		outline: 2px solid transparent;
 		display: inline-flex;
 		flex-shrink: 0;
-		-webkit-box-pack: start;
 		justify-content: flex-start;
 		box-sizing: content-box;
 		cursor: pointer;
-		border-radius: 100px;
+		border-radius: 9999px;
 		transition-property: background-color, color, fill, stroke, opacity, transform, outline-color, opacity;
 		transition-duration: var(--transition-duration);
 		padding: var(--thumb-gap);
-
 		width: var(--switch-track-width);
-		height: var(--switch-track-height);
+		height: var(--thumb-size);
 
 		&[data-state='unchecked'] {
 			background: var(--color-background-deselected);
@@ -44,7 +40,7 @@
 				background: var(--color-background-deselected-hover);
 			}
 
-			&[data-focus] {
+			&[data-focus-visible] {
 				outline-color: var(--color-background-action-hover);
 				background: var(--color-background-deselected-hover);
 			}
@@ -65,7 +61,7 @@
 				background: var(--color-background-selected-hover);
 			}
 
-			&[data-focus] {
+			&[data-focus-visible] {
 				outline-color: var(--color-background-selected);
 				background: var(--color-background-selected-hover);
 			}
@@ -87,7 +83,7 @@
 				background: var(--color-background-deselected-hover);
 			}
 
-			&[data-focus] {
+			&[data-focus-visible] {
 				outline-color: var(--color-background-action-hover);
 				background: var(--color-background-deselected-hover);
 			}
@@ -95,21 +91,19 @@
 	}
 
 	[data-part='thumb'] {
-		border-radius: 100%;
+		border-radius: 9999px;
 		position: relative;
 		transition-property: transform;
 		background: var(--color-background);
 		transition-duration: var(--transition-duration);
-		width: var(--switch-track-height);
-		height: var(--switch-track-height);
+		height: 100%;
+		aspect-ratio: 1/1;
 
 		&:before {
+			content: '';
 			transition: background-color var(--transition-duration) ease-in-out;
 			position: absolute;
-			height: var(--thumb-size);
-			width: var(--thumb-size);
 			background-color: transparent;
-			content: '';
 			z-index: 10;
 			top: 50%;
 			left: 50%;
@@ -130,12 +124,6 @@
 		.labelInfo {
 			width: 100%;
 			color: var(--color-font-secondary);
-		}
-
-		&:has(.labelInfo) {
-			// needed to adjust the design (align control with the label)
-			position: relative;
-			top: 7px;
 		}
 
 		&[data-disabled] {

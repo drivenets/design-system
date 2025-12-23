@@ -1,9 +1,10 @@
-import { Switch } from '@ark-ui/react/switch';
+import { Switch, type SwitchCheckedChangeDetails } from '@ark-ui/react/switch';
 import classNames from 'classnames';
 import type { DsToggleProps } from './ds-toggle.types';
 import styles from './ds-toggle.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
+import type { Ref } from 'react';
 
 /**
  * Design system Toggle component
@@ -23,6 +24,10 @@ const DsToggle = ({
 	...rest
 }: DsToggleProps) => {
 	const isSmall = size === 'small';
+	const iconSize = isSmall ? 'tiny' : 'small';
+	const checkIconClass = classNames(styles.icon, styles.iconCheck);
+	const closeIconClass = classNames(styles.icon, styles.iconClose);
+
 	const rootClass = classNames(
 		styles.root,
 		{
@@ -30,16 +35,14 @@ const DsToggle = ({
 		},
 		className,
 	);
-	const checkIconClass = classNames(styles.icon, styles.iconCheck);
-	const closeIconClass = classNames(styles.icon, styles.iconClose);
-	const iconSize = isSmall ? 'tiny' : 'small';
-	const handleCheckedChange = (e: { checked: boolean }) => {
+
+	const handleCheckedChange = (e: SwitchCheckedChangeDetails) => {
 		onValueChange?.(e.checked);
 	};
 
 	return (
 		<Switch.Root
-			ref={ref}
+			ref={ref as Ref<HTMLLabelElement>}
 			style={style}
 			className={rootClass}
 			label={label}

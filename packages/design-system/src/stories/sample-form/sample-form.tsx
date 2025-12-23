@@ -20,7 +20,6 @@ const defaultValues = {
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
-	notificationsEnabled: true,
 };
 
 const SampleForm = () => {
@@ -195,27 +194,6 @@ const SampleForm = () => {
 				{errors.acceptTerms && (
 					<span style={{ color: 'red', fontSize: '12px' }}>{errors.acceptTerms.message}</span>
 				)}
-
-				<DsFormControl
-					label="Notifications"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.notificationsEnabled ? errors.notificationsEnabled?.message : undefined}
-				>
-					<Controller
-						name="notificationsEnabled"
-						control={control}
-						render={({ field }) => (
-							<DsFormControl.Toggle
-								name={field.name}
-								label="Enable notifications"
-								checked={!!field.value}
-								onValueChange={(checked) => handleValueChange(field, checked)}
-							/>
-						)}
-					/>
-				</DsFormControl>
 
 				<DsButton type="submit" disabled={!isDirty || !isValid}>
 					Submit

@@ -1,5 +1,4 @@
 import type { CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
-import type { SwitchRootProps } from '@ark-ui/react/switch';
 
 export const toggleSizes = ['default', 'small'] as const;
 export type ToggleSize = (typeof toggleSizes)[number];
@@ -7,26 +6,16 @@ export type ToggleSize = (typeof toggleSizes)[number];
 /**
  * Props for the DsToggle component
  */
-export type DsToggleProps = SwitchRootProps & {
+export type DsToggleProps = {
 	/**
 	 * Forwarded ref for the toggle label element
 	 */
-	ref?: Ref<HTMLLabelElement>;
-
-	/**
-	 * Optional label text displayed next to the toggle
-	 */
-	label?: string;
+	ref?: Ref<HTMLElement>;
 
 	/**
 	 * Optional form field name
 	 */
 	name?: string;
-
-	/**
-	 * Optional additional info text displayed below the label
-	 */
-	labelInfo?: string;
 
 	/**
 	 * Additional CSS class names
@@ -63,9 +52,25 @@ export type DsToggleProps = SwitchRootProps & {
 	 * Whether the toggle is disabled
 	 */
 	disabled?: boolean;
+} & (
+	| {
+			/**
+			 * Optional children (e.g., custom label content)
+			 */
+			children: ReactNode;
+			label?: never;
+			labelInfo?: never;
+	  }
+	| {
+			children?: never;
+			/**
+			 * Optional label text displayed next to the toggle
+			 */
+			label?: string;
 
-	/**
-	 * Optional children (e.g., custom label content)
-	 */
-	children?: ReactNode;
-};
+			/**
+			 * Optional additional info text displayed below the label
+			 */
+			labelInfo?: string;
+	  }
+);

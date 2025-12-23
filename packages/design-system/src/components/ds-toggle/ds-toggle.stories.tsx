@@ -13,10 +13,9 @@ const meta: Meta<typeof DsToggle> = {
 	},
 	tags: ['autodocs'],
 	argTypes: {
-		// Explicitly hide checked
 		checked: {
-			table: { disable: true },
-			control: false,
+			control: 'boolean',
+			description: "Whether it's checked or not",
 		},
 		label: {
 			control: 'text',
@@ -36,20 +35,24 @@ const meta: Meta<typeof DsToggle> = {
 			description: 'Whether the toggle is disabled',
 		},
 		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
+			table: { disable: true },
+			control: false,
 		},
 		style: {
-			control: 'object',
-			description: 'Inline styles to apply to the component',
+			table: { disable: true },
+			control: false,
 		},
 		onChange: {
-			action: 'clicked',
-			description: 'Function called when component is clicked',
+			table: { disable: true },
+			control: false,
 		},
 		onValueChange: {
-			action: 'changed',
-			description: 'Function called when toggle value changes',
+			table: { disable: true },
+			control: false,
+		},
+		ref: {
+			table: { disable: true },
+			control: false,
 		},
 	},
 };
@@ -61,14 +64,6 @@ type Story = StoryObj<typeof DsToggle>;
 const label = 'Text for label';
 const labelInfo = 'Text for info';
 
-// Helper – get the Switch root (Ark's <Switch.Root>)
-const getToggleRoot = (canvasElement: HTMLElement) =>
-	canvasElement.querySelector('[data-scope="switch"][data-part="root"]') as HTMLElement;
-
-// Helper – get the Switch control (Ark's <Switch.Control>)
-const getToggleControl = (canvasElement: HTMLElement) =>
-	canvasElement.querySelector('[data-scope="switch"][data-part="control"]') as HTMLElement;
-
 export const Default: Story = {
 	args: {
 		label,
@@ -78,24 +73,18 @@ export const Default: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const toggleRoot = getToggleRoot(canvasElement);
-		const toggleControl = getToggleControl(canvasElement);
+		const toggle = canvas.getByRole('checkbox', { name: /Text for label/ });
 
-		// Sanity check
-		await expect(toggleRoot).toBeInTheDocument();
-		await expect(toggleControl).toBeInTheDocument();
+		await expect(toggle).toBeInTheDocument();
 
-		// Ark UI Switch: data-state = "checked" | "unchecked"
-		await expect(toggleRoot).toHaveAttribute('data-state', 'unchecked');
+		await expect(toggle).not.toBeChecked();
 
-		// Label info should be rendered
 		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
 
-		// Click the control to turn it on
-		await userEvent.click(toggleControl);
+		await userEvent.click(toggle);
 
 		await waitFor(() => {
-			expect(toggleRoot).toHaveAttribute('data-state', 'checked');
+			expect(toggle).toBeChecked();
 		});
 	},
 };
@@ -107,18 +96,17 @@ export const Controlled: Story = {
 		return <DsToggle label={label} labelInfo={labelInfo} checked={checked} onValueChange={setChecked} />;
 	},
 	play: async ({ canvasElement }) => {
-		const toggleRoot = getToggleRoot(canvasElement);
-		const toggleControl = getToggleControl(canvasElement);
+		const canvas = within(canvasElement);
 
-		await expect(toggleRoot).toBeInTheDocument();
-		await expect(toggleControl).toBeInTheDocument();
+		const toggle = canvas.getByRole('checkbox', { name: /Text for label/ });
+
+		await expect(toggle).toBeInTheDocument();
 
 		// Starts checked (controlled via props)
-		await expect(toggleRoot).toHaveAttribute('data-state', 'checked');
+		await expect(toggle).toBeChecked();
 
-		// Toggle off
-		await userEvent.click(toggleControl);
-		await expect(toggleRoot).toHaveAttribute('data-state', 'unchecked');
+		await userEvent.click(toggle);
+		await expect(toggle).not.toBeChecked();
 	},
 };
 
@@ -137,25 +125,48 @@ export const Disabled: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const toggleRoot = getToggleRoot(canvasElement);
-		const toggleControl = getToggleControl(canvasElement);
+		const toggle = canvas.getByRole('checkbox', { name: /Text for label/ });
 
-		await expect(toggleRoot).toBeInTheDocument();
-		await expect(toggleControl).toBeInTheDocument();
+		await expect(toggle).toBeInTheDocument();
 
-		// Ark UI: data-disabled is present when disabled
-		await expect(toggleRoot).toHaveAttribute('data-disabled');
+		// Disabled checkbox
+		await expect(toggle).toBeDisabled();
 
-		// Label info should be rendered
 		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
 
-		// Capture initial state (usually "unchecked")
-		const initialState = toggleRoot.getAttribute('data-state');
+		const initiallyChecked = (toggle as HTMLInputElement).checked;
 
-		// Try to click the disabled toggle
-		await userEvent.click(toggleControl, { pointerEventsCheck: 0 });
+		await userEvent.click(toggle, { pointerEventsCheck: 0 });
 
 		// State should remain unchanged
-		await expect(toggleRoot).toHaveAttribute('data-state', initialState ?? 'unchecked');
+		await expect(toggle).toHaveProperty('checked', initiallyChecked);
+		await expect(toggle).toBeDisabled();
+	},
+};
+
+export const ChildrenCustomLabels: Story = {
+	render: function Render() {
+		return (
+			<DsToggle size="small">
+				<span
+					data-testid="custom-element"
+					style={{
+						color: 'red',
+					}}
+				>
+					Custom label totally!
+				</span>
+			</DsToggle>
+		);
+	},
+	args: {
+		label,
+		labelInfo,
+		disabled: true,
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByTestId('custom-element')).toHaveTextContent('Custom label totally!');
 	},
 };

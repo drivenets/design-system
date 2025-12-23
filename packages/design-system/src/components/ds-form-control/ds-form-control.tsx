@@ -7,7 +7,6 @@ import { DsTextInput } from '../ds-text-input';
 import { DsTextarea } from '../ds-textarea';
 import { DsNumberInput } from '../ds-number-input';
 import { DsPasswordInput } from '../ds-password-input';
-import { DsToggle } from '../ds-toggle';
 import type { DsFormControlDescriptionProps, DsFormControlProps } from './ds-form-control.types';
 import styles from './ds-form-control.module.scss';
 
@@ -91,6 +90,5 @@ DsFormControl.PasswordInput = controlify(DsPasswordInput);
 DsFormControl.Textarea = controlify(DsTextarea);
 DsFormControl.Select = controlify(DsSelect);
 DsFormControl.Description = DsFormControlDescription;
-DsFormControl.Toggle = controlify(DsToggle);
 
 export default DsFormControl;

@@ -13,7 +13,6 @@ export const sampleFormSchema = z.object({
 		errorMap: () => ({ message: 'Please select a subscription plan' }),
 	}),
 	contactMethod: z.string().nonempty('Please select a contact method'),
-	notificationsEnabled: z.boolean().refine((v) => v, 'You must enable notifications to receive updates'),
 });
 
 export type SampleFormValues = z.infer<typeof sampleFormSchema>;
