@@ -18,7 +18,7 @@ const defaultValues = {
 	description: '',
 	quantity: undefined,
 	acceptTerms: false,
-	subscription: undefined,
+	subscription: '',
 	contactMethod: '',
 };
 
