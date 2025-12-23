@@ -12,15 +12,6 @@ export interface DsDividerProps {
 	 */
 	component?: React.ElementType;
 	/**
-	 * Divider line color. Falls back to currentColor with low opacity.
-	 */
-	backgroundColor?: string;
-	/**
-	 * Height for horizontal OR width for vertical.
-	 * Examples: 1, "2px", "0.5rem"
-	 */
-	thickness?: number | string;
-	/**
 	 * Additional CSS styles
 	 */
 	style?: CSSProperties;

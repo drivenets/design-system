@@ -11,8 +11,6 @@ const meta: Meta<typeof DsDivider> = {
 	},
 	args: {
 		orientation: 'horizontal',
-		backgroundColor: undefined,
-		thickness: undefined,
 	},
 	tags: ['autodocs'],
 	argTypes: {
@@ -20,14 +18,6 @@ const meta: Meta<typeof DsDivider> = {
 			control: 'radio',
 			options: ['horizontal', 'vertical'],
 			description: 'Controls orientation of the divider.',
-		},
-		backgroundColor: {
-			control: 'color',
-			description: 'Divider line color.',
-		},
-		thickness: {
-			control: { type: 'number', min: 0, step: 1 },
-			description: 'Height for horizontal or width for vertical (in px).',
 		},
 		component: {
 			control: 'select',
@@ -96,30 +86,6 @@ export const Showcase: Story = {
 
 					<tr>
 						<td className={styles.showcaseCell}>
-							<span className={styles.showcaseCellBold}>Horizontal</span>
-							<span className={styles.showcaseCellInline}>thickness=4</span>
-						</td>
-						<td className={styles.showcaseCell}>
-							<div className={styles.horizontalDividerWrapper}>
-								<DsDivider thickness={4} />
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td className={styles.showcaseCell}>
-							<span className={styles.showcaseCellBold}>Horizontal</span>
-							<span className={styles.showcaseCellInline}>custom color</span>
-						</td>
-						<td className={styles.showcaseCell}>
-							<div className={styles.horizontalDividerWrapper}>
-								<DsDivider backgroundColor="rgba(107, 91, 255, 1)" />
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td className={styles.showcaseCell}>
 							<span className={styles.showcaseCellBold}>Vertical</span>
 							<span className={styles.showcaseCellInline}>default</span>
 						</td>
@@ -134,38 +100,12 @@ export const Showcase: Story = {
 
 					<tr>
 						<td className={styles.showcaseCell}>
-							<span className={styles.showcaseCellBold}>Vertical</span>
-							<span className={styles.showcaseCellInline}>thickness=6</span>
-						</td>
-						<td className={styles.showcaseCell}>
-							<div className={styles.verticalDividerContainer}>
-								<div className={styles.verticalDividerContent}>Left</div>
-								<DsDivider orientation="vertical" thickness={6} />
-								<div className={styles.verticalDividerContent}>Right</div>
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td className={styles.showcaseCell}>
 							<span className={styles.showcaseCellBold}>Custom</span>
 							<span className={styles.showcaseCellInline}>component=&quot;span&quot;</span>
 						</td>
 						<td className={styles.showcaseCell}>
 							<div className={styles.horizontalDividerWrapper}>
 								<DsDivider component="span" />
-							</div>
-						</td>
-					</tr>
-
-					<tr>
-						<td className={`${styles.showcaseCell} ${styles.showcaseCellDark}`}>
-							<span className={styles.showcaseCellBold}>Dark bg</span>
-							<span className={styles.showcaseCellInline}>contrast</span>
-						</td>
-						<td className={`${styles.showcaseCell} ${styles.showcaseCellDark}`}>
-							<div className={styles.horizontalDividerWrapper}>
-								<DsDivider backgroundColor="rgba(255, 255, 255, 0.48)" />
 							</div>
 						</td>
 					</tr>
@@ -188,51 +128,9 @@ export const Horizontal: Story = {
 	),
 };
 
-export const HorizontalThick: Story = {
-	args: {
-		orientation: 'horizontal',
-		thickness: 4,
-	},
-	render: (args) => (
-		<div className={styles.horizontalContainer}>
-			<div className={styles.storyText}>Above</div>
-			<DsDivider {...args} />
-			<div className={styles.storyText}>Below</div>
-		</div>
-	),
-};
-
-export const CustomColor: Story = {
-	args: {
-		orientation: 'horizontal',
-		backgroundColor: '#6B5BFF',
-	},
-	render: (args) => (
-		<div className={styles.horizontalContainer}>
-			<div className={styles.storyText}>Above</div>
-			<DsDivider {...args} />
-			<div className={styles.storyText}>Below</div>
-		</div>
-	),
-};
-
 export const Vertical: Story = {
 	args: {
 		orientation: 'vertical',
-	},
-	render: (args) => (
-		<div className={`${styles.storyContainer} ${styles.storyContainerVertical}`}>
-			<div className={styles.storyContentSide}>Left</div>
-			<DsDivider {...args} />
-			<div className={styles.storyContentSide}>Right</div>
-		</div>
-	),
-};
-
-export const VerticalThick: Story = {
-	args: {
-		orientation: 'vertical',
-		thickness: '6px',
 	},
 	render: (args) => (
 		<div className={`${styles.storyContainer} ${styles.storyContainerVertical}`}>

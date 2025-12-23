@@ -5,21 +5,17 @@
 	padding: 0;
 	color: transparent;
 
-	--divider-thickness: 1px;
-	--divider-color: var(--color-border-secondary);
-
-	background-color: var(--divider-color);
+	background-color: var(--color-border-secondary);
 	flex-shrink: 0;
 }
+
 .horizontal {
 	width: 100%;
-	height: var(--divider-thickness);
-	margin: 16px 0;
+	height: 1px;
 }
 
 .vertical {
-	width: var(--divider-thickness);
+	width: 1px;
 	height: auto;
 	align-self: stretch;
-	margin: 0 16px;
 }
