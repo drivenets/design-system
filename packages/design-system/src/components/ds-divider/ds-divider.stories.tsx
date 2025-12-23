@@ -51,29 +51,19 @@ type Story = StoryObj<typeof DsDivider>;
 export const Default: Story = {
 	render: (args) => (
 		<div
-			style={{
-				width: 420,
-				height: args.orientation === 'vertical' ? 220 : 'auto',
-				display: 'flex',
-				alignItems: 'stretch',
-				justifyContent: 'center',
-				padding: 16,
-				border: '1px solid rgba(0,0,0,0.08)',
-				borderRadius: 12,
-				boxSizing: 'border-box',
-			}}
+			className={`${styles.storyContainer} ${args.orientation === 'vertical' ? styles.storyContainerVertical : ''}`}
 		>
 			{args.orientation === 'vertical' ? (
 				<>
-					<div style={{ width: 140, fontSize: 12 }}>Left content</div>
+					<div className={styles.storyContentSide}>Left content</div>
 					<DsDivider {...args} />
-					<div style={{ width: 140, fontSize: 12 }}>Right content</div>
+					<div className={styles.storyContentSide}>Right content</div>
 				</>
 			) : (
-				<div style={{ width: '100%' }}>
-					<div style={{ fontSize: 12 }}>Top content</div>
+				<div className={styles.storyContent}>
+					<div className={styles.storyText}>Top content</div>
 					<DsDivider {...args} />
-					<div style={{ fontSize: 12 }}>Bottom content</div>
+					<div className={styles.storyText}>Bottom content</div>
 				</div>
 			)}
 		</div>
@@ -81,9 +71,8 @@ export const Default: Story = {
 };
 
 export const Showcase: Story = {
-	parameters: { controls: { exclude: /.*/ } },
 	render: () => (
-		<div className={styles.showcaseContainer} style={{ width: 760 }}>
+		<div className={styles.showcaseContainer}>
 			<table className={styles.showcaseTable}>
 				<thead>
 					<tr>
@@ -99,7 +88,7 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>default</span>
 						</td>
 						<td className={styles.showcaseCell}>
-							<div style={{ width: 520 }}>
+							<div className={styles.horizontalDividerWrapper}>
 								<DsDivider />
 							</div>
 						</td>
@@ -111,7 +100,7 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>thickness=4</span>
 						</td>
 						<td className={styles.showcaseCell}>
-							<div style={{ width: 520 }}>
+							<div className={styles.horizontalDividerWrapper}>
 								<DsDivider thickness={4} />
 							</div>
 						</td>
@@ -123,7 +112,7 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>custom color</span>
 						</td>
 						<td className={styles.showcaseCell}>
-							<div style={{ width: 520 }}>
+							<div className={styles.horizontalDividerWrapper}>
 								<DsDivider backgroundColor="rgba(107, 91, 255, 1)" />
 							</div>
 						</td>
@@ -135,10 +124,10 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>default</span>
 						</td>
 						<td className={styles.showcaseCell}>
-							<div style={{ height: 140, display: 'flex', alignItems: 'stretch', justifyContent: 'center' }}>
-								<div style={{ width: 120, fontSize: 12, display: 'flex', alignItems: 'center' }}>Left</div>
+							<div className={styles.verticalDividerContainer}>
+								<div className={styles.verticalDividerContent}>Left</div>
 								<DsDivider orientation="vertical" />
-								<div style={{ width: 120, fontSize: 12, display: 'flex', alignItems: 'center' }}>Right</div>
+								<div className={styles.verticalDividerContent}>Right</div>
 							</div>
 						</td>
 					</tr>
@@ -149,10 +138,10 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>thickness=6</span>
 						</td>
 						<td className={styles.showcaseCell}>
-							<div style={{ height: 140, display: 'flex', alignItems: 'stretch', justifyContent: 'center' }}>
-								<div style={{ width: 120, fontSize: 12, display: 'flex', alignItems: 'center' }}>Left</div>
+							<div className={styles.verticalDividerContainer}>
+								<div className={styles.verticalDividerContent}>Left</div>
 								<DsDivider orientation="vertical" thickness={6} />
-								<div style={{ width: 120, fontSize: 12, display: 'flex', alignItems: 'center' }}>Right</div>
+								<div className={styles.verticalDividerContent}>Right</div>
 							</div>
 						</td>
 					</tr>
@@ -163,7 +152,7 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>component=&quot;span&quot;</span>
 						</td>
 						<td className={styles.showcaseCell}>
-							<div style={{ width: 520 }}>
+							<div className={styles.horizontalDividerWrapper}>
 								<DsDivider component="span" />
 							</div>
 						</td>
@@ -175,7 +164,7 @@ export const Showcase: Story = {
 							<span className={styles.showcaseCellInline}>contrast</span>
 						</td>
 						<td className={`${styles.showcaseCell} ${styles.showcaseCellDark}`}>
-							<div style={{ width: 520 }}>
+							<div className={styles.horizontalDividerWrapper}>
 								<DsDivider backgroundColor="rgba(255, 255, 255, 0.48)" />
 							</div>
 						</td>
@@ -191,10 +180,10 @@ export const Horizontal: Story = {
 		orientation: 'horizontal',
 	},
 	render: (args) => (
-		<div style={{ width: 420 }}>
-			<div style={{ fontSize: 12 }}>Above</div>
+		<div className={styles.horizontalContainer}>
+			<div className={styles.storyText}>Above</div>
 			<DsDivider {...args} />
-			<div style={{ fontSize: 12 }}>Below</div>
+			<div className={styles.storyText}>Below</div>
 		</div>
 	),
 };
@@ -205,10 +194,10 @@ export const HorizontalThick: Story = {
 		thickness: 4,
 	},
 	render: (args) => (
-		<div style={{ width: 420 }}>
-			<div style={{ fontSize: 12 }}>Above</div>
+		<div className={styles.horizontalContainer}>
+			<div className={styles.storyText}>Above</div>
 			<DsDivider {...args} />
-			<div style={{ fontSize: 12 }}>Below</div>
+			<div className={styles.storyText}>Below</div>
 		</div>
 	),
 };
@@ -219,10 +208,10 @@ export const CustomColor: Story = {
 		backgroundColor: '#6B5BFF',
 	},
 	render: (args) => (
-		<div style={{ width: 420 }}>
-			<div style={{ fontSize: 12 }}>Above</div>
+		<div className={styles.horizontalContainer}>
+			<div className={styles.storyText}>Above</div>
 			<DsDivider {...args} />
-			<div style={{ fontSize: 12 }}>Below</div>
+			<div className={styles.storyText}>Below</div>
 		</div>
 	),
 };
@@ -232,21 +221,10 @@ export const Vertical: Story = {
 		orientation: 'vertical',
 	},
 	render: (args) => (
-		<div
-			style={{
-				width: 420,
-				height: 220,
-				display: 'flex',
-				alignItems: 'stretch',
-				padding: 16,
-				border: '1px solid rgba(0,0,0,0.08)',
-				borderRadius: 12,
-				boxSizing: 'border-box',
-			}}
-		>
-			<div style={{ width: 140, fontSize: 12 }}>Left</div>
+		<div className={`${styles.storyContainer} ${styles.storyContainerVertical}`}>
+			<div className={styles.storyContentSide}>Left</div>
 			<DsDivider {...args} />
-			<div style={{ width: 140, fontSize: 12 }}>Right</div>
+			<div className={styles.storyContentSide}>Right</div>
 		</div>
 	),
 };
@@ -257,21 +235,10 @@ export const VerticalThick: Story = {
 		thickness: '6px',
 	},
 	render: (args) => (
-		<div
-			style={{
-				width: 420,
-				height: 220,
-				display: 'flex',
-				alignItems: 'stretch',
-				padding: 16,
-				border: '1px solid rgba(0,0,0,0.08)',
-				borderRadius: 12,
-				boxSizing: 'border-box',
-			}}
-		>
-			<div style={{ width: 140, fontSize: 12 }}>Left</div>
+		<div className={`${styles.storyContainer} ${styles.storyContainerVertical}`}>
+			<div className={styles.storyContentSide}>Left</div>
 			<DsDivider {...args} />
-			<div style={{ width: 140, fontSize: 12 }}>Right</div>
+			<div className={styles.storyContentSide}>Right</div>
 		</div>
 	),
 };
@@ -282,10 +249,10 @@ export const WithCustomComponent: Story = {
 		component: 'span',
 	},
 	render: (args) => (
-		<div style={{ width: 420 }}>
-			<div style={{ fontSize: 12 }}>Above</div>
+		<div className={styles.horizontalContainer}>
+			<div className={styles.storyText}>Above</div>
 			<DsDivider {...args} />
-			<div style={{ fontSize: 12 }}>Below</div>
+			<div className={styles.storyText}>Below</div>
 		</div>
 	),
 };

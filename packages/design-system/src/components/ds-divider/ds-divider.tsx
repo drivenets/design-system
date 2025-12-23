@@ -1,12 +1,13 @@
 import { type CSSProperties } from 'react';
 import type React from 'react';
+import classNames from 'classnames';
 import styles from './ds-divider.module.scss';
 import { type DsDividerProps } from './ds-divider.types';
 import { toCssSize } from '../../utils/common.util';
 
 type DsDividerBaseProps = DsDividerProps & Omit<React.HTMLAttributes<HTMLElement>, 'color'>;
 
-export const DsDivider: React.FC<DsDividerBaseProps> = ({
+const DsDivider: React.FC<DsDividerBaseProps> = ({
 	orientation = 'horizontal',
 	thickness,
 	component,
@@ -18,9 +19,14 @@ export const DsDivider: React.FC<DsDividerBaseProps> = ({
 	const isVertical = orientation === 'vertical';
 	const Component = component ?? (isVertical ? 'div' : 'hr');
 
-	const classes = [styles.divider, isVertical ? styles.vertical : styles.horizontal, className]
-		.filter(Boolean)
-		.join(' ');
+	const classes = classNames(
+		styles.divider,
+		{
+			[styles.vertical]: isVertical,
+			[styles.horizontal]: !isVertical,
+		},
+		className,
+	);
 
 	const customProperties: Record<string, string> = {};
 
