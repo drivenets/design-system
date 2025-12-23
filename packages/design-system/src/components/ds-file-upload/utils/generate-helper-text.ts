@@ -11,7 +11,7 @@ export function generateHelperText(
 	maxFiles: number,
 ): string {
 	// Extract file extensions from accept configuration
-	const extensions = accept ? getFileExtensions(accept) : [];
+	const extensions = getFileExtensions(accept);
 	const uniqueExtensions = [...new Set(extensions)];
 	const fileTypes = uniqueExtensions.map((ext) => ext.toUpperCase()).join(', ');
 
@@ -32,7 +32,7 @@ export function generateHelperText(
 	if (maxFiles === 1) {
 		parts.push('Only 1 file');
 	} else if (maxFiles > 1) {
-		parts.push(`Up to ${maxFiles} files`);
+		parts.push(`Up to ${String(maxFiles)} files`);
 	}
 
 	return parts.join('. ') + '.';

@@ -1,5 +1,4 @@
 import React from 'react';
-import type { Cell } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -40,7 +39,7 @@ const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleP
 	);
 };
 
-const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TData>) => {
+const DsTableRow = <TData,>({ ref, row, virtualRow }: DsTableRowProps<TData>) => {
 	const {
 		expandable,
 		expandedRows,
@@ -57,7 +56,7 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 		primaryRowActions,
 		secondaryRowActions,
 		activeRowId,
-	} = useDsTableContext<TData, TValue>();
+	} = useDsTableContext<TData, unknown>();
 	const isExpanded = expandedRows[row.id];
 	const isExpandable = typeof expandable === 'function' ? expandable(row.original) : expandable;
 	const isActive = activeRowId === row.id;
@@ -69,7 +68,7 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 	const rowStyle: React.CSSProperties =
 		virtualRow && virtualized
 			? {
-					transform: `translateY(${virtualRow.start}px)`,
+					transform: `translateY(${String(virtualRow.start)}px)`,
 				}
 			: reorderable
 				? {
@@ -164,12 +163,12 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 							{isLastColumn ? (
 								<DsTableCell
 									row={row}
-									cell={cell as Cell<TData, TValue>}
+									cell={cell}
 									primaryRowActions={primaryRowActions}
 									secondaryRowActions={secondaryRowActions}
 								/>
 							) : (
-								<DsTableCell row={row} cell={cell as Cell<TData, TValue>} />
+								<DsTableCell row={row} cell={cell} />
 							)}
 						</TableCell>
 					);
@@ -180,7 +179,7 @@ const DsTableRow = <TData, TValue>({ ref, row, virtualRow }: DsTableRowProps<TDa
 					style={
 						virtualRow && virtualized
 							? {
-									transform: `translateY(${virtualRow.start + virtualRow.size}px)`,
+									transform: `translateY(${String(virtualRow.start + virtualRow.size)}px)`,
 								}
 							: undefined
 					}

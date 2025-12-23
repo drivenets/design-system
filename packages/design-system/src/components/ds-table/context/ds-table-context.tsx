@@ -35,5 +35,5 @@ export const useDsTableContext = <TData, TValue>(): DsTableContextType<TData, TV
 	if (!context) {
 		throw new Error('useDsTableContext must be used within DsTable');
 	}
-	return context;
+	return context as DsTableContextType<TData, TValue>;
 };

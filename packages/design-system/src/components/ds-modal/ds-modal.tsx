@@ -24,7 +24,7 @@ const DsModal = ({
 	children,
 }: DsModalProps) => {
 	const handleOpenChange = (details: { open: boolean }) => {
-		onOpenChange?.(details.open);
+		onOpenChange(details.open);
 	};
 
 	return (
@@ -40,7 +40,7 @@ const DsModal = ({
 				<Dialog.Positioner>
 					<Dialog.Content
 						style={style}
-						className={classNames(styles.modal, styles[`cols-${columns}`], className)}
+						className={classNames(styles.modal, styles[`cols-${String(columns)}`], className)}
 					>
 						<div className={classNames(styles.content)}>{children}</div>
 					</Dialog.Content>

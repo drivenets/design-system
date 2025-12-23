@@ -1,4 +1,4 @@
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 
 export type TestScenario = 'normal' | 'interrupted' | 'error';
 
@@ -20,11 +20,10 @@ const getMockFile = (): File => {
  */
 export const createTestPlayFunction = (scenario: TestScenario) => {
 	return async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-		const canvas = within(canvasElement);
 		const mockFile = getMockFile();
 
 		// Find and upload file
-		const fileInput = canvasElement.querySelector('input[type="file"]') as HTMLInputElement;
+		const fileInput = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
 
 		if (!fileInput) {
 			throw new Error('File input not found');
@@ -35,13 +34,13 @@ export const createTestPlayFunction = (scenario: TestScenario) => {
 		// Test based on scenario
 		switch (scenario) {
 			case 'normal':
-				await testNormalUpload(canvas);
+				await testNormalUpload();
 				break;
 			case 'interrupted':
-				await testInterruptedUpload(canvas);
+				await testInterruptedUpload();
 				break;
 			case 'error':
-				await testErrorUpload(canvas);
+				await testErrorUpload();
 				break;
 		}
 	};
@@ -50,12 +49,12 @@ export const createTestPlayFunction = (scenario: TestScenario) => {
 /**
  * Test normal upload flow - file uploads successfully
  */
-async function testNormalUpload(canvas: ReturnType<typeof within>) {
+async function testNormalUpload() {
 	// Wait for upload to start
 	await waitFor(
 		() => {
-			const uploadingText = canvas.queryByText(/Uploading/i);
-			expect(uploadingText).toBeInTheDocument();
+			const uploadingText = screen.queryByText(/Uploading/i);
+			return expect(uploadingText).toBeInTheDocument();
 		},
 		{ timeout: 1000 },
 	);
@@ -63,32 +62,32 @@ async function testNormalUpload(canvas: ReturnType<typeof within>) {
 	// Wait for upload to complete
 	await waitFor(
 		() => {
-			const completeText = canvas.queryByText(/complete/i);
-			expect(completeText).toBeInTheDocument();
+			const completeText = screen.queryByText(/complete/i);
+			return expect(completeText).toBeInTheDocument();
 		},
 		{ timeout: 5000 },
 	);
 
 	// Test delete button
-	const deleteButton = canvas.getByLabelText(/delete/i);
+	const deleteButton = screen.getByLabelText(/delete/i);
 	await userEvent.click(deleteButton);
 
 	// Verify file was removed
 	await waitFor(() => {
-		const fileName = canvas.queryByText('test-document.pdf');
-		expect(fileName).not.toBeInTheDocument();
+		const fileName = screen.queryByText('test-document.pdf');
+		return expect(fileName).not.toBeInTheDocument();
 	});
 }
 
 /**
  * Test interrupted upload flow - upload fails mid-way and can be retried
  */
-async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
+async function testInterruptedUpload() {
 	// Wait for upload to start
 	await waitFor(
 		() => {
-			const uploadingText = canvas.queryByText(/Uploading/i);
-			expect(uploadingText).toBeInTheDocument();
+			const uploadingText = screen.queryByText(/Uploading/i);
+			return expect(uploadingText).toBeInTheDocument();
 		},
 		{ timeout: 1000 },
 	);
@@ -96,51 +95,51 @@ async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
 	// Wait for interruption
 	await waitFor(
 		() => {
-			const interruptedText = canvas.queryByText(/interrupted|lost|failed/i);
-			expect(interruptedText).toBeInTheDocument();
+			const interruptedText = screen.queryByText(/interrupted|lost|failed/i);
+			return expect(interruptedText).toBeInTheDocument();
 		},
 		{ timeout: 5000 },
 	);
 
 	// Find and click retry button
-	const retryButton = canvas.getByLabelText(/retry/i);
+	const retryButton = screen.getByLabelText(/retry/i);
 	await userEvent.click(retryButton);
 
 	// Wait for retry to complete
 	// Note: Retry uses normal adapter so it should succeed
 	await waitFor(
 		() => {
-			const completeText = canvas.queryByText(/complete/i);
-			expect(completeText).toBeInTheDocument();
+			const completeText = screen.queryByText(/complete/i);
+			return expect(completeText).toBeInTheDocument();
 		},
 		{ timeout: 5000 },
 	);
 
 	// Test delete button
-	const deleteButton = canvas.getByLabelText(/delete/i);
+	const deleteButton = screen.getByLabelText(/delete/i);
 	await userEvent.click(deleteButton);
 }
 
 /**
  * Test error upload flow - upload fails immediately
  */
-async function testErrorUpload(canvas: ReturnType<typeof within>) {
+async function testErrorUpload() {
 	// Wait for error to appear
 	await waitFor(
 		() => {
-			const errorText = canvas.queryByText(/failed|error|unsupported/i);
-			expect(errorText).toBeInTheDocument();
+			const errorText = screen.queryByText(/failed|error|unsupported/i);
+			return expect(errorText).toBeInTheDocument();
 		},
 		{ timeout: 2000 },
 	);
 
 	// Test remove button
-	const removeButton = canvas.getByLabelText(/remove/i);
+	const removeButton = screen.getByLabelText(/remove/i);
 	await userEvent.click(removeButton);
 
 	// Verify file was removed
 	await waitFor(() => {
-		const fileName = canvas.queryByText('test-document.pdf');
-		expect(fileName).not.toBeInTheDocument();
+		const fileName = screen.queryByText('test-document.pdf');
+		return expect(fileName).not.toBeInTheDocument();
 	});
 }

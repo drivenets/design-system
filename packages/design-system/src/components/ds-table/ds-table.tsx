@@ -35,7 +35,7 @@ const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
 const DsTable = <TData extends { id: string }, TValue>({
 	ref,
 	columns,
-	data: tableData = [],
+	data: tableData,
 	virtualized = false,
 	virtualizedOptions,
 	className,
@@ -215,6 +215,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const selectedRows = Object.entries(rowSelection)
 		.filter(([, selected]) => selected)
+		// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		.map(([key]) => rowsById[key]?.original)
 		.filter(Boolean);
 
@@ -270,7 +272,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 					>
 						<DsTableHeader table={table} />
 						<TableBody
-							style={{ height: virtualized ? `${rowVirtualizer.getTotalSize()}px` : undefined }}
+							style={{ height: virtualized ? `${String(rowVirtualizer.getTotalSize())}px` : undefined }}
 							className={classnames(virtualized && styles.virtualizedBody)}
 						>
 							{virtualized ? (

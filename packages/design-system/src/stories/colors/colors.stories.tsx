@@ -185,16 +185,16 @@ const colorGroups = [
 	},
 ];
 
-const isHex = (code: string) => /^#([0-9a-f]{3,8})$/i.test(code?.trim());
+const isHex = (code: string) => /^#([0-9a-f]{3,8})$/i.test(code.trim());
 
 export const Default: Story = {
 	render: function Render() {
 		const [copied, setCopied] = useState<string | null>(null);
 
-		const handleCopy = (tone: Tone) => {
+		const handleCopy = async (tone: Tone) => {
 			const codeToCopy = getCSSVariable(tone.variable);
 			if (codeToCopy) {
-				navigator.clipboard.writeText(codeToCopy);
+				await navigator.clipboard.writeText(codeToCopy);
 				setCopied(tone.name);
 				setTimeout(() => setCopied(null), 1500);
 			}

@@ -55,12 +55,12 @@ export const Default: Story = {
 		};
 
 		const handleAddFilter = () => {
-			const newId = `new-${Date.now()}`;
+			const newId = `new-${String(Date.now())}`;
 			setFilters((prev) => [
 				...prev,
 				{
 					id: newId,
-					label: `New Filter ${prev.length + 1}`,
+					label: `New Filter ${String(prev.length + 1)}`,
 				},
 			]);
 		};

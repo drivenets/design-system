@@ -32,7 +32,7 @@ export interface FileUploadResult {
  * - reject with FatalFileUploadError for permanent failures
  */
 export interface FileUploadAdapter {
-	upload: (options: FileUploadOptions) => Promise<FileUploadResult>;
-	cancel?: (fileId: string) => Promise<void>;
-	delete?: (fileId: string) => Promise<void>;
+	upload: (options: FileUploadOptions) => FileUploadResult | Promise<FileUploadResult>;
+	cancel?: (fileId: string) => void | Promise<void>;
+	delete?: (fileId: string) => void | Promise<void>;
 }

@@ -23,7 +23,7 @@ const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'medium', className, style
 	const actualWidth = widthMap[size];
 	const radius = (actualSize - actualWidth) / 2;
 	const circumference = 2 * Math.PI * radius;
-	const strokeDasharray = `${0.25 * circumference} ${circumference}`;
+	const strokeDasharray = `${String(0.25 * circumference)} ${String(circumference)}`;
 
 	return (
 		<div className={classNames(styles.spinnerContainer, styles[size], className)} style={style} {...props}>
@@ -31,7 +31,7 @@ const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'medium', className, style
 				className={classNames(styles.progressCircle, styles.spin)}
 				width={actualSize}
 				height={actualSize}
-				viewBox={`0 0 ${actualSize} ${actualSize}`}
+				viewBox={`0 0 ${String(actualSize)} ${String(actualSize)}`}
 			>
 				<circle
 					className={styles.progressArc}

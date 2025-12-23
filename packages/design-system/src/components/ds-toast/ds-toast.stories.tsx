@@ -204,9 +204,9 @@ export const WarningWithActions: Story = {
 		await userEvent.click(canvas.getByTestId('show-toast-button'));
 
 		// Wait for toast to appear and verify content
-		await waitFor(() => {
-			expect(canvas.getByText('File upload failed')).toBeInTheDocument();
-			expect(canvas.getByText('Your file could not be uploaded.')).toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(canvas.getByText('File upload failed')).toBeInTheDocument();
+			await expect(canvas.getByText('Your file could not be uploaded.')).toBeInTheDocument();
 		});
 
 		// Verify action buttons are present
@@ -218,13 +218,13 @@ export const WarningWithActions: Story = {
 
 		// Verify toast is dismissed and action is recorded
 		await waitFor(() => {
-			expect(canvas.getByTestId('action-result')).toHaveTextContent('abort');
+			return expect(canvas.getByTestId('action-result')).toHaveTextContent('abort');
 		});
 
 		// Wait a bit to ensure toast is dismissed
 		await waitFor(
 			() => {
-				expect(canvas.queryByText('File upload failed')).not.toBeInTheDocument();
+				return expect(canvas.queryByText('File upload failed')).not.toBeInTheDocument();
 			},
 			{ timeout: 1000 },
 		);
@@ -371,13 +371,13 @@ export const MultipleToasts: Story = {
 
 		// First toast should appear immediately
 		await waitFor(() => {
-			expect(canvas.getByText('First Toast')).toBeInTheDocument();
+			return expect(canvas.getByText('First Toast')).toBeInTheDocument();
 		});
 
 		// Wait for second toast (500ms delay)
 		await waitFor(
 			() => {
-				expect(canvas.getByText('Second Toast')).toBeInTheDocument();
+				return expect(canvas.getByText('Second Toast')).toBeInTheDocument();
 			},
 			{ timeout: 1000 },
 		);
@@ -385,7 +385,7 @@ export const MultipleToasts: Story = {
 		// Wait for third toast (1000ms delay)
 		await waitFor(
 			() => {
-				expect(canvas.getByText('Third Toast')).toBeInTheDocument();
+				return expect(canvas.getByText('Third Toast')).toBeInTheDocument();
 			},
 			{ timeout: 1500 },
 		);
@@ -402,16 +402,16 @@ export const MultipleToasts: Story = {
 		await userEvent.click(canvas.getByTestId('dismiss-all-button'));
 
 		// Verify all toasts are dismissed
-		await waitFor(() => {
-			expect(canvas.queryByText('First Toast')).not.toBeInTheDocument();
-			expect(canvas.queryByText('Second Toast')).not.toBeInTheDocument();
-			expect(canvas.queryByText('Third Toast')).not.toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('First Toast')).not.toBeInTheDocument();
+			await expect(canvas.queryByText('Second Toast')).not.toBeInTheDocument();
+			await expect(canvas.queryByText('Third Toast')).not.toBeInTheDocument();
 		});
 
 		// Verify count is back to 0
 		await waitFor(
 			() => {
-				expect(canvas.getByTestId('toast-count')).toHaveTextContent('0');
+				return expect(canvas.getByTestId('toast-count')).toHaveTextContent('0');
 			},
 			{ timeout: 1000 },
 		);

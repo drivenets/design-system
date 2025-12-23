@@ -43,12 +43,12 @@ export const LastEditedFilter = ({ value, onChange, availableEditors }: LastEdit
 		metadata: { colorIndex: editor.colorIndex },
 	}));
 
-	const selectedEditorItems = editorItems.filter((item) => value.editors.includes(item.value as string));
+	const selectedEditorItems = editorItems.filter((item) => value.editors.includes(item.value));
 
 	const handleEditorChange = (selected: CheckboxFilterItem[]) => {
 		onChange({
 			...value,
-			editors: selected.map((item) => item.value as string),
+			editors: selected.map((item) => item.value),
 		});
 	};
 

@@ -55,7 +55,7 @@ export function createDualRangeFilterAdapter<TData>(
 		label,
 		fields,
 		formatNumber = (num) => num.toLocaleString('en-US'),
-		getRowValue = (row) => row.getValue(id) as Record<string, number>,
+		getRowValue = (row) => row.getValue(id),
 	} = config;
 
 	const initialValue: DualRangeFilterValue = {};
@@ -144,7 +144,9 @@ export function createDualRangeFilterAdapter<TData>(
 					{Object.entries(fields).map(([fieldKey, fieldLabel]) => (
 						<RangeFilter
 							key={fieldKey}
-							label={fieldLabel as string}
+							label={fieldLabel}
+							// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
+							// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 							value={value[fieldKey] || {}}
 							onChange={(rangeValue) =>
 								onChange({

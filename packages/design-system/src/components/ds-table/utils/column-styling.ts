@@ -19,7 +19,7 @@ export const getColumnStyle = (
 
 	if (virtualized) {
 		return {
-			flexBasis: `${columnSize}px`,
+			flexBasis: `${String(columnSize)}px`,
 			flexGrow: isLastColumn ? 1 : 0,
 		};
 	}

@@ -78,7 +78,7 @@ const DsChipGroup: React.FC<DsChipGroupProps> = ({
 				{showExpandButton && (
 					<DsChip
 						ref={showAllChipsRef}
-						label={`+${hiddenCount} ${hiddenCount === 1 ? 'item' : 'items'} show all`}
+						label={`+${String(hiddenCount)} ${hiddenCount === 1 ? 'item' : 'items'} show all`}
 						onClick={handleOpenDialog}
 						className={styles.expandChip}
 					/>

@@ -12,7 +12,7 @@ import DsTypography from '../ds-typography/ds-typography';
  */
 export const DsConfirmation = ({ open, onOpenChange, style, className, children }: DsConfirmationProps) => {
 	const handleOpenChange = (details: { open: boolean }) => {
-		onOpenChange?.(details.open);
+		onOpenChange(details.open);
 	};
 
 	return (

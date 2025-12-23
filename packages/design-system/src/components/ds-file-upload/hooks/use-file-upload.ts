@@ -153,7 +153,7 @@ export function useFileUpload({
 	const uploadNewFiles = (uploadedFiles: UploadedFile[]) => {
 		if (autoUpload) {
 			uploadedFiles.forEach((file) => {
-				uploadSingleFile(file);
+				void uploadSingleFile(file);
 			});
 		}
 	};

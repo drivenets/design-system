@@ -9,8 +9,8 @@ export const DsGrid: React.FC<DsGridProps> = ({ children, columns, rows, classNa
 	const gridClass = classNames(
 		'ds-grid',
 		{
-			[`ds-grid-cols-${columns}`]: columns,
-			[`ds-grid-rows-${rows}`]: rows,
+			[`ds-grid-cols-${String(columns)}`]: columns,
+			[`ds-grid-rows-${String(rows)}`]: rows,
 		},
 		className,
 	);
@@ -31,10 +31,10 @@ export const DsGridItem: React.FC<DsGridItemProps> = ({
 }) => {
 	const gridItemClass = classNames(
 		{
-			[`ds-grid-col-span-${colSpan}`]: colSpan,
-			[`ds-grid-col-start-${colStart}`]: colStart,
-			[`ds-grid-row-span-${rowSpan}`]: rowSpan,
-			[`ds-grid-row-start-${rowStart}`]: rowStart,
+			[`ds-grid-col-span-${String(colSpan)}`]: colSpan,
+			[`ds-grid-col-start-${String(colStart)}`]: colStart,
+			[`ds-grid-row-span-${String(rowSpan)}`]: rowSpan,
+			[`ds-grid-row-start-${String(rowStart)}`]: rowStart,
 		},
 		className,
 	);

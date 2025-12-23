@@ -107,7 +107,7 @@ const statusIconMap: Record<DsStatus, IconType> = {
  * Get icon for status
  */
 const getStatusIcon = (status: DsStatus): IconType => {
-	return statusIconMap[status] ?? 'check_circle';
+	return statusIconMap[status];
 };
 
 /**
@@ -162,7 +162,7 @@ const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workflow>({
 		completed: 'Completed',
 	},
 	formatNumber: (num) => num.toLocaleString('en-US'),
-	getRowValue: (row) => row.getValue('runningCompleted') as { running: number; completed: number },
+	getRowValue: (row) => row.getValue('runningCompleted'),
 });
 
 /**

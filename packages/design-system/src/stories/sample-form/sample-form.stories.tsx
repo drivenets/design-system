@@ -23,8 +23,8 @@ export const Default: Story = {
 
 		// Helper function to wait for validation messages
 		const waitForMessage = async (text: string) => {
-			await waitFor(() => {
-				expect(canvas.getByText(text)).toBeInTheDocument();
+			await waitFor(async () => {
+				await expect(canvas.getByText(text)).toBeInTheDocument();
 			});
 		};
 
@@ -68,23 +68,23 @@ export const Default: Story = {
 		const fakeEmail = faker.internet.email();
 		await userEvent.clear(emailInput);
 		await userEvent.type(emailInput, fakeEmail);
-		await waitFor(() => {
-			expect(canvas.queryByText('Invalid email address')).not.toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('Invalid email address')).not.toBeInTheDocument();
 		});
 
 		// 8. Typing name inside name will hide the message
 		const fakeName = `${faker.person.firstName()} ${faker.person.lastName()}`;
 		await userEvent.type(nameInput, fakeName);
-		await waitFor(() => {
-			expect(canvas.queryByText('Name is required')).not.toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('Name is required')).not.toBeInTheDocument();
 		});
 
 		// 9. Selecting contactMethod inside contactMethod will hide the message
 		await userEvent.click(contactMethodTrigger);
 		const contactOption = screen.getByRole('option', { name: 'Email' });
 		await userEvent.click(contactOption);
-		await waitFor(() => {
-			expect(canvas.queryByText('Please select a contact method')).not.toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('Please select a contact method')).not.toBeInTheDocument();
 		});
 
 		// 10. Typing random text (less than 20 chars) inside description will (still) show message
@@ -95,14 +95,16 @@ export const Default: Story = {
 		const fakeDescription = faker.lorem.sentence(5);
 		await userEvent.clear(descriptionInput);
 		await userEvent.type(descriptionInput, fakeDescription);
-		await waitFor(() => {
-			expect(canvas.queryByText('Short description is required (min. 20 chars)')).not.toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(
+				canvas.queryByText('Short description is required (min. 20 chars)'),
+			).not.toBeInTheDocument();
 		});
 
 		// 12. Checking acceptTerms will hide the message
 		await userEvent.click(acceptTermsCheckbox);
-		await waitFor(() => {
-			expect(canvas.queryByText('You must accept the terms and conditions')).not.toBeInTheDocument();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('You must accept the terms and conditions')).not.toBeInTheDocument();
 		});
 
 		// 13. Submit still disabled when subscription not selected
@@ -112,8 +114,8 @@ export const Default: Story = {
 		// 14. When subscription selected submit will be enabled
 		const subscriptionOption = canvas.getByLabelText('Pro');
 		await userEvent.click(subscriptionOption);
-		await waitFor(() => {
-			expect(submitButton).toBeEnabled();
+		await waitFor(async () => {
+			await expect(submitButton).toBeEnabled();
 		});
 
 		// 15. Clicking submit will show alert containing stringified json of the values
@@ -132,18 +134,18 @@ export const Default: Story = {
 			2,
 		);
 
-		await waitFor(() => {
-			expect(alertSpy).toHaveBeenCalledWith(expectedData);
+		await waitFor(async () => {
+			await expect(alertSpy).toHaveBeenCalledWith(expectedData);
 		});
 
 		// 16. When closing the alert form is empty again (reset)
-		await waitFor(() => {
-			expect(nameInput).toHaveValue('');
-			expect(emailInput).toHaveValue('');
-			expect(contactMethodTrigger).toHaveTextContent(/Select a contact method|^$/);
-			expect(descriptionInput).toHaveValue('');
-			expect(acceptTermsCheckbox).not.toBeChecked();
-			expect(subscriptionOption).not.toBeChecked();
+		await waitFor(async () => {
+			await expect(nameInput).toHaveValue('');
+			await expect(emailInput).toHaveValue('');
+			await expect(contactMethodTrigger).toHaveTextContent(/Select a contact method|^$/);
+			await expect(descriptionInput).toHaveValue('');
+			await expect(acceptTermsCheckbox).not.toBeChecked();
+			await expect(subscriptionOption).not.toBeChecked();
 		});
 	},
 };

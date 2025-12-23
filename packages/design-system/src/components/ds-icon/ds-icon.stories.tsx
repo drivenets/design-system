@@ -86,6 +86,8 @@ export const Showcase: Story = {
 				// Key format is "category::iconName"
 				const [category, iconName] = key.split('::');
 
+				// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				if (!categorizedIcons[category]) {
 					categorizedIcons[category] = [];
 				}
@@ -112,7 +114,7 @@ export const Showcase: Story = {
 					const response = await fetch(ICONS_URL);
 
 					if (response.ok) {
-						const data = await response.json();
+						const data = (await response.json()) as Record<string, number>;
 						setIconsByCategory(processIconData(data));
 					} else {
 						throw new Error('Failed to fetch icons from GitHub');
@@ -128,7 +130,7 @@ export const Showcase: Story = {
 				}
 			};
 
-			fetchIcons();
+			void fetchIcons();
 		}, []);
 
 		const filteredCategories = useMemo(() => {
@@ -149,9 +151,9 @@ export const Showcase: Story = {
 			return result;
 		}, [iconsByCategory, searchTerm]);
 
-		const handleIconClick = (iconName: string) => {
+		const handleIconClick = async (iconName: string) => {
 			// Copy icon name to clipboard
-			navigator.clipboard.writeText(iconName);
+			await navigator.clipboard.writeText(iconName);
 
 			// Create a temporary element for notification
 			const notification = document.createElement('div');

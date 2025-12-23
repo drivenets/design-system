@@ -160,7 +160,7 @@ const BreadcrumbStory = ({ items }: { items: DsBreadcrumbItem[] }) => {
 	useEffect(() => {
 		extendedWindow.resetBreadcrumbItems = (initialPath: string) => {
 			setUpdatedItems(items);
-			navigate({ to: initialPath });
+			void navigate({ to: initialPath });
 		};
 		return () => {
 			delete extendedWindow.resetBreadcrumbItems;
@@ -171,7 +171,7 @@ const BreadcrumbStory = ({ items }: { items: DsBreadcrumbItem[] }) => {
 		<DsBreadcrumb
 			items={updatedItems}
 			onSelect={(href: string) => {
-				navigate({ to: href });
+				void navigate({ to: href });
 			}}
 		/>
 	);
