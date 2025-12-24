@@ -3,6 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"packageManager": "pnpm@10.0.0",
+	"type": "module",
 	"scripts": {
 		"lint": "turbo run lint:root lint",
 		"lint:root": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
@@ -13,7 +14,9 @@
 		"start": "pnpm run --filter @drivenets/design-system storybook",
 		"lint:versions": "syncpack list-mismatches",
 		"lint:spell": "cspell . --quiet",
-		"lint:unused": "knip"
+		"lint:unused": "knip",
+		"prepare": "husky",
+		"pre-commit": "lint-staged"
 	},
 	"devDependencies": {
 		"@commitlint/cli": "^20.2.0",
@@ -30,7 +33,9 @@
 		"eslint-plugin-import-x": "^4.16.1",
 		"eslint-plugin-unicorn": "^62.0.0",
 		"globals": "^16.5.0",
+		"husky": "^9.1.7",
 		"knip": "^5.75.0",
+		"lint-staged": "^16.2.7",
 		"playwright": "^1.57.0",
 		"prettier": "^3.7.4",
 		"syncpack": "^13.0.4",

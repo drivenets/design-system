@@ -22,6 +22,7 @@
 		"skipLibCheck": true,
 
 		// Linting
-		"erasableSyntaxOnly": true
+		"erasableSyntaxOnly": true,
+		"checkJs": true
 	}
 }
