@@ -13,7 +13,7 @@
 		}
 	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint ./' 'tsc'"
+		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'"
 	},
 	"peerDependencies": {
 		"@commitlint/lint": "^20.2.0",

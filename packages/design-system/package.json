@@ -13,7 +13,7 @@
 		"./src/styles/*": "./src/styles/*"
 	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
+		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest --project=storybook",
 		"build": "vite build",

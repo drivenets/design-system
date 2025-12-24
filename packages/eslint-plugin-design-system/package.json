@@ -12,7 +12,7 @@
 		}
 	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
+		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
 		"test": "vitest",
 		"build": "tsdown"
 	},
