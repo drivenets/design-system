@@ -84,7 +84,7 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 		toChips: (selectedItems) => {
 			// Generate chips for all selected items
 			return selectedItems.map((item) => ({
-				id: `${id}_${item.value}`,
+				id: `${id}_${String(item.value)}`,
 				label: chipLabelTemplate(item),
 				metadata: {
 					key: id,

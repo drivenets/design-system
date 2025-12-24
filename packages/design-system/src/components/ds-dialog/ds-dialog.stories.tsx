@@ -77,13 +77,13 @@ export const Centered: Story = {
 		await userEvent.click(trigger);
 		// Verify dialog is opened
 		await waitFor(() => {
-			expect(screen.getByText(/Centered Dialog/)).toBeTruthy();
+			return expect(screen.getByText(/Centered Dialog/)).toBeTruthy();
 		});
 		// Close dialog with Escape key
 		await userEvent.keyboard('{Escape}');
 		// Verify dialog is closed
 		await waitFor(() => {
-			expect(screen.queryByText(/Centered Dialog/)).toBeNull();
+			return expect(screen.queryByText(/Centered Dialog/)).toBeNull();
 		});
 	},
 };
@@ -114,13 +114,13 @@ export const CustomPosition: Story = {
 		await userEvent.click(trigger);
 		// Verify dialog is opened
 		await waitFor(() => {
-			expect(screen.getByText(/Custom Position Dialog/)).toBeTruthy();
+			return expect(screen.getByText(/Custom Position Dialog/)).toBeTruthy();
 		});
 		// Close dialog with Escape key
 		await userEvent.keyboard('{Escape}');
 		// Verify dialog is closed
 		await waitFor(() => {
-			expect(screen.queryByText(/Custom Position Dialog/)).toBeNull();
+			return expect(screen.queryByText(/Custom Position Dialog/)).toBeNull();
 		});
 	},
 };

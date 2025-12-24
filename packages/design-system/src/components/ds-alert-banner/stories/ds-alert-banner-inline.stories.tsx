@@ -213,7 +213,7 @@ export const WithActions: Story = {
 		await userEvent.click(closeButton);
 		await waitFor(() => {
 			// The component should be hidden after clicking close
-			expect(canvas.queryByText('Attention needed')).toBeFalsy();
+			return expect(canvas.queryByText('Attention needed')).toBeFalsy();
 		});
 	},
 };

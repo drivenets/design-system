@@ -30,7 +30,7 @@ export function createPlugin<TRules extends string>(
  * See: https://github.com/bradzacher/eslint-no-restricted/issues/12
  */
 function renamePlugin<TRules extends string>(plugin: Plugin<TRules>, newName: string): Plugin<TRules> {
-	const oldName = plugin.meta.name;
+	const oldName = plugin.meta.name as string;
 
 	plugin.meta.name = newName;
 
@@ -38,8 +38,12 @@ function renamePlugin<TRules extends string>(plugin: Plugin<TRules>, newName: st
 
 	const renameFn = (ruleName: string) => ruleName.replace(new RegExp(`^${oldName}/`), `${newName}/`);
 
-	plugin.rules = renameObjectKeys(plugin.rules, renameFn);
-	plugin.configs.recommended.rules = renameObjectKeys(plugin.configs.recommended.rules || {}, renameFn);
+	plugin.rules = renameObjectKeys(plugin.rules, renameFn) as never;
+
+	plugin.configs.recommended.rules = renameObjectKeys(
+		plugin.configs.recommended.rules || {},
+		renameFn,
+	) as never;
 
 	plugin.configs.recommended.plugins = {
 		[newName]: plugin,
@@ -53,5 +57,5 @@ function renameObjectKeys(obj: Record<string, unknown>, renameFn: (key: string) 
 		return [renameFn(key), value];
 	});
 
-	return Object.fromEntries(entries);
+	return Object.fromEntries(entries) as Record<string, unknown>;
 }

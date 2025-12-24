@@ -63,7 +63,7 @@ export const Default: Story = {
 		// Test typing in the textarea
 		await userEvent.type(textarea, 'Hello world Design System!');
 		await waitFor(() => {
-			expect(textarea).toHaveValue('Hello world Design System!');
+			return expect(textarea).toHaveValue('Hello world Design System!');
 		});
 	},
 };
@@ -95,7 +95,7 @@ export const MaxLength: Story = {
 		const longText = 'This is a very long text that should be truncated at 50 characters';
 		await userEvent.type(textarea, longText);
 		await waitFor(() => {
-			expect(textarea).toHaveValue(longText.substring(0, 50));
+			return expect(textarea).toHaveValue(longText.substring(0, 50));
 		});
 	},
 };

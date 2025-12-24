@@ -2,12 +2,13 @@ import type * as Collapsible from '@radix-ui/react-collapsible';
 
 export type DsPanelVariant = 'docked' | 'floating';
 
-export type DsPanelProps = Collapsible.CollapsibleProps & {
+export type DsPanelProps = Omit<Collapsible.CollapsibleProps, 'onOpenChange'> & {
 	variant?: DsPanelVariant;
 	disablePadding?: boolean;
 	slotProps?: {
 		collapseButton?: DsPanelCollapseButtonProps;
 	};
+	onOpenChange?: (open: boolean) => void;
 };
 
 export type DsPanelCollapseButtonProps = {

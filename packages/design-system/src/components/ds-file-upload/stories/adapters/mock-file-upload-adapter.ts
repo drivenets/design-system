@@ -99,7 +99,7 @@ export class MockFileUploadAdapter implements FileUploadAdapter {
 		};
 	}
 
-	async cancel(fileId: string): Promise<void> {
+	cancel(fileId: string) {
 		const upload = this.uploads.get(fileId);
 		if (upload) {
 			upload.cancelled = true;

@@ -46,7 +46,7 @@ const DsDrawer = ({
 						style={style}
 						className={classNames(
 							styles.drawer,
-							styles[`cols-${columns}`],
+							styles[`cols-${String(columns)}`],
 							styles[`position-${position}`],
 							className,
 						)}

@@ -12,7 +12,7 @@ type SelectItemsChipsProps = {
 };
 
 export function SelectItemsChips({ showAll, onShowAll, onValueChange, count }: SelectItemsChipsProps) {
-	const { collection, value: selectedItems }: UseSelectContext<DsSelectOption> = useSelectContext();
+	const { collection, value: selectedItems } = useSelectContext() as UseSelectContext<DsSelectOption>;
 
 	if (!selectedItems.length) {
 		return null;
@@ -39,7 +39,7 @@ export function SelectItemsChips({ showAll, onShowAll, onValueChange, count }: S
 			})}
 
 			{!showAll && selectedItems.length > count && (
-				<DsChip label={`+${selectedItems.length - count}`} onClick={onShowAll} size="small" />
+				<DsChip label={`+${String(selectedItems.length - count)}`} onClick={onShowAll} size="small" />
 			)}
 
 			<DsButton

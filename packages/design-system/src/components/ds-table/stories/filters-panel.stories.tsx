@@ -41,7 +41,7 @@ const columns: ColumnDef<Workflow>[] = [
 		header: 'Running/completed',
 		cell: (info) => {
 			const value = info.getValue() as { running: number; completed: number };
-			return `${value.running}/${value.completed}`;
+			return `${String(value.running)}/${String(value.completed)}`;
 		},
 	},
 	{

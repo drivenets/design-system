@@ -10,7 +10,7 @@ import globals from 'globals';
 export default defineConfig(
 	// Base rules.
 	eslint.configs.recommended,
-	tseslint.configs.strict,
+	tseslint.configs.strictTypeChecked,
 
 	// Overrides.
 	{
@@ -25,6 +25,7 @@ export default defineConfig(
 			parserOptions: {
 				// Use the tsconfig relative to each package root.
 				tsconfigRootDir: process.cwd(),
+				projectService: true,
 			},
 		},
 
@@ -38,6 +39,20 @@ export default defineConfig(
 		},
 
 		rules: {
+			'@typescript-eslint/no-misused-promises': [
+				'error',
+				{
+					checksVoidReturn: false,
+				},
+			],
+
+			'@typescript-eslint/no-confusing-void-expression': [
+				'error',
+				{
+					ignoreArrowShorthand: true,
+				},
+			],
+
 			'@typescript-eslint/consistent-type-imports': [
 				'error',
 				{

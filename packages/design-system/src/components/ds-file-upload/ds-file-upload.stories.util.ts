@@ -20,11 +20,10 @@ const getMockFile = (): File => {
  */
 export const createTestPlayFunction = (scenario: TestScenario) => {
 	return async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-		const canvas = within(canvasElement);
 		const mockFile = getMockFile();
 
 		// Find and upload file
-		const fileInput = canvasElement.querySelector('input[type="file"]') as HTMLInputElement;
+		const fileInput = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
 
 		if (!fileInput) {
 			throw new Error('File input not found');
@@ -35,13 +34,13 @@ export const createTestPlayFunction = (scenario: TestScenario) => {
 		// Test based on scenario
 		switch (scenario) {
 			case 'normal':
-				await testNormalUpload(canvas);
+				await testNormalUpload(canvasElement);
 				break;
 			case 'interrupted':
-				await testInterruptedUpload(canvas);
+				await testInterruptedUpload(canvasElement);
 				break;
 			case 'error':
-				await testErrorUpload(canvas);
+				await testErrorUpload(canvasElement);
 				break;
 		}
 	};
@@ -50,12 +49,14 @@ export const createTestPlayFunction = (scenario: TestScenario) => {
 /**
  * Test normal upload flow - file uploads successfully
  */
-async function testNormalUpload(canvas: ReturnType<typeof within>) {
+async function testNormalUpload(canvasElement: HTMLElement) {
+	const canvas = within(canvasElement);
+
 	// Wait for upload to start
 	await waitFor(
 		() => {
 			const uploadingText = canvas.queryByText(/Uploading/i);
-			expect(uploadingText).toBeInTheDocument();
+			return expect(uploadingText).toBeInTheDocument();
 		},
 		{ timeout: 1000 },
 	);
@@ -64,7 +65,7 @@ async function testNormalUpload(canvas: ReturnType<typeof within>) {
 	await waitFor(
 		() => {
 			const completeText = canvas.queryByText(/complete/i);
-			expect(completeText).toBeInTheDocument();
+			return expect(completeText).toBeInTheDocument();
 		},
 		{ timeout: 5000 },
 	);
@@ -76,19 +77,21 @@ async function testNormalUpload(canvas: ReturnType<typeof within>) {
 	// Verify file was removed
 	await waitFor(() => {
 		const fileName = canvas.queryByText('test-document.pdf');
-		expect(fileName).not.toBeInTheDocument();
+		return expect(fileName).not.toBeInTheDocument();
 	});
 }
 
 /**
  * Test interrupted upload flow - upload fails mid-way and can be retried
  */
-async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
+async function testInterruptedUpload(canvasElement: HTMLElement) {
+	const canvas = within(canvasElement);
+
 	// Wait for upload to start
 	await waitFor(
 		() => {
 			const uploadingText = canvas.queryByText(/Uploading/i);
-			expect(uploadingText).toBeInTheDocument();
+			return expect(uploadingText).toBeInTheDocument();
 		},
 		{ timeout: 1000 },
 	);
@@ -97,7 +100,7 @@ async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
 	await waitFor(
 		() => {
 			const interruptedText = canvas.queryByText(/interrupted|lost|failed/i);
-			expect(interruptedText).toBeInTheDocument();
+			return expect(interruptedText).toBeInTheDocument();
 		},
 		{ timeout: 5000 },
 	);
@@ -111,7 +114,7 @@ async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
 	await waitFor(
 		() => {
 			const completeText = canvas.queryByText(/complete/i);
-			expect(completeText).toBeInTheDocument();
+			return expect(completeText).toBeInTheDocument();
 		},
 		{ timeout: 5000 },
 	);
@@ -124,12 +127,14 @@ async function testInterruptedUpload(canvas: ReturnType<typeof within>) {
 /**
  * Test error upload flow - upload fails immediately
  */
-async function testErrorUpload(canvas: ReturnType<typeof within>) {
+async function testErrorUpload(canvasElement: HTMLElement) {
+	const canvas = within(canvasElement);
+
 	// Wait for error to appear
 	await waitFor(
 		() => {
 			const errorText = canvas.queryByText(/failed|error|unsupported/i);
-			expect(errorText).toBeInTheDocument();
+			return expect(errorText).toBeInTheDocument();
 		},
 		{ timeout: 2000 },
 	);
@@ -141,6 +146,6 @@ async function testErrorUpload(canvas: ReturnType<typeof within>) {
 	// Verify file was removed
 	await waitFor(() => {
 		const fileName = canvas.queryByText('test-document.pdf');
-		expect(fileName).not.toBeInTheDocument();
+		return expect(fileName).not.toBeInTheDocument();
 	});
 }

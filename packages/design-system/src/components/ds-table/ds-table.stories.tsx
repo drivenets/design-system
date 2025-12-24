@@ -36,7 +36,7 @@ const ProgressInfographic = ({ value }: { value: number }) => {
 
 	return (
 		<div className={styles.progressInfographic}>
-			<div className={barClass} style={{ width: `${value}%` }}>
+			<div className={barClass} style={{ width: `${String(value)}%` }}>
 				{value}%
 			</div>
 		</div>
@@ -72,7 +72,7 @@ const columns: ColumnDef<Person>[] = [
 	{
 		accessorKey: 'progress',
 		header: 'Profile Progress',
-		cell: (info) => `${info.getValue()}%`,
+		cell: (info) => `${String(info.getValue())}%`,
 	},
 ];
 
@@ -683,7 +683,7 @@ export const AdvancedSearch: Story = {
 
 			const lowercasedFilter = globalFilter.toLowerCase();
 
-			return (args.data as Person[]).filter((row) => {
+			return args.data.filter((row) => {
 				return Object.values(row).some((value) => String(value).toLowerCase().includes(lowercasedFilter));
 			});
 		}, [globalFilter, args.data]);
@@ -867,8 +867,8 @@ export const Virtualized: Story = {
 					'people',
 					sorting, // refetch when sorting changes
 				],
-				queryFn: async ({ pageParam = 0 }) => {
-					const start = (pageParam as number) * pageSize;
+				queryFn: async ({ pageParam }) => {
+					const start = pageParam * pageSize;
 					return await fetchData(start, pageSize, sorting);
 				},
 				initialPageParam: 0,
@@ -907,7 +907,7 @@ export const Virtualized: Story = {
 			const shouldFetchMore = distanceFromBottom <= scrollThreshold;
 
 			if (!isFetching && !finishedFetching && shouldFetchMore) {
-				fetchNextPage();
+				await fetchNextPage();
 			}
 		};
 

@@ -37,6 +37,9 @@ export default defineConfig(
 			'react-hooks/incompatible-library': 'off',
 			'react-hooks/set-state-in-effect': 'off',
 			'react-hooks/refs': 'off',
+
+			// We have deprecated components in the codebase.
+			'@typescript-eslint/no-deprecated': 'off',
 		},
 	},
 

@@ -78,9 +78,12 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	filterAdapters: FilterAdapter<TData, TValue, TCellValue>[] | AnyAdapter[],
 	baseColumns?: ColumnDef<TData>[],
 ): UseTableFiltersResult<TData, TValue> {
+	// Internal variable just to avoid assignment issues of `any`.
+	const _filterAdapters = filterAdapters as FilterAdapter<TData, TValue, TCellValue>[];
+
 	// Initialize filter state from adapters
 	const initialState: FilterState<TValue> = {};
-	filterAdapters.forEach((adapter) => {
+	_filterAdapters.forEach((adapter) => {
 		initialState[adapter.id] = adapter.initialValue;
 	});
 
@@ -89,7 +92,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	const [filterChips, setFilterChips] = useState<ChipItem[]>([]);
 
 	// Generate filter nav items with counts (updates as user changes filters in modal)
-	const filterNavItems: FilterNavItem[] = filterAdapters.map((adapter) => ({
+	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
 		id: adapter.id,
 		label: adapter.label,
 		count: adapter.getActiveFiltersCount(filterState[adapter.id]),
@@ -99,7 +102,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	const enhancedColumns: ColumnDef<TData>[] = !baseColumns
 		? []
 		: baseColumns.map((col) => {
-				const adapter = filterAdapters.find((a) => a.id === col.id);
+				const adapter = _filterAdapters.find((a) => a.id === col.id);
 
 				if (adapter) {
 					const cellRenderer = adapter.cellRenderer;
@@ -127,7 +130,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 		const filters: ColumnFilterState<TValue>[] = [];
 		const chips: ChipItem[] = [];
 
-		filterAdapters.forEach((adapter) => {
+		_filterAdapters.forEach((adapter) => {
 			const value = filterState[adapter.id];
 
 			if (adapter.getActiveFiltersCount(value) > 0) {
@@ -148,7 +151,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 
 	const clearAll = () => {
 		const resetState: FilterState<TValue> = {};
-		filterAdapters.forEach((adapter) => {
+		_filterAdapters.forEach((adapter) => {
 			resetState[adapter.id] = adapter.reset();
 		});
 		setFilterState(resetState);
@@ -160,7 +163,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 		const filterKey = typeof chip.metadata?.key === 'string' ? chip.metadata.key : undefined;
 		if (!filterKey) return;
 
-		const adapter = filterAdapters.find((a) => a.id === filterKey);
+		const adapter = _filterAdapters.find((a) => a.id === filterKey);
 		if (!adapter) return;
 
 		const currentValue = filterState[filterKey];
@@ -168,7 +171,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 
 		// Regenerate chips to check if this was the last one
 		const chips: ChipItem[] = [];
-		filterAdapters.forEach((adapter) => {
+		_filterAdapters.forEach((adapter) => {
 			const value = adapter.id === filterKey ? newValue : filterState[adapter.id];
 			const adapterChips = adapter.toChips(value);
 			chips.push(...adapterChips);
@@ -199,7 +202,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	};
 
 	const renderFilterContent = (selectedFilter: FilterNavItem) => {
-		const adapter = filterAdapters.find((a) => a.id === selectedFilter.id);
+		const adapter = _filterAdapters.find((a) => a.id === selectedFilter.id);
 		if (!adapter) return null;
 
 		const value = filterState[adapter.id];

@@ -160,7 +160,7 @@ export const Controlled: Story = {
 					defaultValue={0}
 					onValueChange={(newValue) => setValue(newValue)}
 				/>
-				{value !== undefined && <div>Current value: {value}</div>}
+				<div>Current value: {value}</div>
 				<button onClick={() => setValue(0)}>Reset to 0</button>
 				<button onClick={() => setValue(100)}>Set to 100</button>
 			</div>

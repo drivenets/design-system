@@ -13,7 +13,7 @@ export function createColumnsGridTemplate({ columns, selectable }: Args): string
 	return columns
 		.reduce<string[]>(
 			(acc, col) => {
-				acc.push(col.size ? `${col.size}px` : 'auto');
+				acc.push(col.size ? `${String(col.size)}px` : 'auto');
 
 				return acc;
 			},

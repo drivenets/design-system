@@ -103,10 +103,7 @@ export const Default: Story = {
 			reset(defaultFormValues);
 		};
 
-		const handleValueChange = (
-			field: keyof ModalFormValues,
-			value: string | boolean | 'indeterminate' | null,
-		) => {
+		const handleValueChange = (field: keyof ModalFormValues, value: string | boolean | null) => {
 			setValue(field, value === 'indeterminate' ? false : (value as ModalFormValues[typeof field]), {
 				shouldValidate: true,
 				shouldTouch: true,
@@ -289,7 +286,7 @@ export const Default: Story = {
 								<div>
 									<h3 className={styles.formSectionTitle}>Subscription Plan</h3>
 									<DsRadioGroup.Root
-										value={watch('subscription') || ''}
+										value={watch('subscription')}
 										onValueChange={(value) => handleValueChange('subscription', value)}
 									>
 										<DsRadioGroup.Item value="basic" label="Basic" />
@@ -360,7 +357,7 @@ export const Default: Story = {
 		// Helper function to wait for validation messages
 		const waitForMessage = async (text: string) => {
 			await waitFor(() => {
-				expect(screen.getByText(text)).toBeInTheDocument();
+				return expect(screen.getByText(text)).toBeInTheDocument();
 			});
 		};
 
@@ -370,7 +367,7 @@ export const Default: Story = {
 
 		// Wait for modal to be visible
 		await waitFor(() => {
-			expect(screen.getByText('User Profile Form')).toBeVisible();
+			return expect(screen.getByText('User Profile Form')).toBeVisible();
 		});
 
 		// 2. Test form validation by interacting with fields and blurring them
@@ -415,7 +412,7 @@ export const Default: Story = {
 		const fakeName = `${faker.person.firstName()} ${faker.person.lastName()}`;
 		await userEvent.type(nameInput, fakeName);
 		await waitFor(() => {
-			expect(screen.queryByText('Name is required')).not.toBeInTheDocument();
+			return expect(screen.queryByText('Name is required')).not.toBeInTheDocument();
 		});
 
 		// Fill email
@@ -423,7 +420,7 @@ export const Default: Story = {
 		await userEvent.clear(emailInput);
 		await userEvent.type(emailInput, fakeEmail);
 		await waitFor(() => {
-			expect(screen.queryByText('Invalid email address')).not.toBeInTheDocument();
+			return expect(screen.queryByText('Invalid email address')).not.toBeInTheDocument();
 		});
 
 		// Select department
@@ -431,7 +428,7 @@ export const Default: Story = {
 		const departmentOption = screen.getByRole('option', { name: 'Product' });
 		await userEvent.click(departmentOption);
 		await waitFor(() => {
-			expect(screen.queryByText('Please select a department')).not.toBeInTheDocument();
+			return expect(screen.queryByText('Please select a department')).not.toBeInTheDocument();
 		});
 
 		// Select role
@@ -439,7 +436,7 @@ export const Default: Story = {
 		const roleOption = screen.getByRole('option', { name: 'Manager' });
 		await userEvent.click(roleOption);
 		await waitFor(() => {
-			expect(screen.queryByText('Please select a role')).not.toBeInTheDocument();
+			return expect(screen.queryByText('Please select a role')).not.toBeInTheDocument();
 		});
 
 		// Fill description
@@ -447,26 +444,26 @@ export const Default: Story = {
 		await userEvent.clear(descriptionInput);
 		await userEvent.type(descriptionInput, fakeDescription);
 		await waitFor(() => {
-			expect(screen.queryByText('Description must be at least 20 characters')).not.toBeInTheDocument();
+			return expect(screen.queryByText('Description must be at least 20 characters')).not.toBeInTheDocument();
 		});
 
 		// Select subscription
 		const subscriptionOption = screen.getByLabelText('Pro');
 		await userEvent.click(subscriptionOption);
 		await waitFor(() => {
-			expect(screen.queryByText('Please select a subscription plan')).not.toBeInTheDocument();
+			return expect(screen.queryByText('Please select a subscription plan')).not.toBeInTheDocument();
 		});
 
 		// Accept terms
 		await userEvent.click(acceptTermsCheckbox);
 		await waitFor(() => {
-			expect(screen.queryByText('You must accept the terms and conditions')).not.toBeInTheDocument();
+			return expect(screen.queryByText('You must accept the terms and conditions')).not.toBeInTheDocument();
 		});
 
 		// 4. Verify submit button is enabled
 		const saveButton = screen.getByRole('button', { name: /save changes/i });
 		await waitFor(() => {
-			expect(saveButton).toBeEnabled();
+			return expect(saveButton).toBeEnabled();
 		});
 
 		// 5. Submit the form
@@ -474,12 +471,12 @@ export const Default: Story = {
 
 		// 6. Verify modal is closed and results are displayed
 		await waitFor(() => {
-			expect(screen.queryByText('User Profile Form')).not.toBeVisible();
+			return expect(screen.queryByText('User Profile Form')).not.toBeVisible();
 		});
 
 		// Helper function to wait for validation messages
 		const checkResult = (text: string) => {
-			expect(
+			return expect(
 				canvas.getByText((content, element) => {
 					return element?.textContent === text;
 				}),
@@ -487,29 +484,29 @@ export const Default: Story = {
 		};
 
 		// Verify results are displayed
-		await waitFor(() => {
-			expect(canvas.getByText('Form Results:')).toBeInTheDocument();
-			checkResult(`Name: ${fakeName}`);
-			checkResult(`Email: ${fakeEmail}`);
-			checkResult('Role: manager');
-			checkResult('Department: product');
-			checkResult(`Description: ${fakeDescription}`);
-			checkResult('Subscription: pro');
-			checkResult('Terms Accepted: Yes');
+		await waitFor(async () => {
+			await expect(canvas.getByText('Form Results:')).toBeInTheDocument();
+			await checkResult(`Name: ${fakeName}`);
+			await checkResult(`Email: ${fakeEmail}`);
+			await checkResult('Role: manager');
+			await checkResult('Department: product');
+			await checkResult(`Description: ${fakeDescription}`);
+			await checkResult('Subscription: pro');
+			await checkResult('Terms Accepted: Yes');
 		});
 
 		// 7. Test reset functionality
 		await userEvent.click(openModalButton);
 		await waitFor(() => {
-			expect(screen.getByText('User Profile Form')).toBeInTheDocument();
+			return expect(screen.getByText('User Profile Form')).toBeInTheDocument();
 		});
 
 		// Verify form is reset to default values
-		await waitFor(() => {
-			expect(nameInput).toHaveValue('');
-			expect(emailInput).toHaveValue('');
-			expect(descriptionInput).toHaveValue('');
-			expect(acceptTermsCheckbox).not.toBeChecked();
+		await waitFor(async () => {
+			await expect(nameInput).toHaveValue('');
+			await expect(emailInput).toHaveValue('');
+			await expect(descriptionInput).toHaveValue('');
+			await expect(acceptTermsCheckbox).not.toBeChecked();
 		});
 
 		// 8. Test reset button
@@ -524,11 +521,11 @@ export const Default: Story = {
 		await userEvent.click(resetButton);
 
 		// Verify form is reset
-		await waitFor(() => {
-			expect(nameInput).toHaveValue('');
-			expect(emailInput).toHaveValue('');
-			expect(descriptionInput).toHaveValue('');
-			expect(acceptTermsCheckbox).not.toBeChecked();
+		await waitFor(async () => {
+			await expect(nameInput).toHaveValue('');
+			await expect(emailInput).toHaveValue('');
+			await expect(descriptionInput).toHaveValue('');
+			await expect(acceptTermsCheckbox).not.toBeChecked();
 		});
 
 		// Exit the modal form
@@ -537,7 +534,7 @@ export const Default: Story = {
 		// 9. Test clear results functionality
 		await userEvent.click(canvas.getByRole('button', { name: /clear results/i }));
 		await waitFor(() => {
-			expect(canvas.queryByText('Form Results:')).not.toBeInTheDocument();
+			return expect(canvas.queryByText('Form Results:')).not.toBeInTheDocument();
 		});
 	},
 	parameters: {

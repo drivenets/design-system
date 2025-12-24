@@ -5,8 +5,9 @@ import type { FileError, UploadedFile, UploadFileStatus } from '../ds-file-uploa
  */
 export function createUploadedFile(file: File, status: UploadFileStatus, errors?: FileError[]): UploadedFile {
 	return {
+		// eslint-disable-next-line @typescript-eslint/no-misused-spread -- We're fine with losing the prototype here
 		...file,
-		id: `${file.name}-${Date.now()}-${Math.random()}`,
+		id: `${file.name}-${String(Date.now())}-${String(Math.random())}`,
 		name: file.name,
 		size: file.size,
 		type: file.type,

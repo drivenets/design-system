@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import classNames from 'classnames';
-import { DsIcon, type IconSize } from '../../../ds-icon';
+import { DsIcon } from '../../../ds-icon';
 import styles from './ds-button-legacy.stories.module.scss';
 import DsButtonLegacy from './ds-button-legacy';
 import {
@@ -100,7 +100,7 @@ export const Showcase: Story = {
 							size={size}
 							disabled={disabled}
 						>
-							{showIcon && <DsIcon key={`${size}`} icon="add" size={size as IconSize} />}
+							{showIcon && <DsIcon key={size} icon="add" size={size} />}
 							{showTitle && <span>{size} Button</span>}
 						</DsButtonLegacy>
 					))}

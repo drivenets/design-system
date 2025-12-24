@@ -18,7 +18,7 @@ const defaultValues = {
 	description: '',
 	quantity: undefined,
 	acceptTerms: false,
-	subscription: undefined,
+	subscription: '',
 	contactMethod: '',
 };
 
@@ -47,11 +47,10 @@ const SampleForm = () => {
 
 	const handleValueChange = (
 		field: ControllerRenderProps<SampleFormValues> | keyof SampleFormValues,
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		value: any,
+		value: unknown,
 	) => {
 		const name = typeof field === 'string' ? field : field.name;
-		setValue(name, value, {
+		setValue(name, value as never, {
 			shouldValidate: true,
 			shouldTouch: true,
 			shouldDirty: true,
@@ -176,7 +175,7 @@ const SampleForm = () => {
 				</DsFormControl>
 
 				<DsRadioGroup.Root
-					value={watch('subscription') || ''}
+					value={watch('subscription')}
 					onValueChange={(value) => handleValueChange('subscription', value)}
 				>
 					<DsRadioGroup.Item value="basic" label="Basic" />

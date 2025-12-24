@@ -26,11 +26,9 @@ export const DefaultDescription = () => (
 	</>
 );
 
-export const sanityCheck = async <T extends HTMLInputElement | HTMLTextAreaElement>(
-	canvasElement: HTMLElement,
-) => {
+export const sanityCheck = async (canvasElement: HTMLElement) => {
 	const canvas = within(canvasElement);
-	const input = canvas.getByLabelText(/Input label.*/i) as T;
+	const input = canvas.getByLabelText<HTMLInputElement | HTMLTextAreaElement>(/Input label.*/i);
 
 	// Simulate typing into the input field
 	await userEvent.type(input, message);
@@ -45,11 +43,9 @@ export const sanityCheck = async <T extends HTMLInputElement | HTMLTextAreaEleme
 	await expect(input.value).toBe('');
 };
 
-export const checkDisabled = async <T extends HTMLInputElement | HTMLTextAreaElement>(
-	canvasElement: HTMLElement,
-) => {
+export const checkDisabled = async (canvasElement: HTMLElement) => {
 	const canvas = within(canvasElement);
-	const input = canvas.getByLabelText(/Input label.*/i) as T;
+	const input = canvas.getByLabelText<HTMLInputElement | HTMLTextAreaElement>(/Input label.*/i);
 
 	// Assert that the input is disabled
 	await expect(input).toBeDisabled();

@@ -1,4 +1,9 @@
-import type { FileUploadAdapter, FileUploadOptions, FileUploadResult } from '../../ds-file-upload-api.types';
+import type {
+	FileMetadata,
+	FileUploadAdapter,
+	FileUploadOptions,
+	FileUploadResult,
+} from '../../ds-file-upload-api.types';
 import { FatalFileUploadError, RetryableFileUploadError } from '../../errors/file-upload-errors';
 
 /**
@@ -40,7 +45,7 @@ export function getSimpleFileUploadAdapter(uploadEndpoint: string): FileUploadAd
 				xhr.addEventListener('load', () => {
 					if (xhr.status >= 200 && xhr.status < 300) {
 						try {
-							const response = JSON.parse(xhr.responseText);
+							const response = JSON.parse(xhr.responseText) as { url: string; metadata: FileMetadata };
 							resolve({
 								url: response.url,
 								metadata: response.metadata,
