@@ -15,7 +15,7 @@
 	"scripts": {
 		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
 		"storybook": "storybook dev -p 6006",
-		"test": "vitest --project=storybook",
+		"test": "vitest",
 		"build": "tsdown",
 		"build:storybook": "storybook build"
 	},
