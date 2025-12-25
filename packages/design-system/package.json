@@ -75,8 +75,8 @@
 		"storybook": "^10.1.9",
 		"tsdown": "^0.18.0",
 		"typescript": "^5.9.3",
+		"typescript-plugin-css-modules": "^5.2.0",
 		"vite": "^7.3.0",
-		"vite-plugin-dts": "^4.5.4",
 		"vitest": "^4.0.16",
 		"zod": "^3.24.2"
 	}

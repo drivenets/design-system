@@ -4,17 +4,10 @@ import path from 'path';
 import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
-import dts from 'vite-plugin-dts';
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
-	plugins: [
-		dts({
-			include: ['src/**/*'],
-			exclude: ['src/**/*.test.ts', 'src/**/stories/**/*', 'src/**/*.stories.*', 'src/plugins'],
-		}),
-	],
 	test: {
 		projects: [
 			{
