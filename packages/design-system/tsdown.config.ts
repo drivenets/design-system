@@ -1,5 +1,6 @@
 import { defineConfig } from 'tsdown';
 import sass from 'rollup-plugin-sass';
+import sassEmbedded from 'sass-embedded';
 import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
 
@@ -18,6 +19,8 @@ export default defineConfig({
 			options: {
 				style: 'compressed',
 			},
+
+			runtime: sassEmbedded,
 
 			// https://github.com/elycruz/rollup-plugin-sass#create-css-modules-using-processor-cssmodules-output
 			async processor(css, id) {
