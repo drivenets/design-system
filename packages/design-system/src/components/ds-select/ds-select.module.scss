@@ -1,6 +1,6 @@
-@use '@drivenets/design-system/src/styles/typography';
-@use '@drivenets/design-system/src/styles/shared/dropdown';
-@use '@drivenets/design-system/src/styles/shared/input';
+@use '../../styles/typography';
+@use '../../styles/shared/dropdown';
+@use '../../styles/shared/input';
 
 .control {
 	@include input.selectControl;

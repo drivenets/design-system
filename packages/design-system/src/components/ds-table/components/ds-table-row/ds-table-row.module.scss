@@ -1,4 +1,4 @@
-@use '@drivenets/design-system/src/styles/typography';
+@use '../../../../styles/typography';
 @use '../../styles/variables' as vars;
 
 @mixin expanded-row-border($side) {

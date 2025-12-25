@@ -15,16 +15,6 @@ export default defineConfig({
 			exclude: ['src/**/*.test.ts', 'src/**/stories/**/*', 'src/**/*.stories.*', 'src/plugins'],
 		}),
 	],
-	build: {
-		outDir: 'dist',
-		sourcemap: true,
-		lib: {
-			fileName: (format) => (format === 'es' ? 'index.mjs' : 'index.js'),
-			cssFileName: 'index',
-			formats: ['es', 'cjs'],
-			entry: path.resolve(dirname, 'src/index.ts'),
-		},
-	},
 	test: {
 		projects: [
 			{
