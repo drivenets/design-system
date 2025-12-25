@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
-    name: Check
+  require-changeset:
+    name: Require Changeset
     runs-on: ubuntu-latest
 
     # Skip opted out PRs, and release PRs
