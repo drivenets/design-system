@@ -95,7 +95,9 @@ export function useFileUpload({
 	const getDuplicatedFiles = (newFiles: File[]) =>
 		newFiles.filter((file) => {
 			const uploadedFile = file as UploadedFile;
-			if (uploadedFile.id) return false;
+			if (uploadedFile.id) {
+				return false;
+			}
 			const found = files.filter((existing) => isFileEqual(existing, file));
 			if (found.length) {
 				const alreadyAdded = found.some((existing) => existing.errors?.includes('FILE_EXISTS'));

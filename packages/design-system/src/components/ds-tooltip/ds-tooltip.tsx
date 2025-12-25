@@ -7,7 +7,7 @@ import { DsTypography } from '../ds-typography';
 
 const DsTooltip: FC<DsTooltipProps> = ({ content, children }) => {
 	if (content === undefined) {
-		return <>{children}</>;
+		return children;
 	}
 	return (
 		<Tooltip.Provider delayDuration={200}>

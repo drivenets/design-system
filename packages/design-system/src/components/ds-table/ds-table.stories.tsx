@@ -231,7 +231,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	},
 	args: {
 		// Default args for all stories
-		columns: columns,
+		columns,
 		data: defaultData,
 		stickyHeader: true,
 		bordered: true,
@@ -679,7 +679,9 @@ export const AdvancedSearch: Story = {
 		const [globalFilter, setGlobalFilter] = useState('');
 
 		const filteredData = useMemo(() => {
-			if (!globalFilter) return args.data;
+			if (!globalFilter) {
+				return args.data;
+			}
 
 			const lowercasedFilter = globalFilter.toLowerCase();
 

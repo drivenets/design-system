@@ -14,12 +14,16 @@ export const useChipRowCalculation = ({ chipsWrapperRef, totalFilters }: UseChip
 
 	useLayoutEffect(() => {
 		const calculateVisibleChips = () => {
-			if (!chipsWrapperRef.current) return;
+			if (!chipsWrapperRef.current) {
+				return;
+			}
 
 			const wrapper = chipsWrapperRef.current;
 			const children = Array.from(wrapper.children) as HTMLElement[];
 
-			if (children.length === 0) return;
+			if (children.length === 0) {
+				return;
+			}
 
 			const cs = getComputedStyle(wrapper);
 			const gap = parseFloat(cs.columnGap || cs.gap || '0') || 8;
@@ -34,7 +38,9 @@ export const useChipRowCalculation = ({ chipsWrapperRef, totalFilters }: UseChip
 
 				if (total + next >= wrapper.clientWidth) {
 					line++;
-					if (line >= 2) break;
+					if (line >= 2) {
+						break;
+					}
 					total = next;
 				} else {
 					total += next;
