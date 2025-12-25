@@ -4,18 +4,20 @@
 	"private": true,
 	"packageManager": "pnpm@10.0.0",
 	"scripts": {
-		"lint": "turbo run lint:root lint",
-		"lint:root": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
+		"start": "pnpm run --filter @drivenets/design-system storybook",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"test": "turbo run test",
-		"build": "turbo run build",
-		"start": "pnpm run --filter @drivenets/design-system storybook",
+		"lint": "turbo run lint:root lint",
+		"lint:root": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
 		"lint:versions": "syncpack list-mismatches",
 		"lint:spell": "cspell . --quiet",
-		"lint:unused": "knip"
+		"lint:unused": "knip",
+		"test": "turbo run test",
+		"build": "turbo run build",
+		"changelog": "changeset"
 	},
 	"devDependencies": {
+		"@changesets/cli": "^2.29.8",
 		"@commitlint/cli": "^20.2.0",
 		"@commitlint/config-conventional": "^20.2.0",
 		"@commitlint/types": "^20.2.0",

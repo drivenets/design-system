@@ -1,0 +1,45 @@
+name: PR
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - labeled
+      - unlabeled
+      - edited
+      - synchronize
+    branches:
+      - main
+
+concurrency:
+  group: '${{ github.workflow }} - Changeset @ ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+
+    # Skip opted out PRs, and release PRs
+    if: |
+      ! contains(github.event.pull_request.labels.*.name, 'skip changelog')
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm i
+
+      # Returns exit code 1 when there are changes without changesets attached to them.
+      # See: https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#blocking
+      - name: Run Changesets
+        run: pnpm changeset status --since origin/main
