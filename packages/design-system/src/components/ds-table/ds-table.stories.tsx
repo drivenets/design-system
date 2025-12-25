@@ -660,7 +660,7 @@ export const WithProgressInfographic: Story = {
 					header: 'Status',
 					cell: (info) => (
 						<span
-							className={classnames(styles.statusCell, styles[`statusCell--${info.getValue() as string}`])}
+							className={classnames(styles.statusCell, styles[`statusCell--${info.getValue() as Status}`])}
 						>
 							{info.getValue() as string}
 						</span>
