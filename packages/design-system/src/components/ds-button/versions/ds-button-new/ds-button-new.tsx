@@ -35,7 +35,6 @@ const DsButton: React.FC<DsButtonProps> = ({
 		{ [styles.iconButton]: isIconOnly(children) },
 		styles[`${type}-${variant}`],
 		styles[size],
-		{ [styles.disabled]: disabled },
 		className,
 	);
 

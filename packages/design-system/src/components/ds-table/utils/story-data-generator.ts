@@ -43,17 +43,17 @@ export const generatePersonData = (
 	const statuses: Status[] = ['single', 'relationship', 'complicated'];
 
 	// Generate all data first for sorting
-	const allData: Person[] = Array.from({ length: totalRows }).map((_, index) => {
+	const allData = Array.from({ length: totalRows }).map((_, index) => {
 		const i = index + 1;
 		return {
 			id: i.toString(),
-			firstName: firstNames[i % firstNames.length],
-			lastName: lastNames[i % lastNames.length],
+			firstName: firstNames[i % firstNames.length] as string,
+			lastName: lastNames[i % lastNames.length] as string,
 			age: 20 + (i % 50),
 			visits: Math.floor(Math.random() * 500) + 1,
-			status: statuses[i % statuses.length],
+			status: statuses[i % statuses.length] as Status,
 			progress: Math.floor(Math.random() * 100) + 1,
-		};
+		} satisfies Person;
 	});
 
 	// Apply sorting if provided

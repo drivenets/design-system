@@ -76,7 +76,7 @@ const DsFormControl = ({
 				{message && (
 					<div className={styles.message}>
 						<DsIcon icon={messageIcon} size="tiny" filled />
-						<span className={styles.messageText}>{message}</span>
+						<span>{message}</span>
 					</div>
 				)}
 			</div>
