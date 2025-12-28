@@ -18,7 +18,7 @@
 	},
 	"dependencies": {
 		"@eslint/core": "^1.0.0",
-		"eslint-no-restricted": "^0.0.8"
+		"eslint-no-restricted": "^0.0.9"
 	},
 	"devDependencies": {
 		"concurrently": "^9.2.1",
