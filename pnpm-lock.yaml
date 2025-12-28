@@ -51,9 +51,6 @@ importers:
       '@types/node':
         specifier: ^25.0.3
         version: 25.0.3
-      concurrently:
-        specifier: ^9.2.1
-        version: 9.2.1
       cspell:
         specifier: ^9.4.0
         version: 9.4.0
