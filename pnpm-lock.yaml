@@ -103,9 +103,6 @@ importers:
         specifier: ^20.2.0
         version: 20.2.0
     devDependencies:
-      concurrently:
-        specifier: ^9.2.1
-        version: 9.2.1
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -291,9 +288,6 @@ importers:
         specifier: ^0.0.9
         version: 0.0.9(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
     devDependencies:
-      concurrently:
-        specifier: ^9.2.1
-        version: 9.2.1
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)
@@ -313,9 +307,6 @@ importers:
         specifier: '*'
         version: 7.3.0(@types/node@25.0.3)(jiti@2.6.1)(less@4.5.1)(sass-embedded@1.97.0)(sass@1.97.0)(stylus@0.62.0)(yaml@2.8.2)
     devDependencies:
-      concurrently:
-        specifier: ^9.2.1
-        version: 9.2.1
       eslint:
         specifier: ^9.39.2
         version: 9.39.2(jiti@2.6.1)

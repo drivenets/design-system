@@ -23,14 +23,14 @@
 		}
 	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
+		"lint": "eslint --max-warnings=0 .",
+		"typecheck": "tsc",
 		"build": "tsdown"
 	},
 	"peerDependencies": {
 		"vite": "*"
 	},
 	"devDependencies": {
-		"concurrently": "^9.2.1",
 		"eslint": "^9.39.2",
 		"tsdown": "^0.18.0",
 		"typescript": "^5.9.3"

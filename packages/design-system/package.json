@@ -13,7 +13,8 @@
 		"./src/styles/*": "./src/styles/*"
 	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'",
+		"lint": "eslint --max-warnings=0 .",
+		"typecheck": "tsc",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest",
 		"build": "tsdown",
