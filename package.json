@@ -16,6 +16,7 @@
 		"lint:unused": "knip",
 		"test": "turbo run test",
 		"build": "turbo run build",
+		"build:lint": "turbo run build:lint",
 		"changelog": "changeset"
 	},
 	"devDependencies": {

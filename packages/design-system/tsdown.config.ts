@@ -11,7 +11,7 @@ export default defineConfig({
 	sourcemap: false,
 	clean: true,
 	outDir: 'dist',
-	outExtensions: ({ format }) => (format === 'cjs' ? { js: '.js' } : { js: '.mjs' }),
+	outExtensions: ({ format }) => (format === 'cjs' ? { js: '.cjs' } : { js: '.js' }),
 	plugins: [
 		sass({
 			api: 'modern',

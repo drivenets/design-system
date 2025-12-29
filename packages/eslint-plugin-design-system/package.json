@@ -1,28 +1,44 @@
 {
 	"name": "@drivenets/eslint-plugin-design-system",
 	"version": "0.0.0",
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
 	"type": "module",
+	"types": "./dist/index.d.cts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
 	"exports": {
 		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.mjs",
-			"require": "./dist/index.js"
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"require": {
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
+			}
 		}
 	},
+	"files": [
+		"README.md",
+		"CHANGELOG.md",
+		"./dist",
+		"./src",
+		"!**/__tests__"
+	],
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
 		"typecheck": "tsc",
 		"test": "vitest",
-		"build": "tsdown"
+		"build": "tsdown",
+		"build:lint": "publint && attw --pack"
 	},
 	"dependencies": {
 		"@eslint/core": "^1.0.0",
 		"eslint-no-restricted": "^0.0.9"
 	},
 	"devDependencies": {
+		"@arethetypeswrong/cli": "^0.18.2",
 		"eslint": "^9.39.2",
+		"publint": "^0.3.16",
 		"tsdown": "^0.18.0",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.16"
