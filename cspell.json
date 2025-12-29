@@ -8,12 +8,17 @@
 		"controlify",
 		"drivenets",
 		"evenodd",
+		"findlast",
+		"fromentries",
 		"Linsley",
+		"matchall",
+		"nolyfill",
 		"overscan",
 		"reorderable",
 		"retryable",
 		"subcomponents",
 		"syncpack",
+		"tosorted",
 		"unhover"
 	],
 	"ignorePaths": [

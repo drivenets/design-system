@@ -1,5 +1,5 @@
-@use '@drivenets/design-system/src/styles/typography';
-@use '@drivenets/design-system/src/styles/shared/dropdown';
+@use '../../styles/typography';
+@use '../../styles/shared/dropdown';
 
 .content {
 	@include dropdown.dropdown-content;

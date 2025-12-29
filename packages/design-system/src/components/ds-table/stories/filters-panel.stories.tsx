@@ -371,7 +371,7 @@ createCustomFilterAdapter({
 	},
 	tags: ['autodocs'],
 	args: {
-		columns: columns,
+		columns,
 		data: defaultData,
 		stickyHeader: true,
 		bordered: true,

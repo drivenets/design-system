@@ -74,7 +74,7 @@ const DsTableRow = <TData,>({ ref, row, virtualRow }: DsTableRowProps<TData>) =>
 				? {
 						// Convert DND-kit's transform coordinates to CSS transform string
 						transform: CSS.Transform.toString(transform),
-						transition: transition,
+						transition,
 						...(isDragging
 							? {
 									background: 'var(--action-active-light)',

@@ -12,16 +12,16 @@
 		}
 	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
+		"lint": "eslint --max-warnings=0 .",
+		"typecheck": "tsc",
 		"test": "vitest",
 		"build": "tsdown"
 	},
 	"dependencies": {
 		"@eslint/core": "^1.0.0",
-		"eslint-no-restricted": "^0.0.8"
+		"eslint-no-restricted": "^0.0.9"
 	},
 	"devDependencies": {
-		"concurrently": "^9.2.1",
 		"eslint": "^9.39.2",
 		"tsdown": "^0.18.0",
 		"typescript": "^5.9.3",

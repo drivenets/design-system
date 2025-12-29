@@ -6,7 +6,9 @@ import type { DsButtonProps } from './ds-button-new.types';
 import DsIcon from '../../../ds-icon/ds-icon';
 
 const isIconOnly = (children: React.ReactNode) => {
-	if (Children.count(children) !== 1) return false;
+	if (Children.count(children) !== 1) {
+		return false;
+	}
 
 	const childArray = Children.toArray(children);
 	const onlyChild = childArray[0];
@@ -38,7 +40,7 @@ const DsButton: React.FC<DsButtonProps> = ({
 	);
 
 	return (
-		<button className={buttonClass} disabled={disabled} {...props}>
+		<button type="button" className={buttonClass} disabled={disabled} {...props}>
 			<span className={classNames(styles.content, contentClassName)}>{children}</span>
 		</button>
 	);

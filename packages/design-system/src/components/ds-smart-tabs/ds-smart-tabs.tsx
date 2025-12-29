@@ -68,7 +68,14 @@ const DsSmartTab: React.FC<DsSmartTabProps> = ({
 	};
 
 	return (
-		<button className={tabClass} style={tabStyle} onClick={handleClick} disabled={disabled} {...props}>
+		<button
+			type="button"
+			className={tabClass}
+			style={tabStyle}
+			onClick={handleClick}
+			disabled={disabled}
+			{...props}
+		>
 			<DsIcon className={styles.icon} icon={icon} size="small" />
 			<span className={styles.label}>{label}</span>
 			<span className={styles.content}>{content}</span>
