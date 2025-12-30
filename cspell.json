@@ -21,6 +21,7 @@
 		"subcomponents",
 		"syncpack",
 		"tosorted",
+		"Turborepo",
 		"unhover"
 	],
 	"ignorePaths": [
