@@ -1,4 +1,4 @@
-# DriveNets Design System Monorepo
+# DriveNets Design System
 
 [![](https://img.shields.io/badge/github-pages-ff4785?logo=storybook&style=for-the-badge)](https://drivenets.github.io/design-system/)
 
