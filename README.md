@@ -46,14 +46,10 @@ These are scripts that run in the CI workflows for each PR. You might not need t
 ### Development Workflow
 
 - Create a new branch for your feature or bugfix.
-
 - Make your changes, ensuring to run the relevant scripts (linting, testing, etc.) locally.
-
 - Commit your changes with a descriptive message following the Conventional Commits standard (e.g., `feat(design-system): add new button component [TICKET-ID]`).
-
 - Add a changelog entry if needed using `pnpm changelog`.
   See [Intro to Using Changesets](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md) and [Adding a Changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) for more details.
-
 - Push your branch and open a pull request for review.
 
 > [!NOTE]
@@ -64,11 +60,8 @@ These are scripts that run in the CI workflows for each PR. You might not need t
 This monorepo is structured as any other standard multi-package repository you're familiar with, and contains the following packages:
 
 - `@drivenets/design-system`: The core design system package.
-
 - `@drivenets/eslint-plugin-design-system`: An ESLint plugin for enforcing design system rules (deprecated components, best practices, etc.).
-
 - `@drivenets/vite-plugin-design-system`: A Vite plugin for integrating the design system into Vite projects (injecting styles and assets).
-
 - `@drivenets/commitlint-plugin-design-system`: An internal Commitlint plugin for enforcing commit message conventions related to the design system.
 
 ## Technologies
