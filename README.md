@@ -2,7 +2,7 @@
 
 [![](https://img.shields.io/badge/github-pages-ff4785?logo=storybook&style=for-the-badge)](https://drivenets.github.io/design-system/)
 
-This monorepo contains the DriveNets Design System packages.
+This monorepo contains DriveNets' Design System packages.
 
 ## Development
 
