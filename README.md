@@ -24,7 +24,7 @@ Each deployment commit contains the commit hash of the corresponding default bra
 - Node 24+
 - pnpm 10.0.0
 
-We recommend utils tools like [fnm](https://github.com/Schniz/fnm), [nvm](https://github.com/nvm-sh/nvm), and/or [mise](https://github.com/jdx/mise) to manage these versions for you.
+We recommend using tools like [fnm](https://github.com/Schniz/fnm), [nvm](https://github.com/nvm-sh/nvm), and/or [mise](https://github.com/jdx/mise) to manage these versions for you.
 
 ### Getting Started
 
