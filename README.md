@@ -1,8 +1,21 @@
 # DriveNets Design System
 
+## Structure
+
+This monorepo is structured as any other standard multi-package repository you're familiar with, and contains the following packages:
+
+- `@drivenets/design-system`: The core design system package.
+- `@drivenets/eslint-plugin-design-system`: An ESLint plugin for enforcing design system rules (deprecated components, best practices, etc.).
+- `@drivenets/vite-plugin-design-system`: A Vite plugin for integrating the design system into Vite projects (injecting styles and assets).
+- `@drivenets/commitlint-plugin-design-system`: An internal Commitlint plugin for enforcing commit message conventions related to the design system.
+
+## Storybook Deployment
+
 [![](https://img.shields.io/badge/github-pages-ff4785?logo=storybook&style=for-the-badge)](https://drivenets.github.io/design-system/)
 
-This monorepo contains DriveNets' Design System packages.
+Storybook is automatically deployed to GitHub Pages on every PR merge to the default branch.
+
+Each deployment commit contains the commit hash of the corresponding default branch commit in its message for easy reference.
 
 ## Development
 
@@ -54,15 +67,6 @@ These are scripts that run in the CI workflows for each PR. You might not need t
 
 > [!NOTE]
 > Since we're squashing commits when merging, only the PR name will be validated as a Conventional Commit message, so don't bother too much about each individual commit message.
-
-## Structure
-
-This monorepo is structured as any other standard multi-package repository you're familiar with, and contains the following packages:
-
-- `@drivenets/design-system`: The core design system package.
-- `@drivenets/eslint-plugin-design-system`: An ESLint plugin for enforcing design system rules (deprecated components, best practices, etc.).
-- `@drivenets/vite-plugin-design-system`: A Vite plugin for integrating the design system into Vite projects (injecting styles and assets).
-- `@drivenets/commitlint-plugin-design-system`: An internal Commitlint plugin for enforcing commit message conventions related to the design system.
 
 ## Technologies
 
