@@ -1,6 +1,7 @@
 {
 	"name": "@drivenets/eslint-plugin-design-system",
 	"version": "0.0.0",
+	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./dist/index.d.cts",
 	"main": "./dist/index.cjs",
@@ -20,6 +21,7 @@
 	"files": [
 		"README.md",
 		"CHANGELOG.md",
+		"LICENSE",
 		"./dist",
 		"./src",
 		"!**/__tests__"

@@ -1,6 +1,7 @@
 {
 	"name": "@drivenets/vite-plugin-design-system",
 	"version": "0.0.0",
+	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./src/index.ts",
 	"main": "./src/index.ts",
@@ -26,6 +27,7 @@
 	"files": [
 		"README.md",
 		"CHANGELOG.md",
+		"LICENSE",
 		"./dist",
 		"./src"
 	],
