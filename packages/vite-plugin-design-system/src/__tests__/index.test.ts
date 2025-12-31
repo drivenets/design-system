@@ -1,5 +1,5 @@
 import { Volume } from 'memfs';
-import { vitePluginDesignSystem } from '..';
+import { vitePluginDesignSystem } from '../index';
 import { build, defineConfig, type Plugin } from 'vite';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
