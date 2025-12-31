@@ -48,7 +48,7 @@ describe('vite-plugin-design-system', () => {
 	});
 });
 
-// Vite plugin to load files from a memfs volume instead of the real file system.
+// Vite plugin to load files from a memfs volume instead of the real file system for testing purposes.
 function vitePluginLoadFromMemfs(memfsVolume: Volume): Plugin {
 	return {
 		name: 'load-from-memfs',
