@@ -84,5 +84,5 @@ We're using the following technologies in this monorepo:
 - Unused code detection: [Knip](https://knip.dev/)
 - Spell checking: [CSpell](https://cspell.org/)
 - Commit linting: [Commitlint](https://commitlint.js.org/) with [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
-  standards and a [custom plugin](./packages/commitlint-plugin-design-system/) for JIRA tickets
+  standards and a [custom plugin](./packages/commitlint-plugin/) for JIRA tickets
 - Changelog & release management: [Changesets](https://github.com/changesets/changesets)
