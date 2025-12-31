@@ -23,7 +23,9 @@
 		"syncpack",
 		"tosorted",
 		"Turborepo",
-		"unhover"
+		"unhover",
+		"vite",
+		"Vitest"
 	],
 	"ignorePaths": [
 		".git",
