@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 describe('Design System exports', () => {
 	it('should export all components from index', () => {
 		// Arrange.
-		const expectedExports =
+		const expectedContent =
 			fs
 				.readdirSync('./src/components')
 				.toSorted()
@@ -14,8 +14,8 @@ describe('Design System exports', () => {
 				.join('\n') + '\n';
 
 		// Assert.
-		const indexFileContent = fs.readFileSync('./src/index.ts', 'utf-8');
+		const actualContent = fs.readFileSync('./src/index.ts', 'utf-8');
 
-		expect(indexFileContent).toBe(expectedExports);
+		expect(actualContent).toBe(expectedContent);
 	});
 });
