@@ -1,5 +1,11 @@
 # @drivenets/vite-plugin-design-system
 
+## 0.0.3
+
+### Patch Changes
+
+- 1511529: Fix typing and build issues
+
 ## 0.0.2
 
 ### Patch Changes

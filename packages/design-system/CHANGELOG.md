@@ -1,5 +1,12 @@
 # @drivenets/design-system
 
+## 0.0.3
+
+### Patch Changes
+
+- 30483ae: Fix build issues
+- 17c1f0f: Export css bundle
+
 ## 0.0.2
 
 ### Patch Changes

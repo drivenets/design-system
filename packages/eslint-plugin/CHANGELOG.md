@@ -1,5 +1,11 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.3
+
+### Patch Changes
+
+- c6eed37: Fix build issues
+
 ## 0.0.2
 
 ### Patch Changes
