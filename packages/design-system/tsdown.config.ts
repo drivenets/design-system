@@ -15,7 +15,7 @@ export default defineConfig({
 	plugins: [
 		sass({
 			api: 'modern',
-			output: './dist/index.css',
+			output: './dist/index.min.css',
 			options: {
 				style: 'compressed',
 			},

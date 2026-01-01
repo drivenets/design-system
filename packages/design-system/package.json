@@ -17,7 +17,8 @@
 				"default": "./dist/index.cjs"
 			}
 		},
-		"./src/styles/*": "./src/styles/*"
+		"./index.min.css": "./dist/index.min.css",
+		"./raw-styles/*": "./src/styles/*"
 	},
 	"files": [
 		"README.md",
