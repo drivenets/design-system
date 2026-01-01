@@ -8,7 +8,7 @@ import postcssModules from 'postcss-modules';
 
 export default defineConfig({
 	entry: ['./src/index.ts'],
-	format: ['esm', 'cjs'],
+	format: ['cjs', 'esm'],
 	platform: 'browser',
 	dts: true,
 	sourcemap: false,
