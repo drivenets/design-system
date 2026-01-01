@@ -6,6 +6,8 @@ export default defineConfig({
 	dts: true,
 	sourcemap: false,
 	clean: true,
+	unbundle: true,
+	skipNodeModulesBundle: true,
 	outDir: 'dist',
 	outExtensions: ({ format }) => (format === 'cjs' ? { js: '.cjs' } : { js: '.js' }),
 });
