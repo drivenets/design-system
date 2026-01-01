@@ -39,7 +39,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Ensure latest npm
-        run: npm install -g npm@latest
+        run: npm install -g npm@latest # npm >= 11.5.1 is required for trusted publishing
 
       - name: Install Dependencies
         run: pnpm i
@@ -60,4 +60,4 @@ jobs:
           title: 'chore(release): publish'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ''
+          NPM_TOKEN: '' # https://github.com/changesets/action/issues/542#issuecomment-3642334398
