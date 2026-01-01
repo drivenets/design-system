@@ -1,3 +1,5 @@
+import type { Plugin } from 'vite';
+import * as fs from 'node:fs/promises';
 import { defineConfig } from 'tsdown';
 import sass from 'rollup-plugin-sass';
 import sassEmbedded from 'sass-embedded';
@@ -5,8 +7,14 @@ import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
 
 export default defineConfig({
+<<<<<<< Updated upstream
 	entry: ['src/index.ts'],
 	format: ['cjs', 'esm'],
+=======
+	entry: ['./src/index.ts'],
+	format: ['esm', 'cjs'],
+	platform: 'browser',
+>>>>>>> Stashed changes
 	dts: true,
 	sourcemap: false,
 	clean: true,
@@ -37,5 +45,27 @@ export default defineConfig({
 				return { css: postcssProcessResult.css, cssModules };
 			},
 		}),
+
+		compileRootStyles(),
 	],
 });
+
+function compileRootStyles(): Plugin {
+	return {
+		name: 'compile-root-styles',
+		async generateBundle({ format }) {
+			// Ensure the root styles are compiled and appended only once.
+			if (format !== 'es') {
+				return;
+			}
+
+			const rootStyles = await sassEmbedded.compileAsync('./src/styles/styles.scss', {
+				style: 'compressed',
+			});
+
+			const indexCssFile = await fs.readFile('./dist/index.min.css', 'utf-8');
+
+			await fs.writeFile('./dist/index.min.css', rootStyles.css + indexCssFile);
+		},
+	};
+}
