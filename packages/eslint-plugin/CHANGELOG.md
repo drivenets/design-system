@@ -1,5 +1,11 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.2
+
+### Patch Changes
+
+- cd458e3: Configure trusted publishing
+
 ## 0.0.1
 
 ### Patch Changes
