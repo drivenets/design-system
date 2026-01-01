@@ -2,7 +2,7 @@ import type { Plugin } from 'vite';
 import * as fs from 'node:fs/promises';
 import { defineConfig } from 'tsdown';
 import sass from 'rollup-plugin-sass';
-import sassEmbedded from 'sass-embedded';
+import * as sassEmbedded from 'sass-embedded';
 import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
 
@@ -43,13 +43,13 @@ export default defineConfig({
 			},
 		}),
 
-		compileRootStyles(),
+		appendRootStyles(),
 	],
 });
 
-function compileRootStyles(): Plugin {
+function appendRootStyles(): Plugin {
 	return {
-		name: 'compile-root-styles',
+		name: 'append-root-styles',
 		async generateBundle({ format }) {
 			// Ensure the root styles are compiled and appended only once.
 			if (format !== 'es') {
