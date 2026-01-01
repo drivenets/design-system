@@ -17,7 +17,8 @@
 		"test": "turbo run test",
 		"build": "turbo run build",
 		"build:lint": "turbo run build:lint",
-		"changelog": "changeset"
+		"changelog": "changeset",
+		"release": "pnpm build && changeset publish"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.8",
