@@ -7,14 +7,9 @@ import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
 
 export default defineConfig({
-<<<<<<< Updated upstream
-	entry: ['src/index.ts'],
-	format: ['cjs', 'esm'],
-=======
 	entry: ['./src/index.ts'],
 	format: ['esm', 'cjs'],
 	platform: 'browser',
->>>>>>> Stashed changes
 	dts: true,
 	sourcemap: false,
 	clean: true,
