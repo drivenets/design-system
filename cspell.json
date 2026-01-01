@@ -18,11 +18,14 @@
 		"overscan",
 		"reorderable",
 		"retryable",
+		"stylesheet",
 		"subcomponents",
 		"syncpack",
 		"tosorted",
 		"Turborepo",
-		"unhover"
+		"unhover",
+		"vite",
+		"Vitest"
 	],
 	"ignorePaths": [
 		".git",
