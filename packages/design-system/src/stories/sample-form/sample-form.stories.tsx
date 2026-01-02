@@ -118,7 +118,7 @@ export const Default: Story = {
 			await expect(submitButton).toBeEnabled();
 		});
 
-		// 15. Clicking submit will show an alert containing stringified JSON of the values
+		// 15. Clicking submit will show alert containing stringified json of the values
 		await userEvent.click(submitButton);
 		const expectedData = JSON.stringify(
 			{

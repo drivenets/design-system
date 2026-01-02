@@ -12,13 +12,13 @@ import { DsCheckbox } from '../../components/ds-checkbox';
 import { DsButton } from '../../components/ds-button';
 import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
 
-const defaultValues = {
+const defaultValues: SampleFormValues = {
 	name: '',
 	email: '',
 	description: '',
 	quantity: undefined,
 	acceptTerms: false,
-	subscription: '',
+	subscription: null,
 	contactMethod: '',
 };
 

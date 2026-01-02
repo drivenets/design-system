@@ -84,7 +84,7 @@ export const Default: Story = {
 		await userEvent.click(toggle);
 
 		await waitFor(() => {
-			expect(toggle).toBeChecked();
+			void expect(toggle).toBeChecked();
 		});
 	},
 };
@@ -131,15 +131,14 @@ export const Disabled: Story = {
 
 		// Disabled checkbox
 		await expect(toggle).toBeDisabled();
+		await expect(toggle).not.toBeChecked();
 
 		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
-
-		const initiallyChecked = (toggle as HTMLInputElement).checked;
 
 		await userEvent.click(toggle, { pointerEventsCheck: 0 });
 
 		// State should remain unchanged
-		await expect(toggle).toHaveProperty('checked', initiallyChecked);
+		await expect(toggle).not.toBeChecked();
 		await expect(toggle).toBeDisabled();
 	},
 };
@@ -166,7 +165,17 @@ export const ChildrenCustomLabels: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-
+		const toggle = canvas.getByRole('checkbox', {
+			name: 'Custom label totally!',
+		});
 		await expect(canvas.getByTestId('custom-element')).toHaveTextContent('Custom label totally!');
+		await expect(toggle).toBeInTheDocument();
+		await expect(toggle).not.toBeChecked();
+
+		await userEvent.click(toggle);
+
+		await waitFor(() => {
+			void expect(toggle).toBeChecked();
+		});
 	},
 };
