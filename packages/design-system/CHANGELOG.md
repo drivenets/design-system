@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.0.4
+
+### Patch Changes
+
+- 5e21f4b: Add React Compiler
+
 ## 0.0.3
 
 ### Patch Changes

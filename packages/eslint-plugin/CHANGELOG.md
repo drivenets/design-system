@@ -1,5 +1,11 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.4
+
+### Patch Changes
+
+- 8390bfc: Rename plugin
+
 ## 0.0.3
 
 ### Patch Changes
