@@ -1,21 +1,38 @@
+import type { Plugin } from 'vite';
+import * as fs from 'node:fs/promises';
 import { defineConfig } from 'tsdown';
 import sass from 'rollup-plugin-sass';
-import sassEmbedded from 'sass-embedded';
+import * as sassEmbedded from 'sass-embedded';
 import postcss from 'postcss';
 import postcssModules from 'postcss-modules';
+import babel from '@rollup/plugin-babel';
+import babelPluginReactCompiler from 'babel-plugin-react-compiler';
 
 export default defineConfig({
-	entry: ['src/index.ts'],
+	entry: ['./src/index.ts'],
 	format: ['cjs', 'esm'],
+	platform: 'browser',
 	dts: true,
 	sourcemap: false,
 	clean: true,
+	unbundle: true,
+	skipNodeModulesBundle: true,
 	outDir: 'dist',
-	outExtensions: ({ format }) => (format === 'cjs' ? { js: '.js' } : { js: '.mjs' }),
+	outExtensions: ({ format }) => (format === 'cjs' ? { js: '.cjs' } : { js: '.js' }),
 	plugins: [
+		babel({
+			babelHelpers: 'bundled',
+			parserOpts: {
+				sourceType: 'module',
+				plugins: ['jsx', 'typescript'],
+			},
+			plugins: [babelPluginReactCompiler],
+			extensions: ['.js', '.jsx', '.ts', '.tsx'],
+		}),
+
 		sass({
 			api: 'modern',
-			output: './dist/index.css',
+			output: './dist/index.min.css',
 			options: {
 				style: 'compressed',
 			},
@@ -37,5 +54,27 @@ export default defineConfig({
 				return { css: postcssProcessResult.css, cssModules };
 			},
 		}),
+
+		appendRootStyles(),
 	],
 });
+
+function appendRootStyles(): Plugin {
+	return {
+		name: 'append-root-styles',
+		async generateBundle({ format }) {
+			// Ensure the root styles are compiled and appended only once.
+			if (format !== 'es') {
+				return;
+			}
+
+			const rootStyles = await sassEmbedded.compileAsync('./src/styles/styles.scss', {
+				style: 'compressed',
+			});
+
+			const indexCssFile = await fs.readFile('./dist/index.min.css', 'utf-8');
+
+			await fs.writeFile('./dist/index.min.css', rootStyles.css + indexCssFile);
+		},
+	};
+}

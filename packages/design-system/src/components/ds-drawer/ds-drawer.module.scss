@@ -1,4 +1,4 @@
-@use '../../styles/grid';
+@use '../../styles/grid-variables' as grid-vars;
 
 .backdrop {
 	position: absolute;
@@ -84,7 +84,7 @@
 		}
 	}
 
-	@for $i from 1 through grid.$columns {
+	@for $i from 1 through grid-vars.$columns {
 		&.cols-#{$i} {
 			width: var(--col-span-#{$i});
 		}

@@ -16,7 +16,9 @@
 		"lint:unused": "knip",
 		"test": "turbo run test",
 		"build": "turbo run build",
-		"changelog": "changeset"
+		"build:lint": "turbo run build:lint",
+		"changelog": "changeset",
+		"release": "pnpm build && changeset publish"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.8",

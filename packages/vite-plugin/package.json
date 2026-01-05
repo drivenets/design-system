@@ -1,0 +1,57 @@
+{
+	"name": "@drivenets/vite-plugin-design-system",
+	"version": "0.0.4",
+	"license": "Apache-2.0",
+	"type": "module",
+	"types": "./src/index.ts",
+	"main": "./src/index.ts",
+	"module": "./src/index.ts",
+	"exports": {
+		".": {
+			"types": "./src/index.ts",
+			"import": "./src/index.ts",
+			"require": "./src/index.ts"
+		}
+	},
+	"publishConfig": {
+		"types": "./dist/index.d.cts",
+		"main": "./dist/index.cjs",
+		"module": "./dist/index.js",
+		"exports": {
+			".": {
+				"import": "./dist/index.js",
+				"require": "./dist/index.cjs"
+			}
+		}
+	},
+	"files": [
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE",
+		"./dist",
+		"./src"
+	],
+	"repository": {
+		"url": "https://github.com/drivenets/design-system",
+		"directory": "/packages/vite-plugin"
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings=0 .",
+		"typecheck": "tsc",
+		"build": "tsdown",
+		"build:lint": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL",
+		"test": "vitest"
+	},
+	"peerDependencies": {
+		"vite": "*"
+	},
+	"devDependencies": {
+		"@arethetypeswrong/cli": "^0.18.2",
+		"eslint": "^9.39.2",
+		"memfs": "^4.51.1",
+		"publint": "^0.3.16",
+		"tsdown": "^0.18.0",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.16"
+	}
+}

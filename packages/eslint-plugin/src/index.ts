@@ -2,7 +2,7 @@ import { JSXAttribute, JSXElement } from './selectors';
 import { createPlugin } from './create-plugin';
 
 const eslintPlugin = createPlugin(
-	'drivenets-design-system',
+	'@drivenets/design-system',
 	{
 		name: 'no-deprecated-ds-button-legacy-design',
 		selector: [

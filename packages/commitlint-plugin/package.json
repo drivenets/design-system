@@ -1,9 +1,10 @@
 {
-	"name": "@drivenets/vite-plugin-design-system",
+	"name": "@drivenets/commitlint-plugin-design-system",
 	"version": "0.0.0",
-	"type": "module",
+	"private": true,
 	"main": "./src/index.ts",
 	"types": "./src/index.ts",
+	"type": "module",
 	"exports": {
 		".": {
 			"types": "./src/index.ts",
@@ -11,28 +12,20 @@
 			"require": "./src/index.ts"
 		}
 	},
-	"publishConfig": {
-		"main": "./dist/index.js",
-		"types": "./dist/index.d.ts",
-		"exports": {
-			".": {
-				"types": "./dist/index.d.ts",
-				"import": "./dist/index.mjs",
-				"require": "./dist/index.js"
-			}
-		}
+	"repository": {
+		"url": "https://github.com/drivenets/design-system",
+		"directory": "/packages/commitlint-plugin"
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
-		"typecheck": "tsc",
-		"build": "tsdown"
+		"typecheck": "tsc"
 	},
 	"peerDependencies": {
-		"vite": "*"
+		"@commitlint/lint": "^20.2.0",
+		"@commitlint/types": "^20.2.0"
 	},
 	"devDependencies": {
 		"eslint": "^9.39.2",
-		"tsdown": "^0.18.0",
 		"typescript": "^5.9.3"
 	}
 }
