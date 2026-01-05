@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-- Add `DsToggle` component
+Add `DsToggle` component

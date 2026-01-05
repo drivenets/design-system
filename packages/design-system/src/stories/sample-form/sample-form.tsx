@@ -40,7 +40,7 @@ const SampleForm = () => {
 		control,
 	} = methods;
 
-	const onSubmit: SubmitHandler<SampleFormValues> = (data) => {
+	const onSubmit: SubmitHandler<SampleFormValues> = (data: SampleFormValues) => {
 		alert(JSON.stringify(data, null, 2));
 		reset(defaultValues as never);
 	};
