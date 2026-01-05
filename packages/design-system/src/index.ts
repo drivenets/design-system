@@ -19,6 +19,7 @@ export * from './components/ds-panel';
 export * from './components/ds-password-input';
 export * from './components/ds-popover';
 export * from './components/ds-radio-group';
+export * from './components/ds-segment-group';
 export * from './components/ds-select';
 export * from './components/ds-smart-tabs';
 export * from './components/ds-spinner';
