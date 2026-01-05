@@ -12,20 +12,20 @@ import { DsCheckbox } from '../../components/ds-checkbox';
 import { DsButton } from '../../components/ds-button';
 import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
 
-const defaultValues: SampleFormValues = {
+const defaultValues = {
 	name: '',
 	email: '',
 	description: '',
 	quantity: undefined,
 	acceptTerms: false,
-	subscription: null,
+	subscription: '',
 	contactMethod: '',
 };
 
 const SampleForm = () => {
 	const methods = useForm<SampleFormValues>({
 		resolver: zodResolver(sampleFormSchema),
-		defaultValues,
+		defaultValues: defaultValues as never,
 		mode: 'onChange',
 	});
 
@@ -42,7 +42,7 @@ const SampleForm = () => {
 
 	const onSubmit: SubmitHandler<SampleFormValues> = (data) => {
 		alert(JSON.stringify(data, null, 2));
-		reset(defaultValues);
+		reset(defaultValues as never);
 	};
 
 	const handleValueChange = (

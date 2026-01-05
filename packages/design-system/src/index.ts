@@ -30,7 +30,7 @@ export * from './components/ds-table';
 export * from './components/ds-text-input';
 export * from './components/ds-textarea';
 export * from './components/ds-toast';
+export * from './components/ds-toggle';
 export * from './components/ds-tooltip';
 export * from './components/ds-typography';
 export * from './components/ds-vertical-tabs';
-export * from './components/ds-toggle';
