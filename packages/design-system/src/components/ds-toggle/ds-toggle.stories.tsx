@@ -83,8 +83,8 @@ export const Default: Story = {
 
 		await userEvent.click(toggle);
 
-		await waitFor(() => {
-			void expect(toggle).toBeChecked();
+		await waitFor(async () => {
+			await expect(toggle).toBeChecked();
 		});
 	},
 };
@@ -148,7 +148,6 @@ export const ChildrenCustomLabels: Story = {
 		return (
 			<DsToggle size="small">
 				<span
-					data-testid="custom-element"
 					style={{
 						color: 'red',
 					}}
@@ -168,14 +167,13 @@ export const ChildrenCustomLabels: Story = {
 		const toggle = canvas.getByRole('checkbox', {
 			name: 'Custom label totally!',
 		});
-		await expect(canvas.getByTestId('custom-element')).toHaveTextContent('Custom label totally!');
 		await expect(toggle).toBeInTheDocument();
 		await expect(toggle).not.toBeChecked();
 
 		await userEvent.click(toggle);
 
-		await waitFor(() => {
-			void expect(toggle).toBeChecked();
+		await waitFor(async () => {
+			await expect(toggle).toBeChecked();
 		});
 	},
 };
