@@ -1,5 +1,12 @@
 # @drivenets/design-system
 
+## 0.0.5
+
+### Patch Changes
+
+- 2c5317f: Add `DsSegmentGroup` component
+- 3a2973f: Add readme
+
 ## 0.0.4
 
 ### Patch Changes

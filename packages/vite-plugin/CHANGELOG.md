@@ -1,5 +1,11 @@
 # @drivenets/vite-plugin-design-system
 
+## 0.0.4
+
+### Patch Changes
+
+- 3a2973f: Add readme
+
 ## 0.0.3
 
 ### Patch Changes
