@@ -25,7 +25,7 @@ const DsButton: React.FC<DsButtonProps> = ({
 	);
 
 	return (
-		<button className={buttonClass} disabled={disabled} {...props}>
+		<button type="button" className={buttonClass} disabled={disabled} {...props}>
 			<span className={classNames(styles.content, contentClassName)}>{children}</span>
 		</button>
 	);

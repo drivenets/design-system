@@ -1,5 +1,5 @@
-@use '@drivenets/design-system/src/styles/typography';
-@use '@drivenets/design-system/src/styles/mixins/bounding-box';
+@use '../../styles/typography';
+@use '../../styles/mixins/bounding-box';
 
 .overlay {
 	position: fixed;

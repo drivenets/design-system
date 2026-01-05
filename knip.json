@@ -4,5 +4,6 @@
 	"ignoreExportsUsedInFile": {
 		"interface": true,
 		"type": true
-	}
+	},
+	"ignoreBinaries": ["tail"]
 }

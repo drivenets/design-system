@@ -345,7 +345,9 @@ const lastEditedFilterAdapter = createFilterAdapter<Workflow, LastEditedFilterVa
 	},
 	getActiveFiltersCount: (value) => {
 		let count = value.editors.length;
-		if (value.timeRange) count += 1;
+		if (value.timeRange) {
+			count += 1;
+		}
 		return count;
 	},
 	renderFilter: (value, onChange) => (

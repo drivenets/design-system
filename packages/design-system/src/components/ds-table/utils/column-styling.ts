@@ -15,7 +15,9 @@ export const getColumnStyle = (
 	isLastColumn: boolean = false,
 ): CSSProperties | undefined => {
 	const hasCustomSize = columnSize !== defaultColumnSizing.size;
-	if (!hasCustomSize) return undefined;
+	if (!hasCustomSize) {
+		return undefined;
+	}
 
 	if (virtualized) {
 		return {

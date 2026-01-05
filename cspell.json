@@ -1,20 +1,31 @@
 {
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
 	"enableGlobDot": true,
+	"useGitignore": true,
 	"words": [
+		"attw",
 		"autodocs",
 		"borderless",
 		"clickability",
 		"controlify",
 		"drivenets",
 		"evenodd",
+		"findlast",
+		"fromentries",
 		"Linsley",
+		"matchall",
+		"nolyfill",
 		"overscan",
 		"reorderable",
 		"retryable",
+		"stylesheet",
 		"subcomponents",
 		"syncpack",
-		"unhover"
+		"tosorted",
+		"Turborepo",
+		"unhover",
+		"vite",
+		"Vitest"
 	],
 	"ignorePaths": [
 		".git",

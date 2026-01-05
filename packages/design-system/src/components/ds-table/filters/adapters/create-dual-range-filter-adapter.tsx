@@ -120,7 +120,9 @@ export function createDualRangeFilterAdapter<TData>(
 
 		fromChip: (chip, currentValue) => {
 			const fieldKey = chip.metadata?.field as string;
-			if (!fieldKey) return currentValue;
+			if (!fieldKey) {
+				return currentValue;
+			}
 
 			return {
 				...currentValue,

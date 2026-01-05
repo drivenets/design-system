@@ -39,6 +39,27 @@ export default defineConfig(
 		},
 
 		rules: {
+			// Stricter ESLint core rules.
+			eqeqeq: 'error',
+			curly: ['error', 'all'],
+			'no-eval': 'error',
+			'no-implied-eval': 'error',
+			'no-lone-blocks': 'error',
+			'no-unassigned-vars': 'error',
+			'no-unreachable-loop': 'error',
+			'no-useless-assignment': 'error',
+			'no-useless-call': 'error',
+			'no-useless-computed-key': 'error',
+			'no-useless-concat': 'error',
+			'no-useless-rename': 'error',
+			'no-var': 'error',
+			'object-shorthand': 'error',
+			'prefer-arrow-callback': 'error',
+			'prefer-const': 'error',
+			'prefer-rest-params': 'error',
+			radix: 'error',
+
+			// Slightly loosened TSESLint rules.
 			'@typescript-eslint/no-misused-promises': [
 				'error',
 				{
@@ -53,6 +74,7 @@ export default defineConfig(
 				},
 			],
 
+			// Stylistic rules.
 			'@typescript-eslint/consistent-type-imports': [
 				'error',
 				{
@@ -83,6 +105,7 @@ export default defineConfig(
 				},
 			],
 
+			// Import rules.
 			'import-x/no-cycle': 'error',
 			'import-x/no-unresolved': 'error',
 			'import-x/no-extraneous-dependencies': 'error',

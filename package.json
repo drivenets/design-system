@@ -5,20 +5,26 @@
 	"packageManager": "pnpm@10.0.0",
 	"type": "module",
 	"scripts": {
-		"lint": "turbo run lint:root lint",
-		"lint:root": "concurrently -n eslint,tsc -c magenta,blue 'eslint .' 'tsc'",
+		"start": "pnpm run --filter @drivenets/design-system storybook",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"test": "turbo run test",
-		"build": "turbo run build",
-		"start": "pnpm run --filter @drivenets/design-system storybook",
+		"lint": "turbo run lint:root lint",
+		"lint:root": "eslint --max-warnings=0 .",
+		"typecheck": "turbo run typecheck typecheck:root",
+		"typecheck:root": "tsc",
 		"lint:versions": "syncpack list-mismatches",
 		"lint:spell": "cspell . --quiet",
 		"lint:unused": "knip",
+		"test": "turbo run test",
+		"build": "turbo run build",
+		"build:lint": "turbo run build:lint",
+		"changelog": "changeset",
+		"release": "pnpm build && changeset publish",
 		"prepare": "husky",
 		"pre-commit": "lint-staged"
 	},
 	"devDependencies": {
+		"@changesets/cli": "^2.29.8",
 		"@commitlint/cli": "^20.2.0",
 		"@commitlint/config-conventional": "^20.2.0",
 		"@commitlint/types": "^20.2.0",
@@ -26,7 +32,6 @@
 		"@eslint/core": "^1.0.0",
 		"@eslint/js": "^9.39.2",
 		"@types/node": "^25.0.3",
-		"concurrently": "^9.2.1",
 		"cspell": "^9.4.0",
 		"eslint": "^9.39.2",
 		"eslint-import-resolver-typescript": "^4.4.4",
@@ -42,5 +47,26 @@
 		"turbo": "^2.6.3",
 		"typescript": "^5.9.3",
 		"typescript-eslint": "^8.50.0"
+	},
+	"pnpm": {
+		"overrides": {
+			"array-includes": "npm:@nolyfill/array-includes@^1",
+			"array.prototype.findlast": "npm:@nolyfill/array.prototype.findlast@^1",
+			"array.prototype.flat": "npm:@nolyfill/array.prototype.flat@^1",
+			"array.prototype.flatmap": "npm:@nolyfill/array.prototype.flatmap@^1",
+			"array.prototype.tosorted": "npm:@nolyfill/array.prototype.tosorted@^1",
+			"es-iterator-helpers": "npm:@nolyfill/es-iterator-helpers@^1",
+			"hasown": "npm:@nolyfill/hasown@^1",
+			"is-core-module": "npm:@nolyfill/is-core-module@^1",
+			"object.assign": "npm:@nolyfill/object.assign@^1",
+			"object.entries": "npm:@nolyfill/object.entries@^1",
+			"object.fromentries": "npm:@nolyfill/object.fromentries@^1",
+			"object.values": "npm:@nolyfill/object.values@^1",
+			"safe-regex-test": "npm:@nolyfill/safe-regex-test@^1",
+			"safer-buffer": "npm:@nolyfill/safer-buffer@^1",
+			"string.prototype.includes": "npm:@nolyfill/string.prototype.includes@^1",
+			"string.prototype.matchall": "npm:@nolyfill/string.prototype.matchall@^1",
+			"string.prototype.repeat": "npm:@nolyfill/string.prototype.repeat@^1"
+		}
 	}
 }

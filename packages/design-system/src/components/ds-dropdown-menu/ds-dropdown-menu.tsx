@@ -328,7 +328,9 @@ export const DsDropdownMenuLegacy: React.FC<DsDropdownMenuLegacyProps> = ({
 								e.stopPropagation();
 
 								if (!option.disabled) {
-									if (option.value) onSelect?.(option.value);
+									if (option.value) {
+										onSelect?.(option.value);
+									}
 									option.onClick?.(e);
 									setOpen(false);
 								}

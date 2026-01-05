@@ -136,7 +136,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 			if (adapter.getActiveFiltersCount(value) > 0) {
 				filters.push({
 					id: adapter.id,
-					value: value,
+					value,
 				});
 			}
 
@@ -161,10 +161,14 @@ export function useTableFilters<TData, TValue, TCellValue>(
 
 	const deleteChip = (chip: ChipItem) => {
 		const filterKey = typeof chip.metadata?.key === 'string' ? chip.metadata.key : undefined;
-		if (!filterKey) return;
+		if (!filterKey) {
+			return;
+		}
 
 		const adapter = _filterAdapters.find((a) => a.id === filterKey);
-		if (!adapter) return;
+		if (!adapter) {
+			return;
+		}
 
 		const currentValue = filterState[filterKey];
 		const newValue = adapter.fromChip(chip, currentValue);
@@ -203,7 +207,9 @@ export function useTableFilters<TData, TValue, TCellValue>(
 
 	const renderFilterContent = (selectedFilter: FilterNavItem) => {
 		const adapter = _filterAdapters.find((a) => a.id === selectedFilter.id);
-		if (!adapter) return null;
+		if (!adapter) {
+			return null;
+		}
 
 		const value = filterState[adapter.id];
 		const onChange = (newValue: TValue) => updateFilter(adapter.id, newValue);

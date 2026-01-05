@@ -30,6 +30,10 @@ export default defineConfig(
 			// We're using TypeScript instead.
 			'react/prop-types': 'off',
 
+			'react/jsx-no-useless-fragment': 'error',
+
+			'react/jsx-pascal-case': 'error',
+
 			// The default is set to `warn`, but we're strict.
 			'react-hooks/exhaustive-deps': 'error',
 
@@ -43,11 +47,14 @@ export default defineConfig(
 		},
 	},
 
+	// Production code overrides.
 	{
 		files: ['**/*.?(m)[tj]s?(x)'],
 		ignores: ['**/*.stories.ts?(x)'],
 		rules: {
 			'no-console': 'error',
+
+			'react/button-has-type': 'error',
 		},
 	},
 

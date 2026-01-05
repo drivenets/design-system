@@ -1,4 +1,4 @@
 packages:
   - 'packages/*'
 
-minimumReleaseAge: 60 # 1 hour in minutes
+minimumReleaseAge: 1440 # 1 day in minutes

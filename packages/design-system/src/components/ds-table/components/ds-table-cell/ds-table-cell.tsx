@@ -31,6 +31,7 @@ export const DsTableCell = <TData, TValue>({
 						return (
 							<button
 								key={i}
+								type="button"
 								className={classnames(styles.rowActionIcon, { [styles.disabled]: isDisabled })}
 								title={action.tooltip || label}
 								onClick={(e) => {

@@ -52,7 +52,13 @@ const DsAlertBanner = ({
 			{icon && <DsIcon className={styles.icon} icon={icon} size="small" filled />}
 			{children}
 			{closable && (
-				<button className={styles.closeButton} onClick={handleClose} aria-label="Close alert" data-close>
+				<button
+					type="button"
+					className={styles.closeButton}
+					onClick={handleClose}
+					aria-label="Close alert"
+					data-close
+				>
 					<DsIcon icon="close" size="small" />
 				</button>
 			)}

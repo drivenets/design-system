@@ -1,24 +1,12 @@
 @use 'sass:map';
 @use 'sass:math';
 
-// max columns
-$columns: 12;
-// max rows
-$rows: 8;
-
-$gutter: 16px;
-$margin-y: 16px;
-$margin-x: 20px;
-
-$grid-hd: (
-	gutter: $gutter,
-	margin: $margin-y $margin-x,
-);
+@use './grid-variables' as grid-vars;
 
 :root {
-	--grid-gutter: #{$gutter};
-	--grid-margin: #{$margin-x};
-	--grid-columns: #{$columns};
+	--grid-gutter: #{grid-vars.$gutter};
+	--grid-margin: #{grid-vars.$margin-x};
+	--grid-columns: #{grid-vars.$columns};
 
 	// Computed width of a single grid column: (viewport_width - margins - gutters) / number_of_columns
 	--grid-column-size: calc(
@@ -28,10 +16,10 @@ $grid-hd: (
 
 	// Generate custom properties for each column span (1 through 12)
 	// Each --col-span-N represents the total width for spanning N columns
-	@for $i from 1 through $columns {
+	@for $i from 1 through grid-vars.$columns {
 		// Margins are added to all column spans to ensure proper alignment
 		// The last column span (full width) receives 2 margins (left + right), others receive 1 margin (typically left)
-		$margins: if($i == $columns, 2, 1);
+		$margins: if($i == grid-vars.$columns, 2, 1);
 
 		// Calculate total width for spanning i columns:
 		// - i columns × column width
@@ -52,51 +40,51 @@ $grid-hd: (
 }
 
 @mixin generate-grid-classes($grid-setup) {
-	@for $i from 1 through $columns {
+	@for $i from 1 through grid-vars.$columns {
 		.ds-grid-col-span-#{$i} {
 			--col-span: #{$i};
 		}
-		@if $i < $columns {
+		@if $i < grid-vars.$columns {
 			.ds-grid-col-start-#{$i} {
 				--col-start: #{$i};
 			}
 		}
 	}
-	@for $i from 1 through $rows {
+	@for $i from 1 through grid-vars.$rows {
 		.ds-grid-row-span-#{$i} {
 			--row-span: #{$i};
 		}
-		@if $i < $rows {
+		@if $i < grid-vars.$rows {
 			.ds-grid-row-start-#{$i} {
 				--row-start: #{$i};
 			}
 		}
 	}
-	@for $i from 3 through $columns {
+	@for $i from 3 through grid-vars.$columns {
 		&.ds-grid-cols-#{$i} {
 			grid-template-columns: repeat($i, 1fr);
 		}
 	}
-	@for $i from 1 through math.floor(calc($rows / 2)) {
+	@for $i from 1 through math.floor(calc(grid-vars.$rows / 2)) {
 		$row-count: 2 * $i;
 		&.ds-grid-rows-#{$row-count} {
 			grid-template-rows: repeat($row-count, 1fr);
 		}
 	}
 	.ds-grid-col-span-full {
-		--col-span: #{$columns};
+		--col-span: #{grid-vars.$columns};
 	}
 	.ds-grid-row-span-full {
-		--row-span: #{$rows};
+		--row-span: #{grid-vars.$rows};
 	}
 }
 
 .ds-grid {
 	display: grid;
-	grid-template-columns: repeat($columns, 1fr);
+	grid-template-columns: repeat(grid-vars.$columns, 1fr);
 	grid-template-rows: 1fr;
-	@include grid-setup($grid-hd);
-	@include generate-grid-classes($grid-hd);
+	@include grid-setup(grid-vars.$grid-hd);
+	@include generate-grid-classes(grid-vars.$grid-hd);
 
 	/*
     @media screen and (min-width: $qhd) {
