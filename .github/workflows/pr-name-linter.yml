@@ -22,6 +22,8 @@ jobs:
         run: |
           gh pr close 72
           gh pr reopen 72
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Checkout source code
         uses: actions/checkout@v4
