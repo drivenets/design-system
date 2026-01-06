@@ -18,6 +18,11 @@ jobs:
       ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
 
     steps:
+      - name: close and reopen PR
+        run: |
+          gh pr close 72
+          gh pr reopen 72
+
       - name: Checkout source code
         uses: actions/checkout@v4
 
