@@ -17,9 +17,9 @@ jobs:
     if: |
       ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
 
-    permissions:
-      pull-requests: write
-      contents: write
+    # permissions:
+    #   pull-requests: write
+    #   contents: write
 
     steps:
       - name: Checkout source code
