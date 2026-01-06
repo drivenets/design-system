@@ -18,15 +18,15 @@ jobs:
       ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
       - name: close and reopen PR
         run: |
           gh pr close 72
           gh pr reopen 72
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Checkout source code
-        uses: actions/checkout@v4
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
