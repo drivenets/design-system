@@ -18,9 +18,6 @@ jobs:
       ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
 
     steps:
-      - name: Debug github context
-        run: echo "${{ toJson(github) }}"
-
       - name: Checkout source code
         uses: actions/checkout@v4
 
