@@ -7,7 +7,7 @@ name: PR
 #   DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
 #
 #   See: https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
-on: ['pull_request_target']
+on: ['pull_request']
 
 # This allows a subsequently queued workflow run to interrupt previous runs
 concurrency:
