@@ -8,7 +8,7 @@ tooling:
           - '**/*nvmrc*'
           - '**/*prettier*'
           - '**/*syncpack*'
-          - '**/*commitlint*'
+          - '**/commitlint.config.*'
           - '**/*cspell'
           - '**/*eslint*'
           - '**/*knip*'
