@@ -1,0 +1,89 @@
+.showcaseContainer {
+	padding: 24px;
+	width: 760px;
+}
+
+.showcaseTable {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.showcaseHeader {
+	text-align: center;
+	vertical-align: middle;
+	padding: 16px;
+}
+
+.showcaseCell {
+	padding: 16px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.showcaseCellBold {
+	font-weight: bold;
+	padding-right: 8px;
+}
+
+.showcaseCellInline {
+	display: inline-block;
+}
+
+.showcaseCellDark {
+	background: var(--color-brand-500-default);
+	color: var(--color-secondary-white);
+}
+
+// Story container styles
+.storyContainer {
+	width: 420px;
+	height: auto;
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+	padding: 16px;
+	border: 1px solid rgba(0, 0, 0, 0.08);
+	border-radius: 12px;
+	box-sizing: border-box;
+}
+
+.storyContainerVertical {
+	height: 220px;
+}
+
+.storyContent {
+	width: 100%;
+}
+
+.storyContentSide {
+	width: 140px;
+	font-size: 12px;
+}
+
+.storyText {
+	font-size: 12px;
+}
+
+// Horizontal divider container
+.horizontalContainer {
+	width: 420px;
+}
+
+.horizontalDividerWrapper {
+	width: 520px;
+}
+
+// Vertical divider container
+.verticalDividerContainer {
+	height: 140px;
+	display: flex;
+	align-items: stretch;
+	justify-content: center;
+}
+
+.verticalDividerContent {
+	width: 120px;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+}

@@ -12,15 +12,19 @@
 			"require": "./src/index.ts"
 		}
 	},
+	"repository": {
+		"url": "https://github.com/drivenets/design-system",
+		"directory": "/packages/commitlint-plugin"
+	},
 	"scripts": {
-		"lint": "concurrently -n eslint,tsc -c magenta,blue 'eslint --max-warnings=0 .' 'tsc'"
+		"lint": "eslint --max-warnings=0 .",
+		"typecheck": "tsc"
 	},
 	"peerDependencies": {
 		"@commitlint/lint": "^20.2.0",
 		"@commitlint/types": "^20.2.0"
 	},
 	"devDependencies": {
-		"concurrently": "^9.2.1",
 		"eslint": "^9.39.2",
 		"typescript": "^5.9.3"
 	}

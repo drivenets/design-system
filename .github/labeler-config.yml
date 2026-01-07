@@ -1,0 +1,54 @@
+ci:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**'
+
+tooling:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/.nvmrc'
+          - '**/.prettier*'
+          - '**/.syncpack*'
+          - '**/commitlint.config.*'
+          - '**/cspell*'
+          - '**/eslint.config.*'
+          - '**/knip*'
+          - '**/lint-staged*'
+          - '**/tsconfig*'
+          - '**/tsdown*'
+          - '**/vite.config.*'
+          - '**/vitest.config.*'
+          - '**/vitest.setup.*'
+          - '**/.attw*'
+          - '**/.gitignore'
+          - '.changeset/config.json'
+          - '.husky/**'
+          - 'pnpm-workspace.yaml'
+          - 'turbo.json'
+
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file: 'pnpm-lock.yaml'
+
+commitlint-plugin:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/commitlint-plugin/**'
+
+design-system:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/design-system/**'
+
+eslint-plugin:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/eslint-plugin/**'
+
+vite-plugin:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/vite-plugin/**'
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: '**/README.md'
+
+license:
+  - changed-files:
+      - any-glob-to-any-file: '**/LICENSE'

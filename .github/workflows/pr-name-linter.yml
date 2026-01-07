@@ -13,6 +13,10 @@ jobs:
     name: Name Linter
     runs-on: ubuntu-latest
 
+    # Skip release PRs
+    if: |
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4

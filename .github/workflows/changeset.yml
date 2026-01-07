@@ -23,7 +23,9 @@ jobs:
 
     # Skip opted out PRs, and release PRs
     if: |
-      ! contains(github.event.pull_request.labels.*.name, 'skip changelog')
+      ! contains(github.event.pull_request.labels.*.name, 'skip changelog') &&
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
+
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4

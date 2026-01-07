@@ -1,0 +1,13 @@
+// max columns
+$columns: 12;
+// max rows
+$rows: 8;
+
+$gutter: 16px;
+$margin-y: 16px;
+$margin-x: 20px;
+
+$grid-hd: (
+	gutter: $gutter,
+	margin: $margin-y $margin-x,
+);

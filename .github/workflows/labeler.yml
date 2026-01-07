@@ -1,0 +1,35 @@
+name: PR
+
+# WARNING:
+#   Using `pull_request_target` here because we want to be able to add labels to PRs from forks.
+#   `pull_request_target` can be UNSAFE because it runs in the TARGET repo context (not fork context).
+#
+#   DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
+#
+#   See: https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
+on: ['pull_request_target']
+
+# This allows a subsequently queued workflow run to interrupt previous runs
+concurrency:
+  group: '${{ github.workflow }} - Labeler @ ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  labeler:
+    name: Labeler
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    # Skip release PRs
+    if: |
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
+
+    steps:
+      - name: Label PR
+        uses: actions/labeler@v6
+        with:
+          configuration-path: .github/labeler-config.yml
+          sync-labels: true

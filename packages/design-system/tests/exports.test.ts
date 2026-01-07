@@ -4,15 +4,18 @@ import { describe, expect, it } from 'vitest';
 describe('Design System exports', () => {
 	it('should export all components from index', () => {
 		// Arrange.
-		const components = fs.readdirSync('./src/components').map((component) => {
-			return `export * from './components/${component}';`;
-		});
+		const expectedContent =
+			fs
+				.readdirSync('./src/components')
+				.toSorted()
+				.map((component) => {
+					return `export * from './components/${component}';`;
+				})
+				.join('\n') + '\n';
 
 		// Assert.
-		const indexFileContent = fs.readFileSync('./src/index.ts', 'utf-8');
+		const actualContent = fs.readFileSync('./src/index.ts', 'utf-8');
 
-		components.forEach((componentExport) => {
-			expect(indexFileContent).toContain(componentExport);
-		});
+		expect(actualContent).toBe(expectedContent);
 	});
 });
