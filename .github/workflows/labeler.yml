@@ -28,7 +28,7 @@ jobs:
       ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
 
     steps:
-      - name: Label PRs
+      - name: Label PR
         uses: actions/labeler@v6
         with:
           configuration-path: .github/labeler-config.yml
