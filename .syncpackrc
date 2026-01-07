@@ -2,7 +2,7 @@
 	"$schema": "./node_modules/syncpack/dist/schema.json",
 	"versionGroups": [
 		{
-			"label": "Use workspace protocol for local packages",
+			"label": "Use workspace protocol for local packages ",
 			"dependencies": [
 				"$LOCAL"
 			],
