@@ -9,7 +9,7 @@ tooling:
           - '**/*prettier*'
           - '**/*syncpack*'
           - '**/commitlint.config.*'
-          - '**/*cspell'
+          - '**/*cspell*'
           - '**/*eslint*'
           - '**/*knip*'
           - '**/*lint-staged*'
