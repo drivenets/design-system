@@ -1,0 +1,13 @@
+.root {
+	display: flex;
+	gap: var(--spacing-lg);
+	width: 100%;
+
+	&:has([data-orientation='vertical']) {
+		flex-direction: row;
+	}
+
+	&:has([data-orientation='horizontal']) {
+		flex-direction: column;
+	}
+}

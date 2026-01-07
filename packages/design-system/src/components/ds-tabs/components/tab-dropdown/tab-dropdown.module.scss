@@ -1,0 +1,31 @@
+@use '../../../../styles/typography';
+
+:global(.ds-dropdown-menu-item-tab) {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-2xs);
+
+	:global(.tab-icon) {
+		display: flex;
+		align-items: center;
+		color: var(--color-font-secondary);
+	}
+
+	:global(.tab-label) {
+		flex: 1;
+		min-width: 0;
+	}
+
+	:global(.tab-badge) {
+		margin-left: auto;
+		padding: 0 var(--spacing-2xs);
+		border-radius: 10px;
+		background: var(--color-background-tertiary);
+		color: var(--color-font-secondary);
+		font-size: 12px;
+		line-height: 20px;
+		height: 20px;
+		display: flex;
+		align-items: center;
+	}
+}

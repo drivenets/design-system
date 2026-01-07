@@ -1,0 +1,129 @@
+@use '../../../../styles/typography';
+
+.tabItem {
+	@include typography.body-sm-reg;
+	display: inline-flex;
+	align-items: center;
+	background: var(--color-background);
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition:
+		background-color 0.2s,
+		color 0.2s,
+		border-color 0.2s;
+	position: relative;
+	color: var(--color-font-main);
+	max-width: 200px;
+
+	&:hover:not(:disabled):not([data-selected]) {
+		background: var(--color-background-action-hover-weak);
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+		color: var(--color-font-disabled);
+	}
+
+	&[data-selected] {
+		@include typography.body-sm-md;
+		color: var(--color-background-selected);
+		background: var(--color-background);
+
+		.icon {
+			color: var(--color-background-selected);
+		}
+
+		.badge {
+			background: var(--color-blue-50);
+			color: var(--color-background-selected);
+		}
+	}
+}
+
+.tabItem-horizontal {
+	flex-direction: row;
+	justify-content: center;
+	gap: var(--spacing-3xs);
+	flex: 0 0 auto;
+	width: auto;
+
+	&.tabItem-base {
+		height: 40px;
+		padding: var(--spacing-sm);
+	}
+
+	&.tabItem-small {
+		height: 36px;
+		padding: var(--spacing-sm);
+	}
+}
+
+.tabItem-vertical {
+	flex-direction: row;
+	justify-content: flex-start;
+	gap: var(--spacing-3xs);
+	width: 100%;
+
+	&.tabItem-base {
+		height: 44px;
+		padding: var(--spacing-sm) var(--spacing-standard);
+		padding-left: var(--spacing-xs);
+		border-radius: 4px 0 0 4px;
+	}
+
+	&.tabItem-small {
+		height: 36px;
+		padding: var(--spacing-xs) var(--spacing-standard);
+		padding-left: var(--spacing-xs);
+		border-radius: 4px 0 0 4px;
+	}
+}
+
+.icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-background-deselected);
+	flex-shrink: 0;
+}
+
+.label {
+	@include typography.body-sm-reg;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	flex: 1 1 auto;
+	min-width: 0;
+
+	[data-selected] & {
+		@include typography.body-sm-md;
+	}
+}
+
+.menu {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.badge {
+	@include typography.body-xs-reg;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 20px;
+	padding: 0 var(--spacing-2xs);
+	border-radius: 24px;
+	background: var(--color-background-secondary);
+	color: var(--color-font-main);
+	line-height: var(--line-height-xs);
+	flex-shrink: 0;
+}
+
+:global(.ds-tabs-dropdown-wrapper) {
+	position: relative;
+	display: inline-flex;
+}

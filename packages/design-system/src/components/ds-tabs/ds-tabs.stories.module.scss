@@ -1,0 +1,67 @@
+.container {
+	width: 800px;
+	padding: var(--spacing-lg);
+}
+
+.containerNarrow {
+	width: fit-content;
+	max-width: 900px;
+	padding: var(--spacing-lg);
+}
+
+.verticalContainer {
+	width: 800px;
+	padding: var(--spacing-lg);
+	min-height: 400px;
+}
+
+.content {
+	padding: var(--spacing-lg);
+	background: var(--color-background-secondary);
+	border-radius: 4px;
+	min-height: 200px;
+	width: 100%;
+
+	h3 {
+		margin: 0 0 var(--spacing-sm) 0;
+		color: var(--color-font-main);
+		font-size: var(--font-size-xl);
+		font-weight: var(--font-weight-medium);
+	}
+
+	p {
+		margin: 0;
+		color: var(--color-font-secondary);
+		line-height: var(--line-height-md);
+	}
+}
+
+// Custom tab content styles
+.customTab {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+}
+
+.customIcon {
+	font-size: 18px;
+}
+
+.customBadge {
+	font-size: 10px;
+	padding: 2px 6px;
+	background: var(--color-data-pink);
+	color: var(--color-background);
+	border-radius: 12px;
+	font-weight: var(--font-weight-medium);
+	text-transform: uppercase;
+}
+
+.customCount {
+	font-size: 12px;
+	padding: 2px 8px;
+	background: var(--color-background-action);
+	color: var(--color-font-on-action);
+	border-radius: 12px;
+	font-weight: var(--font-weight-medium);
+}
