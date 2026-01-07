@@ -16,7 +16,7 @@ pnpm install @drivenets/eslint-plugin
 yarn add @drivenets/eslint-plugin
 ```
 
-## Usa ge
+## Usage
 
 > [!NOTE]
 > This plugin supports only the new ESLint Flat Config format and requires ESLint 9.0.0 or higher.
