@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		// Environment   Settings
+		// Environment Settings
 		"module": "preserve",
 		"moduleResolution": "bundler",
 		"target": "esnext",
