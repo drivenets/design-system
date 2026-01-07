@@ -10,7 +10,7 @@ tooling:
           - '**/*syncpack*'
           - '**/commitlint.config.*'
           - '**/*cspell*'
-          - '**/*eslint*'
+          - '**/*eslint.config.*'
           - '**/*knip*'
           - '**/*lint-staged*'
           - '**/*tsconfig*'
