@@ -1,6 +1,6 @@
 {
 	"extends": "../../tsconfig.base.json",
-	"include": ["**/*", "a"],
+	"include": ["**/*"],
 	"compilerOptions": {
 		"noUncheckedIndexedAccess": true,
 		"exactOptionalPropertyTypes": true
