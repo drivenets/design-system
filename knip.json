@@ -1,5 +1,5 @@
 {
-	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"$schema": "https://unpkg.com/knip@5/schema.json ",
 	"ignore": ["**/*.scss", "**/simple-file-upload-adapter.ts"],
 	"ignoreExportsUsedInFile": {
 		"interface": true,

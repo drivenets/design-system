@@ -6,7 +6,7 @@ import unicorn from 'eslint-plugin-unicorn';
 import importX, { createNodeResolver } from 'eslint-plugin-import-x';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import globals from 'globals';
-//
+
 export default defineConfig(
 	// Base rules.
 	eslint.configs.recommended,
