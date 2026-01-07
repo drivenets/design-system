@@ -43,7 +43,7 @@ vite-plugin:
   - changed-files:
       - any-glob-to-any-file: 'packages/vite-plugin/**'
 
-docs:
+documentation:
   - changed-files:
       - any-glob-to-any-file: '**/README.md'
 
