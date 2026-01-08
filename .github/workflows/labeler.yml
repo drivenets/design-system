@@ -9,6 +9,8 @@ name: PR
 #   See: https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
 on: ['pull_request_target']
 
+permissions: {}
+
 # This allows a subsequently queued workflow run to interrupt previous runs
 concurrency:
   group: '${{ github.workflow }} - Labeler @ ${{ github.head_ref || github.ref }}'

@@ -10,6 +10,8 @@ on:
   schedule:
     - cron: '0 0 * * 6'
 
+permissions: {}
+
 jobs:
   CodeQL:
     name: CodeQL Security (${{ matrix.label }})

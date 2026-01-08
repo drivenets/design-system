@@ -12,6 +12,8 @@ on:
     branches:
       - main
 
+permissions: {}
+
 concurrency:
   group: '${{ github.workflow }} - Changeset @ ${{ github.head_ref || github.ref }}'
   cancel-in-progress: true
@@ -20,6 +22,9 @@ jobs:
   require-changeset:
     name: Require Changeset
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     # Skip opted out PRs, and release PRs
     if: |
