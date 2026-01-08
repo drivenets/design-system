@@ -15,7 +15,7 @@ on:
 permissions: {}
 
 concurrency:
-  group: '${{ github.workflow }} - Changeset @ ${{ github.head_ref || github.ref }}'
+  group: '${{ github.workflow }} - Changeset @ ${{ github.event.pull_request.number }}'
   cancel-in-progress: true
 
 jobs:
