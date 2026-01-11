@@ -1,5 +1,12 @@
 # @drivenets/design-system
 
+## 0.1.0
+
+### Minor Changes
+
+- 631b216: Add `DsToggle` component
+- 1efac4c: Add 'DsDivider' component
+
 ## 0.0.5
 
 ### Patch Changes
