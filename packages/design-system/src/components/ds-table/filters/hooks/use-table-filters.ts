@@ -95,7 +95,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
 		id: adapter.id,
 		label: adapter.label,
-		count: adapter.getActiveFiltersCount(filterState[adapter.id]),
+		count: adapter.getActiveFiltersCount(getValueByAdapterId(adapter.id)),
 	}));
 
 	// Enhance column definitions with filter functions and renderers
@@ -131,7 +131,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 		const chips: ChipItem[] = [];
 
 		_filterAdapters.forEach((adapter) => {
-			const value = filterState[adapter.id];
+			const value = getValueByAdapterId(adapter.id);
 
 			if (adapter.getActiveFiltersCount(value) > 0) {
 				filters.push({
@@ -170,13 +170,13 @@ export function useTableFilters<TData, TValue, TCellValue>(
 			return;
 		}
 
-		const currentValue = filterState[filterKey];
+		const currentValue = getValueByAdapterId(filterKey);
 		const newValue = adapter.fromChip(chip, currentValue);
 
 		// Regenerate chips to check if this was the last one
 		const chips: ChipItem[] = [];
 		_filterAdapters.forEach((adapter) => {
-			const value = adapter.id === filterKey ? newValue : filterState[adapter.id];
+			const value = adapter.id === filterKey ? newValue : getValueByAdapterId(adapter.id);
 			const adapterChips = adapter.toChips(value);
 			chips.push(...adapterChips);
 		});
@@ -211,10 +211,15 @@ export function useTableFilters<TData, TValue, TCellValue>(
 			return null;
 		}
 
-		const value = filterState[adapter.id];
+		const value = getValueByAdapterId(adapter.id);
 		const onChange = (newValue: TValue) => updateFilter(adapter.id, newValue);
 
 		return adapter.renderFilter(value, onChange);
+	};
+
+	const getValueByAdapterId = (adapterId: string) => {
+		// Should be safe to cast because it's being filled in the initialState
+		return filterState[adapterId] as TValue;
 	};
 
 	return {

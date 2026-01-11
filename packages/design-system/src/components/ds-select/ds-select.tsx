@@ -66,7 +66,7 @@ const DsSelect = ({
 		onValueChange: (details) => {
 			// Single select mode.
 			if (!multiselectProps.multiple) {
-				multiselectProps.onValueChange?.(details.value[0]);
+				multiselectProps.onValueChange?.(details.value[0] ?? '');
 				return;
 			}
 

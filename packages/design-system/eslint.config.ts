@@ -9,8 +9,8 @@ export default defineConfig(
 	...baseConfig,
 
 	// React rules.
-	react.configs.flat.recommended,
-	react.configs.flat['jsx-runtime'],
+	react.configs.flat.recommended as Config,
+	react.configs.flat['jsx-runtime'] as Config,
 
 	reactHooks.configs.flat.recommended,
 
@@ -58,5 +58,5 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(['storybook-static', '!.storybook']),
+	globalIgnores(['storybook-static', '!.storybook', '.scss-dts']),
 );

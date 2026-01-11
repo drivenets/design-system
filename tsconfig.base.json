@@ -21,6 +21,9 @@
 		"moduleDetection": "force",
 		"skipLibCheck": true,
 
+		// Stricter Options
+		"noUncheckedIndexedAccess": true,
+
 		// Linting
 		"erasableSyntaxOnly": true,
 		"checkJs": true

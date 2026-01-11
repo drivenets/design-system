@@ -33,6 +33,11 @@ export const useChipRowCalculation = ({ chipsWrapperRef, totalFilters }: UseChip
 
 			for (index = 0; index < children.length; index++) {
 				const current = children[index];
+
+				if (!current) {
+					continue;
+				}
+
 				const offset = current.offsetWidth === wrapper.clientWidth ? 0 : gap;
 				const next = offset + current.offsetWidth;
 

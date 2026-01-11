@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, screen, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import DsSelect from './ds-select';
-import type { DsSelectProps } from './ds-select.types';
+import type { DsSelectOption, DsSelectProps } from './ds-select.types';
 
 const meta: Meta<typeof DsSelect> = {
 	title: 'Design System/Select',
@@ -83,34 +83,41 @@ const sanityCheck = async (canvasElement: HTMLElement) => {
 	const canvas = within(canvasElement);
 	const trigger = canvas.getByRole('combobox');
 
+	const firstOption = mockOptions[0];
+	const secondOption = mockOptions[1];
+
+	if (!firstOption || !secondOption) {
+		throw new Error('mockOptions must have at least 2 items');
+	}
+
 	// Open the select dropdown
 	await userEvent.click(trigger);
 
 	// Verify that the first item is not selected initially
-	const option1 = screen.getByRole('option', { name: mockOptions[0].label });
+	const option1 = screen.getByRole('option', { name: firstOption.label });
 	await expect(option1).not.toHaveAttribute('data-state', 'checked');
 
 	// Select the first item
 	await userEvent.click(option1);
-	await expect(trigger).toHaveTextContent(mockOptions[0].label);
+	await expect(trigger).toHaveTextContent(firstOption.label);
 
 	// Open the select dropdown again
 	await userEvent.click(trigger);
 
 	// Select the second item
-	const option2 = screen.getByRole('option', { name: mockOptions[1].label });
+	const option2 = screen.getByRole('option', { name: secondOption.label });
 	await userEvent.click(option2);
-	await expect(trigger).toHaveTextContent(mockOptions[1].label);
+	await expect(trigger).toHaveTextContent(secondOption.label);
 
 	// Open the select dropdown again to verify selection states
 	await userEvent.click(trigger);
 
 	// Verify that the first item is no longer selected
-	const updatedOption1 = screen.getByRole('option', { name: mockOptions[0].label });
+	const updatedOption1 = screen.getByRole('option', { name: firstOption.label });
 	await expect(updatedOption1).not.toHaveAttribute('data-state', 'checked');
 
 	// Verify that the second item is now selected
-	const updatedOption2 = screen.getByRole('option', { name: mockOptions[1].label });
+	const updatedOption2 = screen.getByRole('option', { name: secondOption.label });
 	await expect(updatedOption2).toHaveAttribute('data-state', 'checked');
 
 	// Close the dropdown first by pressing Escape
@@ -138,7 +145,7 @@ const mockOptions = [
 	{ value: 'kiwi', label: 'Kiwi' },
 	{ value: 'lemon', label: 'Lemon' },
 	{ value: 'melon', label: 'Melon' },
-];
+] satisfies DsSelectOption[];
 
 export const Default: Story = {
 	render: (args) => <ControlledSelectWrapper {...args} />,

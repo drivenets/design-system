@@ -215,10 +215,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const selectedRows = Object.entries(rowSelection)
 		.filter(([, selected]) => selected)
-		// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		.map(([key]) => rowsById[key]?.original)
-		.filter(Boolean);
+		.filter((v) => !!v);
 
 	const contextValue: DsTableContextType<TData, TValue> = {
 		stickyHeader,
@@ -279,6 +277,11 @@ const DsTable = <TData extends { id: string }, TValue>({
 								rowVirtualizer.getVirtualItems().length ? (
 									rowVirtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
 										const row = rows[virtualRow.index];
+
+										if (!row) {
+											return null;
+										}
+
 										return <DsTableRow key={row.id} row={row} virtualRow={virtualRow} />;
 									})
 								) : (

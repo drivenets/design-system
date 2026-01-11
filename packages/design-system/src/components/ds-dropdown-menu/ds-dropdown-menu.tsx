@@ -195,7 +195,7 @@ const ItemGroup: React.FC<DsDropdownMenuItemGroupProps> = ({
 
 	return (
 		<GroupContext.Provider value={{ collapsed, toggle }}>
-			<Menu.ItemGroup className={classNames(styles.group, className)} style={style}>
+			<Menu.ItemGroup className={className} style={style}>
 				{children}
 			</Menu.ItemGroup>
 		</GroupContext.Provider>

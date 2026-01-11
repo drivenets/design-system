@@ -74,9 +74,9 @@ export function createDualRangeFilterAdapter<TData>(
 			// Check each field's range
 			for (const [fieldKey, range] of Object.entries(filterValue)) {
 				const hasFilter = range.from !== undefined || range.to !== undefined;
+				const fieldValue = rowValue[fieldKey];
 
-				if (hasFilter) {
-					const fieldValue = rowValue[fieldKey];
+				if (hasFilter && fieldValue !== undefined) {
 					const matchesFrom = range.from === undefined || fieldValue >= range.from;
 					const matchesTo = range.to === undefined || fieldValue <= range.to;
 
@@ -147,8 +147,6 @@ export function createDualRangeFilterAdapter<TData>(
 						<RangeFilter
 							key={fieldKey}
 							label={fieldLabel}
-							// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
-							// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 							value={value[fieldKey] || {}}
 							onChange={(rangeValue) =>
 								onChange({

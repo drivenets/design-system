@@ -16,13 +16,7 @@ const DsButton: React.FC<DsButtonProps> = ({
 	children,
 	...props
 }) => {
-	const buttonClass = classNames(
-		styles.button,
-		styles[`${schema}-${variant}`],
-		styles[size],
-		{ [styles.disabled]: disabled },
-		className,
-	);
+	const buttonClass = classNames(styles.button, styles[`${schema}-${variant}`], styles[size], className);
 
 	return (
 		<button type="button" className={buttonClass} disabled={disabled} {...props}>
