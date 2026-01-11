@@ -147,8 +147,6 @@ export function createDualRangeFilterAdapter<TData>(
 						<RangeFilter
 							key={fieldKey}
 							label={fieldLabel}
-							// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
-
 							value={value[fieldKey] || {}}
 							onChange={(rangeValue) =>
 								onChange({
