@@ -1,0 +1,21 @@
+.indicator {
+	position: absolute;
+	background: var(--color-background-selected);
+	transition:
+		left 0.3s ease,
+		top 0.3s ease,
+		width 0.3s ease,
+		height 0.3s ease;
+	border-radius: 4px;
+	pointer-events: none;
+}
+
+.indicator-horizontal {
+	height: 2px;
+	bottom: 0;
+}
+
+.indicator-vertical {
+	width: 2px;
+	right: 0;
+}

@@ -1,0 +1,18 @@
+@use '../../../../styles/typography';
+
+.tabList {
+	display: flex;
+	position: relative;
+}
+
+.tabList-horizontal {
+	flex-direction: row;
+	gap: var(--spacing-xs);
+	align-items: center;
+}
+
+.tabList-vertical {
+	flex-direction: column;
+	gap: var(--spacing-3xs);
+	align-items: flex-start;
+}

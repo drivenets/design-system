@@ -1,0 +1,2 @@
+// Re-export styles from ds-tabs-tab since overflow uses same tab styles
+@forward '../ds-tabs-tab/ds-tabs-tab.module.scss';
