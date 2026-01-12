@@ -28,6 +28,7 @@ export * from './components/ds-status-badge';
 export * from './components/ds-stepper';
 export * from './components/ds-system-status';
 export * from './components/ds-table';
+export * from './components/ds-tag';
 export * from './components/ds-text-input';
 export * from './components/ds-textarea';
 export * from './components/ds-toast';

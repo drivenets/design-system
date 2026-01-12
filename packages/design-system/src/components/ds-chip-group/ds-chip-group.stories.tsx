@@ -4,13 +4,23 @@ import DsChipGroup from './ds-chip-group';
 import type { ChipItem } from './ds-chip-group.types';
 import styles from './ds-chip-group.stories.module.scss';
 
+/**
+ * @deprecated This component is deprecated. Use `DsTagGroup` instead.
+ * @see {@link ../ds-tag-group/ds-tag-group.stories} for examples of the replacement component.
+ */
 const meta: Meta<typeof DsChipGroup> = {
-	title: 'Design System/Chip Group',
+	title: 'Design System/Chip Group (Deprecated)',
 	component: DsChipGroup,
 	parameters: {
 		layout: 'padded',
+		docs: {
+			description: {
+				component:
+					'**Deprecated**: This component is deprecated. Please use `DsTagGroup` instead. See the TagGroup stories for the replacement component.',
+			},
+		},
 	},
-	tags: ['autodocs'],
+	tags: ['autodocs', 'deprecated'],
 	argTypes: {
 		items: {
 			control: 'object',

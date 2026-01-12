@@ -2,13 +2,23 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsChip from './ds-chip';
 import { chipSizes } from './ds-chip.types';
 
+/**
+ * @deprecated This component is deprecated. Use `DsTag` instead.
+ * @see {@link ../ds-tag/ds-tag.stories} for examples of the replacement component.
+ */
 const meta: Meta<typeof DsChip> = {
-	title: 'Design System/Chip',
+	title: 'Design System/Chip (Deprecated)',
 	component: DsChip,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'**Deprecated**: This component is deprecated. Please use `DsTag` instead. See the Tag stories for the replacement component.',
+			},
+		},
 	},
-	tags: ['autodocs'],
+	tags: ['autodocs', 'deprecated'],
 	argTypes: {
 		label: {
 			control: 'text',

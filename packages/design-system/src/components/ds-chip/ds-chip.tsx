@@ -6,7 +6,8 @@ import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
 /**
- * Design system Chip component
+ * @deprecated This component is deprecated. Use `DsTag` instead.
+ * @see {@link ../ds-tag} for the replacement component.
  */
 const DsChip: React.FC<DsChipProps> = ({
 	ref,

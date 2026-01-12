@@ -1,5 +1,9 @@
 import type { CSSProperties } from 'react';
 
+/**
+ * @deprecated This interface is deprecated. Use `DsTagGroup` types instead.
+ * @see {@link ../ds-tag-group} for the replacement types.
+ */
 export interface ChipItem {
 	/**
 	 * Unique identifier for the chip
@@ -19,6 +23,10 @@ export interface ChipItem {
 	selected?: boolean;
 }
 
+/**
+ * @deprecated This interface is deprecated. Use `DsTagGroupProps` from `ds-tag-group` instead.
+ * @see {@link ../ds-tag-group/ds-tag-group.types} for the replacement interface.
+ */
 export interface DsChipGroupProps {
 	/**
 	 * Array of chip items to display

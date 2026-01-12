@@ -13,8 +13,8 @@ import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 
 /**
- * Design system chip group component displays a collection of chips with overflow handling
- * Used for displaying filters, selected items, tags, etc.
+ * @deprecated This component is deprecated. Use `DsTagGroup` instead.
+ * @see {@link ../ds-tag-group} for the replacement component.
  */
 const DsChipGroup: React.FC<DsChipGroupProps> = ({
 	items,

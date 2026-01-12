@@ -1,0 +1,111 @@
+@use '../../styles/typography';
+
+.tag {
+	--transition-duration: 200ms;
+
+	display: inline-flex;
+	outline: 2px solid transparent;
+	align-items: center;
+	border-radius: 4px;
+	cursor: default;
+	overflow: hidden;
+	position: relative;
+	padding: var(--spacing-3xs) var(--spacing-xs);
+	background: var(--color-background);
+	border: 1px solid var(--color-border-contrast);
+	transition-property:
+		background, border-color, width, max-width, color, fill, stroke, opacity, transform, outline-color,
+		opacity, visibility;
+	transition-timing-function: ease-out;
+	transition-duration: var(--transition-duration);
+
+	&.clickable {
+		cursor: pointer;
+
+		&:hover {
+			background: var(--color-background-secondary);
+			border-color: var(--color-border-action-secondary-hover);
+		}
+
+		&:focus-visible {
+			outline-color: var(--color-border-action-secondary);
+		}
+	}
+
+	&.selected {
+		background: var(--color-background-selected-weak);
+		border-color: var(--color-border-action-primary);
+
+		&:focus-visible {
+			outline-color: var(--color-border-action-primary);
+		}
+
+		.deleteButton {
+			outline-color: var(--color-border-action-primary);
+		}
+	}
+
+	&.include {
+		.variantIcon {
+			color: var(--color-icon-secondary);
+		}
+	}
+
+	&.exclude {
+		.variantIcon {
+			color: var(--color-icon-danger);
+		}
+	}
+
+	&.disabled {
+		cursor: not-allowed;
+		color: var(--color-font-disabled);
+		background: var(--color-background);
+		border-color: var(--color-border-contrast);
+
+		.label {
+			color: var(--color-font-disabled);
+		}
+
+		.variantIcon {
+			color: var(--color-font-disabled);
+		}
+	}
+
+	.deleteButton {
+		opacity: 0;
+		visibility: hidden;
+		max-width: 0;
+		display: flex;
+		outline-color: var(--color-border-action-secondary);
+		user-select: none;
+		transition-property:
+			background, border-color, width, max-width, color, fill, stroke, opacity, transform, outline-color,
+			visibility, margin-left;
+		transition-timing-function: ease-out;
+		transition-duration: var(--transition-duration);
+		color: var(--color-icon-secondary);
+
+		&:hover {
+			background: var(--color-background-action-secondary-hover);
+		}
+	}
+
+	&:hover:not(.disabled) .deleteButton,
+	&:focus-within:not(.disabled) .deleteButton,
+	&.selected:not(.disabled) .deleteButton {
+		opacity: 1;
+		visibility: visible;
+		max-width: 50px;
+		margin-left: var(--spacing-3xs);
+	}
+}
+
+.label {
+	@include typography.ellipsis;
+}
+
+.variantIcon {
+	flex-shrink: 0;
+	margin-right: var(--spacing-3xs);
+}
