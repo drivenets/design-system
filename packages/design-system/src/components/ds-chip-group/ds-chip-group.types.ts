@@ -1,8 +1,8 @@
 import type { CSSProperties } from 'react';
 
 /**
- * @deprecated This interface is deprecated. Use `DsTagGroup` types instead.
- * @see {@link ../ds-tag-group} for the replacement types.
+ * @deprecated This interface is deprecated. Use `DsTagFilter` types instead.
+ * @see {@link ../ds-tag-filter} for the replacement types.
  */
 export interface ChipItem {
 	/**
@@ -24,8 +24,8 @@ export interface ChipItem {
 }
 
 /**
- * @deprecated This interface is deprecated. Use `DsTagGroupProps` from `ds-tag-group` instead.
- * @see {@link ../ds-tag-group/ds-tag-group.types} for the replacement interface.
+ * @deprecated This interface is deprecated. Use `DsTagFilterProps` from `ds-tag-filter` instead.
+ * @see {@link ../ds-tag-filter/ds-tag-filter.types} for the replacement interface.
  */
 export interface DsChipGroupProps {
 	/**

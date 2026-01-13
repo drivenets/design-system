@@ -13,8 +13,8 @@ import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 
 /**
- * @deprecated This component is deprecated. Use `DsTagGroup` instead.
- * @see {@link ../ds-tag-group} for the replacement component.
+ * @deprecated This component is deprecated. Use `DsTagFilter` instead.
+ * @see {@link ../ds-tag-filter} for the replacement component.
  */
 const DsChipGroup: React.FC<DsChipGroupProps> = ({
 	items,

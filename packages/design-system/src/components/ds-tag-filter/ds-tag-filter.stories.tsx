@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import DsTagFilter from './ds-tag-filter';
 import type { TagFilterItem } from './ds-tag-filter.types';
 import styles from './ds-tag-filter.stories.module.scss';
@@ -39,6 +39,10 @@ const meta: Meta<typeof DsTagFilter> = {
 			action: 'select-item',
 			description: 'Callback when item is selected',
 		},
+		onExpand: {
+			action: 'expand',
+			description: 'Callback when expand/collapse is clicked',
+		},
 	},
 };
 
@@ -57,8 +61,8 @@ const sampleFilters: TagFilterItem[] = [
 	{ id: '9', label: 'Version: 000.0001-4' },
 	{ id: '10', label: 'Version: 000.0001-5' },
 	{ id: '11', label: 'Version: 000.0001-6' },
-	{ id: '12', label: 'Last editor: Maren Levin' },
-	{ id: '13', label: 'Last editor: Emery Franci' },
+	{ id: '12', label: 'Last editor: Kevin Levin' },
+	{ id: '13', label: 'Last editor: Emery Dance' },
 ];
 
 /**
@@ -125,7 +129,7 @@ export const Default: Story = {
 			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
 		});
 
-		await expect(canvas.getAllByText('Filtered by:')[0]).toBeInTheDocument();
+		await expect(canvas.getByText('Filtered by:')).toBeInTheDocument();
 		await expect(canvas.getByRole('button', { name: /Clear all filters/ })).toBeInTheDocument();
 
 		const firstTag = canvas.getByRole('button', { name: 'Status: Active' });
@@ -297,11 +301,13 @@ export const ReadOnly: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		// Verify custom label is shown (use getAllByText and take first to avoid measurement container duplicate)
-		await expect(canvas.getAllByText('Applied filters:')[0]).toBeInTheDocument();
+		// Wait for layout calculation to complete and tags to be rendered
+		await waitFor(async () => {
+			await expect(canvas.getByText('Status: Active')).toBeInTheDocument();
+		});
 
-		// Verify filters are visible
-		await expect(canvas.getAllByText('Status: Active')[0]).toBeInTheDocument();
+		// Verify custom label is shown
+		await expect(canvas.getByText('Applied filters:')).toBeInTheDocument();
 
 		// Verify delete buttons are NOT visible (read-only)
 		await expect(canvas.queryByRole('button', { name: 'Delete tag' })).not.toBeInTheDocument();
@@ -402,13 +408,61 @@ export const CustomLocale: Story = {
 			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
 		});
 
-		// Verify custom label is rendered (use getAllByText and take first to avoid measurement container duplicate)
-		await expect(canvas.getAllByText('Active criteria:')[0]).toBeInTheDocument();
+		// Verify custom label is rendered
+		await expect(canvas.getByText('Active criteria:')).toBeInTheDocument();
 
 		await expect(canvas.getByRole('button', { name: /Reset all/ })).toBeInTheDocument();
 
 		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
 		await expect(canvas.queryByRole('button', { name: /Clear all filters/ })).not.toBeInTheDocument();
+	},
+};
+
+/**
+ * Story testing the expand/collapse functionality and onExpand callback.
+ */
+export const ExpandCollapse: Story = {
+	args: {
+		items: sampleFilters,
+		onExpand: fn(),
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		// Wait for layout calculation to complete and overflow tag to appear
+		await waitFor(async () => {
+			await expect(canvas.getByRole('button', { name: /\+\d+ filters?/ })).toBeInTheDocument();
+		});
+
+		const expandButton = canvas.getByRole('button', { name: /\+\d+ filters?/ });
+
+		// Click expand button
+		await userEvent.click(expandButton);
+
+		// Verify onExpand was called with true (expanded)
+		await waitFor(async () => {
+			await expect(args.onExpand).toHaveBeenCalledWith(true);
+		});
+
+		// Verify the button now shows "Collapse"
+		await waitFor(async () => {
+			await expect(canvas.getByRole('button', { name: 'Collapse' })).toBeInTheDocument();
+		});
+
+		const collapseButton = canvas.getByRole('button', { name: 'Collapse' });
+
+		// Click collapse button
+		await userEvent.click(collapseButton);
+
+		// Verify onExpand was called with false (collapsed)
+		await waitFor(async () => {
+			await expect(args.onExpand).toHaveBeenCalledWith(false);
+		});
+
+		// Verify the expand button is back
+		await waitFor(async () => {
+			await expect(canvas.getByRole('button', { name: /\+\d+ filters?/ })).toBeInTheDocument();
+		});
 	},
 };
 

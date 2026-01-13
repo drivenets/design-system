@@ -5,8 +5,8 @@ import type { ChipItem } from './ds-chip-group.types';
 import styles from './ds-chip-group.stories.module.scss';
 
 /**
- * @deprecated This component is deprecated. Use `DsTagGroup` instead.
- * @see {@link ../ds-tag-group/ds-tag-group.stories} for examples of the replacement component.
+ * @deprecated This component is deprecated. Use `DsTagFilter` instead.
+ * @see {@link ../ds-tag-filter/ds-tag-filter.stories} for examples of the replacement component.
  */
 const meta: Meta<typeof DsChipGroup> = {
 	title: 'Design System/Chip Group (Deprecated)',
@@ -16,7 +16,7 @@ const meta: Meta<typeof DsChipGroup> = {
 		docs: {
 			description: {
 				component:
-					'**Deprecated**: This component is deprecated. Please use `DsTagGroup` instead. See the TagGroup stories for the replacement component.',
+					'**Deprecated**: This component is deprecated. Please use `DsTagFilter` instead. See the TagGroup stories for the replacement component.',
 			},
 		},
 	},

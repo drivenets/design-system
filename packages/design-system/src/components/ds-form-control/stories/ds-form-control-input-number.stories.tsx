@@ -77,6 +77,7 @@ const sanityCheck = async (canvasElement: HTMLElement) => {
 
 	// Test typing
 	await userEvent.clear(input);
+	await userEvent.click(input); // ensure focus + caret placement
 	await userEvent.type(input, '25');
 	await waitFor(async () => {
 		await expect(input).toHaveValue('25');

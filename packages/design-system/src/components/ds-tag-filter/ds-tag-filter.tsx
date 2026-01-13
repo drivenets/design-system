@@ -1,4 +1,5 @@
 import { useState, useRef, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import styles from './ds-tag-filter.module.scss';
 import type { DsTagFilterProps } from './ds-tag-filter.types';
@@ -17,11 +18,12 @@ import { DsIcon } from '../ds-icon';
 const DsTagFilter = ({
 	items,
 	locale = {},
+	className,
+	style,
 	onClearAll,
 	onItemDelete,
 	onItemSelect,
-	className,
-	style,
+	onExpand,
 }: DsTagFilterProps) => {
 	const [expanded, setExpanded] = useState(false);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -66,20 +68,35 @@ const DsTagFilter = ({
 		/>
 	);
 
-	return (
-		<div
-			ref={containerRef}
-			className={classNames(styles.container, expanded && styles.expanded, className)}
-			style={style}
-		>
-			<div className={styles.row1}>
-				{label && (
+	const handleExpandToggle = () => {
+		const newExpanded = !expanded;
+		setExpanded(newExpanded);
+		onExpand?.(newExpanded);
+	};
+
+	// Measurement container rendered via portal to keep it outside component's DOM tree
+	// This prevents Testing Library from finding duplicate elements
+	const measurementContainer = (
+		<div ref={measurementRef} className={styles.measurementContainer} aria-hidden="true">
+			{label && (
+				<span data-measure-label="">
 					<DsTypography variant="body-sm-reg" className={styles.label}>
 						{label}
 					</DsTypography>
-				)}
-				{row1Tags.map((item) => renderTag(item))}
-				{onClearAll && (
+				</span>
+			)}
+			{items.map((item) => (
+				<span key={item.id} data-measure-tag="">
+					<DsTag
+						label={item.label}
+						selected={item.selected}
+						onClick={onItemSelect ? () => onItemSelect(item) : undefined}
+						onDelete={onItemDelete ? () => onItemDelete(item) : undefined}
+					/>
+				</span>
+			))}
+			{onClearAll && (
+				<span data-measure-clear="">
 					<DsButton
 						design="v1.2"
 						buttonType="tertiary"
@@ -87,51 +104,33 @@ const DsTagFilter = ({
 						className={styles.clearButton}
 						contentClassName={styles.clearContent}
 						size="small"
-						onClick={onClearAll}
 					>
 						<DsIcon icon="close" />
 						{clearButton}
 					</DsButton>
-				)}
-			</div>
-
-			{hasRow2Content && (
-				<div className={styles.row2}>
-					{row2Tags.map((item) => renderTag(item))}
-					{hasOverflow && (
-						<DsTag
-							label={
-								expanded ? 'Collapse' : `+${String(hiddenCount)} ${hiddenCount === 1 ? 'filter' : 'filters'}`
-							}
-							selected={expanded}
-							className={styles.expandTag}
-							onClick={() => setExpanded((prev) => !prev)}
-						/>
-					)}
-				</div>
+				</span>
 			)}
+			<span data-measure-expand="">
+				<DsTag label="+99 filters" className={styles.expandTag} />
+			</span>
+		</div>
+	);
 
-			{/* Hidden measurement container - used to measure all elements for layout calculation */}
-			<div ref={measurementRef} className={styles.measurementContainer} aria-hidden="true">
-				{label && (
-					<span data-measure-label="">
+	return (
+		<>
+			<div
+				ref={containerRef}
+				className={classNames(styles.container, expanded && styles.expanded, className)}
+				style={style}
+			>
+				<div className={styles.row1}>
+					{label && (
 						<DsTypography variant="body-sm-reg" className={styles.label}>
 							{label}
 						</DsTypography>
-					</span>
-				)}
-				{items.map((item) => (
-					<span key={item.id} data-measure-tag="">
-						<DsTag
-							label={item.label}
-							selected={item.selected}
-							onClick={onItemSelect ? () => onItemSelect(item) : undefined}
-							onDelete={onItemDelete ? () => onItemDelete(item) : undefined}
-						/>
-					</span>
-				))}
-				{onClearAll && (
-					<span data-measure-clear="">
+					)}
+					{row1Tags.map((item) => renderTag(item))}
+					{onClearAll && (
 						<DsButton
 							design="v1.2"
 							buttonType="tertiary"
@@ -139,17 +138,34 @@ const DsTagFilter = ({
 							className={styles.clearButton}
 							contentClassName={styles.clearContent}
 							size="small"
+							onClick={onClearAll}
 						>
 							<DsIcon icon="close" />
 							{clearButton}
 						</DsButton>
-					</span>
+					)}
+				</div>
+
+				{hasRow2Content && (
+					<div className={styles.row2}>
+						{row2Tags.map((item) => renderTag(item))}
+						{hasOverflow && (
+							<DsTag
+								label={
+									expanded
+										? 'Collapse'
+										: `+${String(hiddenCount)} ${hiddenCount === 1 ? 'filter' : 'filters'}`
+								}
+								selected={expanded}
+								className={styles.expandTag}
+								onClick={handleExpandToggle}
+							/>
+						)}
+					</div>
 				)}
-				<span data-measure-expand="">
-					<DsTag label="+99 filters" className={styles.expandTag} />
-				</span>
 			</div>
-		</div>
+			{createPortal(measurementContainer, document.body)}
+		</>
 	);
 };
 
