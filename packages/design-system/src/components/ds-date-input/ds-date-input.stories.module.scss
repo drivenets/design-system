@@ -1,0 +1,29 @@
+.containerSingle {
+	width: 320px;
+}
+
+.containerRange {
+	width: 420px;
+}
+
+.helperText {
+	font-size: 12px;
+	margin-top: 8px;
+	color: var(--color-font-secondary);
+}
+
+.errorText {
+	font-size: 12px;
+	margin-top: 8px;
+	color: var(--color-error);
+}
+
+.infoContainer {
+	font-size: 12px;
+	margin-top: 8px;
+	color: var(--color-font-secondary);
+}
+
+.buttonContainer {
+	margin-bottom: 16px;
+}

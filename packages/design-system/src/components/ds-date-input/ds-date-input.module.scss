@@ -1,0 +1,246 @@
+@use '../../styles/shared/input';
+@use '../../styles/shared/dropdown';
+
+.dateInputControl {
+	@include input.base-input-container;
+	@include input.input-container-states;
+	max-height: input.$input-text-height-default;
+	justify-content: space-between;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	gap: var(--spacing-3xs);
+
+	border-color: var(--form-control-border-color, var(--color-border));
+
+	&:hover:not(.disabled) {
+		border-color: var(--form-control-border-color, var(--color-border-hover));
+	}
+
+	&:focus-within {
+		border-color: var(--form-control-border-color, var(--color-border-action));
+	}
+
+	&.disabled {
+		color: var(--color-background-deselected);
+		background: var(--color-background-secondary);
+		border-color: var(--color-border-disabled);
+		cursor: not-allowed;
+
+		.input {
+			color: var(--color-font-disabled);
+		}
+
+		.dateInputButton {
+			color: var(--color-background-disable);
+			cursor: not-allowed;
+		}
+	}
+
+	&.readOnly {
+		background: var(--color-background-secondary);
+		cursor: default;
+	}
+}
+
+.input {
+	@include input.base-input;
+	min-width: 0;
+	flex: 1;
+	padding: 0;
+}
+
+.dateInputButton {
+	@include input.icon-button;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	padding: 0;
+	transition: color 0.2s ease;
+
+	&:hover:not(:disabled) {
+		color: var(--color-background-action-hover);
+	}
+
+	&:disabled {
+		color: var(--color-background-disable);
+		cursor: not-allowed;
+	}
+}
+
+.positioner {
+	@include dropdown.dropdown-viewport;
+}
+
+.content {
+	@include dropdown.dropdown-content;
+	padding: var(--spacing-standard);
+}
+
+.viewControl {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--spacing-xs);
+}
+
+.viewTrigger {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: var(--spacing-2xs) var(--spacing-xs);
+	border-radius: var(--spacing-2xs);
+	color: var(--color-font-main);
+	transition: background-color 0.2s;
+
+	&:hover {
+		background: var(--color-background-hover);
+	}
+}
+
+.prevTrigger,
+.nextTrigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: var(--spacing-2xs);
+	border-radius: var(--spacing-2xs);
+	color: var(--color-font-secondary);
+	transition: all 0.2s;
+
+	&:hover {
+		background: var(--color-background-hover);
+		color: var(--color-font-main);
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+}
+
+.calendarView {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+}
+
+.table {
+	width: 100%;
+	border-collapse: collapse;
+
+	.tableBody .tableRow .tableCellTrigger:focus-visible {
+		.tableCellTriggerValue {
+			outline: 2px solid var(--color-background-action-hover);
+			border-radius: var(--spacing-2xs);
+			border-width: 0;
+		}
+	}
+}
+
+.tableHead {
+	border-bottom: 1px solid var(--color-border);
+}
+
+.tableHeader {
+	text-align: center;
+	padding: var(--spacing-2xs);
+	color: var(--color-font-secondary);
+	font-weight: var(--font-weight-medium);
+}
+
+.tableRow {
+	&:first-child {
+		.tableCellTrigger {
+			margin-top: var(--spacing-xs);
+		}
+	}
+}
+
+.tableCellTrigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+	outline: none;
+
+	.tableCellTriggerValue {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: var(--spacing-xl);
+		height: var(--spacing-xl);
+		margin: var(--spacing-3xs);
+		color: var(--color-font-main);
+		border-radius: var(--spacing-xs);
+	}
+
+	&:hover:not([data-disabled], [data-selected], [data-in-range], [data-in-hover-range])
+		.tableCellTriggerValue {
+		outline: 1px solid var(--color-border);
+		background: var(--color-background-action-hover-weak);
+	}
+
+	&[data-outside-range] .tableCellTriggerValue {
+		color: var(--color-font-disabled);
+	}
+
+	&[data-selected] .tableCellTriggerValue {
+		background: var(--color-background-selected);
+		color: var(--color-font-on-action);
+	}
+
+	&[data-in-range]:not([data-selected]) {
+		position: relative;
+
+		.tableCellTriggerValue {
+			background: var(--color-background-action-secondary-hover);
+		}
+	}
+
+	&[data-today]:not([data-selected], [data-in-range]):hover .tableCellTriggerValue {
+		border-radius: var(--spacing-xs);
+	}
+
+	&[data-today]:not([data-selected]) .tableCellTriggerValue {
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 75%;
+			bottom: 4px;
+			border-bottom: 1px solid var(--color-background-brand);
+		}
+	}
+
+	&[data-today][data-selected] .tableCellTriggerValue {
+		position: relative;
+
+		&::after {
+			content: '';
+			position: absolute;
+			width: 75%;
+			bottom: 4px;
+			border-bottom: 1px solid var(--color-background);
+		}
+	}
+
+	&[data-disabled] .tableCellTriggerValue {
+		color: var(--color-font-disabled);
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+
+	&[data-unavailable] .tableCellTriggerValue {
+		text-decoration: line-through;
+		opacity: 0.4;
+	}
+}

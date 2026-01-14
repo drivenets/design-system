@@ -66,6 +66,7 @@
 		"classnames": "^2.5.1"
 	},
 	"peerDependencies": {
+		"@internationalized/date": "^3.0.0",
 		"react": "^19"
 	},
 	"devDependencies": {

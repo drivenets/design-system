@@ -17,6 +17,7 @@ const defaultValues = {
 	email: '',
 	description: '',
 	quantity: undefined,
+	startDate: undefined,
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
@@ -47,10 +48,10 @@ const SampleForm = () => {
 
 	const handleValueChange = (
 		field: ControllerRenderProps<SampleFormValues> | keyof SampleFormValues,
-		value: unknown,
+		value: string | number | true | undefined,
 	) => {
 		const name = typeof field === 'string' ? field : field.name;
-		setValue(name, value as never, {
+		setValue(name, value ?? '', {
 			shouldValidate: true,
 			shouldTouch: true,
 			shouldDirty: true,
@@ -130,6 +131,25 @@ const SampleForm = () => {
 				</DsFormControl>
 
 				<DsFormControl
+					label="Start Date"
+					required
+					status="error"
+					messageIcon="cancel"
+					message={touchedFields.startDate ? errors.startDate?.message : undefined}
+				>
+					<Controller
+						name="startDate"
+						control={control}
+						render={({ field }) => (
+							<DsFormControl.DateInput
+								value={field.value}
+								onValueChange={(value) => handleValueChange(field, value as string)}
+							/>
+						)}
+					/>
+				</DsFormControl>
+
+				<DsFormControl
 					label="Preferred Contact Method"
 					required
 					status="error"
@@ -176,7 +196,7 @@ const SampleForm = () => {
 
 				<DsRadioGroup.Root
 					value={watch('subscription')}
-					onValueChange={(value) => handleValueChange('subscription', value)}
+					onValueChange={(value) => handleValueChange('subscription', value as string)}
 				>
 					<DsRadioGroup.Item value="basic" label="Basic" />
 					<DsRadioGroup.Item value="pro" label="Pro" />

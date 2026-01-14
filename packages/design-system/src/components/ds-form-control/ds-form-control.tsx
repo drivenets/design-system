@@ -9,6 +9,7 @@ import { DsNumberInput } from '../ds-number-input';
 import { DsPasswordInput } from '../ds-password-input';
 import type { DsFormControlDescriptionProps, DsFormControlProps } from './ds-form-control.types';
 import styles from './ds-form-control.module.scss';
+import { DsDateInput } from '../ds-date-input';
 
 const FormControlContext = createContext<{ controlId: string } | null>(null);
 
@@ -87,6 +88,7 @@ const DsFormControl = ({
 DsFormControl.TextInput = controlify(DsTextInput);
 DsFormControl.NumberInput = controlify(DsNumberInput);
 DsFormControl.PasswordInput = controlify(DsPasswordInput);
+DsFormControl.DateInput = controlify(DsDateInput);
 DsFormControl.Textarea = controlify(DsTextarea);
 DsFormControl.Select = controlify(DsSelect);
 DsFormControl.Description = DsFormControlDescription;
