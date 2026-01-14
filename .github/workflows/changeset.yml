@@ -63,7 +63,7 @@ jobs:
 
           echo $STATUS_OUTPUT
 
-          if [[ "$STATUS_OUTPUT" == *"$MAJOR_PATTERN"* ]]; then
+          if echo "$STATUS_OUTPUT" | grep -q "$MAJOR_PATTERN"; then
             echo "Error: Major changesets are not allowed. Did you mean to create a minor or patch changeset instead?";
             exit 1;
           fi
