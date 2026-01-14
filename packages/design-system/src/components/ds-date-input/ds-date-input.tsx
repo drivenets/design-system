@@ -119,7 +119,7 @@ const DsDateInput = ({
 			readOnly={readOnly}
 			open={isOpen}
 			onOpenChange={(details) => {
-				// Don't close the calendar when user typing
+				// Don't close the calendar when the user is typing
 				if (!isFocused) {
 					setIsOpen(details.open);
 					onOpenChange?.(details.open);
