@@ -91,6 +91,8 @@ jobs:
           STATUS_OUTPUT=$(pnpm changeset status --since origin/main)
           MAJOR_PATTERN="info Packages to be bumped at major:"
 
+          echo $STATUS_OUTPUT
+
           if [[ "$STATUS_OUTPUT" == *"$MAJOR_PATTERN"* ]]; then
             echo "Error: Major changesets are not allowed. Did you mean to create a minor or patch changeset instead?";
             exit 1;
