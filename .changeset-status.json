@@ -1,0 +1,75 @@
+{
+	"changesets": [
+		{
+			"releases": [
+				{
+					"name": "@drivenets/design-system",
+					"type": "minor"
+				}
+			],
+			"summary": "Add `DsToggle` component",
+			"id": "chubby-bugs-start"
+		},
+		{
+			"releases": [
+				{
+					"name": "@drivenets/design-system",
+					"type": "minor"
+				}
+			],
+			"summary": "Added `DsDateInput` component",
+			"id": "chubby-flowers-lie"
+		},
+		{
+			"releases": [
+				{
+					"name": "@drivenets/design-system",
+					"type": "major"
+				},
+				{
+					"name": "@drivenets/eslint-plugin-design-system",
+					"type": "major"
+				},
+				{
+					"name": "@drivenets/vite-plugin-design-system",
+					"type": "major"
+				}
+			],
+			"summary": "asd",
+			"id": "shiny-berries-tan"
+		},
+		{
+			"releases": [
+				{
+					"name": "@drivenets/design-system",
+					"type": "minor"
+				}
+			],
+			"summary": "Add 'DsDivider' component",
+			"id": "silly-ideas-smash"
+		}
+	],
+	"releases": [
+		{
+			"name": "@drivenets/design-system",
+			"type": "major",
+			"oldVersion": "0.0.5",
+			"changesets": ["chubby-bugs-start", "chubby-flowers-lie", "shiny-berries-tan", "silly-ideas-smash"],
+			"newVersion": "1.0.0"
+		},
+		{
+			"name": "@drivenets/eslint-plugin-design-system",
+			"type": "major",
+			"oldVersion": "0.0.5",
+			"changesets": ["shiny-berries-tan"],
+			"newVersion": "1.0.0"
+		},
+		{
+			"name": "@drivenets/vite-plugin-design-system",
+			"type": "major",
+			"oldVersion": "0.0.4",
+			"changesets": ["shiny-berries-tan"],
+			"newVersion": "1.0.0"
+		}
+	]
+}
