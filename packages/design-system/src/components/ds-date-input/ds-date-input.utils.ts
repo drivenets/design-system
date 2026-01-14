@@ -50,7 +50,7 @@ export const dateValuesToStrings = (dates: DateValue[], range: boolean): string 
 /**
  * Format a DateValue to string (MM/DD/YYYY)
  */
-export const formatDateValue = (date: DateValue): string => {
+const formatDateValue = (date: DateValue): string => {
 	const paddedMonth = String(date.month).padStart(2, '0');
 	const paddedDay = String(date.day).padStart(2, '0');
 
@@ -74,7 +74,7 @@ export const formatDateInputValue = (value: DateValue[], range: boolean): string
 /**
  * Parse a date string (MM/DD/YYYY) to DateValue
  */
-export const parseDateString = (dateStr: string): DateValue | null => {
+const parseDateString = (dateStr: string): DateValue | null => {
 	if (!dateStr || !dateStr.trim()) {
 		return null;
 	}
@@ -106,7 +106,7 @@ export const parseDateString = (dateStr: string): DateValue | null => {
 /**
  * Parse a range input string (MM/DD/YYYY - MM/DD/YYYY)
  */
-export const parseRangeInput = (text: string): ParsedDateRange => {
+const parseRangeInput = (text: string): ParsedDateRange => {
 	if (!text.trim()) {
 		return { start: null, end: null, isValid: true }; // Empty is valid
 	}
