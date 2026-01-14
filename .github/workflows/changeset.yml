@@ -53,17 +53,7 @@ jobs:
       # Returns exit code 1 when there are changes without changesets attached to them.
       # See: https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#blocking
       - name: Run Changesets
-        run: pnpm changeset status --since origin/main
+        run: pnpm changeset status --since origin/main --output=/tmp/changeset-status.json
 
       - name: Check for Major Changeset
-        shell: bash
-        run: |
-          STATUS_OUTPUT=$(pnpm changeset status --since origin/main 2>&1)
-          MAJOR_PATTERN="info Packages to be bumped at major:"
-
-          echo $STATUS_OUTPUT
-
-          if echo "$STATUS_OUTPUT" | grep -q "$MAJOR_PATTERN"; then
-            echo "Error: Major changesets are not allowed. Did you mean to create a minor or patch changeset instead?";
-            exit 1;
-          fi
+        run: node .github/scripts/check-major-version.ts /tmp/changeset-status.json
