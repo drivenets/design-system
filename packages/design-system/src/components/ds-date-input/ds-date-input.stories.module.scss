@@ -1,0 +1,32 @@
+// Story container widths
+.containerSingle {
+	width: 320px;
+}
+
+.containerRange {
+	width: 420px;
+}
+
+// Helper text styles
+.helperText {
+	font-size: 12px;
+	margin-top: 8px;
+	color: var(--color-font-secondary);
+}
+
+.errorText {
+	font-size: 12px;
+	margin-top: 8px;
+	color: var(--color-error);
+}
+
+.infoContainer {
+	font-size: 12px;
+	margin-top: 8px;
+	color: var(--color-font-secondary);
+}
+
+// Button container
+.buttonContainer {
+	margin-bottom: 16px;
+}

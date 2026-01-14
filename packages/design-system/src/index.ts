@@ -35,3 +35,4 @@ export * from './components/ds-toggle';
 export * from './components/ds-tooltip';
 export * from './components/ds-typography';
 export * from './components/ds-vertical-tabs';
+export * from './components/ds-date-input';
