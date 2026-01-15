@@ -78,3 +78,25 @@ ruleTester.run('no-deprecated-ds-radio-group-legacy', plugin.rules['no-deprecate
 		},
 	],
 });
+
+ruleTester.run('no-deprecated-ds-chip', plugin.rules['no-deprecated-ds-chip'], {
+	valid: ['<DsTag />', '<DsTagFilter />'],
+
+	invalid: [
+		{
+			code: '<DsChip />',
+			errors: [{ message: `DsChip is deprecated. Use DsTag instead.` }],
+		},
+	],
+});
+
+ruleTester.run('no-deprecated-ds-chip-group', plugin.rules['no-deprecated-ds-chip-group'], {
+	valid: ['<DsTag />', '<DsTagFilter />'],
+
+	invalid: [
+		{
+			code: '<DsChipGroup />',
+			errors: [{ message: `DsChipGroup is deprecated. Use DsTagFilter instead.` }],
+		},
+	],
+});

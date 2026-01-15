@@ -392,8 +392,8 @@ export const CustomLocale: Story = {
 			<DsTagFilter
 				items={filters}
 				locale={{
-					label: 'Active criteria:',
-					clearButton: 'Reset all',
+					label: 'Aktywne filtry:',
+					clearButton: 'Zresetuj',
 				}}
 				onClearAll={handleClearAll}
 				onItemDelete={handleFilterDelete}
@@ -409,9 +409,9 @@ export const CustomLocale: Story = {
 		});
 
 		// Verify custom label is rendered
-		await expect(canvas.getByText('Active criteria:')).toBeInTheDocument();
+		await expect(canvas.getByText('Aktywne filtry:')).toBeInTheDocument();
 
-		await expect(canvas.getByRole('button', { name: /Reset all/ })).toBeInTheDocument();
+		await expect(canvas.getByRole('button', { name: /Zresetuj/ })).toBeInTheDocument();
 
 		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
 		await expect(canvas.queryByRole('button', { name: /Clear all filters/ })).not.toBeInTheDocument();

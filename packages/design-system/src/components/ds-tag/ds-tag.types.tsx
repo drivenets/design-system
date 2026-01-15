@@ -1,4 +1,4 @@
-import type { CSSProperties, KeyboardEvent, MouseEvent, Ref } from 'react';
+import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, Ref } from 'react';
 
 export const tagSizes = ['medium', 'small'] as const;
 export type TagSize = (typeof tagSizes)[number];
@@ -14,11 +14,17 @@ export interface DsTagProps {
 	/**
 	 * The label text to display in the tag
 	 */
-	label: string;
+	label: ReactNode;
 	/**
 	 * Additional CSS class names
 	 */
 	className?: string;
+	/**
+	 * Locale object (you can pass custom strings for localization)
+	 */
+	locale?: {
+		deleteAriaLabel?: string;
+	};
 	/**
 	 * Additional styles to apply to the component
 	 */

@@ -1,4 +1,4 @@
-import { type RefObject, useLayoutEffect, useState, useCallback } from 'react';
+import { type RefObject, useCallback, useLayoutEffect, useState } from 'react';
 
 interface UseTagOverflowCalculationProps {
 	containerRef: RefObject<HTMLDivElement | null>;
@@ -11,7 +11,6 @@ interface UseTagOverflowCalculationResult {
 	row1TagCount: number;
 	row2TagCount: number;
 	hasOverflow: boolean;
-	isCalculating: boolean;
 }
 
 // Extra space needed per row for animated delete button that appears on hover
@@ -34,7 +33,6 @@ export const useTagOverflowCalculation = ({
 	const [row1TagCount, setRow1TagCount] = useState(0);
 	const [row2TagCount, setRow2TagCount] = useState(0);
 	const [hasOverflow, setHasOverflow] = useState(false);
-	const [isCalculating, setIsCalculating] = useState(true);
 
 	const calculateLayout = useCallback(() => {
 		if (!containerRef.current || !measurementRef.current) {
@@ -54,7 +52,6 @@ export const useTagOverflowCalculation = ({
 			setRow1TagCount(0);
 			setRow2TagCount(0);
 			setHasOverflow(false);
-			setIsCalculating(false);
 			return;
 		}
 
@@ -65,17 +62,14 @@ export const useTagOverflowCalculation = ({
 		const paddingRight = parseFloat(containerStyle.paddingRight) || 0;
 		const containerWidth = containerRect.width - paddingLeft - paddingRight;
 
-		// Get computed gap from CSS
 		const computedStyle = getComputedStyle(measurementContainer);
 		const gap = parseFloat(computedStyle.gap) || 8;
 
-		// Measure fixed elements
 		const labelWidth = label ? label.getBoundingClientRect().width + gap : 0;
 		const clearButtonWidth = clearButton ? clearButton.getBoundingClientRect().width + gap : 0;
 		// Fallback width for expand tag (~100px for "+99 filters" text) if measurement fails
 		const expandTagWidth = expandTag ? expandTag.getBoundingClientRect().width + gap : 100;
 
-		// Measure all tag widths
 		const tagWidths = tags.map((tag) => tag.getBoundingClientRect().width);
 
 		// Calculate Row 1 available space (Label + Tags + Clear Button)
@@ -103,7 +97,6 @@ export const useTagOverflowCalculation = ({
 			setRow1TagCount(row1Count);
 			setRow2TagCount(0);
 			setHasOverflow(false);
-			setIsCalculating(false);
 			return;
 		}
 
@@ -157,13 +150,9 @@ export const useTagOverflowCalculation = ({
 				setHasOverflow(false);
 			}
 		}
-
-		setIsCalculating(false);
 	}, [containerRef, measurementRef]);
 
 	useLayoutEffect(() => {
-		setIsCalculating(true);
-
 		// Use requestAnimationFrame to ensure DOM is fully laid out
 		const rafId = requestAnimationFrame(() => {
 			calculateLayout();
@@ -191,7 +180,6 @@ export const useTagOverflowCalculation = ({
 			row1TagCount,
 			row2TagCount: totalItems - row1TagCount,
 			hasOverflow: true, // Keep expand button visible to allow collapse
-			isCalculating,
 		};
 	}
 
@@ -199,6 +187,5 @@ export const useTagOverflowCalculation = ({
 		row1TagCount,
 		row2TagCount,
 		hasOverflow,
-		isCalculating,
 	};
 };

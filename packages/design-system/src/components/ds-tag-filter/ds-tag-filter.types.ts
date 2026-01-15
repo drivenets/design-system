@@ -1,4 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties } from 'react';
+import type { DsTagProps } from '../ds-tag';
 
 export interface TagFilterItem {
 	/**
@@ -17,6 +18,10 @@ export interface TagFilterItem {
 	 * Whether the tag is selected/checked
 	 */
 	selected?: boolean;
+	/**
+	 * Additional props to pass to the tag component
+	 */
+	tagProps?: Partial<DsTagProps>;
 }
 
 export interface DsTagFilterProps {
@@ -24,13 +29,15 @@ export interface DsTagFilterProps {
 	 * Array of tag items to display
 	 */
 	items: TagFilterItem[];
-
 	/**
-	 * Represents locale-specific options
+	 * Locale object (you can pass custom strings for localization)
 	 */
 	locale?: {
-		label?: ReactNode;
-		clearButton?: ReactNode;
+		label?: string;
+		clearButton?: string;
+		collapseTagLabel?: string;
+		hiddenCountSingular?: string;
+		hiddenCountPlural?: string;
 	};
 	/**
 	 * Callback when "Clear all" is clicked

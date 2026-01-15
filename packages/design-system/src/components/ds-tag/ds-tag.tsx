@@ -1,8 +1,8 @@
-import { useMemo, type Ref, type MouseEvent, type KeyboardEvent } from 'react';
+import { type KeyboardEvent, type MouseEvent, type Ref } from 'react';
 import classNames from 'classnames';
 import styles from './ds-tag.module.scss';
 import type { DsTagProps } from './ds-tag.types';
-import { DsIcon, type IconType } from '../ds-icon';
+import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
 /**
@@ -13,12 +13,14 @@ const DsTag = ({
 	label,
 	className,
 	style = {},
-	onClick,
-	onDelete,
 	size = 'medium',
 	selected = false,
 	variant = 'default',
 	disabled = false,
+	locale = {},
+	onClick,
+	onDelete,
+	...rest
 }: DsTagProps) => {
 	const tagClass = classNames(
 		styles.tag,
@@ -42,6 +44,11 @@ const DsTag = ({
 			event.preventDefault();
 			onClick(event as KeyboardEvent<HTMLDivElement>);
 		}
+
+		if (onDelete && (event.key === 'Backspace' || event.key === 'Delete')) {
+			event.preventDefault();
+			onDelete(event);
+		}
 	};
 
 	const handleKeyDownDelete = (event: KeyboardEvent<HTMLElement>) => {
@@ -60,17 +67,15 @@ const DsTag = ({
 		}
 	};
 
-	const variantIconName = useMemo((): IconType | null => {
-		if (variant === 'include') {
-			return 'check_circle';
-		}
+	let iconVariant: 'do_not_disturb_on' | 'check_circle' | null = null;
 
-		if (variant === 'exclude') {
-			return 'do_not_disturb_on';
-		}
+	if (variant === 'include') {
+		iconVariant = 'check_circle';
+	}
 
-		return null;
-	}, [variant]);
+	if (variant === 'exclude') {
+		iconVariant = 'do_not_disturb_on';
+	}
 
 	return (
 		<div
@@ -81,11 +86,12 @@ const DsTag = ({
 			onKeyDown={disabled ? undefined : handleKeyDownTag}
 			role={onClick || onDelete ? 'button' : undefined}
 			tabIndex={disabled || (!onClick && !onDelete) ? undefined : 0}
-			aria-label={label}
+			aria-label={typeof label === 'string' ? label : undefined}
 			aria-pressed={onClick && selected && !disabled ? 'true' : undefined}
 			aria-disabled={disabled}
+			{...rest}
 		>
-			{variantIconName && <DsIcon icon={variantIconName} size="tiny" className={styles.variantIcon} />}
+			{iconVariant && <DsIcon icon={iconVariant} size="tiny" className={styles.variantIcon} />}
 			<DsTypography variant={size === 'small' ? 'body-xs-reg' : 'body-sm-reg'} className={styles.label}>
 				{label}
 			</DsTypography>
@@ -95,7 +101,7 @@ const DsTag = ({
 					className={styles.deleteButton}
 					onClick={handleDeleteClick}
 					onKeyDown={handleKeyDownDelete}
-					aria-label="Delete tag"
+					aria-label={locale.deleteAriaLabel ?? 'Delete tag'}
 					tabIndex={0}
 				>
 					<DsIcon icon="close" size="tiny" />
