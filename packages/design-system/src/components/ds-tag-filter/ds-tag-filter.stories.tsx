@@ -392,9 +392,9 @@ export const CustomLocale: Story = {
 			<DsTagFilter
 				items={filters}
 				locale={{
-					// cspell:disable-next-line
+					/* cspell:disable-next-line */
 					label: 'Aktywne filtry:',
-					// cspell:disable-next-line
+					/* cspell:disable-next-line */
 					clearButton: 'Zresetuj',
 				}}
 				onClearAll={handleClearAll}
