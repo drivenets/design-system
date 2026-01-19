@@ -21,6 +21,7 @@ import type {
 	DsDropdownMenuPositioning,
 	DsDropdownMenuRootProps,
 	DsDropdownMenuSeparatorProps,
+	DsDropdownMenuTriggerItemProps,
 	DsDropdownMenuTriggerProps,
 } from './ds-dropdown-menu.types';
 
@@ -265,6 +266,20 @@ const Separator: React.FC<DsDropdownMenuSeparatorProps> = ({ className, style })
 };
 
 /**
+ * TriggerItem component - triggers a nested submenu
+ */
+const TriggerItem: React.FC<DsDropdownMenuTriggerItemProps> = ({ className, style, children, ...props }) => {
+	return (
+		<Menu.TriggerItem className={styles.item} {...props}>
+			<div className={classNames(styles.triggerItem, className)} style={style}>
+				{children}
+			</div>
+			<DsIcon className={styles.triggerItemIcon} icon="keyboard_arrow_right" />
+		</Menu.TriggerItem>
+	);
+};
+
+/**
  * DEPRECATED: Legacy DsDropdownMenu component with options array
  * Use compound component pattern instead
  * @deprecated
@@ -387,6 +402,7 @@ export const DsDropdownMenu = {
 	Content,
 	Item,
 	ItemIndicator,
+	TriggerItem,
 	Header,
 	Actions,
 	ItemGroup,

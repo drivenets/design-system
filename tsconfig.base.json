@@ -27,5 +27,6 @@
 		// Linting
 		"erasableSyntaxOnly": true,
 		"checkJs": true
-	}
+	},
+	"exclude": ["**/dist"]
 }

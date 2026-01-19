@@ -60,11 +60,17 @@ export const Default: Story = {
 		await userEvent.click(acceptTermsCheckbox);
 		await waitForMessage('You must accept the terms and conditions');
 
-		// 6. Typing random text inside email will (still) show message
+		// 6. Activate start date and then blur it will show message
+		const startDateInput = canvas.getByPlaceholderText('MM/DD/YYYY');
+		await userEvent.click(startDateInput);
+		await userEvent.tab();
+		await waitForMessage('Start date is required');
+
+		// 7. Typing random text inside email will (still) show message
 		await userEvent.type(emailInput, 'invalid-email');
 		await waitForMessage('Invalid email address');
 
-		// 7. Typing random email inside email will hide the message
+		// 8. Typing random email inside email will hide the message
 		const fakeEmail = faker.internet.email();
 		await userEvent.clear(emailInput);
 		await userEvent.type(emailInput, fakeEmail);
@@ -72,14 +78,14 @@ export const Default: Story = {
 			await expect(canvas.queryByText('Invalid email address')).not.toBeInTheDocument();
 		});
 
-		// 8. Typing name inside name will hide the message
+		// 9. Typing name inside name will hide the message
 		const fakeName = `${faker.person.firstName()} ${faker.person.lastName()}`;
 		await userEvent.type(nameInput, fakeName);
 		await waitFor(async () => {
 			await expect(canvas.queryByText('Name is required')).not.toBeInTheDocument();
 		});
 
-		// 9. Selecting contactMethod inside contactMethod will hide the message
+		// 10. Selecting contactMethod inside contactMethod will hide the message
 		await userEvent.click(contactMethodTrigger);
 		const contactOption = screen.getByRole('option', { name: 'Email' });
 		await userEvent.click(contactOption);
@@ -87,11 +93,20 @@ export const Default: Story = {
 			await expect(canvas.queryByText('Please select a contact method')).not.toBeInTheDocument();
 		});
 
-		// 10. Typing random text (less than 20 chars) inside description will (still) show message
+		// 11. Typing a valid date in start date will hide the message
+		await userEvent.clear(startDateInput);
+		const fakeDate = '12/25/2024';
+		await userEvent.type(startDateInput, fakeDate);
+		await userEvent.tab(); // Blur to trigger validation
+		await waitFor(async () => {
+			await expect(canvas.queryByText('Start date is required')).not.toBeInTheDocument();
+		});
+
+		// 12. Typing random text (less than 20 chars) inside description will (still) show message
 		await userEvent.type(descriptionInput, 'Short text');
 		await waitForMessage('Short description is required (min. 20 chars)');
 
-		// 11. Typing random text (more than 20 chars) inside description will hide the message
+		// 13. Typing random text (more than 20 chars) inside description will hide the message
 		const fakeDescription = faker.lorem.sentence(5);
 		await userEvent.clear(descriptionInput);
 		await userEvent.type(descriptionInput, fakeDescription);
@@ -101,24 +116,24 @@ export const Default: Story = {
 			).not.toBeInTheDocument();
 		});
 
-		// 12. Checking acceptTerms will hide the message
+		// 14. Checking acceptTerms will hide the message
 		await userEvent.click(acceptTermsCheckbox);
 		await waitFor(async () => {
 			await expect(canvas.queryByText('You must accept the terms and conditions')).not.toBeInTheDocument();
 		});
 
-		// 13. Submit still disabled when subscription not selected
+		// 15. Submit still disabled when subscription not selected
 		const submitButton = canvas.getByRole('button', { name: /submit/i });
 		await expect(submitButton).toBeDisabled();
 
-		// 14. When subscription selected submit will be enabled
+		// 16. When subscription selected submit will be enabled
 		const subscriptionOption = canvas.getByLabelText('Pro');
 		await userEvent.click(subscriptionOption);
 		await waitFor(async () => {
 			await expect(submitButton).toBeEnabled();
 		});
 
-		// 15. Clicking submit will show alert containing stringified json of the values
+		// 17. Clicking submit will show alert containing stringified json of the values
 		await userEvent.click(submitButton);
 		const expectedData = JSON.stringify(
 			{
@@ -126,6 +141,7 @@ export const Default: Story = {
 				email: fakeEmail,
 				description: fakeDescription,
 				quantity: 1,
+				startDate: '2024-12-25',
 				acceptTerms: true,
 				subscription: 'pro',
 				contactMethod: 'email',
@@ -138,12 +154,13 @@ export const Default: Story = {
 			await expect(alertSpy).toHaveBeenCalledWith(expectedData);
 		});
 
-		// 16. When closing the alert form is empty again (reset)
+		// 18. When closing the alert form is empty again (reset)
 		await waitFor(async () => {
 			await expect(nameInput).toHaveValue('');
 			await expect(emailInput).toHaveValue('');
 			await expect(contactMethodTrigger).toHaveTextContent(/Select a contact method|^$/);
 			await expect(descriptionInput).toHaveValue('');
+			await expect(startDateInput).toHaveValue('');
 			await expect(acceptTermsCheckbox).not.toBeChecked();
 			await expect(subscriptionOption).not.toBeChecked();
 		});

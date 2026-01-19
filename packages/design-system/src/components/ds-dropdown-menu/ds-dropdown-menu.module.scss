@@ -8,6 +8,7 @@
 	max-height: var(--available-height, 400px);
 	overflow-y: auto;
 	width: auto;
+	z-index: var(--layer-index);
 
 	&:focus-visible {
 		outline-offset: 2px;
@@ -29,9 +30,12 @@
 
 .item {
 	@include dropdown.dropdown-item;
-	display: flex;
-	align-items: center;
-	gap: var(--spacing-xs);
+
+	.triggerItem {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-xs);
+	}
 
 	&.selected {
 		.indicator {
@@ -103,6 +107,10 @@
 		transform: rotate(180deg);
 		transition: transform 0.2s ease-in-out;
 	}
+}
+
+.triggerItemIcon {
+	margin-left: auto;
 }
 
 /** Legacy classes */

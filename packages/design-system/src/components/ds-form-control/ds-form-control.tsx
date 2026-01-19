@@ -13,6 +13,7 @@ import type {
 	DsFormControlProps,
 } from './ds-form-control.types';
 import styles from './ds-form-control.module.scss';
+import { DsDateInput } from '../ds-date-input';
 
 const statusClasses: Partial<Record<ControlStatus, string>> = {
 	success: styles.success,
@@ -97,6 +98,7 @@ const DsFormControl = ({
 DsFormControl.TextInput = controlify(DsTextInput);
 DsFormControl.NumberInput = controlify(DsNumberInput);
 DsFormControl.PasswordInput = controlify(DsPasswordInput);
+DsFormControl.DateInput = controlify(DsDateInput);
 DsFormControl.Textarea = controlify(DsTextarea);
 DsFormControl.Select = controlify(DsSelect);
 DsFormControl.Description = DsFormControlDescription;

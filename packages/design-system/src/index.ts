@@ -5,6 +5,7 @@ export * from './components/ds-checkbox';
 export * from './components/ds-chip';
 export * from './components/ds-chip-group';
 export * from './components/ds-confirmation';
+export * from './components/ds-date-input';
 export * from './components/ds-dialog';
 export * from './components/ds-divider';
 export * from './components/ds-drawer';
