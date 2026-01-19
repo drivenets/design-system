@@ -41,10 +41,21 @@ export const stringToDateValue = (dates: string | [string, string]): DateValue[]
 /**
  * Convert DateValue array to string or tuple (for public API)
  */
-export const dateValuesToStrings = (dates: DateValue[], range: boolean): string | [string, string] => {
+export const dateValuesToStrings = (
+	dates: DateValue[],
+	range: boolean,
+): string | [string, string] | undefined => {
 	const values = dates.map((date) => date.toString());
 
-	return range ? [values[0], values[1]] : values[0];
+	if (range) {
+		const start = values[0];
+		const end = values[1];
+		if (start && end) {
+			return [start, end];
+		}
+	}
+
+	return values[0];
 };
 
 /**
@@ -68,7 +79,7 @@ export const formatDateInputValue = (value: DateValue[], range: boolean): string
 	}
 	const newValue = value.map(formatDateValue);
 
-	return range ? newValue.join(' - ') : newValue[0];
+	return range ? newValue.join(' - ') : (newValue[0] ?? '');
 };
 
 /**
@@ -81,11 +92,16 @@ const parseDateString = (dateStr: string): DateValue | null => {
 
 	// Try MM/DD/YYYY format
 	const match = dateStr.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
-	if (!match) {
+	if (!match || match.length < 4) {
 		return null;
 	}
 
 	const [, month, day, year] = match;
+
+	if (!month || !day || !year) {
+		return null;
+	}
+
 	const monthNum = parseInt(month, 10);
 	const dayNum = parseInt(day, 10);
 	const yearNum = parseInt(year, 10);
@@ -129,6 +145,10 @@ const parseRangeInput = (text: string): ParsedDateRange => {
 	}
 
 	const [startStr, endStr] = parts;
+	if (!startStr || !endStr) {
+		return { start: null, end: null, isValid: false };
+	}
+
 	const startDate = parseDateString(startStr);
 	const endDate = parseDateString(endStr);
 
