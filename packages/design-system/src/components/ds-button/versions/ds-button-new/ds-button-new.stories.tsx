@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
+import classNames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import DsSpinner from '../../../ds-spinner/ds-spinner';
 import DsButtonNew from './ds-button-new';
@@ -195,9 +196,9 @@ export const Showcase: Story = {
 												return (
 													<td
 														key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}
-														className={`${styles.showcaseCell} ${
-															variant === 'dark' ? styles.showcaseCellDark : ''
-														}`}
+														className={classNames(styles.showcaseCell, {
+															[styles.showcaseCellDark]: variant === 'dark',
+														})}
 													>
 														<div className={styles.showcaseCellInline}>
 															<DsButtonNew

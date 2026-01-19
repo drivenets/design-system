@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { DsTypography } from '../../../../../ds-typography';
 import styles from './user-avatar.module.scss';
 
@@ -27,7 +28,7 @@ export const UserAvatar = ({ name, size = 'small', colorIndex = 0 }: UserAvatarP
 
 	return (
 		<div
-			className={`${styles.avatar} ${styles[size]}`}
+			className={classNames(styles.avatar, styles[size])}
 			style={{
 				backgroundColor: color?.bg,
 				color: color?.text,

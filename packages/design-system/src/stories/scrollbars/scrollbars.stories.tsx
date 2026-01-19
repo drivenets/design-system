@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Fragment } from 'react';
+import classNames from 'classnames';
 import styles from './scrollbars.stories.module.scss';
 
 const meta: Meta = {
@@ -61,14 +62,14 @@ export const SmallScrollbar: Story = {
 		<div className={styles.container}>
 			<div className={styles.section}>
 				<h3>Vertical Scrollbar (Thin)</h3>
-				<div className={`scrollbar-thin ${styles.scrollableContainer}`}>
+				<div className={classNames('scrollbar-thin', styles.scrollableContainer)}>
 					{generateContent(20, 'vertical')}
 				</div>
 			</div>
 
 			<div className={styles.sectionWide}>
 				<h3>Horizontal Scrollbar (Thin)</h3>
-				<div className={`scrollbar-thin ${styles.scrollableContainer}`}>
+				<div className={classNames('scrollbar-thin', styles.scrollableContainer)}>
 					{generateContent(15, 'horizontal')}
 				</div>
 			</div>
