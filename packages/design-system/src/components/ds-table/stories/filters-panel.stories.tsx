@@ -376,7 +376,6 @@ createCustomFilterAdapter({
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
-		highlightOnHover: true,
 		expandable: false,
 		emptyState: <div>No data available</div>,
 		onRowClick: (row) => console.log('Row clicked:', row),

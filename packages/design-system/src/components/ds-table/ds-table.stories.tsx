@@ -4,7 +4,7 @@ import type { ColumnDef, ColumnFiltersState, SortingState, VisibilityState } fro
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import classnames from 'classnames';
 import DsIcon from '../ds-icon/ds-icon';
-import type { IconType } from '../ds-icon/ds-icon.types';
+import type { IconType } from '../ds-icon';
 import { DsSmartTabs } from '../ds-smart-tabs';
 import { DsCheckbox } from '../ds-checkbox';
 import { DsDrawer } from '../ds-drawer';
@@ -227,7 +227,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		// Example:
 		// zebra: { control: 'boolean' },
 		// bordered: { control: 'boolean' },
-		// highlightOnHover: { control: 'boolean' },
 	},
 	args: {
 		// Default args for all stories
@@ -236,7 +235,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
-		highlightOnHover: true,
 		expandable: false,
 		emptyState: (
 			<div className={styles.emptyStateContainer}>
@@ -572,7 +570,7 @@ export const WithDrawerAndActiveRow: Story = {
 					</p>
 				</div>
 
-				<DsTable {...args} activeRowId={activeRowId} onRowClick={handleRowClick} highlightOnHover />
+				<DsTable {...args} activeRowId={activeRowId} onRowClick={handleRowClick} />
 
 				<DsDrawer
 					open={isDrawerOpen}

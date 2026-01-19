@@ -236,11 +236,6 @@ export interface DsDataTableProps<TData, TValue> {
 	fullWidth?: boolean;
 
 	/**
-	 * Whether the table has highlight on hover
-	 */
-	highlightOnHover?: boolean;
-
-	/**
 	 * Row size variant (small: 36px, medium: 48px, large: 64px)
 	 * @default 'medium'
 	 */
