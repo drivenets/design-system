@@ -91,6 +91,11 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	const [columnFilters, setColumnFilters] = useState<ColumnFilterState<TValue>[]>([]);
 	const [filterChips, setFilterChips] = useState<ChipItem[]>([]);
 
+	const getValueByAdapterId = (adapterId: string) => {
+		// Should be safe to cast because it's being filled in the initialState
+		return filterState[adapterId] as TValue;
+	};
+
 	// Generate filter nav items with counts (updates as user changes filters in modal)
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
 		id: adapter.id,
@@ -215,11 +220,6 @@ export function useTableFilters<TData, TValue, TCellValue>(
 		const onChange = (newValue: TValue) => updateFilter(adapter.id, newValue);
 
 		return adapter.renderFilter(value, onChange);
-	};
-
-	const getValueByAdapterId = (adapterId: string) => {
-		// Should be safe to cast because it's being filled in the initialState
-		return filterState[adapterId] as TValue;
 	};
 
 	return {
