@@ -1,5 +1,5 @@
-import { type ComponentType, createContext, useContext, useId } from 'react';
 import type React from 'react';
+import { type ComponentType, createContext, useContext, useId } from 'react';
 import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';
 import { DsSelect } from '../ds-select';
@@ -7,8 +7,18 @@ import { DsTextInput } from '../ds-text-input';
 import { DsTextarea } from '../ds-textarea';
 import { DsNumberInput } from '../ds-number-input';
 import { DsPasswordInput } from '../ds-password-input';
-import type { DsFormControlDescriptionProps, DsFormControlProps } from './ds-form-control.types';
+import type {
+	ControlStatus,
+	DsFormControlDescriptionProps,
+	DsFormControlProps,
+} from './ds-form-control.types';
 import styles from './ds-form-control.module.scss';
+
+const statusClasses: Partial<Record<ControlStatus, string>> = {
+	success: styles.success,
+	warning: styles.warning,
+	error: styles.error,
+};
 
 const FormControlContext = createContext<{ controlId: string } | null>(null);
 
@@ -56,7 +66,7 @@ const DsFormControl = ({
 	return (
 		<FormControlContext.Provider value={{ controlId }}>
 			<div
-				className={classNames(styles.container, status && message && styles[status], className)}
+				className={classNames(styles.container, status && message && statusClasses[status], className)}
 				style={style}
 			>
 				<div className={styles.labelContainer}>

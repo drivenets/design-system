@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode, Fragment } from 'react';
+import { type CSSProperties, Fragment, type ReactNode } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
@@ -46,7 +46,7 @@ const DsDrawer = ({
 						style={style}
 						className={classNames(
 							styles.drawer,
-							styles[`cols-${String(columns)}`],
+							styles[`cols-${String(columns)}` as keyof typeof styles],
 							styles[`position-${position}`],
 							className,
 						)}

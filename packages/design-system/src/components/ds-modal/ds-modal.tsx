@@ -40,7 +40,11 @@ const DsModal = ({
 				<Dialog.Positioner>
 					<Dialog.Content
 						style={style}
-						className={classNames(styles.modal, styles[`cols-${String(columns)}`], className)}
+						className={classNames(
+							styles.modal,
+							styles[`cols-${String(columns)}` as keyof typeof styles],
+							className,
+						)}
 					>
 						<div className={classNames(styles.content)}>{children}</div>
 					</Dialog.Content>
