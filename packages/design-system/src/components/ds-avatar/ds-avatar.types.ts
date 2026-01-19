@@ -37,5 +37,5 @@ export interface DsAvatarProps {
 	/**
 	 * Callback when the status of the image changes
 	 */
-	onStatusChange?: (status: 'loading' | 'error' | 'loaded') => void;
+	onStatusChange?: (status: 'error' | 'loaded') => void;
 }
