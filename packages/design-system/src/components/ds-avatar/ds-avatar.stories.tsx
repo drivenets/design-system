@@ -62,18 +62,18 @@ export const WithImage: AvatarStory = {
 export const Sizes: AvatarStory = {
 	render: (args) => (
 		<div className={styles.sizesContainer}>
-			<DsAvatar {...args} size="xsm" name="XSmall" />
-			<DsAvatar {...args} size="sm" name="Small" />
-			<DsAvatar {...args} size="regular" name="Regular" />
-			<DsAvatar {...args} size="md" name="Medium" />
-			<DsAvatar {...args} size="lg" name="Large" />
-			<DsAvatar {...args} size="xl" name="XLarge" />
+			<DsAvatar {...args} size="xsm" name="Extra Small" />
+			<DsAvatar {...args} size="sm" name="Sam Mitchell" />
+			<DsAvatar {...args} size="regular" name="Rachel Evans" />
+			<DsAvatar {...args} size="md" name="Mike Edwards" />
+			<DsAvatar {...args} size="lg" name="Laura Adams" />
+			<DsAvatar {...args} size="xl" name="Xavier Lee" />
 		</div>
 	),
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		// Check all sizes are rendered
-		await expect(canvas.getByText('XS')).toBeInTheDocument();
+		await expect(canvas.getByText('ES')).toBeInTheDocument();
 		await expect(canvas.getByText('SM')).toBeInTheDocument();
 		await expect(canvas.getByText('RE')).toBeInTheDocument();
 		await expect(canvas.getByText('ME')).toBeInTheDocument();
@@ -85,8 +85,8 @@ export const Sizes: AvatarStory = {
 export const Shapes: AvatarStory = {
 	render: (args) => (
 		<div className={styles.shapesContainer}>
-			<DsAvatar {...args} type="circle" name="Circle" />
-			<DsAvatar {...args} type="rounded" name="Rounded" />
+			<DsAvatar {...args} type="circle" name="Chris Irving" />
+			<DsAvatar {...args} type="rounded" name="Rose Oliver" />
 		</div>
 	),
 	play: async ({ canvasElement }) => {
