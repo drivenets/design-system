@@ -72,17 +72,19 @@ These are scripts that run in the CI workflows for each PR. You might not need t
 
 We're using the following technologies in this monorepo:
 
-- Monorepo management: [Turborepo](https://turborepo.com/docs)
-- Package management: [pnpm](https://pnpm.io/)
-- Linting: [ESLint](https://eslint.org/) & [Typescript ESLint](https://typescript-eslint.io/) with strict config
-- Type checking: [TypeScript](https://www.typescriptlang.org/)
-- Code formatting: [Prettier](https://prettier.io/)
-- Testing: [Vitest](https://vitest.dev/) with [Browser Mode](https://vitest.dev/guide/browser/) & [Playwright](https://playwright.dev/)
-- Building: [tsdown](https://tsdown.dev/)
-- Package validation: [publint](https://github.com/publint/publint) & [attw](https://github.com/arethetypeswrong/arethetypeswrong.github.io)
-- Documentation: [Storybook](https://storybook.js.org/)
-- Unused code detection: [Knip](https://knip.dev/)
-- Spell checking: [CSpell](https://cspell.org/)
-- Commit linting: [Commitlint](https://commitlint.js.org/) with [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- **Monorepo Management**: [Turborepo](https://turborepo.com/docs)
+- **Package Management**: [pnpm](https://pnpm.io/)
+- **Linting**: [ESLint](https://eslint.org/) and [Typescript ESLint](https://typescript-eslint.io/) with strict config
+- **Type Checking**: [TypeScript](https://www.typescriptlang.org/)
+- **Code Formatting**: [Prettier](https://prettier.io/)
+- **Testing**: [Vitest](https://vitest.dev/) with [Browser Mode](https://vitest.dev/guide/browser/) and [Playwright](https://playwright.dev/)
+- **Building**: [tsdown](https://tsdown.dev/) with [React Compiler](https://react.dev/learn/react-compiler) and [Sass Embedded](https://www.npmjs.com/package/sass-embedded)
+- **Package Validation**: [publint](https://github.com/publint/publint) and [attw](https://github.com/arethetypeswrong/arethetypeswrong.github.io)
+- **Documentation**: [Storybook](https://storybook.js.org/)
+- **Unused Code Detection**: [Knip](https://knip.dev/)
+- **Dependency Version Consistency**: [Syncpack](https://jamiemason.github.io/syncpack/)
+- **Spell Checking**: [CSpell](https://cspell.org/)
+- **Commit Linting**: [Commitlint](https://commitlint.js.org/) with [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
   standards and a [custom plugin](./packages/commitlint-plugin/) for JIRA tickets
-- Changelog & release management: [Changesets](https://github.com/changesets/changesets)
+- **Changelog and Release Management**: [Changesets](https://github.com/changesets/changesets)
+- **Security Scanning**: [CodeQL](https://codeql.github.com/) in [GitHub Actions](https://github.com/github/codeql-action)
