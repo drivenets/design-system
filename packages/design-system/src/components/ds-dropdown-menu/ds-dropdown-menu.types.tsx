@@ -260,3 +260,8 @@ export interface DsDropdownMenuItemGroupContentProps {
  * Props for the DsDropdownMenu Separator component
  */
 export type DsDropdownMenuSeparatorProps = Menu.SeparatorProps;
+
+/**
+ * Props for the DsDropdownMenu TriggerItem component (for nested submenus)
+ */
+export type DsDropdownMenuTriggerItemProps = Menu.TriggerItemProps;

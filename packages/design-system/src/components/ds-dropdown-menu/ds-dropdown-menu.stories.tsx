@@ -357,3 +357,67 @@ export const RadioList: Story = {
 		);
 	},
 };
+
+export const ActionMenu: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Action Menu pattern from Figma design system demonstrating nested submenus. Features both full-size button and icon button variants. Menu items can trigger submenus using TriggerItem with right arrow indicators. Includes separators and danger-styled items for risky actions.',
+			},
+		},
+	},
+	render: () => {
+		const handleEdit = () => console.log('Edit clicked');
+		const handleDuplicate = () => console.log('Duplicate clicked');
+		const handleShareEmail = () => console.log('Share via Email clicked');
+		const handleShareLink = () => console.log('Copy Link clicked');
+		const handleShareSocial = () => console.log('Share to Social Media clicked');
+		const handleDelete = () => console.log('Delete item clicked');
+
+		return (
+			<DsDropdownMenu.Root>
+				<DsDropdownMenu.Trigger asChild>
+					<DsButton design="v1.2" buttonType="secondary">
+						<DsIcon icon="more_vert" />
+					</DsButton>
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Item value="edit" onSelect={handleEdit}>
+						<DsIcon icon="edit" />
+						<span>Edit</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Item value="duplicate" onSelect={handleDuplicate}>
+						<DsIcon icon="content_copy" />
+						<span>Duplicate</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Root positioning={{ placement: 'right-start' }}>
+						<DsDropdownMenu.TriggerItem className="action-menu-item">
+							<DsIcon icon="share" />
+							<span>Share</span>
+						</DsDropdownMenu.TriggerItem>
+						<DsDropdownMenu.Content>
+							<DsDropdownMenu.Item value="share-email" onSelect={handleShareEmail}>
+								<DsIcon icon="mail" />
+								<span>Email</span>
+							</DsDropdownMenu.Item>
+							<DsDropdownMenu.Item value="share-link" onSelect={handleShareLink}>
+								<DsIcon icon="link" />
+								<span>Copy Link</span>
+							</DsDropdownMenu.Item>
+							<DsDropdownMenu.Item value="share-social" onSelect={handleShareSocial}>
+								<DsIcon icon="public" />
+								<span>Social Media</span>
+							</DsDropdownMenu.Item>
+						</DsDropdownMenu.Content>
+					</DsDropdownMenu.Root>
+					<DsDropdownMenu.Separator />
+					<DsDropdownMenu.Item value="delete" onSelect={handleDelete} className="danger">
+						<DsIcon icon="delete" />
+						<span>Delete item</span>
+					</DsDropdownMenu.Item>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
+	},
+};

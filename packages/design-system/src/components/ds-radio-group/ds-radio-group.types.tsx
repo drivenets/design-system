@@ -7,7 +7,7 @@ import { type RadioGroupItemProps, type RadioGroupRootProps } from '@ark-ui/reac
  */
 export interface DsRadioGroupRootProps extends Pick<
 	RadioGroupRootProps,
-	'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'orientation' | 'children'
+	'id' | 'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'orientation' | 'children'
 > {
 	/**
 	 * Event handler called when the selected value changes
