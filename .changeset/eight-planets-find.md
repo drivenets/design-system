@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-Disabled button affordance
+Prevent button from being stretched
