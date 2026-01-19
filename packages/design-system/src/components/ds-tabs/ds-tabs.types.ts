@@ -44,15 +44,9 @@ export interface DsTabsListProps {
 	children: ReactNode;
 }
 
-export interface DsTabsTabProps {
+type DsTabsTabBaseProps = {
 	/** Unique value for this tab */
 	value: string;
-	/** Tab label text */
-	label?: string;
-	/** Leading icon name (Material Icons) or SVG component */
-	icon?: IconType;
-	/** Badge count or text */
-	badge?: string | number;
 	/** Menu action items to display in dropdown */
 	menuActionItems?: DsTabsMenuActionItem[];
 	/** Callback when a menu action is selected */
@@ -65,9 +59,31 @@ export interface DsTabsTabProps {
 	className?: string;
 	/** Custom styles */
 	style?: CSSProperties;
-	/** Custom children (overrides default rendering) */
-	children?: ReactNode;
-}
+};
+
+export type DsTabsTabProps = DsTabsTabBaseProps &
+	(
+		| {
+				/** Custom children (overrides default rendering) */
+				children: ReactNode;
+				/** Tab label text */
+				label?: never;
+				/** Leading icon name (Material Icons) or SVG component */
+				icon?: never;
+				/** Badge count or text */
+				badge?: never;
+		  }
+		| {
+				/** Custom children (overrides default rendering) */
+				children?: never;
+				/** Tab label text */
+				label?: string;
+				/** Leading icon name (Material Icons) or SVG component */
+				icon?: IconType;
+				/** Badge count or text */
+				badge?: string | number;
+		  }
+	);
 
 export interface DsTabsContentProps {
 	/** Value matching the tab this content belongs to */

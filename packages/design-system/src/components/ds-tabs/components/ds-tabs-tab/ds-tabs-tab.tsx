@@ -79,7 +79,10 @@ export const DsTabsTab = ({
 							aria-label="Open menu"
 							aria-expanded={menuOpen}
 						>
-							<DsIcon icon={(menuOpen ? 'arrow_drop_up' : 'arrow_drop_down') as IconType} size="tiny" />
+							<DsIcon
+								icon={(menuOpen ? 'arrow_drop_up' : 'arrow_drop_down') satisfies IconType}
+								size="tiny"
+							/>
 						</div>
 					)}
 				</>

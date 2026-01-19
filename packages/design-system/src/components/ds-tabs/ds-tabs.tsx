@@ -1,4 +1,3 @@
-import type React from 'react';
 import { Tabs } from '@ark-ui/react/tabs';
 import classNames from 'classnames';
 import DsTabsContext from './context/ds-tabs-context';
@@ -49,14 +48,9 @@ const DsTabsRoot = ({
 	);
 };
 
-export interface DsTabsComponent extends React.FC<DsTabsProps> {
-	List: typeof DsTabsList;
-	Tab: typeof DsTabsTab;
-	Content: typeof DsTabsContent;
-}
-
-export const DsTabs = DsTabsRoot as DsTabsComponent;
-
-DsTabs.List = DsTabsList;
-DsTabs.Tab = DsTabsTab;
-DsTabs.Content = DsTabsContent;
+export const DsTabs = {
+	Root: DsTabsRoot,
+	List: DsTabsList,
+	Tab: DsTabsTab,
+	Content: DsTabsContent,
+};
