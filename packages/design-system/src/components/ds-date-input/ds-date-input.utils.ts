@@ -41,17 +41,14 @@ export const stringToDateValue = (dates: string | [string, string]): DateValue[]
 /**
  * Convert DateValue array to string or tuple (for public API)
  */
-export const dateValuesToStrings = (
-	dates: DateValue[],
-	range: boolean,
-): string | [string, string] | undefined => {
+export const dateValuesToStrings = (dates: DateValue[], range: boolean): string | [string, string] => {
 	const values = dates.map((date) => date.toString());
 
 	if (range) {
-		return values[0] && values[1] ? [values[0], values[1]] : undefined;
+		return [values[0] ?? '', values[1] ?? ''];
 	}
 
-	return values[0];
+	return values[0] ?? '';
 };
 
 /**
