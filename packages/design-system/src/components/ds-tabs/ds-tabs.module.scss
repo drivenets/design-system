@@ -1,14 +1,14 @@
 .root {
 	display: flex;
 	width: 100%;
-}
 
-.root-vertical {
-	flex-direction: row;
-	gap: var(--spacing-lg);
-}
+	&[data-orientation='vertical'] {
+		flex-direction: row;
+		gap: var(--spacing-lg);
+	}
 
-.root-horizontal {
-	flex-direction: column;
-	gap: 0;
+	&[data-orientation='horizontal'] {
+		flex-direction: column;
+		gap: 0;
+	}
 }

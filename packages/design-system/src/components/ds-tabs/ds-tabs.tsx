@@ -1,7 +1,5 @@
 import { Tabs } from '@ark-ui/react/tabs';
 import classNames from 'classnames';
-import DsTabsContext from './context/ds-tabs-context';
-import type { DsTabsContextType } from './context/ds-tabs-context.types';
 import { DsTabsList } from './components/ds-tabs-list';
 import { DsTabsTab } from './components/ds-tabs-tab';
 import { DsTabsContent } from './components/ds-tabs-content';
@@ -22,29 +20,21 @@ const DsTabsRoot = ({
 		onValueChange?.(details.value);
 	};
 
-	const contextValue: DsTabsContextType = {
-		orientation,
-		size,
-		currentValue: value,
-		onValueChange,
-	};
-
 	return (
-		<DsTabsContext.Provider value={contextValue}>
-			<Tabs.Root
-				orientation={orientation}
-				value={value}
-				defaultValue={defaultValue}
-				onValueChange={handleValueChange}
-				activationMode="manual"
-				lazyMount
-				unmountOnExit
-				className={classNames(styles.root, styles[`root-${orientation}`], className)}
-				style={style}
-			>
-				{children}
-			</Tabs.Root>
-		</DsTabsContext.Provider>
+		<Tabs.Root
+			orientation={orientation}
+			value={value}
+			defaultValue={defaultValue}
+			onValueChange={handleValueChange}
+			activationMode="manual"
+			lazyMount
+			unmountOnExit
+			className={classNames(styles.root, className)}
+			style={style}
+			data-size={size}
+		>
+			{children}
+		</Tabs.Root>
 	);
 };
 

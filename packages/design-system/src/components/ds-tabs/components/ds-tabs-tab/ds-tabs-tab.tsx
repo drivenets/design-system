@@ -5,7 +5,6 @@ import DsIcon from '../../../ds-icon/ds-icon';
 import type { IconType } from '../../../ds-icon';
 import { DsTooltip } from '../../../ds-tooltip';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
-import { useTabsContext } from '../../context/ds-tabs-context';
 import type { DsTabsTabProps } from '../../ds-tabs.types';
 import styles from './ds-tabs-tab.module.scss';
 
@@ -22,7 +21,6 @@ export const DsTabsTab = ({
 	style,
 	children,
 }: DsTabsTabProps) => {
-	const { orientation, size } = useTabsContext();
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const menuTriggerRef = useRef<HTMLDivElement>(null);
 	const [menuOpen, setMenuOpen] = useState(false);
@@ -39,12 +37,7 @@ export const DsTabsTab = ({
 			ref={triggerRef}
 			value={value}
 			disabled={disabled}
-			className={classNames(
-				styles.tabItem,
-				styles[`tabItem-${orientation}`],
-				styles[`tabItem-${size}`],
-				className,
-			)}
+			className={classNames(styles.tabItem, className)}
 			style={style}
 		>
 			{children ? (
