@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, screen, userEvent, within } from 'storybook/test';
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import DsDateInput from './ds-date-input';
 import type { DsDateInputProps } from './ds-date-input.types';
 import styles from './ds-date-input.stories.module.scss';
@@ -96,12 +96,16 @@ export const RangeMode: Story = {
 		// 1. Open calendar and select range [01/15/2026 - 01/17/2026]
 		await userEvent.click(calendarButton);
 
+		await waitFor(() => {
+			return expect(screen.getByRole('application', { name: 'calendar' })).toBeVisible();
+		});
+
 		// Click start date (01/15/2026)
-		const jan15Button = screen.getByRole('button', { name: /Choose.*January 15, 2026/i });
+		const jan15Button = screen.getByRole('button', { name: /January 15, 2026/i });
 		await userEvent.click(jan15Button);
 
 		// Click end date (01/17/2026)
-		const jan17Button = screen.getByRole('button', { name: /Choose.*January 17, 2026/i });
+		const jan17Button = screen.getByRole('button', { name: /January 17, 2026/i });
 		await userEvent.click(jan17Button);
 
 		// 2. Check calendar shows the selection correctly (both dates marked as selected)
@@ -120,21 +124,18 @@ export const RangeMode: Story = {
 		// 4. Type a new range [01/14/2026 - 01/18/2026]
 		await userEvent.clear(input);
 		await userEvent.type(input, '01/14/2026 - 01/18/2026');
-		await userEvent.tab(); // Trigger blur to validate
+		await userEvent.click(input);
+		await userEvent.type(input, '{Escape}'); // Trigger parsing.
 
 		// Verify input updated
 		await expect(input).toHaveValue('01/14/2026 - 01/18/2026');
-
-		// Wait a moment for the internal state to sync
-		await new Promise((resolve) => setTimeout(resolve, 100));
 
 		// 5. Check calendar is updated correctly
 		await userEvent.click(calendarButton);
 
 		// Check the new selected dates
-		const allTheCells = screen.queryAllByRole('gridcell');
-		const jan14Cell = allTheCells.find((cell) => cell.getAttribute('data-value') === '2026-01-14');
-		const jan18Cell = allTheCells.find((cell) => cell.getAttribute('data-value') === '2026-01-18');
+		const jan14Cell = allCells.find((cell) => cell.getAttribute('data-value') === '2026-01-14');
+		const jan18Cell = allCells.find((cell) => cell.getAttribute('data-value') === '2026-01-18');
 
 		await expect(jan14Cell).toBeInTheDocument();
 		await expect(jan18Cell).toBeInTheDocument();
