@@ -1,5 +1,12 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.6
+
+### Patch Changes
+
+- 1881953: - Add deprecation rule for `DsChip`
+  - Add deprecation rule for `DsChipGroup`
+
 ## 0.0.5
 
 ### Patch Changes
