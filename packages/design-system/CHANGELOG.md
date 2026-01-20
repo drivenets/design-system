@@ -1,5 +1,15 @@
 # @drivenets/design-system
 
+## 0.2.0
+
+### Minor Changes
+
+- 9bd668b: Add 'DsAvatar' component
+- 1881953: - Added `DsTag` component
+  - Added `DsTagFilter` component
+  - Deprecated `DsChip` component
+  - Deprecated `DsChipGroup` component
+
 ## 0.1.0
 
 ### Minor Changes
