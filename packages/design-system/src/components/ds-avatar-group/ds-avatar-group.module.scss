@@ -1,0 +1,70 @@
+@import '../ds-avatar/mixins';
+
+.avatarGroup {
+	display: flex;
+	align-items: center;
+
+	.avatarItem {
+		border: $avatar-border-width solid var(--color-background);
+
+		&:not(:first-child) {
+			margin-left: $avatar-overlap-default;
+		}
+
+		&.xsm:not(:first-child) {
+			margin-left: $avatar-overlap-xsm;
+		}
+
+		&.sm:not(:first-child) {
+			margin-left: $avatar-overlap-sm;
+		}
+	}
+
+	.moreAvatar {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: var(--color-background);
+		color: var(--color-font-action);
+		border: $avatar-border-width solid var(--color-background);
+		margin-left: $avatar-overlap-default;
+		font-weight: var(--font-weight-medium);
+		z-index: 1;
+		cursor: default;
+		flex-shrink: 0;
+
+		&.circle {
+			border-radius: 50%;
+		}
+
+		&.rounded {
+			&.xsm,
+			&.sm {
+				border-radius: $avatar-border-radius-small;
+			}
+			&.regular,
+			&.md,
+			&.lg,
+			&.xl {
+				border-radius: $avatar-border-radius-large;
+			}
+		}
+
+		@include avatar-sizes;
+
+		&.xsm {
+			margin-left: $avatar-overlap-xsm;
+		}
+
+		&.sm {
+			margin-left: $avatar-overlap-sm;
+		}
+	}
+
+	.tooltipList {
+		display: flex;
+		flex-direction: column;
+		gap: var(--spacing-3xs);
+		padding: var(--spacing-3xs) 0;
+	}
+}

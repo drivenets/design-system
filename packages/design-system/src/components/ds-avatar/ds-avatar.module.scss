@@ -1,0 +1,52 @@
+@import './mixins';
+
+.avatar {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	overflow: hidden;
+	background-color: var(--color-background-deselected);
+	color: var(--color-font-on-action);
+	flex-shrink: 0;
+	user-select: none;
+
+	&.circle {
+		border-radius: 50%;
+	}
+
+	&.rounded {
+		&.xsm,
+		&.sm {
+			border-radius: $avatar-border-radius-small;
+		}
+		&.regular,
+		&.md,
+		&.lg,
+		&.xl {
+			border-radius: $avatar-border-radius-large;
+		}
+	}
+
+	@include avatar-sizes;
+
+	img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.fallback {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		font-weight: var(--font-weight-medium);
+		text-transform: uppercase;
+	}
+}

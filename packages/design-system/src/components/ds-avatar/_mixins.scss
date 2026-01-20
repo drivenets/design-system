@@ -1,0 +1,45 @@
+$avatar-size-xsm: 18px;
+$avatar-size-sm: 24px;
+$avatar-size-regular: 32px;
+$avatar-size-md: 48px;
+$avatar-size-lg: 80px;
+$avatar-size-xl: 144px;
+
+$avatar-border-width: var(--spacing-4xs);
+$avatar-border-radius-small: var(--spacing-3xs);
+$avatar-border-radius-large: var(--spacing-xs);
+$avatar-overlap-xsm: -4px;
+$avatar-overlap-sm: -6px;
+$avatar-overlap-default: -8px;
+
+@mixin avatar-size($size, $font-size) {
+	width: $size;
+	height: $size;
+	font-size: $font-size;
+}
+
+@mixin avatar-sizes {
+	&.xsm {
+		@include avatar-size($avatar-size-xsm, 8px);
+	}
+
+	&.sm {
+		@include avatar-size($avatar-size-sm, 10px);
+	}
+
+	&.regular {
+		@include avatar-size($avatar-size-regular, var(--font-size-xs));
+	}
+
+	&.md {
+		@include avatar-size($avatar-size-md, var(--font-size-md));
+	}
+
+	&.lg {
+		@include avatar-size($avatar-size-lg, var(--font-size-2xl));
+	}
+
+	&.xl {
+		@include avatar-size($avatar-size-xl, var(--font-size-3xl));
+	}
+}
