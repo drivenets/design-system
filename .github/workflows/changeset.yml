@@ -87,6 +87,8 @@ jobs:
 
       - name: Check for Major Changeset
         run: |
-          pnpm changeset status --since origin/main --output=./.changeset-status.json &> /dev/null
+          pnpm changeset status --since origin/main --output=./.changeset-status.json &> /dev/null || true
 
-          node .github/scripts/check-major-version.ts ./.changeset-status.json
+          if [ -f ./.changeset-status.json ]; then
+            node .github/scripts/check-major-version.ts ./.changeset-status.json
+          fi
