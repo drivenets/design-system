@@ -1,6 +1,7 @@
 {
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
+		"rootDirs": ["./", "./.scss-dts"],
 		"types": ["vite/client"],
 		"plugins": [{ "name": "typescript-plugin-css-modules" }]
 	},

@@ -57,7 +57,14 @@ const DsFormControl = ({
 	return (
 		<FormControlContext.Provider value={{ controlId }}>
 			<div
-				className={classNames(styles.container, status && message && styles[status], className)}
+				className={classNames(
+					styles.container,
+					className,
+
+					// @ts-expect-error: `info` doesn't have its own classname
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+					status && message && styles[status],
+				)}
 				style={style}
 			>
 				<div className={styles.labelContainer}>
@@ -77,7 +84,7 @@ const DsFormControl = ({
 				{message && (
 					<div className={styles.message}>
 						<DsIcon icon={messageIcon} size="tiny" filled />
-						<span className={styles.messageText}>{message}</span>
+						<span>{message}</span>
 					</div>
 				)}
 			</div>

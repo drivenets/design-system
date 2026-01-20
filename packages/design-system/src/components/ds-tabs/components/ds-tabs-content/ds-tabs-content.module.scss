@@ -1,0 +1,18 @@
+$animation-duration: 0.2s;
+$animation-translate: -4px;
+
+.tabContent {
+	padding: var(--spacing-standard) 0;
+	animation: fadeIn $animation-duration ease-in;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+		transform: translateY($animation-translate);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

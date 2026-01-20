@@ -46,9 +46,12 @@ const DsDrawer = ({
 						style={style}
 						className={classNames(
 							styles.drawer,
-							styles[`cols-${String(columns)}`],
 							styles[`position-${position}`],
 							className,
+
+							// @ts-expect-error: these classnames are generated dynamically in scss
+							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+							styles[`cols-${String(columns)}`],
 						)}
 					>
 						<div className={styles.content}>{children}</div>

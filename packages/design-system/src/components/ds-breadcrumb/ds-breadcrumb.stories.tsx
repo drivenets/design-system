@@ -192,33 +192,38 @@ export const Default: Story = {
 	}) => {
 		const canvas = within(canvasElement);
 
+		const lastItem = initialItems[initialItems.length - 1];
+		const previousItem = initialItems[initialItems.length - 2];
+
+		if (!lastItem || !previousItem) {
+			throw new Error('Items array must have at least 2 elements');
+		}
+
 		// 1. Check last item is selected
-		const lastItemElement = canvas.getByText(initialItems[initialItems.length - 1].label);
+		const lastItemElement = canvas.getByText(lastItem.label);
 		await expect(lastItemElement).toHaveAttribute('aria-current', 'page');
 
 		// 2. Click on previous item and verify last item is hidden
-		const previousItem = canvas.getByText(initialItems[initialItems.length - 2].label);
-		await userEvent.click(previousItem);
+		const previousItemElement = canvas.getByText(previousItem.label);
+		await userEvent.click(previousItemElement);
 
 		// Verify previous item is now last and selected
-		const updatedLastItem = canvas.getByText(initialItems[initialItems.length - 2].label);
+		const updatedLastItem = canvas.getByText(previousItem.label);
 		await expect(updatedLastItem).toHaveAttribute('aria-current', 'page');
 
 		// Verify original last item is not visible
-		const originalLastItem = screen.queryByText(initialItems[initialItems.length - 1].label);
+		const originalLastItem = screen.queryByText(lastItem.label);
 		await expect(originalLastItem).not.toBeInTheDocument();
 
 		// 3. Reset to initial state
-		const lastBreadcrumbItem = initialItems[initialItems.length - 1];
-		const lastItemHref =
-			lastBreadcrumbItem.type === 'link' ? lastBreadcrumbItem.href : lastBreadcrumbItem.options[0].href;
+		const lastItemHref = lastItem.type === 'link' ? lastItem.href : (lastItem.options[0]?.href ?? '');
 
 		act(() => {
 			extendedWindow.resetBreadcrumbItems?.(lastItemHref);
 		});
 
 		// Verify we're back to initial state
-		const resetLastItem = canvas.getByText(initialItems[initialItems.length - 1].label);
+		const resetLastItem = canvas.getByText(lastItem.label);
 		await expect(resetLastItem).toBeInTheDocument();
 	},
 };

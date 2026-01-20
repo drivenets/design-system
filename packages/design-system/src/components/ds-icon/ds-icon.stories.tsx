@@ -86,8 +86,10 @@ export const Showcase: Story = {
 				// Key format is "category::iconName"
 				const [category, iconName] = key.split('::');
 
-				// This is not necessarily a redundant condition. It depends on `noUncheckedIndexedAccess`.
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				if (!category || !iconName) {
+					return;
+				}
+
 				if (!categorizedIcons[category]) {
 					categorizedIcons[category] = [];
 				}
@@ -98,8 +100,8 @@ export const Showcase: Story = {
 			});
 
 			// Sort icon names within each category
-			Object.keys(categorizedIcons).forEach((category) => {
-				categorizedIcons[category].sort();
+			Object.values(categorizedIcons).forEach((icons) => {
+				icons.sort();
 			});
 
 			return categorizedIcons;
@@ -136,8 +138,8 @@ export const Showcase: Story = {
 		const filteredCategories = useMemo(() => {
 			const result: IconsByCategory = {};
 
-			Object.keys(iconsByCategory).forEach((category) => {
-				const filteredIcons = iconsByCategory[category].filter(
+			Object.entries(iconsByCategory).forEach(([category, icons]) => {
+				const filteredIcons = icons.filter(
 					(icon) =>
 						icon.toLowerCase().includes(searchTerm.toLowerCase()) ||
 						category.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -196,13 +198,13 @@ export const Showcase: Story = {
 				{Object.keys(filteredCategories).length === 0 ? (
 					<div className="no-results">No icons found matching &quot;{searchTerm}&quot;</div>
 				) : (
-					Object.keys(filteredCategories)
-						.sort()
-						.map((category) => (
+					Object.entries(filteredCategories)
+						.sort(([a], [b]) => a.localeCompare(b))
+						.map(([category, icons]) => (
 							<div key={category} className="category-section">
 								<h2 className="category-title">{category}</h2>
 								<div className="results">
-									{filteredCategories[category].map((iconName) => (
+									{icons.map((iconName) => (
 										<button
 											key={`${category}-${iconName}`}
 											className="icon-wrapper"

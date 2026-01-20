@@ -1,8 +1,5 @@
 {
 	"extends": "./tsconfig.base.json",
 	"include": ["**/*", "./.github/scripts/**/*"],
-	"exclude": ["./packages/**"],
-	"compilerOptions": {
-		"noUncheckedIndexedAccess": true
-	}
+	"exclude": ["./packages/**"]
 }

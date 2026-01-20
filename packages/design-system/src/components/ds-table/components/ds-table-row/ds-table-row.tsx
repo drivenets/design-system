@@ -50,7 +50,6 @@ const DsTableRow = <TData,>({ ref, row, virtualRow }: DsTableRowProps<TData>) =>
 		renderExpandedRow,
 		virtualized,
 		bordered,
-		highlightOnHover,
 		rowSize,
 		toggleRowExpanded,
 		primaryRowActions,
@@ -100,7 +99,6 @@ const DsTableRow = <TData,>({ ref, row, virtualRow }: DsTableRowProps<TData>) =>
 					},
 					virtualized && styles.virtualizedRow,
 					onRowClick && styles.clickableRow,
-					highlightOnHover && styles.highlightHoverRow,
 					!bordered && styles.rowNoBorder,
 					isExpanded && styles.expanded,
 				)}

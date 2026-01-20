@@ -26,7 +26,7 @@ const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'medium', className, style
 	const strokeDasharray = `${String(0.25 * circumference)} ${String(circumference)}`;
 
 	return (
-		<div className={classNames(styles.spinnerContainer, styles[size], className)} style={style} {...props}>
+		<div className={classNames(styles.spinnerContainer, className)} style={style} {...props}>
 			<svg
 				className={classNames(styles.progressCircle, styles.spin)}
 				width={actualSize}

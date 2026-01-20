@@ -5,6 +5,7 @@ import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';
 import styles from './ds-table-bulk-actions.module.scss';
 import type { BulkActionsProps } from './ds-table-bulk-actions.types';
+import { DsTypography } from '../../../ds-typography';
 
 const DsTableBulkActions: React.FC<BulkActionsProps> = ({ numSelectedRows, actions, onClearSelection }) => {
 	const [isRendered, setIsRendered] = useState(false);
@@ -31,24 +32,21 @@ const DsTableBulkActions: React.FC<BulkActionsProps> = ({ numSelectedRows, actio
 	return (
 		<div className={classnames(styles.bulkActionsContainer, animationClass)}>
 			<div className={styles.selectedCountContainer}>
-				<h3 className={classnames(styles.selectedCountBadge, styles.bold)}>{numSelectedRows}</h3>
+				<DsTypography variant="heading1" className={styles.selectedCountBadge}>
+					{numSelectedRows}
+				</DsTypography>
 			</div>
 			<div className={styles.bulkActionsContent}>
-				<span className={styles.bulkActionsInfo}>items selected</span>
+				<DsTypography variant="body-md-semi-bold" className={styles.bulkActionsInfo}>
+					Items selected
+				</DsTypography>
 
 				<div className={styles.bulkActionsActions}>
 					{actions.map((action, index) => (
-						<DsButton
-							key={index}
-							variant="borderless"
-							size="small"
-							className={styles.actionButton}
-							contentClassName={styles.actionButtonContent}
-							onClick={action.onClick}
-						>
+						<button key={index} type="button" className={styles.actionButton} onClick={action.onClick}>
 							<DsIcon icon={action.icon} />
-							<span className={(styles['p-s'], styles.medium)}>{action.label}</span>
-						</DsButton>
+							<DsTypography variant="body-xs-md">{action.label}</DsTypography>
+						</button>
 					))}
 				</div>
 
@@ -60,7 +58,6 @@ const DsTableBulkActions: React.FC<BulkActionsProps> = ({ numSelectedRows, actio
 					onClick={onClearSelection}
 				>
 					<DsIcon icon="close" />
-					<span className={(styles['p-s'], styles.medium)}>Esc</span>
 				</DsButton>
 			</div>
 		</div>

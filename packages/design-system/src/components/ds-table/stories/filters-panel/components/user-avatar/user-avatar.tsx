@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { DsTypography } from '../../../../../ds-typography';
 import styles from './user-avatar.module.scss';
 
@@ -14,9 +15,9 @@ const colors = [
 ];
 
 const getInitials = (name: string): string => {
-	const parts = name.trim().split(' ');
-	if (parts.length >= 2) {
-		return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
+	const [firstName, lastName] = name.trim().split(' ');
+	if (firstName && lastName) {
+		return `${firstName[0] as string}${lastName[0] as string}`.toUpperCase();
 	}
 	return name.slice(0, 2).toUpperCase();
 };
@@ -27,10 +28,10 @@ export const UserAvatar = ({ name, size = 'small', colorIndex = 0 }: UserAvatarP
 
 	return (
 		<div
-			className={`${styles.avatar} ${styles[size]}`}
+			className={classNames(styles.avatar, styles[size])}
 			style={{
-				backgroundColor: color.bg,
-				color: color.text,
+				backgroundColor: color?.bg,
+				color: color?.text,
 			}}
 		>
 			<DsTypography variant="body-xs-semi-bold">{initials}</DsTypography>

@@ -44,7 +44,11 @@ export const stringToDateValue = (dates: string | [string, string]): DateValue[]
 export const dateValuesToStrings = (dates: DateValue[], range: boolean): string | [string, string] => {
 	const values = dates.map((date) => date.toString());
 
-	return range ? [values[0], values[1]] : values[0];
+	if (range) {
+		return [values[0] ?? '', values[1] ?? ''];
+	}
+
+	return values[0] ?? '';
 };
 
 /**
@@ -68,7 +72,7 @@ export const formatDateInputValue = (value: DateValue[], range: boolean): string
 	}
 	const newValue = value.map(formatDateValue);
 
-	return range ? newValue.join(' - ') : newValue[0];
+	return range ? newValue.join(' - ') : (newValue[0] ?? '');
 };
 
 /**
@@ -86,6 +90,11 @@ const parseDateString = (dateStr: string): DateValue | null => {
 	}
 
 	const [, month, day, year] = match;
+
+	if (!month || !day || !year) {
+		return null;
+	}
+
 	const monthNum = parseInt(month, 10);
 	const dayNum = parseInt(day, 10);
 	const yearNum = parseInt(year, 10);
@@ -129,6 +138,11 @@ const parseRangeInput = (text: string): ParsedDateRange => {
 	}
 
 	const [startStr, endStr] = parts;
+
+	if (!startStr || !endStr) {
+		return { start: null, end: null, isValid: false };
+	}
+
 	const startDate = parseDateString(startStr);
 	const endDate = parseDateString(endStr);
 

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
+import classNames from 'classnames';
 import DsAlertBanner from '../ds-alert-banner';
 import { DsButton } from '../../ds-button';
 import { alertBannerVariants } from '../ds-alert-banner.types';
@@ -195,14 +196,14 @@ export const CustomBody: Story = {
 									Multiple security vulnerabilities have been detected in your system:
 								</p>
 								<div className={styles.securityCardsContainer}>
-									<div className={`${styles.securityCard} ${styles.securityCardCritical}`}>
-										<span className={`${styles.securityCardTitle} ${styles.securityCardTitleCritical}`}>
+									<div className={classNames(styles.securityCard, styles.securityCardCritical)}>
+										<span className={classNames(styles.securityCardTitle, styles.securityCardTitleCritical)}>
 											Critical: SQL Injection
 										</span>
 										<span className={styles.securityCardScore}>CVSS: 9.8</span>
 									</div>
-									<div className={`${styles.securityCard} ${styles.securityCardHigh}`}>
-										<span className={`${styles.securityCardTitle} ${styles.securityCardTitleHigh}`}>
+									<div className={classNames(styles.securityCard, styles.securityCardHigh)}>
+										<span className={classNames(styles.securityCardTitle, styles.securityCardTitleHigh)}>
 											High: XSS Vulnerability
 										</span>
 										<span className={styles.securityCardScore}>CVSS: 7.2</span>

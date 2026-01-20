@@ -10,7 +10,10 @@ type BasePositioning = NonNullable<Menu.RootProps['positioning']>;
 /**
  * Positioning options for dropdown menu
  */
-export type DsDropdownMenuPositioning = Pick<BasePositioning, 'placement' | 'gutter' | 'sameWidth'>;
+export type DsDropdownMenuPositioning = Pick<
+	BasePositioning,
+	'placement' | 'gutter' | 'sameWidth' | 'getAnchorRect'
+>;
 
 /**
  * DEPRECATED: Legacy dropdown menu option configuration

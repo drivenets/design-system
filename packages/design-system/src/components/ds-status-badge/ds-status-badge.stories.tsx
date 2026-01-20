@@ -79,7 +79,7 @@ export const All: Story = {
 			<div className={styles.storiesContainer}>
 				<div className={styles.storiesRow}>
 					{/* Filled variants - Default */}
-					<div className={styles.storiesSection}>
+					<div>
 						<div className={styles.sectionTitle}>Filled</div>
 						<div className={styles.storiesList}>
 							{dsStatuses.map((status) => (
@@ -89,7 +89,7 @@ export const All: Story = {
 					</div>
 
 					{/* Ghost variants - Default */}
-					<div className={styles.storiesSection}>
+					<div>
 						<div className={styles.sectionTitle}>Ghost</div>
 						<div className={styles.storiesList}>
 							{dsStatuses.map((status) => (
@@ -106,7 +106,7 @@ export const All: Story = {
 
 				<div className={styles.storiesRow}>
 					{/* Filled variants - Small */}
-					<div className={styles.storiesSection}>
+					<div>
 						<div className={styles.sectionTitle}>Filled - Small</div>
 						<div className={styles.storiesList}>
 							{dsStatuses.map((status) => (
@@ -121,7 +121,7 @@ export const All: Story = {
 					</div>
 
 					{/* Ghost variants - Small */}
-					<div className={styles.storiesSection}>
+					<div>
 						<div className={styles.sectionTitle}>Ghost - Small</div>
 						<div className={styles.storiesList}>
 							{dsStatuses.map((status) => (

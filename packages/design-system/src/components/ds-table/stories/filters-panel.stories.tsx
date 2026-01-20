@@ -20,7 +20,7 @@ const sampleUsers = [
 	{ name: 'Roger Dias', colorIndex: 0 },
 	{ name: 'Lindsey Westerner', colorIndex: 1 },
 	{ name: 'Neil Sims', colorIndex: 2 },
-];
+] as const;
 
 const columns: ColumnDef<Workflow>[] = [
 	{
@@ -376,7 +376,6 @@ createCustomFilterAdapter({
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
-		highlightOnHover: true,
 		expandable: false,
 		emptyState: <div>No data available</div>,
 		onRowClick: (row) => console.log('Row clicked:', row),
@@ -521,7 +520,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 		// Set initial selected filter when modal opens
 		const handleOpenChange = (open: boolean) => {
 			if (open && !selectedFilterId && filterNavItems.length > 0) {
-				setSelectedFilterId(filterNavItems[0].id);
+				setSelectedFilterId(filterNavItems[0]?.id || '');
 			}
 			setIsOpen(open);
 		};

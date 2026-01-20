@@ -1,0 +1,31 @@
+$indicator-border-radius: 4px;
+$indicator-thickness: 2px;
+$indicator-offset: -4px;
+$transition-duration: 0.2s;
+
+.indicator {
+	position: absolute;
+	background: var(--color-background-selected);
+	transition:
+		left $transition-duration ease-in-out,
+		top $transition-duration ease-in-out,
+		width $transition-duration ease-in-out,
+		height $transition-duration ease-in-out,
+		opacity $transition-duration ease-in-out;
+	border-radius: $indicator-border-radius;
+	pointer-events: none;
+
+	[data-orientation='horizontal'] & {
+		bottom: $indicator-offset;
+		height: $indicator-thickness;
+		left: var(--left);
+		width: var(--width);
+	}
+
+	[data-orientation='vertical'] & {
+		left: 0;
+		width: $indicator-thickness;
+		top: var(--top);
+		height: var(--height);
+	}
+}

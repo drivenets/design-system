@@ -40,7 +40,13 @@ const DsModal = ({
 				<Dialog.Positioner>
 					<Dialog.Content
 						style={style}
-						className={classNames(styles.modal, styles[`cols-${String(columns)}`], className)}
+						className={classNames(
+							styles.modal,
+							className,
+
+							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+							styles[`cols-${columns}`],
+						)}
 					>
 						<div className={classNames(styles.content)}>{children}</div>
 					</Dialog.Content>

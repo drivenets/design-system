@@ -1,5 +1,6 @@
 import type React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import classNames from 'classnames';
 import DsDivider from './ds-divider';
 import styles from './ds-divider.stories.module.scss';
 
@@ -41,7 +42,9 @@ type Story = StoryObj<typeof DsDivider>;
 export const Default: Story = {
 	render: (args) => (
 		<div
-			className={`${styles.storyContainer} ${args.orientation === 'vertical' ? styles.storyContainerVertical : ''}`}
+			className={classNames(styles.storyContainer, {
+				[styles.storyContainerVertical]: args.orientation === 'vertical',
+			})}
 		>
 			{args.orientation === 'vertical' ? (
 				<>
@@ -133,7 +136,7 @@ export const Vertical: Story = {
 		orientation: 'vertical',
 	},
 	render: (args) => (
-		<div className={`${styles.storyContainer} ${styles.storyContainerVertical}`}>
+		<div className={classNames(styles.storyContainer, styles.storyContainerVertical)}>
 			<div className={styles.storyContentSide}>Left</div>
 			<DsDivider {...args} />
 			<div className={styles.storyContentSide}>Right</div>

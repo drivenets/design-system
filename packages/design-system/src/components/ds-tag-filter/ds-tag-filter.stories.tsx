@@ -153,10 +153,10 @@ export const Default: Story = {
 
 		// Wait for delete button to become visible after focus
 		await waitFor(async () => {
-			await expect(canvas.getAllByRole('button', { name: 'Delete tag' })[0]).toBeVisible();
+			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
 		});
 
-		const deleteButton = canvas.getAllByRole('button', { name: 'Delete tag' })[0];
+		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
 		await userEvent.click(deleteButton);
 
 		await waitFor(async () => {
@@ -231,10 +231,10 @@ export const FewFilters: Story = {
 
 		// Wait for delete button to become visible after focus
 		await waitFor(async () => {
-			await expect(canvas.getAllByRole('button', { name: 'Delete tag' })[0]).toBeVisible();
+			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
 		});
 
-		const deleteButton = canvas.getAllByRole('button', { name: 'Delete tag' })[0];
+		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
 		await userEvent.click(deleteButton);
 
 		await waitFor(async () => {
@@ -277,10 +277,10 @@ export const WithoutClearAll: Story = {
 
 		// Wait for delete button to become visible after focus
 		await waitFor(async () => {
-			await expect(canvas.getAllByRole('button', { name: 'Delete tag' })[0]).toBeVisible();
+			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
 		});
 
-		const deleteButton = canvas.getAllByRole('button', { name: 'Delete tag' })[0];
+		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
 		await userEvent.click(deleteButton);
 
 		await waitFor(async () => {
@@ -361,10 +361,10 @@ export const WithoutLabel: Story = {
 
 		// Wait for delete button to become visible after focus
 		await waitFor(async () => {
-			await expect(canvas.getAllByRole('button', { name: 'Delete tag' })[0]).toBeVisible();
+			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
 		});
 
-		const deleteButton = canvas.getAllByRole('button', { name: 'Delete tag' })[0];
+		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
 		await userEvent.click(deleteButton);
 
 		await waitFor(async () => {

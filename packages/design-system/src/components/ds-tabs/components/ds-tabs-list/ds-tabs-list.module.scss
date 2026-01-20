@@ -1,0 +1,27 @@
+$border-width: 1px;
+
+.tabList {
+	display: flex;
+	position: relative;
+
+	[data-orientation='horizontal'] & {
+		flex-direction: row;
+		align-items: center;
+		border-bottom: $border-width solid var(--color-border-main);
+		gap: var(--spacing-xs);
+	}
+
+	[data-orientation='vertical'] & {
+		flex-direction: column;
+		align-items: stretch;
+		border-right: $border-width solid var(--color-border-main);
+	}
+
+	[data-orientation='vertical'][data-size='medium'] & {
+		gap: var(--spacing-xs);
+	}
+
+	[data-orientation='vertical'][data-size='small'] & {
+		gap: var(--spacing-3xs);
+	}
+}

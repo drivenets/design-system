@@ -36,8 +36,9 @@
 		"directory": "/packages/design-system"
 	},
 	"scripts": {
-		"lint": "eslint --max-warnings=0 .",
-		"typecheck": "tsc",
+		"lint": "pnpm generate-scss-dts; eslint --max-warnings=0 .",
+		"typecheck": "pnpm generate-scss-dts; tsc",
+		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest",
 		"build": "tsdown",
@@ -107,6 +108,7 @@
 		"sass-embedded": "^1.97.0",
 		"storybook": "^10.1.9",
 		"tsdown": "^0.18.0",
+		"typed-scss-modules": "^8.1.1",
 		"typescript": "^5.9.3",
 		"typescript-plugin-css-modules": "^5.2.0",
 		"vite": "^7.3.0",
