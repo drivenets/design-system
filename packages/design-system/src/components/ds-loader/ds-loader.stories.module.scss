@@ -1,0 +1,53 @@
+.inlineContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+}
+
+.variantComparisonContainer {
+	display: flex;
+	gap: var(--spacing-2xl);
+	align-items: center;
+}
+
+.variantItem {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--spacing-sm);
+}
+
+.variantLabel {
+	font-size: 12px;
+	color: var(--color-font-secondary);
+}
+
+.usageExamplesContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xl);
+}
+
+.usageSection {
+	margin-bottom: var(--spacing-sm);
+}
+
+.centeredContainer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 200px;
+	height: 100px;
+	border: 1px dashed var(--color-border-main);
+	border-radius: 8px;
+}
+
+.multipleLoadersContainer {
+	display: flex;
+	gap: var(--spacing-standard);
+}
+
+.customPropsLoader {
+	padding: var(--spacing-standard);
+	background-color: rgba(0, 0, 0, 0.05);
+}
