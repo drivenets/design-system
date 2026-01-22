@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 import { DsSkeleton } from './index';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '../ds-table/components/core-table';
 import styles from './ds-skeleton.stories.module.scss';
 
 const meta: Meta<typeof DsSkeleton> = {
@@ -211,6 +219,47 @@ export const CardSkeleton: Story = {
 				<DsSkeleton.Rect width={100} height={36} radius={4} />
 				<DsSkeleton.Rect width={100} height={36} radius={4} />
 			</div>
+		</div>
+	),
+};
+
+/**
+ * Table skeleton composition - shows a loading state for tabular data
+ */
+export const TableSkeleton: Story = {
+	render: () => (
+		<div className={styles.tableContainer}>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Name</TableHead>
+						<TableHead>Status</TableHead>
+						<TableHead>Progress</TableHead>
+						<TableHead>Actions</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					{Array.from({ length: 5 }).map((_, i) => (
+						<TableRow key={i}>
+							<TableCell>
+								<div className={styles.tableNameCell}>
+									<DsSkeleton.Circle size="sm" />
+									<DsSkeleton.Text width={120} />
+								</div>
+							</TableCell>
+							<TableCell>
+								<DsSkeleton.Rect width={80} height={24} radius="round" />
+							</TableCell>
+							<TableCell>
+								<DsSkeleton.Rect width={100} height={8} radius={4} />
+							</TableCell>
+							<TableCell>
+								<DsSkeleton.Rect width={32} height={32} radius={4} />
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
 		</div>
 	),
 };
