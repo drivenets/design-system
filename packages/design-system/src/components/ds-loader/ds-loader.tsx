@@ -11,7 +11,7 @@ import SpinnerIcon from './spinner-icon';
 const DsLoader: React.FC<DsLoaderProps> = ({ variant = 'spinner', className, style, ...props }) => {
 	return (
 		<div className={classNames(styles.loaderContainer, className)} style={style} {...props}>
-			{variant === 'pulsing' ? <PulsingIcon /> : <SpinnerIcon className={styles.loader} />}
+			{variant === 'pulsing' ? <PulsingIcon /> : <SpinnerIcon />}
 		</div>
 	);
 };

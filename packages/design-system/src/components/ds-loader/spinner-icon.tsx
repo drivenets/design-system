@@ -1,10 +1,8 @@
-interface SpinnerIconProps {
-	className?: string;
-}
+import styles from './ds-loader.module.scss';
 
-const SpinnerIcon = ({ className }: SpinnerIconProps) => (
+const SpinnerIcon = () => (
 	<svg
-		className={className}
+		className={styles.loader}
 		width="24"
 		height="24"
 		viewBox="0 0 24 24"

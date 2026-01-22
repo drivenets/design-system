@@ -9,7 +9,6 @@ import styles from './ds-skeleton.module.scss';
  * Matches DsAvatar sizes
  */
 const DsSkeletonCircle: React.FC<DsSkeletonCircleProps> = ({ size, variant = 'grey', className, style }) => {
-	// Determine pixel size from size prop
 	const pixelSize = typeof size === 'number' ? size : circleSizeMap[size];
 
 	const circleStyle: React.CSSProperties = {
