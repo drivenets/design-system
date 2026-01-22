@@ -5,5 +5,6 @@
 		"interface": true,
 		"type": true
 	},
-	"ignoreBinaries": ["tail"]
+	"ignoreBinaries": ["tail"],
+	"ignoreDependencies": ["@vitest/coverage-v8"]
 }

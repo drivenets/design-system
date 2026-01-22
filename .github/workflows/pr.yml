@@ -160,7 +160,7 @@ jobs:
         run: pnpm --filter @drivenets/design-system test:coverage
 
       - name: Upload Coverage Report
-        uses: actions/upload-artifact@ea05b972c4286d9363af3d338d0c4c61a0dc8f96 # v4.6.2
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: coverage-report
@@ -182,7 +182,7 @@ jobs:
           fi
 
       - name: Coverage PR Comment
-        uses: davelosert/vitest-coverage-report-action@3bb15bf7db10acbe97dbd47ceeaeb7f59b964a68 # v2.8.0
+        uses: davelosert/vitest-coverage-report-action@v2
         if: github.event_name == 'pull_request'
         with:
           working-directory: packages/design-system
