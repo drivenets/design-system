@@ -9,6 +9,27 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 
 export default defineConfig({
 	test: {
+		coverage: {
+			provider: 'istanbul',
+			reporter: ['text', 'html', 'lcov', 'json-summary'],
+			reportsDirectory: './coverage',
+			include: ['src/components/**/*.{ts,tsx}'],
+			exclude: [
+				'**/*.stories.tsx',
+				'**/*.stories.ts',
+				'**/*.test.ts',
+				'**/*.test.tsx',
+				'**/stories/**',
+				'**/*.types.ts',
+				'**/index.ts',
+			],
+			thresholds: {
+				statements: 70,
+				branches: 70,
+				functions: 70,
+				lines: 70,
+			},
+		},
 		projects: [
 			{
 				extends: true,
