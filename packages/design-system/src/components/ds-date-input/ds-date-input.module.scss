@@ -73,6 +73,7 @@
 .content {
 	@include dropdown.dropdown-content;
 	padding: var(--spacing-standard);
+	min-width: fit-content;
 }
 
 .viewControl {
