@@ -56,6 +56,27 @@ These are scripts that run in the CI workflows for each PR. You might not need t
 - `pnpm lint:versions`: Ensures consistent package versions across the monorepo.
 - `pnpm lint:unused`: Detects unused code and dependencies.
 
+### Cursor Rules
+
+This repo includes [Cursor rules](https://cursor.com/docs) in `.cursor/rules/` to support AI-powered development:
+
+| Rule                | Usage                                                        |
+| ------------------- | ------------------------------------------------------------ |
+| `design-system.mdc` | Auto-applied when editing components — scaffolding templates |
+| `monorepo.mdc`      | Auto-applied in `packages/` — import boundaries              |
+| `checkers.mdc`      | Always applied — how to run lint/test/typecheck              |
+| `standards.mdc`     | Always applied — PR requirements and code standards          |
+| `code-review.mdc`   | **Manual** — invoke with `@code-review` for local PR review  |
+
+#### Local Code Review
+
+Before submitting a PR, run a local code review (apply latest `main` changes!):
+
+1. Type `@code-review` in Cursor chat to invoke the rule
+2. The AI will align with the `upstream/main` when permitted.
+3. The AI will diff against `upstream/main` and flag high-severity issues.
+4. Review comments are added as `REVIEW-[SEVERITY]` inline comments.
+
 ### Development Workflow
 
 - Create a new branch for your feature or bugfix.

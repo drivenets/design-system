@@ -1,0 +1,51 @@
+---
+description: Package boundaries and workspace structure
+globs: packages/**/*
+---
+
+# Package Boundaries
+
+## Structure
+
+```
+packages/
+├── design-system/       # @drivenets/design-system
+├── eslint-plugin/       # @drivenets/eslint-plugin-design-system
+├── vite-plugin/         # @drivenets/vite-plugin-design-system
+└── commitlint-plugin/   # @drivenets/commitlint-plugin-design-system
+```
+
+## Import Rules
+
+| Package | Can Import | Cannot Import |
+|---------|-----------|---------------|
+| design-system | React, Ark UI, Radix, TanStack, classnames | Other workspace packages |
+| eslint-plugin | ESLint APIs, TypeScript | React, design-system |
+| vite-plugin | Vite APIs | React, design-system |
+
+## Workspace Dependencies
+
+```json
+{
+  "devDependencies": {
+    "@drivenets/vite-plugin-design-system": "workspace:*"
+  }
+}
+```
+
+## Adding New Packages
+
+1. Create `packages/{name}/`
+2. `package.json` with name `@drivenets/{name}`
+3. `tsconfig.json` extends `../../tsconfig.base.json`
+4. `eslint.config.ts` imports from `../../eslint.config.base.ts`
+
+## Cross-Package Imports
+
+```typescript
+// Good - use package name
+import { util } from '@drivenets/design-system';
+
+// Bad - relative path across packages
+import { util } from '../../design-system/src/utils';
+```

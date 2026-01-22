@@ -1,0 +1,27 @@
+---
+description: Use this rule when doing code reviews
+alwaysApply: false
+---
+
+# Code Review Rules
+
+It is a local code review process done before submitting a PR.
+
+Objectives:
+
+1. Review the current PR diff and flag only clear, high-severity issues
+2. Verify requirements and applicable code standards/cursor rules
+3. Add short JS comments with a structure:
+
+```typescript
+/**
+ * REVIEW-[SEVERITY]: [ISSUE DESCRIPTION]
+ */
+```
+
+- Get diff: git diff upstream/main
+- Max 10 inline comments total; prioritize the most critical issues
+- One issue per comment; place on the exact changed line
+- Natural tone, specific and actionable; do not mention automated or a high-confidence
+- Use emojis: 🚨 Critical 🔒 Security ⚡ Performance ⚠️ Logic ✅ Resolved ✨ Improvement
+

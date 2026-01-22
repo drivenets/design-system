@@ -1,0 +1,71 @@
+---
+description: Component scaffolding templates for creating new design system components
+globs: packages/design-system/src/components/**/*
+---
+
+# Component Scaffolding
+
+## File Structure
+
+New component at `packages/design-system/src/components/ds-{name}/`:
+
+```
+ds-{name}/
+├── index.ts              # Barrel export
+├── ds-{name}.tsx         # Implementation
+├── ds-{name}.types.ts    # Props interface
+├── ds-{name}.module.scss # Styles
+└── ds-{name}.stories.tsx # Stories
+```
+
+## Implementation Template
+
+```tsx
+import classNames from 'classnames';
+import styles from './ds-{name}.module.scss';
+import type { Ds{Name}Props } from './ds-{name}.types';
+
+/**
+ * Design system {Name} component
+ */
+const Ds{Name} = ({
+  className,
+  children,
+  ...props
+}: Ds{Name}Props) => {
+  return (
+    <div className={classNames(styles.container, className)} {...props}>
+      {children}
+    </div>
+  );
+};
+
+export default Ds{Name};
+```
+
+## Types Template
+
+```typescript
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+
+export interface Ds{Name}Props extends ComponentPropsWithoutRef<'div'> {
+  /**
+   * JSDoc description
+   */
+  label?: ReactNode;
+}
+```
+
+## Index Barrel
+
+```typescript
+export { default as Ds{Name} } from './ds-{name}';
+export type { Ds{Name}Props } from './ds-{name}.types';
+```
+
+## Primitive Libraries
+
+1. **Ark UI** (`@ark-ui/react`) - Primary choice for new components
+2. **Radix UI** (`@radix-ui/react-*`) - Deprecated, modify existing only
+3. **TanStack** - Data-heavy components (table, virtual)
+4. **Custom** - Only when no primitive exists

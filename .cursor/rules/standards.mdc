@@ -1,0 +1,201 @@
+---
+description: PR requirements and code standards for the design-system repository
+alwaysApply: true
+---
+
+# Pull Request Requirements & Code Standards
+
+Based on code review feedback, here are the consolidated standards for the design-system repository.
+
+---
+
+## Git & PR Workflow
+
+| Requirement                    | Details                                                |
+| ------------------------------ | ------------------------------------------------------ |
+| **No force-push after review** | GitHub loses review history; use merge commits instead |
+| **Changelog required**         | Run `pnpm changelog` before merge                      |
+| **Conventional commits**       | PR title must follow conventional commit format        |
+| **Separate concerns**          | Unrelated changes should go in separate PRs            |
+
+---
+
+## Testing Standards
+
+| Requirement                      | Details                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Every story needs tests**      | Add `play` function to stories, do not repeat the same assertions many times if not needed |
+| **Prefer a11y queries**          | Use `getByRole('button', { name: /label/i })` over `getByTestId`                           |
+| **Semantic assertions**          | Use `toBeChecked()`, `toBeDisabled()`, `toBeSelected()`                                    |
+| **Avoid implementation details** | Don't test data attributes, CSS selectors, or internal state                               |
+| **Await promises**               | Return or await all async operations in tests                                              |
+| **use fn() from storybook**      | To assert callback interaction use this method to verify                                   |
+
+```typescript
+// Good
+const checkbox = canvas.getByRole('checkbox', { name: /Toggle/ });
+await expect(checkbox).toBeChecked();
+
+// Bad
+const el = canvas.getByTestId('toggle');
+expect(el).toHaveAttribute('data-state', 'checked');
+```
+
+---
+
+## CSS/SCSS Standards
+
+| Requirement                     | Details                                               |
+| ------------------------------- | ----------------------------------------------------- |
+| **Use design tokens**           | Colors from `--color-*`, spacing from `--spacing-*`   |
+| **Focus states**                | Use `[data-focus-visible]` for keyboard-only outlines |
+| **Use `classnames` utility**    | Not template literals for conditional classes         |
+| **Avoid `:global`**             | CSS modules should stay scoped                        |
+| **No inline styles in stories** | Move to `*.stories.module.scss`                       |
+| **Use mixins for duplication**  | Extract repeated patterns                             |
+| **Pill border-radius**          | Use `9999px` for safety                               |
+| **Pseudo-element order**        | Put `content: ''` first                               |
+
+```scss
+// Good
+.button {
+  color: var(--color-text-primary);
+  &[data-focus-visible] {
+    outline: 2px solid var(--color-focus);
+  }
+}
+
+// Bad
+.button {
+  color: #333;
+  &:focus {
+    outline: 2px solid blue;
+  }
+}
+```
+
+---
+
+## Component API Design
+
+| Requirement                    | Details                                         |
+| ------------------------------ | ----------------------------------------------- |
+| **Own props layer**            | Don't expose all underlying library props       |
+| **Generic ref types**          | Use `Ref<HTMLElement>` to allow library changes |
+| **Standard props**             | Always support `className`, `style`, `ref`      |
+| **slotProps pattern**          | Use for sub-component customization (MUI-style) |
+| **Consistent callback naming** | Prefer `onXChange` pattern                      |
+| **Single deprecation comment** | In types file only, not on every export         |
+
+```typescript
+// Good - own props layer
+interface DsToggleProps {
+  checked?: boolean;
+  onCheckedChange?: (checked: boolean) => void;
+  ref?: Ref<HTMLElement>;
+  className?: string;
+}
+
+// Bad - exposing library internals
+interface DsToggleProps extends SwitchRootProps {
+  // exposes all Ark props
+}
+```
+
+---
+
+## TypeScript Standards
+
+| Requirement                  | Details                            |
+| ---------------------------- | ---------------------------------- |
+| **No redundant JSDoc**       | Skip `@interface` and `@type` tags |
+| **Use full type references** | Import and use named types         |
+| **Export from `.types.ts`**  | Keep types in dedicated files      |
+
+---
+
+## Code Organization
+
+| Requirement                    | Details                                                   |
+| ------------------------------ | --------------------------------------------------------- |
+| **Let code breathe**           | Whitespace between logical chunks                         |
+| **Extract functions**          | Complex logic into small, named functions                 |
+| **Name magic numbers**         | Use constants with descriptive names                      |
+| **Avoid overkill memoization** | Memory cost may exceed calculation                        |
+| **Avoid React anti-patterns**  | No `querySelector`, `requestAnimationFrame` in components |
+| **Early returns**              | Simplify conditionals where possible                      |
+
+```typescript
+// Good - breathing code
+const isSmall = size === 'small';
+
+const rootClass = classNames(styles.root, {
+  [styles.small]: isSmall,
+});
+
+const handleChange = ({ checked }: CheckedChangeDetails) => {
+  onCheckedChange?.(checked);
+};
+
+// Bad - cramped
+const isSmall = size === 'small';
+const rootClass = classNames(styles.root, { [styles.small]: isSmall });
+const handleChange = ({ checked }: CheckedChangeDetails) => onCheckedChange?.(checked);
+```
+
+---
+
+## Storybook Standards
+
+| Requirement                                                     | Details                                                |
+| --------------------------------------------------------------- | ------------------------------------------------------ |
+| **Hide internal args, which does not make sense in storybook ** | Use `argTypes: { prop: { table: { disable: true } } }` |
+| **Show combined states**                                        | E.g., checked + disabled together                      |
+| **Propagate args**                                              | Story args must flow to component                      |
+| **Localization examples**                                       | Add story showing i18n capability with "locale" prop   |
+| **Use `fn()` for actions**                                      | Storybook's built-in spy                               |
+
+---
+
+## Design Alignment
+
+| Requirement                   | Details                                    |
+| ----------------------------- | ------------------------------------------ |
+| **Verify against Figma**      | Colors, spacing, behavior must match       |
+| **Question additions**        | If not in design, ask designers first      |
+| **Document design decisions** | Comment why specific values (e.g., `-8px`) |
+
+---
+
+## File Naming
+
+| Requirement          | Details                        |
+| -------------------- | ------------------------------ |
+| **Barrel exports**   | Use `index.ts` not `index.tsx` |
+| **kebab-case files** | All files must be kebab-case   |
+
+---
+
+## ESLint Plugin
+
+| Requirement           | Details                                                          |
+| --------------------- | ---------------------------------------------------------------- |
+| **Deprecation rules** | Add to `@drivenets/eslint-plugin-design-system` when deprecating |
+
+---
+
+## PR Checklist
+
+Before submitting a PR:
+
+- [ ] Changelog added (`pnpm changelog`)
+- [ ] All stories have `play` tests
+- [ ] Tests use a11y queries (no test-ids)
+- [ ] CSS uses design tokens
+- [ ] No inline styles in stories
+- [ ] Props layer doesn't expose library internals
+- [ ] Types exported from `.types.ts`
+- [ ] Code is well-spaced and readable
+- [ ] Matches Figma design
+- [ ] Storybook examples show off all states
+- [ ] Analyze and check for simplifications, especially for useEffects, DOM listeners, many refs

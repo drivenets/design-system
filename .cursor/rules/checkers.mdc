@@ -1,0 +1,66 @@
+---
+description: How to run tests, linting, and type checking during development
+alwaysApply: true
+---
+
+# Code Quality Checkers
+
+Run checkers **only on changed files/directories** to keep feedback fast. Run from **workspace root**.
+
+## File/Directory-Specific Commands
+
+### Linting (eslint)
+
+```bash
+# Single file
+pnpm eslint packages/design-system/src/components/ds-button/ds-button.tsx
+
+# Directory
+pnpm eslint packages/eslint-plugin/src/
+
+# With auto-fix
+pnpm eslint --fix packages/design-system/src/components/ds-button/
+```
+
+### Type Checking (tsc)
+
+TypeScript checks the whole project config, so scope by package:
+
+```bash
+# design-system package
+pnpm --filter @drivenets/design-system typecheck
+
+# eslint-plugin package
+pnpm --filter @drivenets/eslint-plugin-design-system typecheck
+
+# vite-plugin package
+pnpm --filter @drivenets/vite-plugin-design-system typecheck
+```
+
+### Tests (vitest)
+
+```bash
+# Single test file
+pnpm --filter @drivenets/design-system test packages/design-system/tests/exports.test.ts --run
+
+# Directory of tests
+pnpm --filter @drivenets/eslint-plugin-design-system test src/__tests__/ --run
+
+# Pattern match
+pnpm --filter @drivenets/vite-plugin-design-system test --run -t "snapshot"
+```
+
+## When to Run What
+
+| Changed                    | Run                                     |
+| -------------------------- | --------------------------------------- |
+| `*.test.ts` file           | `pnpm --filter <pkg> test <path> --run` |
+| Source file with tests     | Lint the file + run related tests       |
+| Source file, no tests      | Lint the file + typecheck the package   |
+| SCSS file in design-system | Lint the file                           |
+
+## Notes
+
+- **`--run` flag** prevents vitest watch mode
+- **design-system typecheck** auto-generates SCSS type defs
+- Prefer file-level lint, package-level typecheck, file-level test
