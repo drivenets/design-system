@@ -16,7 +16,7 @@ export interface DsSkeletonBaseProps {
 	 * Color variant of the skeleton
 	 * @default 'grey'
 	 */
-	variant?: SkeletonColorVariant;
+	color?: SkeletonColorVariant;
 	/**
 	 * Additional CSS class names
 	 */

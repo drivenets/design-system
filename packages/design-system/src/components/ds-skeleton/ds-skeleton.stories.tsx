@@ -91,11 +91,11 @@ export const ColorVariants: Story = {
 		<div className={styles.verticalStack}>
 			<div>
 				<h4 className={styles.sectionLabel}>Grey (default)</h4>
-				<DsSkeleton variant="grey" />
+				<DsSkeleton color="grey" />
 			</div>
 			<div>
 				<h4 className={styles.sectionLabel}>Blue</h4>
-				<DsSkeleton variant="blue" />
+				<DsSkeleton color="blue" />
 			</div>
 		</div>
 	),

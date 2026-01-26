@@ -11,7 +11,7 @@ const DsSkeletonRect = ({
 	width,
 	height,
 	radius = 'default',
-	variant = 'grey',
+	color = 'grey',
 	className,
 	style,
 }: DsSkeletonRectProps) => {
@@ -26,7 +26,7 @@ const DsSkeletonRect = ({
 
 	return (
 		<span
-			className={classNames(styles.skeleton, styles.rectangle, styles[variant], className)}
+			className={classNames(styles.skeleton, styles.rectangle, styles[color], className)}
 			style={rectStyle}
 			aria-hidden="true"
 		/>

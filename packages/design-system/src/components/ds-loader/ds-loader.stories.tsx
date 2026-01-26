@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
-import { DsLoader } from './index';
+import { DsLoader, variants } from './index';
 import styles from './ds-loader.stories.module.scss';
 
 const meta: Meta<typeof DsLoader> = {
@@ -13,7 +13,7 @@ const meta: Meta<typeof DsLoader> = {
 	argTypes: {
 		variant: {
 			control: 'radio',
-			options: ['spinner', 'pulsing'],
+			options: variants,
 		},
 	},
 };

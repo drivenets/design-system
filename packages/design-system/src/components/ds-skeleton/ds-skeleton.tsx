@@ -12,7 +12,7 @@ const DsSkeleton = ({
 	loading = true,
 	children,
 	lines = 3,
-	variant = 'grey',
+	color = 'grey',
 	radius = 'default',
 	className,
 	style,
@@ -21,12 +21,9 @@ const DsSkeleton = ({
 		return children;
 	}
 
-	return (
-		<DsSkeletonText variant={variant} lines={lines} radius={radius} className={className} style={style} />
-	);
+	return <DsSkeletonText color={color} lines={lines} radius={radius} className={className} style={style} />;
 };
 
-// Attach sub-components to create compound component pattern
 DsSkeleton.Text = DsSkeletonText;
 DsSkeleton.Circle = DsSkeletonCircle;
 DsSkeleton.Rect = DsSkeletonRect;

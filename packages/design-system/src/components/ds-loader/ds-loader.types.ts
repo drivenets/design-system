@@ -1,11 +1,14 @@
 import type React from 'react';
 
+export const variants = ['spinner', 'pulsing'] as const;
+export type LoaderVariant = (typeof variants)[number];
+
 export interface DsLoaderProps {
 	/**
 	 * Loader variant
 	 * @default 'spinner'
 	 */
-	variant?: 'spinner' | 'pulsing';
+	variant?: LoaderVariant;
 	/**
 	 * Additional CSS class names
 	 */
