@@ -1,5 +1,17 @@
 # @drivenets/design-system
 
+## 0.3.0
+
+### Minor Changes
+
+- 072854f: Add `DsTabs` component
+- f36f9f4: - Add `DsSkeleton` component
+  - Add `DsLoader` component
+
+### Patch Changes
+
+- 393cf6d: Fix the date input min-width
+
 ## 0.2.0
 
 ### Minor Changes
