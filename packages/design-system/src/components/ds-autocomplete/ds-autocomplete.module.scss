@@ -190,27 +190,11 @@ $autocomplete-opacity-visible: 1;
 	}
 }
 
-.highlight {
-	background-color: var(--color-data-yellow);
-	color: var(--color-font-main);
-	font-weight: var(--font-weight-medium);
-	padding: 0;
-	border-radius: $autocomplete-highlight-border-radius;
-}
-
-.noMatches,
-.loading {
+.noMatches {
 	padding: var(--spacing-xs);
 	color: var(--color-font-disabled);
 	text-align: center;
 	font-size: var(--font-size-sm);
-}
-
-.loading {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: var(--spacing-xs);
 }
 
 .disabled {
