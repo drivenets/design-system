@@ -1,4 +1,4 @@
-@import '../ds-avatar/mixins';
+@use '../ds-avatar/mixins' as *;
 
 .avatarGroup {
 	display: flex;
