@@ -1,7 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 
 /**
- * Props for the DsConfirmation component
+ * @deprecated DsConfirmationProps is deprecated. Use DsModal with variant="info" instead.
+ * @see {@link ../ds-modal/ds-modal} for the replacement.
  */
 export interface DsConfirmationProps {
 	/**

@@ -1,9 +1,11 @@
 @use '../../styles/shared/modal' as shared;
 
-$pad-x: 24px;
-$pad-y: 16px;
+$pad-x: var(--spacing-lg);
+$pad-y: var(--spacing-standard);
 $max-width: 90vw;
 $max-height: 90vh;
+$border-size: 1px;
+$border: $border-size solid var(--color-border-secondary);
 
 .overlay {
 	@include shared.overlay-base;
@@ -26,10 +28,28 @@ $max-height: 90vh;
 
 .header {
 	@include shared.header-base;
+	gap: var(--spacing-xs);
+	position: relative;
+	border-bottom: none;
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: $pad-x;
+		right: $pad-x;
+		height: $border-size;
+		background: var(--color-border-secondary);
+	}
+}
+
+.headerIcon {
+	flex-shrink: 0;
+	color: var(--color-icon-information-secondary);
 }
 
 .footer {
-	@include shared.footer-base;
+	@include shared.footer-base(false);
 	display: flex;
 }
 
@@ -44,6 +64,20 @@ $max-height: 90vh;
 .actions {
 	@include shared.actions-base;
 	margin-left: auto;
+}
+
+.content.form {
+	.header {
+		border-bottom: $border;
+
+		&::after {
+			display: none;
+		}
+	}
+
+	.footer {
+		border-top: $border;
+	}
 }
 
 // width classes derived from DS grid

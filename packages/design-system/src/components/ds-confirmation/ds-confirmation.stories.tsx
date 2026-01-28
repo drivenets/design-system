@@ -2,11 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { DsConfirmation } from './ds-confirmation';
 import DsButton from '../ds-button/ds-button';
-import { DsIcon } from '../ds-icon';
 import styles from './ds-confirmation.stories.module.scss';
 
+/**
+ * @deprecated This component is deprecated. Use DsModal instead.
+ * @see {@link ../ds-modal/ds-modal.stories} for examples of the replacement component.
+ */
 const meta: Meta<typeof DsConfirmation> = {
-	title: 'Design System/Confirmation',
+	title: 'Design System/Confirmation (Deprecated)',
 	component: DsConfirmation,
 	parameters: {
 		layout: 'centered',
@@ -29,7 +32,6 @@ export const Default: Story = {
 				<DsButton onClick={() => setOpen(true)}>Open Confirmation</DsButton>
 				<DsConfirmation open={open} onOpenChange={setOpen}>
 					<DsConfirmation.Header>
-						<DsIcon style={{ color: 'var(--color-icon-information-secondary)' }} icon="info" size="small" />
 						<DsConfirmation.Title>Confirm Action</DsConfirmation.Title>
 						<DsConfirmation.CloseTrigger />
 					</DsConfirmation.Header>
@@ -74,7 +76,6 @@ export const WithCancel: Story = {
 				<DsButton onClick={() => setOpen(true)}>Open Confirmation</DsButton>
 				<DsConfirmation open={open} onOpenChange={setOpen}>
 					<DsConfirmation.Header>
-						<DsIcon style={{ color: 'var(--color-icon-warning)' }} icon="error" size="small" />
 						<DsConfirmation.Title>Save Changes</DsConfirmation.Title>
 						<DsConfirmation.CloseTrigger />
 					</DsConfirmation.Header>
@@ -130,7 +131,6 @@ export const Danger: Story = {
 				<DsButton onClick={() => setOpen(true)}>Open Confirmation</DsButton>
 				<DsConfirmation open={open} onOpenChange={setOpen}>
 					<DsConfirmation.Header>
-						<DsIcon style={{ color: 'var(--color-icon-danger)' }} icon="cancel" size="small" />
 						<DsConfirmation.Title>Delete Item</DsConfirmation.Title>
 						<DsConfirmation.CloseTrigger />
 					</DsConfirmation.Header>
@@ -179,7 +179,6 @@ export const CustomBody: Story = {
 				<DsButton onClick={() => setOpen(true)}>Open Custom Confirmation</DsButton>
 				<DsConfirmation style={{ maxBlockSize: 'none' }} open={open} onOpenChange={setOpen}>
 					<DsConfirmation.Header>
-						<DsIcon style={{ color: 'var(--color-icon-information-secondary)' }} icon="info" size="small" />
 						<DsConfirmation.Title>Advanced Configuration</DsConfirmation.Title>
 						<DsConfirmation.CloseTrigger />
 					</DsConfirmation.Header>

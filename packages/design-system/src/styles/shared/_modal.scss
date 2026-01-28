@@ -92,14 +92,14 @@
 	@include header-footer-base;
 	display: flex;
 	align-items: center;
-	border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+	border-bottom: 1px solid var(--color-border-subtle);
 }
 
 @mixin footer-base($has-border: true) {
 	@include header-footer-base;
 
 	@if $has-border {
-		border-top: 1px solid rgba(0, 0, 0, 0.06);
+		border-top: 1px solid var(--color-border-subtle);
 	}
 }
 

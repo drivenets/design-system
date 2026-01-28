@@ -19,6 +19,12 @@ const eslintPlugin = createPlugin(
 	},
 
 	{
+		name: 'no-deprecated-ds-confirmation',
+		selector: JSXElement('DsConfirmation'),
+		message: `DsConfirmation is deprecated. Use DsModal instead.`,
+	},
+
+	{
 		name: 'no-deprecated-ds-system-status',
 		selector: JSXElement('DsSystemStatus'),
 		message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.`,

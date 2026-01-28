@@ -1,11 +1,28 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
-import type { DsModalProps } from './ds-modal.types';
+import type { DsModalLayout, DsModalProps, DsModalVariant } from './ds-modal.types';
 import styles from './ds-modal.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
+
+/**
+ * Context for passing variant and layout to sub-components
+ */
+const DsModalContext = createContext<{ variant: DsModalVariant; layout: DsModalLayout }>({
+	variant: 'default',
+	layout: 'default',
+});
+
+const getVariantIcon = (variant: DsModalVariant) => {
+	switch (variant) {
+		case 'info':
+			return <DsIcon icon="info" size="small" className={styles.headerIcon} />;
+		default:
+			return null;
+	}
+};
 
 /**
  * Composable modal dialog.
@@ -14,45 +31,55 @@ import { DsTypography } from '../ds-typography';
  */
 const DsModal = ({
 	open,
-	onOpenChange,
 	columns = 6,
+	variant = 'default',
+	layout = 'default',
 	style,
 	className,
 	modal = true,
 	closeOnEscape,
 	closeOnInteractOutside = false,
 	children,
+	onOpenChange,
 }: DsModalProps) => {
 	const handleOpenChange = (details: { open: boolean }) => {
 		onOpenChange(details.open);
 	};
 
 	return (
-		<Dialog.Root
-			open={open}
-			onOpenChange={handleOpenChange}
-			modal={modal}
-			closeOnEscape={closeOnEscape}
-			closeOnInteractOutside={closeOnInteractOutside}
-		>
-			<Portal>
-				<Dialog.Backdrop className={styles.overlay} />
-				<Dialog.Positioner>
-					<Dialog.Content
-						style={style}
-						className={classNames(
-							styles.modal,
-							className,
+		<DsModalContext.Provider value={{ variant, layout }}>
+			<Dialog.Root
+				open={open}
+				onOpenChange={handleOpenChange}
+				modal={modal}
+				closeOnEscape={closeOnEscape}
+				closeOnInteractOutside={closeOnInteractOutside}
+			>
+				<Portal>
+					<Dialog.Backdrop className={styles.overlay} />
+					<Dialog.Positioner>
+						<Dialog.Content
+							style={style}
+							className={classNames(
+								styles.modal,
+								className,
 
-							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-							styles[`cols-${columns}`],
-						)}
-					>
-						<div className={classNames(styles.content)}>{children}</div>
-					</Dialog.Content>
-				</Dialog.Positioner>
-			</Portal>
-		</Dialog.Root>
+								// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+								styles[`cols-${columns}`],
+							)}
+						>
+							<div
+								className={classNames(styles.content, {
+									[styles.form]: layout === 'form',
+								})}
+							>
+								{children}
+							</div>
+						</Dialog.Content>
+					</Dialog.Positioner>
+				</Portal>
+			</Dialog.Root>
+		</DsModalContext.Provider>
 	);
 };
 
@@ -64,11 +91,16 @@ const Header = ({
 	style?: CSSProperties;
 	className?: string;
 	children: ReactNode;
-}) => (
-	<div style={style} className={classNames(styles.header, className)}>
-		{children}
-	</div>
-);
+}) => {
+	const { variant } = useContext(DsModalContext);
+
+	return (
+		<div style={style} className={classNames(styles.header, className)}>
+			{getVariantIcon(variant)}
+			{children}
+		</div>
+	);
+};
 
 const Title = ({
 	style,
