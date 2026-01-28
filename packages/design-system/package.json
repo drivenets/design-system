@@ -41,6 +41,7 @@
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest",
+		"test:coverage": "vitest --coverage --run",
 		"build": "tsdown",
 		"build:storybook": "storybook build",
 		"build:lint": "publint && attw --pack"
@@ -90,6 +91,7 @@
 		"@types/react-dom": "^19.2.3",
 		"@vitest/browser": "^4.0.16",
 		"@vitest/browser-playwright": "^4.0.15",
+		"@vitest/coverage-istanbul": "^4.0.17",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^9.39.2",
 		"eslint-plugin-jsx-a11y": "^6.10.2",
