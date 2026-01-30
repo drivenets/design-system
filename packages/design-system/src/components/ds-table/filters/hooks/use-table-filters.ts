@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import type { CellContext, ColumnDef } from '@tanstack/react-table';
 import type { ChipItem } from '../../../ds-chip-group';
 import type {
@@ -23,6 +23,7 @@ export interface ServerSideFilterOptions<TValue> {
 	 * External applied filters (source of truth for server-side filtering).
 	 * Must be in "modal format" with keys matching adapter IDs.
 	 * Chips are derived from this using the adapters' toChips method.
+	 * The internal filterState is automatically synced when this changes.
 	 */
 	appliedFilters: FilterState<TValue>;
 
@@ -32,13 +33,6 @@ export interface ServerSideFilterOptions<TValue> {
 	 * Receives filters in the same "modal format" as appliedFilters.
 	 */
 	onFiltersChange: (filters: FilterState<TValue>) => void;
-
-	/**
-	 * Whether the filter UI (modal, drawer, panel) is currently open.
-	 * When this transitions from false → true, the hook automatically syncs
-	 * the internal filter state from appliedFilters so the UI shows current selections.
-	 */
-	isOpen?: boolean;
 }
 
 export interface UseTableFiltersResult<TData, TValue> {
@@ -125,7 +119,6 @@ export interface UseTableFiltersResult<TData, TValue> {
  *     const backendFilters = convertModalToBackendFormat(filters);
  *     refetch(backendFilters);
  *   },
- *   isOpen: isFilterModalOpen,
  * });
  */
 export function useTableFilters<TData, TValue, TCellValue>(
@@ -138,7 +131,7 @@ export function useTableFilters<TData, TValue, TCellValue>(
 
 	// Determine if we're in server-side mode
 	const isServerSideMode = !!serverSideOptions;
-	const { appliedFilters, onFiltersChange, isOpen } = serverSideOptions ?? {};
+	const { appliedFilters, onFiltersChange } = serverSideOptions ?? {};
 
 	// Initialize filter state from adapters
 	const initialState = _filterAdapters.reduce<FilterState<TValue>>(
@@ -158,19 +151,13 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	// Derive chips based on mode:
 	// - Server-side: from appliedFilters using adapters' toChips
 	// - Client-side: from internal state
-	const filterChips = (() => {
-		if (isServerSideMode && appliedFilters) {
-			const chips: ChipItem[] = [];
-			_filterAdapters.forEach((adapter) => {
-				const value = appliedFilters[adapter.id];
-				if (value !== undefined) {
-					chips.push(...adapter.toChips(value));
-				}
-			});
-			return chips;
-		}
-		return internalFilterChips;
-	})();
+	const filterChips =
+		isServerSideMode && appliedFilters
+			? _filterAdapters.flatMap((adapter) => {
+					const value = appliedFilters[adapter.id];
+					return value !== undefined ? adapter.toChips(value) : [];
+				})
+			: internalFilterChips;
 
 	// Generate filter nav items with counts (updates as user changes filters in modal)
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
@@ -199,31 +186,22 @@ export function useTableFilters<TData, TValue, TCellValue>(
 				return col;
 			});
 
-	// Track previous isOpen value to detect open transition
-	const prevIsOpenRef = useRef(isOpen);
-
-	// Auto-sync internal filter state from appliedFilters when filter UI opens (server-side mode only)
+	// Auto-sync internal filter state from appliedFilters (server-side mode only)
 	useEffect(() => {
 		if (!isServerSideMode || !appliedFilters) {
 			return;
 		}
 
-		// Detect transition from closed → open
-		const justOpened = isOpen && !prevIsOpenRef.current;
-		prevIsOpenRef.current = isOpen;
-
-		if (justOpened) {
-			// Sync internal filter state from external applied filters
-			const newState: FilterState<TValue> = { ...initialState };
-			_filterAdapters.forEach((adapter) => {
-				const appliedValue = appliedFilters[adapter.id];
-				if (appliedValue !== undefined) {
-					newState[adapter.id] = appliedValue;
-				}
-			});
-			setFilterState(newState);
-		}
-	}, [isOpen, isServerSideMode, appliedFilters, _filterAdapters, initialState]);
+		setFilterState(
+			_filterAdapters.reduce<FilterState<TValue>>(
+				(state, adapter) => {
+					const appliedValue = appliedFilters[adapter.id];
+					return appliedValue !== undefined ? { ...state, [adapter.id]: appliedValue } : state;
+				},
+				{ ...initialState },
+			),
+		);
+	}, [isServerSideMode, appliedFilters, _filterAdapters, initialState]);
 
 	// Handlers
 	const updateFilter = (filterId: string, value: TValue) => {
