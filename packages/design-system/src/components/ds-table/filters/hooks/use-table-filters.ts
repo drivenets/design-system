@@ -141,10 +141,10 @@ export function useTableFilters<TData, TValue, TCellValue>(
 	const { appliedFilters, onFiltersChange, isOpen } = serverSideOptions ?? {};
 
 	// Initialize filter state from adapters
-	const initialState: FilterState<TValue> = {};
-	_filterAdapters.forEach((adapter) => {
-		initialState[adapter.id] = adapter.initialValue;
-	});
+	const initialState = _filterAdapters.reduce<FilterState<TValue>>(
+		(state, adapter) => ({ ...state, [adapter.id]: adapter.initialValue }),
+		{},
+	);
 
 	const [filterState, setFilterState] = useState<FilterState<TValue>>(initialState);
 	const [columnFilters, setColumnFilters] = useState<ColumnFilterState<TValue>[]>([]);
@@ -303,14 +303,14 @@ export function useTableFilters<TData, TValue, TCellValue>(
 		const newValue = adapter.fromChip(chip, currentValue);
 
 		if (isServerSideMode && onFiltersChange && appliedFilters) {
-			// Server-side mode: update the filter value and call onFiltersChange
-			const newFilters = { ...appliedFilters };
-
-			if (adapter.getActiveFiltersCount(newValue) === 0) {
-				delete newFilters[filterKey];
-			} else {
-				newFilters[filterKey] = newValue;
-			}
+			// Server-side mode: build new filters excluding removed key or with updated value
+			const otherFilters = Object.fromEntries(
+				Object.entries(appliedFilters).filter(([key]) => key !== filterKey),
+			);
+			const newFilters =
+				adapter.getActiveFiltersCount(newValue) === 0
+					? otherFilters
+					: { ...otherFilters, [filterKey]: newValue };
 
 			onFiltersChange(newFilters);
 			return;
