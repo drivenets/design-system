@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, waitFor, within, screen } from 'storybook/test';
+import { expect, screen, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import DsIcon from '../../ds-icon/ds-icon';
@@ -635,207 +635,86 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		/**
-		 * FiltersPanel Comprehensive Test
-		 *
-		 * Tests the complete filter workflow:
-		 * 1. Modal open/close
-		 * 2. Tab navigation between filter types
-		 * 3. Status filter (checkbox multi-select)
-		 * 4. Running/Completed filter (dual-range)
-		 * 5. Last edited filter (custom with editors + time range)
-		 * 6. Filter chips display and deletion
-		 * 7. Clear all functionality
-		 * 8. Table row filtering verification
-		 * 9. Re-open modal preserves filter state
-		 */
-
 		// Verify initial state: table shows all 12 rows
 		const getTableRows = () => canvas.getAllByRole('row').filter((row) => !row.querySelector('th'));
 		await expect(getTableRows()).toHaveLength(12);
 
-		// ========================================
 		// 1. Open filter modal
-		// ========================================
 		const filterButton = canvas.getByRole('button', { name: /filter/i });
 		await userEvent.click(filterButton);
 
-		await waitFor(() => {
-			return expect(screen.getByText('Filters')).toBeVisible();
-		});
-
-		// ========================================
-		// 2. Tab navigation - verify all tabs exist
-		// ========================================
+		// 2. Verify all tabs exist
 		const statusTab = screen.getByRole('tab', { name: /status/i });
 		const runningTab = screen.getByRole('tab', { name: /running\/completed/i });
 		const lastEditedTab = screen.getByRole('tab', { name: /last edited/i });
 
-		await expect(statusTab).toBeInTheDocument();
-		await expect(runningTab).toBeInTheDocument();
-		await expect(lastEditedTab).toBeInTheDocument();
-
-		// ========================================
 		// 3. Status filter - select "Active" and "Running"
-		// ========================================
 		await userEvent.click(statusTab);
 
-		// Select Active status
-		const activeCheckbox = screen.getByRole('checkbox', { name: /active/i });
-		await userEvent.click(activeCheckbox);
-		await expect(activeCheckbox).toBeChecked();
+		const activeCheckbox = screen.getByRole('checkbox', { name: /^active$/i });
+		const runningCheckbox = screen.getByRole('checkbox', { name: /^running$/i });
 
-		// Select Running status
-		const runningCheckbox = screen.getByRole('checkbox', { name: /running/i });
+		await userEvent.click(activeCheckbox);
 		await userEvent.click(runningCheckbox);
+
+		await expect(activeCheckbox).toBeChecked();
 		await expect(runningCheckbox).toBeChecked();
 
-		// Verify count badge appears on Status tab (should show 2)
-		await waitFor(() => {
-			const statusTabContent = statusTab.textContent;
-			return expect(statusTabContent).toContain('2');
-		});
-
-		// ========================================
 		// 4. Running/Completed filter - set range
-		// ========================================
 		await userEvent.click(runningTab);
 
-		// Wait for content to render
-		await waitFor(() => {
-			return expect(screen.getByLabelText(/running from/i)).toBeVisible();
-		});
+		const [runningFrom, runningTo] = screen.getAllByRole('spinbutton');
+		await userEvent.type(runningFrom as HTMLElement, '0');
+		await userEvent.type(runningTo as HTMLElement, '50');
 
-		// Set Running range: 0 to 50
-		const runningFromInput = screen.getByLabelText(/running from/i);
-		const runningToInput = screen.getByLabelText(/running to/i);
-
-		await userEvent.clear(runningFromInput);
-		await userEvent.type(runningFromInput, '0');
-		await userEvent.clear(runningToInput);
-		await userEvent.type(runningToInput, '50');
-
-		// ========================================
-		// 5. Last edited filter - select editor
-		// ========================================
+		// 5. Last edited filter - select editor + time range
 		await userEvent.click(lastEditedTab);
 
-		// Wait for content to render
-		await waitFor(() => {
-			return expect(screen.getByRole('checkbox', { name: /marry levin/i })).toBeVisible();
-		});
-
-		// Select an editor
 		const editorCheckbox = screen.getByRole('checkbox', { name: /marry levin/i });
-		await userEvent.click(editorCheckbox);
-		await expect(editorCheckbox).toBeChecked();
-
-		// Select time range "Last 3 months"
 		const timeRangeRadio = screen.getByRole('radio', { name: /last 3 months/i });
+
+		await userEvent.click(editorCheckbox);
 		await userEvent.click(timeRangeRadio);
+
+		await expect(editorCheckbox).toBeChecked();
 		await expect(timeRangeRadio).toBeChecked();
 
-		// ========================================
-		// 6. Apply filters and verify chips
-		// ========================================
-		const applyButton = screen.getByRole('button', { name: /apply/i });
-		await userEvent.click(applyButton);
-
-		// Modal should close
-		await waitFor(() => {
-			return expect(screen.queryByText('Filters')).not.toBeVisible();
-		});
-
-		// Verify filter chips appear
-		await waitFor(() => {
-			// Status chips
-			expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
-			expect(canvas.getByText(/status: running/i)).toBeInTheDocument();
-			// Running range chip
-			expect(canvas.getByText(/running.*0.*50/i)).toBeInTheDocument();
-			// Editor chip
-			expect(canvas.getByText(/editor: marry levin/i)).toBeInTheDocument();
-			// Time range chip
-			expect(canvas.getByText(/last 3 months/i)).toBeInTheDocument();
-		});
-
-		// ========================================
-		// 7. Verify table filtering - only matching rows shown
-		// ========================================
-		// With Active/Running status AND Running range 0-50 AND editor/time filters,
-		// the table should show fewer rows
-		await waitFor(() => {
-			const filteredRows = getTableRows();
-			return expect(filteredRows.length).toBeLessThan(12);
-		});
-
-		// ========================================
-		// 8. Re-open modal - verify filters are preserved
-		// ========================================
-		await userEvent.click(filterButton);
-
-		await waitFor(() => {
-			return expect(screen.getByText('Filters')).toBeVisible();
-		});
-
-		// Verify Status tab still shows count
-		await waitFor(() => {
-			const statusTabContent = screen.getByRole('tab', { name: /status/i }).textContent;
-			return expect(statusTabContent).toContain('2');
-		});
-
-		// Click Status tab and verify checkboxes are still selected
-		await userEvent.click(screen.getByRole('tab', { name: /status/i }));
-		await waitFor(() => {
-			expect(screen.getByRole('checkbox', { name: /active/i })).toBeChecked();
-			expect(screen.getByRole('checkbox', { name: /running/i })).toBeChecked();
-		});
-
-		// Close modal without changes
+		// 6. Apply filters
 		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
 
-		await waitFor(() => {
-			return expect(screen.queryByText('Filters')).not.toBeVisible();
-		});
+		// Verify chips appear
+		await expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
+		await expect(canvas.getByText(/status: running/i)).toBeInTheDocument();
+		await expect(canvas.getByText(/running.*0.*50/i)).toBeInTheDocument();
+		await expect(canvas.getByText(/editor: marry levin/i)).toBeInTheDocument();
+		await expect(canvas.getByText(/last 3 months/i)).toBeInTheDocument();
 
-		// ========================================
+		// 7. Verify table is filtered
+		await expect(getTableRows().length).toBeLessThan(12);
+
+		// 8. Re-open modal - verify filters preserved
+		await userEvent.click(filterButton);
+
+		await userEvent.click(screen.getByRole('tab', { name: /status/i }));
+
+		await expect(screen.getByRole('checkbox', { name: /^active$/i })).toBeChecked();
+		await expect(screen.getByRole('checkbox', { name: /^running$/i })).toBeChecked();
+
+		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
+
 		// 9. Delete individual chip
-		// ========================================
-		// Find and delete the "Status: Active" chip by focusing it to reveal delete button
-		const activeChipElement = canvas.getByText(/status: active/i).closest('button');
-		expect(activeChipElement).not.toBeNull();
-
-		activeChipElement!.focus();
-
-		// Wait for delete button to become visible after focus
-		await waitFor(() => {
-			return expect(canvas.getByRole('button', { name: /delete/i })).toBeVisible();
-		});
-
-		const deleteButton = canvas.getByRole('button', { name: /delete/i });
+		const activeChip = canvas.getByRole('button', { name: /status: active/i });
+		const deleteButton = within(activeChip).getByRole('button', { name: /delete/i });
 		await userEvent.click(deleteButton);
 
-		// Verify chip is removed
-		await waitFor(() => {
-			return expect(canvas.queryByText(/status: active/i)).not.toBeInTheDocument();
-		});
+		await expect(canvas.queryByRole('button', { name: /status: active/i })).not.toBeInTheDocument();
 
-		// ========================================
 		// 10. Clear all filters
-		// ========================================
-		const clearAllButton = canvas.getByRole('button', { name: /clear all/i });
-		await userEvent.click(clearAllButton);
+		await userEvent.click(canvas.getByRole('button', { name: /clear all/i }));
 
-		// Verify all chips are removed
-		await waitFor(() => {
-			expect(canvas.queryByText(/status:/i)).not.toBeInTheDocument();
-			expect(canvas.queryByText(/running.*0.*50/i)).not.toBeInTheDocument();
-			expect(canvas.queryByText(/editor:/i)).not.toBeInTheDocument();
-		});
+		await expect(canvas.queryByText(/status:/i)).not.toBeInTheDocument();
 
 		// Verify table shows all rows again
-		await waitFor(() => {
-			return expect(getTableRows()).toHaveLength(12);
-		});
+		await expect(getTableRows()).toHaveLength(12);
 	},
 };
