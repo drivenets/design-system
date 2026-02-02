@@ -6,13 +6,6 @@ import type { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
  */
 export type DsModalColumns = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
-export const modalVariants = ['default', 'info'] as const;
-
-/**
- * Available modal variants for semantic meaning (determines icon and color)
- */
-export type DsModalVariant = (typeof modalVariants)[number];
-
 /**
  * Props for the DsModal component
  */
@@ -30,12 +23,6 @@ export interface DsModalProps extends Pick<
 	 * @default 6
 	 */
 	columns?: DsModalColumns;
-
-	/**
-	 * Modal variant for semantic meaning (determines icon and color)
-	 * @default 'default'
-	 */
-	variant?: DsModalVariant;
 
 	/**
 	 * Show full-width dividers between header, body, and footer sections

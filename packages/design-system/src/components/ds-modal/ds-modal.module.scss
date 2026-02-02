@@ -114,11 +114,6 @@ $border: $border-size solid var(--color-border-secondary);
 	}
 }
 
-.headerIcon {
-	flex-shrink: 0;
-	color: var(--color-icon-information-secondary);
-}
-
 .footer {
 	display: flex;
 	background: inherit;

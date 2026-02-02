@@ -12,7 +12,7 @@ import { DsButton } from '../ds-button';
 import { DsFormControl } from '../ds-form-control';
 import { DsRadioGroup } from '../ds-radio-group';
 import { DsCheckbox } from '../ds-checkbox';
-import { modalVariants } from './ds-modal.types';
+import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsModal> = {
 	title: 'Design System/Modal',
@@ -28,11 +28,6 @@ const meta: Meta<typeof DsModal> = {
 		open: {
 			control: 'boolean',
 			description: 'Controls whether the modal is open',
-		},
-		variant: {
-			control: 'select',
-			options: modalVariants,
-			description: 'Modal variant for semantic meaning (determines icon and color)',
 		},
 		dividers: {
 			control: 'boolean',
@@ -779,22 +774,23 @@ export const Custom: Story = {
 	},
 };
 
-export const Info: Story = {
+export const WithIcon: Story = {
 	render: function Render() {
 		const [isOpen, setIsOpen] = useState(false);
 
 		return (
 			<div className={styles.storyContainer}>
 				<div className={styles.storyHeader}>
-					<h2>Info Modal Demo</h2>
-					<p>The info variant automatically displays an info icon in the header.</p>
+					<h2>Modal with Icon</h2>
+					<p>Example showing how to add an icon to the modal header.</p>
 					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
-						Open Info Modal
+						Open Modal
 					</DsButton>
 				</div>
 
-				<DsModal open={isOpen} columns={4} variant="info" onOpenChange={setIsOpen}>
+				<DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}>
 					<DsModal.Header>
+						<DsIcon icon="info" size="small" />
 						<DsModal.Title>Session Timeout</DsModal.Title>
 						<DsModal.CloseTrigger />
 					</DsModal.Header>
@@ -808,7 +804,7 @@ export const Info: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const openModalButton = canvas.getByRole('button', { name: /open info modal/i });
+		const openModalButton = canvas.getByRole('button', { name: /open modal/i });
 		await userEvent.click(openModalButton);
 
 		await waitFor(() => {
@@ -817,9 +813,6 @@ export const Info: Story = {
 
 		await expect(screen.getByRole('heading', { name: /session timeout/i })).toBeVisible();
 		await expect(screen.getByText(/session will expire/i)).toBeVisible();
-
-		const dialog = screen.getByRole('dialog');
-		await expect(within(dialog).getByText('info')).toBeInTheDocument();
 
 		await userEvent.keyboard('{Escape}');
 
@@ -830,7 +823,8 @@ export const Info: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'Info modal with auto-rendered icon in the header.',
+				story:
+					'Example showing how to add an icon to the modal header by composing DsIcon with DsModal.Header.',
 			},
 		},
 	},

@@ -1,27 +1,11 @@
-import { createContext, useContext, type CSSProperties, type ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { Dialog } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
-import type { DsModalProps, DsModalVariant } from './ds-modal.types';
+import type { DsModalProps } from './ds-modal.types';
 import styles from './ds-modal.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
-
-/**
- * Context for passing variant to sub-components
- */
-const DsModalContext = createContext<{ variant: DsModalVariant }>({
-	variant: 'default',
-});
-
-const getVariantIcon = (variant: DsModalVariant) => {
-	switch (variant) {
-		case 'info':
-			return <DsIcon icon="info" size="small" className={styles.headerIcon} />;
-		default:
-			return null;
-	}
-};
 
 /**
  * Composable modal dialog.
@@ -31,7 +15,6 @@ const getVariantIcon = (variant: DsModalVariant) => {
 const DsModal = ({
 	open,
 	columns = 6,
-	variant = 'default',
 	dividers = false,
 	style,
 	className,
@@ -46,35 +29,33 @@ const DsModal = ({
 	};
 
 	return (
-		<DsModalContext.Provider value={{ variant }}>
-			<Dialog.Root
-				open={open}
-				onOpenChange={handleOpenChange}
-				modal={modal}
-				closeOnEscape={closeOnEscape}
-				closeOnInteractOutside={closeOnInteractOutside}
-			>
-				<Portal>
-					<Dialog.Backdrop className={styles.overlay} />
-					<Dialog.Positioner>
-						<Dialog.Content
-							style={style}
-							className={classNames(
-								styles.modal,
-								className,
+		<Dialog.Root
+			open={open}
+			onOpenChange={handleOpenChange}
+			modal={modal}
+			closeOnEscape={closeOnEscape}
+			closeOnInteractOutside={closeOnInteractOutside}
+		>
+			<Portal>
+				<Dialog.Backdrop className={styles.overlay} />
+				<Dialog.Positioner>
+					<Dialog.Content
+						style={style}
+						className={classNames(
+							styles.modal,
+							className,
 
-								// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-								styles[`cols-${columns}`],
-							)}
-						>
-							<div className={styles.content} data-dividers={dividers || undefined}>
-								{children}
-							</div>
-						</Dialog.Content>
-					</Dialog.Positioner>
-				</Portal>
-			</Dialog.Root>
-		</DsModalContext.Provider>
+							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+							styles[`cols-${columns}`],
+						)}
+					>
+						<div className={styles.content} data-dividers={dividers || undefined}>
+							{children}
+						</div>
+					</Dialog.Content>
+				</Dialog.Positioner>
+			</Portal>
+		</Dialog.Root>
 	);
 };
 
@@ -86,16 +67,11 @@ const Header = ({
 	style?: CSSProperties;
 	className?: string;
 	children: ReactNode;
-}) => {
-	const { variant } = useContext(DsModalContext);
-
-	return (
-		<div style={style} className={classNames(styles.header, className)}>
-			{getVariantIcon(variant)}
-			{children}
-		</div>
-	);
-};
+}) => (
+	<div style={style} className={classNames(styles.header, className)}>
+		{children}
+	</div>
+);
 
 const Title = ({
 	style,
