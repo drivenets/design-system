@@ -23,36 +23,35 @@ export interface UseTableFiltersOptions<TData, TValue, TCellValue> {
 	/**
 	 * Controlled mode: External applied filters (source of truth).
 	 * When provided with onFiltersChange, the hook operates in controlled mode.
-	 * Must be in "modal format" - keys must match adapter IDs.
+	 * Keys must match adapter IDs.
 	 */
 	appliedFilters?: FilterState<TValue>;
 
 	/**
 	 * Controlled mode: Callback when filters change.
 	 * Called by applyFilters(), deleteChip(), clearAll().
-	 * Receives filters in the same "modal format" as appliedFilters.
 	 */
 	onFiltersChange?: (filters: FilterState<TValue>) => void;
 }
 
 export interface UseTableFiltersResult<TData, TValue> {
 	/**
-	 * Current filter state (draft state in modal)
+	 * Current draft filter state (uncommitted user selections)
 	 */
 	filterState: FilterState<TValue>;
 
 	/**
-	 * Column filters (uncontrolled mode only)
+	 * Column filters (derived from applied state)
 	 */
 	columnFilters: ColumnFilterState<TValue>[];
 
 	/**
-	 * Filter chips for display (derived from applied filters)
+	 * Filter chips for display (derived from applied state)
 	 */
 	filterChips: ChipItem[];
 
 	/**
-	 * Filter navigation items with counts
+	 * Filter navigation items with active counts
 	 */
 	filterNavItems: FilterNavItem[];
 
@@ -62,64 +61,46 @@ export interface UseTableFiltersResult<TData, TValue> {
 	enhancedColumns: ColumnDef<TData>[];
 
 	/**
-	 * Handlers
+	 * Handlers for filter operations
 	 */
 	handlers: {
-		/**
-		 * Update a specific filter's value (draft state)
-		 */
+		/** Update a specific filter's draft value */
 		updateFilter: (filterId: string, value: TValue) => void;
-
-		/**
-		 * Apply all filters
-		 */
+		/** Commit draft state to applied state */
 		applyFilters: () => void;
-
-		/**
-		 * Clear all filters
-		 */
+		/** Clear all filters */
 		clearAll: () => void;
-
-		/**
-		 * Delete a specific chip
-		 */
+		/** Delete a specific filter chip */
 		deleteChip: (chip: ChipItem) => void;
 	};
 
 	/**
-	 * Render function for filter modal content
+	 * Render function for filter content
 	 */
 	renderFilterContent: (selectedFilter: FilterNavItem) => ReactNode;
 }
 
 /**
- * Hook to orchestrate table filtering with adapter
- * Manages filter state, generates chips, handles column definitions
+ * Hook to orchestrate table filtering with adapters.
+ * Manages filter state, generates chips, and handles column definitions.
  *
- * **Uncontrolled mode** (default): filters are managed internally
- * **Controlled mode**: filters are managed externally via appliedFilters/onFiltersChange props
- *
- * @param options Hook options including adapters and optional controlled mode props
- * @returns Complete filter management system
+ * **Uncontrolled mode** (default): Filters are managed internally.
+ * **Controlled mode**: Filters are managed externally via appliedFilters/onFiltersChange.
  *
  * @example
- * // Uncontrolled mode (default)
+ * // Uncontrolled mode
  * const { filterChips, handlers } = useTableFilters({
  *   filterAdapters: adapters,
  *   baseColumns: columns,
  * });
  *
  * @example
- * // Controlled mode (e.g., server-side filtering with URL params)
- * const modalFilters = convertBackendToModalFormat(backendFilters);
+ * // Controlled mode (e.g., URL-driven filtering)
  * const { filterChips, handlers } = useTableFilters({
  *   filterAdapters: adapters,
  *   baseColumns: columns,
- *   appliedFilters: modalFilters,
- *   onFiltersChange: (filters) => {
- *     const backendFilters = convertModalToBackendFormat(filters);
- *     updateUrlAndRefetch(backendFilters);
- *   },
+ *   appliedFilters: filtersFromUrl,
+ *   onFiltersChange: (filters) => updateUrlAndRefetch(filters),
  * });
  */
 export function useTableFilters<TData, TValue, TCellValue>({
@@ -128,39 +109,35 @@ export function useTableFilters<TData, TValue, TCellValue>({
 	appliedFilters,
 	onFiltersChange,
 }: UseTableFiltersOptions<TData, TValue, TCellValue>): UseTableFiltersResult<TData, TValue> {
-	// Internal variable just to avoid assignment issues of `any`.
 	const _filterAdapters = filterAdapters as FilterAdapter<TData, TValue, TCellValue>[];
 
-	// Controlled vs uncontrolled mode
 	const isControlled = appliedFilters !== undefined && onFiltersChange !== undefined;
 
-	// Initialize filter state from adapters
+	// Initial state from adapters (default values)
 	const initialState = _filterAdapters.reduce<FilterState<TValue>>(
 		(state, adapter) => ({ ...state, [adapter.id]: adapter.initialValue }),
 		{},
 	);
 
+	// Internal state (used in uncontrolled mode)
 	const [filterState, setFilterState] = useState<FilterState<TValue>>({});
-	const [columnFilters, setColumnFilters] = useState<ColumnFilterState<TValue>[]>([]);
+	// Pending changes (uncommitted user edits)
 	const [pendingChanges, setPendingChanges] = useState<FilterState<TValue>>({});
-
+	// Applied state (controlled or uncontrolled)
 	const appliedState = isControlled ? appliedFilters : filterState;
 
-	const setAppliedState = isControlled
-		? onFiltersChange
-		: (filters: FilterState<TValue>) => {
-				setFilterState(filters);
-				const newColumnFilters = Object.entries(filters)
-					.filter(([id]) => {
-						const adapter = _filterAdapters.find((a) => a.id === id);
-						return adapter ? adapter.getActiveFiltersCount(filters[id] as TValue) > 0 : false;
-					})
-					.map(([id, value]) => ({ id, value }));
-				setColumnFilters(newColumnFilters);
-			};
+	const setAppliedState = isControlled ? onFiltersChange : setFilterState;
 
-	// Draft state = applied + pending changes (what the modal shows)
+	// Draft state = applied + pending (what user sees while editing)
 	const draftState = { ...initialState, ...appliedState, ...pendingChanges };
+
+	// Column filters derived from applied state
+	const columnFilters: ColumnFilterState<TValue>[] = Object.entries(appliedState)
+		.filter(([id]) => {
+			const adapter = _filterAdapters.find((a) => a.id === id);
+			return adapter ? adapter.getActiveFiltersCount(appliedState[id] as TValue) > 0 : false;
+		})
+		.map(([id, value]) => ({ id, value }));
 
 	// Chips derived from applied state
 	const filterChips = _filterAdapters.flatMap((adapter) => {
@@ -168,38 +145,35 @@ export function useTableFilters<TData, TValue, TCellValue>({
 		return value !== undefined ? adapter.toChips(value) : [];
 	});
 
-	// Filter nav items with counts (based on draftState for live updates in modal)
+	// Nav items with counts (based on draft state for live feedback)
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
 		id: adapter.id,
 		label: adapter.label,
 		count: adapter.getActiveFiltersCount(draftState[adapter.id] as TValue),
 	}));
 
-	// Enhance column definitions with filter functions and renderers
+	// Enhanced columns with filter functions
 	const enhancedColumns: ColumnDef<TData>[] = !baseColumns
 		? []
 		: baseColumns.map((col) => {
 				const adapter = _filterAdapters.find((a) => a.id === col.id);
-
-				if (adapter) {
-					const cellRenderer = adapter.cellRenderer;
-					return {
-						...col,
-						filterFn: adapter.columnFilterFn,
-						...(cellRenderer && {
-							cell: (info: CellContext<TData, TCellValue>) => cellRenderer(info.getValue()),
-						}),
-					};
+				if (!adapter) {
+					return col;
 				}
 
-				return col;
+				const cellRenderer = adapter.cellRenderer;
+				return {
+					...col,
+					filterFn: adapter.columnFilterFn,
+					...(cellRenderer && {
+						cell: (info: CellContext<TData, TCellValue>) => cellRenderer(info.getValue()),
+					}),
+				};
 			});
 
+	// Handlers
 	const updateFilter = (filterId: string, value: TValue) => {
-		setPendingChanges((prev) => ({
-			...prev,
-			[filterId]: value,
-		}));
+		setPendingChanges((prev) => ({ ...prev, [filterId]: value }));
 	};
 
 	const applyFilters = () => {
@@ -218,9 +192,6 @@ export function useTableFilters<TData, TValue, TCellValue>({
 	const clearAll = () => {
 		setPendingChanges({});
 		setAppliedState({});
-		if (!isControlled) {
-			setColumnFilters([]);
-		}
 	};
 
 	const deleteChip = (chip: ChipItem) => {
@@ -241,7 +212,6 @@ export function useTableFilters<TData, TValue, TCellValue>({
 
 		const newValue = adapter.fromChip(chip, currentValue);
 
-		// Build new applied filters (exclude the key if count is 0)
 		const newFilters =
 			adapter.getActiveFiltersCount(newValue) === 0
 				? Object.fromEntries(Object.entries(appliedState).filter(([key]) => key !== filterKey))
