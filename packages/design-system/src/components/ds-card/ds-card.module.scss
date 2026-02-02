@@ -1,0 +1,111 @@
+// Card root
+.root {
+	--ds-card-header-padding: var(--spacing-xs) var(--spacing-xl);
+	--ds-card-body-padding: var(--spacing-standard) var(--spacing-xl);
+	--ds-card-footer-padding: var(--spacing-xs) var(--spacing-xl);
+	--ds-card-gap: 0;
+	--ds-card-border-radius: 8px;
+	--ds-card-width: 264px;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--ds-card-gap);
+	width: var(--ds-card-width);
+	background: var(--color-background);
+	border: 1px solid var(--color-border-contrast);
+	border-radius: var(--ds-card-border-radius);
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+// Size variants - override CSS variables
+.root[data-size='small'] {
+	--ds-card-header-padding: var(--spacing-xs) var(--spacing-sm);
+	--ds-card-body-padding: 0 var(--spacing-sm);
+	--ds-card-footer-padding: var(--spacing-xs) var(--spacing-sm);
+	--ds-card-border-radius: 4px;
+	--ds-card-width: 224px;
+}
+
+.root[data-size='medium'] {
+	--ds-card-header-padding: var(--spacing-xs) var(--spacing-xl);
+	--ds-card-body-padding: var(--spacing-standard) var(--spacing-xl);
+	--ds-card-footer-padding: var(--spacing-xs) var(--spacing-xl);
+	--ds-card-border-radius: 8px;
+	--ds-card-width: 264px;
+}
+
+.root[data-size='large'] {
+	--ds-card-header-padding: var(--spacing-xs) var(--spacing-xl);
+	--ds-card-body-padding: var(--spacing-standard) var(--spacing-xl);
+	--ds-card-footer-padding: var(--spacing-xs) var(--spacing-xl);
+	--ds-card-border-radius: 8px;
+	--ds-card-width: 368px;
+}
+
+// Selectable mode - adds interactive states
+.root[data-selectable] {
+	cursor: pointer;
+	transition:
+		border-color 150ms ease-in-out,
+		background-color 150ms ease-in-out;
+
+	&:hover:not([data-disabled]):not([data-readonly]) {
+		border-color: var(--color-border-action-secondary);
+	}
+
+	&[data-focus-visible] {
+		border-width: 2px;
+		border-color: var(--color-border-action-secondary);
+		outline: none;
+	}
+
+	&[data-disabled] {
+		cursor: not-allowed;
+		border-color: var(--color-border-disabled);
+	}
+
+	&[data-readonly] {
+		cursor: default;
+	}
+}
+
+// Selected state
+.root[data-selected] {
+	border-width: 2px;
+	border-color: var(--color-border-action-primary);
+
+	&[data-highlight] {
+		background: var(--color-background-selected-weak);
+	}
+}
+
+// Header section
+.header {
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.title {
+	flex: 1;
+	min-width: 0;
+}
+
+.extra {
+	flex-shrink: 0;
+}
+
+// Body section
+.body {
+	flex: 1;
+	padding: var(--ds-card-body-padding);
+}
+
+// Footer section
+.footer {
+	display: flex;
+	align-items: center;
+	min-height: 48px;
+	box-sizing: border-box;
+}
