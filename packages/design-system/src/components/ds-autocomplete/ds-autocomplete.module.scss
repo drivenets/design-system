@@ -29,7 +29,6 @@ $autocomplete-opacity-visible: 1;
 	display: flex;
 	align-items: center;
 	gap: var(--spacing-3xs);
-	cursor: text;
 	height: $autocomplete-input-height;
 	min-height: $autocomplete-input-height;
 	max-height: $autocomplete-input-height;

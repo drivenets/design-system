@@ -26,10 +26,6 @@ export interface DsAutocompleteProps {
 	 */
 	options: DsAutocompleteOption[];
 	/**
-	 * The current value of the input
-	 */
-	value?: string;
-	/**
 	 * Additional styles to apply to the component
 	 */
 	style?: React.CSSProperties;
@@ -54,17 +50,9 @@ export interface DsAutocompleteProps {
 	 */
 	onValueChange?: (value: string) => void;
 	/**
-	 * Event handler called when an option is selected from the dropdown
-	 */
-	onOptionSelect?: (option: DsAutocompleteOption) => void;
-	/**
 	 * Event handler called when the input value changes (on every keystroke)
 	 */
 	onInputValueChange?: (value: string) => void;
-	/**
-	 * Event handler called when the open state of the combobox changes
-	 */
-	onOpenChange?: (open: boolean) => void;
 	/**
 	 * Message to display when no options match the input
 	 * @default 'No matches found'

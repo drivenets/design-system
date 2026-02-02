@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';
-import { useState } from 'react';
 import { DsIcon } from '../ds-icon';
 import { DsAutocomplete } from './ds-autocomplete';
-import type { DsAutocompleteProps } from './ds-autocomplete.types';
 
 const meta: Meta<typeof DsAutocomplete> = {
 	title: 'Design System/Autocomplete',
@@ -16,10 +14,6 @@ const meta: Meta<typeof DsAutocomplete> = {
 		options: {
 			control: 'object',
 			description: 'Options to display in the autocomplete dropdown',
-		},
-		value: {
-			control: 'text',
-			description: 'Current value of the input',
 		},
 		placeholder: {
 			control: 'text',
@@ -45,30 +39,11 @@ const meta: Meta<typeof DsAutocomplete> = {
 	args: {
 		onValueChange: fn(),
 		onInputValueChange: fn(),
-		onOptionSelect: fn(),
-		onOpenChange: fn(),
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsAutocomplete>;
-
-const ControlledWrapper = (props: Partial<DsAutocompleteProps>) => {
-	const [value, setValue] = useState<string>('');
-
-	const handleValueChange = (newValue: string) => {
-		setValue(newValue);
-	};
-
-	return (
-		<DsAutocomplete
-			{...props}
-			options={props.options || []}
-			value={value}
-			onValueChange={handleValueChange}
-		/>
-	);
-};
 
 const mockOptions = [
 	{ value: 'apple', label: 'Apple' },
@@ -99,7 +74,7 @@ const countries = [
 ];
 
 export const Default: Story = {
-	render: (args) => <ControlledWrapper {...args} />,
+	render: (args) => <DsAutocomplete {...args} />,
 	args: {
 		options: mockOptions,
 		showTrigger: true,
@@ -114,7 +89,6 @@ export const Default: Story = {
 		await expect(trigger).toBeInTheDocument();
 
 		await userEvent.click(trigger);
-		await expect(args.onOpenChange).toHaveBeenCalledWith(true);
 
 		const appleOption = await screen.findByRole('option', { name: /Apple/i });
 		await expect(appleOption).toBeInTheDocument();
@@ -128,7 +102,7 @@ export const Default: Story = {
 
 		await userEvent.click(screen.getByRole('option', { name: /Banana/i }));
 		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('Banana');
-		await expect(args.onOptionSelect).toHaveBeenCalledWith({ value: 'banana', label: 'Banana' });
+		await expect(args.onValueChange).toHaveBeenCalledWith('banana');
 
 		const clearButton = canvas.getByLabelText('Clear');
 		await userEvent.click(clearButton);
@@ -137,7 +111,7 @@ export const Default: Story = {
 };
 
 export const SearchMode: Story = {
-	render: (args) => <ControlledWrapper {...args} />,
+	render: (args) => <DsAutocomplete {...args} />,
 	args: {
 		options: mockOptions,
 		showTrigger: false,
@@ -154,18 +128,16 @@ export const SearchMode: Story = {
 		await userEvent.click(input);
 		await expect(input).toHaveFocus();
 		await expect(canvas.queryByRole('listbox')).not.toBeInTheDocument();
-		await expect(args.onOpenChange).not.toHaveBeenCalled();
 
 		await userEvent.type(input, 'a');
 		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('a');
-		await expect(args.onOpenChange).toHaveBeenCalledWith(true);
 
 		const appleOption = await screen.findByRole('option', { name: /Apple/i });
 		await expect(appleOption).toBeInTheDocument();
 
 		await userEvent.click(appleOption);
 		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('Apple');
-		await expect(args.onOptionSelect).toHaveBeenCalledWith({ value: 'apple', label: 'Apple' });
+		await expect(args.onValueChange).toHaveBeenCalledWith('apple');
 
 		const clearButton = canvas.getByLabelText('Clear');
 		await userEvent.click(clearButton);
@@ -174,7 +146,7 @@ export const SearchMode: Story = {
 };
 
 export const SearchWithIcon: Story = {
-	render: (args) => <ControlledWrapper {...args} />,
+	render: (args) => <DsAutocomplete {...args} />,
 	args: {
 		options: countries,
 		showTrigger: false,
@@ -191,14 +163,13 @@ export const SearchWithIcon: Story = {
 
 		await userEvent.type(input, 'Sta');
 		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('Sta');
-		await expect(args.onOpenChange).toHaveBeenCalledWith(true);
 
 		const usOption = await screen.findByRole('option', { name: /United States/i });
 		await expect(usOption).toBeInTheDocument();
 
 		await userEvent.click(usOption);
 		await expect(args.onInputValueChange).toHaveBeenCalledWith('United States');
-		await expect(args.onOptionSelect).toHaveBeenCalledWith({ value: 'us', label: 'United States' });
+		await expect(args.onValueChange).toHaveBeenCalledWith('us');
 	},
 };
 
@@ -207,15 +178,15 @@ export const AllVariants: Story = {
 		<div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 			<div style={{ width: '300px' }}>
 				<p>Default (with trigger)</p>
-				<ControlledWrapper options={mockOptions} showTrigger placeholder="Select or type..." />
+				<DsAutocomplete options={mockOptions} showTrigger placeholder="Select or type..." />
 			</div>
 			<div style={{ width: '300px' }}>
 				<p>Search Mode (no trigger)</p>
-				<ControlledWrapper options={mockOptions} showTrigger={false} placeholder="Start typing..." />
+				<DsAutocomplete options={mockOptions} showTrigger={false} placeholder="Start typing..." />
 			</div>
 			<div style={{ width: '300px' }}>
 				<p>Search with Icon</p>
-				<ControlledWrapper
+				<DsAutocomplete
 					options={countries}
 					showTrigger={false}
 					startAdornment={<DsIcon icon="search" size="medium" aria-label="search icon" />}
@@ -254,11 +225,11 @@ export const States: Story = {
 		<div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
 			<div style={{ width: '300px' }}>
 				<p>Disabled</p>
-				<ControlledWrapper options={mockOptions} disabled placeholder="Disabled autocomplete..." />
+				<DsAutocomplete options={mockOptions} disabled placeholder="Disabled autocomplete..." />
 			</div>
 			<div style={{ width: '300px' }}>
 				<p>Invalid</p>
-				<ControlledWrapper options={mockOptions} invalid placeholder="Invalid autocomplete..." />
+				<DsAutocomplete options={mockOptions} invalid placeholder="Invalid autocomplete..." />
 			</div>
 		</div>
 	),
