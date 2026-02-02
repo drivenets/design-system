@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import type { CellContext, ColumnDef } from '@tanstack/react-table';
 import type { ChipItem } from '../../../ds-chip-group';
 import type {
@@ -9,45 +9,45 @@ import type {
 	FilterState,
 } from '../types/filter-adapter.types';
 
-/**
- * Options for server-side filtering mode.
- * When provided, the hook derives chips from external applied filters
- * and calls onFiltersChange instead of managing internal state.
- *
- * IMPORTANT: `appliedFilters` must be in "modal format" - keys must match adapter IDs
- * and values must match the adapter's expected value type. The hook uses adapters
- * to generate chips and handle chip deletion, so the format must be compatible.
- */
-export interface ServerSideFilterOptions<TValue> {
+export interface UseTableFiltersOptions<TData, TValue, TCellValue> {
 	/**
-	 * External applied filters (source of truth for server-side filtering).
-	 * Must be in "modal format" with keys matching adapter IDs.
-	 * Chips are derived from this using the adapters' toChips method.
-	 * The internal filterState is automatically synced when this changes.
+	 * Array of filter adapters that define filter behavior
 	 */
-	appliedFilters: FilterState<TValue>;
+	filterAdapters: FilterAdapter<TData, TValue, TCellValue>[] | AnyAdapter[];
 
 	/**
-	 * Callback when filters change (triggers server refetch).
+	 * Base column definitions
+	 */
+	baseColumns?: ColumnDef<TData>[];
+
+	/**
+	 * Controlled mode: External applied filters (source of truth).
+	 * When provided with onFiltersChange, the hook operates in controlled mode.
+	 * Must be in "modal format" - keys must match adapter IDs.
+	 */
+	appliedFilters?: FilterState<TValue>;
+
+	/**
+	 * Controlled mode: Callback when filters change.
 	 * Called by applyFilters(), deleteChip(), clearAll().
 	 * Receives filters in the same "modal format" as appliedFilters.
 	 */
-	onFiltersChange: (filters: FilterState<TValue>) => void;
+	onFiltersChange?: (filters: FilterState<TValue>) => void;
 }
 
 export interface UseTableFiltersResult<TData, TValue> {
 	/**
-	 * Current filter state
+	 * Current filter state (draft state in modal)
 	 */
 	filterState: FilterState<TValue>;
 
 	/**
-	 * Column filters for TanStack Table
+	 * Column filters (uncontrolled mode only)
 	 */
 	columnFilters: ColumnFilterState<TValue>[];
 
 	/**
-	 * Filter chips for display
+	 * Filter chips for display (derived from applied filters)
 	 */
 	filterChips: ChipItem[];
 
@@ -66,12 +66,12 @@ export interface UseTableFiltersResult<TData, TValue> {
 	 */
 	handlers: {
 		/**
-		 * Update a specific filter's value
+		 * Update a specific filter's value (draft state)
 		 */
 		updateFilter: (filterId: string, value: TValue) => void;
 
 		/**
-		 * Apply all filters (converts to TanStack format)
+		 * Apply all filters
 		 */
 		applyFilters: () => void;
 
@@ -93,45 +93,46 @@ export interface UseTableFiltersResult<TData, TValue> {
 }
 
 /**
- * Hook to orchestrate table filtering with adapters
+ * Hook to orchestrate table filtering with adapter
  * Manages filter state, generates chips, handles column definitions
  *
- * Supports two modes:
- * 1. **Client-side mode** (default): Filters are applied locally via TanStack Table
- * 2. **Server-side mode**: Filters are sent to a backend API via onFiltersChange callback
+ * **Uncontrolled mode** (default): filters are managed internally
+ * **Controlled mode**: filters are managed externally via appliedFilters/onFiltersChange props
  *
- * @param filterAdapters Array of filter adapters
- * @param baseColumns Base column definitions (optional)
- * @param serverSideOptions Options for server-side filtering mode (optional)
+ * @param options Hook options including adapters and optional controlled mode props
  * @returns Complete filter management system
  *
  * @example
- * // Client-side mode (default)
- * const { filterChips, handlers } = useTableFilters(adapters, columns);
+ * // Uncontrolled mode (default)
+ * const { filterChips, handlers } = useTableFilters({
+ *   filterAdapters: adapters,
+ *   baseColumns: columns,
+ * });
  *
  * @example
- * // Server-side mode
- * // Note: appliedFilters must be in "modal format" (keys match adapter IDs)
+ * // Controlled mode (e.g., server-side filtering with URL params)
  * const modalFilters = convertBackendToModalFormat(backendFilters);
- * const { filterChips, handlers } = useTableFilters(adapters, columns, {
+ * const { filterChips, handlers } = useTableFilters({
+ *   filterAdapters: adapters,
+ *   baseColumns: columns,
  *   appliedFilters: modalFilters,
  *   onFiltersChange: (filters) => {
  *     const backendFilters = convertModalToBackendFormat(filters);
- *     refetch(backendFilters);
+ *     updateUrlAndRefetch(backendFilters);
  *   },
  * });
  */
-export function useTableFilters<TData, TValue, TCellValue>(
-	filterAdapters: FilterAdapter<TData, TValue, TCellValue>[] | AnyAdapter[],
-	baseColumns?: ColumnDef<TData>[],
-	serverSideOptions?: ServerSideFilterOptions<TValue>,
-): UseTableFiltersResult<TData, TValue> {
+export function useTableFilters<TData, TValue, TCellValue>({
+	filterAdapters,
+	baseColumns,
+	appliedFilters,
+	onFiltersChange,
+}: UseTableFiltersOptions<TData, TValue, TCellValue>): UseTableFiltersResult<TData, TValue> {
 	// Internal variable just to avoid assignment issues of `any`.
 	const _filterAdapters = filterAdapters as FilterAdapter<TData, TValue, TCellValue>[];
 
-	// Determine if we're in server-side mode
-	const isServerSideMode = !!serverSideOptions;
-	const { appliedFilters, onFiltersChange } = serverSideOptions ?? {};
+	// Controlled vs uncontrolled mode
+	const isControlled = appliedFilters !== undefined && onFiltersChange !== undefined;
 
 	// Initialize filter state from adapters
 	const initialState = _filterAdapters.reduce<FilterState<TValue>>(
@@ -139,31 +140,39 @@ export function useTableFilters<TData, TValue, TCellValue>(
 		{},
 	);
 
-	const [filterState, setFilterState] = useState<FilterState<TValue>>(initialState);
+	const [filterState, setFilterState] = useState<FilterState<TValue>>({});
 	const [columnFilters, setColumnFilters] = useState<ColumnFilterState<TValue>[]>([]);
-	const [internalFilterChips, setInternalFilterChips] = useState<ChipItem[]>([]);
+	const [pendingChanges, setPendingChanges] = useState<FilterState<TValue>>({});
 
-	const getValueByAdapterId = (adapterId: string) => {
-		// Should be safe to cast because it's being filled in the initialState
-		return filterState[adapterId] as TValue;
-	};
+	const appliedState = isControlled ? appliedFilters : filterState;
 
-	// Derive chips based on mode:
-	// - Server-side: from appliedFilters using adapters' toChips
-	// - Client-side: from internal state
-	const filterChips =
-		isServerSideMode && appliedFilters
-			? _filterAdapters.flatMap((adapter) => {
-					const value = appliedFilters[adapter.id];
-					return value !== undefined ? adapter.toChips(value) : [];
-				})
-			: internalFilterChips;
+	const setAppliedState = isControlled
+		? onFiltersChange
+		: (filters: FilterState<TValue>) => {
+				setFilterState(filters);
+				const newColumnFilters = Object.entries(filters)
+					.filter(([id]) => {
+						const adapter = _filterAdapters.find((a) => a.id === id);
+						return adapter ? adapter.getActiveFiltersCount(filters[id] as TValue) > 0 : false;
+					})
+					.map(([id, value]) => ({ id, value }));
+				setColumnFilters(newColumnFilters);
+			};
 
-	// Generate filter nav items with counts (updates as user changes filters in modal)
+	// Draft state = applied + pending changes (what the modal shows)
+	const draftState = { ...initialState, ...appliedState, ...pendingChanges };
+
+	// Chips derived from applied state
+	const filterChips = _filterAdapters.flatMap((adapter) => {
+		const value = appliedState[adapter.id];
+		return value !== undefined ? adapter.toChips(value) : [];
+	});
+
+	// Filter nav items with counts (based on draftState for live updates in modal)
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
 		id: adapter.id,
 		label: adapter.label,
-		count: adapter.getActiveFiltersCount(getValueByAdapterId(adapter.id)),
+		count: adapter.getActiveFiltersCount(draftState[adapter.id] as TValue),
 	}));
 
 	// Enhance column definitions with filter functions and renderers
@@ -186,76 +195,31 @@ export function useTableFilters<TData, TValue, TCellValue>(
 				return col;
 			});
 
-	// Auto-sync internal filter state from appliedFilters (server-side mode only)
-	useEffect(() => {
-		if (!isServerSideMode || !appliedFilters) {
-			return;
-		}
-
-		setFilterState(
-			_filterAdapters.reduce<FilterState<TValue>>(
-				(state, adapter) => {
-					const appliedValue = appliedFilters[adapter.id];
-					return appliedValue !== undefined ? { ...state, [adapter.id]: appliedValue } : state;
-				},
-				{ ...initialState },
-			),
-		);
-	}, [isServerSideMode, appliedFilters, _filterAdapters, initialState]);
-
-	// Handlers
 	const updateFilter = (filterId: string, value: TValue) => {
-		setFilterState((prev) => ({
+		setPendingChanges((prev) => ({
 			...prev,
 			[filterId]: value,
 		}));
 	};
 
 	const applyFilters = () => {
-		const filters: ColumnFilterState<TValue>[] = [];
-		const chips: ChipItem[] = [];
-
-		_filterAdapters.forEach((adapter) => {
-			const value = getValueByAdapterId(adapter.id);
-
+		const filtersToApply = _filterAdapters.reduce<FilterState<TValue>>((acc, adapter) => {
+			const value = draftState[adapter.id] as TValue;
 			if (adapter.getActiveFiltersCount(value) > 0) {
-				filters.push({
-					id: adapter.id,
-					value,
-				});
+				acc[adapter.id] = value;
 			}
+			return acc;
+		}, {});
 
-			// Generate chips from current filter value
-			const adapterChips = adapter.toChips(value);
-			chips.push(...adapterChips);
-		});
-
-		setColumnFilters(filters);
-
-		if (isServerSideMode && onFiltersChange) {
-			// Convert column filters to FilterState format and call external handler
-			const filtersRecord: FilterState<TValue> = {};
-			filters.forEach((f) => {
-				filtersRecord[f.id] = f.value;
-			});
-			onFiltersChange(filtersRecord);
-		} else {
-			setInternalFilterChips(chips);
-		}
+		setAppliedState(filtersToApply);
+		setPendingChanges({});
 	};
 
 	const clearAll = () => {
-		const resetState: FilterState<TValue> = {};
-		_filterAdapters.forEach((adapter) => {
-			resetState[adapter.id] = adapter.reset();
-		});
-		setFilterState(resetState);
-		setColumnFilters([]);
-
-		if (isServerSideMode && onFiltersChange) {
-			onFiltersChange({});
-		} else {
-			setInternalFilterChips([]);
+		setPendingChanges({});
+		setAppliedState({});
+		if (!isControlled) {
+			setColumnFilters([]);
 		}
 	};
 
@@ -270,61 +234,20 @@ export function useTableFilters<TData, TValue, TCellValue>(
 			return;
 		}
 
-		// Get current value from appropriate source based on mode
-		const currentValue =
-			isServerSideMode && appliedFilters ? appliedFilters[filterKey] : getValueByAdapterId(filterKey);
-
+		const currentValue = appliedState[filterKey];
 		if (currentValue === undefined) {
 			return;
 		}
 
 		const newValue = adapter.fromChip(chip, currentValue);
 
-		if (isServerSideMode && onFiltersChange && appliedFilters) {
-			// Server-side mode: build new filters excluding removed key or with updated value
-			const otherFilters = Object.fromEntries(
-				Object.entries(appliedFilters).filter(([key]) => key !== filterKey),
-			);
-			const newFilters =
-				adapter.getActiveFiltersCount(newValue) === 0
-					? otherFilters
-					: { ...otherFilters, [filterKey]: newValue };
+		// Build new applied filters (exclude the key if count is 0)
+		const newFilters =
+			adapter.getActiveFiltersCount(newValue) === 0
+				? Object.fromEntries(Object.entries(appliedState).filter(([key]) => key !== filterKey))
+				: { ...appliedState, [filterKey]: newValue };
 
-			onFiltersChange(newFilters);
-			return;
-		}
-
-		// Client-side mode: update internal state
-		// Regenerate chips to check if this was the last one
-		const chips: ChipItem[] = [];
-		_filterAdapters.forEach((adapter) => {
-			const value = adapter.id === filterKey ? newValue : getValueByAdapterId(adapter.id);
-			const adapterChips = adapter.toChips(value);
-			chips.push(...adapterChips);
-		});
-
-		// If no chips left, clear all filters
-		if (chips.length === 0) {
-			clearAll();
-			return;
-		}
-
-		// Otherwise, update state and filters
-		setFilterState((prev) => ({
-			...prev,
-			[filterKey]: newValue,
-		}));
-
-		// Update column filters
-		if (adapter.getActiveFiltersCount(newValue) === 0) {
-			setColumnFilters((prev) => prev.filter((cf) => cf.id !== filterKey));
-		} else {
-			setColumnFilters((prev) =>
-				prev.map((cf) => (cf.id === filterKey ? { id: filterKey, value: newValue } : cf)),
-			);
-		}
-
-		setInternalFilterChips(chips);
+		setAppliedState(newFilters as FilterState<TValue>);
 	};
 
 	const renderFilterContent = (selectedFilter: FilterNavItem) => {
@@ -333,14 +256,14 @@ export function useTableFilters<TData, TValue, TCellValue>(
 			return null;
 		}
 
-		const value = getValueByAdapterId(adapter.id);
+		const value = draftState[adapter.id] as TValue;
 		const onChange = (newValue: TValue) => updateFilter(adapter.id, newValue);
 
 		return adapter.renderFilter(value, onChange);
 	};
 
 	return {
-		filterState,
+		filterState: draftState,
 		columnFilters,
 		filterChips,
 		filterNavItems,

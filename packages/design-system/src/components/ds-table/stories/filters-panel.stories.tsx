@@ -285,7 +285,10 @@ function MyTable() {
     enhancedColumns,     // Columns with filters
     handlers,            // { applyFilters, clearAll, deleteChip }
     renderFilterContent, // Render function
-  } = useTableFilters(myFilters, baseColumns);
+  } = useTableFilters({
+    filterAdapters: myFilters,
+    baseColumns,
+  });
 
   return (
     <>
@@ -428,7 +431,10 @@ This story demonstrates the complete filter system with:
      enhancedColumns,     // Pass to DsTable (includes filter functions)
      handlers,            // { applyFilters, clearAll, deleteChip }
      renderFilterContent, // Render function for modal content
-   } = useTableFilters(workflowFilters, columns);
+   } = useTableFilters({
+     filterAdapters: workflowFilters,
+     baseColumns: columns,
+   });
    \`\`\`
 
 3. **What's Handled Automatically**:
@@ -512,7 +518,10 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 	render: function Render(args) {
 		// useTableFilters hook orchestrates all filter logic
 		const { columnFilters, filterChips, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
-			useTableFilters(workflowFilters, args.columns);
+			useTableFilters({
+				filterAdapters: workflowFilters,
+				baseColumns: args.columns,
+			});
 
 		const [isOpen, setIsOpen] = useState(false);
 		const [selectedFilterId, setSelectedFilterId] = useState<string>(filterNavItems[0]?.id || '');

@@ -1,2 +1,2 @@
 export { useTableFilters } from './use-table-filters';
-export type { UseTableFiltersResult, ServerSideFilterOptions } from './use-table-filters';
+export type { UseTableFiltersOptions, UseTableFiltersResult } from './use-table-filters';
