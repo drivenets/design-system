@@ -13,10 +13,12 @@ export const modalVariants = ['default', 'info'] as const;
  */
 export type DsModalVariant = (typeof modalVariants)[number];
 
-export const modalLayouts = ['default', 'form'] as const;
+export const modalLayouts = ['default', 'divided'] as const;
 
 /**
- * Available modal layouts for structural styling
+ * Available modal layouts for structural styling.
+ * - 'default': Inset header underline, no footer border
+ * - 'divided': Full-width borders on header and footer for visual separation
  */
 export type DsModalLayout = (typeof modalLayouts)[number];
 

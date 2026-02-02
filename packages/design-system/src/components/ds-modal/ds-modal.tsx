@@ -70,7 +70,7 @@ const DsModal = ({
 						>
 							<div
 								className={classNames(styles.content, {
-									[styles.form]: layout === 'form',
+									[styles.divided]: layout === 'divided',
 								})}
 							>
 								{children}

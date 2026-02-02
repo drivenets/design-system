@@ -145,7 +145,7 @@ export const Default: Story = {
 	},
 };
 
-export const Form: Story = {
+export const Divided: Story = {
 	render: function Render() {
 		const [isOpen, setIsOpen] = useState(false);
 		const [submittedData, setSubmittedData] = useState<ModalFormValues | null>(null);
@@ -236,7 +236,7 @@ export const Form: Story = {
 					</div>
 				)}
 
-				<DsModal open={isOpen} columns={8} layout="form" onOpenChange={setIsOpen}>
+				<DsModal open={isOpen} columns={8} layout="divided" onOpenChange={setIsOpen}>
 					<DsModal.Header>
 						<DsModal.Title>User Profile Form</DsModal.Title>
 						<DsModal.CloseTrigger />
@@ -611,7 +611,7 @@ export const Form: Story = {
 		docs: {
 			description: {
 				story:
-					'An interactive form modal that demonstrates proper form state management using react-hook-form, validation with Zod, and displaying results in the parent component. The form includes various input types and shows how data flows from the modal back to the parent.',
+					'The divided layout adds full-width borders on header and footer for clear visual separation. This example demonstrates form state management using react-hook-form with Zod validation.',
 			},
 		},
 	},
@@ -632,7 +632,7 @@ export const Custom: Story = {
 					</DsButton>
 				</div>
 
-				<DsModal open={isOpen} columns={4} layout="form" onOpenChange={setIsOpen}>
+				<DsModal open={isOpen} columns={4} layout="divided" onOpenChange={setIsOpen}>
 					<DsModal.Header>
 						<div className={styles.customHeader}>
 							<button className={styles.headerButton}>⋯</button>
