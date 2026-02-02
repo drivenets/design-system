@@ -17,7 +17,7 @@ const meta: Meta<typeof DsDateInput> = {
 		layout: 'centered',
 	},
 	beforeEach: () => {
-		vi.useFakeTimers({ shouldAdvanceTime: true });
+		vi.useFakeTimers();
 		vi.setSystemTime(MOCK_DATE);
 
 		return () => {
