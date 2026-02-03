@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { DsCard } from './index';
 import { cardSizes } from './ds-card.types';
+import DsStatusBadge from '../ds-status-badge/ds-status-badge';
+import DsTypography from '../ds-typography/ds-typography';
+import styles from './ds-card.stories.module.scss';
 
 const meta: Meta<typeof DsCard.Root> = {
 	title: 'Design System/Card',
@@ -15,6 +19,18 @@ const meta: Meta<typeof DsCard.Root> = {
 		size: {
 			control: 'select',
 			options: cardSizes,
+		},
+		selectable: {
+			control: 'boolean',
+		},
+		selected: {
+			control: 'boolean',
+		},
+		highlightSelected: {
+			control: 'boolean',
+		},
+		disabled: {
+			control: 'boolean',
 		},
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
@@ -42,9 +58,7 @@ export const Default: Story = {
 	},
 	render: (args) => (
 		<DsCard.Root {...args}>
-			<DsCard.Header>
-				<DsCard.Title>Card Title</DsCard.Title>
-			</DsCard.Header>
+			<DsCard.Header>Card Title</DsCard.Header>
 			<DsCard.Body>Card content goes here</DsCard.Body>
 		</DsCard.Root>
 	),
@@ -68,25 +82,19 @@ export const Sizes: Story = {
 		},
 	},
 	render: () => (
-		<div style={{ display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
+		<div className={styles.container}>
 			<DsCard.Root size="small">
-				<DsCard.Header>
-					<DsCard.Title>Small Card</DsCard.Title>
-				</DsCard.Header>
+				<DsCard.Header>Small Card</DsCard.Header>
 				<DsCard.Body>Small content</DsCard.Body>
 			</DsCard.Root>
 
 			<DsCard.Root size="medium">
-				<DsCard.Header>
-					<DsCard.Title>Medium Card</DsCard.Title>
-				</DsCard.Header>
+				<DsCard.Header>Medium Card</DsCard.Header>
 				<DsCard.Body>Medium content</DsCard.Body>
 			</DsCard.Root>
 
 			<DsCard.Root size="large">
-				<DsCard.Header>
-					<DsCard.Title>Large Card</DsCard.Title>
-				</DsCard.Header>
+				<DsCard.Header>Large Card</DsCard.Header>
 				<DsCard.Body>Large content</DsCard.Body>
 			</DsCard.Root>
 		</div>
@@ -100,25 +108,213 @@ export const Sizes: Story = {
 	},
 };
 
-export const CustomHeaderLayout: Story = {
+export const WithHeaderAndFooter: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: 'Header accepts any children - not limited to Title/Extra structure.',
+				story: 'Card with header, body, and footer sections.',
 			},
 		},
 	},
 	render: () => (
 		<DsCard.Root size="large">
-			<DsCard.Header style={{ justifyContent: 'center' }}>
-				<span style={{ fontWeight: 'bold', fontSize: '18px' }}>Centered Custom Header</span>
+			<DsCard.Header className={styles.headerRow}>
+				<DsTypography variant="heading3">Card Title</DsTypography>
+				<DsStatusBadge icon="check_circle" status="active" ghost />
 			</DsCard.Header>
-			<DsCard.Body>The header can contain any custom layout</DsCard.Body>
+			<DsCard.Body className={styles.statsBlock}>
+				<DsTypography variant="body-md-bold">12 of 12 Devices</DsTypography>
+				<DsTypography variant="body-sm-reg">Success 10 | Failed 1 | Skipped 1</DsTypography>
+			</DsCard.Body>
+			<DsCard.Footer className={styles.footer}>
+				<DsTypography variant="body-sm-reg">Last updated: 2 min ago</DsTypography>
+			</DsCard.Footer>
 		</DsCard.Root>
 	),
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		await expect(canvas.getByText('Centered Custom Header')).toBeInTheDocument();
+		await expect(canvas.getByText('Card Title')).toBeInTheDocument();
+		await expect(canvas.getByText('12 of 12 Devices')).toBeInTheDocument();
+		await expect(canvas.getByText('Last updated: 2 min ago')).toBeInTheDocument();
+	},
+};
+
+export const StepCard: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story: 'A realistic step card example showing deployment status with detailed metrics.',
+			},
+		},
+	},
+	render: () => (
+		<DsCard.Root size="large">
+			<DsCard.Header className={styles.headerRow}>
+				<DsTypography variant="heading3">Canary</DsTypography>
+				<DsStatusBadge icon="check_circle" status="active" label="Complete" />
+			</DsCard.Header>
+			<DsCard.Body className={styles.statsBlock}>
+				<DsTypography variant="body-md-bold">12 of 12 Devices</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					Success 10 | Failed 1 | Skipped 1
+				</DsTypography>
+			</DsCard.Body>
+			<DsCard.Body className={styles.dataList}>
+				<DsTypography variant="body-sm-reg">Config Push</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSuccess}>
+					Complete
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Dwell Time (60 min.)</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSuccess}>
+					Complete
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Failed</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					1 (8%)
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Failure threshold</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					5 or 10%
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Threshold state</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					Normal
+				</DsTypography>
+			</DsCard.Body>
+		</DsCard.Root>
+	),
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('Canary')).toBeInTheDocument();
+		await expect(canvas.getByText('12 of 12 Devices')).toBeInTheDocument();
+		await expect(canvas.getByText('Config Push')).toBeInTheDocument();
+	},
+};
+
+export const Selectable: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Selectable cards act as buttons and can be clicked to toggle selection. Use `selectable` prop to enable.',
+			},
+		},
+	},
+	args: {
+		selectable: true,
+		selected: false,
+		onClick: fn(),
+	},
+	render: (args) => (
+		<DsCard.Root {...args}>
+			<DsCard.Header>Selectable Card</DsCard.Header>
+			<DsCard.Body>Click to select this card</DsCard.Body>
+		</DsCard.Root>
+	),
+	play: async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const card = canvas.getByRole('button');
+		await expect(card).toBeInTheDocument();
+		await expect(card).toHaveAttribute('aria-pressed', 'false');
+
+		await userEvent.click(card);
+		await expect(args.onClick).toHaveBeenCalledTimes(1);
+	},
+};
+
+export const SelectableControlled: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story: 'Controlled selectable card with state management.',
+			},
+		},
+	},
+	render: function Render() {
+		const [selected, setSelected] = useState(false);
+
+		return (
+			<DsCard.Root selectable selected={selected} onClick={() => setSelected(!selected)}>
+				<DsCard.Header>Controlled Card</DsCard.Header>
+				<DsCard.Body>{selected ? 'Selected! Click to deselect.' : 'Click to select.'}</DsCard.Body>
+			</DsCard.Root>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const card = canvas.getByRole('button');
+		await expect(card).toHaveAttribute('aria-pressed', 'false');
+
+		await userEvent.click(card);
+		await expect(card).toHaveAttribute('aria-pressed', 'true');
+		await expect(canvas.getByText('Selected! Click to deselect.')).toBeInTheDocument();
+
+		await userEvent.click(card);
+		await expect(card).toHaveAttribute('aria-pressed', 'false');
+	},
+};
+
+export const Disabled: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story: 'Disabled cards cannot be interacted with.',
+			},
+		},
+	},
+	args: {
+		selectable: true,
+		disabled: true,
+		onClick: fn(),
+	},
+	render: (args) => (
+		<DsCard.Root size="large" {...args}>
+			<DsCard.Header className={styles.headerRow}>
+				<DsTypography variant="heading3">Canary</DsTypography>
+				<DsStatusBadge icon="check_circle" status="active" label="Complete" />
+			</DsCard.Header>
+			<DsCard.Body className={styles.statsBlock}>
+				<DsTypography variant="body-md-bold">12 of 12 Devices</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					Success 10 | Failed 1 | Skipped 1
+				</DsTypography>
+			</DsCard.Body>
+			<DsCard.Body className={styles.dataList}>
+				<DsTypography variant="body-sm-reg">Config Push</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSuccess}>
+					Complete
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Dwell Time (60 min.)</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSuccess}>
+					Complete
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Failed</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					1 (8%)
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Failure threshold</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					5 or 10%
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Threshold state</DsTypography>
+				<DsTypography variant="body-sm-reg" className={styles.textSecondary}>
+					Normal
+				</DsTypography>
+			</DsCard.Body>
+		</DsCard.Root>
+	),
+	play: async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const card = canvas.getByRole('button');
+		await expect(card).toHaveAttribute('aria-disabled', 'true');
+		await expect(card).toHaveAttribute('tabindex', '-1');
+
+		await userEvent.click(card, { pointerEventsCheck: 0 });
+		await expect(args.onClick).not.toHaveBeenCalled();
 	},
 };

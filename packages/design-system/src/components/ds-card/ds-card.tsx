@@ -1,14 +1,7 @@
 import classNames from 'classnames';
 
 import styles from './ds-card.module.scss';
-import type {
-	DsCardRootProps,
-	DsCardHeaderProps,
-	DsCardTitleProps,
-	DsCardExtraProps,
-	DsCardBodyProps,
-	DsCardFooterProps,
-} from './ds-card.types';
+import type { DsCardRootProps, DsCardHeaderProps, DsCardBodyProps, DsCardFooterProps } from './ds-card.types';
 
 /**
  * Card root component - container with optional selectable behavior.
@@ -65,24 +58,6 @@ const Header = ({ className, style, children, ref }: DsCardHeaderProps) => (
 );
 
 /**
- * Card title - left-aligned title within the header.
- */
-const Title = ({ className, style, children, ref }: DsCardTitleProps) => (
-	<div ref={ref} className={classNames(styles.title, className)} style={style}>
-		{children}
-	</div>
-);
-
-/**
- * Card extra - right-aligned extra content within the header.
- */
-const Extra = ({ className, style, children, ref }: DsCardExtraProps) => (
-	<div ref={ref} className={classNames(styles.extra, className)} style={style}>
-		{children}
-	</div>
-);
-
-/**
  * Card body - main content area.
  */
 const Body = ({ className, style, children, ref }: DsCardBodyProps) => (
@@ -103,8 +78,6 @@ const Footer = ({ className, style, children, ref }: DsCardFooterProps) => (
 export const DsCard = {
 	Root,
 	Header,
-	Title,
-	Extra,
 	Body,
 	Footer,
 };

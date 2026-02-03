@@ -73,7 +73,5 @@ export interface DsCardSlotProps {
 }
 
 export type DsCardHeaderProps = DsCardSlotProps;
-export type DsCardTitleProps = DsCardSlotProps;
-export type DsCardExtraProps = DsCardSlotProps;
 export type DsCardBodyProps = DsCardSlotProps;
 export type DsCardFooterProps = DsCardSlotProps;
