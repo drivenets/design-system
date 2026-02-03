@@ -25,7 +25,7 @@ To use the plugin, add it to your ESLint configuration file (e.g. `eslint.config
 
 You can either use the recommended config:
 
-```TS
+```typescript
 import { defineConfig } from 'eslint/config';
 import designSystem from '@drivenets/eslint-plugin-design-system';
 
@@ -37,7 +37,7 @@ export default defineConfig(
 
 Or you can customize the rules as needed:
 
-```TS
+```typescript
 import { defineConfig } from 'eslint/config';
 import designSystem from '@drivenets/eslint-plugin-design-system';
 
@@ -51,6 +51,6 @@ export default defineConfig(
       '@drivenets/design-system/no-native-button': 'off',
       '@drivenets/design-system/no-native-text-input': 'error',
     },
-  }
+  },
 );
 ```
