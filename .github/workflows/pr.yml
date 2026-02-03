@@ -281,3 +281,24 @@ jobs:
 
       - name: Run Unused Code Check
         run: pnpm lint:unused
+
+  action-lint:
+    name: GitHub Actions Lint
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Action Lint
+        id: install_actionlint
+        run: |
+          bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+
+      - name: Run Action Lint
+        run: ${{ steps.install_actionlint.outputs.executable }} -color
