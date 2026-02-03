@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-Update `DSTabs` component
+Fixed an issue with `DSTabs` component in storybook docs with tabs switching
