@@ -1,4 +1,5 @@
 export * from './components/ds-alert-banner';
+export * from './components/ds-autocomplete';
 export * from './components/ds-avatar';
 export * from './components/ds-avatar-group';
 export * from './components/ds-breadcrumb';
