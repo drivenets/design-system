@@ -14,14 +14,15 @@ import { DsTypography } from '../ds-typography';
  */
 const DsModal = ({
 	open,
-	onOpenChange,
 	columns = 6,
+	dividers = false,
 	style,
 	className,
 	modal = true,
 	closeOnEscape,
 	closeOnInteractOutside = false,
 	children,
+	onOpenChange,
 }: DsModalProps) => {
 	const handleOpenChange = (details: { open: boolean }) => {
 		onOpenChange(details.open);
@@ -48,7 +49,9 @@ const DsModal = ({
 							styles[`cols-${columns}`],
 						)}
 					>
-						<div className={classNames(styles.content)}>{children}</div>
+						<div className={styles.content} data-dividers={dividers || undefined}>
+							{children}
+						</div>
 					</Dialog.Content>
 				</Dialog.Positioner>
 			</Portal>

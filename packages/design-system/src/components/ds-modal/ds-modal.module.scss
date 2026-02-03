@@ -1,20 +1,91 @@
-@use '../../styles/shared/modal' as shared;
-
-$pad-x: 24px;
-$pad-y: 16px;
+$pad-x: var(--spacing-lg);
+$pad-y: var(--spacing-standard);
 $max-width: 90vw;
-$max-height: 90vh;
+$border-size: 1px;
+$border: $border-size solid var(--color-border-secondary);
 
 .overlay {
-	@include shared.overlay-base;
+	position: fixed;
+	inset: 0;
+	background: var(--color-background-brand);
+	opacity: 0.4;
+	z-index: 1199;
+
+	&[data-state='open'] {
+		animation: fade-in-overlay 0.2s ease-in-out both;
+	}
+
+	&[data-state='closed'] {
+		animation: fade-out-overlay 0.2s 0.1s ease-in-out both;
+	}
+}
+
+@keyframes fade-in-overlay {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 0.4;
+	}
+}
+
+@keyframes fade-out-overlay {
+	0% {
+		opacity: 0.4;
+	}
+
+	100% {
+		opacity: 0;
+	}
 }
 
 .modal {
-	@include shared.modal-base;
+	position: fixed;
+	inset: 50% auto auto 50%;
+	background: var(--color-background);
+	border-radius: 4px;
+	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+	z-index: 1200;
+	overflow: hidden;
+	inline-size: min(var(--col-span-6), $max-width);
+
+	&[data-state='open'] {
+		animation: scale-in-modal 0.2s 0.1s ease-in-out both;
+	}
+
+	&[data-state='closed'] {
+		animation: scale-out-modal 0.2s ease-in-out both;
+	}
+}
+
+@keyframes scale-in-modal {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.9);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+}
+
+@keyframes scale-out-modal {
+	0% {
+		opacity: 1;
+		transform: translate(-50%, -50%) scale(1);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.9);
+	}
 }
 
 .content {
-	@include shared.content-base;
+	display: flex;
+	flex-direction: column;
 	height: 100%;
 }
 
@@ -25,76 +96,68 @@ $max-height: 90vh;
 }
 
 .header {
-	@include shared.header-base;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	position: relative;
+	background: inherit;
+	flex-shrink: 0;
+
+	&::after {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: $pad-x;
+		right: $pad-x;
+		height: $border-size;
+		background: var(--color-border-secondary);
+	}
 }
 
 .footer {
-	@include shared.footer-base;
 	display: flex;
+	background: inherit;
+	flex-shrink: 0;
 }
 
 .title {
-	@include shared.title-base;
+	color: var(--color-font-main);
+	margin: 0;
+	flex: 1;
 }
 
 .body {
-	@include shared.body-base;
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	min-height: 0;
 }
 
 .actions {
-	@include shared.actions-base;
+	display: flex;
+	gap: var(--spacing-xs);
+	justify-content: flex-end;
 	margin-left: auto;
 }
 
-// width classes derived from DS grid
-.modal {
-	inline-size: min(var(--col-span-6), $max-width);
+// Dividers mode: full-width borders on header and footer
+.content[data-dividers] {
+	.header {
+		border-bottom: $border;
+
+		&::after {
+			display: none;
+		}
+	}
+
+	.footer {
+		border-top: $border;
+	}
 }
 
-.modal.cols-1 {
-	inline-size: min(var(--col-span-1), $max-width);
-}
-
-.modal.cols-2 {
-	inline-size: min(var(--col-span-2), $max-width);
-}
-
-.modal.cols-3 {
-	inline-size: min(var(--col-span-3), $max-width);
-}
-
-.modal.cols-4 {
-	inline-size: min(var(--col-span-4), $max-width);
-}
-
-.modal.cols-5 {
-	inline-size: min(var(--col-span-5), $max-width);
-}
-
-.modal.cols-6 {
-	inline-size: min(var(--col-span-6), $max-width);
-}
-
-.modal.cols-7 {
-	inline-size: min(var(--col-span-7), $max-width);
-}
-
-.modal.cols-8 {
-	inline-size: min(var(--col-span-8), $max-width);
-}
-
-.modal.cols-9 {
-	inline-size: min(var(--col-span-9), $max-width);
-}
-
-.modal.cols-10 {
-	inline-size: min(var(--col-span-10), $max-width);
-}
-
-.modal.cols-11 {
-	inline-size: min(var(--col-span-11), $max-width);
-}
-
-.modal.cols-12 {
-	inline-size: min(var(--col-span-12), $max-width);
+// Width classes derived from DS grid
+@for $i from 1 through 12 {
+	.modal.cols-#{$i} {
+		inline-size: min(var(--col-span-#{$i}), $max-width);
+	}
 }
