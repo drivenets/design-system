@@ -18,7 +18,7 @@ yarn add @drivenets/vite-plugin
 
 To use the plugin, add it to your Vite configuration file (e.g. `vite.config.ts`):
 
-```TS
+```typescript
 import { defineConfig } from 'vite';
 import { vitePluginDesignSystem } from '@drivenets/vite-plugin';
 

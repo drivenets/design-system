@@ -211,10 +211,8 @@ export const CustomBody: Story = {
 								</div>
 								<div className={styles.recommendationsBox}>
 									<strong>Recommended actions:</strong>
-									<br />
-									• Update all dependencies immediately
-									<br />
-									• Review and sanitize user inputs
+									<br />• Update all dependencies immediately
+									<br />• Review and sanitize user inputs
 									<br />• Implement additional security headers
 								</div>
 							</div>

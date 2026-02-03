@@ -1,9 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
+import { vi } from 'vitest';
 import DsDateInput from './ds-date-input';
 import type { DsDateInputProps } from './ds-date-input.types';
 import styles from './ds-date-input.stories.module.scss';
+
+// Mock system time to January 15, 2026 for consistent test dates
+const MOCK_DATE = new Date('2026-01-15T12:00:00');
 
 const meta: Meta<typeof DsDateInput> = {
 	title: 'Design System/DateInput',
@@ -11,6 +15,17 @@ const meta: Meta<typeof DsDateInput> = {
 	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
+	},
+	beforeEach: () => {
+		vi.useFakeTimers({
+			// needed,
+			shouldAdvanceTime: true,
+		});
+		vi.setSystemTime(MOCK_DATE);
+
+		return () => {
+			vi.useRealTimers();
+		};
 	},
 };
 

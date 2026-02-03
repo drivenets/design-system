@@ -16,7 +16,7 @@ yarn add @drivenets/design-system
 
 Then, import the css styles in your application root (e.g., `main.tsx` or `App.tsx`):
 
-```TSX
+```typescript
 import '@drivenets/design-system/index.min.css';
 ```
 

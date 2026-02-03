@@ -17,21 +17,24 @@ export interface DsModalProps extends Pick<
 	 * Whether the modal is open
 	 */
 	open: boolean;
-	/**
-	 * Callback when modal open state changes
-	 * @param open - whether the modal is open
-	 */
-	onOpenChange: (open: boolean) => void;
 
 	/**
 	 * Number of grid columns for modal width
 	 * @default 6
 	 */
 	columns?: DsModalColumns;
+
+	/**
+	 * Show full-width dividers between header, body, and footer sections
+	 * @default false
+	 */
+	dividers?: boolean;
+
 	/**
 	 * Optional inline styles to apply to the component
 	 */
 	style?: CSSProperties;
+
 	/**
 	 * Additional CSS class name
 	 */
@@ -41,4 +44,10 @@ export interface DsModalProps extends Pick<
 	 * Modal body content
 	 */
 	children: ReactNode;
+
+	/**
+	 * Callback when modal open state changes
+	 * @param open - whether the modal is open
+	 */
+	onOpenChange: (open: boolean) => void;
 }

@@ -12,6 +12,7 @@ import { DsButton } from '../ds-button';
 import { DsFormControl } from '../ds-form-control';
 import { DsRadioGroup } from '../ds-radio-group';
 import { DsCheckbox } from '../ds-checkbox';
+import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsModal> = {
 	title: 'Design System/Modal',
@@ -27,6 +28,10 @@ const meta: Meta<typeof DsModal> = {
 		open: {
 			control: 'boolean',
 			description: 'Controls whether the modal is open',
+		},
+		dividers: {
+			control: 'boolean',
+			description: 'Show full-width dividers between header, body, and footer sections',
 		},
 		columns: {
 			control: 'select',
@@ -70,8 +75,71 @@ const defaultFormValues: ModalFormValues = {
 	subscription: 'basic' as const,
 };
 
-// Default story - Interactive Form Modal (renamed from InteractiveFormModal)
 export const Default: Story = {
+	render: function Render() {
+		const [isOpen, setIsOpen] = useState(false);
+
+		return (
+			<div className={styles.storyContainer}>
+				<div className={styles.storyHeader}>
+					<h2>Default Modal</h2>
+					<p>The default variant has an inset header underline and no footer border.</p>
+					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+						Open Modal
+					</DsButton>
+				</div>
+
+				<DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}>
+					<DsModal.Header>
+						<DsModal.Title>Modal Title</DsModal.Title>
+						<DsModal.CloseTrigger />
+					</DsModal.Header>
+					<DsModal.Body>
+						<p>This is the default modal variant with simple content.</p>
+					</DsModal.Body>
+					<DsModal.Footer>
+						<DsModal.Actions>
+							<DsButton design="v1.2" buttonType="secondary" size="large" onClick={() => setIsOpen(false)}>
+								Cancel
+							</DsButton>
+							<DsButton design="v1.2" variant="filled" size="large" onClick={() => setIsOpen(false)}>
+								Confirm
+							</DsButton>
+						</DsModal.Actions>
+					</DsModal.Footer>
+				</DsModal>
+			</div>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openModalButton = canvas.getByRole('button', { name: /open modal/i });
+		await userEvent.click(openModalButton);
+
+		await waitFor(() => {
+			return expect(screen.getByRole('dialog')).toBeVisible();
+		});
+
+		await expect(screen.getByRole('heading', { name: /modal title/i })).toBeVisible();
+
+		const confirmButton = screen.getByRole('button', { name: /confirm/i });
+		await userEvent.click(confirmButton);
+
+		await waitFor(() => {
+			return expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+		});
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Default modal variant with inset header underline and no footer border.',
+			},
+		},
+	},
+};
+
+export const Divided: Story = {
 	render: function Render() {
 		const [isOpen, setIsOpen] = useState(false);
 		const [submittedData, setSubmittedData] = useState<ModalFormValues | null>(null);
@@ -162,7 +230,7 @@ export const Default: Story = {
 					</div>
 				)}
 
-				<DsModal open={isOpen} onOpenChange={setIsOpen} columns={8}>
+				<DsModal open={isOpen} columns={8} dividers onOpenChange={setIsOpen}>
 					<DsModal.Header>
 						<DsModal.Title>User Profile Form</DsModal.Title>
 						<DsModal.CloseTrigger />
@@ -354,18 +422,15 @@ export const Default: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		// Helper function to wait for validation messages
 		const waitForMessage = async (text: string) => {
 			await waitFor(() => {
 				return expect(screen.getByText(text)).toBeInTheDocument();
 			});
 		};
 
-		// 1. Open the modal
 		const openModalButton = canvas.getByRole('button', { name: /open form modal/i });
 		await userEvent.click(openModalButton);
 
-		// Wait for modal to be visible
 		await waitFor(() => {
 			return expect(screen.getByText('User Profile Form')).toBeVisible();
 		});
@@ -474,7 +539,6 @@ export const Default: Story = {
 			return expect(screen.queryByText('User Profile Form')).not.toBeVisible();
 		});
 
-		// Helper function to wait for validation messages
 		const checkResult = (text: string) => {
 			return expect(
 				canvas.getByText((content, element) => {
@@ -541,7 +605,7 @@ export const Default: Story = {
 		docs: {
 			description: {
 				story:
-					'An interactive form modal that demonstrates proper form state management using react-hook-form, validation with Zod, and displaying results in the parent component. The form includes various input types and shows how data flows from the modal back to the parent.',
+					'The divided layout adds full-width borders on header and footer for clear visual separation. This example demonstrates form state management using react-hook-form with Zod validation.',
 			},
 		},
 	},
@@ -562,7 +626,7 @@ export const Custom: Story = {
 					</DsButton>
 				</div>
 
-				<DsModal open={isOpen} onOpenChange={setIsOpen} columns={4}>
+				<DsModal open={isOpen} columns={4} dividers onOpenChange={setIsOpen}>
 					<DsModal.Header>
 						<div className={styles.customHeader}>
 							<button className={styles.headerButton}>⋯</button>
@@ -681,11 +745,153 @@ export const Custom: Story = {
 			</div>
 		);
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openButton = canvas.getByRole('button', { name: /open custom modal/i });
+		await userEvent.click(openButton);
+
+		await waitFor(() => {
+			return expect(screen.getByRole('dialog')).toBeVisible();
+		});
+
+		await expect(screen.getByText('Project Details')).toBeVisible();
+
+		const closeButton = screen.getByRole('button', { name: /✕/i });
+		await userEvent.click(closeButton);
+
+		await waitFor(() => {
+			return expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+		});
+	},
 	parameters: {
 		docs: {
 			description: {
 				story:
 					'A custom modal with custom header and footer content, demonstrating how to override the default modal structure with custom components.',
+			},
+		},
+	},
+};
+
+export const WithIcon: Story = {
+	render: function Render() {
+		const [isOpen, setIsOpen] = useState(false);
+
+		return (
+			<div className={styles.storyContainer}>
+				<div className={styles.storyHeader}>
+					<h2>Modal with Icon</h2>
+					<p>Example showing how to add an icon to the modal header.</p>
+					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+						Open Modal
+					</DsButton>
+				</div>
+
+				<DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}>
+					<DsModal.Header>
+						<DsIcon icon="info" size="small" />
+						<DsModal.Title>Session Timeout</DsModal.Title>
+						<DsModal.CloseTrigger />
+					</DsModal.Header>
+					<DsModal.Body>
+						<p>Your session will expire in 5 minutes due to inactivity.</p>
+					</DsModal.Body>
+				</DsModal>
+			</div>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openModalButton = canvas.getByRole('button', { name: /open modal/i });
+		await userEvent.click(openModalButton);
+
+		await waitFor(() => {
+			return expect(screen.getByRole('dialog')).toBeVisible();
+		});
+
+		await expect(screen.getByRole('heading', { name: /session timeout/i })).toBeVisible();
+		await expect(screen.getByText(/session will expire/i)).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+
+		await waitFor(() => {
+			return expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+		});
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Example showing how to add an icon to the modal header by composing DsIcon with DsModal.Header.',
+			},
+		},
+	},
+};
+
+export const WithoutHeader: Story = {
+	render: function Render() {
+		const [isOpen, setIsOpen] = useState(false);
+
+		return (
+			<div className={styles.storyContainer}>
+				<div className={styles.storyHeader}>
+					<h2>Modal Without Header</h2>
+					<p>Modal with only body and footer content, no header section.</p>
+					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+						Open Modal
+					</DsButton>
+				</div>
+
+				<DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}>
+					<DsModal.Body>
+						<p>
+							This modal has no header section. Use this pattern when you want a cleaner look without the
+							header underline.
+						</p>
+					</DsModal.Body>
+					<DsModal.Footer>
+						<DsModal.Actions>
+							<DsButton design="v1.2" buttonType="secondary" size="large" onClick={() => setIsOpen(false)}>
+								Close
+							</DsButton>
+							<DsButton design="v1.2" variant="filled" size="large" onClick={() => setIsOpen(false)}>
+								Continue
+							</DsButton>
+						</DsModal.Actions>
+					</DsModal.Footer>
+				</DsModal>
+			</div>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openModalButton = canvas.getByRole('button', { name: /open modal/i });
+		await userEvent.click(openModalButton);
+
+		await waitFor(() => {
+			return expect(screen.getByRole('dialog')).toBeVisible();
+		});
+
+		const dialog = screen.getByRole('dialog');
+		await expect(within(dialog).getByText(/no header section/i)).toBeVisible();
+
+		const continueButton = screen.getByRole('button', { name: /continue/i });
+		await expect(continueButton).toBeVisible();
+
+		await userEvent.click(continueButton);
+
+		await waitFor(() => {
+			return expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+		});
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Modal without a header component - use this pattern instead of a variant when you want no header underline.',
 			},
 		},
 	},
