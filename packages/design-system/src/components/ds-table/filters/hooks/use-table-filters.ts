@@ -109,6 +109,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 	appliedFilters: externalAppliedFilters,
 	onFiltersChange: setExternalAppliedFilters,
 }: UseTableFiltersOptions<TData, TValue, TCellValue>): UseTableFiltersResult<TData, TValue> {
+	// Internal variable just to avoid assignment issues of `any`.
 	const _filterAdapters = filterAdapters as FilterAdapter<TData, TValue, TCellValue>[];
 
 	const isControlled = externalAppliedFilters !== undefined && setExternalAppliedFilters !== undefined;
