@@ -718,3 +718,190 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 		await expect(getTableRows()).toHaveLength(12);
 	},
 };
+
+export const Controlled: Story = {
+	name: 'Controlled Mode',
+	parameters: {
+		docs: {
+			description: {
+				story: `
+### Controlled Mode Example
+
+Demonstrates using \`useTableFilters\` in **controlled mode** where filter state is managed externally.
+
+This is useful for:
+- **URL-driven filtering**: Sync filters with URL params
+- **Server-side filtering**: Send filters to API and refetch data
+- **Cross-component state**: Share filter state with other components
+
+\`\`\`typescript
+const [appliedFilters, setAppliedFilters] = useState({});
+
+const { filterChips, handlers } = useTableFilters({
+  filterAdapters: workflowFilters,
+  baseColumns: columns,
+  appliedFilters,           // External state
+  onFiltersChange: setAppliedFilters, // Callback to update state
+});
+\`\`\`
+
+The debug panel below shows the current filter state as JSON.
+`,
+			},
+		},
+	},
+	render: function Render(args) {
+		// External filter state (controlled mode)
+		const [appliedFilters, setAppliedFilters] = useState<Record<string, unknown>>({});
+
+		const { columnFilters, filterChips, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
+			useTableFilters({
+				filterAdapters: workflowFilters,
+				baseColumns: args.columns,
+				appliedFilters,
+				onFiltersChange: setAppliedFilters,
+			});
+
+		const [isOpen, setIsOpen] = useState(false);
+		const [selectedFilterId, setSelectedFilterId] = useState<string>(filterNavItems[0]?.id || '');
+
+		const handleOpenChange = (open: boolean) => {
+			if (open && !selectedFilterId && filterNavItems.length > 0) {
+				setSelectedFilterId(filterNavItems[0]?.id || '');
+			}
+			setIsOpen(open);
+		};
+
+		const handleValueChange = (value: string | null) => {
+			if (value) {
+				setSelectedFilterId(value);
+			}
+		};
+
+		const handleApply = () => {
+			handlers.applyFilters();
+			setIsOpen(false);
+		};
+
+		const handleClearAll = () => {
+			handlers.clearAll();
+			setIsOpen(false);
+		};
+
+		const TabLabel = ({ item }: { item: FilterNavItem }) => (
+			<>
+				<DsTypography variant="body-sm-md" className={styles.filterTabLabel}>
+					{item.label}
+				</DsTypography>
+				{!!item.count && (
+					<div className={styles.filterTabBadge}>
+						<span className={styles.filterTabDot} />
+						<DsTypography variant="body-sm-reg" className={styles.filterTabCount}>
+							{item.count}
+						</DsTypography>
+					</div>
+				)}
+			</>
+		);
+
+		return (
+			<div className={styles.tableFilterContainer}>
+				{/* Debug panel showing external state */}
+				<div className={styles.debugPanel}>
+					<DsTypography variant="body-sm-md">External Filter State (controlled):</DsTypography>
+					<pre className={styles.debugCode}>{JSON.stringify(appliedFilters, null, 2) || '{}'}</pre>
+				</div>
+
+				<div className={styles.toolbar}>
+					<DsButton design="v1.2" buttonType="secondary" onClick={() => setIsOpen(true)}>
+						<DsIcon size="tiny" icon="filter_list" />
+					</DsButton>
+				</div>
+
+				{filterChips.length > 0 && (
+					<DsChipGroup items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+				)}
+
+				<DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
+
+				<DsModal style={{ height: '600px' }} open={isOpen} onOpenChange={handleOpenChange}>
+					<DsModal.Header className={styles.filterHeader}>
+						<div className={styles.headerLeft}>
+							<DsIcon icon="filter_list" size="small" />
+							<DsModal.Title>Filters</DsModal.Title>
+						</div>
+						<DsModal.CloseTrigger />
+					</DsModal.Header>
+
+					<DsModal.Body className={styles.filterBody}>
+						<DsVerticalTabs
+							className={styles.filterTabs}
+							value={selectedFilterId}
+							onValueChange={handleValueChange}
+						>
+							<DsVerticalTabs.List className={styles.filterTabList}>
+								{filterNavItems.map((item) => (
+									<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+										<TabLabel item={item} />
+									</DsVerticalTabs.Tab>
+								))}
+							</DsVerticalTabs.List>
+							{filterNavItems.map((item) => (
+								<DsVerticalTabs.Content key={item.id} value={item.id} className={styles.filterContent}>
+									{renderFilterContent(item)}
+								</DsVerticalTabs.Content>
+							))}
+						</DsVerticalTabs>
+					</DsModal.Body>
+
+					<DsModal.Footer className={styles.filterFooter}>
+						<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={handleClearAll}>
+							<DsIcon icon="close" size="tiny" />
+							Clear all
+						</DsButton>
+						<DsModal.Actions>
+							<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={handleApply}>
+								Apply
+							</DsButton>
+						</DsModal.Actions>
+					</DsModal.Footer>
+				</DsModal>
+			</div>
+		);
+	},
+	args: {},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		// Verify initial state: debug panel shows empty object
+		const debugPanel = canvas.getByText('External Filter State (controlled):');
+		await expect(debugPanel).toBeInTheDocument();
+		await expect(canvas.getByText('{}')).toBeInTheDocument();
+
+		// 1. Open filter modal and apply a filter
+		const filterButton = canvas.getByRole('button', { name: /filter/i });
+		await userEvent.click(filterButton);
+
+		// Select Active status
+		const statusTab = screen.getByRole('tab', { name: /status/i });
+		await userEvent.click(statusTab);
+
+		const activeCheckbox = screen.getByRole('checkbox', { name: /^active$/i });
+		await userEvent.click(activeCheckbox);
+
+		// Apply
+		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
+
+		// 2. Verify external state is updated (debug panel shows filter)
+		await expect(canvas.getByText(/"status"/)).toBeInTheDocument();
+
+		// 3. Verify chip appears
+		await expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
+
+		// 4. Clear all and verify state resets
+		await userEvent.click(canvas.getByRole('button', { name: /clear all/i }));
+
+		await expect(canvas.getByText('{}')).toBeInTheDocument();
+		await expect(canvas.queryByText(/status: active/i)).not.toBeInTheDocument();
+	},
+};

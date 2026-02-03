@@ -106,53 +106,44 @@ export interface UseTableFiltersResult<TData, TValue> {
 export function useTableFilters<TData, TValue, TCellValue>({
 	filterAdapters,
 	baseColumns,
-	appliedFilters,
-	onFiltersChange,
+	appliedFilters: externalAppliedFilters,
+	onFiltersChange: setExternalAppliedFilters,
 }: UseTableFiltersOptions<TData, TValue, TCellValue>): UseTableFiltersResult<TData, TValue> {
 	const _filterAdapters = filterAdapters as FilterAdapter<TData, TValue, TCellValue>[];
 
-	const isControlled = appliedFilters !== undefined && onFiltersChange !== undefined;
+	const isControlled = externalAppliedFilters !== undefined && setExternalAppliedFilters !== undefined;
 
-	// Initial state from adapters (default values)
-	const initialState = _filterAdapters.reduce<FilterState<TValue>>(
+	const initialFilters = _filterAdapters.reduce<FilterState<TValue>>(
 		(state, adapter) => ({ ...state, [adapter.id]: adapter.initialValue }),
 		{},
 	);
 
-	// Internal state (used in uncontrolled mode)
-	const [filterState, setFilterState] = useState<FilterState<TValue>>({});
-	// Pending changes (uncommitted user edits)
-	const [pendingChanges, setPendingChanges] = useState<FilterState<TValue>>({});
-	// Applied state (controlled or uncontrolled)
-	const appliedState = isControlled ? appliedFilters : filterState;
+	const [internalAppliedFilters, setInternalAppliedFilters] = useState<FilterState<TValue>>({});
+	const [pendingFilters, setPendingFilters] = useState<FilterState<TValue>>({});
 
-	const setAppliedState = isControlled ? onFiltersChange : setFilterState;
+	const appliedFilters = isControlled ? externalAppliedFilters : internalAppliedFilters;
+	const setAppliedFilters = isControlled ? setExternalAppliedFilters : setInternalAppliedFilters;
 
-	// Draft state = applied + pending (what user sees while editing)
-	const draftState = { ...initialState, ...appliedState, ...pendingChanges };
+	const draftFilters = { ...initialFilters, ...appliedFilters, ...pendingFilters };
 
-	// Column filters derived from applied state
-	const columnFilters: ColumnFilterState<TValue>[] = Object.entries(appliedState)
+	const columnFilters: ColumnFilterState<TValue>[] = Object.entries(appliedFilters)
 		.filter(([id]) => {
 			const adapter = _filterAdapters.find((a) => a.id === id);
-			return adapter ? adapter.getActiveFiltersCount(appliedState[id] as TValue) > 0 : false;
+			return adapter ? adapter.getActiveFiltersCount(appliedFilters[id] as TValue) > 0 : false;
 		})
 		.map(([id, value]) => ({ id, value }));
 
-	// Chips derived from applied state
 	const filterChips = _filterAdapters.flatMap((adapter) => {
-		const value = appliedState[adapter.id];
+		const value = appliedFilters[adapter.id];
 		return value !== undefined ? adapter.toChips(value) : [];
 	});
 
-	// Nav items with counts (based on draft state for live feedback)
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
 		id: adapter.id,
 		label: adapter.label,
-		count: adapter.getActiveFiltersCount(draftState[adapter.id] as TValue),
+		count: adapter.getActiveFiltersCount(draftFilters[adapter.id] as TValue),
 	}));
 
-	// Enhanced columns with filter functions
 	const enhancedColumns: ColumnDef<TData>[] = !baseColumns
 		? []
 		: baseColumns.map((col) => {
@@ -171,27 +162,26 @@ export function useTableFilters<TData, TValue, TCellValue>({
 				};
 			});
 
-	// Handlers
 	const updateFilter = (filterId: string, value: TValue) => {
-		setPendingChanges((prev) => ({ ...prev, [filterId]: value }));
+		setPendingFilters((prev) => ({ ...prev, [filterId]: value }));
 	};
 
 	const applyFilters = () => {
 		const filtersToApply = _filterAdapters.reduce<FilterState<TValue>>((acc, adapter) => {
-			const value = draftState[adapter.id] as TValue;
+			const value = draftFilters[adapter.id] as TValue;
 			if (adapter.getActiveFiltersCount(value) > 0) {
 				acc[adapter.id] = value;
 			}
 			return acc;
 		}, {});
 
-		setAppliedState(filtersToApply);
-		setPendingChanges({});
+		setAppliedFilters(filtersToApply);
+		setPendingFilters({});
 	};
 
 	const clearAll = () => {
-		setPendingChanges({});
-		setAppliedState({});
+		setPendingFilters({});
+		setAppliedFilters({});
 	};
 
 	const deleteChip = (chip: ChipItem) => {
@@ -205,7 +195,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 			return;
 		}
 
-		const currentValue = appliedState[filterKey];
+		const currentValue = appliedFilters[filterKey];
 		if (currentValue === undefined) {
 			return;
 		}
@@ -214,10 +204,10 @@ export function useTableFilters<TData, TValue, TCellValue>({
 
 		const newFilters =
 			adapter.getActiveFiltersCount(newValue) === 0
-				? Object.fromEntries(Object.entries(appliedState).filter(([key]) => key !== filterKey))
-				: { ...appliedState, [filterKey]: newValue };
+				? Object.fromEntries(Object.entries(appliedFilters).filter(([key]) => key !== filterKey))
+				: { ...appliedFilters, [filterKey]: newValue };
 
-		setAppliedState(newFilters as FilterState<TValue>);
+		setAppliedFilters(newFilters);
 	};
 
 	const renderFilterContent = (selectedFilter: FilterNavItem) => {
@@ -226,14 +216,14 @@ export function useTableFilters<TData, TValue, TCellValue>({
 			return null;
 		}
 
-		const value = draftState[adapter.id] as TValue;
+		const value = draftFilters[adapter.id] as TValue;
 		const onChange = (newValue: TValue) => updateFilter(adapter.id, newValue);
 
 		return adapter.renderFilter(value, onChange);
 	};
 
 	return {
-		filterState: draftState,
+		filterState: draftFilters,
 		columnFilters,
 		filterChips,
 		filterNavItems,
