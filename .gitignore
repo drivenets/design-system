@@ -8,3 +8,5 @@ dist
 .turbo
 .DS_Store
 .changeset-status.json
+
+actionlint

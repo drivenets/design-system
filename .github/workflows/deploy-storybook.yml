@@ -47,7 +47,7 @@ jobs:
 
           LAST_COMMIT=$(git rev-parse --short HEAD)
 
-          echo "LAST_COMMIT=$LAST_COMMIT" >> $GITHUB_ENV
+          echo "LAST_COMMIT=$LAST_COMMIT" >> "$GITHUB_ENV"
 
       - name: Setup Git User
         run: |
