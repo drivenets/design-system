@@ -1,0 +1,257 @@
+@use '../../styles/shared/dropdown';
+@use '../../styles/shared/input';
+
+$autocomplete-input-height: 36px;
+$autocomplete-max-visible-items: 4;
+$autocomplete-item-height: 38px;
+$autocomplete-dropdown-max-height: calc($autocomplete-max-visible-items * $autocomplete-item-height);
+$autocomplete-trigger-size: 24px;
+$autocomplete-trigger-border-radius: 4px;
+$autocomplete-highlight-border-radius: 2px;
+$autocomplete-animation-duration: 0.2s;
+$autocomplete-animation-translate: -8px;
+$autocomplete-outline-width: 2px;
+$autocomplete-outline-offset: 2px;
+$autocomplete-rotation-open: 180deg;
+$autocomplete-opacity-hidden: 0;
+$autocomplete-opacity-visible: 1;
+
+.root {
+	position: relative;
+	width: 100%;
+	display: inline-flex;
+	flex-direction: column;
+}
+
+.control {
+	@include input.base-input-container;
+	@include input.input-container-states;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	height: $autocomplete-input-height;
+	min-height: $autocomplete-input-height;
+	max-height: $autocomplete-input-height;
+
+	&[data-focus] {
+		border-color: var(--form-control-border-color, var(--color-border-action-primary)) !important;
+	}
+
+	&[data-invalid] {
+		border-color: var(--color-background-danger-strong);
+	}
+}
+
+.input {
+	@include input.base-input;
+	flex: 1;
+	min-width: 0;
+	outline: none;
+
+	&::placeholder {
+		color: var(--color-font-placeholder);
+	}
+}
+
+.startAdornment {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-background-action);
+	flex-shrink: 0;
+}
+
+.iconContainer {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	flex-shrink: 0;
+}
+
+.clearButton {
+	@include input.icon-button;
+	cursor: pointer;
+	opacity: $autocomplete-opacity-hidden;
+	visibility: hidden;
+	transition: opacity $autocomplete-animation-duration ease;
+
+	&:hover {
+		color: var(--color-background-action-hover);
+	}
+}
+
+.control:hover .clearButton,
+.control[data-focus] .clearButton {
+	opacity: $autocomplete-opacity-visible;
+	visibility: visible;
+}
+
+.trigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-background-deselected);
+	transition:
+		transform $autocomplete-animation-duration ease-in-out,
+		background-color $autocomplete-animation-duration ease,
+		color $autocomplete-animation-duration ease;
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	padding: 0;
+	border-radius: $autocomplete-trigger-border-radius;
+	width: $autocomplete-trigger-size;
+	height: $autocomplete-trigger-size;
+
+	&:hover {
+		color: var(--color-background-deselected-hover);
+		background: var(--color-background-action-hover-weak);
+	}
+
+	&[data-state='open'] {
+		transform: rotate($autocomplete-rotation-open);
+		color: var(--color-background-deselected-hover);
+		background: var(--color-background-action-hover-weak);
+	}
+
+	&:focus-visible {
+		outline: $autocomplete-outline-width solid var(--color-focus);
+		outline-offset: $autocomplete-outline-offset;
+	}
+}
+
+.control[data-focus] .trigger {
+	color: var(--color-background-deselected-hover);
+	background: var(--color-background-action-hover-weak);
+}
+
+.positioner {
+	z-index: var(--z-index-dropdown, 9999);
+	width: var(--reference-width);
+}
+
+.content {
+	@include dropdown.dropdown-content;
+	overflow: hidden;
+	animation: expand $autocomplete-animation-duration ease;
+	width: 100%;
+	min-width: var(--reference-width);
+	max-height: $autocomplete-dropdown-max-height;
+
+	&[data-state='open'] {
+		animation: expand $autocomplete-animation-duration ease;
+	}
+
+	&[data-state='closed'] {
+		animation: collapse $autocomplete-animation-duration ease;
+	}
+}
+
+.itemGroup {
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: $autocomplete-dropdown-max-height;
+	scrollbar-width: thin;
+}
+
+.item {
+	@include dropdown.dropdown-item;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	height: $autocomplete-item-height;
+	min-height: $autocomplete-item-height;
+
+	&[data-highlighted] {
+		background: var(--color-background-secondary-selected-weak);
+	}
+}
+
+.itemIcon {
+	color: var(--color-background-deselected);
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+}
+
+.itemText {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+
+	mark {
+		background-color: var(--color-data-yellow);
+		color: var(--color-font-main);
+		font-weight: var(--font-weight-medium);
+		padding: 0;
+		border-radius: $autocomplete-highlight-border-radius;
+	}
+}
+
+.noMatches {
+	padding: var(--spacing-xs);
+	color: var(--color-font-disabled);
+	text-align: center;
+	font-size: var(--font-size-sm);
+}
+
+.disabled {
+	.control {
+		color: var(--color-background-deselected);
+		background: var(--color-background-secondary);
+		border-color: var(--color-border-disabled);
+		cursor: not-allowed;
+
+		.input {
+			color: var(--color-font-disabled);
+			cursor: not-allowed;
+		}
+
+		.trigger {
+			color: var(--color-background-disable);
+			cursor: not-allowed;
+			background: transparent;
+
+			&:hover {
+				background: transparent;
+				color: var(--color-background-disable);
+			}
+		}
+	}
+}
+
+.invalid {
+	.control {
+		border-color: var(--color-background-danger-strong);
+
+		&:hover,
+		&[data-focus] {
+			border-color: var(--color-background-danger-strong) !important;
+		}
+	}
+}
+
+@keyframes expand {
+	0% {
+		opacity: $autocomplete-opacity-hidden;
+		transform: translateY($autocomplete-animation-translate);
+	}
+
+	100% {
+		opacity: $autocomplete-opacity-visible;
+		transform: translateY(0);
+	}
+}
+
+@keyframes collapse {
+	0% {
+		opacity: $autocomplete-opacity-visible;
+		transform: translateY(0);
+	}
+
+	100% {
+		opacity: $autocomplete-opacity-hidden;
+		transform: translateY($autocomplete-animation-translate);
+	}
+}
