@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
-import { vi } from 'vitest';
+import MockDate from 'mockdate';
 import DsDateInput from './ds-date-input';
 import type { DsDateInputProps } from './ds-date-input.types';
 import styles from './ds-date-input.stories.module.scss';
@@ -17,14 +17,10 @@ const meta: Meta<typeof DsDateInput> = {
 		layout: 'centered',
 	},
 	beforeEach: () => {
-		vi.useFakeTimers({
-			// needed,
-			shouldAdvanceTime: true,
-		});
-		vi.setSystemTime(MOCK_DATE);
+		MockDate.set(MOCK_DATE);
 
 		return () => {
-			vi.useRealTimers();
+			MockDate.reset();
 		};
 	},
 };
