@@ -84,6 +84,7 @@ Before submitting a PR, run a local code review (apply latest `main` changes!):
 - Commit your changes with a descriptive message following the Conventional Commits standard (e.g., `feat(design-system): add new button component [TICKET-ID]`).
 - Add a changelog entry if needed using `pnpm changelog`.
   See [Intro to Using Changesets](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md) and [Adding a Changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) for more details.
+  If your change doesn’t require a new release, you can add the `skip changelog` label to the GitHub PR.
 - Push your branch and open a pull request for review.
 
 > [!NOTE]
