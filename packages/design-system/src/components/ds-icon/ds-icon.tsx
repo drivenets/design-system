@@ -1,4 +1,3 @@
-import type React from 'react';
 import classNames from 'classnames';
 import styles from './ds-icon.module.scss';
 import type { DsIconProps } from './ds-icon.types';
@@ -7,7 +6,7 @@ import { customIcons, isCustomIcon } from './custom-icons';
 /**
  * Design system Icon component that renders Google Material Icons, custom SVG icons, or inline SVGs
  */
-const DsIcon: React.FC<DsIconProps> = ({
+const DsIcon = ({
 	icon,
 	size = 'medium',
 	variant = 'outlined',
@@ -15,7 +14,7 @@ const DsIcon: React.FC<DsIconProps> = ({
 	className = '',
 	style = {},
 	...rest
-}) => {
+}: DsIconProps) => {
 	const iconClass = classNames(styles.icon, styles[size], { [styles.filled]: filled }, className);
 
 	// 1. SVG component passed directly

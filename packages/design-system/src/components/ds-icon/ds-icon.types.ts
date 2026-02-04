@@ -1,4 +1,4 @@
-import type React from 'react';
+import type { MouseEvent, CSSProperties, FunctionComponent, SVGProps } from 'react';
 import type { IconPrefix, materialIcons } from './material-icons';
 import type { CustomIconName } from './custom-icons';
 
@@ -13,7 +13,7 @@ export type MaterialIconName = {
 
 export type IconName = MaterialIconName | CustomIconName;
 
-export type IconType = IconName | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+export type IconType = IconName | FunctionComponent<SVGProps<SVGSVGElement>>;
 
 export interface DsIconProps {
 	/**
@@ -47,10 +47,10 @@ export interface DsIconProps {
 	/**
 	 * Additional styles to apply to the icon
 	 */
-	style?: React.CSSProperties;
+	style?: CSSProperties;
 
 	/**
 	 * Optional click handler
 	 */
-	onClick?: (event: React.MouseEvent<HTMLSpanElement | SVGSVGElement>) => void;
+	onClick?: (event: MouseEvent<HTMLSpanElement | SVGSVGElement>) => void;
 }
