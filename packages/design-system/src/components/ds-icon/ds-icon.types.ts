@@ -1,14 +1,17 @@
 import type React from 'react';
 import type { IconPrefix, materialIcons } from './material-icons';
+import type { CustomIconName } from './custom-icons';
 
 export const iconSizes = ['tiny', 'small', 'medium', 'large', 'extra-large'] as const;
 export type IconSize = (typeof iconSizes)[number];
 export const iconVariants = ['outlined', 'rounded'] as const;
 export type IconVariant = (typeof iconVariants)[number];
 
-export type IconName = {
+export type MaterialIconName = {
 	[K in keyof typeof materialIcons]: K extends `${IconPrefix}::${infer Name}` ? Name : never;
 }[keyof typeof materialIcons];
+
+export type IconName = MaterialIconName | CustomIconName;
 
 export type IconType = IconName | React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
 
