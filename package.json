@@ -56,6 +56,7 @@
 			"array.prototype.flatmap": "npm:@nolyfill/array.prototype.flatmap@^1",
 			"array.prototype.tosorted": "npm:@nolyfill/array.prototype.tosorted@^1",
 			"es-iterator-helpers": "npm:@nolyfill/es-iterator-helpers@^1",
+			"es-set-tostringtag": "npm:@nolyfill/es-set-tostringtag@^1",
 			"hasown": "npm:@nolyfill/hasown@^1",
 			"is-core-module": "npm:@nolyfill/is-core-module@^1",
 			"object.assign": "npm:@nolyfill/object.assign@^1",
