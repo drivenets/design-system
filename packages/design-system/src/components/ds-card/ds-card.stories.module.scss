@@ -50,6 +50,10 @@
 	background: var(--color-background-tertiary);
 }
 
+.collapseRoot {
+	max-width: 400px;
+}
+
 .collapsibleContent {
 	display: grid;
 	grid-template-rows: 1fr;

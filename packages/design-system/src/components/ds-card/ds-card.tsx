@@ -17,6 +17,8 @@ const Root = ({
 	className,
 	style,
 	children,
+	onClick,
+	onKeyDown,
 	...rest
 }: DsCardRootProps) => {
 	const interactiveProps = selectable
@@ -33,6 +35,8 @@ const Root = ({
 			ref={ref}
 			{...rest}
 			{...interactiveProps}
+			onClick={disabled ? undefined : onClick}
+			onKeyDown={disabled ? undefined : onKeyDown}
 			data-size={size}
 			data-selectable={selectable || undefined}
 			data-selected={selected || undefined}

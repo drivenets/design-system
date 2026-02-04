@@ -103,9 +103,13 @@ export const Sizes: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		await expect(canvas.getByText('Small Card')).toBeInTheDocument();
-		await expect(canvas.getByText('Medium Card')).toBeInTheDocument();
-		await expect(canvas.getByText('Large Card')).toBeInTheDocument();
+		const smallCard = canvas.getByText('Small Card').closest('[data-size]');
+		const mediumCard = canvas.getByText('Medium Card').closest('[data-size]');
+		const largeCard = canvas.getByText('Large Card').closest('[data-size]');
+
+		await expect(smallCard).toHaveAttribute('data-size', 'small');
+		await expect(mediumCard).toHaveAttribute('data-size', 'medium');
+		await expect(largeCard).toHaveAttribute('data-size', 'large');
 	},
 };
 
@@ -221,8 +225,38 @@ export const Selectable: Story = {
 		await expect(card).toBeInTheDocument();
 		await expect(card).toHaveAttribute('aria-pressed', 'false');
 
+		// Click interaction
 		await userEvent.click(card);
 		await expect(args.onClick).toHaveBeenCalledTimes(1);
+	},
+};
+
+export const HighlightSelected: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story: 'When `highlightSelected` is true, selected cards display a highlighted background color.',
+			},
+		},
+	},
+	args: {
+		selectable: true,
+		selected: true,
+		highlightSelected: true,
+	},
+	render: (args) => (
+		<DsCard.Root {...args}>
+			<DsCard.Header>Highlighted Card</DsCard.Header>
+			<DsCard.Body>This card has a highlighted background when selected</DsCard.Body>
+		</DsCard.Root>
+	),
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const card = canvas.getByRole('button');
+		await expect(card).toHaveAttribute('aria-pressed', 'true');
+		await expect(card).toHaveAttribute('data-highlight', 'true');
+		await expect(card).toHaveAttribute('data-selected', 'true');
 	},
 };
 
@@ -317,6 +351,13 @@ export const Disabled: Story = {
 
 		await userEvent.click(card, { pointerEventsCheck: 0 });
 		await expect(args.onClick).not.toHaveBeenCalled();
+
+		card.focus();
+		await userEvent.keyboard('{Enter}');
+		await expect(args.onClick).not.toHaveBeenCalled();
+
+		await userEvent.keyboard(' ');
+		await expect(args.onClick).not.toHaveBeenCalled();
 	},
 };
 
@@ -333,7 +374,7 @@ export const Collapsible: Story = {
 		const [expanded, setExpanded] = useState(true);
 
 		return (
-			<DsCard.Root size="large">
+			<DsCard.Root size="large" className={styles.collapseRoot}>
 				<DsCard.Header className={styles.collapseHeader}>
 					<button
 						type="button"
