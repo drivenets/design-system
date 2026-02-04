@@ -54,3 +54,8 @@ jobs:
           git add .
           git commit -m "build: deploy storybook ($LAST_COMMIT)"
           git push
+
+      # The `gh-pages` branch doesn't have the `.github/actions/install` directory, so we need to switch
+      # back to the previous branch so the automatic "Post Install Dependencies" cleanup step will work.
+      - name: Reset Branch
+        run: git checkout -
