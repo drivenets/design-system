@@ -43,39 +43,6 @@ expect(el).toHaveAttribute('data-state', 'checked');
 
 ---
 
-## CSS/SCSS Standards
-
-| Requirement                     | Details                                               |
-| ------------------------------- | ----------------------------------------------------- |
-| **Use design tokens**           | Colors from `--color-*`, spacing from `--spacing-*`   |
-| **Focus states**                | Use `[data-focus-visible]` for keyboard-only outlines |
-| **Use `classnames` utility**    | Not template literals for conditional classes         |
-| **Avoid `:global`**             | CSS modules should stay scoped                        |
-| **No inline styles in stories** | Move to `*.stories.module.scss`                       |
-| **Use mixins for duplication**  | Extract repeated patterns                             |
-| **Pill border-radius**          | Use `9999px` for safety                               |
-| **Pseudo-element order**        | Put `content: ''` first                               |
-
-```scss
-// Good
-.button {
-  color: var(--color-text-primary);
-  &[data-focus-visible] {
-    outline: 2px solid var(--color-focus);
-  }
-}
-
-// Bad
-.button {
-  color: #333;
-  &:focus {
-    outline: 2px solid blue;
-  }
-}
-```
-
----
-
 ## Component API Design
 
 | Requirement                    | Details                                         |

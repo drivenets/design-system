@@ -1,0 +1,98 @@
+---
+description: SCSS styling standards for design system components
+globs: **/*.scss
+---
+
+# SCSS Standards
+
+## Design Tokens
+
+| Requirement              | Details                                               |
+| ------------------------ | ----------------------------------------------------- |
+| **Use design tokens**    | Colors from `--color-*`, spacing from `--spacing-*`   |
+| **No hardcoded colors**  | Always use CSS custom properties                      |
+| **No hardcoded spacing** | Use `--spacing-*` tokens                              |
+
+## Focus & Interaction States
+
+| Requirement        | Details                                               |
+| ------------------ | ----------------------------------------------------- |
+| **Focus states**   | Use `[data-focus-visible]` for keyboard-only outlines |
+| **Hover states**   | Use `&:hover` with appropriate token colors           |
+| **Disabled states** | Use `[data-disabled]` or `&:disabled`                |
+
+## CSS Modules
+
+| Requirement          | Details                                       |
+| -------------------- | --------------------------------------------- |
+| **Avoid `:global`**  | CSS modules should stay scoped                |
+| **Use `classnames`** | Not template literals for conditional classes |
+
+## Code Style
+
+| Requirement                | Details                                       |
+| -------------------------- | ----------------------------------------------|
+| **Use mixins**             | Extract repeated patterns                     |
+| **Pill border-radius**     | Use `9999px` for safety                       |
+| **Pseudo-element order**   | Put `content: ''` first                       |
+| **Logical property order** | Position → Box model → Visual                 |
+| **Do not use comments**    | Only for complex constructions, to explain    |
+
+## Storybook Styles
+
+| Requirement                     | Details                         |
+| ------------------------------- | ------------------------------- |
+| **No inline styles in stories** | Move to `*.stories.module.scss` |
+
+## Examples
+
+```scss
+// Good
+.button {
+  color: var(--color-text-primary);
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--radius-md);
+
+  &:hover {
+    background-color: var(--color-bg-hover);
+  }
+
+  &[data-focus-visible] {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.pill {
+  border-radius: 9999px; // Safe pill radius
+}
+
+.icon::before {
+  content: ''; // content first in pseudo-elements
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+```
+
+```scss
+// Bad
+.button {
+  color: #333; // hardcoded color
+  padding: 8px 16px; // hardcoded spacing
+
+  &:focus {
+    // should use [data-focus-visible]
+    outline: 2px solid blue; // hardcoded color
+  }
+}
+
+:global(.external-class) {
+  // avoid :global, keep modules scoped
+}
+```

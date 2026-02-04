@@ -1,4 +1,9 @@
-// Card root
+$border-radius: 8px;
+$min-width-small: 224px;
+$min-width-medium: 264px;
+$min-width-large: 368px;
+$transition-duration: 0.2s;
+
 .root {
 	position: relative;
 	display: flex;
@@ -7,10 +12,9 @@
 	border: 1px solid var(--color-border-contrast);
 	overflow: hidden;
 	box-sizing: border-box;
-	border-radius: 8px;
+	border-radius: $border-radius;
 }
 
-// Disabled backdrop overlay
 .root[data-disabled] {
 	&::after {
 		content: '';
@@ -23,9 +27,8 @@
 	}
 }
 
-// Size variants
 .root[data-size='small'] {
-	min-width: 224px;
+	min-width: $min-width-small;
 
 	.header,
 	.body,
@@ -35,7 +38,7 @@
 }
 
 .root[data-size='medium'] {
-	min-width: 264px;
+	min-width: $min-width-medium;
 
 	.header,
 	.body,
@@ -45,7 +48,7 @@
 }
 
 .root[data-size='large'] {
-	min-width: 368px;
+	min-width: $min-width-large;
 
 	.header,
 	.body,
@@ -54,13 +57,12 @@
 	}
 }
 
-// Selectable mode - adds interactive states
 .root[data-selectable] {
 	cursor: pointer;
 	transition:
-		border-color 150ms ease-in-out,
-		box-shadow 150ms ease-in-out,
-		background-color 150ms ease-in-out;
+		border-color $transition-duration ease-in-out,
+		box-shadow $transition-duration ease-in-out,
+		background-color $transition-duration ease-in-out;
 
 	&:focus {
 		outline: none;
@@ -88,7 +90,6 @@
 	}
 }
 
-// Selected state
 .root[data-selected] {
 	border-color: var(--color-border-action-primary);
 
@@ -103,18 +104,15 @@
 	}
 }
 
-// Header section
 .header {
 	display: flex;
 	align-items: center;
 }
 
-// Body section
 .body {
 	flex: 1;
 }
 
-// Footer section
 .footer {
 	display: flex;
 	align-items: center;
