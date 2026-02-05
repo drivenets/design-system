@@ -42,6 +42,7 @@
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest",
 		"build": "tsdown",
+		"build:watch": "tsdown --watch",
 		"build:storybook": "storybook build",
 		"build:lint": "publint && attw --pack"
 	},
