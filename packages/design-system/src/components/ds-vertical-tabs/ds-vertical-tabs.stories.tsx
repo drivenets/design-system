@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import DsVerticalTabs from './ds-vertical-tabs';
 import { DsTypography } from '../ds-typography';
 import styles from './ds-vertical-tabs.stories.module.scss';
@@ -108,9 +109,12 @@ const TabLabel = ({ item }: { item: TabItem }) => (
 );
 
 export const Default: Story = {
-	render: () => (
+	args: {
+		onValueChange: fn(),
+	},
+	render: (args) => (
 		<div className={styles.storyContainer}>
-			<DsVerticalTabs>
+			<DsVerticalTabs onValueChange={args.onValueChange}>
 				<DsVerticalTabs.List>
 					{sampleItems.map((item) => (
 						<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
@@ -126,12 +130,35 @@ export const Default: Story = {
 			</DsVerticalTabs>
 		</div>
 	),
+	play: async ({ args, canvas }) => {
+		const firstTab = canvas.getByRole('tab', { name: /status/i });
+		await userEvent.click(firstTab);
+		await expect(firstTab).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: status/i)).toBeVisible();
+
+		const categoryTab = canvas.getByRole('tab', { name: /^category$/i });
+		await userEvent.click(categoryTab);
+
+		await expect(args.onValueChange).toHaveBeenCalledWith('category');
+		await expect(categoryTab).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: category/i)).toBeVisible();
+
+		const versionTab = canvas.getByRole('tab', { name: /^version$/i });
+		await userEvent.click(versionTab);
+
+		await expect(versionTab).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: version/i)).toBeVisible();
+		await expect(args.onValueChange).toHaveBeenCalledWith('version');
+	},
 };
 
 export const WithDisabledItems: Story = {
-	render: () => (
+	args: {
+		onValueChange: fn(),
+	},
+	render: (args) => (
 		<div className={styles.storyContainer}>
-			<DsVerticalTabs>
+			<DsVerticalTabs onValueChange={args.onValueChange}>
 				<DsVerticalTabs.List>
 					{sampleItemsWithDisabled.map((item) => (
 						<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
@@ -147,13 +174,33 @@ export const WithDisabledItems: Story = {
 			</DsVerticalTabs>
 		</div>
 	),
+	play: async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const disabledTab = canvas.getByRole('tab', { name: /status/i });
+		await expect(disabledTab).toBeDisabled();
+
+		await userEvent.click(disabledTab);
+		await expect(args.onValueChange).not.toHaveBeenCalled();
+
+		const runningTab = canvas.getByRole('tab', { name: /running\/completed/i });
+		await userEvent.click(runningTab);
+
+		await expect(args.onValueChange).toHaveBeenCalledWith('running');
+		await expect(runningTab).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: running/i)).toBeVisible();
+		await expect(disabledTab).toBeDisabled();
+	},
 };
 
 export const LongLabels: Story = {
-	render: () => {
+	args: {
+		onValueChange: fn(),
+	},
+	render: (args) => {
 		return (
 			<div className={styles.storyContainerShort}>
-				<DsVerticalTabs>
+				<DsVerticalTabs onValueChange={args.onValueChange}>
 					<DsVerticalTabs.List>
 						{itemsWithLongLabels.map((item) => (
 							<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
@@ -170,13 +217,41 @@ export const LongLabels: Story = {
 			</div>
 		);
 	},
+	play: async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const longLabel1 = canvas.getByRole('tab', {
+			name: /very long navigation item label that might overflow/i,
+		});
+		const longLabel2 = canvas.getByRole('tab', { name: /another really long label for testing purposes/i });
+		const shortLabel = canvas.getByRole('tab', { name: /^short/i });
+
+		await expect(longLabel1).toBeVisible();
+		await expect(longLabel2).toBeVisible();
+		await expect(shortLabel).toBeVisible();
+
+		await userEvent.click(longLabel2);
+
+		await expect(longLabel2).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: 2/i)).toBeVisible();
+		await expect(args.onValueChange).toHaveBeenCalledWith('2');
+
+		await userEvent.click(shortLabel);
+
+		await expect(shortLabel).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: 3/i)).toBeVisible();
+		await expect(args.onValueChange).toHaveBeenCalledWith('3');
+	},
 };
 
 export const HighCounts: Story = {
-	render: () => {
+	args: {
+		onValueChange: fn(),
+	},
+	render: (args) => {
 		return (
 			<div className={styles.storyContainerShort}>
-				<DsVerticalTabs>
+				<DsVerticalTabs onValueChange={args.onValueChange}>
 					<DsVerticalTabs.List>
 						{itemsWithHighCounts.map((item) => (
 							<DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
@@ -192,5 +267,36 @@ export const HighCounts: Story = {
 				</DsVerticalTabs>
 			</div>
 		);
+	},
+	play: async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('999')).toBeVisible();
+		await expect(canvas.getByText('1000')).toBeVisible();
+		await expect(canvas.getByText('12345')).toBeVisible();
+
+		const statusTab = canvas.getByRole('tab', { name: /status/i });
+		const categoryTab = canvas.getByRole('tab', { name: /category/i });
+		const versionTab = canvas.getByRole('tab', { name: /version/i });
+
+		await expect(statusTab).toBeVisible();
+		await expect(categoryTab).toBeVisible();
+		await expect(versionTab).toBeVisible();
+
+		await userEvent.click(categoryTab);
+
+		await expect(categoryTab).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: category/i)).toBeVisible();
+		await expect(args.onValueChange).toHaveBeenCalledWith('category');
+
+		await userEvent.click(versionTab);
+
+		await expect(versionTab).toHaveAttribute('data-selected');
+		await expect(canvas.getByText(/selected tab content: version/i)).toBeVisible();
+		await expect(args.onValueChange).toHaveBeenCalledWith('version');
+
+		await expect(canvas.getByText('999')).toBeVisible();
+		await expect(canvas.getByText('1000')).toBeVisible();
+		await expect(canvas.getByText('12345')).toBeVisible();
 	},
 };
