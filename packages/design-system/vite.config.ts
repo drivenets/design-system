@@ -9,6 +9,9 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 
 export default defineConfig({
 	test: {
+		coverage: {
+			exclude: ['**/stories/**', '**/*.stories.{ts,tsx}', '**/.storybook/**', '**/*.scss'],
+		},
 		projects: [
 			{
 				extends: true,
