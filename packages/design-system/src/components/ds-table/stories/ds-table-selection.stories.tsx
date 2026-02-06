@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent } from 'storybook/test';
 import { useRef, useState } from 'react';
 import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person } from './common/story-data';
 import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
-import { getDataRows } from './common/story-test-helpers';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Selection',
@@ -35,15 +34,13 @@ export const Selectable: Story = {
 		selectable: true,
 		onSelectionChange: fn(),
 	},
-	play: async ({ args, canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ args, canvas }) => {
 		const checkboxes = canvas.getAllByRole('checkbox');
 
-		const selectAllCheckbox = checkboxes[0]!;
+		const selectAllCheckbox = checkboxes[0] as HTMLElement;
 		await expect(selectAllCheckbox).not.toBeChecked();
 
-		const firstRowCheckbox = checkboxes[1]!;
+		const firstRowCheckbox = checkboxes[1] as HTMLElement;
 		await userEvent.click(firstRowCheckbox);
 		await expect(firstRowCheckbox).toBeChecked();
 		await expect(args.onSelectionChange).toHaveBeenCalled();
@@ -131,9 +128,7 @@ export const ProgrammaticRowSelection: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(canvas.getByText(/selected rows: none/i)).toBeInTheDocument();
 
 		await userEvent.click(canvas.getByRole('button', { name: /select row 1/i }));
@@ -201,26 +196,26 @@ export const MaxSelectionLimit: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(canvas.getByText(/selected: 0 \/ 2/i)).toBeInTheDocument();
 
 		const checkboxes = canvas.getAllByRole('checkbox');
+		const firstCheckbox = checkboxes[0] as HTMLElement;
+		const secondCheckbox = checkboxes[1] as HTMLElement;
+		const thirdCheckbox = checkboxes[2] as HTMLElement;
 
-		await userEvent.click(checkboxes[0]!);
+		await userEvent.click(firstCheckbox);
 		await expect(canvas.getByText(/selected: 1 \/ 2/i)).toBeInTheDocument();
 
-		await userEvent.click(checkboxes[1]!);
+		await userEvent.click(secondCheckbox);
 		await expect(canvas.getByText(/selected: 2 \/ 2/i)).toBeInTheDocument();
 
-		const thirdCheckbox = canvas.getAllByRole('checkbox')[2]!;
 		await expect(thirdCheckbox).toBeDisabled();
 
-		await userEvent.click(checkboxes[0]!);
+		await userEvent.click(firstCheckbox);
 		await expect(canvas.getByText(/selected: 1 \/ 2/i)).toBeInTheDocument();
 
-		const thirdCheckboxAfter = canvas.getAllByRole('checkbox')[2]!;
+		const thirdCheckboxAfter = canvas.getAllByRole('checkbox')[2] as HTMLElement;
 		await expect(thirdCheckboxAfter).not.toBeDisabled();
 	},
 };

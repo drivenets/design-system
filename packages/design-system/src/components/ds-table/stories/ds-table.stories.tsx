@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent } from 'storybook/test';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person } from './common/story-data';
@@ -30,9 +30,7 @@ export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
 export const Default: Story = {
-	play: async ({ args, canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ args, canvas }) => {
 		await expect(getDataRows(canvas)).toHaveLength(15);
 
 		await expect(canvas.getByRole('columnheader', { name: /first name/i })).toBeInTheDocument();
@@ -42,16 +40,14 @@ export const Default: Story = {
 		await expect(canvas.getByRole('columnheader', { name: /status/i })).toBeInTheDocument();
 		await expect(canvas.getByRole('columnheader', { name: /profile progress/i })).toBeInTheDocument();
 
-		const firstDataRow = getDataRows(canvas)[0]!;
+		const firstDataRow = getDataRows(canvas)[0] as HTMLElement;
 		await userEvent.click(firstDataRow);
 		await expect(args.onRowClick).toHaveBeenCalled();
 	},
 };
 
 export const Sortable: Story = {
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		const firstNameHeader = canvas.getByRole('columnheader', { name: /first name/i });
 		await userEvent.click(firstNameHeader);
 
@@ -100,18 +96,16 @@ export const Expandable: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(getDataRows(canvas)).toHaveLength(5);
 
 		const expandButtons = canvas.getAllByRole('button', { name: /chevron_right/i });
 		await expect(expandButtons).toHaveLength(4);
 
-		await userEvent.click(expandButtons[0]!);
+		await userEvent.click(expandButtons[0] as HTMLElement);
 		await expect(canvas.getByText(/expanded details for kevin/i)).toBeInTheDocument();
 
-		await userEvent.click(expandButtons[0]!);
+		await userEvent.click(expandButtons[0] as HTMLElement);
 		await expect(canvas.queryByText(/expanded details for kevin/i)).not.toBeInTheDocument();
 	},
 };
@@ -120,9 +114,7 @@ export const EmptyState: Story = {
 	args: {
 		data: [],
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(canvas.getByText(/no matching records found/i)).toBeInTheDocument();
 	},
 };
@@ -132,9 +124,7 @@ export const EmptyStateVirtualized: Story = {
 		virtualized: true,
 		data: [],
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(canvas.getByText(/no matching records found/i)).toBeInTheDocument();
 	},
 };

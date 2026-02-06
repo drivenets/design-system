@@ -33,9 +33,7 @@ export const Reorderable: Story = {
 		reorderable: true,
 		onOrderChange: (rows) => console.log('Reordered row:', rows),
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(getDataRows(canvas)).toHaveLength(5);
 		await expect(canvas.getByRole('columnheader', { name: /order/i })).toBeInTheDocument();
 	},
@@ -53,12 +51,12 @@ export const WithRowActions: Story = {
 				label: 'Edit',
 				onClick: editClickHandler,
 			},
-		{
-			icon: 'open_in_new',
-			label: 'Open in New Window',
-			disabled: (data) => data.firstName === 'Tanner',
-			onClick: openInNewWindowClickHandler,
-		},
+			{
+				icon: 'open_in_new',
+				label: 'Open in New Window',
+				disabled: (data) => data.firstName === 'Tanner',
+				onClick: openInNewWindowClickHandler,
+			},
 		],
 		secondaryRowActions: [
 			{
@@ -81,22 +79,20 @@ export const WithRowActions: Story = {
 			},
 		],
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		const dataRows = getDataRows(canvas);
-		await userEvent.hover(dataRows[1]!);
+		await userEvent.hover(dataRows[1] as HTMLElement);
 
-		const row1 = within(dataRows[1]!);
+		const row1 = within(dataRows[1] as HTMLElement);
 		const editButton = row1.getByRole('button', { name: /^edit$/i });
 		await expect(editButton).toBeInTheDocument();
 
 		await userEvent.click(editButton);
 		await expect(editClickHandler).toHaveBeenCalled();
 
-		await userEvent.hover(dataRows[0]!);
+		await userEvent.hover(dataRows[0] as HTMLElement);
 
-		const row0 = within(dataRows[0]!);
+		const row0 = within(dataRows[0] as HTMLElement);
 		const openButton = row0.getByRole('button', { name: /open in new window/i });
 		await expect(openButton).toHaveAttribute('aria-disabled', 'true');
 	},
@@ -129,8 +125,8 @@ export const WithBulkActions: Story = {
 		const canvas = within(canvasElement);
 
 		const checkboxes = canvas.getAllByRole('checkbox');
-		await userEvent.click(checkboxes[1]!);
-		await userEvent.click(checkboxes[2]!);
+		await userEvent.click(checkboxes[1] as HTMLElement);
+		await userEvent.click(checkboxes[2] as HTMLElement);
 
 		await expect(canvas.getByText(/items selected/i)).toBeInTheDocument();
 		await expect(canvas.getByText('2')).toBeInTheDocument();

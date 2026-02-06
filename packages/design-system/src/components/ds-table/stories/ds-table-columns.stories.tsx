@@ -59,9 +59,7 @@ export const WithProgressInfographic: Story = {
 		}),
 		data: defaultData,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(getDataRows(canvas)).toHaveLength(15);
 		await expect(canvas.getByText('75%')).toBeInTheDocument();
 		await expect(canvas.getAllByText('single').length).toBeGreaterThan(0);

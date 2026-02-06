@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
 import type { IconType } from '../../ds-icon';
@@ -66,9 +66,7 @@ export const AdvancedSearch: Story = {
 		);
 	},
 	args: {},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(getDataRows(canvas)).toHaveLength(15);
 
 		const searchInput = canvas.getByPlaceholderText(/search all columns/i);
@@ -166,9 +164,7 @@ export const TabFilters: Story = {
 		);
 	},
 	args: {},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		await expect(getDataRows(canvas)).toHaveLength(15);
 
 		const singleTab = canvas.getByRole('button', { name: /single/i });

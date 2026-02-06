@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
+import { expect, screen, userEvent, waitFor } from 'storybook/test';
 import { useState } from 'react';
 import classnames from 'classnames';
 import DsIcon from '../../ds-icon/ds-icon';
@@ -129,11 +129,9 @@ export const WithDrawerAndActiveRow: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
+	play: async ({ canvas }) => {
 		const dataRows = getDataRows(canvas);
-		await userEvent.click(dataRows[0]!);
+		await userEvent.click(dataRows[0] as HTMLElement);
 
 		await waitFor(() => {
 			return expect(screen.getByRole('heading', { name: /person details/i })).toBeVisible();
@@ -147,14 +145,14 @@ export const WithDrawerAndActiveRow: Story = {
 		});
 
 		const dataRowsAfter = getDataRows(canvas);
-		await userEvent.click(dataRowsAfter[1]!);
+		await userEvent.click(dataRowsAfter[1] as HTMLElement);
 
 		await waitFor(() => {
 			return expect(screen.getByRole('heading', { name: /person details/i })).toBeVisible();
 		});
 		await expect(screen.getByText(/kevin fine/i)).toBeInTheDocument();
 
-		await userEvent.click(dataRowsAfter[1]!);
+		await userEvent.click(dataRowsAfter[1] as HTMLElement);
 
 		await waitFor(() => {
 			return expect(screen.queryByRole('heading', { name: /person details/i })).not.toBeInTheDocument();
