@@ -41,6 +41,7 @@
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest",
+		"test:coverage": "vitest --coverage",
 		"build": "tsdown",
 		"build:storybook": "storybook build",
 		"build:lint": "publint && attw --pack"
