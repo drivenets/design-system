@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
 import classnames from 'classnames';
 import DsIcon from '../../ds-icon/ds-icon';
 import { DsDrawer } from '../../ds-drawer';
 import DsTable from '../ds-table';
-import styles from '../ds-table.stories.module.scss';
+import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person, ProgressInfographic } from './common/story-data';
 import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { getDataRows } from './common/story-test-helpers';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Design System/Table',
+	title: 'Design System/Table/Active Row',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
@@ -126,5 +128,36 @@ export const WithDrawerAndActiveRow: Story = {
 				</DsDrawer>
 			</div>
 		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const dataRows = getDataRows(canvas);
+		await userEvent.click(dataRows[0]!);
+
+		await waitFor(() => {
+			return expect(screen.getByRole('heading', { name: /person details/i })).toBeVisible();
+		});
+		await expect(screen.getByText(/tanner linsley/i)).toBeInTheDocument();
+
+		await userEvent.click(screen.getByRole('button', { name: /close drawer/i }));
+
+		await waitFor(() => {
+			return expect(screen.queryByRole('heading', { name: /person details/i })).not.toBeInTheDocument();
+		});
+
+		const dataRowsAfter = getDataRows(canvas);
+		await userEvent.click(dataRowsAfter[1]!);
+
+		await waitFor(() => {
+			return expect(screen.getByRole('heading', { name: /person details/i })).toBeVisible();
+		});
+		await expect(screen.getByText(/kevin fine/i)).toBeInTheDocument();
+
+		await userEvent.click(dataRowsAfter[1]!);
+
+		await waitFor(() => {
+			return expect(screen.queryByRole('heading', { name: /person details/i })).not.toBeInTheDocument();
+		});
 	},
 };

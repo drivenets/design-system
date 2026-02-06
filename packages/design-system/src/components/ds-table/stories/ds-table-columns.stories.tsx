@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsCheckbox } from '../../ds-checkbox';
 import DsTable from '../ds-table';
-import styles from '../ds-table.stories.module.scss';
+import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person, ProgressInfographic, type Status } from './common/story-data';
 import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { getDataRows } from './common/story-test-helpers';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Columns',
@@ -56,6 +58,13 @@ export const WithProgressInfographic: Story = {
 			return col;
 		}),
 		data: defaultData,
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(getDataRows(canvas)).toHaveLength(15);
+		await expect(canvas.getByText('75%')).toBeInTheDocument();
+		await expect(canvas.getAllByText('single').length).toBeGreaterThan(0);
 	},
 };
 
@@ -111,4 +120,21 @@ export const ColumnHiding: Story = {
 		);
 	},
 	args: {},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByRole('columnheader', { name: /^age$/i })).toBeInTheDocument();
+		await expect(canvas.getByRole('columnheader', { name: /visits/i })).toBeInTheDocument();
+
+		const ageCheckbox = canvas.getByRole('checkbox', { name: /^age$/i });
+		await userEvent.click(ageCheckbox);
+
+		await expect(canvas.queryByRole('columnheader', { name: /^age$/i })).not.toBeInTheDocument();
+
+		await expect(canvas.getByRole('columnheader', { name: /first name/i })).toBeInTheDocument();
+		await expect(canvas.getByRole('columnheader', { name: /visits/i })).toBeInTheDocument();
+
+		await userEvent.click(ageCheckbox);
+		await expect(canvas.getByRole('columnheader', { name: /^age$/i })).toBeInTheDocument();
+	},
 };

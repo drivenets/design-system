@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import DsIcon from '../../../ds-icon/ds-icon';
-import styles from '../../ds-table.stories.module.scss';
+import styles from '../ds-table.stories.module.scss';
 
 export const fullHeightDecorator = (Story: () => ReactNode) => (
 	<div className={styles.storyPadding}>

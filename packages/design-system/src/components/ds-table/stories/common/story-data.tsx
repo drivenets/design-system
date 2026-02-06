@@ -1,6 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import classnames from 'classnames';
-import styles from '../../ds-table.stories.module.scss';
+import styles from '../ds-table.stories.module.scss';
 
 export type Status = 'relationship' | 'complicated' | 'single';
 

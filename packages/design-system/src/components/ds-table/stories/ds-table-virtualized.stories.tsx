@@ -1,17 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, waitFor, within } from 'storybook/test';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
 import type { ScrollParams } from '../ds-table.types';
 import { DsSpinner } from '../../ds-spinner';
-import { generatePersonData, simulateApiCall } from '../utils/story-data-generator';
-import styles from '../ds-table.stories.module.scss';
+import { generatePersonData, simulateApiCall } from './common/story-data-generator';
+import styles from './ds-table.stories.module.scss';
 import { columns, type Person } from './common/story-data';
 import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Design System/Table',
+	title: 'Design System/Table/Virtualized',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
@@ -35,7 +36,6 @@ type Story = StoryObj<typeof DsTable<Person, unknown>>;
 export const Virtualized: Story = {
 	name: 'Virtualized Table (Large Dataset)',
 	render: function Render(args) {
-		// Simulate API call using the utility function
 		const fetchData = async (start: number, size: number, sorting: SortingState) => {
 			return simulateApiCall(() => generatePersonData(start, size, sorting));
 		};
@@ -50,10 +50,7 @@ export const Virtualized: Story = {
 			isLoading,
 		} = useInfiniteQuery(
 			{
-				queryKey: [
-					'people',
-					sorting, // refetch when sorting changes
-				],
+				queryKey: ['people', sorting],
 				queryFn: async ({ pageParam }) => {
 					const start = pageParam * pageSize;
 					return await fetchData(start, pageSize, sorting);
@@ -62,12 +59,11 @@ export const Virtualized: Story = {
 				getNextPageParam: (_lastGroup, groups) => groups.length,
 				placeholderData: keepPreviousData,
 			},
-			// assuming the app is wrapped inside QueryClientProvider below is no longer needed
 			new QueryClient({
 				defaultOptions: {
 					queries: {
-						staleTime: 5 * 60 * 1000, // 5 minutes
-						gcTime: 10 * 60 * 1000, // 10 minutes
+						staleTime: 5 * 60 * 1000,
+						gcTime: 10 * 60 * 1000,
 						refetchOnWindowFocus: false,
 					},
 				},
@@ -149,5 +145,18 @@ export const Virtualized: Story = {
 			}
 			return col;
 		}),
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await waitFor(
+			() => {
+				return expect(canvas.getByText(/of 10000 rows fetched/i)).toBeInTheDocument();
+			},
+			{ timeout: 5000 },
+		);
+
+		const dataRows = canvas.getAllByRole('row').filter((row) => !row.querySelector('th'));
+		await expect(dataRows.length).toBeGreaterThan(0);
 	},
 };

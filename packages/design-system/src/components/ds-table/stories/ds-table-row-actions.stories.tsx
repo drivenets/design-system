@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import DsTable from '../ds-table';
 import { columns, defaultData, type Person } from './common/story-data';
 import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { getDataRows } from './common/story-test-helpers';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Row Actions',
@@ -31,32 +33,32 @@ export const Reorderable: Story = {
 		reorderable: true,
 		onOrderChange: (rows) => console.log('Reordered row:', rows),
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(getDataRows(canvas)).toHaveLength(5);
+		await expect(canvas.getByRole('columnheader', { name: /order/i })).toBeInTheDocument();
+	},
 };
+
+const editClickHandler = fn();
+const openInNewWindowClickHandler = fn();
 
 export const WithRowActions: Story = {
 	args: {
-		onRowClick: (data) => {
-			console.log('Row clicked', data);
-		},
+		onRowClick: fn(),
 		primaryRowActions: [
 			{
 				icon: 'edit',
 				label: 'Edit',
-				onClick: (data) => {
-					alert(`Row edit ${JSON.stringify(data)}`);
-				},
+				onClick: editClickHandler,
 			},
-			{
-				icon: 'open_in_new',
-				label: 'Open in New Window',
-				disabled: (data) => {
-					return data.firstName === 'Tanner'; // Example condition to disable action
-				},
-				onClick: (data) => {
-					console.log('Open in New Window', data);
-					alert(`Open in New Window ${JSON.stringify(data)}`);
-				},
-			},
+		{
+			icon: 'open_in_new',
+			label: 'Open in New Window',
+			disabled: (data) => data.firstName === 'Tanner',
+			onClick: openInNewWindowClickHandler,
+		},
 		],
 		secondaryRowActions: [
 			{
@@ -64,28 +66,43 @@ export const WithRowActions: Story = {
 				label: 'Delete',
 				tooltip: 'Delete this row',
 				disabled: (data) => data.status === 'single',
-				onClick: (data) => {
-					alert(`Delete action for ${data.firstName}`);
-				},
+				onClick: fn(),
 			},
 			{
 				icon: 'info',
 				label: 'Details',
 				tooltip: 'Show details',
-				onClick: (data) => {
-					alert(`Details for ${data.firstName}`);
-				},
+				onClick: fn(),
 			},
 			{
 				icon: 'call',
 				label: (row) => `Call ${row.firstName}`,
-				onClick: (data) => {
-					alert(`Calling ${data.firstName} ${data.lastName}`);
-				},
+				onClick: fn(),
 			},
 		],
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const dataRows = getDataRows(canvas);
+		await userEvent.hover(dataRows[1]!);
+
+		const row1 = within(dataRows[1]!);
+		const editButton = row1.getByRole('button', { name: /^edit$/i });
+		await expect(editButton).toBeInTheDocument();
+
+		await userEvent.click(editButton);
+		await expect(editClickHandler).toHaveBeenCalled();
+
+		await userEvent.hover(dataRows[0]!);
+
+		const row0 = within(dataRows[0]!);
+		const openButton = row0.getByRole('button', { name: /open in new window/i });
+		await expect(openButton).toHaveAttribute('aria-disabled', 'true');
+	},
 };
+
+const notifyClickHandler = fn();
 
 export const WithBulkActions: Story = {
 	args: {
@@ -94,24 +111,31 @@ export const WithBulkActions: Story = {
 			{
 				icon: 'alarm',
 				label: 'Notify',
-				onClick: (args) => {
-					console.log('Bulk actions', args);
-				},
+				onClick: notifyClickHandler,
 			},
 			{
 				icon: 'folder_open',
 				label: 'Folder',
-				onClick: (args) => {
-					console.log('Bulk actions', args);
-				},
+				onClick: fn(),
 			},
 			{
 				icon: 'delete_outline',
 				label: 'Delete',
-				onClick: (args) => {
-					console.log('Bulk actions', args);
-				},
+				onClick: fn(),
 			},
 		],
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const checkboxes = canvas.getAllByRole('checkbox');
+		await userEvent.click(checkboxes[1]!);
+		await userEvent.click(checkboxes[2]!);
+
+		await expect(canvas.getByText(/items selected/i)).toBeInTheDocument();
+		await expect(canvas.getByText('2')).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByText(/notify/i));
+		await expect(notifyClickHandler).toHaveBeenCalled();
 	},
 };
