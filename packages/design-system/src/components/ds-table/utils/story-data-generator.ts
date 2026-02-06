@@ -1,5 +1,5 @@
 import type { SortingState } from '@tanstack/react-table';
-import type { Status } from '../ds-table.stories';
+import type { Status } from '../stories/common/story-data';
 
 export type Person = {
 	id: string;
