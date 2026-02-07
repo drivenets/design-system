@@ -4,6 +4,7 @@ import DsIcon from './ds-icon';
 import './ds-icon.stories.scss';
 import { materialIcons } from './material-icons';
 import { iconSizes, iconVariants, type IconName } from './ds-icon.types';
+import { customIcons, type CustomIconName } from './custom-icons';
 
 const meta: Meta<typeof DsIcon> = {
 	title: 'Design System/Icon',
@@ -47,10 +48,17 @@ export const Default: Story = {
 
 export const Colored: Story = {
 	args: {
-		icon: 'check_circle',
 		size: 'medium',
 		filled: true,
 		style: { color: '#4CAF50' },
+	},
+	render: function Render(args) {
+		return (
+			<div>
+				<DsIcon {...args} icon="check_circle" />
+				<DsIcon {...args} icon="special-market" />
+			</div>
+		);
 	},
 };
 
@@ -63,14 +71,19 @@ const ICONS_URL =
 	'https://raw.githubusercontent.com/google/material-design-icons/master/update/current_versions.json';
 
 export const Showcase: Story = {
+	args: {
+		size: 'medium',
+		variant: 'outlined',
+		filled: false,
+	},
 	parameters: {
 		layout: 'fullscreen',
 	},
-	render: function Render() {
+	render: function Render(args) {
+		const { size, variant, filled } = args;
 		const [searchTerm, setSearchTerm] = useState('');
 		const [iconsByCategory, setIconsByCategory] = useState<IconsByCategory>({});
 		const [isLoading, setIsLoading] = useState(true);
-		// const [error, setError] = useState<string | null>(null);
 		const [usedFallback, setUsedFallback] = useState(false);
 
 		// Process icon data into categories
@@ -211,13 +224,164 @@ export const Showcase: Story = {
 											onClick={() => handleIconClick(iconName)}
 											title={`Click to copy: ${iconName}`}
 										>
-											<DsIcon icon={iconName} size="medium" />
+											<DsIcon icon={iconName} size={size} variant={variant} filled={filled} />
 											<span className="icon-name">{iconName}</span>
 										</button>
 									))}
 								</div>
 							</div>
 						))
+				)}
+			</div>
+		);
+	},
+};
+
+// Group custom icons by category for display
+const customIconCategories: Record<string, CustomIconName[]> = {
+	'Site & Location': [
+		'special-market',
+		'special-site-t1',
+		'special-site-t2',
+		'special-site-t3',
+		'special-site-t4',
+		'special-site-unknown',
+		'special-site-generic',
+	],
+	'NE State': ['special-discovered-ne', 'special-upgrading', 'special-cluster-ne', 'special-standalone'],
+	'NE Navigation': [
+		'special-ne-nav-360-dashboard',
+		'special-ne-nav-components',
+		'special-ne-nav-topology',
+		'special-ne-nav-stacks',
+		'special-ne-nav-settings',
+		'special-ne-nav-message-support',
+		'special-ne-nav-logging',
+		'special-ne-nav-terminal',
+		'special-ne-nav-instal-log',
+	],
+	'System & Config': [
+		'special-autoboot-profiles',
+		'special-automation',
+		'special-stacks',
+		'special-packages',
+		'special-gnmi',
+		'special-alarm-settings',
+		'special-ne-health',
+		'special-hardware',
+		'special-modules',
+		'special-resources',
+		'special-version-control',
+		'special-software',
+		'special-conflicted-nes',
+		'special-yang-version-control',
+		'special-old-base-os',
+		'special-general-details',
+		'special-config-template',
+		'special-compare',
+		'special-webhook',
+		'special-map-view',
+	],
+	Misc: [
+		'special-home',
+		'special-lego',
+		'special-scheme',
+		'special-book',
+		'special-device',
+		'special-grouped-devices',
+		'special-fiber-circuit',
+		'special-netgen',
+		'special-netgen-s',
+	],
+	'Active State': ['special-filter-list-active', 'special-cached-active'],
+};
+
+export const CustomIcons: Story = {
+	args: {
+		size: 'medium',
+	},
+	parameters: {
+		layout: 'fullscreen',
+	},
+	render: function Render(args) {
+		const { size } = args;
+		const [searchTerm, setSearchTerm] = useState('');
+
+		const filteredCategories = useMemo(() => {
+			const result: Record<string, CustomIconName[]> = {};
+
+			Object.entries(customIconCategories).forEach(([category, icons]) => {
+				const filteredIcons = icons.filter(
+					(icon) =>
+						icon.toLowerCase().includes(searchTerm.toLowerCase()) ||
+						category.toLowerCase().includes(searchTerm.toLowerCase()),
+				);
+
+				if (filteredIcons.length > 0) {
+					result[category] = filteredIcons;
+				}
+			});
+
+			return result;
+		}, [searchTerm]);
+
+		const handleIconClick = async (iconName: string) => {
+			await navigator.clipboard.writeText(iconName);
+
+			const notification = document.createElement('div');
+			notification.className = 'copy-notification';
+			notification.textContent = `Copied: ${iconName}`;
+			document.body.appendChild(notification);
+
+			setTimeout(() => {
+				document.body.removeChild(notification);
+			}, 2000);
+		};
+
+		const totalIcons = Object.keys(customIcons).length;
+
+		return (
+			<div className="container">
+				<div className="search-container">
+					<input
+						type="text"
+						placeholder="Search custom icons..."
+						className="search"
+						value={searchTerm}
+						onChange={(e) => setSearchTerm(e.target.value)}
+					/>
+					<div className="icon-count">
+						{Object.values(filteredCategories).reduce((total, icons) => total + icons.length, 0)} of{' '}
+						{totalIcons} custom icons
+					</div>
+				</div>
+
+				<div className="fallback-notice">
+					These are custom DriveNets-specific icons. Use the &quot;special-&quot; prefix to distinguish them
+					from Material Icons.
+				</div>
+
+				{Object.keys(filteredCategories).length === 0 ? (
+					<div className="no-results">No icons found matching &quot;{searchTerm}&quot;</div>
+				) : (
+					Object.entries(filteredCategories).map(([category, icons]) => (
+						<div key={category} className="category-section">
+							<h2 className="category-title">{category}</h2>
+							<div className="results">
+								{icons.map((iconName) => (
+									<button
+										key={iconName}
+										className="icon-wrapper"
+										onClick={() => handleIconClick(iconName)}
+										title={`Click to copy: ${iconName}`}
+									>
+										<DsIcon icon={iconName} size={size} />
+										<span className="icon-name">{iconName}</span>
+									</button>
+								))}
+							</div>
+						</div>
+					))
 				)}
 			</div>
 		);
