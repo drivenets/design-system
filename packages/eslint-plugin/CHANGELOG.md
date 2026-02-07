@@ -1,5 +1,11 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.7
+
+### Patch Changes
+
+- f924d2f: - Add deprecation rules for `DsConfirmation` to the eslint plugin
+
 ## 0.0.6
 
 ### Patch Changes

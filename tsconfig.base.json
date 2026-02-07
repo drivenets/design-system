@@ -4,7 +4,6 @@
 		"module": "preserve",
 		"moduleResolution": "bundler",
 		"target": "esnext",
-		"types": [],
 
 		// Other Outputs
 		"sourceMap": true,

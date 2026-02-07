@@ -4,6 +4,10 @@ $animation-translate: -4px;
 .tabContent {
 	padding: var(--spacing-standard) 0;
 	animation: fadeIn $animation-duration ease-in;
+
+	&[data-state='closed'] {
+		display: none;
+	}
 }
 
 @keyframes fadeIn {

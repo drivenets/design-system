@@ -350,3 +350,22 @@
 		color: var(--color-font-secondary);
 	}
 }
+
+.debugPanel {
+	padding: var(--spacing-md);
+	background: var(--color-background-secondary);
+	border: 1px solid var(--color-border-secondary);
+	border-radius: 4px;
+}
+
+.debugCode {
+	margin: var(--spacing-xs) 0 0;
+	padding: var(--spacing-sm);
+	background: var(--color-background);
+	border-radius: 4px;
+	font-family: monospace;
+	font-size: var(--font-size-sm);
+	overflow-x: auto;
+	white-space: pre-wrap;
+	word-break: break-all;
+}

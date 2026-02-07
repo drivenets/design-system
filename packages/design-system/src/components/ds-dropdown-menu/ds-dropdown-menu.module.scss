@@ -8,7 +8,6 @@
 	max-height: var(--available-height, 400px);
 	overflow-y: auto;
 	width: auto;
-	z-index: var(--layer-index);
 
 	&:focus-visible {
 		outline-offset: 2px;
