@@ -9,16 +9,6 @@ export const initialFilterState: CommentsFilterState = {
 	statuses: [],
 };
 
-export const isFilterEmpty = (filter: CommentsFilterState): boolean => {
-	return (
-		filter.authors.length === 0 &&
-		filter.labels.length === 0 &&
-		filter.statuses.length === 0 &&
-		!filter.dateFrom &&
-		!filter.dateTo
-	);
-};
-
 export const applyFilters = (
 	comments: CommentData[],
 	filters: CommentsFilterState,
@@ -144,13 +134,4 @@ export const removeChip = (filters: CommentsFilterState, chip: FilterChip): Comm
 	}
 
 	return newFilters;
-};
-
-export const getFilterCounts = (filters: CommentsFilterState) => {
-	return {
-		statuses: filters.statuses.length,
-		authors: filters.authors.length,
-		labels: filters.labels.length,
-		dateRange: filters.dateFrom || filters.dateTo ? 1 : 0,
-	};
 };

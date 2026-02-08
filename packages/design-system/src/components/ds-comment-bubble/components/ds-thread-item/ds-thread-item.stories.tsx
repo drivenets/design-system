@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn, expect, within } from 'storybook/test';
-import { DsThreadItem, type DsThreadItemProps } from './components/ds-thread-item';
+import { DsThreadItem, type DsThreadItemProps } from './index';
 
 const meta: Meta<typeof DsThreadItem> = {
 	title: 'Design System/Comments/Thread Item',
@@ -34,9 +34,13 @@ Displays the author, timestamp, message content, and action buttons.
 			control: 'date',
 			description: 'When the message was created',
 		},
-		isAuthorMessage: {
+		isCommentAuthorMessage: {
 			control: 'boolean',
 			description: 'Whether this message is from the comment author (left-aligned)',
+		},
+		canModify: {
+			control: 'boolean',
+			description: 'Whether the current user can modify this message',
 		},
 		onEdit: {
 			description: 'Callback when message is edited',
@@ -67,7 +71,8 @@ const defaultArgs: Partial<DsThreadItemProps> = {
 	author: mockAuthor,
 	content: 'This is a sample message in the comment thread.',
 	createdAt: new Date(Date.now() - 3600000), // 1 hour ago
-	isAuthorMessage: true,
+	isCommentAuthorMessage: true,
+	canModify: true,
 	onEdit: fn(),
 	onDelete: fn(),
 	onMarkUnread: fn(),
@@ -95,7 +100,8 @@ export const CurrentUserMessage: Story = {
 	args: {
 		...defaultArgs,
 		id: 'msg-2',
-		isAuthorMessage: false,
+		isCommentAuthorMessage: false,
+		canModify: false,
 		content: 'This is my message, so it appears aligned to the right.',
 	},
 	play: async ({ canvasElement }) => {
