@@ -1,5 +1,15 @@
 # @drivenets/design-system
 
+## 0.5.0
+
+### Minor Changes
+
+- 8fa2522: - Add `Card` component
+
+### Patch Changes
+
+- f485640: Updates dependencies
+
 ## 0.4.0
 
 ### Minor Changes
