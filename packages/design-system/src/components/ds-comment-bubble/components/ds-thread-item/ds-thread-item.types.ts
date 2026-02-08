@@ -6,6 +6,8 @@ export interface DsThreadItemProps {
 	content: string;
 	createdAt: Date;
 	isAuthorMessage?: boolean;
+	isCommentAuthorMessage?: boolean;
+	canModify?: boolean;
 	onEdit?: (messageId: string, newContent: string) => void;
 	onDelete?: (messageId: string) => void;
 	onMarkUnread?: (messageId: string) => void;

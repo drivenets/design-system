@@ -13,7 +13,6 @@ const createMockComment = (overrides: Partial<CommentData> = {}): CommentData =>
 		avatarSrc: 'https://i.pravatar.cc/40?img=1',
 	},
 	createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-	isRead: true,
 	isResolved: false,
 	messages: [
 		{
@@ -59,16 +58,6 @@ const createMockComment = (overrides: Partial<CommentData> = {}): CommentData =>
 			createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
 		},
 	],
-	participants: [
-		{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
-		{ id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
-		{ id: 'user-3', name: 'Jane S.', avatarSrc: 'https://i.pravatar.cc/40?img=3' },
-		{ id: 'user-4', name: 'Bob M.', avatarSrc: 'https://i.pravatar.cc/40?img=4' },
-		{ id: 'user-5', name: 'Alice W.', avatarSrc: 'https://i.pravatar.cc/40?img=5' },
-		{ id: 'user-6', name: 'Charlie B.', avatarSrc: 'https://i.pravatar.cc/40?img=6' },
-		{ id: 'user-7', name: 'Diana P.', avatarSrc: 'https://i.pravatar.cc/40?img=7' },
-		{ id: 'user-8', name: 'Eve R.', avatarSrc: 'https://i.pravatar.cc/40?img=8' },
-	],
 	...overrides,
 });
 
@@ -90,11 +79,6 @@ const meta: Meta<typeof DsCommentCard> = {
 		comment: {
 			description: 'Comment data including author, messages, participants, and metadata',
 		},
-		referenceTag: {
-			control: 'text',
-			description:
-				'Reference tag (string or ReactNode). Strings are automatically wrapped in DsTag with icon.',
-		},
 		disabled: {
 			control: 'boolean',
 			description: 'Whether the card is disabled',
@@ -103,10 +87,6 @@ const meta: Meta<typeof DsCommentCard> = {
 			control: 'select',
 			options: ['hidden', 'displayed'],
 			description: 'Whether to truncate long messages or show them in full',
-		},
-		isActionRequired: {
-			control: 'boolean',
-			description: 'Whether action is required for this comment',
 		},
 		onClick: {
 			action: 'clicked',
@@ -138,7 +118,6 @@ const meta: Meta<typeof DsCommentCard> = {
 		},
 	},
 	args: {
-		referenceTag: 'Resource allocation',
 		onClick: fn(),
 		onResolve: fn(),
 		onToggleActionRequired: fn(),
@@ -175,7 +154,6 @@ export const DefaultCard: Story = {
 export const ActionRequired: Story = {
 	args: {
 		comment: createMockComment(),
-		isActionRequired: true,
 		overflow: 'hidden',
 	},
 	play: async ({ canvasElement }) => {
@@ -250,36 +228,22 @@ export const Default: Story = {
 		<div className={styles.grid}>
 			<div className={styles.column}>
 				<h4 className={styles.heading}>Default</h4>
-				<DsCommentCard comment={createMockComment()} referenceTag="Resource allocation" overflow="hidden" />
+				<DsCommentCard comment={createMockComment()} overflow="hidden" />
 			</div>
 
 			<div className={styles.column}>
 				<h4 className={styles.heading}>Action Required</h4>
-				<DsCommentCard
-					comment={createMockComment()}
-					referenceTag="Resource allocation"
-					isActionRequired={true}
-					overflow="hidden"
-				/>
+				<DsCommentCard comment={createMockComment()} overflow="hidden" />
 			</div>
 
 			<div className={styles.column}>
 				<h4 className={styles.heading}>Disabled</h4>
-				<DsCommentCard
-					comment={createMockComment()}
-					referenceTag="Resource allocation"
-					disabled={true}
-					overflow="hidden"
-				/>
+				<DsCommentCard comment={createMockComment()} disabled={true} overflow="hidden" />
 			</div>
 
 			<div className={styles.column}>
 				<h4 className={styles.heading}>Full Message</h4>
-				<DsCommentCard
-					comment={createMockComment()}
-					referenceTag="Resource allocation"
-					overflow="displayed"
-				/>
+				<DsCommentCard comment={createMockComment()} overflow="displayed" />
 			</div>
 		</div>
 	),

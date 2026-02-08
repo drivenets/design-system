@@ -160,6 +160,6 @@ $transition-duration: 0.2s;
 	color: var(--color-font-secondary);
 }
 
-:global([data-scope='menu'][data-part='positioner']) {
+.dropdownContent {
 	z-index: 1300 !important;
 }

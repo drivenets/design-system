@@ -1,1 +1,1 @@
-export { formatRelativeTime, getInitials } from './format';
+export { formatRelativeTime } from './format';

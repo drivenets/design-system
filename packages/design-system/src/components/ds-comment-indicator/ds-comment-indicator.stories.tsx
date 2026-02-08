@@ -115,7 +115,7 @@ export const Default: Story = {
 		const canvas = within(canvasElement);
 		const indicators = canvas.getAllByRole('button');
 
-		await expect(indicators).toHaveLength(6);
+		await expect(indicators).toHaveLength(3);
 
 		await expect(indicators[0]).toHaveAttribute('aria-label', 'Add comment');
 		await expect(indicators[1]).toHaveAttribute('aria-label', 'View comment');
@@ -138,7 +138,6 @@ const createMockComment = (): CommentData => ({
 		avatarSrc: 'https://i.pravatar.cc/40?img=2',
 	},
 	createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-	isRead: true,
 	isResolved: false,
 	messages: [
 		{
@@ -158,10 +157,6 @@ const createMockComment = (): CommentData => ({
 			content: 'Thank you for the feedback!',
 			createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
 		},
-	],
-	participants: [
-		{ id: 'user-2', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
-		currentUser,
 	],
 });
 
@@ -184,7 +179,6 @@ export const WithEmptyBubble: Story = {
 					numericId: 42,
 					author: currentUser,
 					createdAt: new Date(),
-					isRead: true,
 					isResolved: false,
 					messages: [
 						{
@@ -195,7 +189,6 @@ export const WithEmptyBubble: Story = {
 							isInitialMessage: true,
 						},
 					],
-					participants: [currentUser],
 				};
 				setComment(newComment);
 				setActionRequired(isActionRequired);

@@ -1,19 +1,7 @@
 import type { CommentData } from '../ds-comment-card';
+import type { FilterChip, CommentsFilterState } from './comments-filters.types';
 
-export interface FilterChip {
-	id: string;
-	label: string;
-	filterId: string;
-	value: string;
-}
-
-export interface CommentsFilterState {
-	authors: string[];
-	dateFrom?: string;
-	dateTo?: string;
-	labels: string[];
-	statuses: ('unresolved' | 'resolved' | 'action-required')[];
-}
+export type { FilterChip, CommentsFilterState } from './comments-filters.types';
 
 export const initialFilterState: CommentsFilterState = {
 	authors: [],

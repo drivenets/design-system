@@ -16,7 +16,6 @@ const createMockComments = (): CommentData[] => [
 			avatarSrc: 'https://i.pravatar.cc/40?img=1',
 		},
 		createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-		isRead: true,
 		isResolved: false,
 		labels: ['Bug', 'High Priority'],
 		messages: [
@@ -53,13 +52,6 @@ const createMockComments = (): CommentData[] => [
 				createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
 			},
 		],
-		participants: [
-			{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
-			{ id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
-			{ id: 'user-3', name: 'Jane S.', avatarSrc: 'https://i.pravatar.cc/40?img=3' },
-			{ id: 'user-4', name: 'Bob M.', avatarSrc: 'https://i.pravatar.cc/40?img=4' },
-			{ id: 'user-5', name: 'Alice W.', avatarSrc: 'https://i.pravatar.cc/40?img=5' },
-		],
 	},
 	{
 		id: 'comment-2',
@@ -70,7 +62,6 @@ const createMockComments = (): CommentData[] => [
 			avatarSrc: 'https://i.pravatar.cc/40?img=2',
 		},
 		createdAt: new Date(Date.now() - 48 * 60 * 60 * 1000),
-		isRead: false,
 		isResolved: false,
 		labels: ['Feature Request'],
 		messages: [
@@ -87,10 +78,6 @@ const createMockComments = (): CommentData[] => [
 				isInitialMessage: true,
 			},
 		],
-		participants: [
-			{ id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
-			{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
-		],
 	},
 	{
 		id: 'comment-3',
@@ -101,7 +88,6 @@ const createMockComments = (): CommentData[] => [
 			avatarSrc: 'https://i.pravatar.cc/40?img=3',
 		},
 		createdAt: new Date(Date.now() - 72 * 60 * 60 * 1000),
-		isRead: true,
 		isResolved: false,
 		labels: ['Documentation', 'Enhancement'],
 		messages: [
@@ -148,11 +134,6 @@ const createMockComments = (): CommentData[] => [
 				createdAt: new Date(Date.now() - 36 * 60 * 60 * 1000),
 			},
 		],
-		participants: [
-			{ id: 'user-3', name: 'Jane S.', avatarSrc: 'https://i.pravatar.cc/40?img=3' },
-			{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
-			{ id: 'user-4', name: 'Bob M.', avatarSrc: 'https://i.pravatar.cc/40?img=4' },
-		],
 	},
 	{
 		id: 'comment-4',
@@ -163,7 +144,6 @@ const createMockComments = (): CommentData[] => [
 			avatarSrc: 'https://i.pravatar.cc/40?img=4',
 		},
 		createdAt: new Date(Date.now() - 96 * 60 * 60 * 1000),
-		isRead: true,
 		isResolved: false,
 		labels: ['Question'],
 		messages: [
@@ -180,7 +160,6 @@ const createMockComments = (): CommentData[] => [
 				isInitialMessage: true,
 			},
 		],
-		participants: [{ id: 'user-4', name: 'Bob M.', avatarSrc: 'https://i.pravatar.cc/40?img=4' }],
 	},
 	{
 		id: 'comment-5',
@@ -191,7 +170,6 @@ const createMockComments = (): CommentData[] => [
 			avatarSrc: 'https://i.pravatar.cc/40?img=1',
 		},
 		createdAt: new Date(Date.now() - 120 * 60 * 60 * 1000),
-		isRead: true,
 		isResolved: true,
 		labels: ['Bug'],
 		messages: [
@@ -207,7 +185,6 @@ const createMockComments = (): CommentData[] => [
 				isInitialMessage: true,
 			},
 		],
-		participants: [{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' }],
 	},
 	{
 		id: 'comment-6',
@@ -218,7 +195,6 @@ const createMockComments = (): CommentData[] => [
 			avatarSrc: 'https://i.pravatar.cc/40?img=2',
 		},
 		createdAt: new Date(Date.now() - 144 * 60 * 60 * 1000),
-		isRead: true,
 		isResolved: true,
 		labels: ['Documentation'],
 		messages: [
@@ -234,16 +210,8 @@ const createMockComments = (): CommentData[] => [
 				isInitialMessage: true,
 			},
 		],
-		participants: [{ id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' }],
 	},
 ];
-
-const referenceTagMap: Record<string, string> = {
-	'comment-1': 'Resource allocation',
-	'comment-2': 'Budget review',
-	'comment-3': 'Timeline update',
-	'comment-4': 'Team assignment',
-};
 
 const meta: Meta<typeof DsCommentsDrawer> = {
 	title: 'Design System/Comments/CommentsDrawer',
@@ -283,8 +251,6 @@ Side panel for viewing and managing all comments.
 		},
 	},
 	args: {
-		getReferenceTag: (comment) => referenceTagMap[comment.id],
-		getIsActionRequired: (comment) => comment.id === 'comment-1',
 		onOpenChange: fn(),
 		onShowResolvedChange: fn(),
 		onSearchChange: fn(),
@@ -305,7 +271,6 @@ export const Default: Story = {
 	args: {
 		open: true,
 		comments: createMockComments(),
-		resolvedCount: 2,
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
@@ -320,7 +285,6 @@ export const WithSearch: Story = {
 		open: true,
 		comments: createMockComments(),
 		searchQuery: 'Karen',
-		resolvedCount: 2,
 	},
 };
 
@@ -348,8 +312,6 @@ export const Interactive: Story = {
 			setComments((prev) => prev.map((c) => (c.id === commentId ? { ...c, isResolved: true } : c)));
 		};
 
-		const resolvedCount = comments.filter((c) => c.isResolved).length;
-
 		return (
 			<div className={styles.storyWrapper}>
 				<DsButton onClick={() => setOpen(true)}>Open Comments Drawer</DsButton>
@@ -358,13 +320,10 @@ export const Interactive: Story = {
 					open={open}
 					onOpenChange={setOpen}
 					comments={comments}
-					getReferenceTag={(comment) => referenceTagMap[comment.id]}
-					getIsActionRequired={(comment) => comment.id === 'comment-1'}
 					searchQuery={searchQuery}
 					onSearchChange={setSearchQuery}
 					showResolved={showResolved}
 					onShowResolvedChange={setShowResolved}
-					resolvedCount={resolvedCount}
 					onCommentClick={(comment) => console.log('Comment clicked:', comment.id)}
 					onResolveComment={handleResolve}
 					onToggleActionRequired={(commentId) => console.log('Toggle action required:', commentId)}
@@ -411,8 +370,6 @@ Interactive story demonstrating the filter functionality.
 		const [showResolved, setShowResolved] = useState(false);
 		const [comments] = useState(createMockComments());
 
-		const resolvedCount = comments.filter((c) => c.isResolved).length;
-
 		return (
 			<div className={styles.storyWrapper}>
 				<div style={{ padding: '20px', backgroundColor: 'var(--color-background-secondary)' }}>
@@ -435,13 +392,10 @@ Interactive story demonstrating the filter functionality.
 					open={open}
 					onOpenChange={setOpen}
 					comments={comments}
-					getReferenceTag={(comment) => referenceTagMap[comment.id]}
-					getIsActionRequired={(comment) => comment.id === 'comment-1'}
 					searchQuery={searchQuery}
 					onSearchChange={setSearchQuery}
 					showResolved={showResolved}
 					onShowResolvedChange={setShowResolved}
-					resolvedCount={resolvedCount}
 					onCommentClick={(comment) => console.log('Comment clicked:', comment.id)}
 					onResolveComment={(commentId) => console.log('Resolve:', commentId)}
 					onToggleActionRequired={(commentId) => console.log('Toggle action required:', commentId)}

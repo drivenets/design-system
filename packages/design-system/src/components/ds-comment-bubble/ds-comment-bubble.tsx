@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef } from 'react';
 import classNames from 'classnames';
 import styles from './ds-comment-bubble.module.scss';
 import type { DsCommentBubbleProps } from './ds-comment-bubble.types';
@@ -10,7 +10,7 @@ import { DsTag } from '../ds-tag';
 import { DsDropdownMenu } from '../ds-dropdown-menu';
 import { useClickOutside, useAutoResize } from './hooks';
 
-const DsCommentBubble = ({
+export const DsCommentBubble = ({
 	comment,
 	currentUser,
 	actionRequired = false,
@@ -33,14 +33,17 @@ const DsCommentBubble = ({
 	className,
 	style,
 }: DsCommentBubbleProps) => {
-	const bubbleRef = useRef<HTMLDivElement>(null);
-	const textareaRef = useRef<HTMLTextAreaElement>(null);
-
 	const hasThread = Boolean(comment?.messages.length);
 	const hasContent = value.trim().length > 0;
-	const isThreadMode = hasThread;
 	const isTypingMode = !hasThread && hasContent;
 	const isInitialMode = !hasThread && !hasContent;
+	const placeholder = hasThread ? 'Reply' : 'Add a comment';
+	const showFooter = isTypingMode;
+	const showHeader = hasThread && Boolean(comment);
+	const maxTextareaHeight = 480;
+
+	const bubbleRef = useRef<HTMLDivElement>(null);
+	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	const handleClickOutside = () => {
 		if (isInitialMode) {
@@ -49,7 +52,7 @@ const DsCommentBubble = ({
 	};
 
 	useClickOutside(bubbleRef, handleClickOutside, isInitialMode);
-	useAutoResize(textareaRef, value);
+	useAutoResize(textareaRef, value, maxTextareaHeight);
 
 	const handleSend = () => {
 		if (hasContent && onSend) {
@@ -64,12 +67,7 @@ const DsCommentBubble = ({
 		}
 	};
 
-	const placeholder = isThreadMode ? 'Reply' : 'Add a comment';
-	const showFooter = isTypingMode;
-	const showHeader = isThreadMode && Boolean(comment);
-	const isActionRequiredActive = actionRequired;
-
-	const renderedReferenceTag = useMemo(() => {
+	const renderReferenceTag = () => {
 		if (!referenceTag) {
 			return null;
 		}
@@ -87,7 +85,7 @@ const DsCommentBubble = ({
 		}
 
 		return referenceTag;
-	}, [referenceTag]);
+	};
 
 	return (
 		<div
@@ -95,10 +93,10 @@ const DsCommentBubble = ({
 			className={classNames(
 				styles.bubble,
 				{
-					[styles.actionRequired]: isActionRequiredActive,
+					[styles.actionRequired]: actionRequired,
 					[styles.initial]: isInitialMode,
 					[styles.typing]: isTypingMode,
-					[styles.thread]: isThreadMode,
+					[styles.thread]: hasThread,
 				},
 				className,
 			)}
@@ -111,8 +109,8 @@ const DsCommentBubble = ({
 					<div className={styles.headerLeft}>
 						<div className={styles.headerInfo}>
 							<span className={styles.commentId}>#{comment.numericId}</span>
-							{renderedReferenceTag}
-							{isActionRequiredActive && <span className={styles.actionRequiredBadge}>Action required</span>}
+							{renderReferenceTag()}
+							{actionRequired && <span className={styles.actionRequiredBadge}>Action required</span>}
 						</div>
 					</div>
 
@@ -143,32 +141,37 @@ const DsCommentBubble = ({
 								</DsDropdownMenu.Content>
 							</DsDropdownMenu.Root>
 
+							{onResolve && (
+								<DsButton
+									design="v1.2"
+									buttonType="tertiary"
+									size="small"
+									{...({ onClick: onResolve } as { onClick: () => void })}
+									aria-label="Resolve"
+									className={styles.headerActionButton}
+								>
+									<DsIcon icon="check_circle" size="tiny" />
+								</DsButton>
+							)}
+						</div>
+
+						{onClose && (
 							<DsButton
 								design="v1.2"
 								buttonType="tertiary"
 								size="small"
-								onClick={onResolve}
-								aria-label="Resolve"
+								{...({ onClick: onClose } as { onClick: () => void })}
+								className={styles.headerActionButton}
+								aria-label="Close"
 							>
-								<DsIcon icon="check_circle" size="tiny" />
+								<DsIcon icon="close" size="tiny" />
 							</DsButton>
-						</div>
-
-						<DsButton
-							design="v1.2"
-							buttonType="tertiary"
-							size="small"
-							onClick={onClose}
-							className={styles.closeButton}
-							aria-label="Close"
-						>
-							<DsIcon icon="close" size="tiny" />
-						</DsButton>
+						)}
 					</div>
 				</div>
 			)}
 
-			{isThreadMode && comment && (
+			{hasThread && comment && (
 				<DsCommentThread
 					messages={comment.messages}
 					commentAuthor={comment.author}
@@ -194,7 +197,7 @@ const DsCommentBubble = ({
 					/>
 				</div>
 
-				{(isInitialMode || isThreadMode) && (
+				{(isInitialMode || hasThread) && (
 					<DsButton design="v1.2" size="small" disabled={!hasContent} onClick={handleSend} aria-label="Send">
 						<DsIcon icon="send" size="tiny" />
 					</DsButton>
@@ -220,5 +223,3 @@ const DsCommentBubble = ({
 		</div>
 	);
 };
-
-export default DsCommentBubble;

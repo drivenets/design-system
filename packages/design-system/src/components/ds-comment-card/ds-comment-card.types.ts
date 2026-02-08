@@ -12,6 +12,7 @@ export interface CommentMessage {
 	content: string;
 	createdAt: Date;
 	isInitialMessage?: boolean;
+	isResolved?: boolean;
 }
 
 export interface CommentData {
@@ -19,19 +20,17 @@ export interface CommentData {
 	numericId: number;
 	author: CommentAuthor;
 	createdAt: Date;
-	isRead: boolean;
 	isResolved: boolean;
 	messages: CommentMessage[];
-	participants: CommentAuthor[];
 	labels?: string[];
+	referenceTag?: ReactNode;
+	isActionRequired?: boolean;
 }
 
 export interface DsCommentCardProps {
 	comment: CommentData;
-	referenceTag?: ReactNode;
 	disabled?: boolean;
 	overflow?: 'hidden' | 'displayed';
-	isActionRequired?: boolean;
 	onClick?: () => void;
 	onResolve?: () => void;
 	onToggleActionRequired?: () => void;

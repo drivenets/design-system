@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import classNames from 'classnames';
 import styles from './ds-comment-card.module.scss';
 import type { DsCommentCardProps } from './ds-comment-card.types';
@@ -9,12 +8,10 @@ import { DsTag } from '../ds-tag';
 import { DsDropdownMenu } from '../ds-dropdown-menu';
 import { formatRelativeTime } from '../ds-comment-bubble/utils';
 
-const DsCommentCard = ({
+export const DsCommentCard = ({
 	comment,
-	referenceTag,
 	disabled = false,
 	overflow = 'hidden',
-	isActionRequired = false,
 	onClick,
 	onResolve,
 	onToggleActionRequired,
@@ -25,12 +22,14 @@ const DsCommentCard = ({
 	className,
 	style,
 }: DsCommentCardProps) => {
-	const { numericId, author, createdAt, messages, participants } = comment;
+	const { numericId, author, createdAt, messages, referenceTag, isActionRequired } = comment;
 
 	const initialMessage = messages.find((m) => m.isInitialMessage) || messages[0];
 	const replyCount = messages.length - 1;
 
-	const renderedReferenceTag = useMemo(() => {
+	const participants = Array.from(new Map(messages.map((m) => [m.author.id, m.author])).values());
+
+	const renderReferenceTag = () => {
 		if (!referenceTag) {
 			return null;
 		}
@@ -48,16 +47,12 @@ const DsCommentCard = ({
 		}
 
 		return referenceTag;
-	}, [referenceTag]);
+	};
 
-	const avatars = useMemo(
-		() =>
-			participants.map((p) => ({
-				name: p.name,
-				src: p.avatarSrc,
-			})),
-		[participants],
-	);
+	const avatars = participants.map((p) => ({
+		name: p.name,
+		src: p.avatarSrc,
+	}));
 
 	const handleResolve = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -95,7 +90,7 @@ const DsCommentCard = ({
 
 							<div className={styles.commentInfo}>
 								<span className={styles.commentId}>#{numericId}</span>
-								{renderedReferenceTag}
+								{renderReferenceTag()}
 							</div>
 
 							<div className={styles.authorInfo}>
@@ -107,70 +102,34 @@ const DsCommentCard = ({
 						<div className={styles.actions}>
 							{showMoreMenu && (
 								<DsDropdownMenu.Root>
-									<DsDropdownMenu.Trigger asChild>
-										<DsButton
-											design="v1.2"
-											buttonType="tertiary"
-											size="small"
-											onClick={(e) => e.stopPropagation()}
-											aria-label="More actions"
-										>
+									<DsDropdownMenu.Trigger {...({ asChild: true } as { asChild: boolean })}>
+										<DsButton design="v1.2" buttonType="tertiary" size="small" aria-label="More actions">
 											<DsIcon icon="more_vert" size="tiny" />
 										</DsButton>
 									</DsDropdownMenu.Trigger>
-									<DsDropdownMenu.Content>
+									<DsDropdownMenu.Content className={styles.dropdownContent}>
 										{onToggleActionRequired && (
-											<DsDropdownMenu.Item
-												value="toggle-action"
-												onClick={(e) => {
-													e.stopPropagation();
-													onToggleActionRequired();
-												}}
-											>
+											<DsDropdownMenu.Item value="toggle-action" onClick={() => onToggleActionRequired()}>
 												{isActionRequired ? 'Remove action requirement' : 'Require action'}
 											</DsDropdownMenu.Item>
 										)}
 										{onForward && (
-											<DsDropdownMenu.Item
-												value="forward"
-												onClick={(e) => {
-													e.stopPropagation();
-													onForward();
-												}}
-											>
+											<DsDropdownMenu.Item value="forward" onClick={() => onForward()}>
 												Forward
 											</DsDropdownMenu.Item>
 										)}
 										{onMarkUnread && (
-											<DsDropdownMenu.Item
-												value="mark-unread"
-												onClick={(e) => {
-													e.stopPropagation();
-													onMarkUnread();
-												}}
-											>
+											<DsDropdownMenu.Item value="mark-unread" onClick={() => onMarkUnread()}>
 												Mark as &apos;Unread&apos;
 											</DsDropdownMenu.Item>
 										)}
 										{onCopyLink && (
-											<DsDropdownMenu.Item
-												value="copy-link"
-												onClick={(e) => {
-													e.stopPropagation();
-													onCopyLink();
-												}}
-											>
+											<DsDropdownMenu.Item value="copy-link" onClick={() => onCopyLink()}>
 												Copy link
 											</DsDropdownMenu.Item>
 										)}
 										{onDelete && (
-											<DsDropdownMenu.Item
-												value="delete"
-												onClick={(e) => {
-													e.stopPropagation();
-													onDelete();
-												}}
-											>
+											<DsDropdownMenu.Item value="delete" onClick={() => onDelete()}>
 												Delete
 											</DsDropdownMenu.Item>
 										)}
@@ -202,11 +161,13 @@ const DsCommentCard = ({
 						{initialMessage?.content}
 					</p>
 
-					{replyCount > 0 && <span className={styles.replyCount}>{replyCount} replies</span>}
+					{replyCount > 0 && (
+						<span className={styles.replyCount}>
+							{replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+						</span>
+					)}
 				</div>
 			</div>
 		</button>
 	);
 };
-
-export default DsCommentCard;

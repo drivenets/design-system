@@ -16,7 +16,6 @@ const createMockComment = (overrides: Partial<CommentData> = {}): CommentData =>
 	numericId: 63,
 	author: currentUser,
 	createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-	isRead: true,
 	isResolved: false,
 	messages: [
 		{
@@ -62,11 +61,6 @@ const createMockComment = (overrides: Partial<CommentData> = {}): CommentData =>
 				'I can prepare a summary of our current resource usage and projected needs for the meeting. This will help us make informed decisions.',
 			createdAt: new Date(Date.now() - 8 * 60 * 60 * 1000),
 		},
-	],
-	participants: [
-		currentUser,
-		{ id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
-		{ id: 'user-3', name: 'Jane S.', avatarSrc: 'https://i.pravatar.cc/40?img=3' },
 	],
 	...overrides,
 });
@@ -203,7 +197,6 @@ export const FullInteractiveFlow: Story = {
 					numericId: 63,
 					author: currentUser,
 					createdAt: new Date(),
-					isRead: true,
 					isResolved: false,
 					messages: [
 						{
@@ -214,7 +207,6 @@ export const FullInteractiveFlow: Story = {
 							isInitialMessage: true,
 						},
 					],
-					participants: [currentUser],
 				};
 				setComment(newComment);
 				setActionRequired(isActionRequired);

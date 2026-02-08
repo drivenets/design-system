@@ -28,14 +28,3 @@ export const formatRelativeTime = (date: Date): string => {
 
 	return `${String(diffMonths)}mo ago`;
 };
-
-export const getInitials = (name: string): string => {
-	return name
-		.trim()
-		.split(' ')
-		.map((word) => word[0])
-		.filter(Boolean)
-		.slice(0, 2)
-		.join('')
-		.toUpperCase();
-};

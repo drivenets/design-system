@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import styles from './ds-comment-indicator.module.scss';
 import type { DsCommentIndicatorProps } from './ds-comment-indicator.types';
 
-const DsCommentIndicator = ({
+export const DsCommentIndicator = ({
 	type = 'placeholder',
 	avatarSrc,
 	onClick,
@@ -42,5 +42,3 @@ const DsCommentIndicator = ({
 		</button>
 	);
 };
-
-export default DsCommentIndicator;

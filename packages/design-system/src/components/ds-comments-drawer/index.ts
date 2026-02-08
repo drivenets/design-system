@@ -1,2 +1,3 @@
-export { default as DsCommentsDrawer } from './ds-comments-drawer';
-export type { DsCommentsDrawerProps, CommentFilter } from './ds-comments-drawer.types';
+export { DsCommentsDrawer } from './ds-comments-drawer';
+export * from './ds-comments-drawer.types';
+export * from './comments-filters.types';

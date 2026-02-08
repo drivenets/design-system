@@ -1,19 +1,21 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 import styles from './ds-thread-item.module.scss';
+import { DsAvatar } from '../../../ds-avatar';
 import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import { DsTextarea } from '../../../ds-textarea';
-import { formatRelativeTime, getInitials } from '../../utils';
+import { formatRelativeTime } from '../../utils';
 import type { DsThreadItemProps } from './ds-thread-item.types';
 
-const DsThreadItem = ({
+export const DsThreadItem = ({
 	id,
 	author,
 	content,
 	createdAt,
-	isAuthorMessage = false,
+	isCommentAuthorMessage = false,
+	canModify = false,
 	onEdit,
 	onDelete,
 	onMarkUnread,
@@ -35,24 +37,21 @@ const DsThreadItem = ({
 		setIsEditing(false);
 	};
 
-	const showActions = !isEditing && (onEdit || onDelete || onMarkUnread || onResolved);
+	const hasEditActions = canModify && (onEdit || onDelete);
+	const showActions = !isEditing && (hasEditActions || onMarkUnread || onResolved);
 
 	return (
 		<div
 			className={classNames(
 				styles.threadItem,
 				{
-					[styles.alignRight]: !isAuthorMessage,
+					[styles.alignRight]: !isCommentAuthorMessage,
 				},
 				className,
 			)}
 		>
 			<div className={styles.avatarWrapper}>
-				{author.avatarSrc ? (
-					<img src={author.avatarSrc} alt={author.name} className={styles.avatar} />
-				) : (
-					<span className={styles.avatarFallback}>{getInitials(author.name)}</span>
-				)}
+				<DsAvatar name={author.name} src={author.avatarSrc} size="sm" />
 			</div>
 
 			<div className={styles.content}>
@@ -85,7 +84,7 @@ const DsThreadItem = ({
 
 			{showActions && (
 				<div className={styles.actions}>
-					{(onEdit || onDelete || onMarkUnread) && (
+					{hasEditActions && (
 						<DsDropdownMenu.Root>
 							<DsDropdownMenu.Trigger asChild>
 								<DsButton design="v1.2" buttonType="tertiary" size="small" aria-label="More actions">
@@ -127,5 +126,3 @@ const DsThreadItem = ({
 		</div>
 	);
 };
-
-export default DsThreadItem;
