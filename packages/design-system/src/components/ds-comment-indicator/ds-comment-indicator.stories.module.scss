@@ -1,0 +1,78 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-standard);
+}
+
+.header {
+	display: grid;
+	grid-template-columns: 80px repeat(3, 100px);
+	gap: var(--spacing-standard);
+	padding-bottom: var(--spacing-xs);
+	border-bottom: 1px solid var(--color-border);
+	align-items: center;
+}
+
+.headerCell {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-regular);
+	color: var(--color-font-main);
+	text-align: center;
+}
+
+.row {
+	display: grid;
+	grid-template-columns: 80px repeat(3, 100px);
+	gap: var(--spacing-standard);
+	align-items: center;
+}
+
+.labelCell {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	padding-right: var(--spacing-xs);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-regular);
+	color: var(--color-font-main);
+	text-align: right;
+}
+
+.row > :not(.labelCell) {
+	display: flex;
+	justify-content: center;
+}
+
+.interactiveContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-standard);
+	padding: var(--spacing-standard);
+}
+
+.instructions {
+	margin: 0;
+	padding: var(--spacing-standard);
+	background: var(--color-background-secondary);
+	border-radius: var(--border-radius-sm);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-md);
+	color: var(--color-font-secondary);
+}
+
+.indicatorWrapper {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	min-height: 200px;
+}
+
+.bubbleWrapper {
+	position: absolute;
+	top: 40px;
+	z-index: 10;
+}
