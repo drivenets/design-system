@@ -1,0 +1,18 @@
+import type { FC, SVGProps } from 'react';
+
+/**
+ * Special Site T2 icon - represents a Tier 2 site
+ * @figma https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp?node-id=10886:32783
+ */
+export const SpecialSiteT2: FC<SVGProps<SVGSVGElement>> = (props) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		width="20"
+		height="20"
+		viewBox="0 0 20 20"
+		fill="currentColor"
+		{...props}
+	>
+		<path d="M3.33331 17.5V2.5H9.16665V5.83333H17.5V17.5H3.33331ZM4.99998 15.8333H7.49998V14.1667H4.99998V15.8333ZM4.99998 12.5H7.49998V10.8333H4.99998V12.5ZM4.99998 9.16667H7.49998V7.5H4.99998V9.16667ZM4.99998 5.83333H7.49998V4.16667H4.99998V5.83333ZM9.16665 15.8333H15.8333V7.5H9.16665V9.16667H10.8333V10.8333H9.16665V12.5H10.8333V14.1667H9.16665V15.8333ZM12.5 10.8333V9.16667H14.1666V10.8333H12.5ZM12.5 14.1667V12.5H14.1666V14.1667H12.5Z" />
+	</svg>
+);
