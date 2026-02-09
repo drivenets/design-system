@@ -1,6 +1,4 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import styles from '../ds-table.stories.module.scss';
-import DsIcon from '../../../ds-icon/ds-icon';
 
 export type Status = 'relationship' | 'complicated' | 'single';
 
