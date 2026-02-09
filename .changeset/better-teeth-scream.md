@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-add comments components
+Add `DSCommentBubble`, `DSCommentCard`, `DSCommentIndicator`, `DSCommentDrawer` components
