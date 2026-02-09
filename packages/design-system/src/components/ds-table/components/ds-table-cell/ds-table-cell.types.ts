@@ -39,6 +39,11 @@ export type SecondaryRowAction<TData> = Omit<RowAction<TData>, 'icon'> & {
 	 * Optional icon to be displayed for the action
 	 */
 	icon?: IconType;
+
+	/**
+	 * Optional className to apply custom styling to the action item
+	 */
+	className?: string;
 };
 
 /**

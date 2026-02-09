@@ -491,6 +491,7 @@ export const WithRowActions: Story = {
 				label: 'Delete',
 				tooltip: 'Delete this row',
 				disabled: (data) => data.status === 'single',
+				className: styles.destructiveAction,
 				onClick: (data) => {
 					alert(`Delete action for ${data.firstName}`);
 				},
