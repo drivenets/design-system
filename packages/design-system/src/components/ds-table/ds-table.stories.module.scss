@@ -369,3 +369,7 @@
 	white-space: pre-wrap;
 	word-break: break-all;
 }
+
+.destructiveAction {
+	color: var(--system-status-error);
+}

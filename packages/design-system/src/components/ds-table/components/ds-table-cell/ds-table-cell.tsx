@@ -76,6 +76,7 @@ export const DsTableCell = <TData, TValue>({
 											key={i}
 											value={label}
 											disabled={isDisabled}
+											className={action.className}
 											onClick={(e) => e.stopPropagation()}
 											onSelect={() => action.onClick(row.original)}
 										>
