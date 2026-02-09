@@ -100,7 +100,8 @@ export const ExpandChange: Story = {
 			await expect(input).toHaveValue('');
 		});
 
-		// Fails due to the component bug. Waiting for feedback from design team.
+		// TODO: Fails due to the component bug https://drivenets.atlassian.net/browse/AR-47261.
+		// Uncomment when the bug is fixed.
 		// await step('Clear flow - by deleting all text', async () => {
 		// 	const iconButton = canvas.getByRole('button', { name: 'Open text input' });
 		// 	await userEvent.click(iconButton);
@@ -160,7 +161,8 @@ export const Controlled: Story = {
 			/>
 		);
 	},
-	// Fails due to the component bug. Waiting for feedback from design team.
+	// TODO: Fails due to the component bug https://drivenets.atlassian.net/browse/AR-47261.
+	// Uncomment when the bug is fixed.
 	// play: async ({ canvasElement }) => {
 	// 	const canvas = within(canvasElement);
 

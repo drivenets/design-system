@@ -254,6 +254,19 @@ export const WithBackdropAndScroll: Story = {
 			</>
 		),
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openButton = canvas.getByRole('button', { name: /open drawer/i });
+		await userEvent.click(openButton);
+
+		const drawer = await canvas.findByRole('dialog');
+		await expect(drawer).toHaveAttribute('data-state', 'open');
+
+		const backdrop = canvasElement.querySelector('[data-part="backdrop"]');
+		await expect(backdrop).toBeInTheDocument();
+		await expect(backdrop).toHaveAttribute('data-state', 'open');
+	},
 };
 
 export const DockToStart: Story = {
