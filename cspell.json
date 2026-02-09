@@ -4,6 +4,7 @@
 	"useGitignore": true,
 	"words": [
 		"attw",
+		"autoboot",
 		"autodocs",
 		"borderless",
 		"clickability",
@@ -12,8 +13,10 @@
 		"evenodd",
 		"findlast",
 		"fromentries",
+		"gnmi",
 		"Linsley",
 		"matchall",
+		"netgen",
 		"nolyfill",
 		"overscan",
 		"Oxfmt",
