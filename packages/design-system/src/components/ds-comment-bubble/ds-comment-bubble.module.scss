@@ -17,6 +17,31 @@ $checkbox-border-radius: 2px;
 
 $transition-duration: 0.2s;
 
+@mixin icon-button-size {
+	width: $icon-button-size !important;
+	height: $icon-button-size !important;
+	min-width: $icon-button-size !important;
+	min-height: $icon-button-size !important;
+	padding: 0 !important;
+	border: none !important;
+
+	> * {
+		width: $icon-button-size !important;
+		height: $icon-button-size !important;
+		padding: 0 !important;
+		min-width: $icon-button-size !important;
+		min-height: $icon-button-size !important;
+	}
+
+	span {
+		width: $icon-button-size !important;
+		height: $icon-button-size !important;
+		padding: 0 !important;
+		min-width: $icon-button-size !important;
+		min-height: $icon-button-size !important;
+	}
+}
+
 .bubble {
 	display: flex;
 	flex-direction: column;
@@ -162,55 +187,13 @@ $transition-duration: 0.2s;
 	}
 
 	button {
-		width: $icon-button-size !important;
-		height: $icon-button-size !important;
-		min-width: $icon-button-size !important;
-		min-height: $icon-button-size !important;
-		padding: 0 !important;
-		border: none !important;
-
-		> * {
-			width: $icon-button-size !important;
-			height: $icon-button-size !important;
-			padding: 0 !important;
-			min-width: $icon-button-size !important;
-			min-height: $icon-button-size !important;
-		}
-
-		span {
-			width: $icon-button-size !important;
-			height: $icon-button-size !important;
-			padding: 0 !important;
-			min-width: $icon-button-size !important;
-			min-height: $icon-button-size !important;
-		}
+		@include icon-button-size;
 	}
 }
 
 .headerActionButton {
+	@include icon-button-size;
 	opacity: 1;
-	width: $icon-button-size !important;
-	height: $icon-button-size !important;
-	min-width: $icon-button-size !important;
-	min-height: $icon-button-size !important;
-	padding: 0 !important;
-	border: none !important;
-
-	> * {
-		width: $icon-button-size !important;
-		height: $icon-button-size !important;
-		padding: 0 !important;
-		min-width: $icon-button-size !important;
-		min-height: $icon-button-size !important;
-	}
-
-	span {
-		width: $icon-button-size !important;
-		height: $icon-button-size !important;
-		padding: 0 !important;
-		min-width: $icon-button-size !important;
-		min-height: $icon-button-size !important;
-	}
 }
 
 .inputArea {
