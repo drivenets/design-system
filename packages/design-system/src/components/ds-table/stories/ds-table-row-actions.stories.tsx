@@ -5,6 +5,7 @@ import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState } from './components';
+import styles from './ds-table.stories.module.scss';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Row Actions',
@@ -65,6 +66,7 @@ export const WithRowActions: Story = {
 				label: 'Delete',
 				tooltip: 'Delete this row',
 				disabled: (data) => data.status === 'single',
+				className: styles.destructiveAction,
 				onClick: fn(),
 			},
 			{
