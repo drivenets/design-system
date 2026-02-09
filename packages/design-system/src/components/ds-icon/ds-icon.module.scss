@@ -1,22 +1,32 @@
 .icon {
 	&.extra-large {
 		font-size: var(--icon-width-extra-large);
+		width: var(--icon-width-extra-large);
+		height: var(--icon-width-extra-large);
 	}
 
 	&.large {
 		font-size: var(--icon-width-large);
+		width: var(--icon-width-large);
+		height: var(--icon-width-large);
 	}
 
 	&.medium {
 		font-size: var(--icon-width-medium);
+		width: var(--icon-width-medium);
+		height: var(--icon-width-medium);
 	}
 
 	&.small {
 		font-size: var(--icon-width-small);
+		width: var(--icon-width-small);
+		height: var(--icon-width-small);
 	}
 
 	&.tiny {
 		font-size: var(--icon-width-tiny);
+		width: var(--icon-width-tiny);
+		height: var(--icon-width-tiny);
 	}
 }
 
