@@ -23,6 +23,11 @@
 		filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.22));
 	}
 
+	&.dragging {
+		cursor: grabbing;
+		user-select: none;
+	}
+
 	&.disablePadding {
 		padding: 0;
 	}
@@ -89,6 +94,7 @@
 	}
 
 	.root.variantFloating & {
+		z-index: 1;
 		top: 50%;
 		transform: translateY(-50%);
 	}

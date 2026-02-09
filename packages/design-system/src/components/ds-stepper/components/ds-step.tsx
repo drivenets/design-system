@@ -1,20 +1,32 @@
-import type { PropsWithChildren } from 'react';
+import type { MouseEvent, PropsWithChildren, ReactNode } from 'react';
 import { useStepper } from '../hooks/use-stepper';
 import classnames from 'classnames';
 import styles from '../ds-stepper.module.scss';
 import DsIcon from '../../ds-icon/ds-icon';
 
-type DsStepProps = PropsWithChildren<{
+export type DsStepProps = PropsWithChildren<{
 	index: number;
 	className?: string;
+	disabled?: boolean;
+	isError?: boolean;
+	slots?: {
+		indicator?: ReactNode;
+	};
+	slotProps?: {
+		indicator?: {
+			className?: string;
+			onClick?: (event: MouseEvent<HTMLElement>) => void;
+		};
+	};
 }>;
 
-export function DsStep({ index, children, className }: DsStepProps) {
+export function DsStep({ index, children, className, disabled, isError, slots, slotProps }: DsStepProps) {
 	const context = useStepper();
 
 	const { completed, current, last } = context.stepsApi.getItemState({ index });
 
 	const isSingleVariant = context.variant === 'single';
+	const isHorizontal = context.orientation === 'horizontal';
 	const isLast = last && context.stepsApi.value === index + 1;
 
 	const shouldHide = isSingleVariant && !current && !isLast;
@@ -23,7 +35,7 @@ export function DsStep({ index, children, className }: DsStepProps) {
 		return null;
 	}
 
-	const isClickable = completed && !isSingleVariant;
+	const isClickable = completed && !isSingleVariant && !disabled;
 
 	const Wrapper = isClickable ? 'button' : 'div';
 
@@ -35,22 +47,58 @@ export function DsStep({ index, children, className }: DsStepProps) {
 			}
 		: {};
 
+	const indicatorClassName = classnames(styles.indicator, slotProps?.indicator?.className);
+
+	const renderIndicator = () => {
+		if (slots?.indicator) {
+			return (
+				<span {...slotProps?.indicator} className={indicatorClassName}>
+					{slots.indicator}
+				</span>
+			);
+		}
+
+		if (isError) {
+			return (
+				<span className={slotProps?.indicator?.className}>
+					<DsIcon icon="close" className={indicatorClassName} />
+				</span>
+			);
+		}
+
+		if (completed) {
+			return (
+				<span className={slotProps?.indicator?.className}>
+					<DsIcon icon="check" className={indicatorClassName} />
+				</span>
+			);
+		}
+
+		return (
+			<span {...slotProps?.indicator} className={indicatorClassName}>
+				{index + 1}
+			</span>
+		);
+	};
+
 	return (
 		<Wrapper
 			{...context.stepsApi.getItemProps({ index })}
 			data-current={current ? '' : undefined}
 			data-complete={completed ? '' : undefined}
-			className={classnames(styles.step, className)}
+			data-disabled={disabled ? '' : undefined}
+			data-error={isError ? '' : undefined}
+			className={classnames(styles.step, { [styles.error]: isError }, className)}
 			{...props}
 		>
-			<div {...context.stepsApi.getIndicatorProps({ index })} className={styles.indicatorContainer}>
-				{completed ? (
-					<DsIcon icon="check" className={styles.indicator} />
-				) : (
-					<span className={styles.indicator}>{index + 1}</span>
-				)}
+			{context.floating && <DsIcon icon="drag_indicator" className={styles.dragHandle} data-drag-handle="" />}
 
-				<div {...context.stepsApi.getSeparatorProps({ index })} className={styles.separator} />
+			<div {...context.stepsApi.getIndicatorProps({ index })} className={styles.indicatorContainer}>
+				{renderIndicator()}
+
+				{!isHorizontal && (
+					<div {...context.stepsApi.getSeparatorProps({ index })} className={styles.separator} />
+				)}
 			</div>
 
 			{children}

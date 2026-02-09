@@ -4,6 +4,7 @@ export type DsPanelVariant = 'docked' | 'floating';
 
 export type DsPanelProps = Omit<Collapsible.CollapsibleProps, 'onOpenChange'> & {
 	variant?: DsPanelVariant;
+	draggable?: boolean;
 	disablePadding?: boolean;
 	slotProps?: {
 		collapseButton?: DsPanelCollapseButtonProps;

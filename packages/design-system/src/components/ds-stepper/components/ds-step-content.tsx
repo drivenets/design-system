@@ -5,16 +5,19 @@ import { DsStepDescription } from './ds-step-description';
 import classnames from 'classnames';
 import styles from '../ds-stepper.module.scss';
 
-type DsStepContentProps = {
+export type DsStepContentProps = {
 	index: number;
-	label: string;
-	description?: string;
+	label: ReactNode;
+	description?: ReactNode;
 	actions?: ReactNode;
 };
 
 export function DsStepContent({ index, label, description, actions }: DsStepContentProps) {
-	const { variant, stepsApi } = useStepper();
-	const { current } = stepsApi.getItemState({ index });
+	const { variant, orientation, stepsApi } = useStepper();
+	const { current, completed, last } = stepsApi.getItemState({ index });
+
+	const isHorizontal = orientation === 'horizontal';
+	const showDescription = variant !== 'single' && description;
 
 	return (
 		<div
@@ -22,11 +25,31 @@ export function DsStepContent({ index, label, description, actions }: DsStepCont
 				[styles.stepContentSingle]: variant === 'single',
 			})}
 		>
-			<DsStepLabel>{label}</DsStepLabel>
+			{isHorizontal ? (
+				<>
+					<div className={styles.stepLabelRow}>
+						<DsStepLabel>{label}</DsStepLabel>
 
-			{variant !== 'single' && description && <DsStepDescription>{description}</DsStepDescription>}
+						{!last && (
+							<div
+								{...stepsApi.getSeparatorProps({ index })}
+								data-complete={completed ? '' : undefined}
+								className={styles.horizontalSeparator}
+							/>
+						)}
+					</div>
 
-			{actions && current && <div className={styles.stepActions}>{actions}</div>}
+					{showDescription && <DsStepDescription>{description}</DsStepDescription>}
+				</>
+			) : (
+				<>
+					<DsStepLabel>{label}</DsStepLabel>
+
+					{showDescription && <DsStepDescription>{description}</DsStepDescription>}
+
+					{actions && current && <div className={styles.stepActions}>{actions}</div>}
+				</>
+			)}
 		</div>
 	);
 }
