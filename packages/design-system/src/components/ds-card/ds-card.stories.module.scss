@@ -1,0 +1,72 @@
+.container {
+	display: flex;
+	gap: var(--spacing-lg);
+	align-items: flex-start;
+}
+
+.headerRow {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	background: var(--color-orange-200);
+}
+
+.statsBlock {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-3xs);
+}
+
+.dataList {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	gap: var(--spacing-3xs) var(--spacing-sm);
+	width: 100%;
+	border-top: 1px solid var(--color-border-contrast);
+	padding-top: var(--spacing-3xs);
+}
+
+// Color utility classes
+.textSecondary {
+	color: var(--color-text-secondary);
+}
+
+.textSuccess {
+	color: var(--color-text-success);
+}
+
+.footer {
+	border-top: 1px solid var(--color-border-secondary);
+}
+
+.collapsibleButton {
+	margin-right: var(--spacing-xs);
+}
+
+.collapseHeader {
+	display: flex;
+	align-items: center;
+	background: var(--color-background-tertiary);
+}
+
+.collapseRoot {
+	max-width: 400px;
+}
+
+.collapsibleContent {
+	display: grid;
+	grid-template-rows: 1fr;
+	transition:
+		grid-template-rows,
+		padding 200ms ease-in-out;
+
+	&[data-collapsed='true'] {
+		grid-template-rows: 0fr;
+		padding: 0 !important;
+	}
+}
+
+.collapsibleContentInner {
+	overflow: hidden;
+}
