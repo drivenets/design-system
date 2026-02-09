@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import classnames from 'classnames';
 import styles from '../ds-table.stories.module.scss';
+import DsIcon from '../../../ds-icon/ds-icon';
 
 export type Status = 'relationship' | 'complicated' | 'single';
 
@@ -29,6 +30,13 @@ export const ProgressInfographic = ({ value }: { value: number }) => {
 		</div>
 	);
 };
+
+export const defaultEmptyState = (
+	<div className={styles.emptyStateContainer}>
+		<DsIcon icon="info" size="large" />
+		<p className={styles.emptyStateContainer__text}>No matching records found.</p>
+	</div>
+);
 
 export const columns: ColumnDef<Person>[] = [
 	{

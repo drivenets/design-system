@@ -4,8 +4,8 @@ import { useRef, useState } from 'react';
 import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
 import styles from './ds-table.stories.module.scss';
-import { columns, defaultData, type Person } from './common/story-data';
-import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { columns, defaultData, type Person, defaultEmptyState } from './common/story-data';
+import { fullHeightDecorator } from './common/story-decorators';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Selection',

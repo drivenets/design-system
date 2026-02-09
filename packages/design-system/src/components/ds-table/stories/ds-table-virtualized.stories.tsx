@@ -8,8 +8,8 @@ import type { ScrollParams } from '../ds-table.types';
 import { DsSpinner } from '../../ds-spinner';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
-import { columns, type Person } from './common/story-data';
-import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { columns, type Person, defaultEmptyState } from './common/story-data';
+import { fullHeightDecorator } from './common/story-decorators';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Virtualized',

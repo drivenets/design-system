@@ -2,8 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
-import { columns, defaultData, type Person } from './common/story-data';
-import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { columns, defaultData, type Person, defaultEmptyState } from './common/story-data';
+import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {

@@ -7,8 +7,8 @@ import { DsSmartTabs } from '../../ds-smart-tabs';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { StatusItem } from './components/status-item/status-item';
-import { columns, defaultData, type Person, type Status } from './common/story-data';
-import { defaultEmptyState, fullHeightDecorator } from './common/story-decorators';
+import { columns, defaultData, type Person, type Status, defaultEmptyState } from './common/story-data';
+import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
