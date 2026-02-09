@@ -6,15 +6,10 @@ import DsIcon from '../../ds-icon/ds-icon';
 import { DsDrawer } from '../../ds-drawer';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
-import {
-	columns,
-	defaultData,
-	type Person,
-	ProgressInfographic,
-	defaultEmptyState,
-} from './common/story-data';
+import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
+import { TableEmptyState, ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Active Row',
@@ -29,7 +24,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: defaultEmptyState,
+		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
 	decorators: [fullHeightDecorator],

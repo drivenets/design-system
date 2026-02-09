@@ -6,16 +6,10 @@ import classnames from 'classnames';
 import { DsCheckbox } from '../../ds-checkbox';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
-import {
-	columns,
-	defaultData,
-	type Person,
-	ProgressInfographic,
-	type Status,
-	defaultEmptyState,
-} from './common/story-data';
+import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
+import { TableEmptyState, ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Columns',
@@ -30,7 +24,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: defaultEmptyState,
+		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
 	decorators: [fullHeightDecorator],

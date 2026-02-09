@@ -7,9 +7,10 @@ import { DsSmartTabs } from '../../ds-smart-tabs';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { StatusItem } from './components/status-item/status-item';
-import { columns, defaultData, type Person, type Status, defaultEmptyState } from './common/story-data';
+import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
+import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Search and Filtering',
@@ -24,7 +25,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: defaultEmptyState,
+		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
 	decorators: [fullHeightDecorator],

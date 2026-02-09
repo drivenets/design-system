@@ -8,8 +8,9 @@ import type { ScrollParams } from '../ds-table.types';
 import { DsSpinner } from '../../ds-spinner';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
-import { columns, type Person, defaultEmptyState } from './common/story-data';
+import { columns, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
+import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Virtualized',
@@ -24,7 +25,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: defaultEmptyState,
+		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
 	decorators: [fullHeightDecorator],

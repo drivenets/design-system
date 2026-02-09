@@ -2,9 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent } from 'storybook/test';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
-import { columns, defaultData, type Person, defaultEmptyState } from './common/story-data';
+import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
+import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table',
@@ -20,7 +21,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: defaultEmptyState,
+		emptyState: <TableEmptyState />,
 		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],
