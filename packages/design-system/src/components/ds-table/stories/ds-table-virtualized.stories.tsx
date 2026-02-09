@@ -59,6 +59,7 @@ export const Virtualized: Story = {
 				getNextPageParam: (_lastGroup, groups) => groups.length,
 				placeholderData: keepPreviousData,
 			},
+			// assuming the app is wrapped inside QueryClientProvider below is no longer needed
 			new QueryClient({
 				defaultOptions: {
 					queries: {
