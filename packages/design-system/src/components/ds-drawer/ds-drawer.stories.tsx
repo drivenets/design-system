@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import classNames from 'classnames';
+import { expect, userEvent, within } from 'storybook/test';
 import DsDrawer from './ds-drawer';
 import { DsButton } from '../ds-button';
 import { DsTextInput } from '../ds-text-input';
@@ -136,6 +137,20 @@ export const Default: Story = {
 			</>
 		),
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openButton = canvas.getByRole('button', { name: /open drawer/i });
+		await userEvent.click(openButton);
+
+		const drawer = await canvas.findByRole('dialog');
+		await expect(drawer).toHaveAttribute('data-state', 'open');
+
+		const closeButton = canvas.getByRole('button', { name: /close/i });
+		await userEvent.click(closeButton);
+
+		await expect(drawer).toHaveAttribute('data-state', 'closed');
+	},
 };
 
 const Tabs = ({ total = 4 }: { total?: number }) => {
@@ -238,6 +253,19 @@ export const WithBackdropAndScroll: Story = {
 				</DsDrawer.Body>
 			</>
 		),
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const openButton = canvas.getByRole('button', { name: /open drawer/i });
+		await userEvent.click(openButton);
+
+		const drawer = await canvas.findByRole('dialog');
+		await expect(drawer).toHaveAttribute('data-state', 'open');
+
+		const backdrop = canvasElement.querySelector('[data-part="backdrop"]');
+		await expect(backdrop).toBeInTheDocument();
+		await expect(backdrop).toHaveAttribute('data-state', 'open');
 	},
 };
 
