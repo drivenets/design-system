@@ -43,6 +43,9 @@ $horizontal-description-line-clamp: 2;
 	color: var(--color-font-secondary);
 	cursor: grab;
 }
+.root {
+	background: var(--color-background);
+}
 
 .step {
 	position: relative;

@@ -19,17 +19,17 @@ export default {
 type Story = StoryObj<typeof DsStepper>;
 
 const steps = [
-	{ label: 'Project details', description: 'The swift red fox leaps over the sleepy hound' },
-	{ label: 'Select market', description: 'The swift red fox leaps over the sleepy hound' },
-	{ label: 'Design policy', description: 'The swift red fox leaps over the sleepy hound' },
+	{ label: 'Project details', description: 'Enter project name and basic configuration' },
+	{ label: 'Select market', description: 'Choose the target market for deployment' },
+	{ label: 'Design policy', description: 'Define the design constraints and rules' },
 ];
 
 const horizontalSteps = [
-	{ label: 'Project details', description: 'Description line can help explain by double line only' },
-	{ label: 'Select market', description: 'Description line can help explain by double line only' },
-	{ label: 'Design policy', description: 'Description line can help explain by double line only' },
-	{ label: 'Review summary', description: 'Description line can help explain by double line only' },
-	{ label: 'Final approval', description: 'Description line can help explain by double line only' },
+	{ label: 'Project details', description: 'Set up the project scope and requirements' },
+	{ label: 'Select market', description: 'Pick a region and target audience' },
+	{ label: 'Design policy', description: 'Configure branding and layout guidelines' },
+	{ label: 'Review summary', description: 'Verify all settings before submission' },
+	{ label: 'Final approval', description: 'Confirm and finalize the deployment plan' },
 ];
 
 export const Default: Story = {
@@ -179,7 +179,7 @@ export const WithPanel: Story = {
 			await togglePanel();
 		});
 
-		await expect(canvas.queryByText(/The swift red fox/)).not.toBeInTheDocument();
+		await expect(canvas.queryByText(/Enter project name/)).not.toBeInTheDocument();
 
 		await step('Iterate steps - Floating', async () => {
 			await click('Next');
@@ -412,7 +412,7 @@ export const CustomizedVertical: Story = {
 						<DsStepContent
 							index={0}
 							label="Project details"
-							description="The swift red fox leaps over the sleepy hound"
+							description="Enter project name and basic configuration"
 							actions={<DsNextStepButton>Next</DsNextStepButton>}
 						/>
 					</DsStep>
@@ -447,7 +447,7 @@ export const CustomizedVertical: Story = {
 						<DsStepContent
 							index={2}
 							label="Design policy"
-							description="The swift red fox leaps over the sleepy hound"
+							description="Define the design constraints and rules"
 							actions={<DsNextStepButton>Finish</DsNextStepButton>}
 						/>
 					</DsStep>

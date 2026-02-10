@@ -12,5 +12,6 @@ export type DsStepperProps = PropsWithChildren<
 		floating?: boolean;
 		onComplete?: steps.Props['onStepComplete'];
 		activeStep?: steps.Props['step'];
+		className?: string;
 	} & Pick<steps.Props, 'onStepChange' | 'count'>
 >;

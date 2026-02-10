@@ -15,6 +15,7 @@ export function DsStepper({
 	onStepChange,
 	onComplete,
 	children,
+	className,
 }: DsStepperProps) {
 	const stepsApi = useSteps({ count, activeStep, onStepChange, onComplete, orientation });
 
@@ -35,10 +36,14 @@ export function DsStepper({
 		>
 			<div
 				{...stepsApi.getRootProps()}
-				className={classnames(styles.root, {
-					[styles.variantSingle]: variant === 'single',
-					[styles.horizontal]: isHorizontal,
-				})}
+				className={classnames(
+					styles.root,
+					{
+						[styles.variantSingle]: variant === 'single',
+						[styles.horizontal]: isHorizontal,
+					},
+					className,
+				)}
 			>
 				{isHorizontal ? (
 					<>
