@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { DsExpandableTextInput } from './ds-expandable-text-input';
 import { textInputSizes } from '../ds-text-input';
 import { useState } from 'react';
@@ -24,6 +25,7 @@ const meta: Meta<typeof DsExpandableTextInput> = {
 			options: textInputSizes,
 			description: 'The size of the input field',
 		},
+		onExpandChange: { action: 'expand change' },
 		disabled: {
 			control: 'boolean',
 			description: 'Whether the input is disabled',
@@ -41,6 +43,16 @@ type Story = StoryObj<typeof DsExpandableTextInput>;
 export const Default: Story = {
 	args: {
 		icon: 'search',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const iconButton = canvas.getByRole('button', { name: 'Open text input' });
+		await expect(iconButton).toBeInTheDocument();
+		await expect(iconButton).toHaveAttribute('aria-hidden', 'false');
+
+		const input = canvas.getByRole('textbox');
+		await expect(input).toBeInTheDocument();
 	},
 };
 
@@ -61,15 +73,84 @@ export const ExpandChange: Story = {
 	args: {
 		icon: 'search',
 		placeholder: 'Look at the console',
-		onExpandChange: (expanded) => {
-			console.log('Expanded:', expanded);
-		},
+		onExpandChange: fn(),
+		onClear: fn(),
+	},
+	play: async ({ args, canvasElement, step }) => {
+		const canvas = within(canvasElement);
+
+		await step('Expand flow', async () => {
+			const iconButton = canvas.getByRole('button', { name: 'Open text input' });
+			await userEvent.click(iconButton);
+
+			const input = canvas.getByRole('textbox');
+			await expect(input).toHaveFocus();
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(true);
+		});
+
+		await step('Clear flow - with button', async () => {
+			const input = canvas.getByRole('textbox');
+			await userEvent.type(input, 'test text');
+
+			const clearButton = canvas.getByRole('button', { name: 'Clear' });
+			await userEvent.click(clearButton);
+
+			await expect(args.onClear).toHaveBeenCalled();
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(false);
+			await expect(input).toHaveValue('');
+		});
+
+		// TODO: Fails due to the component bug https://drivenets.atlassian.net/browse/AR-47261.
+		// Uncomment when the bug is fixed.
+		// await step('Clear flow - by deleting all text', async () => {
+		// 	const iconButton = canvas.getByRole('button', { name: 'Open text input' });
+		// 	await userEvent.click(iconButton);
+
+		// 	const input = canvas.getByRole('textbox');
+		// 	await userEvent.type(input, 'test');
+		// 	await userEvent.clear(input);
+
+		// 	await userEvent.click(canvasElement);
+		// 	await expect(args.onExpandChange).toHaveBeenLastCalledWith(false);
+		// });
+
+		await step('Blur without typing', async () => {
+			const iconButton = canvas.getByRole('button', { name: 'Open text input' });
+			await userEvent.click(iconButton);
+
+			await userEvent.click(canvasElement);
+
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(false);
+		});
+
+		await step('Blur with value - stays expanded', async () => {
+			const iconButton = canvas.getByRole('button', { name: 'Open text input' });
+			await userEvent.click(iconButton);
+
+			const input = canvas.getByRole('textbox');
+			await userEvent.type(input, 'test text');
+
+			await userEvent.click(canvasElement);
+
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(true);
+		});
 	},
 };
 
 export const Controlled: Story = {
-	render: function Render() {
-		const [value, setValue] = useState('');
+	argTypes: {
+		value: {
+			control: 'text',
+			description: 'The current value',
+		},
+		onChange: { action: 'changed' },
+		onClear: { action: 'clear' },
+	},
+	args: {
+		value: 'query',
+	},
+	render: function Render(args) {
+		const [value, setValue] = useState(args.value);
 
 		return (
 			<DsExpandableTextInput
@@ -80,6 +161,17 @@ export const Controlled: Story = {
 			/>
 		);
 	},
+	// TODO: Fails due to the component bug https://drivenets.atlassian.net/browse/AR-47261.
+	// Uncomment when the bug is fixed.
+	// play: async ({ canvasElement }) => {
+	// 	const canvas = within(canvasElement);
+
+	// 	const input = canvas.getByRole('textbox');
+	// 	await expect(input).toHaveValue('search');
+
+	// 	const clearButton = canvas.getByRole('button', { name: 'Clear' });
+	// 	await expect(clearButton).toBeVisible();
+	// },
 };
 
 type Person = {
