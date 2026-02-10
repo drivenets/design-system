@@ -38,6 +38,7 @@ export interface DsCommentCardProps {
 	onMarkUnread?: () => void;
 	onCopyLink?: () => void;
 	onDelete?: () => void;
+	formatTimestamp?: (date: Date) => string;
 	className?: string;
 	style?: CSSProperties;
 }

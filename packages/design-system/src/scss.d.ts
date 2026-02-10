@@ -1,6 +1,6 @@
 declare module '*.module.scss' {
-	const classNames: { [key: string]: string };
-	export = classNames;
+	const styles: Record<string, string>;
+	export default styles;
 }
 
 declare module '*.scss';

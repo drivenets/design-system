@@ -19,6 +19,7 @@ export const DsCommentCard = ({
 	onMarkUnread,
 	onCopyLink,
 	onDelete,
+	formatTimestamp = formatRelativeTime,
 	className,
 	style,
 }: DsCommentCardProps) => {
@@ -95,14 +96,14 @@ export const DsCommentCard = ({
 
 							<div className={styles.authorInfo}>
 								<span className={styles.authorName}>{author.name}</span>
-								<span className={styles.timestamp}>{formatRelativeTime(createdAt)}</span>
+								<span className={styles.timestamp}>{formatTimestamp(createdAt)}</span>
 							</div>
 						</div>
 
 						<div className={styles.actions}>
 							{showMoreMenu && (
 								<DsDropdownMenu.Root>
-									<DsDropdownMenu.Trigger {...({ asChild: true } as { asChild: boolean })}>
+									<DsDropdownMenu.Trigger asChild>
 										<DsButton design="v1.2" buttonType="tertiary" size="small" aria-label="More actions">
 											<DsIcon icon="more_vert" size="tiny" />
 										</DsButton>

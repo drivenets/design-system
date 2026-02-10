@@ -1,7 +1,6 @@
 $scrollbar-width: 8px;
 $scrollbar-thumb-width: 3.2px;
 $scrollbar-border-radius-pill: 100px;
-$shadow-top-offset: 72px;
 $shadow-height: 34px;
 $shadow-border-radius: 0 0 32px 32px;
 $transition-duration: 0.2s;
@@ -17,6 +16,7 @@ $transition-duration: 0.2s;
 
 .initialComment {
 	flex-shrink: 0;
+	position: relative;
 }
 
 .followingComments {
@@ -45,7 +45,8 @@ $transition-duration: 0.2s;
 
 .overflowShadow {
 	position: absolute;
-	top: $shadow-top-offset;
+	bottom: 0;
+	transform: translateY(100%);
 	left: 0;
 	right: 0;
 	height: $shadow-height;

@@ -1,4 +1,4 @@
-export interface FilterChip {
+export interface FilterTag {
 	id: string;
 	label: string;
 	filterId: string;

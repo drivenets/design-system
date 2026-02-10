@@ -1,11 +1,11 @@
-import { useEffect, type RefObject } from 'react';
+import { useLayoutEffect, type RefObject } from 'react';
 
 export const useAutoResize = (
 	ref: RefObject<HTMLTextAreaElement | null>,
 	value: string,
 	maxHeight: number = 480,
 ): void => {
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const textarea = ref.current;
 		if (!textarea) {
 			return;

@@ -1,7 +1,7 @@
 import type { CommentData } from '../ds-comment-card';
-import type { FilterChip, CommentsFilterState } from './comments-filters.types';
+import type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
-export type { FilterChip, CommentsFilterState } from './comments-filters.types';
+export type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
 export const initialFilterState: CommentsFilterState = {
 	authors: [],
@@ -64,16 +64,13 @@ export const applyFilters = (
 	});
 };
 
-export const filtersToChips = (
-	filters: CommentsFilterState,
-	authorMap: Map<string, string>,
-): FilterChip[] => {
-	const chips: FilterChip[] = [];
+export const filtersToTags = (filters: CommentsFilterState, authorMap: Map<string, string>): FilterTag[] => {
+	const tags: FilterTag[] = [];
 
 	filters.statuses.forEach((status) => {
 		const label =
 			status === 'action-required' ? 'Action required' : status.charAt(0).toUpperCase() + status.slice(1);
-		chips.push({
+		tags.push({
 			id: `status-${status}`,
 			label: `Status: ${label}`,
 			filterId: 'statuses',
@@ -83,7 +80,7 @@ export const filtersToChips = (
 
 	filters.authors.forEach((authorId) => {
 		const authorName = authorMap.get(authorId) || authorId;
-		chips.push({
+		tags.push({
 			id: `author-${authorId}`,
 			label: `Author: ${authorName}`,
 			filterId: 'authors',
@@ -94,7 +91,7 @@ export const filtersToChips = (
 	if (filters.dateFrom || filters.dateTo) {
 		const from = filters.dateFrom || '...';
 		const to = filters.dateTo || '...';
-		chips.push({
+		tags.push({
 			id: 'date-range',
 			label: `Date: ${from} to ${to}`,
 			filterId: 'date',
@@ -103,7 +100,7 @@ export const filtersToChips = (
 	}
 
 	filters.labels.forEach((label) => {
-		chips.push({
+		tags.push({
 			id: `label-${label}`,
 			label: `Label: ${label}`,
 			filterId: 'labels',
@@ -111,21 +108,21 @@ export const filtersToChips = (
 		});
 	});
 
-	return chips;
+	return tags;
 };
 
-export const removeChip = (filters: CommentsFilterState, chip: FilterChip): CommentsFilterState => {
+export const removeTag = (filters: CommentsFilterState, tag: FilterTag): CommentsFilterState => {
 	const newFilters = { ...filters };
 
-	switch (chip.filterId) {
+	switch (tag.filterId) {
 		case 'statuses':
-			newFilters.statuses = newFilters.statuses.filter((s) => s !== chip.value);
+			newFilters.statuses = newFilters.statuses.filter((s) => s !== tag.value);
 			break;
 		case 'authors':
-			newFilters.authors = newFilters.authors.filter((a) => a !== chip.value);
+			newFilters.authors = newFilters.authors.filter((a) => a !== tag.value);
 			break;
 		case 'labels':
-			newFilters.labels = newFilters.labels.filter((l) => l !== chip.value);
+			newFilters.labels = newFilters.labels.filter((l) => l !== tag.value);
 			break;
 		case 'date':
 			newFilters.dateFrom = undefined;

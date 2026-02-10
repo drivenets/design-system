@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './ds-thread-item.module.scss';
 import { DsAvatar } from '../../../ds-avatar';
@@ -24,6 +24,10 @@ export const DsThreadItem = ({
 }: DsThreadItemProps) => {
 	const [isEditing, setIsEditing] = useState(false);
 	const [editContent, setEditContent] = useState(content);
+
+	useEffect(() => {
+		setEditContent(content);
+	}, [content]);
 
 	const handleSaveEdit = () => {
 		if (editContent.trim() && editContent !== content) {

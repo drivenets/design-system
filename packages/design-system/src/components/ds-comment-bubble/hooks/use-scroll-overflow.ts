@@ -1,9 +1,9 @@
-import { useState, useEffect, type RefObject } from 'react';
+import { useState, useLayoutEffect, type RefObject } from 'react';
 
 export const useScrollOverflow = (ref: RefObject<HTMLElement | null>, dependency: number): boolean => {
 	const [hasOverflow, setHasOverflow] = useState(false);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const container = ref.current;
 		if (!container) {
 			return;
@@ -16,7 +16,7 @@ export const useScrollOverflow = (ref: RefObject<HTMLElement | null>, dependency
 		};
 
 		checkOverflow();
-		container.addEventListener('scroll', checkOverflow);
+		container.addEventListener('scroll', checkOverflow, { passive: true });
 
 		return () => {
 			container.removeEventListener('scroll', checkOverflow);

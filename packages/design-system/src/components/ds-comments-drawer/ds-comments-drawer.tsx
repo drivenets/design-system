@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styles from './ds-comments-drawer.module.scss';
 import type { DsCommentsDrawerProps } from './ds-comments-drawer.types';
 import { DsDrawer } from '../ds-drawer';
@@ -11,8 +11,8 @@ import {
 	type CommentsFilterState,
 	initialFilterState,
 	applyFilters,
-	filtersToChips,
-	removeChip,
+	filtersToTags,
+	removeTag,
 } from './comments-filters';
 import { CommentsFilterModal } from './components/comments-filter-modal';
 
@@ -39,45 +39,49 @@ export const DsCommentsDrawer = ({
 	const [pendingFilters, setPendingFilters] = useState<CommentsFilterState>(initialFilterState);
 	const [appliedFilters, setAppliedFilters] = useState<CommentsFilterState>(initialFilterState);
 
-	const authorsMap = new Map<string, string>();
-	const labelsSet = new Set<string>();
+	const { availableAuthors, availableLabels, authorMap } = useMemo(() => {
+		const authorsMap = new Map<string, string>();
+		const labelsSet = new Set<string>();
 
-	comments.forEach((comment) => {
-		authorsMap.set(comment.author.id, comment.author.name);
-		comment.labels?.forEach((label) => labelsSet.add(label));
-	});
-
-	const availableAuthors = Array.from(authorsMap.entries()).map(([id, name]) => ({ id, name }));
-	const availableLabels = Array.from(labelsSet);
-	const authorMap = authorsMap;
-
-	let filteredComments = comments;
-
-	if (!showResolved) {
-		filteredComments = filteredComments.filter((c) => !c.isResolved);
-	}
-
-	filteredComments = applyFilters(
-		filteredComments,
-		appliedFilters,
-		(comment) => comment.isActionRequired || false,
-	);
-
-	if (searchQuery) {
-		const query = searchQuery.toLowerCase();
-		filteredComments = filteredComments.filter((comment) => {
-			const matchesContent = comment.messages.some((m) => m.content.toLowerCase().includes(query));
-			const matchesAuthor = comment.author.name.toLowerCase().includes(query);
-			const matchesId = `#${String(comment.numericId)}`.includes(query);
-			return matchesContent || matchesAuthor || matchesId;
+		comments.forEach((comment) => {
+			authorsMap.set(comment.author.id, comment.author.name);
+			comment.labels?.forEach((label) => labelsSet.add(label));
 		});
-	}
 
-	const commentCount = comments.filter((c) => !c.isResolved).length;
-	const resolvedCount = comments.filter((c) => c.isResolved).length;
+		return {
+			availableAuthors: Array.from(authorsMap.entries()).map(([id, name]) => ({ id, name })),
+			availableLabels: Array.from(labelsSet),
+			authorMap: authorsMap,
+		};
+	}, [comments]);
+
+	const filteredComments = useMemo(() => {
+		let result = comments;
+
+		if (!showResolved) {
+			result = result.filter((c) => !c.isResolved);
+		}
+
+		result = applyFilters(result, appliedFilters, (comment) => comment.isActionRequired || false);
+
+		if (searchQuery) {
+			const query = searchQuery.toLowerCase();
+			result = result.filter((comment) => {
+				const matchesContent = comment.messages.some((m) => m.content.toLowerCase().includes(query));
+				const matchesAuthor = comment.author.name.toLowerCase().includes(query);
+				const matchesId = `#${String(comment.numericId)}`.includes(query);
+				return matchesContent || matchesAuthor || matchesId;
+			});
+		}
+
+		return result;
+	}, [comments, showResolved, appliedFilters, searchQuery]);
+
+	const commentCount = useMemo(() => comments.filter((c) => !c.isResolved).length, [comments]);
+	const resolvedCount = useMemo(() => comments.filter((c) => c.isResolved).length, [comments]);
 	const hasResolved = resolvedCount > 0;
 
-	const filterChips = filtersToChips(appliedFilters, authorMap);
+	const filterTags = useMemo(() => filtersToTags(appliedFilters, authorMap), [appliedFilters, authorMap]);
 
 	const handleShowResolvedToggle = () => {
 		onShowResolvedChange?.(!showResolved);
@@ -99,10 +103,10 @@ export const DsCommentsDrawer = ({
 		setIsFilterModalOpen(false);
 	};
 
-	const handleDeleteChip = (item: TagFilterItem) => {
-		const chip = filterChips.find((c) => c.id === item.id);
-		if (chip) {
-			const newFilters = removeChip(appliedFilters, chip);
+	const handleDeleteTag = (item: TagFilterItem) => {
+		const tag = filterTags.find((c) => c.id === item.id);
+		if (tag) {
+			const newFilters = removeTag(appliedFilters, tag);
 			setAppliedFilters(newFilters);
 		}
 	};
@@ -167,15 +171,15 @@ export const DsCommentsDrawer = ({
 					</DsDrawer.Toolbar>
 				)}
 
-				{filterChips.length > 0 && (
-					<DsDrawer.Toolbar className={styles.filterChipsToolbar}>
-						<DsTagFilter
-							items={filterChips}
-							onClearAll={handleClearAllFilters}
-							onItemDelete={handleDeleteChip}
-						/>
-					</DsDrawer.Toolbar>
-				)}
+			{filterTags.length > 0 && (
+				<DsDrawer.Toolbar className={styles.filterTagsToolbar}>
+					<DsTagFilter
+						items={filterTags}
+						onClearAll={handleClearAllFilters}
+						onItemDelete={handleDeleteTag}
+					/>
+				</DsDrawer.Toolbar>
+			)}
 
 				<DsDrawer.Body className={styles.body}>
 					{filteredComments.length === 0 ? (

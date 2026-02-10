@@ -116,6 +116,14 @@ const meta: Meta<typeof DsCommentCard> = {
 			action: 'delete',
 			description: 'Callback when delete is triggered',
 		},
+		formatTimestamp: {
+			description:
+				'Custom formatter for timestamps. Defaults to relative time format (e.g., "2d ago"). Can be overridden for custom formats like absolute dates.',
+			table: {
+				type: { summary: '(date: Date) => string' },
+				defaultValue: { summary: 'formatRelativeTime' },
+			},
+		},
 	},
 	args: {
 		onClick: fn(),
@@ -252,5 +260,34 @@ export const Default: Story = {
 		const cards = canvas.getAllByRole('button', { name: /Comment #/i });
 
 		await expect(cards.length).toBeGreaterThan(0);
+	},
+};
+
+export const CustomFormatter: Story = {
+	args: {
+		comment: createMockComment(),
+		overflow: 'hidden',
+		formatTimestamp: (date: Date) => {
+			const options: Intl.DateTimeFormatOptions = {
+				year: 'numeric',
+				month: 'short',
+				day: 'numeric',
+				hour: '2-digit',
+				minute: '2-digit',
+			};
+			return date.toLocaleDateString('en-US', options);
+		},
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const card = canvas.getByRole('button', { name: /Comment #/i });
+
+		await expect(card).toBeInTheDocument();
+
+		// Verify the formatted timestamp is present (should be in format like "Feb 9, 2026, 05:11 PM")
+		// and does not contain "ago"
+		const cardText = card.textContent || '';
+		await expect(cardText).toMatch(/\d{4}/); // Should contain year
+		await expect(cardText).not.toMatch(/ago/i); // Should not contain "ago"
 	},
 };

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 import classNames from 'classnames';
 import styles from './ds-comment-bubble.module.scss';
 import type { DsCommentBubbleProps } from './ds-comment-bubble.types';
@@ -45,11 +45,11 @@ export const DsCommentBubble = ({
 	const bubbleRef = useRef<HTMLDivElement>(null);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-	const handleClickOutside = () => {
+	const handleClickOutside = useCallback(() => {
 		if (isInitialMode) {
 			onValueChange?.('');
 		}
-	};
+	}, [isInitialMode, onValueChange]);
 
 	useClickOutside(bubbleRef, handleClickOutside, isInitialMode);
 	useAutoResize(textareaRef, value, maxTextareaHeight);

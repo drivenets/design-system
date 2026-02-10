@@ -16,9 +16,6 @@ export const formatRelativeTime = (date: Date): string => {
 	if (diffDays === 0) {
 		return `${String(diffHours)}h ago`;
 	}
-	if (diffDays === 1) {
-		return '1d ago';
-	}
 	if (diffWeeks === 0) {
 		return `${String(diffDays)}d ago`;
 	}

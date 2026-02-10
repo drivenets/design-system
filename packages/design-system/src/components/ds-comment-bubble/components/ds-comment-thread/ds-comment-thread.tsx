@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import classNames from 'classnames';
 import styles from './ds-comment-thread.module.scss';
 import { DsThreadItem } from '../ds-thread-item';
@@ -17,17 +17,15 @@ export const DsCommentThread = ({
 	className,
 }: DsCommentThreadProps) => {
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
+	const bottomRef = useRef<HTMLDivElement>(null);
 
 	const initialMessage = messages.find((m) => m.isInitialMessage) || messages[0];
 	const followingMessages = messages.filter((m) => m.id !== initialMessage?.id);
 
 	const hasOverflow = useScrollOverflow(scrollContainerRef, messages.length);
 
-	useEffect(() => {
-		const container = scrollContainerRef.current;
-		if (container) {
-			container.scrollTop = container.scrollHeight;
-		}
+	useLayoutEffect(() => {
+		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [messages.length]);
 
 	const isCurrentUserMessage = (author: CommentAuthor): boolean => currentUser?.id === author.id;
@@ -53,33 +51,32 @@ export const DsCommentThread = ({
 					onMarkUnread={onMarkUnread}
 					onResolved={onResolved}
 				/>
+				<div
+					className={classNames(styles.overflowShadow, {
+						[styles.visible]: hasOverflow,
+					})}
+				/>
 			</div>
 
 			{followingMessages.length > 0 && (
-				<>
-					<div
-						className={classNames(styles.overflowShadow, {
-							[styles.visible]: hasOverflow,
-						})}
-					/>
-					<div ref={scrollContainerRef} className={styles.followingComments}>
-						{followingMessages.map((message) => (
-							<DsThreadItem
-								key={message.id}
-								id={message.id}
-								author={message.author}
-								content={message.content}
-								createdAt={message.createdAt}
-								isCommentAuthorMessage={isCommentAuthorMessage(message.author)}
-								canModify={canModify(message.author)}
-								onEdit={canModify(message.author) ? onEditMessage : undefined}
-								onDelete={canModify(message.author) ? onDeleteMessage : undefined}
-								onMarkUnread={onMarkUnread}
-								onResolved={onResolved}
-							/>
-						))}
-					</div>
-				</>
+				<div ref={scrollContainerRef} className={styles.followingComments}>
+					{followingMessages.map((message) => (
+						<DsThreadItem
+							key={message.id}
+							id={message.id}
+							author={message.author}
+							content={message.content}
+							createdAt={message.createdAt}
+							isCommentAuthorMessage={isCommentAuthorMessage(message.author)}
+							canModify={canModify(message.author)}
+							onEdit={canModify(message.author) ? onEditMessage : undefined}
+							onDelete={canModify(message.author) ? onDeleteMessage : undefined}
+							onMarkUnread={onMarkUnread}
+							onResolved={onResolved}
+						/>
+					))}
+					<div ref={bottomRef} />
+				</div>
 			)}
 		</div>
 	);
