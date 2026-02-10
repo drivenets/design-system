@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import type { Mock } from 'vitest';
 import DsTag from './ds-tag';
 import { tagSizes, tagVariants } from './ds-tag.types';
 import { DsIcon } from '../ds-icon';
@@ -213,5 +214,70 @@ export const CustomIcon: Story = {
 		// Custom icon should be rendered instead of the variant icon
 		await expect(canvas.getByText('star')).toBeInTheDocument();
 		await expect(canvas.queryByText('check_circle')).not.toBeInTheDocument();
+	},
+};
+
+export const KeyboardInteraction: Story = {
+	args: {
+		label: 'Keyboard Tag',
+		onClick: fn(),
+		onDelete: fn(),
+	},
+	play: async ({ args, canvasElement, step }) => {
+		const canvas = within(canvasElement);
+
+		const tag = canvas.getByRole('button', { name: /Keyboard Tag/i });
+		const deleteButton = canvas.getByLabelText('Delete tag');
+
+		let onClickCalls = 0;
+		let onDeleteCalls = 0;
+
+		await step('Tag Enter/Space keys trigger onClick', async () => {
+			tag.focus();
+			await expect(tag).toHaveFocus();
+
+			// Press Enter
+			await userEvent.keyboard('{Enter}');
+			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
+
+			// Press Space
+			await userEvent.keyboard(' ');
+			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
+		});
+
+		await step('Tag Backspace/Delete keys trigger onDelete', async () => {
+			tag.focus();
+
+			// Press Backspace
+			await userEvent.keyboard('{Backspace}');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			// Press Delete
+			await userEvent.keyboard('{Delete}');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			// onClick should not have been called additionally
+			await expect(args.onClick).toHaveBeenCalledTimes(onClickCalls);
+		});
+
+		await step('Delete button Enter/Space keys trigger onDelete and stop propagation', async () => {
+			// Track call counts at start of this step
+			const onClickCallsBefore = (args.onClick as Mock)?.mock.calls.length ?? 0;
+			const onDeleteCallsBefore = (args.onDelete as Mock)?.mock.calls.length ?? 0;
+
+			deleteButton.focus();
+			await expect(deleteButton).toHaveFocus();
+
+			// Press Enter
+			await userEvent.keyboard('{Enter}');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			// Press Space
+			await userEvent.keyboard(' ');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			// onClick should not be called (propagation stopped)
+			await expect(args.onClick).toHaveBeenCalledTimes(onClickCalls);
+		});
 	},
 };
