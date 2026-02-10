@@ -1,0 +1,10 @@
+.emptyStateContainer {
+	padding: 20px;
+	text-align: center;
+	border: 1px dashed #ccc;
+	height: 100%;
+
+	&__text {
+		margin-top: 10px;
+	}
+}
