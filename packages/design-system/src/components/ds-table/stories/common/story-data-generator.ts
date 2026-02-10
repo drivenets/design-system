@@ -1,15 +1,5 @@
 import type { SortingState } from '@tanstack/react-table';
-import type { Status } from '../ds-table.stories';
-
-export type Person = {
-	id: string;
-	firstName: string;
-	lastName: string;
-	age: number;
-	visits: number;
-	status: Status;
-	progress: number;
-};
+import type { Person, Status } from './story-data';
 
 export interface GeneratedDataResult {
 	data: Person[];
