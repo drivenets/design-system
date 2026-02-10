@@ -171,15 +171,15 @@ export const DsCommentsDrawer = ({
 					</DsDrawer.Toolbar>
 				)}
 
-			{filterTags.length > 0 && (
-				<DsDrawer.Toolbar className={styles.filterTagsToolbar}>
-					<DsTagFilter
-						items={filterTags}
-						onClearAll={handleClearAllFilters}
-						onItemDelete={handleDeleteTag}
-					/>
-				</DsDrawer.Toolbar>
-			)}
+				{filterTags.length > 0 && (
+					<DsDrawer.Toolbar className={styles.filterTagsToolbar}>
+						<DsTagFilter
+							items={filterTags}
+							onClearAll={handleClearAllFilters}
+							onItemDelete={handleDeleteTag}
+						/>
+					</DsDrawer.Toolbar>
+				)}
 
 				<DsDrawer.Body className={styles.body}>
 					{filteredComments.length === 0 ? (
