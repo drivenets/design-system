@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import type { Mock } from 'vitest';
 import DsTag from './ds-tag';
 import { tagSizes, tagVariants } from './ds-tag.types';
 import { DsIcon } from '../ds-icon';
