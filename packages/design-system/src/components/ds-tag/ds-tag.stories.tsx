@@ -261,10 +261,6 @@ export const KeyboardInteraction: Story = {
 		});
 
 		await step('Delete button Enter/Space keys trigger onDelete and stop propagation', async () => {
-			// Track call counts at start of this step
-			const onClickCallsBefore = (args.onClick as Mock)?.mock.calls.length ?? 0;
-			const onDeleteCallsBefore = (args.onDelete as Mock)?.mock.calls.length ?? 0;
-
 			deleteButton.focus();
 			await expect(deleteButton).toHaveFocus();
 
