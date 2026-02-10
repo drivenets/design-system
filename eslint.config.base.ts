@@ -7,6 +7,9 @@ import importX, { createNodeResolver } from 'eslint-plugin-import-x';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import globals from 'globals';
 
+// Keep in sync with tsconfig.base.json "exclude".
+const GLOBAL_IGNORES = ['**/dist', '**/.turbo', '**/coverage'];
+
 export default defineConfig(
 	// Base rules.
 	eslint.configs.recommended,
@@ -128,5 +131,5 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(['**/dist', '**/.turbo', '**/coverage']),
+	globalIgnores(GLOBAL_IGNORES),
 );

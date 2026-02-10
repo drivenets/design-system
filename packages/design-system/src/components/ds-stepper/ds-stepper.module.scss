@@ -197,7 +197,7 @@ $horizontal-description-line-clamp: 2;
 	}
 }
 
-.root.horizontal {
+.root[data-orientation='horizontal'] {
 	display: flex;
 	align-items: center;
 	padding: var(--spacing-xs) var(--spacing-standard);
@@ -205,7 +205,7 @@ $horizontal-description-line-clamp: 2;
 	.stepsContainer {
 		display: flex;
 		flex: 1 1 0;
-		align-items: center;
+		align-items: flex-start;
 		min-width: 0;
 		overflow-x: auto;
 	}

@@ -1,10 +1,8 @@
-import React from 'react';
 import classnames from 'classnames';
 import styles from './ds-stepper.module.scss';
 import { useSteps } from './hooks/use-steps';
 import { StepperContext } from './hooks/use-stepper';
 import type { DsStepperProps } from './ds-stepper.types';
-import { DsStep } from './components/ds-step';
 
 export function DsStepper({
 	count,
@@ -16,14 +14,11 @@ export function DsStepper({
 	onComplete,
 	children,
 	className,
+	actions,
 }: DsStepperProps) {
 	const stepsApi = useSteps({ count, activeStep, onStepChange, onComplete, orientation });
 
 	const isHorizontal = orientation === 'horizontal';
-
-	const childArray = React.Children.toArray(children);
-	const steps = childArray.filter((child) => React.isValidElement(child) && child.type === DsStep);
-	const actions = childArray.filter((child) => !(React.isValidElement(child) && child.type === DsStep));
 
 	return (
 		<StepperContext.Provider
@@ -40,16 +35,15 @@ export function DsStepper({
 					styles.root,
 					{
 						[styles.variantSingle]: variant === 'single',
-						[styles.horizontal]: isHorizontal,
 					},
 					className,
 				)}
 			>
 				{isHorizontal ? (
 					<>
-						<div className={styles.stepsContainer}>{steps}</div>
+						<div className={styles.stepsContainer}>{children}</div>
 
-						{actions.length > 0 && <div className={styles.navActions}>{actions}</div>}
+						{actions && <div className={styles.navActions}>{actions}</div>}
 					</>
 				) : (
 					children

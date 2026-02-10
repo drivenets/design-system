@@ -1,4 +1,4 @@
-import type { PropsWithChildren } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 import type * as steps from '@zag-js/steps';
 
 export type DsStepperVariant = 'single';
@@ -13,5 +13,6 @@ export type DsStepperProps = PropsWithChildren<
 		onComplete?: steps.Props['onStepComplete'];
 		activeStep?: steps.Props['step'];
 		className?: string;
+		actions?: ReactNode;
 	} & Pick<steps.Props, 'onStepChange' | 'count'>
 >;

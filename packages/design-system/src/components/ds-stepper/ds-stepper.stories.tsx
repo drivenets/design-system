@@ -4,7 +4,7 @@ import { DsStepper, DsStep, DsNextStepButton, DsStepContent } from './index';
 import { DsPanel, type DsPanelVariant } from '../ds-panel';
 import DsIcon from '../ds-icon/ds-icon';
 import type { IconType } from '../ds-icon';
-import { expect, fn, userEvent } from 'storybook/test';
+import { expect, userEvent } from 'storybook/test';
 import styles from './ds-stepper.stories.module.scss';
 
 export default {
@@ -36,7 +36,7 @@ export const Default: Story = {
 	render: function Render() {
 		return (
 			<div style={{ width: 300 }}>
-				<DsStepper count={steps.length} onComplete={fn()}>
+				<DsStepper count={steps.length}>
 					{steps.map((step, index) => (
 						<DsStep index={index} key={index}>
 							<DsStepContent
@@ -74,7 +74,7 @@ export const Compact: Story = {
 	render: function Render() {
 		return (
 			<div style={{ width: 300 }}>
-				<DsStepper count={steps.length} onComplete={fn()}>
+				<DsStepper count={steps.length}>
 					{steps.map((step, index) => (
 						<DsStep index={index} key={index}>
 							<DsStepContent
@@ -204,13 +204,16 @@ export const Horizontal: Story = {
 
 	render: function Render() {
 		return (
-			<DsStepper count={horizontalSteps.length} orientation="horizontal" onComplete={fn()}>
+			<DsStepper
+				count={horizontalSteps.length}
+				orientation="horizontal"
+				actions={<DsNextStepButton>Next</DsNextStepButton>}
+			>
 				{horizontalSteps.map((step, index) => (
 					<DsStep index={index} key={index}>
 						<DsStepContent index={index} label={step.label} description={step.description} />
 					</DsStep>
 				))}
-				<DsNextStepButton>Next</DsNextStepButton>
 			</DsStepper>
 		);
 	},
@@ -247,13 +250,16 @@ export const HorizontalFewSteps: Story = {
 
 	render: function Render() {
 		return (
-			<DsStepper count={fewSteps.length} orientation="horizontal" onComplete={fn()}>
+			<DsStepper
+				count={fewSteps.length}
+				orientation="horizontal"
+				actions={<DsNextStepButton>Next</DsNextStepButton>}
+			>
 				{fewSteps.map((step, index) => (
 					<DsStep index={index} key={index}>
 						<DsStepContent index={index} label={step.label} description={step.description} />
 					</DsStep>
 				))}
-				<DsNextStepButton>Next</DsNextStepButton>
 			</DsStepper>
 		);
 	},
@@ -288,13 +294,16 @@ export const HorizontalCompactFewSteps: Story = {
 
 	render: function Render() {
 		return (
-			<DsStepper count={fewCompactSteps.length} orientation="horizontal" onComplete={fn()}>
+			<DsStepper
+				count={fewCompactSteps.length}
+				orientation="horizontal"
+				actions={<DsNextStepButton>Next</DsNextStepButton>}
+			>
 				{fewCompactSteps.map((step, index) => (
 					<DsStep index={index} key={index}>
 						<DsStepContent index={index} label={step.label} />
 					</DsStep>
 				))}
-				<DsNextStepButton>Next</DsNextStepButton>
 			</DsStepper>
 		);
 	},
@@ -352,16 +361,17 @@ export const CustomizedHorizontal: Story = {
 				orientation="horizontal"
 				activeStep={activeStep}
 				onStepChange={({ step }) => setActiveStep(step)}
-				onComplete={fn()}
+				actions={
+					<DsNextStepButton variant="ghost">
+						{activeStep === customSteps.length - 1 ? 'Finish' : 'Continue'}
+					</DsNextStepButton>
+				}
 			>
 				{customSteps.map((step, index) => (
 					<DsStep index={index} key={index} slots={{ indicator: <DsIcon icon={step.icon} size="small" /> }}>
 						<DsStepContent index={index} label={step.label} description={step.description} />
 					</DsStep>
 				))}
-				<DsNextStepButton schema="secondary" variant="ghost">
-					{activeStep === customSteps.length - 1 ? 'Finish' : 'Continue'}
-				</DsNextStepButton>
 			</DsStepper>
 		);
 	},
@@ -402,12 +412,7 @@ export const CustomizedVertical: Story = {
 
 		return (
 			<div style={{ width: 350 }}>
-				<DsStepper
-					count={3}
-					activeStep={activeStep}
-					onStepChange={({ step }) => setActiveStep(step)}
-					onComplete={fn()}
-				>
+				<DsStepper count={3} activeStep={activeStep} onStepChange={({ step }) => setActiveStep(step)}>
 					<DsStep index={0}>
 						<DsStepContent
 							index={0}
@@ -482,7 +487,7 @@ export const WithDisabledSteps: Story = {
 	render: function Render() {
 		return (
 			<div style={{ width: 350 }}>
-				<DsStepper count={4} onComplete={fn()}>
+				<DsStepper count={4}>
 					<DsStep index={0}>
 						<DsStepContent
 							index={0}
@@ -555,7 +560,7 @@ export const WithErrorStep: Story = {
 	render: function Render() {
 		return (
 			<div style={{ width: 350 }}>
-				<DsStepper count={4} onComplete={fn()}>
+				<DsStepper count={4}>
 					<DsStep index={0}>
 						<DsStepContent
 							index={0}

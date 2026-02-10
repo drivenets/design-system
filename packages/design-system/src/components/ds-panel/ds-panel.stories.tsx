@@ -126,6 +126,10 @@ export const Draggable: Story = {
 			await userEvent.click(canvas.getByLabelText('Toggle panel'));
 		};
 
+		const getPanel = () => canvas.getByText('Configure network').closest('[data-state]') as HTMLElement;
+
+		const dockedRect = getPanel().getBoundingClientRect();
+
 		await step('Docked - all steps and descriptions visible', async () => {
 			await expect(canvas.getByText('Configure network')).toBeVisible();
 			await expect(canvas.getByText('Assign resources')).toBeVisible();
@@ -143,29 +147,36 @@ export const Draggable: Story = {
 
 		await step('Drag floating panel', async () => {
 			const handle = canvas.getByText('drag_indicator');
-			const panel = handle.closest('[data-state]') as HTMLElement;
+			const panel = getPanel();
+			const rectBefore = panel.getBoundingClientRect();
 
-			handle.dispatchEvent(new MouseEvent('mousedown', { clientX: 100, clientY: 100, bubbles: true }));
+			await userEvent.pointer([
+				{ target: handle, keys: '[MouseLeft>]', coords: { clientX: 100, clientY: 100 } },
+				{ coords: { clientX: 200, clientY: 150 } },
+				{ keys: '[/MouseLeft]' },
+			]);
 
-			document.dispatchEvent(new MouseEvent('mousemove', { clientX: 200, clientY: 150, bubbles: true }));
+			const rectAfter = panel.getBoundingClientRect();
 
-			document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
-
-			await expect(panel.style.transform).toBe('translate(100px, 50px)');
+			await expect(Math.round(rectAfter.left - rectBefore.left)).toBe(100);
+			await expect(Math.round(rectAfter.top - rectBefore.top)).toBe(50);
 		});
 
 		await step('Non-handle area does not trigger drag', async () => {
 			const label = canvas.getByText('Configure network');
-			const panel = label.closest('[data-state]') as HTMLElement;
-			const prevTransform = panel.style.transform;
+			const panel = getPanel();
+			const rectBefore = panel.getBoundingClientRect();
 
-			label.dispatchEvent(new MouseEvent('mousedown', { clientX: 0, clientY: 0, bubbles: true }));
+			await userEvent.pointer([
+				{ target: label, keys: '[MouseLeft>]', coords: { clientX: 0, clientY: 0 } },
+				{ coords: { clientX: 200, clientY: 200 } },
+				{ keys: '[/MouseLeft]' },
+			]);
 
-			document.dispatchEvent(new MouseEvent('mousemove', { clientX: 200, clientY: 200, bubbles: true }));
+			const rectAfter = panel.getBoundingClientRect();
 
-			document.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
-
-			await expect(panel.style.transform).toBe(prevTransform);
+			await expect(rectAfter.left).toBe(rectBefore.left);
+			await expect(rectAfter.top).toBe(rectBefore.top);
 		});
 
 		await step('Navigate steps while floating', async () => {
@@ -184,9 +195,10 @@ export const Draggable: Story = {
 		});
 
 		await step('Drag position resets after expanding', async () => {
-			const panel = canvas.getByText('Configure network').closest('[data-state]') as HTMLElement;
+			const resetRect = getPanel().getBoundingClientRect();
 
-			await expect(panel.style.transform).toBe('');
+			await expect(resetRect.left).toBe(dockedRect.left);
+			await expect(resetRect.top).toBe(dockedRect.top);
 		});
 	},
 };

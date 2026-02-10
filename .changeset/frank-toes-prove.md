@@ -2,5 +2,5 @@
 '@drivenets/design-system': minor
 ---
 
-- Change `DsStepper` by adding horizontal version, more composition options
-- Change `DsPanel` by adding draggable option for floating panel
+- Add horizontal version, more composition options to `DsStepper`
+- Add draggable option for floating panel to `DsPanel`
