@@ -11,6 +11,15 @@ export default defineConfig({
 	test: {
 		coverage: {
 			exclude: ['**/stories/**', '**/*.stories.{ts,tsx}', '**/.storybook/**', '**/*.scss'],
+			thresholds: {
+				lines: 90,
+				functions: 90,
+				branches: 90,
+				statements: 90,
+			},
+			watermarks: {
+				statements: [80, 90],
+			},
 		},
 		projects: [
 			{
