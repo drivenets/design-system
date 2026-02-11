@@ -43,6 +43,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
+		"@vitest/coverage-v8": "^4.0.18",
 		"eslint": "^9.39.2",
 		"publint": "^0.3.17",
 		"tsdown": "^0.18.4",
