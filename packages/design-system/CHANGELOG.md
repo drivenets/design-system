@@ -1,5 +1,17 @@
 # @drivenets/design-system
 
+## 0.5.0
+
+### Minor Changes
+
+- 8fa2522: - Add `Card` component
+
+### Patch Changes
+
+- f485640: Updates dependencies
+- ea528b9: - Add `className` option to the SecondaryRowAction props
+- 298d259: - Add special icons from Figma to the `DsIcon`
+
 ## 0.4.0
 
 ### Minor Changes
