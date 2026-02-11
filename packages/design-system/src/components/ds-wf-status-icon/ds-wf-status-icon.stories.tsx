@@ -43,7 +43,7 @@ export const Default: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		const icon = canvas.getByRole('img', { name: /running status/i });
+		const icon = canvas.getByLabelText(/running status/i);
 		await expect(icon).toBeInTheDocument();
 		await expect(icon).toHaveAccessibleName('running status');
 	},
@@ -86,29 +86,29 @@ export const All: Story = {
 		const canvas = within(canvasElement);
 
 		// Check active icons
-		const runningIcon = canvas.getByRole('img', { name: 'running status' });
+		const runningIcon = canvas.getByLabelText('running status');
 		await expect(runningIcon).toBeInTheDocument();
 
-		const warningIcon = canvas.getByRole('img', { name: 'warning status' });
+		const warningIcon = canvas.getByLabelText('warning status');
 		await expect(warningIcon).toBeInTheDocument();
 
-		const failedIcon = canvas.getByRole('img', { name: 'failed status' });
+		const failedIcon = canvas.getByLabelText('failed status');
 		await expect(failedIcon).toBeInTheDocument();
 
-		const pausedIcon = canvas.getByRole('img', { name: 'paused status' });
+		const pausedIcon = canvas.getByLabelText('paused status');
 		await expect(pausedIcon).toBeInTheDocument();
 
 		// Check inactive icons
-		const inactiveRunning = canvas.getByRole('img', { name: 'running status (inactive)' });
+		const inactiveRunning = canvas.getByLabelText('running status (inactive)');
 		await expect(inactiveRunning).toBeInTheDocument();
 
-		const inactiveWarning = canvas.getByRole('img', { name: 'warning status (inactive)' });
+		const inactiveWarning = canvas.getByLabelText('warning status (inactive)');
 		await expect(inactiveWarning).toBeInTheDocument();
 
-		const inactiveFailed = canvas.getByRole('img', { name: 'failed status (inactive)' });
+		const inactiveFailed = canvas.getByLabelText('failed status (inactive)');
 		await expect(inactiveFailed).toBeInTheDocument();
 
-		const inactivePaused = canvas.getByRole('img', { name: 'paused status (inactive)' });
+		const inactivePaused = canvas.getByLabelText('paused status (inactive)');
 		await expect(inactivePaused).toBeInTheDocument();
 	},
 };
