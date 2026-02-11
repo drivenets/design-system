@@ -193,7 +193,7 @@ $horizontal-description-line-clamp: 2;
 	}
 }
 
-.step.error {
+.step[data-error] {
 	.indicatorContainer .indicator {
 		background: var(--color-background-danger-weak);
 		color: var(--color-background-danger-strong);

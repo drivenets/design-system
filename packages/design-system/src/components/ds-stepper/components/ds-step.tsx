@@ -73,7 +73,7 @@ export function DsStep({
 
 		if (variant === 'error') {
 			return (
-				<span className={slotProps?.indicator?.className}>
+				<span {...slotProps?.indicator} className={slotProps?.indicator?.className}>
 					<DsIcon icon="close" className={indicatorClassName} />
 				</span>
 			);
@@ -81,7 +81,7 @@ export function DsStep({
 
 		if (completed) {
 			return (
-				<span className={slotProps?.indicator?.className}>
+				<span {...slotProps?.indicator} className={slotProps?.indicator?.className}>
 					<DsIcon icon="check" className={indicatorClassName} />
 				</span>
 			);
@@ -101,7 +101,7 @@ export function DsStep({
 			data-complete={completed ? '' : undefined}
 			data-disabled={disabled ? '' : undefined}
 			data-error={variant === 'error' ? '' : undefined}
-			className={classnames(styles.step, { [styles.error]: variant === 'error' }, className)}
+			className={classnames(styles.step, className)}
 			{...props}
 		>
 			{context.floating && <DsIcon icon="drag_indicator" className={styles.dragHandle} data-drag-handle="" />}
