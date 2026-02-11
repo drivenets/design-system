@@ -12,10 +12,12 @@ describe('Design System exports', () => {
 	const actualContent = fs.readFileSync('./src/index.ts', 'utf-8');
 	const actualLines = actualContent.split('\n').filter((line) => line.trim().length > 0);
 
-	expect(actualLines.length).toBe(expectedLines.length);
-
 	const tests = expectedLines.map((expectedLine, index) => {
 		return [actualLines[index], expectedLine];
+	});
+
+	it('should export all components', () => {
+		expect(actualLines.length).toBe(expectedLines.length);
 	});
 
 	// split expected by line and assert that each line is exported
