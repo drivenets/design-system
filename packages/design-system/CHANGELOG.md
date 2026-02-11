@@ -1,5 +1,12 @@
 # @drivenets/design-system
 
+## 0.6.0
+
+### Minor Changes
+
+- 9b50b80: - Add horizontal version, more composition options to `DsStepper`
+  - Add draggable option for floating panel to `DsPanel`
+
 ## 0.5.0
 
 ### Minor Changes
