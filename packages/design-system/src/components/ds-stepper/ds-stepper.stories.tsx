@@ -207,7 +207,7 @@ export const Horizontal: Story = {
 			<DsStepper
 				count={horizontalSteps.length}
 				orientation="horizontal"
-				actions={<DsNextStepButton>Next</DsNextStepButton>}
+				horizontalActions={<DsNextStepButton>Next</DsNextStepButton>}
 			>
 				{horizontalSteps.map((step, index) => (
 					<DsStep index={index} key={index}>
@@ -253,7 +253,7 @@ export const HorizontalFewSteps: Story = {
 			<DsStepper
 				count={fewSteps.length}
 				orientation="horizontal"
-				actions={<DsNextStepButton>Next</DsNextStepButton>}
+				horizontalActions={<DsNextStepButton>Next</DsNextStepButton>}
 			>
 				{fewSteps.map((step, index) => (
 					<DsStep index={index} key={index}>
@@ -297,7 +297,7 @@ export const HorizontalCompactFewSteps: Story = {
 			<DsStepper
 				count={fewCompactSteps.length}
 				orientation="horizontal"
-				actions={<DsNextStepButton>Next</DsNextStepButton>}
+				horizontalActions={<DsNextStepButton>Next</DsNextStepButton>}
 			>
 				{fewCompactSteps.map((step, index) => (
 					<DsStep index={index} key={index}>
@@ -361,7 +361,7 @@ export const CustomizedHorizontal: Story = {
 				orientation="horizontal"
 				activeStep={activeStep}
 				onStepChange={({ step }) => setActiveStep(step)}
-				actions={
+				horizontalActions={
 					<DsNextStepButton variant="ghost">
 						{activeStep === customSteps.length - 1 ? 'Finish' : 'Continue'}
 					</DsNextStepButton>

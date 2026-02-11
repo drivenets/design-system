@@ -14,7 +14,7 @@ export function DsStepper({
 	onComplete,
 	children,
 	className,
-	actions,
+	horizontalActions,
 }: DsStepperProps) {
 	const stepsApi = useSteps({ count, activeStep, onStepChange, onComplete, orientation });
 
@@ -43,7 +43,7 @@ export function DsStepper({
 					<>
 						<div className={styles.stepsContainer}>{children}</div>
 
-						{actions && <div className={styles.navActions}>{actions}</div>}
+						{horizontalActions && <div className={styles.navActions}>{horizontalActions}</div>}
 					</>
 				) : (
 					children

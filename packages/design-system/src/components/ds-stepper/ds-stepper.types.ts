@@ -13,6 +13,9 @@ export type DsStepperProps = PropsWithChildren<
 		onComplete?: steps.Props['onStepComplete'];
 		activeStep?: steps.Props['step'];
 		className?: string;
-		actions?: ReactNode;
+		/**
+		 * Represents optional ReactNode elements that are displayed as a set of horizontal actions (only horizontal orientation).
+		 */
+		horizontalActions?: ReactNode;
 	} & Pick<steps.Props, 'onStepChange' | 'count'>
 >;
