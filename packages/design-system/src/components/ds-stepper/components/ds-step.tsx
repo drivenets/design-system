@@ -3,6 +3,7 @@ import { useStepper } from '../hooks/use-stepper';
 import classnames from 'classnames';
 import styles from '../ds-stepper.module.scss';
 import DsIcon from '../../ds-icon/ds-icon';
+import { DsStepSeparator } from './ds-step-separator';
 
 export type DsStepProps = PropsWithChildren<{
 	index: number;
@@ -96,9 +97,7 @@ export function DsStep({ index, children, className, disabled, isError, slots, s
 			<div {...context.stepsApi.getIndicatorProps({ index })} className={styles.indicatorContainer}>
 				{renderIndicator()}
 
-				{!isHorizontal && (
-					<div {...context.stepsApi.getSeparatorProps({ index })} className={styles.separator} />
-				)}
+				{!isHorizontal && <DsStepSeparator index={index} />}
 			</div>
 
 			{children}

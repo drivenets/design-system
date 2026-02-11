@@ -113,15 +113,16 @@ $horizontal-description-line-clamp: 2;
 			left: 50%;
 			margin-left: calc($separator-width / -2);
 			background: var(--color-border);
+			z-index: 10;
 
 			&[data-complete] {
 				background: var(--color-background-selected);
 			}
-		}
-	}
 
-	&:last-child .indicatorContainer .separator {
-		display: none;
+			&[data-current] {
+				background: var(--color-background-selected);
+			}
+		}
 	}
 
 	.stepContent {
@@ -269,6 +270,10 @@ $horizontal-description-line-clamp: 2;
 
 		&[data-complete] {
 			background: var(--color-background-selected);
+		}
+
+		&[data-current] {
+			background: var(--color-outline-moderate);
 		}
 	}
 
