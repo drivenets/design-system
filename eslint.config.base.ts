@@ -5,10 +5,8 @@ import tseslint from 'typescript-eslint';
 import unicorn from 'eslint-plugin-unicorn';
 import importX, { createNodeResolver } from 'eslint-plugin-import-x';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import vitest from '@vitest/eslint-plugin';
 import globals from 'globals';
-
-// Keep in sync with tsconfig.base.json "exclude".
-const GLOBAL_IGNORES = ['**/dist', '**/.turbo', '**/coverage'];
 
 export default defineConfig(
 	// Base rules.
@@ -131,5 +129,45 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(GLOBAL_IGNORES),
+	// Test rules.
+	{
+		files: ['**/*.@(test|spec).[tj]s?(x)'],
+		...vitest.configs.recommended,
+		rules: {
+			...vitest.configs.recommended.rules,
+			'vitest/prefer-vi-mocked': 'error',
+			'vitest/prefer-hooks-on-top': 'error',
+			'vitest/no-duplicate-hooks': 'error',
+			'vitest/hoisted-apis-on-top': 'error',
+
+			'vitest/consistent-each-for': [
+				'error',
+				{
+					test: 'each',
+					it: 'each',
+					describe: 'each',
+					suite: 'each',
+				},
+			],
+
+			'vitest/consistent-test-filename': [
+				'error',
+				{
+					pattern: '\\.test\\.[tj]sx?$',
+				},
+			],
+
+			'vitest/consistent-test-it': [
+				'error',
+				{
+					fn: 'it',
+					withinDescribe: 'it',
+				},
+			],
+
+			'vitest/prefer-hooks-in-order': 'error',
+		},
+	},
+
+	globalIgnores(['**/dist', '**/.turbo']),
 );
