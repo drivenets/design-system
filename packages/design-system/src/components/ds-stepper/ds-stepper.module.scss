@@ -45,6 +45,13 @@ $horizontal-description-line-clamp: 2;
 }
 .root {
 	background: var(--color-background);
+	overflow-y: auto;
+}
+
+.verticalActions {
+	display: flex;
+	gap: $actions-gap;
+	padding: $step-padding;
 }
 
 .step {
@@ -211,7 +218,7 @@ $horizontal-description-line-clamp: 2;
 		overflow-x: auto;
 	}
 
-	.navActions {
+	.horizontalActions {
 		display: flex;
 		align-items: center;
 		flex-shrink: 0;

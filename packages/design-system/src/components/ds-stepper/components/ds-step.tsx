@@ -9,7 +9,11 @@ export type DsStepProps = PropsWithChildren<{
 	index: number;
 	className?: string;
 	disabled?: boolean;
-	isError?: boolean;
+	/**
+	 * Represents the variant type that determines the state or style of a component.
+	 * @default 'default'
+	 */
+	variant?: 'error' | 'default';
 	slots?: {
 		indicator?: ReactNode;
 	};
@@ -21,7 +25,15 @@ export type DsStepProps = PropsWithChildren<{
 	};
 }>;
 
-export function DsStep({ index, children, className, disabled, isError, slots, slotProps }: DsStepProps) {
+export function DsStep({
+	index,
+	children,
+	className,
+	disabled,
+	variant = 'default',
+	slots,
+	slotProps,
+}: DsStepProps) {
 	const context = useStepper();
 
 	const { completed, current, last } = context.stepsApi.getItemState({ index });
@@ -59,7 +71,7 @@ export function DsStep({ index, children, className, disabled, isError, slots, s
 			);
 		}
 
-		if (isError) {
+		if (variant === 'error') {
 			return (
 				<span className={slotProps?.indicator?.className}>
 					<DsIcon icon="close" className={indicatorClassName} />
@@ -88,8 +100,8 @@ export function DsStep({ index, children, className, disabled, isError, slots, s
 			data-current={current ? '' : undefined}
 			data-complete={completed ? '' : undefined}
 			data-disabled={disabled ? '' : undefined}
-			data-error={isError ? '' : undefined}
-			className={classnames(styles.step, { [styles.error]: isError }, className)}
+			data-error={variant === 'error' ? '' : undefined}
+			className={classnames(styles.step, { [styles.error]: variant === 'error' }, className)}
 			{...props}
 		>
 			{context.floating && <DsIcon icon="drag_indicator" className={styles.dragHandle} data-drag-handle="" />}
