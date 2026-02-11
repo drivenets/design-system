@@ -123,6 +123,9 @@ jobs:
       - name: Run Tests
         run: pnpm test --affected
 
+      - name: Check Coverage Thresholds
+        run: pnpm --filter @drivenets/design-system test:coverage
+
   build:
     name: Build
     runs-on: ubuntu-latest
