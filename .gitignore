@@ -4,7 +4,8 @@ dist
 *.log
 
 .idea
-.vscode
 .turbo
 .DS_Store
 .changeset-status.json
+
+actionlint

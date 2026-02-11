@@ -1,3 +1,4 @@
 coverage
 .scss-dts
 storybook-static
+/coverage

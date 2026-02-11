@@ -6,7 +6,7 @@ tooling:
   - changed-files:
       - any-glob-to-any-file:
           - '**/.nvmrc'
-          - '**/.prettier*'
+          - '**/.oxfmtrc*'
           - '**/.syncpack*'
           - '**/commitlint.config.*'
           - '**/cspell*'

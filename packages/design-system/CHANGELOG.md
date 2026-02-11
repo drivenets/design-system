@@ -1,5 +1,19 @@
 # @drivenets/design-system
 
+## 0.4.0
+
+### Minor Changes
+
+- 888480d: Fix tab not closing
+- f924d2f: - Add layout and variant (info) props to `DsModal`
+  - Deprecate `DsConfirmation`
+- 8e01acd: Add `DSAutocomplete` component
+
+### Patch Changes
+
+- 87f96dd: Fix dropdown z-index issue
+- 6d5f4f0: Add support for controlled table filters
+
 ## 0.3.0
 
 ### Minor Changes

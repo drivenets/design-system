@@ -4,7 +4,6 @@
 		"module": "preserve",
 		"moduleResolution": "bundler",
 		"target": "esnext",
-		"types": [],
 
 		// Other Outputs
 		"sourceMap": true,
@@ -28,5 +27,5 @@
 		"erasableSyntaxOnly": true,
 		"checkJs": true
 	},
-	"exclude": ["**/dist"]
+	"exclude": ["**/dist", "**/coverage"]
 }

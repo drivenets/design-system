@@ -84,6 +84,7 @@ Before submitting a PR, run a local code review (apply latest `main` changes!):
 - Commit your changes with a descriptive message following the Conventional Commits standard (e.g., `feat(design-system): add new button component [TICKET-ID]`).
 - Add a changelog entry if needed using `pnpm changelog`.
   See [Intro to Using Changesets](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md) and [Adding a Changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) for more details.
+  If your change doesn’t require a new release, you can add the `skip changelog` label to the GitHub PR.
 - Push your branch and open a pull request for review.
 
 > [!NOTE]
@@ -97,7 +98,7 @@ We're using the following technologies in this monorepo:
 - **Package Management**: [pnpm](https://pnpm.io/)
 - **Linting**: [ESLint](https://eslint.org/) and [Typescript ESLint](https://typescript-eslint.io/) with strict config
 - **Type Checking**: [TypeScript](https://www.typescriptlang.org/)
-- **Code Formatting**: [Prettier](https://prettier.io/)
+- **Code Formatting**: [Oxfmt](https://oxc.rs/docs/guide/usage/formatter)
 - **Testing**: [Vitest](https://vitest.dev/) with [Browser Mode](https://vitest.dev/guide/browser/) and [Playwright](https://playwright.dev/)
 - **Building**: [tsdown](https://tsdown.dev/) with [React Compiler](https://react.dev/learn/react-compiler) and [Sass Embedded](https://www.npmjs.com/package/sass-embedded)
 - **Package Validation**: [publint](https://github.com/publint/publint) and [attw](https://github.com/arethetypeswrong/arethetypeswrong.github.io)
