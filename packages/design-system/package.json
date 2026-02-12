@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/design-system",
-	"version": "0.4.0",
+	"version": "0.6.0",
 	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./dist/index.d.cts",
@@ -43,6 +43,7 @@
 		"test": "vitest",
 		"test:coverage": "vitest --coverage",
 		"build": "tsdown",
+		"build:watch": "pnpm build --watch",
 		"build:storybook": "storybook build",
 		"build:lint": "publint && attw --pack"
 	},
