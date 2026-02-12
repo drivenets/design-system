@@ -6,7 +6,7 @@ import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import { DsTextarea } from '../../../ds-textarea';
-import { formatRelativeTime } from '../../utils';
+import { formatRelativeTime } from '../../../../utils/format-relative-time';
 import type { DsThreadItemProps } from './ds-thread-item.types';
 
 export const DsThreadItem = ({
@@ -29,10 +29,14 @@ export const DsThreadItem = ({
 		setEditContent(content);
 	}, [content]);
 
+	const isSaveDisabled = !editContent.trim() || editContent === content;
+
 	const handleSaveEdit = () => {
-		if (editContent.trim() && editContent !== content) {
-			onEdit?.(id, editContent);
+		if (isSaveDisabled) {
+			return;
 		}
+
+		onEdit?.(id, editContent);
 		setIsEditing(false);
 	};
 
@@ -76,7 +80,7 @@ export const DsThreadItem = ({
 							<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleCancelEdit}>
 								Cancel
 							</DsButton>
-							<DsButton design="v1.2" size="small" onClick={handleSaveEdit}>
+							<DsButton design="v1.2" size="small" onClick={handleSaveEdit} disabled={isSaveDisabled}>
 								Save
 							</DsButton>
 						</div>
@@ -91,7 +95,14 @@ export const DsThreadItem = ({
 					{hasEditActions && (
 						<DsDropdownMenu.Root>
 							<DsDropdownMenu.Trigger asChild>
-								<DsButton design="v1.2" buttonType="tertiary" size="small" aria-label="More actions">
+								<DsButton
+									design="v1.2"
+									buttonType="tertiary"
+									size="small"
+									aria-label="More actions"
+									className={styles.actionButton}
+									contentClassName={styles.iconButtonContent}
+								>
 									<DsIcon icon="more_vert" size="tiny" />
 								</DsButton>
 							</DsDropdownMenu.Trigger>
@@ -121,6 +132,8 @@ export const DsThreadItem = ({
 							size="small"
 							onClick={() => onResolved(id)}
 							aria-label="Mark message as resolved"
+							className={styles.actionButton}
+							contentClassName={styles.iconButtonContent}
 						>
 							<DsIcon icon="check_circle" size="tiny" />
 						</DsButton>

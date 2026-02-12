@@ -1,7 +1,8 @@
+@import '../../styles/mixin';
+
 $side-color-width: 4px;
 $border-width: 1px;
 $line-clamp-count: 3;
-$disabled-opacity: 0.6;
 $transition-duration: 0.2s;
 
 .card {
@@ -29,11 +30,7 @@ $transition-duration: 0.2s;
 		}
 	}
 
-	&.disabled {
-		cursor: not-allowed;
-		opacity: $disabled-opacity;
-		pointer-events: none;
-	}
+	@include disabled-overlay;
 }
 
 .sideColor {

@@ -1,7 +1,8 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { CommentAuthor, CommentData } from '../ds-comment-card';
 
 export interface DsCommentBubbleProps {
+	ref?: Ref<HTMLDivElement>;
 	comment?: CommentData;
 	currentUser?: CommentAuthor;
 	actionRequired?: boolean;

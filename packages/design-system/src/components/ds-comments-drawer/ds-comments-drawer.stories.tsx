@@ -286,6 +286,12 @@ export const WithSearch: Story = {
 		comments: createMockComments(),
 		searchQuery: 'Karen',
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const searchInput = canvas.getByPlaceholderText(/search/i);
+
+		await expect(searchInput).toBeInTheDocument();
+	},
 };
 
 export const Empty: Story = {
@@ -372,15 +378,15 @@ Interactive story demonstrating the filter functionality.
 
 		return (
 			<div className={styles.storyWrapper}>
-				<div style={{ padding: '20px', backgroundColor: 'var(--color-background-secondary)' }}>
-					<h3 style={{ marginBottom: '12px' }}>Filter Demonstration</h3>
-					<p style={{ marginBottom: '8px', color: 'var(--color-font-secondary)' }}>
+				<div className={styles.filterDemo}>
+					<h3 className={styles.filterDemoTitle}>Filter Demonstration</h3>
+					<p className={styles.filterDemoText}>
 						The drawer is open by default. Click the filter icon to explore filtering options.
 					</p>
-					<p style={{ marginBottom: '8px', color: 'var(--color-font-secondary)' }}>
+					<p className={styles.filterDemoText}>
 						<strong>Try filtering by:</strong>
 					</p>
-					<ul style={{ marginLeft: '20px', color: 'var(--color-font-secondary)' }}>
+					<ul className={styles.filterDemoList}>
 						<li>Author: &quot;Karen J.&quot; to see 2 comments</li>
 						<li>Label: &quot;Bug&quot; to see 2 comments</li>
 						<li>Status: &quot;Action required&quot; to see 1 comment</li>

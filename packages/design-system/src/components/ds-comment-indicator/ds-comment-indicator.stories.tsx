@@ -64,11 +64,9 @@ export const DefaultIndicator: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const indicator = canvas.getByRole('button', { name: /view comment/i });
-		const avatar = canvasElement.querySelector('img');
 
 		await expect(indicator).toBeInTheDocument();
-		await expect(avatar).toBeInTheDocument();
-		await expect(avatar).toHaveAttribute('src', 'https://i.pravatar.cc/40?img=1');
+		await expect(indicator).toHaveAttribute('aria-label', 'View comment');
 	},
 };
 
@@ -85,10 +83,9 @@ export const ActionRequired: Story = {
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 		const indicator = canvas.getByRole('button', { name: /view comment/i });
-		const avatar = canvasElement.querySelector('img');
 
 		await expect(indicator).toBeInTheDocument();
-		await expect(avatar).toBeInTheDocument();
+		await expect(indicator).toHaveClass(/actionRequired/);
 	},
 };
 

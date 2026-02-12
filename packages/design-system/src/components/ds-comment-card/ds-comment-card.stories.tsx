@@ -70,7 +70,7 @@ const meta: Meta<typeof DsCommentCard> = {
 	tags: ['autodocs'],
 	decorators: [
 		(Story) => (
-			<div style={{ width: '484px' }}>
+			<div className={styles.decorator}>
 				<Story />
 			</div>
 		),
@@ -161,12 +161,12 @@ export const DefaultCard: Story = {
 
 export const ActionRequired: Story = {
 	args: {
-		comment: createMockComment(),
+		comment: createMockComment({ isActionRequired: true }),
 		overflow: 'hidden',
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #/i });
+		const card = canvas.getByRole('button', { name: /action required/i });
 
 		await expect(card).toBeInTheDocument();
 	},

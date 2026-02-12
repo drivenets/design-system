@@ -6,6 +6,24 @@ $dropdown-min-width: 180px;
 $border-radius-circle: 50%;
 $transition-duration: 0.2s;
 
+@mixin icon-button-size {
+	&#{&} {
+		width: $icon-button-size;
+		height: $icon-button-size;
+		min-width: $icon-button-size;
+		min-height: $icon-button-size;
+		padding: 0;
+		border: none;
+	}
+}
+
+.iconButtonContent {
+	height: $icon-button-size !important;
+	min-height: $icon-button-size !important;
+	padding: 0 !important;
+	border: none !important;
+}
+
 .threadItem {
 	display: flex;
 	gap: var(--spacing-lg);
@@ -100,31 +118,10 @@ $transition-duration: 0.2s;
 	gap: var(--spacing-xs);
 	opacity: 0;
 	transition: opacity $transition-duration ease;
+}
 
-	button {
-		width: $icon-button-size !important;
-		height: $icon-button-size !important;
-		min-width: $icon-button-size !important;
-		min-height: $icon-button-size !important;
-		padding: 0 !important;
-		border: none !important;
-
-		> * {
-			width: $icon-button-size !important;
-			height: $icon-button-size !important;
-			padding: 0 !important;
-			min-width: $icon-button-size !important;
-			min-height: $icon-button-size !important;
-		}
-
-		span {
-			width: $icon-button-size !important;
-			height: $icon-button-size !important;
-			padding: 0 !important;
-			min-width: $icon-button-size !important;
-			min-height: $icon-button-size !important;
-		}
-	}
+.actionButton {
+	@include icon-button-size;
 }
 
 .editContainer {
@@ -145,5 +142,8 @@ $transition-duration: 0.2s;
 
 .dropdownContent {
 	min-width: $dropdown-min-width;
-	z-index: 1300 !important;
+
+	&#{&} {
+		z-index: 1300;
+	}
 }

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import styles from './ds-comments-drawer.module.scss';
 import type { DsCommentsDrawerProps } from './ds-comments-drawer.types';
 import { DsDrawer } from '../ds-drawer';
@@ -39,49 +39,44 @@ export const DsCommentsDrawer = ({
 	const [pendingFilters, setPendingFilters] = useState<CommentsFilterState>(initialFilterState);
 	const [appliedFilters, setAppliedFilters] = useState<CommentsFilterState>(initialFilterState);
 
-	const { availableAuthors, availableLabels, authorMap } = useMemo(() => {
-		const authorsMap = new Map<string, string>();
-		const labelsSet = new Set<string>();
+	const authorsMap = new Map<string, string>();
+	const labelsSet = new Set<string>();
 
-		comments.forEach((comment) => {
-			authorsMap.set(comment.author.id, comment.author.name);
-			comment.labels?.forEach((label) => labelsSet.add(label));
+	comments.forEach((comment) => {
+		authorsMap.set(comment.author.id, comment.author.name);
+		comment.labels?.forEach((label) => labelsSet.add(label));
+	});
+
+	const availableAuthors = Array.from(authorsMap.entries()).map(([id, name]) => ({ id, name }));
+	const availableLabels = Array.from(labelsSet);
+
+	let filteredComments = comments;
+
+	if (!showResolved) {
+		filteredComments = filteredComments.filter((c) => !c.isResolved);
+	}
+
+	filteredComments = applyFilters(
+		filteredComments,
+		appliedFilters,
+		(comment) => comment.isActionRequired || false,
+	);
+
+	if (searchQuery) {
+		const query = searchQuery.toLowerCase();
+		filteredComments = filteredComments.filter((comment) => {
+			const matchesContent = comment.messages.some((m) => m.content.toLowerCase().includes(query));
+			const matchesAuthor = comment.author.name.toLowerCase().includes(query);
+			const matchesId = `#${String(comment.numericId)}`.includes(query);
+			return matchesContent || matchesAuthor || matchesId;
 		});
+	}
 
-		return {
-			availableAuthors: Array.from(authorsMap.entries()).map(([id, name]) => ({ id, name })),
-			availableLabels: Array.from(labelsSet),
-			authorMap: authorsMap,
-		};
-	}, [comments]);
-
-	const filteredComments = useMemo(() => {
-		let result = comments;
-
-		if (!showResolved) {
-			result = result.filter((c) => !c.isResolved);
-		}
-
-		result = applyFilters(result, appliedFilters, (comment) => comment.isActionRequired || false);
-
-		if (searchQuery) {
-			const query = searchQuery.toLowerCase();
-			result = result.filter((comment) => {
-				const matchesContent = comment.messages.some((m) => m.content.toLowerCase().includes(query));
-				const matchesAuthor = comment.author.name.toLowerCase().includes(query);
-				const matchesId = `#${String(comment.numericId)}`.includes(query);
-				return matchesContent || matchesAuthor || matchesId;
-			});
-		}
-
-		return result;
-	}, [comments, showResolved, appliedFilters, searchQuery]);
-
-	const commentCount = useMemo(() => comments.filter((c) => !c.isResolved).length, [comments]);
-	const resolvedCount = useMemo(() => comments.filter((c) => c.isResolved).length, [comments]);
+	const commentCount = comments.filter((c) => !c.isResolved).length;
+	const resolvedCount = comments.filter((c) => c.isResolved).length;
 	const hasResolved = resolvedCount > 0;
 
-	const filterTags = useMemo(() => filtersToTags(appliedFilters, authorMap), [appliedFilters, authorMap]);
+	const filterTags = filtersToTags(appliedFilters, authorsMap);
 
 	const handleShowResolvedToggle = () => {
 		onShowResolvedChange?.(!showResolved);
@@ -159,14 +154,8 @@ export const DsCommentsDrawer = ({
 
 				{hasResolved && (
 					<DsDrawer.Toolbar>
-						<DsButton
-							design="v1.2"
-							buttonType="tertiary"
-							size="small"
-							onClick={handleShowResolvedToggle}
-							disabled={resolvedCount === 0}
-						>
-							Show resolved ({resolvedCount})
+						<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleShowResolvedToggle}>
+							{showResolved ? 'Hide' : 'Show'} resolved ({resolvedCount})
 						</DsButton>
 					</DsDrawer.Toolbar>
 				)}
@@ -177,6 +166,7 @@ export const DsCommentsDrawer = ({
 							items={filterTags}
 							onClearAll={handleClearAllFilters}
 							onItemDelete={handleDeleteTag}
+							className={styles.tagFilter}
 						/>
 					</DsDrawer.Toolbar>
 				)}

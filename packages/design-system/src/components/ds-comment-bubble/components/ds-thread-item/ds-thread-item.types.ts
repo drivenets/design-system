@@ -5,7 +5,6 @@ export interface DsThreadItemProps {
 	author: CommentAuthor;
 	content: string;
 	createdAt: Date;
-	isAuthorMessage?: boolean;
 	isCommentAuthorMessage?: boolean;
 	canModify?: boolean;
 	onEdit?: (messageId: string, newContent: string) => void;

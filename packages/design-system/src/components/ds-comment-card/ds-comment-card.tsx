@@ -6,9 +6,10 @@ import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 import { DsTag } from '../ds-tag';
 import { DsDropdownMenu } from '../ds-dropdown-menu';
-import { formatRelativeTime } from '../ds-comment-bubble/utils';
+import { formatRelativeTime } from '../../utils/format-relative-time';
 
 export const DsCommentCard = ({
+	ref,
 	comment,
 	disabled = false,
 	overflow = 'hidden',
@@ -64,17 +65,13 @@ export const DsCommentCard = ({
 
 	return (
 		<button
+			ref={ref}
 			type="button"
-			className={classNames(
-				styles.card,
-				{
-					[styles.disabled]: disabled,
-				},
-				className,
-			)}
+			className={classNames(styles.card, className)}
 			style={style}
 			onClick={onClick}
 			disabled={disabled}
+			data-disabled={disabled ? '' : undefined}
 			aria-label={`Comment #${String(numericId)} by ${author.name}${isActionRequired ? ', action required' : ''}`}
 		>
 			<div

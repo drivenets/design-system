@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import classNames from 'classnames';
 import styles from './ds-comment-thread.module.scss';
 import { DsThreadItem } from '../ds-thread-item';
@@ -24,7 +24,7 @@ export const DsCommentThread = ({
 
 	const hasOverflow = useScrollOverflow(scrollContainerRef, messages.length);
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
 	}, [messages.length]);
 

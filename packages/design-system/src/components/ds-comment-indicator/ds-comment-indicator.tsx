@@ -1,11 +1,14 @@
 import classNames from 'classnames';
 import styles from './ds-comment-indicator.module.scss';
 import type { DsCommentIndicatorProps } from './ds-comment-indicator.types';
+import { DsAvatar } from '../ds-avatar';
 
 export const DsCommentIndicator = ({
 	type = 'placeholder',
 	avatarSrc,
+	avatarName = '',
 	onClick,
+	ref,
 	className,
 	style,
 }: DsCommentIndicatorProps) => {
@@ -21,6 +24,7 @@ export const DsCommentIndicator = ({
 
 	return (
 		<button
+			ref={ref}
 			type="button"
 			className={classNames(
 				styles.indicator,
@@ -37,7 +41,7 @@ export const DsCommentIndicator = ({
 			{isPlaceholder ? (
 				<span className={styles.plusIcon}>+</span>
 			) : (
-				<img src={avatarSrc} alt="" className={styles.avatar} />
+				<DsAvatar src={avatarSrc} name={avatarName} size="sm" className={styles.avatar} />
 			)}
 		</button>
 	);

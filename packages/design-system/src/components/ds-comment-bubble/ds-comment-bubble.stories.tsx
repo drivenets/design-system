@@ -161,6 +161,14 @@ export const TypingWithActionRequired: Story = {
 		value: 'This needs attention!',
 		actionRequired: true,
 	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const checkbox = canvas.getByRole('checkbox', { name: /action required/i });
+		const sendButton = canvas.getByRole('button', { name: /send/i });
+
+		await expect(checkbox).toBeChecked();
+		await expect(sendButton).toBeEnabled();
+	},
 };
 
 export const Thread: Story = {
@@ -181,6 +189,12 @@ export const ThreadWithActionRequired: Story = {
 		comment: createMockComment(),
 		actionRequired: true,
 		currentUser,
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const dialog = canvas.getByRole('dialog', { name: /comment thread #63/i });
+
+		await expect(dialog).toBeInTheDocument();
 	},
 };
 

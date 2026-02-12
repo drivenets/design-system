@@ -1,7 +1,8 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { CommentData } from '../ds-comment-card';
 
 export interface DsCommentsDrawerProps {
+	ref?: Ref<HTMLElement>;
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	comments: CommentData[];

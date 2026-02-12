@@ -5,3 +5,22 @@
 	min-height: 100vh;
 	padding: var(--spacing-standard);
 }
+
+.filterDemo {
+	padding: var(--spacing-standard);
+	background-color: var(--color-background-secondary);
+}
+
+.filterDemoTitle {
+	margin-bottom: var(--spacing-sm);
+}
+
+.filterDemoText {
+	margin-bottom: var(--spacing-xs);
+	color: var(--color-font-secondary);
+}
+
+.filterDemoList {
+	margin-left: var(--spacing-standard);
+	color: var(--color-font-secondary);
+}

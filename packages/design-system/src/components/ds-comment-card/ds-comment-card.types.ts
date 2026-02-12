@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 
 export interface CommentAuthor {
 	id: string;
@@ -28,6 +28,7 @@ export interface CommentData {
 }
 
 export interface DsCommentCardProps {
+	ref?: Ref<HTMLButtonElement>;
 	comment: CommentData;
 	disabled?: boolean;
 	overflow?: 'hidden' | 'displayed';

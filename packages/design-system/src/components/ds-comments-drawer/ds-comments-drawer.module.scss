@@ -60,12 +60,8 @@ $scrollbar-border-radius-pill: 9999px;
 .filterTagsToolbar {
 	min-width: 0;
 	overflow: hidden;
+}
 
-	:global(.ds-tag-filter) {
-		min-width: 0;
-	}
-
-	:global(.ds-tag) {
-		max-width: 200px;
-	}
+.tagFilter {
+	min-width: 0;
 }

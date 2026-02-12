@@ -9,8 +9,10 @@ import { DsIcon } from '../ds-icon';
 import { DsTag } from '../ds-tag';
 import { DsDropdownMenu } from '../ds-dropdown-menu';
 import { useClickOutside, useAutoResize } from './hooks';
+import { mergeRefs } from '../ds-table/utils/merge-refs';
 
 export const DsCommentBubble = ({
+	ref,
 	comment,
 	currentUser,
 	actionRequired = false,
@@ -43,13 +45,14 @@ export const DsCommentBubble = ({
 	const maxTextareaHeight = 480;
 
 	const bubbleRef = useRef<HTMLDivElement>(null);
+	const mergedRef = mergeRefs(ref, bubbleRef);
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	const handleClickOutside = useCallback(() => {
 		if (isInitialMode) {
-			onValueChange?.('');
+			onClose?.();
 		}
-	}, [isInitialMode, onValueChange]);
+	}, [isInitialMode, onClose]);
 
 	useClickOutside(bubbleRef, handleClickOutside, isInitialMode);
 	useAutoResize(textareaRef, value, maxTextareaHeight);
@@ -89,7 +92,7 @@ export const DsCommentBubble = ({
 
 	return (
 		<div
-			ref={bubbleRef}
+			ref={mergedRef}
 			className={classNames(
 				styles.bubble,
 				{
@@ -102,7 +105,11 @@ export const DsCommentBubble = ({
 			)}
 			style={style}
 			role="dialog"
-			aria-label={isInitialMode ? 'Add new comment' : `Comment thread #${String(comment?.numericId ?? '')}`}
+			aria-label={
+				isInitialMode
+					? 'Add new comment'
+					: `Comment thread${comment?.numericId ? ` #${String(comment.numericId)}` : ''}`
+			}
 		>
 			{showHeader && comment && (
 				<div className={styles.header}>
@@ -118,7 +125,14 @@ export const DsCommentBubble = ({
 						<div className={styles.headerActions}>
 							<DsDropdownMenu.Root>
 								<DsDropdownMenu.Trigger asChild>
-									<DsButton design="v1.2" buttonType="tertiary" size="small" aria-label="More actions">
+									<DsButton
+										design="v1.2"
+										buttonType="tertiary"
+										size="small"
+										aria-label="More actions"
+										className={styles.headerActionButton}
+										contentClassName={styles.iconButtonContent}
+									>
 										<DsIcon icon="more_vert" size="tiny" />
 									</DsButton>
 								</DsDropdownMenu.Trigger>
@@ -146,9 +160,10 @@ export const DsCommentBubble = ({
 									design="v1.2"
 									buttonType="tertiary"
 									size="small"
-									{...({ onClick: onResolve } as { onClick: () => void })}
+									onClick={() => onResolve()}
 									aria-label="Resolve"
 									className={styles.headerActionButton}
+									contentClassName={styles.iconButtonContent}
 								>
 									<DsIcon icon="check_circle" size="tiny" />
 								</DsButton>
@@ -160,8 +175,9 @@ export const DsCommentBubble = ({
 								design="v1.2"
 								buttonType="tertiary"
 								size="small"
-								{...({ onClick: onClose } as { onClick: () => void })}
+								onClick={() => onClose()}
 								className={styles.headerActionButton}
+								contentClassName={styles.iconButtonContent}
 								aria-label="Close"
 							>
 								<DsIcon icon="close" size="tiny" />

@@ -7,6 +7,7 @@ import { DsTypography } from '../../../ds-typography';
 import { DsCheckbox } from '../../../ds-checkbox';
 import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';
+import { DsDateInput } from '../../../ds-date-input';
 
 export const CommentsFilterModal = ({
 	open,
@@ -41,12 +42,12 @@ export const CommentsFilterModal = ({
 		});
 	};
 
-	const handleDateFromChange = (value: string) => {
-		onFiltersChange({ ...filters, dateFrom: value || undefined });
+	const handleDateFromChange = (value: string | undefined) => {
+		onFiltersChange({ ...filters, dateFrom: value });
 	};
 
-	const handleDateToChange = (value: string) => {
-		onFiltersChange({ ...filters, dateTo: value || undefined });
+	const handleDateToChange = (value: string | undefined) => {
+		onFiltersChange({ ...filters, dateTo: value });
 	};
 
 	const filterCounts = {
@@ -138,7 +139,7 @@ export const CommentsFilterModal = ({
 					<DsTabs.Content value="authors" className={styles.tabContent}>
 						<div className={styles.filterSection}>
 							{availableAuthors.length === 0 ? (
-								<DsTypography variant="body-sm-reg" style={{ color: 'var(--color-font-secondary)' }}>
+								<DsTypography variant="body-sm-reg" className={styles.emptyMessage}>
 									No authors available
 								</DsTypography>
 							) : (
@@ -159,22 +160,24 @@ export const CommentsFilterModal = ({
 								<DsTypography variant="body-sm-md" className={styles.dateLabel}>
 									From
 								</DsTypography>
-								<input
-									type="date"
-									value={filters.dateFrom || ''}
-									onChange={(e) => handleDateFromChange(e.target.value)}
-									className={styles.dateInput}
+								<DsDateInput
+									value={filters.dateFrom}
+									onValueChange={handleDateFromChange}
+									max={filters.dateTo}
+									placeholder="Select start date"
+									disablePortal
 								/>
 							</div>
 							<div className={styles.dateField}>
 								<DsTypography variant="body-sm-md" className={styles.dateLabel}>
 									To
 								</DsTypography>
-								<input
-									type="date"
-									value={filters.dateTo || ''}
-									onChange={(e) => handleDateToChange(e.target.value)}
-									className={styles.dateInput}
+								<DsDateInput
+									value={filters.dateTo}
+									onValueChange={handleDateToChange}
+									min={filters.dateFrom}
+									placeholder="Select end date"
+									disablePortal
 								/>
 							</div>
 						</div>
@@ -182,7 +185,7 @@ export const CommentsFilterModal = ({
 					<DsTabs.Content value="labels" className={styles.tabContent}>
 						<div className={styles.filterSection}>
 							{availableLabels.length === 0 ? (
-								<DsTypography variant="body-sm-reg" style={{ color: 'var(--color-font-secondary)' }}>
+								<DsTypography variant="body-sm-reg" className={styles.emptyMessage}>
 									No labels available
 								</DsTypography>
 							) : (
