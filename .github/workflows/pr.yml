@@ -124,7 +124,7 @@ jobs:
         run: pnpm test --affected
 
       - name: Check Coverage Thresholds
-        run: pnpm --filter @drivenets/design-system test:coverage
+        run: pnpm --filter @drivenets/design-system test:coverage --run
 
   build:
     name: Build
