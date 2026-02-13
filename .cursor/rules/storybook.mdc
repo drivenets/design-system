@@ -1,0 +1,153 @@
+---
+description: Storybook story and interaction test standards
+globs: **/*.stories.tsx
+---
+
+# Storybook Standards
+
+## Interaction Tests
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Every story needs a `play` function**      | Stories without `play` are untested; add at minimum a render assertion            |
+| **Use `fn()` for callback spying**           | Import from `@storybook/test`; pass as args for action logs + test assertions    |
+| **Use a11y queries**                         | `getByRole`, `getByLabelText`, `getByText` over `getByTestId`                   |
+| **Semantic assertions**                      | `toBeChecked()`, `toBeDisabled()`, `toBeVisible()` over `toHaveAttribute`        |
+| **Don't test implementation details**        | No data attributes, CSS selectors, or internal state; test user-visible behavior |
+| **Await all interactions**                   | `await userEvent.click(...)`, `await expect(...)`                                |
+
+```tsx
+// Good
+export const Default: Story = {
+  args: {
+    onSelect: fn(),
+    onChange: fn(),
+  },
+  play: async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    const button = canvas.getByRole('button', { name: /submit/i });
+
+    await userEvent.click(button);
+    await expect(args.onSelect).toHaveBeenCalledOnce();
+  },
+};
+
+// Bad - no play function, no fn(), testing implementation details
+export const Default: Story = {
+  args: {
+    onSelect: () => console.log('selected'),
+  },
+  // no play function = no test
+};
+```
+
+---
+
+## Date Mocking
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Use `mockdate` for date-dependent stories**| `vi.useFakeTimers` breaks Ark UI internals (setTimeout, setInterval)             |
+| **Add reference comment**                    | Explain why `mockdate` is used over `vi.useFakeTimers` on first usage in file    |
+
+```tsx
+import MockDate from 'mockdate';
+
+export const WithDate: Story = {
+  // mockdate is used instead of vi.useFakeTimers because Ark UI
+  // internally uses setTimeout/setInterval which hang with fake timers
+  play: async ({ canvasElement }) => {
+    MockDate.set('2026-01-15');
+    // ... test logic
+    MockDate.reset();
+  },
+};
+```
+
+---
+
+## Story Variants
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Show combined states**                     | E.g., checked + disabled together                                                |
+| **Add controlled story**                     | If component supports controlled mode, add a story demonstrating it              |
+| **Add localization story**                   | Components with hardcoded text need a story with non-English `locale` prop       |
+| **Propagate args**                           | Story args must flow to the component, not be hardcoded in render                |
+
+```tsx
+// Good - controlled story
+export const Controlled: Story = {
+  render: (args) => {
+    const [value, setValue] = useState('initial');
+
+    return <DsInput {...args} value={value} onChange={setValue} />;
+  },
+};
+
+// Good - localization story
+export const Localized: Story = {
+  args: {
+    locale: {
+      clearAll: 'Effacer tout',
+      showMore: 'Afficher plus',
+    },
+  },
+};
+```
+
+---
+
+## Styling in Stories
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **No inline styles**                         | Move all story-specific styles to `*.stories.module.scss`                        |
+| **Use design tokens in story styles**        | Story SCSS files should also use `--color-*`, `--spacing-*` tokens               |
+
+```tsx
+// Bad
+export const Default: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '20px', background: '#f5f5f5' }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+// Good
+import styles from './ds-card.stories.module.scss';
+
+export const Default: Story = {
+  decorators: [
+    (Story) => (
+      <div className={styles.wrapper}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+```
+
+---
+
+## Story Args
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Hide internal args**                       | Use `argTypes: { prop: { table: { disable: true } } }` for internal-only props  |
+| **Export variant arrays for options**         | Import variant arrays from types to use as `argTypes` options                    |
+
+```tsx
+import { tagVariants } from './ds-tag.types';
+
+const meta: Meta<typeof DsTag> = {
+  component: DsTag,
+  argTypes: {
+    variant: { options: tagVariants },
+    internalProp: { table: { disable: true } },
+  },
+};
+```

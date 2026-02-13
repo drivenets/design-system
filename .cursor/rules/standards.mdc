@@ -11,48 +11,36 @@ Based on code review feedback, here are the consolidated standards for the desig
 
 ## Git & PR Workflow
 
-| Requirement                    | Details                                                |
-| ------------------------------ | ------------------------------------------------------ |
-| **No force-push after review** | GitHub loses review history; use merge commits instead |
-| **Changelog required**         | Run `pnpm changelog` before merge                      |
-| **Conventional commits**       | PR title must follow conventional commit format        |
-| **Separate concerns**          | Unrelated changes should go in separate PRs            |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **No force-push after review**               | GitHub loses review history; use merge commits instead                           |
+| **Changelog required**                       | Run `pnpm changelog` before merge                                               |
+| **Conventional commits**                     | PR title must follow conventional commit format                                  |
+| **Separate concerns**                        | Unrelated changes go in separate PRs; easier revert and isolation                |
+| **Changeset messages are user-facing**       | Write "Add X to Y" or "Fix X in Y", not implementation details                  |
+| **`skip changelog` label**                   | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes      |
+| **Use `--frozen-lockfile`**                  | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes       |
 
----
+```markdown
+<!-- Good changeset message -->
+Add DsCard component
 
-## Testing Standards
-
-| Requirement                      | Details                                                                                    |
-| -------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Every story needs tests**      | Add `play` function to stories, do not repeat the same assertions many times if not needed |
-| **Prefer a11y queries**          | Use `getByRole('button', { name: /label/i })` over `getByTestId`                           |
-| **Semantic assertions**          | Use `toBeChecked()`, `toBeDisabled()`, `toBeSelected()`                                    |
-| **Avoid implementation details** | Don't test data attributes, CSS selectors, or internal state                               |
-| **Await promises**               | Return or await all async operations in tests                                              |
-| **use fn() from storybook**      | To assert callback interaction use this method to verify                                   |
-
-```typescript
-// Good
-const checkbox = canvas.getByRole('checkbox', { name: /Toggle/ });
-await expect(checkbox).toBeChecked();
-
-// Bad
-const el = canvas.getByTestId('toggle');
-expect(el).toHaveAttribute('data-state', 'checked');
+<!-- Bad changeset message - implementation details -->
+Refactor card to use CSS modules and fix hover state selector specificity
 ```
 
 ---
 
 ## Component API Design
 
-| Requirement                    | Details                                         |
-| ------------------------------ | ----------------------------------------------- |
-| **Own props layer**            | Don't expose all underlying library props       |
-| **Generic ref types**          | Use, IF MAKES SENSE, `Ref<HTMLElement>` to allow library changes |
-| **Standard props**             | Always support `className`, `style`, `ref`      |
-| **slotProps pattern**          | Use for sub-component customization (MUI-style) |
-| **Consistent callback naming** | Prefer `onXChange` pattern                      |
-| **Single deprecation comment** | In types file only, not on every export         |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Own props layer**                          | Don't expose all underlying library props                                        |
+| **Generic ref types**                        | Use `Ref<HTMLElement>` (if it makes sense) to allow library changes              |
+| **Standard props**                           | Always support `className`, `style`, `ref`                                       |
+| **slotProps pattern**                        | Use for sub-component customization (MUI-style)                                  |
+| **Consistent callback naming**               | Prefer `onXChange` pattern                                                       |
+| **Single deprecation comment**               | In types file only, not on every export                                          |
 
 ```typescript
 // Good - own props layer
@@ -73,24 +61,37 @@ interface DsToggleProps extends SwitchRootProps {
 
 ## TypeScript Standards
 
-| Requirement                  | Details                            |
-| ---------------------------- | ---------------------------------- |
-| **No redundant JSDoc**       | Skip `@interface` and `@type` tags |
-| **Use full type references** | Import and use named types         |
-| **Export from `.types.ts`**  | Keep types in dedicated files      |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **No redundant JSDoc**                       | Skip `@interface` and `@type` tags; storybooks serve as living docs              |
+| **Use full type references**                 | Import and use named types                                                       |
+| **Export from `.types.ts`**                  | Keep types in dedicated files                                                    |
+| **Export variant arrays**                    | Export `as const` arrays from types for reuse in storybook `argTypes.options`     |
+| **`Object.freeze` config exports**           | Freeze exported config/mapping objects to prevent mutation                        |
+
+```typescript
+// Good - exportable variant array
+export const loaderVariants = ['spinner', 'pulsing'] as const;
+export type LoaderVariant = (typeof loaderVariants)[number];
+
+// Good - frozen config
+export const circleSizeMap: Record<AvatarSize, number> = Object.freeze({
+  small: 24,
+  medium: 32,
+  large: 48,
+});
+```
 
 ---
 
 ## Code Organization
 
-| Requirement                    | Details                                                   |
-| ------------------------------ | --------------------------------------------------------- |
-| **Let code breathe**           | Whitespace between logical chunks                         |
-| **Extract functions**          | Complex logic into small, named functions                 |
-| **Name magic numbers**         | Use constants with descriptive names                      |
-| **Avoid overkill memoization** | Memory cost may exceed calculation                        |
-| **Avoid React anti-patterns**  | No `querySelector`, `requestAnimationFrame` in components |
-| **Early returns**              | Simplify conditionals where possible                      |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Let code breathe**                         | Whitespace between logical chunks                                                |
+| **Name magic numbers**                       | Use constants with descriptive names                                             |
+| **Early returns**                            | Simplify conditionals where possible                                             |
+| **No cross-component imports**               | Don't import from another component's internals; extract shared logic to a util  |
 
 ```typescript
 // Good - breathing code
@@ -110,44 +111,40 @@ const rootClass = classNames(styles.root, { [styles.small]: isSmall });
 const handleChange = ({ checked }: CheckedChangeDetails) => onCheckedChange?.(checked);
 ```
 
----
+```typescript
+// Bad - cross-component import
+import { formatDate } from '../ds-comment-bubble/utils/format';
 
-## Storybook Standards
-
-| Requirement                                                     | Details                                                |
-| --------------------------------------------------------------- | ------------------------------------------------------ |
-| **Hide internal args, which does not make sense in storybook ** | Use `argTypes: { prop: { table: { disable: true } } }` |
-| **Show combined states**                                        | E.g., checked + disabled together                      |
-| **Propagate args**                                              | Story args must flow to component                      |
-| **Localization examples**                                       | Add story showing i18n capability with "locale" prop   |
-| **Use `fn()` for actions**                                      | Storybook's built-in spy                               |
+// Good - shared utility
+import { formatDate } from '../../utils/format-date';
+```
 
 ---
 
 ## Design Alignment
 
-| Requirement                   | Details                                    |
-| ----------------------------- | ------------------------------------------ |
-| **Verify against Figma**      | Colors, spacing, behavior must match       |
-| **Question additions**        | If not in design, ask designers first      |
-| **Document design decisions** | Comment why specific values (e.g., `-8px`) |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Verify against Figma**                     | Colors, spacing, behavior must match                                             |
+| **Question additions**                       | If not in design, ask designers first                                            |
+| **Document design decisions**                | Comment why specific values (e.g., `-8px`)                                       |
 
 ---
 
 ## File Naming
 
-| Requirement          | Details                        |
-| -------------------- | ------------------------------ |
-| **Barrel exports**   | Use `index.ts` not `index.tsx` |
-| **kebab-case files** | All files must be kebab-case   |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Barrel exports**                           | Use `index.ts` not `index.tsx`                                                   |
+| **kebab-case files**                         | All files must be kebab-case                                                     |
 
 ---
 
 ## ESLint Plugin
 
-| Requirement           | Details                                                          |
-| --------------------- | ---------------------------------------------------------------- |
-| **Deprecation rules** | Add to `@drivenets/eslint-plugin-design-system` when deprecating |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Deprecation rules**                        | Add to `@drivenets/eslint-plugin-design-system` when deprecating                 |
 
 ---
 
@@ -155,14 +152,16 @@ const handleChange = ({ checked }: CheckedChangeDetails) => onCheckedChange?.(ch
 
 Before submitting a PR:
 
-- [ ] Changelog added (`pnpm changelog`)
-- [ ] All stories have `play` tests
+- [ ] Changelog added (`pnpm changelog`) with user-facing message
+- [ ] All stories have `play` tests with `fn()` for callbacks
 - [ ] Tests use a11y queries (no test-ids)
-- [ ] CSS uses design tokens
+- [ ] CSS uses design tokens, no `!important`
 - [ ] No inline styles in stories
 - [ ] Props layer doesn't expose library internals
-- [ ] Types exported from `.types.ts`
+- [ ] Types exported from `.types.ts` with variant arrays
 - [ ] Code is well-spaced and readable
 - [ ] Matches Figma design
-- [ ] Storybook examples show off all states
-- [ ] Analyze and check for simplifications, especially for useEffects, DOM listeners, many refs
+- [ ] Storybook examples show off all states (including controlled + localized)
+- [ ] No cross-component internal imports
+- [ ] No unnecessary `useMemo`/`useCallback`
+- [ ] Check Ark UI for existing primitives before custom implementation
