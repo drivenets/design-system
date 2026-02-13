@@ -227,11 +227,7 @@ export const ContentChangeWhileNotEditing: Story = {
 					onDelete={fn()}
 				/>
 
-				<DsButton
-					design="v1.2"
-					size="small"
-					onClick={() => setContent(UPDATED_CONTENT)}
-				>
+				<DsButton design="v1.2" size="small" onClick={() => setContent(UPDATED_CONTENT)}>
 					Simulate external update
 				</DsButton>
 			</>
@@ -272,11 +268,7 @@ export const ContentChangeWhileEditing: Story = {
 					onDelete={fn()}
 				/>
 
-				<DsButton
-					design="v1.2"
-					size="small"
-					onClick={() => setContent(UPDATED_CONTENT)}
-				>
+				<DsButton design="v1.2" size="small" onClick={() => setContent(UPDATED_CONTENT)}>
 					Simulate external update
 				</DsButton>
 			</>
@@ -321,11 +313,7 @@ export const ContentChangeWhileEditingThenCancel: Story = {
 					onDelete={fn()}
 				/>
 
-				<DsButton
-					design="v1.2"
-					size="small"
-					onClick={() => setContent(UPDATED_CONTENT)}
-				>
+				<DsButton design="v1.2" size="small" onClick={() => setContent(UPDATED_CONTENT)}>
 					Simulate external update
 				</DsButton>
 			</>
