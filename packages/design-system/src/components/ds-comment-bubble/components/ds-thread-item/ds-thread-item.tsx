@@ -26,8 +26,10 @@ export const DsThreadItem = ({
 	const [editContent, setEditContent] = useState(content);
 
 	useEffect(() => {
-		setEditContent(content);
-	}, [content]);
+		if (!isEditing) {
+			setEditContent(content);
+		}
+	}, [content, isEditing]);
 
 	const isSaveDisabled = !editContent.trim() || editContent === content;
 
