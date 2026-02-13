@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn, expect, within } from 'storybook/test';
+import { fn, expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { DsThreadItem, type DsThreadItemProps } from './index';
+import { DsButton } from '../../../ds-button';
 
 const meta: Meta<typeof DsThreadItem> = {
 	title: 'Design System/Comments/Thread Item',
@@ -66,11 +68,14 @@ const mockAuthor = {
 	avatarSrc: 'https://i.pravatar.cc/150?img=1',
 };
 
+const INITIAL_CONTENT = 'Initial message content.';
+const UPDATED_CONTENT = 'Content updated from outside.';
+
 const defaultArgs: Partial<DsThreadItemProps> = {
 	id: 'msg-1',
 	author: mockAuthor,
 	content: 'This is a sample message in the comment thread.',
-	createdAt: new Date(Date.now() - 3600000), // 1 hour ago
+	createdAt: new Date(Date.now() - 3600000),
 	isCommentAuthorMessage: true,
 	canModify: true,
 	onEdit: fn(),
@@ -93,9 +98,6 @@ export const Default: Story = {
 	},
 };
 
-/**
- * Message from the current user (aligned to the right)
- */
 export const CurrentUserMessage: Story = {
 	args: {
 		...defaultArgs,
@@ -151,7 +153,7 @@ export const RecentMessage: Story = {
 	args: {
 		...defaultArgs,
 		id: 'msg-5',
-		createdAt: new Date(Date.now() - 30000), // 30 seconds ago
+		createdAt: new Date(Date.now() - 30000),
 		content: 'Just posted this message.',
 	},
 	play: async ({ canvasElement }) => {
@@ -166,7 +168,7 @@ export const OldMessage: Story = {
 	args: {
 		...defaultArgs,
 		id: 'msg-6',
-		createdAt: new Date(Date.now() - 86400000 * 3), // 3 days ago
+		createdAt: new Date(Date.now() - 86400000 * 3),
 		content: 'This message was posted a few days ago.',
 	},
 	play: async ({ canvasElement }) => {
@@ -205,5 +207,149 @@ export const InteractiveActions: Story = {
 		const canvas = within(canvasElement);
 
 		await expect(canvas.getByText('This is a sample message in the comment thread.')).toBeInTheDocument();
+	},
+};
+
+export const ContentChangeWhileNotEditing: Story = {
+	render: function Render() {
+		const [content, setContent] = useState(INITIAL_CONTENT);
+
+		return (
+			<>
+				<DsThreadItem
+					id="msg-ext-1"
+					author={mockAuthor}
+					content={content}
+					createdAt={new Date(Date.now() - 3600000)}
+					isCommentAuthorMessage
+					canModify
+					onEdit={fn()}
+					onDelete={fn()}
+				/>
+
+				<DsButton
+					design="v1.2"
+					size="small"
+					onClick={() => setContent(UPDATED_CONTENT)}
+				>
+					Simulate external update
+				</DsButton>
+			</>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText(INITIAL_CONTENT)).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: /simulate external update/i }));
+
+		await expect(canvas.getByText(UPDATED_CONTENT)).toBeInTheDocument();
+		await expect(canvas.queryByText(INITIAL_CONTENT)).not.toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+
+		const textarea = canvas.getByRole('textbox');
+		await expect(textarea).toHaveValue(UPDATED_CONTENT);
+	},
+};
+
+export const ContentChangeWhileEditing: Story = {
+	render: function Render() {
+		const [content, setContent] = useState(INITIAL_CONTENT);
+
+		return (
+			<>
+				<DsThreadItem
+					id="msg-ext-2"
+					author={mockAuthor}
+					content={content}
+					createdAt={new Date(Date.now() - 3600000)}
+					isCommentAuthorMessage
+					canModify
+					onEdit={fn()}
+					onDelete={fn()}
+				/>
+
+				<DsButton
+					design="v1.2"
+					size="small"
+					onClick={() => setContent(UPDATED_CONTENT)}
+				>
+					Simulate external update
+				</DsButton>
+			</>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText(INITIAL_CONTENT)).toBeInTheDocument();
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+
+		const textarea = canvas.getByRole('textbox');
+		await expect(textarea).toHaveValue(INITIAL_CONTENT);
+
+		await userEvent.clear(textarea);
+		await userEvent.type(textarea, 'My custom edit');
+
+		await expect(textarea).toHaveValue('My custom edit');
+
+		await userEvent.click(canvas.getByRole('button', { name: /simulate external update/i }));
+
+		await expect(textarea).toHaveValue('My custom edit');
+	},
+};
+
+export const ContentChangeWhileEditingThenCancel: Story = {
+	render: function Render() {
+		const [content, setContent] = useState(INITIAL_CONTENT);
+
+		return (
+			<>
+				<DsThreadItem
+					id="msg-ext-3"
+					author={mockAuthor}
+					content={content}
+					createdAt={new Date(Date.now() - 3600000)}
+					isCommentAuthorMessage
+					canModify
+					onEdit={fn()}
+					onDelete={fn()}
+				/>
+
+				<DsButton
+					design="v1.2"
+					size="small"
+					onClick={() => setContent(UPDATED_CONTENT)}
+				>
+					Simulate external update
+				</DsButton>
+			</>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+
+		const textarea = canvas.getByRole('textbox');
+		await userEvent.clear(textarea);
+		await userEvent.type(textarea, 'My custom edit');
+
+		await userEvent.click(canvas.getByRole('button', { name: /simulate external update/i }));
+
+		await expect(textarea).toHaveValue('My custom edit');
+
+		await userEvent.click(canvas.getByRole('button', { name: /cancel/i }));
+
+		await waitFor(async () => {
+			await expect(canvas.getByText(UPDATED_CONTENT)).toBeInTheDocument();
+		});
+		await expect(canvas.queryByText(INITIAL_CONTENT)).not.toBeInTheDocument();
 	},
 };
