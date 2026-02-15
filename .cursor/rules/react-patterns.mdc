@@ -1,0 +1,172 @@
+---
+description: React patterns and anti-patterns for design system components
+globs: **/*.tsx,**/*.ts
+---
+
+# React Patterns
+
+## Memoization
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **No unnecessary `useMemo`/`useCallback`**   | Memory cost often exceeds calculation cost; React Compiler handles this for you  |
+| **Justify memoization**                      | Only use when profiling shows a real performance benefit                         |
+
+```typescript
+// Bad - overkill memoization
+const filteredItems = useMemo(() => items.filter((i) => i.active), [items]);
+const handleClick = useCallback(() => onChange(value), [onChange, value]);
+
+// Good - just compute it
+const filteredItems = items.filter((i) => i.active);
+const handleClick = () => onChange(value);
+```
+
+---
+
+## State Management
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Derived state over redundant state**       | Compute values from existing state instead of syncing with `useEffect`           |
+| **No prop-to-state sync via `useEffect`**    | This is an anti-pattern; use derived values or key remounting                    |
+| **Controlled vs uncontrolled pattern**       | Unify with a single internal API that delegates to external or internal state    |
+
+```typescript
+// Bad - syncing state from props
+const [local, setLocal] = useState(prop);
+useEffect(() => setLocal(prop), [prop]);
+
+// Good - derived state
+const value = isControlled ? externalValue : internalValue;
+
+// Good - controlled/uncontrolled pattern
+function useControllableState<T>(
+  value: T | undefined,
+  onChange: ((v: T) => void) | undefined,
+  defaultValue: T,
+) {
+  const [internal, setInternal] = useState(defaultValue);
+  const isControlled = value !== undefined && onChange !== undefined;
+
+  const state = isControlled ? value : internal;
+  const setState = isControlled ? onChange : setInternal;
+
+  return [state, setState] as const;
+}
+```
+
+---
+
+## Hooks Usage
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **`useLayoutEffect` only for DOM reads**     | If you need to mutate the DOM and/or do need to perform measurements     |
+| **`useId` for generated IDs**                | Use React `useId()` for SVG `clipPath`, gradient, and filter IDs to avoid dupes  |
+| **Extract complex hook logic**               | Break large hooks into small, named pure functions that receive parameters       |
+| **`{ passive: true }` for scroll listeners** | Add `{ passive: true }` to `scroll`, `wheel`, and `touchmove` event listeners   |
+
+```tsx
+// Bad - useLayoutEffect without DOM reads
+useLayoutEffect(() => {
+  setCount(items.length);
+}, [items]);
+
+// Good - useEffect for non-DOM logic
+useEffect(() => {
+  setCount(items.length);
+}, [items]);
+
+// Good - useId for SVG IDs
+const id = useId();
+<clipPath id={`clip-${id}`}>...</clipPath>
+<rect clipPath={`url(#clip-${id})`} />
+
+// Good - passive scroll listener
+container.addEventListener('scroll', checkOverflow, { passive: true });
+```
+
+One other situation you might want to use useLayoutEffect instead of useEffect is if you're updating a value (like a ref)
+and you want to make sure it's up-to-date before any other code runs. For example:
+
+```tsx
+// Good
+const ref = React.useRef()
+React.useEffect(() => {
+	ref.current = 'some value'
+})
+
+// then, later in another hook or something
+React.useLayoutEffect(() => {
+	console.log(ref.current) // <-- this logs an old value because this runs first!
+})
+```
+
+---
+
+## React 19
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **No `forwardRef`**                          | Deprecated in React 19; pass `ref` as a regular prop                             |
+
+```tsx
+// Bad
+const DsButton = forwardRef<HTMLButtonElement, DsButtonProps>((props, ref) => {
+  return <button ref={ref} {...props} />;
+});
+
+// Good
+const DsButton = ({ ref, ...props }: DsButtonProps) => {
+  return <button ref={ref} {...props} />;
+};
+```
+
+---
+
+## Ark UI Integration
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Check Ark UI primitives first**            | Before building custom components, check if Ark UI already provides one          |
+| **Don't duplicate Ark internal state**       | Ark manages state for inputs, selects, etc.; don't mirror it with `useState`     |
+| **Don't override Ark callbacks**             | Wrap Ark callbacks to forward to your own props, don't replace them              |
+
+```typescript
+// Bad - duplicating Ark's internal state
+const [inputValue, setInputValue] = useState('');
+<Combobox.Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+
+// Good - let Ark manage, hook into callbacks
+<Combobox.Root onInputValueChange={({ inputValue }) => onInputChange?.(inputValue)}>
+  <Combobox.Input />
+</Combobox.Root>
+```
+
+---
+
+## Component API Ordering
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Value props first, callbacks last**        | Order: value/config props, then render/slot props, then callbacks                |
+| **`locale` prop for i18n**                   | Components with hardcoded text should accept a `locale` prop for overrides       |
+
+```typescript
+// Good - ordered interface
+export interface DsTagFilterProps {
+  // Value props
+  items: TagFilterItem[];
+  selectedKeys?: string[];
+  size?: 'small' | 'medium';
+
+  // Slot props
+  slotProps?: { tag?: Partial<DsTagProps> };
+  locale?: { clearAll?: string; showMore?: string };
+
+  // Callbacks
+  onSelectionChange?: (keys: string[]) => void;
+  onClear?: () => void;
+}
+```

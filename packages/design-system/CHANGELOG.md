@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.6.1
+
+### Patch Changes
+
+- 9491d59: Fix common js build
+
 ## 0.6.0
 
 ### Minor Changes

@@ -7,42 +7,47 @@ globs: **/*.scss
 
 ## Design Tokens
 
-| Requirement              | Details                                               |
-| ------------------------ | ----------------------------------------------------- |
-| **Use design tokens**    | Colors from `--color-*`, spacing from `--spacing-*`   |
-| **No hardcoded colors**  | Always use CSS custom properties                      |
-| **No hardcoded spacing** | Use `--spacing-*` tokens                              |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Use design tokens**                        | Colors from `--color-*`, spacing from `--spacing-*`                              |
+| **No hardcoded colors**                      | Always use CSS custom properties                                                 |
+| **No hardcoded spacing**                     | Use `--spacing-*` tokens                                                         |
+
+---
 
 ## Focus & Interaction States
 
-| Requirement        | Details                                               |
-| ------------------ | ----------------------------------------------------- |
-| **Focus states**   | Use `[data-focus-visible]` for keyboard-only outlines |
-| **Hover states**   | Use `&:hover` with appropriate token colors           |
-| **Disabled states** | Use `[data-disabled]` or `&:disabled`                |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Focus states**                             | Use `[data-focus-visible]` for keyboard-only outlines                            |
+| **Hover states**                             | Use `&:hover` with appropriate token colors                                      |
+| **Disabled states**                          | Use `[data-disabled]` or `&:disabled`                                            |
+
+---
 
 ## CSS Modules
 
-| Requirement          | Details                                       |
-| -------------------- | --------------------------------------------- |
-| **Avoid `:global`**  | CSS modules should stay scoped                |
-| **Use `classnames`** | Not template literals for conditional classes |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Avoid `:global`**                          | CSS modules should stay scoped                                                   |
+| **Use `classnames`**                         | Not template literals for conditional classes                                    |
+
+---
 
 ## Code Style
 
-| Requirement                | Details                                       |
-| -------------------------- | ----------------------------------------------|
-| **Use mixins**             | Extract repeated patterns                     |
-| **Pill border-radius**     | Use `9999px` for safety                       |
-| **Pseudo-element order**   | Put `content: ''` first                       |
-| **Logical property order** | Position → Box model → Visual                 |
-| **Do not use comments**    | Only for complex constructions, to explain    |
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Use mixins**                               | Extract repeated size/state patterns into `@mixin` instead of duplicating        |
+| **Pill border-radius**                       | Use `9999px` for safety                                                          |
+| **Pseudo-element order**                     | Put `content: ''` first                                                          |
+| **Logical property order**                   | Position, then box model, then visual                                            |
+| **No comments in SCSS**                      | In 99% of cases they are redundant; only for genuinely complex constructions     |
+| **No `!important`**                          | Clean components never need it; if you think you do, refactor the selectors      |
+| **Standard transition duration**             | Use `0.2s` as the standard transition duration across components                 |
+| **Component-scoped variables**               | Keep component-specific CSS variables in the component file, not in `_root.scss` |
 
-## Storybook Styles
-
-| Requirement                     | Details                         |
-| ------------------------------- | ------------------------------- |
-| **No inline styles in stories** | Move to `*.stories.module.scss` |
+---
 
 ## Examples
 
@@ -52,6 +57,7 @@ globs: **/*.scss
   color: var(--color-text-primary);
   padding: var(--spacing-2) var(--spacing-4);
   border-radius: var(--radius-md);
+  transition: background-color 0.2s;
 
   &:hover {
     background-color: var(--color-bg-hover);
@@ -69,11 +75,11 @@ globs: **/*.scss
 }
 
 .pill {
-  border-radius: 9999px; // Safe pill radius
+  border-radius: 9999px;
 }
 
 .icon::before {
-  content: ''; // content first in pseudo-elements
+  content: '';
   display: block;
   width: 16px;
   height: 16px;
@@ -83,16 +89,46 @@ globs: **/*.scss
 ```scss
 // Bad
 .button {
-  color: #333; // hardcoded color
-  padding: 8px 16px; // hardcoded spacing
+  color: #333;
+  padding: 8px 16px;
+  transition: all 0.3s;
 
   &:focus {
-    // should use [data-focus-visible]
-    outline: 2px solid blue; // hardcoded color
+    outline: 2px solid blue !important;
   }
 }
 
 :global(.external-class) {
-  // avoid :global, keep modules scoped
+  color: red;
+}
+```
+
+```scss
+// Good - extract repeated patterns into mixins
+@mixin avatar-size($size, $font-size) {
+  width: $size;
+  height: $size;
+  font-size: $font-size;
+}
+
+.small {
+  @include avatar-size(24px, var(--font-size-xs));
+}
+
+.medium {
+  @include avatar-size(32px, var(--font-size-sm));
+}
+
+// Bad - duplicated size declarations
+.small {
+  width: 24px;
+  height: 24px;
+  font-size: var(--font-size-xs);
+}
+
+.medium {
+  width: 32px;
+  height: 32px;
+  font-size: var(--font-size-sm);
 }
 ```
