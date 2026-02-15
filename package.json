@@ -17,6 +17,7 @@
 		"lint:unused": "knip",
 		"lint:dedupe": "pnpm dedupe --check",
 		"test": "turbo run test",
+		"test:coverage": "turbo run test:coverage",
 		"test:requires-build": "turbo run test:requires-build",
 		"build": "turbo run build",
 		"build:lint": "turbo run build:lint",
