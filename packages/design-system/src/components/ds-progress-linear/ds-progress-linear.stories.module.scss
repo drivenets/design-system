@@ -1,0 +1,6 @@
+.grid {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xl);
+	width: 600px;
+}
