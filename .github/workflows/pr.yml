@@ -195,8 +195,8 @@ jobs:
       - name: Run Spell Check
         run: pnpm lint:spell
 
-  unused:
-    name: Check Unused Code
+  unused-dedupe:
+    name: Check Unused Code and Dependencies
     runs-on: ubuntu-latest
 
     permissions:
@@ -213,6 +213,9 @@ jobs:
 
       - name: Run Unused Code Check
         run: pnpm lint:unused
+
+      - name: Run Dependencies Deduplication Check
+        run: pnpm lint:dedupe
 
   action-lint:
     name: GitHub Actions Lint

@@ -15,6 +15,7 @@
 		"lint:versions": "syncpack list-mismatches",
 		"lint:spell": "cspell . --quiet",
 		"lint:unused": "knip",
+		"lint:dedupe": "pnpm dedupe --check",
 		"test": "turbo run test",
 		"test:requires-build": "turbo run test:requires-build",
 		"build": "turbo run build",
