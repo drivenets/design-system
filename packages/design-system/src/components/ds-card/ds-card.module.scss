@@ -1,3 +1,5 @@
+@use '../../styles/mixin' as mixins;
+
 $border-radius: 8px;
 $min-width-small: 224px;
 $min-width-medium: 264px;
@@ -13,18 +15,8 @@ $transition-duration: 0.2s;
 	overflow: hidden;
 	box-sizing: border-box;
 	border-radius: $border-radius;
-}
 
-.root[data-disabled] {
-	&::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		// TODO: remove once we import all the tokens from figma
-		background: rgba(255, 255, 255, 0.6);
-		pointer-events: none;
-		border-radius: inherit;
-	}
+	@include mixins.disabled-overlay;
 }
 
 .root[data-size='small'] {

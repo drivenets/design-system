@@ -1,5 +1,17 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.9
+
+### Patch Changes
+
+- 9491d59: Fix common js build
+
+## 0.0.8
+
+### Patch Changes
+
+- f485640: Updates dependencies
+
 ## 0.0.7
 
 ### Patch Changes

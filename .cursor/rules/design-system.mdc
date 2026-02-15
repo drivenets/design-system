@@ -69,3 +69,9 @@ export type { Ds{Name}Props } from './ds-{name}.types';
 2. **Radix UI** (`@radix-ui/react-*`) - Deprecated, modify existing only
 3. **TanStack** - Data-heavy components (table, virtual)
 4. **Custom** - Only when no primitive exists
+
+## Skills
+
+- To scaffold a new component, use the **component-scaffold** skill.
+- To create a component from a Figma URL, use the **figma-to-component** skill.
+- To check if Ark UI has a primitive, use the **check-ark-ui** notepad.

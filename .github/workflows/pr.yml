@@ -154,6 +154,9 @@ jobs:
           pnpm build --affected
           pnpm build:lint --affected
 
+      - name: Run Tests With Build
+        run: pnpm test:requires-build --affected
+
   packages-versions:
     name: Check Packages Versions
     runs-on: ubuntu-latest
@@ -192,8 +195,8 @@ jobs:
       - name: Run Spell Check
         run: pnpm lint:spell
 
-  unused:
-    name: Check Unused Code
+  unused-dedupe:
+    name: Check Unused Code and Dependencies
     runs-on: ubuntu-latest
 
     permissions:
@@ -210,6 +213,9 @@ jobs:
 
       - name: Run Unused Code Check
         run: pnpm lint:unused
+
+      - name: Run Dependencies Deduplication Check
+        run: pnpm lint:dedupe
 
   action-lint:
     name: GitHub Actions Lint

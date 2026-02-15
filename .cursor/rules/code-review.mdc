@@ -1,5 +1,5 @@
 ---
-description: Use this rule when doing code reviews
+description: Apply when reviewing code changes, running git diff, or preparing a PR
 alwaysApply: false
 ---
 
@@ -7,11 +7,13 @@ alwaysApply: false
 
 It is a local code review process done before submitting a PR.
 
-Objectives:
+## Process
 
-1. Review the current PR diff and flag only clear, high-severity issues
-2. Verify requirements and applicable code standards/cursor rules
-3. Add short JS comments with a structure:
+1. Get diff: `git diff origin/main`
+2. Review every changed file against project cursor rules
+3. Flag only clear, high-severity issues (max 10 inline comments)
+
+## Inline comment format
 
 ```typescript
 /**
@@ -19,9 +21,21 @@ Objectives:
  */
 ```
 
-- Get diff: git diff upstream/main
-- Max 10 inline comments total; prioritize the most critical issues
 - One issue per comment; place on the exact changed line
-- Natural tone, specific and actionable; do not mention automated or a high-confidence
-- Use emojis: 🚨 Critical 🔒 Security ⚡ Performance ⚠️ Logic ✅ Resolved ✨ Improvement
+- Natural tone, specific and actionable; do not mention automated or high-confidence
+- Severity emojis: 🚨 Critical 🔒 Security ⚡ Performance ⚠️ Logic ✨ Improvement
+
+## Priorities to check
+
+- No `!important` in SCSS
+- No hardcoded colors or spacing (use `--color-*`, `--spacing-*` tokens)
+- No `:global` in CSS modules
+- No unnecessary `useMemo`/`useCallback`
+- No `forwardRef` (deprecated)
+- No cross-component internal imports
+- No `useLayoutEffect` without DOM reads
+- Stories have `play` functions with `fn()` and a11y queries
+- No inline styles in stories
+- Props layer doesn't expose library internals
+- Logic errors, security issues, race conditions, missing edge cases
 

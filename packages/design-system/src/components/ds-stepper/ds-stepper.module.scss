@@ -1,17 +1,76 @@
-.step {
-	padding: 12px;
+@use '../../styles/mixin' as mixins;
+
+$step-padding: var(--spacing-sm);
+$step-gap: var(--spacing-standard);
+$step-border-radius: var(--spacing-3xs);
+
+$step-single-padding-block: var(--spacing-standard);
+$step-single-padding-inline-start: var(--spacing-sm);
+$step-single-padding-inline-end: var(--spacing-md);
+$step-single-border-radius: var(--spacing-xs);
+
+$indicator-size: 36px;
+$indicator-size-single: var(--icon-width-extra-large);
+$indicator-border-width: var(--spacing-4xs);
+$indicator-border-width-current: 3px;
+$indicator-container-padding: 0 var(--spacing-4xs);
+
+$separator-width: var(--spacing-4xs);
+$separator-offset: var(--spacing-sm);
+
+$label-padding: var(--spacing-4xs) 0;
+$label-font-size: var(--font-size-md);
+$label-font-size-single: var(--font-size-sm);
+$label-line-height: 1.5;
+$label-font-weight: var(--font-weight-medium);
+$description-font-size: var(--font-size-sm);
+$description-line-height: 1.4;
+
+$actions-margin-top: var(--spacing-sm);
+$actions-gap: var(--spacing-3xs);
+
+$drag-handle-size: 20px;
+
+$horizontal-current-min-width: 256px;
+$horizontal-description-line-clamp: 2;
+
+.dragHandle {
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	width: $drag-handle-size;
+	height: $drag-handle-size;
+	color: var(--color-font-secondary);
+	cursor: grab;
+}
+.root {
+	background: var(--color-background);
+	overflow-y: auto;
+}
+
+.verticalActions {
 	display: flex;
-	gap: 16px;
+	gap: $actions-gap;
+	padding: $step-padding;
+}
+
+.step {
+	position: relative;
+	padding: $step-padding;
+	display: flex;
+	gap: $step-gap;
 	background: none;
 	border: none;
 	text-align: start;
 	font-family: inherit;
 
+	@include mixins.disabled-overlay;
+
 	.root.variantSingle & {
-		padding-block: 16px;
-		padding-inline-start: 12px;
-		padding-inline-end: 20px;
-		border-radius: 8px;
+		padding-block: $step-single-padding-block;
+		padding-inline-start: $step-single-padding-inline-start;
+		padding-inline-end: $step-single-padding-inline-end;
+		border-radius: $step-single-border-radius;
 	}
 
 	.root:not(.variantSingle) &[data-complete] {
@@ -19,26 +78,26 @@
 	}
 
 	&[data-current] {
-		border-radius: 4px;
+		border-radius: $step-border-radius;
 		background: var(--color-background-action-secondary-hover);
 	}
 
 	.indicatorContainer {
-		padding: 0 2px;
+		padding: $indicator-container-padding;
 		position: relative;
 		display: flex;
 
 		.indicator {
-			height: 36px;
-			width: 36px;
-			border: 2px solid var(--color-border);
+			height: $indicator-size;
+			width: $indicator-size;
+			border: $indicator-border-width solid var(--color-border);
 			display: grid;
 			place-items: center;
 			border-radius: 100%;
 
 			.variantSingle & {
-				height: 32px;
-				width: 32px;
+				height: $indicator-size-single;
+				width: $indicator-size-single;
 			}
 		}
 
@@ -50,26 +109,27 @@
 		&[data-current] .indicator {
 			background: var(--color-background-selected);
 			color: var(--white);
-			border: 3px solid var(--white);
+			border: $indicator-border-width-current solid var(--white);
 		}
 
 		.separator {
 			position: absolute;
-			width: 2px;
-			height: calc(100% - 12px);
-			top: 36px;
+			width: $separator-width;
+			height: calc(100% - $separator-offset);
+			top: $indicator-size;
 			left: 50%;
-			margin-left: -1px;
+			margin-left: calc($separator-width / -2);
 			background: var(--color-border);
+			z-index: 10;
 
 			&[data-complete] {
 				background: var(--color-background-selected);
 			}
-		}
-	}
 
-	&:last-child .indicatorContainer .separator {
-		display: none;
+			&[data-current] {
+				background: var(--color-background-selected);
+			}
+		}
 	}
 
 	.stepContent {
@@ -84,21 +144,21 @@
 	}
 
 	.stepLabel {
-		padding: 2px 0;
-		font-size: 16px;
-		line-height: 1.5;
-		font-weight: 500;
+		padding: $label-padding;
+		font-size: $label-font-size;
+		line-height: $label-line-height;
+		font-weight: $label-font-weight;
 		color: var(--color-font-secondary);
 
 		.root.variantSingle & {
-			font-size: 14px;
+			font-size: $label-font-size-single;
 		}
 	}
 
 	.stepDescription {
 		margin: 0;
-		font-size: 14px;
-		line-height: 1.4;
+		font-size: $description-font-size;
+		line-height: $description-line-height;
 		color: var(--color-background-deselected);
 	}
 
@@ -123,12 +183,114 @@
 	}
 
 	.stepContent:not(.stepContentSingle) .stepActions {
-		margin-top: 12px;
+		margin-top: $actions-margin-top;
 	}
 
 	.stepActions {
 		margin-inline-start: auto;
 		display: flex;
-		gap: 4px;
+		gap: $actions-gap;
+	}
+}
+
+.step[data-error] {
+	.indicatorContainer .indicator {
+		background: var(--color-background-danger-weak);
+		color: var(--color-background-danger-strong);
+		border-color: var(--color-background-danger-strong);
+	}
+
+	.stepLabel {
+		color: var(--color-font-danger);
+	}
+}
+
+.root[data-orientation='horizontal'] {
+	display: flex;
+	align-items: center;
+	padding: var(--spacing-xs) var(--spacing-standard);
+
+	.stepsContainer {
+		display: flex;
+		flex: 1 1 0;
+		align-items: flex-start;
+		min-width: 0;
+		overflow-x: auto;
+	}
+
+	.horizontalActions {
+		display: flex;
+		align-items: center;
+		flex-shrink: 0;
+		padding-inline-start: var(--spacing-xs);
+	}
+
+	.step {
+		flex: 1 1 0;
+		padding: var(--spacing-3xs) var(--spacing-xs);
+		gap: var(--spacing-sm);
+		border-radius: var(--spacing-2xs);
+		overflow: clip;
+
+		&[data-current] {
+			min-width: $horizontal-current-min-width;
+			border-radius: var(--spacing-2xs);
+		}
+	}
+
+	.indicatorContainer {
+		padding: 0;
+
+		.indicator {
+			height: $indicator-size;
+			width: $indicator-size;
+		}
+	}
+
+	.stepContent {
+		min-width: 0;
+	}
+
+	.stepLabelRow {
+		display: flex;
+		align-items: center;
+		gap: var(--spacing-sm);
+		height: $indicator-size;
+		min-width: 0;
+	}
+
+	.stepLabel {
+		padding: 0;
+		font-size: var(--font-size-sm);
+		line-height: var(--line-height-sm);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		flex-shrink: 0;
+	}
+
+	.horizontalSeparator {
+		flex: 1 1 0;
+		height: var(--spacing-4xs);
+		min-width: 0;
+		background: var(--color-border-contrast);
+
+		&[data-complete] {
+			background: var(--color-background-selected);
+		}
+
+		&[data-current] {
+			background: var(--color-outline-moderate);
+		}
+	}
+
+	.stepDescription {
+		font-size: var(--font-size-xs);
+		line-height: var(--line-height-xs);
+		max-height: var(--spacing-8);
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: $horizontal-description-line-clamp;
+		-webkit-box-orient: vertical;
 	}
 }

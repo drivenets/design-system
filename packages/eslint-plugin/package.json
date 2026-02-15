@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/eslint-plugin-design-system",
-	"version": "0.0.7",
+	"version": "0.0.9",
 	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./dist/index.d.cts",
@@ -34,6 +34,7 @@
 		"lint": "eslint --max-warnings=0 .",
 		"typecheck": "tsc",
 		"test": "vitest",
+		"test:coverage": "vitest --coverage",
 		"build": "tsdown",
 		"build:lint": "publint && attw --pack"
 	},
@@ -43,9 +44,10 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
+		"@vitest/coverage-v8": "^4.0.18",
 		"eslint": "^9.39.2",
 		"publint": "^0.3.17",
-		"tsdown": "^0.18.4",
+		"tsdown": "^0.20.3",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.18"
 	},
