@@ -121,10 +121,7 @@ jobs:
             ${{ runner.os }}-turbo-test-
 
       - name: Run Tests
-        run: pnpm test --affected
-
-      - name: Check Coverage Thresholds
-        run: pnpm --filter @drivenets/design-system test:coverage --run
+        run: pnpm test:coverage --run
 
   build:
     name: Build
