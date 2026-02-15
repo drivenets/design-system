@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import DsTable from '../ds-table';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState } from './components';
 import styles from './ds-table.stories.module.scss';
+import type { Action } from '../ds-table.types';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Row Actions',
@@ -137,8 +138,6 @@ export const WithRowActions: Story = {
 	},
 };
 
-const notifyClickHandler = fn();
-
 export const WithBulkActions: Story = {
 	args: {
 		selectable: true,
@@ -146,7 +145,7 @@ export const WithBulkActions: Story = {
 			{
 				icon: 'alarm',
 				label: 'Notify',
-				onClick: notifyClickHandler,
+				onClick: fn(),
 			},
 			{
 				icon: 'folder_open',
@@ -160,7 +159,7 @@ export const WithBulkActions: Story = {
 			},
 		],
 	},
-	play: async ({ canvasElement }) => {
+	play: async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
 
 		const checkboxes = canvas.getAllByRole('checkbox');
@@ -170,7 +169,24 @@ export const WithBulkActions: Story = {
 		await expect(canvas.getByText(/items selected/i)).toBeInTheDocument();
 		await expect(canvas.getByText('2')).toBeInTheDocument();
 
-		await userEvent.click(canvas.getByText(/notify/i));
-		await expect(notifyClickHandler).toHaveBeenCalled();
+		const testActionClick = async (action: Action<Person>) => {
+			await userEvent.click(canvas.getByText(action.label));
+			await expect(action.onClick).toHaveBeenCalled();
+		};
+
+		for (const action of args.actions ?? []) {
+			await testActionClick(action);
+		}
+
+		// Deselect all rows to verify panel disappears
+		await userEvent.click(checkboxes[1] as HTMLElement);
+		await userEvent.click(checkboxes[2] as HTMLElement);
+
+		await waitFor(
+			() => {
+				return expect(canvas.queryByText(/items selected/i)).not.toBeInTheDocument();
+			},
+			{ timeout: 500 },
+		);
 	},
 };
