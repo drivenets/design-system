@@ -110,7 +110,7 @@
 		"rollup-plugin-sass": "^1.15.3",
 		"sass-embedded": "^1.97.3",
 		"storybook": "^10.2.7",
-		"tsdown": "^0.18.4",
+		"tsdown": "^0.20.3",
 		"typed-scss-modules": "^8.1.1",
 		"typescript": "^5.9.3",
 		"typescript-plugin-css-modules": "^5.2.0",

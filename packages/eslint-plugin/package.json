@@ -45,7 +45,7 @@
 		"@arethetypeswrong/cli": "^0.18.2",
 		"eslint": "^9.39.2",
 		"publint": "^0.3.17",
-		"tsdown": "^0.18.4",
+		"tsdown": "^0.20.3",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.18"
 	},
