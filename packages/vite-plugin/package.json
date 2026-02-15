@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/vite-plugin-design-system",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./src/index.ts",
@@ -40,13 +40,15 @@
 		"typecheck": "tsc",
 		"build": "tsdown",
 		"build:lint": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL",
-		"test": "vitest"
+		"test": "vitest",
+		"test:coverage": "vitest --coverage"
 	},
 	"peerDependencies": {
 		"vite": "*"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
+		"@vitest/coverage-v8": "^4.0.18",
 		"eslint": "^9.39.2",
 		"memfs": "^4.56.10",
 		"publint": "^0.3.17",

@@ -169,5 +169,5 @@ export default defineConfig(
 		},
 	},
 
-	globalIgnores(['**/dist', '**/.turbo']),
+	globalIgnores(['**/dist', '**/.turbo', '**/coverage']),
 );

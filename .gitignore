@@ -9,3 +9,5 @@ dist
 .changeset-status.json
 
 actionlint
+
+coverage/
