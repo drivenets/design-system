@@ -40,7 +40,8 @@
 		"typecheck": "tsc",
 		"build": "tsdown",
 		"build:lint": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL",
-		"test": "vitest"
+		"test": "vitest",
+		"test:coverage": "vitest --coverage"
 	},
 	"peerDependencies": {
 		"vite": "*"

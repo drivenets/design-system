@@ -34,6 +34,7 @@
 		"lint": "eslint --max-warnings=0 .",
 		"typecheck": "tsc",
 		"test": "vitest",
+		"test:coverage": "vitest --coverage",
 		"build": "tsdown",
 		"build:lint": "publint && attw --pack"
 	},
