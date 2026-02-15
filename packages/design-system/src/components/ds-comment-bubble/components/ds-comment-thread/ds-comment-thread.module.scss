@@ -1,0 +1,62 @@
+$scrollbar-width: 8px;
+$scrollbar-thumb-width: 3.2px;
+$scrollbar-border-radius-pill: 100px;
+$shadow-height: 34px;
+$shadow-border-radius: 0 0 32px 32px;
+$transition-duration: 0.2s;
+
+.thread {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	position: relative;
+	overflow: hidden;
+	min-height: 0;
+}
+
+.initialComment {
+	flex-shrink: 0;
+	position: relative;
+}
+
+.followingComments {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+	flex: 1;
+	overflow-y: auto;
+	min-height: 0;
+	padding: var(--spacing-sm) 0;
+
+	&::-webkit-scrollbar {
+		width: $scrollbar-width;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: var(--color-background-tertiary);
+		border-radius: $scrollbar-border-radius-pill;
+		width: $scrollbar-thumb-width;
+	}
+}
+
+.overflowShadow {
+	position: absolute;
+	bottom: 0;
+	transform: translateY(100%);
+	left: 0;
+	right: 0;
+	height: $shadow-height;
+	border-radius: $shadow-border-radius;
+	background: linear-gradient(180deg, rgba(0, 26, 71, 0.2) -135.47%, rgba(0, 26, 71, 0) 54.98%);
+	pointer-events: none;
+	opacity: 0;
+	transition: opacity $transition-duration ease;
+
+	&.visible {
+		opacity: 1;
+	}
+}

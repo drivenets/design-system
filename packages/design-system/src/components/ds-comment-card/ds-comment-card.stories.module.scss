@@ -1,0 +1,23 @@
+.decorator {
+	width: 484px;
+}
+
+.grid {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-lg);
+	width: 484px;
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+}
+
+.heading {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--color-font-secondary);
+}
