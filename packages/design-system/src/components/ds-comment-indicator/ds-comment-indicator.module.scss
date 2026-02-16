@@ -1,0 +1,65 @@
+$indicator-size: 32px;
+$avatar-size: 20px;
+$plus-icon-font-size: 20px;
+$border-width: 1px;
+$border-radius-circle: 50%;
+$outline-width: 2px;
+$outline-offset: 2px;
+$transition-duration: 0.2s;
+
+.indicator {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $indicator-size;
+	height: $indicator-size;
+	padding: 0;
+	border: $border-width solid var(--color-border);
+	border-radius: var(--spacing-standard) var(--spacing-standard) var(--spacing-standard) 0;
+	background: var(--color-background);
+	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+	cursor: pointer;
+	transition:
+		background-color $transition-duration ease,
+		border-color $transition-duration ease;
+
+	&:focus-visible {
+		outline: $outline-width solid var(--color-focus);
+		outline-offset: $outline-offset;
+	}
+
+	&:not(.actionRequired):hover {
+		background: var(--color-background-secondary);
+		border-color: var(--color-border-action-secondary-hover);
+	}
+}
+
+.placeholder {
+	.plusIcon {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: $avatar-size;
+		height: $avatar-size;
+		font-size: $plus-icon-font-size;
+		font-weight: var(--font-weight-semi-bold);
+		line-height: 0;
+		color: var(--color-font-main);
+	}
+}
+
+.actionRequired {
+	background: var(--color-background-warning-strong);
+
+	&:hover {
+		background: var(--color-background-danger-strong-hover);
+		border-color: var(--color-border-action-secondary-hover);
+	}
+}
+
+.avatar {
+	width: $avatar-size;
+	height: $avatar-size;
+	border-radius: $border-radius-circle;
+	object-fit: cover;
+}

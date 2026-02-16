@@ -36,8 +36,8 @@
 		"directory": "/packages/design-system"
 	},
 	"scripts": {
-		"lint": "pnpm generate-scss-dts; eslint --max-warnings=0 .",
-		"typecheck": "pnpm generate-scss-dts; tsc",
+		"lint": "pnpm generate-scss-dts && eslint --max-warnings=0 .; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
+		"typecheck": "pnpm generate-scss-dts && tsc; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest --project=\"!requires-build\"",

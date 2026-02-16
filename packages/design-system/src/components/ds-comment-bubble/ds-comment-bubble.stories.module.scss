@@ -1,0 +1,33 @@
+.grid {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xl);
+}
+
+.column {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+}
+
+.heading {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--color-font-secondary);
+}
+
+.interactiveContainer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-standard);
+	align-items: center;
+}
+
+.instructions {
+	margin: 0;
+	font-size: 14px;
+	color: var(--color-font-secondary);
+	text-align: center;
+	max-width: 400px;
+}
