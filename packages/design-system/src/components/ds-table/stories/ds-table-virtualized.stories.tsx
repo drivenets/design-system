@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, waitFor, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
@@ -80,11 +80,10 @@ export const Virtualized: Story = {
 		const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
 		const totalFetched = flatData.length;
 
-		const fetchMoreOnBottomReached = async ({
-			scrollOffset,
-			totalContentHeight,
-			viewportHeight,
-		}: ScrollParams) => {
+		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
+			args.onScroll?.(params);
+			const { scrollOffset, totalContentHeight, viewportHeight } = params;
+
 			const finishedFetching = totalFetched >= totalRows;
 
 			const scrollThreshold = 500;
@@ -147,8 +146,9 @@ export const Virtualized: Story = {
 			}
 			return col;
 		}),
+		onScroll: fn(),
 	},
-	play: async ({ canvasElement }) => {
+	play: async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
 
 		await waitFor(
@@ -160,5 +160,19 @@ export const Virtualized: Story = {
 
 		const dataRows = canvas.getAllByRole('row').filter((row) => !row.querySelector('th'));
 		await expect(dataRows.length).toBeGreaterThan(0);
+
+		const scrollContainer = canvasElement.querySelector('[class*="virtualizedContainer"]');
+		await expect(scrollContainer).toBeInTheDocument();
+
+		if (scrollContainer) {
+			scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+			await waitFor(
+				() => {
+					expect(args.onScroll).toHaveBeenCalled();
+				},
+				{ timeout: 2000 },
+			);
+		}
 	},
 };
