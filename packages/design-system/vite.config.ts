@@ -17,6 +17,7 @@ export default defineConfig({
 				'**/*.stories.**{ts,tsx}',
 				'**/.storybook/**',
 				'**/*.scss',
+				'dist/**',
 
 				// deprecated components
 				'**/ds-chip/**',
