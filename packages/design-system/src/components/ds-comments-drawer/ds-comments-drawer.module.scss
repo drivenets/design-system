@@ -1,0 +1,67 @@
+$divider-width: 1px;
+$divider-height: 16px;
+$scrollbar-width: 8px;
+$scrollbar-border-radius-pill: 9999px;
+
+.headerActions {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+}
+
+.divider {
+	width: $divider-width;
+	height: $divider-height;
+	background: var(--color-border-secondary);
+}
+
+.searchInput {
+	flex: 1;
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-standard);
+	padding: var(--spacing-standard);
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		width: $scrollbar-width;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background: var(--color-background-tertiary);
+		border-radius: $scrollbar-border-radius-pill;
+	}
+}
+
+.emptyState {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-xl);
+	text-align: center;
+	color: var(--color-font-secondary);
+	font-size: var(--font-size-sm);
+	line-height: var(--line-height-sm);
+	gap: var(--spacing-sm);
+}
+
+.emptyIcon {
+	color: var(--color-icon-secondary);
+}
+
+.filterTagsToolbar {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.tagFilter {
+	min-width: 0;
+}
