@@ -6,15 +6,15 @@ const START_ROTATION = 135;
 
 export const ARC_RATIO = ARC_DEGREES / FULL_CIRCLE;
 
-export const containerSizeMap: Record<ArcProgressSize, number> = Object.freeze({
+const containerSizeMap: Record<ArcProgressSize, number> = {
 	small: 80,
 	medium: 120,
-});
+};
 
-export const strokeWidthMap: Record<ArcProgressSize, number> = Object.freeze({
+const strokeWidthMap: Record<ArcProgressSize, number> = {
 	small: 4,
 	medium: 6,
-});
+};
 
 export const clampValue = (value: number): number => Math.min(100, Math.max(0, value));
 
