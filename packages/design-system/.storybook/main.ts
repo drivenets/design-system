@@ -16,6 +16,23 @@ const config: StorybookConfig = {
 		// Storybook build doesn't need to generate d.ts files.
 		viteConfig.plugins = await withoutVitePlugins(viteConfig.plugins, ['vite:dts']);
 
+		// Suppress "use client" directive warnings from Ark UI / other RSC-aware libs.
+		if (!viteConfig.build) {
+			viteConfig.build = {};
+		}
+
+		if (!viteConfig.build.rollupOptions) {
+			viteConfig.build.rollupOptions = {};
+		}
+
+		viteConfig.build.rollupOptions.onwarn = (warning, defaultHandler) => {
+			if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes('"use client"')) {
+				return;
+			}
+
+			defaultHandler(warning);
+		};
+
 		return viteConfig;
 	},
 };
