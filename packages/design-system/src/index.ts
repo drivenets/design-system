@@ -30,6 +30,7 @@ export * from './components/ds-number-input';
 export * from './components/ds-panel';
 export * from './components/ds-password-input';
 export * from './components/ds-popover';
+export * from './components/ds-progress-linear';
 export * from './components/ds-radio-group';
 export * from './components/ds-segment-group';
 export * from './components/ds-select';

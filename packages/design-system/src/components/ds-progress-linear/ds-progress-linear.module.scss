@@ -1,0 +1,100 @@
+@use '../../styles/typography';
+
+$border-radius: 4px;
+
+.root {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	&.sizeSmall {
+		gap: var(--spacing-4xs);
+	}
+
+	&.sizeMedium,
+	&.sizeLarge {
+		gap: var(--spacing-3xs);
+	}
+}
+
+.header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+}
+
+.label {
+	@include typography.body-sm-md;
+	color: var(--color-font-main);
+}
+
+.valueText {
+	@include typography.body-sm-reg;
+	color: var(--color-font-main);
+	flex-shrink: 0;
+}
+
+.track {
+	width: 100%;
+	background-color: var(--color-background-tertiary);
+	border-radius: $border-radius;
+	overflow: hidden;
+}
+
+.trackSmall {
+	height: 2px;
+}
+
+.trackMedium {
+	height: 4px;
+}
+
+.trackLarge {
+	height: 8px;
+}
+
+.range {
+	height: 100%;
+	border-radius: $border-radius;
+	transition: width 0.2s ease;
+}
+
+.variantProgress {
+	background-color: var(--color-background-selected);
+}
+
+.variantInterrupted {
+	background-color: var(--color-background-warning-strong);
+}
+
+.variantSuccess {
+	background-color: var(--color-background-success-strong);
+}
+
+.variantFailed {
+	background-color: var(--color-background-danger-strong);
+}
+
+.caption {
+	@include typography.body-xs-reg;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	padding-top: var(--spacing-4xs);
+}
+
+.captionDefault {
+	color: var(--color-font-secondary);
+}
+
+.captionSuccess {
+	color: var(--color-background-success-strong);
+}
+
+.captionFailed {
+	color: var(--color-background-danger-strong);
+}
+
+.captionInterrupted {
+	color: var(--color-font-warning);
+}
