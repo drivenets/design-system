@@ -1,1 +1,5 @@
+pnpm --filter @drivenets/design-system generate-scss-dts
 pnpm pre-commit
+EXIT_CODE=$?
+rm -rf packages/design-system/.scss-dts
+exit $EXIT_CODE
