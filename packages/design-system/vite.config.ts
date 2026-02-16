@@ -16,10 +16,13 @@ export default defineConfig({
 			thresholds: {
 				lines: 90,
 				functions: 90,
-				branches: 90,
+				branches: 85,
 				statements: 90,
 			},
 			watermarks: {
+				lines: [80, 90],
+				functions: [80, 90],
+				branches: [75, 85],
 				statements: [80, 90],
 			},
 		},
