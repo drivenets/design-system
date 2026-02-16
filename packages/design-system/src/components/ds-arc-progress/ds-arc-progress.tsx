@@ -8,7 +8,7 @@ import { getArcGeometry, getEffectiveValue, getProgressDasharray, getTrackDashar
 const variantStyleMap: Record<ArcProgressVariant, string> = Object.freeze({
 	default: styles.default,
 	success: styles.success,
-	error: styles.error,
+	failed: styles.failed,
 });
 
 const DsArcProgress = ({
@@ -29,13 +29,14 @@ const DsArcProgress = ({
 	const progressDasharray = getProgressDasharray(effectiveValue, arcLength, circumference);
 
 	const renderIcon = (iconName: 'check' | 'close', colorClass: string) => {
-		if (size === 'medium') {
-			return (
-				<DsIcon variant="rounded" icon={iconName} className={classNames(styles.iconCustomSize, colorClass)} />
-			);
-		}
-
-		return <DsIcon variant="rounded" icon={iconName} size="large" className={colorClass} />;
+		return (
+			<DsIcon
+				variant="rounded"
+				icon={iconName}
+				size="large"
+				className={classNames({ [styles.iconMediumSize]: size === 'medium' }, colorClass)}
+			/>
+		);
 	};
 
 	const renderCenter = () => {
@@ -47,8 +48,8 @@ const DsArcProgress = ({
 			return renderIcon('check', styles.iconSuccess);
 		}
 
-		if (variant === 'error') {
-			return renderIcon('close', styles.iconError);
+		if (variant === 'failed') {
+			return renderIcon('close', styles.iconFailed);
 		}
 
 		return (

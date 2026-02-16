@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef, ReactNode, Ref } from 'react';
 export const arcProgressSizes = ['small', 'medium'] as const;
 export type ArcProgressSize = (typeof arcProgressSizes)[number];
 
-export const arcProgressVariants = ['default', 'success', 'error'] as const;
+export const arcProgressVariants = ['default', 'success', 'failed'] as const;
 export type ArcProgressVariant = (typeof arcProgressVariants)[number];
 
 export interface DsArcProgressProps extends ComponentPropsWithoutRef<'div'> {

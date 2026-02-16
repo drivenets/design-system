@@ -58,8 +58,8 @@ export const AllVariants: Story = {
 				<span className={styles.label}>Small / Success</span>
 			</div>
 			<div className={styles.cell}>
-				<DsArcProgress size="small" variant="error" value={50} />
-				<span className={styles.label}>Small / Error</span>
+				<DsArcProgress size="small" variant="failed" value={50} />
+				<span className={styles.label}>Small / Failed</span>
 			</div>
 
 			<div className={styles.cell}>
@@ -71,8 +71,8 @@ export const AllVariants: Story = {
 				<span className={styles.label}>Medium / Success</span>
 			</div>
 			<div className={styles.cell}>
-				<DsArcProgress size="medium" variant="error" value={50} />
-				<span className={styles.label}>Medium / Error</span>
+				<DsArcProgress size="medium" variant="failed" value={50} />
+				<span className={styles.label}>Medium / Failed</span>
 			</div>
 		</div>
 	),
@@ -120,9 +120,9 @@ export const Success: Story = {
 	},
 };
 
-export const Error: Story = {
+export const Failed: Story = {
 	args: {
-		variant: 'error',
+		variant: 'failed',
 		value: 50,
 	},
 	play: async ({ canvasElement }) => {

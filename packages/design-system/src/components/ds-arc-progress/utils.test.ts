@@ -40,9 +40,9 @@ describe('Arc Progress Utils', () => {
 			expect(getEffectiveValue('default', 200)).toBe(100);
 		});
 
-		it('should return clamped value for error variant', () => {
-			expect(getEffectiveValue('error', 75)).toBe(75);
-			expect(getEffectiveValue('error', -5)).toBe(0);
+		it('should return clamped value for failed variant', () => {
+			expect(getEffectiveValue('failed', 75)).toBe(75);
+			expect(getEffectiveValue('failed', -5)).toBe(0);
 		});
 	});
 
