@@ -1,6 +1,7 @@
 @use '../../styles/typography';
 
 $icon-custom-size: 44px;
+$transition-duration: 0.2s;
 
 .root {
 	position: relative;
@@ -16,11 +17,11 @@ $icon-custom-size: 44px;
 
 .track {
 	stroke: var(--color-background-tertiary);
-	transition: stroke 0.2s;
+	transition: stroke $transition-duration;
 }
 
 .progress {
-	transition: stroke-dasharray 0.2s;
+	transition: stroke-dasharray $transition-duration;
 }
 
 .default {
@@ -50,8 +51,7 @@ $icon-custom-size: 44px;
 .valueSmall {
 	@include typography.body-md-md;
 }
-
-.iconSuccess {
+rea .iconSuccess {
 	color: var(--color-icon-success);
 }
 
