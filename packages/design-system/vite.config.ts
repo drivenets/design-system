@@ -12,7 +12,7 @@ const testsWithBuild = '**/*.requires-build.test.{ts,tsx}';
 export default defineConfig({
 	test: {
 		coverage: {
-			exclude: ['**/stories/**', '**/*.stories.{ts,tsx}', '**/.storybook/**', '**/*.scss'],
+			exclude: ['**/stories/**', '**/*.stories.**{ts,tsx}', '**/.storybook/**', '**/*.scss'],
 		},
 		projects: [
 			{
