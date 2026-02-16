@@ -294,6 +294,7 @@ const customIconCategories: Record<string, CustomIconName[]> = {
 		'special-netgen-s',
 	],
 	'Active State': ['special-filter-list-active', 'special-cached-active'],
+	'WF Status': ['special-failed', 'special-warning', 'special-running', 'special-paused'],
 };
 
 export const CustomIcons: Story = {
