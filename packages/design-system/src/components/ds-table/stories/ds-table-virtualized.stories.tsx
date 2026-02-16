@@ -168,9 +168,8 @@ export const Virtualized: Story = {
 			scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
 			await waitFor(
-				() => {
-					expect(args.onScroll).toHaveBeenCalled();
-				},
+				() => expect(args.onScroll).toHaveBeenCalled(),
+
 				{ timeout: 2000 },
 			);
 		}
