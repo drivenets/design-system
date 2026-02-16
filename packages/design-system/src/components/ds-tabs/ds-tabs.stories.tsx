@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
 import { DsTabs } from './ds-tabs';
 import type { DsTabsMenuActionItem } from './ds-tabs.types';
@@ -234,7 +234,7 @@ export const WithMenuActions: Story = {
 			// Test keyboard interaction - Enter key opens menu
 			menuButton.focus();
 			await userEvent.keyboard('{Enter}');
-			await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+			await waitFor(() => expect(menuButton).toHaveAttribute('aria-expanded', 'true'));
 
 			const editAction = await body.findByRole('menuitem', { name: /Edit/i });
 			await expect(editAction).toBeInTheDocument();
@@ -247,7 +247,7 @@ export const WithMenuActions: Story = {
 			// Test Space key also toggles menu
 			menuButton.focus();
 			await userEvent.keyboard(' ');
-			await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+			await waitFor(() => expect(menuButton).toHaveAttribute('aria-expanded', 'true'));
 
 			const duplicateAction = await body.findByRole('menuitem', { name: /Duplicate/i });
 			await expect(duplicateAction).toBeInTheDocument();
