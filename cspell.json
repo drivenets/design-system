@@ -18,6 +18,7 @@
 		"matchall",
 		"netgen",
 		"nolyfill",
+		"onwarn",
 		"overscan",
 		"Oxfmt",
 		"reorderable",
