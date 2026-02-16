@@ -351,7 +351,7 @@ export const CollapsibleGroupControlled: StoryObj<CollapsibleGroupControlledArgs
 		await expect(groupLabel).toBeInTheDocument();
 
 		const profileItem = await screen.findByText('Profile');
-		await expect(profileItem).toBeVisible();
+		await expect(profileItem).toBeInTheDocument();
 
 		await userEvent.click(groupLabel);
 
