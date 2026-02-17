@@ -3,6 +3,7 @@ import { expect, screen, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import DsSelect from './ds-select';
 import type { DsSelectOption, DsSelectProps } from './ds-select.types';
+import styles from './ds-select.stories.module.scss';
 
 const meta: Meta<typeof DsSelect> = {
 	title: 'Design System/Select',
@@ -180,13 +181,13 @@ export const WithIcons: Story = {
 
 export const Sizes: Story = {
 	render: (args) => (
-		<div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-			<div>
-				<div style={{ marginBottom: '8px', fontSize: '12px', color: '#666' }}>Default</div>
+		<div className={styles.sizesContainer}>
+			<div className={styles.sizeItem}>
+				<div className={styles.sizeLabel}>Default</div>
 				<ControlledSelectWrapper {...args} size="default" />
 			</div>
-			<div>
-				<div style={{ marginBottom: '8px', fontSize: '12px', color: '#666' }}>Small</div>
+			<div className={styles.sizeItem}>
+				<div className={styles.sizeLabel}>Small</div>
 				<ControlledSelectWrapper {...args} size="small" />
 			</div>
 		</div>
@@ -267,10 +268,7 @@ export const MultiSelect: Story = {
 		await userEvent.click(trigger);
 
 		// Delete the first option by clicking its delete button
-		const firstOption = mockOptions[0];
-		if (!firstOption) {
-			throw new Error('mockOptions must have at least 1 item');
-		}
+		const firstOption = mockOptions[0] as DsSelectOption;
 		const firstOptionChip = screen.getByRole('button', { name: firstOption.label });
 		const deleteButton = within(firstOptionChip).getByRole('button', { name: 'Delete chip' });
 		await userEvent.click(deleteButton);
@@ -318,7 +316,6 @@ export const MultiSelectWithSearch: Story = {
 			const searchInput = screen.getByPlaceholderText('Search');
 			await expect(searchInput).toBeInTheDocument();
 
-			// Type in the search input to filter
 			await userEvent.type(searchInput, 'berry');
 
 			// Verify matching items are visible
@@ -329,7 +326,6 @@ export const MultiSelectWithSearch: Story = {
 			await expect(screen.queryByRole('option', { name: 'Banana' })).not.toBeInTheDocument();
 			await expect(screen.queryByRole('option', { name: 'Date' })).not.toBeInTheDocument();
 
-			// Clear search
 			await userEvent.clear(searchInput);
 		});
 
