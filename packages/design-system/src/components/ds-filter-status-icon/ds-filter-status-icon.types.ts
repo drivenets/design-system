@@ -1,14 +1,14 @@
 import type { CSSProperties } from 'react';
 
-export const wfStatuses = ['running', 'warning', 'failed', 'paused'] as const;
+export const filterStatuses = ['running', 'warning', 'failed', 'paused'] as const;
 
-export type WfStatus = (typeof wfStatuses)[number];
+export type FilterStatus = (typeof filterStatuses)[number];
 
-export interface DsWfStatusIconProps {
+export interface DsFilterStatusIconProps {
 	/**
 	 * The workflow status type
 	 */
-	status: WfStatus;
+	status: FilterStatus;
 	/**
 	 * Whether the status icon is active or non-active
 	 * @default true

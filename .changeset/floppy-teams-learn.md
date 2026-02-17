@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-Add `DsWfStatusIcon` component
+Add `DsFilterStatusIcon` component

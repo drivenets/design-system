@@ -1,13 +1,13 @@
 import classNames from 'classnames';
-import styles from './ds-wf-status-icon.module.scss';
-import type { DsWfStatusIconProps } from './ds-wf-status-icon.types';
+import styles from './ds-filter-status-icon.module.scss';
+import type { DsFilterStatusIconProps } from './ds-filter-status-icon.types';
 import { DsIcon } from '../ds-icon';
 
 /**
- * Design system Workflow Status Icon component
+ * Design system Filter Status Icon component
  * Status icons for toggle filter buttons to help users quickly distinguish workflow states
  */
-export const DsWfStatusIcon = ({ status, active = true, className, style }: DsWfStatusIconProps) => {
+export const DsFilterStatusIcon = ({ status, active = true, className, style }: DsFilterStatusIconProps) => {
 	const iconMap = {
 		running: 'special-running',
 		warning: 'special-warning',

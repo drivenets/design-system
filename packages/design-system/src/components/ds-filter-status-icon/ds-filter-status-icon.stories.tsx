@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
-import { DsWfStatusIcon } from './ds-wf-status-icon';
-import { wfStatuses } from './ds-wf-status-icon.types';
-import styles from './ds-wf-status-icon.stories.module.scss';
+import { DsFilterStatusIcon } from './ds-filter-status-icon';
+import { filterStatuses } from './ds-filter-status-icon.types';
+import styles from './ds-filter-status-icon.stories.module.scss';
 
-const meta: Meta<typeof DsWfStatusIcon> = {
-	title: 'Design System/WfStatusIcon',
-	component: DsWfStatusIcon,
+const meta: Meta<typeof DsFilterStatusIcon> = {
+	title: 'Design System/FilterStatusIcon',
+	component: DsFilterStatusIcon,
 	parameters: {
 		layout: 'centered',
 	},
@@ -14,7 +14,7 @@ const meta: Meta<typeof DsWfStatusIcon> = {
 	argTypes: {
 		status: {
 			control: 'select',
-			options: wfStatuses,
+			options: filterStatuses,
 			description: 'The workflow status type',
 		},
 		active: {
@@ -33,7 +33,7 @@ const meta: Meta<typeof DsWfStatusIcon> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof DsWfStatusIcon>;
+type Story = StoryObj<typeof DsFilterStatusIcon>;
 
 export const Default: Story = {
 	args: {
@@ -55,7 +55,7 @@ export const All: Story = {
 			<div className={styles.storiesContainer}>
 				<div className={styles.row}>
 					<div className={styles.label}></div>
-					{wfStatuses.map((status) => (
+					{filterStatuses.map((status) => (
 						<div key={status} className={styles.label}>
 							{status}
 						</div>
@@ -64,18 +64,18 @@ export const All: Story = {
 
 				<div className={styles.row}>
 					<div className={styles.label}>active</div>
-					{wfStatuses.map((status) => (
+					{filterStatuses.map((status) => (
 						<div key={`active-${status}`} className={styles.cell}>
-							<DsWfStatusIcon status={status} active />
+							<DsFilterStatusIcon status={status} active />
 						</div>
 					))}
 				</div>
 
 				<div className={styles.row}>
 					<div className={styles.label}>non-active</div>
-					{wfStatuses.map((status) => (
+					{filterStatuses.map((status) => (
 						<div key={`inactive-${status}`} className={styles.cell}>
-							<DsWfStatusIcon status={status} active={false} />
+							<DsFilterStatusIcon status={status} active={false} />
 						</div>
 					))}
 				</div>
