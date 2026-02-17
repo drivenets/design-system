@@ -27,5 +27,5 @@
 		"erasableSyntaxOnly": true,
 		"checkJs": true
 	},
-	"exclude": ["**/dist", "**/coverage"]
+	"exclude": ["**/dist", "**/coverage", "**/storybook-static"]
 }

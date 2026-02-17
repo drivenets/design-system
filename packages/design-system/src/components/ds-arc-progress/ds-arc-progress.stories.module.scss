@@ -1,0 +1,25 @@
+.grid {
+	display: grid;
+	grid-template-columns: repeat(3, auto);
+	gap: var(--spacing-8);
+	align-items: center;
+	justify-items: center;
+}
+
+.cell {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--spacing-2);
+}
+
+.label {
+	font-size: var(--font-size-sm);
+	color: var(--color-font-secondary);
+}
+
+.row {
+	display: flex;
+	gap: var(--spacing-8);
+	align-items: center;
+}
