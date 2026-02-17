@@ -7,6 +7,7 @@ import { createTestPlayFunction, getMockFile } from './ds-file-upload.stories.ut
 import { MockAdapterPresets } from './stories/adapters/mock-file-upload-adapter';
 import { FileUpload } from './components/file-upload';
 import DocsPage from './stories/adapters/simple-file-upload-adapter.docs.mdx';
+import type { FileMetadata } from './ds-file-upload-api.types';
 
 const meta: Meta<typeof DsFileUpload> = {
 	title: 'Design System/FileUpload',
@@ -139,7 +140,7 @@ export const Manual: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
+	play: async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
 
 		const file1 = getMockFile({ name: 'document-1.pdf' });
@@ -155,8 +156,8 @@ export const Manual: Story = {
 
 		// Wait for files to appear in the list (they should be pending)
 		await waitFor(async () => {
-			await expect(canvas.getByText('document-1.pdf')).toBeInTheDocument();
-			await expect(canvas.getByText('document-2.pdf')).toBeInTheDocument();
+			await expect(canvas.getByText(file1.name)).toBeInTheDocument();
+			await expect(canvas.getByText(file2.name)).toBeInTheDocument();
 		});
 
 		// Find and click "Upload All" button
@@ -165,9 +166,28 @@ export const Manual: Story = {
 
 		// Wait for all uploads to complete
 		await waitFor(
-			() => {
+			async () => {
 				const completeTexts = canvas.queryAllByText(/complete/i);
-				return expect(completeTexts.length).toBe(2);
+				await expect(completeTexts.length).toBe(2);
+
+				await expect(args.onFileUploadComplete).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						metadata: expect.objectContaining({
+							fileName: file1.name,
+						}) as FileMetadata,
+					}),
+				);
+				await expect(args.onFileUploadComplete).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						metadata: expect.objectContaining({
+							fileName: file2.name,
+						}) as FileMetadata,
+					}),
+				);
+
+				await expect(args.onAllFileUploadsComplete).toHaveBeenCalled();
 			},
 			{ timeout: 10000 },
 		);
