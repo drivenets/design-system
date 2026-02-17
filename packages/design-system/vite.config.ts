@@ -14,7 +14,7 @@ export default defineConfig({
 		coverage: {
 			exclude: [
 				'**/stories/**',
-				'**/*.stories.**{ts,tsx}',
+				'**/*.stories.*{ts,tsx}',
 				'**/.storybook/**',
 				'**/*.scss',
 				'dist/**',
