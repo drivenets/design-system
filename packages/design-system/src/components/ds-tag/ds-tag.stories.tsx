@@ -235,11 +235,9 @@ export const KeyboardInteraction: Story = {
 			tag.focus();
 			await expect(tag).toHaveFocus();
 
-			// Press Enter
 			await userEvent.keyboard('{Enter}');
 			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
 
-			// Press Space
 			await userEvent.keyboard(' ');
 			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
 		});
@@ -247,11 +245,9 @@ export const KeyboardInteraction: Story = {
 		await step('Tag Backspace/Delete keys trigger onDelete', async () => {
 			tag.focus();
 
-			// Press Backspace
 			await userEvent.keyboard('{Backspace}');
 			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
 
-			// Press Delete
 			await userEvent.keyboard('{Delete}');
 			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
 
@@ -263,11 +259,9 @@ export const KeyboardInteraction: Story = {
 			deleteButton.focus();
 			await expect(deleteButton).toHaveFocus();
 
-			// Press Enter
 			await userEvent.keyboard('{Enter}');
 			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
 
-			// Press Space
 			await userEvent.keyboard(' ');
 			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
 
