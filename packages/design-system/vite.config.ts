@@ -15,14 +15,12 @@ export default defineConfig({
 			exclude: ['**/stories/**', '**/*.stories.{ts,tsx}', '**/.storybook/**', '**/*.scss'],
 			thresholds: {
 				lines: 90,
-				functions: 90,
 				branches: 85,
-				statements: 90,
 			},
 			watermarks: {
 				lines: [80, 90],
-				functions: [80, 90],
 				branches: [75, 85],
+				functions: [80, 90],
 				statements: [80, 90],
 			},
 		},

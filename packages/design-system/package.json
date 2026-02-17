@@ -41,7 +41,7 @@
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest --project=\"!requires-build\"",
-		"test:coverage": "vitest --coverage --project=\"!requires-build\"",
+		"test:coverage": "pnpm test --coverage",
 		"test:requires-build": "vitest --project=requires-build",
 		"build": "tsdown",
 		"build:watch": "pnpm build --watch",
