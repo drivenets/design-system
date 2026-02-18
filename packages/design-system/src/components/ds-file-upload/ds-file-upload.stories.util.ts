@@ -2,13 +2,25 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 
 export type TestScenario = 'normal' | 'interrupted' | 'error';
 
+export interface MockFileOptions {
+	name?: string;
+	type?: string;
+	size?: number;
+}
+
 /**
  * Returns a mock file for testing
  */
-const getMockFile = (): File => {
-	const file = new File(['test content'], 'test-document.pdf', { type: 'application/pdf' });
+export const getMockFile = (options: MockFileOptions = {}): File => {
+	const {
+		name = 'test-document.pdf',
+		type = 'application/pdf',
+		size = 1024 * 100, // 100KB
+	} = options;
+
+	const file = new File(['test content'], name, { type });
 	Object.defineProperty(file, 'size', {
-		value: 1024 * 100, // 100KB
+		value: size,
 		writable: false,
 	});
 	return file;

@@ -129,9 +129,9 @@ const DsTable = <TData extends { id: string }, TValue>({
 		getCoreRowModel: getCoreRowModel(),
 		onSortingChange: handleSortingChange,
 		getSortedRowModel: getSortedRowModel(),
-		onColumnFiltersChange: handleColumnFiltersChange,
+		onColumnFiltersChange: handleColumnFiltersChange, // TODO: looks like this is not used, since filters are handled from the outside
 		getFilteredRowModel: getFilteredRowModel(),
-		onColumnVisibilityChange: handleColumnVisibilityChange,
+		onColumnVisibilityChange: handleColumnVisibilityChange, // TODO: looks like this is not used, since visibility is handled from the outside
 		onRowSelectionChange: handleRowSelectionChange,
 		getRowId: (row) => row.id,
 		state: {

@@ -19,9 +19,10 @@ jobs:
       contents: read
       pull-requests: read
 
-    # Skip release PRs
+    # Skip release & dependabot PRs
     if: |
-      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]') &&
+      ! (github.event.pull_request.user.login == 'dependabot[bot]')
 
     steps:
       - name: Checkout source code

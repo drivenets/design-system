@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, screen, userEvent, within } from 'storybook/test';
 import { DsDropdownMenu } from './ds-dropdown-menu';
 import { DsIcon } from '../ds-icon';
 import { DsTextInput } from '../ds-text-input';
@@ -253,6 +254,118 @@ export const CheckboxList: Story = {
 				</DsDropdownMenu.Content>
 			</DsDropdownMenu.Root>
 		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = canvas.getByRole('button', { name: /Multi Select/i });
+
+		await userEvent.click(trigger);
+
+		const groupLabelText = await screen.findByText('Group Name');
+		await expect(groupLabelText).toBeInTheDocument();
+
+		const groupLabel = groupLabelText.closest('button') as HTMLElement;
+		await expect(groupLabel).toBeInTheDocument();
+
+		const collapseIcon = await screen.findByText('keyboard_arrow_down');
+		await expect(collapseIcon).toBeInTheDocument();
+
+		const groupItem = screen.getByText('Menu text 3');
+		await expect(groupItem).toBeVisible();
+
+		await userEvent.click(groupLabel);
+
+		await expect(screen.queryByText('Menu text 3')).not.toBeInTheDocument();
+		await expect(screen.queryByText('Menu text 4')).not.toBeInTheDocument();
+
+		await userEvent.click(groupLabel);
+
+		await expect(screen.getByText('Menu text 3')).toBeVisible();
+		await expect(screen.getByText('Menu text 4')).toBeVisible();
+	},
+};
+
+type CollapsibleGroupControlledArgs = {
+	onCollapsedChange?: (collapsed: boolean) => void;
+};
+
+export const CollapsibleGroupControlled: StoryObj<CollapsibleGroupControlledArgs> = {
+	name: 'Collapsible Group (Controlled)',
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'The collapsed state is controlled externally via props, and the onCollapsedChange callback is triggered when the user clicks the group label.',
+			},
+		},
+	},
+	render: function Render(args) {
+		const [collapsed, setCollapsed] = useState(false);
+
+		const handleCollapsedChange = (newCollapsed: boolean) => {
+			setCollapsed(newCollapsed);
+			args.onCollapsedChange?.(newCollapsed);
+		};
+
+		return (
+			<DsDropdownMenu.Root positioning={{ sameWidth: true }}>
+				<DsDropdownMenu.Trigger className="trigger fixedWidth">
+					<span>Controlled Group</span>
+					<DsIcon icon="arrow_drop_down" />
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.ItemGroup collapsed={collapsed} onCollapsedChange={handleCollapsedChange}>
+						<DsDropdownMenu.ItemGroupLabel>Settings</DsDropdownMenu.ItemGroupLabel>
+						<DsDropdownMenu.ItemGroupContent>
+							<DsDropdownMenu.Item value="profile">
+								<DsIcon icon="person" />
+								<span>Profile</span>
+							</DsDropdownMenu.Item>
+							<DsDropdownMenu.Item value="preferences">
+								<DsIcon icon="settings" />
+								<span>Preferences</span>
+							</DsDropdownMenu.Item>
+							<DsDropdownMenu.Item value="notifications">
+								<DsIcon icon="notifications" />
+								<span>Notifications</span>
+							</DsDropdownMenu.Item>
+						</DsDropdownMenu.ItemGroupContent>
+					</DsDropdownMenu.ItemGroup>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
+	},
+	args: {
+		onCollapsedChange: fn(),
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		const trigger = canvas.getByRole('button', { name: /Controlled Group/i });
+		await userEvent.click(trigger);
+
+		const groupLabelText = await screen.findByText('Settings');
+		await expect(groupLabelText).toBeInTheDocument();
+
+		const groupLabel = groupLabelText.closest('button') as HTMLElement;
+		await expect(groupLabel).toBeInTheDocument();
+
+		const profileItem = await screen.findByText('Profile');
+		await expect(profileItem).toBeInTheDocument();
+
+		await userEvent.click(groupLabel);
+
+		await expect(args.onCollapsedChange).toHaveBeenCalledWith(true);
+		await expect(args.onCollapsedChange).toHaveBeenCalledTimes(1);
+
+		await expect(screen.queryByText('Profile')).not.toBeInTheDocument();
+
+		await userEvent.click(groupLabel);
+
+		await expect(args.onCollapsedChange).toHaveBeenCalledWith(false);
+		await expect(args.onCollapsedChange).toHaveBeenCalledTimes(2);
+
+		await expect(await screen.findByText('Profile')).toBeVisible();
 	},
 };
 

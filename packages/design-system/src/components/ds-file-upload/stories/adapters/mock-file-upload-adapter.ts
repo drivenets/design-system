@@ -141,7 +141,7 @@ export const MockAdapterPresets = {
 	interrupted: (atProgress = 30): MockFileUploadAdapter =>
 		new MockFileUploadAdapter({
 			scenario: 'interrupted',
-			duration: 2000,
+			duration: 1000,
 			steps: 20,
 			interruptAt: atProgress,
 			errorMessage: 'Network connection lost',
