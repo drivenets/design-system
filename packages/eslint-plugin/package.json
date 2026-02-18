@@ -40,7 +40,7 @@
 	},
 	"dependencies": {
 		"@eslint/core": "^1.1.0",
-		"eslint-no-restricted": "^0.0.9"
+		"eslint-no-restricted": "^0.0.10"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
