@@ -9,6 +9,7 @@ import { shouldSkipPackage } from '@changesets/should-skip-package';
 import changesetConfig from '../../.changeset/config.json' with { type: 'json' };
 
 const execAsync = promisify(exec);
+const baseBranch = 'origin/' + changesetConfig.baseBranch;
 
 const rootDir = path.resolve(import.meta.dirname, '../../');
 const changedPackages = await getVersionableChangedPackages();
@@ -46,7 +47,7 @@ await execAsync('git push', { cwd: rootDir });
 async function getExistingChangeset() {
 	const changedFiles = await git.getChangedFilesSince({
 		cwd: rootDir,
-		ref: changesetConfig.baseBranch,
+		ref: baseBranch,
 	});
 
 	return changedFiles.find((file) => file.includes('.changeset/'));
@@ -57,7 +58,7 @@ async function getExistingChangeset() {
 async function getVersionableChangedPackages() {
 	const changedPackages = await git.getChangedPackagesSinceRef({
 		cwd: rootDir,
-		ref: changesetConfig.baseBranch,
+		ref: baseBranch,
 	});
 
 	return changedPackages.filter(
