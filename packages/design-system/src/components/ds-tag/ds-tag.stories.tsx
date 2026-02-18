@@ -215,3 +215,58 @@ export const CustomIcon: Story = {
 		await expect(canvas.queryByText('check_circle')).not.toBeInTheDocument();
 	},
 };
+
+export const KeyboardInteraction: Story = {
+	args: {
+		label: 'Keyboard Tag',
+		onClick: fn(),
+		onDelete: fn(),
+	},
+	play: async ({ args, canvasElement, step }) => {
+		const canvas = within(canvasElement);
+
+		const tag = canvas.getByRole('button', { name: /Keyboard Tag/i });
+		const deleteButton = canvas.getByLabelText('Delete tag');
+
+		let onClickCalls = 0;
+		let onDeleteCalls = 0;
+
+		await step('Tag Enter/Space keys trigger onClick', async () => {
+			tag.focus();
+			await expect(tag).toHaveFocus();
+
+			await userEvent.keyboard('{Enter}');
+			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
+
+			await userEvent.keyboard(' ');
+			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
+		});
+
+		await step('Tag Backspace/Delete keys trigger onDelete', async () => {
+			tag.focus();
+
+			await userEvent.keyboard('{Backspace}');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			await userEvent.keyboard('{Delete}');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			// onClick should not have been called additionally
+			await expect(args.onClick).toHaveBeenCalledTimes(onClickCalls);
+		});
+
+		await step('Delete button Enter/Space keys trigger onDelete and stop propagation', async () => {
+			deleteButton.focus();
+			await expect(deleteButton).toHaveFocus();
+
+			await userEvent.keyboard('{Enter}');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			await userEvent.keyboard(' ');
+			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
+
+			// onClick should not be called (propagation stopped)
+			await expect(args.onClick).toHaveBeenCalledTimes(onClickCalls);
+		});
+	},
+};

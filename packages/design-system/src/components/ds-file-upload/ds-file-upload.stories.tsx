@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import DsButton from '../ds-button/ds-button';
 import DsFileUpload from './ds-file-upload';
 import { useFileUpload } from './hooks/use-file-upload';
-import { createTestPlayFunction } from './ds-file-upload.stories.util';
+import { createTestPlayFunction, getMockFile } from './ds-file-upload.stories.util';
 import { MockAdapterPresets } from './stories/adapters/mock-file-upload-adapter';
 import { FileUpload } from './components/file-upload';
 import DocsPage from './stories/adapters/simple-file-upload-adapter.docs.mdx';
+import type { FileMetadata } from './ds-file-upload-api.types';
 
 const meta: Meta<typeof DsFileUpload> = {
 	title: 'Design System/FileUpload',
@@ -96,15 +98,20 @@ export const Default: Story = {
  */
 export const Manual: Story = {
 	args: {
-		adapter: MockAdapterPresets.normal(),
+		adapter: MockAdapterPresets.fast(),
 		autoUpload: false,
 		hideProgress: false,
 		style: { width: '500px' },
+		onFilesAdded: fn(),
+		onFileUploadComplete: fn(),
+		onAllFileUploadsComplete: fn(),
 	},
 	render: function Render(args) {
 		const { getProps, files, uploadAll, clearFiles } = useFileUpload({
-			adapter: MockAdapterPresets.normal(),
-			autoUpload: false, // Manual upload
+			adapter: args.adapter,
+			autoUpload: args.autoUpload,
+			onFileUploadComplete: args.onFileUploadComplete,
+			onAllFileUploadsComplete: args.onAllFileUploadsComplete,
 		});
 
 		const isUploading = files.some((file) => file.status === 'uploading');
@@ -112,7 +119,7 @@ export const Manual: Story = {
 
 		return (
 			<div style={{ width: '500px' }}>
-				<FileUpload {...getProps()} {...args} />
+				<FileUpload {...getProps({ onFilesAdded: args.onFilesAdded })} {...args} />
 
 				{hasFiles && (
 					<div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
@@ -133,11 +140,60 @@ export const Manual: Story = {
 			</div>
 		);
 	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		const file1 = getMockFile({ name: 'document-1.pdf' });
+		const file2 = getMockFile({ name: 'document-2.pdf' });
+
+		const fileInput = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
+		if (!fileInput) {
+			throw new Error('File input not found');
+		}
+
+		// Upload 2 files at once
+		await userEvent.upload(fileInput, [file1, file2]);
+
+		// Wait for files to appear in the list (they should be pending)
+		await waitFor(async () => {
+			await expect(canvas.getByText(file1.name)).toBeInTheDocument();
+			await expect(canvas.getByText(file2.name)).toBeInTheDocument();
+		});
+
+		// Find and click "Upload All" button
+		const uploadAllButton = canvas.getByRole('button', { name: /upload all/i });
+		await userEvent.click(uploadAllButton);
+
+		// Wait for all uploads to complete
+		await waitFor(
+			async () => {
+				const completeTexts = canvas.queryAllByText(/complete/i);
+				await expect(completeTexts.length).toBe(2);
+
+				await expect(args.onFileUploadComplete).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						metadata: expect.objectContaining({
+							fileName: file1.name,
+						}) as FileMetadata,
+					}),
+				);
+				await expect(args.onFileUploadComplete).toHaveBeenCalledWith(
+					expect.any(String),
+					expect.objectContaining({
+						metadata: expect.objectContaining({
+							fileName: file2.name,
+						}) as FileMetadata,
+					}),
+				);
+
+				await expect(args.onAllFileUploadsComplete).toHaveBeenCalled();
+			},
+			{ timeout: 10000 },
+		);
+	},
 };
 
-/**
- * Compact mode for inline or constrained layouts
- */
 export const Compact: Story = {
 	args: {
 		adapter: MockAdapterPresets.fast(),
@@ -155,6 +211,7 @@ export const Compact: Story = {
 		dropzoneText: 'Drag and drop your document here or',
 		triggerText: 'Choose document',
 		style: { width: '400px' },
+		onFilesAdded: fn(),
 	},
 };
 
@@ -190,4 +247,143 @@ export const UploadInterrupted: Story = {
 		style: { width: '500px' },
 	},
 	play: createTestPlayFunction('interrupted'),
+};
+
+export const MaxFiles: Story = {
+	args: {
+		adapter: MockAdapterPresets.fast(),
+		maxFiles: 1,
+		style: { width: '400px' },
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const file1 = getMockFile({ name: 'first-file.pdf' });
+		const file2 = getMockFile({ name: 'second-file.pdf' });
+
+		const fileInput = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
+		if (!fileInput) {
+			throw new Error('File input not found');
+		}
+
+		// Upload first file
+		await userEvent.upload(fileInput, file1);
+
+		// Wait for first file to complete
+		await waitFor(
+			async () => {
+				await expect(canvas.getByText('first-file.pdf')).toBeInTheDocument();
+				await expect(canvas.queryByText(/complete/i)).toBeInTheDocument();
+			},
+			{ timeout: 3000 },
+		);
+
+		// Attempt to upload second file (should be rejected due to maxFiles: 1)
+		await userEvent.upload(fileInput, file2);
+
+		// Wait for rejection error to appear
+		await waitFor(async () => {
+			await expect(canvas.getByText('second-file.pdf')).toBeInTheDocument();
+			// Check for TOO_MANY_FILES error message
+			const errorMessages = canvas.queryAllByText(/too many files|maximum|limit/i);
+			return expect(errorMessages.length).toBeGreaterThan(0);
+		});
+	},
+};
+
+/**
+ * Duplicate files scenario - uploading the same file twice
+ * Demonstrates duplicate detection and FILE_EXISTS error
+ */
+export const DuplicateFiles: Story = {
+	args: {
+		adapter: MockAdapterPresets.fast(),
+		style: { width: '500px' },
+		onFilesAdded: fn(),
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const mockFile = getMockFile({ name: 'duplicate-test.pdf' });
+
+		const fileInput = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
+		if (!fileInput) {
+			throw new Error('File input not found');
+		}
+
+		// Upload first time
+		await userEvent.upload(fileInput, mockFile);
+
+		// Wait for upload to complete
+		await waitFor(
+			async () => {
+				await expect(canvas.getByText('duplicate-test.pdf')).toBeInTheDocument();
+				await expect(canvas.queryByText(/complete/i)).toBeInTheDocument();
+			},
+			{ timeout: 3000 },
+		);
+
+		// Upload duplicate
+		await userEvent.upload(fileInput, mockFile);
+
+		// Wait for duplicate error to appear
+		await waitFor(async () => {
+			const allFileNames = canvas.queryAllByText('duplicate-test.pdf');
+			// Should have 2 instances: one completed, one with error
+			await expect(allFileNames.length).toBe(2);
+
+			// Check for FILE_EXISTS error
+			const errorMessages = canvas.queryAllByText(/already exists|file exists|duplicate/i);
+			return expect(errorMessages.length).toBeGreaterThan(0);
+		});
+	},
+};
+
+/**
+ * Cancel upload scenario - cancel an ongoing upload
+ * Demonstrates upload cancellation functionality
+ */
+export const CancelUpload: Story = {
+	args: {
+		adapter: MockAdapterPresets.slow(),
+		style: { width: '500px' },
+		onFileUploadCanceled: fn(),
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		const mockFile = getMockFile({ name: 'cancel-test.pdf' });
+
+		const fileInput = canvasElement.querySelector<HTMLInputElement>('input[type="file"]');
+		if (!fileInput) {
+			throw new Error('File input not found');
+		}
+
+		// Upload file
+		await userEvent.upload(fileInput, mockFile);
+
+		// Wait for upload to start and reach some progress
+		await waitFor(
+			async () => {
+				await expect(canvas.getByText('cancel-test.pdf')).toBeInTheDocument();
+				await expect(canvas.queryByText(/uploading/i)).toBeInTheDocument();
+			},
+			{ timeout: 1000 },
+		);
+
+		// Wait a bit for progress
+		await new Promise((resolve) => setTimeout(resolve, 500));
+
+		// Click cancel button
+		const cancelButton = canvas.getByLabelText(/cancel/i);
+		await userEvent.click(cancelButton);
+
+		// Wait for cancelled status
+		await waitFor(
+			async () => {
+				await expect(canvas.queryByText(/cancelled|canceled/i)).toBeInTheDocument();
+			},
+			{ timeout: 2000 },
+		);
+	},
 };

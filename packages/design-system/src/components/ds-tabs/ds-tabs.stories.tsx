@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
 import { DsTabs } from './ds-tabs';
 import type { DsTabsMenuActionItem } from './ds-tabs.types';
@@ -150,6 +150,8 @@ export const HorizontalSmall: Story = {
 	},
 };
 
+const handleMenuActionMock = fn();
+
 export const WithMenuActions: Story = {
 	args: {
 		orientation: 'horizontal',
@@ -165,10 +167,6 @@ export const WithMenuActions: Story = {
 			{ value: 'delete', label: 'Delete' },
 		];
 
-		const handleMenuAction = (action: string) => {
-			console.log('Menu action selected:', action);
-		};
-
 		return (
 			<div className={styles.container}>
 				<DsTabs.Root
@@ -183,7 +181,7 @@ export const WithMenuActions: Story = {
 							icon="folder"
 							badge={5}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={handleMenuActionMock}
 						/>
 						<DsTabs.Tab
 							value="tab2"
@@ -191,14 +189,14 @@ export const WithMenuActions: Story = {
 							icon="description"
 							badge={12}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={handleMenuActionMock}
 						/>
 						<DsTabs.Tab
 							value="tab3"
 							label="Settings"
 							icon="settings"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={handleMenuActionMock}
 						/>
 					</DsTabs.List>
 
@@ -224,18 +222,37 @@ export const WithMenuActions: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
+	play: async ({ canvas }) => {
+		const body = within(document.body);
+
 		const tabs = canvas.getAllByRole('tab');
 		await expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
+
 		const firstTab: HTMLElement | undefined = tabs[0];
 		if (firstTab) {
-			const menuButton = firstTab.querySelector('[role="button"][aria-label="Open menu"]');
-			if (menuButton) {
-				await userEvent.click(menuButton);
-				const editAction = await within(document.body).findByRole('menuitem', { name: /Edit/i });
-				await expect(editAction).toBeInTheDocument();
-			}
+			const menuButton = within(firstTab).getByRole('button', { name: /open menu/i });
+			// Test keyboard interaction - Enter key opens menu
+			menuButton.focus();
+			await userEvent.keyboard('{Enter}');
+			await waitFor(() => expect(menuButton).toHaveAttribute('aria-expanded', 'true'));
+
+			const editAction = await body.findByRole('menuitem', { name: /Edit/i });
+			await expect(editAction).toBeInTheDocument();
+
+			// Select menu item and verify callback + menu closes
+			await userEvent.click(editAction);
+			await expect(handleMenuActionMock).toHaveBeenCalledWith('edit');
+			await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+			// Test Space key also toggles menu
+			menuButton.focus();
+			await userEvent.keyboard(' ');
+			await waitFor(() => expect(menuButton).toHaveAttribute('aria-expanded', 'true'));
+
+			const duplicateAction = await body.findByRole('menuitem', { name: /Duplicate/i });
+			await expect(duplicateAction).toBeInTheDocument();
+			await userEvent.click(duplicateAction);
+			await expect(handleMenuActionMock).toHaveBeenCalledWith('duplicate');
 		}
 	},
 };

@@ -12,7 +12,19 @@ const testsWithBuild = '**/*.requires-build.test.{ts,tsx}';
 export default defineConfig({
 	test: {
 		coverage: {
-			exclude: ['**/stories/**', '**/*.stories.{ts,tsx}', '**/.storybook/**', '**/*.scss'],
+			exclude: [
+				'**/stories/**',
+				'**/*.stories.*{ts,tsx}',
+				'**/.storybook/**',
+				'**/*.scss',
+				'dist/**',
+
+				// deprecated components
+				'**/ds-chip/**',
+				'**/ds-chip-group/**',
+				'**/ds-confirmation/**',
+				'**/ds-system-status/**',
+			],
 			thresholds: {
 				lines: 90,
 				branches: 85,

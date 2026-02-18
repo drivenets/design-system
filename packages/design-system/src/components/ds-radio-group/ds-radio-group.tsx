@@ -64,6 +64,7 @@ const Item: React.FC<DsRadioGroupItemProps> = ({
  * Use compound component pattern instead: DsRadioGroup.Root + DsRadioGroup.Item
  * @deprecated
  */
+/* c8 ignore start */
 export const DsRadioGroupLegacy: React.FC<DsRadioGroupLegacyProps> = ({
 	options,
 	value,
@@ -99,6 +100,7 @@ export const DsRadioGroupLegacy: React.FC<DsRadioGroupLegacyProps> = ({
 		))}
 	</RadioGroupPrimitive.Root>
 );
+/* c8 ignore stop */
 
 /**
  * Design system RadioGroup component

@@ -1,0 +1,67 @@
+@use '../../styles/typography';
+
+$icon-custom-size: 44px;
+$transition-duration: 0.2s;
+
+.root {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.svg {
+	position: absolute;
+	inset: 0;
+}
+
+.track {
+	stroke: var(--color-background-tertiary);
+	transition: stroke $transition-duration;
+}
+
+.progress {
+	transition: stroke-dasharray $transition-duration;
+}
+
+.default {
+	stroke: var(--color-background-selected);
+}
+
+.success {
+	stroke: var(--color-background-success-strong);
+}
+
+.failed {
+	stroke: var(--color-background-danger-strong);
+}
+
+.center {
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-font-main);
+}
+
+.valueMedium {
+	@include typography.heading3;
+}
+
+.valueSmall {
+	@include typography.body-md-md;
+}
+.iconSuccess {
+	color: var(--color-icon-success);
+}
+
+.iconFailed {
+	color: var(--color-icon-danger);
+}
+
+/* doubled selector to override DsIcon's .icon.medium compound specificity */
+.iconMediumSize.iconMediumSize {
+	font-size: $icon-custom-size;
+	width: $icon-custom-size;
+	height: $icon-custom-size;
+}

@@ -284,6 +284,7 @@ const TriggerItem: React.FC<DsDropdownMenuTriggerItemProps> = ({ className, styl
  * Use compound component pattern instead
  * @deprecated
  */
+/* c8 ignore start */
 export const DsDropdownMenuLegacy: React.FC<DsDropdownMenuLegacyProps> = ({
 	options,
 	children,
@@ -365,6 +366,7 @@ export const DsDropdownMenuLegacy: React.FC<DsDropdownMenuLegacyProps> = ({
 		</DropdownMenu.Root>
 	);
 };
+/* c8 ignore stop */
 
 /**
  * Design system  DsDropdownMenu component
