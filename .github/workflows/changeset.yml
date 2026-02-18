@@ -29,7 +29,8 @@ jobs:
     # Skip opted out PRs, and release PRs
     if: |
       ! contains(github.event.pull_request.labels.*.name, 'skip changelog') &&
-      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]') &&
+      ! (github.event.pull_request.user.login == 'dependabot[bot]')
 
     steps:
       - name: Checkout source code
@@ -53,9 +54,10 @@ jobs:
     permissions:
       contents: read
 
-    # Skip release PRs
+    # Skip release & dependabot PRs
     if: |
-      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]') &&
+      ! (github.event.pull_request.user.login == 'dependabot[bot]')
 
     steps:
       - name: Checkout source code
