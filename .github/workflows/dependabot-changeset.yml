@@ -16,7 +16,7 @@ jobs:
     #   NEVER REMOVE THIS CONDITION!
     #   We're using `pull_request_target` in order to have write access to the repository and commit the changeset file.
     #   Removing this condition could give privileged access to a potentially attacker.
-    # if: github.event.pull_request.user.login == 'dependabot[bot]'
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
 
     runs-on: ubuntu-latest
 
@@ -24,11 +24,6 @@ jobs:
       contents: write
 
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
-
       - name: Checkout source code
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
         with:
@@ -37,6 +32,11 @@ jobs:
 
       - name: Install Dependencies
         uses: ./.github/actions/install
+
+      - name: Configure git user
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Generate changeset
         run: node .github/scripts/generate-dependabot-changeset.ts
