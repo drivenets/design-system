@@ -256,6 +256,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 										'--ds-table-columns-template': createColumnsGridTemplate({
 											columns,
 											selectable: !!selectable,
+											expandable: !!expandable,
 										}),
 									} as React.CSSProperties)
 								: undefined

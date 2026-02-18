@@ -47,7 +47,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 							)}
 						</TableHead>
 					)}
-					{expandable && <TableHead className={classnames(styles.headerCell, styles.expandColumn)} />}
+					{expandable && <TableHead className={styles.headerCell} />}
 					{reorderable && (
 						<TableHead className={classnames(styles.headerCell, styles.reorderColumn)}>Order</TableHead>
 					)}
