@@ -133,7 +133,7 @@ export const customIcons = {
 	'special-filter-list-active': SpecialFilterListActive,
 	'special-cached-active': SpecialCachedActive,
 
-	// WF
+	// Filter status
 	'special-running': SpecialRunning,
 	'special-warning': SpecialWarning,
 	'special-failed': SpecialFailed,
