@@ -21,7 +21,7 @@
 		"./raw-styles/*": "./src/styles/*"
 	},
 	"files": [
-		"README.md",
+		"README.md ",
 		"CHANGELOG.md",
 		"LICENSE",
 		"./dist",
