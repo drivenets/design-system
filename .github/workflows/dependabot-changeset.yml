@@ -6,6 +6,10 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: '${{ github.workflow }} - Dependabot Changeset @ ${{ github.event.pull_request.number }}'
+  cancel-in-progress: true
+
 jobs:
   generate-changeset:
     name: Generate Changeset
@@ -27,6 +31,7 @@ jobs:
         with:
           fetch-depth: 0
           filter: 'blob:none'
+          ref: ${{ github.head_ref }}
 
       - name: Install Dependencies
         uses: ./.github/actions/install
