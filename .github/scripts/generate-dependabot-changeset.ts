@@ -2,23 +2,24 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { promisify } from 'node:util';
 import { exec } from 'node:child_process';
+import * as git from '@changesets/git';
 import writeChangeset from '@changesets/write';
 import { type Changeset } from '@changesets/types';
-import * as git from '@changesets/git';
 import { shouldSkipPackage } from '@changesets/should-skip-package';
 import changesetConfig from '../../.changeset/config.json' with { type: 'json' };
 
 const execAsync = promisify(exec);
-const baseBranch = 'origin/' + changesetConfig.baseBranch;
 
-const rootDir = path.resolve(import.meta.dirname, '../../');
-const changedPackages = await getVersionableChangedPackages();
+const BASE_BRANCH = 'origin/' + changesetConfig.baseBranch;
+const ROOT_DIR = path.resolve(import.meta.dirname, '../../');
 
 const existingChangeset = await getExistingChangeset();
 
 if (existingChangeset) {
 	await fs.rm(existingChangeset);
 }
+
+const changedPackages = await getVersionableChangedPackages();
 
 if (changedPackages.length === 0) {
 	console.log('No changed packages found');
@@ -33,28 +34,28 @@ const changeset: Changeset = {
 	})),
 };
 
-await writeChangeset(changeset, rootDir);
+await writeChangeset(changeset, ROOT_DIR);
 
-await git.add('-A', rootDir);
-await git.commit('chore: update changeset', rootDir);
+await git.add('-A', ROOT_DIR);
+await git.commit('chore: update changeset', ROOT_DIR);
 
-await execAsync('git push', { cwd: rootDir });
+await execAsync('git push', { cwd: ROOT_DIR });
 
 async function getExistingChangeset() {
 	const changedFiles = await git.getChangedFilesSince({
-		cwd: rootDir,
-		ref: baseBranch,
+		cwd: ROOT_DIR,
+		ref: BASE_BRANCH,
 	});
 
-	return changedFiles.find((file) => file.startsWith('.changeset/'));
+	return changedFiles.find((file) => file.startsWith('.changeset/') && file.endsWith('.md'));
 }
 
 // Inspired by:
 // https://github.com/changesets/changesets/blob/d23e19e2d/packages/cli/src/utils/versionablePackages.ts
 async function getVersionableChangedPackages() {
 	const changedPackages = await git.getChangedPackagesSinceRef({
-		cwd: rootDir,
-		ref: baseBranch,
+		cwd: ROOT_DIR,
+		ref: BASE_BRANCH,
 	});
 
 	return changedPackages.filter(
