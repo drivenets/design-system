@@ -28,6 +28,10 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.29.8",
+		"@changesets/git": "^3.0.4",
+		"@changesets/should-skip-package": "^0.1.2",
+		"@changesets/types": "^6.1.0",
+		"@changesets/write": "^0.4.0",
 		"@commitlint/cli": "^20.4.1",
 		"@commitlint/config-conventional": "^20.4.1",
 		"@commitlint/types": "^20.4.0",
