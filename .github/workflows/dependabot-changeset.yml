@@ -1,0 +1,43 @@
+name: Dependabot
+
+on: pull_request_target
+
+permissions: {}
+
+concurrency:
+  group: '${{ github.workflow }} - Dependabot Changeset @ ${{ github.event.pull_request.number }}'
+  cancel-in-progress: true
+
+jobs:
+  generate-changeset:
+    name: Generate Changeset
+
+    # IMPORTANT:
+    #   NEVER REMOVE THIS CONDITION!
+    #   We're using `pull_request_target` in order to have write access to the base repository
+    #   so we'll be able to commit the changeset file.
+    #   Removing this condition could give privileged access to a potential attacker.
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Configure git user
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Generate changeset
+        run: node .github/scripts/generate-dependabot-changeset.ts

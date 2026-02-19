@@ -5,13 +5,13 @@ const subscriptionTypes = ['basic', 'pro', 'enterprise'] as const satisfies Subs
 
 export const sampleFormSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
-	email: z.string().email('Invalid email address'),
+	email: z.email('Invalid email address'),
 	description: z.string().min(20, 'Short description is required (min. 20 chars)'),
 	quantity: z.number().min(1, 'Quantity must be at least 1').max(100, 'Quantity cannot exceed 100'),
-	startDate: z.string().date('Start date is required'),
+	startDate: z.iso.date('Start date is required'),
 	acceptTerms: z.boolean().refine((v) => v, 'You must accept the terms and conditions'),
 	subscription: z.enum(subscriptionTypes, {
-		errorMap: () => ({ message: 'Please select a subscription plan' }),
+		error: () => 'Please select a subscription plan',
 	}),
 	contactMethod: z.string().nonempty('Please select a contact method'),
 });
