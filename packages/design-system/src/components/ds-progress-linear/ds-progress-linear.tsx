@@ -12,7 +12,7 @@ const rangeVariantClass: Record<ProgressLinearVariant, string | undefined> = Obj
 	progress: styles.variantProgress,
 	interrupted: styles.variantInterrupted,
 	success: styles.variantSuccess,
-	failed: styles.variantFailed,
+	error: styles.variantError,
 });
 
 const captionVariantClass: Record<ProgressLinearVariant, string> = Object.freeze({
@@ -20,12 +20,12 @@ const captionVariantClass: Record<ProgressLinearVariant, string> = Object.freeze
 	progress: styles.captionDefault,
 	interrupted: styles.captionInterrupted,
 	success: styles.captionSuccess,
-	failed: styles.captionFailed,
+	error: styles.captionError,
 });
 
 const captionIcon: Partial<Record<ProgressLinearVariant, IconName>> = Object.freeze({
 	success: 'check_circle',
-	failed: 'cancel',
+	error: 'cancel',
 	interrupted: 'warning',
 });
 

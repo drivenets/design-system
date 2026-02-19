@@ -1,17 +1,19 @@
+import type React from 'react';
 import classNames from 'classnames';
 
 import { DsIcon } from '../ds-icon';
-import styles from './ds-arc-progress.module.scss';
-import type { ArcProgressVariant, DsArcProgressProps } from './ds-arc-progress.types';
-import { getArcGeometry, getEffectiveValue, getProgressDasharray, getTrackDasharray } from './utils';
+import { DsTypography } from '../ds-typography';
+import styles from './ds-progress-arc.module.scss';
+import type { DsProgressArcProps, ProgressArcVariant } from './ds-progress-arc.types';
+import { clampValue, getArcGeometry, getProgressDasharray, getTrackDasharray } from './utils';
 
-const variantStyleMap: Record<ArcProgressVariant, string> = Object.freeze({
+const variantStyleMap: Record<ProgressArcVariant, string> = Object.freeze({
 	default: styles.default,
 	success: styles.success,
-	failed: styles.failed,
+	error: styles.error,
 });
 
-const DsArcProgress = ({
+const DsProgressArc = ({
 	value = 0,
 	size = 'medium',
 	variant = 'default',
@@ -20,11 +22,11 @@ const DsArcProgress = ({
 	style,
 	ref,
 	...props
-}: DsArcProgressProps) => {
+}: DsProgressArcProps) => {
 	const { containerSize, strokeWidth, radius, circumference, arcLength, center, startRotation } =
 		getArcGeometry(size);
 
-	const effectiveValue = getEffectiveValue(variant, value);
+	const effectiveValue = variant === 'success' ? 100 : clampValue(value);
 	const trackDasharray = getTrackDasharray(arcLength, circumference);
 	const progressDasharray = getProgressDasharray(effectiveValue, arcLength, circumference);
 
@@ -48,12 +50,14 @@ const DsArcProgress = ({
 			return renderIcon('check', styles.iconSuccess);
 		}
 
-		if (variant === 'failed') {
-			return renderIcon('close', styles.iconFailed);
+		if (variant === 'error') {
+			return renderIcon('close', styles.iconError);
 		}
 
 		return (
-			<span className={size === 'medium' ? styles.valueMedium : styles.valueSmall}>{effectiveValue}%</span>
+			<DsTypography variant={size === 'medium' ? 'heading3' : 'body-md-md'} asChild>
+				<span>{effectiveValue}%</span>
+			</DsTypography>
 		);
 	};
 
@@ -62,7 +66,7 @@ const DsArcProgress = ({
 			{...props}
 			className={classNames(styles.root, className)}
 			style={{ width: containerSize, height: containerSize, ...style }}
-			ref={ref}
+			ref={ref as React.Ref<HTMLDivElement>}
 			role="progressbar"
 			aria-valuenow={effectiveValue}
 			aria-valuemin={0}
@@ -104,4 +108,4 @@ const DsArcProgress = ({
 	);
 };
 
-export default DsArcProgress;
+export default DsProgressArc;
