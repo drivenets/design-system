@@ -1,5 +1,4 @@
 export * from './components/ds-alert-banner';
-export * from './components/ds-arc-progress';
 export * from './components/ds-autocomplete';
 export * from './components/ds-avatar';
 export * from './components/ds-avatar-group';
@@ -30,6 +29,7 @@ export * from './components/ds-number-input';
 export * from './components/ds-panel';
 export * from './components/ds-password-input';
 export * from './components/ds-popover';
+export * from './components/ds-progress-arc';
 export * from './components/ds-progress-donut';
 export * from './components/ds-progress-linear';
 export * from './components/ds-radio-group';

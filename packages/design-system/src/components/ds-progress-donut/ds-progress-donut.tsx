@@ -20,7 +20,7 @@ const sizeStyleMap: Record<ProgressDonutSize, string> = Object.freeze({
 const variantStyleMap: Record<ProgressDonutVariant, string> = Object.freeze({
 	default: styles.default,
 	success: styles.success,
-	failed: styles.failed,
+	error: styles.error,
 });
 
 const DsProgressDonut = ({
@@ -52,8 +52,8 @@ const DsProgressDonut = ({
 			return renderIcon('check', styles.iconSuccess);
 		}
 
-		if (variant === 'failed') {
-			return renderIcon('close', styles.iconFailed);
+		if (variant === 'error') {
+			return renderIcon('close', styles.iconError);
 		}
 
 		return (
