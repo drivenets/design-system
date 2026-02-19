@@ -1,14 +1,16 @@
+import type React from 'react';
 import { Progress } from '@ark-ui/react';
 import classNames from 'classnames';
 
 import { DsIcon } from '../ds-icon';
+import { DsTypography } from '../ds-typography';
 import styles from './ds-progress-donut.module.scss';
 import type {
 	DsProgressDonutProps,
 	ProgressDonutSize,
 	ProgressDonutVariant,
 } from './ds-progress-donut.types';
-import { getEffectiveValue } from './utils';
+import { clampValue } from './utils';
 
 const sizeStyleMap: Record<ProgressDonutSize, string> = Object.freeze({
 	small: styles.small,
@@ -30,7 +32,7 @@ const DsProgressDonut = ({
 	style,
 	ref,
 }: DsProgressDonutProps) => {
-	const effectiveValue = getEffectiveValue(variant, value);
+	const effectiveValue = variant === 'success' ? 100 : clampValue(value);
 
 	const renderIcon = (iconName: 'check' | 'close', colorClass: string) => (
 		<DsIcon
@@ -55,13 +57,15 @@ const DsProgressDonut = ({
 		}
 
 		return (
-			<span className={size === 'medium' ? styles.valueMedium : styles.valueSmall}>{effectiveValue}%</span>
+			<DsTypography variant={size === 'medium' ? 'heading3' : 'body-md-md'} asChild>
+				<span>{effectiveValue}%</span>
+			</DsTypography>
 		);
 	};
 
 	return (
 		<Progress.Root
-			ref={ref}
+			ref={ref as React.Ref<HTMLDivElement>}
 			value={effectiveValue}
 			className={classNames(styles.root, sizeStyleMap[size], variantStyleMap[variant], className)}
 			style={style}

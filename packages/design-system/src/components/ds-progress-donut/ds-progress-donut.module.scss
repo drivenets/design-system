@@ -1,13 +1,8 @@
-@use '../../styles/typography';
-
-$icon-custom-size: 44px;
 $transition-duration: 0.2s;
 
 .root {
-	position: relative;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
+	display: inline-grid;
+	place-items: center;
 }
 
 .small {
@@ -21,6 +16,7 @@ $transition-duration: 0.2s;
 }
 
 .circle {
+	grid-area: 1 / 1;
 	display: block;
 }
 
@@ -38,10 +34,7 @@ $transition-duration: 0.2s;
 	stroke: var(--color-background-selected);
 }
 
-.success .track {
-	stroke: var(--color-background-success-strong);
-}
-
+.success .track,
 .success .range {
 	stroke: var(--color-background-success-strong);
 }
@@ -51,20 +44,8 @@ $transition-duration: 0.2s;
 }
 
 .center {
-	position: absolute;
-	inset: 0;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	grid-area: 1 / 1;
 	color: var(--color-font-main);
-}
-
-.valueMedium {
-	@include typography.heading3;
-}
-
-.valueSmall {
-	@include typography.body-md-md;
 }
 
 .iconSuccess {
@@ -75,9 +56,10 @@ $transition-duration: 0.2s;
 	color: var(--color-icon-danger);
 }
 
-/* doubled selector to override DsIcon's .icon.medium compound specificity */
+$icon-custom-size: 44px;
+
 .iconMediumSize.iconMediumSize {
 	font-size: $icon-custom-size;
-	width: $icon-custom-size;
-	height: $icon-custom-size;
+	width: 1em;
+	height: 1em;
 }

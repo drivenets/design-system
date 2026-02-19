@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, within } from 'storybook/test';
 
 import { DsIcon } from '../ds-icon';
-import { DsProgressArc, progressArcSizes, progressArcVariants } from './index';
-import styles from './ds-progress-arc.stories.module.scss';
+import { DsArcProgress, arcProgressSizes, arcProgressVariants } from './index';
+import styles from './ds-arc-progress.stories.module.scss';
 
-const meta: Meta<typeof DsProgressArc> = {
-	title: 'Design System/ProgressArc',
-	component: DsProgressArc,
+const meta: Meta<typeof DsArcProgress> = {
+	title: 'Design System/ArcProgress',
+	component: DsArcProgress,
 	parameters: {
 		layout: 'centered',
 	},
@@ -18,17 +18,17 @@ const meta: Meta<typeof DsProgressArc> = {
 		},
 		size: {
 			control: { type: 'select' },
-			options: progressArcSizes,
+			options: arcProgressSizes,
 		},
 		variant: {
 			control: { type: 'select' },
-			options: progressArcVariants,
+			options: arcProgressVariants,
 		},
 	},
 };
 
 export default meta;
-type Story = StoryObj<typeof DsProgressArc>;
+type Story = StoryObj<typeof DsArcProgress>;
 
 export const Default: Story = {
 	args: {
@@ -50,28 +50,28 @@ export const AllVariants: Story = {
 	render: () => (
 		<div className={styles.grid}>
 			<div className={styles.cell}>
-				<DsProgressArc size="small" value={50} />
+				<DsArcProgress size="small" value={50} />
 				<span className={styles.label}>Small / Default</span>
 			</div>
 			<div className={styles.cell}>
-				<DsProgressArc size="small" variant="success" />
+				<DsArcProgress size="small" variant="success" />
 				<span className={styles.label}>Small / Success</span>
 			</div>
 			<div className={styles.cell}>
-				<DsProgressArc size="small" variant="failed" value={50} />
+				<DsArcProgress size="small" variant="failed" value={50} />
 				<span className={styles.label}>Small / Failed</span>
 			</div>
 
 			<div className={styles.cell}>
-				<DsProgressArc size="medium" value={50} />
+				<DsArcProgress size="medium" value={50} />
 				<span className={styles.label}>Medium / Default</span>
 			</div>
 			<div className={styles.cell}>
-				<DsProgressArc size="medium" variant="success" />
+				<DsArcProgress size="medium" variant="success" />
 				<span className={styles.label}>Medium / Success</span>
 			</div>
 			<div className={styles.cell}>
-				<DsProgressArc size="medium" variant="failed" value={50} />
+				<DsArcProgress size="medium" variant="failed" value={50} />
 				<span className={styles.label}>Medium / Failed</span>
 			</div>
 		</div>
@@ -88,11 +88,11 @@ export const Sizes: Story = {
 	render: () => (
 		<div className={styles.row}>
 			<div className={styles.cell}>
-				<DsProgressArc size="small" value={75} />
+				<DsArcProgress size="small" value={75} />
 				<span className={styles.label}>Small</span>
 			</div>
 			<div className={styles.cell}>
-				<DsProgressArc size="medium" value={75} />
+				<DsArcProgress size="medium" value={75} />
 				<span className={styles.label}>Medium</span>
 			</div>
 		</div>

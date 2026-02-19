@@ -1,17 +1,17 @@
 import classNames from 'classnames';
 
 import { DsIcon } from '../ds-icon';
-import styles from './ds-progress-arc.module.scss';
-import type { DsProgressArcProps, ProgressArcVariant } from './ds-progress-arc.types';
+import styles from './ds-arc-progress.module.scss';
+import type { ArcProgressVariant, DsArcProgressProps } from './ds-arc-progress.types';
 import { getArcGeometry, getEffectiveValue, getProgressDasharray, getTrackDasharray } from './utils';
 
-const variantStyleMap: Record<ProgressArcVariant, string> = Object.freeze({
+const variantStyleMap: Record<ArcProgressVariant, string> = Object.freeze({
 	default: styles.default,
 	success: styles.success,
 	failed: styles.failed,
 });
 
-const DsProgressArc = ({
+const DsArcProgress = ({
 	value = 0,
 	size = 'medium',
 	variant = 'default',
@@ -20,7 +20,7 @@ const DsProgressArc = ({
 	style,
 	ref,
 	...props
-}: DsProgressArcProps) => {
+}: DsArcProgressProps) => {
 	const { containerSize, strokeWidth, radius, circumference, arcLength, center, startRotation } =
 		getArcGeometry(size);
 
@@ -104,4 +104,4 @@ const DsProgressArc = ({
 	);
 };
 
-export default DsProgressArc;
+export default DsArcProgress;
