@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import type { IconSize } from '../ds-icon';
 
 export const filterStatuses = ['running', 'warning', 'failed', 'paused'] as const;
 
@@ -14,6 +15,11 @@ export interface DsFilterStatusIconProps {
 	 * @default true
 	 */
 	active?: boolean;
+	/**
+	 * Icon size
+	 * @default 'small'
+	 */
+	size?: IconSize;
 	/**
 	 * Additional CSS class names
 	 */

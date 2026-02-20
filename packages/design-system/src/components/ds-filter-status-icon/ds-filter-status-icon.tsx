@@ -7,7 +7,13 @@ import { DsIcon } from '../ds-icon';
  * Design system Filter Status Icon component
  * Status icons for toggle filter buttons to help users quickly distinguish workflow states
  */
-export const DsFilterStatusIcon = ({ status, active = true, className, style }: DsFilterStatusIconProps) => {
+export const DsFilterStatusIcon = ({
+	status,
+	active = true,
+	size = 'small',
+	className,
+	style,
+}: DsFilterStatusIconProps) => {
 	const iconMap = {
 		running: 'special-running',
 		warning: 'special-warning',
@@ -22,7 +28,7 @@ export const DsFilterStatusIcon = ({ status, active = true, className, style }: 
 			className={classNames(!active && styles.inactive, className)}
 			style={style}
 			icon={iconMap[status]}
-			size="small"
+			size={size}
 			aria-label={statusLabel}
 		/>
 	);
