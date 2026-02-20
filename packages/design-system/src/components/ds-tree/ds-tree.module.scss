@@ -1,0 +1,283 @@
+@use '../../styles/typography';
+
+$icon-size: 16px;
+$indent-per-level: 12px;
+$half-icon: calc($icon-size * 0.5);
+
+@mixin node-row {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	border-radius: 4px;
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+	width: 100%;
+	background: transparent;
+	color: var(--color-font-secondary);
+
+	--ds-tree-depth: calc(var(--depth) - 1);
+	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
+	--ds-tree-icon-offset: calc(#{$half-icon} * var(--ds-tree-depth));
+	--ds-tree-offset: calc(var(--spacing-3xs) + var(--ds-tree-indent-offset) + var(--ds-tree-icon-offset));
+
+	padding-inline-start: var(--ds-tree-offset);
+	padding-inline-end: var(--spacing-3xs);
+
+	&:hover {
+		background: var(--color-background-action-hover-weak);
+	}
+
+	&[data-focus] {
+		outline: 2px solid var(--color-border-action-primary-hover);
+		outline-offset: -2px;
+		background: var(--color-background-action-hover-weak);
+	}
+
+	&[data-selected] {
+		background: var(--color-background-action-secondary-hover);
+	}
+
+	&[data-disabled] {
+		cursor: not-allowed;
+		pointer-events: none;
+		.itemText {
+			color: var(--color-secondary-300);
+		}
+	}
+
+	&:hover .itemAction,
+	&[data-focus-visible] .itemAction {
+		opacity: 1;
+	}
+}
+
+@mixin node-text {
+	flex: 1;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	min-width: 0;
+}
+
+.root {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	&[data-size='medium'] {
+		.branchControl,
+		.item {
+			padding-block: var(--spacing-xs);
+		}
+
+		.branchText,
+		.itemText {
+			@include typography.body-sm-reg;
+		}
+
+		.itemIndicator {
+			width: var(--icon-width-tiny);
+			height: var(--icon-width-tiny);
+		}
+	}
+
+	&[data-size='small'] {
+		.branchControl,
+		.item {
+			padding-block: var(--spacing-2xs);
+		}
+
+		.branchText,
+		.itemText {
+			@include typography.body-xs-reg;
+		}
+
+		.itemIndicator {
+			width: var(--icon-width-tiny);
+			height: var(--icon-width-tiny);
+		}
+	}
+}
+
+.tree {
+	display: flex;
+	flex-direction: column;
+}
+
+.branch {
+	position: relative;
+}
+
+.branchControl {
+	@include node-row;
+}
+
+.branchIndicator {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: $icon-size;
+	height: $icon-size;
+	color: var(--color-font-main);
+	transform-origin: center;
+	transition: transform 0.2s;
+
+	&[data-state='open'] {
+		transform: rotate(90deg);
+	}
+}
+
+.branchText {
+	@include node-text;
+	color: var(--color-font-secondary);
+}
+
+.branchContent {
+	position: relative;
+	overflow: hidden;
+
+	&[data-state='open'] {
+		animation: ds-tree-expand 0.2s ease-out;
+	}
+
+	&[data-state='closed'] {
+		animation: ds-tree-collapse 0.2s ease-out;
+	}
+}
+
+.branchIndentGuide {
+	position: absolute;
+	z-index: 1;
+	width: 1px;
+	height: 100%;
+	background: var(--color-border-secondary);
+
+	--ds-tree-depth: calc(var(--depth) - 1);
+	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
+	--ds-tree-guide-offset: calc(var(--spacing-3xs) + var(--ds-tree-indent-offset));
+	--ds-tree-icon-offset: calc(#{$half-icon} * var(--depth));
+
+	inset-inline-start: calc(var(--ds-tree-guide-offset) + var(--ds-tree-icon-offset));
+}
+
+.item {
+	@include node-row;
+}
+
+.itemText {
+	@include node-text;
+	color: var(--color-font-secondary);
+}
+
+.itemIndicator {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.itemDot {
+	width: 4px;
+	height: 4px;
+	border-radius: 50%;
+	background-color: var(--color-font-main);
+}
+
+.itemAction {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	border: none;
+	background: transparent;
+	padding: 0;
+	opacity: 0;
+	cursor: pointer;
+	color: var(--color-font-secondary);
+	transition: opacity 0.2s;
+
+	&:hover {
+		color: var(--color-font-main);
+	}
+}
+
+.nodeCheckbox {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	cursor: pointer;
+
+	&[data-state='checked'],
+	&[data-state='indeterminate'] {
+		.nodeCheckboxBox {
+			background-color: var(--color-background-selected);
+			border-color: var(--color-background-selected);
+		}
+	}
+
+	&[data-disabled] {
+		cursor: not-allowed;
+
+		.nodeCheckboxBox {
+			border-color: var(--color-background-disable);
+		}
+
+		&[data-state='checked'] .nodeCheckboxBox,
+		&[data-state='indeterminate'] .nodeCheckboxBox {
+			background-color: var(--color-background-disable);
+			border-color: var(--color-background-disable);
+		}
+	}
+}
+
+.nodeCheckboxBox {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 16px;
+	height: 16px;
+	border: 1.5px solid var(--color-background-deselected);
+	border-radius: 2px;
+	transition:
+		background-color 0.2s,
+		border-color 0.2s;
+}
+
+.nodeCheckboxIndicator {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+}
+
+@keyframes ds-tree-expand {
+	from {
+		height: 0;
+		opacity: 0;
+	}
+
+	to {
+		height: var(--height);
+		opacity: 1;
+	}
+}
+
+@keyframes ds-tree-collapse {
+	from {
+		height: var(--height);
+		opacity: 1;
+	}
+
+	to {
+		height: 0;
+		opacity: 0;
+	}
+}
