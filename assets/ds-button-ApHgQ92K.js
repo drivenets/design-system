@@ -1,0 +1,1 @@
+import{j as o}from"./jsx-runtime-u17CrQMm.js";import{D as s}from"./ds-button-legacy-C-c8ur0G.js";import{D as n}from"./ds-button-new-G3Pz_ZO5.js";const r=t=>t.design==="v1.2"?o.jsx(n,{...t}):o.jsx(s,{...t});r.__docgenInfo={description:"",methods:[],displayName:"DsButton"};export{r as D};
