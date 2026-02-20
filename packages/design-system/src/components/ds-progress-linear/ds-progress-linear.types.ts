@@ -1,6 +1,6 @@
 import type React from 'react';
 
-export const progressLinearVariants = ['initial', 'progress', 'interrupted', 'success', 'failed'] as const;
+export const progressLinearVariants = ['initial', 'progress', 'interrupted', 'success', 'error'] as const;
 export type ProgressLinearVariant = (typeof progressLinearVariants)[number];
 
 export const progressLinearSizes = ['small', 'medium', 'large'] as const;

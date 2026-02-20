@@ -53,13 +53,13 @@ type Story = StoryObj<typeof DsModal>;
 // Form schema for the modal
 const modalFormSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
-	email: z.string().email('Invalid email address'),
+	email: z.email('Invalid email address'),
 	department: z.string().min(1, 'Please select a department'),
 	role: z.string().min(1, 'Please select a role'),
 	description: z.string().min(20, 'Description must be at least 20 characters'),
 	acceptTerms: z.boolean().refine((v) => v, 'You must accept the terms and conditions'),
 	subscription: z.enum(['basic', 'pro', 'enterprise'], {
-		errorMap: () => ({ message: 'Please select a subscription plan' }),
+		error: () => 'Please select a subscription plan',
 	}),
 });
 

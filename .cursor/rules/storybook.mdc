@@ -41,6 +41,21 @@ export const Default: Story = {
 };
 ```
 
+For stories with callback args, verify the callback was called:
+
+```tsx
+await userEvent.click(button);
+await expect(args.onClick).toHaveBeenCalledOnce();
+```
+
+For stories showing disabled state, verify interactions are blocked:
+
+```tsx
+await userEvent.click(element, { pointerEventsCheck: 0 });
+await expect(args.onClick).not.toHaveBeenCalled();
+```
+
+
 ---
 
 ## Date Mocking
