@@ -2,11 +2,13 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { promisify } from 'node:util';
 import { exec } from 'node:child_process';
+import * as oxfmt from 'oxfmt';
 import * as git from '@changesets/git';
 import getChangesets from '@changesets/read';
 import writeChangeset from '@changesets/write';
 import { type Changeset } from '@changesets/types';
 import { shouldSkipPackage } from '@changesets/should-skip-package';
+import oxfmtConfig from '../../.oxfmtrc.json' with { type: 'json' };
 import changesetConfig from '../../.changeset/config.json' with { type: 'json' };
 
 const execAsync = promisify(exec);
@@ -42,7 +44,9 @@ if (changedPackages.length === 0) {
 	process.exit(0);
 }
 
-await writeChangeset(newChangeset, ROOT_DIR);
+const changesetId = await writeChangeset(newChangeset, ROOT_DIR);
+
+await formatChangeset(changesetId);
 
 console.log('Added new changeset');
 
@@ -58,9 +62,22 @@ async function getExistingChangeset() {
 }
 
 async function removeChangeset(changesetId: string) {
-	const changesetPath = path.resolve(ROOT_DIR, '.changeset', changesetId + '.md');
+	const changesetPath = getChangesetPath(changesetId);
 
 	await fs.rm(changesetPath);
+}
+
+async function formatChangeset(changesetId: string) {
+	const changesetPath = getChangesetPath(changesetId);
+
+	const changeset = await fs.readFile(changesetPath, 'utf8');
+	const formattedChangeset = await oxfmt.format(changesetPath, changeset, oxfmtConfig as oxfmt.FormatOptions);
+
+	await fs.writeFile(changesetPath, formattedChangeset.code);
+}
+
+function getChangesetPath(changesetId: string) {
+	return path.resolve(ROOT_DIR, '.changeset', changesetId + '.md');
 }
 
 // Inspired by:
