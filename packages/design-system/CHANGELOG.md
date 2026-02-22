@@ -1,5 +1,18 @@
 # @drivenets/design-system
 
+## 0.7.0
+
+### Minor Changes
+
+- 7dc80d8: Add DsArcProgress component
+- 9381dc7: Add `DsProgressDonut` component
+- e5c66ff: Add `DSCommentBubble`, `DSCommentCard`, `DSCommentIndicator`, `DSCommentDrawer` components
+- f5cec0a: - Add `ProgressLinear` component
+
+### Patch Changes
+
+- 1f8f0e3: Update dependencies
+
 ## 0.6.1
 
 ### Patch Changes
