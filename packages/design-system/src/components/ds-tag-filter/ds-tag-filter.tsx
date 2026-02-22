@@ -13,10 +13,12 @@ import { DsIcon } from '../ds-icon';
  * Design system TagFilter component
  *
  * A component for displaying active filters as tags with overflow handling.
- * Shows visible tags in up to 2 rows, with the Expand button to show hidden items.
+ * Non-tag elements (label, expand/collapse, clear) sit in a header row.
+ * Tags occupy the full width below, wrapping as needed.
  */
 const DsTagFilter = ({
 	items,
+	size,
 	locale = {},
 	className,
 	style,
@@ -29,7 +31,7 @@ const DsTagFilter = ({
 	const containerRef = useRef<HTMLDivElement>(null);
 	const measurementRef = useRef<HTMLDivElement>(null);
 
-	const { row1TagCount, row2TagCount, hasOverflow } = useTagOverflowCalculation({
+	const { visibleTagCount, hasOverflow } = useTagOverflowCalculation({
 		containerRef,
 		measurementRef,
 		totalItems: items.length,
@@ -39,22 +41,16 @@ const DsTagFilter = ({
 	const {
 		label = 'Filtered by:',
 		clearButton = 'Clear all filters',
-		hiddenCountPlural = 'filters',
-		hiddenCountSingular = 'filter',
-		collapseTagLabel = 'Collapse',
+		showMore = 'Show more',
+		showLess = 'Show less',
 	} = locale;
 
-	// Split items into row sections
-	const row1Tags = items.slice(0, row1TagCount);
-	const row2Tags = items.slice(row1TagCount, row1TagCount + row2TagCount);
-	const hiddenTags = expanded ? [] : items.slice(row1TagCount + row2TagCount);
+	const visibleTags = expanded ? items : items.slice(0, visibleTagCount);
+	const hiddenCount = items.length - visibleTagCount;
 
 	if (items.length === 0) {
 		return null;
 	}
-
-	const hiddenCount = hiddenTags.length;
-	const hasRow2Content = row2Tags.length > 0 || hasOverflow;
 
 	const renderTag = (item: TagFilterItem) => {
 		const tagProps = item.slotProps?.tag || {};
@@ -64,6 +60,7 @@ const DsTagFilter = ({
 				{...tagProps}
 				key={item.id}
 				label={item.label}
+				size={size}
 				selected={item.selected}
 				onClick={onItemSelect ? () => onItemSelect(item) : undefined}
 				onDelete={onItemDelete ? () => onItemDelete(item) : undefined}
@@ -77,51 +74,22 @@ const DsTagFilter = ({
 		onExpand?.(newExpanded);
 	};
 
-	// Measurement container rendered via portal to keep it outside the component's DOM tree
-	// This prevents Testing Library from finding duplicate elements
-	// We use it to calculate the number of remaining tags to render
 	const measurementContainer = (
 		<div ref={measurementRef} className={styles.measurementContainer} aria-hidden="true">
-			{label && (
-				<span data-measure-label="">
-					<DsTypography variant="body-sm-reg" className={styles.label}>
-						{label}
-					</DsTypography>
-				</span>
-			)}
 			{items.map((item) => (
 				<DsTag
 					key={item.id}
 					data-measure-tag=""
 					label={item.label}
+					size={size}
 					selected={item.selected}
 					onClick={onItemSelect ? () => onItemSelect(item) : undefined}
 					onDelete={onItemDelete ? () => onItemDelete(item) : undefined}
 				/>
 			))}
-			{onClearAll && (
-				<DsButton
-					data-measure-clear=""
-					design="v1.2"
-					buttonType="tertiary"
-					variant="ghost"
-					className={styles.clearButton}
-					contentClassName={styles.clearContent}
-					size="small"
-				>
-					<DsIcon icon="close" />
-					{clearButton}
-				</DsButton>
-			)}
-			<DsTag data-measure-expand="" label="+99 filters" className={styles.expandTag} />
 		</div>
 	);
 
-	/**
-	 * IMPORTANT!
-	 * If you make any changes to this layout (styling, JSX, anything that affects it.)
-	 * please, apply the exact same changes to the "measurementContainer"
-	 */
 	return (
 		<>
 			<div
@@ -129,46 +97,47 @@ const DsTagFilter = ({
 				className={classNames(styles.container, expanded && styles.expanded, className)}
 				style={style}
 			>
-				<div className={styles.row1}>
+				<div className={styles.header}>
 					{label && (
 						<DsTypography variant="body-sm-reg" className={styles.label}>
 							{label}
 						</DsTypography>
 					)}
-					{row1Tags.map((item) => renderTag(item))}
-					{onClearAll && (
-						<DsButton
-							design="v1.2"
-							buttonType="tertiary"
-							variant="ghost"
-							className={styles.clearButton}
-							contentClassName={styles.clearContent}
-							size="small"
-							onClick={onClearAll}
-						>
-							<DsIcon icon="close" />
-							{clearButton}
-						</DsButton>
-					)}
-				</div>
 
-				{hasRow2Content && (
-					<div className={styles.row2}>
-						{row2Tags.map((item) => renderTag(item))}
+					<div className={styles.headerActions}>
 						{hasOverflow && (
-							<DsTag
-								label={
-									expanded
-										? collapseTagLabel
-										: `+${String(hiddenCount)} ${hiddenCount === 1 ? hiddenCountSingular : hiddenCountPlural}`
-								}
-								selected={expanded}
-								className={styles.expandTag}
+							<DsButton
+								design="v1.2"
+								buttonType="tertiary"
+								variant="ghost"
+								className={styles.actionButton}
+								contentClassName={styles.ghostButtonContent}
+								size="small"
 								onClick={handleExpandToggle}
-							/>
+							>
+								<DsIcon icon={expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'} />
+								{expanded ? showLess : `${showMore} (${String(hiddenCount)})`}
+							</DsButton>
+						)}
+
+						{onClearAll && (
+							<DsButton
+								design="v1.2"
+								buttonType="tertiary"
+								variant="ghost"
+								className={styles.actionButton}
+								contentClassName={styles.ghostButtonContent}
+								size="small"
+								onClick={onClearAll}
+							>
+								<DsIcon icon="close" />
+								{clearButton}
+							</DsButton>
 						)}
 					</div>
-				)}
+				</div>
+
+				<div className={styles.tagsArea}>{visibleTags.map((item) => renderTag(item))}</div>
 			</div>
 			{createPortal(measurementContainer, document.body)}
 		</>

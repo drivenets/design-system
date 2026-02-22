@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import DsTagFilter from './ds-tag-filter';
 import type { TagFilterItem } from './ds-tag-filter.types';
+import { tagSizes } from '../ds-tag';
 import styles from './ds-tag-filter.stories.module.scss';
 
 const meta: Meta<typeof DsTagFilter> = {
@@ -13,7 +14,7 @@ const meta: Meta<typeof DsTagFilter> = {
 		docs: {
 			description: {
 				component:
-					'A component for displaying active filters as tags with overflow handling. Shows visible tags in up to 2 rows, with an expand button to show hidden items in a dialog.',
+					'A component for displaying active filters as tags with overflow handling. Non-tag elements (label, expand/collapse, clear) sit in a header row. Tags wrap in a dedicated area below.',
 			},
 		},
 	},
@@ -22,6 +23,11 @@ const meta: Meta<typeof DsTagFilter> = {
 		items: {
 			control: 'object',
 			description: 'Array of tag items to display',
+		},
+		size: {
+			options: tagSizes,
+			control: 'radio',
+			description: 'Size of the tags',
 		},
 		locale: {
 			description: 'Locale-specific options for customizing text content',
@@ -70,7 +76,7 @@ const sampleFilters: TagFilterItem[] = [
  * Try adding, removing, and selecting filters to see the component in action.
  */
 export const Default: Story = {
-	render: function Render() {
+	render: function Render(args) {
 		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters);
 
 		const handleClearAll = () => {
@@ -99,6 +105,7 @@ export const Default: Story = {
 		return (
 			<div className={styles.container}>
 				<DsTagFilter
+					{...args}
 					items={filters}
 					onClearAll={handleClearAll}
 					onItemDelete={handleFilterDelete}
@@ -178,7 +185,7 @@ export const Default: Story = {
  * Story showing fewer filters that fit within the visible area without overflow.
  */
 export const FewFilters: Story = {
-	render: function Render() {
+	render: function Render(args) {
 		const [filters, setFilters] = useState<TagFilterItem[]>([
 			{ id: '1', label: 'Status: Active' },
 			{ id: '2', label: 'Version: 1.0.0' },
@@ -199,6 +206,7 @@ export const FewFilters: Story = {
 
 		return (
 			<DsTagFilter
+				{...args}
 				items={filters}
 				onClearAll={handleClearAll}
 				onItemDelete={handleFilterDelete}
@@ -251,14 +259,14 @@ export const FewFilters: Story = {
  * Story showing TagFilter without the "Clear all" button.
  */
 export const WithoutClearAll: Story = {
-	render: function Render() {
+	render: function Render(args) {
 		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters.slice(0, 5));
 
 		const handleFilterDelete = (filter: TagFilterItem) => {
 			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
 		};
 
-		return <DsTagFilter items={filters} onItemDelete={handleFilterDelete} />;
+		return <DsTagFilter {...args} items={filters} onClearAll={undefined} onItemDelete={handleFilterDelete} />;
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
@@ -293,10 +301,19 @@ export const WithoutClearAll: Story = {
  * Story showing TagFilter without delete functionality (read-only tags).
  */
 export const ReadOnly: Story = {
-	render: function Render() {
+	render: function Render(args) {
 		const filters: TagFilterItem[] = sampleFilters.slice(0, 5);
 
-		return <DsTagFilter items={filters} locale={{ label: 'Applied filters:' }} />;
+		return (
+			<DsTagFilter
+				{...args}
+				items={filters}
+				onClearAll={undefined}
+				onItemDelete={undefined}
+				onItemSelect={undefined}
+				locale={{ label: 'Applied filters:' }}
+			/>
+		);
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
@@ -321,7 +338,7 @@ export const ReadOnly: Story = {
  * Story showing TagFilter without a label.
  */
 export const WithoutLabel: Story = {
-	render: function Render() {
+	render: function Render(args) {
 		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters.slice(0, 5));
 
 		const handleClearAll = () => {
@@ -334,6 +351,7 @@ export const WithoutLabel: Story = {
 
 		return (
 			<DsTagFilter
+				{...args}
 				items={filters}
 				locale={{ label: '' }}
 				onClearAll={handleClearAll}
@@ -377,8 +395,8 @@ export const WithoutLabel: Story = {
  * Story demonstrating full locale customization with both label and clearButton.
  */
 export const CustomLocale: Story = {
-	render: function Render() {
-		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters.slice(0, 5));
+	render: function Render(args) {
+		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters);
 
 		const handleClearAll = () => {
 			setFilters([]);
@@ -390,12 +408,17 @@ export const CustomLocale: Story = {
 
 		return (
 			<DsTagFilter
+				{...args}
 				items={filters}
 				locale={{
 					// cspell:disable-next-line
 					label: 'Aktywne filtry:',
 					// cspell:disable-next-line
 					clearButton: 'Zresetuj',
+					// cspell:disable-next-line
+					showMore: 'Pokaż więcej',
+					// cspell:disable-next-line
+					showLess: 'Pokaż mniej',
 				}}
 				onClearAll={handleClearAll}
 				onItemDelete={handleFilterDelete}
@@ -417,8 +440,13 @@ export const CustomLocale: Story = {
 		// cspell:disable-next-line
 		await expect(canvas.getByRole('button', { name: /Zresetuj/ })).toBeInTheDocument();
 
+		// Verify custom showMore locale
+		// cspell:disable-next-line
+		await expect(canvas.getByRole('button', { name: /Pokaż więcej/ })).toBeInTheDocument();
+
 		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
 		await expect(canvas.queryByRole('button', { name: /Clear all filters/ })).not.toBeInTheDocument();
+		await expect(canvas.queryByRole('button', { name: /Show more/ })).not.toBeInTheDocument();
 	},
 };
 
@@ -433,14 +461,14 @@ export const ExpandCollapse: Story = {
 	play: async ({ canvasElement, args }) => {
 		const canvas = within(canvasElement);
 
-		// Wait for layout calculation to complete and overflow tag to appear
+		// Wait for layout calculation to complete and "Show more" button to appear
 		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: /\+\d+ filters?/ })).toBeInTheDocument();
+			await expect(canvas.getByRole('button', { name: /Show more \(\d+\)/ })).toBeInTheDocument();
 		});
 
-		const expandButton = canvas.getByRole('button', { name: /\+\d+ filters?/ });
+		const expandButton = canvas.getByRole('button', { name: /Show more \(\d+\)/ });
 
-		// Click expand button
+		// Click an expand button
 		await userEvent.click(expandButton);
 
 		// Verify onExpand was called with true (expanded)
@@ -448,12 +476,12 @@ export const ExpandCollapse: Story = {
 			await expect(args.onExpand).toHaveBeenCalledWith(true);
 		});
 
-		// Verify the button now shows "Collapse"
+		// Verify the button now shows "Show less"
 		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Collapse' })).toBeInTheDocument();
+			await expect(canvas.getByRole('button', { name: /Show less/ })).toBeInTheDocument();
 		});
 
-		const collapseButton = canvas.getByRole('button', { name: 'Collapse' });
+		const collapseButton = canvas.getByRole('button', { name: /Show less/ });
 
 		// Click collapse button
 		await userEvent.click(collapseButton);
@@ -463,10 +491,44 @@ export const ExpandCollapse: Story = {
 			await expect(args.onExpand).toHaveBeenCalledWith(false);
 		});
 
-		// Verify the expand button is back
+		// Verify an expand button is back
 		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: /\+\d+ filters?/ })).toBeInTheDocument();
+			await expect(canvas.getByRole('button', { name: /Show more \(\d+\)/ })).toBeInTheDocument();
 		});
+	},
+};
+
+/**
+ * Story showing TagFilter with small tags.
+ */
+export const SmallSize: Story = {
+	args: {
+		size: 'small',
+	},
+	render: function Render(args) {
+		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters.slice(0, 6));
+
+		const handleClearAll = () => {
+			setFilters([]);
+		};
+
+		const handleFilterDelete = (filter: TagFilterItem) => {
+			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
+		};
+
+		return (
+			<DsTagFilter {...args} items={filters} onClearAll={handleClearAll} onItemDelete={handleFilterDelete} />
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await waitFor(async () => {
+			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
+		});
+
+		await expect(canvas.getByText('Filtered by:')).toBeInTheDocument();
+		await expect(canvas.getByRole('button', { name: /Clear all filters/ })).toBeInTheDocument();
 	},
 };
 
@@ -474,7 +536,7 @@ export const ExpandCollapse: Story = {
  * Story showing TagFilter with pre-selected items.
  */
 export const WithPreSelectedItems: Story = {
-	render: function Render() {
+	render: function Render(args) {
 		const [filters, setFilters] = useState<TagFilterItem[]>([
 			{ id: '1', label: 'Status: Active', selected: true },
 			{ id: '2', label: 'Running: From 100 to 10,000', selected: false },
@@ -497,6 +559,7 @@ export const WithPreSelectedItems: Story = {
 
 		return (
 			<DsTagFilter
+				{...args}
 				items={filters}
 				onClearAll={handleClearAll}
 				onItemDelete={handleFilterDelete}
@@ -541,5 +604,19 @@ export const WithPreSelectedItems: Story = {
 		await waitFor(async () => {
 			await expect(runningTag).toHaveAttribute('aria-pressed', 'true');
 		});
+	},
+};
+
+/**
+ * Story verifying the component renders nothing when items is empty.
+ */
+export const EmptyState: Story = {
+	args: {
+		items: [],
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
 	},
 };

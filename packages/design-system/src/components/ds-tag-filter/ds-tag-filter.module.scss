@@ -6,7 +6,7 @@
 	background: var(--color-background-selected-weak);
 	border: 1px solid var(--color-outline-weak);
 	border-radius: var(--spacing-3xs);
-	max-height: 88px; // hardcoded value required in the design
+	max-height: 100px;
 	overflow: hidden;
 
 	&.expanded {
@@ -14,7 +14,7 @@
 	}
 }
 
-.row1 {
+.header {
 	display: flex;
 	align-items: center;
 	width: 100%;
@@ -22,7 +22,15 @@
 	flex-shrink: 0;
 }
 
-.row2 {
+.headerActions {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	flex-shrink: 0;
+	margin-left: auto;
+}
+
+.tagsArea {
 	display: flex;
 	align-items: center;
 	width: 100%;
@@ -36,35 +44,25 @@
 	flex-shrink: 0;
 }
 
-.expandTag {
-	cursor: pointer;
-	flex-shrink: 0;
-}
-
 .itemCheckbox {
 	display: flex;
 	align-items: center;
 }
 
-.clearContent {
+.ghostButtonContent {
 	background: transparent !important;
 }
 
-.clearButton {
-	margin-left: auto;
+.actionButton {
 	padding: 0;
 	flex-shrink: 0;
 }
 
-// Hidden container for measuring element widths
-// Must render all elements to get accurate measurements
 .measurementContainer {
 	pointer-events: none;
 	display: flex;
 	align-items: center;
 	gap: var(--spacing-xs);
-
-	// Ensure it doesn't affect layout
 	height: 0;
 	overflow: hidden;
 	position: absolute;
