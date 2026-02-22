@@ -19,7 +19,7 @@ jobs:
     #   Removing the user check could give privileged access to a potential attacker.
     if: |
       github.event.pull_request.user.login == 'dependabot[bot]' &&
-      ! github.event.pull_request.title.contains('development group')
+      ! contains(github.event.pull_request.title, 'development group')
 
     runs-on: ubuntu-latest
 
