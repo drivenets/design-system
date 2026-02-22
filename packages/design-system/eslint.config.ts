@@ -1,16 +1,27 @@
 import baseConfig from '../../eslint.config.base';
 import { defineConfig, globalIgnores, type Config } from 'eslint/config';
-import react from 'eslint-plugin-react';
+import { fixupPluginRules } from '@eslint/compat';
+import _react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import storybook from 'eslint-plugin-storybook';
+
+// Fix the `eslint-plugin-react` plugin to be compatible with ESLint 10.
+// Waiting until https://github.com/jsx-eslint/eslint-plugin-react/pull/3979 is merged.
+const react = fixupPluginRules(_react);
 
 export default defineConfig(
 	...baseConfig,
 
 	// React rules.
-	react.configs.flat.recommended as Config,
-	react.configs.flat['jsx-runtime'] as Config,
+	{
+		..._react.configs.flat.recommended,
+		plugins: { react },
+	},
+	{
+		..._react.configs.flat['jsx-runtime'],
+		plugins: { react },
+	},
 
 	reactHooks.configs.flat.recommended,
 
