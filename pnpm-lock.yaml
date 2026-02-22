@@ -26,11 +26,6 @@ overrides:
   esbuild@<=0.24.2: '>=0.25.0'
   eslint: ^10.0.1
 
-patchedDependencies:
-  eslint-plugin-react:
-    hash: 268b9205208e96299f2818b0f2047ae63bd4b3614592b63332b8659faa4fc262
-    path: .pnpm-patches/eslint-plugin-react.patch
-
 importers:
 
   .:
@@ -208,6 +203,9 @@ importers:
       '@drivenets/vite-plugin-design-system':
         specifier: workspace:*
         version: link:../vite-plugin
+      '@eslint/compat':
+        specifier: ^2.0.2
+        version: 2.0.2(eslint@10.0.1(jiti@2.6.1))
       '@faker-js/faker':
         specifier: ^10.3.0
         version: 10.3.0
@@ -267,7 +265,7 @@ importers:
         version: 6.10.2(eslint@10.0.1(jiti@2.6.1))
       eslint-plugin-react:
         specifier: ^7.37.5
-        version: 7.37.5(patch_hash=268b9205208e96299f2818b0f2047ae63bd4b3614592b63332b8659faa4fc262)(eslint@10.0.1(jiti@2.6.1))
+        version: 7.37.5(eslint@10.0.1(jiti@2.6.1))
       eslint-plugin-react-hooks:
         specifier: ^7.0.1
         version: 7.0.1(eslint@10.0.1(jiti@2.6.1))
@@ -1136,6 +1134,15 @@ packages:
   '@eslint-community/regexpp@4.12.2':
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
+
+  '@eslint/compat@2.0.2':
+    resolution: {integrity: sha512-pR1DoD0h3HfF675QZx0xsyrsU8q70Z/plx7880NOhS02NuWLgBCOMDL787nUeQ7EWLkxv3bPQJaarjcPQb2Dwg==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
+    peerDependencies:
+      eslint: ^10.0.1
+    peerDependenciesMeta:
+      eslint:
+        optional: true
 
   '@eslint/config-array@0.23.2':
     resolution: {integrity: sha512-YF+fE6LV4v5MGWRGj7G404/OZzGNepVF8fxk7jqmqo3lrza7a0uUcDnROGRBG1WFC1omYUS/Wp1f42i0M+3Q3A==}
@@ -6691,6 +6698,12 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.2': {}
 
+  '@eslint/compat@2.0.2(eslint@10.0.1(jiti@2.6.1))':
+    dependencies:
+      '@eslint/core': 1.1.0
+    optionalDependencies:
+      eslint: 10.0.1(jiti@2.6.1)
+
   '@eslint/config-array@0.23.2':
     dependencies:
       '@eslint/object-schema': 3.0.2
@@ -9553,7 +9566,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react@7.37.5(patch_hash=268b9205208e96299f2818b0f2047ae63bd4b3614592b63332b8659faa4fc262)(eslint@10.0.1(jiti@2.6.1)):
+  eslint-plugin-react@7.37.5(eslint@10.0.1(jiti@2.6.1)):
     dependencies:
       array-includes: '@nolyfill/array-includes@1.0.44'
       array.prototype.findlast: '@nolyfill/array.prototype.findlast@1.0.44'
