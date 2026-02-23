@@ -1,0 +1,6 @@
+@use '../../styles/variables' as vars;
+
+.cell {
+	width: vars.$select-column-width;
+	padding: 0;
+}

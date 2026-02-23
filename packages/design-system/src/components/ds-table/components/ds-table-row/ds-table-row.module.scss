@@ -4,14 +4,11 @@
 
 .tableRow {
 	&:not(:last-child) {
-		.tableCell {
+		.tableCell,
+		.selectableCell,
+		.expandableCell {
 			border-bottom: vars.$border-width solid var(--color-border-secondary);
 		}
-	}
-
-	.cellCheckbox.tableCell {
-		padding: 0;
-		width: vars.$select-column-width;
 	}
 
 	&:hover {
@@ -61,10 +58,6 @@
 	@include table-mixins.expanded-row-border('bottom');
 }
 
-.cellButton {
-	width: vars.$expand-column-width;
-}
-
 .cellReorder {
 	width: vars.$reorder-column-width;
 	text-align: center;
@@ -78,10 +71,15 @@
 	}
 }
 
-.tableCell {
+.tableCell,
+.selectableCell,
+.expandableCell {
 	@include typography.body-sm-reg;
 	vertical-align: middle;
 	color: var(--color-font-main);
+}
+
+.tableCell {
 	padding: 0 var(--spacing-standard);
 }
 

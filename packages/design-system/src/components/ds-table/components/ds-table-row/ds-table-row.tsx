@@ -3,13 +3,12 @@ import classnames from 'classnames';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { DsIcon } from '../../../ds-icon';
-import { DsCheckbox } from '../../../ds-checkbox';
-import { DsButton } from '../../../ds-button';
 import { TableCell, TableRow } from '../core-table';
 import { DsTableCell } from '../ds-table-cell';
+import { DsTableRowSelectableCell } from '../ds-table-row-selectable-cell';
+import { DsTableRowExpandableCell } from '../ds-table-row-expandable-cell';
 import type { DsTableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
-import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
@@ -97,45 +96,13 @@ const DsTableRow = <TData,>({ ref, row }: DsTableRowProps<TData>) => {
 				onClick={() => onRowClick?.(row.original)}
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
-				{selectable && (
-					<TableCell className={classnames(styles.tableCell, styles.cellCheckbox)}>
-						<DsCheckbox
-							className={stylesShared.checkboxContainer}
-							checked={row.getIsSelected()}
-							disabled={!row.getCanSelect()}
-							onClick={(e) => {
-								e.stopPropagation();
-								const toggleHandler = row.getToggleSelectedHandler();
-								toggleHandler(e);
-							}}
-							onDoubleClick={(e: React.MouseEvent) => {
-								e.stopPropagation();
-							}}
-						/>
-					</TableCell>
-				)}
+				{selectable && <DsTableRowSelectableCell row={row} className={styles.selectableCell} />}
 				{expandable && (
-					<TableCell className={classnames(styles.tableCell, styles.cellButton)}>
-						{isExpandable && (
-							<DsButton
-								variant="borderless"
-								size="small"
-								onClick={(e: React.MouseEvent) => {
-									e.stopPropagation();
-									row.toggleExpanded();
-								}}
-								onDoubleClick={(e: React.MouseEvent) => {
-									e.stopPropagation();
-								}}
-								className={styles.expandToggleButton}
-							>
-								<DsIcon
-									icon="chevron_right"
-									className={classnames(stylesShared.pageButtonIcon, isExpanded && 'rotate-90')}
-								/>
-							</DsButton>
-						)}
-					</TableCell>
+					<DsTableRowExpandableCell
+						row={row}
+						className={styles.expandableCell}
+						buttonClassName={styles.expandToggleButton}
+					/>
 				)}
 				{reorderable && (
 					<DsRowDragHandle isDragging={isDragging} attributes={attributes} listeners={listeners} />

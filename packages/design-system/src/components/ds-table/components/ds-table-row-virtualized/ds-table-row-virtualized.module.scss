@@ -52,22 +52,17 @@
 	}
 }
 
-.cell {
+.cell,
+.selectableCell,
+.expandableCell {
 	display: flex;
 	align-items: center;
 	@include typography.body-sm-reg;
 	color: var(--color-font-main);
+}
+
+.cell {
 	padding: 0 var(--spacing-standard);
-}
-
-.expandableCell {
-	width: vars.$expand-column-width;
-	padding: 0;
-}
-
-.selectableCell {
-	width: vars.$select-column-width;
-	padding: 0;
 }
 
 .expandedRowContent {

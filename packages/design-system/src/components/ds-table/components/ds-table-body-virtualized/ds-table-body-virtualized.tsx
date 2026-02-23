@@ -1,19 +1,10 @@
-import { type Row, type Table } from '@tanstack/react-table';
+import { type Row } from '@tanstack/react-table';
 import { useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import { useLayoutEffect, useRef } from 'react';
 import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
-import type { ScrollParams } from './ds-table-body-virtualized.types';
+import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
 import { TableBody } from '../core-table';
-
-interface DsTableBodyVirtualizedProps<TData> {
-	table: Table<TData>;
-	tableContainerRef: React.RefObject<HTMLDivElement | null>;
-	emptyState?: React.ReactNode;
-	estimateSize: number;
-	overscan?: number;
-	onScroll?: (params: ScrollParams) => void;
-}
 
 export function DsTableBodyVirtualized<TData>({
 	table,

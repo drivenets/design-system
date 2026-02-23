@@ -1,3 +1,14 @@
+import type { Table } from '@tanstack/react-table';
+
+export interface DsTableBodyVirtualizedProps<TData> {
+	table: Table<TData>;
+	tableContainerRef: React.RefObject<HTMLDivElement | null>;
+	emptyState?: React.ReactNode;
+	estimateSize: number;
+	overscan?: number;
+	onScroll?: (params: ScrollParams) => void;
+}
+
 /**
  * Parameters passed to the onScroll callback in virtualized tables.
  */

@@ -1,0 +1,6 @@
+@use '../../styles/variables' as vars;
+
+.cell {
+	width: vars.$expand-column-width;
+	padding: 0;
+}
