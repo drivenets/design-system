@@ -12,7 +12,7 @@ const iconMap = {
 
 /**
  * Design system Filter Status Icon component
- * Status icons for toggle filter buttons to help users quickly distinguish workflow states
+ * Status icons for toggle filter buttons to help users quickly distinguish states
  */
 export const DsFilterStatusIcon = ({
 	status,

@@ -15,7 +15,7 @@ const meta: Meta<typeof DsFilterStatusIcon> = {
 		status: {
 			control: 'select',
 			options: filterStatuses,
-			description: 'The workflow status type',
+			description: 'The filter status type',
 		},
 		active: {
 			control: 'boolean',
