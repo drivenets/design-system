@@ -27,16 +27,17 @@ export function DsTableBodyVirtualized<TData>({
 
 	const { rows } = table.getRowModel();
 
-	const rowsWithExpandedContent: { type: 'row' | 'expanded-content'; row: Row<TData> }[] = [];
-	rows.forEach((row) => {
-		rowsWithExpandedContent.push({ type: 'row', row });
-		if (row.getIsExpanded()) {
-			rowsWithExpandedContent.push({ type: 'expanded-content', row });
-		}
-	});
+	const rowsAndExpandedRowContent = rows.flatMap((row) =>
+		row.getIsExpanded()
+			? [
+					{ row, isExpandedRowContent: false },
+					{ row, isExpandedRowContent: true },
+				]
+			: [{ row, isExpandedRowContent: false }],
+	);
 
 	const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
-		count: rowsWithExpandedContent.length,
+		count: rowsAndExpandedRowContent.length,
 		estimateSize: () => estimateSize, // estimate row height for accurate scrollbar dragging
 		getScrollElement: () => tableContainerRef.current,
 		// measure dynamic row height, except in firefox because it measures table border height incorrectly
@@ -78,7 +79,7 @@ export function DsTableBodyVirtualized<TData>({
 		<DsTableBody
 			rowRefsMap={rowRefsMap}
 			rowVirtualizer={rowVirtualizer}
-			rowsWithExpandedContent={rowsWithExpandedContent}
+			rowsAndExpandedRowContent={rowsAndExpandedRowContent}
 			emptyState={emptyState}
 		/>
 	);
@@ -87,8 +88,8 @@ export function DsTableBodyVirtualized<TData>({
 interface DsTableBodyProps<TData> {
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
 	rowRefsMap: React.RefObject<Map<number, HTMLTableRowElement>>;
-	rowsWithExpandedContent: {
-		type: 'row' | 'expanded-content';
+	rowsAndExpandedRowContent: {
+		isExpandedRowContent: boolean;
 		row: Row<TData>;
 	}[];
 	emptyState?: React.ReactNode;
@@ -97,7 +98,7 @@ interface DsTableBodyProps<TData> {
 function DsTableBody<TData>({
 	rowVirtualizer,
 	rowRefsMap,
-	rowsWithExpandedContent,
+	rowsAndExpandedRowContent,
 	emptyState,
 }: DsTableBodyProps<TData>) {
 	const virtualRowIndexes = rowVirtualizer.getVirtualIndexes();
@@ -111,16 +112,16 @@ function DsTableBody<TData>({
 		>
 			{virtualRowIndexes.length > 0 ? (
 				virtualRowIndexes.map((virtualRowIndex) => {
-					const row = rowsWithExpandedContent[virtualRowIndex];
+					const row = rowsAndExpandedRowContent[virtualRowIndex];
 					if (!row) {
 						return null;
 					}
 
 					return (
 						<DsTableRowVirtualized
-							key={`${row.row.id}-${row.type}`}
+							key={`${row.row.id}${row.isExpandedRowContent ? '-expanded-content' : ''}`}
 							row={row.row}
-							isExpandedRowContent={row.type === 'expanded-content'}
+							isExpandedRowContent={row.isExpandedRowContent}
 							rowRefsMap={rowRefsMap}
 							rowVirtualizer={rowVirtualizer}
 							virtualRowIndex={virtualRowIndex}
