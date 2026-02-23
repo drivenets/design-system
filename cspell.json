@@ -2,6 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
 	"enableGlobDot": true,
 	"useGitignore": true,
+	"dictionaries": ["typescript", "npm", "filetypes", "softwareTerms"],
 	"words": [
 		"attw",
 		"autoboot",
@@ -23,26 +24,11 @@
 		"Oxfmt",
 		"reorderable",
 		"retryable",
-		"stylesheet",
 		"subcomponents",
 		"syncpack",
 		"tosorted",
 		"Turborepo",
-		"unhover",
-		"vite",
-		"Vitest"
+		"unhover"
 	],
-	"ignorePaths": [
-		".cursor",
-		".git",
-		".github",
-		".idea",
-		".vscode",
-		".cspell",
-		".turbo",
-		".DS_Store",
-		"**/dist/**",
-		"**/node_modules/**",
-		"pnpm-lock.yaml"
-	]
+	"ignorePaths": [".cursor", ".git", ".github", ".vscode", ".cspell", "pnpm-lock.yaml"]
 }

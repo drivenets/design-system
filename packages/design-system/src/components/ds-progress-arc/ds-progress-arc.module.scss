@@ -1,6 +1,4 @@
-@use '../../styles/typography';
-
-$icon-custom-size: 44px;
+$icon-medium-size: 44px;
 $transition-duration: 0.2s;
 
 .root {
@@ -32,7 +30,7 @@ $transition-duration: 0.2s;
 	stroke: var(--color-background-success-strong);
 }
 
-.failed {
+.error {
 	stroke: var(--color-background-danger-strong);
 }
 
@@ -44,24 +42,16 @@ $transition-duration: 0.2s;
 	color: var(--color-font-main);
 }
 
-.valueMedium {
-	@include typography.heading3;
-}
-
-.valueSmall {
-	@include typography.body-md-md;
-}
 .iconSuccess {
 	color: var(--color-icon-success);
 }
 
-.iconFailed {
+.iconError {
 	color: var(--color-icon-danger);
 }
 
-/* doubled selector to override DsIcon's .icon.medium compound specificity */
 .iconMediumSize.iconMediumSize {
-	font-size: $icon-custom-size;
-	width: $icon-custom-size;
-	height: $icon-custom-size;
+	font-size: $icon-medium-size;
+	width: 1em;
+	height: 1em;
 }

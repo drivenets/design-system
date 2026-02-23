@@ -66,7 +66,7 @@ export const AllVariants: Story = {
 			<DsProgressLinear variant="interrupted" value={35} label="File Upload" caption="Upload interrupted." />
 			<DsProgressLinear variant="success" value={100} label="File Upload" caption="Upload complete." />
 			<DsProgressLinear
-				variant="failed"
+				variant="error"
 				value={0}
 				label="File Upload"
 				caption="Error: File exceeds size limit."
@@ -219,7 +219,7 @@ export const FullMatrix: Story = {
 			/>
 			<DsProgressLinear
 				size="small"
-				variant="failed"
+				variant="error"
 				value={0}
 				label="File Upload"
 				caption="Error: File exceeds size limit."
@@ -255,7 +255,7 @@ export const FullMatrix: Story = {
 			/>
 			<DsProgressLinear
 				size="medium"
-				variant="failed"
+				variant="error"
 				value={0}
 				label="File Upload"
 				caption="Error: File exceeds size limit."
@@ -291,7 +291,7 @@ export const FullMatrix: Story = {
 			/>
 			<DsProgressLinear
 				size="large"
-				variant="failed"
+				variant="error"
 				value={0}
 				label="File Upload"
 				caption="Error: File exceeds size limit."

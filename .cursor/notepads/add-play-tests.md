@@ -11,17 +11,3 @@ For each story without `play`, generate an interaction test following these rule
 5. Await all interactions: `await userEvent.click(...)`, `await expect(...)`
 6. Don't test implementation details (no data attributes, no CSS selectors), unless it's a required part of the story
 7. Test user-visible behavior: render check, click interactions, callback assertions
-
-For stories with callback args, verify the callback was called:
-
-```tsx
-await userEvent.click(button);
-await expect(args.onClick).toHaveBeenCalledOnce();
-```
-
-For stories showing disabled state, verify interactions are blocked:
-
-```tsx
-await userEvent.click(element, { pointerEventsCheck: 0 });
-await expect(args.onClick).not.toHaveBeenCalled();
-```

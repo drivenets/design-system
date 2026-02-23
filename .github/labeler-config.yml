@@ -2,6 +2,10 @@ ci:
   - changed-files:
       - any-glob-to-any-file: '.github/**'
 
+cursor:
+  - changed-files:
+      - any-glob-to-any-file: '.cursor/**'
+
 tooling:
   - changed-files:
       - any-glob-to-any-file:
@@ -22,6 +26,7 @@ tooling:
           - '**/.gitignore'
           - '.changeset/config.json'
           - '.husky/**'
+          - '.vscode/**'
           - 'pnpm-workspace.yaml'
           - 'turbo.json'
 

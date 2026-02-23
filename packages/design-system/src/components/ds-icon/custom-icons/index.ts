@@ -62,6 +62,10 @@ import { SpecialNetgenS } from './special-netgen-s';
 // Active state icons
 import { SpecialFilterListActive } from './special-filter-list-active';
 import { SpecialCachedActive } from './special-cached-active';
+import { SpecialRunning } from './special-running';
+import { SpecialWarning } from './special-warning';
+import { SpecialFailed } from './special-failed';
+import { SpecialPaused } from './special-paused';
 
 export type CustomIconComponent = FC<SVGProps<SVGSVGElement>>;
 
@@ -128,6 +132,12 @@ export const customIcons = {
 	// Active state
 	'special-filter-list-active': SpecialFilterListActive,
 	'special-cached-active': SpecialCachedActive,
+
+	// Filter status
+	'special-running': SpecialRunning,
+	'special-warning': SpecialWarning,
+	'special-failed': SpecialFailed,
+	'special-paused': SpecialPaused,
 } as const satisfies Record<string, CustomIconComponent>;
 
 export type CustomIconName = keyof typeof customIcons;

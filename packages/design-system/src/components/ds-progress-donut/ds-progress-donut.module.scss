@@ -1,0 +1,67 @@
+$transition-duration: 0.2s;
+
+.root {
+	display: inline-grid;
+}
+
+.small {
+	--size: 80px;
+	--thickness: 4px;
+}
+
+.medium {
+	--size: 120px;
+	--thickness: 6px;
+}
+
+.circle {
+	grid-area: 1 / 1;
+	display: block;
+}
+
+.track {
+	stroke: var(--color-background-tertiary);
+	transition: stroke $transition-duration;
+}
+
+.range {
+	transition: stroke-dashoffset $transition-duration;
+	stroke-linecap: round;
+}
+
+.default .range {
+	stroke: var(--color-background-selected);
+}
+
+.success .track,
+.success .range {
+	stroke: var(--color-background-success-strong);
+}
+
+.error .range {
+	stroke: var(--color-background-danger-strong);
+}
+
+.center {
+	grid-area: 1 / 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-font-main);
+}
+
+.iconSuccess {
+	color: var(--color-icon-success);
+}
+
+.iconError {
+	color: var(--color-icon-danger);
+}
+
+$icon-medium-size: 44px;
+
+.iconMediumSize.iconMediumSize {
+	font-size: $icon-medium-size;
+	width: 1em;
+	height: 1em;
+}
