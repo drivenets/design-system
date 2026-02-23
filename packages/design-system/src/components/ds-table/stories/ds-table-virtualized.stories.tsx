@@ -35,8 +35,18 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
-export const Virtualized: Story = {
-	name: 'Virtualized Table (Large Dataset)',
+export const EmptyState: Story = {
+	args: {
+		virtualized: true,
+		data: [],
+	},
+	play: async ({ canvas }) => {
+		await expect(canvas.getByText(/no matching records found/i)).toBeInTheDocument();
+	},
+};
+
+export const VirtualizedSelectable: Story = {
+	name: 'Virtualized Selectable Table',
 	render: function Render(args) {
 		const fetchData = async (start: number, size: number, sorting: SortingState) => {
 			return simulateApiCall(() => generatePersonData(start, size, sorting));
@@ -159,26 +169,44 @@ export const Virtualized: Story = {
 			{ timeout: 5000 },
 		);
 
-		const dataRows = canvas.getAllByRole('row').filter((row) => !row.querySelector('th'));
+		const dataRows = getDataRows(canvas);
 		await expect(dataRows.length).toBeGreaterThan(0);
 
-		const scrollContainer = canvasElement.querySelector('[class*="virtualizedContainer"]');
+		const checkboxes = canvas.getAllByRole('checkbox');
+		const firstRowCheckbox = checkboxes[1] as HTMLElement;
+		await userEvent.click(firstRowCheckbox);
+		await waitFor(() => expect(firstRowCheckbox).toBeChecked(), { timeout: 1000 });
+
+		const scrollContainer = canvasElement.querySelector('[class*="virtualizedContainer"]') as Element;
 		await expect(scrollContainer).toBeInTheDocument();
 
-		if (scrollContainer) {
-			scrollContainer.scrollTop = scrollContainer.scrollHeight;
+		scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
-			await waitFor(
-				() => expect(args.onScroll).toHaveBeenCalled(),
+		await waitFor(() => expect(args.onScroll).toHaveBeenCalled(), { timeout: 2000 });
 
-				{ timeout: 2000 },
-			);
-		}
+		// check that the row with checked checkbox is unmounted (virtualized out)
+		await waitFor(
+			() => {
+				return expect(canvas.queryAllByRole('checkbox', { checked: true })).toHaveLength(0);
+			},
+			{ timeout: 1000 },
+		);
+
+		scrollContainer.scrollTop = 0;
+
+		// check that the first row is still checked after scrolling back to top
+		await waitFor(
+			() => {
+				const checkboxesAfterScroll = canvas.getAllByRole('checkbox');
+				return expect(checkboxesAfterScroll[1]).toBeChecked();
+			},
+			{ timeout: 1000 },
+		);
 	},
 };
 
 export const VirtualizedExpandable: Story = {
-	name: 'Virtualized Table with Expandable Rows',
+	name: 'Virtualized Expandable Table',
 	render: function Render(args) {
 		const fetchData = async (start: number, size: number, sorting: SortingState) => {
 			return simulateApiCall(() => generatePersonData(start, size, sorting));
@@ -318,7 +346,7 @@ export const VirtualizedExpandable: Story = {
 			() => {
 				return expect(canvas.getByText(/of 10000 rows fetched/i)).toBeInTheDocument();
 			},
-			{ timeout: 5000 },
+			{ timeout: 2000 },
 		);
 
 		const dataRows = getDataRows(canvas);
@@ -332,28 +360,36 @@ export const VirtualizedExpandable: Story = {
 			() => {
 				return expect(canvas.getByText(/expanded details for/i)).toBeInTheDocument();
 			},
-			{ timeout: 2000 },
+			{ timeout: 1000 },
 		);
 
-		await userEvent.click(expandButtons[0] as HTMLElement);
+		const scrollContainer = canvasElement.querySelector('[class*="virtualizedContainer"]') as Element;
+		await expect(scrollContainer).toBeInTheDocument();
+
+		scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+		await waitFor(
+			() => expect(args.onScroll).toHaveBeenCalled(),
+
+			{ timeout: 1000 },
+		);
+
+		// check that the expanded row is unmounted
 		await waitFor(
 			() => {
 				return expect(canvas.queryByText(/expanded details for/i)).not.toBeInTheDocument();
 			},
-			{ timeout: 2000 },
+			{ timeout: 1000 },
 		);
 
-		const scrollContainer = canvasElement.querySelector('[class*="virtualizedContainer"]');
-		await expect(scrollContainer).toBeInTheDocument();
+		scrollContainer.scrollTop = 0;
 
-		if (scrollContainer) {
-			scrollContainer.scrollTop = scrollContainer.scrollHeight;
-
-			await waitFor(
-				() => expect(args.onScroll).toHaveBeenCalled(),
-
-				{ timeout: 2000 },
-			);
-		}
+		// check that the expanded row is still expanded after scrolling to the top
+		await waitFor(
+			() => {
+				return expect(canvas.getByText(/expanded details for/i)).toBeInTheDocument();
+			},
+			{ timeout: 1000 },
+		);
 	},
 };

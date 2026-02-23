@@ -7,7 +7,7 @@ import styles from './ds-table-header.module.scss';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableHeaderProps } from './ds-table-header.types';
 import { useDsTableContext } from '../../context/ds-table-context';
-import { getColumnStyle } from '../../utils/column-styling';
+import { getColumnSizeStyle } from '../../utils/column-size';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 	const { stickyHeader, bordered, expandable, selectable, reorderable, showSelectAllCheckbox, virtualized } =
@@ -47,13 +47,12 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 							)}
 						</TableHead>
 					)}
-					{expandable && <TableHead className={styles.headerCell} />}
+					{expandable && <TableHead className={classnames(styles.headerCell, styles.expandColumn)} />}
 					{reorderable && (
 						<TableHead className={classnames(styles.headerCell, styles.reorderColumn)}>Order</TableHead>
 					)}
-					{headerGroup.headers.map((header, idx) => {
-						const isLastColumn = idx === headerGroup.headers.length - 1;
-						const headerStyle = getColumnStyle(header.column.getSize(), virtualized, isLastColumn);
+					{headerGroup.headers.map((header) => {
+						const headerStyle = getColumnSizeStyle(header.column.getSize(), virtualized);
 
 						return (
 							<TableHead
