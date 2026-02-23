@@ -25,7 +25,7 @@ export const DsFilterStatusIcon = ({
 
 	return (
 		<DsIcon
-			className={classNames(!active && styles.inactive, className)}
+			className={classNames(active ? styles[status] : styles.inactive, className)}
 			style={style}
 			icon={iconMap[status]}
 			size={size}
