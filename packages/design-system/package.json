@@ -87,7 +87,7 @@
 		"@storybook/builder-vite": "^10.2.10",
 		"@storybook/react-vite": "^10.2.10",
 		"@tanstack/react-query": "^5.90.21",
-		"@tanstack/react-router": "^1.162.1",
+		"@tanstack/react-router": "^1.162.4",
 		"@types/eslint-plugin-jsx-a11y": "^6.10.1",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
