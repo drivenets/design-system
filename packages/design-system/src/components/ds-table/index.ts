@@ -1,4 +1,5 @@
 export type { SecondaryRowAction, RowAction } from './components/ds-table-cell';
+export type { ScrollParams } from './components/ds-table-body-virtualized';
 
 export * from './filters';
 

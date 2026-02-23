@@ -8,23 +8,12 @@ import type {
 } from '@tanstack/react-table';
 import type { IconType } from '../ds-icon';
 import type { RowAction, SecondaryRowAction } from './components/ds-table-cell';
+import type { ScrollParams } from './components/ds-table-body-virtualized';
 
 /**
  * Row size variants based on Figma design specifications
  */
 export type DsTableRowSize = 'small' | 'medium' | 'large';
-
-/**
- * Parameters passed to the onScroll callback in virtualized tables.
- */
-export interface ScrollParams {
-	/** The current vertical scroll position from the top of the scrollable content (in pixels) */
-	scrollOffset: number;
-	/** The total height of all content in the virtualized table (in pixels) */
-	totalContentHeight: number;
-	/** The visible height of the table container (in pixels) */
-	viewportHeight: number;
-}
 
 /**
  * API for programmatically controlling a DsTable component.

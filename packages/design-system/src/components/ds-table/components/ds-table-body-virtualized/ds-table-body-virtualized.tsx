@@ -3,7 +3,7 @@ import { useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import { useLayoutEffect, useRef } from 'react';
 import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
-import type { ScrollParams } from '../../ds-table.types'; // TODO: move to this component types
+import type { ScrollParams } from './ds-table-body-virtualized.types';
 import { TableBody } from '../core-table';
 
 interface DsTableBodyVirtualizedProps<TData> {

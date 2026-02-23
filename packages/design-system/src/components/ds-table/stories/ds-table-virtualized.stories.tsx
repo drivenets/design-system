@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
-import type { ScrollParams } from '../ds-table.types';
+import type { ScrollParams } from '../';
 import { DsSpinner } from '../../ds-spinner';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
