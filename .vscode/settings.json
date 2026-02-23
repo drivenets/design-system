@@ -1,4 +1,9 @@
 {
+	// This matches the value configured on .oxfmtrc.json
+	"editor.rulers": [110],
+
 	"oxc.fmt.configPath": ".oxfmtrc.json",
-	"editor.defaultFormatter": "oxc.oxc-vscode"
+	"editor.defaultFormatter": "oxc.oxc-vscode",
+
+	"typescript.tsdk": "node_modules/typescript/lib"
 }
