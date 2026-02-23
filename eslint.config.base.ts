@@ -116,7 +116,8 @@ export default defineConfig(
 
 	// Production files.
 	{
-		files: ['**/src/*.[tj]s?(x)'],
+		files: ['**/src/**/*.[tj]s?(x)'],
+		ignores: ['**/*.test.[tj]s?(x)', '**/*.stories?(.*).[tj]s?(x)', '**/stories/**'],
 		rules: {
 			// Disallow importing dev dependencies in production files.
 			'import-x/no-extraneous-dependencies': [
