@@ -7,7 +7,7 @@ export type FilterStatus = (typeof filterStatuses)[number];
 
 export interface DsFilterStatusIconProps {
 	/**
-	 * The workflow status type
+	 * The filter status type
 	 */
 	status: FilterStatus;
 	/**
