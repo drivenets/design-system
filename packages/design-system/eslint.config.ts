@@ -6,7 +6,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import storybook from 'eslint-plugin-storybook';
 
-// Fix the `eslint-plugin-react` plugin to be compatible with ESLint 10.
+// Fix `eslint-plugin-react` to be compatible with ESLint 10.
 // Waiting until https://github.com/jsx-eslint/eslint-plugin-react/pull/3979 is merged.
 const react = fixupPluginRules(_react);
 
