@@ -49,7 +49,7 @@
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
 		"@vitest/coverage-v8": "^4.0.18",
-		"eslint": "^9.39.3",
+		"eslint": "^10.0.1",
 		"memfs": "^4.56.10",
 		"publint": "^0.3.17",
 		"tsdown": "^0.20.3",
