@@ -33,15 +33,17 @@ export function DsStepper({
 				{...stepsApi.getRootProps()}
 				className={classnames(
 					styles.root,
+					'scrollbar-thin',
 					{
 						[styles.variantSingle]: variant === 'single',
+						[styles.floating]: floating,
 					},
 					className,
 				)}
 			>
 				{isHorizontal ? (
 					<>
-						<div className={styles.stepsContainer}>{children}</div>
+						<div className={classnames(styles.stepsContainer, 'scrollbar-thin')}>{children}</div>
 
 						{actions && <div className={styles.horizontalActions}>{actions}</div>}
 					</>

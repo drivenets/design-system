@@ -6,7 +6,7 @@
 	border-inline-end: 1px solid transparent;
 
 	&[data-state='open']:hover,
-	&[data-state='open']:focus-within {
+	&[data-state='open']:has(:focus-visible) {
 		border-color: var(--color-border);
 	}
 
@@ -57,12 +57,12 @@
 	}
 
 	.root:hover &,
-	.root:focus-within & {
+	.root:has(:focus-visible) & {
 		display: flex;
 	}
 
 	&:hover,
-	&:focus {
+	&:focus-visible {
 		color: var(--color-icon-primary);
 		border-color: var(--color-border-action-primary);
 		outline: none;

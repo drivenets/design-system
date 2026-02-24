@@ -109,7 +109,7 @@ export function DsStep({
 			<div {...context.stepsApi.getIndicatorProps({ index })} className={styles.indicatorContainer}>
 				{renderIndicator()}
 
-				{!isHorizontal && <DsStepSeparator index={index} />}
+				{!isHorizontal && !isSingleVariant && <DsStepSeparator index={index} />}
 			</div>
 
 			{children}

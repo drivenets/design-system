@@ -212,26 +212,15 @@ describe('Tag Filter Utils', () => {
 			vi.restoreAllMocks();
 		});
 
-		it('should measure all elements with default gap', () => {
-			// Create mock elements
+		it('should measure tag widths and gap', () => {
 			const tag1 = document.createElement('div');
 			tag1.setAttribute('data-measure-tag', '');
 			const tag2 = document.createElement('div');
 			tag2.setAttribute('data-measure-tag', '');
-			const label = document.createElement('div');
-			label.setAttribute('data-measure-label', '');
-			const clearButton = document.createElement('div');
-			clearButton.setAttribute('data-measure-clear', '');
-			const expandTag = document.createElement('div');
-			expandTag.setAttribute('data-measure-expand', '');
 
 			mockContainer.appendChild(tag1);
 			mockContainer.appendChild(tag2);
-			mockContainer.appendChild(label);
-			mockContainer.appendChild(clearButton);
-			mockContainer.appendChild(expandTag);
 
-			// Mock getBoundingClientRect for each element
 			vi.spyOn(tag1, 'getBoundingClientRect').mockReturnValue({
 				width: 80,
 				height: 30,
@@ -256,42 +245,6 @@ describe('Tag Filter Utils', () => {
 				toJSON: () => ({}),
 			});
 
-			vi.spyOn(label, 'getBoundingClientRect').mockReturnValue({
-				width: 60,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 60,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(clearButton, 'getBoundingClientRect').mockReturnValue({
-				width: 40,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 40,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(expandTag, 'getBoundingClientRect').mockReturnValue({
-				width: 100,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 100,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
 			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
 				gap: '8px',
 			} as CSSStyleDeclaration);
@@ -299,40 +252,7 @@ describe('Tag Filter Utils', () => {
 			const result = getElementMeasurements(mockContainer);
 
 			expect(result.tagWidths).toEqual([80, 90]);
-			expect(result.labelWidth).toBe(68); // 60 + 8
-			expect(result.clearButtonWidth).toBe(48); // 40 + 8
-			expect(result.expandTagWidth).toBe(108); // 100 + 8
 			expect(result.gap).toBe(8);
-		});
-
-		it('should handle missing optional elements', () => {
-			const tag1 = document.createElement('div');
-			tag1.setAttribute('data-measure-tag', '');
-			mockContainer.appendChild(tag1);
-
-			vi.spyOn(tag1, 'getBoundingClientRect').mockReturnValue({
-				width: 80,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 80,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '12px',
-			} as CSSStyleDeclaration);
-
-			const result = getElementMeasurements(mockContainer);
-
-			expect(result.tagWidths).toEqual([80]);
-			expect(result.labelWidth).toBe(0); // Missing label
-			expect(result.clearButtonWidth).toBe(0); // Missing clear button
-			expect(result.expandTagWidth).toBe(100); // Fallback width
-			expect(result.gap).toBe(12);
 		});
 
 		it('should use fallback gap when gap is invalid', () => {
@@ -358,7 +278,7 @@ describe('Tag Filter Utils', () => {
 
 			const result = getElementMeasurements(mockContainer);
 
-			expect(result.gap).toBe(8); // Fallback to 8
+			expect(result.gap).toBe(8);
 		});
 
 		it('should handle no tags present', () => {
@@ -370,32 +290,6 @@ describe('Tag Filter Utils', () => {
 
 			expect(result.tagWidths).toEqual([]);
 			expect(result.gap).toBe(10);
-		});
-
-		it('should use fallback for expand tag when width is 0', () => {
-			const expandTag = document.createElement('div');
-			expandTag.setAttribute('data-measure-expand', '');
-			mockContainer.appendChild(expandTag);
-
-			vi.spyOn(expandTag, 'getBoundingClientRect').mockReturnValue({
-				width: 0,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 0,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '8px',
-			} as CSSStyleDeclaration);
-
-			const result = getElementMeasurements(mockContainer);
-
-			expect(result.expandTagWidth).toBe(8); // 0 + 8 (not using fallback since element exists)
 		});
 	});
 });

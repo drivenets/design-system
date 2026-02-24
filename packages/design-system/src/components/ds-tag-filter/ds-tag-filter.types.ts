@@ -37,9 +37,8 @@ export interface DsTagFilterProps {
 	locale?: {
 		label?: string;
 		clearButton?: string;
-		collapseTagLabel?: string;
-		hiddenCountSingular?: string;
-		hiddenCountPlural?: string;
+		showMore?: string;
+		showLess?: string;
 	};
 	/**
 	 * Callback when "Clear all" is clicked

@@ -46,6 +46,10 @@ $horizontal-description-line-clamp: 2;
 .root {
 	background: var(--color-background);
 	overflow-y: auto;
+
+	&.floating {
+		border-radius: inherit;
+	}
 }
 
 .verticalActions {
@@ -213,7 +217,7 @@ $horizontal-description-line-clamp: 2;
 	.stepsContainer {
 		display: flex;
 		flex: 1 1 0;
-		align-items: flex-start;
+		align-items: stretch;
 		min-width: 0;
 		overflow-x: auto;
 	}
@@ -227,6 +231,8 @@ $horizontal-description-line-clamp: 2;
 
 	.step {
 		flex: 1 1 0;
+		align-self: stretch;
+		align-items: center;
 		padding: var(--spacing-3xs) var(--spacing-xs);
 		gap: var(--spacing-sm);
 		border-radius: var(--spacing-2xs);
