@@ -19,12 +19,7 @@ export function DsTableBodyVirtualized<TData>({
 	const { rows } = table.getRowModel();
 
 	const rowsAndExpandedRowContent = rows.flatMap((row) =>
-		row.getIsExpanded()
-			? [
-					{ row, isExpandedRowContent: false },
-					{ row, isExpandedRowContent: true },
-				]
-			: [{ row, isExpandedRowContent: false }],
+		row.getIsExpanded() ? [{ row }, { row, isExpandedRowContent: true }] : [{ row }],
 	);
 
 	const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
@@ -80,8 +75,8 @@ interface DsTableBodyProps<TData> {
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
 	rowRefsMap: React.RefObject<Map<number, HTMLTableRowElement>>;
 	rowsAndExpandedRowContent: {
-		isExpandedRowContent: boolean;
 		row: Row<TData>;
+		isExpandedRowContent?: boolean;
 	}[];
 	emptyState?: React.ReactNode;
 }

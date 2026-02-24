@@ -6,5 +6,5 @@ export interface DsTableRowVirtualizedProps<TData> {
 	rowRefsMap: React.RefObject<Map<number, HTMLTableRowElement>>;
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
 	virtualRowIndex: number;
-	isExpandedRowContent: boolean;
+	isExpandedRowContent?: boolean;
 }
