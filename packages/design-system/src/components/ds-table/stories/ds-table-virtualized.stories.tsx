@@ -337,6 +337,15 @@ export const VirtualizedExpandable: Story = {
 		);
 	},
 	args: {
+		columns: columns.map((col) => {
+			if ('accessorKey' in col && col.accessorKey === 'age') {
+				return {
+					...col,
+					size: 100,
+				} as ColumnDef<Person>;
+			}
+			return col;
+		}),
 		onScroll: fn(),
 	},
 	play: async ({ canvasElement, args }) => {
