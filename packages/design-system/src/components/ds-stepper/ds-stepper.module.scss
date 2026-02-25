@@ -32,6 +32,7 @@ $actions-gap: var(--spacing-3xs);
 $drag-handle-size: 20px;
 
 $horizontal-current-min-width: 256px;
+$horizontal-other-min-width: 50px;
 $horizontal-description-line-clamp: 2;
 
 .dragHandle {
@@ -237,10 +238,17 @@ $horizontal-description-line-clamp: 2;
 		gap: var(--spacing-sm);
 		border-radius: var(--spacing-2xs);
 		overflow: clip;
+		min-width: $horizontal-other-min-width;
 
 		&[data-current] {
+			flex-grow: 2;
+			max-width: none;
 			min-width: $horizontal-current-min-width;
 			border-radius: var(--spacing-2xs);
+
+			.stepLabel {
+				flex-shrink: 0;
+			}
 		}
 	}
 
@@ -272,7 +280,7 @@ $horizontal-description-line-clamp: 2;
 		white-space: nowrap;
 		overflow: hidden;
 		text-overflow: ellipsis;
-		flex-shrink: 0;
+		flex-shrink: 1;
 	}
 
 	.horizontalSeparator {
