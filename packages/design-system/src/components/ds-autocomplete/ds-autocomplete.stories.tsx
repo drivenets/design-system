@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, screen, userEvent, within } from 'storybook/test';
 import { DsIcon } from '../ds-icon';
 import { DsAutocomplete } from './ds-autocomplete';
+import type { DsAutocompleteLoadDetails } from './ds-autocomplete.types';
 
 const meta: Meta<typeof DsAutocomplete> = {
 	title: 'Design System/Autocomplete',
@@ -245,5 +246,80 @@ export const States: Story = {
 		const invalidInput = inputs[1] as HTMLInputElement;
 		await expect(invalidInput).toBeInTheDocument();
 		await expect(invalidInput).not.toBeDisabled();
+	},
+};
+
+const ASYNC_DELAY_MS = 150;
+
+const simulateServerSearch = async ({
+	filterText,
+	signal,
+}: DsAutocompleteLoadDetails): Promise<{ items: typeof countries }> => {
+	if (!filterText) {
+		return { items: [] };
+	}
+
+	await new Promise((resolve) => setTimeout(resolve, ASYNC_DELAY_MS));
+
+	if (signal?.aborted) {
+		return { items: [] };
+	}
+
+	return {
+		items: countries.filter((c) => c.label.toLowerCase().includes(filterText.toLowerCase())),
+	};
+};
+
+export const AsyncSearch: Story = {
+	render: (args) => (
+		<DsAutocomplete
+			{...args}
+			onLoadOptions={simulateServerSearch}
+			showTrigger={false}
+			startAdornment={<DsIcon icon="search" size="medium" aria-label="search icon" />}
+			placeholder="Search countries (async)..."
+			noMatchesMessage="No results found"
+			style={{ width: '300px' }}
+		/>
+	),
+	play: async ({ args, canvasElement }) => {
+		const canvas = within(canvasElement);
+		const input = canvas.getByRole('combobox');
+
+		// Type and verify filtered results appear
+		await userEvent.type(input, 'Uni');
+
+		const usOption = await screen.findByRole('option', { name: /United States/i });
+		await expect(usOption).toBeInTheDocument();
+		await expect(screen.getByRole('option', { name: /United Kingdom/i })).toBeInTheDocument();
+		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('Uni');
+
+		// Select an option and verify callbacks
+		await userEvent.click(usOption);
+		await expect(args.onValueChange).toHaveBeenCalledWith('us');
+		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('United States');
+
+		// Clear and verify reset
+		const clearButton = canvas.getByLabelText('Clear');
+		await userEvent.click(clearButton);
+		await expect(args.onInputValueChange).toHaveBeenLastCalledWith('');
+
+		// Type a query with no matches
+		await userEvent.type(input, 'zzz');
+		await screen.findByText('No results found');
+		await expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+		// Clear and refine: broad search then narrow down
+		await userEvent.clear(input);
+		await userEvent.type(input, 'an');
+
+		const options = await screen.findAllByRole('option');
+		await expect(options.length).toBeGreaterThanOrEqual(2);
+		await expect(screen.getByRole('option', { name: /Canada/i })).toBeInTheDocument();
+		await expect(screen.getByRole('option', { name: /France/i })).toBeInTheDocument();
+
+		await userEvent.type(input, 'ad');
+		await screen.findByRole('option', { name: /Canada/i });
+		await expect(screen.queryByRole('option', { name: /France/i })).not.toBeInTheDocument();
 	},
 };
