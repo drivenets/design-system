@@ -13,8 +13,10 @@ export function DsExpandableTextInput({
 	icon,
 	...props
 }: DsExpandableTextInputProps) {
-	const [expanded, _setExpanded] = useState(false);
-	const [dirty, setDirty] = useState(false);
+	const hasInitialValue = Boolean(props.value ?? props.defaultValue);
+
+	const [expanded, _setExpanded] = useState(hasInitialValue);
+	const [dirty, setDirty] = useState(hasInitialValue);
 	const ref = useRef<HTMLInputElement>(null);
 
 	const setExpanded = (newExpanded: boolean) => {
@@ -41,12 +43,14 @@ export function DsExpandableTextInput({
 			onChange={(e) => {
 				props.onChange?.(e);
 
-				setDirty(true);
+				setDirty(Boolean(e.target.value));
 			}}
 			onBlur={(e) => {
 				props.onBlur?.(e);
 
-				if (!dirty && !ref.current?.value) {
+				const currentValue = props.value ?? ref.current?.value;
+
+				if (!currentValue) {
 					setExpanded(false);
 				}
 			}}
