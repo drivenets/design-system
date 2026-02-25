@@ -20,6 +20,7 @@ import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { type DsTableContextType, DsTableContext } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
+import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
 
 // Row size to pixel height mapping (matches CSS variables)
 const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
@@ -176,7 +177,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 				colSpan={columns.length + (expandable ? 1 : 0) + (selectable ? 1 : 0)}
 				className={styles.emptyState}
 			>
-				{emptyState || 'No results.'}
+				{emptyState || EMPTY_TABLE_STATE_TEXT}
 			</TableCell>
 		</TableRow>
 	);

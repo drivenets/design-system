@@ -6,7 +6,10 @@ import type { DsTableRowSelectableCellProps } from './ds-table-row-selectable-ce
 import classnames from 'classnames';
 import styles from './ds-table-row-selectable-cell.module.scss';
 
-export function DsTableRowSelectableCell<TData>({ row, className }: DsTableRowSelectableCellProps<TData>) {
+export const DsTableRowSelectableCell = <TData,>({
+	row,
+	className,
+}: DsTableRowSelectableCellProps<TData>) => {
 	return (
 		<TableCell className={classnames(styles.cell, className)}>
 			<DsCheckbox
@@ -24,4 +27,4 @@ export function DsTableRowSelectableCell<TData>({ row, className }: DsTableRowSe
 			/>
 		</TableCell>
 	);
-}
+};

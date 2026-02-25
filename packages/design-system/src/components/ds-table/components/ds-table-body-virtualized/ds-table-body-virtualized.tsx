@@ -5,15 +5,16 @@ import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
 import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
 import { TableBody } from '../core-table';
+import { EMPTY_TABLE_STATE_TEXT } from '../../utils/constants';
 
-export function DsTableBodyVirtualized<TData>({
+export const DsTableBodyVirtualized = <TData,>({
 	table,
 	tableContainerRef,
 	emptyState,
 	estimateSize,
 	overscan,
 	onScroll,
-}: DsTableBodyVirtualizedProps<TData>) {
+}: DsTableBodyVirtualizedProps<TData>) => {
 	const rowRefsMap = useRef<Map<number, HTMLTableRowElement>>(new Map());
 
 	const { rows } = table.getRowModel();
@@ -69,7 +70,7 @@ export function DsTableBodyVirtualized<TData>({
 			emptyState={emptyState}
 		/>
 	);
-}
+};
 
 interface DsTableBodyProps<TData> {
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
@@ -115,7 +116,7 @@ function DsTableBody<TData>({
 					);
 				})
 			) : (
-				<div className={styles.emptyState}>{emptyState || 'No results.'}</div>
+				<div className={styles.emptyState}>{emptyState || EMPTY_TABLE_STATE_TEXT}</div>
 			)}
 		</TableBody>
 	);

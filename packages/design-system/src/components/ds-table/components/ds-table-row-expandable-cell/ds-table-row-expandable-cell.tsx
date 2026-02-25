@@ -8,11 +8,11 @@ import { useDsTableContext } from '../../context/ds-table-context';
 import type { DsTableRowExpandableCellProps } from './ds-table-row-expandable-cell.types';
 import styles from './ds-table-row-expandable-cell.module.scss';
 
-export function DsTableRowExpandableCell<TData>({
+export const DsTableRowExpandableCell = <TData,>({
 	row,
 	className,
 	buttonClassName,
-}: DsTableRowExpandableCellProps<TData>) {
+}: DsTableRowExpandableCellProps<TData>) => {
 	const { expandable } = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isExpandable = typeof expandable === 'function' ? expandable(row.original) : expandable;
@@ -40,4 +40,4 @@ export function DsTableRowExpandableCell<TData>({
 			)}
 		</TableCell>
 	);
-}
+};

@@ -8,13 +8,13 @@ import { DsTableRowExpandableCell } from '../ds-table-row-expandable-cell';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
 import { DsTableCell } from '../ds-table-cell';
 
-export function DsTableRowVirtualized<TData>({
+export const DsTableRowVirtualized = <TData,>({
 	row,
 	rowRefsMap,
 	rowVirtualizer,
 	virtualRowIndex,
 	isExpandedRowContent,
-}: DsTableRowVirtualizedProps<TData>) {
+}: DsTableRowVirtualizedProps<TData>) => {
 	const {
 		selectable,
 		expandable,
@@ -84,4 +84,4 @@ export function DsTableRowVirtualized<TData>({
 			)}
 		</TableRow>
 	);
-}
+};
