@@ -3,7 +3,8 @@ import { type VirtualItem, type Virtualizer } from '@tanstack/react-virtual';
 
 export interface DsTableRowVirtualizedProps<TData> {
 	row: Row<TData>;
-	rowRefsMap: React.RefObject<Map<string, { height: number; node: HTMLTableRowElement }>>;
+	rowsMapRef: React.RefObject<Map<string, HTMLTableRowElement>>;
+	rowHeightsMapRef: React.RefObject<Map<string, number>>;
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
 	virtualRow: VirtualItem;
 	isExpandedRowContent?: boolean;

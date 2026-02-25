@@ -10,7 +10,8 @@ import { DsTableCell } from '../ds-table-cell';
 
 export const DsTableRowVirtualized = <TData,>({
 	row,
-	rowRefsMap,
+	rowsMapRef,
+	rowHeightsMapRef,
 	rowVirtualizer,
 	virtualRow,
 	isExpandedRowContent,
@@ -32,14 +33,18 @@ export const DsTableRowVirtualized = <TData,>({
 
 	return (
 		<TableRow
-			data-index={virtualRow.index} // needed for dynamic row height measurement
-			ref={(node) => {
-				if (node) {
-					rowVirtualizer.measureElement(node); // measure dynamic row height
-					rowRefsMap.current.set(String(virtualRow.key), {
-						height: node.getBoundingClientRect().height, // store height for virtualizer to estimate size
-						node, // store ref for virtualizer to apply scrolling transforms
-					});
+			data-index={virtualRow.index}
+			ref={(row) => {
+				const key = String(virtualRow.key);
+
+				if (row) {
+					rowVirtualizer.measureElement(row); // measure dynamic row height
+					rowsMapRef.current.set(key, row); // store ref for virtualizer to apply scrolling transforms
+
+					const height = row.getBoundingClientRect().height;
+					rowHeightsMapRef.current.set(key, height); // store height for virtualizer to estimate size
+				} else {
+					rowsMapRef.current.delete(key);
 				}
 			}}
 			data-state={isActive ? 'active' : row.getIsSelected() ? 'selected' : undefined}

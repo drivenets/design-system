@@ -15,7 +15,8 @@ export const DsTableBodyVirtualized = <TData,>({
 	overscan,
 	onScroll,
 }: DsTableBodyVirtualizedProps<TData>) => {
-	const rowRefsMap = useRef<Map<string, { height: number; node: HTMLTableRowElement }>>(new Map());
+	const rowsMapRef = useRef<Map<string, HTMLTableRowElement>>(new Map());
+	const rowHeightsMapRef = useRef<Map<string, number>>(new Map());
 
 	const { rows } = table.getRowModel();
 
@@ -31,7 +32,7 @@ export const DsTableBodyVirtualized = <TData,>({
 	const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
 		count: rowsAndExpandedRowContent.length,
 		estimateSize: (index) => {
-			const cachedHeight = rowRefsMap.current.get(getItemKey(index))?.height;
+			const cachedHeight = rowHeightsMapRef.current.get(getItemKey(index));
 			return cachedHeight || estimateSize;
 		}, // estimate row height for accurate scrollbar dragging
 		getItemKey,
@@ -45,12 +46,12 @@ export const DsTableBodyVirtualized = <TData,>({
 		onChange: (instance, sync) => {
 			requestAnimationFrame(() => {
 				instance.getVirtualItems().forEach((virtualRow) => {
-					const rowRef = rowRefsMap.current.get(String(virtualRow.key));
-					if (!rowRef) {
+					const row = rowsMapRef.current.get(String(virtualRow.key));
+					if (!row) {
 						return;
 					}
 
-					rowRef.node.style.transform = `translateY(${virtualRow.start.toString()}px)`;
+					row.style.transform = `translateY(${virtualRow.start.toString()}px)`;
 				});
 			});
 
@@ -73,7 +74,8 @@ export const DsTableBodyVirtualized = <TData,>({
 
 	return (
 		<DsTableBody
-			rowRefsMap={rowRefsMap}
+			rowsMapRef={rowsMapRef}
+			rowHeightsMapRef={rowHeightsMapRef}
 			rowVirtualizer={rowVirtualizer}
 			rowsAndExpandedRowContent={rowsAndExpandedRowContent}
 			emptyState={emptyState}
@@ -83,7 +85,8 @@ export const DsTableBodyVirtualized = <TData,>({
 
 interface DsTableBodyProps<TData> {
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
-	rowRefsMap: React.RefObject<Map<string, { height: number; node: HTMLTableRowElement }>>;
+	rowsMapRef: React.RefObject<Map<string, HTMLTableRowElement>>;
+	rowHeightsMapRef: React.RefObject<Map<string, number>>;
 	rowsAndExpandedRowContent: {
 		row: Row<TData>;
 		isExpandedRowContent?: boolean;
@@ -93,7 +96,8 @@ interface DsTableBodyProps<TData> {
 
 function DsTableBody<TData>({
 	rowVirtualizer,
-	rowRefsMap,
+	rowsMapRef,
+	rowHeightsMapRef,
 	rowsAndExpandedRowContent,
 	emptyState,
 }: DsTableBodyProps<TData>) {
@@ -118,7 +122,8 @@ function DsTableBody<TData>({
 							key={virtualRow.key}
 							row={row.row}
 							isExpandedRowContent={row.isExpandedRowContent}
-							rowRefsMap={rowRefsMap}
+							rowsMapRef={rowsMapRef}
+							rowHeightsMapRef={rowHeightsMapRef}
 							rowVirtualizer={rowVirtualizer}
 							virtualRow={virtualRow}
 						/>
