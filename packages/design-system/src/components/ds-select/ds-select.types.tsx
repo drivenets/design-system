@@ -1,4 +1,5 @@
 import type React from 'react';
+import type { ReactNode } from 'react';
 import type { IconName } from '../ds-icon';
 
 export type SelectSize = 'default' | 'small';
@@ -56,6 +57,12 @@ export type DsSelectProps = {
 	 * @default 'default'
 	 */
 	size?: SelectSize;
+	/**
+	 * Custom render function for dropdown options.
+	 * When provided, replaces the default label text inside each dropdown item.
+	 * The string `label` is still used for search, trigger text, chips, and accessibility.
+	 */
+	renderOption?: (option: DsSelectOption) => ReactNode;
 } & (
 	| {
 			clearable?: undefined | false;
