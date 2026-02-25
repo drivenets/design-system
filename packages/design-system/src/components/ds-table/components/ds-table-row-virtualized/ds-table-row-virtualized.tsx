@@ -52,8 +52,8 @@ export const DsTableRowVirtualized = <TData,>({
 				!bordered && styles.rowNoBorder,
 				isExpanded && styles.expanded,
 			)}
-			onClick={() => onRowClick?.(row.original)}
-			onDoubleClick={() => onRowDoubleClick?.(row.original)}
+			onClick={isExpandedRowContent ? undefined : () => onRowClick?.(row.original)}
+			onDoubleClick={isExpandedRowContent ? undefined : () => onRowDoubleClick?.(row.original)}
 		>
 			{isExpandedRowContent ? (
 				<TableCell>{renderExpandedRow?.(row.original)}</TableCell>
