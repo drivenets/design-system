@@ -30,6 +30,7 @@ const DsSelect = ({
 	className,
 	placeholder = 'Click to select a value',
 	disabled,
+	renderOption,
 	...multiselectProps
 }: DsSelectProps) => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -191,7 +192,7 @@ const DsSelect = ({
 									<Select.Item item={item}>
 										{multiselectProps.multiple && <DsCheckbox checked={checked} />}
 										{item.icon && <DsIcon className={styles.itemIcon} icon={item.icon} aria-hidden="true" />}
-										<Select.ItemText>{item.label}</Select.ItemText>
+										<Select.ItemText>{renderOption ? renderOption(item) : item.label}</Select.ItemText>
 									</Select.Item>
 								</DsTypography>
 							);
