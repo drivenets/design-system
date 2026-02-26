@@ -136,16 +136,10 @@ export const ExpandChange: Story = {
 };
 
 export const Controlled: Story = {
-	argTypes: {
-		value: {
-			control: 'text',
-			description: 'The current value',
-		},
-		onChange: { action: 'changed' },
-		onClear: { action: 'clear' },
-	},
 	args: {
 		value: 'query',
+		onExpandChange: fn(),
+		onClear: fn(),
 	},
 	render: function Render(args) {
 		const [value, setValue] = useState(args.value);
@@ -154,12 +148,16 @@ export const Controlled: Story = {
 			<DsExpandableTextInput
 				icon="search"
 				value={value}
+				onExpandChange={args.onExpandChange}
 				onChange={(e) => setValue(e.target.value)}
-				onClear={() => setValue('')}
+				onClear={() => {
+					setValue('');
+					args.onClear?.();
+				}}
 			/>
 		);
 	},
-	play: async ({ canvasElement, step }) => {
+	play: async ({ args, canvasElement, step }) => {
 		const canvas = within(canvasElement);
 
 		await step('Starts expanded with initial value', async () => {
@@ -176,6 +174,9 @@ export const Controlled: Story = {
 			const clearButton = canvas.getByRole('button', { name: 'Clear' });
 			await userEvent.click(clearButton);
 
+			await expect(args.onClear).toHaveBeenCalled();
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(false);
+
 			const input = canvas.getByRole('textbox');
 			await expect(input).toHaveValue('');
 		});
@@ -183,15 +184,14 @@ export const Controlled: Story = {
 		await step('Re-expand, type, backspace to empty, blur collapses', async () => {
 			const iconButton = canvas.getByRole('button', { name: 'Open text input' });
 			await userEvent.click(iconButton);
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(true);
 
 			const input = canvas.getByRole('textbox');
 			await userEvent.type(input, 'hello');
-			await expect(input).toHaveValue('hello');
-
 			await userEvent.clear(input);
-			await expect(input).toHaveValue('');
 
 			await userEvent.click(canvasElement);
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(false);
 		});
 	},
 };

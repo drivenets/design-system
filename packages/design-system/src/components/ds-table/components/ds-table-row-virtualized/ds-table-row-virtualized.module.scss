@@ -1,0 +1,80 @@
+@use '../../../../styles/typography';
+@use '../../styles/variables' as vars;
+@use '../../styles/mixins' as table-mixins;
+
+.row {
+	display: flex;
+	position: absolute;
+	width: 100%;
+
+	&:hover {
+		background-color: var(--color-background-secondary);
+	}
+
+	&[data-state='selected'] {
+		background-color: var(--color-background-selected-weak);
+	}
+
+	&[data-state='active'] {
+		background-color: var(--color-background-selected-weak);
+	}
+
+	&:not(:last-child):not(.expandedRowContent) {
+		> td {
+			border-bottom: vars.$border-width solid var(--color-border-secondary);
+		}
+	}
+
+	&.clickableRow {
+		cursor: pointer;
+	}
+
+	&.rowNoBorder {
+		border-bottom: none;
+	}
+
+	&:not(.expandedRowContent) {
+		&.expanded {
+			@include table-mixins.expanded-row-border('top');
+		}
+
+		&.sizeSmall {
+			height: var(--ds-table-row-small);
+		}
+
+		&.sizeMedium {
+			height: var(--ds-table-row-medium);
+		}
+
+		&.sizeLarge {
+			height: var(--ds-table-row-large);
+		}
+	}
+}
+
+.cell,
+.selectableCell,
+.expandableCell {
+	display: flex;
+	align-items: center;
+	@include typography.body-sm-reg;
+	color: var(--color-font-main);
+}
+
+.cell {
+	padding: 0 var(--spacing-standard);
+}
+
+.expandedRowContent {
+	background-color: var(--color-background-secondary);
+
+	& > td {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		padding: var(--spacing-standard);
+		background-color: var(--color-background-secondary);
+	}
+
+	@include table-mixins.expanded-row-border('bottom');
+}

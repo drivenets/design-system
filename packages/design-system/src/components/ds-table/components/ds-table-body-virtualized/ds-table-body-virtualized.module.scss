@@ -1,0 +1,9 @@
+.body {
+	display: grid;
+}
+
+.emptyState {
+	position: absolute;
+	inset: 0;
+	top: var(--ds-table-header-height);
+}

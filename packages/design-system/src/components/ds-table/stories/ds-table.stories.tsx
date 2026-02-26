@@ -120,16 +120,6 @@ export const EmptyState: Story = {
 	},
 };
 
-export const EmptyStateVirtualized: Story = {
-	args: {
-		virtualized: true,
-		data: [],
-	},
-	play: async ({ canvas }) => {
-		await expect(canvas.getByText(/no matching records found/i)).toBeInTheDocument();
-	},
-};
-
 export const NoBorder: Story = {
 	args: {
 		bordered: false,

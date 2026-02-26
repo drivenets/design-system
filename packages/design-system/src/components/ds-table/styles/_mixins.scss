@@ -1,0 +1,15 @@
+@mixin expanded-row-border($side) {
+	$border: 1px solid var(--color-border-action-primary);
+
+	&:not(.expandedRow + &) > td {
+		border-#{$side}: $border;
+	}
+
+	& > td:first-child {
+		border-inline-start: $border;
+	}
+
+	& > td:last-child {
+		border-inline-end: $border;
+	}
+}

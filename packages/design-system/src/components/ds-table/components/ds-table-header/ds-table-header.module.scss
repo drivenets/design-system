@@ -10,8 +10,6 @@
 
 .virtualizedHeader {
 	display: grid;
-	grid-template-columns: subgrid;
-	grid-column: 1 / -1;
 }
 
 .headerRow {
@@ -32,18 +30,17 @@
 }
 
 .headerRowVirtualized {
-	display: grid;
-	grid-template-columns: subgrid;
-	grid-column: 1 / -1;
-	align-items: center;
-}
-
-.expandColumn {
-	width: vars.$expand-column-width;
+	display: flex;
+	width: 100%;
 }
 
 .reorderColumn {
 	width: vars.$reorder-column-width;
+}
+
+.expandColumn {
+	width: vars.$expand-column-width;
+	padding: 0;
 }
 
 .headerCell {
