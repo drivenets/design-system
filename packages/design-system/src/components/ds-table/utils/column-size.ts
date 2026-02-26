@@ -6,25 +6,15 @@ import { defaultColumnSizing } from '@tanstack/react-table';
  *
  * @param columnSize - The size of the column
  * @param virtualized - Whether the table is virtualized
- * @param isLastColumn - Whether this is the last column in the row
  * @returns Style object or undefined if no custom styling is needed
  */
-export const getColumnStyle = (
-	columnSize: number,
-	virtualized?: boolean,
-	isLastColumn: boolean = false,
-): CSSProperties | undefined => {
+export const getColumnSizeStyle = (columnSize: number, virtualized?: boolean): CSSProperties | undefined => {
 	const hasCustomSize = columnSize !== defaultColumnSizing.size;
-	if (!hasCustomSize) {
-		return undefined;
+	if (hasCustomSize) {
+		return { width: columnSize };
 	}
 
 	if (virtualized) {
-		return {
-			flexBasis: `${String(columnSize)}px`,
-			flexGrow: isLastColumn ? 1 : 0,
-		};
+		return { flex: 1 };
 	}
-
-	return { width: columnSize };
 };

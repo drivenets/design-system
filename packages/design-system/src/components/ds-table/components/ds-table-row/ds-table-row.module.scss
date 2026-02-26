@@ -1,54 +1,13 @@
 @use '../../../../styles/typography';
 @use '../../styles/variables' as vars;
-
-@mixin expanded-row-border($side) {
-	$border: 1px solid var(--color-border-action-primary);
-
-	// Prevent double border with adjacent expanded rows.
-	&:not(.expandedRow + &) > td {
-		border-#{$side}: $border;
-	}
-
-	& > td:first-child {
-		border-inline-start: $border;
-	}
-
-	& > td:last-child {
-		border-inline-end: $border;
-	}
-}
+@use '../../styles/mixins' as table-mixins;
 
 .tableRow {
-	&:not(.virtualizedRow) {
-		&:not(:last-child) {
-			.tableCell {
-				border-bottom: vars.$border-width solid var(--color-border-secondary);
-			}
-		}
-
-		.cellCheckbox.tableCell {
-			padding: 0;
-			width: vars.$select-column-width;
-		}
-	}
-
-	&.virtualizedRow {
-		display: grid;
-		grid-template-columns: subgrid;
-		grid-column: 1 / -1;
-		grid-row: 1;
-		align-items: center;
-
-		&:not(:last-child) {
+	&:not(:last-child) {
+		.tableCell,
+		.selectableCell,
+		.expandableCell {
 			border-bottom: vars.$border-width solid var(--color-border-secondary);
-		}
-
-		.tableCell {
-			&.cellCheckbox {
-				text-align: center;
-				padding: 0;
-				width: vars.$select-column-width;
-			}
 		}
 	}
 
@@ -73,7 +32,7 @@
 	}
 
 	&.expanded {
-		@include expanded-row-border('top');
+		@include table-mixins.expanded-row-border('top');
 	}
 
 	&.sizeSmall {
@@ -96,11 +55,7 @@
 		padding: var(--spacing-standard);
 	}
 
-	@include expanded-row-border('bottom');
-}
-
-.cellButton {
-	width: vars.$expand-column-width;
+	@include table-mixins.expanded-row-border('bottom');
 }
 
 .cellReorder {
@@ -116,10 +71,15 @@
 	}
 }
 
-.tableCell {
+.tableCell,
+.selectableCell,
+.expandableCell {
 	@include typography.body-sm-reg;
 	vertical-align: middle;
 	color: var(--color-font-main);
+}
+
+.tableCell {
 	padding: 0 var(--spacing-standard);
 }
 

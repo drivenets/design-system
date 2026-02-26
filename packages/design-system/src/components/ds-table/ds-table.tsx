@@ -10,7 +10,6 @@ import {
 	useReactTable,
 	type VisibilityState,
 } from '@tanstack/react-table';
-import { useVirtualizer, type VirtualItem } from '@tanstack/react-virtual';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
 import { DsTableBulkActions } from './components/ds-table-bulk-actions';
@@ -20,7 +19,8 @@ import type { DsDataTableProps, DsTableRowSize } from './ds-table.types';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { type DsTableContextType, DsTableContext } from './context/ds-table-context';
-import { createColumnsGridTemplate } from './utils/create-columns-grid-template';
+import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
+import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
 
 // Row size to pixel height mapping (matches CSS variables)
 const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
@@ -69,7 +69,6 @@ const DsTable = <TData extends { id: string }, TValue>({
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
 	const [internalColumnVisibility, setInternalColumnVisibility] = React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
-	const [expandedRows, setExpandedRows] = React.useState<Record<string, boolean>>({});
 
 	const { DragWrapper, SortableWrapper } = useDragAndDrop<TData>({
 		isDragEnabled: reorderable && !virtualized,
@@ -172,45 +171,16 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const { rows, rowsById } = table.getRowModel();
 
-	const rowVirtualizer = useVirtualizer({
-		count: rows.length,
-		getScrollElement: () => tableContainerRef.current,
-		// estimate row height for accurate scrollbar dragging
-		estimateSize: () => virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize],
-		overscan: virtualizedOptions?.overscan || 5,
-		onChange: (instance, sync) => {
-			if (sync && onScroll) {
-				const scrollOffset = instance.scrollOffset || 0;
-				const totalContentHeight = instance.getTotalSize();
-				const viewportHeight = instance.scrollElement?.clientHeight;
-
-				if (viewportHeight) {
-					onScroll({ scrollOffset, totalContentHeight, viewportHeight });
-				}
-			}
-		},
-	});
-
-	const toggleRowExpanded = (rowId: string) => {
-		setExpandedRows((prev) => ({
-			...prev,
-			[rowId]: !prev[rowId],
-		}));
-	};
-
-	const renderEmptyState = () =>
-		virtualized ? (
-			<div className={styles.emptyStateVirtualized}>{emptyState || 'No results.'}</div>
-		) : (
-			<TableRow>
-				<TableCell
-					colSpan={columns.length + (expandable ? 1 : 0) + (selectable ? 1 : 0)}
-					className={styles.emptyState}
-				>
-					{emptyState || 'No results.'}
-				</TableCell>
-			</TableRow>
-		);
+	const renderEmptyState = () => (
+		<TableRow>
+			<TableCell
+				colSpan={columns.length + (expandable ? 1 : 0) + (selectable ? 1 : 0)}
+				className={styles.emptyState}
+			>
+				{emptyState || EMPTY_TABLE_STATE_TEXT}
+			</TableCell>
+		</TableRow>
+	);
 
 	const selectedRows = Object.entries(rowSelection)
 		.filter(([, selected]) => selected)
@@ -232,8 +202,6 @@ const DsTable = <TData extends { id: string }, TValue>({
 		secondaryRowActions,
 		renderExpandedRow,
 		virtualized,
-		expandedRows,
-		toggleRowExpanded,
 		activeRowId,
 	};
 
@@ -250,16 +218,6 @@ const DsTable = <TData extends { id: string }, TValue>({
 			>
 				<DragWrapper>
 					<Table
-						style={
-							virtualized
-								? ({
-										'--ds-table-columns-template': createColumnsGridTemplate({
-											columns,
-											selectable: !!selectable,
-										}),
-									} as React.CSSProperties)
-								: undefined
-						}
 						className={classnames(
 							fullWidth && styles.fullWidth,
 							!bordered && styles.tableNoBorder,
@@ -267,32 +225,24 @@ const DsTable = <TData extends { id: string }, TValue>({
 						)}
 					>
 						<DsTableHeader table={table} />
-						<TableBody
-							style={{ height: virtualized ? `${String(rowVirtualizer.getTotalSize())}px` : undefined }}
-							className={classnames(virtualized && styles.virtualizedBody)}
-						>
-							{virtualized ? (
-								rowVirtualizer.getVirtualItems().length ? (
-									rowVirtualizer.getVirtualItems().map((virtualRow: VirtualItem) => {
-										const row = rows[virtualRow.index];
-
-										if (!row) {
-											return null;
-										}
-
-										return <DsTableRow key={row.id} row={row} virtualRow={virtualRow} />;
-									})
-								) : (
-									renderEmptyState()
-								)
-							) : (
+						{virtualized ? (
+							<DsTableBodyVirtualized
+								table={table}
+								tableContainerRef={tableContainerRef}
+								emptyState={emptyState}
+								estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
+								overscan={virtualizedOptions?.overscan}
+								onScroll={onScroll}
+							/>
+						) : (
+							<TableBody>
 								<SortableWrapper>
 									{rows.length
 										? rows.map((row) => <DsTableRow key={row.id} row={row} />)
 										: renderEmptyState()}
 								</SortableWrapper>
-							)}
-						</TableBody>
+							</TableBody>
+						)}
 					</Table>
 				</DragWrapper>
 			</div>

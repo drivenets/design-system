@@ -3,15 +3,6 @@ import type { DsDataTableProps, DsTableRowSize } from '../ds-table.types';
 
 export interface DsTableContextType<TData, TValue> extends Partial<DsDataTableProps<TData, TValue>> {
 	/**
-	 * The expanded rows
-	 */
-	expandedRows: Record<string, boolean>;
-	/**
-	 * Toggle the expanded state of a row
-	 * @param rowId - The id of the row to toggle
-	 */
-	toggleRowExpanded: (rowId: string) => void;
-	/**
 	 * Whether the table is virtualized
 	 * @default false
 	 */

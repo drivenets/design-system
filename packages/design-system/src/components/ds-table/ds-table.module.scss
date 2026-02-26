@@ -10,12 +10,6 @@
 	background: var(--color-background);
 }
 
-.virtualizedContainer {
-	position: relative;
-	height: vars.$virtualized-height;
-	overflow: auto;
-}
-
 .dataTableContainer {
 	max-height: 100%;
 	overflow: auto;
@@ -42,19 +36,12 @@
 	text-align: center;
 }
 
-.emptyStateVirtualized {
-	position: absolute;
-	inset: 0;
-	top: var(--ds-table-header-height);
-}
-
 .virtualized {
 	display: grid;
-	grid-template-columns: var(--ds-table-columns-template);
 }
 
-.virtualizedBody {
-	display: grid;
-	grid-template-columns: subgrid;
-	grid-column: 1 / -1;
+.virtualizedContainer {
+	position: relative;
+	height: vars.$virtualized-height;
+	overflow: auto;
 }
