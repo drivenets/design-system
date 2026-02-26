@@ -33,9 +33,9 @@ const meta: Meta<typeof DsAutocomplete> = {
 			control: 'object',
 			description: 'Content to display at the start of the input (e.g., a search icon)',
 		},
-		noMatchesMessage: {
-			control: 'text',
-			description: 'Message to display when no options match the input',
+		locale: {
+			control: 'object',
+			description: 'Locale strings for the autocomplete component',
 		},
 	},
 	args: {
@@ -287,7 +287,7 @@ export const AsyncSearch: Story = {
 				showTrigger={false}
 				startAdornment={<DsIcon icon="search" size="medium" aria-label="search icon" />}
 				placeholder="Search countries (async)..."
-				noMatchesMessage="No results found"
+				locale={{ noMatches: 'No results found' }}
 				style={{ width: '300px' }}
 			/>
 		);

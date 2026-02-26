@@ -62,6 +62,11 @@ export interface DsAutocompleteProps {
 		 * @default 'Loading...'
 		 */
 		loading?: string;
+		/**
+		 * Message to display when no options match the input
+		 * @default 'No matches found'
+		 */
+		noMatches?: string;
 	};
 	/**
 	 * Whether to highlight the matching text in the dropdown options
@@ -78,11 +83,6 @@ export interface DsAutocompleteProps {
 	 * Content to display at the start of the input (e.g., a search icon).
 	 */
 	startAdornment?: React.ReactNode;
-	/**
-	 * Message to display when no options match the input
-	 * @default 'No matches found'
-	 */
-	noMatchesMessage?: string;
 
 	/**
 	 * Event handler called when the value changes (when an option is selected)
