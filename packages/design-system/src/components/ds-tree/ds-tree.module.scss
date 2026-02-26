@@ -2,8 +2,6 @@
 
 $indent-per-level: 12px;
 $half-icon: calc(var(--icon-width-tiny) * 0.5);
-$focus-outline: 2px solid var(--color-border-action-primary-hover);
-$focus-outline-offset: -2px;
 $transition-duration: 0.2s;
 
 @mixin node-row {
