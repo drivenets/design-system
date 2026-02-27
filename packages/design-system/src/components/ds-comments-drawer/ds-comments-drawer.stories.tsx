@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import { DsCommentsDrawer } from './index';
 import { DsButton } from '../ds-button';
@@ -304,6 +304,113 @@ export const Empty: Story = {
 		const emptyMessage = canvas.getByText(/no comments yet/i);
 
 		await expect(emptyMessage).toBeInTheDocument();
+	},
+};
+
+export const ShowResolvedToggle: Story = {
+	args: {
+		open: true,
+		comments: createMockComments(),
+		showResolved: false,
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const toggleButton = canvas.getByRole('button', { name: /show resolved/i });
+
+		await expect(toggleButton).toBeInTheDocument();
+		await expect(toggleButton).toHaveTextContent(/\(2\)/);
+
+		await userEvent.click(toggleButton);
+
+		await expect(args.onShowResolvedChange).toHaveBeenCalledWith(true);
+	},
+};
+
+export const HideResolvedToggle: Story = {
+	args: {
+		open: true,
+		comments: createMockComments(),
+		showResolved: true,
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const toggleButton = canvas.getByRole('button', { name: /hide resolved/i });
+
+		await expect(toggleButton).toBeInTheDocument();
+
+		await userEvent.click(toggleButton);
+
+		await expect(args.onShowResolvedChange).toHaveBeenCalledWith(false);
+	},
+};
+
+export const CommentCardClick: Story = {
+	args: {
+		open: true,
+		comments: createMockComments(),
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const card = canvas.getAllByRole('button', { name: /comment #/i }).at(0);
+
+		await expect(card).toBeDefined();
+		await userEvent.click(card as HTMLElement);
+
+		await expect(args.onCommentClick).toHaveBeenCalledOnce();
+	},
+};
+
+export const SearchFiltering: Story = {
+	args: {
+		open: true,
+		comments: createMockComments(),
+		searchQuery: 'dark mode',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const cards = canvas.getAllByRole('button', { name: /comment #/i });
+
+		await expect(cards).toHaveLength(1);
+		await expect(canvas.getByText(/dark mode/i)).toBeInTheDocument();
+	},
+};
+
+export const SearchById: Story = {
+	args: {
+		open: true,
+		comments: createMockComments(),
+		searchQuery: '#65',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const cards = canvas.getAllByRole('button', { name: /comment #/i });
+
+		await expect(cards).toHaveLength(1);
+	},
+};
+
+export const CustomEmptyMessage: Story = {
+	args: {
+		open: true,
+		comments: [],
+		noCommentsMessage: 'Nothing to see here!',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('Nothing to see here!')).toBeInTheDocument();
+	},
+};
+
+export const NoResolvedComments: Story = {
+	args: {
+		open: true,
+		comments: createMockComments().filter((c) => !c.isResolved),
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.queryByRole('button', { name: /show resolved/i })).not.toBeInTheDocument();
 	},
 };
 
