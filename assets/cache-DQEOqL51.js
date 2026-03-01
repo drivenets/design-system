@@ -1,0 +1,1 @@
+function u(a){const e=new Map;return function(n,t){const r=n+(t?Object.entries(t).sort((f,i)=>f[0]<i[0]?-1:1).join():"");if(e.has(r))return e.get(r);let c=new a(n,t);return e.set(r,c),c}}export{u as i};
