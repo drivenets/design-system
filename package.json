@@ -36,6 +36,7 @@
 		"@commitlint/cli": "^20.4.2",
 		"@commitlint/config-conventional": "^20.4.2",
 		"@commitlint/types": "^20.4.0",
+		"@cspell/dict-mime-types": "^1.0.0",
 		"@drivenets/commitlint-plugin-design-system": "workspace:*",
 		"@eslint/core": "^1.1.0",
 		"@eslint/js": "^10.0.1",

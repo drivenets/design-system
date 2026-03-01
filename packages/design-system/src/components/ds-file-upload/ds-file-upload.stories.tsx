@@ -203,7 +203,6 @@ export const Compact: Story = {
 			'application/pdf',
 			'text/csv',
 			{
-				// cspell:disable-next-line
 				mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 				extensions: ['.xlsx'],
 			},
