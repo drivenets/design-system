@@ -2,4 +2,4 @@
 '@drivenets/design-system': patch
 ---
 
-Fix `ds-button-new` component to have a transparent background and border for tertiary type
+Fix `DsButton` design v1.2 to have a transparent background and border for tertiary type
