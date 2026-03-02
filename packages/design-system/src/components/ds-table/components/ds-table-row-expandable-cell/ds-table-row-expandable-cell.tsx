@@ -21,9 +21,10 @@ export const DsTableRowExpandableCell = <TData,>({
 		<TableCell className={classnames(styles.cell, className)}>
 			{isExpandable && (
 				<DsButton
-					variant="borderless"
+					design="v1.2"
+					buttonType="tertiary"
 					size="small"
-					className={buttonClassName}
+					className={classnames(styles.button, buttonClassName)}
 					onClick={(e: React.MouseEvent) => {
 						e.stopPropagation();
 						row.toggleExpanded();
@@ -34,6 +35,7 @@ export const DsTableRowExpandableCell = <TData,>({
 				>
 					<DsIcon
 						icon="chevron_right"
+						size="small"
 						className={classnames(stylesShared.pageButtonIcon, isExpanded && 'rotate-90')}
 					/>
 				</DsButton>

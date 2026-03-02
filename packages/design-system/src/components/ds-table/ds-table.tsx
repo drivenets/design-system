@@ -165,6 +165,23 @@ const DsTable = <TData extends { id: string }, TValue>({
 			getSelectedRows: () => {
 				return table.getFilteredSelectedRowModel().rows.map((r) => r.original);
 			},
+			expandRow: (rowId: string) => {
+				table.getRow(rowId).toggleExpanded(true);
+			},
+			collapseRow: (rowId: string) => {
+				table.getRow(rowId).toggleExpanded(false);
+			},
+			expandAllRows: () => {
+				table.toggleAllRowsExpanded(true);
+			},
+			collapseAllRows: () => {
+				table.toggleAllRowsExpanded(false);
+			},
+			expandRows: (rowIds: string[]) => {
+				const expansion: Record<string, boolean> = {};
+				rowIds.forEach((id) => (expansion[id] = true));
+				table.setExpanded(expansion);
+			},
 		}),
 		[table],
 	);

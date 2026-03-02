@@ -106,6 +106,62 @@ export interface DsTableApi<TData> {
 	 * ```
 	 */
 	getSelectedRows: () => TData[];
+
+	/**
+	 * Expands a single row by its ID.
+	 *
+	 * @param rowId - The unique identifier of the row to expand
+	 *
+	 * @example
+	 * ```tsx
+	 * tableRef.current?.expandRow('user-123');
+	 * ```
+	 */
+	expandRow: (rowId: string) => void;
+
+	/**
+	 * Collapses a single row by its ID.
+	 *
+	 * @param rowId - The unique identifier of the row to collapse
+	 *
+	 * @example
+	 * ```tsx
+	 * tableRef.current?.collapseRow('user-123');
+	 * ```
+	 */
+	collapseRow: (rowId: string) => void;
+
+	/**
+	 * Expands all rows in the table.
+	 *
+	 * @example
+	 * ```tsx
+	 * tableRef.current?.expandAllRows();
+	 * ```
+	 */
+	expandAllRows: () => void;
+
+	/**
+	 * Collapses all rows in the table.
+	 *
+	 * @example
+	 * ```tsx
+	 * tableRef.current?.collapseAllRows();
+	 * ```
+	 */
+	collapseAllRows: () => void;
+
+	/**
+	 * Expands multiple rows by their IDs.
+	 *
+	 * @param rowIds - Array of unique identifiers for the rows to expand
+	 *
+	 * @example
+	 * ```tsx
+	 * tableRef.current?.expandRows(['user-1', 'user-2', 'user-3']);
+	 * ```
+	 */
+	expandRows: (rowIds: string[]) => void;
 }
 
 /**
