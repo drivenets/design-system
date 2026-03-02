@@ -5,6 +5,5 @@
 		"interface": true,
 		"type": true
 	},
-	"ignoreBinaries": ["tail"],
-	"ignoreDependencies": ["@cspell/cspell-bundled-dicts"]
+	"ignoreBinaries": ["tail"]
 }

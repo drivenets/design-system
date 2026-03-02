@@ -2,7 +2,7 @@
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
 	"enableGlobDot": true,
 	"useGitignore": true,
-	"import": ["@cspell/dict-mime-types/cspell-ext.json"],
+	"import": ["@cspell/dict-cspell-bundle/cspell-ext.json", "@cspell/dict-mime-types/cspell-ext.json"],
 	"dictionaries": ["typescript", "npm", "filetypes", "softwareTerms", "mime-types"],
 	"words": [
 		"autoboot",
