@@ -29,9 +29,11 @@
 	justify-content: center;
 	width: 36px;
 	height: 36px;
+	border: none;
 	border-radius: 50%;
 	background: none;
 	cursor: pointer;
+	outline: none;
 	transition: background 0.15s;
 	color: var(--color-icon-secondary);
 
@@ -42,7 +44,7 @@
 	}
 
 	&:hover,
-	&:focus-within {
+	&[data-state='open'] {
 		background: var(--color-background-action-hover-weak);
 		color: var(--color-font-action);
 	}
