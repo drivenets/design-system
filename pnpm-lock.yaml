@@ -57,6 +57,9 @@ importers:
       '@commitlint/types':
         specifier: ^20.4.0
         version: 20.4.0
+      '@cspell/cspell-bundled-dicts':
+        specifier: ^9.7.0
+        version: 9.7.0
       '@cspell/dict-mime-types':
         specifier: ^1.0.0
         version: 1.0.0
