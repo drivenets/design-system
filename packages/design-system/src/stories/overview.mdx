@@ -7,13 +7,17 @@ import { DsButton } from '../components/ds-button';
 import styles from './overview.module.scss';
 import githubIconUrl from './assets/github-icon-title.svg';
 import figmaIconUrl from './assets/figma.svg';
+import logoUrl from './assets/logo.svg';
 
 <Meta title="Overview" />
 
 <div className={`${styles.root} sb-unstyled`}>
 
-<div>
-	<DsTypography variant="heading1">DriveNets Design System</DsTypography>
+<div className={styles.hero}>
+	<div className={styles.heroHeader}>
+		<img src={logoUrl} className={styles.logo} alt="DriveNets" />
+		<DsTypography variant="heading1">DriveNets Design System</DsTypography>
+	</div>
 	<DsTypography variant="body-md-reg" className={styles.heroDescription}>
 		The official component library for building consistent, scalable UI across DriveNets applications. Browse
 		components in the sidebar, copy code from the docs, and ship faster.

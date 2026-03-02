@@ -4,6 +4,21 @@
 	gap: var(--spacing-lg);
 }
 
+.hero {
+	display: flex;
+	flex-direction: column;
+}
+
+.heroHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+}
+
+.logo {
+	height: 40px;
+}
+
 .heroDescription {
 	margin-top: var(--spacing-sm);
 	color: var(--color-font-secondary);
