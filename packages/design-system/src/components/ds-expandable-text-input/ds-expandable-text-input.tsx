@@ -43,14 +43,14 @@ export function DsExpandableTextInput({
 			onChange={(e) => {
 				props.onChange?.(e);
 
-				setDirty(Boolean(e.target.value));
+				setDirty(true);
 			}}
 			onBlur={(e) => {
 				props.onBlur?.(e);
 
 				const currentValue = props.value ?? ref.current?.value;
 
-				if (!currentValue) {
+				if (!dirty && !currentValue) {
 					setExpanded(false);
 				}
 			}}
