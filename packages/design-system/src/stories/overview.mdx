@@ -80,4 +80,39 @@ export const App = () => (
   </div>
 </div>
 
+<DsDivider />
+
+<div>
+  <div className={styles.sectionHeader}>
+    <DsIcon icon="verified" size="medium" />
+    <DsTypography variant="heading2">ESLint Plugin</DsTypography>
+  </div>
+
+<DsTypography variant="body-md-reg" className={styles.sectionDescription}>
+	Enforce design system consistency and catch deprecated components early with the ESLint plugin. It prevents
+	usage of native HTML elements and MUI components, ensuring your codebase stays aligned with the design
+	system.
+</DsTypography>
+
+  <div className={styles.steps}>
+    <div className={styles.step}>
+      <DsTypography variant="heading4">1. Install the plugin</DsTypography>
+      <Source dark code="pnpm install @drivenets/eslint-plugin-design-system" language="bash" />
+    </div>
+
+    <div className={styles.step}>
+      <DsTypography variant="heading4">2. Add to ESLint config</DsTypography>
+      <DsTypography variant="body-sm-reg" className={styles.stepHint}>
+        Import and use the recommended preset in your eslint.config.ts:
+      </DsTypography>
+      <Source dark code={`import designSystem from '@drivenets/eslint-plugin-design-system';
+
+export default [
+  // your config
+  designSystem.configs.recommended,
+];`} language="typescript" />
+    </div>
+  </div>
+</div>
+
 </div>
