@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { CommentData } from '../ds-comment-card';
 import type { CommentsFilterState, FilterTag } from './comments-filters.types';
-import { applyFilters, filtersToTags, initialFilterState, removeTag } from './comments-filters';
+import { applyFilters, filtersToTags, removeTag } from './comments-filters';
 
 const makeAuthor = (id: string, name: string) => ({ id, name });
 
@@ -25,16 +25,6 @@ const neverActionRequired = () => false;
 const alwaysActionRequired = () => true;
 
 describe('comments-filters', () => {
-	describe('initialFilterState', () => {
-		it('should have empty arrays for all filter categories', () => {
-			expect(initialFilterState).toEqual({
-				authors: [],
-				labels: [],
-				statuses: [],
-			});
-		});
-	});
-
 	describe('applyFilters', () => {
 		it('should return all comments when no filters are set', () => {
 			const comments = [makeComment({ id: '1' }), makeComment({ id: '2' })];
