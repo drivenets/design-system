@@ -154,7 +154,7 @@ $button-size-large: 40px;
 		color: var(--color-background-action);
 
 		.content {
-			background: var(--color-background);
+			background: transparent;
 			border-color: transparent;
 		}
 
@@ -238,7 +238,7 @@ $button-size-large: 40px;
 		color: var(--color-background-selected);
 
 		.content {
-			background: var(--color-background);
+			background: transparent;
 			border-color: transparent;
 		}
 
@@ -267,10 +267,6 @@ $button-size-large: 40px;
 		&:disabled {
 			cursor: not-allowed;
 			color: var(--color-background-disable);
-
-			.content {
-				border-color: var(--color-background);
-			}
 		}
 	}
 
@@ -361,7 +357,7 @@ $button-size-large: 40px;
 		color: var(--color-background-danger-strong);
 
 		.content {
-			background: var(--color-background);
+			background: transparent;
 			border-color: transparent;
 		}
 
