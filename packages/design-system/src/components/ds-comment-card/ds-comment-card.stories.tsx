@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { DsCommentCard } from './index';
 import type { CommentData } from './ds-comment-card.types';
 import styles from './ds-comment-card.stories.module.scss';
@@ -260,6 +260,61 @@ export const Default: Story = {
 		const cards = canvas.getAllByRole('button', { name: /Comment #/i });
 
 		await expect(cards.length).toBeGreaterThan(0);
+	},
+};
+
+export const WithReferenceTag: Story = {
+	args: {
+		comment: createMockComment({ referenceTag: 'Resource allocation' }),
+		overflow: 'hidden',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('Resource allocation')).toBeInTheDocument();
+	},
+};
+
+export const WithCallbacks: Story = {
+	args: {
+		comment: createMockComment(),
+		overflow: 'hidden',
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const card = canvas.getByRole('button', { name: /Comment #63/i });
+
+		await userEvent.click(card);
+
+		await expect(args.onClick).toHaveBeenCalledOnce();
+	},
+};
+
+export const SingleReply: Story = {
+	args: {
+		comment: createMockComment({
+			messages: [
+				{
+					id: 'msg-1',
+					author: { id: 'user-1', name: 'Karen J.' },
+					content: 'Initial message',
+					createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+					isInitialMessage: true,
+				},
+				{
+					id: 'msg-2',
+					author: { id: 'user-2', name: 'John D.' },
+					content: 'One reply',
+					createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
+				},
+			],
+		}),
+		overflow: 'hidden',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('1 reply')).toBeInTheDocument();
 	},
 };
 

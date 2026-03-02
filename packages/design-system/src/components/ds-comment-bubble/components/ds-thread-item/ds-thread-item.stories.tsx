@@ -194,19 +194,105 @@ Line 3: Final line with conclusion`,
 	},
 };
 
-export const InteractiveActions: Story = {
+export const EditAndSave: Story = {
 	args: defaultArgs,
-	parameters: {
-		docs: {
-			description: {
-				story: 'Hover over the message to see the action buttons (More actions menu and Mark button).',
-			},
-		},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+
+		const textarea = canvas.getByRole('textbox');
+		await expect(textarea).toHaveValue('This is a sample message in the comment thread.');
+
+		await userEvent.clear(textarea);
+		await userEvent.type(textarea, 'Updated message content');
+
+		await userEvent.click(canvas.getByRole('button', { name: /save/i }));
+
+		await expect(args.onEdit).toHaveBeenCalledWith('msg-1', 'Updated message content');
+	},
+};
+
+export const EditSaveDisabledWhenEmpty: Story = {
+	args: defaultArgs,
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+
+		const textarea = canvas.getByRole('textbox');
+		await userEvent.clear(textarea);
+
+		const saveButton = canvas.getByRole('button', { name: /save/i });
+		await expect(saveButton).toBeDisabled();
+	},
+};
+
+export const EditSaveDisabledWhenUnchanged: Story = {
+	args: defaultArgs,
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /edit/i }));
+
+		const saveButton = canvas.getByRole('button', { name: /save/i });
+		await expect(saveButton).toBeDisabled();
+	},
+};
+
+export const DeleteAction: Story = {
+	args: defaultArgs,
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /delete/i }));
+
+		await expect(args.onDelete).toHaveBeenCalledWith('msg-1');
+	},
+};
+
+export const MarkUnreadAction: Story = {
+	args: defaultArgs,
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		await userEvent.click(canvas.getByRole('button', { name: /more actions/i }));
+		await userEvent.click(screen.getByRole('menuitem', { name: /mark as/i }));
+
+		await expect(args.onMarkUnread).toHaveBeenCalledWith('msg-1');
+	},
+};
+
+export const ResolvedAction: Story = {
+	args: defaultArgs,
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const resolvedButton = canvas.getByRole('button', { name: /mark message as resolved/i });
+
+		await userEvent.click(resolvedButton);
+
+		await expect(args.onResolved).toHaveBeenCalledWith('msg-1');
+	},
+};
+
+export const NoActionsWhenCannotModify: Story = {
+	args: {
+		...defaultArgs,
+		canModify: false,
+		onEdit: undefined,
+		onDelete: undefined,
+		onMarkUnread: undefined,
+		onResolved: undefined,
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
-		await expect(canvas.getByText('This is a sample message in the comment thread.')).toBeInTheDocument();
+		await expect(canvas.queryByRole('button', { name: /more actions/i })).not.toBeInTheDocument();
+		await expect(canvas.queryByRole('button', { name: /mark message as resolved/i })).not.toBeInTheDocument();
 	},
 };
 

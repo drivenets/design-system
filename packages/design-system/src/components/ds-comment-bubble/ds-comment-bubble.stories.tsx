@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import { DsCommentBubble } from './index';
 import type { CommentData, CommentAuthor } from '../ds-comment-card';
@@ -195,6 +195,151 @@ export const ThreadWithActionRequired: Story = {
 		const dialog = canvas.getByRole('dialog', { name: /comment thread #63/i });
 
 		await expect(dialog).toBeInTheDocument();
+	},
+};
+
+export const SendButtonClick: Story = {
+	args: {
+		value: 'Test message to send',
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const sendButton = canvas.getByRole('button', { name: /send/i });
+
+		await userEvent.click(sendButton);
+
+		await expect(args.onSend).toHaveBeenCalledWith('Test message to send', false);
+	},
+};
+
+export const SendWithEnterKey: Story = {
+	args: {
+		value: 'Enter key message',
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox');
+
+		await userEvent.click(textarea);
+		await userEvent.keyboard('{Enter}');
+
+		await expect(args.onSend).toHaveBeenCalledWith('Enter key message', false);
+	},
+};
+
+export const SendDisabledWhenEmpty: Story = {
+	args: {
+		value: '',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const sendButton = canvas.getByRole('button', { name: /send/i });
+
+		await expect(sendButton).toBeDisabled();
+	},
+};
+
+export const ThreadSendDisabledWhenEmpty: Story = {
+	args: {
+		comment: createMockComment(),
+		currentUser,
+		value: '',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const sendButton = canvas.getByRole('button', { name: /send/i });
+
+		await expect(sendButton).toBeDisabled();
+	},
+};
+
+export const ThreadSendEnabled: Story = {
+	args: {
+		comment: createMockComment(),
+		currentUser,
+		value: 'A reply',
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const sendButton = canvas.getByRole('button', { name: /send/i });
+
+		await expect(sendButton).toBeEnabled();
+
+		await userEvent.click(sendButton);
+
+		await expect(args.onSend).toHaveBeenCalledWith('A reply', false);
+	},
+};
+
+export const ThreadCloseButton: Story = {
+	args: {
+		comment: createMockComment(),
+		currentUser,
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const closeButton = canvas.getByRole('button', { name: /close/i });
+
+		await userEvent.click(closeButton);
+
+		await expect(args.onClose).toHaveBeenCalledOnce();
+	},
+};
+
+export const ThreadResolveButton: Story = {
+	args: {
+		comment: createMockComment(),
+		currentUser,
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const resolveButton = canvas.getByRole('button', { name: 'Resolve' });
+
+		await userEvent.click(resolveButton);
+
+		await expect(args.onResolve).toHaveBeenCalledOnce();
+	},
+};
+
+export const TextareaValueChange: Story = {
+	args: {
+		comment: createMockComment(),
+		currentUser,
+		value: '',
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+		const textarea = canvas.getByRole('textbox', { name: /reply/i });
+
+		await userEvent.type(textarea, 'new text');
+
+		await expect(args.onValueChange).toHaveBeenCalled();
+	},
+};
+
+export const InitialWithReferenceTag: Story = {
+	args: {
+		referenceTag: 'My tag',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const dialog = canvas.getByRole('dialog', { name: /add new comment/i });
+
+		await expect(dialog).toBeInTheDocument();
+	},
+};
+
+export const ThreadWithReferenceTag: Story = {
+	args: {
+		comment: createMockComment(),
+		currentUser,
+		referenceTag: 'Resource allocation',
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('Resource allocation')).toBeInTheDocument();
+		await expect(canvas.getByText('#63')).toBeInTheDocument();
 	},
 };
 
