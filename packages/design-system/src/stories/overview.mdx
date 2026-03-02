@@ -70,7 +70,7 @@ import logoUrl from './assets/logo.svg';
       <DsTypography variant="body-sm-reg" className={styles.stepHint}>
         Use the Vite plugin for automatic font injection:
       </DsTypography>
-      <Source dark code="pnpm install @drivenets/vite-plugin-design-system" language="bash" />
+      <Source dark code="pnpm install -D @drivenets/vite-plugin-design-system" language="bash" />
     </div>
 
     <div className={styles.step}>
@@ -101,19 +101,19 @@ export const App = () => (
   <div className={styles.steps}>
     <div className={styles.step}>
       <DsTypography variant="heading4">1. Install the plugin</DsTypography>
-      <Source dark code="pnpm install @drivenets/eslint-plugin-design-system" language="bash" />
+      <Source dark code="pnpm install -D @drivenets/eslint-plugin-design-system" language="bash" />
     </div>
 
     <div className={styles.step}>
       <DsTypography variant="heading4">2. Add to ESLint config</DsTypography>
       <DsTypography variant="body-sm-reg" className={styles.stepHint}>
-        Import and use the recommended preset in your eslint.config.ts:
+        Import and use the recommended preset in your ESLint config:
       </DsTypography>
       <Source dark code={`import designSystem from '@drivenets/eslint-plugin-design-system';
 
 export default [
-  // your config
-  designSystem.configs.recommended,
+    // your config
+    designSystem.configs.recommended,
 ];`} language="typescript" />
     </div>
   </div>
