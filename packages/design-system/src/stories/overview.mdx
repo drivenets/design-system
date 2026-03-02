@@ -1,0 +1,122 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks';
+import { DsTypography } from '../components/ds-typography';
+import { DsIcon } from '../components/ds-icon';
+import { DsDivider } from '../components/ds-divider';
+import { DsCard } from '../components/ds-card';
+import { DsButton } from '../components/ds-button';
+import styles from './overview.module.scss';
+import githubIconUrl from './assets/github-icon-title.svg';
+import figmaIconUrl from './assets/figma.svg';
+import logoUrl from './assets/logo.svg';
+
+<Meta title="Overview" />
+
+<div className={`${styles.root} sb-unstyled`}>
+
+<div className={styles.hero}>
+	<div className={styles.heroHeader}>
+		<img src={logoUrl} className={styles.logo} alt="DriveNets" />
+		<DsTypography variant="heading1">DriveNets Design System</DsTypography>
+	</div>
+	<DsTypography variant="body-md-reg" className={styles.heroDescription}>
+		The official component library for building consistent, scalable UI across DriveNets applications. Browse
+		components in the sidebar, copy code from the docs, and ship faster.
+	</DsTypography>
+</div>
+
+<div className={styles.links}>
+	<a
+		href="https://github.com/drivenets/design-system"
+		target="_blank"
+		rel="noopener noreferrer"
+		className={styles.link}
+	>
+		<img src={githubIconUrl} className={styles.githubIcon} alt="GitHub" />
+	</a>
+	<a
+		href="https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2"
+		target="_blank"
+		rel="noopener noreferrer"
+		className={styles.link}
+	>
+		<img src={figmaIconUrl} className={styles.figmaIcon} alt="Figma" />
+	</a>
+</div>
+
+<DsDivider />
+
+<div>
+  <div className={styles.sectionHeader}>
+    <DsIcon icon="rocket_launch" size="medium" />
+    <DsTypography variant="heading2">Getting Started</DsTypography>
+  </div>
+
+  <div className={styles.steps}>
+    <div className={styles.step}>
+      <DsTypography variant="heading4">1. Install the package</DsTypography>
+      <Source dark code="pnpm install @drivenets/design-system" language="bash" />
+    </div>
+
+    <div className={styles.step}>
+      <DsTypography variant="heading4">2. Import styles</DsTypography>
+      <DsTypography variant="body-sm-reg" className={styles.stepHint}>
+        Add this to your application root (e.g. main.tsx or App.tsx):
+      </DsTypography>
+      <Source dark code="import '@drivenets/design-system/index.min.css';" language="typescript" />
+    </div>
+
+    <div className={styles.step}>
+      <DsTypography variant="heading4">3. Add fonts</DsTypography>
+      <DsTypography variant="body-sm-reg" className={styles.stepHint}>
+        Use the Vite plugin for automatic font injection:
+      </DsTypography>
+      <Source dark code="pnpm install -D @drivenets/vite-plugin-design-system" language="bash" />
+    </div>
+
+    <div className={styles.step}>
+      <DsTypography variant="heading4">4. Use components</DsTypography>
+      <Source dark code={`import { DsButton } from '@drivenets/design-system';
+
+export const App = () => (
+    <DsButton onClick={() => alert('Clicked!')}>Click Me</DsButton>
+);`} language="tsx" />
+    </div>
+  </div>
+</div>
+
+<DsDivider />
+
+<div>
+  <div className={styles.sectionHeader}>
+    <DsIcon icon="verified" size="medium" />
+    <DsTypography variant="heading2">ESLint Plugin</DsTypography>
+  </div>
+
+<DsTypography variant="body-md-reg" className={styles.sectionDescription}>
+	Enforce design system consistency and catch deprecated components early with the ESLint plugin. It prevents
+	usage of native HTML elements and MUI components, ensuring your codebase stays aligned with the design
+	system.
+</DsTypography>
+
+  <div className={styles.steps}>
+    <div className={styles.step}>
+      <DsTypography variant="heading4">1. Install the plugin</DsTypography>
+      <Source dark code="pnpm install -D @drivenets/eslint-plugin-design-system" language="bash" />
+    </div>
+
+    <div className={styles.step}>
+      <DsTypography variant="heading4">2. Add to ESLint config</DsTypography>
+      <DsTypography variant="body-sm-reg" className={styles.stepHint}>
+        Import and use the recommended preset in your ESLint config:
+      </DsTypography>
+      <Source dark code={`import designSystem from '@drivenets/eslint-plugin-design-system';
+
+export default [
+    // your config
+    designSystem.configs.recommended,
+];`} language="typescript" />
+    </div>
+  </div>
+</div>
+
+</div>

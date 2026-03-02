@@ -1,0 +1,75 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-lg);
+}
+
+.hero {
+	display: flex;
+	flex-direction: column;
+}
+
+.heroHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+}
+
+.logo {
+	height: 40px;
+}
+
+.heroDescription {
+	margin-top: var(--spacing-sm);
+	color: var(--color-font-secondary);
+}
+
+.links {
+	display: flex;
+	gap: var(--spacing-standard);
+}
+
+.link {
+	display: flex;
+	align-items: center;
+}
+
+.githubIcon {
+	height: 36px;
+}
+
+.figmaIcon {
+	height: 32px;
+}
+
+.sectionHeader {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	margin-bottom: var(--spacing-lg);
+}
+
+.sectionDescription {
+	margin-bottom: var(--spacing-lg);
+	color: var(--color-font-secondary);
+}
+
+.steps {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-md);
+}
+
+.step {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+
+	:global(.docblock-source) {
+		margin: 0;
+	}
+}
+
+.stepHint {
+	color: var(--color-font-secondary);
+}
