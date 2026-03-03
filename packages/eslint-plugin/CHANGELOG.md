@@ -1,5 +1,12 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.10
+
+### Patch Changes
+
+- b23bed1: Add support for ESLint 10
+- 62d0bb7: Update dependencies
+
 ## 0.0.9
 
 ### Patch Changes

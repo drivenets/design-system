@@ -1,5 +1,32 @@
 # @drivenets/design-system
 
+## 0.7.0
+
+### Minor Changes
+
+- 7dc80d8: Add DsArcProgress component
+- 9381dc7: Add `DsProgressDonut` component
+- e5c66ff: Add `DSCommentBubble`, `DSCommentCard`, `DSCommentIndicator`, `DSCommentDrawer` components
+- 7b1cbe1: Update `DsTagFilter` to support a new design
+- aa1f4f3: Add `DsFilterStatusIcon` component
+- f5cec0a: - Add `ProgressLinear` component
+- 314484c: Add `DsTree` component
+- d4d33e6: Add loading state for `DsAutocomplete`
+
+### Patch Changes
+
+- b11c027: Add `renderOption` prop to `DsSelect` for custom option rendering
+- c1d1db8: Fix table component to support expandable rows when virtualization enabled
+- fb76d61: Add programmatic row expansion in Table component
+- 9b3299e: Add missing `@tanstack/react-router` dependency
+- 1f8f0e3: Update dependencies
+- 59c08a9: Fix `DsStepper` visual issues (scrolls, sizing)
+- ea5cb59: Fix stale hover effect in action menu in `DsTable`
+- 439177e: Fix `DsButton` design v1.2 to have a transparent background and border for tertiary type
+- 62d0bb7: Update dependencies
+- 4eb5918: Fix DsTable expandable and selectable columns width
+- 65d66fc: Fix `DsExpandableTextInput` default value, collapsing
+
 ## 0.6.1
 
 ### Patch Changes
