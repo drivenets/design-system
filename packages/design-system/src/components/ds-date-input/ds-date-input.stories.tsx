@@ -239,6 +239,41 @@ export const ReadOnly: Story = {
 };
 
 /**
+ * Date input with hidden clear button
+ */
+export const HideClearButton: Story = {
+	render: function Render() {
+		const [value, setValue] = useState<string>();
+
+		return (
+			<DsDateInput
+				className={styles.containerSingle}
+				value={value}
+				onValueChange={setValue}
+				hideClearButton
+			/>
+		);
+	},
+	play: async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+		const canvas = within(canvasElement);
+		const calendarButton = canvas.getByRole('button', { name: /open calendar/i });
+
+		// Select a date
+		await userEvent.click(calendarButton);
+		const jan15Button = screen.getByRole('button', { name: /Choose.*January 15, 2026/i });
+		await userEvent.click(jan15Button);
+
+		// Verify the date is selected
+		const input = canvas.getByPlaceholderText('MM/DD/YYYY');
+		await expect(input).toHaveValue('01/15/2026');
+
+		// Verify the clear button is not rendered
+		const clearButton = canvas.queryByRole('button', { name: /clear date/i });
+		await expect(clearButton).not.toBeInTheDocument();
+	},
+};
+
+/**
  * Controlled open state
  */
 export const ControlledOpen: Story = {

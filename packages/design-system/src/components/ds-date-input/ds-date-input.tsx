@@ -27,6 +27,7 @@ const DsDateInput = ({
 	style,
 	className,
 	disablePortal = false,
+	hideClearButton = false,
 	onValueChange,
 	onOpenChange,
 	value: _value,
@@ -100,7 +101,8 @@ const DsDateInput = ({
 		onValueChange?.(dateValuesToStrings(parsedValue, range) as never);
 	};
 
-	const showClearButton = !disabled && !readOnly && !!(value.length > 0 ? value : defaultValue).length;
+	const showClearButton =
+		!hideClearButton && !disabled && !readOnly && !!(value.length > 0 ? value : defaultValue).length;
 	const Wrapper = disablePortal ? Fragment : Portal;
 
 	return (
