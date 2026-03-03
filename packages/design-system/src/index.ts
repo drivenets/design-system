@@ -51,5 +51,6 @@ export * from './components/ds-textarea';
 export * from './components/ds-toast';
 export * from './components/ds-toggle';
 export * from './components/ds-tooltip';
+export * from './components/ds-tree';
 export * from './components/ds-typography';
 export * from './components/ds-vertical-tabs';
