@@ -17,6 +17,7 @@ export const DsTableBodyVirtualized = <TData,>({
 }: DsTableBodyVirtualizedProps<TData>) => {
 	const rowsMapRef = useRef<Map<string, HTMLTableRowElement>>(new Map());
 	const rowHeightsMapRef = useRef<Map<string, number>>(new Map());
+	const prevScrollOffsetRef = useRef<number>(0);
 
 	const { rows } = table.getRowModel();
 
@@ -61,7 +62,12 @@ export const DsTableBodyVirtualized = <TData,>({
 				const viewportHeight = instance.scrollElement?.clientHeight;
 
 				if (viewportHeight) {
-					onScroll({ scrollOffset, totalContentHeight, viewportHeight });
+					const bottomOffset = totalContentHeight - (scrollOffset + viewportHeight);
+					const direction = scrollOffset > prevScrollOffsetRef.current ? 'down' : 'up';
+
+					onScroll({ scrollOffset, totalContentHeight, viewportHeight, bottomOffset, direction });
+
+					prevScrollOffsetRef.current = scrollOffset;
 				}
 			}
 		},
