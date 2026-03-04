@@ -96,6 +96,12 @@ type DsDateInputBaseProps = Pick<
 	 * @default false
 	 */
 	disablePortal?: boolean;
+
+	/**
+	 * Whether to hide the clear button
+	 * @default false
+	 */
+	hideClearButton?: boolean;
 };
 
 /**

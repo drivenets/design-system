@@ -22,6 +22,11 @@ export interface FileUploadProps {
 	 */
 	hideProgress?: boolean;
 	/**
+	 * Whether to hide the info text (file types, size limits, etc.)
+	 * @default false
+	 */
+	hideInfoText?: boolean;
+	/**
 	 * Whether to disable drag and drop functionality
 	 * @default false
 	 */

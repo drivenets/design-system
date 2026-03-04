@@ -24,6 +24,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 	dropzoneText = 'Drag and drop files here or ',
 	triggerText = 'Select file...',
 	hideProgress = false,
+	hideInfoText = false,
 	disableDrop = false,
 	onFileAccept,
 	onFileReject,
@@ -68,7 +69,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 				</ArkUiFileUpload.Trigger>
 			</ArkUiFileUpload.Dropzone>
 
-			{infoText && !disabled && !errorText && (
+			{infoText && !hideInfoText && !disabled && !errorText && (
 				<DsTypography className={styles.infoText} variant="body-xs-reg">
 					{infoText}
 				</DsTypography>

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import DsButton from '../ds-button/ds-button';
 import DsFileUpload from './ds-file-upload';
-import { useFileUpload } from './hooks/use-file-upload';
+import { useFileUpload } from './hooks';
 import { createTestPlayFunction, getMockFile } from './ds-file-upload.stories.util';
 import { MockAdapterPresets } from './stories/adapters/mock-file-upload-adapter';
 import { FileUpload } from './components/file-upload';
@@ -42,6 +42,7 @@ return (
 		dropzoneText: { control: 'text' },
 		triggerText: { control: 'text' },
 		hideProgress: { control: 'boolean' },
+		hideInfoText: { control: 'boolean' },
 		disableDrop: { control: 'boolean' },
 		maxFiles: { control: 'number' },
 		accept: { control: 'object' },
@@ -335,6 +336,23 @@ export const DuplicateFiles: Story = {
 			const errorMessages = canvas.queryAllByText(/already exists|file exists|duplicate/i);
 			return expect(errorMessages.length).toBeGreaterThan(0);
 		});
+	},
+};
+
+/**
+ * Hidden info text - hides the file type and size limit information
+ */
+export const HiddenInfoText: Story = {
+	args: {
+		adapter: MockAdapterPresets.fast(),
+		hideInfoText: true,
+		style: { width: '500px' },
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByRole('button', { name: /select file/i })).toBeInTheDocument();
+		await expect(canvas.queryByText(/only.*files/i)).not.toBeInTheDocument();
 	},
 };
 
