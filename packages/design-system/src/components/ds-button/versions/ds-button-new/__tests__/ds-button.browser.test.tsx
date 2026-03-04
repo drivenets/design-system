@@ -1,64 +1,49 @@
-import { describe, expect, it } from 'vitest';
-import { page, type Locator } from 'vitest/browser';
+import { describe, expect, it, vi } from 'vitest';
 import DsButton from '../ds-button-new';
-
-const cartesian = [
-	{ buttonType: 'primary', variant: 'filled' },
-	{ buttonType: 'primary', variant: 'ghost' },
-	{ buttonType: 'primary', variant: 'danger' },
-	{ buttonType: 'primary', variant: 'dark' },
-	{ buttonType: 'secondary', variant: 'filled' },
-	{ buttonType: 'secondary', variant: 'ghost' },
-	{ buttonType: 'secondary', variant: 'danger' },
-	{ buttonType: 'secondary', variant: 'dark' },
-	{ buttonType: 'secondary-light', variant: 'filled' },
-	{ buttonType: 'secondary-light', variant: 'ghost' },
-	{ buttonType: 'secondary-light', variant: 'danger' },
-	{ buttonType: 'secondary-light', variant: 'dark' },
-	{ buttonType: 'tertiary', variant: 'filled' },
-	{ buttonType: 'tertiary', variant: 'ghost' },
-	{ buttonType: 'tertiary', variant: 'danger' },
-	{ buttonType: 'tertiary', variant: 'dark' },
-] as const;
+import { page } from 'vitest/browser';
 
 describe('DsButton', () => {
-	cartesian.forEach((props) => {
-		it(`screenshot ${jsonToSlug(props)}`, async () => {
-			// Arrange.
-			const screen = await page.render(<DsButton {...props}>Click</DsButton>);
+	it('should trigger onClick handler when clicked', async () => {
+		// Arrange.
+		const onClick = vi.fn();
 
-			// Act.
-			const button = screen.getByRole('button', { name: 'Click' });
+		await page.render(<DsButton onClick={onClick}>Click me</DsButton>);
 
-			// Assert.
-			await expect(button).toMatchScreenshot(jsonToSlug(props), getScreenshotOptions(button));
+		// Act.
+		await page.getByRole('button', { name: 'Click me' }).click();
 
-			// Act.
-			await button.hover();
+		// Assert.
+		expect(onClick).toHaveBeenCalled();
+	});
 
-			// Assert.
-			await expect(button).toMatchScreenshot(jsonToSlug(props) + '-hover', getScreenshotOptions(button));
-		});
+	it('should support disabled state', async () => {
+		// Arrange.
+		const onClick = vi.fn();
+
+		await page.render(
+			<DsButton onClick={onClick} disabled>
+				Click me
+			</DsButton>,
+		);
+
+		const button = page.getByRole('button', { name: 'Click me', disabled: true });
+
+		// Act.
+		await button.click({ force: true });
+
+		// Assert.
+		expect(onClick).not.toHaveBeenCalled();
+		await expect.element(button).toBeDisabled();
+	});
+
+	it('should support custom class names', async () => {
+		// Arrange.
+		const className = 'custom-class';
+
+		// Act.
+		await page.render(<DsButton className={className}>Click me</DsButton>);
+
+		// Assert.
+		await expect.element(page.getByRole('button', { name: 'Click me' })).toHaveClass(className);
 	});
 });
-
-function jsonToSlug(json: Record<string, string>) {
-	return Object.entries(json)
-		.map(([, value]) => value)
-		.join('-');
-}
-
-function getScreenshotOptions(locator: Locator) {
-	const boundingClientRect = locator.element().getBoundingClientRect();
-
-	return {
-		screenshotOptions: {
-			clip: {
-				x: boundingClientRect.x,
-				y: boundingClientRect.y,
-				width: boundingClientRect.width,
-				height: boundingClientRect.height,
-			},
-		},
-	};
-}

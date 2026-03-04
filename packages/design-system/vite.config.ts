@@ -41,8 +41,6 @@ export default defineConfig({
 				test: {
 					name: 'unit',
 					include: [testPattern('unit')],
-					environment: 'jsdom',
-					setupFiles: ['./vitest/setup.unit.ts'],
 				},
 			},
 			{
@@ -63,11 +61,6 @@ export default defineConfig({
 						enabled: true,
 						provider: playwright(),
 						instances: [{ browser: 'chromium' }],
-						headless: true,
-						viewport: {
-							width: 1024,
-							height: 768,
-						},
 					},
 					deps: {
 						web: {

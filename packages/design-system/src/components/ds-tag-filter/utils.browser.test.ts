@@ -100,99 +100,33 @@ describe('Tag Filter Utils', () => {
 
 		beforeEach(() => {
 			mockContainer = document.createElement('div');
+			document.body.appendChild(mockContainer);
 		});
 
 		afterEach(() => {
 			vi.restoreAllMocks();
+			document.body.removeChild(mockContainer);
 		});
 
 		it('should calculate available width without padding', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '0px',
-				paddingRight: '0px',
-			} as CSSStyleDeclaration);
-
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(500);
 		});
 
 		it('should subtract padding from container width', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '20px',
-				paddingRight: '30px',
-			} as CSSStyleDeclaration);
-
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(450); // 500 - 20 - 30 = 450
 		});
 
 		it('should handle string padding values with decimals', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '15.5px',
-				paddingRight: '24.5px',
-			} as CSSStyleDeclaration);
-
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(460); // 500 - 15.5 - 24.5 = 460
 		});
 
 		it('should default to 0 for invalid padding values', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '',
-				paddingRight: '',
-			} as CSSStyleDeclaration);
-
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(500); // No padding subtracted
@@ -221,34 +155,6 @@ describe('Tag Filter Utils', () => {
 			mockContainer.appendChild(tag1);
 			mockContainer.appendChild(tag2);
 
-			vi.spyOn(tag1, 'getBoundingClientRect').mockReturnValue({
-				width: 80,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 80,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(tag2, 'getBoundingClientRect').mockReturnValue({
-				width: 90,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 90,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '8px',
-			} as CSSStyleDeclaration);
-
 			const result = getElementMeasurements(mockContainer);
 
 			expect(result.tagWidths).toEqual([80, 90]);
@@ -260,32 +166,12 @@ describe('Tag Filter Utils', () => {
 			tag1.setAttribute('data-measure-tag', '');
 			mockContainer.appendChild(tag1);
 
-			vi.spyOn(tag1, 'getBoundingClientRect').mockReturnValue({
-				width: 80,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 80,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '',
-			} as CSSStyleDeclaration);
-
 			const result = getElementMeasurements(mockContainer);
 
 			expect(result.gap).toBe(8);
 		});
 
 		it('should handle no tags present', () => {
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '10px',
-			} as CSSStyleDeclaration);
-
 			const result = getElementMeasurements(mockContainer);
 
 			expect(result.tagWidths).toEqual([]);
