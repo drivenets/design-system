@@ -381,7 +381,7 @@ export const VirtualizedExpandable: Story = {
 					expect.objectContaining({
 						scrollOffset: scrollContainer.scrollTop,
 						viewportHeight: scrollContainer.clientHeight,
-						direction: 'down',
+						scrollDirection: 'forward',
 					}),
 				),
 
@@ -404,7 +404,7 @@ export const VirtualizedExpandable: Story = {
 					expect.objectContaining({
 						scrollOffset: scrollContainer.scrollTop,
 						viewportHeight: scrollContainer.clientHeight,
-						direction: 'up',
+						scrollDirection: 'backward',
 					}),
 				),
 

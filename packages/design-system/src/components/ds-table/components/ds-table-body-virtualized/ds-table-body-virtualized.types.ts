@@ -22,5 +22,5 @@ export interface ScrollParams {
 	/** The distance from the current scroll position to the bottom of the content (in pixels) */
 	bottomOffset: number;
 	/** The direction of the scroll movement */
-	direction: 'up' | 'down';
+	scrollDirection: 'forward' | 'backward' | null;
 }
