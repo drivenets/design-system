@@ -1,5 +1,13 @@
 # @drivenets/design-system
 
+## 0.7.1
+
+### Patch Changes
+
+- cf27655: Make `@tanstack/react-router` a peer dependency
+- 07faa44: Add `hideInfoText` prop to the `DsFileUpload`
+- 6ffbcf9: Add `hideClearButton` prop to the `DsDateInput`
+
 ## 0.7.0
 
 ### Minor Changes
