@@ -59,9 +59,12 @@ export const DsTableBodyVirtualized = <TData,>({
 				const scrollOffset = instance.scrollOffset || 0;
 				const totalContentHeight = instance.getTotalSize();
 				const viewportHeight = instance.scrollElement?.clientHeight;
+				const scrollDirection = instance.scrollDirection;
 
 				if (viewportHeight) {
-					onScroll({ scrollOffset, totalContentHeight, viewportHeight });
+					const bottomOffset = totalContentHeight - (scrollOffset + viewportHeight);
+
+					onScroll({ scrollOffset, totalContentHeight, viewportHeight, bottomOffset, scrollDirection });
 				}
 			}
 		},

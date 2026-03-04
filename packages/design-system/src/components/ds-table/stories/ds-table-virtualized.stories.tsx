@@ -93,13 +93,12 @@ export const VirtualizedSelectable: Story = {
 
 		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
 			args.onScroll?.(params);
-			const { scrollOffset, totalContentHeight, viewportHeight } = params;
+			const { bottomOffset } = params;
 
 			const finishedFetching = totalFetched >= totalRows;
 
 			const scrollThreshold = 500;
-			const distanceFromBottom = totalContentHeight - scrollOffset - viewportHeight;
-			const shouldFetchMore = distanceFromBottom <= scrollThreshold;
+			const shouldFetchMore = bottomOffset <= scrollThreshold;
 
 			if (!isFetching && !finishedFetching && shouldFetchMore) {
 				await fetchNextPage();
@@ -252,13 +251,12 @@ export const VirtualizedExpandable: Story = {
 
 		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
 			args.onScroll?.(params);
-			const { scrollOffset, totalContentHeight, viewportHeight } = params;
+			const { bottomOffset } = params;
 
 			const finishedFetching = totalFetched >= totalRows;
 
 			const scrollThreshold = 500;
-			const distanceFromBottom = totalContentHeight - scrollOffset - viewportHeight;
-			const shouldFetchMore = distanceFromBottom <= scrollThreshold;
+			const shouldFetchMore = bottomOffset <= scrollThreshold;
 
 			if (!isFetching && !finishedFetching && shouldFetchMore) {
 				await fetchNextPage();
@@ -378,7 +376,14 @@ export const VirtualizedExpandable: Story = {
 		scrollContainer.scrollTop = scrollContainer.scrollHeight;
 
 		await waitFor(
-			() => expect(args.onScroll).toHaveBeenCalled(),
+			() =>
+				expect(args.onScroll).toHaveBeenCalledWith(
+					expect.objectContaining({
+						scrollOffset: scrollContainer.scrollTop,
+						viewportHeight: scrollContainer.clientHeight,
+						scrollDirection: 'forward',
+					}),
+				),
 
 			{ timeout: 1000 },
 		);
@@ -392,6 +397,19 @@ export const VirtualizedExpandable: Story = {
 		);
 
 		scrollContainer.scrollTop = 0;
+
+		await waitFor(
+			() =>
+				expect(args.onScroll).toHaveBeenCalledWith(
+					expect.objectContaining({
+						scrollOffset: scrollContainer.scrollTop,
+						viewportHeight: scrollContainer.clientHeight,
+						scrollDirection: 'backward',
+					}),
+				),
+
+			{ timeout: 1000 },
+		);
 
 		// check that the expanded row is still expanded after scrolling to the top
 		await waitFor(
