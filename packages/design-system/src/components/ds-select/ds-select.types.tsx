@@ -63,12 +63,6 @@ export type DsSelectProps = {
 	 * The string `label` is still used for search, trigger text, chips, and accessibility.
 	 */
 	renderOption?: (option: DsSelectOption) => ReactNode;
-	/**
-	 * Custom render function for the selected value in the trigger.
-	 * When provided, replaces the default label text inside the trigger button.
-	 * Only called when there is a selection; otherwise the placeholder is shown.
-	 */
-	renderValue?: (selectedOptions: DsSelectOption[]) => ReactNode;
 } & (
 	| {
 			clearable?: undefined | false;
@@ -84,10 +78,22 @@ export type DsSelectProps = {
 				multiple?: undefined | false;
 				value: SelectOptionValue;
 				onValueChange?: (value: SelectOptionValue) => void;
+				/**
+				 * Custom render function for the selected value in the trigger.
+				 * When provided, replaces the default label text inside the trigger button.
+				 * Only called when there is a selection; otherwise the placeholder is shown.
+				 */
+				renderValue?: (selectedOption: DsSelectOption) => ReactNode;
 		  }
 		| {
 				multiple: true;
 				value: SelectOptionValue[];
 				onValueChange?: (value: SelectOptionValue[]) => void;
+				/**
+				 * Custom render function for the selected value in the trigger.
+				 * When provided, replaces the default label text inside the trigger button.
+				 * Only called when there is a selection; otherwise the placeholder is shown.
+				 */
+				renderValue?: (selectedOptions: DsSelectOption[]) => ReactNode;
 		  }
 	);

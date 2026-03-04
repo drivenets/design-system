@@ -31,7 +31,6 @@ const DsSelect = ({
 	placeholder = 'Click to select a value',
 	disabled,
 	renderOption,
-	renderValue,
 	...multiselectProps
 }: DsSelectProps) => {
 	const [searchTerm, setSearchTerm] = useState('');
@@ -92,6 +91,40 @@ const DsSelect = ({
 		},
 	});
 
+	const renderTriggerValue = () => {
+		const defaultTrigger = (
+			<DsTypography className={styles.valueText} variant="body-sm-reg" asChild>
+				<Select.ValueText placeholder={placeholder} />
+			</DsTypography>
+		);
+
+		if (!multiselectProps.renderValue || !select.hasSelectedItems) {
+			return defaultTrigger;
+		}
+
+		const userItems = getUserSelectedItems(select.selectedItems);
+
+		if (multiselectProps.multiple) {
+			return (
+				<DsTypography className={styles.valueText} variant="body-sm-reg">
+					{multiselectProps.renderValue(userItems)}
+				</DsTypography>
+			);
+		}
+
+		const firstItem = userItems[0];
+
+		if (!firstItem) {
+			return defaultTrigger;
+		}
+
+		return (
+			<DsTypography className={styles.valueText} variant="body-sm-reg">
+				{multiselectProps.renderValue(firstItem)}
+			</DsTypography>
+		);
+	};
+
 	return (
 		<Select.RootProvider
 			value={select}
@@ -133,15 +166,7 @@ const DsSelect = ({
 					// automatic labelling here.
 					aria-labelledby={null as never}
 				>
-					{renderValue && select.hasSelectedItems ? (
-						<DsTypography className={styles.valueText} variant="body-sm-reg">
-							{renderValue(getUserSelectedItems(select.selectedItems))}
-						</DsTypography>
-					) : (
-						<DsTypography className={styles.valueText} variant="body-sm-reg" asChild>
-							<Select.ValueText placeholder={placeholder} />
-						</DsTypography>
-					)}
+					{renderTriggerValue()}
 
 					<Select.Indicator className={styles.triggerIcon}>
 						<DsIcon icon="keyboard_arrow_down" size={size === 'small' ? 'small' : 'medium'} />
