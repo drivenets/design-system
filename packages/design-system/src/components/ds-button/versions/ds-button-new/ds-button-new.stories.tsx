@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import classNames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
-import DsSpinner from '../../../ds-spinner/ds-spinner';
+import { DsSpinner } from '../../../ds-spinner';
 import DsButtonNew from './ds-button-new';
 import { buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types';
 import styles from './ds-button-new.stories.module.scss';

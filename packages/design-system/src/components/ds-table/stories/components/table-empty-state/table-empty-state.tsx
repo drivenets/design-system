@@ -1,5 +1,5 @@
 import styles from './table-empty-state.module.scss';
-import DsIcon from '../../../../ds-icon/ds-icon';
+import { DsIcon } from '../../../../ds-icon';
 
 export const TableEmptyState = () => {
 	return (

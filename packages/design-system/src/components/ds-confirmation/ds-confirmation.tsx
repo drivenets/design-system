@@ -1,4 +1,4 @@
-import DsModal from '../ds-modal/ds-modal';
+import { DsModal } from '../ds-modal';
 import type { DsConfirmationProps } from './ds-confirmation.types';
 
 /**

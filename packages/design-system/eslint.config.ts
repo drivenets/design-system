@@ -5,6 +5,7 @@ import _react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import storybook from 'eslint-plugin-storybook';
+import internal from '@drivenets/eslint-plugin-internal';
 
 // Fix `eslint-plugin-react` to be compatible with ESLint 10.
 // Waiting until https://github.com/jsx-eslint/eslint-plugin-react/pull/3979 is merged.
@@ -68,6 +69,9 @@ export default defineConfig(
 			'react/button-has-type': 'error',
 		},
 	},
+
+	// Internal rules.
+	internal.configs.recommended,
 
 	globalIgnores(['storybook-static', '!.storybook', '.scss-dts']),
 );

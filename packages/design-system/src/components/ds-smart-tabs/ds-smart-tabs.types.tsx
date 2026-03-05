@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type React from 'react';
-import type { IconType } from '../ds-icon/ds-icon.types';
+import { type IconType } from '../ds-icon';
 
 export const colors = [
 	'dark-blue',

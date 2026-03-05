@@ -10,7 +10,7 @@ import { DsTableRowExpandableCell } from '../ds-table-row-expandable-cell';
 import type { DsTableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
-import { mergeRefs } from '../../utils/merge-refs';
+import { mergeRefs } from '../../../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
 
 interface DsRowDragHandleProps {

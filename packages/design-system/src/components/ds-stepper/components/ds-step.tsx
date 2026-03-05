@@ -2,7 +2,7 @@ import type { MouseEvent, PropsWithChildren, ReactNode } from 'react';
 import { useStepper } from '../hooks/use-stepper';
 import classnames from 'classnames';
 import styles from '../ds-stepper.module.scss';
-import DsIcon from '../../ds-icon/ds-icon';
+import { DsIcon } from '../../ds-icon';
 import { DsStepSeparator } from './ds-step-separator';
 
 export type DsStepProps = PropsWithChildren<{

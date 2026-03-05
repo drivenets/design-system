@@ -1,7 +1,8 @@
 import { useSelectContext, type UseSelectContext } from '@ark-ui/react/select';
 import styles from './ds-select.module.scss';
-import DsButton from '../ds-button/ds-button';
-import DsChip from '../ds-chip/ds-chip';
+import { DsButton } from '../ds-button';
+// TODO: Use DsTag instead.
+import { DsChip } from '../ds-chip';
 import type { DsSelectOption, SelectOptionValue } from './ds-select.types';
 
 type SelectItemsChipsProps = {
