@@ -2,7 +2,7 @@
 	"name": "@drivenets/design-system-monorepo",
 	"version": "0.0.0",
 	"private": true,
-	"packageManager": "pnpm@10.0.0",
+	"packageManager": "pnpm@10.30.3",
 	"type": "module",
 	"scripts": {
 		"start": "pnpm run --filter @drivenets/design-system storybook",
