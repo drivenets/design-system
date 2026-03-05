@@ -379,9 +379,6 @@ importers:
         specifier: ^8.56.1
         version: 8.56.1(eslint@10.0.1(jiti@2.6.1))(typescript@5.9.3)
     devDependencies:
-      '@arethetypeswrong/cli':
-        specifier: ^0.18.2
-        version: 0.18.2
       '@typescript-eslint/rule-tester':
         specifier: ^8.56.1
         version: 8.56.1(eslint@10.0.1(jiti@2.6.1))(typescript@5.9.3)

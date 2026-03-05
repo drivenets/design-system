@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 
 const plugin = {
@@ -12,10 +13,11 @@ const plugin = {
 	},
 
 	configs: {
-		recommended: [],
+		recommended: [] as never,
 	},
-};
+} satisfies Linter.Plugin;
 
+// https://eslint.org/docs/latest/extend/plugins#configs-in-plugins
 Object.assign(plugin.configs, {
 	recommended: [
 		{
