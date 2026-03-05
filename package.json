@@ -80,7 +80,9 @@
 			"string.prototype.matchall": "npm:@nolyfill/string.prototype.matchall@^1",
 			"string.prototype.repeat": "npm:@nolyfill/string.prototype.repeat@^1",
 			"esbuild@<=0.24.2": ">=0.25.0",
-			"eslint": "^10.0.1"
+			"eslint": "^10.0.1",
+			"semver": "^7.7.4",
+			"chokidar": "^5.0.0"
 		}
 	}
 }
