@@ -5,6 +5,7 @@ import DsSelect from './ds-select';
 import type { DsSelectOption, DsSelectProps } from './ds-select.types';
 import { DsTag } from '../ds-tag';
 import { DsIcon } from '../ds-icon';
+import { type DsStatus, DsStatusBadge } from '../ds-status-badge';
 import styles from './ds-select.stories.module.scss';
 
 const meta: Meta<typeof DsSelect> = {
@@ -61,6 +62,7 @@ const ControlledSelectWrapper = ({
 	multiple,
 	disabled,
 	renderOption,
+	renderValue,
 }: DsSelectProps) => {
 	const [value, setValue] = useState<string | string[]>('');
 
@@ -80,6 +82,7 @@ const ControlledSelectWrapper = ({
 			multiple={multiple as never}
 			clearable={clearable as never}
 			renderOption={renderOption}
+			renderValue={renderValue as never}
 		/>
 	);
 };
@@ -377,6 +380,24 @@ const renderCountryOption = (option: DsSelectOption) => (
 	</span>
 );
 
+const versionOptions: DsSelectOption[] = [
+	{ value: 'v0.8', label: 'v0.8' },
+	{ value: 'v1.0', label: 'v1.0' },
+	{ value: 'v1.4', label: 'v1.4' },
+	{ value: 'v2.3', label: 'v2.3' },
+	{ value: 'v3.6', label: 'v3.6' },
+	{ value: 'v4.1', label: 'v4.1' },
+];
+
+const versionStatusMap: Record<string, { status: DsStatus; label: string }> = {
+	'v0.8': { status: 'active', label: 'Live' },
+	'v1.0': { status: 'active', label: 'Live' },
+	'v1.4': { status: 'running', label: 'Running' },
+	'v2.3': { status: 'pending', label: 'Pending' },
+	'v3.6': { status: 'draft', label: 'Draft' },
+	'v4.1': { status: 'failed', label: 'Failed' },
+};
+
 export const CustomRenderOption: Story = {
 	render: (args) => <ControlledSelectWrapper {...args} />,
 	args: {
@@ -472,7 +493,7 @@ export const CustomRenderOptionWithSearch: Story = {
 			await userEvent.clear(searchInput);
 		});
 
-		await step('Select an option from search results', async () => {
+		await step('should select an option from search results', async () => {
 			const searchInput = screen.getByPlaceholderText('Search');
 			await userEvent.type(searchInput, 'Japan');
 
@@ -481,6 +502,246 @@ export const CustomRenderOptionWithSearch: Story = {
 
 			await expect(trigger).toHaveTextContent('Japan');
 		});
+	},
+};
+
+export const CustomRenderValue: Story = {
+	render: () => {
+		const [value, setValue] = useState('');
+
+		const renderValue = (selected: DsSelectOption) => {
+			const info = versionStatusMap[selected.value];
+
+			return (
+				<span className={styles.customOption}>
+					{selected.label}
+					{info && (
+						<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
+					)}
+				</span>
+			);
+		};
+
+		return (
+			<DsSelect
+				options={versionOptions}
+				value={value}
+				onValueChange={setValue}
+				renderValue={renderValue}
+				clearable
+				style={{ width: '250px' }}
+			/>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = canvas.getByRole('combobox');
+
+		await expect(trigger).toHaveTextContent('Click to select a value');
+
+		await userEvent.click(trigger);
+
+		const v08 = screen.getByRole('option', { name: 'v0.8' });
+		await userEvent.click(v08);
+
+		await expect(trigger).toHaveTextContent('v0.8');
+		await expect(trigger).toHaveTextContent('Live');
+
+		await userEvent.click(trigger);
+
+		const v23 = screen.getByRole('option', { name: 'v2.3' });
+		await userEvent.click(v23);
+
+		await expect(trigger).toHaveTextContent('v2.3');
+		await expect(trigger).toHaveTextContent('Pending');
+	},
+};
+
+export const CustomRenderValueMultiSelect: Story = {
+	render: () => {
+		const [value, setValue] = useState<string[]>([]);
+
+		const renderOption = (option: DsSelectOption) => (
+			<span className={styles.customOption}>
+				<DsTag label={option.value.toUpperCase()} size="small" />
+				{option.label}
+			</span>
+		);
+
+		const renderValue = (selected: DsSelectOption[]) => (
+			<span className={styles.customOption}>
+				{selected.map((opt) => (
+					<DsTag key={opt.value} label={opt.value.toUpperCase()} size="small" />
+				))}
+			</span>
+		);
+
+		return (
+			<DsSelect
+				options={countryOptions}
+				value={value}
+				onValueChange={setValue}
+				renderOption={renderOption}
+				renderValue={renderValue}
+				multiple
+				clearable
+				style={{ width: '300px' }}
+			/>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = canvas.getByRole('combobox');
+
+		await userEvent.click(trigger);
+
+		const usOption = screen.getByRole('option', { name: /United States/ });
+		await userEvent.click(usOption);
+
+		const deOption = screen.getByRole('option', { name: /Germany/ });
+		await userEvent.click(deOption);
+
+		await expect(trigger).toHaveTextContent('US');
+		await expect(trigger).toHaveTextContent('DE');
+	},
+};
+
+export const CustomRenderValueAndOption: Story = {
+	render: () => {
+		const [value, setValue] = useState('');
+
+		const renderOption = (option: DsSelectOption) => {
+			const info = versionStatusMap[option.value];
+
+			if (!info) {
+				return option.label;
+			}
+
+			return (
+				<span className={styles.customOption}>
+					{option.label}
+					<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
+				</span>
+			);
+		};
+
+		const renderValue = (selected: DsSelectOption) => {
+			const info = versionStatusMap[selected.value];
+
+			return (
+				<span className={styles.customOption}>
+					{selected.label}
+					{info && (
+						<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
+					)}
+				</span>
+			);
+		};
+
+		return (
+			<DsSelect
+				options={versionOptions}
+				value={value}
+				onValueChange={setValue}
+				renderOption={renderOption}
+				renderValue={renderValue}
+				clearable
+				style={{ width: '250px' }}
+			/>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = canvas.getByRole('combobox');
+
+		await expect(trigger).toHaveTextContent('Click to select a value');
+
+		await userEvent.click(trigger);
+
+		const v08 = screen.getByRole('option', { name: /v0.8/ });
+		await expect(v08).toHaveTextContent('Live');
+		await userEvent.click(v08);
+
+		await expect(trigger).toHaveTextContent('v0.8');
+		await expect(trigger).toHaveTextContent('Live');
+
+		await userEvent.click(trigger);
+
+		const v14 = screen.getByRole('option', { name: /v1.4/ });
+		await expect(v14).toHaveTextContent('Running');
+		await userEvent.click(v14);
+
+		await expect(trigger).toHaveTextContent('v1.4');
+		await expect(trigger).toHaveTextContent('Running');
+	},
+};
+
+export const CustomRenderValueAndOptionMultiSelect: Story = {
+	render: () => {
+		const [value, setValue] = useState<string[]>([]);
+
+		const renderOption = (option: DsSelectOption) => {
+			const info = versionStatusMap[option.value];
+
+			if (!info) {
+				return option.label;
+			}
+
+			return (
+				<span className={styles.customOption}>
+					{option.label}
+					<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
+				</span>
+			);
+		};
+
+		const renderValue = (selected: DsSelectOption[]) => {
+			const option = selected[0];
+			const info = option ? versionStatusMap[option.value] : undefined;
+
+			return (
+				<span className={styles.customOption}>
+					{option?.label}
+					{info && (
+						<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
+					)}
+					{selected.length > 1 && ` +${String(selected.length - 1)}`}
+				</span>
+			);
+		};
+
+		return (
+			<DsSelect
+				options={versionOptions}
+				value={value}
+				onValueChange={setValue}
+				renderOption={renderOption}
+				renderValue={renderValue}
+				multiple
+				clearable
+				style={{ width: '300px' }}
+			/>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+		const trigger = canvas.getByRole('combobox');
+
+		await userEvent.click(trigger);
+
+		const v08 = screen.getByRole('option', { name: /v0.8/ });
+		await expect(v08).toHaveTextContent('Live');
+		await userEvent.click(v08);
+
+		await expect(trigger).toHaveTextContent('v0.8');
+		await expect(trigger).toHaveTextContent('Live');
+
+		const v36 = screen.getByRole('option', { name: /v3.6/ });
+		await expect(v36).toHaveTextContent('Draft');
+		await userEvent.click(v36);
+
+		await expect(trigger).toHaveTextContent('v0.8');
+		await expect(trigger).toHaveTextContent('+1');
 	},
 };
 

@@ -9,11 +9,11 @@ import { type DsCheckboxProps, DsCheckbox } from '../ds-checkbox';
 import { SelectItemsChips } from './select-items-chips';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
+import { SELECT_ALL_VALUE, getUserSelectedItems } from './utils';
 
 const SEARCH_THRESHOLD = 13;
-const SELECT_ALL_VALUE = '__INTERNAL_SELECT_ALL_VALUE__';
 
-const SELECT_ALL: DsSelectOption = {
+const SELECT_ALL_OPTION: DsSelectOption = {
 	label: 'All',
 	value: SELECT_ALL_VALUE,
 };
@@ -36,7 +36,7 @@ const DsSelect = ({
 	const [searchTerm, setSearchTerm] = useState('');
 	const [showAllItems, setShowAllItems] = useState(false);
 
-	const internalOptions = multiselectProps.multiple ? [SELECT_ALL, ...userOptions] : userOptions;
+	const internalOptions = multiselectProps.multiple ? [SELECT_ALL_OPTION, ...userOptions] : userOptions;
 
 	const collection = createListCollection({
 		items: internalOptions,
@@ -91,6 +91,40 @@ const DsSelect = ({
 		},
 	});
 
+	const renderTriggerValue = () => {
+		const defaultTrigger = (
+			<DsTypography className={styles.valueText} variant="body-sm-reg" asChild>
+				<Select.ValueText placeholder={placeholder} />
+			</DsTypography>
+		);
+
+		if (!multiselectProps.renderValue || !select.hasSelectedItems) {
+			return defaultTrigger;
+		}
+
+		const userItems = getUserSelectedItems(select.selectedItems);
+
+		if (multiselectProps.multiple) {
+			return (
+				<DsTypography className={styles.valueText} variant="body-sm-reg">
+					{multiselectProps.renderValue(userItems)}
+				</DsTypography>
+			);
+		}
+
+		const firstItem = userItems[0];
+
+		if (!firstItem) {
+			return defaultTrigger;
+		}
+
+		return (
+			<DsTypography className={styles.valueText} variant="body-sm-reg">
+				{multiselectProps.renderValue(firstItem)}
+			</DsTypography>
+		);
+	};
+
 	return (
 		<Select.RootProvider
 			value={select}
@@ -132,9 +166,7 @@ const DsSelect = ({
 					// automatic labelling here.
 					aria-labelledby={null as never}
 				>
-					<DsTypography className={styles.valueText} variant="body-sm-reg" asChild>
-						<Select.ValueText placeholder={placeholder} />
-					</DsTypography>
+					{renderTriggerValue()}
 
 					<Select.Indicator className={styles.triggerIcon}>
 						<DsIcon icon="keyboard_arrow_down" size={size === 'small' ? 'small' : 'medium'} />
@@ -192,7 +224,9 @@ const DsSelect = ({
 									<Select.Item item={item}>
 										{multiselectProps.multiple && <DsCheckbox checked={checked} />}
 										{item.icon && <DsIcon className={styles.itemIcon} icon={item.icon} aria-hidden="true" />}
-										<Select.ItemText>{renderOption ? renderOption(item) : item.label}</Select.ItemText>
+										<Select.ItemText>
+											{renderOption && item.value !== SELECT_ALL_VALUE ? renderOption(item) : item.label}
+										</Select.ItemText>
 									</Select.Item>
 								</DsTypography>
 							);

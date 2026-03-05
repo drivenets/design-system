@@ -19,4 +19,8 @@ export interface ScrollParams {
 	totalContentHeight: number;
 	/** The visible height of the table container (in pixels) */
 	viewportHeight: number;
+	/** The distance from the current scroll position to the bottom of the content (in pixels) */
+	bottomOffset: number;
+	/** The direction of the scroll movement */
+	scrollDirection: 'forward' | 'backward' | null;
 }
