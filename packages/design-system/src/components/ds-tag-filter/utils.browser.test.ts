@@ -109,24 +109,39 @@ describe('Tag Filter Utils', () => {
 		});
 
 		it('should calculate available width without padding', () => {
+			mockContainer.style.padding = '0px';
+			mockContainer.style.width = '500px';
+
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(500);
 		});
 
 		it('should subtract padding from container width', () => {
+			mockContainer.style.paddingLeft = '20px';
+			mockContainer.style.paddingRight = '30px';
+			mockContainer.style.width = '500px';
+
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(450); // 500 - 20 - 30 = 450
 		});
 
 		it('should handle string padding values with decimals', () => {
+			mockContainer.style.paddingLeft = '15.5px';
+			mockContainer.style.paddingRight = '24.5px';
+			mockContainer.style.width = '500px';
+
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(460); // 500 - 15.5 - 24.5 = 460
 		});
 
 		it('should default to 0 for invalid padding values', () => {
+			mockContainer.style.paddingLeft = 'invalid';
+			mockContainer.style.paddingRight = 'invalid';
+			mockContainer.style.width = '500px';
+
 			const result = getContainerAvailableWidth(mockContainer);
 
 			expect(result).toBe(500); // No padding subtracted
@@ -148,9 +163,13 @@ describe('Tag Filter Utils', () => {
 
 		it('should measure tag widths and gap', () => {
 			const tag1 = document.createElement('div');
-			tag1.setAttribute('data-measure-tag', '');
 			const tag2 = document.createElement('div');
+
+			tag1.setAttribute('data-measure-tag', '');
 			tag2.setAttribute('data-measure-tag', '');
+
+			tag1.style.width = '80px';
+			tag2.style.width = '90px';
 
 			mockContainer.appendChild(tag1);
 			mockContainer.appendChild(tag2);
@@ -165,6 +184,7 @@ describe('Tag Filter Utils', () => {
 			const tag1 = document.createElement('div');
 			tag1.setAttribute('data-measure-tag', '');
 			mockContainer.appendChild(tag1);
+			mockContainer.style.gap = 'invalid';
 
 			const result = getElementMeasurements(mockContainer);
 
@@ -172,6 +192,7 @@ describe('Tag Filter Utils', () => {
 		});
 
 		it('should handle no tags present', () => {
+			mockContainer.style.gap = '10px';
 			const result = getElementMeasurements(mockContainer);
 
 			expect(result.tagWidths).toEqual([]);
