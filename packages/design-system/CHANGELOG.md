@@ -1,5 +1,13 @@
 # @drivenets/design-system
 
+## 0.7.2
+
+### Patch Changes
+
+- f2aea4f: Update dependencies
+- 99a7aa6: Add `renderValue` prop to the `DsSelect`
+- 92075b8: Add `bottomOffset` and `scrollDirection` properties to `onScroll` callback in `DsTable` component
+
 ## 0.7.1
 
 ### Patch Changes
