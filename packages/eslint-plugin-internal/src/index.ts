@@ -1,5 +1,7 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
+import { consistentDeprecatedStories } from './rules/consistent-deprecated-stories';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 
 const plugin = {
@@ -10,6 +12,7 @@ const plugin = {
 
 	rules: {
 		'no-cross-component-internal-import': noCrossComponentInternalImport,
+		'consistent-deprecated-stories': consistentDeprecatedStories,
 	},
 
 	configs: {
@@ -21,11 +24,23 @@ const plugin = {
 Object.assign(plugin.configs, {
 	recommended: [
 		{
+			name: 'ds-internal:recommended:all',
 			plugins: {
 				'@drivenets/ds-internal': plugin,
 			},
 			rules: {
 				'@drivenets/ds-internal/no-cross-component-internal-import': 'error',
+			},
+		},
+
+		{
+			name: 'ds-internal:recommended:stories',
+			files: ['**/*.stories.ts?(x)'],
+			plugins: {
+				'@drivenets/ds-internal': plugin,
+			},
+			rules: {
+				'@drivenets/ds-internal/consistent-deprecated-stories': 'error',
 			},
 		},
 	] satisfies TSESLint.FlatConfig.ConfigArray,

@@ -11,6 +11,7 @@ import styles from './ds-confirmation.stories.module.scss';
 const meta: Meta<typeof DsConfirmation> = {
 	title: 'Design System/Confirmation (Deprecated)',
 	component: DsConfirmation,
+	tags: ['deprecated'],
 	parameters: {
 		layout: 'centered',
 	},
