@@ -39,7 +39,7 @@
 		"@cspell/dict-cspell-bundle": "^2.0.54",
 		"@cspell/dict-mime-types": "^1.0.0",
 		"@drivenets/commitlint-plugin-design-system": "workspace:*",
-		"@eslint/core": "^1.1.0",
+		"@eslint/core": "^1.1.1",
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^25.3.3",
 		"@vitest/eslint-plugin": "^1.6.9",
