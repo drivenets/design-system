@@ -106,30 +106,32 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			);
 
 			// Report when the tags prop is missing or doesn't contain the deprecated tag.
-			if (!hasDeprecatedTag) {
-				context.report({
-					node: tagsProp ?? metaNode,
-					messageId: 'requireDeprecatedTag',
-					data: { component: componentName },
-					fix: (fixer) => {
-						// Create the tags property if it doesn't exist.
-						if (!tagsProp) {
-							const lastProperty = metaNode.properties.at(-1);
-
-							return lastProperty
-								? fixer.insertTextAfter(lastProperty, ",\n\ttags: ['deprecated']")
-								: fixer.insertTextAfter(metaNode, "\n\ttags: ['deprecated']");
-						}
-
-						// Append the deprecated tag to the tags array.
-						const lastTag = tagsArray?.elements.at(-1);
-
-						return lastTag
-							? fixer.insertTextAfter(lastTag, ", 'deprecated'")
-							: fixer.replaceText(tagsProp.value, "['deprecated']");
-					},
-				});
+			if (hasDeprecatedTag) {
+				return;
 			}
+
+			context.report({
+				node: tagsProp ?? metaNode,
+				messageId: 'requireDeprecatedTag',
+				data: { component: componentName },
+				fix: (fixer) => {
+					// Create the tags property if it doesn't exist.
+					if (!tagsProp) {
+						const lastProperty = metaNode.properties.at(-1);
+
+						return lastProperty
+							? fixer.insertTextAfter(lastProperty, ",\n\ttags: ['deprecated']")
+							: fixer.insertTextAfter(metaNode, "\n\ttags: ['deprecated']");
+					}
+
+					// Append the deprecated tag to the tags array.
+					const lastTag = tagsArray?.elements.at(-1);
+
+					return lastTag
+						? fixer.insertTextAfter(lastTag, ", 'deprecated'")
+						: fixer.replaceText(tagsProp.value, "['deprecated']");
+				},
+			});
 		}
 
 		return {
