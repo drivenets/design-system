@@ -1,13 +1,12 @@
-import { defineConfig } from 'vite';
-import { configDefaults } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
+import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
+import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
-
-const testsWithBuild = '**/*.requires-build.test.{ts,tsx}';
 
 export default defineConfig({
 	test: {
@@ -41,16 +40,33 @@ export default defineConfig({
 				extends: true,
 				test: {
 					name: 'unit',
-					include: ['**/*.test.{ts,tsx}'],
-					exclude: [...configDefaults.exclude, testsWithBuild],
-					environment: 'jsdom',
+					include: [testPattern('unit')],
 				},
 			},
 			{
 				extends: true,
 				test: {
 					name: 'requires-build',
-					include: [testsWithBuild],
+					include: [testPattern('requires-build')],
+				},
+			},
+			{
+				extends: true,
+				plugins: [react(), vitePluginDesignSystem()],
+				test: {
+					name: 'browser',
+					include: [testPattern('browser')],
+					setupFiles: ['./vitest/setup.browser.ts'],
+					browser: {
+						enabled: true,
+						provider: playwright(),
+						instances: [{ browser: 'chromium' }],
+					},
+					deps: {
+						web: {
+							transformCss: true,
+						},
+					},
 				},
 			},
 			{
@@ -74,3 +90,7 @@ export default defineConfig({
 		],
 	},
 });
+
+function testPattern(type: 'unit' | 'requires-build' | 'browser') {
+	return `**/*.${type}.test.{ts,tsx}`;
+}

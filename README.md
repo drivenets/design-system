@@ -22,7 +22,7 @@ Storybook is automatically deployed to GitHub Pages on every PR merge to the def
 ### Prerequisites
 
 - Node 24+
-- pnpm 10.0.0
+- pnpm 10.30.3
 
 We recommend [fnm](https://github.com/Schniz/fnm), [nvm](https://github.com/nvm-sh/nvm), or [mise](https://github.com/jdx/mise) to manage these versions.
 
