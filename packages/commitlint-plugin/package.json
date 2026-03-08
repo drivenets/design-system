@@ -27,6 +27,6 @@
 	"devDependencies": {
 		"@typescript/native-preview": "7.0.0-dev.20260304.1",
 		"eslint": "^10.0.1",
-		"typescript": "6.0.0-beta"
+		"typescript": "6.0.1-rc"
 	}
 }
