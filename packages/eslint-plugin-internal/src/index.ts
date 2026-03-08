@@ -11,8 +11,8 @@ const plugin = {
 	},
 
 	rules: {
-		'no-cross-component-internal-import': noCrossComponentInternalImport,
 		'consistent-deprecated-stories': consistentDeprecatedStories,
+		'no-cross-component-internal-import': noCrossComponentInternalImport,
 	},
 
 	configs: {
