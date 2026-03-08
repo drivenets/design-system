@@ -1,16 +1,16 @@
-name: Dependabot
+name: Dependabot Changeset
 
 on: pull_request_target
 
 permissions: {}
 
 concurrency:
-  group: '${{ github.workflow }} - Dependabot Changeset @ ${{ github.event.pull_request.number }}'
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.number }}'
   cancel-in-progress: true
 
 jobs:
-  generate-changeset:
-    name: Generate Changeset
+  generate:
+    name: Generate
 
     # IMPORTANT:
     #   NEVER REMOVE THIS CONDITION!
