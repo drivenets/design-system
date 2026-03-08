@@ -12,11 +12,13 @@
 		"noEmit": true,
 
 		// Recommended Options
+		"strict": true,
 		"jsx": "react-jsx",
 		"verbatimModuleSyntax": true,
 		"isolatedModules": true,
 		"moduleDetection": "force",
 		"skipLibCheck": true,
+		"noUncheckedSideEffectImports": true,
 
 		// Stricter Options
 		"noUncheckedIndexedAccess": true,
