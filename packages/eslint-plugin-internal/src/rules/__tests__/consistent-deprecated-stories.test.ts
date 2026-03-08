@@ -310,6 +310,44 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		},
 
 		{
+			name: 'suffix has multiple spaces - removes extra spaces',
+			code: `
+				/** @deprecated */
+				function DsChip() { return null; }
+
+				const meta = {
+					title: 'Design System/Chip    (Deprecated)',
+					component: DsChip,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			output: `
+				/** @deprecated */
+				function DsChip() { return null; }
+
+				const meta = {
+					title: 'Design System/Chip (Deprecated)',
+					component: DsChip,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'deprecatedSuffixNotFormatted',
+					data: { component: 'DsChip' },
+					line: 6,
+					column: 13,
+					endLine: 6,
+					endColumn: 49,
+				},
+			],
+		},
+
+		{
 			name: 'inline default export without suffix and tags prop - fixes both',
 			code: `
 				/** @deprecated */
@@ -383,6 +421,42 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				{
 					messageId: 'requireDeprecatedSuffix',
 					data: { component: 'DsDeprecatedFixture' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 46,
+				},
+			],
+		},
+
+		{
+			name: 'imported renamed deprecated component missing suffix - fixes suffix',
+			code: `
+				import { DsDeprecatedFixture as DsDeprecatedFixtureAlias } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedFixture',
+					component: DsDeprecatedFixtureAlias,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsDeprecatedFixture as DsDeprecatedFixtureAlias } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedFixture (Deprecated)',
+					component: DsDeprecatedFixtureAlias,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'requireDeprecatedSuffix',
+					data: { component: 'DsDeprecatedFixtureAlias' },
 					line: 5,
 					column: 13,
 					endLine: 5,

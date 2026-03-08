@@ -1,13 +1,8 @@
-import ts from 'typescript';
-import * as tsutils from 'ts-api-utils';
-import {
-	AST_NODE_TYPES,
-	ESLintUtils,
-	type TSESTree,
-	type ParserServicesWithTypeInformation,
-} from '@typescript-eslint/utils';
 import { createRule } from '../create-rule';
+import { isDeprecated } from './utils/is-deprecated';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
+import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
+import { getObjectProperty } from './utils/get-object-property';
 
 type MessageId =
 	| 'requireDeprecatedSuffix'
@@ -48,22 +43,24 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				return;
 			}
 
-			const tagsProp = findProperty(metaNode, 'tags');
-			const titleProp = findProperty(metaNode, 'title');
-			const componentProp = findProperty(metaNode, 'component');
+			const tagsProp = getObjectProperty(metaNode, 'tags');
+			const titleProp = getObjectProperty(metaNode, 'title');
+			const componentProp = getObjectProperty(metaNode, 'component');
 
+			// Skip invalid (e.g., non-variable-reference) components.
 			if (componentProp?.value.type !== AST_NODE_TYPES.Identifier) {
 				return;
 			}
 
-			const componentName = componentProp.value.name;
+			const componentRef = componentProp.value;
+			const componentName = componentRef.name;
 
-			const isDeprecated = isComponentDeprecated(services, componentProp);
-
-			if (!isDeprecated) {
+			// Skip non-deprecated components.
+			if (!isDeprecated(services, componentRef)) {
 				return;
 			}
 
+			// Report when the title is missing.
 			if (!titleProp) {
 				context.report({
 					node: metaNode,
@@ -87,6 +84,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			const hasSuffix = title.endsWith('(Deprecated)');
 			const suffixFormatted = title.match(/[^\s]\s\(Deprecated\)$/g);
 
+			// Report when the title doesn't have a suffix or is not formatted correctly.
 			if (!hasSuffix || !suffixFormatted) {
 				context.report({
 					node: titleProp.value,
@@ -107,6 +105,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				(el) => el?.type === AST_NODE_TYPES.Literal && el.value === 'deprecated',
 			);
 
+			// Report when the tags prop is missing or doesn't contain the deprecated tag.
 			if (!hasDeprecatedTag) {
 				context.report({
 					node: tagsProp ?? metaNode,
@@ -139,6 +138,19 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 	},
 });
 
+/**
+ * Resolve the meta object either from a variable declaration or an export default declaration:
+ *
+ * ```ts
+ * const meta = {...};
+ *
+ * export default meta;
+ * ```
+ * or
+ * ```ts
+ * export default {...};
+ * ```
+ */
 function resolveMetaObject(
 	context: RuleContext<MessageId, []>,
 	declaration: TSESTree.DefaultExportDeclarations,
@@ -156,33 +168,4 @@ function resolveMetaObject(
 	}
 
 	return undefined;
-}
-
-function findProperty(obj: TSESTree.ObjectExpression, name: string): TSESTree.Property | undefined {
-	return obj.properties.find(
-		(p): p is TSESTree.Property =>
-			p.type === AST_NODE_TYPES.Property && p.key.type === AST_NODE_TYPES.Identifier && p.key.name === name,
-	);
-}
-
-function isComponentDeprecated(
-	services: ParserServicesWithTypeInformation,
-	componentProp: TSESTree.Property,
-): boolean {
-	const checker = services.program.getTypeChecker();
-	const componentTsNode = services.esTreeNodeToTSNodeMap.get(componentProp.value);
-
-	const symbol = resolveSymbol(checker, componentTsNode);
-
-	return symbol?.getJsDocTags().some((tag) => tag.name === 'deprecated') ?? false;
-}
-
-function resolveSymbol(checker: ts.TypeChecker, node: ts.Node): ts.Symbol | undefined {
-	let symbol = checker.getSymbolAtLocation(node);
-
-	if (symbol && tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)) {
-		symbol = checker.getAliasedSymbol(symbol);
-	}
-
-	return symbol;
 }
