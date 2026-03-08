@@ -8,11 +8,11 @@ updates:
     commit-message:
       prefix: 'chore'
     groups:
-      development:
+      npm-development:
         dependency-type: 'development'
         patterns:
           - '**'
-      production:
+      npm-production:
         dependency-type: 'production'
         patterns:
           - '**'
