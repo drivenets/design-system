@@ -1,6 +1,8 @@
 import { type Rule } from '@commitlint/types';
 
-export const requireJiraTicket: Rule = ({ subject }, _, value: undefined | { prefix?: string }) => {
+type Value = { prefix?: string };
+
+export const requireJiraTicket: Rule<Value> = ({ subject }, _, value) => {
 	if (!subject) {
 		return [
 			false,

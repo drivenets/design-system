@@ -1,4 +1,4 @@
-import { RuleConfigSeverity } from '@commitlint/types';
+import { RuleConfigSeverity, type UserConfig } from '@commitlint/types';
 import designSystem from '@drivenets/commitlint-plugin-design-system';
 
 export default {
@@ -7,4 +7,4 @@ export default {
 	rules: {
 		'design-system/require-jira-ticket': [RuleConfigSeverity.Error, 'always', { prefix: 'AR' }],
 	},
-};
+} satisfies UserConfig;
