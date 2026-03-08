@@ -8,18 +8,23 @@ updates:
     commit-message:
       prefix: 'chore'
     groups:
-      development:
+      npm-development:
         dependency-type: 'development'
         patterns:
           - '**'
-      production:
+      npm-production:
         dependency-type: 'production'
         patterns:
           - '**'
 
   - package-ecosystem: 'github-actions'
-    directory: '/'
+    directories:
+      - '/'
+      - '/.github/actions/*'
     schedule:
       interval: 'weekly'
     commit-message:
       prefix: 'ci'
+    groups:
+      github-actions:
+        group-by: dependency-name

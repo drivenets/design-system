@@ -100,29 +100,17 @@ describe('Tag Filter Utils', () => {
 
 		beforeEach(() => {
 			mockContainer = document.createElement('div');
+			document.body.appendChild(mockContainer);
 		});
 
 		afterEach(() => {
 			vi.restoreAllMocks();
+			document.body.removeChild(mockContainer);
 		});
 
 		it('should calculate available width without padding', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '0px',
-				paddingRight: '0px',
-			} as CSSStyleDeclaration);
+			mockContainer.style.padding = '0px';
+			mockContainer.style.width = '500px';
 
 			const result = getContainerAvailableWidth(mockContainer);
 
@@ -130,22 +118,9 @@ describe('Tag Filter Utils', () => {
 		});
 
 		it('should subtract padding from container width', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '20px',
-				paddingRight: '30px',
-			} as CSSStyleDeclaration);
+			mockContainer.style.paddingLeft = '20px';
+			mockContainer.style.paddingRight = '30px';
+			mockContainer.style.width = '500px';
 
 			const result = getContainerAvailableWidth(mockContainer);
 
@@ -153,22 +128,9 @@ describe('Tag Filter Utils', () => {
 		});
 
 		it('should handle string padding values with decimals', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '15.5px',
-				paddingRight: '24.5px',
-			} as CSSStyleDeclaration);
+			mockContainer.style.paddingLeft = '15.5px';
+			mockContainer.style.paddingRight = '24.5px';
+			mockContainer.style.width = '500px';
 
 			const result = getContainerAvailableWidth(mockContainer);
 
@@ -176,22 +138,9 @@ describe('Tag Filter Utils', () => {
 		});
 
 		it('should default to 0 for invalid padding values', () => {
-			vi.spyOn(mockContainer, 'getBoundingClientRect').mockReturnValue({
-				width: 500,
-				height: 100,
-				top: 0,
-				left: 0,
-				bottom: 100,
-				right: 500,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				paddingLeft: '',
-				paddingRight: '',
-			} as CSSStyleDeclaration);
+			mockContainer.style.paddingLeft = 'invalid';
+			mockContainer.style.paddingRight = 'invalid';
+			mockContainer.style.width = '500px';
 
 			const result = getContainerAvailableWidth(mockContainer);
 
@@ -214,40 +163,16 @@ describe('Tag Filter Utils', () => {
 
 		it('should measure tag widths and gap', () => {
 			const tag1 = document.createElement('div');
-			tag1.setAttribute('data-measure-tag', '');
 			const tag2 = document.createElement('div');
+
+			tag1.setAttribute('data-measure-tag', '');
 			tag2.setAttribute('data-measure-tag', '');
+
+			tag1.style.width = '80px';
+			tag2.style.width = '90px';
 
 			mockContainer.appendChild(tag1);
 			mockContainer.appendChild(tag2);
-
-			vi.spyOn(tag1, 'getBoundingClientRect').mockReturnValue({
-				width: 80,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 80,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(tag2, 'getBoundingClientRect').mockReturnValue({
-				width: 90,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 90,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '8px',
-			} as CSSStyleDeclaration);
 
 			const result = getElementMeasurements(mockContainer);
 
@@ -259,22 +184,7 @@ describe('Tag Filter Utils', () => {
 			const tag1 = document.createElement('div');
 			tag1.setAttribute('data-measure-tag', '');
 			mockContainer.appendChild(tag1);
-
-			vi.spyOn(tag1, 'getBoundingClientRect').mockReturnValue({
-				width: 80,
-				height: 30,
-				top: 0,
-				left: 0,
-				bottom: 30,
-				right: 80,
-				x: 0,
-				y: 0,
-				toJSON: () => ({}),
-			});
-
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '',
-			} as CSSStyleDeclaration);
+			mockContainer.style.gap = 'invalid';
 
 			const result = getElementMeasurements(mockContainer);
 
@@ -282,10 +192,7 @@ describe('Tag Filter Utils', () => {
 		});
 
 		it('should handle no tags present', () => {
-			vi.spyOn(window, 'getComputedStyle').mockReturnValue({
-				gap: '10px',
-			} as CSSStyleDeclaration);
-
+			mockContainer.style.gap = '10px';
 			const result = getElementMeasurements(mockContainer);
 
 			expect(result.tagWidths).toEqual([]);

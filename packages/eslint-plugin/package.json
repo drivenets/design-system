@@ -39,15 +39,15 @@
 		"build:lint": "publint && attw --pack"
 	},
 	"dependencies": {
-		"@eslint/core": "^1.1.0",
+		"@eslint/core": "^1.1.1",
 		"eslint-no-restricted": "^0.1.1"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
 		"@vitest/coverage-v8": "^4.0.18",
 		"eslint": "^10.0.1",
-		"publint": "^0.3.17",
-		"tsdown": "^0.20.3",
+		"publint": "^0.3.18",
+		"tsdown": "^0.21.0",
 		"typescript": "^5.9.3",
 		"vitest": "^4.0.18"
 	},

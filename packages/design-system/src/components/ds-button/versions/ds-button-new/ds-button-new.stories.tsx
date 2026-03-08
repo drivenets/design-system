@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 import classNames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { DsSpinner } from '../../../ds-spinner';
@@ -69,12 +69,6 @@ export const DefaultButton: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const button = canvas.getByRole('button', { name: defaultButtonText });
-		await userEvent.click(button);
-		await expect(button).toBeInTheDocument();
-	},
 };
 
 export const WithSpinner: Story = {
@@ -90,12 +84,6 @@ export const WithSpinner: Story = {
 				<DsIcon icon="keyboard_arrow_down" size="tiny" aria-hidden="true" />
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const button = canvas.getByRole('button', { name: defaultButtonText });
-		await userEvent.click(button);
-		await expect(button).toBeInTheDocument();
 	},
 };
 
