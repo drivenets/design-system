@@ -9,7 +9,6 @@ const meta: Meta<typeof DsCheckbox> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		label: {
 			control: 'text',

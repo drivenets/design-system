@@ -11,7 +11,6 @@ const meta: Meta<typeof DsTag> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		label: {
 			control: 'text',

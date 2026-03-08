@@ -14,6 +14,7 @@ const meta: Meta<typeof DsConfirmation> = {
 	parameters: {
 		layout: 'centered',
 	},
+	tags: ['deprecated'],
 	argTypes: {
 		open: {
 			control: { type: 'boolean' },

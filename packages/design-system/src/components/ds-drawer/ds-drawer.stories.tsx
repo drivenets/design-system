@@ -29,7 +29,6 @@ A composable drawer component that supports:
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		columns: {
 			control: { type: 'select' },

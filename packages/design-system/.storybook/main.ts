@@ -6,6 +6,13 @@ const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 	addons: ['@storybook/addon-vitest', '@storybook/addon-a11y', '@storybook/addon-docs'],
 	framework: '@storybook/react-vite',
+
+	tags: {
+		deprecated: {
+			defaultFilterSelection: 'exclude',
+		},
+	},
+
 	viteFinal: async (viteConfig) => {
 		if (!Array.isArray(viteConfig.plugins)) {
 			viteConfig.plugins = [];

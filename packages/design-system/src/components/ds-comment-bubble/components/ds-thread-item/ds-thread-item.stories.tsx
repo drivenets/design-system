@@ -18,7 +18,6 @@ Displays the author, timestamp, message content, and action buttons.
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		id: {
 			control: 'text',

@@ -95,7 +95,6 @@ const withTanStackRouter = (Story: React.ComponentType, initialPath: string) => 
 const meta: Meta<typeof DsBreadcrumb> = {
 	title: 'Design System/Breadcrumb',
 	component: DsBreadcrumb,
-	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

@@ -92,7 +92,6 @@ Floating bubble component for creating new comments and viewing/replying to exis
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		actionRequired: {
 			control: 'boolean',

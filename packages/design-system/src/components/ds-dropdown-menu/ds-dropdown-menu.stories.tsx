@@ -15,7 +15,6 @@ const meta: Meta<typeof DsDropdownMenu> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 };
 
 export default meta;

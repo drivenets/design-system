@@ -11,7 +11,6 @@ const meta: Meta<typeof DsTabs.Root> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		orientation: {
 			control: 'radio',

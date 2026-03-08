@@ -6,6 +6,7 @@ import SampleForm from './sample-form';
 const meta: Meta<typeof SampleForm> = {
 	title: 'Examples/Simple form',
 	component: SampleForm,
+	tags: ['!autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

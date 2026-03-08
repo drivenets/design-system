@@ -20,7 +20,6 @@ Uses predefined typography combinations (e.g., \`body-md-reg\`, \`code-xs-semi-b
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		variant: {
 			control: 'select',
