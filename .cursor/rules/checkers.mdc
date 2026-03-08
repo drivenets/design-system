@@ -22,7 +22,7 @@ pnpm eslint packages/eslint-plugin/src/
 pnpm eslint --fix packages/design-system/src/components/ds-button/
 ```
 
-### Type Checking (tsc)
+### Type Checking (tsgo)
 
 TypeScript checks the whole project config, so scope by package:
 

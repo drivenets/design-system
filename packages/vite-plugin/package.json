@@ -37,7 +37,7 @@
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
-		"typecheck": "tsc",
+		"typecheck": "tsgo",
 		"build": "tsdown",
 		"build:lint": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL",
 		"test": "vitest",
@@ -48,12 +48,13 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
+		"@typescript/native-preview": "7.0.0-dev.20260306.1",
 		"@vitest/coverage-v8": "^4.0.18",
 		"eslint": "^10.0.1",
 		"memfs": "^4.56.11",
 		"publint": "^0.3.18",
 		"tsdown": "^0.21.0",
-		"typescript": "^5.9.3",
+		"typescript": "6.0.1-rc",
 		"vitest": "^4.0.18"
 	}
 }
