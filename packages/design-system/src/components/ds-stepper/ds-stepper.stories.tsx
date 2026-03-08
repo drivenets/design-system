@@ -13,7 +13,6 @@ export default {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 } satisfies Meta<typeof DsStepper>;
 
 type Story = StoryObj<typeof DsStepper>;

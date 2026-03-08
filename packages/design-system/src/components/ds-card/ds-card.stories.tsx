@@ -15,7 +15,6 @@ const meta: Meta<typeof DsCard.Root> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		size: {
 			control: 'select',

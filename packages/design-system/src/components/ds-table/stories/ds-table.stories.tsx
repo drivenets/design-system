@@ -12,7 +12,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	parameters: {
 		layout: 'fullscreen',
 	},
-	tags: ['autodocs'],
 	args: {
 		columns,
 		data: defaultData,

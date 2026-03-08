@@ -18,7 +18,7 @@ const meta: Meta<typeof DsChip> = {
 			},
 		},
 	},
-	tags: ['autodocs', 'deprecated'],
+	tags: ['deprecated'],
 	argTypes: {
 		label: {
 			control: 'text',

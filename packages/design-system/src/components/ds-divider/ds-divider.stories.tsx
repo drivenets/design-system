@@ -13,7 +13,6 @@ const meta: Meta<typeof DsDivider> = {
 	args: {
 		orientation: 'horizontal',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		orientation: {
 			control: 'radio',

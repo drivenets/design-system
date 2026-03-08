@@ -18,7 +18,7 @@ const meta: Meta<typeof DsSystemStatus> = {
 			},
 		},
 	},
-	tags: ['autodocs', 'deprecated'],
+	tags: ['deprecated'],
 	argTypes: {
 		status: {
 			control: { type: 'select' },

@@ -10,7 +10,6 @@ const meta: Meta<typeof DsFilterStatusIcon> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		status: {
 			control: 'select',

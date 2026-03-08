@@ -9,7 +9,6 @@ const meta: Meta<typeof DsAvatar> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		size: {
 			control: 'select',

@@ -11,7 +11,6 @@ const meta: Meta<typeof DsToggle> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		checked: {
 			control: 'boolean',

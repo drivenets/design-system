@@ -373,7 +373,6 @@ createCustomFilterAdapter({
 			},
 		},
 	},
-	tags: ['autodocs'],
 	args: {
 		columns,
 		data: defaultData,

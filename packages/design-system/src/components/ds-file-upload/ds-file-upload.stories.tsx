@@ -36,7 +36,6 @@ return (
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		errorText: { control: 'text' },
 		dropzoneText: { control: 'text' },

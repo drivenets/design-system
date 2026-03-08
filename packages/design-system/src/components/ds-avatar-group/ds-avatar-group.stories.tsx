@@ -9,7 +9,6 @@ const meta: Meta<typeof DsAvatarGroup> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 };
 
 export default meta;
