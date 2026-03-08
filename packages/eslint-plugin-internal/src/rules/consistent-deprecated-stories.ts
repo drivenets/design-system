@@ -105,11 +105,11 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				(el) => el?.type === AST_NODE_TYPES.Literal && el.value === 'deprecated',
 			);
 
-			// Report when the tags prop is missing or doesn't contain the deprecated tag.
 			if (hasDeprecatedTag) {
 				return;
 			}
 
+			// Report when the tags prop is missing or doesn't contain the deprecated tag.
 			context.report({
 				node: tagsProp ?? metaNode,
 				messageId: 'requireDeprecatedTag',
