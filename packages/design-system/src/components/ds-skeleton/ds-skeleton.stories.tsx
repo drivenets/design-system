@@ -8,6 +8,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
+	// eslint-disable-next-line @drivenets/ds-internal/no-cross-component-internal-import
 } from '../ds-table/components/core-table';
 import styles from './ds-skeleton.stories.module.scss';
 import skeletonStyles from './ds-skeleton.module.scss';

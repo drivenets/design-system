@@ -9,7 +9,7 @@ import { DsIcon } from '../ds-icon';
 import { DsTag } from '../ds-tag';
 import { DsDropdownMenu } from '../ds-dropdown-menu';
 import { useClickOutside, useAutoResize } from './hooks';
-import { mergeRefs } from '../ds-table/utils/merge-refs';
+import { mergeRefs } from '../../utils/merge-refs';
 
 export const DsCommentBubble = ({
 	ref,

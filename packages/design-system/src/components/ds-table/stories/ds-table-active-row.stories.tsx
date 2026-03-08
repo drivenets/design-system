@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, screen, userEvent, waitFor } from 'storybook/test';
 import { useState } from 'react';
 import classnames from 'classnames';
-import DsIcon from '../../ds-icon/ds-icon';
+import { DsIcon } from '../../ds-icon';
 import { DsDrawer } from '../../ds-drawer';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';

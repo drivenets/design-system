@@ -39,9 +39,8 @@
  */
 
 import type { ReactNode } from 'react';
-import DsStatusBadge from '../../../ds-status-badge/ds-status-badge';
-import type { DsStatus } from '../../../ds-status-badge/ds-status-badge.types';
-import type { IconType } from '../../../ds-icon/ds-icon.types';
+import { DsStatusBadge, type DsStatus } from '../../../ds-status-badge';
+import { type IconType } from '../../../ds-icon';
 import {
 	type AnyAdapter,
 	type CheckboxFilterItem,

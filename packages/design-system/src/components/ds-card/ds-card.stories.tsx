@@ -4,8 +4,8 @@ import { expect, fn, userEvent, within } from 'storybook/test';
 
 import { DsCard } from './index';
 import { cardSizes } from './ds-card.types';
-import DsStatusBadge from '../ds-status-badge/ds-status-badge';
-import DsTypography from '../ds-typography/ds-typography';
+import { DsStatusBadge } from '../ds-status-badge';
+import { DsTypography } from '../ds-typography';
 import { DsIcon } from '../ds-icon';
 import styles from './ds-card.stories.module.scss';
 

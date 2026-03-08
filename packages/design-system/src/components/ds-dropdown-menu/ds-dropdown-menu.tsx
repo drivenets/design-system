@@ -6,8 +6,8 @@ import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import styles from './ds-dropdown-menu.module.scss';
 import { DsIcon } from '../ds-icon';
-import DsTypography from '../ds-typography/ds-typography';
-import DsTextInput from '../ds-text-input/ds-text-input';
+import { DsTypography } from '../ds-typography';
+import { DsTextInput } from '../ds-text-input';
 import type {
 	DsDropdownMenuActionsProps,
 	DsDropdownMenuContentProps,

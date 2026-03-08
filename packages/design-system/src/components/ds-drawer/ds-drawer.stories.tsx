@@ -6,7 +6,8 @@ import DsDrawer from './ds-drawer';
 import { DsButton } from '../ds-button';
 import { DsTextInput } from '../ds-text-input';
 import { DsIcon } from '../ds-icon';
-import DsSystemStatus from '../ds-system-status/ds-system-status';
+// TODO: Use DsStatusBadge instead.
+import { DsSystemStatus } from '../ds-system-status';
 import styles from './ds-drawer.stories.module.scss';
 import { DsTypography } from '../ds-typography';
 import type { DsDrawerProps } from './ds-drawer.types';

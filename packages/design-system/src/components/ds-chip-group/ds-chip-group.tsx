@@ -7,7 +7,7 @@ import styles from './ds-chip-group.module.scss';
 import type { DsChipGroupProps } from './ds-chip-group.types';
 import { useChipRowCalculation } from './hooks/use-chip-row-calculation';
 import { DsTypography } from '../ds-typography';
-import DsChip from '../ds-chip/ds-chip';
+import { DsChip } from '../ds-chip';
 import { DsCheckbox } from '../ds-checkbox';
 import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
