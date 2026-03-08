@@ -39,7 +39,7 @@
 		"build:lint": "publint && attw --pack"
 	},
 	"dependencies": {
-		"@eslint/core": "^1.1.0",
+		"@eslint/core": "^1.1.1",
 		"eslint-no-restricted": "^0.1.1"
 	},
 	"devDependencies": {
