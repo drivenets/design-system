@@ -59,5 +59,4 @@ jobs:
           commit: 'chore(release): publish'
           title: 'chore(release): publish'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: '' # https://github.com/changesets/action/issues/542#issuecomment-3642334398
