@@ -1,4 +1,4 @@
-name: PR
+name: PR Name Linter
 on:
   pull_request:
     types: ['opened', 'edited', 'reopened', 'synchronize']
@@ -7,12 +7,12 @@ permissions: {}
 
 # This allows a subsequently queued workflow run to interrupt previous runs
 concurrency:
-  group: '${{ github.workflow }} - Name Linter @ ${{ github.event.pull_request.number }}'
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.number }}'
   cancel-in-progress: true
 
 jobs:
-  name-linter:
-    name: Name Linter
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     permissions:

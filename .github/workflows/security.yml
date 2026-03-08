@@ -1,9 +1,6 @@
-name: PR
+name: Security
 
 on:
-  push:
-    branches: ['main']
-
   pull_request:
     branches: ['main']
 
@@ -13,12 +10,12 @@ on:
 permissions: {}
 
 concurrency:
-  group: '${{ github.workflow }}-${{ github.ref }}'
+  group: '${{ github.workflow }} @ ${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
   CodeQL:
-    name: CodeQL Security (${{ matrix.label }})
+    name: CodeQL (${{ matrix.label }})
     runs-on: ubuntu-latest
     permissions:
       contents: read
