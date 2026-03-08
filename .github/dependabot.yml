@@ -25,3 +25,6 @@ updates:
       interval: 'weekly'
     commit-message:
       prefix: 'ci'
+    groups:
+      github-actions:
+        group-by: dependency-name
