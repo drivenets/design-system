@@ -70,18 +70,6 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			const hasDeprecatedTag = !!deprecatedTag;
 
 			if (!isComponentDeprecated) {
-				// Report when a non-deprecated component has a `deprecated` tag.
-				if (hasDeprecatedTag) {
-					context.report({
-						node: deprecatedTag,
-						messageId: 'noUnusedDeprecatedTag',
-						data: { component: componentName },
-						fix: (fixer) => {
-							return fixer.remove(deprecatedTag);
-						},
-					});
-				}
-
 				// Report when a non-deprecated component has a `deprecated` suffix.
 				if (titleProp && hasSuffix) {
 					context.report({
@@ -92,6 +80,18 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 							const replaced = title.replace(SUFFIX, '').trim();
 
 							return fixer.replaceText(titleProp.value, `'${replaced}'`);
+						},
+					});
+				}
+
+				// Report when a non-deprecated component has a `deprecated` tag.
+				if (hasDeprecatedTag) {
+					context.report({
+						node: deprecatedTag,
+						messageId: 'noUnusedDeprecatedTag',
+						data: { component: componentName },
+						fix: (fixer) => {
+							return fixer.remove(deprecatedTag);
 						},
 					});
 				}
