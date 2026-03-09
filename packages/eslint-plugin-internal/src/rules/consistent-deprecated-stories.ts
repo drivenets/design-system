@@ -82,7 +82,6 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 					node: titleProp.value,
 					messageId: hasSuffix ? 'deprecatedSuffixNotFormatted' : 'requireDeprecatedSuffix',
 					data: { component: componentName },
-
 					fix: (fixer) => {
 						const base = title.replace(new RegExp(`\\s*${SUFFIX_ESCAPED}`, 'g'), '').trim();
 
