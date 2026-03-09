@@ -1,12 +1,13 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 
+type PropertyValuePredicate<T extends PropertyValue> = (value: PropertyValue) => value is T;
+
 type PropertyValue = TSESTree.Property['value'];
-type PropertyPredicate<T extends PropertyValue> = (propertyValue: PropertyValue) => propertyValue is T;
 
 type Args<T extends PropertyValue> = {
 	obj: TSESTree.ObjectExpression;
 	name: string;
-	predicate?: PropertyPredicate<T>;
+	predicate?: PropertyValuePredicate<T>;
 };
 
 export function getObjectProperty<T extends PropertyValue = PropertyValue>(

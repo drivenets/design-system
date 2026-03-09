@@ -55,7 +55,6 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 
 			const componentRef = componentProp.value;
 			const componentName = componentRef.name;
-
 			const isComponentDeprecated = isDeprecated(services, componentRef);
 
 			const title = String(titleProp?.value.value);
@@ -100,7 +99,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				return;
 			}
 
-			// Report when the title is missing.
+			// Report when a deprecated component has no title.
 			if (!titleProp) {
 				context.report({
 					node: metaNode,
@@ -114,7 +113,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				return;
 			}
 
-			// Report when the title doesn't have a suffix or is not formatted correctly.
+			// Report when a deprecated component is missing a title suffix or is not formatted correctly.
 			if (!hasSuffix || !suffixFormatted) {
 				context.report({
 					node: titleProp.value,
@@ -128,7 +127,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				});
 			}
 
-			// Report when the `tags` prop is missing or doesn't contain the `deprecated` tag.
+			// Report when a deprecated component is missing a `deprecated` tag.
 			if (!hasDeprecatedTag) {
 				context.report({
 					node: tagsProp ?? metaNode,
@@ -181,7 +180,7 @@ function resolveStoryMetaObject(
 	const isInlineObject = declaration.type !== AST_NODE_TYPES.Identifier;
 
 	if (isInlineObject) {
-		return toObjectExpression(declaration);
+		return assertObjectExpression(declaration);
 	}
 
 	const scope = context.sourceCode.getScope(declaration);
@@ -189,13 +188,13 @@ function resolveStoryMetaObject(
 	const def = variable?.defs[0]?.node;
 
 	if (def?.type === AST_NODE_TYPES.VariableDeclarator) {
-		return toObjectExpression(def.init);
+		return assertObjectExpression(def.init);
 	}
 
 	return null;
 }
 
-function toObjectExpression(node: TSESTree.Node | null): TSESTree.ObjectExpression | null {
+function assertObjectExpression(node: TSESTree.Node | null): TSESTree.ObjectExpression | null {
 	return node?.type === AST_NODE_TYPES.ObjectExpression ? node : null;
 }
 
