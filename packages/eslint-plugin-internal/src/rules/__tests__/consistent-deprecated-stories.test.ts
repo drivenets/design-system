@@ -130,7 +130,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedTag',
+					messageId: 'missingDeprecatedTag',
 					data: { component: 'DsChip' },
 					line: 5,
 					column: 18,
@@ -138,7 +138,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 					endColumn: 6,
 				},
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsChip' },
 					line: 6,
 					column: 13,
@@ -176,7 +176,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedTag',
+					messageId: 'missingDeprecatedTag',
 					data: { component: 'DsChip' },
 					line: 8,
 					column: 6,
@@ -214,7 +214,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsDialog' },
 					line: 6,
 					column: 13,
@@ -261,7 +261,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			],
 			errors: [
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsDialog' },
 					line: 5,
 					column: 18,
@@ -299,7 +299,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsChip' },
 					line: 6,
 					column: 13,
@@ -337,7 +337,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'deprecatedSuffixNotFormatted',
+					messageId: 'unformattedDeprecatedSuffix',
 					data: { component: 'DsChip' },
 					line: 6,
 					column: 13,
@@ -369,7 +369,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedTag',
+					messageId: 'missingDeprecatedTag',
 					data: { component: 'DsConfirmation' },
 					line: 5,
 					column: 20,
@@ -377,7 +377,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 					endColumn: 6,
 				},
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsConfirmation' },
 					line: 6,
 					column: 13,
@@ -411,7 +411,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedTag',
+					messageId: 'missingDeprecatedTag',
 					data: { component: 'DsDeprecatedFixture' },
 					line: 4,
 					column: 18,
@@ -419,7 +419,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 					endColumn: 6,
 				},
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsDeprecatedFixture' },
 					line: 5,
 					column: 13,
@@ -455,12 +455,82 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			`,
 			errors: [
 				{
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsDeprecatedFixtureAlias' },
 					line: 5,
 					column: 13,
 					endLine: 5,
 					endColumn: 46,
+				},
+			],
+		},
+
+		{
+			name: 'non-deprecated component with deprecated suffix - removes suffix',
+			code: `
+				function DsButton() { return null; }
+
+				const meta = {
+					title: 'Design System/Button (Deprecated)',
+					component: DsButton,
+				};
+
+				export default meta;
+			`,
+			output: `
+				function DsButton() { return null; }
+
+				const meta = {
+					title: 'Design System/Button',
+					component: DsButton,
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noUnusedDeprecatedSuffix',
+					data: { component: 'DsButton' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 48,
+				},
+			],
+		},
+
+		{
+			name: 'non-deprecated component with deprecated tag - removes tag',
+			code: `
+				function DsButton() { return null; }
+
+				const meta = {
+					title: 'Design System/Button',
+					component: DsButton,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			output: `
+				function DsButton() { return null; }
+
+				const meta = {
+					title: 'Design System/Button',
+					component: DsButton,
+					tags: [],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noUnusedDeprecatedTag',
+					data: { component: 'DsButton' },
+					line: 7,
+					column: 13,
+					endLine: 7,
+					endColumn: 25,
 				},
 			],
 		},

@@ -5,10 +5,11 @@ import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
 
 type MessageId =
-	| 'requireDeprecatedSuffix'
-	| 'requireDeprecatedTag'
-	| 'deprecatedSuffixNotFormatted'
-	| 'disallowDeprecatedTag';
+	| 'missingDeprecatedSuffix'
+	| 'missingDeprecatedTag'
+	| 'unformattedDeprecatedSuffix'
+	| 'noUnusedDeprecatedTag'
+	| 'noUnusedDeprecatedSuffix';
 
 const SUFFIX = '(Deprecated)';
 const SUFFIX_ESCAPED = SUFFIX.replace(/([()])/g, '\\$1');
@@ -21,13 +22,15 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			description: `Stories for deprecated components must include a "${SUFFIX}" title suffix and a "deprecated" tag.`,
 		},
 		messages: {
-			requireDeprecatedSuffix: `{{ component }} is deprecated. The story title must have a "${SUFFIX}" suffix.`,
+			missingDeprecatedSuffix: `{{ component }} is deprecated. The story title must have a "${SUFFIX}" suffix.`,
 
-			requireDeprecatedTag: '{{ component }} is deprecated. The story must have a "deprecated" tag.',
+			missingDeprecatedTag: '{{ component }} is deprecated. The story must have a "deprecated" tag.',
 
-			deprecatedSuffixNotFormatted: `The "${SUFFIX}" suffix is case-sensitive and must have a single space before it.`,
+			unformattedDeprecatedSuffix: `The "${SUFFIX}" suffix is case-sensitive and must have a single space before it.`,
 
-			disallowDeprecatedTag: '{{ component }} is not deprecated. Remove the "deprecated" tag.',
+			noUnusedDeprecatedSuffix: `{{ component }} is not deprecated. Remove the "${SUFFIX}" suffix.`,
+
+			noUnusedDeprecatedTag: '{{ component }} is not deprecated. Remove the "deprecated" tag.',
 		},
 		fixable: 'code',
 		schema: [],
@@ -53,8 +56,47 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			const componentRef = componentProp.value;
 			const componentName = componentRef.name;
 
-			// Skip non-deprecated components.
-			if (!isDeprecated(services, componentRef)) {
+			const isComponentDeprecated = isDeprecated(services, componentRef);
+
+			const title = String(titleProp?.value.value);
+			const hasSuffix = title.endsWith(SUFFIX);
+			const suffixFormatted = title.match(new RegExp(`[^\\s]\\s${SUFFIX_ESCAPED}$`, 'g'));
+
+			const tagsArray = tagsProp?.value;
+
+			const deprecatedTag = tagsArray?.elements.find((el) => {
+				return el?.type === AST_NODE_TYPES.Literal && el.value === 'deprecated';
+			});
+
+			const hasDeprecatedTag = !!deprecatedTag;
+
+			if (!isComponentDeprecated) {
+				// Report when a non-deprecated component has a `deprecated` tag.
+				if (hasDeprecatedTag) {
+					context.report({
+						node: deprecatedTag,
+						messageId: 'noUnusedDeprecatedTag',
+						data: { component: componentName },
+						fix: (fixer) => {
+							return fixer.remove(deprecatedTag);
+						},
+					});
+				}
+
+				// Report when a non-deprecated component has a `deprecated` suffix.
+				if (titleProp && hasSuffix) {
+					context.report({
+						node: titleProp.value,
+						messageId: 'noUnusedDeprecatedSuffix',
+						data: { component: componentName },
+						fix: (fixer) => {
+							const replaced = title.replace(SUFFIX, '').trim();
+
+							return fixer.replaceText(titleProp.value, `'${replaced}'`);
+						},
+					});
+				}
+
 				return;
 			}
 
@@ -62,7 +104,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			if (!titleProp) {
 				context.report({
 					node: metaNode,
-					messageId: 'requireDeprecatedSuffix',
+					messageId: 'missingDeprecatedSuffix',
 					data: { component: componentName },
 					fix: (fixer) => {
 						return fixer.insertTextAfter(componentProp, `,\n\ttitle: '${componentName} ${SUFFIX}'`);
@@ -72,15 +114,11 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				return;
 			}
 
-			const title = String(titleProp.value.value);
-			const hasSuffix = title.endsWith(SUFFIX);
-			const suffixFormatted = title.match(new RegExp(`[^\\s]\\s${SUFFIX_ESCAPED}$`, 'g'));
-
 			// Report when the title doesn't have a suffix or is not formatted correctly.
 			if (!hasSuffix || !suffixFormatted) {
 				context.report({
 					node: titleProp.value,
-					messageId: hasSuffix ? 'deprecatedSuffixNotFormatted' : 'requireDeprecatedSuffix',
+					messageId: hasSuffix ? 'unformattedDeprecatedSuffix' : 'missingDeprecatedSuffix',
 					data: { component: componentName },
 					fix: (fixer) => {
 						const base = title.replace(new RegExp(`\\s*${SUFFIX_ESCAPED}`, 'g'), '').trim();
@@ -90,39 +128,31 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				});
 			}
 
-			const tagsArray = tagsProp?.value;
-
-			const hasDeprecatedTag = tagsArray?.elements.some(
-				(el) => el?.type === AST_NODE_TYPES.Literal && el.value === 'deprecated',
-			);
-
-			if (hasDeprecatedTag) {
-				return;
-			}
-
 			// Report when the `tags` prop is missing or doesn't contain the `deprecated` tag.
-			context.report({
-				node: tagsProp ?? metaNode,
-				messageId: 'requireDeprecatedTag',
-				data: { component: componentName },
-				fix: (fixer) => {
-					// Create the tags property if it doesn't exist.
-					if (!tagsProp) {
-						const lastProperty = metaNode.properties.at(-1);
+			if (!hasDeprecatedTag) {
+				context.report({
+					node: tagsProp ?? metaNode,
+					messageId: 'missingDeprecatedTag',
+					data: { component: componentName },
+					fix: (fixer) => {
+						// Create the tags property if it doesn't exist.
+						if (!tagsProp) {
+							const lastProperty = metaNode.properties.at(-1);
 
-						return lastProperty
-							? fixer.insertTextAfter(lastProperty, ",\n\ttags: ['deprecated']")
-							: fixer.insertTextAfter(metaNode, "\n\ttags: ['deprecated']");
-					}
+							return lastProperty
+								? fixer.insertTextAfter(lastProperty, ",\n\ttags: ['deprecated']")
+								: fixer.insertTextAfter(metaNode, "\n\ttags: ['deprecated']");
+						}
 
-					// Append the deprecated tag to the tags array.
-					const lastTag = tagsArray?.elements.at(-1);
+						// Append the deprecated tag to the tags array.
+						const lastTag = tagsArray?.elements.at(-1);
 
-					return lastTag
-						? fixer.insertTextAfter(lastTag, ", 'deprecated'")
-						: fixer.replaceText(tagsProp.value, "['deprecated']");
-				},
-			});
+						return lastTag
+							? fixer.insertTextAfter(lastTag, ", 'deprecated'")
+							: fixer.replaceText(tagsProp.value, "['deprecated']");
+					},
+				});
+			}
 		}
 
 		return {
