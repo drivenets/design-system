@@ -2,7 +2,7 @@ import type React from 'react';
 import { SegmentGroup } from '@ark-ui/react/segment-group';
 import classNames from 'classnames';
 import styles from './ds-segment-group.module.scss';
-import DsTypography from '../ds-typography/ds-typography';
+import { DsTypography } from '../ds-typography';
 import {
 	type DsSegmentGroupItemProps,
 	type DsSegmentGroupItemTextProps,

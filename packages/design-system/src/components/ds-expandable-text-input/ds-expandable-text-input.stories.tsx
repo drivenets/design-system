@@ -4,8 +4,8 @@ import { DsExpandableTextInput } from './ds-expandable-text-input';
 import { textInputSizes } from '../ds-text-input';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import DsTable from '../ds-table/ds-table';
-import DsButton from '../ds-button/ds-button';
+import { DsTable } from '../ds-table';
+import { DsButton } from '../ds-button';
 
 const meta: Meta<typeof DsExpandableTextInput> = {
 	title: 'Design System/ExpandableTextInput',

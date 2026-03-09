@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { DsConfirmation } from './ds-confirmation';
-import DsButton from '../ds-button/ds-button';
+import { DsButton } from '../ds-button';
 import styles from './ds-confirmation.stories.module.scss';
 
 /**

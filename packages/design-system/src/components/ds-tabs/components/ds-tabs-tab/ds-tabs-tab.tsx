@@ -1,8 +1,7 @@
 import { useRef, useState } from 'react';
 import { Tabs } from '@ark-ui/react/tabs';
 import classNames from 'classnames';
-import DsIcon from '../../../ds-icon/ds-icon';
-import type { IconType } from '../../../ds-icon';
+import { DsIcon, type IconType } from '../../../ds-icon';
 import { DsTooltip } from '../../../ds-tooltip';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import type { DsTabsTabProps } from '../../ds-tabs.types';

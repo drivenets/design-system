@@ -3,7 +3,7 @@ import type React from 'react';
 import { Children, isValidElement } from 'react';
 import styles from './ds-button-new.module.scss';
 import type { DsButtonProps } from './ds-button-new.types';
-import DsIcon from '../../../ds-icon/ds-icon';
+import { DsIcon } from '../../../ds-icon';
 
 const isIconOnly = (children: React.ReactNode) => {
 	if (Children.count(children) !== 1) {

@@ -1,9 +1,13 @@
 import { useStepper } from '../hooks/use-stepper';
-import DsButton from '../../ds-button/ds-button';
-import type { DsButtonProps } from '../../ds-button/versions/ds-button-legacy';
+import { DsButton, type DsButtonUnifiedProps } from '../../ds-button';
+
+// TODO: Use the new button props once we deprecate the legacy button.
+type DsLegacyButtonProps = Extract<DsButtonUnifiedProps, { design?: undefined | 'legacy' }> & {
+	design?: undefined | 'legacy';
+};
 
 export type DsNextStepButtonProps = Pick<
-	DsButtonProps,
+	DsLegacyButtonProps,
 	'variant' | 'size' | 'className' | 'style' | 'children'
 >;
 

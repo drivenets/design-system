@@ -22,6 +22,7 @@
 		"retryable",
 		"subcomponents",
 		"tosorted",
+		"TSESTree",
 		"unhover"
 	],
 	"ignorePaths": [".cursor", ".git", ".github", ".vscode", ".cspell", "pnpm-lock.yaml"]

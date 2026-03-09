@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
-import DsButton from '../ds-button/ds-button';
+import { DsButton } from '../ds-button';
 import DsFileUpload from './ds-file-upload';
 import { useFileUpload } from './hooks';
 import { createTestPlayFunction, getMockFile } from './ds-file-upload.stories.util';

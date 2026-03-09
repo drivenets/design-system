@@ -1,0 +1,42 @@
+{
+	"name": "@drivenets/eslint-plugin-internal",
+	"version": "0.0.0",
+	"private": true,
+	"license": "Apache-2.0",
+	"type": "module",
+	"types": "./src/index.ts",
+	"main": "./src/index.ts",
+	"module": "./src/index.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./src/index.ts",
+				"default": "./src/index.ts"
+			},
+			"require": {
+				"types": "./src/index.ts",
+				"default": "./src/index.ts"
+			}
+		}
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings=0 .",
+		"typecheck": "tsc",
+		"test": "vitest",
+		"test:coverage": "pnpm test --coverage"
+	},
+	"dependencies": {
+		"@typescript-eslint/utils": "^8.56.1"
+	},
+	"devDependencies": {
+		"@typescript-eslint/rule-tester": "^8.56.1",
+		"@vitest/coverage-v8": "^4.0.18",
+		"eslint": "^10.0.1",
+		"typescript": "^5.9.3",
+		"vitest": "^4.0.18"
+	},
+	"peerDependencies": {
+		"eslint": "^9.0.0 || ^10.0.0",
+		"typescript": "^5.0.0"
+	}
+}

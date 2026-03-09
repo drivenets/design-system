@@ -2,8 +2,7 @@ import { useState, type ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsStepper, DsStep, DsNextStepButton, DsStepContent } from './index';
 import { DsPanel, type DsPanelVariant } from '../ds-panel';
-import DsIcon from '../ds-icon/ds-icon';
-import type { IconType } from '../ds-icon';
+import { DsIcon, type IconType } from '../ds-icon';
 import { expect, userEvent } from 'storybook/test';
 import styles from './ds-stepper.stories.module.scss';
 

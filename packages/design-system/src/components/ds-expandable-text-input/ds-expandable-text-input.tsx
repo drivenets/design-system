@@ -3,7 +3,7 @@ import { DsTextInput } from '../ds-text-input';
 import { DsIcon } from '../ds-icon';
 import classNames from 'classnames';
 import styles from './ds-expandable-text-input.module.scss';
-import { mergeRefs } from '../ds-table/utils/merge-refs';
+import { mergeRefs } from '../../utils/merge-refs';
 import type { DsExpandableTextInputProps } from './ds-expandable-text-input.types';
 import { DsButton } from '../ds-button';
 
