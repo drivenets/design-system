@@ -1,8 +1,8 @@
 import { createRule } from '../create-rule';
 import { isDeprecated } from './utils/is-deprecated';
+import { getObjectProperty } from './utils/get-object-property';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
-import { getObjectProperty } from './utils/get-object-property';
 
 type MessageId =
 	| 'requireDeprecatedSuffix'
@@ -10,22 +10,22 @@ type MessageId =
 	| 'deprecatedSuffixNotFormatted'
 	| 'disallowDeprecatedTag';
 
+const SUFFIX = '(Deprecated)';
+const SUFFIX_ESCAPED = SUFFIX.replace(/([()])/g, '\\$1');
+
 export const consistentDeprecatedStories = createRule<[], MessageId>({
 	name: 'consistent-deprecated-stories',
 	meta: {
 		type: 'problem',
 		docs: {
-			description:
-				'Stories for deprecated components must include a "(Deprecated)" title suffix and a "deprecated" tag.',
+			description: `Stories for deprecated components must include a "${SUFFIX}" title suffix and a "deprecated" tag.`,
 		},
 		messages: {
-			requireDeprecatedSuffix:
-				'{{ component }} is deprecated. The story title must have a "(Deprecated)" suffix.',
+			requireDeprecatedSuffix: `{{ component }} is deprecated. The story title must have a "${SUFFIX}" suffix.`,
 
 			requireDeprecatedTag: '{{ component }} is deprecated. The story must have a "deprecated" tag.',
 
-			deprecatedSuffixNotFormatted:
-				'The "(Deprecated)" suffix is case-sensitive and must have a single space before it.',
+			deprecatedSuffixNotFormatted: `The "${SUFFIX}" suffix is case-sensitive and must have a single space before it.`,
 
 			disallowDeprecatedTag: '{{ component }} is not deprecated. Remove the "deprecated" tag.',
 		},
@@ -37,18 +37,16 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 		const services = ESLintUtils.getParserServices(context);
 
 		function check(node: TSESTree.ExportDefaultDeclaration) {
-			const metaNode = resolveMetaObject(context, node.declaration);
+			const metaNode = resolveStoryMetaObject(context, node.declaration);
 
-			if (!metaNode || metaNode.type !== AST_NODE_TYPES.ObjectExpression) {
+			if (!metaNode) {
 				return;
 			}
 
-			const tagsProp = getObjectProperty(metaNode, 'tags');
-			const titleProp = getObjectProperty(metaNode, 'title');
-			const componentProp = getObjectProperty(metaNode, 'component');
+			const { componentProp, tagsProp, titleProp } = getStoryMetaProps(metaNode);
 
-			// Skip invalid (e.g., non-variable-reference) components.
-			if (componentProp?.value.type !== AST_NODE_TYPES.Identifier) {
+			// Skip when the component property is missing.
+			if (!componentProp) {
 				return;
 			}
 
@@ -67,22 +65,16 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 					messageId: 'requireDeprecatedSuffix',
 					data: { component: componentName },
 					fix: (fixer) => {
-						return fixer.insertTextAfter(componentProp, `,\n\ttitle: '${componentName} (Deprecated)'`);
+						return fixer.insertTextAfter(componentProp, `,\n\ttitle: '${componentName} ${SUFFIX}'`);
 					},
 				});
 
 				return;
 			}
 
-			// Skip checking when title is not a literal value (i.e., reference to a variable)
-			if (titleProp.value.type !== AST_NODE_TYPES.Literal) {
-				return;
-			}
-
 			const title = String(titleProp.value.value);
-
-			const hasSuffix = title.endsWith('(Deprecated)');
-			const suffixFormatted = title.match(/[^\s]\s\(Deprecated\)$/g);
+			const hasSuffix = title.endsWith(SUFFIX);
+			const suffixFormatted = title.match(new RegExp(`[^\\s]\\s${SUFFIX_ESCAPED}$`, 'g'));
 
 			// Report when the title doesn't have a suffix or is not formatted correctly.
 			if (!hasSuffix || !suffixFormatted) {
@@ -92,14 +84,14 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 					data: { component: componentName },
 
 					fix: (fixer) => {
-						const base = title.replace(/\s*\(Deprecated\)/g, '').trimEnd();
+						const base = title.replace(new RegExp(`\\s*${SUFFIX_ESCAPED}`, 'g'), '').trim();
 
-						return fixer.replaceText(titleProp.value, `'${base} (Deprecated)'`);
+						return fixer.replaceText(titleProp.value, `'${base} ${SUFFIX}'`);
 					},
 				});
 			}
 
-			const tagsArray = tagsProp?.value.type === AST_NODE_TYPES.ArrayExpression ? tagsProp.value : null;
+			const tagsArray = tagsProp?.value;
 
 			const hasDeprecatedTag = tagsArray?.elements.some(
 				(el) => el?.type === AST_NODE_TYPES.Literal && el.value === 'deprecated',
@@ -109,7 +101,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 				return;
 			}
 
-			// Report when the tags prop is missing or doesn't contain the deprecated tag.
+			// Report when the `tags` prop is missing or doesn't contain the `deprecated` tag.
 			context.report({
 				node: tagsProp ?? metaNode,
 				messageId: 'requireDeprecatedTag',
@@ -153,12 +145,14 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
  * export default {...};
  * ```
  */
-function resolveMetaObject(
+function resolveStoryMetaObject(
 	context: RuleContext<MessageId, []>,
 	declaration: TSESTree.DefaultExportDeclarations,
-): TSESTree.Expression | undefined {
-	if (declaration.type !== AST_NODE_TYPES.Identifier) {
-		return declaration as TSESTree.Expression;
+): TSESTree.ObjectExpression | null {
+	const isInlineObject = declaration.type !== AST_NODE_TYPES.Identifier;
+
+	if (isInlineObject) {
+		return toObjectExpression(declaration);
 	}
 
 	const scope = context.sourceCode.getScope(declaration);
@@ -166,8 +160,38 @@ function resolveMetaObject(
 	const def = variable?.defs[0]?.node;
 
 	if (def?.type === AST_NODE_TYPES.VariableDeclarator) {
-		return def.init ?? undefined;
+		return toObjectExpression(def.init);
 	}
 
-	return undefined;
+	return null;
+}
+
+function toObjectExpression(node: TSESTree.Node | null): TSESTree.ObjectExpression | null {
+	return node?.type === AST_NODE_TYPES.ObjectExpression ? node : null;
+}
+
+function getStoryMetaProps(metaNode: TSESTree.ObjectExpression) {
+	const tagsProp = getObjectProperty({
+		obj: metaNode,
+		name: 'tags',
+		predicate: (v) => v.type === AST_NODE_TYPES.ArrayExpression,
+	});
+
+	const componentProp = getObjectProperty({
+		obj: metaNode,
+		name: 'component',
+		predicate: (v) => v.type === AST_NODE_TYPES.Identifier,
+	});
+
+	const titleProp = getObjectProperty({
+		obj: metaNode,
+		name: 'title',
+		predicate: (v) => v.type === AST_NODE_TYPES.Literal,
+	});
+
+	return {
+		tagsProp,
+		titleProp,
+		componentProp,
+	};
 }

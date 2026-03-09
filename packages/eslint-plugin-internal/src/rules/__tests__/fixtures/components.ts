@@ -1,4 +1,4 @@
-/** @deprecated Use DsTag instead. */
+/** @deprecated */
 export function DsDeprecatedFixture() {
 	return null;
 }

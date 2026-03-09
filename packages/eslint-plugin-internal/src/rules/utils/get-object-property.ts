@@ -1,14 +1,25 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 
-export function getObjectProperty(
-	obj: TSESTree.ObjectExpression,
-	name: string,
-): TSESTree.Property | undefined {
-	return obj.properties.find((property): property is TSESTree.Property => {
+type PropertyValue = TSESTree.Property['value'];
+type PropertyPredicate<T extends PropertyValue> = (propertyValue: PropertyValue) => propertyValue is T;
+
+type Args<T extends PropertyValue> = {
+	obj: TSESTree.ObjectExpression;
+	name: string;
+	predicate?: PropertyPredicate<T>;
+};
+
+export function getObjectProperty<T extends PropertyValue = PropertyValue>(
+	args: Args<T>,
+): (TSESTree.Property & { value: T }) | undefined {
+	const { obj, name, predicate = () => true } = args;
+
+	return obj.properties.find((property) => {
 		return (
 			property.type === AST_NODE_TYPES.Property &&
 			property.key.type === AST_NODE_TYPES.Identifier &&
-			property.key.name === name
+			property.key.name === name &&
+			predicate(property.value)
 		);
-	});
+	}) as never;
 }
