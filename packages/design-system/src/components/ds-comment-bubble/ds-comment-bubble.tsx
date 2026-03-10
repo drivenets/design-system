@@ -203,7 +203,14 @@ export const DsCommentBubble = ({
 				</div>
 
 				{(isInitialMode || hasThread) && (
-					<DsButton design="v1.2" size="small" disabled={!hasContent} onClick={handleSend} aria-label="Send">
+					<DsButton
+						design="v1.2"
+						buttonType="tertiary"
+						size="tiny"
+						disabled={!hasContent}
+						onClick={handleSend}
+						aria-label="Send"
+					>
 						<DsIcon icon="send" size="tiny" />
 					</DsButton>
 				)}
@@ -218,7 +225,14 @@ export const DsCommentBubble = ({
 						onCheckedChange={(checked) => onActionRequiredChange?.(checked === true)}
 					/>
 
-					<DsButton design="v1.2" size="small" disabled={!hasContent} onClick={handleSend} aria-label="Send">
+					<DsButton
+						design="v1.2"
+						buttonType="tertiary"
+						size="tiny"
+						disabled={!hasContent}
+						onClick={handleSend}
+						aria-label="Send"
+					>
 						<DsIcon icon="send" size="tiny" />
 					</DsButton>
 				</div>
