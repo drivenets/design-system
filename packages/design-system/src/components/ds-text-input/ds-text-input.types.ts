@@ -90,7 +90,10 @@ export interface DsTextInputProps {
 	 * Whether the input is disabled
 	 */
 	disabled?: boolean;
-
+	/**
+	 * Whether the input is read only
+	 */
+	readOnly?: boolean;
 	/**
 	 * The tabIndex of the input
 	 */
