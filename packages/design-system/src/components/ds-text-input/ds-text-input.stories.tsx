@@ -17,7 +17,6 @@ const meta: Meta<typeof DsTextInput> = {
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		size: {
 			control: { type: 'select' },

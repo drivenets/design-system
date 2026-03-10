@@ -20,7 +20,7 @@ const meta: Meta<typeof DsChipGroup> = {
 			},
 		},
 	},
-	tags: ['autodocs', 'deprecated'],
+	tags: ['deprecated'],
 	argTypes: {
 		items: {
 			control: 'object',

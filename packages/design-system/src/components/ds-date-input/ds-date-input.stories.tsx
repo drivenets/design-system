@@ -12,7 +12,6 @@ const MOCK_DATE = new Date('2026-01-15T12:00:00');
 const meta: Meta<typeof DsDateInput> = {
 	title: 'Design System/DateInput',
 	component: DsDateInput,
-	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

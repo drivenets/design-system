@@ -12,7 +12,6 @@ const meta: Meta<typeof DsCommentIndicator> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		type: {
 			control: 'select',

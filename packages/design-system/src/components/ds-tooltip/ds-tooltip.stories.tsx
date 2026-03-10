@@ -12,7 +12,6 @@ const meta: Meta<typeof DsTooltip> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		content: {
 			control: 'text',

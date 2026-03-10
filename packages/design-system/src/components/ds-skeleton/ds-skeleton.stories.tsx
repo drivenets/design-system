@@ -15,7 +15,6 @@ import skeletonStyles from './ds-skeleton.module.scss';
 
 const meta: Meta<typeof DsSkeleton> = {
 	title: 'Design System/Skeleton',
-	tags: ['autodocs'],
 	parameters: {
 		layout: 'padded',
 	},

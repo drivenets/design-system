@@ -12,7 +12,6 @@ const meta: Meta<typeof DsPopover> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		trigger: {
 			control: 'object',

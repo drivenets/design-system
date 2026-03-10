@@ -9,7 +9,6 @@ const meta = {
 	component: DsGrid,
 	subcomponents: { DsGridItem },
 	parameters: {},
-	tags: ['autodocs'],
 	argTypes: {
 		children: {
 			control: 'text',

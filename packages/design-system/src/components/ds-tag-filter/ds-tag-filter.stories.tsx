@@ -17,7 +17,6 @@ const meta: Meta<typeof DsTagFilter> = {
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		items: {
 			control: 'object',

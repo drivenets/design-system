@@ -11,7 +11,6 @@ const meta: Meta<typeof DsAutocomplete> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		options: {
 			control: 'object',

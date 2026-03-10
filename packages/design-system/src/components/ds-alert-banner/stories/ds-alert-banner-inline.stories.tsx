@@ -12,7 +12,6 @@ const meta: Meta<typeof DsAlertBanner> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		open: {
 			control: 'boolean',

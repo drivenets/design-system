@@ -13,15 +13,12 @@ import {
 } from './ds-button-legacy.types';
 
 const meta: Meta<typeof DsButtonLegacy> = {
-	title: 'Design System/Button (Legacy)',
+	title: 'Design System/Button (Deprecated)',
 	component: DsButtonLegacy,
 	parameters: {
-		// Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
 		layout: 'centered',
 	},
-	// This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-	tags: ['autodocs'],
-	// More on argTypes: https://storybook.js.org/docs/api/argtypes
+	tags: ['deprecated'],
 	argTypes: {
 		schema: {
 			control: { type: 'select' },

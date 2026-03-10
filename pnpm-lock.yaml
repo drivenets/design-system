@@ -380,6 +380,9 @@ importers:
       '@typescript-eslint/utils':
         specifier: ^8.56.1
         version: 8.56.1(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3)
+      ts-api-utils:
+        specifier: ^2.4.0
+        version: 2.4.0(typescript@5.9.3)
     devDependencies:
       '@typescript-eslint/rule-tester':
         specifier: ^8.56.1

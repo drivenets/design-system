@@ -41,7 +41,6 @@ DsVerticalTabs is a compound component for creating flexible vertical tab naviga
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		value: {
 			control: 'text',
