@@ -5,6 +5,7 @@ import type { DsButtonProps } from './ds-button-legacy.types';
 
 /**
  * Design system Button component
+ * @deprecated Use [DsButton](../ds-button-new/ds-button-new.tsx) instead.
  */
 const DsButton: React.FC<DsButtonProps> = ({
 	schema = 'primary',

@@ -134,7 +134,6 @@ const meta: Meta<typeof Ds{Name}> = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
   argTypes: {
     variant: { control: 'select', options: ds{Name}Variants },
     className: { table: { disable: true } },

@@ -6,7 +6,6 @@ import styles from './ds-loader.stories.module.scss';
 const meta: Meta<typeof DsLoader> = {
 	title: 'Design System/Loader',
 	component: DsLoader,
-	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

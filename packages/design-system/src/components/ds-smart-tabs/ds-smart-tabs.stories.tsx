@@ -9,7 +9,6 @@ const meta: Meta<typeof DsSmartTabs> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		activeTab: {
 			control: 'text',

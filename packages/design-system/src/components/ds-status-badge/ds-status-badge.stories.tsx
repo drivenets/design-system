@@ -11,7 +11,6 @@ const meta: Meta<typeof DsStatusBadge> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		icon: {
 			control: 'text',

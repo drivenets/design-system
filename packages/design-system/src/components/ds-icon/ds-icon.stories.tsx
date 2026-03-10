@@ -12,7 +12,6 @@ const meta: Meta<typeof DsIcon> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		icon: {
 			control: 'text',

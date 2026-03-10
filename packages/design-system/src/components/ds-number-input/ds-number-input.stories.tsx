@@ -9,7 +9,6 @@ const meta: Meta<typeof DsNumberInput> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		size: {
 			control: { type: 'select' },

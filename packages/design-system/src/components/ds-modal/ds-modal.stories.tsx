@@ -20,7 +20,6 @@ const meta: Meta<typeof DsModal> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	args: {
 		open: false,
 	},

@@ -1,6 +1,11 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
-	"ignore": ["**/*.scss", "**/simple-file-upload-adapter.ts", "**/mock-file-upload-adapter.ts"],
+	"ignore": [
+		"**/*.scss",
+		"**/simple-file-upload-adapter.ts",
+		"**/mock-file-upload-adapter.ts",
+		"./packages/eslint-plugin-internal/src/rules/__tests__/fixtures/components.ts"
+	],
 	"ignoreExportsUsedInFile": {
 		"interface": true,
 		"type": true

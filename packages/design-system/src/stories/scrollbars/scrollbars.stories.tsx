@@ -16,7 +16,6 @@ You can add a \`.scrollbar-thin\` class to the element in order to make its scro
 			},
 		},
 	},
-	tags: ['autodocs'],
 };
 
 export default meta;

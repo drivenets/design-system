@@ -18,7 +18,6 @@ const meta: Meta<typeof DsExpandableTextInput> = {
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		size: {
 			control: { type: 'select' },

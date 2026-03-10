@@ -330,7 +330,6 @@ const collection = createDsTreeCollection([
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		size: { control: 'select', options: dsTreeSizes },
 		collection: { table: { disable: true } },
