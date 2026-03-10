@@ -1,0 +1,15 @@
+{
+	"$schema": "https://turborepo.com/schema.json",
+	"extends": ["//"],
+	"tasks": {
+		"test": {
+			"dependsOn": ["$TURBO_EXTENDS$", "install:playwright"]
+		},
+		"test:coverage": {
+			"dependsOn": ["$TURBO_EXTENDS$", "install:playwright"]
+		},
+		"install:playwright": {
+			"dependsOn": []
+		}
+	}
+}
