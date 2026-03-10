@@ -223,12 +223,10 @@ export const DsCommentBubble = ({
 			{showFooter && (
 				<div className={styles.footer}>
 					<DsCheckbox
+						variant="warning"
 						label="Action required"
 						checked={actionRequired}
 						onCheckedChange={(checked) => onActionRequiredChange?.(checked === true)}
-						className={classNames(styles.actionRequiredCheckbox, {
-							[styles.checked]: actionRequired,
-						})}
 					/>
 
 					<DsButton design="v1.2" size="small" disabled={!hasContent} onClick={handleSend} aria-label="Send">
