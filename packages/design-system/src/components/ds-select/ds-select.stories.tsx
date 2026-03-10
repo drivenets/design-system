@@ -14,7 +14,6 @@ const meta: Meta<typeof DsSelect> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		options: {
 			control: 'object',

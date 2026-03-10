@@ -11,7 +11,6 @@ const meta: Meta<typeof DsFormControl> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		status: {
 			control: { type: 'select' },

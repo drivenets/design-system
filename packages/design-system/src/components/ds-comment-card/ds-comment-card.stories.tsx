@@ -67,7 +67,6 @@ const meta: Meta<typeof DsCommentCard> = {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 	decorators: [
 		(Story) => (
 			<div className={styles.decorator}>

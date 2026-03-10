@@ -12,7 +12,6 @@ export default {
 	parameters: {
 		layout: 'centered',
 	},
-	tags: ['autodocs'],
 } satisfies Meta<typeof DsPanel>;
 
 type Story = StoryObj<typeof DsPanel>;

@@ -8,7 +8,6 @@ import styles from './ds-progress-linear.stories.module.scss';
 const meta: Meta<typeof DsProgressLinear> = {
 	title: 'Design System/ProgressLinear',
 	component: DsProgressLinear,
-	tags: ['autodocs'],
 	parameters: {
 		layout: 'centered',
 	},

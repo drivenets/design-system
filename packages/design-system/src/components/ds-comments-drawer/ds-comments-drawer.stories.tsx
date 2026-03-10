@@ -235,7 +235,6 @@ Side panel for viewing and managing all comments.
 			},
 		},
 	},
-	tags: ['autodocs'],
 	argTypes: {
 		open: {
 			control: 'boolean',

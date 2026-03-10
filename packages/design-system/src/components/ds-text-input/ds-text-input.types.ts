@@ -28,6 +28,10 @@ export interface DsTextInputProps {
 	 */
 	type?: string;
 	/**
+	 * Event handler called when the input field receives focus
+	 */
+	onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+	/**
 	 * Event handler called when the input field loses focus
 	 *
 	 * @param event
