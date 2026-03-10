@@ -45,18 +45,8 @@ Object.assign(plugin.configs, {
 			},
 			files: ['**/*.stories.ts?(x)'],
 			rules: {
-				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
-			},
-		},
-
-		{
-			name: 'ds-internal:recommended:stories',
-			files: ['**/*.stories.ts?(x)'],
-			plugins: {
-				'@drivenets/ds-internal': plugin,
-			},
-			rules: {
 				'@drivenets/ds-internal/consistent-deprecated-stories': 'error',
+				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
 			},
 		},
 	] satisfies TSESLint.FlatConfig.ConfigArray,
