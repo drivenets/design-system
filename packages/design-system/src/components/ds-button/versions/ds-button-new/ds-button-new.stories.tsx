@@ -171,10 +171,7 @@ export const Showcase: Story = {
 									.map((variant) =>
 										sizes.map((size) =>
 											states.map((disabled) => {
-												const isTiny = size === 'tiny';
-												const isTertiary = row.buttonType === 'tertiary';
-
-												if (!isSupported(row.buttonType, variant) || (isTiny && !isTertiary)) {
+												if (!isSupported(row.buttonType, variant)) {
 													return (
 														<td
 															key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}
@@ -182,7 +179,6 @@ export const Showcase: Story = {
 														></td>
 													);
 												}
-
 												return (
 													<td
 														key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}
@@ -191,25 +187,14 @@ export const Showcase: Story = {
 														})}
 													>
 														<div className={styles.showcaseCellInline}>
-															{isTertiary ? (
-																<DsButtonNew
-																	buttonType="tertiary"
-																	variant={variant as (typeof buttonVariants)[number]}
-																	size={size as (typeof buttonSizes)[number]}
-																	disabled={disabled}
-																>
-																	{row.icon ? iconButtonChildren : defaultButtonChildren}
-																</DsButtonNew>
-															) : (
-																<DsButtonNew
-																	buttonType={row.buttonType as (typeof buttonTypes)[number]}
-																	variant={variant as (typeof buttonVariants)[number]}
-																	size={size as Exclude<(typeof buttonSizes)[number], 'tiny'>}
-																	disabled={disabled}
-																>
-																	{row.icon ? iconButtonChildren : defaultButtonChildren}
-																</DsButtonNew>
-															)}
+															<DsButtonNew
+																buttonType={row.buttonType as (typeof buttonTypes)[number]}
+																variant={variant as (typeof buttonVariants)[number]}
+																size={size as (typeof buttonSizes)[number]}
+																disabled={disabled}
+															>
+																{row.icon ? iconButtonChildren : defaultButtonChildren}
+															</DsButtonNew>
 														</div>
 													</td>
 												);
