@@ -9,7 +9,7 @@ Check the diff against the main and remove AI-generated slop introduced in the b
 
 ## Focus Areas
 
-- Extra comments that are unnecessary or inconsistent with the local style
+- Extra comments that are unnecessary or inconsistent with the local style, except "TODO" comments
 - Defensive checks or try/catch blocks that are abnormal for trusted code paths
 - Casts to `any` used only to bypass type issues
 - Deeply nested code that should be simplified with early returns
