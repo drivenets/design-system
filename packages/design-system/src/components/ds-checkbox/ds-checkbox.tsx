@@ -11,6 +11,7 @@ import { DsIcon } from '../ds-icon';
  */
 const DsCheckbox: React.FC<DsCheckboxProps> = ({
 	id,
+	variant = 'default',
 	label,
 	labelInfo,
 	className,
@@ -23,7 +24,7 @@ const DsCheckbox: React.FC<DsCheckboxProps> = ({
 	const checkboxId = id || generatedId;
 
 	return (
-		<div className={classNames(styles.container, className)}>
+		<div className={classNames(styles.container, styles[variant], className)}>
 			<CheckboxPrimitive.Root
 				className={styles.checkboxRoot}
 				id={checkboxId}

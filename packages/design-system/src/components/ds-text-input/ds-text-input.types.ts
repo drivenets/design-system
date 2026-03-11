@@ -28,6 +28,10 @@ export interface DsTextInputProps {
 	 */
 	type?: string;
 	/**
+	 * Event handler called when the input field receives focus
+	 */
+	onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
+	/**
 	 * Event handler called when the input field loses focus
 	 *
 	 * @param event
@@ -86,7 +90,10 @@ export interface DsTextInputProps {
 	 * Whether the input is disabled
 	 */
 	disabled?: boolean;
-
+	/**
+	 * Whether the input is read only
+	 */
+	readOnly?: boolean;
 	/**
 	 * The tabIndex of the input
 	 */

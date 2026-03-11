@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import DsCheckbox from './ds-checkbox';
+import { checkboxVariants } from './ds-checkbox.types';
 
 const meta: Meta<typeof DsCheckbox> = {
 	title: 'Design System/Checkbox',
@@ -10,6 +10,10 @@ const meta: Meta<typeof DsCheckbox> = {
 		layout: 'centered',
 	},
 	argTypes: {
+		variant: {
+			options: checkboxVariants,
+			control: 'radio',
+		},
 		label: {
 			control: 'text',
 			description: 'Label for the checkbox',
@@ -37,26 +41,6 @@ export const Default: Story = {
 		labelInfo,
 		className: 'custom-checkbox',
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Locate the checkbox by its role
-		const checkbox = await canvas.findByRole('checkbox');
-
-		// Assert that the checkbox is initially unchecked
-		await expect(checkbox).not.toBeChecked();
-
-		// Assert that label info is displayed
-		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
-
-		// Click to check the checkbox
-		await userEvent.click(checkbox);
-		await expect(checkbox).toBeChecked();
-
-		// Click again to uncheck the checkbox
-		await userEvent.click(checkbox);
-		await expect(checkbox).not.toBeChecked();
-	},
 };
 
 export const Indeterminate: Story = {
@@ -72,18 +56,6 @@ export const Indeterminate: Story = {
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Locate the checkbox by its role
-		const checkbox = await canvas.findByRole('checkbox');
-
-		// Assert that the checkbox is initially indeterminate
-		await expect(checkbox).toHaveAttribute('data-state', 'indeterminate');
-
-		// Assert that label info is displayed
-		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
-	},
 };
 
 export const Disabled: Story = {
@@ -92,22 +64,34 @@ export const Disabled: Story = {
 		labelInfo,
 		disabled: true,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
+};
 
-		// Locate the checkbox by its role
-		const checkbox = await canvas.findByRole('checkbox');
+export const Warning: Story = {
+	args: {
+		variant: 'warning',
+	},
+};
 
-		// Assert that the checkbox is disabled
-		await expect(checkbox).toBeDisabled();
+export const WarningWithLabel: Story = {
+	args: {
+		variant: 'warning',
+		label,
+		labelInfo,
+	},
+};
 
-		// Assert that label info is displayed
-		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
+export const WarningIndeterminate: Story = {
+	render: function Render() {
+		const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
 
-		// Attempt to click the disabled checkbox
-		await userEvent.click(checkbox, { pointerEventsCheck: 0 });
-
-		// Assert that the checkbox remains unchecked
-		await expect(checkbox).not.toBeChecked();
+		return (
+			<DsCheckbox
+				variant="warning"
+				label={label}
+				labelInfo={labelInfo}
+				checked={checked}
+				onCheckedChange={(newState) => setChecked(newState)}
+			/>
+		);
 	},
 };

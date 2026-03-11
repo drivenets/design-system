@@ -6,7 +6,7 @@ export type ButtonType = (typeof buttonTypes)[number];
 export const buttonVariants = ['filled', 'ghost', 'danger', 'dark'] as const;
 export type ButtonVariant = (typeof buttonVariants)[number];
 
-export const buttonSizes = ['large', 'medium', 'small'] as const;
+export const buttonSizes = ['large', 'medium', 'small', 'tiny'] as const;
 export type ButtonSize = (typeof buttonSizes)[number];
 
 export interface DsButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {

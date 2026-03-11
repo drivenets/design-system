@@ -131,8 +131,8 @@ export const Showcase: Story = {
 			{ label: 'Icon Tertiary Dark', buttonType: 'tertiary', icon: true, variant: 'dark' },
 		];
 
-		const variants = ['filled', 'ghost', 'danger', 'dark'];
-		const sizes = ['small', 'medium', 'large'];
+		const variants = buttonVariants;
+		const sizes = buttonSizes;
 		const states = [false, true]; // false = default, true = disabled
 
 		return (
@@ -189,8 +189,8 @@ export const Showcase: Story = {
 														<div className={styles.showcaseCellInline}>
 															<DsButtonNew
 																buttonType={row.buttonType as (typeof buttonTypes)[number]}
-																variant={variant as (typeof buttonVariants)[number]}
-																size={size as (typeof buttonSizes)[number]}
+																variant={variant}
+																size={size}
 																disabled={disabled}
 															>
 																{row.icon ? iconButtonChildren : defaultButtonChildren}
