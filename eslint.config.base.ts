@@ -60,6 +60,16 @@ export default defineConfig(
 			'prefer-rest-params': 'error',
 			radix: 'error',
 
+			// Customizations.
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					enableAutofixRemoval: {
+						imports: true,
+					},
+				},
+			],
+
 			// Slightly loosened TSESLint rules.
 			'@typescript-eslint/no-misused-promises': [
 				'error',

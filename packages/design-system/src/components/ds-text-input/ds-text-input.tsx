@@ -9,6 +9,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	name,
 	size = 'default',
 	type = 'text',
+	onFocus,
 	onBlur,
 	onKeyDown,
 	onChange,
@@ -23,6 +24,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	maxLength,
 	placeholder,
 	disabled = false,
+	readOnly = false,
 	tabIndex,
 	slots,
 }) => {
@@ -60,7 +62,9 @@ const DsTextInput: FC<DsTextInputProps> = ({
 					minLength={minLength}
 					maxLength={maxLength}
 					placeholder={placeholder}
+					readOnly={readOnly}
 					disabled={disabled}
+					onFocus={onFocus}
 					onBlur={onBlur}
 					onKeyDown={onKeyDown}
 					onChange={handleChange}

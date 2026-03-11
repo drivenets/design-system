@@ -1,5 +1,6 @@
 @use '../../../../styles/typography';
 
+$button-size-tiny: 16px;
 $button-size-small: 28px;
 $button-size-default: 32px;
 $button-size-large: 40px;
@@ -27,6 +28,13 @@ $button-size-large: 40px;
 		border: 1px solid transparent;
 		border-radius: var(--exo-spacing-2x-small);
 		flex-grow: 1;
+	}
+
+	&.tiny .content {
+		@include typography.body-xs-md;
+		height: $button-size-tiny;
+		border-radius: var(--spacing-4xs);
+		--icon-width-tiny: 13px;
 	}
 
 	&.small .content {
@@ -65,6 +73,11 @@ $button-size-large: 40px;
 		&.small .content {
 			height: $button-size-small;
 			width: $button-size-small;
+		}
+
+		&.tiny .content {
+			height: $button-size-tiny;
+			width: $button-size-tiny;
 		}
 	}
 

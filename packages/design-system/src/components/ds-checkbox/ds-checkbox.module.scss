@@ -18,11 +18,11 @@
 		}
 	}
 
-	&:has(.checkboxRoot:focus-visible) {
+	&:has(.label):has(.checkboxRoot:focus-visible) {
 		border-color: var(--color-background-selected);
 	}
 
-	&:has([data-state='unchecked']:focus-visible) {
+	&:has(.label):has([data-state='unchecked']:focus-visible) {
 		border-color: var(--color-background-selected-hover);
 	}
 }
@@ -62,7 +62,8 @@
 			background-color: var(--color-background-selected);
 		}
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
 			background: var(--color-background-action-secondary-hover);
 		}
 	}
@@ -72,7 +73,8 @@
 			border-color: var(--color-background-deselected);
 		}
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
 			background: var(--color-background-action-hover-weak);
 		}
 	}
@@ -83,7 +85,8 @@
 			background-color: var(--color-background-selected);
 		}
 
-		&:hover {
+		&:hover,
+		&:focus-visible {
 			background: var(--color-background-action-secondary-hover);
 		}
 	}
@@ -127,4 +130,32 @@
 	color: var(--color-font-secondary);
 	cursor: pointer;
 	width: 100%;
+}
+
+.default {
+	border-color: transparent;
+}
+
+.warning {
+	&:has([data-state='checked']),
+	&:has([data-state='indeterminate']) {
+		.label {
+			color: var(--color-font-warning);
+		}
+	}
+
+	.checkboxRoot {
+		&[data-state='checked'],
+		&[data-state='indeterminate'] {
+			.checkboxWrapper {
+				border-color: var(--color-background-warning-strong);
+				background-color: var(--color-background-warning-strong);
+			}
+
+			&:hover,
+			&:focus-visible {
+				background: var(--color-background-warning);
+			}
+		}
+	}
 }
