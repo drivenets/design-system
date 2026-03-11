@@ -60,7 +60,7 @@ export default defineConfig(
 			'prefer-rest-params': 'error',
 			radix: 'error',
 
-			// Overrides.
+			// Customizations.
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{
