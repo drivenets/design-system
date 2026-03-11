@@ -15,7 +15,7 @@ export const noAutodocsTag = createRule<[], MessageId>({
 		},
 		messages: {
 			noAutodocsTag:
-				"Remove the `autodocs` tag from the story meta. It's already defined automatically for all stories.",
+				"Remove the `autodocs` tag from the story meta. It's already defined globally for all stories.",
 		},
 		fixable: 'code',
 		schema: [],
