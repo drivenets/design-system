@@ -55,6 +55,37 @@ export const Default: Story = {
 	},
 };
 
+export const SmallSize: Story = {
+	args: {
+		icon: 'search',
+		size: 'small',
+		onClear: fn(),
+		onExpandChange: fn(),
+	},
+	play: async ({ args, canvasElement, step }) => {
+		const canvas = within(canvasElement);
+
+		await step('Expand and type', async () => {
+			const iconButton = canvas.getByRole('button', { name: 'Open text input' });
+			await userEvent.click(iconButton);
+
+			const input = canvas.getByRole('textbox');
+			await userEvent.type(input, 'test');
+		});
+
+		await step('Clear button works', async () => {
+			const clearButton = canvas.getByRole('button', { name: 'Clear' });
+			await userEvent.click(clearButton);
+
+			await expect(args.onClear).toHaveBeenCalled();
+			await expect(args.onExpandChange).toHaveBeenLastCalledWith(false);
+
+			const input = canvas.getByRole('textbox');
+			await expect(input).toHaveValue('');
+		});
+	},
+};
+
 export const CustomIcon: Story = {
 	args: {
 		icon: 'search_insights',
