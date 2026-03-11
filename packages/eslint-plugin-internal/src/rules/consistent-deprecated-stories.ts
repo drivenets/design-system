@@ -1,7 +1,7 @@
 import { createRule } from '../create-rule';
 import { isDeprecated } from './utils/is-deprecated';
 import { getObjectProperty } from './utils/get-object-property';
-import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
+import { resolveStoryMeta } from './utils/resolve-story-meta';
 import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
 
 type MessageId =
@@ -40,7 +40,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 		const services = ESLintUtils.getParserServices(context);
 
 		function check(node: TSESTree.ExportDefaultDeclaration) {
-			const metaNode = resolveStoryMetaObject(context, node.declaration);
+			const metaNode = resolveStoryMeta(context, node.declaration);
 
 			if (!metaNode) {
 				return;
@@ -159,44 +159,6 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 		};
 	},
 });
-
-/**
- * Resolve the meta object either from a variable declaration or an export default declaration:
- *
- * ```ts
- * const meta = {...};
- *
- * export default meta;
- * ```
- * or
- * ```ts
- * export default {...};
- * ```
- */
-function resolveStoryMetaObject(
-	context: RuleContext<MessageId, []>,
-	declaration: TSESTree.DefaultExportDeclarations,
-): TSESTree.ObjectExpression | null {
-	const isInlineObject = declaration.type !== AST_NODE_TYPES.Identifier;
-
-	if (isInlineObject) {
-		return assertObjectExpression(declaration);
-	}
-
-	const scope = context.sourceCode.getScope(declaration);
-	const variable = scope.references.find((ref) => ref.identifier === declaration)?.resolved;
-	const def = variable?.defs[0]?.node;
-
-	if (def?.type === AST_NODE_TYPES.VariableDeclarator) {
-		return assertObjectExpression(def.init);
-	}
-
-	return null;
-}
-
-function assertObjectExpression(node: TSESTree.Node | null): TSESTree.ObjectExpression | null {
-	return node?.type === AST_NODE_TYPES.ObjectExpression ? node : null;
-}
 
 function getStoryMetaProps(metaNode: TSESTree.ObjectExpression) {
 	const tagsProp = getObjectProperty({
