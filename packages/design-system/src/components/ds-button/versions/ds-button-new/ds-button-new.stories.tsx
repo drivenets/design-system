@@ -171,10 +171,7 @@ export const Showcase: Story = {
 									.map((variant) =>
 										sizes.map((size) =>
 											states.map((disabled) => {
-												const isTiny = size === 'tiny';
-												const isTertiary = row.buttonType === 'tertiary';
-
-												if (!isSupported(row.buttonType, variant) || (isTiny && !isTertiary)) {
+												if (!isSupported(row.buttonType, variant)) {
 													return (
 														<td
 															key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}
@@ -182,7 +179,6 @@ export const Showcase: Story = {
 														></td>
 													);
 												}
-
 												return (
 													<td
 														key={`${row.label}-${variant}-${size}-${disabled ? 'disabled' : 'default'}`}
