@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { DsSpinner } from '../../../ds-spinner';
 import DsButtonNew from './ds-button-new';
-import { buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types';
+import { type DsButtonProps, buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types';
 import styles from './ds-button-new.stories.module.scss';
 
 const meta: Meta<typeof DsButtonNew> = {
@@ -192,10 +192,12 @@ export const Showcase: Story = {
 													>
 														<div className={styles.showcaseCellInline}>
 															<DsButtonNew
-																buttonType={row.buttonType as (typeof buttonTypes)[number]}
-																variant={variant}
-																size={size}
-																disabled={disabled}
+																{...({
+																	buttonType: row.buttonType as (typeof buttonTypes)[number],
+																	variant,
+																	size,
+																	disabled,
+																} as DsButtonProps)}
 															>
 																{row.icon ? iconButtonChildren : defaultButtonChildren}
 															</DsButtonNew>
