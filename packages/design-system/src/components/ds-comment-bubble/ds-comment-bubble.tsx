@@ -125,14 +125,7 @@ export const DsCommentBubble = ({
 						<div className={styles.headerActions}>
 							<DsDropdownMenu.Root>
 								<DsDropdownMenu.Trigger asChild>
-									<DsButton
-										design="v1.2"
-										buttonType="tertiary"
-										size="small"
-										aria-label="More actions"
-										className={styles.headerActionButton}
-										contentClassName={styles.iconButtonContent}
-									>
+									<DsButton design="v1.2" buttonType="tertiary" size="tiny" aria-label="More actions">
 										<DsIcon icon="more_vert" size="tiny" />
 									</DsButton>
 								</DsDropdownMenu.Trigger>
@@ -159,11 +152,9 @@ export const DsCommentBubble = ({
 								<DsButton
 									design="v1.2"
 									buttonType="tertiary"
-									size="small"
+									size="tiny"
 									onClick={() => onResolve()}
 									aria-label="Resolve"
-									className={styles.headerActionButton}
-									contentClassName={styles.iconButtonContent}
 								>
 									<DsIcon icon="check_circle" size="tiny" />
 								</DsButton>
@@ -174,10 +165,8 @@ export const DsCommentBubble = ({
 							<DsButton
 								design="v1.2"
 								buttonType="tertiary"
-								size="small"
+								size="tiny"
 								onClick={() => onClose()}
-								className={styles.headerActionButton}
-								contentClassName={styles.iconButtonContent}
 								aria-label="Close"
 							>
 								<DsIcon icon="close" size="tiny" />
@@ -214,7 +203,14 @@ export const DsCommentBubble = ({
 				</div>
 
 				{(isInitialMode || hasThread) && (
-					<DsButton design="v1.2" size="small" disabled={!hasContent} onClick={handleSend} aria-label="Send">
+					<DsButton
+						design="v1.2"
+						buttonType="tertiary"
+						size="tiny"
+						disabled={!hasContent}
+						onClick={handleSend}
+						aria-label="Send"
+					>
 						<DsIcon icon="send" size="tiny" />
 					</DsButton>
 				)}
@@ -229,7 +225,14 @@ export const DsCommentBubble = ({
 						onCheckedChange={(checked) => onActionRequiredChange?.(checked === true)}
 					/>
 
-					<DsButton design="v1.2" size="small" disabled={!hasContent} onClick={handleSend} aria-label="Send">
+					<DsButton
+						design="v1.2"
+						buttonType="tertiary"
+						size="tiny"
+						disabled={!hasContent}
+						onClick={handleSend}
+						aria-label="Send"
+					>
 						<DsIcon icon="send" size="tiny" />
 					</DsButton>
 				</div>

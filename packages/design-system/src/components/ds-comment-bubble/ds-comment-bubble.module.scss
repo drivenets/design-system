@@ -8,31 +8,12 @@ $input-min-height-initial: 20px;
 $input-min-height-typing: 40px;
 $input-min-height-thread: 28px;
 $input-max-height: 480px;
-$icon-button-size: 16px;
 $scrollbar-width-textarea: 4px;
 $scrollbar-border-radius-pill: 100px;
 $dropdown-min-width: 160px;
 $border-width: 1px;
 
 $transition-duration: 0.2s;
-
-@mixin icon-button-size {
-	&#{&} {
-		width: $icon-button-size;
-		height: $icon-button-size;
-		min-width: $icon-button-size;
-		min-height: $icon-button-size;
-		padding: 0;
-		border: none;
-	}
-}
-
-.iconButtonContent {
-	height: $icon-button-size !important;
-	min-height: $icon-button-size !important;
-	padding: 0 !important;
-	border: none !important;
-}
 
 .bubble {
 	display: flex;
@@ -177,11 +158,6 @@ $transition-duration: 0.2s;
 	.bubble:hover & {
 		opacity: 1;
 	}
-}
-
-.headerActionButton {
-	@include icon-button-size;
-	opacity: 1;
 }
 
 .inputArea {
