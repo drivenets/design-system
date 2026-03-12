@@ -46,6 +46,10 @@ eslint-plugin:
   - changed-files:
       - any-glob-to-any-file: 'packages/eslint-plugin/**'
 
+eslint-plugin-internal:
+  - changed-files:
+      - any-glob-to-any-file: 'packages/eslint-plugin-internal/**'
+
 vite-plugin:
   - changed-files:
       - any-glob-to-any-file: 'packages/vite-plugin/**'

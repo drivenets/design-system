@@ -1,28 +1,9 @@
 $avatar-size: 24px;
 $avatar-fallback-font-size: 10px;
 $header-height: 24px;
-$icon-button-size: 16px;
 $dropdown-min-width: 180px;
 $border-radius-circle: 50%;
 $transition-duration: 0.2s;
-
-@mixin icon-button-size {
-	&#{&} {
-		width: $icon-button-size;
-		height: $icon-button-size;
-		min-width: $icon-button-size;
-		min-height: $icon-button-size;
-		padding: 0;
-		border: none;
-	}
-}
-
-.iconButtonContent {
-	height: $icon-button-size !important;
-	min-height: $icon-button-size !important;
-	padding: 0 !important;
-	border: none !important;
-}
 
 .threadItem {
 	display: flex;
@@ -118,10 +99,6 @@ $transition-duration: 0.2s;
 	gap: var(--spacing-xs);
 	opacity: 0;
 	transition: opacity $transition-duration ease;
-}
-
-.actionButton {
-	@include icon-button-size;
 }
 
 .editContainer {

@@ -97,14 +97,7 @@ export const DsThreadItem = ({
 					{hasEditActions && (
 						<DsDropdownMenu.Root>
 							<DsDropdownMenu.Trigger asChild>
-								<DsButton
-									design="v1.2"
-									buttonType="tertiary"
-									size="small"
-									aria-label="More actions"
-									className={styles.actionButton}
-									contentClassName={styles.iconButtonContent}
-								>
+								<DsButton design="v1.2" buttonType="tertiary" size="tiny" aria-label="More actions">
 									<DsIcon icon="more_vert" size="tiny" />
 								</DsButton>
 							</DsDropdownMenu.Trigger>
@@ -131,11 +124,9 @@ export const DsThreadItem = ({
 						<DsButton
 							design="v1.2"
 							buttonType="tertiary"
-							size="small"
+							size="tiny"
 							onClick={() => onResolved(id)}
 							aria-label="Mark message as resolved"
-							className={styles.actionButton}
-							contentClassName={styles.iconButtonContent}
 						>
 							<DsIcon icon="check_circle" size="tiny" />
 						</DsButton>
