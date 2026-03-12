@@ -144,8 +144,9 @@ export type DsDropdownMenuTriggerProps = Menu.TriggerProps;
 /**
  * Props for the DsDropdownMenu Content component
  */
-export interface DsDropdownMenuContentProps extends Partial<
-	Pick<Menu.ContentProps, 'className' | 'style' | 'children'>
+export interface DsDropdownMenuContentProps extends Pick<
+	Menu.ContentProps,
+	'className' | 'style' | 'children'
 > {
 	/**
 	 * Whether to render in place instead of using portals
@@ -157,14 +158,10 @@ export interface DsDropdownMenuContentProps extends Partial<
 /**
  * Props for the DsDropdownMenu Item component
  */
-export interface DsDropdownMenuItemProps extends Partial<
-	Pick<Menu.ItemProps, 'disabled' | 'asChild' | 'className' | 'style' | 'onSelect' | 'onClick' | 'children'>
+export interface DsDropdownMenuItemProps extends Pick<
+	Menu.ItemProps,
+	'disabled' | 'asChild' | 'className' | 'style' | 'onSelect' | 'onClick' | 'value' | 'children'
 > {
-	/**
-	 * The unique value of the menu item
-	 */
-	value: string;
-
 	/**
 	 * Whether the item is selected (applies selected styling)
 	 */
