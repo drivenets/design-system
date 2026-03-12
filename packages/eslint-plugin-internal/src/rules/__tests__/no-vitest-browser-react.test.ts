@@ -14,11 +14,27 @@ ruleTester.run('no-vitest-browser-react', noVitestBrowserReact, {
 	invalid: [
 		{
 			code: "import { render } from 'vitest-browser-react';",
-			errors: [{ messageId: 'noVitestBrowserReact' }],
+			errors: [
+				{
+					messageId: 'noVitestBrowserReact',
+					line: 1,
+					endLine: 1,
+					column: 24,
+					endColumn: 46,
+				},
+			],
 		},
 		{
 			code: "import { render, cleanup } from 'vitest-browser-react';",
-			errors: [{ messageId: 'noVitestBrowserReact' }],
+			errors: [
+				{
+					messageId: 'noVitestBrowserReact',
+					line: 1,
+					endLine: 1,
+					column: 33,
+					endColumn: 55,
+				},
+			],
 		},
 	],
 });
