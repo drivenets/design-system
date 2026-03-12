@@ -1,0 +1,65 @@
+@use '../../styles/typography';
+
+.root {
+	display: flex;
+	align-items: flex-start;
+}
+
+.root[data-layout='vertical'] {
+	flex-direction: column;
+}
+
+.root[data-layout='horizontal'] {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	column-gap: var(--spacing-xs);
+	align-items: start;
+}
+
+.label {
+	@include typography.body-sm-md;
+
+	padding-bottom: var(--spacing-4xs);
+	padding-left: var(--spacing-sm);
+	color: var(--color-font-main);
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.root[data-layout='horizontal'] .label {
+	padding-bottom: 0;
+	padding-top: var(--spacing-3xs);
+}
+
+.valueContainer {
+	display: grid;
+	align-items: center;
+	width: 100%;
+	outline: none;
+}
+
+.root[data-layout='horizontal'] .valueContainer {
+	text-align: right;
+}
+
+.valueDisplay {
+	@include typography.body-sm-reg;
+	@include typography.ellipsis;
+
+	min-width: 0;
+	padding: var(--spacing-3xs) var(--spacing-sm);
+	color: var(--color-font-secondary);
+}
+
+.valueDisplay[data-hidden] {
+	display: none;
+}
+
+.editorSlot {
+	display: none;
+	min-width: 0;
+}
+
+.editorSlot[data-active] {
+	display: block;
+}

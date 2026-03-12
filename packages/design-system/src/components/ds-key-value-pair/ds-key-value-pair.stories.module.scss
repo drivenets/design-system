@@ -1,0 +1,84 @@
+.editableVerticalDemo {
+	width: 150px;
+}
+
+.editableHorizontalDemo {
+	width: 250px;
+}
+
+.narrowInput {
+	width: 100px;
+}
+
+.mediumInput {
+	width: 120px;
+}
+
+.descriptionTextarea {
+	width: 230px;
+}
+
+.valueWithIcon {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+}
+
+.iconLabel {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-4xs);
+}
+
+.pairsColumn {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+	width: 336px;
+}
+
+.responsiveDemo {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-sm);
+}
+
+.responsiveSlider {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-xs);
+	font-size: 13px;
+	font-family: monospace;
+	color: var(--color-font-secondary);
+}
+
+.responsiveSliderInput {
+	flex: 1;
+}
+
+.responsivePairs {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+	border: 1px dashed var(--color-border);
+	border-radius: 4px;
+	padding: var(--spacing-sm);
+}
+
+.statusBadge {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--spacing-3xs);
+	padding: var(--spacing-4xs) var(--spacing-xs);
+	border-radius: 9999px;
+	background: var(--color-status-bg-success);
+	font-size: 12px;
+	font-weight: 500;
+	color: var(--color-font-main);
+}
+
+.tagGroup {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xs);
+}
