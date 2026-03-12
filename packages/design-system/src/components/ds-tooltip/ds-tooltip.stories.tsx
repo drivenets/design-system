@@ -51,13 +51,18 @@ export const RichContent: Story = {
 	},
 };
 
-export const CustomWidth: Story = {
+export const CustomWidthWithEllipsis: Story = {
 	args: {
-		content: 'Narrow tooltip with custom max-width applied via slotProps.',
+		content: 'Narrow tooltip with custom max-width and text overflow ellipsis applied via slotProps.',
 		children: <DsIcon icon="info" />,
 		slotProps: {
 			content: {
-				style: { maxWidth: 80 },
+				style: {
+					maxWidth: 200,
+					overflow: 'hidden',
+					textOverflow: 'ellipsis',
+					whiteSpace: 'nowrap',
+				},
 			},
 		},
 	},

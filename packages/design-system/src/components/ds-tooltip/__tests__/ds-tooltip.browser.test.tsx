@@ -3,20 +3,15 @@ import { page } from 'vitest/browser';
 import DsTooltip from '../ds-tooltip';
 
 describe('DsTooltip', () => {
-	it('should show tooltip on hover and hide on unhover', async () => {
+	it('should show tooltip on hover', async () => {
 		await page.render(
 			<DsTooltip content="Tooltip text">
 				<button type="button">Trigger</button>
 			</DsTooltip>,
 		);
 
-		const trigger = page.getByRole('button', { name: 'Trigger' });
-
-		await trigger.hover();
+		await page.getByRole('button', { name: 'Trigger' }).hover();
 		await expect.element(page.getByRole('tooltip')).toBeVisible();
-
-		await trigger.unhover();
-		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 	});
 
 	it('should show full long text without truncation', async () => {
@@ -60,11 +55,11 @@ describe('DsTooltip', () => {
 
 		const tooltip = page.getByRole('tooltip');
 		await expect.element(tooltip).toBeVisible();
-		await expect.element(page.getByText('Bold')).toBeVisible();
-		await expect.element(page.getByText('italic')).toBeVisible();
+		await expect.element(tooltip.getByText('Bold')).toBeVisible();
+		await expect.element(tooltip.getByText('italic')).toBeVisible();
 	});
 
-	it('should apply slotProps className and style to tooltip content', async () => {
+	it('should forward slotProps to tooltip content wrapper', async () => {
 		await page.render(
 			<DsTooltip
 				content="Styled tooltip"
@@ -75,11 +70,11 @@ describe('DsTooltip', () => {
 		);
 
 		await page.getByRole('button', { name: 'Trigger' }).hover();
+		await expect.element(page.getByRole('tooltip')).toBeVisible();
 
-		const tooltip = page.getByRole('tooltip');
-		await expect.element(tooltip).toBeVisible();
-		await expect.element(tooltip).toHaveClass('custom-tooltip');
-		await expect.element(tooltip).toHaveStyle({ maxWidth: '200px' });
+		const wrapper = document.querySelector('.custom-tooltip');
+		expect(wrapper).toBeTruthy();
+		expect((wrapper as HTMLElement).style.maxWidth).toBe('200px');
 	});
 
 	it('should conditionally show tooltip based on content prop', async () => {

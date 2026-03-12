@@ -11,6 +11,7 @@ export function DsExpandableTextInput({
 	onClear,
 	onExpandChange,
 	icon,
+	size,
 	...props
 }: DsExpandableTextInputProps) {
 	const hasInitialValue = Boolean(props.value ?? props.defaultValue);
@@ -29,9 +30,12 @@ export function DsExpandableTextInput({
 		}
 	};
 
+	const clearButtonSize = size === 'small' ? 'tiny' : 'small';
+
 	return (
 		<DsTextInput
 			{...props}
+			size={size}
 			ref={mergeRefs(ref, props.ref)}
 			tabIndex={expanded ? 0 : -1}
 			className={classNames(
@@ -80,7 +84,7 @@ export function DsExpandableTextInput({
 				endAdornment: (
 					<DsButton
 						design="v1.2"
-						size="small"
+						size={clearButtonSize}
 						buttonType="tertiary"
 						variant="filled"
 						className={styles.clearTrigger}
