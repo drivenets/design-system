@@ -11,7 +11,7 @@
 		"lint": "turbo run lint:root lint",
 		"lint:root": "eslint --max-warnings=0 .",
 		"typecheck": "turbo run typecheck typecheck:root",
-		"typecheck:root": "tsc",
+		"typecheck:root": "tsgo",
 		"lint:versions": "syncpack lint",
 		"lint:spell": "cspell . --quiet",
 		"lint:unused": "knip",
@@ -42,6 +42,7 @@
 		"@eslint/core": "^1.1.1",
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^25.3.5",
+		"@typescript/native-preview": "7.0.0-dev.20260306.1",
 		"@vitest/eslint-plugin": "^1.6.9",
 		"cspell": "^9.7.0",
 		"eslint": "^10.0.1",
@@ -55,7 +56,7 @@
 		"oxfmt": "^0.36.0",
 		"syncpack": "^14.0.0",
 		"turbo": "^2.8.14",
-		"typescript": "^5.9.3",
+		"typescript": "6.0.1-rc",
 		"typescript-eslint": "^8.56.1"
 	},
 	"pnpm": {
@@ -80,6 +81,7 @@
 			"string.prototype.repeat": "npm:@nolyfill/string.prototype.repeat@^1",
 			"esbuild@<=0.24.2": ">=0.25.0",
 			"eslint": "^10.0.1",
+			"typescript": "6.0.1-rc",
 			"semver": "^7.7.4",
 			"chokidar": "^5.0.0"
 		}

@@ -15,12 +15,12 @@ export interface DsTreeNode {
 export const dsTreeSizes = ['medium', 'small'] as const;
 export type DsTreeSize = (typeof dsTreeSizes)[number];
 
-interface DsTreeBaseProps {
+export interface DsTreeBaseProps {
 	className?: string;
 	style?: CSSProperties;
 }
 
-interface DsTreeBasePropsWithChildren extends DsTreeBaseProps {
+export interface DsTreeBasePropsWithChildren extends DsTreeBaseProps {
 	children?: ReactNode;
 }
 
