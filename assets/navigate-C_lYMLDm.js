@@ -1,1 +1,0 @@
-import{g as t}from"./create-anatomy-Cj7KKSv4.js";import{b as c}from"./event-CBXSxTbR.js";import{q as n}from"./raf-CC9hSMXO.js";function u(e){const i=()=>{const o=t(e);e.dispatchEvent(new o.MouseEvent("click"))};c()?n(e,"keyup",i):queueMicrotask(i)}export{u as c};
