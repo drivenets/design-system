@@ -5,6 +5,7 @@ import { consistentDeprecatedStories } from './rules/consistent-deprecated-stori
 import { noAutodocsTag } from './rules/no-autodocs-tag';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
+import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
 import { noVitestInStories } from './rules/no-vitest-in-stories';
 
 const plugin = {
@@ -18,6 +19,7 @@ const plugin = {
 		'no-autodocs-tag': noAutodocsTag,
 		'no-cross-component-internal-import': noCrossComponentInternalImport,
 		'no-useless-tsx-extension': noUselessTsxExtension,
+		'no-vitest-browser-react': noVitestBrowserReact,
 		'no-vitest-in-stories': noVitestInStories,
 	},
 
@@ -50,6 +52,17 @@ Object.assign(plugin.configs, {
 				'@drivenets/ds-internal/consistent-deprecated-stories': 'error',
 				'@drivenets/ds-internal/no-autodocs-tag': 'error',
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
+			},
+		},
+
+		{
+			name: 'ds-internal:recommended:tests:browser',
+			plugins: {
+				'@drivenets/ds-internal': plugin,
+			},
+			files: ['**/*.browser.test.ts?(x)'],
+			rules: {
+				'@drivenets/ds-internal/no-vitest-browser-react': 'error',
 			},
 		},
 	] satisfies TSESLint.FlatConfig.ConfigArray,

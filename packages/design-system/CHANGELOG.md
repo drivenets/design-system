@@ -1,5 +1,19 @@
 # @drivenets/design-system
 
+## 0.7.2
+
+### Patch Changes
+
+- 7b6e27e: Remove outline for focus state for `DsDropdownMenu` component
+- f2aea4f: Update dependencies
+- 9d0dd60: Added `onFocus` prop to `DsTextInput` component
+- cb7dc51: Add `tiny` size to `DsButton`
+- 5a4c765: Fix too big clear button in the `DsExpandableTextInput`
+- 0034c39: Added `readonly` property to `DsTextInput` component
+- 99a7aa6: Add `renderValue` prop to the `DsSelect`
+- 92075b8: Add `bottomOffset` and `scrollDirection` properties to `onScroll` callback in `DsTable` component
+- b99dee2: Add "warning" variant to `DsCheckbox`
+
 ## 0.7.1
 
 ### Patch Changes
