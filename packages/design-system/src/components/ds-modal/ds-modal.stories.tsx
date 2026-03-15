@@ -15,7 +15,7 @@ import { DsCheckbox } from '../ds-checkbox';
 import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsModal> = {
-	title: 'Design System/Modal',
+	title: 'Components/Modal',
 	component: DsModal,
 	parameters: {
 		layout: 'centered',

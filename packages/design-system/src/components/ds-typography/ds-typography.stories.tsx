@@ -7,7 +7,7 @@ import { semanticElementMap } from './ds-typography.config';
 const semanticVariants = Object.keys(semanticElementMap);
 
 const meta: Meta<typeof DsTypography> = {
-	title: 'Design System/Typography',
+	title: 'Components/Typography',
 	component: DsTypography,
 	parameters: {
 		layout: 'padded',

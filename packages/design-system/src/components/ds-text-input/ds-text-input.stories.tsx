@@ -6,7 +6,7 @@ import { DsIcon } from '../ds-icon';
 import { textInputSizes } from './ds-text-input.types';
 
 const meta: Meta<typeof DsTextInput> = {
-	title: 'Design System/TextInput',
+	title: 'Components/TextInput',
 	component: DsTextInput,
 	parameters: {
 		layout: 'centered',

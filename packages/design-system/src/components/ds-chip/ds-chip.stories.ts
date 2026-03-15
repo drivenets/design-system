@@ -7,7 +7,7 @@ import { chipSizes } from './ds-chip.types';
  * @see {@link ../ds-tag/ds-tag.stories} for examples of the replacement component.
  */
 const meta: Meta<typeof DsChip> = {
-	title: 'Design System/Chip (Deprecated)',
+	title: 'Components/Chip (Deprecated)',
 	component: DsChip,
 	parameters: {
 		layout: 'centered',

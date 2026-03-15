@@ -4,7 +4,7 @@ import { useState } from 'react';
 import DsSmartTabs from './ds-smart-tabs';
 
 const meta: Meta<typeof DsSmartTabs> = {
-	title: 'Design System/SmartTabs',
+	title: 'Components/SmartTabs',
 	component: DsSmartTabs,
 	parameters: {
 		layout: 'centered',

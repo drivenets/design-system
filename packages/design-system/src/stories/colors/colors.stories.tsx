@@ -4,7 +4,7 @@ import styles from './colors.stories.module.scss';
 
 // eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
 const meta: Meta = {
-	title: 'Design System/Colors',
+	title: 'Foundations/Colors',
 	parameters: {
 		layout: 'padded',
 	},

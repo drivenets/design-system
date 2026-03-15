@@ -11,7 +11,7 @@ import { DsRadioGroup } from '../ds-radio-group';
 import './ds-dropdown-menu.stories.scss';
 
 const meta: Meta<typeof DsDropdownMenu.Root> = {
-	title: 'Design System/DropdownMenu',
+	title: 'Components/DropdownMenu',
 	component: DsDropdownMenu.Root,
 	parameters: {
 		layout: 'centered',

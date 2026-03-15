@@ -8,7 +8,7 @@ import { alertBannerVariants } from '../ds-alert-banner.types';
 import styles from './ds-alert-banner.stories.module.scss';
 
 const meta: Meta<typeof DsAlertBanner> = {
-	title: 'Design System/AlertBanner/Global',
+	title: 'Components/AlertBanner/Global',
 	component: DsAlertBanner,
 	parameters: {
 		layout: 'centered',

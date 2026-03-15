@@ -6,7 +6,7 @@ import { DsProgressArc, progressArcSizes, progressArcVariants } from './index';
 import styles from './ds-progress-arc.stories.module.scss';
 
 const meta: Meta<typeof DsProgressArc> = {
-	title: 'Design System/ProgressArc',
+	title: 'Components/ProgressArc',
 	component: DsProgressArc,
 	parameters: {
 		layout: 'centered',

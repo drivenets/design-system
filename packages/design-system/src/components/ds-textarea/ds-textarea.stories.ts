@@ -3,7 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import DsTextarea from './ds-textarea';
 
 const meta: Meta<typeof DsTextarea> = {
-	title: 'Design System/Textarea',
+	title: 'Components/Textarea',
 	component: DsTextarea,
 	parameters: {
 		layout: 'centered',

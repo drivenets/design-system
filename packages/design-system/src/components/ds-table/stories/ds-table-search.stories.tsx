@@ -13,7 +13,7 @@ import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Design System/Table/Search and Filtering',
+	title: 'Components/Table/Search and Filtering',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

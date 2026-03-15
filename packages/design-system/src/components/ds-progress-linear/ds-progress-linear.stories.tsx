@@ -6,7 +6,7 @@ import { DsProgressLinear, progressLinearSizes, progressLinearVariants } from '.
 import styles from './ds-progress-linear.stories.module.scss';
 
 const meta: Meta<typeof DsProgressLinear> = {
-	title: 'Design System/ProgressLinear',
+	title: 'Components/ProgressLinear',
 	component: DsProgressLinear,
 	parameters: {
 		layout: 'centered',

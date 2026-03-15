@@ -224,7 +224,7 @@ const defaultData: Workflow[] = [
 ];
 
 const meta: Meta<typeof DsTable<Workflow, unknown>> = {
-	title: 'Design System/Table/Filters',
+	title: 'Components/Table/Filters',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

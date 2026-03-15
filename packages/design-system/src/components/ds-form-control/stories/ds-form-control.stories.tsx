@@ -5,7 +5,7 @@ import { controlStatuses } from '../ds-form-control.types';
 import { checkDisabled, sanityCheck } from './ds-form-control-stories-shared';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Design System/FormControl/Text',
+	title: 'Components/FormControl/Text',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
