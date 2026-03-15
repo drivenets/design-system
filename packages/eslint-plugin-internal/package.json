@@ -26,7 +26,7 @@
 		"test:coverage": "pnpm test --coverage"
 	},
 	"dependencies": {
-		"@typescript-eslint/utils": "^8.56.1",
+		"@typescript-eslint/utils": "^8.57.0",
 		"ts-api-utils": "^2.4.0"
 	},
 	"devDependencies": {
