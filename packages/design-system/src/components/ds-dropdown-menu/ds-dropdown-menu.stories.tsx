@@ -10,8 +10,9 @@ import { DsButton } from '../ds-button';
 import { DsRadioGroup } from '../ds-radio-group';
 import './ds-dropdown-menu.stories.scss';
 
-const meta: Meta<typeof DsDropdownMenu> = {
+const meta: Meta<typeof DsDropdownMenu.Root> = {
 	title: 'Design System/DropdownMenu',
+	component: DsDropdownMenu.Root,
 	parameters: {
 		layout: 'centered',
 	},

@@ -7,6 +7,7 @@ import { noCrossComponentInternalImport } from './rules/no-cross-component-inter
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
 import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
 import { noVitestInStories } from './rules/no-vitest-in-stories';
+import { requireStoryParams } from './rules/require-story-params';
 
 const plugin = {
 	meta: {
@@ -21,6 +22,7 @@ const plugin = {
 		'no-useless-tsx-extension': noUselessTsxExtension,
 		'no-vitest-browser-react': noVitestBrowserReact,
 		'no-vitest-in-stories': noVitestInStories,
+		'require-story-params': requireStoryParams,
 	},
 
 	configs: {
@@ -52,6 +54,7 @@ Object.assign(plugin.configs, {
 				'@drivenets/ds-internal/consistent-deprecated-stories': 'error',
 				'@drivenets/ds-internal/no-autodocs-tag': 'error',
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
+				'@drivenets/ds-internal/require-story-params': 'error',
 			},
 		},
 
