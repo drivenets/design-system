@@ -122,6 +122,48 @@ ruleTester.run('require-story-params', requireStoryParams, {
 		{
 			name: 'satisfies expression without title property',
 			code: `
+				const meta = {
+					component: DsButton,
+				} satisfies Meta<typeof DsButton>;
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'missing',
+					data: { property: 'title' },
+					line: 2,
+					column: 18,
+					endLine: 4,
+					endColumn: 6,
+				},
+			],
+		},
+
+		{
+			name: 'as expression without title property',
+			code: `
+				const meta = {
+					component: DsButton,
+				} as Meta<typeof DsButton>;
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'missing',
+					data: { property: 'title' },
+					line: 2,
+					column: 18,
+					endLine: 4,
+					endColumn: 6,
+				},
+			],
+		},
+
+		{
+			name: 'satisfies expression without title property in inline export',
+			code: `
 				export default {
 					component: DsButton,
 				} satisfies Meta<typeof DsButton>;
@@ -139,7 +181,7 @@ ruleTester.run('require-story-params', requireStoryParams, {
 		},
 
 		{
-			name: 'as expression without title property',
+			name: 'as expression without title property in inline export',
 			code: `
 				export default {
 					component: DsButton,
@@ -151,6 +193,27 @@ ruleTester.run('require-story-params', requireStoryParams, {
 					data: { property: 'title' },
 					line: 2,
 					column: 20,
+					endLine: 4,
+					endColumn: 6,
+				},
+			],
+		},
+
+		{
+			name: 'as/satisfies expressions without title property in variable declaration and in export',
+			code: `
+				const meta = {
+					component: DsButton,
+				} satisfies Meta<typeof DsButton>;
+
+				export default meta as Meta<typeof DsButton>;
+			`,
+			errors: [
+				{
+					messageId: 'missing',
+					data: { property: 'title' },
+					line: 2,
+					column: 18,
 					endLine: 4,
 					endColumn: 6,
 				},

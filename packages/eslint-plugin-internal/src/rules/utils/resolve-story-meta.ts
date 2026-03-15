@@ -25,8 +25,8 @@ export function resolveStoryMeta(
 		return asObjectExpression(unwrappedDeclaration);
 	}
 
-	const scope = context.sourceCode.getScope(declaration);
-	const variable = scope.references.find((ref) => ref.identifier === declaration)?.resolved;
+	const scope = context.sourceCode.getScope(unwrappedDeclaration);
+	const variable = scope.references.find((ref) => ref.identifier === unwrappedDeclaration)?.resolved;
 	const def = variable?.defs[0]?.node;
 
 	if (def?.type === AST_NODE_TYPES.VariableDeclarator) {
