@@ -10,7 +10,7 @@
 	width: auto;
 
 	&:focus-visible {
-		outline-offset: 2px;
+		outline: 0;
 	}
 
 	&[hidden] {
