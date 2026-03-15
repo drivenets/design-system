@@ -10,7 +10,7 @@ import styles from './ds-date-input.stories.module.scss';
 const MOCK_DATE = new Date('2026-01-15T12:00:00');
 
 const meta: Meta<typeof DsDateInput> = {
-	title: 'Design System/DateInput',
+	title: 'Components/DateInput',
 	component: DsDateInput,
 	parameters: {
 		layout: 'centered',

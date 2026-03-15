@@ -8,7 +8,7 @@ import { useState } from 'react';
 import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Design System/FormControl/Select',
+	title: 'Components/FormControl/Select',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',

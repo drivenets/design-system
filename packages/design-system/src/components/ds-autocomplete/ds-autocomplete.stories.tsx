@@ -6,7 +6,7 @@ import { DsAutocomplete } from './ds-autocomplete';
 import type { DsAutocompleteOption } from './ds-autocomplete.types';
 
 const meta: Meta<typeof DsAutocomplete> = {
-	title: 'Design System/Autocomplete',
+	title: 'Components/Autocomplete',
 	component: DsAutocomplete,
 	parameters: {
 		layout: 'centered',

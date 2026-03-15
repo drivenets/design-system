@@ -6,7 +6,7 @@ import type { IconType } from '../ds-icon';
 import styles from './ds-status-badge.stories.module.scss';
 
 const meta: Meta<typeof DsStatusBadge> = {
-	title: 'Design System/StatusBadge',
+	title: 'Components/StatusBadge',
 	component: DsStatusBadge,
 	parameters: {
 		layout: 'centered',

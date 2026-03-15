@@ -6,7 +6,7 @@ import type { TagFilterItem } from './ds-tag-filter.types';
 import styles from './ds-tag-filter.stories.module.scss';
 
 const meta: Meta<typeof DsTagFilter> = {
-	title: 'Design System/Tag Filter',
+	title: 'Components/TagFilter',
 	component: DsTagFilter,
 	parameters: {
 		layout: 'padded',

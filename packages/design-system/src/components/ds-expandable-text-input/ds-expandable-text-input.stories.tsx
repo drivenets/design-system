@@ -7,7 +7,7 @@ import { DsTable } from '../ds-table';
 import { DsButton } from '../ds-button';
 
 const meta: Meta<typeof DsExpandableTextInput> = {
-	title: 'Design System/ExpandableTextInput',
+	title: 'Components/ExpandableTextInput',
 	component: DsExpandableTextInput,
 	parameters: {
 		layout: 'centered',

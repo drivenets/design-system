@@ -7,7 +7,7 @@ import { iconSizes, iconVariants, type IconName } from './ds-icon.types';
 import { customIcons, type CustomIconName } from './custom-icons';
 
 const meta: Meta<typeof DsIcon> = {
-	title: 'Design System/Icon',
+	title: 'Components/Icon',
 	component: DsIcon,
 	parameters: {
 		layout: 'centered',

@@ -5,7 +5,7 @@ import { filterStatuses } from './ds-filter-status-icon.types';
 import styles from './ds-filter-status-icon.stories.module.scss';
 
 const meta: Meta<typeof DsFilterStatusIcon> = {
-	title: 'Design System/FilterStatusIcon',
+	title: 'Components/FilterStatusIcon',
 	component: DsFilterStatusIcon,
 	parameters: {
 		layout: 'centered',

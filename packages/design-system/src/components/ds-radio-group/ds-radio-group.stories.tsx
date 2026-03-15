@@ -5,7 +5,7 @@ import { DsRadioGroup } from './ds-radio-group';
 import styles from './ds-radio-group.stories.module.scss';
 
 const meta: Meta = {
-	title: 'Design System/RadioGroup',
+	title: 'Components/RadioGroup',
 	component: DsRadioGroup.Root,
 	parameters: {
 		layout: 'centered',

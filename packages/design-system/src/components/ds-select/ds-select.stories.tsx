@@ -9,7 +9,7 @@ import { type DsStatus, DsStatusBadge } from '../ds-status-badge';
 import styles from './ds-select.stories.module.scss';
 
 const meta: Meta<typeof DsSelect> = {
-	title: 'Design System/Select',
+	title: 'Components/Select',
 	component: DsSelect,
 	parameters: {
 		layout: 'centered',

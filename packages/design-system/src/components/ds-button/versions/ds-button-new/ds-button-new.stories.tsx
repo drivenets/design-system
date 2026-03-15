@@ -8,7 +8,8 @@ import { buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types'
 import styles from './ds-button-new.stories.module.scss';
 
 const meta: Meta<typeof DsButtonNew> = {
-	title: 'Design System/Button',
+	// eslint-disable-next-line @drivenets/ds-internal/consistent-story-titles -- We want to show user something different than code.
+	title: 'Components/Button',
 	component: DsButtonNew,
 	parameters: {
 		// Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout

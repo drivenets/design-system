@@ -9,7 +9,7 @@ import styles from './ds-table.stories.module.scss';
 import type { Action } from '../ds-table.types';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Design System/Table/Row Actions',
+	title: 'Components/Table/Row Actions',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

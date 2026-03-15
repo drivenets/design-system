@@ -5,7 +5,7 @@ import DsDivider from './ds-divider';
 import styles from './ds-divider.stories.module.scss';
 
 const meta: Meta<typeof DsDivider> = {
-	title: 'Design System/Divider',
+	title: 'Components/Divider',
 	component: DsDivider,
 	parameters: {
 		layout: 'centered',

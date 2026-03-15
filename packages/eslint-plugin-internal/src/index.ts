@@ -2,6 +2,7 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 
 import { consistentDeprecatedStories } from './rules/consistent-deprecated-stories';
+import { consistentStoryTitles } from './rules/consistent-story-titles';
 import { noAutodocsTag } from './rules/no-autodocs-tag';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
@@ -17,6 +18,7 @@ const plugin = {
 
 	rules: {
 		'consistent-deprecated-stories': consistentDeprecatedStories,
+		'consistent-story-titles': consistentStoryTitles,
 		'no-autodocs-tag': noAutodocsTag,
 		'no-cross-component-internal-import': noCrossComponentInternalImport,
 		'no-useless-tsx-extension': noUselessTsxExtension,
@@ -52,6 +54,7 @@ Object.assign(plugin.configs, {
 			files: ['**/*.stories.ts?(x)'],
 			rules: {
 				'@drivenets/ds-internal/consistent-deprecated-stories': 'error',
+				'@drivenets/ds-internal/consistent-story-titles': 'error',
 				'@drivenets/ds-internal/no-autodocs-tag': 'error',
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
 				'@drivenets/ds-internal/require-story-params': 'error',
