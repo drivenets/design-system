@@ -390,6 +390,9 @@ importers:
       eslint:
         specifier: ^10.0.1
         version: 10.0.3(jiti@2.6.1)
+      eslint-plugin-eslint-plugin:
+        specifier: ^7.3.2
+        version: 7.3.2(eslint@10.0.3(jiti@2.6.1))
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -3919,6 +3922,12 @@ packages:
   eslint-no-restricted@0.1.1:
     resolution: {integrity: sha512-wm0bxiG2q3dG+JTGvAHjx/e+blO+K5vN9yDzITq75VLzXAjQd7/iPHfDP7OLXCr5VOB/8pZ+aVCgAx1b/rR1mw==}
     engines: {node: ^20.9.0 || >=22.0.0}
+    peerDependencies:
+      eslint: ^10.0.1
+
+  eslint-plugin-eslint-plugin@7.3.2:
+    resolution: {integrity: sha512-odUwjaeon0s3W96vAmZf13XbTEGKnnXStnRykwM3XysTce7ZI7C8AJRn47OFJMdDNVtG/jLb/gFk0Wvj9zkSbQ==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       eslint: ^10.0.1
 
@@ -9853,6 +9862,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - typescript
+
+  eslint-plugin-eslint-plugin@7.3.2(eslint@10.0.3(jiti@2.6.1)):
+    dependencies:
+      '@eslint-community/eslint-utils': 4.9.1(eslint@10.0.3(jiti@2.6.1))
+      eslint: 10.0.3(jiti@2.6.1)
+      estraverse: 5.3.0
 
   eslint-plugin-import-x@4.16.1(@typescript-eslint/utils@8.56.1(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3))(eslint@10.0.3(jiti@2.6.1)):
     dependencies:
