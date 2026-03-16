@@ -1,0 +1,1 @@
+import{a as e,n as t}from"./chunk-BneVvdWh.js";import{a as n}from"./iframe-B_jYKNIh.js";function r(e){let t=i.useRef(e);return i.useEffect(()=>{t.current=e}),i.useMemo(()=>(...e)=>t.current?.(...e),[])}var i,a=t((()=>{i=e(n(),1)}));export{r as n,a as t};
