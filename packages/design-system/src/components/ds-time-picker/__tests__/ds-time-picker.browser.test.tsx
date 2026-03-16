@@ -11,7 +11,6 @@ const createTime = (hours: number, minutes: number) => {
 
 describe('DsTimePicker', () => {
 	it('should open the time picker when trigger is clicked', async () => {
-		// Arrange.
 		const onOpenChange = vi.fn();
 
 		function Wrapper() {
@@ -22,26 +21,21 @@ describe('DsTimePicker', () => {
 
 		await page.render(<Wrapper />);
 
-		// Act.
 		const trigger = page.getByRole('button', { name: /open time picker/i });
 		await expect.element(trigger).toBeVisible();
 		await trigger.click();
 
-		// Assert.
 		expect(onOpenChange).toHaveBeenCalledWith(true);
 	});
 
 	it('should display formatted default value', async () => {
-		// Arrange.
 		await page.render(<DsTimePicker defaultValue={createTime(14, 30)} onChange={vi.fn()} />);
 
-		// Assert.
 		const input = page.getByRole('textbox');
 		await expect.element(input).toHaveValue('02:30 PM');
 	});
 
 	it('should display controlled value', async () => {
-		// Arrange.
 		function Wrapper() {
 			const [value, setValue] = useState<Date | null>(createTime(9, 45));
 
@@ -50,31 +44,25 @@ describe('DsTimePicker', () => {
 
 		await page.render(<Wrapper />);
 
-		// Assert.
 		const input = page.getByRole('textbox');
 		await expect.element(input).toHaveValue('09:45 AM');
 	});
 
 	it('should support disabled state', async () => {
-		// Arrange.
 		await page.render(<DsTimePicker value={createTime(14, 30)} disabled />);
 
-		// Assert.
 		const input = page.getByRole('textbox');
 		await expect.element(input).toBeDisabled();
 	});
 
 	it('should support read-only state', async () => {
-		// Arrange.
 		await page.render(<DsTimePicker value={createTime(14, 30)} readOnly />);
 
-		// Assert.
 		const input = page.getByRole('textbox');
 		await expect.element(input).toHaveAttribute('readonly');
 	});
 
 	it('should enforce min/max constraints on time selection', async () => {
-		// Arrange.
 		const onOpenChange = vi.fn();
 
 		function Wrapper() {

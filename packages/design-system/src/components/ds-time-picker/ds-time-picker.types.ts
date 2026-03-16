@@ -15,6 +15,10 @@ export interface DsTimePickerProps {
 	disabled?: boolean;
 	readOnly?: boolean;
 
+	/**
+	 * Whether to disable the portal for the popover content
+	 * @default false
+	 */
 	disablePortal?: boolean;
 
 	locale?: DsTimePickerLocale;
