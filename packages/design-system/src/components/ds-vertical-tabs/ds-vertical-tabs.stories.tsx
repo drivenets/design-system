@@ -13,7 +13,7 @@ interface TabItem {
 }
 
 const meta: Meta<typeof DsVerticalTabs> = {
-	title: 'Design System/Vertical Tabs',
+	title: 'Design System/VerticalTabs',
 	component: DsVerticalTabs,
 	parameters: {
 		layout: 'centered',

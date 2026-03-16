@@ -13,4 +13,8 @@ export interface DsTableRowProps<TData> {
 	 * The row data from the table
 	 */
 	row: Row<TData>;
+	/**
+	 * Indicates whether a row is currently selected.
+	 */
+	isSelected: boolean;
 }

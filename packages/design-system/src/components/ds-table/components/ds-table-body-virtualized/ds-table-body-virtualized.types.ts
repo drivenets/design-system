@@ -1,12 +1,14 @@
-import type { Table } from '@tanstack/react-table';
+import { type RefObject, type ReactNode } from 'react';
+import { type RowSelectionState, type Table } from '@tanstack/react-table';
 
 export interface DsTableBodyVirtualizedProps<TData> {
 	table: Table<TData>;
-	tableContainerRef: React.RefObject<HTMLDivElement | null>;
-	emptyState?: React.ReactNode;
+	tableContainerRef: RefObject<HTMLDivElement | null>;
+	emptyState?: ReactNode;
 	estimateSize: number;
 	overscan?: number;
 	onScroll?: (params: ScrollParams) => void;
+	rowSelection: RowSelectionState;
 }
 
 /**

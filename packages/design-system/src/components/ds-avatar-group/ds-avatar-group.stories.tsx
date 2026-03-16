@@ -4,7 +4,7 @@ import { DsAvatarGroup } from './ds-avatar-group';
 import styles from './ds-avatar-group.stories.module.scss';
 
 const meta: Meta<typeof DsAvatarGroup> = {
-	title: 'Design System/Avatar Group',
+	title: 'Design System/AvatarGroup',
 	component: DsAvatarGroup,
 	parameters: {
 		layout: 'centered',

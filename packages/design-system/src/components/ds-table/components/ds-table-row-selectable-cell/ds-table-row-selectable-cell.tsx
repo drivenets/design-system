@@ -8,13 +8,14 @@ import styles from './ds-table-row-selectable-cell.module.scss';
 
 export const DsTableRowSelectableCell = <TData,>({
 	row,
+	isSelected,
 	className,
 }: DsTableRowSelectableCellProps<TData>) => {
 	return (
 		<TableCell className={classnames(styles.cell, className)}>
 			<DsCheckbox
 				className={stylesShared.checkboxContainer}
-				checked={row.getIsSelected()}
+				checked={isSelected}
 				disabled={!row.getCanSelect()}
 				onClick={(e) => {
 					e.stopPropagation();

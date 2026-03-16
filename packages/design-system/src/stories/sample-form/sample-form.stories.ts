@@ -4,7 +4,7 @@ import { faker } from '@faker-js/faker';
 import SampleForm from './sample-form';
 
 const meta: Meta<typeof SampleForm> = {
-	title: 'Examples/Simple form',
+	title: 'Examples/SampleForm',
 	component: SampleForm,
 	tags: ['!autodocs'],
 	parameters: {

@@ -7,7 +7,7 @@ import { systemStatuses } from './ds-system-status.types';
  * @see {@link ../ds-status-badge/ds-status-badge.stories} for examples of the replacement component.
  */
 const meta: Meta<typeof DsSystemStatus> = {
-	title: 'Design System/System Status (Deprecated)',
+	title: 'Design System/SystemStatus (Deprecated)',
 	component: DsSystemStatus,
 	parameters: {
 		layout: 'centered',

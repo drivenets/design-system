@@ -1,6 +1,6 @@
-import { type Row } from '@tanstack/react-table';
+import { useLayoutEffect, useRef, type RefObject, type ReactNode } from 'react';
+import { type Row, type RowSelectionState } from '@tanstack/react-table';
 import { useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
-import { useLayoutEffect, useRef } from 'react';
 import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
 import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
@@ -14,6 +14,7 @@ export const DsTableBodyVirtualized = <TData,>({
 	estimateSize,
 	overscan,
 	onScroll,
+	rowSelection,
 }: DsTableBodyVirtualizedProps<TData>) => {
 	const rowsMapRef = useRef<Map<string, HTMLTableRowElement>>(new Map());
 	const rowHeightsMapRef = useRef<Map<string, number>>(new Map());
@@ -82,19 +83,21 @@ export const DsTableBodyVirtualized = <TData,>({
 			rowVirtualizer={rowVirtualizer}
 			rowsAndExpandedRowContent={rowsAndExpandedRowContent}
 			emptyState={emptyState}
+			rowSelection={rowSelection}
 		/>
 	);
 };
 
 interface DsTableBodyProps<TData> {
 	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
-	rowsMapRef: React.RefObject<Map<string, HTMLTableRowElement>>;
-	rowHeightsMapRef: React.RefObject<Map<string, number>>;
+	rowsMapRef: RefObject<Map<string, HTMLTableRowElement>>;
+	rowHeightsMapRef: RefObject<Map<string, number>>;
 	rowsAndExpandedRowContent: {
 		row: Row<TData>;
 		isExpandedRowContent?: boolean;
 	}[];
-	emptyState?: React.ReactNode;
+	emptyState?: ReactNode;
+	rowSelection: RowSelectionState;
 }
 
 function DsTableBody<TData>({
@@ -103,6 +106,7 @@ function DsTableBody<TData>({
 	rowHeightsMapRef,
 	rowsAndExpandedRowContent,
 	emptyState,
+	rowSelection,
 }: DsTableBodyProps<TData>) {
 	const virtualRows = rowVirtualizer.getVirtualItems();
 
@@ -124,6 +128,7 @@ function DsTableBody<TData>({
 						<DsTableRowVirtualized
 							key={virtualRow.key}
 							row={row.row}
+							isSelected={!!rowSelection[row.row.id]}
 							isExpandedRowContent={row.isExpandedRowContent}
 							rowsMapRef={rowsMapRef}
 							rowHeightsMapRef={rowHeightsMapRef}

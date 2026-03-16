@@ -2,10 +2,13 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import type { Linter } from '@typescript-eslint/utils/ts-eslint';
 
 import { consistentDeprecatedStories } from './rules/consistent-deprecated-stories';
+import { consistentStoryTitles } from './rules/consistent-story-titles';
 import { noAutodocsTag } from './rules/no-autodocs-tag';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
+import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
 import { noVitestInStories } from './rules/no-vitest-in-stories';
+import { requireStoryParams } from './rules/require-story-params';
 
 const plugin = {
 	meta: {
@@ -15,10 +18,13 @@ const plugin = {
 
 	rules: {
 		'consistent-deprecated-stories': consistentDeprecatedStories,
+		'consistent-story-titles': consistentStoryTitles,
 		'no-autodocs-tag': noAutodocsTag,
 		'no-cross-component-internal-import': noCrossComponentInternalImport,
 		'no-useless-tsx-extension': noUselessTsxExtension,
+		'no-vitest-browser-react': noVitestBrowserReact,
 		'no-vitest-in-stories': noVitestInStories,
+		'require-story-params': requireStoryParams,
 	},
 
 	configs: {
@@ -48,8 +54,21 @@ Object.assign(plugin.configs, {
 			files: ['**/*.stories.ts?(x)'],
 			rules: {
 				'@drivenets/ds-internal/consistent-deprecated-stories': 'error',
+				'@drivenets/ds-internal/consistent-story-titles': 'error',
 				'@drivenets/ds-internal/no-autodocs-tag': 'error',
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
+				'@drivenets/ds-internal/require-story-params': 'error',
+			},
+		},
+
+		{
+			name: 'ds-internal:recommended:tests:browser',
+			plugins: {
+				'@drivenets/ds-internal': plugin,
+			},
+			files: ['**/*.browser.test.ts?(x)'],
+			rules: {
+				'@drivenets/ds-internal/no-vitest-browser-react': 'error',
 			},
 		},
 	] satisfies TSESLint.FlatConfig.ConfigArray,

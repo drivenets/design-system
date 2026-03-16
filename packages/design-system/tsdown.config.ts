@@ -1,6 +1,5 @@
-import type { Plugin } from 'vite';
 import * as fs from 'node:fs/promises';
-import { defineConfig } from 'tsdown';
+import { defineConfig, type Rolldown } from 'tsdown';
 import sass from 'rollup-plugin-sass';
 import * as sassEmbedded from 'sass-embedded';
 import postcss from 'postcss';
@@ -58,7 +57,7 @@ export default defineConfig({
 	],
 });
 
-function appendRootStyles(): Plugin {
+function appendRootStyles(): Rolldown.Plugin {
 	return {
 		name: 'append-root-styles',
 		async generateBundle({ format }) {

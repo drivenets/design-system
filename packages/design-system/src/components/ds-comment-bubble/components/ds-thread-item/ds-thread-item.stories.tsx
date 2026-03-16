@@ -5,7 +5,7 @@ import { DsThreadItem, type DsThreadItemProps } from './index';
 import { DsButton } from '../../../ds-button';
 
 const meta: Meta<typeof DsThreadItem> = {
-	title: 'Design System/Comments/Thread Item',
+	title: 'Design System/Comments/ThreadItem',
 	component: DsThreadItem,
 	parameters: {
 		layout: 'padded',

@@ -10,6 +10,7 @@ import { DsTableCell } from '../ds-table-cell';
 
 export const DsTableRowVirtualized = <TData,>({
 	row,
+	isSelected,
 	rowsMapRef,
 	rowHeightsMapRef,
 	rowVirtualizer,
@@ -47,7 +48,7 @@ export const DsTableRowVirtualized = <TData,>({
 					rowsMapRef.current.delete(key);
 				}
 			}}
-			data-state={isActive ? 'active' : row.getIsSelected() ? 'selected' : undefined}
+			data-state={isActive ? 'active' : isSelected ? 'selected' : undefined}
 			className={classnames(
 				styles.row,
 				{
@@ -67,7 +68,9 @@ export const DsTableRowVirtualized = <TData,>({
 				<TableCell>{renderExpandedRow?.(row.original)}</TableCell>
 			) : (
 				<>
-					{selectable && <DsTableRowSelectableCell row={row} className={styles.selectableCell} />}
+					{selectable && (
+						<DsTableRowSelectableCell row={row} isSelected={isSelected} className={styles.selectableCell} />
+					)}
 					{expandable && <DsTableRowExpandableCell row={row} className={styles.expandableCell} />}
 					{row.getVisibleCells().map((cell, idx) => {
 						const isLastColumn = idx === row.getVisibleCells().length - 1;

@@ -1,5 +1,11 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.11
+
+### Patch Changes
+
+- f2aea4f: Update dependencies
+
 ## 0.0.10
 
 ### Patch Changes

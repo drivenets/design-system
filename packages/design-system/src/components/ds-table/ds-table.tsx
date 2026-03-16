@@ -250,12 +250,15 @@ const DsTable = <TData extends { id: string }, TValue>({
 								estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
 								overscan={virtualizedOptions?.overscan}
 								onScroll={onScroll}
+								rowSelection={rowSelection}
 							/>
 						) : (
 							<TableBody>
 								<SortableWrapper>
 									{rows.length
-										? rows.map((row) => <DsTableRow key={row.id} row={row} />)
+										? rows.map((row) => (
+												<DsTableRow key={row.id} row={row} isSelected={!!rowSelection[row.id]} />
+											))
 										: renderEmptyState()}
 								</SortableWrapper>
 							</TableBody>

@@ -5,7 +5,7 @@ import './ds-dropdown-menu.stories.scss';
 import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsDropdownMenuLegacy> = {
-	title: 'Design System/DropdownMenu (Deprecated)',
+	title: 'Design System/DropdownMenuLegacy (Deprecated)',
 	component: DsDropdownMenuLegacy,
 	parameters: {
 		layout: 'centered',

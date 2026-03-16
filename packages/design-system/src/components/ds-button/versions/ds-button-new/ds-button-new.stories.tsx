@@ -8,6 +8,7 @@ import { buttonSizes, buttonTypes, buttonVariants } from './ds-button-new.types'
 import styles from './ds-button-new.stories.module.scss';
 
 const meta: Meta<typeof DsButtonNew> = {
+	// eslint-disable-next-line @drivenets/ds-internal/consistent-story-titles -- We want to show user something different than code.
 	title: 'Design System/Button',
 	component: DsButtonNew,
 	parameters: {
