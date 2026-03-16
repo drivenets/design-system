@@ -5,7 +5,7 @@ import styles from './ds-tooltip.module.scss';
 import type { DsTooltipProps } from './ds-tooltip.types';
 import { DsTypography } from '../ds-typography';
 
-const DsTooltip: FC<DsTooltipProps> = ({ content, children }) => {
+const DsTooltip: FC<DsTooltipProps> = ({ content, children, slotProps }) => {
 	if (content === undefined) {
 		return children;
 	}
@@ -14,14 +14,14 @@ const DsTooltip: FC<DsTooltipProps> = ({ content, children }) => {
 			<Tooltip.Root>
 				<Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
 				<Tooltip.Portal>
-					<Tooltip.Content className={classNames(styles.tooltip)} side="top" align="center" sideOffset={4}>
-						{isValidElement(content) ? (
-							content
-						) : (
-							<DsTypography variant="body-xs-reg" className={styles.content}>
-								{content}
-							</DsTypography>
-						)}
+					<Tooltip.Content
+						className={classNames(styles.tooltip, slotProps?.content?.className)}
+						style={slotProps?.content?.style}
+						side="top"
+						align="center"
+						sideOffset={4}
+					>
+						{isValidElement(content) ? content : <DsTypography variant="body-xs-reg">{content}</DsTypography>}
 						<Tooltip.Arrow className={styles.arrow} />
 					</Tooltip.Content>
 				</Tooltip.Portal>

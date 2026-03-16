@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 export interface DsTooltipProps {
 	/**
@@ -9,4 +9,10 @@ export interface DsTooltipProps {
 	 * The content to be rendered inside the tooltip
 	 */
 	children: ReactNode;
+	slotProps?: {
+		content?: {
+			className?: string;
+			style?: CSSProperties;
+		};
+	};
 }

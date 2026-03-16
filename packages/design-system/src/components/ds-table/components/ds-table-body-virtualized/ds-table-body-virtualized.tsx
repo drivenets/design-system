@@ -4,7 +4,7 @@ import { useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
 import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
-import { TableBody } from '../core-table';
+import { TableBody, TableRow, TableCell } from '../core-table';
 import { EMPTY_TABLE_STATE_TEXT } from '../../utils/constants';
 
 export const DsTableBodyVirtualized = <TData,>({
@@ -138,7 +138,9 @@ function DsTableBody<TData>({
 					);
 				})
 			) : (
-				<div className={styles.emptyState}>{emptyState || EMPTY_TABLE_STATE_TEXT}</div>
+				<TableRow>
+					<TableCell className={styles.emptyState}>{emptyState || EMPTY_TABLE_STATE_TEXT}</TableCell>
+				</TableRow>
 			)}
 		</TableBody>
 	);
