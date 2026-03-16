@@ -93,7 +93,7 @@ const withTanStackRouter = (Story: React.ComponentType, initialPath: string) => 
 };
 
 const meta: Meta<typeof DsBreadcrumb> = {
-	title: 'Components/Breadcrumb',
+	title: 'Design System/Breadcrumb',
 	component: DsBreadcrumb,
 	parameters: {
 		layout: 'centered',

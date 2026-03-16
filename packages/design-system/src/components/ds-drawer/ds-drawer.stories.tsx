@@ -13,7 +13,7 @@ import { DsTypography } from '../ds-typography';
 import type { DsDrawerProps } from './ds-drawer.types';
 
 const meta: Meta<typeof DsDrawer> = {
-	title: 'Components/Drawer',
+	title: 'Design System/Drawer',
 	component: DsDrawer,
 	parameters: {
 		layout: 'fullscreen',

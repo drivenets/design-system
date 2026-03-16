@@ -5,7 +5,7 @@ import { DsButton } from '../ds-button';
 import './ds-grid.stories.scss';
 
 const meta = {
-	title: 'Components/Grid',
+	title: 'Design System/Grid',
 	component: DsGrid,
 	subcomponents: { DsGridItem },
 	parameters: {},

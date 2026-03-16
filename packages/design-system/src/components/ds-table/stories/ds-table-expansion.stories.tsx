@@ -10,7 +10,7 @@ import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Components/Table/Expansion',
+	title: 'Design System/Table/Expansion',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

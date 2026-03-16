@@ -14,7 +14,7 @@ import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Components/Table/Virtualized',
+	title: 'Design System/Table/Virtualized',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

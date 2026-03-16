@@ -4,7 +4,7 @@ import { spinnerSizes } from './ds-spinner.types';
 import styles from './ds-spinner.stories.module.scss';
 
 const meta: Meta<typeof DsSpinner> = {
-	title: 'Components/Spinner',
+	title: 'Design System/Spinner',
 	component: DsSpinner,
 	parameters: {
 		layout: 'centered',

@@ -6,7 +6,7 @@ import { checkDisabled, DefaultDescription, sanityCheck } from './ds-form-contro
 import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Components/FormControl/Password',
+	title: 'Design System/FormControl/Password',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',

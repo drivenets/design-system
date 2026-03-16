@@ -6,7 +6,7 @@ import { checkDisabled, DefaultDescription, sanityCheck } from './ds-form-contro
 import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Components/FormControl/Textarea',
+	title: 'Design System/FormControl/Textarea',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',

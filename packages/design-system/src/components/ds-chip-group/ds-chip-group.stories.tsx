@@ -9,7 +9,7 @@ import styles from './ds-chip-group.stories.module.scss';
  * @see {@link ../ds-tag-filter/ds-tag-filter.stories} for examples of the replacement component.
  */
 const meta: Meta<typeof DsChipGroup> = {
-	title: 'Components/ChipGroup (Deprecated)',
+	title: 'Design System/ChipGroup (Deprecated)',
 	component: DsChipGroup,
 	parameters: {
 		layout: 'padded',

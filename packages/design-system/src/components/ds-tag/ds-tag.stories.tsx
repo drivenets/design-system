@@ -6,7 +6,7 @@ import { tagSizes, tagVariants } from './ds-tag.types';
 import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsTag> = {
-	title: 'Components/Tag',
+	title: 'Design System/Tag',
 	component: DsTag,
 	parameters: {
 		layout: 'centered',

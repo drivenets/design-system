@@ -4,7 +4,7 @@ import { DsLoader, loaderVariants } from './index';
 import styles from './ds-loader.stories.module.scss';
 
 const meta: Meta<typeof DsLoader> = {
-	title: 'Components/Loader',
+	title: 'Design System/Loader',
 	component: DsLoader,
 	parameters: {
 		layout: 'centered',

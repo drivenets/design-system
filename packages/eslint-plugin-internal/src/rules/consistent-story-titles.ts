@@ -6,7 +6,7 @@ import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 type MessageId = 'invalidCategory' | 'invalidComponentName';
 type Options = [];
 
-const CATEGORIES = ['Components', 'Foundations', 'Examples'];
+const CATEGORIES = ['Design System', 'Examples'];
 const DEFAULT_CATEGORY = CATEGORIES[0] as string;
 
 export const consistentStoryTitles = createRule<Options, MessageId>({

@@ -280,7 +280,7 @@ const WorkflowDsTreeNode = ({
 );
 
 const meta: Meta<typeof DsTree.Root> = {
-	title: 'Components/Tree',
+	title: 'Design System/Tree',
 	component: DsTree.Root,
 	parameters: {
 		layout: 'padded',

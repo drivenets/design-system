@@ -62,7 +62,7 @@ const createMockComment = (overrides: Partial<CommentData> = {}): CommentData =>
 });
 
 const meta: Meta<typeof DsCommentCard> = {
-	title: 'Components/Comments/CommentCard',
+	title: 'Design System/Comments/CommentCard',
 	component: DsCommentCard,
 	parameters: {
 		layout: 'centered',

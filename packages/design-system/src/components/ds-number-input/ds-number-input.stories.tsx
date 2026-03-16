@@ -4,7 +4,7 @@ import { useState } from 'react';
 import DsNumberInput from './ds-number-input';
 
 const meta: Meta<typeof DsNumberInput> = {
-	title: 'Components/NumberInput',
+	title: 'Design System/NumberInput',
 	component: DsNumberInput,
 	parameters: {
 		layout: 'centered',

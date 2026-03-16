@@ -9,7 +9,7 @@ import styles from './ds-confirmation.stories.module.scss';
  * @see {@link ../ds-modal/ds-modal.stories} for examples of the replacement component.
  */
 const meta: Meta<typeof DsConfirmation> = {
-	title: 'Components/Confirmation (Deprecated)',
+	title: 'Design System/Confirmation (Deprecated)',
 	component: DsConfirmation,
 	tags: ['deprecated'],
 	parameters: {

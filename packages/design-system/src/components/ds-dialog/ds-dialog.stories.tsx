@@ -7,7 +7,7 @@ import { DsDialog } from '../ds-dialog';
 import styles from './ds-dialog.stories.module.scss';
 
 const meta: Meta<typeof DsDialog> = {
-	title: 'Components/Dialog',
+	title: 'Design System/Dialog',
 	component: DsDialog,
 	parameters: {
 		layout: 'centered',

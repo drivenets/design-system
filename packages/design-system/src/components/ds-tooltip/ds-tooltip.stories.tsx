@@ -7,7 +7,7 @@ import styles from './ds-tooltip.stories.module.scss';
 import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsTooltip> = {
-	title: 'Components/Tooltip',
+	title: 'Design System/Tooltip',
 	component: DsTooltip,
 	parameters: {
 		layout: 'centered',

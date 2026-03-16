@@ -214,7 +214,7 @@ const createMockComments = (): CommentData[] => [
 ];
 
 const meta: Meta<typeof DsCommentsDrawer> = {
-	title: 'Components/Comments/CommentsDrawer',
+	title: 'Design System/Comments/CommentsDrawer',
 	component: DsCommentsDrawer,
 	parameters: {
 		layout: 'fullscreen',

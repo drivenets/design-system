@@ -12,7 +12,7 @@ import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState, ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Components/Table/Active Row',
+	title: 'Design System/Table/Active Row',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

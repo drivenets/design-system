@@ -7,7 +7,7 @@ import { expect, userEvent } from 'storybook/test';
 import type { DsPanelVariant } from './ds-panel.types';
 
 export default {
-	title: 'Components/Panel',
+	title: 'Design System/Panel',
 	component: DsPanel,
 	parameters: {
 		layout: 'centered',

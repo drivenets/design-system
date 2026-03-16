@@ -10,7 +10,7 @@ import DocsPage from './stories/adapters/simple-file-upload-adapter.docs.mdx';
 import type { FileMetadata } from './ds-file-upload-api.types';
 
 const meta: Meta<typeof DsFileUpload> = {
-	title: 'Components/FileUpload',
+	title: 'Design System/FileUpload',
 	component: DsFileUpload,
 	parameters: {
 		layout: 'centered',

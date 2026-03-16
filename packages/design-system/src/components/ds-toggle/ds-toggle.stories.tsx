@@ -6,7 +6,7 @@ import DsToggle from './ds-toggle';
 import { toggleSizes } from './ds-toggle.types';
 
 const meta: Meta<typeof DsToggle> = {
-	title: 'Components/Toggle',
+	title: 'Design System/Toggle',
 	component: DsToggle,
 	parameters: {
 		layout: 'centered',

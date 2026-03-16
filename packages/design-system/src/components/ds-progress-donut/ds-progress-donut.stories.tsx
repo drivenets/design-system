@@ -6,7 +6,7 @@ import { DsProgressDonut, progressDonutSizes, progressDonutVariants } from './in
 import styles from './ds-progress-donut.stories.module.scss';
 
 const meta: Meta<typeof DsProgressDonut> = {
-	title: 'Components/ProgressDonut',
+	title: 'Design System/ProgressDonut',
 	component: DsProgressDonut,
 	parameters: {
 		layout: 'centered',

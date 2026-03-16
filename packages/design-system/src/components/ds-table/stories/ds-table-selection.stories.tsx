@@ -9,7 +9,7 @@ import { fullHeightDecorator } from './common/story-decorators';
 import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Components/Table/Selection',
+	title: 'Design System/Table/Selection',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
