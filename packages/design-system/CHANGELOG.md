@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.7.3
+
+### Patch Changes
+
+- 0a8cdaa: Add `isSelected` prop to `DsTableRow`
+
 ## 0.7.2
 
 ### Patch Changes
