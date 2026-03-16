@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";var t,n=e((()=>{t=e=>e.getAllByRole(`row`).filter(e=>!e.querySelector(`th`))}));export{n,t};
