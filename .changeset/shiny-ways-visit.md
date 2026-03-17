@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-Implement `DsTimePicker` component
+Add `DsTimePicker` component
