@@ -5,7 +5,6 @@ import type { DsTimePickerProps } from './ds-time-picker.types';
 import { clampTime, formatTime, parseTime, timeScrollerAdapter } from './ds-time-picker.utils';
 import { TimeScroller } from './components/time-scroller/time-scroller';
 import { DsIcon } from '../ds-icon';
-import styles from './ds-time-picker.module.scss';
 import { DsButton } from '../ds-button';
 import { DsTextInput } from '../ds-text-input';
 import { useControlled } from '../../utils/use-controlled';
@@ -118,7 +117,6 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 						ref={inputRef}
 						id={id}
 						placeholder={placeholder ?? 'hh:mm AM/PM'}
-						className={styles.input}
 						defaultValue={formattedValue}
 						onChange={handleInputChange}
 						onFocus={handleFocus}
