@@ -32,6 +32,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 
 	const formattedValue = formatTime(value);
 
+	// If the time is before the min or after the max, immediately clamp it to the min or max
 	if (value) {
 		const clamped = clampTime(value, min, max);
 
