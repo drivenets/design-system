@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
 import DsTimePicker from './ds-time-picker';
 import type { DsTimePickerProps } from './ds-time-picker.types';
 import styles from './ds-time-picker.stories.module.scss';
@@ -28,10 +27,6 @@ const createTime = (hours: number, minutes: number) => {
 };
 
 export const Default: Story = {
-	args: {
-		onChange: fn(),
-		onOpenChange: fn(),
-	},
 	render: function Render(args) {
 		const [value, setValue] = useState<Date | null>();
 
@@ -53,14 +48,10 @@ export const WithDefaultValue: Story = {
 	args: {
 		className: styles.container,
 		defaultValue: createTime(14, 30),
-		onChange: fn(),
 	},
 };
 
 export const Controlled: Story = {
-	args: {
-		onChange: fn(),
-	},
 	render: function Render(args) {
 		const defaultDate = createTime(9, 45);
 
@@ -106,8 +97,6 @@ export const ReadOnly: Story = {
 
 export const WithMinMax: Story = {
 	args: {
-		onChange: fn(),
-		onOpenChange: fn(),
 		min: createTime(9, 30),
 		max: createTime(17, 40),
 	},
