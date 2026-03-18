@@ -127,7 +127,6 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 						disabled={disabled}
 						{...slotProps?.input}
 						slots={{
-							...slotProps?.input?.slots,
 							endAdornment: slotProps?.input?.slots?.endAdornment ?? (
 								<Popover.Trigger asChild>
 									<DsButton
@@ -141,6 +140,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 									</DsButton>
 								</Popover.Trigger>
 							),
+							...slotProps?.input?.slots,
 						}}
 					/>
 				</div>
