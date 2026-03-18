@@ -2,10 +2,7 @@ import { useState } from 'react';
 
 /**
  * A hook that manages a controlled or uncontrolled value.
- * @param value - The controlled value.
- * @param setValue - The function to set the value.
- * @param defaultValue - The default value.
- * @returns A tuple of the resolved value and the resolved setValue.
+ * It is considered controlled if both value and setValue are provided.
  */
 export const useControlled = <T>(
 	value: T | undefined,
