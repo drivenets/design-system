@@ -11,12 +11,10 @@ const createTime = (hours: number, minutes: number) => {
 
 describe('DsTimePicker', () => {
 	it('should open the time picker when trigger is clicked', async () => {
-		const onOpenChange = vi.fn();
-
 		function Wrapper() {
 			const [value, setValue] = useState<Date | null>(null);
 
-			return <DsTimePicker value={value} onChange={setValue} onOpenChange={onOpenChange} disablePortal />;
+			return <DsTimePicker value={value} onChange={setValue} disablePortal />;
 		}
 
 		await page.render(<Wrapper />);
@@ -25,7 +23,7 @@ describe('DsTimePicker', () => {
 		expect(trigger).toBeVisible();
 		await trigger.click();
 
-		expect(onOpenChange).toHaveBeenCalledWith(true);
+		expect(page.getByRole('dialog')).toBeVisible();
 	});
 
 	it('should display formatted default value', async () => {
@@ -63,8 +61,6 @@ describe('DsTimePicker', () => {
 	});
 
 	it('should enforce min/max constraints on time selection', async () => {
-		const onOpenChange = vi.fn();
-
 		function Wrapper() {
 			const [value, setValue] = useState<Date | null>(createTime(13, 50));
 
@@ -73,7 +69,6 @@ describe('DsTimePicker', () => {
 					<DsTimePicker
 						value={value}
 						onChange={setValue}
-						onOpenChange={onOpenChange}
 						min={createTime(9, 30)}
 						max={createTime(17, 40)}
 						disablePortal
@@ -92,7 +87,6 @@ describe('DsTimePicker', () => {
 
 		const trigger = page.getByRole('button', { name: /open time picker/i });
 		await trigger.click();
-		expect(onOpenChange).toHaveBeenCalledWith(true);
 
 		const hourListbox = page.getByRole('listbox', { name: 'Hour' });
 		const minuteListbox = page.getByRole('listbox', { name: 'Minute' });
