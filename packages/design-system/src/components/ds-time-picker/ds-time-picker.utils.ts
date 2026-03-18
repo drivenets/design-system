@@ -131,7 +131,7 @@ export const timeScrollerAdapter = (
 	setDate?: (date: Date | null) => void,
 	min?: Date,
 	max?: Date,
-): Pick<TimeScrollerProps, 'slots'> => {
+) => {
 	const hour = date ? to12Hour(date.getHours()) : undefined;
 	const minute = date?.getMinutes();
 	const period = date ? (date.getHours() >= 12 ? 'PM' : 'AM') : undefined;
@@ -172,5 +172,5 @@ export const timeScrollerAdapter = (
 				isDisabled: isPeriodDisabled,
 			},
 		},
-	};
+	} satisfies Pick<TimeScrollerProps, 'slots'>;
 };

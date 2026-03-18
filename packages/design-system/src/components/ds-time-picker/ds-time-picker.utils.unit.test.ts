@@ -11,10 +11,6 @@ function assertDate(value: unknown): asserts value is Date {
 	expect(value).toBeInstanceOf(Date);
 }
 
-function assertDefined<T>(value: T | undefined): asserts value is T {
-	expect(value).toBeDefined();
-}
-
 describe('Time Picker Utils', () => {
 	describe('clampTime', () => {
 		it('should return the original date when within bounds', () => {
@@ -193,7 +189,6 @@ describe('Time Picker Utils', () => {
 				const setDate = vi.fn<(date: Date | null) => void>();
 				const adapter = timeScrollerAdapter(createTime(14, 30), setDate);
 
-				assertDefined(adapter.slots.hour.onChange);
 				adapter.slots.hour.onChange(5);
 
 				expect(setDate).toHaveBeenCalledOnce();
@@ -207,7 +202,6 @@ describe('Time Picker Utils', () => {
 				const setDate = vi.fn<(date: Date | null) => void>();
 				const adapter = timeScrollerAdapter(undefined, setDate);
 
-				assertDefined(adapter.slots.hour.onChange);
 				adapter.slots.hour.onChange(9);
 
 				expect(setDate).toHaveBeenCalledOnce();
@@ -223,7 +217,6 @@ describe('Time Picker Utils', () => {
 				const setDate = vi.fn<(date: Date | null) => void>();
 				const adapter = timeScrollerAdapter(createTime(14, 30), setDate);
 
-				assertDefined(adapter.slots.minute.onChange);
 				adapter.slots.minute.onChange(45);
 
 				expect(setDate).toHaveBeenCalledOnce();
@@ -239,7 +232,6 @@ describe('Time Picker Utils', () => {
 				const setDate = vi.fn<(date: Date | null) => void>();
 				const adapter = timeScrollerAdapter(createTime(14, 30), setDate);
 
-				assertDefined(adapter.slots.period.onChange);
 				adapter.slots.period.onChange('AM');
 
 				expect(setDate).toHaveBeenCalledOnce();
@@ -253,7 +245,6 @@ describe('Time Picker Utils', () => {
 				const setDate = vi.fn<(date: Date | null) => void>();
 				const adapter = timeScrollerAdapter(createTime(9, 15), setDate);
 
-				assertDefined(adapter.slots.period.onChange);
 				adapter.slots.period.onChange('PM');
 
 				expect(setDate).toHaveBeenCalledOnce();
@@ -277,18 +268,16 @@ describe('Time Picker Utils', () => {
 				const min = createTime(13, 0);
 				const adapter = timeScrollerAdapter(createTime(14, 0), undefined, min);
 
-				assertDefined(adapter.slots.period.isDisabled);
-				expect(adapter.slots.period.isDisabled('AM')).toBe(true);
-				expect(adapter.slots.period.isDisabled('PM')).toBe(false);
+				expect(adapter.slots.period.isDisabled?.('AM')).toBe(true);
+				expect(adapter.slots.period.isDisabled?.('PM')).toBe(false);
 			});
 
 			it('should disable PM when max is in AM range', () => {
 				const max = createTime(11, 0);
 				const adapter = timeScrollerAdapter(createTime(9, 0), undefined, undefined, max);
 
-				assertDefined(adapter.slots.period.isDisabled);
-				expect(adapter.slots.period.isDisabled('PM')).toBe(true);
-				expect(adapter.slots.period.isDisabled('AM')).toBe(false);
+				expect(adapter.slots.period.isDisabled?.('PM')).toBe(true);
+				expect(adapter.slots.period.isDisabled?.('AM')).toBe(false);
 			});
 
 			it('should disable hours outside min/max range', () => {
@@ -296,19 +285,17 @@ describe('Time Picker Utils', () => {
 				const max = createTime(17, 0);
 				const adapter = timeScrollerAdapter(createTime(10, 0), undefined, min, max);
 
-				assertDefined(adapter.slots.hour.isDisabled);
-				expect(adapter.slots.hour.isDisabled(8)).toBe(true);
-				expect(adapter.slots.hour.isDisabled(10)).toBe(false);
+				expect(adapter.slots.hour.isDisabled?.(8)).toBe(true);
+				expect(adapter.slots.hour.isDisabled?.(10)).toBe(false);
 			});
 
 			it('should disable minutes outside min/max range', () => {
 				const min = createTime(9, 30);
 				const adapter = timeScrollerAdapter(createTime(9, 45), undefined, min);
 
-				assertDefined(adapter.slots.minute.isDisabled);
-				expect(adapter.slots.minute.isDisabled(15)).toBe(true);
-				expect(adapter.slots.minute.isDisabled(30)).toBe(false);
-				expect(adapter.slots.minute.isDisabled(45)).toBe(false);
+				expect(adapter.slots.minute.isDisabled?.(15)).toBe(true);
+				expect(adapter.slots.minute.isDisabled?.(30)).toBe(false);
+				expect(adapter.slots.minute.isDisabled?.(45)).toBe(false);
 			});
 
 			it('should clamp setDate result to min/max', () => {
@@ -317,7 +304,6 @@ describe('Time Picker Utils', () => {
 				const max = createTime(17, 0);
 				const adapter = timeScrollerAdapter(createTime(10, 0), setDate, min, max);
 
-				assertDefined(adapter.slots.hour.onChange);
 				adapter.slots.hour.onChange(7);
 
 				const result = setDate.mock.calls[0]?.[0];
