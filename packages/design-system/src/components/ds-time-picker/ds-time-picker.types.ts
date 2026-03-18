@@ -3,6 +3,7 @@ import type { DsTextInputProps } from '../ds-text-input';
 import type { PopoverContentProps } from '@ark-ui/react/popover';
 
 export interface DsTimePickerProps {
+	id?: string;
 	ref?: RefObject<HTMLDivElement>;
 	className?: string;
 

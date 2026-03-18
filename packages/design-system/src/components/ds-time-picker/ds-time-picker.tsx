@@ -12,6 +12,7 @@ import { useControlled } from '../../utils/use-controlled';
 
 const DsTimePicker = (props: DsTimePickerProps) => {
 	const {
+		id,
 		ref,
 		className,
 		min,
@@ -116,6 +117,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 				<div ref={ref} className={className}>
 					<DsTextInput
 						ref={inputRef}
+						id={id}
 						placeholder={locale?.placeholder ?? 'hh:mm AM/PM'}
 						className={styles.input}
 						defaultValue={formatTime(value)}

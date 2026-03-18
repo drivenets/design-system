@@ -50,12 +50,7 @@ const getTimeRange = (min?: Date, max?: Date) => ({
 	maxTime: max ? toMinutesSinceMidnight(max) : PM_END,
 });
 
-const validateMinMax = (
-	hour?: number,
-	period?: TimePeriod,
-	min?: Date,
-	max?: Date,
-): Pick<TimeScrollerProps, 'isHourDisabled' | 'isMinuteDisabled' | 'isPeriodDisabled'> => {
+const validateMinMax = (hour?: number, period?: TimePeriod, min?: Date, max?: Date) => {
 	if (!min && !max) {
 		return {};
 	}
@@ -136,7 +131,7 @@ export const timeScrollerAdapter = (
 	setDate?: (date: Date | null) => void,
 	min?: Date,
 	max?: Date,
-): Omit<TimeScrollerProps, 'open'> => {
+): Pick<TimeScrollerProps, 'slots'> => {
 	const hour = date ? to12Hour(date.getHours()) : undefined;
 	const minute = date?.getMinutes();
 	const period = date ? (date.getHours() >= 12 ? 'PM' : 'AM') : undefined;
@@ -145,28 +140,37 @@ export const timeScrollerAdapter = (
 		setDate?.(clampTime(newDate, min, max));
 	};
 
+	const { isHourDisabled, isMinuteDisabled, isPeriodDisabled } = validateMinMax(hour, period, min, max);
+
 	return {
-		hour,
-		minute,
-		period,
-		...validateMinMax(hour, period, min, max),
-
-		onHourChange: (h: number) => {
-			const newDate = date ? new Date(date) : new Date();
-			newDate.setHours(to24Hour(h, period ?? 'AM'), minute ?? 0, 0, 0);
-			clampAndSet(newDate);
-		},
-
-		onMinuteChange: (m: number) => {
-			const newDate = date ? new Date(date) : new Date();
-			newDate.setHours(to24Hour(hour ?? 12, period ?? 'AM'), m, 0, 0);
-			clampAndSet(newDate);
-		},
-
-		onPeriodChange: (p: TimePeriod) => {
-			const newDate = date ? new Date(date) : new Date();
-			newDate.setHours(to24Hour(hour ?? 12, p), minute ?? 0, 0, 0);
-			clampAndSet(newDate);
+		slots: {
+			hour: {
+				value: hour,
+				onChange: (h: number) => {
+					const newDate = date ? new Date(date) : new Date();
+					newDate.setHours(to24Hour(h, period ?? 'AM'), minute ?? 0, 0, 0);
+					clampAndSet(newDate);
+				},
+				isDisabled: isHourDisabled,
+			},
+			minute: {
+				value: minute,
+				onChange: (m: number) => {
+					const newDate = date ? new Date(date) : new Date();
+					newDate.setHours(to24Hour(hour ?? 12, period ?? 'AM'), m, 0, 0);
+					clampAndSet(newDate);
+				},
+				isDisabled: isMinuteDisabled,
+			},
+			period: {
+				value: period,
+				onChange: (p: TimePeriod) => {
+					const newDate = date ? new Date(date) : new Date();
+					newDate.setHours(to24Hour(hour ?? 12, p), minute ?? 0, 0, 0);
+					clampAndSet(newDate);
+				},
+				isDisabled: isPeriodDisabled,
+			},
 		},
 	};
 };

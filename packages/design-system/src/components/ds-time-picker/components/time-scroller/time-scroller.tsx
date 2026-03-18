@@ -4,25 +4,18 @@ import type { TimePeriod, TimeScrollerProps } from './time-scroller.types';
 import styles from './time-scroller.module.scss';
 import { useScrollToSelected } from './time-scroller.utils';
 
+/**
+ * In AM/PM mode, hours start from 12 and then go from to 1 to 11.
+ * e.g. 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
+ */
 const HOURS = [12, ...Array.from({ length: 11 }, (_, i) => i + 1)];
+
 const MINUTES = Array.from({ length: 60 }, (_, i) => i);
 const PERIODS: TimePeriod[] = ['AM', 'PM'];
 
-export const TimeScroller = ({
-	open,
-	hour,
-	minute,
-	period,
-	isHourDisabled,
-	isMinuteDisabled,
-	isPeriodDisabled,
-	onHourChange,
-	onMinuteChange,
-	onPeriodChange,
-	className,
-}: TimeScrollerProps) => {
-	const hourScroll = useScrollToSelected(hour, open);
-	const minuteScroll = useScrollToSelected(minute, open);
+export const TimeScroller = ({ open, slots: { hour, minute, period }, className }: TimeScrollerProps) => {
+	const hourScroll = useScrollToSelected(hour.value, open);
+	const minuteScroll = useScrollToSelected(minute.value, open);
 
 	return (
 		<div className={classNames(styles.container, className)}>
@@ -30,11 +23,11 @@ export const TimeScroller = ({
 				{HOURS.map((h) => (
 					<TimeItem
 						key={h}
-						ref={h === hour ? hourScroll.selectedRef : undefined}
+						ref={h === hour.value ? hourScroll.selectedRef : undefined}
 						label={String(h).padStart(2, '0')}
-						selected={h === hour}
-						disabled={isHourDisabled?.(h)}
-						onClick={() => onHourChange?.(h)}
+						selected={h === hour.value}
+						disabled={hour.isDisabled?.(h)}
+						onClick={() => hour.onChange?.(h)}
 					/>
 				))}
 			</div>
@@ -43,11 +36,11 @@ export const TimeScroller = ({
 				{MINUTES.map((m) => (
 					<TimeItem
 						key={m}
-						ref={m === minute ? minuteScroll.selectedRef : undefined}
+						ref={m === minute.value ? minuteScroll.selectedRef : undefined}
 						label={String(m).padStart(2, '0')}
-						selected={m === minute}
-						disabled={isMinuteDisabled?.(m)}
-						onClick={() => onMinuteChange?.(m)}
+						selected={m === minute.value}
+						disabled={minute.isDisabled?.(m)}
+						onClick={() => minute.onChange?.(m)}
 					/>
 				))}
 			</div>
@@ -57,9 +50,9 @@ export const TimeScroller = ({
 					<TimeItem
 						key={p}
 						label={p}
-						selected={p === period}
-						disabled={isPeriodDisabled?.(p)}
-						onClick={() => onPeriodChange?.(p)}
+						selected={p === period.value}
+						disabled={period.isDisabled?.(p)}
+						onClick={() => period.onChange?.(p)}
 					/>
 				))}
 			</div>
