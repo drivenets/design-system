@@ -13,7 +13,7 @@ const HOURS = [12, ...Array.from({ length: 11 }, (_, i) => i + 1)];
 const MINUTES = Array.from({ length: 60 }, (_, i) => i);
 const PERIODS: TimePeriod[] = ['AM', 'PM'];
 
-export const TimeScroller = ({ open, slots: { hour, minute, period }, className }: TimeScrollerProps) => {
+export const TimeScroller = ({ open, slotProps: { hour, minute, period }, className }: TimeScrollerProps) => {
 	const hourScroll = useScrollToSelected(hour.value, open);
 	const minuteScroll = useScrollToSelected(minute.value, open);
 

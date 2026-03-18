@@ -143,7 +143,7 @@ export const timeScrollerAdapter = (
 	const { isHourDisabled, isMinuteDisabled, isPeriodDisabled } = validateMinMax(hour, period, min, max);
 
 	return {
-		slots: {
+		slotProps: {
 			hour: {
 				value: hour,
 				onChange: (h: number) => {
@@ -172,5 +172,5 @@ export const timeScrollerAdapter = (
 				isDisabled: isPeriodDisabled,
 			},
 		},
-	} satisfies Pick<TimeScrollerProps, 'slots'>;
+	} satisfies Pick<TimeScrollerProps, 'slotProps'>;
 };

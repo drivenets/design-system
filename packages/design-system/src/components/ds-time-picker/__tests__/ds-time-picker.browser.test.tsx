@@ -20,17 +20,17 @@ describe('DsTimePicker', () => {
 		await page.render(<Wrapper />);
 
 		const trigger = page.getByRole('button', { name: /open time picker/i });
-		expect(trigger).toBeVisible();
+		await expect.element(trigger).toBeVisible();
 		await trigger.click();
 
-		expect(page.getByRole('dialog')).toBeVisible();
+		await expect.element(page.getByRole('dialog')).toBeVisible();
 	});
 
 	it('should display formatted default value', async () => {
 		await page.render(<DsTimePicker defaultValue={createTime(14, 30)} onChange={vi.fn()} />);
 
 		const input = page.getByRole('textbox');
-		expect(input).toHaveValue('02:30 PM');
+		await expect.element(input).toHaveValue('02:30 PM');
 	});
 
 	it('should display controlled value', async () => {
@@ -43,21 +43,21 @@ describe('DsTimePicker', () => {
 		await page.render(<Wrapper />);
 
 		const input = page.getByRole('textbox');
-		expect(input).toHaveValue('09:45 AM');
+		await expect.element(input).toHaveValue('09:45 AM');
 	});
 
 	it('should support disabled state', async () => {
 		await page.render(<DsTimePicker value={createTime(14, 30)} disabled />);
 
 		const input = page.getByRole('textbox');
-		expect(input).toBeDisabled();
+		await expect.element(input).toBeDisabled();
 	});
 
 	it('should support read-only state', async () => {
 		await page.render(<DsTimePicker value={createTime(14, 30)} readOnly />);
 
 		const input = page.getByRole('textbox');
-		expect(input).toHaveAttribute('readonly');
+		await expect.element(input).toHaveAttribute('readonly');
 	});
 
 	it('should enforce min/max constraints on time selection', async () => {
@@ -94,41 +94,55 @@ describe('DsTimePicker', () => {
 		const valueDisplay = page.getByText(/Value:/);
 
 		// Hours outside valid range are disabled (8 PM > max, 6 PM > max)
-		expect(hourListbox.getByRole('option', { name: '08' })).toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(hourListbox.getByRole('option', { name: '08' }))
+			.toHaveAttribute('aria-disabled', 'true');
 
-		expect(hourListbox.getByRole('option', { name: '06' })).toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(hourListbox.getByRole('option', { name: '06' }))
+			.toHaveAttribute('aria-disabled', 'true');
 
 		// Hour 5 PM is within range
 		const hour5PM = hourListbox.getByRole('option', { name: '05' });
-		expect(hour5PM).not.toHaveAttribute('aria-disabled', 'true');
+		await expect.element(hour5PM).not.toHaveAttribute('aria-disabled', 'true');
 
 		// Click hour 5 PM — minute 50 exceeds max 5:40 PM → clamp to 5:40 PM
 		await hour5PM.click();
-		expect(valueDisplay).toHaveTextContent('17:40');
+		await expect.element(valueDisplay).toHaveTextContent('17:40');
 
 		// At 5:40 PM, minutes > 40 are disabled
-		expect(minuteListbox.getByRole('option', { name: '45' })).toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(minuteListbox.getByRole('option', { name: '45' }))
+			.toHaveAttribute('aria-disabled', 'true');
 
 		// Minute 40 is at the boundary, should be enabled
 		const minute40 = minuteListbox.getByRole('option', { name: '40' });
-		expect(minute40).not.toHaveAttribute('aria-disabled', 'true');
+		await expect.element(minute40).not.toHaveAttribute('aria-disabled', 'true');
 		await minute40.click();
 
 		// Switch to AM — 5:40 PM → clamp to 9:30 AM (min)
 		await periodListbox.getByRole('option', { name: 'AM' }).click();
-		expect(valueDisplay).toHaveTextContent('09:30');
+		await expect.element(valueDisplay).toHaveTextContent('09:30');
 
 		// At 9:30 AM, hours before 9 are disabled
-		expect(hourListbox.getByRole('option', { name: '08' })).toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(hourListbox.getByRole('option', { name: '08' }))
+			.toHaveAttribute('aria-disabled', 'true');
 
 		// Hour 9 AM is within range
-		expect(hourListbox.getByRole('option', { name: '09' })).not.toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(hourListbox.getByRole('option', { name: '09' }))
+			.not.toHaveAttribute('aria-disabled', 'true');
 
 		// At 9:30 AM, minutes < 30 are disabled
-		expect(minuteListbox.getByRole('option', { name: '25' })).toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(minuteListbox.getByRole('option', { name: '25' }))
+			.toHaveAttribute('aria-disabled', 'true');
 
 		// Minute 30 is at the boundary, should be enabled
-		expect(minuteListbox.getByRole('option', { name: '30' })).not.toHaveAttribute('aria-disabled', 'true');
+		await expect
+			.element(minuteListbox.getByRole('option', { name: '30' }))
+			.not.toHaveAttribute('aria-disabled', 'true');
 	});
 
 	it('should support full keyboard interaction', async () => {
@@ -163,7 +177,7 @@ describe('DsTimePicker', () => {
 
 		// Popover opens — Ark UI focuses first focusable element (hour 12)
 		const hourListbox = page.getByRole('listbox', { name: 'Hour' });
-		expect(hourListbox).toBeVisible();
+		await expect.element(hourListbox).toBeVisible();
 
 		// Tab to hour 01 and select it
 		await userEvent.tab();
@@ -178,6 +192,6 @@ describe('DsTimePicker', () => {
 		await userEvent.keyboard('{Enter}');
 
 		// 1:02 AM = 01:02 in 24h format
-		expect(page.getByText('Value:')).toHaveTextContent('01:02');
+		await expect.element(page.getByText('Value:')).toHaveTextContent('01:02');
 	});
 });

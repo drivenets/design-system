@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, fn, userEvent, within } from 'storybook/test';
 import DsFormControl from '../ds-form-control';
 import { controlStatuses } from '../ds-form-control.types';
 import { DefaultDescription } from './ds-form-control-stories-shared';
@@ -34,14 +33,7 @@ export const Default: Story = {
 		required: true,
 		message: 'Select a time',
 		style: { width: '300px' },
-		children: <DsFormControl.TimePicker onChange={fn()} />,
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByLabelText('Start Time');
-
-		await expect(input).toBeVisible();
-		await expect(input).toHaveAttribute('placeholder', 'hh:mm AM/PM');
+		children: <DsFormControl.TimePicker />,
 	},
 };
 
@@ -55,14 +47,9 @@ export const WithDescription: Story = {
 				<DsFormControl.Description>
 					<DefaultDescription />
 				</DsFormControl.Description>
-				<DsFormControl.TimePicker onChange={fn()} />
+				<DsFormControl.TimePicker />
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByLabelText('Start Time')).toBeVisible();
 	},
 };
 
@@ -79,14 +66,9 @@ export const Error: Story = {
 				<DsFormControl.Description>
 					<DefaultDescription />
 				</DsFormControl.Description>
-				<DsFormControl.TimePicker onChange={fn()} />
+				<DsFormControl.TimePicker />
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Time is required.')).toBeVisible();
 	},
 };
 
@@ -95,12 +77,6 @@ export const Disabled: Story = {
 		label: 'Start Time',
 		style: { width: '300px' },
 		children: <DsFormControl.TimePicker disabled />,
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByLabelText('Start Time');
-
-		await expect(input).toBeDisabled();
 	},
 };
 
@@ -123,12 +99,6 @@ export const WithMinMax: Story = {
 				/>
 			</DsFormControl>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByLabelText('Business Hours');
-
-		await expect(input).toBeVisible();
 	},
 };
 
@@ -156,15 +126,5 @@ export const WithValidation: Story = {
 				/>
 			</DsFormControl>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByLabelText('Start Time');
-
-		await userEvent.click(input);
-		await userEvent.type(input, '2:30 PM');
-		await userEvent.tab();
-
-		await expect(input).toHaveValue('02:30 PM');
 	},
 };

@@ -3,7 +3,7 @@ export type TimePeriod = 'AM' | 'PM';
 export interface TimeScrollerProps {
 	className?: string;
 	open: boolean;
-	slots: {
+	slotProps: {
 		hour: TimeScrollerSlotProps<number>;
 		minute: TimeScrollerSlotProps<number>;
 		period: TimeScrollerSlotProps<TimePeriod>;
