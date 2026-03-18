@@ -1,2 +1,6 @@
 # Codeowners & All github actions related files
 /.github/ @StyleShit @aroba-dn
+
+
+/packages/commitlint-plugin/ @StyleShit
+/packages/eslint-plugin-internal/ @StyleShit

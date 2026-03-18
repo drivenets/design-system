@@ -4,12 +4,13 @@
 
 This monorepo contains the following packages:
 
-| Package                                      | Description                                     |
-| -------------------------------------------- | ----------------------------------------------- |
-| `@drivenets/design-system`                   | The core design system package                  |
-| `@drivenets/eslint-plugin-design-system`     | ESLint plugin for enforcing design system rules |
-| `@drivenets/vite-plugin-design-system`       | Vite plugin for integrating the design system   |
-| `@drivenets/commitlint-plugin-design-system` | Commitlint plugin for commit conventions        |
+| Package                                      | Description                                                         |
+| -------------------------------------------- | ------------------------------------------------------------------- |
+| `@drivenets/design-system`                   | The core design system package                                      |
+| `@drivenets/eslint-plugin-design-system`     | ESLint plugin for enforcing design system rules                     |
+| `@drivenets/vite-plugin-design-system`       | Vite plugin for integrating the design system                       |
+| `@drivenets/commitlint-plugin-design-system` | Commitlint plugin for commit conventions                            |
+| `@drivenets/eslint-plugin-internal`          | ESLint plugin for enforcing internal conventions & coding standards |
 
 ## Storybook Deployment
 

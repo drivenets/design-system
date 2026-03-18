@@ -9,10 +9,11 @@ globs: packages/**/*
 
 ```
 packages/
-├── design-system/       # @drivenets/design-system
-├── eslint-plugin/       # @drivenets/eslint-plugin-design-system
-├── vite-plugin/         # @drivenets/vite-plugin-design-system
-└── commitlint-plugin/   # @drivenets/commitlint-plugin-design-system
+├── design-system/          # @drivenets/design-system
+├── eslint-plugin/          # @drivenets/eslint-plugin-design-system
+├── eslint-plugin-internal/ # @drivenets/eslint-plugin-internal
+├── vite-plugin/            # @drivenets/vite-plugin-design-system
+└── commitlint-plugin/      # @drivenets/commitlint-plugin-design-system
 ```
 
 ## Import Rules
