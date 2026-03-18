@@ -21,6 +21,12 @@ const meta: Meta<typeof DsTimePicker> = {
 export default meta;
 type Story = StoryObj<DsTimePickerProps>;
 
+const createTime = (hours: number, minutes: number) => {
+	const date = new Date();
+	date.setHours(hours, minutes, 0, 0);
+	return date;
+};
+
 export const Default: Story = {
 	args: {
 		onChange: fn(),
@@ -46,11 +52,7 @@ export const Default: Story = {
 export const WithDefaultValue: Story = {
 	args: {
 		className: styles.container,
-		defaultValue: (() => {
-			const date = new Date();
-			date.setHours(14, 30, 0, 0);
-			return date;
-		})(),
+		defaultValue: createTime(14, 30),
 		onChange: fn(),
 	},
 };
@@ -60,8 +62,7 @@ export const Controlled: Story = {
 		onChange: fn(),
 	},
 	render: function Render(args) {
-		const defaultDate = new Date();
-		defaultDate.setHours(9, 45, 0, 0);
+		const defaultDate = createTime(9, 45);
 
 		const [value, setValue] = useState<Date | null>(defaultDate);
 
@@ -90,11 +91,7 @@ export const Controlled: Story = {
 export const Disabled: Story = {
 	args: {
 		className: styles.container,
-		value: (() => {
-			const date = new Date();
-			date.setHours(14, 30, 0, 0);
-			return date;
-		})(),
+		value: createTime(14, 30),
 		disabled: true,
 	},
 };
@@ -102,19 +99,9 @@ export const Disabled: Story = {
 export const ReadOnly: Story = {
 	args: {
 		className: styles.container,
-		value: (() => {
-			const date = new Date();
-			date.setHours(14, 30, 0, 0);
-			return date;
-		})(),
+		value: createTime(14, 30),
 		readOnly: true,
 	},
-};
-
-const createTime = (hours: number, minutes: number) => {
-	const date = new Date();
-	date.setHours(hours, minutes, 0, 0);
-	return date;
 };
 
 export const WithMinMax: Story = {
