@@ -43,6 +43,6 @@ export interface DsTimePickerLocale {
 }
 
 export interface DsTimePickerSlotProps {
-	input?: DsTextInputProps['slots'];
+	input?: DsTextInputProps;
 	popover?: PopoverContentProps;
 }
