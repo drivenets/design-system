@@ -165,6 +165,6 @@ export const WithValidation: Story = {
 		await userEvent.type(input, '2:30 PM');
 		await userEvent.tab();
 
-		await expect(input).toHaveValue('2:30 PM');
+		await expect(input).toHaveValue('02:30 PM');
 	},
 };
