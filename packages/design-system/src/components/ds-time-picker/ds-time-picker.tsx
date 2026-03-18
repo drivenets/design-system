@@ -125,6 +125,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 						onBlur={handleBlur}
 						readOnly={readOnly}
 						disabled={disabled}
+						{...slotProps?.input}
 						slots={{
 							...slotProps?.input?.slots,
 							endAdornment: slotProps?.input?.slots?.endAdornment ?? (
@@ -141,7 +142,6 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 								</Popover.Trigger>
 							),
 						}}
-						{...slotProps?.input}
 					/>
 				</div>
 			</Popover.Anchor>
