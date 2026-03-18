@@ -22,10 +22,9 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		disablePortal = false,
 		locale,
 		slotProps,
-		onOpenChange,
 	} = props;
 	const [value, setValue] = useControlled(props.value, props.onChange, props.defaultValue);
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useControlled(props.open, props.onOpenChange, props.defaultOpen ?? false);
 	const [isFocused, setIsFocused] = useState(false);
 
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -104,7 +103,6 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		}
 
 		setIsOpen(details.open);
-		onOpenChange?.(details.open);
 	};
 
 	const Wrapper = disablePortal ? Fragment : Portal;

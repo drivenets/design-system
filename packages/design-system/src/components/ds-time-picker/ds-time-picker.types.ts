@@ -22,6 +22,9 @@ export interface DsTimePickerProps {
 	 */
 	disablePortal?: boolean;
 
+	open?: boolean;
+	defaultOpen?: boolean;
+
 	locale?: DsTimePickerLocale;
 	slotProps?: DsTimePickerSlotProps;
 
