@@ -15,6 +15,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		id,
 		ref,
 		className,
+		placeholder,
 		min,
 		max,
 		disabled,
@@ -116,7 +117,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 					<DsTextInput
 						ref={inputRef}
 						id={id}
-						placeholder={locale?.placeholder ?? 'hh:mm AM/PM'}
+						placeholder={placeholder ?? 'hh:mm AM/PM'}
 						className={styles.input}
 						defaultValue={formattedValue}
 						onChange={handleInputChange}

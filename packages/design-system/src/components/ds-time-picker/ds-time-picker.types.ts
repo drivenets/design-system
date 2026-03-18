@@ -10,6 +10,11 @@ export interface DsTimePickerProps {
 	value?: Date | null;
 	defaultValue?: Date;
 
+	open?: boolean;
+	defaultOpen?: boolean;
+
+	placeholder?: string;
+
 	min?: Date;
 	max?: Date;
 
@@ -21,9 +26,6 @@ export interface DsTimePickerProps {
 	 * @default false
 	 */
 	disablePortal?: boolean;
-
-	open?: boolean;
-	defaultOpen?: boolean;
 
 	locale?: DsTimePickerLocale;
 	slotProps?: DsTimePickerSlotProps;
@@ -38,7 +40,6 @@ export interface DsTimePickerLocale {
 	hourLabel?: string;
 	minuteLabel?: string;
 	periodLabel?: string;
-	placeholder?: string;
 }
 
 export interface DsTimePickerSlotProps {
