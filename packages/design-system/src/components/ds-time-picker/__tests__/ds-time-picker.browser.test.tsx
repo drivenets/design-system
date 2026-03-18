@@ -194,4 +194,29 @@ describe('DsTimePicker', () => {
 		// 1:02 AM = 01:02 in 24h format
 		await expect.element(page.getByText('Value:')).toHaveTextContent('01:02');
 	});
+
+	it('should reset input to last valid value on blur', async () => {
+		function Wrapper() {
+			const [value, setValue] = useState<Date | null>(createTime(10, 15));
+
+			return <DsTimePicker value={value} onChange={setValue} />;
+		}
+
+		await page.render(<Wrapper />);
+
+		const input = page.getByRole('textbox');
+		await expect.element(input).toHaveValue('10:15 AM');
+
+		await input.clear();
+		await userEvent.type(input, '02:30 PM');
+		input.element().blur();
+
+		await expect.element(input).toHaveValue('02:30 PM');
+
+		await input.click();
+		await userEvent.type(input, 'xyz');
+		input.element().blur();
+
+		await expect.element(input).toHaveValue('02:30 PM');
+	});
 });
