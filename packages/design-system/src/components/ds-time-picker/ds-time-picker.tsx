@@ -92,7 +92,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		if (parsed) {
 			const newDate = value ? new Date(value) : new Date();
 			newDate.setHours(parsed.hours, parsed.minutes, 0, 0);
-			setValue(clampTime(newDate, min, max));
+			setValue(newDate);
 		} else {
 			resetInput();
 		}
