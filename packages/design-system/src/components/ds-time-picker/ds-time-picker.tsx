@@ -24,7 +24,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		locale,
 		slotProps,
 	} = props;
-	const [value, setValue] = useControlled(props.value, props.onChange, props.defaultValue);
+	const [value, setValue] = useControlled(props.value, props.onChange, props.defaultValue ?? null);
 	const [isOpen, setIsOpen] = useControlled(props.open, props.onOpenChange, props.defaultOpen ?? false);
 	const [isFocused, setIsFocused] = useState(false);
 

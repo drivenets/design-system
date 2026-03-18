@@ -7,9 +7,13 @@ import { useState } from 'react';
  * @param defaultValue - The default value.
  * @returns A tuple of the resolved value and the resolved setValue.
  */
-export const useControlled = <T>(value?: T, setValue?: (value: T) => void, defaultValue?: T) => {
+export const useControlled = <T>(
+	value: T | undefined,
+	setValue: ((value: T) => void) | undefined,
+	defaultValue: T,
+) => {
 	const isControlled = value !== undefined && setValue !== undefined;
-	const [internalValue, setInternalValue] = useState<T>(value ?? (defaultValue as T));
+	const [internalValue, setInternalValue] = useState<T>(value ?? defaultValue);
 	const resolvedValue = isControlled ? value : internalValue;
 	const resolvedSetValue = isControlled ? setValue : setInternalValue;
 

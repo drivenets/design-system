@@ -13,7 +13,7 @@ describe('useControlled', () => {
 	describe('controlled mode', () => {
 		it('should return the provided value and setValue', () => {
 			const setValue = vi.fn();
-			const [resolved, resolvedSet] = useControlled('hello', setValue);
+			const [resolved, resolvedSet] = useControlled('hello', setValue, undefined);
 
 			expect(resolved).toBe('hello');
 			expect(resolvedSet).toBe(setValue);
@@ -40,17 +40,11 @@ describe('useControlled', () => {
 
 			expect(useState).toHaveBeenCalledWith(42);
 		});
-
-		it('should fall back to undefined when no defaultValue is given', () => {
-			const [resolved] = useControlled<string>();
-
-			expect(resolved).toBeUndefined();
-		});
 	});
 
 	describe('edge cases', () => {
 		it('should treat value-only (no setValue) as uncontrolled', () => {
-			const [, resolvedSet] = useControlled('value-only');
+			const [, resolvedSet] = useControlled('value-only', undefined, undefined);
 
 			expect(resolvedSet).toBe(mockSetInternal);
 		});
