@@ -1,4 +1,4 @@
-import { type ChangeEvent, Fragment, useRef, useState } from 'react';
+import { type ChangeEvent, Fragment, useEffect, useRef, useState } from 'react';
 import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import type { DsTimePickerProps } from './ds-time-picker.types';
@@ -28,7 +28,6 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const inputRef = useRef<HTMLInputElement>(null);
-	const prevFormattedValue = useRef<string | null>(null);
 
 	const formattedValue = formatTime(value);
 
@@ -41,14 +40,12 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		}
 	}
 
-	// Reformat the input when the value changes externally and the field is not focused
-	if (!isFocused && prevFormattedValue.current !== formattedValue) {
-		prevFormattedValue.current = formattedValue;
-
-		if (inputRef.current) {
+	// Reformat on value change, but skip while focused to avoid disrupting typing
+	useEffect(() => {
+		if (!isFocused && inputRef.current) {
 			inputRef.current.value = formattedValue;
 		}
-	}
+	}, [isFocused, formattedValue]);
 
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const inputVal = e.target.value;
@@ -98,7 +95,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		}
 	};
 
-	const handleOpenChange = (details: { open: boolean }) => {
+	const handleOpenChange = (details: Popover.OpenChangeDetails) => {
 		if (disabled || readOnly) {
 			return;
 		}

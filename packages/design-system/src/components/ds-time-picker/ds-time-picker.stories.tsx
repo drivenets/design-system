@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsTimePicker from './ds-time-picker';
 import type { DsTimePickerProps } from './ds-time-picker.types';
@@ -57,6 +57,15 @@ export const Controlled: Story = {
 
 		const [value, setValue] = useState<Date | null>(defaultDate);
 
+		useEffect(() => {
+			const interval = setInterval(() => {
+				const date = createTime(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
+				setValue(date);
+			}, 5000);
+
+			return () => clearInterval(interval);
+		}, []);
+
 		return (
 			<div>
 				<DsTimePicker
@@ -68,6 +77,11 @@ export const Controlled: Story = {
 						args.onChange?.(v);
 					}}
 				/>
+				<p className={styles.infoContainer}>In this example:</p>
+				<p className={styles.infoContainer}>
+					Value is randomly changing every 5 seconds. As user is typing the input do not show the new value
+					until input loses focus.
+				</p>
 				<p className={styles.infoContainer}>
 					Value:{' '}
 					{value

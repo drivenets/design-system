@@ -1,9 +1,10 @@
 .container {
-	width: 240px;
+	width: 280px;
 }
 
 .infoContainer {
 	margin-top: var(--spacing-sm);
 	font-size: var(--font-size-sm);
 	color: var(--color-font-secondary);
+	max-width: 280px;
 }
