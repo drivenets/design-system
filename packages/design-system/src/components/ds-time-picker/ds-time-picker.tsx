@@ -29,7 +29,9 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 	const [isFocused, setIsFocused] = useState(false);
 
 	const inputRef = useRef<HTMLInputElement>(null);
-	const prevValue = useRef<string | null>(null);
+	const prevFormattedValue = useRef<string | null>(null);
+
+	const formattedValue = formatTime(value);
 
 	if (value) {
 		const clamped = clampTime(value, min, max);
@@ -40,11 +42,11 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 	}
 
 	// Reformat the input when the value changes externally and the field is not focused
-	if (!isFocused && prevValue.current !== formatTime(value)) {
-		prevValue.current = formatTime(value);
+	if (!isFocused && prevFormattedValue.current !== formattedValue) {
+		prevFormattedValue.current = formattedValue;
 
 		if (inputRef.current) {
-			inputRef.current.value = formatTime(value);
+			inputRef.current.value = formattedValue;
 		}
 	}
 
@@ -71,7 +73,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 
 	const resetInput = () => {
 		if (inputRef.current) {
-			inputRef.current.value = value ? formatTime(value) : '';
+			inputRef.current.value = value ? formattedValue : '';
 		}
 	};
 
@@ -120,7 +122,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 						id={id}
 						placeholder={locale?.placeholder ?? 'hh:mm AM/PM'}
 						className={styles.input}
-						defaultValue={formatTime(value)}
+						defaultValue={formattedValue}
 						onChange={handleInputChange}
 						onFocus={handleFocus}
 						onBlur={handleBlur}
