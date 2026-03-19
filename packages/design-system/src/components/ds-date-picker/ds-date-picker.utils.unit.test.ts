@@ -36,6 +36,7 @@ describe('Date Picker Utils', () => {
 		});
 
 		it('should return undefined for undefined input', () => {
+			// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 			expect(toIntlDate(undefined)).toBeUndefined();
 		});
 
@@ -56,6 +57,7 @@ describe('Date Picker Utils', () => {
 		});
 
 		it('should return undefined for undefined input', () => {
+			// eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
 			expect(fromIntlDate(undefined)).toBeUndefined();
 		});
 
@@ -64,9 +66,9 @@ describe('Date Picker Utils', () => {
 			const result = fromIntlDate(dateValue);
 
 			expect(result).toBeInstanceOf(Date);
-			expect(result?.getFullYear()).toBe(2024);
-			expect(result?.getMonth()).toBe(2);
-			expect(result?.getDate()).toBe(15);
+			expect(result.getFullYear()).toBe(2024);
+			expect(result.getMonth()).toBe(2);
+			expect(result.getDate()).toBe(15);
 		});
 
 		it('should handle CalendarDateTime with time components', () => {
@@ -74,8 +76,8 @@ describe('Date Picker Utils', () => {
 			const result = fromIntlDate(dateValue);
 
 			expect(result).toBeInstanceOf(Date);
-			expect(result?.getHours()).toBe(14);
-			expect(result?.getMinutes()).toBe(30);
+			expect(result.getHours()).toBe(14);
+			expect(result.getMinutes()).toBe(30);
 		});
 	});
 
@@ -153,40 +155,32 @@ describe('Date Picker Utils', () => {
 	});
 
 	describe('validateDateString', () => {
-		it('should return valid for empty string', () => {
-			const result = validateDateString({ text: '' });
-			expect(result.isValid).toBe(true);
+		it('should return true for empty string', () => {
+			expect(validateDateString({ text: '' })).toBe(true);
 		});
 
-		it('should return error for invalid format with correct hint', () => {
-			expect(validateDateString({ text: 'not a date' }).error).toBe('Invalid date format. Use MM/DD/YYYY');
-			expect(validateDateString({ text: 'not a date', withTime: true }).error).toBe(
-				'Invalid date format. Use MM/DD/YYYY hh:mm AM/PM',
-			);
+		it('should return false for invalid format', () => {
+			expect(validateDateString({ text: 'not a date' })).toBe(false);
+			expect(validateDateString({ text: 'not a date', withTime: true })).toBe(false);
 		});
 
-		it('should validate min constraint', () => {
+		it('should return false when date is before min', () => {
 			const min = createDateValue(2024, 3, 1);
-			const result = validateDateString({ text: '02/28/2024', min });
 
-			expect(result.isValid).toBe(false);
-			expect(result.error).toBe('Date is before minimum allowed date');
+			expect(validateDateString({ text: '02/28/2024', min })).toBe(false);
 		});
 
-		it('should validate max constraint', () => {
+		it('should return false when date is after max', () => {
 			const max = createDateValue(2024, 3, 31);
-			const result = validateDateString({ text: '04/01/2024', max });
 
-			expect(result.isValid).toBe(false);
-			expect(result.error).toBe('Date is after maximum allowed date');
+			expect(validateDateString({ text: '04/01/2024', max })).toBe(false);
 		});
 
-		it('should return valid when date is within bounds', () => {
+		it('should return true when date is within bounds', () => {
 			const min = createDateValue(2024, 3, 1);
 			const max = createDateValue(2024, 3, 31);
-			const result = validateDateString({ text: '03/15/2024', min, max });
 
-			expect(result.isValid).toBe(true);
+			expect(validateDateString({ text: '03/15/2024', min, max })).toBe(true);
 		});
 	});
 
@@ -224,11 +218,11 @@ describe('Date Picker Utils', () => {
 			const dateValue = toIntlDate(original);
 			const result = fromIntlDate(dateValue);
 
-			expect(result?.getFullYear()).toBe(original.getFullYear());
-			expect(result?.getMonth()).toBe(original.getMonth());
-			expect(result?.getDate()).toBe(original.getDate());
-			expect(result?.getHours()).toBe(original.getHours());
-			expect(result?.getMinutes()).toBe(original.getMinutes());
+			expect(result.getFullYear()).toBe(original.getFullYear());
+			expect(result.getMonth()).toBe(original.getMonth());
+			expect(result.getDate()).toBe(original.getDate());
+			expect(result.getHours()).toBe(original.getHours());
+			expect(result.getMinutes()).toBe(original.getMinutes());
 		});
 
 		it('should preserve date through string → DateValue → string conversion', () => {

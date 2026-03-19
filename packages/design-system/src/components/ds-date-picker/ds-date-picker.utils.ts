@@ -99,14 +99,6 @@ export const parseDate = (dateStr: string, withTime = false): DateValue | null =
 };
 
 /**
- * Validation result for date input
- */
-interface DateInputValidation {
-	isValid: boolean;
-	error?: string;
-}
-
-/**
  * Validate date string
  */
 export const validateDateString = ({
@@ -119,25 +111,24 @@ export const validateDateString = ({
 	min?: DateValue | null;
 	max?: DateValue | null;
 	withTime?: boolean;
-}): DateInputValidation => {
+}): boolean => {
 	if (!text.trim()) {
-		return { isValid: true };
+		return true;
 	}
 
 	const date = parseDate(text, withTime);
 	if (!date) {
-		const format = withTime ? 'MM/DD/YYYY hh:mm AM/PM' : 'MM/DD/YYYY';
-		return { isValid: false, error: `Invalid date format. Use ${format}` };
+		return false;
 	}
 
 	if (min && date.compare(min) < 0) {
-		return { isValid: false, error: 'Date is before minimum allowed date' };
+		return false;
 	}
 	if (max && date.compare(max) > 0) {
-		return { isValid: false, error: 'Date is after maximum allowed date' };
+		return false;
 	}
 
-	return { isValid: true };
+	return true;
 };
 
 export const isSameDay = (

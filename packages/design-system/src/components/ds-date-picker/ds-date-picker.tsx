@@ -68,9 +68,9 @@ const DsDatePicker = ({
 	const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const text = e.target.value;
 
-		const validation = validateDateString({ text, min, max, withTime });
+		const isValid = validateDateString({ text, min, max, withTime });
 
-		if (validation.isValid) {
+		if (isValid) {
 			const parsedValue = parseDate(text, withTime);
 			setValue(parsedValue);
 		}
@@ -90,9 +90,9 @@ const DsDatePicker = ({
 		setIsFocused(false);
 
 		const text = inputRef.current?.value || '';
-		const validation = validateDateString({ text, min, max, withTime });
+		const isValid = validateDateString({ text, min, max, withTime });
 
-		if (validation.isValid) {
+		if (isValid) {
 			setValue(parseDate(text, withTime));
 		} else {
 			resetInput();
