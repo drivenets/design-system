@@ -17,6 +17,7 @@
 		"gnmi",
 		"matchall",
 		"netgen",
+		"noninteractive",
 		"onwarn",
 		"reorderable",
 		"retryable",
