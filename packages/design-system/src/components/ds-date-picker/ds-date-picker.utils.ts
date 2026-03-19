@@ -3,7 +3,7 @@ import { fromDate, getLocalTimeZone, CalendarDateTime } from '@internationalized
 import { formatTime } from '../ds-time-picker';
 
 export const toIntlDate = (date: Date | null | undefined): DateValue | null | undefined => {
-	if (date === null || date === undefined) {
+	if (!date) {
 		return date;
 	}
 
@@ -11,7 +11,7 @@ export const toIntlDate = (date: Date | null | undefined): DateValue | null | un
 };
 
 export const fromIntlDate = (date: DateValue | null | undefined): Date | null | undefined => {
-	if (date === null || date === undefined) {
+	if (!date) {
 		return date;
 	}
 
