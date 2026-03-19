@@ -36,7 +36,7 @@ const plugin = {
 Object.assign(plugin.configs, {
 	recommended: [
 		{
-			name: 'ds-internal:recommended:all',
+			name: 'ds-internal/recommended/all',
 			plugins: {
 				'@drivenets/ds-internal': plugin,
 			},
@@ -47,7 +47,7 @@ Object.assign(plugin.configs, {
 		},
 
 		{
-			name: 'ds-internal:recommended:stories',
+			name: 'ds-internal/recommended/stories',
 			plugins: {
 				'@drivenets/ds-internal': plugin,
 			},
@@ -62,7 +62,7 @@ Object.assign(plugin.configs, {
 		},
 
 		{
-			name: 'ds-internal:recommended:tests:browser',
+			name: 'ds-internal/recommended/tests/browser',
 			plugins: {
 				'@drivenets/ds-internal': plugin,
 			},

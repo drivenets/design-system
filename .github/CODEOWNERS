@@ -2,5 +2,5 @@
 /.github/ @StyleShit @aroba-dn
 
 
-/packages/commitlint-plugin/ @StyleShit
+/packages/commitlint-plugin-internal/ @StyleShit
 /packages/eslint-plugin-internal/ @StyleShit

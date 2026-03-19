@@ -1,20 +1,27 @@
+import * as path from 'node:path';
 import eslint from '@eslint/js';
 import { type Plugin } from '@eslint/core';
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import unicorn from 'eslint-plugin-unicorn';
 import importX, { createNodeResolver } from 'eslint-plugin-import-x';
 import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import vitest from '@vitest/eslint-plugin';
 import globals from 'globals';
+import gitignore from 'eslint-config-flat-gitignore';
 
 export default defineConfig(
+	gitignore({
+		files: collectGitignores(),
+		strict: false,
+	}),
+
 	// Base rules.
 	eslint.configs.recommended,
 	tseslint.configs.strictTypeChecked,
 
-	// Overrides.
 	{
+		name: 'base/general-overrides',
 		linterOptions: {
 			reportUnusedDisableDirectives: 'error',
 			reportUnusedInlineConfigs: 'error',
@@ -124,8 +131,8 @@ export default defineConfig(
 		},
 	},
 
-	// Production files.
 	{
+		name: 'base/source-overrides',
 		files: ['**/src/**/*.[tj]s?(x)'],
 		ignores: ['**/*.test.[tj]s?(x)', '**/*.stories?(.*).[tj]s?(x)', '**/stories/**'],
 		rules: {
@@ -140,10 +147,10 @@ export default defineConfig(
 		},
 	},
 
-	// Test rules.
 	{
-		files: ['**/*.@(test|spec).[tj]s?(x)'],
 		...vitest.configs.recommended,
+		name: 'base/tests-overrides',
+		files: ['**/*.test.[tj]s?(x)'],
 		rules: {
 			...vitest.configs.recommended.rules,
 			'vitest/prefer-vi-mocked': 'error',
@@ -179,6 +186,16 @@ export default defineConfig(
 			'vitest/prefer-hooks-in-order': 'error',
 		},
 	},
-
-	globalIgnores(['**/dist', '**/.turbo', '**/coverage']),
 );
+
+function collectGitignores() {
+	// `.gitignore` relative to cwd.
+	const gitignores = ['.gitignore'];
+
+	// `.gitignore` relative to the repo root, in case cwd is a package.
+	if (process.cwd() !== __dirname) {
+		gitignores.push(path.resolve(__dirname, '.gitignore'));
+	}
+
+	return gitignores;
+}

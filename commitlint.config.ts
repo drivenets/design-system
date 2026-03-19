@@ -1,5 +1,5 @@
 import { RuleConfigSeverity, type UserConfig } from '@commitlint/types';
-import designSystem from '@drivenets/commitlint-plugin-design-system';
+import designSystem from '@drivenets/commitlint-plugin-internal';
 
 export default {
 	extends: ['@commitlint/config-conventional'],

@@ -1,5 +1,5 @@
 {
-	"name": "@drivenets/commitlint-plugin-design-system",
+	"name": "@drivenets/commitlint-plugin-internal",
 	"version": "0.0.0",
 	"private": true,
 	"main": "./src/index.ts",
@@ -11,10 +11,6 @@
 			"import": "./src/index.ts",
 			"require": "./src/index.ts"
 		}
-	},
-	"repository": {
-		"url": "https://github.com/drivenets/design-system",
-		"directory": "/packages/commitlint-plugin"
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",

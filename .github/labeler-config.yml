@@ -34,9 +34,9 @@ dependencies:
   - changed-files:
       - any-glob-to-any-file: 'pnpm-lock.yaml'
 
-commitlint-plugin:
+commitlint-plugin-internal:
   - changed-files:
-      - any-glob-to-any-file: 'packages/commitlint-plugin/**'
+      - any-glob-to-any-file: 'packages/commitlint-plugin-internal/**'
 
 design-system:
   - changed-files:

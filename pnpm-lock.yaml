@@ -65,9 +65,9 @@ importers:
       '@cspell/dict-mime-types':
         specifier: ^1.0.1
         version: 1.0.1
-      '@drivenets/commitlint-plugin-design-system':
+      '@drivenets/commitlint-plugin-internal':
         specifier: workspace:*
-        version: link:packages/commitlint-plugin
+        version: link:packages/commitlint-plugin-internal
       '@eslint/core':
         specifier: ^1.1.1
         version: 1.1.1
@@ -86,6 +86,9 @@ importers:
       eslint:
         specifier: ^10.0.1
         version: 10.0.3(jiti@2.6.1)
+      eslint-config-flat-gitignore:
+        specifier: ^2.2.1
+        version: 2.2.1(eslint@10.0.3(jiti@2.6.1))
       eslint-import-resolver-typescript:
         specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.57.0(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3))(eslint@10.0.3(jiti@2.6.1)))(eslint@10.0.3(jiti@2.6.1))
@@ -123,7 +126,7 @@ importers:
         specifier: ^8.56.1
         version: 8.57.0(eslint@10.0.3(jiti@2.6.1))(typescript@5.9.3)
 
-  packages/commitlint-plugin:
+  packages/commitlint-plugin-internal:
     dependencies:
       '@commitlint/lint':
         specifier: ^20.2.0
@@ -3622,6 +3625,11 @@ packages:
   escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
+
+  eslint-config-flat-gitignore@2.2.1:
+    resolution: {integrity: sha512-wA5EqN0era7/7Gt5Botlsfin/UNY0etJSEeBgbUlFLFrBi47rAN//+39fI7fpYcl8RENutlFtvp/zRa/M/pZNg==}
+    peerDependencies:
+      eslint: ^10.0.1
 
   eslint-import-context@0.1.9:
     resolution: {integrity: sha512-K9Hb+yRaGAGUbwjhFNHvSmmkZs9+zbuoe3kFQ4V1wYjrepUFYM2dZAfNtjbbj3qsPfUfsA68Bx/ICWQMi+C8Eg==}
@@ -9269,6 +9277,11 @@ snapshots:
   escape-string-regexp@1.0.5: {}
 
   escape-string-regexp@4.0.0: {}
+
+  eslint-config-flat-gitignore@2.2.1(eslint@10.0.3(jiti@2.6.1)):
+    dependencies:
+      '@eslint/compat': 2.0.3(eslint@10.0.3(jiti@2.6.1))
+      eslint: 10.0.3(jiti@2.6.1)
 
   eslint-import-context@0.1.9(unrs-resolver@1.11.1):
     dependencies:
