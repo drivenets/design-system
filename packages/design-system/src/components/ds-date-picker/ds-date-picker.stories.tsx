@@ -53,7 +53,7 @@ export const Controlled: Story = {
 		return (
 			<div className={styles.container}>
 				<DsDatePicker {...args} value={value} onChange={setValue} />
-				<p className={styles.infoContainer}>Value: {value?.toISOString() ?? 'undefined'}</p>
+				<p className={styles.infoContainer}>Value: {value?.toLocaleString() ?? 'undefined'}</p>
 			</div>
 		);
 	},
@@ -84,7 +84,7 @@ export const WithMinMax: Story = {
 		})(),
 		max: (() => {
 			const date = new Date();
-			return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 20); // last day of next month
+			return new Date(date.getFullYear(), date.getMonth() + 2, 0, 23, 20); // last day of next month
 		})(),
 	},
 	render: function Render(args) {
