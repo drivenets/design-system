@@ -1,0 +1,48 @@
+.viewControl {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: var(--spacing-sm);
+}
+
+.viewTrigger {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: var(--spacing-2xs) var(--spacing-xs);
+	border-radius: var(--spacing-2xs);
+	color: var(--color-font-main);
+	transition: background-color 0.2s;
+
+	&:hover {
+		background: var(--color-background-hover);
+	}
+}
+
+.prevTrigger,
+.nextTrigger {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: var(--spacing-2xs);
+	border-radius: var(--spacing-2xs);
+	color: var(--color-font-secondary);
+	transition: all 0.2s;
+
+	&:hover {
+		background: var(--color-background-hover);
+		color: var(--color-font-main);
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.5;
+	}
+}
