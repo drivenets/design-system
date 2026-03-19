@@ -1,21 +1,22 @@
 import { type DateValue } from '@ark-ui/react/date-picker';
 import { fromDate, getLocalTimeZone, CalendarDateTime } from '@internationalized/date';
-import { formatTime } from '../ds-time-picker';
 
-export const toIntlDate = (date: Date | null | undefined): DateValue | null | undefined => {
+export const toIntlDate = <T extends Date | null | undefined>(date: T): T extends Date ? DateValue : T => {
 	if (!date) {
-		return date;
+		return date as T extends Date ? DateValue : T;
 	}
 
-	return fromDate(date, getLocalTimeZone());
+	return fromDate(date, getLocalTimeZone()) as T extends Date ? DateValue : T;
 };
 
-export const fromIntlDate = (date: DateValue | null | undefined): Date | null | undefined => {
+export const fromIntlDate = <T extends DateValue | null | undefined>(
+	date: T,
+): T extends DateValue ? Date : T => {
 	if (!date) {
-		return date;
+		return date as T extends DateValue ? Date : T;
 	}
 
-	return date.toDate(getLocalTimeZone());
+	return date.toDate(getLocalTimeZone()) as T extends DateValue ? Date : T;
 };
 
 /**
@@ -26,15 +27,19 @@ export const formatDate = (date: DateValue | null, withTime = false): string => 
 		return '';
 	}
 
-	const paddedMonth = String(date.month).padStart(2, '0');
-	const paddedDay = String(date.day).padStart(2, '0');
-	const datePart = `${paddedMonth}/${paddedDay}/${String(date.year)}`;
+	const options: Intl.DateTimeFormatOptions = {
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+	};
 
-	if (!withTime || !('hour' in date)) {
-		return datePart;
+	if (withTime) {
+		options.hour = '2-digit';
+		options.minute = '2-digit';
+		options.hour12 = true;
 	}
 
-	return `${datePart} ${formatTime(date.toDate(getLocalTimeZone()))}`;
+	return new Intl.DateTimeFormat('en-US', options).format(fromIntlDate(date));
 };
 
 /**
@@ -45,12 +50,14 @@ export const parseDate = (dateStr: string, withTime = false): DateValue | null =
 		return null;
 	}
 
-	const match = dateStr.trim().match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\s+(\d{1,2}):(\d{2})\s+(AM|PM))?$/i);
+	const match = dateStr
+		.trim()
+		.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s+(AM|PM))?$/i);
 	if (!match) {
 		return null;
 	}
 
-	const [, month, day, year, hours, minutes, period] = match;
+	const [, month, day, year, hours, minutes, , period] = match;
 
 	if (!month || !day || !year) {
 		return null;

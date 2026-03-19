@@ -44,12 +44,12 @@ const DsDatePicker = ({
 
 	const [value, setValue] = useControlled<DateValue | null>(
 		toIntlDate(_value),
-		onChange ? (v) => onChange(fromIntlDate(v) ?? null) : undefined,
+		onChange ? (v) => onChange(fromIntlDate(v)) : undefined,
 		defaultValue ?? null,
 	);
 
-	const min = toIntlDate(_min) ?? undefined;
-	const max = toIntlDate(_max) ?? undefined;
+	const min = toIntlDate(_min);
+	const max = toIntlDate(_max);
 
 	const [isFocused, setIsFocused] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
@@ -178,9 +178,9 @@ const DsDatePicker = ({
 						<DayView>
 							{withTime && (
 								<DsTimePicker
-									value={fromIntlDate(value) ?? null}
+									value={fromIntlDate(value)}
 									onChange={(v) => {
-										setValue(toIntlDate(v) ?? null);
+										setValue(toIntlDate(v));
 									}}
 									min={isSameDay(value, min) ? _min : undefined}
 									max={isSameDay(value, max) ? _max : undefined}
