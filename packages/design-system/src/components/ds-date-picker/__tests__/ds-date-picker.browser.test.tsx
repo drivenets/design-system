@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
-import MockDate from 'mockdate';
 import DsDatePicker from '../ds-date-picker';
 
 describe('DsDatePicker', () => {
 	beforeEach(() => {
-		MockDate.set(new Date('2026-01-15T12:00:00'));
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date('2026-01-15T12:00:00'));
 	});
 
 	afterEach(() => {
-		MockDate.reset();
+		vi.useRealTimers();
 	});
 
 	it('should select a date via calendar', async () => {

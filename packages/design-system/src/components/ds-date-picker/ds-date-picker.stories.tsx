@@ -1,12 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import MockDate from 'mockdate';
 import DsDatePicker from './ds-date-picker';
 import type { DsDatePickerProps } from './ds-date-picker.types';
 import styles from './ds-date-picker.stories.module.scss';
-
-// Mock system time to January 15, 2026 for consistent test dates
-const MOCK_DATE = new Date('2026-01-15T12:00:00');
 
 const meta: Meta<typeof DsDatePicker> = {
 	title: 'Design System/DatePicker',
@@ -17,15 +13,6 @@ const meta: Meta<typeof DsDatePicker> = {
 	argTypes: {
 		className: { table: { disable: true } },
 		slotProps: { table: { disable: true } },
-	},
-	// We use mockdate here and not vi.useFakeTimers() because the latter is not compatible with Storybook.
-	// See https://github.com/storybookjs/storybook/issues/31400#issuecomment-2943382690 for more details.
-	beforeEach: () => {
-		MockDate.set(MOCK_DATE);
-
-		return () => {
-			MockDate.reset();
-		};
 	},
 };
 
@@ -91,8 +78,14 @@ export const ReadOnly: Story = {
 export const WithMinMax: Story = {
 	args: {
 		withTime: true,
-		min: new Date('2026-01-01T00:30:00'),
-		max: new Date('2026-03-31T23:20:00'),
+		min: (() => {
+			const date = new Date();
+			return new Date(date.getFullYear(), date.getMonth(), 1, 0, 30);
+		})(),
+		max: (() => {
+			const date = new Date();
+			return new Date(date.getFullYear(), date.getMonth() + 1, 0, 23, 20); // last day of next month
+		})(),
 	},
 	render: function Render(args) {
 		const [value, setValue] = useState<Date | null>(null);

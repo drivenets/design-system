@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import MockDate from 'mockdate';
 import DsFormControl from '../ds-form-control';
 import { controlStatuses } from '../ds-form-control.types';
 import { DefaultDescription } from './ds-form-control-stories-shared';
-
-const MOCK_DATE = new Date('2026-01-15T12:00:00');
 
 const meta: Meta<typeof DsFormControl> = {
 	title: 'Design System/FormControl/DatePicker',
@@ -24,15 +21,6 @@ const meta: Meta<typeof DsFormControl> = {
 		messageIcon: { control: 'text' },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
-	},
-	// We use mockdate here and not vi.useFakeTimers() because the latter is not compatible with Storybook.
-	// See https://github.com/storybookjs/storybook/issues/31400#issuecomment-2943382690 for more details.
-	beforeEach: () => {
-		MockDate.set(MOCK_DATE);
-
-		return () => {
-			MockDate.reset();
-		};
 	},
 };
 
