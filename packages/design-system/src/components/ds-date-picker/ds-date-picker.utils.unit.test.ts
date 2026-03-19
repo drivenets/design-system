@@ -93,12 +93,12 @@ describe('Date Picker Utils', () => {
 
 		it('should format date with time when withTime=true', () => {
 			const dateValue = createDateValue(2024, 3, 15, 14, 30);
-			expect(formatDate(dateValue, true)).toBe('03/15/2024 02:30 PM');
+			expect(formatDate(dateValue, true)).toBe('03/15/2024, 02:30 PM');
 		});
 
 		it('should format midnight and noon correctly', () => {
-			expect(formatDate(createDateValue(2024, 3, 15, 0, 0), true)).toBe('03/15/2024 12:00 AM');
-			expect(formatDate(createDateValue(2024, 3, 15, 12, 0), true)).toBe('03/15/2024 12:00 PM');
+			expect(formatDate(createDateValue(2024, 3, 15, 0, 0), true)).toBe('03/15/2024, 12:00 AM');
+			expect(formatDate(createDateValue(2024, 3, 15, 12, 0), true)).toBe('03/15/2024, 12:00 PM');
 		});
 	});
 
@@ -227,7 +227,7 @@ describe('Date Picker Utils', () => {
 
 		it('should preserve date through string → DateValue → string conversion', () => {
 			expect(formatDate(parseDate('03/15/2024'))).toBe('03/15/2024');
-			expect(formatDate(parseDate('03/15/2024 02:30 PM', true), true)).toBe('03/15/2024 02:30 PM');
+			expect(formatDate(parseDate('03/15/2024 02:30 PM', true), true)).toBe('03/15/2024, 02:30 PM');
 		});
 	});
 });

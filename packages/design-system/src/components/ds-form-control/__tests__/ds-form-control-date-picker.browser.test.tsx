@@ -38,7 +38,7 @@ describe('DsFormControl with DatePicker', () => {
 		);
 
 		const input = page.getByLabelText('Appointment');
-		expect(input).toHaveAttribute('placeholder', 'mm/dd/yyyy hh:mm AM/PM');
+		expect(input).toHaveAttribute('placeholder', 'mm/dd/yyyy hh:mm, AM/PM');
 	});
 
 	it('should render with description', async () => {

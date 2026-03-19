@@ -44,7 +44,7 @@ describe('DsDatePicker', () => {
 
 		await page.render(<Wrapper />);
 
-		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm AM/PM');
+		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm, AM/PM');
 		const calendarButton = page.getByRole('button', { name: /open calendar/i });
 
 		await calendarButton.click();
@@ -52,7 +52,7 @@ describe('DsDatePicker', () => {
 		const jan15Button = page.getByRole('button', { name: /Choose.*January 15, 2026/i });
 		await jan15Button.click();
 
-		expect(input).toHaveValue('01/15/2026 12:00 AM');
+		expect(input).toHaveValue('01/15/2026, 12:00 AM');
 
 		await userEvent.keyboard('{Escape}');
 	});
@@ -60,8 +60,8 @@ describe('DsDatePicker', () => {
 	it('should display default value', async () => {
 		await page.render(<DsDatePicker defaultValue={new Date('2024-12-25T14:30:00')} withTime />);
 
-		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm AM/PM');
-		expect(input).toHaveValue('12/25/2024 02:30 PM');
+		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm, AM/PM');
+		expect(input).toHaveValue('12/25/2024, 02:30 PM');
 	});
 
 	it('should display controlled value', async () => {
@@ -73,8 +73,8 @@ describe('DsDatePicker', () => {
 
 		await page.render(<Wrapper />);
 
-		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm AM/PM');
-		expect(input).toHaveValue('01/15/2026 09:45 AM');
+		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm, AM/PM');
+		expect(input).toHaveValue('01/15/2026, 09:45 AM');
 	});
 
 	it('should support disabled state', async () => {
