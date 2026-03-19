@@ -9,6 +9,8 @@ ruleTester.run('no-vitest-browser-react', noVitestBrowserReact, {
 		"import { expect } from 'vitest';",
 		"import { useState } from 'react';",
 		"import { render } from '@testing-library/react';",
+		"import { renderHook } from 'vitest-browser-react';",
+		"import { renderHook, cleanup } from 'vitest-browser-react';",
 	],
 
 	invalid: [
@@ -16,11 +18,11 @@ ruleTester.run('no-vitest-browser-react', noVitestBrowserReact, {
 			code: "import { render } from 'vitest-browser-react';",
 			errors: [
 				{
-					messageId: 'noVitestBrowserReact',
+					messageId: 'noRenderImport',
 					line: 1,
 					endLine: 1,
-					column: 24,
-					endColumn: 46,
+					column: 10,
+					endColumn: 16,
 				},
 			],
 		},
@@ -28,11 +30,35 @@ ruleTester.run('no-vitest-browser-react', noVitestBrowserReact, {
 			code: "import { render, cleanup } from 'vitest-browser-react';",
 			errors: [
 				{
-					messageId: 'noVitestBrowserReact',
+					messageId: 'noRenderImport',
 					line: 1,
 					endLine: 1,
-					column: 33,
-					endColumn: 55,
+					column: 10,
+					endColumn: 16,
+				},
+			],
+		},
+		{
+			code: "import { render, renderHook } from 'vitest-browser-react';",
+			errors: [
+				{
+					messageId: 'noRenderImport',
+					line: 1,
+					endLine: 1,
+					column: 10,
+					endColumn: 16,
+				},
+			],
+		},
+		{
+			code: "import * as VBR from 'vitest-browser-react';",
+			errors: [
+				{
+					messageId: 'noNamespaceImport',
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 16,
 				},
 			],
 		},

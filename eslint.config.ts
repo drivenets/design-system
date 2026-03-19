@@ -5,5 +5,5 @@ export default defineConfig(
 	...baseConfig,
 
 	// Exclude packages since they have their own ESLint configuration.
-	globalIgnores(['./packages/**']),
+	globalIgnores(['./packages/**'], 'exclude packages'),
 );

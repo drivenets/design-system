@@ -1,5 +1,5 @@
 import baseConfig from '../../eslint.config.base';
-import { defineConfig, globalIgnores, type Config } from 'eslint/config';
+import { defineConfig, type Config } from 'eslint/config';
 import { fixupPluginRules } from '@eslint/compat';
 import _react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -72,6 +72,4 @@ export default defineConfig(
 
 	// Internal rules.
 	internal.configs.recommended,
-
-	globalIgnores(['storybook-static', '!.storybook', '.scss-dts']),
 );
