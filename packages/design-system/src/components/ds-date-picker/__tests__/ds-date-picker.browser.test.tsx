@@ -44,7 +44,7 @@ describe('DsDatePicker', () => {
 
 		await page.render(<Wrapper />);
 
-		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm, AM/PM');
+		const input = page.getByPlaceholder('mm/dd/yyyy, hh:mm AM/PM');
 		const calendarButton = page.getByRole('button', { name: /open calendar/i });
 
 		await calendarButton.click();
@@ -60,7 +60,7 @@ describe('DsDatePicker', () => {
 	it('should display default value', async () => {
 		await page.render(<DsDatePicker defaultValue={new Date('2024-12-25T14:30:00')} withTime />);
 
-		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm, AM/PM');
+		const input = page.getByPlaceholder('mm/dd/yyyy, hh:mm AM/PM');
 		expect(input).toHaveValue('12/25/2024, 02:30 PM');
 	});
 
@@ -73,7 +73,7 @@ describe('DsDatePicker', () => {
 
 		await page.render(<Wrapper />);
 
-		const input = page.getByPlaceholder('mm/dd/yyyy hh:mm, AM/PM');
+		const input = page.getByPlaceholder('mm/dd/yyyy, hh:mm AM/PM');
 		expect(input).toHaveValue('01/15/2026, 09:45 AM');
 	});
 

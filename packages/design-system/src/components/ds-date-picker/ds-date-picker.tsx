@@ -130,7 +130,7 @@ const DsDatePicker = ({
 				<DsTextInput
 					ref={inputRef}
 					id={id}
-					placeholder={placeholder ?? (withTime ? 'mm/dd/yyyy hh:mm, AM/PM' : 'mm/dd/yyyy')}
+					placeholder={placeholder ?? (withTime ? 'mm/dd/yyyy, hh:mm AM/PM' : 'mm/dd/yyyy')}
 					defaultValue={formattedValue}
 					onChange={handleInputChange}
 					onFocus={handleFocus}
