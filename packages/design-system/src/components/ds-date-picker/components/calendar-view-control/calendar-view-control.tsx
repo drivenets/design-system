@@ -9,11 +9,9 @@ export const CalendarViewControl = () => (
 			<DsIcon icon="chevron_left" size="small" />
 		</DatePicker.PrevTrigger>
 		<DatePicker.ViewTrigger className={styles.viewTrigger} asChild>
-			<button type="button">
-				<DsTypography variant="body-md-md" asChild>
-					<DatePicker.RangeText />
-				</DsTypography>
-			</button>
+			<DsTypography variant="body-md-md" asChild>
+				<DatePicker.RangeText />
+			</DsTypography>
 		</DatePicker.ViewTrigger>
 		<DatePicker.NextTrigger className={styles.nextTrigger}>
 			<DsIcon icon="chevron_right" size="small" />
