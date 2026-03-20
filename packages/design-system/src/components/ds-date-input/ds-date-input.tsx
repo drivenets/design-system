@@ -16,10 +16,9 @@ import { DsTypography } from '../ds-typography';
 import styles from './ds-date-input.module.scss';
 
 /**
- * Design system date input component with integrated calendar picker.
- *
- * Supports both single date and date range selection with a single text input field.
- * Features built-in validation, manual text entry, and calendar selection.
+ * @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.
+ * @see {@link ../ds-date-picker} for single date selection.
+ * @see {@link ../ds-date-range-picker} for date range selection.
  */
 const DsDateInput = ({
 	range = false,

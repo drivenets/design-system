@@ -12,6 +12,12 @@ const meta: Meta<typeof DsFormControl> = {
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'**Deprecated**: DsDateInput is deprecated. Please use `DsDatePicker` for single date selection or `DsDateRangePicker` for date range selection instead.',
+			},
+		},
 	},
 	argTypes: {
 		status: {

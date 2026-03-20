@@ -9,12 +9,24 @@ import styles from './ds-date-input.stories.module.scss';
 // Mock system time to January 15, 2026 for consistent test dates
 const MOCK_DATE = new Date('2026-01-15T12:00:00');
 
+/**
+ * @deprecated This component is deprecated. Use `DsDatePicker` or `DsDateRangePicker` instead.
+ * @see {@link ../ds-date-picker/ds-date-picker.stories} for single date selection examples.
+ * @see {@link ../ds-date-range-picker/ds-date-range-picker.stories} for date range selection examples.
+ */
 const meta: Meta<typeof DsDateInput> = {
-	title: 'Design System/DateInput',
+	title: 'Design System/DateInput (Deprecated)',
 	component: DsDateInput,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'**Deprecated**: This component is deprecated. Please use `DsDatePicker` for single date selection or `DsDateRangePicker` for date range selection instead.',
+			},
+		},
 	},
+	tags: ['deprecated'],
 	beforeEach: () => {
 		// We use mockdate here and not vi.useFakeTimers() because the latter is not compatible with Storybook.
 		// See https://github.com/storybookjs/storybook/issues/31400#issuecomment-2943382690 for more details.

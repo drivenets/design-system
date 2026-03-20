@@ -105,6 +105,8 @@ type DsDateInputBaseProps = Pick<
 };
 
 /**
- * Props for the DsDateInput component
+ * @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.
+ * @see {@link ../ds-date-picker} for single date selection.
+ * @see {@link ../ds-date-range-picker} for date range selection.
  */
 export type DsDateInputProps = DsDateInputBaseProps & DsDateInputRangeProps;
