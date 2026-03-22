@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{i as t,n}from"./ds-checkbox.types-BT2TZMLg.js";var r=e((()=>{t(),n()}));export{r as t};
