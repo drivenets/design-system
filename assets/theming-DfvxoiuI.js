@@ -1,1 +1,0 @@
-import{c as e,h as t}from"./theming-C_96mq-A.js";e();export{t as color};
