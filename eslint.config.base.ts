@@ -16,9 +16,10 @@ export default defineConfig(
 		strict: false,
 	}),
 
-	// Base rules.
 	eslint.configs.recommended,
 	tseslint.configs.strictTypeChecked,
+
+	importX.flatConfigs.typescript,
 
 	{
 		name: 'base/general-overrides',
