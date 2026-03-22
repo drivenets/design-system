@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{n as t}from"./ds-drawer-D9pn3o3n.js";var n=e((()=>{t()}));export{n as t};
