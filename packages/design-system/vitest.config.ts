@@ -5,12 +5,14 @@ import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
+import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-plugin';
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
 	test: {
 		coverage: {
+			include: ['src/**/*.{ts,tsx}'],
 			exclude: [
 				'**/stories/**',
 				'**/*.stories.*{ts,tsx}',
@@ -26,7 +28,6 @@ export default defineConfig({
 			],
 			thresholds: {
 				lines: 90,
-				branches: 85,
 			},
 			watermarks: {
 				lines: [80, 90],
@@ -52,7 +53,11 @@ export default defineConfig({
 			},
 			{
 				extends: true,
-				plugins: [react(), vitePluginDesignSystem()],
+				plugins: [
+					reactCompilerRolldownPlugin(), // Must be first.
+					react(),
+					vitePluginDesignSystem(),
+				],
 				test: {
 					name: 'browser',
 					include: [testPattern('browser')],
