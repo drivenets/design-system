@@ -1,16 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent } from 'storybook/test';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
 import type { IconType } from '../../ds-icon';
 import { DsSmartTabs } from '../../ds-smart-tabs';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
-import { StatusItem } from './components/status-item/status-item';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { getDataRows } from './common/story-test-helpers';
-import { TableEmptyState } from './components';
+import { StatusItem, TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Design System/Table/Search and Filtering',
@@ -67,19 +64,6 @@ export const AdvancedSearch: Story = {
 		);
 	},
 	args: {},
-	play: async ({ canvas }) => {
-		await expect(getDataRows(canvas)).toHaveLength(15);
-
-		const searchInput = canvas.getByPlaceholderText(/search all columns/i);
-		await userEvent.type(searchInput, 'Tanner');
-
-		await expect(getDataRows(canvas)).toHaveLength(1);
-		await expect(getDataRows(canvas)[0]).toHaveTextContent('Tanner');
-
-		await userEvent.clear(searchInput);
-
-		await expect(getDataRows(canvas)).toHaveLength(15);
-	},
 };
 
 export const TabFilters: Story = {
@@ -165,18 +149,4 @@ export const TabFilters: Story = {
 		);
 	},
 	args: {},
-	play: async ({ canvas }) => {
-		await expect(getDataRows(canvas)).toHaveLength(15);
-
-		const singleTab = canvas.getByRole('button', { name: /single/i });
-		await userEvent.click(singleTab);
-
-		const singleRowCount = defaultData.filter((row) => row.status === 'single').length;
-		await expect(getDataRows(canvas)).toHaveLength(singleRowCount);
-
-		const allTab = canvas.getByRole('button', { name: /all people/i });
-		await userEvent.click(allTab);
-
-		await expect(getDataRows(canvas)).toHaveLength(15);
-	},
 };

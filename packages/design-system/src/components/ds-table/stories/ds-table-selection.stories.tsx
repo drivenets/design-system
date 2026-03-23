@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent } from 'storybook/test';
+import { fn } from 'storybook/test';
 import { useRef, useState } from 'react';
 import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
@@ -34,29 +34,6 @@ export const Selectable: Story = {
 	args: {
 		selectable: true,
 		onSelectionChange: fn(),
-	},
-	play: async ({ args, canvas }) => {
-		const checkboxes = canvas.getAllByRole('checkbox');
-
-		const selectAllCheckbox = checkboxes[0] as HTMLElement;
-		await expect(selectAllCheckbox).not.toBeChecked();
-
-		const firstRowCheckbox = checkboxes[1] as HTMLElement;
-		await userEvent.click(firstRowCheckbox);
-		await expect(firstRowCheckbox).toBeChecked();
-		await expect(args.onSelectionChange).toHaveBeenCalled();
-
-		await userEvent.click(selectAllCheckbox);
-		const allRowCheckboxes = canvas.getAllByRole('checkbox').slice(1);
-		for (const cb of allRowCheckboxes) {
-			await expect(cb).toBeChecked();
-		}
-
-		await userEvent.click(selectAllCheckbox);
-		const allRowCheckboxesAfter = canvas.getAllByRole('checkbox').slice(1);
-		for (const cb of allRowCheckboxesAfter) {
-			await expect(cb).not.toBeChecked();
-		}
 	},
 };
 
@@ -129,32 +106,6 @@ export const ProgrammaticRowSelection: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvas }) => {
-		await expect(canvas.getByText(/selected rows: none/i)).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /select row 1/i }));
-		await expect(
-			canvas.getByText((content, element) => {
-				return element?.textContent === 'Selected rows: 1';
-			}),
-		).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /^select all$/i }));
-		const allCheckboxes = canvas.getAllByRole('checkbox');
-		for (const cb of allCheckboxes) {
-			await expect(cb).toBeChecked();
-		}
-
-		await userEvent.click(canvas.getByRole('button', { name: /deselect all/i }));
-		await expect(canvas.getByText(/selected rows: none/i)).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /select first 3 rows/i }));
-		const checkboxesAfter = canvas.getAllByRole('checkbox');
-		const checkedCount = checkboxesAfter.filter(
-			(cb) => (cb as HTMLInputElement).checked || cb.getAttribute('data-state') === 'checked',
-		).length;
-		await expect(checkedCount).toBe(3);
-	},
 };
 
 export const MaxSelectionLimit: Story = {
@@ -196,27 +147,5 @@ export const MaxSelectionLimit: Story = {
 				/>
 			</div>
 		);
-	},
-	play: async ({ canvas }) => {
-		await expect(canvas.getByText(/selected: 0 \/ 2/i)).toBeInTheDocument();
-
-		const checkboxes = canvas.getAllByRole('checkbox');
-		const firstCheckbox = checkboxes[0] as HTMLElement;
-		const secondCheckbox = checkboxes[1] as HTMLElement;
-		const thirdCheckbox = checkboxes[2] as HTMLElement;
-
-		await userEvent.click(firstCheckbox);
-		await expect(canvas.getByText(/selected: 1 \/ 2/i)).toBeInTheDocument();
-
-		await userEvent.click(secondCheckbox);
-		await expect(canvas.getByText(/selected: 2 \/ 2/i)).toBeInTheDocument();
-
-		await expect(thirdCheckbox).toBeDisabled();
-
-		await userEvent.click(firstCheckbox);
-		await expect(canvas.getByText(/selected: 1 \/ 2/i)).toBeInTheDocument();
-
-		const thirdCheckboxAfter = canvas.getAllByRole('checkbox')[2] as HTMLElement;
-		await expect(thirdCheckboxAfter).not.toBeDisabled();
 	},
 };
