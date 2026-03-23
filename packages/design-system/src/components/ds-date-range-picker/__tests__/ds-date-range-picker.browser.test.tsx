@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
-import MockDate from 'mockdate';
 import DsDateRangePicker from '../ds-date-range-picker';
 import type { DateRangeValue } from '../ds-date-range-picker.types';
 
 describe('DsDateRangePicker', () => {
 	beforeEach(() => {
-		MockDate.set(new Date('2026-01-15T12:00:00'));
+		vi.useFakeTimers();
+		vi.setSystemTime(new Date('2026-01-15T12:00:00'));
 	});
 
 	afterEach(() => {
-		MockDate.reset();
+		vi.useRealTimers();
 	});
 
 	it('should select start and end dates via calendar', async () => {
@@ -39,7 +39,7 @@ describe('DsDateRangePicker', () => {
 
 		await userEvent.click(endCalendarButton);
 
-		const jan20Button = page.getByRole('button', { name: /Choose.*January 20, 2026/i });
+		const jan20Button = page.getByRole('button', { name: /Choose.*January 20, 2026/i }).nth(1);
 		await jan20Button.click();
 		await userEvent.keyboard('{Escape}');
 
