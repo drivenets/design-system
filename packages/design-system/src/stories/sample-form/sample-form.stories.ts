@@ -172,7 +172,7 @@ export const Default: Story = {
 				email: fakeEmail,
 				description: fakeDescription,
 				quantity: 1,
-				birthDate: '2024-12-25',
+				birthDate: '2002-12-25',
 				acceptTerms: true,
 				subscription: 'pro',
 				contactMethod: 'email',
