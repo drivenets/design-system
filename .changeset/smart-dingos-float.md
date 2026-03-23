@@ -2,4 +2,4 @@
 '@drivenets/design-system': minor
 ---
 
-add `DsDateRangePicker` component
+Add `DsDateRangePicker` component
