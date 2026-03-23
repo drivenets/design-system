@@ -1,7 +1,19 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { consistentStoryTitles } from '../consistent-story-titles';
+import * as path from 'node:path';
 
-const ruleTester = new RuleTester();
+const fixturesDir = path.resolve(__dirname, 'fixtures');
+
+const ruleTester = new RuleTester({
+	languageOptions: {
+		parserOptions: {
+			projectService: {
+				allowDefaultProject: ['*.ts'],
+			},
+			tsconfigRootDir: fixturesDir,
+		},
+	},
+});
 
 ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 	valid: [
@@ -90,6 +102,10 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 		{
 			name: 'component with compound name',
 			code: `
+				const DsButton = {
+					Root: () => null,
+				};
+
 				const meta = {
 					component: Button.Root,
 					title: 'Design System/Button',
@@ -124,6 +140,20 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 				const meta = {
 					component: DsAlertBanner,
 					title: 'Design System/AlertBanner',
+				};
+
+				export default meta;
+			`,
+		},
+
+		{
+			name: 'imported namespaced component with correct title',
+			code: `
+				import { DsActiveNamespacedComponent } from './components';
+
+				const meta = {
+					component: DsActiveNamespacedComponent.Root,
+					title: 'Design System/ActiveNamespacedComponent',
 				};
 
 				export default meta;
@@ -260,8 +290,12 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 		},
 
 		{
-			name: 'component with compound name - normalizes to stripped name',
+			name: 'component with compound name - normalizes to stripped namespace',
 			code: `
+				const DsButton = {
+					Root: () => null,
+				};
+
 				const meta = {
 					component: DsButton.Root,
 					title: 'Design System/DsButton',
@@ -270,6 +304,10 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 				export default meta;
 			`,
 			output: `
+				const DsButton = {
+					Root: () => null,
+				};
+
 				const meta = {
 					component: DsButton.Root,
 					title: 'Design System/Button',
@@ -283,9 +321,9 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					data: {
 						expectedName: 'Button',
 					},
-					line: 4,
+					line: 8,
 					column: 13,
-					endLine: 4,
+					endLine: 8,
 					endColumn: 37,
 				},
 			],
@@ -348,6 +386,38 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					column: 13,
 					endLine: 4,
 					endColumn: 49,
+				},
+			],
+		},
+
+		{
+			name: 'imported namespaced component with Ds prefix in title',
+			code: `
+				import { DsActiveNamespacedComponent } from './components';
+
+				const meta = {
+					component: DsActiveNamespacedComponent.Root,
+					title: 'Design System/DsActiveNamespacedComponent',
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsActiveNamespacedComponent } from './components';
+
+				const meta = {
+					component: DsActiveNamespacedComponent.Root,
+					title: 'Design System/ActiveNamespacedComponent',
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'invalidComponentName',
+					data: {
+						expectedName: 'ActiveNamespacedComponent',
+					},
 				},
 			],
 		},

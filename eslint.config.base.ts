@@ -16,9 +16,10 @@ export default defineConfig(
 		strict: false,
 	}),
 
-	// Base rules.
 	eslint.configs.recommended,
 	tseslint.configs.strictTypeChecked,
+
+	importX.flatConfigs.typescript,
 
 	{
 		name: 'base/general-overrides',
@@ -124,10 +125,15 @@ export default defineConfig(
 			],
 
 			// Import rules.
-			'import-x/no-cycle': 'error',
-			'import-x/no-unresolved': 'error',
 			'import-x/no-extraneous-dependencies': 'error',
 			'import-x/no-duplicates': ['error', { 'prefer-inline': true }],
+
+			'import-x/no-cycle': [
+				'error',
+				{
+					ignoreExternal: true,
+				},
+			],
 		},
 	},
 

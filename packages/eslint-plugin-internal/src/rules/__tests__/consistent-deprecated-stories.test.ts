@@ -61,11 +61,11 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		{
 			name: 'imported deprecated component with correct suffix and tag',
 			code: `
-				import { DsDeprecatedFixture } from './components';
+				import { DsDeprecatedComponent } from './components';
 
 				const meta = {
-					title: 'Design System/DeprecatedFixture (Deprecated)',
-					component: DsDeprecatedFixture,
+					title: 'Design System/DeprecatedComponent (Deprecated)',
+					component: DsDeprecatedComponent,
 					tags: ['deprecated'],
 				};
 
@@ -76,11 +76,11 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		{
 			name: 'imported non-deprecated component without suffix or tag',
 			code: `
-				import { DsActiveFixture } from './components';
+				import { DsActiveComponent } from './components';
 
 				const meta = {
-					title: 'Design System/ActiveFixture',
-					component: DsActiveFixture,
+					title: 'Design System/ActiveComponent',
+					component: DsActiveComponent,
 				};
 
 				export default meta;
@@ -90,12 +90,85 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		{
 			name: 'imported deprecated component with 2 suffixes',
 			code: `
-				import { DsDeprecatedFixture } from './components';
+				import { DsDeprecatedComponent } from './components';
 
 				const meta = {
-					title: 'Design System/DeprecatedFixture (Classic) (Deprecated)',
-					component: DsDeprecatedFixture,
+					title: 'Design System/DeprecatedComponent (Classic) (Deprecated)',
+					component: DsDeprecatedComponent,
 					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+		},
+
+		{
+			name: 'imported deprecated namespaced component',
+			code: `
+				import { DsDeprecatedNamespacedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedNamespacedComponent (Deprecated)',
+					component: DsDeprecatedNamespacedComponent,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+		},
+
+		{
+			name: 'imported non-deprecated namespaced component',
+			code: `
+				import { DsActiveNamespacedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/ActiveNamespacedComponent',
+					component: DsActiveNamespacedComponent,
+				};
+
+				export default meta;
+			`,
+		},
+
+		{
+			name: 'imported deprecated component with type annotation',
+			code: `
+				import { DsDeprecatedTypedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedTypedComponent (Deprecated)',
+					component: DsDeprecatedTypedComponent,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+		},
+
+		{
+			name: 'imported deprecated sub-component',
+			code: `
+				import { DsSubComponents } from './components';
+
+				const meta = {
+					title: 'Design System/SubComponents.Deprecated (Deprecated)',
+					component: DsSubComponents.Deprecated,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+		},
+
+		{
+			name: 'imported non-deprecated sub-component',
+			code: `
+				import { DsSubComponents } from './components';
+
+				const meta = {
+					title: 'Design System/SubComponents.Active',
+					component: DsSubComponents.Active,
 				};
 
 				export default meta;
@@ -390,21 +463,21 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		{
 			name: 'imported deprecated component missing suffix and tags prop - fixes both',
 			code: `
-				import { DsDeprecatedFixture } from './components';
+				import { DsDeprecatedComponent } from './components';
 
 				const meta = {
-					title: 'Design System/DeprecatedFixture',
-					component: DsDeprecatedFixture,
+					title: 'Design System/DeprecatedComponent',
+					component: DsDeprecatedComponent,
 				};
 
 				export default meta;
 			`,
 			output: `
-				import { DsDeprecatedFixture } from './components';
+				import { DsDeprecatedComponent } from './components';
 
 				const meta = {
-					title: 'Design System/DeprecatedFixture (Deprecated)',
-					component: DsDeprecatedFixture,\n\ttags: ['deprecated'],
+					title: 'Design System/DeprecatedComponent (Deprecated)',
+					component: DsDeprecatedComponent,\n\ttags: ['deprecated'],
 				};
 
 				export default meta;
@@ -412,7 +485,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			errors: [
 				{
 					messageId: 'missingDeprecatedTag',
-					data: { component: 'DsDeprecatedFixture' },
+					data: { component: 'DsDeprecatedComponent' },
 					line: 4,
 					column: 18,
 					endLine: 7,
@@ -420,11 +493,45 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				},
 				{
 					messageId: 'missingDeprecatedSuffix',
-					data: { component: 'DsDeprecatedFixture' },
+					data: { component: 'DsDeprecatedComponent' },
 					line: 5,
 					column: 13,
 					endLine: 5,
-					endColumn: 46,
+					endColumn: 48,
+				},
+			],
+		},
+
+		{
+			name: 'imported deprecated component with type annotation missing suffix and tag',
+			code: `
+				import { DsDeprecatedTypedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedTypedComponent',
+					component: DsDeprecatedTypedComponent,
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsDeprecatedTypedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedTypedComponent (Deprecated)',
+					component: DsDeprecatedTypedComponent,\n\ttags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'missingDeprecatedTag',
+					data: { component: 'DsDeprecatedTypedComponent' },
+				},
+				{
+					messageId: 'missingDeprecatedSuffix',
+					data: { component: 'DsDeprecatedTypedComponent' },
 				},
 			],
 		},
@@ -432,22 +539,22 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		{
 			name: 'imported renamed deprecated component missing suffix - fixes suffix',
 			code: `
-				import { DsDeprecatedFixture as DsDeprecatedFixtureAlias } from './components';
+				import { DsDeprecatedComponent as DsDeprecatedComponentAlias } from './components';
 
 				const meta = {
-					title: 'Design System/DeprecatedFixture',
-					component: DsDeprecatedFixtureAlias,
+					title: 'Design System/DeprecatedComponent',
+					component: DsDeprecatedComponentAlias,
 					tags: ['deprecated'],
 				};
 
 				export default meta;
 			`,
 			output: `
-				import { DsDeprecatedFixture as DsDeprecatedFixtureAlias } from './components';
+				import { DsDeprecatedComponent as DsDeprecatedComponentAlias } from './components';
 
 				const meta = {
-					title: 'Design System/DeprecatedFixture (Deprecated)',
-					component: DsDeprecatedFixtureAlias,
+					title: 'Design System/DeprecatedComponent (Deprecated)',
+					component: DsDeprecatedComponentAlias,
 					tags: ['deprecated'],
 				};
 
@@ -456,11 +563,11 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 			errors: [
 				{
 					messageId: 'missingDeprecatedSuffix',
-					data: { component: 'DsDeprecatedFixtureAlias' },
+					data: { component: 'DsDeprecatedComponentAlias' },
 					line: 5,
 					column: 13,
 					endLine: 5,
-					endColumn: 46,
+					endColumn: 48,
 				},
 			],
 		},
@@ -527,6 +634,178 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				{
 					messageId: 'noUnusedDeprecatedTag',
 					data: { component: 'DsButton' },
+					line: 7,
+					column: 13,
+					endLine: 7,
+					endColumn: 25,
+				},
+			],
+		},
+
+		{
+			name: 'imported deprecated namespaced component',
+			code: `
+				import { DsDeprecatedNamespacedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedNamespacedComponent',
+					component: DsDeprecatedNamespacedComponent,
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsDeprecatedNamespacedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/DeprecatedNamespacedComponent (Deprecated)',
+					component: DsDeprecatedNamespacedComponent,\n\ttags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'missingDeprecatedTag',
+					data: { component: 'DsDeprecatedNamespacedComponent' },
+					line: 4,
+					column: 18,
+					endLine: 7,
+					endColumn: 6,
+				},
+				{
+					messageId: 'missingDeprecatedSuffix',
+					data: { component: 'DsDeprecatedNamespacedComponent' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 58,
+				},
+			],
+		},
+
+		{
+			name: 'imported non-deprecated namespaced component',
+			code: `
+				import { DsActiveNamespacedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/ActiveNamespacedComponent (Deprecated)',
+					component: DsActiveNamespacedComponent,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsActiveNamespacedComponent } from './components';
+
+				const meta = {
+					title: 'Design System/ActiveNamespacedComponent',
+					component: DsActiveNamespacedComponent,
+					tags: [],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noUnusedDeprecatedSuffix',
+					data: { component: 'DsActiveNamespacedComponent' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 67,
+				},
+				{
+					messageId: 'noUnusedDeprecatedTag',
+					data: { component: 'DsActiveNamespacedComponent' },
+					line: 7,
+					column: 13,
+					endLine: 7,
+					endColumn: 25,
+				},
+			],
+		},
+		{
+			name: 'imported deprecated sub-component',
+			code: `
+				import { DsSubComponents } from './components';
+
+				const meta = {
+					title: 'Design System/SubComponents.Deprecated',
+					component: DsSubComponents.Deprecated,
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsSubComponents } from './components';
+
+				const meta = {
+					title: 'Design System/SubComponents.Deprecated (Deprecated)',
+					component: DsSubComponents.Deprecated,\n\ttags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'missingDeprecatedTag',
+					data: { component: 'DsSubComponents.Deprecated' },
+					line: 4,
+					column: 18,
+					endLine: 7,
+					endColumn: 6,
+				},
+
+				{
+					messageId: 'missingDeprecatedSuffix',
+					data: { component: 'DsSubComponents.Deprecated' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 53,
+				},
+			],
+		},
+
+		{
+			name: 'imported non-deprecated sub-component',
+			code: `
+				import { DsSubComponents } from './components';
+
+				const meta = {
+					title: 'Design System/SubComponents.Active (Deprecated)',
+					component: DsSubComponents.Active,
+					tags: ['deprecated'],
+				};
+
+				export default meta;
+			`,
+			output: `
+				import { DsSubComponents } from './components';
+
+				const meta = {
+					title: 'Design System/SubComponents.Active',
+					component: DsSubComponents.Active,
+					tags: [],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noUnusedDeprecatedSuffix',
+					data: { component: 'DsSubComponents.Active' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 62,
+				},
+				{
+					messageId: 'noUnusedDeprecatedTag',
+					data: { component: 'DsSubComponents.Active' },
 					line: 7,
 					column: 13,
 					endLine: 7,

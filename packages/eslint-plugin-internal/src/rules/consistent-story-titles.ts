@@ -1,7 +1,8 @@
 import { createRule } from '../create-rule';
-import { getObjectProperty } from './utils/get-object-property';
+import { getComponentParts } from './utils/get-component-parts';
+import { getStoryMetaProps } from './utils/get-story-meta-props';
 import { resolveStoryMeta } from './utils/resolve-story-meta';
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import { ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
 
 type MessageId = 'invalidCategory' | 'invalidComponentName';
 type Options = [];
@@ -27,6 +28,8 @@ export const consistentStoryTitles = createRule<Options, MessageId>({
 		schema: [],
 	},
 	create(context) {
+		const services = ESLintUtils.getParserServices(context);
+
 		const check = (node: TSESTree.ExportDefaultDeclaration) => {
 			const metaNode = resolveStoryMeta(context, node.declaration);
 
@@ -64,7 +67,7 @@ export const consistentStoryTitles = createRule<Options, MessageId>({
 				return;
 			}
 
-			const componentName = getComponentName(componentProp?.value);
+			const { name: componentName } = getComponentParts(services, componentProp?.value);
 
 			if (!componentName) {
 				return;
@@ -114,43 +117,8 @@ export const consistentStoryTitles = createRule<Options, MessageId>({
 	},
 });
 
-function getStoryMetaProps(metaNode: TSESTree.ObjectExpression) {
-	const titleProp = getObjectProperty({
-		obj: metaNode,
-		name: 'title',
-		predicate: (v) => v.type === AST_NODE_TYPES.Literal,
-	});
-
-	const componentProp = getObjectProperty({
-		obj: metaNode,
-		name: 'component',
-		predicate: (v) => v.type === AST_NODE_TYPES.Identifier || v.type === AST_NODE_TYPES.MemberExpression,
-	});
-
-	return {
-		titleProp,
-		componentProp,
-	};
-}
-
 function normalizeComponentName(name: string) {
 	return name.replace(/\bDs([A-Z])/, '$1').trim();
-}
-
-function getComponentName(node: TSESTree.MemberExpression | TSESTree.Identifier | undefined) {
-	if (!node) {
-		return null;
-	}
-
-	if (node.type === AST_NODE_TYPES.Identifier) {
-		return node.name;
-	}
-
-	if (node.object.type === AST_NODE_TYPES.Identifier) {
-		return node.object.name;
-	}
-
-	return null;
 }
 
 // Guess the index of the component name in the title segments.
