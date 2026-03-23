@@ -7,17 +7,32 @@ import {
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DsFormControl } from '../../components/ds-form-control';
+import { DsDateRangePicker } from '../../components/ds-date-range-picker';
 import { DsRadioGroup } from '../../components/ds-radio-group';
 import { DsCheckbox } from '../../components/ds-checkbox';
 import { DsButton } from '../../components/ds-button';
 import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
+
+const parseIsoDate = (iso: string): Date => {
+	const parts = iso.split('-').map(Number);
+	return new Date(parts[0] ?? 0, (parts[1] ?? 1) - 1, parts[2] ?? 1);
+};
+
+const toIsoDate = (date: Date): string => {
+	const year = String(date.getFullYear());
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+	return `${year}-${month}-${day}`;
+};
 
 const defaultValues = {
 	name: '',
 	email: '',
 	description: '',
 	quantity: undefined,
-	startDate: undefined,
+	birthDate: undefined,
+	eventStartDate: '',
+	eventEndDate: '',
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
@@ -131,23 +146,51 @@ const SampleForm = () => {
 				</DsFormControl>
 
 				<DsFormControl
-					label="Start Date"
+					label="Birth Date"
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.startDate ? errors.startDate?.message : undefined}
+					message={touchedFields.birthDate ? errors.birthDate?.message : undefined}
 				>
 					<Controller
-						name="startDate"
+						name="birthDate"
 						control={control}
 						render={({ field }) => (
-							<DsFormControl.DateInput
-								value={field.value}
-								onValueChange={(value) => handleValueChange(field, value as string)}
+							<DsFormControl.DatePicker
+								value={field.value ? parseIsoDate(field.value) : null}
+								onChange={(date) => {
+									handleValueChange(field, date ? toIsoDate(date) : '');
+								}}
 							/>
 						)}
 					/>
 				</DsFormControl>
+
+				<DsDateRangePicker
+					value={[
+						watch('eventStartDate').length > 0 ? parseIsoDate(watch('eventStartDate')) : null,
+						watch('eventEndDate').length > 0 ? parseIsoDate(watch('eventEndDate')) : null,
+					]}
+					onChange={([start, end]) => {
+						handleValueChange('eventStartDate', start ? toIsoDate(start) : '');
+						handleValueChange('eventEndDate', end ? toIsoDate(end) : '');
+					}}
+					orientation="vertical"
+					slotProps={{
+						startFormControl: {
+							required: true,
+							status: 'error',
+							messageIcon: 'cancel',
+							message: touchedFields.eventStartDate ? errors.eventStartDate?.message : undefined,
+						},
+						endFormControl: {
+							required: true,
+							status: 'error',
+							messageIcon: 'cancel',
+							message: touchedFields.eventEndDate ? errors.eventEndDate?.message : undefined,
+						},
+					}}
+				/>
 
 				<DsFormControl
 					label="Preferred Contact Method"
