@@ -220,7 +220,7 @@ describe('Date Picker Utils', () => {
 
 		it('should preserve date through string → DateValue → string conversion', () => {
 			expect(formatDate(parseDate('03/15/2024'))).toBe('03/15/2024');
-			expect(formatDate(parseDate('03/15/2024 02:30 PM'))).toBe('03/15/2024, 02:30 PM');
+			expect(formatDate(parseDate('03/15/2024 02:30 PM'), true)).toBe('03/15/2024, 02:30 PM');
 		});
 	});
 });
