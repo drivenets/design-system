@@ -34,7 +34,7 @@ export const formatDate = (date: DateValue | null, withTime = false): string => 
 /**
  * Parse a date string (MM/DD/YYYY or MM/DD/YYYY, hh:mm AM/PM) to DateValue
  */
-export const parseDate = (dateStr: string, withTime = false): DateValue | null => {
+export const parseDate = (dateStr: string): DateValue | null => {
 	const parsed = new Date(dateStr);
 	if (isNaN(parsed.getTime())) {
 		return null;
@@ -50,7 +50,6 @@ export const validateDateString = ({
 	text,
 	min,
 	max,
-	withTime = false,
 }: {
 	text: string;
 	min?: DateValue | null;
@@ -61,7 +60,7 @@ export const validateDateString = ({
 		return true;
 	}
 
-	const date = parseDate(text, withTime);
+	const date = parseDate(text);
 	if (!date) {
 		return false;
 	}

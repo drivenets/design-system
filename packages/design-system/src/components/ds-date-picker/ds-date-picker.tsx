@@ -71,7 +71,7 @@ const DsDatePicker = ({
 		const isValid = validateDateString({ text, min, max, withTime });
 
 		if (isValid) {
-			const parsedValue = parseDate(text, withTime);
+			const parsedValue = parseDate(text);
 			setValue(parsedValue);
 		}
 	};
@@ -93,7 +93,7 @@ const DsDatePicker = ({
 		const isValid = validateDateString({ text, min, max, withTime });
 
 		if (isValid) {
-			setValue(parseDate(text, withTime));
+			setValue(parseDate(text));
 		} else {
 			resetInput();
 		}

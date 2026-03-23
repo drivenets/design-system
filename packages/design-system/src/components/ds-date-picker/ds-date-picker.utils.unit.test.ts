@@ -118,7 +118,7 @@ describe('Date Picker Utils', () => {
 		});
 
 		it('should parse valid MM/DD/YYYY hh:mm AM/PM format when withTime=true', () => {
-			const result = parseDate('03/15/2024 02:30 PM', true);
+			const result = parseDate('03/15/2024 02:30 PM');
 
 			assertDateValue(result);
 			assert(result instanceof ZonedDateTime);
@@ -131,8 +131,8 @@ describe('Date Picker Utils', () => {
 		});
 
 		it('should convert 12 AM to hour 0 and keep 12 PM as hour 12', () => {
-			const midnight = parseDate('03/15/2024 12:00 AM', true);
-			const noon = parseDate('03/15/2024 12:00 PM', true);
+			const midnight = parseDate('03/15/2024 12:00 AM');
+			const noon = parseDate('03/15/2024 12:00 PM');
 
 			assert(midnight instanceof ZonedDateTime);
 			assert(noon instanceof ZonedDateTime);
@@ -142,8 +142,8 @@ describe('Date Picker Utils', () => {
 		});
 
 		it('should return null for invalid hour or minute values', () => {
-			expect(parseDate('03/15/2024 13:00 PM', true)).toBeNull();
-			expect(parseDate('03/15/2024 09:60 AM', true)).toBeNull();
+			expect(parseDate('03/15/2024 13:00 PM')).toBeNull();
+			expect(parseDate('03/15/2024 09:60 AM')).toBeNull();
 		});
 	});
 
@@ -220,7 +220,7 @@ describe('Date Picker Utils', () => {
 
 		it('should preserve date through string → DateValue → string conversion', () => {
 			expect(formatDate(parseDate('03/15/2024'))).toBe('03/15/2024');
-			expect(formatDate(parseDate('03/15/2024 02:30 PM', true), true)).toBe('03/15/2024, 02:30 PM');
+			expect(formatDate(parseDate('03/15/2024 02:30 PM'))).toBe('03/15/2024, 02:30 PM');
 		});
 	});
 });
