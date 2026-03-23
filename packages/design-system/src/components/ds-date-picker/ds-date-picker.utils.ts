@@ -43,59 +43,15 @@ export const formatDate = (date: DateValue | null, withTime = false): string => 
 };
 
 /**
- * Parse a date string (MM/DD/YYYY or MM/DD/YYYY hh:mm AM/PM) to DateValue
+ * Parse a date string (MM/DD/YYYY or MM/DD/YYYY, hh:mm AM/PM) to DateValue
  */
 export const parseDate = (dateStr: string, withTime = false): DateValue | null => {
-	if (!dateStr || !dateStr.trim()) {
+	const parsed = new Date(dateStr);
+	if (isNaN(parsed.getTime())) {
 		return null;
 	}
 
-	const match = dateStr
-		.trim()
-		.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:,?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s+(AM|PM))?$/i);
-	if (!match) {
-		return null;
-	}
-
-	const [, month, day, year, hours, minutes, , period] = match;
-
-	if (!month || !day || !year) {
-		return null;
-	}
-
-	const monthNum = parseInt(month, 10);
-	const dayNum = parseInt(day, 10);
-	const yearNum = parseInt(year, 10);
-
-	let hoursNum = 0;
-	let minutesNum = 0;
-
-	if (withTime && hours !== undefined && period !== undefined) {
-		const h12 = parseInt(hours, 10);
-
-		if (h12 < 1 || h12 > 12) {
-			return null;
-		}
-
-		hoursNum = period.toUpperCase() === 'AM' ? (h12 === 12 ? 0 : h12) : h12 === 12 ? 12 : h12 + 12;
-		minutesNum = minutes !== undefined ? parseInt(minutes, 10) : 0;
-
-		if (minutesNum < 0 || minutesNum > 59) {
-			return null;
-		}
-	}
-
-	// Use native Date for proper validation (handles leap years, month lengths, etc.)
-	// Note: Date months are 0-indexed, so subtract 1
-	const date = new Date(yearNum, monthNum - 1, dayNum);
-
-	// Check if the date is valid and matches what we parsed
-	// (e.g., 02/31/2024 would roll over to 03/02/2024, so we detect that)
-	if (date.getFullYear() !== yearNum || date.getMonth() !== monthNum - 1 || date.getDate() !== dayNum) {
-		return null;
-	}
-
-	return new CalendarDateTime(yearNum, monthNum, dayNum, hoursNum, minutesNum, 0);
+	return fromDate(parsed, getLocalTimeZone());
 };
 
 /**
