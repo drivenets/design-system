@@ -8,7 +8,7 @@ export const CalendarViewControl = () => (
 		<DatePicker.PrevTrigger className={styles.prevTrigger}>
 			<DsIcon icon="chevron_left" size="small" />
 		</DatePicker.PrevTrigger>
-		<DatePicker.ViewTrigger className={styles.viewTrigger} asChild>
+		<DatePicker.ViewTrigger className={styles.viewTrigger}>
 			<DsTypography variant="body-md-md" asChild>
 				<DatePicker.RangeText />
 			</DsTypography>
