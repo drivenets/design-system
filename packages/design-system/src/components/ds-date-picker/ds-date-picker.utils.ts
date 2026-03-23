@@ -1,23 +1,12 @@
 import { type DateValue } from '@ark-ui/react/date-picker';
-import { fromDate, getLocalTimeZone, CalendarDateTime } from '@internationalized/date';
+import { fromDate, getLocalTimeZone } from '@internationalized/date';
 
-export const toIntlDate = <T extends Date | null | undefined>(date: T): T extends Date ? DateValue : T => {
-	if (!date) {
-		return date as T extends Date ? DateValue : T;
-	}
-
-	return fromDate(date, getLocalTimeZone()) as T extends Date ? DateValue : T;
-};
+export const toIntlDate = <T extends Date | null | undefined>(date: T): T extends Date ? DateValue : T =>
+	date ? (fromDate(date, getLocalTimeZone()) as never) : (date as never);
 
 export const fromIntlDate = <T extends DateValue | null | undefined>(
 	date: T,
-): T extends DateValue ? Date : T => {
-	if (!date) {
-		return date as T extends DateValue ? Date : T;
-	}
-
-	return date.toDate(getLocalTimeZone()) as T extends DateValue ? Date : T;
-};
+): T extends DateValue ? Date : T => (date ? (date.toDate(getLocalTimeZone()) as never) : (date as never));
 
 /**
  * Format a DateValue to string (MM/DD/YYYY or MM/DD/YYYY hh:mm AM/PM)
