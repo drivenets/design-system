@@ -122,7 +122,6 @@ export const DateOrRange: Story = {
 
 				{mode === 'date' ? (
 					<DsDatePicker
-						className={styles.datePickerField}
 						value={dateValue}
 						onChange={(v) => {
 							setDateValue(v);

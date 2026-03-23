@@ -2,6 +2,7 @@
 	display: flex;
 	gap: var(--spacing-xs);
 	align-items: flex-end;
+	width: 500px;
 }
 
 .verticalContainer {
@@ -18,8 +19,4 @@
 	display: flex;
 	gap: var(--spacing-xs);
 	align-items: flex-end;
-}
-
-.datePickerField {
-	width: 240px;
 }

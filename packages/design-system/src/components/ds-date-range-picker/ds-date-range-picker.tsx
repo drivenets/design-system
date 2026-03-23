@@ -47,7 +47,11 @@ const DsDateRangePicker = ({
 
 	return (
 		<div className={classNames(styles.root, styles[orientation], className)}>
-			<DsFormControl label="Start date" {...slotProps?.startFormControl}>
+			<DsFormControl
+				label="Start date"
+				{...slotProps?.startFormControl}
+				className={classNames(styles.formControl, slotProps?.startFormControl?.className)}
+			>
 				<DsFormControl.DatePicker
 					value={startDate}
 					onChange={handleStartChange}
@@ -62,7 +66,11 @@ const DsDateRangePicker = ({
 				/>
 			</DsFormControl>
 
-			<DsFormControl label="End date" {...slotProps?.endFormControl}>
+			<DsFormControl
+				label="End date"
+				{...slotProps?.endFormControl}
+				className={classNames(styles.formControl, slotProps?.startFormControl?.className)}
+			>
 				<DsFormControl.DatePicker
 					value={endDate}
 					onChange={handleEndChange}
