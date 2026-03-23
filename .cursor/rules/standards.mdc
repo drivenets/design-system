@@ -40,15 +40,22 @@ Refactor card to use CSS modules and fix hover state selector specificity
 | **Standard props**                           | Always support `className`, `style`, `ref`                                       |
 | **slotProps pattern**                        | Use for sub-component customization (MUI-style)                                  |
 | **Consistent callback naming**               | Prefer `onXChange` pattern                                                       |
+| **`null` for empty callback values**         | Use `null` (not `undefined`) for optional values in callbacks: `(value: string \| null) => void` |
 | **Single deprecation comment**               | In types file only, not on every export                                          |
 
 ```typescript
-// Good - own props layer
-interface DsToggleProps {
-  checked?: boolean;
-  onCheckedChange?: (checked: boolean) => void;
+// Good - own props layer with null for clearable value
+interface DsSelectProps {
+  value?: string | null;
+  onValueChange?: (value: string | null) => void;
   ref?: Ref<HTMLElement>;
   className?: string;
+}
+
+// Bad - using undefined for empty value
+interface DsSelectProps {
+  value?: string;
+  onValueChange?: (value: string | undefined) => void;
 }
 
 // Bad - exposing library internals
