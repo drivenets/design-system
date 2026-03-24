@@ -1,8 +1,8 @@
 import { createRule } from '../create-rule';
 import { getObjectProperty } from './utils/get-object-property';
+import { removeWithTrailingComma } from './utils/remove-with-trailing-comma';
 import { resolveStoryMeta } from './utils/resolve-story-meta';
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import type { RuleFixer, SourceCode } from '@typescript-eslint/utils/ts-eslint';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 type MessageId = 'noAutodocsTag';
 
@@ -65,10 +65,3 @@ export const noAutodocsTag = createRule<[], MessageId>({
 		};
 	},
 });
-
-function removeWithTrailingComma(sourceCode: SourceCode, fixer: RuleFixer, node: TSESTree.Node) {
-	const trailingComma = sourceCode.getTokenAfter(node);
-	const rangeEnd = trailingComma?.value === ',' ? trailingComma.range[1] : node.range[1];
-
-	return fixer.removeRange([node.range[0], rangeEnd]);
-}
