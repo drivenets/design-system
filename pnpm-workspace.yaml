@@ -2,5 +2,11 @@ packages:
   - 'packages/*'
 
 minimumReleaseAge: 1440 # 1 day in minutes
+
+# Temporary
+minimumReleaseAgeExclude:
+  - 'typescript'
+  - '@typescript/native-preview*'
+
 trustPolicy: 'no-downgrade'
 blockExoticSubdeps: true
