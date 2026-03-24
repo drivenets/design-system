@@ -9,7 +9,7 @@ import { earlierDate, laterDate } from './ds-date-range-picker.utils';
 
 const DsDateRangePicker = ({
 	value: valueProp,
-	defaultValue,
+	defaultValue = [null, null],
 	onChange,
 	min,
 	max,
@@ -24,7 +24,7 @@ const DsDateRangePicker = ({
 	locale,
 	slotProps,
 }: DsDateRangePickerProps) => {
-	const [value, setValue] = useControlled<DateRangeValue>(valueProp, onChange, defaultValue ?? DEFAULT_VALUE);
+	const [value, setValue] = useControlled<DateRangeValue>(valueProp, onChange, defaultValue);
 
 	const [startDate, endDate] = value;
 
@@ -49,8 +49,8 @@ const DsDateRangePicker = ({
 		<div className={classNames(styles.root, styles[orientation], className)}>
 			<DsFormControl
 				label="Start date"
-				{...slotProps?.startFormControl}
-				className={classNames(styles.formControl, slotProps?.startFormControl?.className)}
+				{...slotProps?.startDateFormControl}
+				className={classNames(styles.formControl, slotProps?.startDateFormControl?.className)}
 			>
 				<DsFormControl.DatePicker
 					value={startDate}
@@ -68,8 +68,8 @@ const DsDateRangePicker = ({
 
 			<DsFormControl
 				label="End date"
-				{...slotProps?.endFormControl}
-				className={classNames(styles.formControl, slotProps?.startFormControl?.className)}
+				{...slotProps?.endDateFormControl}
+				className={classNames(styles.formControl, slotProps?.startDateFormControl?.className)}
 			>
 				<DsFormControl.DatePicker
 					value={endDate}
@@ -96,5 +96,3 @@ const DsDateRangePicker = ({
 };
 
 export default DsDateRangePicker;
-
-const DEFAULT_VALUE: DateRangeValue = [null, null];

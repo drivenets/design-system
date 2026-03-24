@@ -15,8 +15,8 @@ export type DateRangeFormControlSlotProps = Partial<Omit<DsFormControlProps, 'ch
 export interface DsDateRangePickerSlotProps {
 	startDatePicker?: DsDatePickerProps;
 	endDatePicker?: DsDatePickerProps;
-	startFormControl?: DateRangeFormControlSlotProps;
-	endFormControl?: DateRangeFormControlSlotProps;
+	startDateFormControl?: DateRangeFormControlSlotProps;
+	endDateFormControl?: DateRangeFormControlSlotProps;
 }
 
 export interface DsDateRangePickerProps {
@@ -48,7 +48,7 @@ export interface DsDateRangePickerProps {
 	max?: Date;
 
 	/**
-	 * Whether to show time pickers alongside date pickers
+	 * Whether to show date pickers with time
 	 * @default false
 	 */
 	withTime?: boolean;

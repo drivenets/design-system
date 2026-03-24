@@ -166,13 +166,13 @@ const SampleForm = () => {
 					orientation="vertical"
 					hideClearAll
 					slotProps={{
-						startFormControl: {
+						startDateFormControl: {
 							required: true,
 							status: 'error',
 							messageIcon: 'cancel',
 							message: touchedFields.eventStartDate ? errors.eventStartDate?.message : undefined,
 						},
-						endFormControl: {
+						endDateFormControl: {
 							required: true,
 							status: 'error',
 							messageIcon: 'cancel',

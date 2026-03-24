@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsDateRangePicker from '../ds-date-range-picker';
-import type { DateRangeValue } from '../ds-date-range-picker.types';
 
 describe('DsDateRangePicker', () => {
 	beforeEach(() => {
@@ -16,9 +14,7 @@ describe('DsDateRangePicker', () => {
 
 	it('should select start and end dates via calendar', async () => {
 		function Wrapper() {
-			const [value, setValue] = useState<DateRangeValue>([null, null]);
-
-			return <DsDateRangePicker value={value} onChange={setValue} disablePortal />;
+			return <DsDateRangePicker disablePortal />;
 		}
 
 		await page.render(<Wrapper />);
@@ -48,38 +44,29 @@ describe('DsDateRangePicker', () => {
 
 	it('should render time inputs when withTime is enabled', async () => {
 		function Wrapper() {
-			const [value, setValue] = useState<DateRangeValue>([null, null]);
-
-			return <DsDateRangePicker value={value} onChange={setValue} withTime />;
+			return <DsDateRangePicker withTime />;
 		}
 
 		await page.render(<Wrapper />);
 
-		const inputs = page.getByPlaceholder('mm/dd/yyyy, hh:mm AM/PM').elements();
-		expect(inputs).toHaveLength(2);
-	});
+		const inputs = page.getByPlaceholder('mm/dd/yyyy, hh:mm AM/PM');
+		expect(inputs.elements()).toHaveLength(2);
 
-	it('should render two date inputs in vertical orientation', async () => {
-		function Wrapper() {
-			const [value, setValue] = useState<DateRangeValue>([null, null]);
+		const startInput = inputs.nth(0);
+		const endInput = inputs.nth(1);
 
-			return <DsDateRangePicker value={value} onChange={setValue} orientation="vertical" />;
-		}
+		await userEvent.type(startInput, '01/10/2026 09:30 AM');
+		await userEvent.type(endInput, '01/20/2026 05:45 PM');
+		endInput.element().blur();
 
-		await page.render(<Wrapper />);
-
-		const inputs = page.getByPlaceholder('mm/dd/yyyy').elements();
-		expect(inputs).toHaveLength(2);
+		await expect.element(startInput).toHaveValue('01/10/2026, 09:30 AM');
+		await expect.element(endInput).toHaveValue('01/20/2026, 05:45 PM');
 	});
 
 	it('should show calendar with min/max constraints', async () => {
 		function Wrapper() {
-			const [value, setValue] = useState<DateRangeValue>([null, null]);
-
 			return (
 				<DsDateRangePicker
-					value={value}
-					onChange={setValue}
 					withTime
 					min={new Date('2026-01-01T00:30:00')}
 					max={new Date('2026-03-31T23:20:00')}
@@ -114,12 +101,12 @@ describe('DsDateRangePicker', () => {
 
 	it('should hide clear all button when hideClearAll is true', async () => {
 		function Wrapper() {
-			const [value, setValue] = useState<DateRangeValue>([
-				new Date('2026-01-10T00:00:00'),
-				new Date('2026-01-20T00:00:00'),
-			]);
-
-			return <DsDateRangePicker value={value} onChange={setValue} hideClearAll />;
+			return (
+				<DsDateRangePicker
+					defaultValue={[new Date('2026-01-10T00:00:00'), new Date('2026-01-20T00:00:00')]}
+					hideClearAll
+				/>
+			);
 		}
 
 		await page.render(<Wrapper />);

@@ -40,9 +40,7 @@ export const WithTime: Story = {
 	render: function Render(args) {
 		const [value, setValue] = useState<DateRangeValue>([null, null]);
 
-		return (
-			<DsDateRangePicker {...args} withTime className={styles.container} value={value} onChange={setValue} />
-		);
+		return <DsDateRangePicker {...args} className={styles.container} value={value} onChange={setValue} />;
 	},
 };
 
@@ -115,7 +113,7 @@ export const DateOrRange: Story = {
 
 		return (
 			<div className={styles.dateOrRangeContainer}>
-				<DsSegmentGroup.Root value={mode} onValueChange={(v) => setMode(v ?? 'date')} size="small">
+				<DsSegmentGroup.Root value={mode} onValueChange={(v) => setMode(v ?? 'date')} size="default">
 					<DsSegmentGroup.Item value="date" label="Date" />
 					<DsSegmentGroup.Item value="range" label="Range" />
 				</DsSegmentGroup.Root>
