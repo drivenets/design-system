@@ -68,7 +68,7 @@ describe('DsDateRangePicker', () => {
 			return (
 				<DsDateRangePicker
 					withTime
-					min={new Date('2026-01-01T00:30:00')}
+					min={new Date('2026-01-15T00:30:00')}
 					max={new Date('2026-03-31T23:20:00')}
 					disablePortal
 				/>
@@ -81,7 +81,10 @@ describe('DsDateRangePicker', () => {
 		const startCalendarButton = calendarButtons[0] as HTMLElement;
 		await userEvent.click(startCalendarButton);
 
-		expect(page.getByRole('button', { name: /Choose.*January 15, 2026/i })).toBeVisible();
+		expect(page.getByRole('button', { name: /Choose.*January 15, 2026/i })).toBeEnabled();
+		expect(page.getByRole('button', { name: /Choose.*January 1, 2026/i })).toBeDisabled();
+		expect(page.getByRole('button', { name: /Choose.*January 10, 2026/i })).toBeDisabled();
+		expect(page.getByRole('button', { name: /Choose.*January 14, 2026/i })).toBeDisabled();
 
 		await userEvent.keyboard('{Escape}');
 	});
