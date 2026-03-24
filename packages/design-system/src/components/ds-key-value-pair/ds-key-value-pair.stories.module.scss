@@ -18,6 +18,14 @@
 	width: 230px;
 }
 
+.fullTextValue {
+	display: block;
+	width: 100%;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	text-align: end;
+}
+
 .valueWithIcon {
 	display: inline-flex;
 	align-items: center;
