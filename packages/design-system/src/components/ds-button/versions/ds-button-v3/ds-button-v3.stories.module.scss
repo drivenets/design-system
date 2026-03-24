@@ -1,0 +1,83 @@
+@use '../../../../styles/root_updated';
+
+.matrix {
+	display: flex;
+	flex-direction: column;
+	gap: var(--lg);
+	padding: var(--2xl);
+}
+
+.section {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sm);
+}
+
+.sectionTitle {
+	margin: 0 0 var(--xs);
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-semi-bold);
+	color: var(--font-font-secondary);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.columnHeaders {
+	display: flex;
+	align-items: center;
+	gap: var(--sm);
+	padding-left: 120px;
+}
+
+.columnHeader {
+	flex: 1;
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-xs);
+	font-weight: var(--font-weight-medium);
+	color: var(--font-font-secondary);
+	text-align: center;
+}
+
+.row {
+	display: flex;
+	align-items: center;
+	gap: var(--sm);
+}
+
+.rowLabel {
+	width: 120px;
+	flex-shrink: 0;
+	font-family: var(--font-family-base);
+	font-size: var(--font-size-sm);
+	font-weight: var(--font-weight-medium);
+	color: var(--font-font-secondary);
+}
+
+.cell {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+}
+
+.onDark {
+	padding: var(--2xl);
+	background-color: var(--darks-500);
+	border-radius: 4px;
+}
+
+.onDarkLabel {
+	color: var(--secondary-050);
+}
+
+.onDarkSectionTitle {
+	color: var(--secondary-300);
+}
+
+.sectionTitleSpaced {
+	margin-top: var(--lg);
+}
+
+.onDarkColumnHeader {
+	color: var(--secondary-300);
+}
