@@ -82,9 +82,9 @@ describe('DsDateRangePicker', () => {
 		await userEvent.click(startCalendarButton);
 
 		expect(page.getByRole('button', { name: /Choose.*January 15, 2026/i })).toBeEnabled();
-		expect(page.getByRole('button', { name: /Choose.*January 1, 2026/i })).toBeDisabled();
-		expect(page.getByRole('button', { name: /Choose.*January 10, 2026/i })).toBeDisabled();
-		expect(page.getByRole('button', { name: /Choose.*January 14, 2026/i })).toBeDisabled();
+		expect(page.getByRole('button', { name: /Not available.*January 1, 2026/i })).toBeDisabled();
+		expect(page.getByRole('button', { name: /Not available.*January 10, 2026/i })).toBeDisabled();
+		expect(page.getByRole('button', { name: /Not available.*January 14, 2026/i })).toBeDisabled();
 
 		await userEvent.keyboard('{Escape}');
 	});
