@@ -582,7 +582,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -11968,6 +11968,7 @@ value?: ReactNode</code></pre>
               <pre><code>const ResponsiveWidth = function Render() {
     const [width, setWidth] = useState(DEFAULT_WIDTH);
     const [serial, setSerial] = useState(&#39;99887766&#39;);
+    const [description, setDescription] = useState(LONG_TEXT);
 
     return (
         &lt;div className={storyStyles.responsiveDemo}&gt;
@@ -12006,6 +12007,19 @@ value?: ReactNode</code></pre>
                     value=&quot;v4.2.1-build.2847&quot;
                     readOnly
                     orientation=&quot;horizontal&quot;
+                /&gt;
+                &lt;DsKeyValuePair
+                    keyLabel=&quot;Description&quot;
+                    value={description}
+                    orientation=&quot;horizontal&quot;
+                    editInput={
+                        &lt;DsTextarea
+                            value={description}
+                            onValueChange={setDescription}
+                            rows={4}
+                            className={storyStyles.descriptionTextarea}
+                        /&gt;
+                    }
                 /&gt;
             &lt;/div&gt;
         &lt;/div&gt;
@@ -12084,7 +12098,7 @@ value?: ReactNode</code></pre>
 
             &lt;DsKeyValuePair
                 keyLabel=&quot;Description&quot;
-                value={description}
+                value={&lt;span className={storyStyles.fullTextValue}&gt;{description}&lt;/span&gt;}
                 orientation=&quot;horizontal&quot;
                 editInput={
                     &lt;DsTextarea
