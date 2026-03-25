@@ -24,12 +24,9 @@ type Story = StoryObj<typeof DsLoader>;
  * Default loader - rotating spinner arc
  */
 export const Default: Story = {
-	args: {
-		'data-testid': 'loader',
-	} as React.ComponentProps<typeof DsLoader>,
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const loader = canvas.getByTestId('loader');
+		const loader = canvas.getByRole('progressbar');
 
 		await expect(loader).toBeInTheDocument();
 	},

@@ -9,7 +9,7 @@ import SpinnerIcon from './spinner-icon';
  */
 const DsLoader = ({ variant = 'spinner', className, ...props }: DsLoaderProps) => {
 	return (
-		<div className={classNames(styles.loaderContainer, className)} {...props}>
+		<div className={classNames(styles.loaderContainer, className)} role="progressbar" {...props}>
 			{variant === 'pulsing' ? <PulsingIcon /> : <SpinnerIcon />}
 		</div>
 	);
