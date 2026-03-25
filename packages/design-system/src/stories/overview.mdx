@@ -18,9 +18,11 @@ import logoUrl from './assets/logo.svg';
 		<img src={logoUrl} className={styles.logo} alt="DriveNets" />
 		<DsTypography variant="heading1">DriveNets Design System</DsTypography>
 	</div>
-	<DsTypography variant="body-md-reg" className={styles.heroDescription}>
-		The official component library for building consistent, scalable UI across DriveNets applications. Browse
-		components in the sidebar, copy code from the docs, and ship faster.
+	<DsTypography variant="body-md-reg" asChild className={styles.heroDescription}>
+		<span>
+			The official component library for building consistent, scalable UI across DriveNets applications.
+			Browse components in the sidebar, copy code from the docs, and ship faster.
+		</span>
 	</DsTypography>
 </div>
 
@@ -92,10 +94,12 @@ export const App = () => (
     <DsTypography variant="heading2">ESLint Plugin</DsTypography>
   </div>
 
-<DsTypography variant="body-md-reg" className={styles.sectionDescription}>
-	Enforce design system consistency and catch deprecated components early with the ESLint plugin. It prevents
-	usage of native HTML elements and MUI components, ensuring your codebase stays aligned with the design
-	system.
+<DsTypography variant="body-md-reg" asChild className={styles.sectionDescription}>
+	<span>
+		Enforce design system consistency and catch deprecated components early with the ESLint plugin. It
+		prevents usage of native HTML elements and MUI components, ensuring your codebase stays aligned with the
+		design system.
+	</span>
 </DsTypography>
 
   <div className={styles.steps}>
