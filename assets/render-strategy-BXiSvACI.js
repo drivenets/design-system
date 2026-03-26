@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{a as t,l as n,o as r,u as i}from"./use-locale-context-XgLibYMz.js";var a,o,s,c=e((()=>{i(),r(),[a,o]=n({name:`RenderStrategyContext`,hookName:`useRenderStrategyContext`,providerName:`<RenderStrategyPropsProvider />`}),s=e=>t()(e,[`lazyMount`,`unmountOnExit`])}));export{o as i,c as n,s as r,a as t};

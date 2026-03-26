@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{n as t}from"./ds-chip-bLiWD6a2.js";var n=e((()=>{t()}));export{n as t};
