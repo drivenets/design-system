@@ -1,60 +1,15 @@
 ---
-description: Storybook story and interaction test standards
+description: Storybook story layout, args, and styling — behavior is covered in Vitest browser tests
 globs: **/*.stories.tsx
 ---
 
 # Storybook Standards
 
-## Interaction Tests
+## Behavior tests
 
-| Requirement                                  | Details                                                                          |
-| -------------------------------------------- | -------------------------------------------------------------------------------- |
-| **Every story needs a `play` function**      | Stories without `play` are untested; add at minimum a render assertion            |
-| **Use `fn()` for callback spying**           | Import from `@storybook/test`; pass as args for action logs + test assertions    |
-| **Use a11y queries**                         | `getByRole`, `getByLabelText`, `getByText` over `getByTestId`                   |
-| **Semantic assertions**                      | `toBeChecked()`, `toBeDisabled()`, `toBeVisible()` over `toHaveAttribute`        |
-| **Don't test implementation details**        | No data attributes, CSS selectors, or internal state; test user-visible behavior |
-| **Await all interactions**                   | `await userEvent.click(...)`, `await expect(...)`                                |
+Interaction and regression coverage lives in **`*.browser.test.tsx`** next to the component (`__tests__/`), using Vitest browser mode (`vitest/browser`), `page.render`, and `expect.element`. Do not rely on Storybook `play` functions.
 
-```tsx
-// Good
-export const Default: Story = {
-  args: {
-    onSelect: fn(),
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-    const button = canvas.getByRole('button', { name: /submit/i });
-
-    await userEvent.click(button);
-    await expect(args.onSelect).toHaveBeenCalledOnce();
-  },
-};
-
-// Bad - no play function, no fn(), testing implementation details
-export const Default: Story = {
-  args: {
-    onSelect: () => console.log('selected'),
-  },
-  // no play function = no test
-};
-```
-
-For stories with callback args, verify the callback was called:
-
-```tsx
-await userEvent.click(button);
-await expect(args.onClick).toHaveBeenCalledOnce();
-```
-
-For stories showing disabled state, verify interactions are blocked:
-
-```tsx
-await userEvent.click(element, { pointerEventsCheck: 0 });
-await expect(args.onClick).not.toHaveBeenCalled();
-```
-
+See `.cursor/rules/browser-tests.mdc` for patterns (a11y queries, `vi.fn()` spies, semantic assertions).
 
 ---
 
@@ -65,19 +20,31 @@ await expect(args.onClick).not.toHaveBeenCalled();
 | **Use `mockdate` for date-dependent stories**| `vi.useFakeTimers` breaks Ark UI internals (setTimeout, setInterval)             |
 | **Add reference comment**                    | Explain why `mockdate` is used over `vi.useFakeTimers` on first usage in file    |
 
-```tsx
-import MockDate from 'mockdate';
+Use a **decorator** so the fixed date applies while the story is mounted (not inside a removed `play` function):
 
-export const WithDate: Story = {
-  // mockdate is used instead of vi.useFakeTimers because Ark UI
-  // internally uses setTimeout/setInterval which hang with fake timers
-  play: async ({ canvasElement }) => {
+```tsx
+import { useEffect } from 'react';
+import MockDate from 'mockdate';
+import type { Decorator, Meta } from '@storybook/react-vite';
+import Ds{Name} from './ds-{name}';
+
+// mockdate is used instead of vi.useFakeTimers because Ark UI
+// internally uses setTimeout/setInterval which hang with fake timers
+const withFixedDate: Decorator = (Story) => {
+  useEffect(() => {
     MockDate.set('2026-01-15');
-    // ... test logic
-    MockDate.reset();
-  },
+    return () => MockDate.reset();
+  }, []);
+  return <Story />;
+};
+
+const meta: Meta<typeof Ds{Name}> = {
+  component: Ds{Name},
+  decorators: [withFixedDate],
 };
 ```
+
+For assertions on date-dependent behavior, prefer **`*.browser.test.tsx`** with the same `mockdate` approach if needed.
 
 ---
 
