@@ -1,0 +1,1 @@
+import{c as e,g as t}from"./theming-3_ACUNjE.js";e();export{t as color};
