@@ -582,7 +582,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -12294,8 +12294,8 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Test that custom props (className, style, data-testid) are forwarded to the container</div>
-              <pre><code>const CustomProps = () =&gt; &lt;DsLoader /&gt;;</code></pre>
+              <div class="hint">Test that custom props (className, style) are forwarded to the container</div>
+              <pre><code>const CustomProps = () =&gt; &lt;DsLoader className={styles.customPropsLoader} /&gt;;</code></pre>
             </div>
         </div>
     
