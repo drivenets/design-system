@@ -29,6 +29,7 @@ const meta: Meta<typeof DsSpinner> = {
 export default meta;
 type Story = StoryObj<typeof DsSpinner>;
 
+// eslint-disable-next-line @drivenets/ds-internal/no-empty-story
 export const Default: Story = {
 	args: {},
 };

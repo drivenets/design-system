@@ -13,7 +13,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	},
 	args: {
 		columns,
-		data: defaultData,
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
@@ -27,7 +26,11 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
-export const Default: Story = {};
+export const Default: Story = {
+	args: {
+		data: defaultData,
+	},
+};
 
 export const EmptyState: Story = {
 	args: {
@@ -37,6 +40,7 @@ export const EmptyState: Story = {
 
 export const NoBorder: Story = {
 	args: {
+		data: defaultData,
 		bordered: false,
 	},
 };

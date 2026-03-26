@@ -1,5 +1,6 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
+import { unwrapExpression } from './unwrap-expression';
 
 /**
  * Resolve the meta object of a story file either from a variable declaration or an inline export default:
@@ -17,7 +18,7 @@ export function resolveStoryMeta(
 	context: RuleContext<string, readonly unknown[]>,
 	declaration: TSESTree.DefaultExportDeclarations,
 ): TSESTree.ObjectExpression | null {
-	const unwrappedDeclaration = unwrap(declaration);
+	const unwrappedDeclaration = unwrapExpression(declaration);
 
 	const isInlineObject = unwrappedDeclaration.type !== AST_NODE_TYPES.Identifier;
 
@@ -30,7 +31,7 @@ export function resolveStoryMeta(
 	const def = variable?.defs[0]?.node;
 
 	if (def?.type === AST_NODE_TYPES.VariableDeclarator) {
-		return asObjectExpression(unwrap(def.init));
+		return asObjectExpression(unwrapExpression(def.init));
 	}
 
 	return null;
@@ -38,19 +39,4 @@ export function resolveStoryMeta(
 
 function asObjectExpression(node: TSESTree.Node | null): TSESTree.ObjectExpression | null {
 	return node?.type === AST_NODE_TYPES.ObjectExpression ? node : null;
-}
-
-/**
- * Unwrap a node if it is a `satisfies` or `as` expression.
- */
-function unwrap<T extends TSESTree.Node | null>(node: T): null extends T ? null : TSESTree.Node {
-	if (!node) {
-		return null as never;
-	}
-
-	if (node.type === AST_NODE_TYPES.TSSatisfiesExpression || node.type === AST_NODE_TYPES.TSAsExpression) {
-		return unwrap(node.expression) as never;
-	}
-
-	return node as never;
 }
