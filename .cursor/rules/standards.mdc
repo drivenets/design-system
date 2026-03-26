@@ -18,6 +18,8 @@ alwaysApply: true
 | **Single deprecation comment**               | In types file only, not on every export                                          |
 | **Value props first, callbacks last**        | Order: value/config props, then render/slot props, then callbacks                |
 | **`locale` prop for i18n**                   | Components with hardcoded text should accept a `locale` prop for overrides       |
+| **Domain-agnostic naming**                   | No product-specific terms in names or props (e.g., "Workflow", "Order")          |
+| **No use-case-specific props**               | Props like `layout="form"` bake in one consumer's use case; keep API composable  |
 
 ```typescript
 // Good - own props layer with null for clearable value

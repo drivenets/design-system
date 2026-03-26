@@ -65,3 +65,8 @@ Before submitting a PR:
 - [ ] No cross-component internal imports
 - [ ] No unnecessary `useMemo`/`useCallback`
 - [ ] Check Ark UI for existing primitives before custom implementation
+- [ ] No `overflow: hidden` as a band-aid for layout bugs
+- [ ] No raw `<img>` — use DS components (e.g., `DsAvatar`) with fallback
+- [ ] No leftover code from abandoned implementation approaches
+- [ ] No `-webkit-*` without cross-browser fallback or `@supports` guard
+- [ ] AI-generated tests actually assert meaningful behavior (not duplicate/trivial)
