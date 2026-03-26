@@ -2,7 +2,7 @@ name: Security
 
 on:
   pull_request:
-    branches: ['main']
+    branches: ['main', 'next']
 
   schedule:
     - cron: '0 0 * * 6'

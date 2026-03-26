@@ -80,35 +80,39 @@ This repo includes rules, skills, and notepads in `.cursor/` to support AI-power
 
 Auto-applied contextual guidance for the AI agent.
 
-| Rule                 | Scope                         | Description                             |
-| -------------------- | ----------------------------- | --------------------------------------- |
-| `standards.mdc`      | Always                        | PR requirements, code org, PR checklist |
-| `checkers.mdc`       | Always                        | How to run lint / test / typecheck      |
-| `react-patterns.mdc` | `**/*.tsx`, `**/*.ts`         | Memoization, hooks, React 19, Ark UI    |
-| `storybook.mdc`      | `**/*.stories.tsx`            | Play tests, fn(), a11y, mockdate        |
-| `scss.mdc`           | `**/*.scss`                   | Design tokens, no !important, mixins    |
-| `design-system.mdc`  | `packages/**/components/**/*` | Component scaffolding templates         |
-| `monorepo.mdc`       | `packages/**/*`               | Import boundaries                       |
-| `code-review.mdc`    | Manual / on diff              | Local PR review with inline comments    |
+| Rule                 | Scope                             | Description                                      |
+| -------------------- | --------------------------------- | ------------------------------------------------ |
+| `standards.mdc`      | Always                            | Code standards, component API design             |
+| `checkers.mdc`       | Always                            | How to run lint / test / typecheck               |
+| `react-patterns.mdc` | `**/*.tsx`, `**/*.ts`             | Hooks, memoization, React 19, Ark UI             |
+| `storybook.mdc`      | `**/*.stories.tsx`                | Story layout, args, styling, mockdate            |
+| `browser-tests.mdc`  | `**/__tests__/*.browser.test.tsx` | Vitest browser test patterns and a11y queries    |
+| `scss.mdc`           | `**/*.scss`                       | Design tokens, no !important, mixins             |
+| `design-system.mdc`  | `packages/**/components/**/*`     | Component conventions, primitive library choices |
+| `monorepo.mdc`       | `packages/**/*`                   | Import boundaries                                |
+| `code-review.mdc`    | Manual / on diff                  | PR workflow, checklist, inline review comments   |
 
 #### Skills (`.cursor/skills/`)
 
 Multi-step workflows the AI agent executes on request.
 
-| Skill                  | Trigger                     | What it does                                                     |
-| ---------------------- | --------------------------- | ---------------------------------------------------------------- |
-| **component-scaffold** | "Scaffold a new component"  | Checks Ark UI, creates files, wires exports, generates stories   |
-| **figma-to-component** | "Implement this Figma link" | Extracts design context + tokens from Figma, scaffolds component |
-| **pr-prep**            | "Prepare my PR"             | Runs lint/typecheck/test on diff, validates stories + SCSS       |
+| Skill                   | Trigger                     | What it does                                                     |
+| ----------------------- | --------------------------- | ---------------------------------------------------------------- |
+| **component-scaffold**  | "Scaffold a new component"  | Checks Ark UI, creates files, wires exports, generates stories   |
+| **figma-to-component**  | "Implement this Figma link" | Extracts design context + tokens from Figma, scaffolds component |
+| **pr-prep**             | "Prepare my PR"             | Runs lint/typecheck/test on diff, validates changeset            |
+| **migrate-story-tests** | "Migrate tests for ds-X"    | Converts Storybook play functions to Vitest browser tests        |
+| **rca-debug**           | "Debug this" / "RCA"        | Structured root cause analysis for persistent bugs               |
+| **deslop**              | "Clean up this code"        | Removes AI-generated code slop, fixes style                      |
+| **get-pr-comments**     | "Get PR comments"           | Fetches and summarizes review comments from the active PR        |
 
 #### Notepads (`.cursor/notepads/`)
 
 Reusable prompt snippets you invoke with `@` in Cursor chat.
 
-| Notepad            | Usage                                              |
-| ------------------ | -------------------------------------------------- |
-| **add-play-tests** | Generate missing `play` functions for stories      |
-| **check-ark-ui**   | Query Ark UI for primitives before building custom |
+| Notepad          | Usage                                              |
+| ---------------- | -------------------------------------------------- |
+| **check-ark-ui** | Query Ark UI for primitives before building custom |
 
 #### How to use
 
@@ -125,12 +129,15 @@ The one exception is `code-review.mdc`, which you trigger manually:
 "Scaffold a ds-tooltip component"  →  component-scaffold
 "Implement this <figma-url>"       →  figma-to-component
 "Prepare my PR"                    →  pr-prep
+"Migrate tests for ds-toggle"      →  migrate-story-tests
+"Debug this" / "RCA"               →  rca-debug
+"Clean up this code"               →  deslop
+"Get PR comments"                  →  get-pr-comments
 ```
 
 **Notepads** are invoked with `@` in Cursor chat:
 
 ```
-@add-play-tests                    →  generate missing play functions
 @check-ark-ui                      →  check Ark UI before building custom
 ```
 
@@ -139,7 +146,7 @@ The one exception is `code-review.mdc`, which you trigger manually:
 ```
 1. "Scaffold a ds-card component" (or "Implement this <figma-url>")
    → agent checks Ark UI for primitives, creates all files,
-     wires barrel exports, generates stories with play tests
+     wires barrel exports, generates stories (+ optional browser tests)
    → with a Figma URL: also extracts design tokens, maps to CSS
      custom properties, and pre-fills styles/variants/stories
    → rules like react-patterns, scss, storybook, design-system
@@ -148,8 +155,7 @@ The one exception is `code-review.mdc`, which you trigger manually:
 2. Iterate on the component in chat
    → rules keep guiding the agent (tokens, no !important, a11y queries, etc.)
 
-3. @add-play-tests
-   → backfills any missing play functions in your stories
+3. Add or extend `__tests__/*.browser.test.tsx` for interactions you care about
 
 4. "Review my changes"
    → agent diffs against origin/main and drops inline REVIEW-* comments

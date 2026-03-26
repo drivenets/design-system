@@ -1,0 +1,12 @@
+$trigger-size: 32px;
+
+.dayView {
+	display: flex;
+	flex-direction: column;
+	gap: var(--spacing-xs);
+}
+
+.trigger {
+	width: $trigger-size;
+	height: $trigger-size;
+}

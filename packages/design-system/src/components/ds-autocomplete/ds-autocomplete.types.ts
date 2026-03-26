@@ -85,7 +85,8 @@ export interface DsAutocompleteProps {
 	startAdornment?: React.ReactNode;
 
 	/**
-	 * Event handler called when the value changes (when an option is selected)
+	 * Event handler called when the value changes.
+	 * Fires with the selected option's value, or an empty string when cleared.
 	 */
 	onValueChange?: (value: string) => void;
 	/**

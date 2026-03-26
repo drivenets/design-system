@@ -7,6 +7,7 @@ import {
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DsFormControl } from '../../components/ds-form-control';
+import { DsDateRangePicker } from '../../components/ds-date-range-picker';
 import { DsRadioGroup } from '../../components/ds-radio-group';
 import { DsCheckbox } from '../../components/ds-checkbox';
 import { DsButton } from '../../components/ds-button';
@@ -17,7 +18,9 @@ const defaultValues = {
 	email: '',
 	description: '',
 	quantity: undefined,
-	startDate: undefined,
+	birthDate: undefined,
+	eventStartDate: undefined,
+	eventEndDate: undefined,
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
@@ -131,23 +134,52 @@ const SampleForm = () => {
 				</DsFormControl>
 
 				<DsFormControl
-					label="Start Date"
+					label="Birth Date"
 					required
 					status="error"
 					messageIcon="cancel"
-					message={touchedFields.startDate ? errors.startDate?.message : undefined}
+					message={touchedFields.birthDate ? errors.birthDate?.message : undefined}
 				>
 					<Controller
-						name="startDate"
+						name="birthDate"
 						control={control}
 						render={({ field }) => (
-							<DsFormControl.DateInput
-								value={field.value}
-								onValueChange={(value) => handleValueChange(field, value as string)}
+							<DsFormControl.DatePicker
+								value={field.value ? new Date(field.value) : null}
+								onChange={(date) => {
+									handleValueChange(field, date ? date.toISOString() : '');
+								}}
 							/>
 						)}
 					/>
 				</DsFormControl>
+
+				<DsDateRangePicker
+					value={[
+						watch('eventStartDate') ? new Date(watch('eventStartDate')) : null,
+						watch('eventEndDate') ? new Date(watch('eventEndDate')) : null,
+					]}
+					onChange={([start, end]) => {
+						handleValueChange('eventStartDate', start ? start.toISOString() : '');
+						handleValueChange('eventEndDate', end ? end.toISOString() : '');
+					}}
+					orientation="vertical"
+					hideClearAll
+					slotProps={{
+						startDateFormControl: {
+							required: true,
+							status: 'error',
+							messageIcon: 'cancel',
+							message: touchedFields.eventStartDate ? errors.eventStartDate?.message : undefined,
+						},
+						endDateFormControl: {
+							required: true,
+							status: 'error',
+							messageIcon: 'cancel',
+							message: touchedFields.eventEndDate ? errors.eventEndDate?.message : undefined,
+						},
+					}}
+				/>
 
 				<DsFormControl
 					label="Preferred Contact Method"

@@ -1,0 +1,19 @@
+@use '../../styles/shared/dropdown';
+
+.control {
+	display: flex;
+}
+
+.positioner {
+	@include dropdown.dropdown-viewport;
+}
+
+.content {
+	@include dropdown.dropdown-content;
+	padding: var(--spacing-standard);
+	min-width: fit-content;
+}
+
+.timePickerPopoverContent {
+	z-index: dropdown.$dropdown-z-index + 1;
+}

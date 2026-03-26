@@ -1,9 +1,9 @@
 ---
-description: Component scaffolding templates for creating new design system components
+description: Design system component conventions and primitive library choices
 globs: packages/design-system/src/components/**/*
 ---
 
-# Component Scaffolding
+# Design System Components
 
 ## File Structure
 
@@ -16,51 +16,6 @@ ds-{name}/
 ├── ds-{name}.types.ts    # Props interface
 ├── ds-{name}.module.scss # Styles
 └── ds-{name}.stories.tsx # Stories
-```
-
-## Implementation Template
-
-```tsx
-import classNames from 'classnames';
-import styles from './ds-{name}.module.scss';
-import type { Ds{Name}Props } from './ds-{name}.types';
-
-/**
- * Design system {Name} component
- */
-const Ds{Name} = ({
-  className,
-  children,
-  ...props
-}: Ds{Name}Props) => {
-  return (
-    <div className={classNames(styles.container, className)} {...props}>
-      {children}
-    </div>
-  );
-};
-
-export default Ds{Name};
-```
-
-## Types Template
-
-```typescript
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-
-export interface Ds{Name}Props extends ComponentPropsWithoutRef<'div'> {
-  /**
-   * JSDoc description
-   */
-  label?: ReactNode;
-}
-```
-
-## Index Barrel
-
-```typescript
-export { default as Ds{Name} } from './ds-{name}';
-export type { Ds{Name}Props } from './ds-{name}.types';
 ```
 
 ## Primitive Libraries

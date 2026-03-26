@@ -62,10 +62,24 @@ export const Default: Story = {
 		await waitForMessage('You must accept the terms and conditions');
 
 		// 6. Activate start date and then blur it will show message
-		const startDateInput = canvas.getByPlaceholderText('MM/DD/YYYY');
-		await userEvent.click(startDateInput);
+		const dateInputs = canvas.getAllByPlaceholderText('mm/dd/yyyy');
+		const birthDateInput = dateInputs[0] as HTMLElement;
+		const eventStartDateInput = dateInputs[1] as HTMLElement;
+		const eventEndDateInput = dateInputs[2] as HTMLElement;
+
+		await userEvent.click(birthDateInput);
 		await userEvent.tab();
-		await waitForMessage('Start date is required');
+		await waitForMessage('Birth date is required');
+
+		// 6a. Activate event start date and then blur it will show message
+		await userEvent.click(eventStartDateInput);
+		await userEvent.tab();
+		await waitForMessage('Event start date is required');
+
+		// 6b. Activate event end date and then blur it will show message
+		await userEvent.click(eventEndDateInput);
+		await userEvent.tab();
+		await waitForMessage('Event end date is required');
 
 		// 7. Typing random text inside email will (still) show message
 		await userEvent.type(emailInput, 'invalid-email');
@@ -94,13 +108,29 @@ export const Default: Story = {
 			await expect(canvas.queryByText('Please select a contact method')).not.toBeInTheDocument();
 		});
 
-		// 11. Typing a valid date in start date will hide the message
-		await userEvent.clear(startDateInput);
-		const fakeDate = '12/25/2024';
-		await userEvent.type(startDateInput, fakeDate);
+		// 11. Typing a valid date in birth date will hide the message
+		await userEvent.clear(birthDateInput);
+		const fakeDate = '12/25/2002';
+		await userEvent.type(birthDateInput, fakeDate);
 		await userEvent.tab(); // Blur to trigger validation
 		await waitFor(async () => {
-			await expect(canvas.queryByText('Start date is required')).not.toBeInTheDocument();
+			await expect(canvas.queryByText('Birth date is required')).not.toBeInTheDocument();
+		});
+
+		// 11a. Typing a valid date in event start date will hide the message
+		await userEvent.clear(eventStartDateInput);
+		await userEvent.type(eventStartDateInput, '01/15/2025');
+		await userEvent.tab();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('Event start date is required')).not.toBeInTheDocument();
+		});
+
+		// 11b. Typing a valid date in event end date will hide the message
+		await userEvent.clear(eventEndDateInput);
+		await userEvent.type(eventEndDateInput, '01/20/2025');
+		await userEvent.tab();
+		await waitFor(async () => {
+			await expect(canvas.queryByText('Event end date is required')).not.toBeInTheDocument();
 		});
 
 		// 12. Typing random text (less than 20 chars) inside description will (still) show message
@@ -142,10 +172,12 @@ export const Default: Story = {
 				email: fakeEmail,
 				description: fakeDescription,
 				quantity: 1,
-				startDate: '2024-12-25',
+				birthDate: '2002-12-25T00:00:00.000Z',
 				acceptTerms: true,
 				subscription: 'pro',
 				contactMethod: 'email',
+				eventStartDate: '2025-01-15T00:00:00.000Z',
+				eventEndDate: '2025-01-20T00:00:00.000Z',
 			},
 			null,
 			2,
@@ -161,7 +193,9 @@ export const Default: Story = {
 			await expect(emailInput).toHaveValue('');
 			await expect(contactMethodTrigger).toHaveTextContent(/Select a contact method|^$/);
 			await expect(descriptionInput).toHaveValue('');
-			await expect(startDateInput).toHaveValue('');
+			await expect(birthDateInput).toHaveValue('');
+			await expect(eventStartDateInput).toHaveValue('');
+			await expect(eventEndDateInput).toHaveValue('');
 			await expect(acceptTermsCheckbox).not.toBeChecked();
 			await expect(subscriptionOption).not.toBeChecked();
 		});

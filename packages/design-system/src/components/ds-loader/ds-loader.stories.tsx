@@ -24,12 +24,9 @@ type Story = StoryObj<typeof DsLoader>;
  * Default loader - rotating spinner arc
  */
 export const Default: Story = {
-	args: {
-		'data-testid': 'loader',
-	} as React.ComponentProps<typeof DsLoader>,
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const loader = canvas.getByTestId('loader');
+		const loader = canvas.getByRole('progressbar');
 
 		await expect(loader).toBeInTheDocument();
 	},
@@ -119,16 +116,15 @@ export const UsageExamples: Story = {
 };
 
 /**
- * Test that custom props (className, style, data-testid) are forwarded to the container
+ * Test that custom props (className, style) are forwarded to the container
  */
 export const CustomProps: Story = {
 	args: {
 		className: styles.customPropsLoader,
-		'data-testid': 'loader-test-id',
-	} as React.ComponentProps<typeof DsLoader>,
+	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const loader = canvas.getByTestId('loader-test-id');
+		const loader = canvas.getByRole('progressbar');
 
 		await expect(loader).toBeInTheDocument();
 		await expect(loader.className).toContain('customPropsLoader');

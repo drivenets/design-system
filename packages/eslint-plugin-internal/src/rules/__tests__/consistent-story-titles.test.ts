@@ -7,9 +7,7 @@ const fixturesDir = path.resolve(__dirname, 'fixtures');
 const ruleTester = new RuleTester({
 	languageOptions: {
 		parserOptions: {
-			projectService: {
-				allowDefaultProject: ['*.ts'],
-			},
+			project: true,
 			tsconfigRootDir: fixturesDir,
 		},
 	},

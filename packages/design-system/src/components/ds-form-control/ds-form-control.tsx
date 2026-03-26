@@ -10,6 +10,7 @@ import { DsPasswordInput } from '../ds-password-input';
 import type { DsFormControlDescriptionProps, DsFormControlProps } from './ds-form-control.types';
 import styles from './ds-form-control.module.scss';
 import { DsDateInput } from '../ds-date-input';
+import { DsDatePicker } from '../ds-date-picker';
 import { DsTimePicker } from '../ds-time-picker';
 
 const FormControlContext = createContext<{ controlId: string } | null>(null);
@@ -98,6 +99,7 @@ DsFormControl.NumberInput = controlify(DsNumberInput);
 DsFormControl.PasswordInput = controlify(DsPasswordInput);
 /** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */
 DsFormControl.DateInput = controlify(DsDateInput);
+DsFormControl.DatePicker = controlify(DsDatePicker);
 DsFormControl.TimePicker = controlify(DsTimePicker);
 DsFormControl.Textarea = controlify(DsTextarea);
 DsFormControl.Select = controlify(DsSelect);

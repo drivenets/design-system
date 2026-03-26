@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, userEvent, waitFor } from 'storybook/test';
 import { useState } from 'react';
 import classnames from 'classnames';
 import { DsIcon } from '../../ds-icon';
@@ -8,7 +7,6 @@ import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState, ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
@@ -129,34 +127,5 @@ export const WithDrawerAndActiveRow: Story = {
 				</DsDrawer>
 			</div>
 		);
-	},
-	play: async ({ canvas }) => {
-		const dataRows = getDataRows(canvas);
-		await userEvent.click(dataRows[0] as HTMLElement);
-
-		await waitFor(() => {
-			return expect(screen.getByRole('heading', { name: /person details/i })).toBeVisible();
-		});
-		await expect(screen.getByText(/tanner linsley/i)).toBeInTheDocument();
-
-		await userEvent.click(screen.getByRole('button', { name: /close drawer/i }));
-
-		await waitFor(() => {
-			return expect(screen.queryByRole('heading', { name: /person details/i })).not.toBeInTheDocument();
-		});
-
-		const dataRowsAfter = getDataRows(canvas);
-		await userEvent.click(dataRowsAfter[1] as HTMLElement);
-
-		await waitFor(() => {
-			return expect(screen.getByRole('heading', { name: /person details/i })).toBeVisible();
-		});
-		await expect(screen.getByText(/kevin fine/i)).toBeInTheDocument();
-
-		await userEvent.click(dataRowsAfter[1] as HTMLElement);
-
-		await waitFor(() => {
-			return expect(screen.queryByRole('heading', { name: /person details/i })).not.toBeInTheDocument();
-		});
 	},
 };

@@ -46,6 +46,8 @@ globs: **/*.scss
 | **No `!important`**                          | Clean components never need it; if you think you do, refactor the selectors      |
 | **Standard transition duration**             | Use `0.2s` as the standard transition duration across components                 |
 | **Component-scoped variables**               | Keep component-specific CSS variables in the component file, not in `_root.scss` |
+| **No `overflow: hidden` as band-aid**        | Find and fix the root cause of overflow; hiding it masks real layout bugs        |
+| **No webkit-only without fallback**          | `-webkit-*` properties (e.g., scrollbar hiding) must include a cross-browser fallback or `@supports` |
 
 ---
 

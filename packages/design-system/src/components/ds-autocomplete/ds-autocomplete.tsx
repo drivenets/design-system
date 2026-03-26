@@ -45,10 +45,7 @@ export const DsAutocomplete = ({
 
 	const handleValueChange = (details: Combobox.ValueChangeDetails<DsAutocompleteOption>) => {
 		const selectedItem = details.items[0];
-
-		if (selectedItem) {
-			onValueChange?.(selectedItem.value);
-		}
+		onValueChange?.(selectedItem?.value ?? '');
 	};
 
 	const handleOpenChange = (details: Combobox.OpenChangeDetails) => {
@@ -83,12 +80,20 @@ export const DsAutocomplete = ({
 				<Combobox.Input className={styles.input} placeholder={placeholder} />
 
 				<Combobox.Context>
-					{(context) => (
+					{(combobox) => (
 						<div className={styles.iconContainer}>
-							{context.inputValue && !disabled && (
-								<Combobox.ClearTrigger className={styles.clearButton} aria-label="Clear">
+							{combobox.inputValue && !disabled && (
+								<button
+									type="button"
+									className={styles.clearButton}
+									aria-label="Clear"
+									onClick={() => {
+										combobox.setValue([]);
+										combobox.setInputValue('');
+									}}
+								>
 									<DsIcon icon="close" size="medium" />
-								</Combobox.ClearTrigger>
+								</button>
 							)}
 
 							{showTrigger && (

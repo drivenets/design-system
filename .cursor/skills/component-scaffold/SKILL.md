@@ -1,6 +1,6 @@
 ---
 name: component-scaffold
-description: Scaffold a new design system component with all required files, Ark UI integration, stories with play tests, and barrel export wiring. Use when the user asks to create, scaffold, or add a new component.
+description: Scaffold a new design system component with all required files, Ark UI integration, Storybook stories (docs/controls), optional Vitest browser tests, and barrel export wiring. Use when the user asks to create, scaffold, or add a new component.
 ---
 
 # Component Scaffold Skill
@@ -30,9 +30,9 @@ Before writing any code, check if Ark UI already provides this component:
    - Do NOT duplicate Ark internal state with `useState`.
 3. If no matching component exists, build a custom implementation.
 
-### Step 2: Create the 5 component files
+### Step 2: Create the component files
 
-All files go in `packages/design-system/src/components/ds-{name}/`.
+All files go in `packages/design-system/src/components/ds-{name}/` (plus optional `__tests__/` for browser tests).
 
 #### `ds-{name}.types.ts`
 
@@ -124,7 +124,6 @@ Follow these rules:
 
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
 import Ds{Name} from './ds-{name}';
 import { ds{Name}Variants } from './ds-{name}.types';
 
@@ -147,27 +146,40 @@ export default meta;
 type Story = StoryObj<typeof Ds{Name}>;
 
 export const Default: Story = {
-  args: {
-    onChange: fn(),
-  },
-  play: async ({ canvasElement, args }) => {
-    const canvas = within(canvasElement);
-    // Add assertions using getByRole, getByText, getByLabelText
-    // Use semantic assertions: toBeChecked, toBeDisabled, toBeVisible
-    // Await all interactions
-  },
+  args: {},
 };
 ```
 
 Follow these rules:
 
-- Every story MUST have a `play` function.
-- Use `fn()` for all callback args.
-- Use a11y queries: `getByRole`, `getByLabelText`, `getByText`. Never `getByTestId`.
+- Stories are for documentation and controls; **behavior is tested in `*.browser.test.tsx`** (see below).
 - Import variant arrays from types for `argTypes.options`.
 - Hide internal args (`className`, `style`, `ref`) with `table: { disable: true }`.
 - No inline styles -- use `*.stories.module.scss` if needed.
 - Add stories for: Default, each variant, Disabled, Controlled (if applicable), Localized (if has `locale` prop).
+
+#### `__tests__/ds-{name}.browser.test.tsx` (recommended)
+
+Use Vitest browser mode (`vitest/browser`). Spy callbacks with `vi.fn()`; query with `page.getByRole`, `getByLabelText`, `getByText` (not `getByTestId` unless unavoidable).
+
+```tsx
+import { describe, expect, it, vi } from 'vitest';
+import { page } from 'vitest/browser';
+import Ds{Name} from '../ds-{name}';
+
+describe('Ds{Name}', () => {
+  it('renders and responds to interaction', async () => {
+    const onChange = vi.fn();
+    await page.render(<Ds{Name} onChange={onChange} />);
+
+    // await expect.element(page.getByRole('...')).toBeVisible();
+    // await page.getByRole('button').click();
+    // expect(onChange).toHaveBeenCalled();
+  });
+});
+```
+
+See existing examples under `packages/design-system/src/components/*/__tests__/*.browser.test.tsx`.
 
 #### `index.ts`
 
@@ -193,6 +205,12 @@ Run the following commands from the workspace root:
 ```bash
 pnpm eslint packages/design-system/src/components/ds-{name}/
 pnpm --filter @drivenets/design-system typecheck
+```
+
+If you added `__tests__/ds-{name}.browser.test.tsx`:
+
+```bash
+pnpm --filter @drivenets/design-system test packages/design-system/src/components/ds-{name}/__tests__/ds-{name}.browser.test.tsx --run
 ```
 
 Fix any errors before finishing.

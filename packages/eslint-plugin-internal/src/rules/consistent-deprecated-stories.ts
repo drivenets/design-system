@@ -4,6 +4,7 @@ import { resolveStoryMeta } from './utils/resolve-story-meta';
 import { AST_NODE_TYPES, ESLintUtils, type TSESTree } from '@typescript-eslint/utils';
 import { getStoryMetaProps } from './utils/get-story-meta-props';
 import { getComponentParts } from './utils/get-component-parts';
+import { removeWithTrailingComma } from './utils/remove-with-trailing-comma';
 
 type MessageId =
 	| 'missingDeprecatedSuffix'
@@ -100,7 +101,14 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 						messageId: 'noUnusedDeprecatedTag',
 						data: { component: componentDisplayName },
 						fix: (fixer) => {
-							return fixer.remove(deprecatedTag);
+							const hasOnlyOneTag = tagsArray?.elements.length === 1;
+							const nodeToRemove = hasOnlyOneTag ? tagsProp : deprecatedTag;
+
+							if (!nodeToRemove) {
+								return null;
+							}
+
+							return removeWithTrailingComma(context.sourceCode, fixer, nodeToRemove);
 						},
 					});
 				}

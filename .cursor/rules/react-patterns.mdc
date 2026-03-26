@@ -87,21 +87,7 @@ const id = useId();
 container.addEventListener('scroll', checkOverflow, { passive: true });
 ```
 
-One other situation you might want to use useLayoutEffect instead of useEffect is if you're updating a value (like a ref)
-and you want to make sure it's up-to-date before any other code runs. For example:
-
-```tsx
-// Good
-const ref = React.useRef()
-React.useEffect(() => {
-	ref.current = 'some value'
-})
-
-// then, later in another hook or something
-React.useLayoutEffect(() => {
-	console.log(ref.current) // <-- this logs an old value because this runs first!
-})
-```
+Also use `useLayoutEffect` when updating a ref that must be current before other hooks read it (it fires before `useEffect`).
 
 ---
 
@@ -146,27 +132,30 @@ const [inputValue, setInputValue] = useState('');
 
 ---
 
-## Component API Ordering
+## Common Pitfalls
 
 | Requirement                                  | Details                                                                          |
 | -------------------------------------------- | -------------------------------------------------------------------------------- |
-| **Value props first, callbacks last**        | Order: value/config props, then render/slot props, then callbacks                |
-| **`locale` prop for i18n**                   | Components with hardcoded text should accept a `locale` prop for overrides       |
+| **Don't spread native objects**              | `{...file}` strips the `File`/`Blob` prototype; use native APIs to copy         |
+| **Event propagation in composed components** | Child content in clickable containers (e.g., table rows) must stop propagation   |
+| **Validate, don't silently fallback**        | Input components should reject bad values, not silently swap in defaults         |
 
-```typescript
-// Good - ordered interface
-export interface DsTagFilterProps {
-  // Value props
-  items: TagFilterItem[];
-  selectedKeys?: string[];
-  size?: 'small' | 'medium';
+```tsx
+// Bad - spreading loses File prototype methods
+const copy = { ...originalFile };
 
-  // Slot props
-  slotProps?: { tag?: Partial<DsTagProps> };
-  locale?: { clearAll?: string; showMore?: string };
+// Good - preserve prototype
+const copy = new File([originalFile], originalFile.name, { type: originalFile.type });
 
-  // Callbacks
-  onSelectionChange?: (keys: string[]) => void;
-  onClear?: () => void;
-}
+// Bad - expanded row content triggers parent onClick
+<tr onClick={onRowClick}>
+  <td>{expandedContent}</td>
+</tr>
+
+// Good - prevent propagation from child content
+<tr onClick={onRowClick}>
+  <td onClick={isExpandedContent ? (e) => e.stopPropagation() : undefined}>
+    {expandedContent}
+  </td>
+</tr>
 ```

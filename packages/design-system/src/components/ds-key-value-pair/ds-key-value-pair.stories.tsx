@@ -18,6 +18,10 @@ const MANUFACTURER_OPTIONS: DsSelectOption[] = [
 	{ label: 'Nokia', value: 'nokia' },
 ];
 
+const LONG_TEXT =
+	// cspell:disable-next-line
+	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.';
+
 const meta: Meta<typeof DsKeyValuePair> = {
 	title: 'Design System/KeyValuePair',
 	component: DsKeyValuePair,
@@ -186,6 +190,7 @@ export const ResponsiveWidth: Story = {
 	render: function Render() {
 		const [width, setWidth] = useState(DEFAULT_WIDTH);
 		const [serial, setSerial] = useState('99887766');
+		const [description, setDescription] = useState(LONG_TEXT);
 
 		return (
 			<div className={storyStyles.responsiveDemo}>
@@ -225,15 +230,24 @@ export const ResponsiveWidth: Story = {
 						readOnly
 						orientation="horizontal"
 					/>
+					<DsKeyValuePair
+						keyLabel="Description"
+						value={description}
+						orientation="horizontal"
+						editInput={
+							<DsTextarea
+								value={description}
+								onValueChange={setDescription}
+								rows={4}
+								className={storyStyles.descriptionTextarea}
+							/>
+						}
+					/>
 				</div>
 			</div>
 		);
 	},
 };
-
-const LONG_TEXT =
-	// cspell:disable-next-line
-	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.';
 
 export const ValueTypes: Story = {
 	name: 'Value types (Figma reference)',
@@ -302,7 +316,7 @@ export const ValueTypes: Story = {
 
 				<DsKeyValuePair
 					keyLabel="Description"
-					value={description}
+					value={<span className={storyStyles.fullTextValue}>{description}</span>}
 					orientation="horizontal"
 					editInput={
 						<DsTextarea

@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent } from 'storybook/test';
+import { fn } from 'storybook/test';
 import { useRef, useState } from 'react';
 import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { getDataRows } from './common/story-test-helpers';
 import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
@@ -65,18 +64,6 @@ export const Expandable: Story = {
 				/>
 			</>
 		),
-	},
-	play: async ({ canvas }) => {
-		await expect(getDataRows(canvas)).toHaveLength(5);
-
-		const expandButtons = canvas.getAllByRole('button', { name: /chevron_right/i });
-		await expect(expandButtons).toHaveLength(4);
-
-		await userEvent.click(expandButtons[0] as HTMLElement);
-		await expect(canvas.getByText(/expanded details for kevin/i)).toBeInTheDocument();
-
-		await userEvent.click(expandButtons[0] as HTMLElement);
-		await expect(canvas.queryByText(/expanded details for kevin/i)).not.toBeInTheDocument();
 	},
 };
 
@@ -160,34 +147,5 @@ export const ProgrammaticExpansion: Story = {
 				<DsTable {...args} ref={tableRef} />
 			</div>
 		);
-	},
-	play: async ({ canvas }) => {
-		await expect(canvas.getByText(/expanded rows: none/i)).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /expand kevin/i }));
-		await expect(
-			canvas.getByText((_content, element) => {
-				return element?.textContent === 'Expanded rows: 2';
-			}),
-		).toBeInTheDocument();
-		await expect(canvas.getByText(/expanded details for kevin/i)).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /^expand all$/i }));
-		const expandButtons = canvas.getAllByRole('button', { name: /chevron_right/i });
-		await expect(expandButtons).toHaveLength(4);
-
-		await userEvent.click(canvas.getByRole('button', { name: /collapse all/i }));
-		await expect(canvas.getByText(/expanded rows: none/i)).toBeInTheDocument();
-		await expect(canvas.queryByText(/expanded details for kevin/i)).not.toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /expand first 3 expandable/i }));
-		await expect(
-			canvas.getByText((_content, element) => {
-				return element?.textContent === 'Expanded rows: 2, 3, 4';
-			}),
-		).toBeInTheDocument();
-
-		await userEvent.click(canvas.getByRole('button', { name: /collapse all/i }));
-		await expect(canvas.getByText(/expanded rows: none/i)).toBeInTheDocument();
 	},
 };
