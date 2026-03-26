@@ -582,7 +582,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -27329,9 +27329,11 @@ import logoUrl from &#39;./assets/logo.svg&#39;;
 		&lt;img src={logoUrl} className={styles.logo} alt=&quot;DriveNets&quot; /&gt;
 		&lt;DsTypography variant=&quot;heading1&quot;&gt;DriveNets Design System&lt;/DsTypography&gt;
 	&lt;/div&gt;
-	&lt;DsTypography variant=&quot;body-md-reg&quot; className={styles.heroDescription}&gt;
-		The official component library for building consistent, scalable UI across DriveNets applications. Browse
-		components in the sidebar, copy code from the docs, and ship faster.
+	&lt;DsTypography variant=&quot;body-md-reg&quot; asChild className={styles.heroDescription}&gt;
+		&lt;span&gt;
+			The official component library for building consistent, scalable UI across DriveNets applications.
+			Browse components in the sidebar, copy code from the docs, and ship faster.
+		&lt;/span&gt;
 	&lt;/DsTypography&gt;
 &lt;/div&gt;
 
@@ -27403,10 +27405,12 @@ export const App = () =&gt; (
     &lt;DsTypography variant=&quot;heading2&quot;&gt;ESLint Plugin&lt;/DsTypography&gt;
   &lt;/div&gt;
 
-&lt;DsTypography variant=&quot;body-md-reg&quot; className={styles.sectionDescription}&gt;
-	Enforce design system consistency and catch deprecated components early with the ESLint plugin. It prevents
-	usage of native HTML elements and MUI components, ensuring your codebase stays aligned with the design
-	system.
+&lt;DsTypography variant=&quot;body-md-reg&quot; asChild className={styles.sectionDescription}&gt;
+	&lt;span&gt;
+		Enforce design system consistency and catch deprecated components early with the ESLint plugin. It
+		prevents usage of native HTML elements and MUI components, ensuring your codebase stays aligned with the
+		design system.
+	&lt;/span&gt;
 &lt;/DsTypography&gt;
 
   &lt;div className={styles.steps}&gt;
