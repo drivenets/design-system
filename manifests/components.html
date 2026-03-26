@@ -576,13 +576,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">6/82 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">44/82 infos</a><span class="filter-pill ok" aria-disabled="true">466 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">1 doc ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">6/82 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">45/82 infos</a><span class="filter-pill ok" aria-disabled="true">466 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">1 doc ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -6103,7 +6103,7 @@ style?: CSSProperties</code></pre>
 <article
   class="card 
   no-error 
-  no-info 
+  has-info 
   no-story-error
   no-doc-error"
   role="listitem"
@@ -6112,28 +6112,35 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsDateInput</h2>
       <div class="badges">
-        <label for="c-18-design-system-dateinput-props" class="badge ok as-toggle">8 prop types</label>
-        
-        <label for="c-18-design-system-dateinput-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-18-design-system-dateinput-deprecated-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-18-design-system-dateinput-deprecated-info" class="badge info as-toggle">1 info</label>
+        <label for="c-18-design-system-dateinput-deprecated-stories" class="badge ok as-toggle">11 stories</label>
         
       </div>
     </div>
-    <div class="meta" title="./src/components/ds-date-input/ds-date-input.stories.tsx">design-system-dateinput · ./src/components/ds-date-input/ds-date-input.stories.tsx</div>
+    <div class="meta" title="./src/components/ds-date-input/ds-date-input.stories.tsx">design-system-dateinput-deprecated · ./src/components/ds-date-input/ds-date-input.stories.tsx</div>
     
-    <div class="hint">Design system date input component with integrated calendar picker. Supports both single date and date range selection with a single text input field. Features built-in validation, manual text entry, and calendar selection.</div>
     
+    <div class="kv"><span class="chip">deprecated: This component is deprecated. Use `DsDatePicker` or `DsDateRangePicker` instead.</span><span class="chip">see: {@link ../ds-date-picker/ds-date-picker.stories} for single date selection examples.</span><span class="chip">see: {@link ../ds-date-range-picker/ds-date-range-picker.stories} for date range selection examples.</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
+  <input id="c-18-design-system-dateinput-deprecated-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-18-design-system-dateinput-deprecated-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-18-design-system-dateinput-stories" class="tg tg-stories" type="checkbox" hidden />
-  
-  <input id="c-18-design-system-dateinput-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-18-design-system-dateinput-deprecated-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
     
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
     
         <div class="panel panel-props">
           <div class="note ok">
@@ -9102,375 +9109,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-29-design-system-formcontrol-dateinput-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-29-design-system-formcontrol-dateinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-29-design-system-formcontrol-dateinput-stories" class="badge ok as-toggle">12 stories</label>
-        
-      </div>
-    </div>
-    <div class="meta" title="./src/components/ds-form-control/stories/ds-form-control-date-input.stories.tsx">design-system-formcontrol-dateinput · ./src/components/ds-form-control/stories/ds-form-control-date-input.stories.tsx</div>
-    
-    
-    
-  </div>
-
-  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  
-  <input id="c-29-design-system-formcontrol-dateinput-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-29-design-system-formcontrol-dateinput-stories" class="tg tg-stories" type="checkbox" hidden />
-  
-  <input id="c-29-design-system-formcontrol-dateinput-props" class="tg tg-props" type="checkbox" hidden />
-
-  <div class="panels">
-    
-    
-        <div class="panel panel-info">
-          
-    <div class="note info">
-      <div class="note-title">Info</div>
-      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
-    </div>
-        </div>
-    
-        <div class="panel panel-props">
-          <div class="note ok">
-            <div class="row">
-              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">9 prop types</span>
-            </div>
-            <pre><code>Component: src/components/ds-form-control/ds-form-control.tsx::default</code></pre>
-            <pre><code>Props:</code></pre>
-            <pre><code>/**
- * Additional CSS class names
- */
-className?: string
-
-/**
- * Unique identifier for the control
- */
-id?: string
-
-/**
- * Label text
- */
-label: string
-
-/**
- * Message under the control
- */
-message?: string
-
-/**
- * Icon shown next to message
- */
-messageIcon?: IconName | FunctionComponent&lt;SVGProps&lt;SVGSVGElement&gt;&gt; = &#39;info&#39;
-
-/**
- * Marks the field as required
- */
-required?: boolean = false
-
-slots?: {
-	/**
-	 * Adornment to display at the end of the label
-	 */
-	endAdornment?: React.ReactNode;
-}
-
-/**
- * Visual status
- */
-status?: (typeof controlStatuses)[number]
-
-/**
- * Additional styles to apply to the component
- */
-style?: React.CSSProperties</code></pre>
-          </div>
-        </div>
-    
-        <div class="panel panel-stories">
-          
-          
-          
-          <div class="note ok">
-                <div class="row">
-                  <span class="ex-name">Imports</span>
-                </div>
-                <pre><code>import { DefaultDescription, DsFormControl, DsIcon } from "@drivenets/design-system";</code></pre>
-              </div>
-          
-          
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Default</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Default = () =&gt; &lt;DsFormControl
-    label=&quot;Event Date&quot;
-    required
-    style={{ width: &#39;400px&#39; }}
-    message=&quot;Select a date for your event&quot;&gt;&lt;DsFormControl.DateInput /&gt;&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Custom Width</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithCustomWidth = () =&gt; &lt;DsFormControl label=&quot;Event Date&quot; required style={{ width: &#39;400px&#39; }}&gt;&lt;DsFormControl.DateInput /&gt;&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Custom Styles</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithCustomStyles = () =&gt; &lt;DsFormControl
-    label=&quot;Event Date&quot;
-    required
-    style={{
-        width: &#39;400px&#39;,
-        padding: &#39;16px&#39;,
-        border: &#39;2px solid #e0e0e0&#39;,
-        borderRadius: &#39;8px&#39;,
-        backgroundColor: &#39;#f9f9f9&#39;,
-    }}&gt;&lt;DsFormControl.DateInput /&gt;&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Description</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithDescription = () =&gt; &lt;DsFormControl label=&quot;Event Date&quot; required style={{ width: &#39;400px&#39; }}&gt;(&lt;&gt;
-        &lt;DsFormControl.Description&gt;
-            &lt;DefaultDescription /&gt;
-        &lt;/DsFormControl.Description&gt;
-        &lt;DsFormControl.DateInput /&gt;
-    &lt;/&gt;)&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Help Icon</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithHelpIcon = () =&gt; &lt;DsFormControl
-    label=&quot;Event Date&quot;
-    required
-    style={{ width: &#39;400px&#39; }}
-    slots={{
-        endAdornment: (
-            &lt;button
-                type=&quot;button&quot;
-                className={styles.helpIcon}
-                onClick={() =&gt; alert(&#39;Help clicked!&#39;)}
-                aria-label=&quot;Help&quot;
-            &gt;
-                &lt;DsIcon icon=&quot;info&quot; size=&quot;small&quot; /&gt;
-            &lt;/button&gt;
-        ),
-    }}&gt;(&lt;&gt;
-        &lt;DsFormControl.Description&gt;
-            &lt;DefaultDescription /&gt;
-        &lt;/DsFormControl.Description&gt;
-        &lt;DsFormControl.DateInput /&gt;
-    &lt;/&gt;)&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Success</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Success = function Render() {
-    const [value] = useState&lt;string&gt;(&#39;2024-12-25&#39;);
-
-    return (
-        &lt;div style={{ width: &#39;400px&#39; }}&gt;
-            &lt;DsFormControl
-                status=&quot;success&quot;
-                label=&quot;Event Date&quot;
-                message=&quot;Valid date selected.&quot;
-                messageIcon=&quot;check_circle&quot;
-            &gt;
-                &lt;DsFormControl.Description&gt;
-                    &lt;DefaultDescription /&gt;
-                &lt;/DsFormControl.Description&gt;
-                &lt;DsFormControl.DateInput value={value} /&gt;
-            &lt;/DsFormControl&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Error</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Error = () =&gt; &lt;DsFormControl
-    status=&quot;error&quot;
-    label=&quot;Event Date&quot;
-    required
-    message=&quot;Date is required.&quot;
-    messageIcon=&quot;error&quot;
-    style={{ width: &#39;400px&#39; }}&gt;(&lt;&gt;
-        &lt;DsFormControl.Description&gt;
-            &lt;DefaultDescription /&gt;
-        &lt;/DsFormControl.Description&gt;
-        &lt;DsFormControl.DateInput /&gt;
-    &lt;/&gt;)&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Warning</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Warning = function Render() {
-    const [value] = useState&lt;string&gt;(&#39;2024-12-25&#39;);
-
-    return (
-        &lt;div style={{ width: &#39;400px&#39; }}&gt;
-            &lt;DsFormControl
-                status=&quot;warning&quot;
-                label=&quot;Event Date&quot;
-                message=&quot;Date is approaching deadline.&quot;
-                messageIcon=&quot;info&quot;
-            &gt;
-                &lt;DsFormControl.Description&gt;
-                    &lt;DefaultDescription /&gt;
-                &lt;/DsFormControl.Description&gt;
-                &lt;DsFormControl.DateInput value={value} /&gt;
-            &lt;/DsFormControl&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Disabled</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Disabled = () =&gt; &lt;DsFormControl label=&quot;Event Date&quot; style={{ width: &#39;400px&#39; }}&gt;(&lt;&gt;
-        &lt;DsFormControl.Description&gt;
-            &lt;DefaultDescription /&gt;
-        &lt;/DsFormControl.Description&gt;
-        &lt;DsFormControl.DateInput disabled /&gt;
-    &lt;/&gt;)&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Range Mode</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const RangeMode = () =&gt; &lt;DsFormControl
-    label=&quot;Date Range&quot;
-    required
-    message=&quot;Select start and end dates&quot;
-    style={{ width: &#39;400px&#39; }}&gt;&lt;DsFormControl.DateInput range /&gt;&lt;/DsFormControl&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Range With Validation</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const RangeWithValidation = function Render() {
-    const [value, setValue] = useState&lt;[string, string]&gt;();
-    const [touched, setTouched] = useState(false);
-    const error = touched &amp;&amp; !value ? &#39;Start and end dates are required&#39; : undefined;
-
-    return (
-        &lt;div style={{ width: &#39;400px&#39; }}&gt;
-            &lt;DsFormControl
-                label=&quot;Date Range&quot;
-                required
-                status={error ? &#39;error&#39; : undefined}
-                messageIcon=&quot;cancel&quot;
-                message={error}
-            &gt;
-                &lt;DsFormControl.DateInput
-                    value={value}
-                    onValueChange={(value) =&gt; {
-                        setValue(value);
-                        setTouched(true);
-                    }}
-                    range
-                /&gt;
-            &lt;/DsFormControl&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Validation</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithValidation = function Render() {
-    const [value, setValue] = useState&lt;string&gt;();
-    const [touched, setTouched] = useState(false);
-    const error = touched &amp;&amp; !value ? &#39;Date is required&#39; : undefined;
-
-    return (
-        &lt;div style={{ width: &#39;400px&#39; }}&gt;
-            &lt;DsFormControl
-                label=&quot;Event Date&quot;
-                required
-                status={error ? &#39;error&#39; : undefined}
-                messageIcon=&quot;cancel&quot;
-                message={error}
-            &gt;
-                &lt;DsFormControl.DateInput
-                    value={value}
-                    onValueChange={(value) =&gt; {
-                        setValue(value);
-                        setTouched(true);
-                    }}
-                /&gt;
-            &lt;/DsFormControl&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-        </div>
-    
-  </div>
-</article>
-<article
-  class="card 
-  no-error 
-  has-info 
-  no-story-error
-  no-doc-error"
-  role="listitem"
-  aria-label="DsFormControl">
-  <div class="head">
-    <div class="title">
-      <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
-      <div class="badges">
-        <label for="c-30-design-system-formcontrol-datepicker-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-30-design-system-formcontrol-datepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-30-design-system-formcontrol-datepicker-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-29-design-system-formcontrol-datepicker-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-29-design-system-formcontrol-datepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-29-design-system-formcontrol-datepicker-stories" class="badge ok as-toggle">6 stories</label>
         
       </div>
     </div>
@@ -9482,10 +9123,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-30-design-system-formcontrol-datepicker-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-30-design-system-formcontrol-datepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-29-design-system-formcontrol-datepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-29-design-system-formcontrol-datepicker-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-30-design-system-formcontrol-datepicker-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-29-design-system-formcontrol-datepicker-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -9684,9 +9325,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-31-design-system-formcontrol-number-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-31-design-system-formcontrol-number-info" class="badge info as-toggle">1 info</label>
-        <label for="c-31-design-system-formcontrol-number-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-30-design-system-formcontrol-number-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-30-design-system-formcontrol-number-info" class="badge info as-toggle">1 info</label>
+        <label for="c-30-design-system-formcontrol-number-stories" class="badge ok as-toggle">9 stories</label>
         
       </div>
     </div>
@@ -9698,10 +9339,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-31-design-system-formcontrol-number-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-31-design-system-formcontrol-number-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-30-design-system-formcontrol-number-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-30-design-system-formcontrol-number-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-31-design-system-formcontrol-number-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-30-design-system-formcontrol-number-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -9957,9 +9598,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-32-design-system-formcontrol-password-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-32-design-system-formcontrol-password-info" class="badge info as-toggle">1 info</label>
-        <label for="c-32-design-system-formcontrol-password-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-31-design-system-formcontrol-password-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-31-design-system-formcontrol-password-info" class="badge info as-toggle">1 info</label>
+        <label for="c-31-design-system-formcontrol-password-stories" class="badge ok as-toggle">9 stories</label>
         
       </div>
     </div>
@@ -9971,10 +9612,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-32-design-system-formcontrol-password-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-32-design-system-formcontrol-password-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-31-design-system-formcontrol-password-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-31-design-system-formcontrol-password-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-32-design-system-formcontrol-password-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-31-design-system-formcontrol-password-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -10223,9 +9864,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-33-design-system-formcontrol-select-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-33-design-system-formcontrol-select-info" class="badge info as-toggle">1 info</label>
-        <label for="c-33-design-system-formcontrol-select-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-32-design-system-formcontrol-select-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-32-design-system-formcontrol-select-info" class="badge info as-toggle">1 info</label>
+        <label for="c-32-design-system-formcontrol-select-stories" class="badge ok as-toggle">9 stories</label>
         
       </div>
     </div>
@@ -10237,10 +9878,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-33-design-system-formcontrol-select-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-33-design-system-formcontrol-select-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-32-design-system-formcontrol-select-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-32-design-system-formcontrol-select-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-33-design-system-formcontrol-select-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-32-design-system-formcontrol-select-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -10640,9 +10281,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-34-design-system-formcontrol-textarea-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-34-design-system-formcontrol-textarea-info" class="badge info as-toggle">1 info</label>
-        <label for="c-34-design-system-formcontrol-textarea-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-33-design-system-formcontrol-textarea-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-33-design-system-formcontrol-textarea-info" class="badge info as-toggle">1 info</label>
+        <label for="c-33-design-system-formcontrol-textarea-stories" class="badge ok as-toggle">9 stories</label>
         
       </div>
     </div>
@@ -10654,10 +10295,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-34-design-system-formcontrol-textarea-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-34-design-system-formcontrol-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-33-design-system-formcontrol-textarea-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-33-design-system-formcontrol-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-34-design-system-formcontrol-textarea-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-33-design-system-formcontrol-textarea-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -10906,9 +10547,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-35-design-system-formcontrol-timepicker-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-35-design-system-formcontrol-timepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-35-design-system-formcontrol-timepicker-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-34-design-system-formcontrol-timepicker-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-34-design-system-formcontrol-timepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-34-design-system-formcontrol-timepicker-stories" class="badge ok as-toggle">6 stories</label>
         
       </div>
     </div>
@@ -10920,10 +10561,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-35-design-system-formcontrol-timepicker-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-35-design-system-formcontrol-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-34-design-system-formcontrol-timepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-34-design-system-formcontrol-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-35-design-system-formcontrol-timepicker-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-34-design-system-formcontrol-timepicker-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -11133,9 +10774,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsFormControl</h2>
       <div class="badges">
-        <label for="c-36-design-system-formcontrol-text-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-36-design-system-formcontrol-text-info" class="badge info as-toggle">1 info</label>
-        <label for="c-36-design-system-formcontrol-text-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-35-design-system-formcontrol-text-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-35-design-system-formcontrol-text-info" class="badge info as-toggle">1 info</label>
+        <label for="c-35-design-system-formcontrol-text-stories" class="badge ok as-toggle">10 stories</label>
         
       </div>
     </div>
@@ -11147,10 +10788,10 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-36-design-system-formcontrol-text-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-36-design-system-formcontrol-text-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-35-design-system-formcontrol-text-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-35-design-system-formcontrol-text-stories" class="tg tg-stories" type="checkbox" hidden />
   
-  <input id="c-36-design-system-formcontrol-text-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-35-design-system-formcontrol-text-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -11505,6 +11146,380 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Disabled = () =&gt; &lt;DsFormControl label=&quot;Input label&quot; required&gt;&lt;DsFormControl.TextInput placeholder=&quot;Disabled Input&quot; disabled /&gt;&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DsFormControl.DateInput">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DsFormControl.DateInput</h2>
+      <div class="badges">
+        <label for="c-36-design-system-formcontrol-dateinput-deprecated-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-36-design-system-formcontrol-dateinput-deprecated-info" class="badge info as-toggle">1 info</label>
+        <label for="c-36-design-system-formcontrol-dateinput-deprecated-stories" class="badge ok as-toggle">12 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/ds-form-control/stories/ds-form-control-date-input.stories.tsx">design-system-formcontrol-dateinput-deprecated · ./src/components/ds-form-control/stories/ds-form-control-date-input.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-36-design-system-formcontrol-dateinput-deprecated-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-36-design-system-formcontrol-dateinput-deprecated-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-36-design-system-formcontrol-dateinput-deprecated-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">9 prop types</span>
+            </div>
+            <pre><code>Component: src/components/ds-form-control/ds-form-control.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Additional CSS class names
+ */
+className?: string
+
+/**
+ * Unique identifier for the control
+ */
+id?: string
+
+/**
+ * Label text
+ */
+label: string
+
+/**
+ * Message under the control
+ */
+message?: string
+
+/**
+ * Icon shown next to message
+ */
+messageIcon?: IconName | FunctionComponent&lt;SVGProps&lt;SVGSVGElement&gt;&gt; = &#39;info&#39;
+
+/**
+ * Marks the field as required
+ */
+required?: boolean = false
+
+slots?: {
+	/**
+	 * Adornment to display at the end of the label
+	 */
+	endAdornment?: React.ReactNode;
+}
+
+/**
+ * Visual status
+ */
+status?: (typeof controlStatuses)[number]
+
+/**
+ * Additional styles to apply to the component
+ */
+style?: React.CSSProperties</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DefaultDescription, DsFormControl, DsIcon } from "@drivenets/design-system";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DsFormControl
+    label=&quot;Event Date&quot;
+    required
+    style={{ width: &#39;400px&#39; }}
+    message=&quot;Select a date for your event&quot;&gt;
+    &lt;DsFormControl.DateInput /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Custom Width</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithCustomWidth = () =&gt; &lt;DsFormControl label=&quot;Event Date&quot; required style={{ width: &#39;400px&#39; }}&gt;
+    &lt;DsFormControl.DateInput /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Custom Styles</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithCustomStyles = () =&gt; &lt;DsFormControl
+    label=&quot;Event Date&quot;
+    required
+    style={{
+        width: &#39;400px&#39;,
+        padding: &#39;16px&#39;,
+        border: &#39;2px solid #e0e0e0&#39;,
+        borderRadius: &#39;8px&#39;,
+        backgroundColor: &#39;#f9f9f9&#39;,
+    }}&gt;
+    &lt;DsFormControl.DateInput /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Description</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithDescription = () =&gt; &lt;DsFormControl label=&quot;Event Date&quot; required style={{ width: &#39;400px&#39; }}&gt;
+    &lt;DsFormControl.Description&gt;
+        &lt;DefaultDescription /&gt;
+    &lt;/DsFormControl.Description&gt;
+    &lt;DsFormControl.DateInput /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Help Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithHelpIcon = () =&gt; &lt;DsFormControl
+    label=&quot;Event Date&quot;
+    required
+    style={{ width: &#39;400px&#39; }}
+    slots={{
+        endAdornment: (
+            &lt;button
+                type=&quot;button&quot;
+                className={styles.helpIcon}
+                onClick={() =&gt; alert(&#39;Help clicked!&#39;)}
+                aria-label=&quot;Help&quot;
+            &gt;
+                &lt;DsIcon icon=&quot;info&quot; size=&quot;small&quot; /&gt;
+            &lt;/button&gt;
+        ),
+    }}&gt;
+    &lt;DsFormControl.Description&gt;
+        &lt;DefaultDescription /&gt;
+    &lt;/DsFormControl.Description&gt;
+    &lt;DsFormControl.DateInput /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Success</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Success = function Render() {
+    const [value] = useState&lt;string&gt;(&#39;2024-12-25&#39;);
+
+    return (
+        &lt;div style={{ width: &#39;400px&#39; }}&gt;
+            &lt;DsFormControl
+                status=&quot;success&quot;
+                label=&quot;Event Date&quot;
+                message=&quot;Valid date selected.&quot;
+                messageIcon=&quot;check_circle&quot;
+            &gt;
+                &lt;DsFormControl.Description&gt;
+                    &lt;DefaultDescription /&gt;
+                &lt;/DsFormControl.Description&gt;
+                &lt;DsFormControl.DateInput value={value} /&gt;
+            &lt;/DsFormControl&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Error</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Error = () =&gt; &lt;DsFormControl
+    status=&quot;error&quot;
+    label=&quot;Event Date&quot;
+    required
+    message=&quot;Date is required.&quot;
+    messageIcon=&quot;error&quot;
+    style={{ width: &#39;400px&#39; }}&gt;
+    &lt;DsFormControl.Description&gt;
+        &lt;DefaultDescription /&gt;
+    &lt;/DsFormControl.Description&gt;
+    &lt;DsFormControl.DateInput /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Warning</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Warning = function Render() {
+    const [value] = useState&lt;string&gt;(&#39;2024-12-25&#39;);
+
+    return (
+        &lt;div style={{ width: &#39;400px&#39; }}&gt;
+            &lt;DsFormControl
+                status=&quot;warning&quot;
+                label=&quot;Event Date&quot;
+                message=&quot;Date is approaching deadline.&quot;
+                messageIcon=&quot;info&quot;
+            &gt;
+                &lt;DsFormControl.Description&gt;
+                    &lt;DefaultDescription /&gt;
+                &lt;/DsFormControl.Description&gt;
+                &lt;DsFormControl.DateInput value={value} /&gt;
+            &lt;/DsFormControl&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;DsFormControl label=&quot;Event Date&quot; style={{ width: &#39;400px&#39; }}&gt;
+    &lt;DsFormControl.Description&gt;
+        &lt;DefaultDescription /&gt;
+    &lt;/DsFormControl.Description&gt;
+    &lt;DsFormControl.DateInput disabled /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Range Mode</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RangeMode = () =&gt; &lt;DsFormControl
+    label=&quot;Date Range&quot;
+    required
+    message=&quot;Select start and end dates&quot;
+    style={{ width: &#39;400px&#39; }}&gt;
+    &lt;DsFormControl.DateInput range /&gt;
+&lt;/DsFormControl&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Range With Validation</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RangeWithValidation = function Render() {
+    const [value, setValue] = useState&lt;[string, string]&gt;();
+    const [touched, setTouched] = useState(false);
+    const error = touched &amp;&amp; !value ? &#39;Start and end dates are required&#39; : undefined;
+
+    return (
+        &lt;div style={{ width: &#39;400px&#39; }}&gt;
+            &lt;DsFormControl
+                label=&quot;Date Range&quot;
+                required
+                status={error ? &#39;error&#39; : undefined}
+                messageIcon=&quot;cancel&quot;
+                message={error}
+            &gt;
+                &lt;DsFormControl.DateInput
+                    value={value}
+                    onValueChange={(value) =&gt; {
+                        setValue(value);
+                        setTouched(true);
+                    }}
+                    range
+                /&gt;
+            &lt;/DsFormControl&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Validation</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithValidation = function Render() {
+    const [value, setValue] = useState&lt;string&gt;();
+    const [touched, setTouched] = useState(false);
+    const error = touched &amp;&amp; !value ? &#39;Date is required&#39; : undefined;
+
+    return (
+        &lt;div style={{ width: &#39;400px&#39; }}&gt;
+            &lt;DsFormControl
+                label=&quot;Event Date&quot;
+                required
+                status={error ? &#39;error&#39; : undefined}
+                messageIcon=&quot;cancel&quot;
+                message={error}
+            &gt;
+                &lt;DsFormControl.DateInput
+                    value={value}
+                    onValueChange={(value) =&gt; {
+                        setValue(value);
+                        setTouched(true);
+                    }}
+                /&gt;
+            &lt;/DsFormControl&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
             </div>
         </div>
     
