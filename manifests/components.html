@@ -576,13 +576,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">6/81 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">43/81 infos</a><span class="filter-pill ok" aria-disabled="true">457 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">1 doc ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">6/81 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">43/81 infos</a><span class="filter-pill ok" aria-disabled="true">459 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">1 doc ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -3771,9 +3771,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsCommentBubble</h2>
       <div class="badges">
-        <label for="c-13-design-system-comments-commentbubble-props" class="badge ok as-toggle">22 prop types</label>
+        <label for="c-13-design-system-comments-commentbubble-props" class="badge ok as-toggle">23 prop types</label>
         <label for="c-13-design-system-comments-commentbubble-info" class="badge info as-toggle">1 info</label>
-        <label for="c-13-design-system-comments-commentbubble-stories" class="badge ok as-toggle">18 stories</label>
+        <label for="c-13-design-system-comments-commentbubble-stories" class="badge ok as-toggle">20 stories</label>
         
       </div>
     </div>
@@ -3805,7 +3805,7 @@ style?: CSSProperties</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">22 prop types</span>
+              <span class="badge ok">23 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-comment-bubble/ds-comment-bubble.tsx::DsCommentBubble</code></pre>
             <pre><code>Props:</code></pre>
@@ -3816,6 +3816,8 @@ className?: string
 comment?: CommentData
 
 currentUser?: CommentAuthor
+
+hideActionRequired?: boolean = false
 
 onActionRequiredChange?: (checked: boolean) =&gt; void
 
@@ -3889,7 +3891,8 @@ value?: string = &#39;&#39;</code></pre>
     onEditMessage={fn()}
     onDeleteMessage={fn()}
     onMessageMarkUnread={fn()}
-    onMessageResolved={fn()} /&gt;;</code></pre>
+    onMessageResolved={fn()}
+    value=&quot;&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3944,6 +3947,32 @@ value?: string = &#39;&#39;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
+                <span class="ex-name">Typing Without Action Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TypingWithoutActionRequired = () =&gt; &lt;DsCommentBubble
+    referenceTag=&quot;Resource allocation&quot;
+    onSend={fn()}
+    onClose={fn()}
+    onResolve={fn()}
+    onToggleActionRequired={fn()}
+    onForward={fn()}
+    onMarkUnread={fn()}
+    onCopyLink={fn()}
+    onDelete={fn()}
+    onActionRequiredChange={fn()}
+    onValueChange={fn()}
+    onEditMessage={fn()}
+    onDeleteMessage={fn()}
+    onMessageMarkUnread={fn()}
+    onMessageResolved={fn()}
+    value=&quot;This is a new comment...&quot;
+    hideActionRequired /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
                 <span class="ex-name">Thread</span>
                 <span class="badge ok">story ok</span>
               </div>
@@ -3994,6 +4023,34 @@ value?: string = &#39;&#39;</code></pre>
     comment={createMockComment()}
     actionRequired
     currentUser={currentUser} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Thread Without Action Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ThreadWithoutActionRequired = () =&gt; &lt;DsCommentBubble
+    referenceTag=&quot;Resource allocation&quot;
+    onSend={fn()}
+    onClose={fn()}
+    onResolve={fn()}
+    onToggleActionRequired={fn()}
+    onForward={fn()}
+    onMarkUnread={fn()}
+    onCopyLink={fn()}
+    onDelete={fn()}
+    onActionRequiredChange={fn()}
+    onValueChange={fn()}
+    onEditMessage={fn()}
+    onDeleteMessage={fn()}
+    onMessageMarkUnread={fn()}
+    onMessageResolved={fn()}
+    comment={createMockComment()}
+    currentUser={currentUser}
+    hideActionRequired
+    actionRequired /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
