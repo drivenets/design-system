@@ -1,5 +1,30 @@
 # @drivenets/design-system
 
+## 0.8.0
+
+### Minor Changes
+
+- 73e3010: Add `DsDatePicker` component
+- 1fa6a48: Deprecated `DsDateInput` component
+- 27151fc: Add `DsKeyValuePair` component
+- 5cd65b4: Add `DsTimePicker` component
+- ad3aad4: Add `DsDateRangePicker` component
+
+### Patch Changes
+
+- 0335e72: Capitalize only the first word in `DsStatusBadge`
+- 6dc2bbe: Fix font size in `DsDropdownMenu` item
+- 8aaa33b: Update dependencies
+- 56d993b: Fix table issues related to React Compiler
+- 8c56a53: Add `hideActionRequired` prop to `DsCommentBubble`
+- 7752e64: Add aria role to `DsLoader`
+- 5a59014: Remove ellipsis from `DsTooltip`
+  Add `slotProps` to `DsTooltip`
+- e6da4c4: Fix `DsAutocomplete` onValueChange trigger, fix clear button
+- 16f7361: Fix styles in `DsCommentBubble`
+- eef2a74: Use semantic HTML structure in `DsTable` empty view
+- ba7fb97: Fix File prototype loss in `DsFileUpload`
+
 ## 0.7.3
 
 ### Patch Changes

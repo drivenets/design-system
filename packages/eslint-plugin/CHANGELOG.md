@@ -1,5 +1,11 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.12
+
+### Patch Changes
+
+- 1fa6a48: Add deprecation rule for `DsDateInput`
+
 ## 0.0.11
 
 ### Patch Changes
