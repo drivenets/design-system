@@ -26,7 +26,7 @@ export const noEmptyStory = createRule<[], MessageId>({
 		function checkNode(node: TSESTree.Node) {
 			node = unwrapExpression(node);
 
-			// When 2 stories reference the same variable, we don't want to report the same story twice.
+			// When 2 stories reference the same variable, we don't want to report it twice.
 			if (reported.has(node)) {
 				return;
 			}
@@ -85,8 +85,8 @@ function isEmptyStory(node: TSESTree.ObjectExpression) {
 	const renderProp = getObjectProperty({ obj: node, name: 'render' });
 	const playProp = getObjectProperty({ obj: node, name: 'play' });
 
-	// We'll trust TypeScript here to ensure that as long as we have `render` or `play` properties they should
-	// be valid.
+	// We'll trust TypeScript here to ensure that as long as we have
+	// `render` or `play` properties they should be valid.
 	if (renderProp || playProp) {
 		return false;
 	}
