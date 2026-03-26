@@ -9,6 +9,7 @@ export interface UploadedFile extends File {
 	progress: number;
 	status: UploadFileStatus;
 	errors?: FileError[];
+	originalFile: File;
 }
 
 export interface FileUploadOptions {
