@@ -1,19 +1,40 @@
 ---
-description: Apply when reviewing code changes, running git diff, or preparing a PR
+description: Apply when preparing a PR, reviewing code changes, running git diff, or generating a changeset
 alwaysApply: false
 ---
 
-# Code Review Rules
+# PR Workflow & Code Review
 
-It is a local code review process done before submitting a PR.
+## Git & PR Workflow
 
-## Process
+| Requirement | Details |
+| --- | --- |
+| **No force-push after review** | GitHub loses review history; use merge commits instead |
+| **Changelog required** | Run `pnpm changelog` before merge |
+| **Conventional commits** | PR title must follow conventional commit format |
+| **Separate concerns** | Unrelated changes go in separate PRs; easier revert and isolation |
+| **Changeset messages are user-facing** | Write "Add X to Y" or "Fix X in Y", not implementation details |
+| **`skip changelog` label** | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes |
+| **Use `--frozen-lockfile`** | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes |
+| **Deprecation rules** | Add to `@drivenets/eslint-plugin-design-system` when deprecating |
+
+```markdown
+<!-- Good changeset message -->
+Add DsCard component
+
+<!-- Bad changeset message - implementation details -->
+Refactor card to use CSS modules and fix hover state selector specificity
+```
+
+---
+
+## Code Review Process
 
 1. Get diff: `git diff origin/main`
-2. Review every changed file against project cursor rules
+2. Review every changed file against project cursor rules (scss, react-patterns, storybook, etc.)
 3. Flag only clear, high-severity issues (max 10 inline comments)
 
-## Inline comment format
+### Inline comment format
 
 ```typescript
 /**
@@ -23,19 +44,24 @@ It is a local code review process done before submitting a PR.
 
 - One issue per comment; place on the exact changed line
 - Natural tone, specific and actionable; do not mention automated or high-confidence
-- Severity emojis: 🚨 Critical 🔒 Security ⚡ Performance ⚠️ Logic ✨ Improvement
+- Severity: 🚨 Critical 🔒 Security ⚡ Performance ⚠️ Logic ✨ Improvement
 
-## Priorities to check
+---
 
-- No `!important` in SCSS
-- No hardcoded colors or spacing (use `--color-*`, `--spacing-*` tokens)
-- No `:global` in CSS modules
-- No unnecessary `useMemo`/`useCallback`
-- No `forwardRef` (deprecated)
-- No cross-component internal imports
-- No `useLayoutEffect` without DOM reads
-- Stories have `play` functions with `fn()` and a11y queries
-- No inline styles in stories
-- Props layer doesn't expose library internals
-- Logic errors, security issues, race conditions, missing edge cases
+## PR Checklist
 
+Before submitting a PR:
+
+- [ ] Changelog added (`pnpm changelog`) with user-facing message
+- [ ] Behavioral coverage in `*.browser.test.tsx` where interactions matter
+- [ ] Browser tests use a11y queries (no test-ids unless unavoidable)
+- [ ] CSS uses design tokens, no `!important`
+- [ ] No inline styles in stories
+- [ ] Props layer doesn't expose library internals
+- [ ] Types exported from `.types.ts` with variant arrays
+- [ ] Code is well-spaced and readable
+- [ ] Matches Figma design
+- [ ] Storybook examples show all states (controlled + localized)
+- [ ] No cross-component internal imports
+- [ ] No unnecessary `useMemo`/`useCallback`
+- [ ] Check Ark UI for existing primitives before custom implementation

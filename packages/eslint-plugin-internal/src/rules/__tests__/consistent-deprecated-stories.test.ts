@@ -605,7 +605,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 		},
 
 		{
-			name: 'non-deprecated component with deprecated tag - removes tag',
+			name: 'non-deprecated component with only deprecated tag - removes the whole tags prop',
 			code: `
 				function DsButton() { return null; }
 
@@ -623,7 +623,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				const meta = {
 					title: 'Design System/Button',
 					component: DsButton,
-					tags: [],
+					
 				};
 
 				export default meta;
@@ -636,6 +636,42 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 					column: 13,
 					endLine: 7,
 					endColumn: 25,
+				},
+			],
+		},
+
+		{
+			name: 'non-deprecated component with deprecated tag and other tags - removes only the deprecated tag',
+			code: `
+				function DsButton() { return null; }
+
+				const meta = {
+					title: 'Design System/Button',
+					component: DsButton,
+					tags: ['!dev', 'deprecated', 'autodocs'],
+				};
+
+				export default meta;
+			`,
+			output: `
+				function DsButton() { return null; }
+
+				const meta = {
+					title: 'Design System/Button',
+					component: DsButton,
+					tags: ['!dev',  'autodocs'],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noUnusedDeprecatedTag',
+					data: { component: 'DsButton' },
+					line: 7,
+					column: 21,
+					endLine: 7,
+					endColumn: 33,
 				},
 			],
 		},
@@ -701,7 +737,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				const meta = {
 					title: 'Design System/ActiveNamespacedComponent',
 					component: DsActiveNamespacedComponent,
-					tags: [],
+					
 				};
 
 				export default meta;
@@ -787,7 +823,7 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				const meta = {
 					title: 'Design System/SubComponents.Active',
 					component: DsSubComponents.Active,
-					tags: [],
+					
 				};
 
 				export default meta;

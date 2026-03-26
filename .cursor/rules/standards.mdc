@@ -1,35 +1,9 @@
 ---
-description: PR requirements and code standards for the design-system repository
+description: Code standards for the design-system repository
 alwaysApply: true
 ---
 
-# Pull Request Requirements & Code Standards
-
-Based on code review feedback, here are the consolidated standards for the design-system repository.
-
----
-
-## Git & PR Workflow
-
-| Requirement                                  | Details                                                                          |
-| -------------------------------------------- | -------------------------------------------------------------------------------- |
-| **No force-push after review**               | GitHub loses review history; use merge commits instead                           |
-| **Changelog required**                       | Run `pnpm changelog` before merge                                               |
-| **Conventional commits**                     | PR title must follow conventional commit format                                  |
-| **Separate concerns**                        | Unrelated changes go in separate PRs; easier revert and isolation                |
-| **Changeset messages are user-facing**       | Write "Add X to Y" or "Fix X in Y", not implementation details                  |
-| **`skip changelog` label**                   | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes      |
-| **Use `--frozen-lockfile`**                  | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes       |
-
-```markdown
-<!-- Good changeset message -->
-Add DsCard component
-
-<!-- Bad changeset message - implementation details -->
-Refactor card to use CSS modules and fix hover state selector specificity
-```
-
----
+# Code Standards
 
 ## Component API Design
 
@@ -42,6 +16,8 @@ Refactor card to use CSS modules and fix hover state selector specificity
 | **Consistent callback naming**               | Prefer `onXChange` pattern                                                       |
 | **`null` for empty callback values**         | Use `null` (not `undefined`) for optional values in callbacks: `(value: string \| null) => void` |
 | **Single deprecation comment**               | In types file only, not on every export                                          |
+| **Value props first, callbacks last**        | Order: value/config props, then render/slot props, then callbacks                |
+| **`locale` prop for i18n**                   | Components with hardcoded text should accept a `locale` prop for overrides       |
 
 ```typescript
 // Good - own props layer with null for clearable value
@@ -145,30 +121,3 @@ import { formatDate } from '../../utils/format-date';
 | **Barrel exports**                           | Use `index.ts` not `index.tsx`                                                   |
 | **kebab-case files**                         | All files must be kebab-case                                                     |
 
----
-
-## ESLint Plugin
-
-| Requirement                                  | Details                                                                          |
-| -------------------------------------------- | -------------------------------------------------------------------------------- |
-| **Deprecation rules**                        | Add to `@drivenets/eslint-plugin-design-system` when deprecating                 |
-
----
-
-## PR Checklist
-
-Before submitting a PR:
-
-- [ ] Changelog added (`pnpm changelog`) with user-facing message
-- [ ] All stories have `play` tests with `fn()` for callbacks
-- [ ] Tests use a11y queries (no test-ids)
-- [ ] CSS uses design tokens, no `!important`
-- [ ] No inline styles in stories
-- [ ] Props layer doesn't expose library internals
-- [ ] Types exported from `.types.ts` with variant arrays
-- [ ] Code is well-spaced and readable
-- [ ] Matches Figma design
-- [ ] Storybook examples show off all states (including controlled + localized)
-- [ ] No cross-component internal imports
-- [ ] No unnecessary `useMemo`/`useCallback`
-- [ ] Check Ark UI for existing primitives before custom implementation

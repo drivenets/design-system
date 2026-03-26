@@ -1,0 +1,48 @@
+---
+description: Vitest browser test patterns for design system components
+globs: **/__tests__/*.browser.test.tsx
+---
+
+# Vitest Browser Tests
+
+Behavioral coverage for design-system components lives next to the component under `__tests__/`, e.g. `ds-checkbox/__tests__/ds-checkbox.browser.test.tsx`. Storybook stories are for docs and controls only.
+
+## Principles
+
+1. **Stories document UI**; assert behavior in `*.browser.test.tsx`.
+2. **Spy callbacks with `vi.fn()`** in tests (not Storybook `fn()`).
+3. **Prefer a11y queries**: `page.getByRole`, `getByLabelText`, `getByText` -- avoid `getByTestId` unless unavoidable.
+4. **Use Vitest browser matchers**: `await expect.element(locator).toBeChecked()`, `toBeDisabled()`, `toBeVisible()`, etc.
+5. **Await async UI**: `await locator.click()`, `await expect.element(...)`.
+6. **Test user-visible behavior**, not implementation details; use `data-*` only when it is an explicit contract (e.g. indeterminate state).
+7. **Disabled / blocked interaction**: `await checkbox.click({ force: true })` when asserting a disabled control does not change state.
+8. **Controlled component testing**: define an inline wrapper with `useState` to test controlled behavior.
+9. **Rerender for prop changes**: use `const { rerender } = await page.render(...)` to test conditional rendering.
+10. **Hover interactions**: `await locator.hover()` / `await locator.unhover()` for tooltip-style components.
+11. **Nested locators**: scope queries within a parent: `parentLocator.getByText(...)`.
+12. **`toBeInTheDocument` vs `toBeVisible`**: use `not.toBeInTheDocument()` for removed DOM elements, `not.toBeVisible()` for hidden ones.
+13. **Querying disabled elements**: pass `{ disabled: true }` to role queries: `page.getByRole('checkbox', { disabled: true })`.
+
+## Example: callback spy
+
+```tsx
+import { describe, expect, it, vi } from 'vitest';
+import { page } from 'vitest/browser';
+import DsWidget from '../ds-widget';
+
+describe('DsWidget', () => {
+  it('calls onSave when submitted', async () => {
+    const onSave = vi.fn();
+    await page.render(<DsWidget onSave={onSave} />);
+
+    await page.getByRole('button', { name: /save/i }).click();
+    expect(onSave).toHaveBeenCalledOnce();
+  });
+});
+```
+
+## Run
+
+```bash
+pnpm --filter @drivenets/design-system test packages/design-system/src/components/ds-{name}/__tests__/ds-{name}.browser.test.tsx --run
+```
