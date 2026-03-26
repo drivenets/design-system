@@ -40,7 +40,10 @@ const DsDateRangePicker = ({
 		setValue([null, null]);
 	};
 
+	// max allowed date for the "Start date" is the earliest of "max" and the selected "endDate"
 	const effectiveStartMax = earlierDate(max, endDate ?? undefined);
+
+	// min allowed date for the "End date" is the later of "min" and the selected "startDate"
 	const effectiveEndMin = laterDate(min, startDate ?? undefined);
 
 	const showClearAll = !hideClearAll && !disabled && !readOnly && (!!startDate || !!endDate);
