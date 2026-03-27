@@ -22,6 +22,12 @@ export interface DsTimePickerProps {
 	readOnly?: boolean;
 
 	/**
+	 * Whether to hide the clear button
+	 * @default false
+	 */
+	hideClearButton?: boolean;
+
+	/**
 	 * Whether to disable the portal for the popover content
 	 * @default false
 	 */

@@ -1,6 +1,7 @@
 import { type ChangeEvent, Fragment, useEffect, useRef, useState } from 'react';
 import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
+import classNames from 'classnames';
 import type { DsTimePickerProps } from './ds-time-picker.types';
 import { clampTime, formatTime, parseTime, timeScrollerAdapter } from './ds-time-picker.utils';
 import { TimeScroller } from './components/time-scroller/time-scroller';
@@ -8,6 +9,7 @@ import { DsIcon } from '../ds-icon';
 import { DsButton } from '../ds-button';
 import { DsTextInput } from '../ds-text-input';
 import { useControlled } from '../../utils/use-controlled';
+import styles from './ds-time-picker.module.scss';
 
 const DsTimePicker = (props: DsTimePickerProps) => {
 	const {
@@ -19,6 +21,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		max,
 		disabled,
 		readOnly,
+		hideClearButton = false,
 		disablePortal = false,
 		locale,
 		slotProps,
@@ -103,6 +106,8 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		setIsOpen(details.open);
 	};
 
+	const showClearButton = !hideClearButton && !disabled && !readOnly && !!value;
+
 	const Wrapper = disablePortal ? Fragment : Portal;
 
 	return (
@@ -112,7 +117,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 			positioning={{ placement: 'bottom-start', gutter: 4 }}
 		>
 			<Popover.Anchor asChild>
-				<div ref={ref} className={className}>
+				<div ref={ref} className={classNames(styles.root, className)}>
 					<DsTextInput
 						ref={inputRef}
 						id={id}
@@ -126,17 +131,32 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 						{...slotProps?.input}
 						slots={{
 							endAdornment: slotProps?.input?.slots?.endAdornment ?? (
-								<Popover.Trigger asChild>
-									<DsButton
-										design="v1.2"
-										size="tiny"
-										buttonType="tertiary"
-										disabled={disabled || readOnly}
-										aria-label={locale?.openLabel ?? 'Open time picker'}
-									>
-										<DsIcon icon="schedule" variant="outlined" size="tiny" />
-									</DsButton>
-								</Popover.Trigger>
+								<>
+									{showClearButton && (
+										<DsButton
+											className={styles.clearTrigger}
+											design="v1.2"
+											size="tiny"
+											buttonType="tertiary"
+											disabled={disabled}
+											aria-label={locale?.clearLabel ?? 'Clear time'}
+											onClick={() => setValue(null)}
+										>
+											<DsIcon icon="close" size="tiny" />
+										</DsButton>
+									)}
+									<Popover.Trigger asChild>
+										<DsButton
+											design="v1.2"
+											size="tiny"
+											buttonType="tertiary"
+											disabled={disabled || readOnly}
+											aria-label={locale?.openLabel ?? 'Open time picker'}
+										>
+											<DsIcon icon="schedule" variant="outlined" size="tiny" />
+										</DsButton>
+									</Popover.Trigger>
+								</>
 							),
 							...slotProps?.input?.slots,
 						}}

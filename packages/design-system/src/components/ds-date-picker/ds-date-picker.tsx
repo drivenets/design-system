@@ -145,6 +145,7 @@ const DsDatePicker = ({
 								{showClearButton && (
 									<DatePicker.ClearTrigger asChild onClick={() => setValue(null)}>
 										<DsButton
+											className={styles.clearTrigger}
 											design="v1.2"
 											size="tiny"
 											buttonType="tertiary"
@@ -184,6 +185,7 @@ const DsDatePicker = ({
 									}}
 									min={isSameDay(value, min) ? _min : undefined}
 									max={isSameDay(value, max) ? _max : undefined}
+									hideClearButton={true}
 									disabled={disabled || !value}
 									readOnly={readOnly}
 									{...slotProps?.timePicker}
