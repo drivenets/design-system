@@ -63,9 +63,8 @@ const DsFormControl = ({
 					styles.container,
 					className,
 
-					// @ts-expect-error: `info` doesn't have its own classname
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-					status && message && styles[status],
+					// Casting because `info` doesn't have its own classname
+					status && message && styles[status as keyof typeof styles],
 				)}
 				style={style}
 			>
