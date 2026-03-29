@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, spyOn, userEvent, waitFor, within } from 'storybook/test';
+import { expect, screen, spyOn, userEvent as _userEvent, waitFor, within } from 'storybook/test';
 import { faker } from '@faker-js/faker';
 import SampleForm from './sample-form';
 
@@ -11,6 +11,8 @@ const meta: Meta<typeof SampleForm> = {
 		layout: 'centered',
 	},
 };
+
+const userEvent = _userEvent.setup({ delay: null });
 
 export default meta;
 type Story = StoryObj<typeof SampleForm>;
