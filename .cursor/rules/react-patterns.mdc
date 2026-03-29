@@ -130,3 +130,32 @@ const [inputValue, setInputValue] = useState('');
 </Combobox.Root>
 ```
 
+---
+
+## Common Pitfalls
+
+| Requirement                                  | Details                                                                          |
+| -------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Don't spread native objects**              | `{...file}` strips the `File`/`Blob` prototype; use native APIs to copy         |
+| **Event propagation in composed components** | Child content in clickable containers (e.g., table rows) must stop propagation   |
+| **Validate, don't silently fallback**        | Input components should reject bad values, not silently swap in defaults         |
+
+```tsx
+// Bad - spreading loses File prototype methods
+const copy = { ...originalFile };
+
+// Good - preserve prototype
+const copy = new File([originalFile], originalFile.name, { type: originalFile.type });
+
+// Bad - expanded row content triggers parent onClick
+<tr onClick={onRowClick}>
+  <td>{expandedContent}</td>
+</tr>
+
+// Good - prevent propagation from child content
+<tr onClick={onRowClick}>
+  <td onClick={isExpandedContent ? (e) => e.stopPropagation() : undefined}>
+    {expandedContent}
+  </td>
+</tr>
+```

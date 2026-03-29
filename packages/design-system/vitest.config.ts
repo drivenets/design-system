@@ -24,6 +24,7 @@ export default defineConfig({
 				'**/ds-chip/**',
 				'**/ds-chip-group/**',
 				'**/ds-confirmation/**',
+				'**/ds-date-input/**',
 				'**/ds-system-status/**',
 			],
 			thresholds: {
@@ -83,6 +84,7 @@ export default defineConfig({
 				],
 				test: {
 					name: 'storybook',
+					testTimeout: 30000, // sample-form.stories.ts takes ~26s to run
 					browser: {
 						enabled: true,
 						headless: true,

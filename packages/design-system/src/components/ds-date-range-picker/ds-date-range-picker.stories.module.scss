@@ -1,0 +1,22 @@
+.container {
+	display: flex;
+	gap: var(--spacing-xs);
+	align-items: flex-end;
+	width: 500px;
+}
+
+.verticalContainer {
+	width: 320px;
+}
+
+.helperText {
+	font-size: 12px;
+	margin-top: var(--spacing-xs);
+	color: var(--color-font-secondary);
+}
+
+.dateOrRangeContainer {
+	display: flex;
+	gap: var(--spacing-xs);
+	align-items: flex-end;
+}

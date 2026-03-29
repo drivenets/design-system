@@ -1,0 +1,20 @@
+.root {
+	display: flex;
+	gap: var(--spacing-xs);
+}
+
+.horizontal {
+	align-items: flex-end;
+}
+
+.vertical {
+	flex-direction: column;
+}
+
+.clearButton {
+	align-self: flex-end;
+}
+
+.formControl {
+	flex: 1;
+}

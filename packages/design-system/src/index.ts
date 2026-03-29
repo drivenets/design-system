@@ -15,6 +15,7 @@ export * from './components/ds-comments-drawer';
 export * from './components/ds-confirmation';
 export * from './components/ds-date-input';
 export * from './components/ds-date-picker';
+export * from './components/ds-date-range-picker';
 export * from './components/ds-dialog';
 export * from './components/ds-divider';
 export * from './components/ds-drawer';

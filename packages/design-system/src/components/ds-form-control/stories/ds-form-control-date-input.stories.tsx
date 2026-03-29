@@ -8,11 +8,18 @@ import styles from './ds-form-control.stories.module.scss';
 import { DsIcon } from '../../ds-icon';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Design System/FormControl/DateInput',
-	component: DsFormControl,
+	title: 'Design System/FormControl/DateInput (Deprecated)',
+	component: DsFormControl.DateInput,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'**Deprecated**: DsFormControl.DateInput is deprecated. Please use `DsFormControl.DsDatePicker` for single date selection or `DsFormControl.DsDateRangePicker` for date range selection instead.',
+			},
+		},
 	},
+	tags: ['deprecated'],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -104,8 +111,12 @@ export const Default: Story = {
 		required: true,
 		style: { width: '400px' },
 		message: 'Select a date for your event',
-		children: <DsFormControl.DateInput />,
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.DateInput />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await sanityCheckSingle(canvasElement);
 	},
@@ -116,8 +127,12 @@ export const WithCustomWidth: Story = {
 		label: 'Event Date',
 		required: true,
 		style: { width: '400px' },
-		children: <DsFormControl.DateInput />,
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.DateInput />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await sanityCheckSingle(canvasElement);
 	},
@@ -134,8 +149,12 @@ export const WithCustomStyles: Story = {
 			borderRadius: '8px',
 			backgroundColor: '#f9f9f9',
 		},
-		children: <DsFormControl.DateInput />,
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.DateInput />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await sanityCheckSingle(canvasElement);
 	},
@@ -146,15 +165,15 @@ export const WithDescription: Story = {
 		label: 'Event Date',
 		required: true,
 		style: { width: '400px' },
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.DateInput />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				<DefaultDescription />
+			</DsFormControl.Description>
+			<DsFormControl.DateInput />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await sanityCheckSingle(canvasElement);
 	},
@@ -177,15 +196,15 @@ export const WithHelpIcon: Story = {
 				</button>
 			),
 		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.DateInput />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				<DefaultDescription />
+			</DsFormControl.Description>
+			<DsFormControl.DateInput />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await sanityCheckSingle(canvasElement);
 	},
@@ -228,15 +247,15 @@ export const Error: Story = {
 		message: 'Date is required.',
 		messageIcon: 'error',
 		style: { width: '400px' },
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.DateInput />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				<DefaultDescription />
+			</DsFormControl.Description>
+			<DsFormControl.DateInput />
+		</DsFormControl>
+	),
 };
 
 export const Warning: Story = {
@@ -265,15 +284,15 @@ export const Disabled: Story = {
 	args: {
 		label: 'Event Date',
 		style: { width: '400px' },
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.DateInput disabled />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				<DefaultDescription />
+			</DsFormControl.Description>
+			<DsFormControl.DateInput disabled />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await checkDisabled(canvasElement);
 	},
@@ -285,8 +304,12 @@ export const RangeMode: Story = {
 		required: true,
 		message: 'Select start and end dates',
 		style: { width: '400px' },
-		children: <DsFormControl.DateInput range />,
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.DateInput range />
+		</DsFormControl>
+	),
 	play: async ({ canvasElement }) => {
 		await sanityCheckRange(canvasElement);
 	},

@@ -211,7 +211,7 @@ export function useFileUpload({
 
 		try {
 			const result = await adapter.upload({
-				file,
+				file: file.originalFile,
 				fileId,
 				metadata,
 				signal: abortController.signal,

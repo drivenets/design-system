@@ -97,6 +97,7 @@ const DsFormControl = ({
 DsFormControl.TextInput = controlify(DsTextInput);
 DsFormControl.NumberInput = controlify(DsNumberInput);
 DsFormControl.PasswordInput = controlify(DsPasswordInput);
+/** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */
 DsFormControl.DateInput = controlify(DsDateInput);
 DsFormControl.DatePicker = controlify(DsDatePicker);
 DsFormControl.TimePicker = controlify(DsTimePicker);

@@ -11,6 +11,31 @@ Interaction and regression coverage lives in **`*.browser.test.tsx`** next to th
 
 See `.cursor/rules/browser-tests.mdc` for patterns (a11y queries, `vi.fn()` spies, semantic assertions).
 
+**Scrutinize AI-generated tests** — AI tools produce tests that look real but assert nothing useful. Verify each test checks behavior unique to that story/scenario.
+
+```tsx
+// Red flag - AI slop: looks like a test but asserts nothing meaningful
+export const DifferentOrientation: Story = {
+  args: { orientation: 'vertical' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getByRole('group')).toBeInTheDocument(); // same as Default
+  },
+};
+
+// Good - actually verifies orientation-specific behavior
+export const Vertical: Story = {
+  args: { orientation: 'vertical' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const inputs = canvas.getAllByRole('textbox');
+    const firstRect = inputs[0].getBoundingClientRect();
+    const secondRect = inputs[1].getBoundingClientRect();
+    await expect(secondRect.top).toBeGreaterThan(firstRect.bottom);
+  },
+};
+```
+
 ---
 
 ## Date Mocking

@@ -5,6 +5,7 @@ export interface DsCommentBubbleProps {
 	ref?: Ref<HTMLDivElement>;
 	comment?: CommentData;
 	currentUser?: CommentAuthor;
+	hideActionRequired?: boolean;
 	actionRequired?: boolean;
 	onActionRequiredChange?: (checked: boolean) => void;
 	value?: string;

@@ -111,3 +111,14 @@ ruleTester.run('no-deprecated-ds-chip-group', plugin.rules['no-deprecated-ds-chi
 		},
 	],
 });
+
+ruleTester.run('no-deprecated-ds-date-input', plugin.rules['no-deprecated-ds-date-input'], {
+	valid: ['<DsDatePicker />', '<DsDateRangePicker />'],
+
+	invalid: [
+		{
+			code: '<DsDateInput />',
+			errors: [{ message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.` }],
+		},
+	],
+});
