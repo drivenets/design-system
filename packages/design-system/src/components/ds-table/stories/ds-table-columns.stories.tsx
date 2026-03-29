@@ -111,5 +111,4 @@ export const ColumnHiding: Story = {
 			</div>
 		);
 	},
-	args: {},
 };

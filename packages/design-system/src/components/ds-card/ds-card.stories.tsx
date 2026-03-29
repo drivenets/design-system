@@ -39,7 +39,6 @@ const meta: Meta<typeof DsCard.Root> = {
 		onFocus: { table: { disable: true } },
 		onBlur: { table: { disable: true } },
 	},
-	args: {},
 };
 
 export default meta;

@@ -16,7 +16,6 @@ export default meta;
 type Story = StoryObj<typeof SampleForm>;
 
 export const Default: Story = {
-	args: {},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
