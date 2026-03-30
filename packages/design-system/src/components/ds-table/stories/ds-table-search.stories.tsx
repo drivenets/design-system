@@ -63,7 +63,6 @@ export const AdvancedSearch: Story = {
 			</div>
 		);
 	},
-	args: {},
 };
 
 export const TabFilters: Story = {
@@ -148,5 +147,4 @@ export const TabFilters: Story = {
 			</div>
 		);
 	},
-	args: {},
 };

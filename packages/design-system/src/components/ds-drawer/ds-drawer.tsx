@@ -49,9 +49,8 @@ const DsDrawer = ({
 							styles[`position-${position}`],
 							className,
 
-							// @ts-expect-error: these classnames are generated dynamically in scss
-							// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-							styles[`cols-${String(columns)}`],
+							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+							styles[`cols-${columns}`],
 						)}
 					>
 						<div className={styles.content}>{children}</div>

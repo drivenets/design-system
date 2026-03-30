@@ -8,7 +8,6 @@ const meta = {
 	title: 'Design System/Grid',
 	component: DsGrid,
 	subcomponents: { DsGridItem },
-	parameters: {},
 	argTypes: {
 		children: {
 			control: 'text',

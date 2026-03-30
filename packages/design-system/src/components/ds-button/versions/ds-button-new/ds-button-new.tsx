@@ -36,9 +36,8 @@ const DsButton: React.FC<DsButtonProps> = ({
 		styles[size],
 		className,
 
-		// @ts-expect-error: we don't have all variations of classnames defined
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-		styles[`${type}-${variant}`],
+		// Casting because we don't have all variations of classnames defined
+		styles[`${type}-${variant}` as keyof typeof styles],
 	);
 
 	return (

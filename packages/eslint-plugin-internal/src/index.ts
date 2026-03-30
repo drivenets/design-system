@@ -6,6 +6,7 @@ import { consistentStoryTitles } from './rules/consistent-story-titles';
 import { noAutodocsTag } from './rules/no-autodocs-tag';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 import { noEmptyStory } from './rules/no-empty-story';
+import { noUselessStoryAnnotations } from './rules/no-useless-story-annotations';
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
 import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
 import { noVitestInStories } from './rules/no-vitest-in-stories';
@@ -23,6 +24,7 @@ const plugin = {
 		'no-autodocs-tag': noAutodocsTag,
 		'no-cross-component-internal-import': noCrossComponentInternalImport,
 		'no-empty-story': noEmptyStory,
+		'no-useless-story-annotations': noUselessStoryAnnotations,
 		'no-useless-tsx-extension': noUselessTsxExtension,
 		'no-vitest-browser-react': noVitestBrowserReact,
 		'no-vitest-in-stories': noVitestInStories,
@@ -59,6 +61,10 @@ Object.assign(plugin.configs, {
 				'@drivenets/ds-internal/consistent-story-titles': 'error',
 				'@drivenets/ds-internal/no-autodocs-tag': 'error',
 				'@drivenets/ds-internal/no-empty-story': 'error',
+
+				'@drivenets/ds-internal/no-useless-story-annotations': 'error',
+				'storybook/no-redundant-story-name': 'off', // turn off conflicting rule
+
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
 				'@drivenets/ds-internal/require-story-params': 'error',
 			},

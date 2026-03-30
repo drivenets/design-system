@@ -630,7 +630,6 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			</div>
 		);
 	},
-	args: {},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
@@ -868,7 +867,6 @@ The debug panel below shows the current filter state as JSON.
 			</div>
 		);
 	},
-	args: {},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
 
