@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import { DsIcon, type IconSize } from '../../../ds-icon';
-import { DsSpinner } from '../../../ds-spinner';
+import { DsIcon, type IconSize } from '../ds-icon';
+import { DsSpinner } from '../ds-spinner';
 import styles from './ds-button-v3.module.scss';
-import type { ButtonV3Size, DsButtonV3Props } from './ds-button-v3.types';
+import type { ButtonV3Size, DsButtonV3Props } from './ds-button-v3.types.ts';
 
 const sizeClassMap = Object.freeze({
 	large: styles.sizeLarge,

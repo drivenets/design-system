@@ -4,7 +4,7 @@ export * from './components/ds-avatar';
 export * from './components/ds-avatar-group';
 export * from './components/ds-breadcrumb';
 export * from './components/ds-button';
-export * from './components/ds-button/versions/ds-button-v3/index.ts';
+export * from './components/ds-button-v3';
 export * from './components/ds-card';
 export * from './components/ds-checkbox';
 export * from './components/ds-chip';

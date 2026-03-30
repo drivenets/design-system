@@ -1,7 +1,7 @@
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import { DsButtonV3 } from '..';
+import { DsButtonV3 } from '../index.ts';
 import styles from '../ds-button-v3.module.scss';
 
 describe('DsButtonV3', () => {

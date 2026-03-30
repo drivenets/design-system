@@ -1,5 +1,5 @@
 import type { ButtonHTMLAttributes, Ref } from 'react';
-import type { IconType } from '../../../ds-icon';
+import type { IconType } from '../ds-icon';
 
 export const buttonV3Variants = ['primary', 'secondary', 'tertiary'] as const;
 export type ButtonV3Variant = (typeof buttonV3Variants)[number];
