@@ -147,7 +147,7 @@ const SampleForm = () => {
 							<DsFormControl.DatePicker
 								value={field.value ? new Date(field.value) : null}
 								onChange={(date) => {
-									handleValueChange(field, date ? date.toISOString() : '');
+									handleValueChange(field, date ? toUTCMidnight(date).toISOString() : '');
 								}}
 							/>
 						)}
@@ -160,8 +160,8 @@ const SampleForm = () => {
 						watch('eventEndDate') ? new Date(watch('eventEndDate')) : null,
 					]}
 					onChange={([start, end]) => {
-						handleValueChange('eventStartDate', start ? start.toISOString() : '');
-						handleValueChange('eventEndDate', end ? end.toISOString() : '');
+						handleValueChange('eventStartDate', start ? toUTCMidnight(start).toISOString() : '');
+						handleValueChange('eventEndDate', end ? toUTCMidnight(end).toISOString() : '');
 					}}
 					orientation="vertical"
 					hideClearAll
@@ -253,6 +253,11 @@ const SampleForm = () => {
 			</form>
 		</FormProvider>
 	);
+};
+
+// Normalize dates to UTC to account for timezone differences in local machines vs CI.
+const toUTCMidnight = (date: Date) => {
+	return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 };
 
 export default SampleForm;
