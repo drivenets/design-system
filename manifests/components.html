@@ -582,7 +582,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -3704,7 +3704,7 @@ style?: CSSProperties</code></pre>
               
               
               <pre><code>const Default = function Render() {
-    const [filters, setFilters] = useState&lt;ChipItem[]&gt;(sampleFilters);
+    const [filters, setFilters] = useState(sampleFilters);
 
     const handleClearAll = () =&gt; {
         setFilters([]);
@@ -6890,7 +6890,7 @@ withTime?: boolean = false</code></pre>
               
               
               <pre><code>const DateOrRange = function Render(args) {
-    const [mode, setMode] = useState&lt;string&gt;(&#39;date&#39;);
+    const [mode, setMode] = useState(&#39;date&#39;);
     const [dateValue, setDateValue] = useState&lt;Date | null&gt;(null);
     const [rangeValue, setRangeValue] = useState&lt;DateRangeValue&gt;([null, null]);
 
@@ -9971,7 +9971,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Default = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl label=&quot;Input&quot; required={true} message=&quot;This is a message&quot;&gt;
@@ -9998,7 +9998,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const WithCustomWidth = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl label=&quot;Input&quot; required={true} style={{ width: &#39;300px&#39; }}&gt;
@@ -10025,7 +10025,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const WithCustomStyles = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl
@@ -10062,7 +10062,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const WithDescription = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl label=&quot;Input&quot; required={true} style={{ width: &#39;300px&#39; }}&gt;
@@ -10092,7 +10092,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const WithHelpIcon = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl
@@ -10137,7 +10137,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Success = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl
@@ -10172,7 +10172,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Error = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl
@@ -10207,7 +10207,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Warning = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl
@@ -10242,7 +10242,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Disabled = function Render() {
-    const [value, setValue] = useState&lt;string&gt;(&#39;&#39;);
+    const [value, setValue] = useState(&#39;&#39;);
 
     return (
         &lt;DsFormControl label=&quot;Input&quot;&gt;
@@ -11359,7 +11359,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Success = function Render() {
-    const [value] = useState&lt;string&gt;(&#39;2024-12-25&#39;);
+    const [value] = useState(&#39;2024-12-25&#39;);
 
     return (
         &lt;div style={{ width: &#39;400px&#39; }}&gt;
@@ -11406,7 +11406,7 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Warning = function Render() {
-    const [value] = useState&lt;string&gt;(&#39;2024-12-25&#39;);
+    const [value] = useState(&#39;2024-12-25&#39;);
 
     return (
         &lt;div style={{ width: &#39;400px&#39; }}&gt;
@@ -20728,7 +20728,7 @@ zebra?: boolean</code></pre>
         });
 
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedFilterId, setSelectedFilterId] = useState&lt;string&gt;(filterNavItems[0]?.id || &#39;&#39;);
+    const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || &#39;&#39;);
 
     // Set initial selected filter when modal opens
     const handleOpenChange = (open: boolean) =&gt; {
@@ -20860,7 +20860,7 @@ zebra?: boolean</code></pre>
         });
 
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedFilterId, setSelectedFilterId] = useState&lt;string&gt;(filterNavItems[0]?.id || &#39;&#39;);
+    const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || &#39;&#39;);
 
     const handleOpenChange = (open: boolean) =&gt; {
         if (open &amp;&amp; !selectedFilterId &amp;&amp; filterNavItems.length &gt; 0) {
@@ -21983,7 +21983,7 @@ style?: CSSProperties</code></pre>
               
               <div class="hint">Default story demonstrating the TagFilter component with interactive controls. Try adding, removing, and selecting filters to see the component in action.</div>
               <pre><code>const Default = () =&gt; {
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;(sampleFilters);
+    const [filters, setFilters] = useState(sampleFilters);
 
     const handleClearAll = () =&gt; {
         setFilters([]);
@@ -22073,7 +22073,7 @@ style?: CSSProperties</code></pre>
               
               <div class="hint">Story showing TagFilter without the &quot;Clear all&quot; button.</div>
               <pre><code>const WithoutClearAll = () =&gt; {
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;(sampleFilters.slice(0, 5));
+    const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
 
     const handleFilterDelete = (filter: TagFilterItem) =&gt; {
         setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
@@ -22110,7 +22110,7 @@ style?: CSSProperties</code></pre>
               
               <div class="hint">Story showing TagFilter without a label.</div>
               <pre><code>const WithoutLabel = () =&gt; {
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;(sampleFilters.slice(0, 5));
+    const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
 
     const handleClearAll = () =&gt; {
         setFilters([]);
@@ -22137,7 +22137,7 @@ style?: CSSProperties</code></pre>
               
               <div class="hint">Story demonstrating full locale customization with both label and clearButton.</div>
               <pre><code>const CustomLocale = () =&gt; {
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;(sampleFilters);
+    const [filters, setFilters] = useState(sampleFilters);
 
     const handleClearAll = () =&gt; {
         setFilters([]);
@@ -22187,7 +22187,7 @@ style?: CSSProperties</code></pre>
         slotProps: { tag: { size: &#39;small&#39; } },
     }));
 
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;(smallFilters);
+    const [filters, setFilters] = useState(smallFilters);
 
     const handleClearAll = () =&gt; {
         setFilters([]);
@@ -23872,7 +23872,7 @@ style?: CSSProperties = {}</code></pre>
               
               
               <pre><code>const Controlled = function Render() {
-    const [checked, setChecked] = useState&lt;boolean&gt;(true);
+    const [checked, setChecked] = useState(true);
 
     return &lt;DsToggle label={label} labelInfo={labelInfo} checked={checked} onValueChange={setChecked} /&gt;;
 };</code></pre>
@@ -24335,7 +24335,7 @@ export const DsTree = {
               <pre><code>const Controlled = () =&gt; {
     const collection = createDsTreeCollection(sideNavNodes);
     const [selectedValue, setSelectedValue] = useState&lt;string[]&gt;([]);
-    const [expandedValue, setExpandedValue] = useState&lt;string[]&gt;([&#39;network&#39;]);
+    const [expandedValue, setExpandedValue] = useState([&#39;network&#39;]);
 
     return (
         &lt;div&gt;
@@ -24914,7 +24914,7 @@ You can add a \`.scrollbar-thin\` class to the element in order to make its scro
 };
 
 export default meta;
-type Story = StoryObj&lt;typeof meta&gt;;
+type Story = StoryObj;
 
 // Helper to generate content
 const generateContent = (count: number, direction: &#39;vertical&#39; | &#39;horizontal&#39;) =&gt; {
@@ -26924,7 +26924,7 @@ export const DsTree = {
               <pre><code>const Controlled = () =&gt; {
     const collection = createDsTreeCollection(sideNavNodes);
     const [selectedValue, setSelectedValue] = useState&lt;string[]&gt;([]);
-    const [expandedValue, setExpandedValue] = useState&lt;string[]&gt;([&#39;network&#39;]);
+    const [expandedValue, setExpandedValue] = useState([&#39;network&#39;]);
 
     return (
         &lt;div&gt;
@@ -27464,7 +27464,7 @@ You can add a \`.scrollbar-thin\` class to the element in order to make its scro
 };
 
 export default meta;
-type Story = StoryObj&lt;typeof meta&gt;;
+type Story = StoryObj;
 
 // Helper to generate content
 const generateContent = (count: number, direction: &#39;vertical&#39; | &#39;horizontal&#39;) =&gt; {
