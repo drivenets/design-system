@@ -582,7 +582,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -23226,7 +23226,7 @@ Line 3: Final line with conclusion`} /&gt;;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTimePicker</h2>
       <div class="badges">
-        <label for="c-73-design-system-timepicker-props" class="badge ok as-toggle">17 prop types</label>
+        <label for="c-73-design-system-timepicker-props" class="badge ok as-toggle">18 prop types</label>
         <label for="c-73-design-system-timepicker-info" class="badge info as-toggle">1 info</label>
         <label for="c-73-design-system-timepicker-stories" class="badge ok as-toggle">6 stories</label>
         
@@ -23260,7 +23260,7 @@ Line 3: Final line with conclusion`} /&gt;;</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">17 prop types</span>
+              <span class="badge ok">18 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-time-picker/ds-time-picker.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23277,6 +23277,12 @@ disabled?: boolean
  * @default false
  */
 disablePortal?: boolean
+
+/**
+ * Whether to hide the clear button
+ * @default false
+ */
+hideClearButton?: boolean
 
 id?: string
 
