@@ -297,7 +297,7 @@ $transition-duration-quick: 0.15s;
 	}
 }
 
-.root[data-on-dark][data-variant='primary'] {
+.root[data-color='ondark'][data-variant='primary'] {
 	background-color: var(--background-background-ondark-primary);
 	color: var(--font-font-on-action);
 	border-color: transparent;
@@ -327,7 +327,7 @@ $transition-duration-quick: 0.15s;
 	}
 }
 
-.root[data-on-dark][data-variant='secondary'] {
+.root[data-color='ondark'][data-variant='secondary'] {
 	background-color: transparent;
 	color: var(--font-font-on-action);
 	border-color: var(--border-border-ondark-secondary);
@@ -361,7 +361,7 @@ $transition-duration-quick: 0.15s;
 	}
 }
 
-.root[data-on-dark][data-variant='tertiary'] {
+.root[data-color='ondark'][data-variant='tertiary'] {
 	background-color: transparent;
 	color: var(--font-font-on-action);
 	border-color: transparent;

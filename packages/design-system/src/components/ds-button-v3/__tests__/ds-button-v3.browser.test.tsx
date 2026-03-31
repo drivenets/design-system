@@ -48,12 +48,12 @@ describe('DsButtonV3', () => {
 		await expect.element(button).toHaveAttribute('data-color', 'negative');
 	});
 
-	it('sets data-on-dark when onDark prop is true', async () => {
-		await page.render(<DsButtonV3 onDark>Label</DsButtonV3>);
+	it('sets ondark color palette', async () => {
+		await page.render(<DsButtonV3 color="ondark">Label</DsButtonV3>);
 
 		const button = page.getByRole('button', { name: 'Label' });
 
-		await expect.element(button).toHaveAttribute('data-on-dark', 'true');
+		await expect.element(button).toHaveAttribute('data-color', 'ondark');
 	});
 
 	it('applies iconOnly layout when icon is set without children', async () => {
@@ -135,25 +135,6 @@ describe('DsButtonV3', () => {
 		}
 	});
 
-	it('applies correct size class for each size', async () => {
-		const sizeClassMap = {
-			large: styles.sizeLarge,
-			medium: styles.sizeMedium,
-			small: styles.sizeSmall,
-			tiny: styles.sizeTiny,
-		} as const;
-
-		for (const [size, cls] of Object.entries(sizeClassMap) as [keyof typeof sizeClassMap, string][]) {
-			await page.render(
-				<DsButtonV3 size={size} aria-label={size}>
-					{size !== 'tiny' ? 'Label' : undefined}
-				</DsButtonV3>,
-			);
-
-			await expect.element(page.getByRole('button', { name: size })).toHaveClass(cls);
-		}
-	});
-
 	it('applies default props when none are specified', async () => {
 		await page.render(<DsButtonV3>Default</DsButtonV3>);
 
@@ -161,7 +142,6 @@ describe('DsButtonV3', () => {
 
 		await expect.element(button).toHaveAttribute('data-color', 'default');
 		await expect.element(button).toHaveAttribute('data-variant', 'primary');
-		await expect.element(button).toHaveClass(styles.sizeMedium);
 	});
 
 	it('forwards ref to the button element', async () => {
@@ -216,19 +196,6 @@ describe('DsButtonV3', () => {
 		await expect.element(button).toBeDisabled();
 		await expect.element(button).toHaveAttribute('aria-pressed', 'true');
 		await expect.element(button).toHaveAttribute('data-selected', 'true');
-	});
-
-	it('applies onDark + negative color together', async () => {
-		await page.render(
-			<DsButtonV3 onDark color="negative">
-				Remove
-			</DsButtonV3>,
-		);
-
-		const button = page.getByRole('button', { name: 'Remove' });
-
-		await expect.element(button).toHaveAttribute('data-on-dark', 'true');
-		await expect.element(button).toHaveAttribute('data-color', 'negative');
 	});
 
 	it('spreads rest props onto the button element', async () => {

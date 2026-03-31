@@ -27,7 +27,6 @@ const DsButtonV3 = ({
 	disabled,
 	loading = false,
 	color = 'default',
-	onDark = false,
 	variant = 'primary',
 	size = 'medium',
 	selected = false,
@@ -39,8 +38,7 @@ const DsButtonV3 = ({
 	return (
 		<button
 			ref={ref}
-			// Dynamic by nature of this component
-			// eslint-disable-next-line react/button-has-type
+			// eslint-disable-next-line react/button-has-type -- Dynamic by nature of this component
 			type={type}
 			disabled={disabled || loading}
 			aria-busy={loading || undefined}
@@ -53,7 +51,6 @@ const DsButtonV3 = ({
 			)}
 			style={style}
 			data-color={color}
-			data-on-dark={onDark ? 'true' : undefined}
 			data-variant={variant}
 			data-selected={selected ? 'true' : undefined}
 			{...rest}

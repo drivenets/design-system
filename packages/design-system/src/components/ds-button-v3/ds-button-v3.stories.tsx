@@ -2,7 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import classNames from 'classnames';
 import { fn } from 'storybook/test';
 import DsButtonV3 from './ds-button-v3.tsx';
-import { buttonV3Colors, buttonV3Sizes, buttonV3Variants } from './ds-button-v3.types.ts';
+import {
+	type ButtonV3Color,
+	buttonV3Colors,
+	buttonV3Sizes,
+	type ButtonV3Variant,
+	buttonV3Variants,
+} from './ds-button-v3.types.ts';
 import storyStyles from './ds-button-v3.stories.module.scss';
 
 const meta: Meta<typeof DsButtonV3> = {
@@ -15,7 +21,6 @@ const meta: Meta<typeof DsButtonV3> = {
 		color: { control: 'select', options: buttonV3Colors },
 		variant: { control: 'select', options: buttonV3Variants },
 		size: { control: 'select', options: buttonV3Sizes },
-		onDark: { control: 'boolean' },
 		loading: { control: 'boolean' },
 		disabled: { control: 'boolean' },
 		className: { table: { disable: true } },
@@ -55,71 +60,74 @@ const onDarkIconMatrixRows = [
 		label: 'arrow down',
 		icon: 'keyboard_arrow_down',
 		variant: 'primary',
-		color: 'default',
+		color: 'ondark',
 		loading: false,
 	},
-	{ label: 'home', icon: 'home', variant: 'secondary', color: 'default', loading: false },
-	{ label: 'info', icon: 'info', variant: 'tertiary', color: 'default', loading: false },
-	{ label: 'loading', icon: 'info', variant: 'primary', color: 'default', loading: true },
+	{ label: 'home', icon: 'home', variant: 'secondary', color: 'ondark', loading: false },
+	{ label: 'info', icon: 'info', variant: 'tertiary', color: 'ondark', loading: false },
+	{ label: 'loading', icon: 'info', variant: 'primary', color: 'ondark', loading: true },
 ] as const;
 
-const MatrixGrid = ({ onDark = false, color }: { onDark?: boolean; color?: 'default' | 'negative' }) => (
-	<div className={storyStyles.section}>
-		<div className={storyStyles.columnHeaders}>
-			{buttonV3Sizes.map((size) => (
-				<span
-					key={size}
-					className={classNames(storyStyles.columnHeader, {
-						[storyStyles.onDarkColumnHeader]: onDark,
-					})}
-				>
-					{size.charAt(0).toUpperCase() + size.slice(1)}
-				</span>
-			))}
-		</div>
+const MatrixGrid = ({ color }: { color?: ButtonV3Color }) => {
+	const isOnDark = color === 'ondark';
 
-		{matrixRows.map(({ label, loading }) => (
-			<div key={label} className={storyStyles.row}>
-				<span
-					className={classNames(storyStyles.rowLabel, {
-						[storyStyles.onDarkLabel]: onDark,
-					})}
-				>
-					{label.charAt(0).toUpperCase() + label.slice(1)}
-				</span>
-
+	return (
+		<div className={storyStyles.section}>
+			<div className={storyStyles.columnHeaders}>
 				{buttonV3Sizes.map((size) => (
-					<div key={size} className={storyStyles.cell}>
-						<DsButtonV3
-							color={color}
-							variant={loading ? 'primary' : (label as (typeof buttonV3Variants)[number])}
-							size={size}
-							onDark={onDark}
-							icon="check_circle"
-							loading={loading}
-							onClick={fn()}
-						>
-							{size !== 'tiny' ? 'Button' : undefined}
-						</DsButtonV3>
-					</div>
+					<span
+						key={size}
+						className={classNames(storyStyles.columnHeader, {
+							[storyStyles.onDarkColumnHeader]: isOnDark,
+						})}
+					>
+						{size}
+					</span>
 				))}
 			</div>
-		))}
-	</div>
-);
+
+			{matrixRows.map(({ label, loading }) => (
+				<div key={label} className={storyStyles.row}>
+					<span
+						className={classNames(storyStyles.rowLabel, {
+							[storyStyles.onDarkLabel]: isOnDark,
+						})}
+					>
+						{label}
+					</span>
+
+					{buttonV3Sizes.map((size) => (
+						<div key={size} className={storyStyles.cell}>
+							<DsButtonV3
+								color={color}
+								variant={loading ? 'primary' : (label as (typeof buttonV3Variants)[number])}
+								size={size}
+								icon="check_circle"
+								loading={loading}
+								onClick={fn()}
+							>
+								{size !== 'tiny' ? 'Button' : undefined}
+							</DsButtonV3>
+						</div>
+					))}
+				</div>
+			))}
+		</div>
+	);
+};
 
 const IconMatrixGrid = ({
 	rows,
-	onDark = false,
+	isOnDark = false,
 }: {
 	rows: ReadonlyArray<{
 		label: string;
 		icon: 'check_circle' | 'info' | 'delete' | 'keyboard_arrow_down' | 'home';
-		variant: (typeof buttonV3Variants)[number];
-		color: (typeof buttonV3Colors)[number];
+		variant: ButtonV3Variant;
+		color: ButtonV3Color;
 		loading: boolean;
 	}>;
-	onDark?: boolean;
+	isOnDark?: boolean;
 }) => (
 	<div className={storyStyles.section}>
 		<div className={storyStyles.columnHeaders}>
@@ -127,10 +135,10 @@ const IconMatrixGrid = ({
 				<span
 					key={size}
 					className={classNames(storyStyles.columnHeader, {
-						[storyStyles.onDarkColumnHeader]: onDark,
+						[storyStyles.onDarkColumnHeader]: isOnDark,
 					})}
 				>
-					{size.charAt(0).toUpperCase() + size.slice(1)}
+					{size}
 				</span>
 			))}
 		</div>
@@ -139,10 +147,10 @@ const IconMatrixGrid = ({
 			<div key={label} className={storyStyles.row}>
 				<span
 					className={classNames(storyStyles.rowLabel, {
-						[storyStyles.onDarkLabel]: onDark,
+						[storyStyles.onDarkLabel]: isOnDark,
 					})}
 				>
-					{label.charAt(0).toUpperCase() + label.slice(1)}
+					{label}
 				</span>
 
 				{buttonV3Sizes.map((size) => {
@@ -154,7 +162,6 @@ const IconMatrixGrid = ({
 								color={color}
 								variant={variant}
 								size={size}
-								onDark={onDark}
 								icon={icon}
 								loading={loading}
 								aria-label={ariaLabel}
@@ -196,7 +203,7 @@ export const MatrixOnDark: Story = {
 				<p className={classNames(storyStyles.sectionTitle, storyStyles.onDarkSectionTitle)}>
 					On Dark — Default
 				</p>
-				<MatrixGrid onDark />
+				<MatrixGrid color="ondark" />
 			</div>
 		</div>
 	),
@@ -219,7 +226,7 @@ export const MatrixIcons: Story = {
 				>
 					Icons — On Dark
 				</p>
-				<IconMatrixGrid rows={onDarkIconMatrixRows} onDark />
+				<IconMatrixGrid rows={onDarkIconMatrixRows} isOnDark />
 			</div>
 		</div>
 	),
