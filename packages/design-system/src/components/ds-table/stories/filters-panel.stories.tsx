@@ -524,7 +524,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			});
 
 		const [isOpen, setIsOpen] = useState(false);
-		const [selectedFilterId, setSelectedFilterId] = useState<string>(filterNavItems[0]?.id || '');
+		const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || '');
 
 		// Set initial selected filter when modal opens
 		const handleOpenChange = (open: boolean) => {
@@ -761,7 +761,7 @@ The debug panel below shows the current filter state as JSON.
 			});
 
 		const [isOpen, setIsOpen] = useState(false);
-		const [selectedFilterId, setSelectedFilterId] = useState<string>(filterNavItems[0]?.id || '');
+		const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || '');
 
 		const handleOpenChange = (open: boolean) => {
 			if (open && !selectedFilterId && filterNavItems.length > 0) {

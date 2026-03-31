@@ -90,7 +90,7 @@ export const Default: Story = {
 
 export const Controlled: Story = {
 	render: function Render() {
-		const [checked, setChecked] = useState<boolean>(true);
+		const [checked, setChecked] = useState(true);
 
 		return <DsToggle label={label} labelInfo={labelInfo} checked={checked} onValueChange={setChecked} />;
 	},

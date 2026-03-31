@@ -7,13 +7,7 @@ import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 import { DsTextInput } from '../ds-text-input';
 import { DsTagFilter, type TagFilterItem } from '../ds-tag-filter';
-import {
-	type CommentsFilterState,
-	initialFilterState,
-	applyFilters,
-	filtersToTags,
-	removeTag,
-} from './comments-filters';
+import { initialFilterState, applyFilters, filtersToTags, removeTag } from './comments-filters';
 import { CommentsFilterModal } from './components/comments-filter-modal';
 
 export const DsCommentsDrawer = ({
@@ -36,8 +30,8 @@ export const DsCommentsDrawer = ({
 	style,
 }: DsCommentsDrawerProps) => {
 	const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-	const [pendingFilters, setPendingFilters] = useState<CommentsFilterState>(initialFilterState);
-	const [appliedFilters, setAppliedFilters] = useState<CommentsFilterState>(initialFilterState);
+	const [pendingFilters, setPendingFilters] = useState(initialFilterState);
+	const [appliedFilters, setAppliedFilters] = useState(initialFilterState);
 
 	const authorsMap = new Map<string, string>();
 	const labelsSet = new Set<string>();

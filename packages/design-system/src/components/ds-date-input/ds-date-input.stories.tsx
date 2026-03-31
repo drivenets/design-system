@@ -39,6 +39,7 @@ const meta: Meta<typeof DsDateInput> = {
 };
 
 export default meta;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments -- https://github.com/typescript-eslint/typescript-eslint/issues/12158
 type Story = StoryObj<DsDateInputProps>;
 
 /**
