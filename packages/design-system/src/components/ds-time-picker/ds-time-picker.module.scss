@@ -1,0 +1,11 @@
+.root {
+	&:where(:hover, :focus-within) {
+		.clearTrigger {
+			visibility: visible;
+		}
+	}
+}
+
+.clearTrigger {
+	visibility: hidden;
+}

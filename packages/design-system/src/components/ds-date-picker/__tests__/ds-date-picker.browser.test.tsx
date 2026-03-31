@@ -117,6 +117,50 @@ describe('DsDatePicker', () => {
 		await userEvent.keyboard('{Escape}');
 	});
 
+	it('should show clear button on hover when value is selected', async () => {
+		await page.render(
+			<div>
+				<button type="button">outside</button>
+				<DsDatePicker value={new Date('2026-01-15T00:00:00')} />
+			</div>,
+		);
+
+		await page.getByPlaceholder('mm/dd/yyyy').hover();
+		await expect.element(page.getByRole('button', { name: /clear date/i })).toBeVisible();
+
+		await page.getByRole('button', { name: 'outside' }).hover();
+		await expect.element(page.getByRole('button', { name: /clear date/i })).not.toBeInTheDocument();
+	});
+
+	it('should not render clear button when hideClearButton is true', async () => {
+		await page.render(<DsDatePicker value={new Date('2026-01-15T00:00:00')} hideClearButton />);
+
+		const input = page.getByPlaceholder('mm/dd/yyyy');
+
+		await input.hover();
+
+		await expect.element(page.getByRole('button', { name: /clear date/i })).not.toBeInTheDocument();
+	});
+
+	it('should not show clear button in the nested time picker', async () => {
+		function Wrapper() {
+			const [value, setValue] = useState<Date | null>(new Date('2026-01-15T14:30:00'));
+
+			return <DsDatePicker value={value} onChange={setValue} withTime disablePortal />;
+		}
+
+		await page.render(<Wrapper />);
+
+		await page.getByRole('button', { name: /open calendar/i }).click();
+
+		const timeInput = page.getByRole('textbox', { name: 'hh:mm AM/PM', exact: true });
+		await timeInput.hover();
+
+		await expect.element(page.getByRole('button', { name: /clear time/i })).not.toBeInTheDocument();
+
+		await userEvent.keyboard('{Escape}');
+	});
+
 	it('should reset input to last valid value on blur after appending invalid characters', async () => {
 		function Wrapper() {
 			const [value, setValue] = useState<Date | null>(new Date('2026-01-15T00:00:00'));

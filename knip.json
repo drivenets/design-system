@@ -3,7 +3,6 @@
 	"ignore": [
 		"**/*.scss",
 		"**/simple-file-upload-adapter.ts",
-		"**/mock-file-upload-adapter.ts",
 		"./packages/eslint-plugin-internal/src/rules/__tests__/fixtures/*.ts"
 	],
 	"ignoreExportsUsedInFile": {

@@ -17,6 +17,7 @@ const meta: Meta<typeof DsDatePicker> = {
 };
 
 export default meta;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments -- https://github.com/typescript-eslint/typescript-eslint/issues/12158
 type Story = StoryObj<DsDatePickerProps>;
 
 export const Default: Story = {

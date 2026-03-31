@@ -2,6 +2,16 @@
 
 .control {
 	display: flex;
+
+	&:not([data-disabled]):where(:hover, :focus-within) {
+		.clearTrigger {
+			visibility: visible;
+		}
+	}
+}
+
+.clearTrigger {
+	visibility: hidden;
 }
 
 .positioner {

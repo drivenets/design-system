@@ -13,8 +13,8 @@ describe('useControlled', () => {
 		});
 
 		it('should call the provided setValue', async () => {
-			const setValue = vi.fn();
-			const { result, act } = await renderHook(() => useControlled<string>('hello', setValue, ''));
+			const setValue = vi.fn(() => {});
+			const { result, act } = await renderHook(() => useControlled('hello', setValue, ''));
 
 			await act(() => {
 				result.current[1]('world');
@@ -33,13 +33,13 @@ describe('useControlled', () => {
 
 	describe('uncontrolled mode', () => {
 		it('should use defaultValue as the initial value', async () => {
-			const { result } = await renderHook(() => useControlled<string>(undefined, undefined, 'fallback'));
+			const { result } = await renderHook(() => useControlled(undefined, undefined, 'fallback'));
 
 			expect(result.current[0]).toBe('fallback');
 		});
 
 		it('should update internal state via the setter', async () => {
-			const { result, act } = await renderHook(() => useControlled<string>(undefined, undefined, 'fallback'));
+			const { result, act } = await renderHook(() => useControlled(undefined, undefined, 'fallback'));
 
 			expect(result.current[0]).toBe('fallback');
 
@@ -63,8 +63,8 @@ describe('useControlled', () => {
 		});
 
 		it('should treat setValue-only (no value) as uncontrolled', async () => {
-			const setValue = vi.fn();
-			const { result, act } = await renderHook(() => useControlled<string>(undefined, setValue, 'default'));
+			const setValue = vi.fn(() => {});
+			const { result, act } = await renderHook(() => useControlled(undefined, setValue, 'default'));
 
 			expect(result.current[0]).toBe('default');
 

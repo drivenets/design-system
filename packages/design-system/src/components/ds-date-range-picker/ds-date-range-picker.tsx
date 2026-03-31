@@ -3,7 +3,7 @@ import { DsFormControl } from '../ds-form-control';
 import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 import { useControlled } from '../../utils/use-controlled';
-import type { DateRangeValue, DsDateRangePickerProps } from './ds-date-range-picker.types';
+import type { DsDateRangePickerProps } from './ds-date-range-picker.types';
 import styles from './ds-date-range-picker.module.scss';
 import { earlierDate, laterDate } from './ds-date-range-picker.utils';
 
@@ -24,7 +24,7 @@ const DsDateRangePicker = ({
 	locale,
 	slotProps,
 }: DsDateRangePickerProps) => {
-	const [value, setValue] = useControlled<DateRangeValue>(valueProp, onChange, defaultValue);
+	const [value, setValue] = useControlled(valueProp, onChange, defaultValue);
 
 	const [startDate, endDate] = value;
 

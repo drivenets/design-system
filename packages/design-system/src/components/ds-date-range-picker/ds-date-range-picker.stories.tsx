@@ -23,6 +23,7 @@ const meta: Meta<typeof DsDateRangePicker> = {
 };
 
 export default meta;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments -- https://github.com/typescript-eslint/typescript-eslint/issues/12158
 type Story = StoryObj<DsDateRangePickerProps>;
 
 export const Default: Story = {
@@ -107,7 +108,7 @@ export const HiddenClearAll: Story = {
 
 export const DateOrRange: Story = {
 	render: function Render(args) {
-		const [mode, setMode] = useState<string>('date');
+		const [mode, setMode] = useState('date');
 		const [dateValue, setDateValue] = useState<Date | null>(null);
 		const [rangeValue, setRangeValue] = useState<DateRangeValue>([null, null]);
 

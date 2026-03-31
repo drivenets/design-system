@@ -1,5 +1,5 @@
 import { type ChangeEvent, Fragment, useEffect, useRef, useState } from 'react';
-import { DatePicker, type DateValue } from '@ark-ui/react/date-picker';
+import { DatePicker } from '@ark-ui/react/date-picker';
 import { Portal } from '@ark-ui/react/portal';
 import type { DsDatePickerProps } from './ds-date-picker.types';
 import {
@@ -42,7 +42,7 @@ const DsDatePicker = ({
 }: DsDatePickerProps) => {
 	const defaultValue = toIntlDate(_defaultValue);
 
-	const [value, setValue] = useControlled<DateValue | null>(
+	const [value, setValue] = useControlled(
 		toIntlDate(_value),
 		onChange ? (v) => onChange(fromIntlDate(v)) : undefined,
 		defaultValue ?? null,
@@ -145,6 +145,7 @@ const DsDatePicker = ({
 								{showClearButton && (
 									<DatePicker.ClearTrigger asChild onClick={() => setValue(null)}>
 										<DsButton
+											className={styles.clearTrigger}
 											design="v1.2"
 											size="tiny"
 											buttonType="tertiary"
@@ -184,6 +185,7 @@ const DsDatePicker = ({
 									}}
 									min={isSameDay(value, min) ? _min : undefined}
 									max={isSameDay(value, max) ? _max : undefined}
+									hideClearButton={true}
 									disabled={disabled || !value}
 									readOnly={readOnly}
 									{...slotProps?.timePicker}
