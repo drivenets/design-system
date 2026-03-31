@@ -70,7 +70,7 @@ const sampleFilters: TagFilterItem[] = [
  */
 export const Default: Story = {
 	render: function Render(args) {
-		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters);
+		const [filters, setFilters] = useState(sampleFilters);
 
 		const handleClearAll = () => {
 			setFilters([]);
@@ -253,7 +253,7 @@ export const FewFilters: Story = {
  */
 export const WithoutClearAll: Story = {
 	render: function Render(args) {
-		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters.slice(0, 5));
+		const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
 
 		const handleFilterDelete = (filter: TagFilterItem) => {
 			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
@@ -336,7 +336,7 @@ export const ReadOnly: Story = {
  */
 export const WithoutLabel: Story = {
 	render: function Render(args) {
-		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters.slice(0, 5));
+		const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
 
 		const handleClearAll = () => {
 			setFilters([]);
@@ -393,7 +393,7 @@ export const WithoutLabel: Story = {
  */
 export const CustomLocale: Story = {
 	render: function Render(args) {
-		const [filters, setFilters] = useState<TagFilterItem[]>(sampleFilters);
+		const [filters, setFilters] = useState(sampleFilters);
 
 		const handleClearAll = () => {
 			setFilters([]);
@@ -505,7 +505,7 @@ export const SmallSize: Story = {
 			slotProps: { tag: { size: 'small' } },
 		}));
 
-		const [filters, setFilters] = useState<TagFilterItem[]>(smallFilters);
+		const [filters, setFilters] = useState(smallFilters);
 
 		const handleClearAll = () => {
 			setFilters([]);

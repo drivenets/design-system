@@ -19,7 +19,7 @@ export const CommentsFilterModal = ({
 	availableAuthors,
 	availableLabels,
 }: CommentsFilterModalProps) => {
-	const [selectedTab, setSelectedTab] = useState<string>('statuses');
+	const [selectedTab, setSelectedTab] = useState('statuses');
 
 	const handleStatusToggle = (status: 'unresolved' | 'resolved' | 'action-required', checked: boolean) => {
 		onFiltersChange({

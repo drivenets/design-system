@@ -147,7 +147,7 @@ const extendedWindow = window as unknown as ExtendedWindow;
 const BreadcrumbStory = ({ items }: { items: DsBreadcrumbItem[] }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const [updatedItems, setUpdatedItems] = useState<DsBreadcrumbItem[]>(items);
+	const [updatedItems, setUpdatedItems] = useState(items);
 
 	useEffect(() => {
 		const currentPath = location.pathname;

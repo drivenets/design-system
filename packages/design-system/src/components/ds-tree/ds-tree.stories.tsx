@@ -393,7 +393,7 @@ export const Controlled: Story = {
 	render: function Render(args) {
 		const collection = createDsTreeCollection(sideNavNodes);
 		const [selectedValue, setSelectedValue] = useState<string[]>([]);
-		const [expandedValue, setExpandedValue] = useState<string[]>(['network']);
+		const [expandedValue, setExpandedValue] = useState(['network']);
 
 		return (
 			<div>

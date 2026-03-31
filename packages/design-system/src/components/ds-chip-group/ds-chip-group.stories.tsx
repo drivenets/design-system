@@ -58,7 +58,7 @@ const sampleFilters: ChipItem[] = [
 
 export const Default: Story = {
 	render: function Render() {
-		const [filters, setFilters] = useState<ChipItem[]>(sampleFilters);
+		const [filters, setFilters] = useState(sampleFilters);
 
 		const handleClearAll = () => {
 			setFilters([]);

@@ -60,6 +60,31 @@ describe('DsTimePicker', () => {
 		await expect.element(input).toHaveAttribute('readonly');
 	});
 
+	it('should show clear button on hover when value is selected', async () => {
+		await page.render(
+			<div>
+				<button type="button">outside</button>
+				<DsTimePicker value={createTime(14, 30)} />
+			</div>,
+		);
+
+		await page.getByRole('textbox').hover();
+		await expect.element(page.getByRole('button', { name: /clear time/i })).toBeVisible();
+
+		await page.getByRole('button', { name: 'outside' }).hover();
+		await expect.element(page.getByRole('button', { name: /clear time/i })).not.toBeInTheDocument();
+	});
+
+	it('should not render clear button when hideClearButton is true', async () => {
+		await page.render(<DsTimePicker value={createTime(14, 30)} hideClearButton />);
+
+		const input = page.getByRole('textbox');
+
+		await input.hover();
+
+		await expect.element(page.getByRole('button', { name: /clear time/i })).not.toBeInTheDocument();
+	});
+
 	it('should enforce min/max constraints on time selection', async () => {
 		function Wrapper() {
 			const [value, setValue] = useState<Date | null>(createTime(13, 50));
