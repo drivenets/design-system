@@ -212,7 +212,7 @@ export const WithHelpIcon: Story = {
 
 export const Success: Story = {
 	render: function Render() {
-		const [value] = useState<string>('2024-12-25');
+		const [value] = useState('2024-12-25');
 
 		return (
 			<div style={{ width: '400px' }}>
@@ -260,7 +260,7 @@ export const Error: Story = {
 
 export const Warning: Story = {
 	render: function Render() {
-		const [value] = useState<string>('2024-12-25');
+		const [value] = useState('2024-12-25');
 
 		return (
 			<div style={{ width: '400px' }}>

@@ -16,8 +16,8 @@ export const DsTableBodyVirtualized = <TData,>({
 	onScroll,
 	rowSelection,
 }: DsTableBodyVirtualizedProps<TData>) => {
-	const rowsMapRef = useRef<Map<string, HTMLTableRowElement>>(new Map());
-	const rowHeightsMapRef = useRef<Map<string, number>>(new Map());
+	const rowsMapRef = useRef(new Map<string, HTMLTableRowElement>());
+	const rowHeightsMapRef = useRef(new Map<string, number>());
 
 	const { rows } = table.getRowModel();
 

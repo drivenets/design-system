@@ -10,7 +10,7 @@ export const useControlled = <T>(
 	defaultValue: T,
 ) => {
 	const isControlled = value !== undefined && setValue !== undefined;
-	const [internalValue, setInternalValue] = useState<T>(value ?? defaultValue);
+	const [internalValue, setInternalValue] = useState(value ?? defaultValue);
 	const resolvedValue = isControlled ? value : internalValue;
 	const resolvedSetValue = isControlled ? setValue : setInternalValue;
 

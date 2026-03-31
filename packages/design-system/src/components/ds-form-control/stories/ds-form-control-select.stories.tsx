@@ -129,7 +129,7 @@ const checkDisabled = async (canvasElement: HTMLElement) => {
 
 export const Default: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl label="Input" required={true} message="This is a message">
@@ -154,7 +154,7 @@ export const Default: Story = {
 
 export const WithCustomWidth: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl label="Input" required={true} style={{ width: '300px' }}>
@@ -179,7 +179,7 @@ export const WithCustomWidth: Story = {
 
 export const WithCustomStyles: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl
@@ -214,7 +214,7 @@ export const WithCustomStyles: Story = {
 
 export const WithDescription: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl label="Input" required={true} style={{ width: '300px' }}>
@@ -242,7 +242,7 @@ export const WithDescription: Story = {
 
 export const WithHelpIcon: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl
@@ -285,7 +285,7 @@ export const WithHelpIcon: Story = {
 
 export const Success: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl
@@ -318,7 +318,7 @@ export const Success: Story = {
 
 export const Error: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl
@@ -351,7 +351,7 @@ export const Error: Story = {
 
 export const Warning: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl
@@ -384,7 +384,7 @@ export const Warning: Story = {
 
 export const Disabled: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string>('');
+		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl label="Input">

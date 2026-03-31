@@ -18,6 +18,7 @@ const meta: Meta<typeof DsTimePicker> = {
 };
 
 export default meta;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments -- https://github.com/typescript-eslint/typescript-eslint/issues/12158
 type Story = StoryObj<DsTimePickerProps>;
 
 const createTime = (hours: number, minutes: number) => {

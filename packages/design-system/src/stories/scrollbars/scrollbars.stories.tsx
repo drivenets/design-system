@@ -20,7 +20,7 @@ You can add a \`.scrollbar-thin\` class to the element in order to make its scro
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
 // Helper to generate content
 const generateContent = (count: number, direction: 'vertical' | 'horizontal') => {
