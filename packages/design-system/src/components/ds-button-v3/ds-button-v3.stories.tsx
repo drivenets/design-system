@@ -60,16 +60,16 @@ const onDarkIconMatrixRows = [
 		label: 'arrow down',
 		icon: 'keyboard_arrow_down',
 		variant: 'primary',
-		color: 'ondark',
+		color: 'light',
 		loading: false,
 	},
-	{ label: 'home', icon: 'home', variant: 'secondary', color: 'ondark', loading: false },
-	{ label: 'info', icon: 'info', variant: 'tertiary', color: 'ondark', loading: false },
-	{ label: 'loading', icon: 'info', variant: 'primary', color: 'ondark', loading: true },
+	{ label: 'home', icon: 'home', variant: 'secondary', color: 'light', loading: false },
+	{ label: 'info', icon: 'info', variant: 'tertiary', color: 'light', loading: false },
+	{ label: 'loading', icon: 'info', variant: 'primary', color: 'light', loading: true },
 ] as const;
 
 const MatrixGrid = ({ color }: { color?: ButtonV3Color }) => {
-	const isOnDark = color === 'ondark';
+	const isOnDark = color === 'light';
 
 	return (
 		<div className={storyStyles.section}>
@@ -203,7 +203,7 @@ export const MatrixOnDark: Story = {
 				<p className={classNames(storyStyles.sectionTitle, storyStyles.onDarkSectionTitle)}>
 					On Dark — Default
 				</p>
-				<MatrixGrid color="ondark" />
+				<MatrixGrid color="light" />
 			</div>
 		</div>
 	),
