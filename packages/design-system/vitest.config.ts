@@ -23,9 +23,8 @@ export default defineConfig({
 				// deprecated components
 				'**/ds-chip/**',
 				'**/ds-chip-group/**',
-				'**/ds-confirmation/**',
-				'**/ds-date-input/**',
-				'**/ds-system-status/**',
+                '**/ds-date-input/**',
+                '**/ds-system-status/**',
 			],
 			thresholds: {
 				lines: 90,
