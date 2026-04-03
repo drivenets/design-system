@@ -61,7 +61,7 @@ $border-width: 1px;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
 
-	// TODO: fix these styles inside the DsSelect component
+	// TODO: remove once PR is merged https://github.com/drivenets/design-system/pull/346
 	@include when-select-disabled {
 		background-color: var(--background-background);
 
