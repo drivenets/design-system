@@ -2,4 +2,4 @@
 '@drivenets/design-system': patch
 ---
 
-fix background of input based components in disabled state
+fix styles of input based components in disabled state
