@@ -27,6 +27,12 @@ const meta: Meta<typeof DsDateInput> = {
 		},
 	},
 	tags: ['deprecated'],
+	argTypes: {
+		disabled: {
+			control: 'boolean',
+			description: 'Whether the date input is disabled',
+		},
+	},
 	beforeEach: () => {
 		// We use mockdate here and not vi.useFakeTimers() because the latter is not compatible with Storybook.
 		// See https://github.com/storybookjs/storybook/issues/31400#issuecomment-2943382690 for more details.
