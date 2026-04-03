@@ -1,0 +1,107 @@
+$highlighted-z-index: 1;
+$divider-z-index: $highlighted-z-index + 1;
+$divider-width: 1px;
+$border-width: 1px;
+
+@mixin when-button-disabled {
+	.root:has(.actionButton:disabled) & {
+		@content;
+	}
+}
+
+@mixin when-select-disabled {
+	.root:has(.select[data-disabled]) & {
+		@content;
+	}
+}
+
+@mixin when-button-highlighted {
+	.root:has(.actionButton:not(:disabled):is(:hover, :focus-visible, :active)) & {
+		@content;
+	}
+}
+
+@mixin when-select-highlighted {
+	.root:has(
+			.select:not([data-disabled]):is(:hover, :active, [data-state='open']),
+			.select:not([data-disabled]) :focus-visible
+		)
+		& {
+		@content;
+	}
+}
+
+.root {
+	display: inline-flex;
+}
+
+.actionButton {
+	border: none !important; // TODO: remove once DsButtonV3 is used
+}
+
+.root .actionButton:disabled .actionContent {
+	border-color: var(--color-border-disabled); // TODO: remove once DsButtonV3 is used
+}
+
+.actionButton {
+	.actionContent {
+		height: 36px !important; // TODO: remove once DsButtonV3 is used
+		width: 36px !important; // TODO: remove once DsButtonV3 is used
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+
+		@include when-button-highlighted {
+			z-index: $highlighted-z-index;
+		}
+	}
+}
+
+.select {
+	margin-left: -$divider-width;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+
+	// TODO: fix these styles inside the DsSelect component
+	@include when-select-disabled {
+		background-color: var(--background-background);
+
+		& * {
+			color: var(--color-font-disabled) !important;
+		}
+	}
+}
+
+.dividerAnchor {
+	position: relative;
+}
+
+.dividerWrapper {
+	position: absolute;
+	top: $border-width;
+	bottom: $border-width;
+	left: -$divider-width;
+	z-index: $divider-z-index;
+	width: $divider-width;
+	padding: var(--spacing-3xs) 0;
+	background-color: var(--background-background);
+
+	@include when-button-highlighted {
+		display: none;
+	}
+	@include when-select-highlighted {
+		display: none;
+	}
+}
+
+.divider {
+	background-color: var(--color-border-secondary);
+	width: $divider-width;
+	height: 100%;
+
+	@include when-button-disabled {
+		background-color: var(--color-border-disabled);
+	}
+	@include when-select-disabled {
+		background-color: var(--color-border-disabled);
+	}
+}
