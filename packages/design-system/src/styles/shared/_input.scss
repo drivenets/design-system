@@ -245,22 +245,6 @@ $textarea-height-default: 120px;
 	}
 }
 
-// Form control base styles
-@mixin formControl {
-	@include base-input-container;
-	@include form-control-states;
-	cursor: pointer;
-	justify-content: space-between;
-}
-
-@mixin formControlSmall {
-	max-height: $input-text-height-small;
-}
-
-@mixin formControlDefault {
-	max-height: $input-text-height-default;
-}
-
 // Select trigger styles
 @mixin selectControl {
 	display: grid;
