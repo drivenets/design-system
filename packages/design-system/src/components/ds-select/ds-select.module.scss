@@ -53,8 +53,11 @@
 	@include typography.ellipsis;
 	grid-column: 1;
 	grid-row: 1;
-	color: var(--color-font-secondary);
 	text-align: start;
+
+	.trigger:not([data-disabled]) & {
+		color: var(--color-font-secondary);
+	}
 }
 
 .multiSelectItemsContainer {
