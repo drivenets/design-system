@@ -1,0 +1,1 @@
+import{c as e,g as t}from"./theming-CYCHbOl6.js";e();export{t as color};
