@@ -1,14 +1,12 @@
 import type { CSSProperties, Ref } from 'react';
-import type { DsButtonUnifiedProps } from '../ds-button';
+import type { DsButtonV3Props } from '../ds-button-v3';
 import type { DsSelectProps } from '../ds-select';
-
-type ButtonV12Props = Extract<DsButtonUnifiedProps, { design: 'v1.2' }>;
 
 export const splitButtonSizes = ['medium', 'small'] as const;
 export type SplitButtonSize = (typeof splitButtonSizes)[number];
 
 export interface DsSplitButtonSlotProps {
-	button: Partial<ButtonV12Props>;
+	button: Partial<DsButtonV3Props>;
 	select: DsSelectProps;
 }
 

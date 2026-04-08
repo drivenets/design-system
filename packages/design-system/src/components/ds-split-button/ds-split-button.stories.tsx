@@ -3,9 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import DsSplitButton from './ds-split-button';
 import { splitButtonSizes } from './ds-split-button.types';
-import { DsIcon } from '../ds-icon';
-import { DsSpinner } from '../ds-spinner';
-import styles from './ds-split-button.stories.module.scss';
 import type { DsSelectProps } from '../ds-select';
 
 const refreshOptions = [
@@ -25,10 +22,7 @@ const meta: Meta<typeof DsSplitButton> = {
 		size: 'medium',
 		disabled: false,
 		slotProps: {
-			button: {
-				children: <DsIcon icon="refresh" size="small" />,
-				'aria-label': 'Refresh now',
-			},
+			button: { icon: 'refresh' },
 			select: {
 				options: refreshOptions,
 				value: '30',
@@ -66,14 +60,9 @@ export const Default: Story = {
 				slotProps={{
 					button: {
 						...args.slotProps.button,
-						children: loading ? (
-							<DsSpinner size="small" className={styles.spinner} />
-						) : (
-							<DsIcon icon="refresh" size="small" />
-						),
+						loading,
+						icon: 'refresh',
 						onClick: handleAction,
-						disabled: loading,
-						'aria-label': loading ? 'Refreshing' : 'Refresh now',
 					},
 					select: {
 						...args.slotProps.select,
@@ -90,9 +79,7 @@ export const Loading: Story = {
 	args: {
 		slotProps: {
 			button: {
-				children: <DsSpinner size="small" className={styles.spinner} />,
-				disabled: true,
-				'aria-label': 'Refreshing',
+				loading: true,
 			},
 			select: {
 				options: refreshOptions,

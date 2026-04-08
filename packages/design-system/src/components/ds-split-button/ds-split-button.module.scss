@@ -2,6 +2,7 @@ $highlighted-z-index: 1;
 $divider-z-index: $highlighted-z-index + 1;
 $divider-width: 1px;
 $border-width: 1px;
+$button-transition-duration: 0.15s;
 
 @mixin when-button-disabled {
 	.root:has(.actionButton:disabled) & {
@@ -33,26 +34,18 @@ $border-width: 1px;
 
 .root {
 	display: inline-flex;
-}
 
-.actionButton {
-	border: none !important; // TODO: remove once DsButtonV3 is used
-}
-
-.root .actionButton:disabled .actionContent {
-	border-color: var(--color-border-disabled); // TODO: remove once DsButtonV3 is used
-}
-
-.actionButton {
-	.actionContent {
-		height: 36px !important; // TODO: remove once DsButtonV3 is used
-		width: 36px !important; // TODO: remove once DsButtonV3 is used
+	.actionButton {
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
+	}
+}
 
-		@include when-button-highlighted {
-			z-index: $highlighted-z-index;
-		}
+.actionButton {
+	@include when-button-highlighted {
+		z-index: $highlighted-z-index;
+		border-right-color: var(--border-border-secondary-hover);
+		transition: border-color $button-transition-duration;
 	}
 }
 
@@ -60,15 +53,6 @@ $border-width: 1px;
 	margin-left: -$divider-width;
 	border-top-left-radius: 0;
 	border-bottom-left-radius: 0;
-
-	// TODO: remove once PR is merged https://github.com/drivenets/design-system/pull/346
-	@include when-select-disabled {
-		background-color: var(--background-background);
-
-		& * {
-			color: var(--color-font-disabled) !important;
-		}
-	}
 }
 
 .dividerAnchor {
@@ -99,9 +83,9 @@ $border-width: 1px;
 	height: 100%;
 
 	@include when-button-disabled {
-		background-color: var(--color-border-disabled);
+		background-color: var(--border-border-disabled);
 	}
 	@include when-select-disabled {
-		background-color: var(--color-border-disabled);
+		background-color: var(--border-border-disabled);
 	}
 }
