@@ -13,26 +13,16 @@ const DsSplitButton = ({
 	disabled,
 	slotProps,
 }: DsSplitButtonProps) => {
-	const {
-		className: buttonClassName,
-		size: buttonSize,
-		disabled: buttonDisabled,
-		...buttonRest
-	} = slotProps.button;
+	const { className: buttonClassName, disabled: buttonDisabled, ...buttonRest } = slotProps.button;
 
-	const {
-		className: selectClassName,
-		size: selectSize,
-		disabled: selectDisabled,
-		...selectRest
-	} = slotProps.select;
+	const { className: selectClassName, disabled: selectDisabled, ...selectRest } = slotProps.select;
 
 	return (
 		<div ref={ref} className={classNames(styles.root, className)} style={style}>
 			<DsButtonV3
 				{...buttonRest}
 				variant="secondary"
-				size={buttonSize ?? size}
+				size={size}
 				disabled={buttonDisabled ?? disabled}
 				className={classNames(styles.actionButton, buttonClassName)}
 			/>
@@ -45,7 +35,7 @@ const DsSplitButton = ({
 
 			<DsSelect
 				{...selectRest}
-				size={selectSize ?? getSelectSize(size)}
+				size={getSelectSize(size)}
 				disabled={selectDisabled ?? disabled}
 				className={classNames(styles.select, selectClassName)}
 			/>

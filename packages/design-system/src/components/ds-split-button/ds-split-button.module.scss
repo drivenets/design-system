@@ -17,7 +17,7 @@ $button-transition-duration: 0.15s;
 }
 
 @mixin when-button-highlighted {
-	.root:has(.actionButton:not(:disabled):is(:hover, :focus-visible, :active)) & {
+	.root:has(.actionButton:not(:disabled):is(:hover, :focus-visible, :active, [data-selected='true'])) & {
 		@content;
 	}
 }
@@ -44,8 +44,15 @@ $button-transition-duration: 0.15s;
 .actionButton {
 	@include when-button-highlighted {
 		z-index: $highlighted-z-index;
-		border-right-color: var(--border-border-secondary-hover);
 		transition: border-color $button-transition-duration;
+	}
+
+	&:not(:disabled):is(:hover, :active, [data-selected='true']) {
+		border-right-color: var(--border-border-secondary-hover);
+	}
+
+	&:not(:disabled):focus-visible {
+		border-right-color: var(--border-border-inverse);
 	}
 }
 
