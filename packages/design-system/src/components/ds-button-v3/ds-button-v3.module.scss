@@ -165,7 +165,7 @@ $transition-duration-quick: 0.15s;
 	&:disabled:not([data-loading]) {
 		background-color: var(--background-background-action-secondary);
 		color: var(--font-font-disabled);
-		border-color: var(--border-border);
+		border-color: var(--border-border-disabled);
 	}
 }
 
@@ -263,7 +263,7 @@ $transition-duration-quick: 0.15s;
 	&:disabled:not([data-loading]) {
 		background-color: var(--background-background-action-secondary);
 		color: var(--font-font-disabled);
-		border-color: var(--border-border);
+		border-color: var(--border-border-disabled);
 	}
 }
 

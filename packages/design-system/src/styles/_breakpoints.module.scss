@@ -1,0 +1,5 @@
+@use 'variables' as var;
+
+:export {
+	breakpointLg: #{var.$breakpoint-lg};
+}
