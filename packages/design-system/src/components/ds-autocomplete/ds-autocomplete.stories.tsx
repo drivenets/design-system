@@ -36,6 +36,10 @@ const meta: Meta<typeof DsAutocomplete> = {
 			control: 'object',
 			description: 'Locale strings for the autocomplete component',
 		},
+		disabled: {
+			control: 'boolean',
+			description: 'Whether the autocomplete is disabled',
+		},
 	},
 	args: {
 		onValueChange: fn(),

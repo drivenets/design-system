@@ -1,0 +1,13 @@
+@use 'variables' as var;
+
+@mixin lg {
+	@media (min-width: #{var.$breakpoint-lg}) {
+		@content;
+	}
+}
+
+@mixin md {
+	@media (max-width: #{var.$breakpoint-lg - 1}) {
+		@content;
+	}
+}

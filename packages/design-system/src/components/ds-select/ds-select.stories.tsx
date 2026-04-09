@@ -46,6 +46,10 @@ const meta: Meta<typeof DsSelect> = {
 			control: 'boolean',
 			description: 'Whether the selection can be cleared',
 		},
+		disabled: {
+			control: 'boolean',
+			description: 'Whether the select is disabled',
+		},
 	},
 };
 

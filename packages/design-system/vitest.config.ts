@@ -43,6 +43,7 @@ export default defineConfig({
 				test: {
 					name: 'unit',
 					include: [testPattern('unit')],
+					css: true,
 				},
 			},
 			{

@@ -6,8 +6,8 @@ type MessageId = 'missing';
 
 const requiredProperties = ['title', 'component'];
 
-export const requireStoryParams = createRule<[], MessageId>({
-	name: 'require-story-params',
+export const requireStoryMetaAnnotations = createRule<[], MessageId>({
+	name: 'require-story-meta-annotations',
 	meta: {
 		type: 'problem',
 		docs: {
