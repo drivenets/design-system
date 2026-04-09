@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{i as t,t as n}from"./ds-spinner.types-RDnZ8d_W.js";var r=e((()=>{t(),n()}));export{r as t};
