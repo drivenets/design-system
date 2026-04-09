@@ -582,7 +582,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -631,7 +631,7 @@
       <div class="note-title">Prop type error</div>
       <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
   4 |
-  5 | // eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+  5 | // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 &gt; 6 | const meta: Meta = {
     | ^
   7 | 	title: &#39;Design System/Colors&#39;,
@@ -643,7 +643,7 @@ import type { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
 import { useState } from &#39;react&#39;;
 import styles from &#39;./colors.stories.module.scss&#39;;
 
-// eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+// eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 const meta: Meta = {
 	title: &#39;Design System/Colors&#39;,
 	parameters: {
@@ -25083,7 +25083,7 @@ value?: string</code></pre>
       <div class="note-title">Prop type error</div>
       <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
    5 |
-   6 | // eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+   6 | // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 &gt;  7 | const meta: Meta = {
      | ^
    8 | 	title: &#39;Design System/Scrollbars&#39;,
@@ -25096,7 +25096,7 @@ import { Fragment } from &#39;react&#39;;
 import classNames from &#39;classnames&#39;;
 import styles from &#39;./scrollbars.stories.module.scss&#39;;
 
-// eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+// eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 const meta: Meta = {
 	title: &#39;Design System/Scrollbars&#39;,
 	parameters: {
@@ -27261,7 +27261,7 @@ export const DsTree = {
       <div class="note-title">Prop type error</div>
       <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
   4 |
-  5 | // eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+  5 | // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 &gt; 6 | const meta: Meta = {
     | ^
   7 | 	title: &#39;Design System/Colors&#39;,
@@ -27273,7 +27273,7 @@ import type { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
 import { useState } from &#39;react&#39;;
 import styles from &#39;./colors.stories.module.scss&#39;;
 
-// eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+// eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 const meta: Meta = {
 	title: &#39;Design System/Colors&#39;,
 	parameters: {
@@ -27633,7 +27633,7 @@ export const Default: Story = {
       <div class="note-title">Prop type error</div>
       <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
    5 |
-   6 | // eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+   6 | // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 &gt;  7 | const meta: Meta = {
      | ^
    8 | 	title: &#39;Design System/Scrollbars&#39;,
@@ -27646,7 +27646,7 @@ import { Fragment } from &#39;react&#39;;
 import classNames from &#39;classnames&#39;;
 import styles from &#39;./scrollbars.stories.module.scss&#39;;
 
-// eslint-disable-next-line @drivenets/ds-internal/require-story-params -- component prop is not required here.
+// eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 const meta: Meta = {
 	title: &#39;Design System/Scrollbars&#39;,
 	parameters: {
