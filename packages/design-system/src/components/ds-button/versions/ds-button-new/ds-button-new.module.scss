@@ -5,6 +5,27 @@ $button-size-small: 28px;
 $button-size-default: 32px;
 $button-size-large: 40px;
 
+@mixin content-size-tiny {
+	@include typography.body-xs-md;
+	height: $button-size-tiny;
+	border-radius: var(--spacing-4xs);
+	--icon-width-tiny: 13px;
+}
+
+@mixin content-size-small {
+	@include typography.body-xs-md;
+	height: $button-size-small;
+}
+
+@mixin content-size-medium {
+	height: $button-size-default;
+}
+
+@mixin content-size-large {
+	@include typography.body-md-md;
+	height: $button-size-large;
+}
+
 .button {
 	@include typography.body-sm-md;
 	display: flex;
@@ -31,24 +52,19 @@ $button-size-large: 40px;
 	}
 
 	&.tiny .content {
-		@include typography.body-xs-md;
-		height: $button-size-tiny;
-		border-radius: var(--spacing-4xs);
-		--icon-width-tiny: 13px;
+		@include content-size-tiny;
 	}
 
 	&.small .content {
-		@include typography.body-xs-md;
-		height: $button-size-small;
+		@include content-size-small;
 	}
 
 	&.medium .content {
-		height: $button-size-default;
+		@include content-size-medium;
 	}
 
 	&.large .content {
-		@include typography.body-md-md;
-		height: $button-size-large;
+		@include content-size-large;
 	}
 
 	&.iconButton {

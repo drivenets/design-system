@@ -10,7 +10,7 @@ import { noUselessStoryAnnotations } from './rules/no-useless-story-annotations'
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
 import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
 import { noVitestInStories } from './rules/no-vitest-in-stories';
-import { requireStoryParams } from './rules/require-story-params';
+import { requireStoryMetaAnnotations } from './rules/require-story-meta-annotations';
 
 const plugin = {
 	meta: {
@@ -28,7 +28,7 @@ const plugin = {
 		'no-useless-tsx-extension': noUselessTsxExtension,
 		'no-vitest-browser-react': noVitestBrowserReact,
 		'no-vitest-in-stories': noVitestInStories,
-		'require-story-params': requireStoryParams,
+		'require-story-meta-annotations': requireStoryMetaAnnotations,
 	},
 
 	configs: {
@@ -66,7 +66,7 @@ Object.assign(plugin.configs, {
 				'storybook/no-redundant-story-name': 'off', // turn off conflicting rule
 
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
-				'@drivenets/ds-internal/require-story-params': 'error',
+				'@drivenets/ds-internal/require-story-meta-annotations': 'error',
 			},
 		},
 

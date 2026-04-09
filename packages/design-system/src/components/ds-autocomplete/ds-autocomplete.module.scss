@@ -200,7 +200,6 @@ $autocomplete-opacity-visible: 1;
 .disabled {
 	.control {
 		color: var(--color-background-deselected);
-		background: var(--color-background-secondary);
 		border-color: var(--color-border-disabled);
 		cursor: not-allowed;
 

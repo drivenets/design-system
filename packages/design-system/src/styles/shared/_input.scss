@@ -57,8 +57,7 @@ $textarea-height-default: 120px;
 
 	&:has(.input:disabled) {
 		color: var(--color-background-deselected);
-		background: var(--color-background-secondary);
-		border-color: var(--color-border-disabled);
+		border-color: var(--border-border-disabled);
 		cursor: not-allowed;
 
 		.input {
@@ -82,8 +81,7 @@ $textarea-height-default: 120px;
 
 	&:disabled {
 		color: var(--color-background-deselected);
-		background: var(--color-background-secondary);
-		border-color: var(--color-border-disabled);
+		border-color: var(--border-border-disabled);
 		cursor: not-allowed;
 	}
 }
@@ -111,8 +109,7 @@ $textarea-height-default: 120px;
 
 	&[data-disabled] {
 		color: var(--color-background-deselected);
-		background: var(--color-background-secondary);
-		border-color: var(--color-border-disabled);
+		border-color: var(--border-border-disabled);
 
 		&,
 		& * {
