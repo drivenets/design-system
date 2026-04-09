@@ -1,9 +1,9 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
-import { requireStoryParams } from '../require-story-params';
+import { requireStoryMetaAnnotations } from '../require-story-meta-annotations';
 
 const ruleTester = new RuleTester();
 
-ruleTester.run('require-story-params', requireStoryParams, {
+ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 	valid: [
 		{
 			name: 'meta with all required properties',
