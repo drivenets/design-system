@@ -5,10 +5,8 @@ minimumReleaseAge: 1440 # 1 day in minutes
 
 # Temporary
 minimumReleaseAgeExclude:
-  - 'typescript'
-  - '@typescript/native-preview*'
-  - 'typescript-eslint'
-  - '@typescript-eslint/*'
+  - '@eslint/*'
+  - 'eslint'
 
 trustPolicy: 'no-downgrade'
 blockExoticSubdeps: true
