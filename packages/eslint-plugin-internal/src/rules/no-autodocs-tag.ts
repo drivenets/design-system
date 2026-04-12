@@ -56,7 +56,7 @@ export const noAutodocsTag = createRule<[], MessageId>({
 						const elements = tagsProp.value.elements;
 
 						const shouldRemoveTagsProp = elements.length === 1;
-						const nodeToRemove = shouldRemoveTagsProp ? tagsProp : autodocsTag;
+						const nodeToRemove = shouldRemoveTagsProp ? tagsProp.node : autodocsTag;
 
 						return removeWithTrailingComma(sourceCode, fixer, nodeToRemove);
 					},
