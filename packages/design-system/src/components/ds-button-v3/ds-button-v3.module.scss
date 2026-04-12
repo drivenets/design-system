@@ -5,14 +5,12 @@ $height-medium: 36px;
 $height-small: 28px;
 $border-radius: 4px;
 $focus-ring-width: 2px;
-$focus-ring-offset: 1px;
 // it looks a bit better with 0.3 than 0.2
 $transition-duration-default: 0.3s;
 $transition-duration-quick: 0.15s;
 
 @mixin focus-ring($outer-color) {
 	outline: $focus-ring-width solid $outer-color;
-	outline-offset: $focus-ring-offset;
 }
 
 .root {
