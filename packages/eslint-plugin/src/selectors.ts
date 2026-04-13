@@ -1,15 +1,9 @@
-export function JSXElement(name: string, attributes: Record<string, string> = {}) {
-	let selector = `JSXOpeningElement[name.name='${name}']`;
-
-	Object.entries(attributes).forEach(([attrName, attrValue]) => {
-		selector += `:has( > ${JSXAttribute(attrName, attrValue)} )`;
-	});
-
-	return selector;
+export function JSXElement(name: string) {
+	return `JSXOpeningElement[name.name='${name}']`;
 }
 
-export function JSXElementName(name: string, attributes: Record<string, string> = {}) {
-	return `${JSXElement(name, attributes)} > .name`;
+export function JSXElementName(name: string) {
+	return `${JSXElement(name)} > .name`;
 }
 
 export function JSXElementAttribute(element: string, attribute: string, value: string) {
