@@ -8,6 +8,14 @@ export function JSXElement(name: string, attributes: Record<string, string> = {}
 	return selector;
 }
 
+export function JSXElementName(name: string, attributes: Record<string, string> = {}) {
+	return `${JSXElement(name, attributes)} > .name`;
+}
+
+export function JSXElementAttribute(element: string, attribute: string, value: string) {
+	return `${JSXElement(element)} > ${JSXAttribute(attribute, value)}`;
+}
+
 export function JSXAttribute(name: string, value?: string) {
 	let selector = `JSXAttribute[name.name='${name}']`;
 
