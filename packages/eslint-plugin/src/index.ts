@@ -16,36 +16,6 @@ const eslintPlugin = createPlugin(
 	},
 
 	{
-		name: 'no-deprecated-ds-dialog',
-		selector: JSXElementName('DsDialog'),
-		message: `DsDialog is deprecated. Use DsModal or DsConfirmation instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-confirmation',
-		selector: JSXElementName('DsConfirmation'),
-		message: `DsConfirmation is deprecated. Use DsModal instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-system-status',
-		selector: JSXElementName('DsSystemStatus'),
-		message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-dropdown-menu-legacy',
-		selector: JSXElementName('DsDropdownMenuLegacy'),
-		message: `DsDropdownMenuLegacy is deprecated. Use DsDropdownMenu instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-radio-group-legacy',
-		selector: JSXElementName('DsRadioGroupLegacy'),
-		message: `DsRadioGroupLegacy is deprecated. Use DsRadioGroup instead.`,
-	},
-
-	{
 		name: 'no-deprecated-ds-chip',
 		selector: JSXElementName('DsChip'),
 		message: `DsChip is deprecated. Use DsTag instead.`,
