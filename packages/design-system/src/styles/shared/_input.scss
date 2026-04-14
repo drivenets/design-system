@@ -86,24 +86,6 @@ $textarea-height-default: 120px;
 	}
 }
 
-@mixin form-control-states {
-	&:hover:not(:disabled) {
-		border-color: var(--form-control-border-color, var(--color-background-action-hover));
-	}
-
-	&:focus {
-		border-color: var(--form-control-border-color, var(--color-border-action-primary));
-		outline: none;
-	}
-
-	&:disabled {
-		color: var(--color-background-deselected);
-		background: var(--color-background-secondary);
-		border-color: var(--color-border-disabled);
-		cursor: not-allowed;
-	}
-}
-
 @mixin select-trigger-states {
 	&:hover:not([data-disabled]) {
 		border-color: var(--form-control-border-color, var(--color-background-action-hover));
@@ -240,22 +222,6 @@ $textarea-height-default: 120px;
 	&::-moz-selection {
 		background: var(--form-control-selection-color, var(--color-background-selected-weak));
 	}
-}
-
-// Form control base styles
-@mixin formControl {
-	@include base-input-container;
-	@include form-control-states;
-	cursor: pointer;
-	justify-content: space-between;
-}
-
-@mixin formControlSmall {
-	max-height: $input-text-height-small;
-}
-
-@mixin formControlDefault {
-	max-height: $input-text-height-default;
 }
 
 // Select trigger styles

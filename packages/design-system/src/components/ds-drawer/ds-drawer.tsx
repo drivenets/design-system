@@ -6,12 +6,8 @@ import type { DsDrawerProps } from './ds-drawer.types';
 import styles from './ds-drawer.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
+import { useResponsiveValue } from '../../utils/responsive';
 
-/**
- * Composable drawer component.
- * Supports grid-based sizing, flexible positioning, and compound components.
- * Use columns prop to control drawer width (1-12 grid columns).
- */
 const DsDrawer = ({
 	open,
 	onOpenChange,
@@ -25,9 +21,12 @@ const DsDrawer = ({
 	className,
 	children,
 }: DsDrawerProps) => {
+	const resolvedColumns = useResponsiveValue(columns);
+
 	const handleOpenChange = (details: { open: boolean }) => {
 		onOpenChange(details.open);
 	};
+
 	const Wrapper = portal ? Portal : Fragment;
 
 	return (
@@ -48,9 +47,8 @@ const DsDrawer = ({
 							styles.drawer,
 							styles[`position-${position}`],
 							className,
-
 							// eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-							styles[`cols-${columns}`],
+							styles[`cols-${resolvedColumns}`],
 						)}
 					>
 						<div className={styles.content}>{children}</div>

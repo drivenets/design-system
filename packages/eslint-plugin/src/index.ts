@@ -129,7 +129,7 @@ const eslintPlugin = createPlugin(
 
 	{
 		name: 'no-mui',
-		selector: 'ImportDeclaration[source.value=/^@mui\\u002F/]',
+		selector: 'ImportDeclaration[source.value=/^@mui\\u002F/] > .source',
 		message: 'Using MUI components is not allowed. Use DriveNets Design System components instead.',
 	},
 );

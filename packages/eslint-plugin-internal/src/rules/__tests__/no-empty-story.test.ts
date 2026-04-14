@@ -40,6 +40,16 @@ ruleTester.run('no-empty-story', noEmptyStory, {
 		},
 
 		{
+			name: 'non-empty args with satisfies',
+			code: `export const Primary = { args: { label: 'Hello' } satisfies Args };`,
+		},
+
+		{
+			name: 'non-empty args with as assertion',
+			code: `export const Primary = { args: { label: 'Hello' } as Args };`,
+		},
+
+		{
 			name: 'default export with empty object',
 			code: `export default {};`,
 		},
@@ -117,6 +127,34 @@ ruleTester.run('no-empty-story', noEmptyStory, {
 					endLine: 1,
 					column: 24,
 					endColumn: 36,
+				},
+			],
+		},
+
+		{
+			name: 'empty args with satisfies',
+			code: `export const Primary = { args: {} satisfies Args };`,
+			errors: [
+				{
+					messageId: 'noEmptyStory',
+					line: 1,
+					endLine: 1,
+					column: 24,
+					endColumn: 51,
+				},
+			],
+		},
+
+		{
+			name: 'empty args with as assertion',
+			code: `export const Primary = { args: {} as Args };`,
+			errors: [
+				{
+					messageId: 'noEmptyStory',
+					line: 1,
+					endLine: 1,
+					column: 24,
+					endColumn: 44,
 				},
 			],
 		},

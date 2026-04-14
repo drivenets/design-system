@@ -53,7 +53,7 @@ export const noUselessStoryAnnotations = createRule<[], MessageId>({
 			});
 
 			if (prop && prop.value.properties.length === 0) {
-				report(prop, messageId);
+				report(prop.node, messageId);
 			}
 		}
 
@@ -65,7 +65,7 @@ export const noUselessStoryAnnotations = createRule<[], MessageId>({
 			});
 
 			if (prop && prop.value.elements.length === 0) {
-				report(prop, messageId);
+				report(prop.node, messageId);
 			}
 		}
 
@@ -84,7 +84,7 @@ export const noUselessStoryAnnotations = createRule<[], MessageId>({
 			const { body } = prop.value;
 
 			if (body.type === AST_NODE_TYPES.BlockStatement && body.body.length === 0) {
-				report(prop, 'emptyPlay');
+				report(prop.node, 'emptyPlay');
 			}
 		}
 
@@ -106,7 +106,7 @@ export const noUselessStoryAnnotations = createRule<[], MessageId>({
 			const userDefinedName = getStringIfConstant(prop.value, context.sourceCode.getScope(prop.value));
 
 			if (userDefinedName === generatedName) {
-				report(prop, 'redundantName', { name: generatedName });
+				report(prop.node, 'redundantName', { name: generatedName });
 			}
 		}
 
