@@ -85,6 +85,13 @@
 	padding: 2rem;
 }
 
+.responsiveButtons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--spacing-xs);
+	margin-top: var(--spacing-sm);
+}
+
 .contentSection {
 	padding: 1rem;
 }

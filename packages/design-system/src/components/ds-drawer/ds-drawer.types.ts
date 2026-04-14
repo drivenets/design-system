@@ -1,5 +1,6 @@
 import type { CSSProperties, ReactNode } from 'react';
 import type { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
+import type { ResponsiveValue } from '../../utils/responsive';
 
 /**
  * Available positions for the drawer
@@ -20,10 +21,11 @@ export interface DsDrawerProps extends Pick<DialogProps, 'closeOnEscape' | 'clos
 	 */
 	onOpenChange: (open: boolean) => void;
 	/**
-	 * Number of grid columns the drawer should span (1-12)
+	 * Number of grid columns the drawer should span (1-12).
+	 * Accepts a responsive value, e.g. `{ lg: 4, md: 6 }`.
 	 * @default 4
 	 */
-	columns?: DsDrawerColumns;
+	columns?: ResponsiveValue<DsDrawerColumns>;
 	/**
 	 * Position of the drawer
 	 * @default 'end'

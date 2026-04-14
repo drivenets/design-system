@@ -169,6 +169,93 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 		},
 
 		{
+			name: 'autodocs with satisfies on tags value',
+			code: `
+				const meta = {
+					title: 'Design System/Button',
+					tags: ['autodocs'] satisfies string[],
+				};
+
+				export default meta;
+			`,
+			output: `
+				const meta = {
+					title: 'Design System/Button',
+					
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noAutodocsTag',
+					line: 4,
+					endLine: 4,
+					column: 13,
+					endColumn: 23,
+				},
+			],
+		},
+
+		{
+			name: 'autodocs in the middle with satisfies on tags value',
+			code: `
+				const meta = {
+					title: 'Design System/Button',
+					tags: ['!dev', 'autodocs', 'deprecated'] satisfies string[],
+				};
+
+				export default meta;
+			`,
+			output: `
+				const meta = {
+					title: 'Design System/Button',
+					tags: ['!dev',  'deprecated'] satisfies string[],
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noAutodocsTag',
+					line: 4,
+					endLine: 4,
+					column: 21,
+					endColumn: 31,
+				},
+			],
+		},
+
+		{
+			name: 'autodocs with as assertion on tags value',
+			code: `
+				const meta = {
+					title: 'Design System/Button',
+					tags: ['autodocs'] as string[],
+				};
+
+				export default meta;
+			`,
+			output: `
+				const meta = {
+					title: 'Design System/Button',
+					
+				};
+
+				export default meta;
+			`,
+			errors: [
+				{
+					messageId: 'noAutodocsTag',
+					line: 4,
+					endLine: 4,
+					column: 13,
+					endColumn: 23,
+				},
+			],
+		},
+
+		{
 			name: 'inline export with autodocs',
 			code: `
 				export default {

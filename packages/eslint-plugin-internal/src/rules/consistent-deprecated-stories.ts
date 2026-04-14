@@ -102,7 +102,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 						data: { component: componentDisplayName },
 						fix: (fixer) => {
 							const hasOnlyOneTag = tagsArray?.elements.length === 1;
-							const nodeToRemove = hasOnlyOneTag ? tagsProp : deprecatedTag;
+							const nodeToRemove = hasOnlyOneTag ? tagsProp?.node : deprecatedTag;
 
 							if (!nodeToRemove) {
 								return null;
@@ -123,7 +123,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 					messageId: 'missingDeprecatedSuffix',
 					data: { component: componentDisplayName },
 					fix: (fixer) => {
-						return fixer.insertTextAfter(componentProp, `,\n\ttitle: '${componentName} ${SUFFIX}'`);
+						return fixer.insertTextAfter(componentProp.node, `,\n\ttitle: '${componentName} ${SUFFIX}'`);
 					},
 				});
 
@@ -147,7 +147,7 @@ export const consistentDeprecatedStories = createRule<[], MessageId>({
 			// Report when a deprecated component is missing a `deprecated` tag.
 			if (!hasDeprecatedTag) {
 				context.report({
-					node: tagsProp ?? metaNode,
+					node: tagsProp?.node ?? metaNode,
 					messageId: 'missingDeprecatedTag',
 					data: { component: componentDisplayName },
 					fix: (fixer) => {

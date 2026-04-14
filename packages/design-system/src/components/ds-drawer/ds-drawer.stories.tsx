@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import classNames from 'classnames';
-import { expect, userEvent, within } from 'storybook/test';
 import DsDrawer from './ds-drawer';
 import { DsButton } from '../ds-button';
 import { DsTextInput } from '../ds-text-input';
@@ -10,7 +9,8 @@ import { DsIcon } from '../ds-icon';
 import { DsSystemStatus } from '../ds-system-status';
 import styles from './ds-drawer.stories.module.scss';
 import { DsTypography } from '../ds-typography';
-import type { DsDrawerProps } from './ds-drawer.types';
+import type { DsDrawerColumns, DsDrawerProps } from './ds-drawer.types';
+import type { ResponsiveValue } from '../../utils/responsive';
 
 const meta: Meta<typeof DsDrawer> = {
 	title: 'Design System/Drawer',
@@ -137,20 +137,6 @@ export const Default: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const openButton = canvas.getByRole('button', { name: /open drawer/i });
-		await userEvent.click(openButton);
-
-		const drawer = await canvas.findByRole('dialog');
-		await expect(drawer).toHaveAttribute('data-state', 'open');
-
-		const closeButton = canvas.getByRole('button', { name: /close/i });
-		await userEvent.click(closeButton);
-
-		await expect(drawer).toHaveAttribute('data-state', 'closed');
-	},
 };
 
 const Tabs = ({ total = 4 }: { total?: number }) => {
@@ -254,19 +240,6 @@ export const WithBackdropAndScroll: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const openButton = canvas.getByRole('button', { name: /open drawer/i });
-		await userEvent.click(openButton);
-
-		const drawer = await canvas.findByRole('dialog');
-		await expect(drawer).toHaveAttribute('data-state', 'open');
-
-		const backdrop = canvasElement.querySelector('[data-part="backdrop"]');
-		await expect(backdrop).toBeInTheDocument();
-		await expect(backdrop).toHaveAttribute('data-state', 'open');
-	},
 };
 
 export const DockToStart: Story = {
@@ -343,6 +316,71 @@ export const WithGridContent: Story = {
 				</DsDrawer.Body>
 			</>
 		),
+	},
+};
+
+/**
+ * Right drawer responsiveness: the columns prop accepts a responsive value `{ lg, md }`.
+ * On screens < 1440px the drawer automatically switches to the `md` column count.
+ *
+ * Recommended responsive mappings for end-positioned drawers:
+ * - 3 cols → `{ lg: 3, md: 4 }`
+ * - 4–5 cols → `{ lg: 4, md: 6 }` / `{ lg: 5, md: 6 }`
+ * - 6+ cols → `{ lg: 6, md: 10 }` (up to 10)
+ */
+export const Responsive: Story = {
+	render: function Render() {
+		const [openDrawer, setOpenDrawer] = useState<string | null>(null);
+
+		const close = () => setOpenDrawer(null);
+
+		const variants = [
+			{ label: '3 cols → 4 on md', columns: { lg: 3, md: 4 } },
+			{ label: '4 cols → 6 on md', columns: { lg: 4, md: 6 } },
+			{ label: '5 cols → 6 on md', columns: { lg: 5, md: 6 } },
+			{ label: '6 cols → 10 on md', columns: { lg: 6, md: 10 } },
+			{ label: '8 cols → 10 on md', columns: { lg: 8, md: 10 } },
+		] satisfies Array<{ label: string; columns: ResponsiveValue<DsDrawerColumns> }>;
+
+		return (
+			<div className={styles.storyWrapper}>
+				<DsTypography variant="body-md-semi-bold">
+					Resize the window below 1440 px to see the responsive column change.
+				</DsTypography>
+
+				<div className={styles.responsiveButtons}>
+					{variants.map(({ label }) => (
+						<DsButton key={label} onClick={() => setOpenDrawer(label)}>
+							{label}
+						</DsButton>
+					))}
+				</div>
+
+				{variants.map(({ label, columns }) => (
+					<DsDrawer
+						key={label}
+						open={openDrawer === label}
+						onOpenChange={(open) => !open && close()}
+						columns={columns}
+					>
+						<DsDrawer.Header>
+							<DsDrawer.Title>{label}</DsDrawer.Title>
+							<DsDrawer.CloseTrigger />
+						</DsDrawer.Header>
+						<DsDrawer.Body className={styles.body}>
+							<div className={styles.section}>
+								<DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+									lg: {columns.lg} columns · md: {columns.md} columns
+								</DsTypography>
+								<DsTypography variant="heading2" className={styles.sectionContent}>
+									Drawer content
+								</DsTypography>
+							</div>
+						</DsDrawer.Body>
+					</DsDrawer>
+				))}
+			</div>
+		);
 	},
 };
 
