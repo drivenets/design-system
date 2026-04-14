@@ -204,6 +204,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 		.map(([key]) => rowsById[key]?.original)
 		.filter((v) => !!v);
 
+	const isBulkActionsVisible = selectable && actions.length > 0 && selectedRows.length > 0;
+
 	const contextValue: DsTableContextType<TData, TValue> = {
 		stickyHeader,
 		bordered,
@@ -230,6 +232,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 					styles.container,
 					!virtualized && styles.dataTableContainer,
 					virtualized && styles.virtualizedContainer,
+					isBulkActionsVisible && styles.bulkActionsVisible,
 					className,
 				)}
 			>

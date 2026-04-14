@@ -2,6 +2,8 @@
 @use '../../styles/utilities' as utils;
 @use './styles/variables' as vars;
 
+$bulk-actions-height: 60px;
+
 .container {
 	border-radius: vars.$border-radius;
 	border-width: vars.$border-width;
@@ -44,4 +46,8 @@
 	position: relative;
 	height: vars.$virtualized-height;
 	overflow: auto;
+}
+
+.bulkActionsVisible {
+	padding-bottom: $bulk-actions-height;
 }
