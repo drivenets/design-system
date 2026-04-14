@@ -1,8 +1,7 @@
 import classNames from 'classnames';
-import { DsSelect } from '../ds-select';
+import { DsSelect, type SelectSize } from '../ds-select';
 import styles from './ds-split-button.module.scss';
-import type { DsSplitButtonProps } from './ds-split-button.types';
-import { getSelectSize } from './ds-split-button.utils';
+import type { DsSplitButtonProps, SplitButtonSize } from './ds-split-button.types';
 import { DsButtonV3 } from '../ds-button-v3';
 
 const DsSplitButton = ({
@@ -13,14 +12,14 @@ const DsSplitButton = ({
 	disabled,
 	slotProps,
 }: DsSplitButtonProps) => {
-	const { className: buttonClassName, disabled: buttonDisabled, ...buttonRest } = slotProps.button;
+	const { className: buttonClassName, disabled: buttonDisabled, ...buttonProps } = slotProps.button;
 
-	const { className: selectClassName, disabled: selectDisabled, ...selectRest } = slotProps.select;
+	const { className: selectClassName, disabled: selectDisabled, ...selectProps } = slotProps.select;
 
 	return (
 		<div ref={ref} className={classNames(styles.root, className)} style={style}>
 			<DsButtonV3
-				{...buttonRest}
+				{...buttonProps}
 				variant="secondary"
 				size={size}
 				disabled={buttonDisabled ?? disabled}
@@ -34,13 +33,17 @@ const DsSplitButton = ({
 			</div>
 
 			<DsSelect
-				{...selectRest}
+				{...selectProps}
 				size={getSelectSize(size)}
 				disabled={selectDisabled ?? disabled}
 				className={classNames(styles.select, selectClassName)}
 			/>
 		</div>
 	);
+};
+
+const getSelectSize = (size: SplitButtonSize): SelectSize => {
+	return size === 'medium' ? 'default' : 'small';
 };
 
 export default DsSplitButton;
