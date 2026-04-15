@@ -20,15 +20,15 @@
 	color: var(--white);
 
 	&--single {
-		background-color: var(--system-status-ok);
+		background-color: var(--background-background-positive-strong);
 	}
 
 	&--relationship {
-		background-color: var(--system-status-info);
+		background-color: var(--background-background-info-strong);
 	}
 
 	&--complicated {
-		background-color: var(--system-status-error);
+		background-color: var(--background-background-negative);
 	}
 }
 
@@ -328,5 +328,5 @@
 }
 
 .destructiveAction {
-	color: var(--system-status-error);
+	color: var(--background-background-negative);
 }
