@@ -1,13 +1,11 @@
 @use '../../styles/root_updated';
+@use '../../styles/shared/button' as button;
 
 $height-large: 40px;
 $height-medium: 36px;
 $height-small: 28px;
 $border-radius: 4px;
 $focus-ring-width: 2px;
-// it looks a bit better with 0.3 than 0.2
-$transition-duration-default: 0.3s;
-$transition-duration-quick: 0.15s;
 
 @mixin focus-ring($outer-color) {
 	outline: $focus-ring-width solid $outer-color;
@@ -28,10 +26,10 @@ $transition-duration-quick: 0.15s;
 	text-align: center;
 	cursor: pointer;
 	transition:
-		background-color $transition-duration-default,
-		border-color $transition-duration-quick,
-		color $transition-duration-default,
-		outline-color $transition-duration-quick;
+		background-color button.$transition-duration-default,
+		border-color button.$transition-duration-quick,
+		color button.$transition-duration-default,
+		outline-color button.$transition-duration-quick;
 
 	&:disabled:not([data-loading]) {
 		cursor: not-allowed;

@@ -1,8 +1,9 @@
+@use '../../styles/shared/button' as button;
+
 $highlighted-z-index: 1;
 $divider-z-index: $highlighted-z-index + 1;
 $divider-width: 1px;
 $border-width: 1px;
-$button-transition-duration: 0.15s;
 
 @mixin when-button-disabled {
 	.root:has(.actionButton:disabled) & {
@@ -44,7 +45,7 @@ $button-transition-duration: 0.15s;
 .actionButton {
 	@include when-button-highlighted {
 		z-index: $highlighted-z-index;
-		transition: border-color $button-transition-duration;
+		transition: border-color button.$transition-duration-quick;
 	}
 
 	&:not(:disabled):is(:hover, :active, [data-selected='true']) {
