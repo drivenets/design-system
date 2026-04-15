@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import classNames from 'classnames';
 import { fn } from 'storybook/test';
-import DsButtonV3 from './ds-button-v3.tsx';
+import DsButtonV3 from './ds-button-v3';
 import {
 	type ButtonV3Color,
 	buttonV3Colors,
 	buttonV3Sizes,
 	type ButtonV3Variant,
 	buttonV3Variants,
-} from './ds-button-v3.types.ts';
+} from './ds-button-v3.types';
 import storyStyles from './ds-button-v3.stories.module.scss';
 
 const meta: Meta<typeof DsButtonV3> = {

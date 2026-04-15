@@ -1,6 +1,9 @@
 import * as fs from 'node:fs/promises';
 import { defineConfig, type Rolldown } from 'tsdown';
 import * as sassEmbedded from 'sass-embedded';
+
+// @ts-expect-error - We're running this using Node directly, which requires an extension,
+// but we don't want to set `allowImportingTsExtensions` for the whole project.
 import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-plugin.ts';
 
 export default defineConfig({
