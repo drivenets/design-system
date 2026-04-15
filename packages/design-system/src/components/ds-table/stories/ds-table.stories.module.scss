@@ -20,15 +20,15 @@
 	color: var(--color-dap-gray-050);
 
 	&--single {
-		background-color: var(--color-dap-data-green);
+		background-color: var(--background-background-positive-strong);
 	}
 
 	&--relationship {
-		background-color: var(--color-dap-blue-600);
+		background-color: var(--background-background-info-strong);
 	}
 
 	&--complicated {
-		background-color: var(--background-error);
+		background-color: var(--background-background-negative);
 	}
 }
 
@@ -328,5 +328,5 @@
 }
 
 .destructiveAction {
-	color: var(--background-error);
+	color: var(--background-background-negative);
 }
