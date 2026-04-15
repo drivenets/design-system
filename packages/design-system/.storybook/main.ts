@@ -1,5 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
+
+// @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
 import { reactCompilerRolldownPlugin } from '../rolldown/react-compiler-rolldown-plugin.ts';
 
 const config: StorybookConfig = {
