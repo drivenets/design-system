@@ -1,0 +1,15 @@
+.box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 80px;
+	padding: var(--xs) var(--sm);
+	border: 1px solid var(--color-border-default);
+	border-radius: 4px;
+	background-color: var(--color-bg-surface-1);
+	font-size: var(--font-size-body-md);
+}
+
+.container {
+	width: 600px;
+}

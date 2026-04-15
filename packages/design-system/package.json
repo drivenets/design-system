@@ -72,7 +72,8 @@
 		"@tanstack/react-virtual": "^3.13.23",
 		"@zag-js/react": "^1.37.0",
 		"@zag-js/steps": "^1.37.0",
-		"classnames": "^2.5.1"
+		"classnames": "^2.5.1",
+		"csstype": "^3.2.3"
 	},
 	"peerDependencies": {
 		"@internationalized/date": "^3.0.0",

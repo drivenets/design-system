@@ -204,6 +204,9 @@ importers:
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
+      csstype:
+        specifier: ^3.2.3
+        version: 3.2.3
     devDependencies:
       '@arethetypeswrong/cli':
         specifier: ^0.18.2
