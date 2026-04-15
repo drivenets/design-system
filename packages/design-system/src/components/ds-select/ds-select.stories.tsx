@@ -256,14 +256,14 @@ export const MultiSelect: Story = {
 		const allOption = screen.getByRole('option', { name: 'All' });
 		await userEvent.click(allOption);
 
-		// Click the "+7" chip to expand and show all selected items
-		const expandChip = screen.getByRole('button', { name: /^\+\d+$/ });
-		await userEvent.click(expandChip);
+		// Click the "+7" tag to expand and show all selected items
+		const expandTag = screen.getByRole('button', { name: /^\+\d+$/ });
+		await userEvent.click(expandTag);
 
-		// Verify all options from mockOptions are displayed as chips
+		// Verify all options from mockOptions are displayed as tags
 		for (const option of mockOptions) {
-			const chip = screen.getByRole('button', { name: option.label });
-			await expect(chip).toBeInTheDocument();
+			const tag = screen.getByRole('button', { name: option.label });
+			await expect(tag).toBeInTheDocument();
 		}
 
 		// Close the dropdown by clicking the trigger
@@ -279,12 +279,12 @@ export const MultiSelect: Story = {
 
 		// Delete the first option by clicking its delete button
 		const firstOption = mockOptions[0] as DsSelectOption;
-		const firstOptionChip = screen.getByRole('button', { name: firstOption.label });
-		const deleteButton = within(firstOptionChip).getByRole('button', { name: 'Delete tag' });
+		const firstOptionTag = screen.getByRole('button', { name: firstOption.label });
+		const deleteButton = within(firstOptionTag).getByRole('button', { name: 'Delete tag' });
 		await userEvent.click(deleteButton);
 
 		// Verify deleted option is no longer visible
-		await expect(firstOptionChip).not.toBeInTheDocument();
+		await expect(firstOptionTag).not.toBeInTheDocument();
 
 		// Click the "Clear All" button
 		const clearAllButton = screen.getByRole('button', { name: 'Clear All' });
@@ -454,11 +454,11 @@ export const CustomRenderOptionMultiSelect: Story = {
 		const gbOption = screen.getByRole('option', { name: /United Kingdom/ });
 		await userEvent.click(gbOption);
 
-		const usChip = screen.getByRole('button', { name: 'United States' });
-		await expect(usChip).toBeInTheDocument();
+		const usTag = screen.getByRole('button', { name: 'United States' });
+		await expect(usTag).toBeInTheDocument();
 
-		const gbChip = screen.getByRole('button', { name: 'United Kingdom' });
-		await expect(gbChip).toBeInTheDocument();
+		const gbTag = screen.getByRole('button', { name: 'United Kingdom' });
+		await expect(gbTag).toBeInTheDocument();
 	},
 };
 

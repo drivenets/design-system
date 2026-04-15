@@ -26,7 +26,7 @@ export interface CheckboxFilterAdapterConfig<TData, TValue> {
 	renderer?: (item: CheckboxFilterItem<TValue>) => ReactNode;
 
 	/**
-	 * Optional custom chip label generator
+	 * Optional custom tag label generator
 	 * @default (item) => `${label}: ${item.label}`
 	 */
 	tagLabelTemplate?: (item: CheckboxFilterItem<TValue>) => string;

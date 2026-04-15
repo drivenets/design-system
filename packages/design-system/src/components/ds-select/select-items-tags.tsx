@@ -4,14 +4,14 @@ import { DsButton } from '../ds-button';
 import { DsTag } from '../ds-tag';
 import type { DsSelectOption, SelectOptionValue } from './ds-select.types';
 
-type SelectItemsChipsProps = {
+type SelectItemsTagsProps = {
 	showAll: boolean;
 	onValueChange?: (value: SelectOptionValue[]) => void;
 	onShowAll: () => void;
 	count: number;
 };
 
-export function SelectItemsChips({ showAll, onShowAll, onValueChange, count }: SelectItemsChipsProps) {
+export function SelectItemsTags({ showAll, onShowAll, onValueChange, count }: SelectItemsTagsProps) {
 	const { collection, value: selectedItems } = useSelectContext() as UseSelectContext<DsSelectOption>;
 
 	if (!selectedItems.length) {
