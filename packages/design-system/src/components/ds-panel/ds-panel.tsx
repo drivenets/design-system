@@ -3,7 +3,7 @@ import * as Collapsible from '@radix-ui/react-collapsible';
 import classnames from 'classnames';
 import styles from './ds-panel.module.scss';
 import { DsIcon } from '../ds-icon';
-import type { DsPanelCollapseButtonProps, DsPanelProps } from './ds-panel.types';
+import type { DsPanelBaseProps, DsPanelCollapseButtonProps } from './ds-panel.types';
 
 function useDraggable(enabled: boolean) {
 	const rootRef = useRef<HTMLDivElement>(null);
@@ -84,19 +84,23 @@ function useDraggable(enabled: boolean) {
 	return rootRef;
 }
 
-export function DsPanel({
+export function DsPanelBase({
 	open,
 	onOpenChange,
 	children,
 	className,
+	style,
 	slotProps,
 	variant = 'docked',
+	width,
 	draggable = false,
 	disablePadding = false,
 	...props
-}: DsPanelProps) {
+}: DsPanelBaseProps) {
 	const isDraggable = variant === 'floating' && draggable;
 	const rootRef = useDraggable(isDraggable);
+
+	const rootStyle = width ? { ...style, width } : style;
 
 	return (
 		<Collapsible.Root
@@ -108,6 +112,7 @@ export function DsPanel({
 				[styles.variantFloating]: variant === 'floating',
 				[styles.disablePadding]: disablePadding,
 			})}
+			style={rootStyle}
 			{...props}
 		>
 			<DsPanelCollapseButton {...slotProps?.collapseButton} />

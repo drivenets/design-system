@@ -19,17 +19,39 @@ ruleTester.run(
 
 		invalid: [
 			{
-				code: '<DsButton>Click me</DsButton>',
-				errors: [{ message: `Using the 'legacy' design for DsButton is deprecated. Use 'v1.2' instead.` }],
-			},
-
-			{
 				code: '<DsButton design="legacy">Click me</DsButton>',
-				errors: [{ message: `Using the 'legacy' design for DsButton is deprecated. Use 'v1.2' instead.` }],
+				errors: [
+					{
+						message: `Using the 'legacy' design for DsButton is deprecated. Use 'v1.2' instead.`,
+						line: 1,
+						endLine: 1,
+						column: 11,
+						endColumn: 26,
+					},
+				],
 			},
 		],
 	},
 );
+
+ruleTester.run('no-deprecated-ds-button-empty-design', plugin.rules['no-deprecated-ds-button-empty-design'], {
+	valid: ['<DsButton design="v1.2">Click me</DsButton>'],
+
+	invalid: [
+		{
+			code: '<DsButton>Click me</DsButton>',
+			errors: [
+				{
+					message: `Omitting the design attribute for DsButton is not allowed. Pass 'design="v1.2"' so the new design is used.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 10,
+				},
+			],
+		},
+	],
+});
 
 ruleTester.run('no-deprecated-ds-dialog', plugin.rules['no-deprecated-ds-dialog'], {
 	valid: ['<Dialog />', '<DsModal />', '<DsConfirmation />'],
@@ -37,7 +59,15 @@ ruleTester.run('no-deprecated-ds-dialog', plugin.rules['no-deprecated-ds-dialog'
 	invalid: [
 		{
 			code: '<DsDialog>Click me</DsDialog>',
-			errors: [{ message: `DsDialog is deprecated. Use DsModal or DsConfirmation instead.` }],
+			errors: [
+				{
+					message: `DsDialog is deprecated. Use DsModal or DsConfirmation instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 10,
+				},
+			],
 		},
 	],
 });
@@ -48,7 +78,15 @@ ruleTester.run('no-deprecated-ds-confirmation', plugin.rules['no-deprecated-ds-c
 	invalid: [
 		{
 			code: '<DsConfirmation />',
-			errors: [{ message: `DsConfirmation is deprecated. Use DsModal instead.` }],
+			errors: [
+				{
+					message: `DsConfirmation is deprecated. Use DsModal instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 16,
+				},
+			],
 		},
 	],
 });
@@ -59,7 +97,15 @@ ruleTester.run('no-deprecated-ds-system-status', plugin.rules['no-deprecated-ds-
 	invalid: [
 		{
 			code: '<DsSystemStatus />',
-			errors: [{ message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.` }],
+			errors: [
+				{
+					message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 16,
+				},
+			],
 		},
 	],
 });
@@ -73,7 +119,15 @@ ruleTester.run(
 		invalid: [
 			{
 				code: '<DsDropdownMenuLegacy />',
-				errors: [{ message: `DsDropdownMenuLegacy is deprecated. Use DsDropdownMenu instead.` }],
+				errors: [
+					{
+						message: `DsDropdownMenuLegacy is deprecated. Use DsDropdownMenu instead.`,
+						line: 1,
+						endLine: 1,
+						column: 2,
+						endColumn: 22,
+					},
+				],
 			},
 		],
 	},
@@ -85,7 +139,15 @@ ruleTester.run('no-deprecated-ds-radio-group-legacy', plugin.rules['no-deprecate
 	invalid: [
 		{
 			code: '<DsRadioGroupLegacy />',
-			errors: [{ message: `DsRadioGroupLegacy is deprecated. Use DsRadioGroup instead.` }],
+			errors: [
+				{
+					message: `DsRadioGroupLegacy is deprecated. Use DsRadioGroup instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 20,
+				},
+			],
 		},
 	],
 });
@@ -96,7 +158,15 @@ ruleTester.run('no-deprecated-ds-chip', plugin.rules['no-deprecated-ds-chip'], {
 	invalid: [
 		{
 			code: '<DsChip />',
-			errors: [{ message: `DsChip is deprecated. Use DsTag instead.` }],
+			errors: [
+				{
+					message: `DsChip is deprecated. Use DsTag instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 8,
+				},
+			],
 		},
 	],
 });
@@ -107,7 +177,15 @@ ruleTester.run('no-deprecated-ds-chip-group', plugin.rules['no-deprecated-ds-chi
 	invalid: [
 		{
 			code: '<DsChipGroup />',
-			errors: [{ message: `DsChipGroup is deprecated. Use DsTagFilter instead.` }],
+			errors: [
+				{
+					message: `DsChipGroup is deprecated. Use DsTagFilter instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 13,
+				},
+			],
 		},
 	],
 });
@@ -118,7 +196,15 @@ ruleTester.run('no-deprecated-ds-date-input', plugin.rules['no-deprecated-ds-dat
 	invalid: [
 		{
 			code: '<DsDateInput />',
-			errors: [{ message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.` }],
+			errors: [
+				{
+					message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 13,
+				},
+			],
 		},
 	],
 });

@@ -10,6 +10,7 @@ import { noUselessStoryAnnotations } from './rules/no-useless-story-annotations'
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
 import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
 import { noVitestInStories } from './rules/no-vitest-in-stories';
+import { noVitestInternal } from './rules/no-vitest-internal';
 import { requireStoryMetaAnnotations } from './rules/require-story-meta-annotations';
 
 const plugin = {
@@ -28,6 +29,7 @@ const plugin = {
 		'no-useless-tsx-extension': noUselessTsxExtension,
 		'no-vitest-browser-react': noVitestBrowserReact,
 		'no-vitest-in-stories': noVitestInStories,
+		'no-vitest-internal': noVitestInternal,
 		'require-story-meta-annotations': requireStoryMetaAnnotations,
 	},
 
@@ -67,6 +69,17 @@ Object.assign(plugin.configs, {
 
 				'@drivenets/ds-internal/no-vitest-in-stories': 'error',
 				'@drivenets/ds-internal/require-story-meta-annotations': 'error',
+			},
+		},
+
+		{
+			name: 'ds-internal/recommended/tests',
+			plugins: {
+				'@drivenets/ds-internal': plugin,
+			},
+			files: ['**/*.test.ts?(x)'],
+			rules: {
+				'@drivenets/ds-internal/no-vitest-internal': 'error',
 			},
 		},
 

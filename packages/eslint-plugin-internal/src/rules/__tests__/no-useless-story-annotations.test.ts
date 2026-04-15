@@ -87,6 +87,28 @@ ruleTester.run('no-useless-story-annotations', noUselessStoryAnnotations, {
 			code: `export const Default = { storyName: 'Custom Name' };`,
 		},
 
+		// --- satisfies / as on property values ---
+		{
+			name: 'non-empty args with satisfies on value',
+			code: `export const Primary = { args: { label: 'Hello' } satisfies Args };`,
+		},
+		{
+			name: 'non-empty args with as assertion on value',
+			code: `export const Primary = { args: { label: 'Hello' } as Args };`,
+		},
+		{
+			name: 'non-empty tags with as assertion on value',
+			code: `export const Primary = { tags: ['deprecated'] as string[] };`,
+		},
+		{
+			name: 'non-empty parameters with satisfies on value',
+			code: `export const Primary = { parameters: { layout: 'centered' } satisfies Params };`,
+		},
+		{
+			name: 'non-empty play with satisfies on value',
+			code: `export const Primary = { play: (async () => { await click(); }) satisfies PlayFn };`,
+		},
+
 		// --- misc ---
 		{
 			name: 'story with no annotations',
@@ -489,7 +511,7 @@ ruleTester.run('no-useless-story-annotations', noUselessStoryAnnotations, {
 			],
 		},
 
-		// --- satisfies / as ---
+		// --- satisfies / as on story ---
 		{
 			name: 'empty args with satisfies expression',
 			code: `export const Primary = { args: {} } satisfies Story;`,
@@ -529,6 +551,50 @@ ruleTester.run('no-useless-story-annotations', noUselessStoryAnnotations, {
 					endLine: 1,
 					column: 33,
 					endColumn: 37,
+				},
+			],
+		},
+
+		// --- satisfies / as on property values ---
+		{
+			name: 'empty args value with satisfies',
+			code: `export const Primary = { args: {} satisfies Args, render: () => {} };`,
+			output: `export const Primary = {  render: () => {} };`,
+			errors: [
+				{
+					messageId: 'emptyArgs',
+					line: 1,
+					endLine: 1,
+					column: 26,
+					endColumn: 30,
+				},
+			],
+		},
+		{
+			name: 'empty tags value with as assertion',
+			code: `export const Primary = { tags: [] as string[] };`,
+			output: `export const Primary = {  };`,
+			errors: [
+				{
+					messageId: 'emptyTags',
+					line: 1,
+					endLine: 1,
+					column: 26,
+					endColumn: 30,
+				},
+			],
+		},
+		{
+			name: 'empty play value with satisfies',
+			code: `export const Primary = { play: (async () => {}) satisfies PlayFn };`,
+			output: `export const Primary = {  };`,
+			errors: [
+				{
+					messageId: 'emptyPlay',
+					line: 1,
+					endLine: 1,
+					column: 26,
+					endColumn: 30,
 				},
 			],
 		},
