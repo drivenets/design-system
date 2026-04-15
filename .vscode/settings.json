@@ -11,7 +11,7 @@
 
 	"typescript.tsdk": "node_modules/typescript/lib",
 
-	// Explicitly disabling tsgo language service since it doens't support plugins yet.
+	// Explicitly disabling tsgo language service since it doesn't support plugins yet.
 	// We need plugins support to use `typescript-plugin-css-modules` in the design-system package.
 	"typescript.experimental.useTsgo": false
 }
