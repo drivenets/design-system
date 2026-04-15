@@ -15,7 +15,7 @@ const defaultSelect = {
 	value: '30',
 	onValueChange: vi.fn(),
 	multiple: false,
-} as const satisfies Partial<DsSelectProps>;
+} satisfies DsSelectProps;
 
 describe('DsSplitButton', () => {
 	it('calls slotProps.button.onClick when primary action is clicked', async () => {
@@ -29,7 +29,7 @@ describe('DsSplitButton', () => {
 						'aria-label': 'Refresh',
 						onClick,
 					},
-					select: { ...defaultSelect, onValueChange: vi.fn() } as DsSelectProps,
+					select: defaultSelect,
 				}}
 			/>,
 		);
@@ -61,7 +61,7 @@ describe('DsSplitButton', () => {
 								setValue(v);
 							},
 							multiple: false,
-						} as DsSelectProps,
+						},
 					}}
 				/>
 			);
@@ -96,7 +96,7 @@ describe('DsSplitButton', () => {
 						value: '30',
 						onValueChange,
 						multiple: false,
-					} as DsSelectProps,
+					},
 				}}
 			/>,
 		);
@@ -126,7 +126,7 @@ describe('DsSplitButton', () => {
 						'aria-label': 'Refresh',
 						onClick,
 					},
-					select: { ...defaultSelect, onValueChange: vi.fn() } as DsSelectProps,
+					select: defaultSelect,
 				}}
 			/>,
 		);
@@ -150,7 +150,7 @@ describe('DsSplitButton', () => {
 						icon: 'refresh',
 						'aria-label': 'Refresh',
 					},
-					select: { ...defaultSelect, onValueChange: vi.fn() } as DsSelectProps,
+					select: defaultSelect,
 				}}
 			/>,
 		);
@@ -174,7 +174,7 @@ describe('DsSplitButton', () => {
 						icon: 'refresh',
 						'aria-label': 'Refresh',
 					},
-					select: { ...defaultSelect, onValueChange: vi.fn() } as DsSelectProps,
+					select: defaultSelect,
 				}}
 			/>,
 		);
