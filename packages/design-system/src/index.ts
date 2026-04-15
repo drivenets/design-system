@@ -48,7 +48,6 @@ export * from './components/ds-stack';
 export * from './components/ds-status-badge';
 export * from './components/ds-status-badge-v2';
 export * from './components/ds-stepper';
-export * from './components/ds-system-status';
 export * from './components/ds-table';
 export * from './components/ds-tabs';
 export * from './components/ds-tag';
