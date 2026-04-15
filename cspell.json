@@ -22,6 +22,7 @@
 		"ondark",
 		"noninteractive",
 		"onwarn",
+		"oxfmtrc",
 		"reorderable",
 		"retryable",
 		"subcomponents",
@@ -29,5 +30,5 @@
 		"TSESTree",
 		"unhover"
 	],
-	"ignorePaths": [".cursor", ".git", ".github", ".vscode", ".cspell", "pnpm-lock.yaml"]
+	"ignorePaths": [".cursor", ".git", ".github", ".vscode/extensions.json", ".cspell", "pnpm-lock.yaml"]
 }
