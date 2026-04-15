@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import DsSplitButton from './ds-split-button';
+import { DsSplitButton } from './';
 import { splitButtonSizes } from './ds-split-button.types';
 import type { DsSelectProps } from '../ds-select';
 
