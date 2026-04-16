@@ -181,15 +181,15 @@
 	--positive-050: var(--color-dap-green-050); // was --color-positive-050
 	--positive-700-default: var(--color-dap-green-700); // was --color-positive-700-default
 
-	/* Alias - negative */
-	--negative-100: var(--color-dap-red-100); // ⚠ NEW VALUE (was #f5c2bf in --color-negative-100)
-	--negative-200: var(--color-dap-red-200); // was --color-negative-200
-	--negative-300: var(--color-dap-red-300); // was --color-negative-300
-	--negative-500: var(--color-dap-red-500); // was --color-negative-500
-	--negative-600: var(--color-dap-red-600); // was --color-negative-600
-	--negative-700: var(--color-dap-red-700); // was --color-negative-700
-	--negative-050: var(--color-dap-red-050); // was --color-negative-050
-	--negative-400-default: var(--color-dap-red-400); // was --color-negative-400-default
+	/* Alias - error */
+	--error-100: var(--color-dap-red-100); // ⚠ NEW VALUE (was #f5c2bf in --color-negative-100)
+	--error-200: var(--color-dap-red-200); // was --color-negative-200
+	--error-300: var(--color-dap-red-300); // was --color-negative-300
+	--error-500: var(--color-dap-red-500); // was --color-negative-500
+	--error-600: var(--color-dap-red-600); // was --color-negative-600
+	--error-700: var(--color-dap-red-700); // was --color-negative-700
+	--error-050: var(--color-dap-red-050); // was --color-negative-050
+	--error-400-default: var(--color-dap-red-400); // was --color-negative-400-default
 
 	/* Alias - warning */
 	--warning-100: var(--color-dap-orange-100); // was --color-warning-100
@@ -268,11 +268,11 @@
 	--background-background-info-strong: var(--primary-800); // was --color-background-info-strong
 	--background-background-warning: var(--warning-100); // was --color-background-warning
 	--background-background-warning-strong: var(--warning-600-default); // was --color-background-warning-strong
-	--background-background-negative: var(--negative-400-default); // was --color-negative-400-default
-	--background-background-negative-hover: var(--negative-500); // was --color-background-danger-strong-hover
-	--background-background-negative-selected: var(--negative-600); // was --color-negative-600
-	--background-background-negative-secondary-hover: var(--negative-050); // was --color-negative-050
-	--background-background-negative-secondary-selected: var(--negative-100);
+	--background-background-error: var(--error-400-default); // was --color-negative-400-default
+	--background-background-error-hover: var(--error-500); // was --color-background-danger-strong-hover
+	--background-background-error-selected: var(--error-600); // was --color-negative-600
+	--background-background-error-secondary-hover: var(--error-050); // was --color-negative-050
+	--background-background-error-secondary-selected: var(--error-100);
 	--background-background-active-moderate: var(--primary-400); // was --color-background-active-moderate
 	--background-background-transparent-hover: rgba(255, 255, 255, 0.15);
 	--background-background-transparent-active: rgba(255, 255, 255, 0.3);
@@ -298,9 +298,9 @@
 	--border-border-action-secondary-hover: var(--brand-400); // was --color-border-action-secondary-hover
 	--border-border-positive: var(--positive-600); // was --color-positive-600
 	--border-border-warning-strong: var(--warning-600-default); // was --color-background-warning-strong
-	--border-border-negative-weak: var(--negative-100);
-	--border-border-negative: var(--negative-400-default); // was --color-negative-400-default
-	--border-border-negative-hover: var(--negative-500); // was --color-negative-500
+	--border-border-error-weak: var(--error-100);
+	--border-border-error: var(--error-400-default); // was --color-negative-400-default
+	--border-border-error-hover: var(--error-500); // was --color-negative-500
 	--border-border-inverse: var(--secondary-050); // was --color-border-inverse
 	--border-border-field: var(--secondary-200); // was --color-border-disabled
 	--border-border-field-hover: var(--brand-600); // was --color-background-action-hover
@@ -320,7 +320,7 @@
 	--font-font-on-disabled: var(--secondary-800); // was --color-font-on-disabled
 	--font-font-positive: var(--positive-700-default); // was --color-font-success
 	--font-font-warning: var(--warning-700); // was --color-font-warning
-	--font-font-negative: var(--negative-500); // was --color-font-danger
+	--font-font-error: var(--error-500); // was --color-font-danger
 	--font-font-code: var(--primary-900); // was --color-font-code
 	--font-font-highlight: var(--color-dap-data-deep-fuchsia); // was --color-font-highlight
 	--font-font-placeholder: var(--secondary-500-net-4); // was --color-font-disabled
@@ -339,7 +339,7 @@
 	--icon-icon-positive: var(--positive-700-default); // was --color-icon-success
 	--icon-icon-warning-light: var(--warning-400); // was --color-warning-400
 	--icon-icon-warning: var(--warning-600-default); // was --color-icon-warning
-	--icon-icon-negative: var(--negative-500); // was --color-negative-500
+	--icon-icon-error: var(--error-500); // was --color-negative-500
 	--icon-icon-pause: var(--paused-600); // was --color-data-blue
 	--icon-icon-information-main: var(--secondary-500-net-4); // was --color-icon-information-main
 	--icon-icon-information-secondary: var(--primary-600); // was --color-icon-information-secondary
@@ -397,7 +397,7 @@
 	--status-bg-pending: var(--warning-100); // was --color-status-bg-pending
 	--status-bg-warning: var(--warning-200); // was --color-status-bg-warning
 	--status-bg-inactive: var(--background-background-tertiary-selected-weak);
-	--status-bg-failed: var(--background-background-negative-secondary-hover);
+	--status-bg-failed: var(--background-background-error-secondary-hover);
 
 	/* Semantic - Dark Buttons */
 	--dark-buttons-primary: var(--darks-400); // was --color-dark-buttons-primary

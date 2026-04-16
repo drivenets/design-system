@@ -51,7 +51,7 @@ const matrixRows = [
 const defaultIconMatrixRows = [
 	{ label: 'check circle', icon: 'check_circle', variant: 'primary', color: 'default', loading: false },
 	{ label: 'info', icon: 'info', variant: 'secondary', color: 'default', loading: false },
-	{ label: 'delete', icon: 'delete', variant: 'tertiary', color: 'negative', loading: false },
+	{ label: 'delete', icon: 'delete', variant: 'tertiary', color: 'error', loading: false },
 	{ label: 'loading', icon: 'check_circle', variant: 'primary', color: 'default', loading: true },
 ] as const;
 
@@ -185,12 +185,12 @@ export const MatrixDefault: Story = {
 	),
 };
 
-export const MatrixNegative: Story = {
+export const MatrixError: Story = {
 	parameters: { layout: 'fullscreen' },
 	render: () => (
 		<div className={storyStyles.matrix}>
-			<p className={storyStyles.sectionTitle}>Negative</p>
-			<MatrixGrid color="negative" />
+			<p className={storyStyles.sectionTitle}>Error</p>
+			<MatrixGrid color="error" />
 		</div>
 	),
 };
