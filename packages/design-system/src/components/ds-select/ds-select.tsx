@@ -6,7 +6,7 @@ import styles from './ds-select.module.scss';
 import type { DsSelectOption, DsSelectProps } from './ds-select.types';
 import { DsIcon } from '../ds-icon';
 import { type DsCheckboxProps, DsCheckbox } from '../ds-checkbox';
-import { SelectItemsChips } from './select-items-chips';
+import { SelectItemsTags } from './select-items-tags.tsx';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
 import { SELECT_ALL_VALUE, getUserSelectedItems } from './utils';
@@ -202,7 +202,7 @@ const DsSelect = ({
 						)}
 
 						{multiselectProps.multiple && (
-							<SelectItemsChips
+							<SelectItemsTags
 								onValueChange={multiselectProps.onValueChange}
 								showAll={showAllItems}
 								onShowAll={() => setShowAllItems(true)}

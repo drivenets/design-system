@@ -465,8 +465,8 @@ Interactive story demonstrating the filter functionality.
    - **Date range**: Filter by creation date
    - **Labels**: Filter by tags (Bug, High Priority, Feature Request, Documentation, Enhancement, Question)
 3. Click **Apply** to see the filtered results
-4. Selected filters appear as chips below the toolbar
-5. Click on a chip to remove that filter, or use **Clear all** to remove all filters
+4. Selected filters appear as tags below the toolbar
+5. Click on a tag to remove that filter, or use **Clear all** to remove all filters
 
 **Current mock data:**
 - 4 unresolved comments with various authors and labels

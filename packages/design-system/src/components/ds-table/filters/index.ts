@@ -20,7 +20,7 @@
  * // 2. Use in component with useTableFilters hook
  * import { useTableFilters } from '../filters';
  *
- * const { columnFilters, filterChips, enhancedColumns, handlers } =
+ * const { columnFilters, filterTags, enhancedColumns, handlers } =
  *   useTableFilters(myFilters, columns);
  * ```
  *

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Row } from '@tanstack/react-table';
-import type { ChipItem } from '../../../ds-chip-group';
+import type { TagFilterItem } from '../../../ds-tag-filter';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyAdapter = FilterAdapter<any, any, any>;
@@ -43,16 +43,16 @@ export interface FilterAdapter<TData, TFilterValue, TCellValue = unknown> {
 	cellRenderer?: (value: TCellValue) => ReactNode;
 
 	/**
-	 * Convert filter value to filter chips for display
-	 * Returns empty array if no chips should be shown
+	 * Convert filter value to filter tags for display
+	 * Returns empty array if no tags should be shown
 	 */
-	toChips: (value: TFilterValue) => ChipItem[];
+	toTags: (value: TFilterValue) => TagFilterItem[];
 
 	/**
-	 * Remove a chip from the filter value
-	 * Returns updated filter value with the chip's effect removed
+	 * Remove a tag from the filter value
+	 * Returns updated filter value with the tag's effect removed
 	 */
-	fromChip: (chip: ChipItem, currentValue: TFilterValue) => TFilterValue;
+	fromTag: (tag: TagFilterItem, currentValue: TFilterValue) => TFilterValue;
 
 	/**
 	 * Calculate how many active filters are applied

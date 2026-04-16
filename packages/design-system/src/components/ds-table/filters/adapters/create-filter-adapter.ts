@@ -23,14 +23,14 @@ export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> 
 	filterFn: FilterAdapter<TData, TFilterValue, TCellValue>['columnFilterFn'];
 
 	/**
-	 * Convert filter value to display chips
+	 * Convert filter value to display tags
 	 */
-	toChips: FilterAdapter<TData, TFilterValue, TCellValue>['toChips'];
+	toTags: FilterAdapter<TData, TFilterValue, TCellValue>['toTags'];
 
 	/**
-	 * Remove chip effect from filter value
+	 * Remove tag effect from filter value
 	 */
-	fromChip: FilterAdapter<TData, TFilterValue, TCellValue>['fromChip'];
+	fromTag: FilterAdapter<TData, TFilterValue, TCellValue>['fromTag'];
 
 	/**
 	 * Calculate active filter count
@@ -59,7 +59,7 @@ export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> 
  * - Complex filtering logic (e.g., editor + date range)
  * - Unique UI that doesn't fit generic patterns
  * - Combining multiple sub-filters
- * - Special chip generation requirements
+ * - Special tag generation requirements
  *
  * ## When to use specialized helpers instead:
  * - **Checkbox filters**: Use `createCheckboxFilterAdapter` for multi-select
@@ -82,13 +82,13 @@ export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> 
  *     return matchesUsers && matchesDateRange;
  *   },
  *
- *   toChips: (value) => {
- *     // Generate chips from your filter value
- *     return chips;
+ *   toTags: (value) => {
+ *     // Generate tags from your filter value
+ *     return tags;
  *   },
  *
- *   fromChip: (chip, currentValue) => {
- *     // Remove chip's effect from value
+ *   fromTag: (tag, currentValue) => {
+ *     // Remove tag's effect from value
  *     return updatedValue;
  *   },
  *
@@ -122,8 +122,8 @@ export function createFilterAdapter<TData, TFilterValue, TCellValue = unknown>(
 		initialValue: config.initialValue,
 		columnFilterFn: config.filterFn,
 		cellRenderer: config.cellRenderer,
-		toChips: config.toChips,
-		fromChip: config.fromChip,
+		toTags: config.toTags,
+		fromTag: config.fromTag,
 		getActiveFiltersCount: config.getActiveFiltersCount,
 		reset: () => config.initialValue,
 		renderFilter: config.renderFilter,

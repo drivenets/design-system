@@ -8,8 +8,6 @@ export * from './components/ds-button-v3';
 export * from './components/ds-card';
 export * from './components/ds-checkbox';
 export * from './components/ds-checkbox-group';
-export * from './components/ds-chip';
-export * from './components/ds-chip-group';
 export * from './components/ds-comment-bubble';
 export * from './components/ds-comment-card';
 export * from './components/ds-comment-indicator';
