@@ -21,8 +21,6 @@ export default defineConfig({
 				'dist/**',
 
 				// deprecated components
-				'**/ds-chip/**',
-				'**/ds-chip-group/**',
 				'**/ds-date-input/**',
 			],
 			thresholds: {

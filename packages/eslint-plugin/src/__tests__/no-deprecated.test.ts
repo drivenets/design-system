@@ -53,44 +53,6 @@ ruleTester.run('no-deprecated-ds-button-empty-design', plugin.rules['no-deprecat
 	],
 });
 
-ruleTester.run('no-deprecated-ds-chip', plugin.rules['no-deprecated-ds-chip'], {
-	valid: ['<DsTag />', '<DsTagFilter />'],
-
-	invalid: [
-		{
-			code: '<DsChip />',
-			errors: [
-				{
-					message: `DsChip is deprecated. Use DsTag instead.`,
-					line: 1,
-					endLine: 1,
-					column: 2,
-					endColumn: 8,
-				},
-			],
-		},
-	],
-});
-
-ruleTester.run('no-deprecated-ds-chip-group', plugin.rules['no-deprecated-ds-chip-group'], {
-	valid: ['<DsTag />', '<DsTagFilter />'],
-
-	invalid: [
-		{
-			code: '<DsChipGroup />',
-			errors: [
-				{
-					message: `DsChipGroup is deprecated. Use DsTagFilter instead.`,
-					line: 1,
-					endLine: 1,
-					column: 2,
-					endColumn: 13,
-				},
-			],
-		},
-	],
-});
-
 ruleTester.run('no-deprecated-ds-date-input', plugin.rules['no-deprecated-ds-date-input'], {
 	valid: ['<DsDatePicker />', '<DsDateRangePicker />'],
 

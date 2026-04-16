@@ -21,12 +21,12 @@ export interface FilterAdapter<TData, TFilterValue, TCellValue = unknown> {
 	/** Optional cell renderer; receives the cell value, not the filter value. */
 	cellRenderer?: (value: TCellValue) => ReactNode;
 	/**
-	 * Convert the filter value into chips for `DsTagFilter`. Each chip's
-	 * `metadata.key` / `metadata.value` must let `fromChip` undo it.
+	 * Convert the filter value into tags for `DsTagFilter`. Each tag's
+	 * `metadata.key` / `metadata.value` must let `fromTag` undo it.
 	 */
-	toChips: (value: TFilterValue) => TagFilterItem[];
-	/** Remove a chip's effect from the current value. */
-	fromChip: (chip: TagFilterItem, currentValue: TFilterValue) => TFilterValue;
+	toTags: (value: TFilterValue) => TagFilterItem[];
+	/** Remove a tag's effect from the current value. */
+	fromTag: (tag: TagFilterItem, currentValue: TFilterValue) => TFilterValue;
 	/** Number of active sub-filters; `0` means the filter is inactive. */
 	getActiveFiltersCount: (value: TFilterValue) => number;
 	/** Return the initial value. */

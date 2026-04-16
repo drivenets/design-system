@@ -6,18 +6,18 @@
  *
  * 1. **Checkbox Filter** (statusFilterAdapter):
  *    - Multi-select with custom rendering (status badges)
- *    - Custom chip labels
+ *    - Custom tag labels
  *    - Custom cell renderer
  *
  * 2. **Dual-Range Filter** (runningCompletedFilterAdapter):
  *    - Multiple numeric range fields in one filter
  *    - Number formatting
- *    - Automatic chip generation
+ *    - Automatic tag generation
  *
  * 3. **Custom Filter** (lastEditedFilterAdapter):
  *    - Complex filter with editor selection + date range
  *    - Custom render component
- *    - Multiple chip types from one filter
+ *    - Multiple tag types from one filter
  *    - Custom cell renderer
  *
  * ## Usage Pattern:
@@ -30,7 +30,7 @@
  * export const workflowFilters = [myFilter, ...];
  *
  * // 3. Use in component with useTableFilters hook
- * const { columnFilters, filterChips, enhancedColumns, handlers } =
+ * const { columnFilters, filterTags, enhancedColumns, handlers } =
  *   useTableFilters(workflowFilters, columns);
  * ```
  *
@@ -122,20 +122,20 @@ const renderStatusBadge = (status: DsStatus): ReactNode => {
  *
  * Demonstrates:
  * - Custom item rendering with DsStatusBadge
- * - Custom chip label template
+ * - Custom tag label template
  * - Custom cell renderer for table column
  *
  * Features:
  * - Empty selection = show all (no filter applied)
  * - Selected items = show only those items
- * - Automatic chip generation for each selected status
+ * - Automatic tag generation for each selected status
  */
 const statusFilterAdapter = createCheckboxFilterAdapter<Workflow, DsStatus>({
 	id: 'status',
 	label: 'Status',
 	items: statusItems,
 	renderer: (item) => renderStatusBadge(item.value),
-	chipLabelTemplate: (item) => `Status: ${item.label}`,
+	tagLabelTemplate: (item) => `Status: ${item.label}`,
 	cellRenderer: (value) => renderStatusBadge(value),
 });
 
@@ -150,8 +150,8 @@ const statusFilterAdapter = createCheckboxFilterAdapter<Workflow, DsStatus>({
  * Features:
  * - Each field can have independent from/to ranges
  * - All ranges must match (AND logic)
- * - Automatic chip generation for each active range
- * - Formatted numbers in chips
+ * - Automatic tag generation for each active range
+ * - Formatted numbers in tags
  */
 const runningCompletedFilterAdapter = createDualRangeFilterAdapter<Workflow>({
 	id: 'runningCompleted',
@@ -233,14 +233,14 @@ const parseTimestamp = (timestamp: string): Date => {
  * Demonstrates:
  * - Complex filter state (editor multi-select + time range)
  * - Custom filter function with multiple conditions
- * - Multiple chip types from one filter
+ * - Multiple tag types from one filter
  * - Custom filter UI component
  * - Custom cell renderer
  *
  * Features:
  * - Filter by multiple editors (multi-select)
  * - Filter by time range (preset options + custom date range)
- * - Separate chips for editors and time range
+ * - Separate tags for editors and time range
  * - Both conditions must match (AND logic)
  *
  * This is a reference implementation for building custom filters
@@ -277,19 +277,17 @@ const lastEditedFilterAdapter = createFilterAdapter<Workflow, LastEditedFilterVa
 
 		return editorMatch && timeMatch;
 	},
-	toChips: (value) => {
-		const chips = [];
+	toTags: (value) => {
+		const tags = [];
 
-		// Editor chips
 		value.editors.forEach((editor) => {
-			chips.push({
+			tags.push({
 				id: `editor-${editor}`,
 				label: `Editor: ${editor}`,
 				metadata: { key: 'lastEdited', type: 'editor', value: editor },
 			});
 		});
 
-		// Time range chip
 		if (value.timeRange) {
 			let label = '';
 			switch (value.timeRange) {
@@ -312,22 +310,22 @@ const lastEditedFilterAdapter = createFilterAdapter<Workflow, LastEditedFilterVa
 					break;
 				}
 			}
-			chips.push({
+			tags.push({
 				id: 'timeRange',
 				label,
 				metadata: { key: 'lastEdited', type: 'timeRange' },
 			});
 		}
 
-		return chips;
+		return tags;
 	},
-	fromChip: (chip, currentValue) => {
-		const { type, value: chipValue } = chip.metadata || {};
+	fromTag: (tag, currentValue) => {
+		const { type, value: tagValue } = tag.metadata || {};
 
 		if (type === 'editor') {
 			return {
 				...currentValue,
-				editors: currentValue.editors.filter((e) => e !== chipValue),
+				editors: currentValue.editors.filter((e) => e !== tagValue),
 			};
 		}
 

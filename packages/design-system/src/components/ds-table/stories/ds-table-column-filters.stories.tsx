@@ -171,18 +171,18 @@ const columns: ColumnDef<DeviceRow>[] = [
 ];
 
 function DevicesTable({ rows }: { rows: DeviceRow[] }) {
-	const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+	const { columnFilters, filterTags, enhancedColumns, handlers } = useTableFilters({
 		filterAdapters: [typeFilter, siteFilter],
 		baseColumns: columns,
 	});
 
 	return (
 		<>
-			{filterChips.length > 0 && (
+			{filterTags.length > 0 && (
 				<DsTagFilter
-					items={filterChips}
+					items={filterTags}
 					onClearAll={handlers.clearAll}
-					onItemDelete={handlers.deleteChip}
+					onItemDelete={handlers.deleteTag}
 				/>
 			)}
 			<DsTable
@@ -239,7 +239,7 @@ function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
 		type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
 	});
 
-	const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+	const { columnFilters, filterTags, enhancedColumns, handlers } = useTableFilters({
 		filterAdapters: [typeFilter],
 		baseColumns: columns,
 		appliedFilters,
@@ -248,11 +248,11 @@ function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
 
 	return (
 		<>
-			{filterChips.length > 0 && (
+			{filterTags.length > 0 && (
 				<DsTagFilter
-					items={filterChips}
+					items={filterTags}
 					onClearAll={handlers.clearAll}
-					onItemDelete={handlers.deleteChip}
+					onItemDelete={handlers.deleteTag}
 				/>
 			)}
 			<DsTable
@@ -302,18 +302,18 @@ draft and closes it (same as pressing Escape).
 		},
 	},
 	render: function Render() {
-		const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+		const { columnFilters, filterTags, enhancedColumns, handlers } = useTableFilters({
 			filterAdapters: adapters,
 			baseColumns,
 		});
 
 		return (
 			<div className={styles.tableFilterContainer}>
-				{filterChips.length > 0 && (
+				{filterTags.length > 0 && (
 					<DsTagFilter
-						items={filterChips}
+						items={filterTags}
 						onClearAll={handlers.clearAll}
-						onItemDelete={handlers.deleteChip}
+						onItemDelete={handlers.deleteTag}
 					/>
 				)}
 
@@ -349,7 +349,7 @@ external state, leaving other filters untouched.
 			type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
 		});
 
-		const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+		const { columnFilters, filterTags, enhancedColumns, handlers } = useTableFilters({
 			filterAdapters: adapters,
 			baseColumns,
 			appliedFilters,
@@ -358,11 +358,11 @@ external state, leaving other filters untouched.
 
 		return (
 			<div className={styles.tableFilterContainer}>
-				{filterChips.length > 0 && (
+				{filterTags.length > 0 && (
 					<DsTagFilter
-						items={filterChips}
+						items={filterTags}
 						onClearAll={handlers.clearAll}
-						onItemDelete={handlers.deleteChip}
+						onItemDelete={handlers.deleteTag}
 					/>
 				)}
 
