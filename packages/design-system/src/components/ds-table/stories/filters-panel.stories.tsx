@@ -239,7 +239,7 @@ A plug-and-play filter system using the **Filter Adapter Pattern** that eliminat
 
 - **Plug-and-play**: Add filters by adding to config array
 - **Type-safe**: Full TypeScript support
-- **Automatic**: Chip generation, nav items, column enhancement
+- **Automatic**: Tag generation, nav items, column enhancement
 - **Reusable**: Generic adapters work across tables
 - **Extensible**: Custom adapters for complex scenarios
 
@@ -281,10 +281,10 @@ function MyTable() {
 
   const {
     columnFilters,       // For TanStack Table
-    filterChips,         // For DsTagFilter
+    filterTags,         // For DsTagFilter
     filterNavItems,      // For filter navigation (FilterNavItem[])
     enhancedColumns,     // Columns with filters
-    handlers,            // { applyFilters, clearAll, deleteChip }
+    handlers,            // { applyFilters, clearAll, deleteTag }
     renderFilterContent, // Render function
   } = useTableFilters({
     filterAdapters: myFilters,
@@ -295,11 +295,11 @@ function MyTable() {
     <>
       <DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsModalOpen(true)} />
 
-      {filterChips.length > 0 && (
+      {filterTags.length > 0 && (
         <DsTagFilter
-          items={filterChips}
+          items={filterTags}
           onClearAll={handlers.clearAll}
-          onItemDelete={handlers.deleteChip}
+          onItemDelete={handlers.deleteTag}
         />
       )}
 
@@ -327,7 +327,7 @@ createCheckboxFilterAdapter({
   label: 'Display Label',
   items: [{ value: 'val1', label: 'Label 1' }],
   renderer?: (item) => <CustomComponent />,      // Optional
-  chipLabelTemplate?: (item) => \`\${item.label}\`, // Optional
+  tagLabelTemplate?: (item) => \`\${item.label}\`, // Optional
   cellRenderer?: (value) => <CustomCell />,      // Optional
 });
 \`\`\`
@@ -352,8 +352,8 @@ createCustomFilterAdapter({
   label: 'Display Label',
   initialValue: { /* your state */ },
   filterFn: (row, columnId, filterValue) => boolean,
-  toChips: (value) => TagFilterItem[],
-  fromChip: (chip, currentValue) => newValue,
+  toTags: (value) => TagFilterItem[],
+  fromTag: (tag, currentValue) => newValue,
   getActiveFiltersCount: (value) => number,              // 0 means none active
   renderFilter: (value, onChange) => ReactNode,
   cellRenderer?: (value) => ReactNode,           // Optional
@@ -362,7 +362,7 @@ createCustomFilterAdapter({
 
 ## What You Get Automatically
 
-- Chip generation from filter state
+- Tag generation from filter state
 - Filter nav items with active counts
 - Column enhancement with filter functions
 - State management across all filters
@@ -411,7 +411,7 @@ This story demonstrates the complete filter system with:
 - **Status Filter**: Checkbox multi-select with custom rendering (status badges)
 - **Running/Completed Filter**: Dual-range numeric filter
 - **Category Filter**: Simple checkbox multi-select
-- **Version Filter**: Checkbox with custom chip labels
+- **Version Filter**: Checkbox with custom tag labels
 
 #### Key Implementation Details:
 
@@ -424,10 +424,10 @@ This story demonstrates the complete filter system with:
    \`\`\`typescript
    const {
      columnFilters,       // Pass to DsTable
-     filterChips,         // Pass to DsTagFilter
+     filterTags,         // Pass to DsTagFilter
      filterNavItems,      // Pass to DsVerticalTabs in modal
      enhancedColumns,     // Pass to DsTable (includes filter functions)
-     handlers,            // { applyFilters, clearAll, deleteChip }
+     handlers,            // { applyFilters, clearAll, deleteTag }
      renderFilterContent, // Render function for modal content
    } = useTableFilters({
      filterAdapters: workflowFilters,
@@ -437,7 +437,7 @@ This story demonstrates the complete filter system with:
 
 3. **What's Handled Automatically**:
    - Filter state management
-   - Chip generation and deletion
+   - Tag generation and deletion
    - Nav item counts (updates in real-time)
    - Column enhancement with filter functions
    - Type-safe filter values
@@ -504,8 +504,8 @@ See the story code for complete implementation with styles.
 1. Click the filter icon to open the modal
 2. Select filters in different categories
 3. Notice the nav item counts update as you make changes
-4. Click "Apply" to see filtered data and chips
-5. Delete individual chips or clear all filters
+4. Click "Apply" to see filtered data and tags
+5. Delete individual tags or clear all filters
 
 #### Adding More Filters:
 To add a new filter, just add one adapter to \`workflowFilters\` array. No other changes needed!
@@ -515,7 +515,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 	},
 	render: function Render(args) {
 		// useTableFilters hook orchestrates all filter logic
-		const { columnFilters, filterChips, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
+		const { columnFilters, filterTags, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
 			useTableFilters({
 				filterAdapters: workflowFilters,
 				baseColumns: args.columns,
@@ -577,9 +577,9 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 					/>
 				</div>
 
-				{/* Filter chips (automatically generated from filter state) */}
-				{filterChips.length > 0 && (
-					<DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+				{/* Filter tags (automatically generated from filter state) */}
+				{filterTags.length > 0 && (
+					<DsTagFilter items={filterTags} onClearAll={handleClearAll} onItemDelete={handlers.deleteTag} />
 				)}
 
 				{/* Table with enhanced columns (includes filter functions) */}
@@ -680,7 +680,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 		// 6. Apply filters
 		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
 
-		// Verify chips appear
+		// Verify tags appear
 		await expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
 		await expect(canvas.getByText(/status: running/i)).toBeInTheDocument();
 		await expect(canvas.getByText(/running.*0.*50/i)).toBeInTheDocument();
@@ -700,11 +700,11 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 
 		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
 
-		// 9. Delete individual chip. DsTagFilter renders a `Delete tag` X inside each
-		// chip; the chip itself is also role="button", so the nested button is
+		// 9. Delete individual tag. DsTagFilter renders a `Delete tag` X inside each
+		// tag; the tag itself is also role="button", so the nested button is
 		// excluded from the accessibility tree — query by label directly.
-		const activeChip = canvas.getByRole('button', { name: /status: active/i });
-		const deleteButton = within(activeChip).getByLabelText(/delete tag/i);
+		const activeTag = canvas.getByRole('button', { name: /status: active/i });
+		const deleteButton = activeTag.querySelector('button[aria-label="Delete tag"]') as HTMLElement;
 		await userEvent.click(deleteButton);
 
 		await expect(canvas.queryByRole('button', { name: /status: active/i })).not.toBeInTheDocument();
@@ -737,7 +737,7 @@ This is useful for:
 \`\`\`typescript
 const [appliedFilters, setAppliedFilters] = useState({});
 
-const { filterChips, handlers } = useTableFilters({
+const { filterTags, handlers } = useTableFilters({
   filterAdapters: workflowFilters,
   baseColumns: columns,
   appliedFilters,           // External state
@@ -754,7 +754,7 @@ The debug panel below shows the current filter state as JSON.
 		// External filter state (controlled mode)
 		const [appliedFilters, setAppliedFilters] = useState<Record<string, unknown>>({});
 
-		const { columnFilters, filterChips, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
+		const { columnFilters, filterTags, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
 			useTableFilters({
 				filterAdapters: workflowFilters,
 				baseColumns: args.columns,
@@ -821,8 +821,8 @@ The debug panel below shows the current filter state as JSON.
 					/>
 				</div>
 
-				{filterChips.length > 0 && (
-					<DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+				{filterTags.length > 0 && (
+					<DsTagFilter items={filterTags} onClearAll={handleClearAll} onItemDelete={handlers.deleteTag} />
 				)}
 
 				<DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
@@ -896,7 +896,7 @@ The debug panel below shows the current filter state as JSON.
 		// 2. Verify external state is updated (debug panel shows filter)
 		await expect(canvas.getByText(/"status"/)).toBeInTheDocument();
 
-		// 3. Verify chip appears
+		// 3. Verify tag appears
 		await expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
 
 		// 4. Clear all and verify state resets

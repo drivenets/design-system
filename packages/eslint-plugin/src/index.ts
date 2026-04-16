@@ -16,18 +16,6 @@ const eslintPlugin = createPlugin(
 	},
 
 	{
-		name: 'no-deprecated-ds-chip',
-		selector: JSXElementName('DsChip'),
-		message: `DsChip is deprecated. Use DsTag instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-chip-group',
-		selector: JSXElementName('DsChipGroup'),
-		message: `DsChipGroup is deprecated. Use DsTagFilter instead.`,
-	},
-
-	{
 		name: 'no-deprecated-ds-date-input',
 		selector: JSXElementName('DsDateInput'),
 		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,

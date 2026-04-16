@@ -46,15 +46,15 @@ const baseColumns: ColumnDef<DeviceRow>[] = [
 ];
 
 function TableWithColumnFilters() {
-	const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+	const { columnFilters, filterTags, enhancedColumns, handlers } = useTableFilters({
 		filterAdapters: [typeFilter],
 		baseColumns,
 	});
 
 	return (
 		<div>
-			{filterChips.length > 0 && (
-				<DsTagFilter items={filterChips} onClearAll={handlers.clearAll} onItemDelete={handlers.deleteChip} />
+			{filterTags.length > 0 && (
+				<DsTagFilter items={filterTags} onClearAll={handlers.clearAll} onItemDelete={handlers.deleteTag} />
 			)}
 			<DsTable columns={enhancedColumns} columnFilters={columnFilters} data={rows} />
 		</div>

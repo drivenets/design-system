@@ -40,8 +40,8 @@ export interface UseTableFiltersResult<TData, TValue> {
 	filterState: FilterState<TValue>;
 	/** Applied filters mapped to TanStack's column-filters shape. */
 	columnFilters: ColumnFilterState<TValue>[];
-	/** Chips for `DsTagFilter`, derived from applied state. */
-	filterChips: TagFilterItem[];
+	/** Tags for `DsTagFilter`, derived from applied state. */
+	filterTags: TagFilterItem[];
 	/** Filter-nav items with active counts. */
 	filterNavItems: FilterNavItem[];
 	/** `baseColumns` with `filterFn`, cell renderer and per-column meta wired in. */
@@ -53,8 +53,8 @@ export interface UseTableFiltersResult<TData, TValue> {
 		applyFilters: () => void;
 		/** Clear all filters. */
 		clearAll: () => void;
-		/** Remove a chip's effect from applied state. */
-		deleteChip: (chip: TagFilterItem) => void;
+		/** Remove a tag's effect from applied state. */
+		deleteTag: (tag: TagFilterItem) => void;
 		/** Commit one column's draft (per-column popover Save). */
 		applyColumnFilter: (filterId: string) => void;
 		/** Discard one column's draft without committing. */
@@ -103,9 +103,9 @@ export function useTableFilters<TData, TValue, TCellValue>({
 		})
 		.map(([id, value]) => ({ id, value }));
 
-	const filterChips = _filterAdapters.flatMap((adapter) => {
+	const filterTags = _filterAdapters.flatMap((adapter) => {
 		const value = appliedFilters[adapter.id];
-		return value !== undefined ? adapter.toChips(value) : [];
+		return value !== undefined ? adapter.toTags(value) : [];
 	});
 
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
@@ -213,8 +213,8 @@ export function useTableFilters<TData, TValue, TCellValue>({
 		}
 	};
 
-	const deleteChip = (chip: TagFilterItem) => {
-		const filterKey = typeof chip.metadata?.key === 'string' ? chip.metadata.key : undefined;
+	const deleteTag = (tag: TagFilterItem) => {
+		const filterKey = typeof tag.metadata?.key === 'string' ? tag.metadata.key : undefined;
 		if (!filterKey) {
 			return;
 		}
@@ -229,7 +229,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 			return;
 		}
 
-		const newValue = adapter.fromChip(chip, currentValue);
+		const newValue = adapter.fromTag(tag, currentValue);
 
 		const newFilters =
 			adapter.getActiveFiltersCount(newValue) === 0
@@ -257,14 +257,14 @@ export function useTableFilters<TData, TValue, TCellValue>({
 	return {
 		filterState: draftFilters,
 		columnFilters,
-		filterChips,
+		filterTags,
 		filterNavItems,
 		enhancedColumns,
 		handlers: {
 			updateFilter,
 			applyFilters,
 			clearAll,
-			deleteChip,
+			deleteTag,
 			applyColumnFilter,
 			cancelColumnFilter,
 			clearColumnFilter,

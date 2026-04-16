@@ -70,8 +70,8 @@ export function createDualRangeFilterAdapter<TData>(
 
 		cellRenderer: undefined,
 
-		toChips: (value) => {
-			const chips: TagFilterItem[] = [];
+		toTags: (value) => {
+			const tags: TagFilterItem[] = [];
 
 			Object.entries(value).forEach(([fieldKey, range]) => {
 				const hasFilter = range.from !== undefined || range.to !== undefined;
@@ -81,7 +81,7 @@ export function createDualRangeFilterAdapter<TData>(
 					const fromText = range.from !== undefined ? formatNumber(range.from) : '';
 					const toText = range.to !== undefined ? formatNumber(range.to) : '';
 
-					chips.push({
+					tags.push({
 						id: `${id}_${fieldKey}`,
 						label: `${fieldLabel}: From ${fromText} to ${toText}`,
 						metadata: {
@@ -94,11 +94,11 @@ export function createDualRangeFilterAdapter<TData>(
 				}
 			});
 
-			return chips;
+			return tags;
 		},
 
-		fromChip: (chip, currentValue) => {
-			const fieldKey = chip.metadata?.field as string;
+		fromTag: (tag, currentValue) => {
+			const fieldKey = tag.metadata?.field as string;
 			if (!fieldKey) {
 				return currentValue;
 			}

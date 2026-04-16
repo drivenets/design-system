@@ -60,7 +60,7 @@ export type DsSelectProps = {
 	/**
 	 * Custom render function for dropdown options.
 	 * When provided, replaces the default label text inside each dropdown item.
-	 * The string `label` is still used for search, trigger text, chips, and accessibility.
+	 * The string `label` is still used for search, trigger text, tags, and accessibility.
 	 */
 	renderOption?: (option: DsSelectOption) => ReactNode;
 } & (
