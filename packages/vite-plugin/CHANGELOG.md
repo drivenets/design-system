@@ -1,5 +1,11 @@
 # @drivenets/vite-plugin-design-system
 
+## 0.0.7
+
+### Patch Changes
+
+- 8c37905: Improve build process
+
 ## 0.0.6
 
 ### Patch Changes

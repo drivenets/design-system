@@ -1,11 +1,13 @@
-export function JSXElement(name: string, attributes: Record<string, string> = {}) {
-	let selector = `JSXOpeningElement[name.name='${name}']`;
+export function JSXElement(name: string) {
+	return `JSXOpeningElement[name.name='${name}']`;
+}
 
-	Object.entries(attributes).forEach(([attrName, attrValue]) => {
-		selector += `:has( > ${JSXAttribute(attrName, attrValue)} )`;
-	});
+export function JSXElementName(name: string) {
+	return `${JSXElement(name)} > .name`;
+}
 
-	return selector;
+export function JSXElementAttribute(element: string, attribute: string, value: string) {
+	return `${JSXElement(element)} > ${JSXAttribute(attribute, value)}`;
 }
 
 export function JSXAttribute(name: string, value?: string) {

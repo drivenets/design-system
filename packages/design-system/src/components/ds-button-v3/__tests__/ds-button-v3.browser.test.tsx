@@ -1,7 +1,7 @@
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import { DsButtonV3 } from '../index.ts';
+import { DsButtonV3 } from '../index';
 
 describe('DsButtonV3', () => {
 	it('calls onClick when clicked', async () => {

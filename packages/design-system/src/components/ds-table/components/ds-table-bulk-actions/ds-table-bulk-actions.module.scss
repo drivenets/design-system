@@ -58,18 +58,15 @@
 	gap: 8px;
 
 	> .actionButton {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: var(--spacing-3xs);
 		border-right: 1px solid var(--neutral-6);
 		width: 68px;
 		height: 48px;
 		border-radius: 0;
-
-		> .actionButtonContent {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			gap: 4px;
-		}
 	}
 
 	> .actionButton:first-child {
