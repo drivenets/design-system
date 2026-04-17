@@ -1,27 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import classNames from 'classnames';
 import { fn } from 'storybook/test';
-import DsButtonV3 from './ds-button-v3';
-import { DsButtonV3 as DsButtonV3Wrapped } from './index';
+import { DsButton } from './index';
 import {
-	type ButtonV3Color,
-	buttonV3Colors,
-	buttonV3Sizes,
-	type ButtonV3Variant,
-	buttonV3Variants,
-} from './ds-button-v3.types';
-import storyStyles from './ds-button-v3.stories.module.scss';
+	type ButtonColor,
+	buttonColors,
+	buttonSizes,
+	type ButtonVariant,
+	buttonVariants,
+} from './ds-button.types';
+import storyStyles from './ds-button.stories.module.scss';
 
-const meta: Meta<typeof DsButtonV3> = {
-	title: 'Design System/ButtonV3',
-	component: DsButtonV3,
+const meta: Meta<typeof DsButton> = {
+	title: 'Design System/Button',
+	component: DsButton,
 	parameters: {
 		layout: 'centered',
 	},
 	argTypes: {
-		color: { control: 'select', options: buttonV3Colors },
-		variant: { control: 'select', options: buttonV3Variants },
-		size: { control: 'select', options: buttonV3Sizes },
+		color: { control: 'select', options: buttonColors },
+		variant: { control: 'select', options: buttonVariants },
+		size: { control: 'select', options: buttonSizes },
 		loading: { control: 'boolean' },
 		disabled: { control: 'boolean' },
 		className: { table: { disable: true } },
@@ -32,7 +31,7 @@ const meta: Meta<typeof DsButtonV3> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof DsButtonV3>;
+type Story = StoryObj<typeof DsButton>;
 
 export const Default: Story = {
 	args: {
@@ -45,7 +44,7 @@ export const Default: Story = {
 };
 
 const matrixRows = [
-	...buttonV3Variants.map((v) => ({ label: v, loading: false })),
+	...buttonVariants.map((v) => ({ label: v, loading: false })),
 	{ label: 'loading', loading: true },
 ];
 
@@ -69,13 +68,13 @@ const onDarkIconMatrixRows = [
 	{ label: 'loading', icon: 'info', variant: 'primary', color: 'light', loading: true },
 ] as const;
 
-const MatrixGrid = ({ color }: { color?: ButtonV3Color }) => {
+const MatrixGrid = ({ color }: { color?: ButtonColor }) => {
 	const isOnDark = color === 'light';
 
 	return (
 		<div className={storyStyles.section}>
 			<div className={storyStyles.columnHeaders}>
-				{buttonV3Sizes.map((size) => (
+				{buttonSizes.map((size) => (
 					<span
 						key={size}
 						className={classNames(storyStyles.columnHeader, {
@@ -97,18 +96,18 @@ const MatrixGrid = ({ color }: { color?: ButtonV3Color }) => {
 						{label}
 					</span>
 
-					{buttonV3Sizes.map((size) => (
+					{buttonSizes.map((size) => (
 						<div key={size} className={storyStyles.cell}>
-							<DsButtonV3
+							<DsButton
 								color={color}
-								variant={loading ? 'primary' : (label as (typeof buttonV3Variants)[number])}
+								variant={loading ? 'primary' : (label as (typeof buttonVariants)[number])}
 								size={size}
 								icon="check_circle"
 								loading={loading}
 								onClick={fn()}
 							>
 								{size !== 'tiny' ? 'Button' : undefined}
-							</DsButtonV3>
+							</DsButton>
 						</div>
 					))}
 				</div>
@@ -124,15 +123,15 @@ const IconMatrixGrid = ({
 	rows: ReadonlyArray<{
 		label: string;
 		icon: 'check_circle' | 'info' | 'delete' | 'keyboard_arrow_down' | 'home';
-		variant: ButtonV3Variant;
-		color: ButtonV3Color;
+		variant: ButtonVariant;
+		color: ButtonColor;
 		loading: boolean;
 	}>;
 	isOnDark?: boolean;
 }) => (
 	<div className={storyStyles.section}>
 		<div className={storyStyles.columnHeaders}>
-			{buttonV3Sizes.map((size) => (
+			{buttonSizes.map((size) => (
 				<span
 					key={size}
 					className={classNames(storyStyles.columnHeader, {
@@ -154,12 +153,12 @@ const IconMatrixGrid = ({
 					{label}
 				</span>
 
-				{buttonV3Sizes.map((size) => {
+				{buttonSizes.map((size) => {
 					const ariaLabel = `${label} ${size}`;
 
 					return (
 						<div key={size} className={storyStyles.cell}>
-							<DsButtonV3
+							<DsButton
 								color={color}
 								variant={variant}
 								size={size}
@@ -237,17 +236,17 @@ export const ResponsiveSize: Story = {
 	parameters: { layout: 'centered' },
 	render: () => (
 		<div className={storyStyles.responsiveRow}>
-			<DsButtonV3Wrapped size={{ lg: 'large', md: 'small' }} icon="check_circle" onClick={fn()}>
+			<DsButton size={{ lg: 'large', md: 'small' }} icon="check_circle" onClick={fn()}>
 				lg: large / md: small
-			</DsButtonV3Wrapped>
+			</DsButton>
 
-			<DsButtonV3Wrapped size={{ lg: 'medium', md: 'tiny' }} icon="check_circle" onClick={fn()}>
+			<DsButton size={{ lg: 'medium', md: 'tiny' }} icon="check_circle" onClick={fn()}>
 				lg: medium / md: tiny
-			</DsButtonV3Wrapped>
+			</DsButton>
 
-			<DsButtonV3Wrapped size="medium" icon="check_circle" onClick={fn()}>
+			<DsButton size="medium" icon="check_circle" onClick={fn()}>
 				static: medium
-			</DsButtonV3Wrapped>
+			</DsButton>
 		</div>
 	),
 };

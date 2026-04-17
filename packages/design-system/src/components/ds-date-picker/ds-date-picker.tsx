@@ -11,7 +11,6 @@ import {
 	validateDateString,
 } from './ds-date-picker.utils';
 import { DsTimePicker } from '../ds-time-picker';
-import { DsIcon } from '../ds-icon';
 import styles from './ds-date-picker.module.scss';
 import { useControlled } from '../../utils/use-controlled';
 import { DsTextInput } from '../ds-text-input';
@@ -145,27 +144,23 @@ const DsDatePicker = ({
 								{showClearButton && (
 									<DatePicker.ClearTrigger asChild onClick={() => setValue(null)}>
 										<DsButton
+											icon="close"
 											className={styles.clearTrigger}
-											design="v1.2"
 											size="tiny"
-											buttonType="tertiary"
+											variant="tertiary"
 											disabled={disabled}
 											aria-label={locale?.clearLabel ?? 'Clear date'}
-										>
-											<DsIcon icon="close" size="tiny" />
-										</DsButton>
+										/>
 									</DatePicker.ClearTrigger>
 								)}
 								<DatePicker.Trigger asChild>
 									<DsButton
-										design="v1.2"
+										icon="calendar_today"
 										size="tiny"
-										buttonType="tertiary"
+										variant="tertiary"
 										disabled={disabled}
 										aria-label={locale?.openCalendarLabel ?? 'Open calendar'}
-									>
-										<DsIcon icon="calendar_today" size="tiny" />
-									</DsButton>
+									/>
 								</DatePicker.Trigger>
 							</>
 						),

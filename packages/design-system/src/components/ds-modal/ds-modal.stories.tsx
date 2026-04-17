@@ -83,7 +83,7 @@ export const Default: Story = {
 				<div className={styles.storyHeader}>
 					<h2>Default Modal</h2>
 					<p>The default variant has an inset header underline and no footer border.</p>
-					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+					<DsButton variant="primary" size="large" onClick={() => setIsOpen(true)}>
 						Open Modal
 					</DsButton>
 				</div>
@@ -98,10 +98,10 @@ export const Default: Story = {
 					</DsModal.Body>
 					<DsModal.Footer>
 						<DsModal.Actions>
-							<DsButton design="v1.2" buttonType="secondary" size="large" onClick={() => setIsOpen(false)}>
+							<DsButton variant="secondary" size="large" onClick={() => setIsOpen(false)}>
 								Cancel
 							</DsButton>
-							<DsButton design="v1.2" variant="filled" size="large" onClick={() => setIsOpen(false)}>
+							<DsButton variant="primary" size="large" onClick={() => setIsOpen(false)}>
 								Confirm
 							</DsButton>
 						</DsModal.Actions>
@@ -186,7 +186,7 @@ export const Divided: Story = {
 						Click the button below to open a form modal. Fill out the form and click &#34;Save Changes&#34; to
 						see the results displayed here.
 					</p>
-					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+					<DsButton variant="primary" size="large" onClick={() => setIsOpen(true)}>
 						Open Form Modal
 					</DsButton>
 				</div>
@@ -218,8 +218,7 @@ export const Divided: Story = {
 							</div>
 						</div>
 						<DsButton
-							design="v1.2"
-							buttonType="secondary"
+							variant="secondary"
 							size="small"
 							onClick={() => setSubmittedData(null)}
 							className={styles.clearResultsButton}
@@ -401,11 +400,11 @@ export const Divided: Story = {
 					</DsModal.Body>
 					<DsModal.Footer>
 						<DsModal.Actions>
-							<DsButton design="v1.2" buttonType="secondary" size="large" onClick={handleReset}>
+							<DsButton variant="secondary" size="large" onClick={handleReset}>
 								Reset
 							</DsButton>
 							<DsButton
-								design="v1.2"
+								variant="primary"
 								size="large"
 								disabled={!isDirty || !isValid}
 								onClick={handleSubmit(onSubmit)}
@@ -620,7 +619,7 @@ export const Custom: Story = {
 				<div className={styles.storyHeader}>
 					<h2>Custom Modal Demo</h2>
 					<p>Click the button below to open a custom modal with custom header and footer content.</p>
-					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+					<DsButton variant="primary" size="large" onClick={() => setIsOpen(true)}>
 						Open Custom Modal
 					</DsButton>
 				</div>
@@ -782,7 +781,7 @@ export const WithIcon: Story = {
 				<div className={styles.storyHeader}>
 					<h2>Modal with Icon</h2>
 					<p>Example showing how to add an icon to the modal header.</p>
-					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+					<DsButton variant="primary" size="large" onClick={() => setIsOpen(true)}>
 						Open Modal
 					</DsButton>
 				</div>
@@ -838,7 +837,7 @@ export const WithoutHeader: Story = {
 				<div className={styles.storyHeader}>
 					<h2>Modal Without Header</h2>
 					<p>Modal with only body and footer content, no header section.</p>
-					<DsButton design="v1.2" size="large" onClick={() => setIsOpen(true)}>
+					<DsButton variant="primary" size="large" onClick={() => setIsOpen(true)}>
 						Open Modal
 					</DsButton>
 				</div>
@@ -852,10 +851,10 @@ export const WithoutHeader: Story = {
 					</DsModal.Body>
 					<DsModal.Footer>
 						<DsModal.Actions>
-							<DsButton design="v1.2" buttonType="secondary" size="large" onClick={() => setIsOpen(false)}>
+							<DsButton variant="secondary" size="large" onClick={() => setIsOpen(false)}>
 								Close
 							</DsButton>
-							<DsButton design="v1.2" variant="filled" size="large" onClick={() => setIsOpen(false)}>
+							<DsButton variant="primary" size="large" onClick={() => setIsOpen(false)}>
 								Continue
 							</DsButton>
 						</DsModal.Actions>

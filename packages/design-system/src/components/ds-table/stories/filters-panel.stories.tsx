@@ -490,9 +490,9 @@ const handleValueChange = (value: string | null) => {
   </DsModal.Body>
 
   <DsModal.Footer className={styles.filterFooter}>
-    <DsButton onClick={handleClearAll}>Clear all</DsButton>
+    <DsButton variant="secondary" onClick={handleClearAll}>Clear all</DsButton>
     <DsModal.Actions>
-      <DsButton onClick={handleApply}>Apply</DsButton>
+      <DsButton variant="primary" onClick={handleApply}>Apply</DsButton>
     </DsModal.Actions>
   </DsModal.Footer>
 </DsModal>
@@ -571,7 +571,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			<div className={styles.tableFilterContainer}>
 				{/* Toolbar with filter button */}
 				<div className={styles.toolbar}>
-					<DsButton design="v1.2" buttonType="secondary" onClick={() => setIsOpen(true)}>
+					<DsButton variant="secondary" onClick={() => setIsOpen(true)}>
 						<DsIcon size="tiny" icon="filter_list" />
 					</DsButton>
 				</div>
@@ -616,12 +616,12 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 					</DsModal.Body>
 
 					<DsModal.Footer className={styles.filterFooter}>
-						<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={handleClearAll}>
+						<DsButton variant="secondary" onClick={handleClearAll}>
 							<DsIcon icon="close" size="tiny" />
 							Clear all
 						</DsButton>
 						<DsModal.Actions>
-							<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={handleApply}>
+							<DsButton variant="primary" onClick={handleApply}>
 								Apply
 							</DsButton>
 						</DsModal.Actions>
@@ -811,7 +811,7 @@ The debug panel below shows the current filter state as JSON.
 				</div>
 
 				<div className={styles.toolbar}>
-					<DsButton design="v1.2" buttonType="secondary" onClick={() => setIsOpen(true)}>
+					<DsButton variant="secondary" onClick={() => setIsOpen(true)}>
 						<DsIcon size="tiny" icon="filter_list" />
 					</DsButton>
 				</div>
@@ -853,12 +853,12 @@ The debug panel below shows the current filter state as JSON.
 					</DsModal.Body>
 
 					<DsModal.Footer className={styles.filterFooter}>
-						<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={handleClearAll}>
+						<DsButton variant="secondary" onClick={handleClearAll}>
 							<DsIcon icon="close" size="tiny" />
 							Clear all
 						</DsButton>
 						<DsModal.Actions>
-							<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={handleApply}>
+							<DsButton variant="primary" onClick={handleApply}>
 								Apply
 							</DsButton>
 						</DsModal.Actions>

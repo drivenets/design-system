@@ -7,7 +7,7 @@ ruleTester.run('no-cross-component-internal-import', noCrossComponentInternalImp
 	valid: [
 		// Barrel imports are fine.
 		"import { DsIcon } from '../ds-icon';",
-		"import DsButton from '../../ds-button';",
+		"import { DsButton } from '../../ds-button';",
 		"import { DsTable } from '../../../ds-table';",
 
 		// Same-component relative imports are fine.
@@ -36,7 +36,7 @@ ruleTester.run('no-cross-component-internal-import', noCrossComponentInternalImp
 			],
 		},
 		{
-			code: "import DsButton from '../../ds-button/ds-button';",
+			code: "import { DsButton } from '../../ds-button/ds-button';",
 			errors: [
 				{
 					messageId: 'noCrossComponentInternalImport',
@@ -45,11 +45,11 @@ ruleTester.run('no-cross-component-internal-import', noCrossComponentInternalImp
 			],
 		},
 		{
-			code: "import type { DsButtonProps } from '../../ds-button/versions/ds-button-legacy';",
+			code: "import type { DsButtonProps } from '../../ds-button/ds-button.types';",
 			errors: [
 				{
 					messageId: 'noCrossComponentInternalImport',
-					data: { importPath: '../../ds-button/versions/ds-button-legacy' },
+					data: { importPath: '../../ds-button/ds-button.types' },
 				},
 			],
 		},

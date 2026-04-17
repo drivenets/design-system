@@ -85,7 +85,7 @@ export const NavigationLayout: Story = {
 			<div className="layout">
 				<div className="header">
 					<div className="logo">
-						<DsButton className="toggle" design="v1.2" onClick={() => setIsCollapsed(!isCollapsed)}>
+						<DsButton className="toggle" onClick={() => setIsCollapsed(!isCollapsed)}>
 							Toggle
 						</DsButton>
 					</div>

@@ -125,10 +125,10 @@ export const Default: Story = {
 				</DsDrawer.Body>
 				<DsDrawer.Footer>
 					<DsDrawer.Actions>
-						<DsButton design="v1.2" buttonType="tertiary" size="large">
+						<DsButton variant="tertiary" size="large">
 							Cancel
 						</DsButton>
-						<DsButton design="v1.2" size="large">
+						<DsButton variant="primary" size="large">
 							Save
 						</DsButton>
 					</DsDrawer.Actions>
@@ -192,10 +192,10 @@ export const WithTabs: Story = {
 				</DsDrawer.Body>
 				<DsDrawer.Footer>
 					<DsDrawer.Actions>
-						<DsButton design="v1.2" buttonType="tertiary" size="large">
+						<DsButton variant="tertiary" size="large">
 							Cancel
 						</DsButton>
-						<DsButton design="v1.2" size="large">
+						<DsButton variant="primary" size="large">
 							Save
 						</DsButton>
 					</DsDrawer.Actions>
