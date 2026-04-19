@@ -48,7 +48,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "^0.18.2",
-		"@typescript/native-preview": "7.0.0-dev.20260331.1",
+		"@typescript/native-preview": "7.0.0-dev.20260418.1",
 		"@vitest/coverage-v8": "^4.1.0",
 		"eslint": "^10.0.1",
 		"publint": "^0.3.18",

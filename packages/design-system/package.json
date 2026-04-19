@@ -99,7 +99,7 @@
 		"@types/eslint-plugin-jsx-a11y": "^6.10.1",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
-		"@typescript/native-preview": "7.0.0-dev.20260331.1",
+		"@typescript/native-preview": "7.0.0-dev.20260418.1",
 		"@vitejs/plugin-react": "^6.0.1",
 		"@vitest/browser-playwright": "^4.1.0",
 		"@vitest/coverage-v8": "^4.1.0",

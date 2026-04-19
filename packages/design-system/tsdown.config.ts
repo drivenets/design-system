@@ -7,10 +7,11 @@ import * as sassEmbedded from 'sass-embedded';
 import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-plugin.ts';
 
 export default defineConfig({
+	tsconfig: './tsconfig.build.json',
 	entry: ['./src/index.ts'],
 	format: ['cjs', 'esm'],
 	platform: 'browser',
-	dts: true,
+	dts: { tsgo: true },
 	sourcemap: false,
 	clean: true,
 	outDir: 'dist',
