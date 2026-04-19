@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/design-system",
-	"version": "0.8.0",
+	"version": "0.9.0",
 	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./dist/index.d.cts",
@@ -40,7 +40,7 @@
 		"lint": "pnpm generate-scss-dts && eslint --max-warnings=0 ${ESLINT_ARGS-} .; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
 		"//": "ESLINT_ARGS is used to pass arguments to eslint. We're using it so we don't need to duplicate the lint script.",
 		"lint:fix": "ESLINT_ARGS=--fix pnpm lint",
-		"typecheck": "pnpm generate-scss-dts && tsc; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
+		"typecheck": "pnpm generate-scss-dts && tsgo; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"storybook": "storybook dev -p 6006",
 		"test": "vitest --project=\"!requires-build\"",
@@ -72,7 +72,8 @@
 		"@tanstack/react-virtual": "^3.13.23",
 		"@zag-js/react": "^1.37.0",
 		"@zag-js/steps": "^1.37.0",
-		"classnames": "^2.5.1"
+		"classnames": "^2.5.1",
+		"csstype": "^3.2.3"
 	},
 	"peerDependencies": {
 		"@internationalized/date": "^3.0.0",
@@ -98,6 +99,7 @@
 		"@types/eslint-plugin-jsx-a11y": "^6.10.1",
 		"@types/react": "^19.2.14",
 		"@types/react-dom": "^19.2.3",
+		"@typescript/native-preview": "7.0.0-dev.20260331.1",
 		"@vitejs/plugin-react": "^6.0.1",
 		"@vitest/browser-playwright": "^4.1.0",
 		"@vitest/coverage-v8": "^4.1.0",
@@ -117,7 +119,7 @@
 		"storybook": "^10.2.19",
 		"tsdown": "^0.21.6",
 		"typed-scss-modules": "^8.1.1",
-		"typescript": "^5.9.3",
+		"typescript": "^6.0.2",
 		"typescript-plugin-css-modules": "^5.2.0",
 		"vite": "8.0.5",
 		"vitest": "^4.1.0",

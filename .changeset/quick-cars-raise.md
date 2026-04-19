@@ -2,4 +2,4 @@
 '@drivenets/eslint-plugin-design-system': patch
 ---
 
-Refine the MUI imports reporting range to reduce noise
+Support TypeScript 6.x

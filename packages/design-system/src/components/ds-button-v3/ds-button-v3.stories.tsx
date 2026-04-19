@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import classNames from 'classnames';
 import { fn } from 'storybook/test';
-import DsButtonV3 from './ds-button-v3.tsx';
+import DsButtonV3 from './ds-button-v3';
 import {
 	type ButtonV3Color,
 	buttonV3Colors,
 	buttonV3Sizes,
 	type ButtonV3Variant,
 	buttonV3Variants,
-} from './ds-button-v3.types.ts';
+} from './ds-button-v3.types';
 import storyStyles from './ds-button-v3.stories.module.scss';
 
 const meta: Meta<typeof DsButtonV3> = {
@@ -51,7 +51,7 @@ const matrixRows = [
 const defaultIconMatrixRows = [
 	{ label: 'check circle', icon: 'check_circle', variant: 'primary', color: 'default', loading: false },
 	{ label: 'info', icon: 'info', variant: 'secondary', color: 'default', loading: false },
-	{ label: 'delete', icon: 'delete', variant: 'tertiary', color: 'negative', loading: false },
+	{ label: 'delete', icon: 'delete', variant: 'tertiary', color: 'error', loading: false },
 	{ label: 'loading', icon: 'check_circle', variant: 'primary', color: 'default', loading: true },
 ] as const;
 
@@ -185,12 +185,12 @@ export const MatrixDefault: Story = {
 	),
 };
 
-export const MatrixNegative: Story = {
+export const MatrixError: Story = {
 	parameters: { layout: 'fullscreen' },
 	render: () => (
 		<div className={storyStyles.matrix}>
-			<p className={storyStyles.sectionTitle}>Negative</p>
-			<MatrixGrid color="negative" />
+			<p className={storyStyles.sectionTitle}>Error</p>
+			<MatrixGrid color="error" />
 		</div>
 	),
 };

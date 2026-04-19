@@ -1,13 +1,11 @@
 @use '../../styles/root_updated';
+@use '../../styles/shared/button' as button;
 
 $height-large: 40px;
 $height-medium: 36px;
 $height-small: 28px;
 $border-radius: 4px;
 $focus-ring-width: 2px;
-// it looks a bit better with 0.3 than 0.2
-$transition-duration-default: 0.3s;
-$transition-duration-quick: 0.15s;
 
 @mixin focus-ring($outer-color) {
 	outline: $focus-ring-width solid $outer-color;
@@ -28,10 +26,10 @@ $transition-duration-quick: 0.15s;
 	text-align: center;
 	cursor: pointer;
 	transition:
-		background-color $transition-duration-default,
-		border-color $transition-duration-quick,
-		color $transition-duration-default,
-		outline-color $transition-duration-quick;
+		background-color button.$transition-duration-default,
+		border-color button.$transition-duration-quick,
+		color button.$transition-duration-default,
+		outline-color button.$transition-duration-quick;
 
 	&:disabled:not([data-loading]) {
 		cursor: not-allowed;
@@ -201,28 +199,28 @@ $transition-duration-quick: 0.15s;
 	}
 }
 
-.root[data-color='negative'][data-variant='primary'] {
-	background-color: var(--background-background-negative);
+.root[data-color='error'][data-variant='primary'] {
+	background-color: var(--background-background-error);
 	color: var(--font-font-on-action);
 	border-color: transparent;
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
-		background-color: var(--background-background-negative-hover);
+		background-color: var(--background-background-error-hover);
 	}
 
 	&:active:not(:disabled) {
-		background-color: var(--background-background-negative-selected);
+		background-color: var(--background-background-error-selected);
 	}
 
 	&:focus-visible {
-		@include focus-ring(var(--border-border-negative));
+		@include focus-ring(var(--border-border-error));
 
-		background-color: var(--background-background-negative-hover);
+		background-color: var(--background-background-error-hover);
 		border-color: var(--border-border-inverse);
 	}
 
 	&[data-selected='true'] {
-		background-color: var(--background-background-negative-selected);
+		background-color: var(--background-background-error-selected);
 	}
 
 	&:disabled:not([data-loading]) {
@@ -231,31 +229,31 @@ $transition-duration-quick: 0.15s;
 	}
 }
 
-.root[data-color='negative'][data-variant='secondary'] {
+.root[data-color='error'][data-variant='secondary'] {
 	background-color: var(--background-background-action-secondary);
-	color: var(--font-font-negative);
-	border-color: var(--border-border-negative);
+	color: var(--font-font-error);
+	border-color: var(--border-border-error);
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
-		background-color: var(--background-background-negative-secondary-hover);
-		border-color: var(--border-border-negative-hover);
+		background-color: var(--background-background-error-secondary-hover);
+		border-color: var(--border-border-error-hover);
 	}
 
 	&:active:not(:disabled) {
-		background-color: var(--background-background-negative-secondary-selected);
-		border-color: var(--border-border-negative-hover);
+		background-color: var(--background-background-error-secondary-selected);
+		border-color: var(--border-border-error-hover);
 	}
 
 	&:focus-visible {
-		@include focus-ring(var(--border-border-negative));
+		@include focus-ring(var(--border-border-error));
 
-		background-color: var(--background-background-negative-secondary-hover);
+		background-color: var(--background-background-error-secondary-hover);
 		border-color: var(--border-border-inverse);
 	}
 
 	&[data-selected='true'] {
-		background-color: var(--background-background-negative-secondary-selected);
-		border-color: var(--border-border-negative-hover);
+		background-color: var(--background-background-error-secondary-selected);
+		border-color: var(--border-border-error-hover);
 	}
 
 	&:disabled:not([data-loading]) {
@@ -265,28 +263,28 @@ $transition-duration-quick: 0.15s;
 	}
 }
 
-.root[data-color='negative'][data-variant='tertiary'] {
+.root[data-color='error'][data-variant='tertiary'] {
 	background-color: transparent;
-	color: var(--font-font-negative);
+	color: var(--font-font-error);
 	border-color: transparent;
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
-		background-color: var(--background-background-negative-secondary-hover);
+		background-color: var(--background-background-error-secondary-hover);
 	}
 
 	&:active:not(:disabled) {
-		background-color: var(--background-background-negative-secondary-selected);
+		background-color: var(--background-background-error-secondary-selected);
 	}
 
 	&:focus-visible {
-		@include focus-ring(var(--border-border-negative));
+		@include focus-ring(var(--border-border-error));
 
-		background-color: var(--background-background-negative-secondary-hover);
+		background-color: var(--background-background-error-secondary-hover);
 		border-color: var(--border-border-inverse);
 	}
 
 	&[data-selected='true'] {
-		background-color: var(--background-background-negative-secondary-selected);
+		background-color: var(--background-background-error-secondary-selected);
 	}
 
 	&:disabled:not([data-loading]) {

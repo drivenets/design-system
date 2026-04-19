@@ -1,5 +1,14 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.13
+
+### Patch Changes
+
+- 651ca99: Fix package name in installation instructions
+- e609972: Refine the MUI imports reporting range to reduce noise
+- 8c37905: Improve build process
+- ef1db6b: Refine the JSX reporting range to reduce noise
+
 ## 0.0.12
 
 ### Patch Changes

@@ -9,5 +9,9 @@
 		"editor.defaultFormatter": "oxc.oxc-vscode"
 	},
 
-	"typescript.tsdk": "node_modules/typescript/lib"
+	"typescript.tsdk": "node_modules/typescript/lib",
+
+	// Explicitly disabling tsgo language service since it doesn't support plugins yet.
+	// We need plugins support to use `typescript-plugin-css-modules` in the design-system package.
+	"typescript.experimental.useTsgo": false
 }

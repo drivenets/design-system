@@ -261,7 +261,6 @@ type CollapsibleGroupControlledArgs = {
 	onCollapsedChange?: (collapsed: boolean) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-arguments -- https://github.com/typescript-eslint/typescript-eslint/issues/12158
 export const CollapsibleGroupControlled: StoryObj<CollapsibleGroupControlledArgs> = {
 	name: 'Collapsible Group (Controlled)',
 	parameters: {

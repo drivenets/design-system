@@ -1,5 +1,27 @@
 # @drivenets/design-system
 
+## 0.9.0
+
+### Minor Changes
+
+- 30c4bfd: Add `DsStack` layout component
+- 43d78e2: Add `DsSplitButton` component
+- d1e3b36: Add responsive prop support at 1440px breakpoint with CSS-first styling and `useResponsiveValue` hook for JS conditional rendering
+- bbfff67: Add the `DsButtonV3` component
+
+### Patch Changes
+
+- dece9c6: fix wrong border color of disabled `DsButtonV3`
+- 4973d40: fix styles of input based components in disabled state
+- 6b4f32a: fix border-color of input based components in disabled state
+- f45a048: Add `width` (responsive), `style` props to DsPanel
+- 6995a02: Align clear button behavior across `DsDatePicker` and `DsTimePicker` components
+- 2ec99f0: fix focus styles of `DsButtonV3`
+- 492b04c: Fix `DsTable` bulk action hides table data
+- 4863637: Update dependencies
+- 22bd508: Make `columns` prop in `DsDrawer` responsive
+- 1676f6d: Improve build process
+
 ## 0.8.0
 
 ### Minor Changes

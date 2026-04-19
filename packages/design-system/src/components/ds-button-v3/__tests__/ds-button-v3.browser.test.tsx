@@ -1,7 +1,7 @@
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import { DsButtonV3 } from '../index.ts';
+import { DsButtonV3 } from '../index';
 
 describe('DsButtonV3', () => {
 	it('calls onClick when clicked', async () => {
@@ -39,12 +39,12 @@ describe('DsButtonV3', () => {
 		await expect.element(button).toHaveAttribute('data-selected', 'true');
 	});
 
-	it('sets data-color for negative palette', async () => {
-		await page.render(<DsButtonV3 color="negative">Delete</DsButtonV3>);
+	it('sets data-color for error palette', async () => {
+		await page.render(<DsButtonV3 color="error">Delete</DsButtonV3>);
 
 		const button = page.getByRole('button', { name: 'Delete' });
 
-		await expect.element(button).toHaveAttribute('data-color', 'negative');
+		await expect.element(button).toHaveAttribute('data-color', 'error');
 	});
 
 	it('applies iconOnly layout when icon is set without children', async () => {

@@ -17,15 +17,39 @@ ruleTester.run('no-native-button', plugin.rules['no-native-button'], {
 	invalid: [
 		{
 			code: '<button>Click me</button>',
-			errors: [{ message: `Using a native button is not allowed. Use DsButton instead.` }],
+			errors: [
+				{
+					message: `Using a native button is not allowed. Use DsButton instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 8,
+				},
+			],
 		},
 		{
 			code: '<input type="button" />',
-			errors: [{ message: `Using a native button is not allowed. Use DsButton instead.` }],
+			errors: [
+				{
+					message: `Using a native button is not allowed. Use DsButton instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 21,
+				},
+			],
 		},
 		{
 			code: '<input type="submit" />',
-			errors: [{ message: `Using a native button is not allowed. Use DsButton instead.` }],
+			errors: [
+				{
+					message: `Using a native button is not allowed. Use DsButton instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 21,
+				},
+			],
 		},
 	],
 });
@@ -37,7 +61,13 @@ ruleTester.run('no-native-select', plugin.rules['no-native-select'], {
 		{
 			code: '<select></select>',
 			errors: [
-				{ message: `Using a native select is not allowed. Use DsSelect or DsFormControl.Select instead.` },
+				{
+					message: `Using a native select is not allowed. Use DsSelect or DsFormControl.Select instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 8,
+				},
 			],
 		},
 	],
@@ -49,7 +79,15 @@ ruleTester.run('no-native-checkbox', plugin.rules['no-native-checkbox'], {
 	invalid: [
 		{
 			code: '<input type="checkbox" />',
-			errors: [{ message: `Using a native checkbox is not allowed. Use DsCheckbox instead.` }],
+			errors: [
+				{
+					message: `Using a native checkbox is not allowed. Use DsCheckbox instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 23,
+				},
+			],
 		},
 	],
 });
@@ -60,7 +98,15 @@ ruleTester.run('no-native-radio', plugin.rules['no-native-radio'], {
 	invalid: [
 		{
 			code: '<input type="radio" />',
-			errors: [{ message: `Using a native radio input is not allowed. Use DsRadioGroup instead.` }],
+			errors: [
+				{
+					message: `Using a native radio input is not allowed. Use DsRadioGroup instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 20,
+				},
+			],
 		},
 	],
 });
@@ -74,6 +120,10 @@ ruleTester.run('no-native-number-input', plugin.rules['no-native-number-input'],
 			errors: [
 				{
 					message: `Using a native number input is not allowed. Use DsNumberInput or DsFormControl.NumberInput instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 21,
 				},
 			],
 		},
@@ -89,6 +139,10 @@ ruleTester.run('no-native-text-input', plugin.rules['no-native-text-input'], {
 			errors: [
 				{
 					message: `Using a native text input is not allowed. Use DsTextInput or DsFormControl.TextInput instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 19,
 				},
 			],
 		},
@@ -97,6 +151,10 @@ ruleTester.run('no-native-text-input', plugin.rules['no-native-text-input'], {
 			errors: [
 				{
 					message: `Using a native text input is not allowed. Use DsTextInput or DsFormControl.TextInput instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 7,
 				},
 			],
 		},
@@ -112,6 +170,10 @@ ruleTester.run('no-native-password-input', plugin.rules['no-native-password-inpu
 			errors: [
 				{
 					message: `Using a native password input is not allowed. Use DsPasswordInput or DsFormControl.PasswordInput instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 23,
 				},
 			],
 		},
@@ -124,7 +186,15 @@ ruleTester.run('no-native-file-input', plugin.rules['no-native-file-input'], {
 	invalid: [
 		{
 			code: '<input type="file" />',
-			errors: [{ message: `Using a native file input is not allowed. Use DsFileUpload instead.` }],
+			errors: [
+				{
+					message: `Using a native file input is not allowed. Use DsFileUpload instead.`,
+					line: 1,
+					endLine: 1,
+					column: 8,
+					endColumn: 19,
+				},
+			],
 		},
 	],
 });
@@ -138,6 +208,10 @@ ruleTester.run('no-native-textarea', plugin.rules['no-native-textarea'], {
 			errors: [
 				{
 					message: `Using a native textarea is not allowed. Use DsTextarea or DsFormControl.Textarea instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 10,
 				},
 			],
 		},
@@ -150,7 +224,15 @@ ruleTester.run('no-native-table', plugin.rules['no-native-table'], {
 	invalid: [
 		{
 			code: '<table></table>',
-			errors: [{ message: `Using a native table is not allowed. Use DsTable instead.` }],
+			errors: [
+				{
+					message: `Using a native table is not allowed. Use DsTable instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 7,
+				},
+			],
 		},
 	],
 });

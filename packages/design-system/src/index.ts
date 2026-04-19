@@ -43,6 +43,8 @@ export * from './components/ds-select';
 export * from './components/ds-skeleton';
 export * from './components/ds-smart-tabs';
 export * from './components/ds-spinner';
+export * from './components/ds-split-button';
+export * from './components/ds-stack';
 export * from './components/ds-status-badge';
 export * from './components/ds-stepper';
 export * from './components/ds-system-status';

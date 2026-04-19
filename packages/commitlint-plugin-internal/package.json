@@ -14,14 +14,15 @@
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
-		"typecheck": "tsc"
+		"typecheck": "tsgo"
 	},
 	"peerDependencies": {
 		"@commitlint/lint": "^20.2.0",
 		"@commitlint/types": "^20.2.0"
 	},
 	"devDependencies": {
+		"@typescript/native-preview": "7.0.0-dev.20260331.1",
 		"eslint": "^10.0.1",
-		"typescript": "^5.9.3"
+		"typescript": "^6.0.2"
 	}
 }

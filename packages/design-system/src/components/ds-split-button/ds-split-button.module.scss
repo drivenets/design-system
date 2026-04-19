@@ -1,0 +1,99 @@
+@use '../../styles/shared/button' as button;
+
+$highlighted-z-index: 1;
+$divider-z-index: $highlighted-z-index + 1;
+$divider-width: 1px;
+$border-width: 1px;
+
+@mixin when-button-disabled {
+	.root:has(.actionButton:disabled) & {
+		@content;
+	}
+}
+
+@mixin when-select-disabled {
+	.root:has(.select[data-disabled]) & {
+		@content;
+	}
+}
+
+@mixin when-button-highlighted {
+	.root:has(.actionButton:not(:disabled):is(:hover, :focus-visible, :active, [data-selected='true'])) & {
+		@content;
+	}
+}
+
+@mixin when-select-highlighted {
+	.root:has(
+			.select:not([data-disabled]):is(:hover, :active, [data-state='open']),
+			.select:not([data-disabled]) :focus-visible
+		)
+		& {
+		@content;
+	}
+}
+
+.root {
+	display: inline-flex;
+
+	.actionButton {
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+	}
+}
+
+.actionButton {
+	@include when-button-highlighted {
+		z-index: $highlighted-z-index;
+		transition: border-color button.$transition-duration-quick;
+	}
+
+	&:not(:disabled):is(:hover, :active, [data-selected='true']) {
+		border-right-color: var(--border-border-secondary-hover);
+	}
+
+	&:not(:disabled):focus-visible {
+		border-right-color: var(--border-border-inverse);
+	}
+}
+
+.select {
+	margin-left: -$divider-width;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.dividerAnchor {
+	position: relative;
+}
+
+.dividerWrapper {
+	position: absolute;
+	top: $border-width;
+	bottom: $border-width;
+	left: -$divider-width;
+	z-index: $divider-z-index;
+	width: $divider-width;
+	padding: var(--spacing-3xs) 0;
+	background-color: var(--background-background);
+
+	@include when-button-highlighted {
+		display: none;
+	}
+	@include when-select-highlighted {
+		display: none;
+	}
+}
+
+.divider {
+	background-color: var(--color-border-secondary);
+	width: $divider-width;
+	height: 100%;
+
+	@include when-button-disabled {
+		background-color: var(--border-border-disabled);
+	}
+	@include when-select-disabled {
+		background-color: var(--border-border-disabled);
+	}
+}
