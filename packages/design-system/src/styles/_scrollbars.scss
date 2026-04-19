@@ -25,7 +25,12 @@ $scrollbar-thin-size: 4px;
 
 @mixin firefox-scrollbar($size) {
 	@-moz-document url-prefix() {
-		scrollbar-width: if($size == $scrollbar-thin-size, thin, auto);
+		@if $size == $scrollbar-thin-size {
+			scrollbar-width: thin;
+		} @else {
+			scrollbar-width: auto;
+		}
+
 		scrollbar-color: var(--color-background-deselected-hover) var(--color-background-secondary);
 	}
 }

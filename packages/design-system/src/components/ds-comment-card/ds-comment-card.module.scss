@@ -1,4 +1,4 @@
-@import '../../styles/mixin';
+@use '../../styles/mixin' as mixins;
 
 $side-color-width: 4px;
 $border-width: 1px;
@@ -30,7 +30,7 @@ $transition-duration: 0.2s;
 		}
 	}
 
-	@include disabled-overlay;
+	@include mixins.disabled-overlay;
 }
 
 .sideColor {
