@@ -39,12 +39,12 @@ describe('DsButtonV3', () => {
 		await expect.element(button).toHaveAttribute('data-selected', 'true');
 	});
 
-	it('sets data-color for negative palette', async () => {
-		await page.render(<DsButtonV3 color="negative">Delete</DsButtonV3>);
+	it('sets data-color for error palette', async () => {
+		await page.render(<DsButtonV3 color="error">Delete</DsButtonV3>);
 
 		const button = page.getByRole('button', { name: 'Delete' });
 
-		await expect.element(button).toHaveAttribute('data-color', 'negative');
+		await expect.element(button).toHaveAttribute('data-color', 'error');
 	});
 
 	it('applies iconOnly layout when icon is set without children', async () => {
