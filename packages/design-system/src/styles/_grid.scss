@@ -19,7 +19,11 @@
 	@for $i from 1 through grid-vars.$columns {
 		// Margins are added to all column spans to ensure proper alignment
 		// The last column span (full width) receives 2 margins (left + right), others receive 1 margin (typically left)
-		$margins: if($i == grid-vars.$columns, 2, 1);
+		$margins: 1;
+
+		@if $i == grid-vars.$columns {
+			$margins: 2;
+		}
 
 		// Calculate total width for spanning i columns:
 		// - i columns × column width
