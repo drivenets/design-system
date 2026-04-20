@@ -36,13 +36,13 @@
 		"directory": "/packages/design-system"
 	},
 	"scripts": {
+		"start": "storybook dev -p 6006",
 		"install:playwright": "pnpm exec playwright install chromium --with-deps",
 		"lint": "pnpm generate-scss-dts && eslint --max-warnings=0 ${ESLINT_ARGS-} .; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
 		"//": "ESLINT_ARGS is used to pass arguments to eslint. We're using it so we don't need to duplicate the lint script.",
 		"lint:fix": "ESLINT_ARGS=--fix pnpm lint",
 		"typecheck": "pnpm generate-scss-dts && tsgo; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
-		"storybook": "storybook dev -p 6006",
 		"test": "vitest --project=\"!requires-build\"",
 		"test:coverage": "pnpm test --coverage",
 		"test:unit": "vitest --project=unit",
