@@ -2,7 +2,7 @@ packages:
   - 'packages/*'
 
 minimumReleaseAge: 1440 # 1 day in minutes
-trustPolicy: no-downgrade
+trustPolicy: 'no-downgrade'
 blockExoticSubdeps: true
 
 catalog:
