@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{n as t}from"./ds-typography-CFt0cm5u.js";var n=e((()=>{})),r=e((()=>{t(),n()}));export{r as t};
