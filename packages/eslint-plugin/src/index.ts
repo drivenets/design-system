@@ -16,12 +16,6 @@ const eslintPlugin = createPlugin(
 	},
 
 	{
-		name: 'no-deprecated-ds-date-input',
-		selector: JSXElementName('DsDateInput'),
-		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,
-	},
-
-	{
 		name: 'no-native-button',
 		selector: [
 			JSXElementName('button'),

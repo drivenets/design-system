@@ -11,7 +11,6 @@ export * from './components/ds-comment-bubble';
 export * from './components/ds-comment-card';
 export * from './components/ds-comment-indicator';
 export * from './components/ds-comments-drawer';
-export * from './components/ds-date-input';
 export * from './components/ds-date-picker';
 export * from './components/ds-date-range-picker';
 export * from './components/ds-divider';

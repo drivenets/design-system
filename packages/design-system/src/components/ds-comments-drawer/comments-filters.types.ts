@@ -7,8 +7,8 @@ export interface FilterTag {
 
 export interface CommentsFilterState {
 	authors: string[];
-	dateFrom?: string;
-	dateTo?: string;
+	dateFrom?: Date;
+	dateTo?: Date;
 	labels: string[];
 	statuses: ('unresolved' | 'resolved' | 'action-required')[];
 }
