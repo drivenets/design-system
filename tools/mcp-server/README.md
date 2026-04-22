@@ -15,19 +15,19 @@ The server starts on port 3000 by default. The MCP endpoint is at `/mcp`.
 
 ## Configuration
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | Server port |
-| `MANIFESTS_URL` | `https://drivenets.github.io/design-system` | URL to fetch manifests from |
-| `MANIFESTS_DIR` | — | Local directory for manifests (overrides URL) |
+| Variable        | Default                                     | Description                                   |
+| --------------- | ------------------------------------------- | --------------------------------------------- |
+| `PORT`          | `3000`                                      | Server port                                   |
+| `MANIFESTS_URL` | `https://drivenets.github.io/design-system` | URL to fetch manifests from                   |
+| `MANIFESTS_DIR` | —                                           | Local directory for manifests (overrides URL) |
 
 ## Tools Exposed
 
-| Tool | Description |
-|------|-------------|
-| `list-all-documentation` | List all components and docs entries with IDs |
-| `get-documentation` | Get full props, stories, and code snippets for a component |
-| `get-documentation-for-story` | Get docs for a specific story variant |
+| Tool                          | Description                                                |
+| ----------------------------- | ---------------------------------------------------------- |
+| `list-all-documentation`      | List all components and docs entries with IDs              |
+| `get-documentation`           | Get full props, stories, and code snippets for a component |
+| `get-documentation-for-story` | Get docs for a specific story variant                      |
 
 ## Testing
 
@@ -38,6 +38,7 @@ MANIFESTS_DIR=$(pwd)/test-manifests PORT=3456 node server.js
 ```
 
 Then verify via curl:
+
 ```bash
 curl -s http://localhost:3456/health
 ```

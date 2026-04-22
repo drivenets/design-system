@@ -3,8 +3,7 @@ import { serve } from 'srvx';
 import { basename, resolve } from 'node:path';
 import { readFile } from 'node:fs/promises';
 
-const MANIFESTS_URL = process.env.MANIFESTS_URL
-	?? 'https://drivenets.github.io/design-system';
+const MANIFESTS_URL = process.env.MANIFESTS_URL ?? 'https://drivenets.github.io/design-system';
 const MANIFESTS_DIR = process.env.MANIFESTS_DIR;
 const PORT = Number(process.env.PORT ?? '3000');
 

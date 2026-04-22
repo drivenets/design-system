@@ -6,7 +6,12 @@ import { reactCompilerRolldownPlugin } from '../rolldown/react-compiler-rolldown
 
 const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-	addons: ['@storybook/addon-vitest', '@storybook/addon-a11y', '@storybook/addon-docs', '@storybook/addon-mcp'],
+	addons: [
+		'@storybook/addon-vitest',
+		'@storybook/addon-a11y',
+		'@storybook/addon-docs',
+		'@storybook/addon-mcp',
+	],
 	framework: '@storybook/react-vite',
 	viteFinal: (viteConfig) => {
 		if (!Array.isArray(viteConfig.plugins)) {

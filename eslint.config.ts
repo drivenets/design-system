@@ -4,6 +4,6 @@ import baseConfig from './eslint.config.base';
 export default defineConfig(
 	...baseConfig,
 
-	// Exclude packages since they have their own ESLint configuration.
-	globalIgnores(['./packages/**'], 'root/exclude-packages'),
+	// Exclude packages (own ESLint config) and tools (standalone projects).
+	globalIgnores(['./packages/**', './tools/**'], 'root/exclude-packages-and-tools'),
 );

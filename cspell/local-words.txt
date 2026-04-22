@@ -1,5 +1,6 @@
 autoboot
 autodocs
+EPIPE
 borderless
 clickability
 controlify
@@ -18,6 +19,8 @@ onwarn
 oxfmtrc
 reorderable
 retryable
+srvx
+Streamable
 subcomponents
 tosorted
 TSESTree

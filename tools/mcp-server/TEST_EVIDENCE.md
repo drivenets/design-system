@@ -39,6 +39,7 @@ $ curl -s -i -X POST http://localhost:3456/mcp \
 ```
 
 **Response Headers**:
+
 ```
 HTTP/1.1 200
 content-type: text/event-stream
@@ -46,6 +47,7 @@ mcp-session-id: 0a31d3a4-e5ba-4b24-9144-361fa8afa6f1
 ```
 
 **Response Body** (key fields):
+
 ```json
 {
   "serverInfo": {
@@ -72,6 +74,7 @@ $ curl -s -X POST http://localhost:3456/mcp \
 ```
 
 **Response**: Three tools registered:
+
 1. `list-all-documentation` — List all UI components and docs
 2. `get-documentation` — Get docs for a component by ID
 3. `get-documentation-for-story` — Get docs for a specific story variant
@@ -83,10 +86,14 @@ $ curl -s -X POST http://localhost:3456/mcp \
 ## Test 4: list-all-documentation
 
 ```json
-{"method":"tools/call","params":{"name":"list-all-documentation","arguments":{"withStoryIds":true}}}
+{
+  "method": "tools/call",
+  "params": { "name": "list-all-documentation", "arguments": { "withStoryIds": true } }
+}
 ```
 
 **Response**:
+
 ```
 # Components
 
@@ -117,10 +124,14 @@ $ curl -s -X POST http://localhost:3456/mcp \
 ## Test 5: get-documentation (DsButton)
 
 ```json
-{"method":"tools/call","params":{"name":"get-documentation","arguments":{"id":"components-ds-button"}}}
+{
+  "method": "tools/call",
+  "params": { "name": "get-documentation", "arguments": { "id": "components-ds-button" } }
+}
 ```
 
 **Response** (excerpted):
+
 ```
 # DsButton
 ID: components-ds-button
@@ -147,10 +158,17 @@ ID: components-ds-button
 ## Test 6: get-documentation-for-story
 
 ```json
-{"method":"tools/call","params":{"name":"get-documentation-for-story","arguments":{"componentId":"components-ds-button","storyName":"Primary"}}}
+{
+  "method": "tools/call",
+  "params": {
+    "name": "get-documentation-for-story",
+    "arguments": { "componentId": "components-ds-button", "storyName": "Primary" }
+  }
+}
 ```
 
 **Response**:
+
 ```
 # DsButton - Primary
 
@@ -179,15 +197,15 @@ A separate AI sub-agent was launched with no prior knowledge of the DS. It:
 
 ## Summary
 
-| Test | Tool/Endpoint | Result |
-|------|--------------|--------|
-| Health check | `/health` | PASS |
-| MCP Initialize | `initialize` | PASS |
-| Tools list | `tools/list` | PASS |
-| List all docs | `list-all-documentation` | PASS |
-| Get component docs | `get-documentation` (DsButton) | PASS |
-| Get story docs | `get-documentation-for-story` | PASS |
-| Sub-agent integration | Full MCP workflow | PASS |
+| Test                  | Tool/Endpoint                  | Result |
+| --------------------- | ------------------------------ | ------ |
+| Health check          | `/health`                      | PASS   |
+| MCP Initialize        | `initialize`                   | PASS   |
+| Tools list            | `tools/list`                   | PASS   |
+| List all docs         | `list-all-documentation`       | PASS   |
+| Get component docs    | `get-documentation` (DsButton) | PASS   |
+| Get story docs        | `get-documentation-for-story`  | PASS   |
+| Sub-agent integration | Full MCP workflow              | PASS   |
 
 **Overall Verdict**: **PASS** — All MCP tools functional, protocol-compliant, sub-second latency, and validated by an independent AI agent.
 

@@ -216,7 +216,11 @@
 					},
 					"onChange": {
 						"required": false,
-						"tsType": { "name": "signature", "type": "function", "raw": "(e: ChangeEvent<HTMLInputElement>) => void" },
+						"tsType": {
+							"name": "signature",
+							"type": "function",
+							"raw": "(e: ChangeEvent<HTMLInputElement>) => void"
+						},
 						"description": "Change handler"
 					},
 					"error": {

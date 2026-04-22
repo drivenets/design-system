@@ -61,6 +61,7 @@ PORT=3000 node server.js
 ```
 
 Environment variables:
+
 - `PORT`: Server port (default: 3000)
 - `MANIFESTS_URL`: Base URL for manifest files (default: GitHub Pages)
 - `MANIFESTS_DIR`: Local directory path for manifests (overrides URL fetch)
