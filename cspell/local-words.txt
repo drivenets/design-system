@@ -26,3 +26,4 @@ tosorted
 TSESTree
 unhover
 Containerizable
+Fira

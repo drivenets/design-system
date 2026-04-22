@@ -1,42 +1,41 @@
 # DriveNets Design System
 
-The DriveNets Design System (DS) is a React component library providing the shared UI foundation for all DAP applications.
+The DriveNets Design System (DS) is a React component library providing the
+shared UI foundation for all DAP applications. It ships 57+ reusable `Ds`-prefixed
+components, a design token system, and Storybook documentation.
 
 ## Quick Facts
 
-- **Package**: `@drivenets/design-system` (published to GitHub Packages)
-- **Framework**: React 19 + TypeScript
-- **Styling**: SCSS modules with CSS custom property tokens
-- **Component foundations**: Ark UI, Radix UI, @tanstack/react-table, @tanstack/react-virtual, dnd-kit
-- **Docs**: Storybook (deployed to GitHub Pages)
-- **Repo**: https://github.com/drivenets/design-system
-
-## Architecture
-
-```
-packages/design-system/
-  src/
-    components/      # 63 ds-* components (Button, Table, Select, Dialog, etc.)
-    styles/          # Design tokens, global styles, SCSS variables
-    utils/           # Shared utilities
-  .storybook/        # Storybook configuration
-tools/
-  mcp-server/        # Storybook MCP server for AI agent access
-```
+|                |                                                                           |
+| -------------- | ------------------------------------------------------------------------- |
+| **Package**    | `@drivenets/design-system` (published to GitHub Packages)                 |
+| **Framework**  | React 19 + TypeScript                                                     |
+| **Build**      | tsdown (rolldown-based) with React Compiler                               |
+| **Styling**    | SCSS modules + CSS custom property tokens                                 |
+| **Primitives** | Ark UI, Radix UI, @tanstack/react-table, @tanstack/react-virtual, dnd-kit |
+| **Docs**       | Storybook 10 (deployed to GitHub Pages)                                   |
+| **Testing**    | Vitest 4, Playwright browser mode, Storybook play tests                   |
+| **Monorepo**   | pnpm workspaces + Turborepo                                               |
+| **Repo**       | https://github.com/drivenets/design-system                                |
+| **Storybook**  | https://drivenets.github.io/design-system/                                |
 
 ## For AI Agents
 
-The DS exposes an MCP server that provides component documentation, props, and usage examples. See `tools/mcp-server/README.md` for setup and the [MCP tools reference](./MCP_TOOLS.md).
+**Use the Storybook MCP for component knowledge** — it serves accurate, auto-generated
+prop documentation, stories, and code snippets. See `AGENTS.md` in the repo root
+for the full workflow.
 
-### Using DS Components
+**Use these `.ai/` docs for architectural context** — repo structure, contribution
+workflow, styling system, and testing strategy are documented here because the MCP
+doesn't cover them.
 
-1. Query `list-all-documentation` to discover available components
-2. Query `get-documentation` with the component ID for full props and stories
-3. Import from `@drivenets/design-system` and include `@drivenets/design-system/index.min.css`
+## Design Philosophy
 
-### Key Conventions
-
-- All component names are prefixed with `Ds` (e.g., `DsButton`, `DsTable`)
-- Components use CSS custom properties for theming (e.g., `--dn-color-primary`)
-- Props follow controlled/uncontrolled patterns (React standard)
-- `design: 'v1.2'` prop on some components enables newer design variants
+- **Consistency over flexibility** — components enforce DAP's visual language;
+  customization is through design tokens, not arbitrary style overrides
+- **Headless-first** — most components wrap Ark UI or Radix primitives for
+  accessibility and state management, then add DriveNets styling
+- **TypeScript-strict** — all props are fully typed; JSDoc on prop interfaces
+  feeds both IDE intellisense and MCP manifest quality
+- **Storybook as documentation** — stories are the primary documentation source;
+  the MCP server makes them queryable by AI agents
