@@ -4,12 +4,12 @@ Merges every token from the legacy files (`_root.scss`, `_colors.scss`, `_spacin
 
 ## Legend
 
-| Status  | Meaning                                                                                                | Migration strategy                         |
-| ------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
-| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required     |
-| Changed | Same logical token but resolved value differs                                                          | Find & replace; visual testing is required |
-| New     | No old equivalent                                                                                      |                                            |
-| Removed | Old token with no new equivalent                                                                       | TODO                                       |
+| Status  | Meaning                                                                                                | Migration strategy                                   |
+| ------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required               |
+| Changed | Same logical token but resolved value differs                                                          | Find & replace; visual testing is required           |
+| New     | No old equivalent                                                                                      |                                                      |
+| Removed | Old token with no new equivalent                                                                       | Either keep old token or find the nearest equivalent |
 
 ---
 
