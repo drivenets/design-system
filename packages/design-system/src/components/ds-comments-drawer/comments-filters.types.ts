@@ -29,11 +29,11 @@ export interface CommentsFilterState {
 	/**
 	 * Lower bound of the createdAt range as an ISO date string, inclusive.
 	 */
-	dateFrom?: string;
+	dateFrom?: Date;
 	/**
 	 * Upper bound of the createdAt range as an ISO date string, inclusive.
 	 */
-	dateTo?: string;
+	dateTo?: Date;
 	/**
 	 * Label strings currently included in the filter. Empty array means no label
 	 * filter is applied.

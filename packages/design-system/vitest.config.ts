@@ -13,16 +13,7 @@ export default defineConfig({
 	test: {
 		coverage: {
 			include: ['src/**/*.{ts,tsx}'],
-			exclude: [
-				'**/stories/**',
-				'**/*.stories.*{ts,tsx}',
-				'**/.storybook/**',
-				'**/*.scss',
-				'dist/**',
-
-				// deprecated components
-				'**/ds-date-input/**',
-			],
+			exclude: ['**/stories/**', '**/*.stories.*{ts,tsx}', '**/.storybook/**', '**/*.scss', 'dist/**'],
 			thresholds: {
 				lines: 90,
 			},
