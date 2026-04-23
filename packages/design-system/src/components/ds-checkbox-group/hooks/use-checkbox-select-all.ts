@@ -1,5 +1,3 @@
-import { useCallback, useMemo } from 'react';
-
 export type CheckedState = boolean | 'indeterminate';
 
 export interface UseCheckboxSelectAllOptions<T extends string> {
@@ -40,34 +38,23 @@ export function useCheckboxSelectAll<T extends string>({
 	onValueChange,
 	isSelectable,
 }: UseCheckboxSelectAllOptions<T>): UseCheckboxSelectAllResult {
-	const selectableValues = useMemo(
-		() => (isSelectable ? allValues.filter(isSelectable) : [...allValues]),
-		[allValues, isSelectable],
-	);
-
-	const selectableSet = useMemo(() => new Set(selectableValues), [selectableValues]);
-
-	const selectedCount = useMemo(
-		() => value.reduce((count, v) => (selectableSet.has(v) ? count + 1 : count), 0),
-		[value, selectableSet],
-	);
-
+	const selectableValues = isSelectable ? allValues.filter(isSelectable) : [...allValues];
+	const selectableSet = new Set(selectableValues);
+	const selectedCount = value.reduce((count, v) => (selectableSet.has(v) ? count + 1 : count), 0);
 	const selectableCount = selectableValues.length;
 
-	const selectAllState: CheckedState =
-		selectableCount === 0 || selectedCount === 0
-			? false
-			: selectedCount === selectableCount
-				? true
-				: 'indeterminate';
+	let selectAllState: CheckedState = 'indeterminate';
 
-	const onSelectAllChange = useCallback(
-		(checked: CheckedState) => {
-			const preserved = value.filter((v) => !selectableSet.has(v));
-			onValueChange(checked === true ? [...preserved, ...selectableValues] : preserved);
-		},
-		[value, selectableSet, selectableValues, onValueChange],
-	);
+	if (selectableCount === 0 || selectedCount === 0) {
+		selectAllState = false;
+	} else if (selectedCount === selectableCount) {
+		selectAllState = true;
+	}
+
+	const onSelectAllChange = (checked: CheckedState) => {
+		const preserved = value.filter((v) => !selectableSet.has(v));
+		onValueChange(checked === true ? [...preserved, ...selectableValues] : preserved);
+	};
 
 	return {
 		selectAllState,

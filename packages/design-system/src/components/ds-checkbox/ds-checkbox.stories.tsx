@@ -130,16 +130,40 @@ export const WarningIndeterminate: Story = {
 
 export const Group: Story = {
 	render: function Render() {
-		const [value, setValue] = useState<string[]>(['react']);
+		const [vertical, setVertical] = useState<string[]>(['react']);
+		const [horizontal, setHorizontal] = useState<string[]>(['react']);
 
 		return (
 			<div className={styles.stack}>
-				<output className={styles.output}>Selected: {value.join(', ')}</output>
-				<DsCheckboxGroup value={value} onValueChange={setValue} name="framework">
-					{frameworkItems.map((item) => (
-						<DsCheckbox key={item.value} label={item.label} value={item.value} />
-					))}
-				</DsCheckboxGroup>
+				<section className={styles.stack}>
+					<strong>Vertical</strong>
+					<output className={styles.output}>Selected: {vertical.join(', ')}</output>
+					<DsCheckboxGroup
+						orientation="vertical"
+						value={vertical}
+						onValueChange={setVertical}
+						name="framework-vertical"
+					>
+						{frameworkItems.map((item) => (
+							<DsCheckbox key={item.value} label={item.label} value={item.value} />
+						))}
+					</DsCheckboxGroup>
+				</section>
+
+				<section className={styles.stack}>
+					<strong>Horizontal</strong>
+					<output className={styles.output}>Selected: {horizontal.join(', ')}</output>
+					<DsCheckboxGroup
+						orientation="horizontal"
+						value={horizontal}
+						onValueChange={setHorizontal}
+						name="framework-horizontal"
+					>
+						{frameworkItems.map((item) => (
+							<DsCheckbox key={item.value} label={item.label} value={item.value} />
+						))}
+					</DsCheckboxGroup>
+				</section>
 			</div>
 		);
 	},

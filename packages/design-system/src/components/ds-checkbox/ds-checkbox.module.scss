@@ -1,13 +1,12 @@
-@use '../../styles/root_updated';
+@use '../../styles/root_new';
 @use '../../styles/typography';
 
 .root {
 	--ds-checkbox-size: 16px;
 	--ds-checkbox-radius: 2px;
 	--ds-checkbox-focus-ring-width: 2px;
-	--ds-checkbox-focus-ring-color: var(--background-background-primary-hover);
-	--ds-checkbox-bg-row-hover: var(--background-background-secondary-hover);
-	--ds-checkbox-label-color: var(--font-font-main);
+	--ds-checkbox-bg-row-hover: var(--background-secondary-hover);
+	--ds-checkbox-label-color: var(--font-main);
 	--ds-checkbox-control-bg: transparent;
 	--ds-checkbox-control-border: var(--secondary-400);
 
@@ -27,30 +26,30 @@
 	}
 
 	&[data-focus-visible] {
-		outline: var(--ds-checkbox-focus-ring-width) solid var(--ds-checkbox-focus-ring-color);
+		outline: var(--ds-checkbox-focus-ring-width) solid var(--background-primary-hover);
 		outline-offset: 0;
 	}
 
 	&[data-state='checked'],
 	&[data-state='indeterminate'] {
-		--ds-checkbox-control-bg: var(--background-background-primary);
-		--ds-checkbox-control-border: var(--background-background-primary);
+		--ds-checkbox-control-bg: var(--background-primary);
+		--ds-checkbox-control-border: var(--background-primary);
 	}
 
 	&[data-disabled] {
-		--ds-checkbox-label-color: var(--font-font-disabled);
+		--ds-checkbox-label-color: var(--font-disabled);
 		cursor: not-allowed;
 		background-color: transparent;
 
 		.labelInfo {
-			color: var(--font-font-disabled);
+			color: var(--font-disabled);
 		}
 
 		&[data-state='checked'],
 		&[data-state='indeterminate'] {
-			--ds-checkbox-label-color: var(--font-font-disabled);
-			--ds-checkbox-control-bg: var(--background-background-disable);
-			--ds-checkbox-control-border: var(--background-background-disable);
+			--ds-checkbox-label-color: var(--font-disabled);
+			--ds-checkbox-control-bg: var(--background-disable);
+			--ds-checkbox-control-border: var(--background-disable);
 		}
 	}
 }
@@ -72,7 +71,7 @@
 
 .indicator {
 	line-height: 0;
-	color: var(--icon-icon-inverse);
+	color: var(--icon-inverse);
 
 	svg {
 		width: 100%;
@@ -96,16 +95,34 @@
 .labelInfo {
 	@include typography.body-xs-reg;
 	@include typography.ellipsis;
-	color: var(--font-font-secondary);
+	color: var(--font-secondary);
+}
+
+// Overlay the native input over the control so `getByRole('checkbox')` clicks
+// land on a real interactive surface. Ark applies `visuallyHiddenStyle` inline
+// (1x1, clipped, off-screen) which Playwright refuses to click; `!important`
+// is required to beat inline-style specificity.
+.hiddenInput {
+	position: absolute !important;
+	inset-block-start: var(--4xs) !important;
+	inset-inline-start: var(--4xs) !important;
+	width: var(--ds-checkbox-size) !important;
+	height: var(--ds-checkbox-size) !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	clip: auto !important;
+	overflow: visible !important;
+	opacity: 0 !important;
+	cursor: inherit !important;
 }
 
 .warning {
-	--ds-checkbox-bg-row-hover: var(--background-background-warning);
+	--ds-checkbox-bg-row-hover: var(--background-warning);
 
 	&[data-state='checked'],
 	&[data-state='indeterminate'] {
-		--ds-checkbox-label-color: var(--font-font-warning);
-		--ds-checkbox-control-bg: var(--background-background-warning-strong);
-		--ds-checkbox-control-border: var(--background-background-warning-strong);
+		--ds-checkbox-label-color: var(--font-warning);
+		--ds-checkbox-control-bg: var(--background-warning-strong);
+		--ds-checkbox-control-border: var(--background-warning-strong);
 	}
 }
