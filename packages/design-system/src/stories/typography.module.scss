@@ -1,18 +1,3 @@
-.container {
-	max-width: 1200px;
-	margin: 0 auto;
-}
-
-.pageDescription {
-	margin-bottom: var(--2xl);
-	color: var(--font-secondary);
-}
-
-.sectionDescription {
-	margin-bottom: var(--lg);
-	color: var(--font-secondary);
-}
-
 .variantGroup {
 	margin-bottom: var(--xl);
 
@@ -42,16 +27,4 @@
 	border-radius: 4px;
 	background-color: var(--background-tertiary);
 	color: var(--font-secondary);
-}
-
-.multiLineSample {
-	display: block;
-	max-width: 480px;
-	font-family: var(--font-family-base);
-}
-
-.paragraphSample {
-	display: block;
-	max-width: 480px;
-	font-family: var(--font-family-base);
 }
