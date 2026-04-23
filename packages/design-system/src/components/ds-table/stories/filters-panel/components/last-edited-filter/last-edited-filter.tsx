@@ -85,7 +85,7 @@ export const LastEditedFilter = ({ value, onChange, availableEditors }: LastEdit
 				<div className={styles.header}>
 					<DsTypography variant="body-md-md">Editor</DsTypography>
 					{value.editors.length > 0 && (
-						<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleClearEditors}>
+						<DsButton variant="tertiary" size="small" onClick={handleClearEditors}>
 							Clear
 						</DsButton>
 					)}
@@ -126,7 +126,7 @@ export const LastEditedFilter = ({ value, onChange, availableEditors }: LastEdit
 				<div className={styles.header}>
 					<DsTypography variant="body-md-md">Last edited</DsTypography>
 					{value.timeRange && (
-						<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleClearTimeRange}>
+						<DsButton variant="tertiary" size="small" onClick={handleClearTimeRange}>
 							Clear
 						</DsButton>
 					)}

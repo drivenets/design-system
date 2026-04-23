@@ -47,7 +47,7 @@ export const RangeFilter = ({ label, value, onChange, onClear }: RangeFilterProp
 			<div className={styles.header}>
 				<DsTypography variant="body-md-md">{label}</DsTypography>
 				{hasValue && onClear && (
-					<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleClear}>
+					<DsButton variant="tertiary" size="small" onClick={handleClear}>
 						Clear
 					</DsButton>
 				)}

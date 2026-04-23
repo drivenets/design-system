@@ -1,17 +1,18 @@
 @use '../../../../styles/typography';
 
+$border-radius: 8px;
+
 .bulkActionsContainer {
 	position: absolute;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--color-dap-gray-050);
-	border-radius: 8px;
+	background-color: var(--white);
+	border-radius: $border-radius;
 	box-shadow: 0 4px 12px #0445cc66;
 	z-index: 1;
 	display: flex;
 	align-items: center;
-	border-radius: 8px;
 	overflow: hidden;
 	animation-duration: 0.3s;
 	animation-timing-function: ease-out;
@@ -29,8 +30,6 @@
 .bulkActionsContent {
 	display: flex;
 	align-items: center;
-	padding-right: 6px;
-	padding-left: 6px;
 }
 
 .selectedCountContainer {
@@ -41,51 +40,71 @@
 }
 
 .selectedCountBadge {
-	color: var(--color-dap-gray-050);
+	color: var(--white);
 	margin: 0;
 }
 
 .bulkActionsInfo {
-	color: var(--color-dap-gray-600);
+	color: var(--neutral-2);
 	text-wrap: nowrap;
 	padding-left: 8px;
 	padding-right: 56px;
 }
 
+.actionButton {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--spacing-3xs);
+	width: 68px;
+	height: 48px;
+	border-radius: 0;
+}
+
 .bulkActionsActions {
 	display: flex;
 	align-items: center;
-	gap: 8px;
 
 	> .actionButton {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: var(--3xs);
-		border-right: 1px solid var(--color-dap-gray-400);
-		width: 68px;
-		height: 48px;
-		border-radius: 0;
-	}
+		position: relative;
 
-	> .actionButton:first-child {
-		border-left: 1px solid var(--color-dap-gray-400);
+		&::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			right: 0;
+			width: 1px;
+			height: 100%;
+			background-color: var(--neutral-6);
+		}
+
+		&:first-child::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 1px;
+			height: 100%;
+			background-color: var(--neutral-6);
+		}
 	}
 }
 
-.escapeButtonContent {
+.targetButton.escapeButtonContent {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	color: var(--color-dap-gray-600);
-	gap: 2px !important;
-	width: 36px;
+	color: var(--neutral-2);
 	padding-left: 4px;
+	margin-right: 2px;
+	background: none;
+	border-radius: 0 $border-radius $border-radius 0;
 
 	&:hover {
-		color: var(--color-dap-gray-500);
+		color: var(--neutral-4);
+		background: inherit;
 	}
 }
 

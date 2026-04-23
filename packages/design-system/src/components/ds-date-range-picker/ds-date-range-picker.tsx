@@ -89,7 +89,7 @@ const DsDateRangePicker = ({
 			</DsFormControl>
 
 			{showClearAll && (
-				<DsButton design="v1.2" buttonType="tertiary" className={styles.clearButton} onClick={handleClearAll}>
+				<DsButton variant="tertiary" className={styles.clearButton} onClick={handleClearAll}>
 					<DsIcon icon="close" size="small" />
 					{locale?.clearAllLabel ?? 'Clear all'}
 				</DsButton>

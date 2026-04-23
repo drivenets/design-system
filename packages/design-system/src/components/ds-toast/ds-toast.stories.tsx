@@ -78,7 +78,7 @@ const ToastDemo = ({
 	return (
 		<div className={styles.demoContainer}>
 			<h3>{variant.charAt(0).toUpperCase() + variant.slice(1)} Toast</h3>
-			<DsButton design="v1.2" onClick={showToast} variant="filled">
+			<DsButton variant="primary" onClick={showToast}>
 				Show {variant.charAt(0).toUpperCase() + variant.slice(1)} Toast
 			</DsButton>
 		</div>
@@ -124,7 +124,7 @@ export const WarningNoTitleAction: Story = {
 				variant="warning"
 				description="Something went wrong. Please try again."
 				actions={
-					<DsButton design="v1.2" variant="danger">
+					<DsButton variant="primary" color="error">
 						Restart
 					</DsButton>
 				}
@@ -149,23 +149,22 @@ export const WarningWithActions: Story = {
 						<div className={styles.actionButtonsContainer}>
 							<DsButton
 								data-testid="abort-button"
-								design="v1.2"
 								onClick={() => {
 									setAction('abort');
 									dismissToast(toastId);
 								}}
-								variant="ghost"
+								variant="tertiary"
 							>
 								Abort
 							</DsButton>
 							<DsButton
 								data-testid="retry-button"
-								design="v1.2"
 								onClick={() => {
 									setAction('retry');
 									dismissToast(toastId);
 								}}
-								variant="danger"
+								variant="primary"
+								color="error"
 							>
 								Re-try
 							</DsButton>
@@ -178,12 +177,7 @@ export const WarningWithActions: Story = {
 			return (
 				<div className={styles.demoContainer}>
 					<h3>Toast with Action</h3>
-					<DsButton
-						data-testid="show-toast-button"
-						design="v1.2"
-						onClick={showToastWithAction}
-						variant="filled"
-					>
+					<DsButton data-testid="show-toast-button" onClick={showToastWithAction} variant="primary">
 						Show Toast with Actions
 					</DsButton>
 					{action && <p data-testid="action-result">{action}</p>}
@@ -262,7 +256,7 @@ export const LongContent: Story = {
 			return (
 				<div className={styles.demoContainer}>
 					<h3>Long Content Toast</h3>
-					<DsButton design="v1.2" onClick={showLongToast} variant="filled">
+					<DsButton variant="primary" onClick={showLongToast}>
 						Show Long Content Toast
 					</DsButton>
 				</div>
@@ -325,20 +319,10 @@ const MultipleToastsDemo = () => {
 		<div className={styles.demoContainer}>
 			<h3>Multiple Toasts Demo</h3>
 			<div className={styles.buttonGroup}>
-				<DsButton
-					data-testid="create-multiple-button"
-					design="v1.2"
-					onClick={createMultipleToasts}
-					variant="filled"
-				>
+				<DsButton data-testid="create-multiple-button" onClick={createMultipleToasts} variant="primary">
 					Create Multiple Toasts
 				</DsButton>
-				<DsButton
-					design="v1.2"
-					onClick={dismissAllVisibleToasts}
-					variant="ghost"
-					data-testid="dismiss-all-button"
-				>
+				<DsButton onClick={dismissAllVisibleToasts} variant="tertiary" data-testid="dismiss-all-button">
 					Dismiss All
 				</DsButton>
 			</div>

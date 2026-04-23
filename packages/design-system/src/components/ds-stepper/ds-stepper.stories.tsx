@@ -360,7 +360,7 @@ export const CustomizedHorizontal: Story = {
 				activeStep={activeStep}
 				onStepChange={({ step }) => setActiveStep(step)}
 				actions={
-					<DsNextStepButton variant="ghost">
+					<DsNextStepButton variant="tertiary">
 						{activeStep === customSteps.length - 1 ? 'Finish' : 'Continue'}
 					</DsNextStepButton>
 				}

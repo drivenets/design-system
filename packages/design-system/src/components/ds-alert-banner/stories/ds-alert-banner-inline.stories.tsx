@@ -183,10 +183,10 @@ export const WithActions: Story = {
 						bit longer so that you can see how spacing within an alert works with this kind of content.
 					</DsAlertBanner.Body>
 					<DsAlertBanner.Actions>
-						<DsButton design="v1.2" variant="danger" size="small">
+						<DsButton variant="primary" color="error" size="small">
 							Proceed
 						</DsButton>
-						<DsButton design="v1.2" buttonType="secondary" size="small">
+						<DsButton variant="secondary" size="small">
 							Skip
 						</DsButton>
 					</DsAlertBanner.Actions>
@@ -255,13 +255,13 @@ export const CustomBody: Story = {
 						</div>
 					</DsAlertBanner.Body>
 					<DsAlertBanner.Actions>
-						<DsButton design="v1.2" variant="filled" size="small">
+						<DsButton variant="primary" size="small">
 							Update Now
 						</DsButton>
-						<DsButton design="v1.2" buttonType="secondary" size="small">
+						<DsButton variant="secondary" size="small">
 							Schedule Later
 						</DsButton>
-						<DsButton design="v1.2" buttonType="secondary" size="small">
+						<DsButton variant="secondary" size="small">
 							Learn More
 						</DsButton>
 					</DsAlertBanner.Actions>

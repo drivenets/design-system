@@ -1,12 +1,12 @@
 import type { CSSProperties, Ref } from 'react';
-import type { DsButtonV3Props } from '../ds-button-v3';
+import type { DsButtonProps } from '../ds-button';
 import type { DsSelectProps } from '../ds-select';
 import type { DistributiveOmit } from '../../utils/type-utils';
 
 export const splitButtonSizes = ['medium', 'small'] as const;
 export type SplitButtonSize = (typeof splitButtonSizes)[number];
 
-type ButtonSlotProps = Omit<DsButtonV3Props, 'variant' | 'color' | 'size'>;
+type ButtonSlotProps = Omit<DsButtonProps, 'variant' | 'color' | 'size'>;
 
 type SelectSlotProps = DistributiveOmit<DsSelectProps, 'size'>;
 
