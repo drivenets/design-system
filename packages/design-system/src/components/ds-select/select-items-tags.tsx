@@ -42,13 +42,7 @@ export function SelectItemsTags({ showAll, onShowAll, onValueChange, count }: Se
 				<DsTag label={`+${String(selectedItems.length - count)}`} onClick={onShowAll} size="small" />
 			)}
 
-			<DsButton
-				design="v1.2"
-				buttonType="tertiary"
-				variant="ghost"
-				size="small"
-				onClick={() => onValueChange?.([])}
-			>
+			<DsButton variant="tertiary" size="small" onClick={() => onValueChange?.([])}>
 				Clear All
 			</DsButton>
 		</div>

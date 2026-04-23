@@ -43,22 +43,25 @@ const DsTableBulkActions: React.FC<BulkActionsProps> = ({ numSelectedRows, actio
 
 				<div className={styles.bulkActionsActions}>
 					{actions.map((action, index) => (
-						<button key={index} type="button" className={styles.actionButton} onClick={action.onClick}>
+						<DsButton key={index} variant="tertiary" className={styles.actionButton} onClick={action.onClick}>
 							<DsIcon icon={action.icon} />
 							<DsTypography variant="body-xs-md">{action.label}</DsTypography>
-						</button>
+						</DsButton>
 					))}
 				</div>
 
 				<DsButton
-					variant="borderless"
-					size="small"
-					color="neutral-2"
-					contentClassName={styles.escapeButtonContent}
+					variant="tertiary"
+					aria-label="Clear selection"
+					icon="close"
+					className={classnames(styles.targetButton, styles.actionButton, styles.escapeButtonContent)}
 					onClick={onClearSelection}
-				>
-					<DsIcon icon="close" />
-				</DsButton>
+					slotProps={{
+						icon: {
+							size: 'medium',
+						},
+					}}
+				/>
 			</div>
 		</div>
 	);

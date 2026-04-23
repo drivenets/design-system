@@ -4,18 +4,6 @@ import { createPlugin } from './create-plugin';
 const eslintPlugin = createPlugin(
 	'@drivenets/design-system',
 	{
-		name: 'no-deprecated-ds-button-legacy-design',
-		selector: JSXElementAttribute('DsButton', 'design', 'legacy'),
-		message: `Using the 'legacy' design for DsButton is deprecated. Use 'v1.2' instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-button-empty-design',
-		selector: `${JSXElement('DsButton')}:not(:has( > ${JSXAttribute('design')} )) > .name`,
-		message: `Omitting the design attribute for DsButton is not allowed. Pass 'design="v1.2"' so the new design is used.`,
-	},
-
-	{
 		name: 'no-deprecated-ds-date-input',
 		selector: JSXElementName('DsDateInput'),
 		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,

@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { DsSelect, type SelectSize } from '../ds-select';
 import styles from './ds-split-button.module.scss';
 import type { DsSplitButtonProps, SplitButtonSize } from './ds-split-button.types';
-import { DsButtonV3 } from '../ds-button-v3';
+import { DsButton } from '../ds-button';
 
 const DsSplitButton = ({
 	ref,
@@ -18,7 +18,7 @@ const DsSplitButton = ({
 
 	return (
 		<div ref={ref} className={classNames(styles.root, className)} style={style}>
-			<DsButtonV3
+			<DsButton
 				{...buttonProps}
 				variant="secondary"
 				size={size}

@@ -104,11 +104,8 @@ const DsTagFilter = ({
 					<div className={styles.headerActions}>
 						{hasOverflow && (
 							<DsButton
-								design="v1.2"
-								buttonType="tertiary"
-								variant="ghost"
+								variant="tertiary"
 								className={styles.actionButton}
-								contentClassName={styles.ghostButtonContent}
 								size="small"
 								onClick={handleExpandToggle}
 							>
@@ -118,15 +115,7 @@ const DsTagFilter = ({
 						)}
 
 						{onClearAll && (
-							<DsButton
-								design="v1.2"
-								buttonType="tertiary"
-								variant="ghost"
-								className={styles.actionButton}
-								contentClassName={styles.ghostButtonContent}
-								size="small"
-								onClick={onClearAll}
-							>
+							<DsButton variant="tertiary" className={styles.actionButton} size="small" onClick={onClearAll}>
 								<DsIcon icon="close" />
 								{clearButton}
 							</DsButton>
