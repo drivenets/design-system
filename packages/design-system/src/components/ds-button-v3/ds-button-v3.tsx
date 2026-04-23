@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { DsIcon, type IconSize } from '../ds-icon';
 import { DsSpinner } from '../ds-spinner';
 import styles from './ds-button-v3.module.scss';
-import type { ButtonV3Size, DsButtonV3Props } from './ds-button-v3.types.ts';
+import type { ButtonV3Size, DsButtonV3BaseProps } from './ds-button-v3.types.ts';
 
 const iconSizeMap: Record<ButtonV3Size, IconSize> = Object.freeze({
 	large: 'small',
@@ -25,7 +25,7 @@ const DsButtonV3 = ({
 	selected = false,
 	type = 'button',
 	...rest
-}: DsButtonV3Props) => {
+}: DsButtonV3BaseProps) => {
 	const isIconOnly = icon !== undefined && !children;
 
 	return (

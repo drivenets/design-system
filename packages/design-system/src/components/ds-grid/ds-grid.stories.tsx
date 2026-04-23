@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { DsGrid, DsGridItem } from './ds-grid';
+import { DsGrid, DsGridItem } from './';
 import { DsButton } from '../ds-button';
 import './ds-grid.stories.scss';
 
@@ -51,6 +51,34 @@ export const Default: Story = {
 			</>
 		),
 		rows: 6,
+	},
+};
+
+export const Responsive: Story = {
+	args: {
+		className: 'my-grid',
+		gutter: { lg: 16, md: 8 },
+		margin: { lg: '16px 20px', md: 8 },
+		children: (
+			<>
+				<DsGridItem className="card" colSpan={{ lg: 4, md: 6 }}>
+					<div>Card 1 — lg:4 md:6</div>
+				</DsGridItem>
+				<DsGridItem className="card" colSpan={{ lg: 4, md: 6 }}>
+					<div>Card 2 — lg:4 md:6</div>
+				</DsGridItem>
+				<DsGridItem className="card" colSpan={{ lg: 4, md: 12 }}>
+					<div>Card 3 — lg:4 md:12</div>
+				</DsGridItem>
+				<DsGridItem className="card" colSpan={{ lg: 6, md: 12 }} rowSpan={{ lg: 2, md: 1 }}>
+					<div>Card 4 — lg:6×2 md:12×1</div>
+				</DsGridItem>
+				<DsGridItem className="card" colSpan={{ lg: 6, md: 12 }}>
+					<div>Card 5 — lg:6 md:12</div>
+				</DsGridItem>
+			</>
+		),
+		rows: 4,
 	},
 };
 

@@ -4,3 +4,14 @@ packages:
 minimumReleaseAge: 1440 # 1 day in minutes
 trustPolicy: 'no-downgrade'
 blockExoticSubdeps: true
+
+catalog:
+  '@arethetypeswrong/cli': ^0.18.2
+  '@eslint/core': ^1.1.1
+  '@typescript/native-preview': 7.0.0-dev.20260331.1
+  '@vitest/coverage-v8': ^4.1.0
+  eslint: ^10.0.1
+  publint: ^0.3.18
+  tsdown: ^0.21.6
+  typescript: ^6.0.2
+  vitest: ^4.1.0

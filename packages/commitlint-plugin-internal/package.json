@@ -21,8 +21,8 @@
 		"@commitlint/types": "^20.2.0"
 	},
 	"devDependencies": {
-		"@typescript/native-preview": "7.0.0-dev.20260331.1",
-		"eslint": "^10.0.1",
-		"typescript": "^6.0.2"
+		"@typescript/native-preview": "catalog:",
+		"eslint": "catalog:",
+		"typescript": "catalog:"
 	}
 }

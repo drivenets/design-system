@@ -39,13 +39,13 @@
 		"@cspell/dict-cspell-bundle": "^2.0.55",
 		"@cspell/dict-mime-types": "^1.0.1",
 		"@drivenets/commitlint-plugin-internal": "workspace:*",
-		"@eslint/core": "^1.1.1",
+		"@eslint/core": "catalog:",
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^25.3.5",
-		"@typescript/native-preview": "7.0.0-dev.20260331.1",
+		"@typescript/native-preview": "catalog:",
 		"@vitest/eslint-plugin": "^1.6.9",
 		"cspell": "^9.7.0",
-		"eslint": "^10.0.1",
+		"eslint": "catalog:",
 		"eslint-config-flat-gitignore": "^2.2.1",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-import-x": "^4.16.1",
@@ -57,7 +57,7 @@
 		"oxfmt": "^0.36.0",
 		"syncpack": "^14.0.0",
 		"turbo": "^2.8.14",
-		"typescript": "^6.0.2",
+		"typescript": "catalog:",
 		"typescript-eslint": "^8.58.2"
 	},
 	"pnpm": {
@@ -81,8 +81,8 @@
 			"string.prototype.includes": "npm:@nolyfill/string.prototype.includes@^1",
 			"string.prototype.matchall": "npm:@nolyfill/string.prototype.matchall@^1",
 			"string.prototype.repeat": "npm:@nolyfill/string.prototype.repeat@^1",
-			"eslint": "^10.0.1",
-			"typescript": "^6.0.2",
+			"eslint": "catalog:",
+			"typescript": "catalog:",
 			"semver": "^7.7.4",
 			"chokidar": "^5.0.0"
 		}

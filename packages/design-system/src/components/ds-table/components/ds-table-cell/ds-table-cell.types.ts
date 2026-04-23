@@ -21,6 +21,12 @@ export interface RowAction<TData> {
 	tooltip?: string;
 
 	/**
+	 * Optional function to determine if the action should be hidden for a specific row.
+	 * When it returns `true`, the action is omitted from that row's menu. Takes precedence over `disabled`.
+	 */
+	hidden?: (row: TData) => boolean;
+
+	/**
 	 * Optional function to determine if the action should be disabled for a specific row
 	 */
 	disabled?: (row: TData) => boolean;
