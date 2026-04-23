@@ -6,6 +6,11 @@ import * as sassEmbedded from 'sass-embedded';
 // but we don't want to set `allowImportingTsExtensions` for the whole project.
 import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-plugin.ts';
 
+// Fail build for any SCSS deprecations.
+const SCSS_DEPRECATIONS = Object.values(sassEmbedded.deprecations).filter(
+	(deprecation: sassEmbedded.Deprecation) => deprecation.status !== 'obsolete',
+);
+
 export default defineConfig({
 	entry: ['./src/index.ts'],
 	format: ['cjs', 'esm'],
@@ -18,6 +23,11 @@ export default defineConfig({
 	css: {
 		fileName: 'index.min.css',
 		minify: true,
+		preprocessorOptions: {
+			scss: {
+				fatalDeprecations: SCSS_DEPRECATIONS,
+			},
+		},
 	},
 	deps: {
 		skipNodeModulesBundle: true,
@@ -40,7 +50,10 @@ function prependRootStyles(): Rolldown.Plugin {
 			const [indexCssFile, rootStyles] = await Promise.all([
 				fs.readFile('./dist/index.min.css', 'utf-8'),
 
-				sassEmbedded.compileAsync('./src/styles/styles.scss', { style: 'compressed' }),
+				sassEmbedded.compileAsync('./src/styles/styles.scss', {
+					style: 'compressed',
+					fatalDeprecations: SCSS_DEPRECATIONS,
+				}),
 			]);
 
 			await fs.writeFile('./dist/index.min.css', rootStyles.css + indexCssFile);
