@@ -46,7 +46,7 @@ export const Swatch = ({ variable, label }) => {
 };
 
 export const SwatchGroup = ({ label, tones }) => (
-	<div className={styles.group}>
+	<div className={`${styles.group} sb-unstyled`}>
 		<DsTypography variant="heading4" className={styles.groupLabel}>
 			{label}
 		</DsTypography>
@@ -58,30 +58,16 @@ export const SwatchGroup = ({ label, tones }) => (
 	</div>
 );
 
-<div className="sb-unstyled">
+# Colors
 
-<DsTypography variant="heading1" className={commonStyles.pageTitle}>
-	Colors
-</DsTypography>
+Reference CSS variables instead of hard-coding hex values.
 
-<DsTypography variant="body-md-reg" className={styles.pageDescription}>
-	Reference CSS variables instead of hard-coding hex values. Tokens are organized in three layers:
-	<b> primitive</b> (raw palette), <b>alias</b> (intent-based naming), and <b>semantic</b> (role-based usage).
-	Click any swatch to copy the token. Source of truth: <code>src/styles/_root_new.scss</code>.
-</DsTypography>
+## 1. Primitive (DAP-root-colors)
 
-<DsDivider className={commonStyles.divider} />
+The raw palette. Prefer the alias or semantic layers below — only reach for primitive tokens when no
+suitable abstraction exists.
 
-<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
-	1. Primitive (DAP-root-colors)
-</DsTypography>
-
-<DsTypography variant="body-md-reg" className={styles.layerDescription}>
-	The raw palette. Prefer the alias or semantic layers below — only reach for primitive tokens when no
-	suitable abstraction exists.
-</DsTypography>
-
-<div className={`${styles.container} ${styles.layer}`}>
+<div className={styles.layer}>
 
 <SwatchGroup
 	label="Blue"
@@ -255,18 +241,12 @@ export const SwatchGroup = ({ label, tones }) => (
 
 </div>
 
-<DsDivider className={commonStyles.divider} />
+## 2. Alias
 
-<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
-	2. Alias
-</DsTypography>
+Intent-based aliases that point at the primitive palette. Prefer these over primitives when the semantic
+layer doesn't cover the use case.
 
-<DsTypography variant="body-md-reg" className={styles.layerDescription}>
-	Intent-based aliases that point at the primitive palette. Prefer these over primitives when the semantic
-	layer doesn't cover the use case.
-</DsTypography>
-
-<div className={`${styles.container} ${styles.layer}`}>
+<div className={styles.layer}>
 
 <SwatchGroup
 	label="Brand"
@@ -396,18 +376,12 @@ export const SwatchGroup = ({ label, tones }) => (
 
 </div>
 
-<DsDivider className={commonStyles.divider} />
+## 3. Semantic (DAP uses)
 
-<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
-	3. Semantic (DAP uses)
-</DsTypography>
+Role-based tokens bound to a UI purpose (background, border, font, icon, outline, schema, shadow, status).
+Always prefer these when composing components.
 
-<DsTypography variant="body-md-reg" className={styles.layerDescription}>
-	Role-based tokens bound to a UI purpose (background, border, font, icon, outline, schema, shadow, status).
-	Always prefer these when composing components.
-</DsTypography>
-
-<div className={`${styles.container} ${styles.layer}`}>
+<div className={styles.layer}>
 
 <SwatchGroup
 	label="Background"
@@ -640,7 +614,5 @@ export const SwatchGroup = ({ label, tones }) => (
 		{ label: 'Text on button', variable: 'text-on-button' },
 	]}
 />
-
-</div>
 
 </div>
