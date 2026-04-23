@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsPanel } from './';
-import { DsButton } from '../ds-button/';
+import { DsButton } from '../ds-button';
 import { DsStepper, DsStep, DsStepContent, DsNextStepButton } from '../ds-stepper';
 import { useState } from 'react';
 import type { DsPanelVariant } from './ds-panel.types';
