@@ -3,6 +3,10 @@ import type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
 export type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
+const formatFilterDateForTag = (d: Date): string => {
+	return d.toISOString().split('T')[0] ?? '';
+};
+
 export const initialFilterState: CommentsFilterState = {
 	authors: [],
 	labels: [],
@@ -42,6 +46,7 @@ export const applyFilters = (
 
 		if (filters.dateFrom) {
 			const fromDate = new Date(filters.dateFrom);
+			fromDate.setHours(0, 0, 0, 0);
 			if (comment.createdAt < fromDate) {
 				return false;
 			}
@@ -89,8 +94,8 @@ export const filtersToTags = (filters: CommentsFilterState, authorMap: Map<strin
 	});
 
 	if (filters.dateFrom || filters.dateTo) {
-		const from = filters.dateFrom || '...';
-		const to = filters.dateTo || '...';
+		const from = filters.dateFrom ? formatFilterDateForTag(filters.dateFrom) : '...';
+		const to = filters.dateTo ? formatFilterDateForTag(filters.dateTo) : '...';
 		tags.push({
 			id: 'date-range',
 			label: `Date: ${from} to ${to}`,

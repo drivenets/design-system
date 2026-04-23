@@ -9,7 +9,7 @@ const makeComment = (overrides: Partial<CommentData> = {}): CommentData => ({
 	id: '1',
 	numericId: 1,
 	author: makeAuthor('user-1', 'Alice'),
-	createdAt: new Date('2025-06-15'),
+	createdAt: new Date(2025, 5, 15),
 	isResolved: false,
 	messages: [],
 	...overrides,
@@ -125,11 +125,11 @@ describe('comments-filters', () => {
 
 		it('should filter by dateFrom', () => {
 			const comments = [
-				makeComment({ id: '1', createdAt: new Date('2025-01-01') }),
-				makeComment({ id: '2', createdAt: new Date('2025-06-15') }),
-				makeComment({ id: '3', createdAt: new Date('2025-12-31') }),
+				makeComment({ id: '1', createdAt: new Date(2025, 0, 1) }),
+				makeComment({ id: '2', createdAt: new Date(2025, 5, 15) }),
+				makeComment({ id: '3', createdAt: new Date(2025, 11, 31) }),
 			];
-			const filters: CommentsFilterState = { ...emptyFilters, dateFrom: '2025-06-01' };
+			const filters: CommentsFilterState = { ...emptyFilters, dateFrom: new Date(2025, 5, 1) };
 
 			const result = applyFilters(comments, filters, neverActionRequired);
 
@@ -139,11 +139,11 @@ describe('comments-filters', () => {
 
 		it('should filter by dateTo (inclusive end of day)', () => {
 			const comments = [
-				makeComment({ id: '1', createdAt: new Date('2025-01-01') }),
-				makeComment({ id: '2', createdAt: new Date('2025-06-15T23:59:59.999') }),
-				makeComment({ id: '3', createdAt: new Date('2025-12-31') }),
+				makeComment({ id: '1', createdAt: new Date(2025, 0, 1) }),
+				makeComment({ id: '2', createdAt: new Date(2025, 5, 15, 23, 59, 59, 999) }),
+				makeComment({ id: '3', createdAt: new Date(2025, 11, 31) }),
 			];
-			const filters: CommentsFilterState = { ...emptyFilters, dateTo: '2025-06-15' };
+			const filters: CommentsFilterState = { ...emptyFilters, dateTo: new Date(2025, 5, 15) };
 
 			const result = applyFilters(comments, filters, neverActionRequired);
 
@@ -153,14 +153,14 @@ describe('comments-filters', () => {
 
 		it('should filter by date range', () => {
 			const comments = [
-				makeComment({ id: '1', createdAt: new Date('2025-01-01') }),
-				makeComment({ id: '2', createdAt: new Date('2025-06-15') }),
-				makeComment({ id: '3', createdAt: new Date('2025-12-31') }),
+				makeComment({ id: '1', createdAt: new Date(2025, 0, 1) }),
+				makeComment({ id: '2', createdAt: new Date(2025, 5, 15) }),
+				makeComment({ id: '3', createdAt: new Date(2025, 11, 31) }),
 			];
 			const filters: CommentsFilterState = {
 				...emptyFilters,
-				dateFrom: '2025-03-01',
-				dateTo: '2025-09-01',
+				dateFrom: new Date(2025, 2, 1),
+				dateTo: new Date(2025, 8, 1),
 			};
 
 			const result = applyFilters(comments, filters, neverActionRequired);
@@ -319,8 +319,8 @@ describe('comments-filters', () => {
 		it('should create date range tag with both dates', () => {
 			const filters: CommentsFilterState = {
 				...emptyFilters,
-				dateFrom: '2025-01-01',
-				dateTo: '2025-12-31',
+				dateFrom: new Date(2025, 0, 1),
+				dateTo: new Date(2025, 11, 31),
 			};
 
 			const result = filtersToTags(filters, authorMap);
@@ -335,7 +335,7 @@ describe('comments-filters', () => {
 		});
 
 		it('should create date range tag with only dateFrom', () => {
-			const filters: CommentsFilterState = { ...emptyFilters, dateFrom: '2025-01-01' };
+			const filters: CommentsFilterState = { ...emptyFilters, dateFrom: new Date(2025, 0, 1) };
 
 			const result = filtersToTags(filters, authorMap);
 
@@ -344,7 +344,7 @@ describe('comments-filters', () => {
 		});
 
 		it('should create date range tag with only dateTo', () => {
-			const filters: CommentsFilterState = { ...emptyFilters, dateTo: '2025-12-31' };
+			const filters: CommentsFilterState = { ...emptyFilters, dateTo: new Date(2025, 11, 31) };
 
 			const result = filtersToTags(filters, authorMap);
 
@@ -382,8 +382,8 @@ describe('comments-filters', () => {
 			const filters: CommentsFilterState = {
 				statuses: ['resolved'],
 				authors: ['user-1'],
-				dateFrom: '2025-01-01',
-				dateTo: '2025-12-31',
+				dateFrom: new Date(2025, 0, 1),
+				dateTo: new Date(2025, 11, 31),
 				labels: ['bug'],
 			};
 
@@ -444,8 +444,8 @@ describe('comments-filters', () => {
 		it('should clear both dateFrom and dateTo when removing a date tag', () => {
 			const filters: CommentsFilterState = {
 				...emptyFilters,
-				dateFrom: '2025-01-01',
-				dateTo: '2025-12-31',
+				dateFrom: new Date(2025, 0, 1),
+				dateTo: new Date(2025, 11, 31),
 			};
 			const tag: FilterTag = {
 				id: 'date-range',
