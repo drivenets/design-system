@@ -3,11 +3,12 @@ import { createPlugin } from './create-plugin';
 
 const eslintPlugin = createPlugin(
 	'@drivenets/design-system',
-	{
-		name: 'no-deprecated-ds-date-input',
-		selector: JSXElementName('DsDateInput'),
-		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,
-	},
+	// Example test for deprecated components, for future reference
+	// 	{
+	// 		name: 'no-deprecated-ds-date-input',
+	// 		selector: JSXElementName('DsDateInput'),
+	// 		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,
+	// 	},
 
 	{
 		name: 'no-native-button',
