@@ -1,0 +1,1211 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DsTypography } from '../components/ds-typography';
+import { DsDivider } from '../components/ds-divider';
+import commonStyles from './stories-common.module.scss';
+
+<Meta title="Design System/Token Migration" />
+
+export const TokenTable = ({ rows, headers = ['Old Name', 'New Name', 'Status'] }) => (
+	<table className={commonStyles.table}>
+		<thead>
+			<tr>
+				{headers.map((header) => (
+					<th key={header}>{header}</th>
+				))}
+			</tr>
+		</thead>
+		<tbody>
+			{rows.map((row, index) => (
+				<tr key={index}>
+					<td>{row.old ? <code>{row.old}</code> : '—'}</td>
+					<td>{row.next ? <code>{row.next}</code> : '—'}</td>
+					<td>{row.status}</td>
+				</tr>
+			))}
+		</tbody>
+	</table>
+);
+
+<div className="sb-unstyled">
+
+<DsTypography variant="heading1" className={commonStyles.pageTitle}>
+	Token Migration Table
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={commonStyles.paragraph}>
+	Shows the mapping of old tokens to new tokens.
+</DsTypography>
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	Legend
+</DsTypography>
+
+<table className={commonStyles.table}>
+	<thead>
+		<tr>
+			<th>Status</th>
+			<th>Meaning</th>
+			<th>Migration strategy</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Renamed</td>
+			<td>
+				Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped)
+			</td>
+			<td>Find &amp; replace; no testing is required</td>
+		</tr>
+		<tr>
+			<td>Changed</td>
+			<td>Same logical token but resolved value differs</td>
+			<td>Find &amp; replace; visual testing is required</td>
+		</tr>
+		<tr>
+			<td>New</td>
+			<td>No old equivalent</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>Removed</td>
+			<td>Old token with no new equivalent</td>
+			<td>Either keep old token or find the nearest equivalent</td>
+		</tr>
+	</tbody>
+</table>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	1. Primitive colors
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Blue
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-blue-50', next: '--color-dap-blue-050', status: 'Renamed' },
+		{ old: null, next: '--color-dap-blue-075', status: 'New' },
+		{ old: '--color-blue-100', next: '--color-dap-blue-100', status: 'Renamed' },
+		{ old: '--color-blue-200', next: '--color-dap-blue-200', status: 'Renamed' },
+		{ old: '--color-blue-300', next: '--color-dap-blue-300', status: 'Renamed' },
+		{ old: '--color-blue-400', next: '--color-dap-blue-400', status: 'Renamed' },
+		{ old: '--color-blue-500', next: '--color-dap-blue-500', status: 'Renamed' },
+		{ old: '--color-blue-600', next: '--color-dap-blue-600', status: 'Renamed' },
+		{ old: '--color-blue-700', next: '--color-dap-blue-700', status: 'Renamed' },
+		{ old: '--color-blue-800', next: '--color-dap-blue-800', status: 'Renamed' },
+		{ old: '--color-blue-900', next: '--color-dap-blue-900', status: 'Renamed' },
+		{ old: '--color-blue-950', next: '--color-dap-blue-950', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Brand
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-brand-50', next: '--color-dap-brand-50', status: 'Renamed' },
+		{ old: '--color-brand-100', next: '--color-dap-brand-100', status: 'Renamed' },
+		{ old: '--color-brand-200', next: '--color-dap-brand-200', status: 'Renamed' },
+		{ old: '--color-brand-300', next: '--color-dap-brand-300', status: 'Renamed' },
+		{ old: '--color-brand-400', next: '--color-dap-brand-400', status: 'Renamed' },
+		{ old: '--color-brand-500', next: '--color-dap-brand-500', status: 'Renamed' },
+		{ old: '--color-brand-600', next: '--color-dap-brand-600', status: 'Renamed' },
+		{ old: '--color-brand-700', next: '--color-dap-brand-700', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Dark Blue
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-dark-blue-50', next: '--color-dap-dark-blue-050', status: 'Renamed' },
+		{ old: '--color-dark-blue-100', next: '--color-dap-dark-blue-100', status: 'Renamed' },
+		{ old: null, next: '--color-dap-dark-blue-150', status: 'New' },
+		{ old: null, next: '--color-dap-dark-blue-150-2', status: 'New' },
+		{ old: null, next: '--color-dap-dark-blue-150-3', status: 'New' },
+		{ old: '--color-dark-blue-300', next: '--color-dap-dark-blue-200', status: 'Renamed' },
+		{ old: '--color-dark-blue-200', next: '--color-dap-dark-blue-300', status: 'Renamed' },
+		{ old: null, next: '--color-dap-dark-blue-400', status: 'New' },
+		{ old: null, next: '--color-dap-dark-blue-500', status: 'New' },
+		{ old: '--color-dark-blue-400', next: '--color-dap-dark-blue-600', status: 'Renamed' },
+		{ old: '--color-dark-blue-500', next: '--color-dap-dark-blue-700', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Dark Gray
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-dark-gray-50', next: '--color-dap-dark-gray-050', status: 'Renamed' },
+		{ old: '--color-dark-gray-100', next: '--color-dap-dark-gray-100', status: 'Renamed' },
+		{ old: '--color-dark-gray-200', next: '--color-dap-dark-gray-200', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Data
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-data-amber', next: '--color-dap-data-amber', status: 'Renamed' },
+		{ old: '--color-data-blue', next: '--color-dap-data-blue', status: 'Renamed' },
+		{ old: '--color-data-deep-fuchsia', next: '--color-dap-data-deep-fuchsia', status: 'Renamed' },
+		{ old: '--color-data-deep-purple', next: '--color-dap-data-deep-purple', status: 'Renamed' },
+		{ old: '--color-data-error', next: '--color-dap-data-error', status: 'Renamed' },
+		{ old: '--color-data-fuchsia', next: '--color-dap-data-fuchsia', status: 'Renamed' },
+		{ old: '--color-data-green', next: '--color-dap-data-green', status: 'Renamed' },
+		{ old: null, next: '--color-dap-data-light-amber', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-blue', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-deep-fuchsia', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-deep-purple', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-error', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-fuchsia', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-green', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-lime', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-orange', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-pink', status: 'New' },
+		{ old: '--color-data-light-purple', next: '--color-dap-data-light-purple', status: 'Renamed' },
+		{ old: null, next: '--color-dap-data-light-rose', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-teal', status: 'New' },
+		{ old: null, next: '--color-dap-data-light-yellow', status: 'New' },
+		{ old: '--color-data-lime', next: '--color-dap-data-lime', status: 'Renamed' },
+		{ old: '--color-data-orange', next: '--color-dap-data-orange', status: 'Renamed' },
+		{ old: '--color-data-pink', next: '--color-dap-data-pink', status: 'Renamed' },
+		{ old: '--color-data-purple', next: '--color-dap-data-purple', status: 'Renamed' },
+		{ old: '--color-data-rose', next: '--color-dap-data-rose', status: 'Renamed' },
+		{ old: '--color-data-teal', next: '--color-dap-data-teal', status: 'Renamed' },
+		{ old: '--color-data-yellow', next: '--color-dap-data-yellow', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Gray
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-gray-50', next: '--color-dap-gray-050', status: 'Renamed' },
+		{ old: '--color-gray-100', next: '--color-dap-gray-100', status: 'Renamed' },
+		{ old: '--color-gray-200', next: '--color-dap-gray-200', status: 'Renamed' },
+		{ old: '--color-gray-300', next: '--color-dap-gray-300', status: 'Renamed' },
+		{ old: '--color-gray-400', next: '--color-dap-gray-400', status: 'Renamed' },
+		{ old: '--color-gray-500', next: '--color-dap-gray-500', status: 'Renamed' },
+		{ old: '--color-gray-600', next: '--color-dap-gray-600', status: 'Renamed' },
+		{ old: '--color-gray-700', next: '--color-dap-gray-700', status: 'Renamed' },
+		{ old: '--color-gray-800', next: '--color-dap-gray-800', status: 'Renamed' },
+		{ old: '--color-gray-900', next: '--color-dap-gray-900', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Green
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-green-50', next: '--color-dap-green-050', status: 'Renamed' },
+		{ old: null, next: '--color-dap-green-075', status: 'New' },
+		{ old: '--color-green-100', next: '--color-dap-green-100', status: 'Renamed' },
+		{ old: '--color-green-200', next: '--color-dap-green-200', status: 'Renamed' },
+		{ old: '--color-green-300', next: '--color-dap-green-300', status: 'Renamed' },
+		{ old: '--color-green-400', next: '--color-dap-green-400', status: 'Renamed' },
+		{ old: '--color-green-500', next: '--color-dap-green-500', status: 'Renamed' },
+		{ old: '--color-green-600', next: '--color-dap-green-600', status: 'Renamed' },
+		{ old: '--color-green-700', next: '--color-dap-green-700', status: 'Renamed' },
+		{ old: '--color-green-800', next: '--color-dap-green-800', status: 'Renamed' },
+		{ old: '--color-green-900', next: '--color-dap-green-900', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Orange
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-orange-50', next: '--color-dap-orange-050', status: 'Renamed' },
+		{ old: '--color-orange-100', next: '--color-dap-orange-100', status: 'Renamed' },
+		{ old: '--color-orange-200', next: '--color-dap-orange-200', status: 'Renamed' },
+		{ old: '--color-orange-300', next: '--color-dap-orange-300', status: 'Renamed' },
+		{ old: '--color-orange-400', next: '--color-dap-orange-400', status: 'Renamed' },
+		{ old: '--color-orange-500', next: '--color-dap-orange-500', status: 'Renamed' },
+		{ old: '--color-orange-600', next: '--color-dap-orange-600', status: 'Renamed' },
+		{ old: '--color-orange-700', next: '--color-dap-orange-700', status: 'Renamed' },
+		{ old: '--color-orange-800', next: '--color-dap-orange-800', status: 'Renamed' },
+		{ old: '--color-orange-900', next: '--color-dap-orange-900', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Purple
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-purple-50', next: '--color-dap-purple-050', status: 'Renamed' },
+		{ old: '--color-purple-100', next: '--color-dap-purple-100', status: 'Renamed' },
+		{ old: '--color-purple-200', next: '--color-dap-purple-200', status: 'Renamed' },
+		{ old: '--color-purple-300', next: '--color-dap-purple-300', status: 'Renamed' },
+		{ old: '--color-purple-400', next: '--color-dap-purple-400', status: 'Renamed' },
+		{ old: '--color-purple-500', next: '--color-dap-purple-500', status: 'Renamed' },
+		{ old: '--color-purple-600', next: '--color-dap-purple-600', status: 'Renamed' },
+		{ old: '--color-purple-700', next: '--color-dap-purple-700', status: 'Renamed' },
+		{ old: '--color-purple-800', next: '--color-dap-purple-800', status: 'Renamed' },
+		{ old: '--color-purple-900', next: '--color-dap-purple-900', status: 'Renamed' },
+		{ old: '--color-purple-950', next: '--color-dap-purple-950', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Red
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-red-50', next: '--color-dap-red-050', status: 'Renamed' },
+		{ old: '--color-red-100', next: '--color-dap-red-100', status: 'Changed' },
+		{ old: '--color-red-200', next: '--color-dap-red-200', status: 'Renamed' },
+		{ old: '--color-red-300', next: '--color-dap-red-300', status: 'Renamed' },
+		{ old: '--color-red-400', next: '--color-dap-red-400', status: 'Renamed' },
+		{ old: '--color-red-500', next: '--color-dap-red-500', status: 'Renamed' },
+		{ old: '--color-red-600', next: '--color-dap-red-600', status: 'Renamed' },
+		{ old: '--color-red-700', next: '--color-dap-red-700', status: 'Renamed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	2. Alias scales
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Brand
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-brand-050', next: '--brand-050', status: 'Renamed' },
+		{ old: null, next: '--brand-100', status: 'New' },
+		{ old: null, next: '--brand-200', status: 'New' },
+		{ old: null, next: '--brand-300', status: 'New' },
+		{ old: null, next: '--brand-400', status: 'New' },
+		{ old: '--color-brand-500-default', next: '--brand-500-default', status: 'Renamed' },
+		{ old: null, next: '--brand-600', status: 'New' },
+		{ old: null, next: '--brand-700', status: 'New' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Darks
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-darks-050', next: '--darks-050', status: 'Renamed' },
+		{ old: '--color-darks-100', next: '--darks-100', status: 'Renamed' },
+		{ old: '--color-darks-200', next: '--darks-200', status: 'Renamed' },
+		{ old: '--color-darks-300', next: '--darks-300', status: 'Renamed' },
+		{ old: '--color-darks-400', next: '--darks-400', status: 'Renamed' },
+		{ old: '--color-darks-500', next: '--darks-500', status: 'Renamed' },
+		{ old: '--color-darks-600', next: '--darks-600', status: 'Renamed' },
+		{ old: '--color-darks-700', next: '--darks-700', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Info
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-info-050', next: '--info-050', status: 'Renamed' },
+		{ old: '--color-info-100', next: '--info-100', status: 'Renamed' },
+		{ old: '--color-info-200', next: '--info-200', status: 'Renamed' },
+		{ old: '--color-info-300', next: '--info-300', status: 'Renamed' },
+		{ old: '--color-info-400', next: '--info-400', status: 'Renamed' },
+		{ old: '--color-info-500', next: '--info-500', status: 'Renamed' },
+		{ old: '--color-info-600-default', next: '--info-600-default', status: 'Renamed' },
+		{ old: '--color-info-700', next: '--info-700', status: 'Renamed' },
+		{ old: '--color-info-800-progress', next: '--info-800-progress', status: 'Renamed' },
+		{ old: '--color-info-900', next: '--info-900', status: 'Renamed' },
+		{ old: '--color-info-950', next: '--info-950', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Negative
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-negative-050', next: '--negative-050', status: 'Renamed' },
+		{ old: '--color-negative-100', next: '--negative-100', status: 'Changed' },
+		{ old: '--color-negative-200', next: '--negative-200', status: 'Renamed' },
+		{ old: '--color-negative-300', next: '--negative-300', status: 'Renamed' },
+		{ old: '--color-negative-400-default', next: '--negative-400-default', status: 'Renamed' },
+		{ old: '--color-negative-500', next: '--negative-500', status: 'Renamed' },
+		{ old: '--color-negative-600', next: '--negative-600', status: 'Renamed' },
+		{ old: '--color-negative-700', next: '--negative-700', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Paused
+</DsTypography>
+
+<TokenTable rows={[{ old: null, next: '--paused-600', status: 'New' }]} />
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Positive
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-positive-050', next: '--positive-050', status: 'Renamed' },
+		{ old: '--color-positive-100', next: '--positive-100', status: 'Renamed' },
+		{ old: '--color-positive-200', next: '--positive-200', status: 'Renamed' },
+		{ old: '--color-positive-300', next: '--positive-300', status: 'Renamed' },
+		{ old: '--color-positive-400', next: '--positive-400', status: 'Renamed' },
+		{ old: '--color-positive-500', next: '--positive-500', status: 'Renamed' },
+		{ old: '--color-positive-600', next: '--positive-600', status: 'Renamed' },
+		{ old: '--color-positive-700-default', next: '--positive-700-default', status: 'Renamed' },
+		{ old: '--color-positive-800', next: '--positive-800', status: 'Renamed' },
+		{ old: '--color-positive-900', next: '--positive-900', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Primary
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-primary-050', next: '--primary-050', status: 'Renamed' },
+		{ old: '--color-primary-100', next: '--primary-100', status: 'Renamed' },
+		{ old: '--color-primary-200', next: '--primary-200', status: 'Renamed' },
+		{ old: '--color-primary-300', next: '--primary-300', status: 'Renamed' },
+		{ old: '--color-primary-400', next: '--primary-400', status: 'Renamed' },
+		{ old: '--color-primary-500', next: '--primary-500', status: 'Renamed' },
+		{ old: '--color-primary-600', next: '--primary-600', status: 'Renamed' },
+		{ old: '--color-primary-700-default', next: '--primary-700-default', status: 'Renamed' },
+		{ old: '--color-primary-800', next: '--primary-800', status: 'Renamed' },
+		{ old: '--color-primary-900', next: '--primary-900', status: 'Renamed' },
+		{ old: '--color-primary-950', next: '--primary-950', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Secondary
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-secondary-white', next: '--secondary-050', status: 'Renamed' },
+		{ old: '--color-secondary-100', next: '--secondary-100', status: 'Renamed' },
+		{ old: '--color-secondary-200', next: '--secondary-200', status: 'Renamed' },
+		{ old: '--color-secondary-300', next: '--secondary-300', status: 'Renamed' },
+		{ old: '--color-secondary-400', next: '--secondary-400', status: 'Renamed' },
+		{ old: '--color-secondary-500-net-4', next: '--secondary-500-net-4', status: 'Renamed' },
+		{ old: '--color-secondary-600-net-2', next: '--secondary-600-net-2', status: 'Renamed' },
+		{ old: '--color-secondary-700-net-1', next: '--secondary-700-net-1', status: 'Renamed' },
+		{ old: '--color-secondary-800', next: '--secondary-800', status: 'Renamed' },
+		{ old: '--color-secondary-black', next: '--secondary-900', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Warning
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-warning-050', next: '--warning-050', status: 'Renamed' },
+		{ old: '--color-warning-100', next: '--warning-100', status: 'Renamed' },
+		{ old: '--color-warning-200', next: '--warning-200', status: 'Renamed' },
+		{ old: '--color-warning-300', next: '--warning-300', status: 'Renamed' },
+		{ old: '--color-warning-400', next: '--warning-400', status: 'Renamed' },
+		{ old: '--color-warning-500', next: '--warning-500', status: 'Renamed' },
+		{ old: '--color-warning-600-default', next: '--warning-600-default', status: 'Renamed' },
+		{ old: '--color-warning-700', next: '--warning-700', status: 'Renamed' },
+		{ old: '--color-warning-800', next: '--warning-800', status: 'Renamed' },
+		{ old: '--color-warning-900', next: '--warning-900', status: 'Renamed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	3. Semantic: Background
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-background', next: '--background', status: 'Renamed' },
+		{ old: '--color-background-action', next: '--background-action', status: 'Renamed' },
+		{ old: '--color-background-action-hover', next: '--background-action-hover', status: 'Renamed' },
+		{
+			old: '--color-background-action-hover-weak',
+			next: '--background-action-hover-weak',
+			status: 'Renamed',
+		},
+		{ old: '--color-background-action-inverse', next: '--background-action-inverse', status: 'Renamed' },
+		{ old: '--color-background-action-secondary', next: '--background-action-secondary', status: 'Renamed' },
+		{
+			old: '--color-background-action-secondary-hover',
+			next: '--background-action-secondary-hover',
+			status: 'Renamed',
+		},
+		{
+			old: '--color-background-action-tertiary',
+			next: '--background-action-tertiary-hover',
+			status: 'Renamed',
+		},
+		{ old: null, next: '--background-active-status', status: 'New' },
+		{ old: '--color-background-active-moderate', next: '--background-active-moderate', status: 'Renamed' },
+		{ old: '--color-background-brand', next: '--background-brand', status: 'Renamed' },
+		{ old: '--color-background-deselected', next: '--background-deselected', status: 'Renamed' },
+		{ old: '--color-background-deselected-hover', next: '--background-deselected-hover', status: 'Renamed' },
+		{ old: '--color-background-disable', next: '--background-disable', status: 'Renamed' },
+		{ old: '--color-background-danger-strong', next: '--background-error', status: 'Renamed' },
+		{ old: '--color-background-danger-strong-hover', next: '--background-error-hover', status: 'Renamed' },
+		{ old: '--color-background-danger-weak', next: '--background-error-secondary-hover', status: 'Renamed' },
+		{ old: null, next: '--background-error-secondary-selected', status: 'New' },
+		{ old: null, next: '--background-error-selected', status: 'New' },
+		{ old: null, next: '--background-execution', status: 'New' },
+		{ old: null, next: '--background-execution-strong', status: 'New' },
+		{ old: '--color-background-info', next: '--background-info', status: 'Renamed' },
+		{ old: '--color-background-info-strong', next: '--background-info-strong', status: 'Renamed' },
+		{ old: null, next: '--background-light', status: 'New' },
+		{ old: null, next: '--background-light-disabled', status: 'New' },
+		{ old: null, next: '--background-light-primary', status: 'New' },
+		{ old: null, next: '--background-light-primary-hover', status: 'New' },
+		{ old: null, next: '--background-light-primary-selected', status: 'New' },
+		{ old: null, next: '--background-light-secondary-selected', status: 'New' },
+		{ old: null, next: '--background-neutral', status: 'New' },
+		{ old: null, next: '--background-overlay', status: 'New' },
+		{ old: null, next: '--background-page', status: 'New' },
+		{ old: null, next: '--background-pending', status: 'New' },
+		{ old: null, next: '--background-pending-strong', status: 'New' },
+		{ old: '--color-background-selected', next: '--background-primary', status: 'Renamed' },
+		{ old: '--color-background-selected-hover', next: '--background-primary-hover', status: 'Renamed' },
+		{ old: null, next: '--background-primary-selected', status: 'New' },
+		{ old: '--color-background-secondary', next: '--background-secondary', status: 'Renamed' },
+		{ old: '--color-background-selected-weak', next: '--background-secondary-hover', status: 'Renamed' },
+		{
+			old: '--color-background-secondary-selected-weak',
+			next: '--background-secondary-selected-weak',
+			status: 'Renamed',
+		},
+		{ old: '--color-background-success', next: '--background-success', status: 'Changed' },
+		{ old: '--color-background-success-strong', next: '--background-success-strong', status: 'Renamed' },
+		{
+			old: '--color-background-success-stronger',
+			next: '--background-success-strong-hover',
+			status: 'Renamed',
+		},
+		{ old: '--color-background-tertiary', next: '--background-tertiary', status: 'Renamed' },
+		{
+			old: '--color-background-tertiary-selected-weak',
+			next: '--background-tertiary-selected-weak',
+			status: 'Renamed',
+		},
+		{ old: null, next: '--background-transparent-active', status: 'New' },
+		{ old: null, next: '--background-transparent-hover', status: 'New' },
+		{ old: '--color-background-warning', next: '--background-warning', status: 'Renamed' },
+		{ old: '--color-background-warning-strong', next: '--background-warning-strong', status: 'Renamed' },
+		{ old: '--color-background-warning-weak', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	4. Semantic: Border
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-border', next: '--border', status: 'Renamed' },
+		{ old: '--color-border-action-primary', next: '--border-action-primary', status: 'Renamed' },
+		{ old: '--color-border-action-primary-hover', next: '--border-action-primary-hover', status: 'Renamed' },
+		{ old: '--color-border-action-secondary', next: '--border-action-secondary', status: 'Renamed' },
+		{
+			old: '--color-border-action-secondary-hover',
+			next: '--border-action-secondary-hover',
+			status: 'Renamed',
+		},
+		{ old: '--color-border-contrast', next: '--border-contrast', status: 'Renamed' },
+		{ old: '--color-border-disabled', next: '--border-disabled', status: 'Changed' },
+		{ old: '--color-border-danger-strong', next: '--border-error', status: 'Renamed' },
+		{ old: null, next: '--border-error-hover', status: 'New' },
+		{ old: '--color-border-danger-weak', next: '--border-error-weak', status: 'Changed' },
+		{ old: null, next: '--border-field', status: 'New' },
+		{ old: null, next: '--border-field-focus', status: 'New' },
+		{ old: null, next: '--border-field-hover', status: 'New' },
+		{ old: '--color-border-inverse', next: '--border-inverse', status: 'Renamed' },
+		{ old: null, next: '--border-light-disabled', status: 'New' },
+		{ old: null, next: '--border-light-secondary', status: 'New' },
+		{ old: '--color-border-secondary', next: '--border-secondary', status: 'Renamed' },
+		{ old: null, next: '--border-secondary-hover', status: 'New' },
+		{ old: '--color-border-success', next: '--border-success', status: 'Renamed' },
+		{ old: '--color-border-tertiary', next: '--border-tertiary', status: 'Renamed' },
+		{ old: null, next: '--border-warning-strong', status: 'New' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	5. Semantic: Font
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-font-action', next: '--font-action', status: 'Renamed' },
+		{ old: '--color-font-action-hover', next: '--font-action-hover', status: 'Renamed' },
+		{ old: '--color-font-action-secondary', next: '--font-action-secondary', status: 'Renamed' },
+		{ old: '--color-font-action-secondary-hover', next: '--font-action-secondary-hover', status: 'Renamed' },
+		{ old: '--color-font-code', next: '--font-code', status: 'Renamed' },
+		{ old: '--color-font-disabled', next: '--font-disabled', status: 'Changed' },
+		{ old: '--color-font-danger', next: '--font-error', status: 'Renamed' },
+		{ old: '--color-font-highlight', next: '--font-highlight', status: 'Renamed' },
+		{ old: null, next: '--font-light-disabled', status: 'New' },
+		{ old: '--color-font-main', next: '--font-main', status: 'Renamed' },
+		{ old: '--color-font-on-action', next: '--font-on-action', status: 'Renamed' },
+		{ old: '--color-font-on-disabled', next: '--font-on-disabled', status: 'Renamed' },
+		{ old: null, next: '--font-placeholder', status: 'New' },
+		{ old: '--color-font-secondary', next: '--font-secondary', status: 'Renamed' },
+		{ old: '--color-font-success', next: '--font-success', status: 'Renamed' },
+		{ old: '--color-font-warning', next: '--font-warning', status: 'Renamed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	6. Semantic: Icon
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: null, next: '--icon-on-button', status: 'New' },
+		{ old: '--color-icon-primary', next: '--icon-action', status: 'Renamed' },
+		{ old: null, next: '--icon-action-hover', status: 'New' },
+		{ old: '--color-icon-secondary', next: '--icon-action-secondary', status: 'Renamed' },
+		{ old: null, next: '--icon-disabled', status: 'New' },
+		{ old: '--color-icon-danger', next: '--icon-error', status: 'Changed' },
+		{ old: null, next: '--icon-execution', status: 'New' },
+		{ old: '--color-icon-information-main', next: '--icon-information-main', status: 'Renamed' },
+		{ old: '--color-icon-information-secondary', next: '--icon-information-secondary', status: 'Renamed' },
+		{ old: '--color-icon-inverse', next: '--icon-inverse', status: 'Renamed' },
+		{ old: null, next: '--icon-main', status: 'New' },
+		{ old: null, next: '--icon-on-dark-disabled', status: 'New' },
+		{ old: null, next: '--icon-pause', status: 'New' },
+		{ old: null, next: '--icon-pending', status: 'New' },
+		{ old: null, next: '--icon-secondary', status: 'New' },
+		{ old: '--color-icon-success', next: '--icon-success', status: 'Renamed' },
+		{ old: null, next: '--icon-success-light', status: 'New' },
+		{ old: '--color-icon-warning', next: '--icon-warning', status: 'Renamed' },
+		{ old: null, next: '--icon-warning-light', status: 'New' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	7. Outline, Shadow, Status
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Outline
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-outline-extreme', next: '--outline-extreme', status: 'Renamed' },
+		{ old: '--color-outline-inverse', next: '--outline-inverse', status: 'Renamed' },
+		{ old: '--color-outline-moderate', next: '--outline-moderate', status: 'Renamed' },
+		{ old: '--color-outline-strong', next: '--outline-strong', status: 'Renamed' },
+		{ old: '--color-outline-weak', next: '--outline-weak', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Shadow
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-shadow-moderate', next: '--shadow-moderate', status: 'Renamed' },
+		{ old: '--color-shadow-strong', next: '--shadow-strong', status: 'Renamed' },
+		{ old: '--color-shadow-weak', next: '--shadow-weak', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Status
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-status-bg-inactive', next: '--status-bg-inactive', status: 'Renamed' },
+		{ old: '--color-status-bg-neutral', next: '--status-bg-neutral', status: 'Renamed' },
+		{ old: '--color-status-bg-pending', next: '--status-bg-pending', status: 'Renamed' },
+		{ old: '--color-status-bg-progress', next: '--status-bg-progress', status: 'Renamed' },
+		{ old: '--color-status-bg-success', next: '--status-bg-success', status: 'Changed' },
+		{ old: '--color-status-bg-warning', next: '--status-bg-warning', status: 'Renamed' },
+		{ old: '--color-status-bg-failed', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	8. Dark / Light buttons
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={commonStyles.paragraph}>
+	Entire group renamed <code>dark-buttons</code> → <code>light-buttons</code>.
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-dark-buttons-primary', next: '--light-buttons-primary', status: 'Renamed' },
+		{ old: null, next: '--light-buttons-primary-2', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-3', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-4', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-5', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-6', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-7', status: 'New' },
+		{ old: '--color-dark-buttons-primary-hover', next: '--light-buttons-primary-hover', status: 'Renamed' },
+		{ old: null, next: '--light-buttons-primary-hover-2', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-hover-3', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-hover-4', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-hover-5', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-hover-6', status: 'New' },
+		{ old: null, next: '--light-buttons-primary-hover-7', status: 'New' },
+		{
+			old: '--color-dark-buttons-secondary-background',
+			next: '--light-buttons-secondary-background',
+			status: 'Renamed',
+		},
+		{
+			old: '--color-dark-buttons-secondary-hover',
+			next: '--light-buttons-secondary-hover',
+			status: 'Renamed',
+		},
+		{
+			old: '--color-dark-buttons-secondary-light',
+			next: '--light-buttons-secondary-light',
+			status: 'Renamed',
+		},
+		{
+			old: '--color-dark-buttons-secondary-light-hover-background',
+			next: '--light-buttons-secondary-light-hover-background',
+			status: 'Renamed',
+		},
+		{ old: '--color-dark-buttons-tertiary', next: '--light-buttons-tertiary', status: 'Renamed' },
+		{
+			old: '--color-dark-buttons-tertiary-hover-background',
+			next: '--light-buttons-tertiary-hover-background',
+			status: 'Renamed',
+		},
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	9. Schema (data aliases)
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={commonStyles.paragraph}>
+	All new — flattened data color aliases without the <code>color-dap-data-</code> prefix.
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: null, next: '--schema-amber', status: 'New' },
+		{ old: null, next: '--schema-blue', status: 'New' },
+		{ old: null, next: '--schema-deep-fuchsia', status: 'New' },
+		{ old: null, next: '--schema-deep-purple', status: 'New' },
+		{ old: null, next: '--schema-error', status: 'New' },
+		{ old: null, next: '--schema-fuchsia', status: 'New' },
+		{ old: null, next: '--schema-green', status: 'New' },
+		{ old: null, next: '--schema-light-amber', status: 'New' },
+		{ old: null, next: '--schema-light-blue', status: 'New' },
+		{ old: null, next: '--schema-light-deep-fuchsia', status: 'New' },
+		{ old: null, next: '--schema-light-deep-purple', status: 'New' },
+		{ old: null, next: '--schema-light-error', status: 'New' },
+		{ old: null, next: '--schema-light-fuchsia', status: 'New' },
+		{ old: null, next: '--schema-light-green', status: 'New' },
+		{ old: null, next: '--schema-light-lime', status: 'New' },
+		{ old: null, next: '--schema-light-orange', status: 'New' },
+		{ old: null, next: '--schema-light-pink', status: 'New' },
+		{ old: null, next: '--schema-light-purple', status: 'New' },
+		{ old: null, next: '--schema-light-rose', status: 'New' },
+		{ old: null, next: '--schema-light-teal', status: 'New' },
+		{ old: null, next: '--schema-light-yellow', status: 'New' },
+		{ old: null, next: '--schema-lime', status: 'New' },
+		{ old: null, next: '--schema-orange', status: 'New' },
+		{ old: null, next: '--schema-pink', status: 'New' },
+		{ old: null, next: '--schema-purple', status: 'New' },
+		{ old: null, next: '--schema-rose', status: 'New' },
+		{ old: null, next: '--schema-teal', status: 'New' },
+		{ old: null, next: '--schema-yellow', status: 'New' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	10. Brand vendor / misc
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: null, next: '--att-brand', status: 'New' },
+		{ old: null, next: '--net-gen-1', status: 'New' },
+		{ old: null, next: '--net-gen-2', status: 'New' },
+		{ old: null, next: '--net-gen-hover-1', status: 'New' },
+		{ old: null, next: '--net-gen-hover-2', status: 'New' },
+		{ old: null, next: '--net-gen-logo-dark-grey', status: 'New' },
+		{ old: null, next: '--net-gen-logo-dodger-blue', status: 'New' },
+		{ old: null, next: '--net-gen-logo-light-grey', status: 'New' },
+		{ old: null, next: '--net-gen-logo-ultramarine-blue', status: 'New' },
+		{ old: null, next: '--nokia-brand', status: 'New' },
+		{ old: null, next: '--primary-green', status: 'New' },
+		{ old: null, next: '--error', status: 'New' },
+		{ old: null, next: '--text-on-button', status: 'New' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	11. Typography (legacy `_root.scss`)
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Font family
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--font-family-base', next: '--font-family-base', status: 'Changed' },
+		{ old: '--font-family-code', next: '--font-family-code', status: 'Changed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Font weight
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--font-weight-regular', next: '--font-weight-regular', status: 'Renamed' },
+		{ old: '--font-weight-medium', next: '--font-weight-medium', status: 'Renamed' },
+		{ old: '--font-weight-semi-bold', next: '--font-weight-semi-bold', status: 'Renamed' },
+		{ old: '--font-weight-bold', next: '--font-weight-bold', status: 'Renamed' },
+		{ old: '--font-weight-extra-bold', next: '--font-weight-extra-bold', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Font size
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--font-size-3xl', next: '--heading-font-size-3xl', status: 'Renamed' },
+		{ old: '--font-size-2xl', next: '--heading-font-size-2xl', status: 'Renamed' },
+		{ old: '--font-size-xl', next: '--heading-font-size-xl', status: 'Renamed' },
+		{ old: '--font-size-large', next: '--heading-font-size-large', status: 'Renamed' },
+		{ old: '--font-size-md', next: '--body-font-size-md', status: 'Renamed' },
+		{ old: '--font-size-sm', next: '--body-font-size-sm', status: 'Renamed' },
+		{ old: '--font-size-xs', next: '--body-font-size-xs', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Line height
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--line-height-3xl', next: '--heading-line-height-3xl', status: 'Renamed' },
+		{ old: '--line-height-2xl', next: '--heading-line-height-2xl', status: 'Renamed' },
+		{ old: '--line-height-xl', next: '--heading-line-height-xl', status: 'Renamed' },
+		{ old: '--line-height-large', next: '--heading-line-height-large', status: 'Renamed' },
+		{ old: '--line-height-md', next: '--body-line-height-md', status: 'Renamed' },
+		{ old: '--line-height-sm', next: '--body-line-height-small', status: 'Renamed' },
+		{ old: '--line-height-xs', next: '--body-line-height-xs', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Paragraph spacing
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={commonStyles.paragraph}>
+	Unit changed from unitless integers to <code>px</code> across the scale. See the breaking-changes summary.
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--paragraph-spacing-3xl', next: '--heading-paragraph-space-3xl', status: 'Changed' },
+		{ old: '--paragraph-spacing-2xl', next: '--heading-paragraph-space-2xl', status: 'Changed' },
+		{ old: '--paragraph-spacing-xl', next: '--heading-paragraph-space-xl', status: 'Changed' },
+		{ old: '--paragraph-spacing-large', next: '--heading-paragraph-space-large', status: 'Changed' },
+		{ old: '--paragraph-spacing-md', next: '--body-paragraph-space-md', status: 'Changed' },
+		{ old: '--paragraph-spacing-sm', next: '--body-paragraph-space-small', status: 'Changed' },
+		{ old: '--paragraph-spacing-xs', next: '--body-paragraph-space-xs', status: 'Changed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Removed (still absent from `_root_new.scss`)
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--letter-spacing--1percent', next: null, status: 'Removed' },
+		{ old: '--icon-width-extra-large', next: null, status: 'Removed' },
+		{ old: '--icon-width-large', next: null, status: 'Removed' },
+		{ old: '--icon-width-medium', next: null, status: 'Removed' },
+		{ old: '--icon-width-small', next: null, status: 'Removed' },
+		{ old: '--icon-width-tiny', next: null, status: 'Removed' },
+		{ old: '--ds-table-row-small', next: null, status: 'Removed' },
+		{ old: '--ds-table-row-medium', next: null, status: 'Removed' },
+		{ old: '--ds-table-row-large', next: null, status: 'Removed' },
+		{ old: '--ds-table-header-height', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	12. Gradients and Markers (legacy `_root.scss` — absent from new file)
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--color-gradient-violet-background', next: null, status: 'Removed' },
+		{ old: '--color-gradient-violet-transparent', next: null, status: 'Removed' },
+		{ old: '--color-gradient-blue-light', next: null, status: 'Removed' },
+		{ old: '--color-gradient-linear-1', next: null, status: 'Removed' },
+		{ old: '--color-marker-magenta-12', next: null, status: 'Removed' },
+		{ old: '--color-marker-magenta-60', next: null, status: 'Removed' },
+		{ old: '--color-marker-magenta-100', next: null, status: 'Removed' },
+		{ old: '--color-marker-yellow-100', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	13. Legacy colors (`_colors.scss`)
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={commonStyles.paragraph}>
+	These tokens come from the older <code>$colors</code> Sass map. Where the hex matches a new primitive, we
+	map it; otherwise they are Removed.
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Primary
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--deep-blue (#001a47)', next: '--color-dap-brand-500', status: 'Renamed' },
+		{ old: '--white (#ffffff)', next: '--color-dap-gray-050', status: 'Renamed' },
+		{ old: '--black (#000000)', next: '--color-dap-gray-900', status: 'Renamed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Gradient (Specials)
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--gradient-violet-background', next: null, status: 'Removed' },
+		{ old: '--gradient-violet-transparent', next: null, status: 'Removed' },
+		{ old: '--gradient-blue-light', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Neutral
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--neutral-1 (#2c3a4b)', next: '--color-dap-gray-700', status: 'Renamed' },
+		{ old: '--neutral-2 (#4c5f76)', next: '--color-dap-gray-600', status: 'Renamed' },
+		{ old: '--neutral-3 (#6c7b8e)', next: null, status: 'Removed' },
+		{ old: '--neutral-4 (#8b98a6)', next: '--color-dap-gray-500', status: 'Renamed' },
+		{ old: '--neutral-5 (#a0aab7)', next: null, status: 'Removed' },
+		{ old: '--neutral-6 (#b3bfd1)', next: null, status: 'Removed' },
+		{ old: '--neutral-7 (#c2cedf)', next: null, status: 'Removed' },
+		{ old: '--neutral-8 (#dee6f1)', next: null, status: 'Removed' },
+		{ old: '--neutral-9 (#eaecef)', next: null, status: 'Removed' },
+		{ old: '--neutral-10 (#f3f5fa)', next: '--color-dap-gray-100', status: 'Renamed' },
+		{ old: '--neutral-bg (#dae2f4)', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Action
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--action-cta1 (#0064fa)', next: null, status: 'Removed' },
+		{ old: '--action-cta2 (#579aff)', next: null, status: 'Removed' },
+		{ old: '--action-cta3 (#6b7b8e)', next: null, status: 'Removed' },
+		{ old: '--action-active-light (#c7d8ff)', next: null, status: 'Removed' },
+		{ old: '--action-hover-light (#e0eaff)', next: null, status: 'Removed' },
+		{ old: '--action-disabled (#b0b4bf)', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	System Status
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--system-status-ok (#067a00)', next: null, status: 'Removed' },
+		{ old: '--system-status-info (#005dcf)', next: null, status: 'Removed' },
+		{ old: '--system-status-error (#d70a00)', next: null, status: 'Removed' },
+		{ old: '--system-status-alert (#d04d07)', next: null, status: 'Removed' },
+		{ old: '--system-status-in-progress (#1513da)', next: null, status: 'Removed' },
+		{ old: '--system-status-pending (#8836d6)', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Utility
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--utility-ok (#d6f5cf)', next: null, status: 'Removed' },
+		{ old: '--utility-info (#c4dcff)', next: null, status: 'Removed' },
+		{ old: '--utility-error (#ffd8d6)', next: null, status: 'Removed' },
+		{ old: '--utility-alert (#ffeac0)', next: null, status: 'Removed' },
+		{ old: '--utility-in-progress (#d9d9ff)', next: null, status: 'Removed' },
+		{ old: '--utility-pending (#ede2ff)', next: null, status: 'Removed' },
+		{ old: '--utility-disabled (#e3e3e3)', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Map / Scheme
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--map-and-scheme-line-layer-0 (#5452f6)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-line-layer-01 (#cc4c5f)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-line-layer-02 (#00894d)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-line-layer-1-optical (#3b8edb)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-line-layer-2-ethernet (#00b8d9)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-line-layer-3-routing (#9a55e0)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-service-overlay (#c30ede)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-pops-core-zones (#a92a00)', next: null, status: 'Removed' },
+		{ old: '--map-and-scheme-line-optional-1 (#da7b2d)', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	14. Spacing
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Numeric scale (`_spacing.scss`) — Removed
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={commonStyles.paragraph}>
+	The whole <code>--spacing-*</code> numeric scale does not appear in <code>_root_updated.scss</code>.
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--base-unit', next: null, status: 'Removed' },
+		{ old: '--spacing-1', next: null, status: 'Removed' },
+		{ old: '--spacing-2', next: null, status: 'Removed' },
+		{ old: '--spacing-3', next: null, status: 'Removed' },
+		{ old: '--spacing-4', next: null, status: 'Removed' },
+		{ old: '--spacing-5', next: null, status: 'Removed' },
+		{ old: '--spacing-6', next: null, status: 'Removed' },
+		{ old: '--spacing-8', next: null, status: 'Removed' },
+		{ old: '--spacing-10', next: null, status: 'Removed' },
+		{ old: '--spacing-12', next: null, status: 'Removed' },
+		{ old: '--spacing-16', next: null, status: 'Removed' },
+		{ old: '--spacing-20', next: null, status: 'Removed' },
+		{ old: '--spacing-24', next: null, status: 'Removed' },
+		{ old: '--spacing-base', next: null, status: 'Removed' },
+		{ old: '--exo-spacing-standard', next: null, status: 'Removed' },
+		{ old: '--exo-spacing-small', next: null, status: 'Removed' },
+		{ old: '--exo-spacing-x-small', next: null, status: 'Removed' },
+		{ old: '--exo-spacing-2x-small', next: null, status: 'Removed' },
+		{ old: '--exo-spacing-4x-small', next: null, status: 'Removed' },
+	]}
+/>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Named scale (T-shirt sizes) — renamed (prefix dropped)
+</DsTypography>
+
+<TokenTable
+	rows={[
+		{ old: '--spacing-none', next: '--none', status: 'Renamed' },
+		{ old: '--spacing-4xs', next: '--4xs', status: 'Renamed' },
+		{ old: '--spacing-3xs', next: '--3xs', status: 'Renamed' },
+		{ old: '--spacing-2xs', next: '--2xs', status: 'Renamed' },
+		{ old: '--spacing-xs', next: '--xs', status: 'Renamed' },
+		{ old: '--spacing-sm', next: '--sm', status: 'Renamed' },
+		{ old: '--spacing-standard', next: '--standard', status: 'Renamed' },
+		{ old: '--spacing-md', next: '--md', status: 'Renamed' },
+		{ old: '--spacing-lg', next: '--lg', status: 'Renamed' },
+		{ old: '--spacing-xl', next: '--xl', status: 'Renamed' },
+		{ old: '--spacing-2xl', next: '--2xl', status: 'Renamed' },
+		{ old: '--spacing-3xl', next: '--3xl', status: 'Renamed' },
+		{ old: '--spacing-4xl', next: '--4xl', status: 'Renamed' },
+		{ old: '--spacing-5xl', next: '--5xl', status: 'Renamed' },
+	]}
+/>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	Summary of value changes (breaking)
+</DsTypography>
+
+<table className={commonStyles.table}>
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Old value</th>
+			<th>New value</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>--color-red-100</code> / <code>--negative-100</code>
+			</td>
+			<td>
+				<code>#f5c2bf</code>
+			</td>
+			<td>
+				<code>#ffd2cf</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--background-success</code> / <code>--status-bg-success</code>
+			</td>
+			<td>
+				<code>#ecfdf6</code> (green-50)
+			</td>
+			<td>
+				<code>#d9f7e9</code> (green-075)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--border-disabled</code>
+			</td>
+			<td>
+				<code>#e5e8ed</code> (brand-050)
+			</td>
+			<td>
+				<code>#c7c9cc</code> (gray-300)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--border-error-weak</code> (was <code>--color-border-danger-weak</code>)
+			</td>
+			<td>
+				<code>#f5c2bf</code>
+			</td>
+			<td>
+				<code>#ffd2cf</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-disabled</code>
+			</td>
+			<td>
+				<code>#8b98a6</code> (gray-500)
+			</td>
+			<td>
+				<code>#c7c9cc</code> (gray-300)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--icon-error</code> (was <code>--color-icon-danger</code>)
+			</td>
+			<td>
+				<code>#d70a00</code> (red-400)
+			</td>
+			<td>
+				<code>#a10800</code> (red-500)
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-family-base</code>
+			</td>
+			<td>
+				<code>'Roboto', sans-serif</code>
+			</td>
+			<td>
+				<code>Roboto</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-family-code</code>
+			</td>
+			<td>
+				<code>'Fira Mono', monospace</code>
+			</td>
+			<td>
+				<code>Fira Mono</code>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>{'--paragraph-spacing-*'}</code> → <code>{'--*-paragraph-space-*'}</code>
+			</td>
+			<td>
+				unitless (e.g. <code>8</code>)
+			</td>
+			<td>
+				px (e.g. <code>8px</code>)
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+</div>

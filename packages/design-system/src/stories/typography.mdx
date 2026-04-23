@@ -1,0 +1,493 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DsTypography } from '../components/ds-typography';
+import { DsDivider } from '../components/ds-divider';
+import { semanticElementMap } from '../components/ds-typography/ds-typography.config';
+import commonStyles from './stories-common.module.scss';
+import styles from './typography.module.scss';
+
+<Meta title="Design System/Typography" />
+
+export const sampleText = 'Almost before we knew it, we had left the ground.';
+
+export const getCssVariable = (name) => {
+	if (typeof window === 'undefined') return '—';
+	const value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	return value || '—';
+};
+
+export const allVariants = /** @type {Array<keyof typeof semanticElementMap>} */ (
+	Object.keys(semanticElementMap)
+);
+
+export const VariantShowcase = () => {
+	const sections = [
+		{
+			title: 'Headings',
+			variants: allVariants.filter((key) => key.startsWith('heading')),
+		},
+		{
+			title: 'Body',
+			variants: allVariants.filter((key) => key.startsWith('body')),
+		},
+		{
+			title: 'Code',
+			variants: allVariants.filter((key) => key.startsWith('code')),
+		},
+	];
+
+    return (
+    	<div>
+    		{sections.map((section) => (
+    			<section key={section.title} className={styles.variantGroup}>
+    				<DsTypography variant="heading3" className={styles.variantGroupTitle}>
+    					{section.title}
+    				</DsTypography>
+    				{section.variants.map((variant) => (
+    					<div key={variant} className={styles.comparisonItem}>
+    						<DsTypography variant="code-sm-reg" className={styles.comparisonLabel}>
+    							{variant}
+    						</DsTypography>
+    						<DsTypography variant={variant}>
+    							{sampleText} ({semanticElementMap[variant]})
+    						</DsTypography>
+    					</div>
+    				))}
+    			</section>
+    		))}
+    	</div>
+    );
+
+};
+
+<div className="sb-unstyled">
+
+<DsTypography variant="heading1" className={commonStyles.pageTitle}>
+	Typography
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={styles.pageDescription}>
+	Use <code>DsTypography</code> with a <code>variant</code> prop to render text with the correct size, weight,
+	line height, and semantic HTML element. Variants are the preferred API; typography tokens are documented
+	below for use in SCSS when a variant is not appropriate.
+</DsTypography>
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	Variants
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={styles.sectionDescription}>
+	The curated set of styles exposed through <code>DsTypography</code>. Each row shows the variant key and the
+	semantic element it renders.
+</DsTypography>
+
+<div className={styles.container}>
+
+<VariantShowcase />
+
+</div>
+
+<DsDivider className={commonStyles.divider} />
+
+<DsTypography variant="heading2" className={commonStyles.sectionTitle}>
+	Tokens
+</DsTypography>
+
+<DsTypography variant="body-md-reg" className={styles.sectionDescription}>
+	Low-level CSS custom properties backing the variants above. Reach for these only when a variant cannot
+	express what you need.
+</DsTypography>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Font family
+</DsTypography>
+
+<table className={commonStyles.table}>
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Value</th>
+			<th>Sample</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>--font-family-base</code>
+			</td>
+			<td>{getCssVariable('font-family-base')}</td>
+			<td>
+				<span style={{ fontFamily: 'var(--font-family-base)' }}>{sampleText}</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-family-code</code>
+			</td>
+			<td>{getCssVariable('font-family-code')}</td>
+			<td>
+				<span style={{ fontFamily: 'var(--font-family-code)' }}>const answer = 42;</span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Font weight
+</DsTypography>
+
+<table className={commonStyles.table}>
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Value</th>
+			<th>Sample</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>--font-weight-regular</code>
+			</td>
+			<td>{getCssVariable('font-weight-regular')}</td>
+			<td>
+				<span style={{ fontWeight: 'var(--font-weight-regular)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-weight-medium</code>
+			</td>
+			<td>{getCssVariable('font-weight-medium')}</td>
+			<td>
+				<span style={{ fontWeight: 'var(--font-weight-medium)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-weight-semi-bold</code>
+			</td>
+			<td>{getCssVariable('font-weight-semi-bold')}</td>
+			<td>
+				<span style={{ fontWeight: 'var(--font-weight-semi-bold)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-weight-bold</code>
+			</td>
+			<td>{getCssVariable('font-weight-bold')}</td>
+			<td>
+				<span style={{ fontWeight: 'var(--font-weight-bold)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--font-weight-extra-bold</code>
+			</td>
+			<td>{getCssVariable('font-weight-extra-bold')}</td>
+			<td>
+				<span style={{ fontWeight: 'var(--font-weight-extra-bold)' }}>Aa</span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Body type primitives
+</DsTypography>
+
+<table className={commonStyles.table}>
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Value</th>
+			<th>Sample</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>--body-font-size-xs</code>
+			</td>
+			<td>{getCssVariable('body-font-size-xs')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--body-font-size-xs)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-font-size-sm</code>
+			</td>
+			<td>{getCssVariable('body-font-size-sm')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--body-font-size-sm)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-font-size-md</code>
+			</td>
+			<td>{getCssVariable('body-font-size-md')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--body-font-size-md)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-line-height-xs</code>
+			</td>
+			<td>{getCssVariable('body-line-height-xs')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--body-line-height-xs)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-line-height-small</code>
+			</td>
+			<td>{getCssVariable('body-line-height-small')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--body-line-height-small)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-line-height-md</code>
+			</td>
+			<td>{getCssVariable('body-line-height-md')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--body-line-height-md)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-paragraph-space-xs</code>
+			</td>
+			<td>{getCssVariable('body-paragraph-space-xs')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--body-paragraph-space-xs)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-paragraph-space-small</code>
+			</td>
+			<td>{getCssVariable('body-paragraph-space-small')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--body-paragraph-space-small)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--body-paragraph-space-md</code>
+			</td>
+			<td>{getCssVariable('body-paragraph-space-md')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--body-paragraph-space-md)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<DsTypography variant="heading3" className={commonStyles.subTitle}>
+	Heading type primitives
+</DsTypography>
+
+<table className={commonStyles.table}>
+	<thead>
+		<tr>
+			<th>Token</th>
+			<th>Value</th>
+			<th>Sample</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<code>--heading-font-size-large</code>
+			</td>
+			<td>{getCssVariable('heading-font-size-large')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--heading-font-size-large)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-font-size-xl</code>
+			</td>
+			<td>{getCssVariable('heading-font-size-xl')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--heading-font-size-xl)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-font-size-2xl</code>
+			</td>
+			<td>{getCssVariable('heading-font-size-2xl')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--heading-font-size-2xl)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-font-size-3xl</code>
+			</td>
+			<td>{getCssVariable('heading-font-size-3xl')}</td>
+			<td>
+				<span style={{ fontSize: 'var(--heading-font-size-3xl)' }}>Aa</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-line-height-large</code>
+			</td>
+			<td>{getCssVariable('heading-line-height-large')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--heading-line-height-large)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-line-height-xl</code>
+			</td>
+			<td>{getCssVariable('heading-line-height-xl')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--heading-line-height-xl)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-line-height-2xl</code>
+			</td>
+			<td>{getCssVariable('heading-line-height-2xl')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--heading-line-height-2xl)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-line-height-3xl</code>
+			</td>
+			<td>{getCssVariable('heading-line-height-3xl')}</td>
+			<td>
+				<span className={styles.multiLineSample} style={{ lineHeight: 'var(--heading-line-height-3xl)' }}>
+					{sampleText}
+					<br />
+					{sampleText}
+					<br />
+					{sampleText}
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-paragraph-space-large</code>
+			</td>
+			<td>{getCssVariable('heading-paragraph-space-large')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--heading-paragraph-space-large)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-paragraph-space-xl</code>
+			</td>
+			<td>{getCssVariable('heading-paragraph-space-xl')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--heading-paragraph-space-xl)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-paragraph-space-2xl</code>
+			</td>
+			<td>{getCssVariable('heading-paragraph-space-2xl')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--heading-paragraph-space-2xl)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<code>--heading-paragraph-space-3xl</code>
+			</td>
+			<td>{getCssVariable('heading-paragraph-space-3xl')}</td>
+			<td>
+				<span className={styles.paragraphSample}>
+					<span style={{ display: 'block', marginBottom: 'var(--heading-paragraph-space-3xl)' }}>
+						{sampleText}
+					</span>
+					<span style={{ display: 'block' }}>{sampleText}</span>
+				</span>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+</div>
