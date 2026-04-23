@@ -121,16 +121,10 @@ export const Manual: Story = {
 
 				{hasFiles && (
 					<div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
-						<DsButton design="v1.2" size="small" onClick={() => uploadAll()} disabled={isUploading}>
+						<DsButton variant="primary" size="small" onClick={() => uploadAll()} disabled={isUploading}>
 							{isUploading ? 'Uploading...' : 'Upload All'}
 						</DsButton>
-						<DsButton
-							design="v1.2"
-							variant="ghost"
-							size="small"
-							onClick={() => clearFiles()}
-							disabled={isUploading}
-						>
+						<DsButton variant="tertiary" size="small" onClick={() => clearFiles()} disabled={isUploading}>
 							Clear All
 						</DsButton>
 					</div>

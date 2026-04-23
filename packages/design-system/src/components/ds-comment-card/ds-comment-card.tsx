@@ -101,9 +101,7 @@ export const DsCommentCard = ({
 							{showMoreMenu && (
 								<DsDropdownMenu.Root>
 									<DsDropdownMenu.Trigger asChild>
-										<DsButton design="v1.2" buttonType="tertiary" size="tiny" aria-label="More actions">
-											<DsIcon icon="more_vert" size="tiny" />
-										</DsButton>
+										<DsButton icon="more_vert" variant="tertiary" size="tiny" aria-label="More actions" />
 									</DsDropdownMenu.Trigger>
 									<DsDropdownMenu.Content className={styles.dropdownContent}>
 										{onToggleActionRequired && (
@@ -137,14 +135,12 @@ export const DsCommentCard = ({
 
 							{onResolve && (
 								<DsButton
-									design="v1.2"
-									buttonType="tertiary"
+									icon="check_circle"
+									variant="tertiary"
 									size="tiny"
 									onClick={handleResolve}
 									aria-label="Resolve comment"
-								>
-									<DsIcon icon="check_circle" size="tiny" />
-								</DsButton>
+								/>
 							)}
 						</div>
 					</div>

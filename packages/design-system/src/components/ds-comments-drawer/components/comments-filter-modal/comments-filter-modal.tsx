@@ -204,12 +204,12 @@ export const CommentsFilterModal = ({
 			</DsModal.Body>
 
 			<DsModal.Footer className={styles.footer}>
-				<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={onClearAll}>
+				<DsButton variant="secondary" onClick={onClearAll}>
 					<DsIcon icon="close" size="tiny" />
 					Clear all
 				</DsButton>
 				<DsModal.Actions>
-					<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={onApply}>
+					<DsButton variant="primary" onClick={onApply}>
 						Apply
 					</DsButton>
 				</DsModal.Actions>

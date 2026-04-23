@@ -139,9 +139,8 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 									{showClearButton && (
 										<DsButton
 											className={styles.clearTrigger}
-											design="v1.2"
 											size="tiny"
-											buttonType="tertiary"
+											variant="tertiary"
 											disabled={disabled}
 											aria-label={locale?.clearLabel ?? 'Clear time'}
 											onClick={() => setValue(null)}
@@ -151,14 +150,12 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 									)}
 									<Popover.Trigger asChild>
 										<DsButton
-											design="v1.2"
+											icon="schedule"
 											size="tiny"
-											buttonType="tertiary"
+											variant="tertiary"
 											disabled={disabled || readOnly}
 											aria-label={locale?.openLabel ?? 'Open time picker'}
-										>
-											<DsIcon icon="schedule" variant="outlined" size="tiny" />
-										</DsButton>
+										/>
 									</Popover.Trigger>
 								</>
 							),

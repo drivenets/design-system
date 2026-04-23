@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsIcon } from '../../ds-icon';
 import DsTable from '../ds-table';
-import { DsButtonV3 } from '../../ds-button-v3';
+import { DsButton } from '../../ds-button';
 import { DsModal } from '../../ds-modal';
 import { DsVerticalTabs } from '../../ds-vertical-tabs';
 import { DsTypography } from '../../ds-typography';
@@ -293,7 +293,9 @@ function MyTable() {
 
   return (
     <>
-      <DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsModalOpen(true)} />
+      <DsButton onClick={() => setIsModalOpen(true)}>
+        <DsIcon icon="filter_list" />
+      </DsButton>
 
       {filterTags.length > 0 && (
         <DsTagFilter
@@ -488,9 +490,9 @@ const handleValueChange = (value: string | null) => {
   </DsModal.Body>
 
   <DsModal.Footer className={styles.filterFooter}>
-    <DsButtonV3 variant="secondary" onClick={handleClearAll}>Clear all</DsButtonV3>
+    <DsButton variant="secondary" onClick={handleClearAll}>Clear all</DsButton>
     <DsModal.Actions>
-      <DsButtonV3 onClick={handleApply}>Apply</DsButtonV3>
+      <DsButton variant="primary" onClick={handleApply}>Apply</DsButton>
     </DsModal.Actions>
   </DsModal.Footer>
 </DsModal>
@@ -569,12 +571,9 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			<div className={styles.tableFilterContainer}>
 				{/* Toolbar with filter button */}
 				<div className={styles.toolbar}>
-					<DsButtonV3
-						variant="secondary"
-						icon="filter_list"
-						aria-label="Filter"
-						onClick={() => setIsOpen(true)}
-					/>
+					<DsButton variant="secondary" onClick={() => setIsOpen(true)}>
+						<DsIcon size="tiny" icon="filter_list" />
+					</DsButton>
 				</div>
 
 				{/* Filter tags (automatically generated from filter state) */}
@@ -617,13 +616,14 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 					</DsModal.Body>
 
 					<DsModal.Footer className={styles.filterFooter}>
-						<DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>
+						<DsButton variant="secondary" onClick={handleClearAll}>
+							<DsIcon icon="close" size="tiny" />
 							Clear all
-						</DsButtonV3>
+						</DsButton>
 						<DsModal.Actions>
-							<DsButtonV3 variant="primary" onClick={handleApply}>
+							<DsButton variant="primary" onClick={handleApply}>
 								Apply
-							</DsButtonV3>
+							</DsButton>
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>
@@ -813,12 +813,9 @@ The debug panel below shows the current filter state as JSON.
 				</div>
 
 				<div className={styles.toolbar}>
-					<DsButtonV3
-						variant="secondary"
-						icon="filter_list"
-						aria-label="Filter"
-						onClick={() => setIsOpen(true)}
-					/>
+					<DsButton variant="secondary" onClick={() => setIsOpen(true)}>
+						<DsIcon size="tiny" icon="filter_list" />
+					</DsButton>
 				</div>
 
 				{filterTags.length > 0 && (
@@ -858,13 +855,14 @@ The debug panel below shows the current filter state as JSON.
 					</DsModal.Body>
 
 					<DsModal.Footer className={styles.filterFooter}>
-						<DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>
+						<DsButton variant="secondary" onClick={handleClearAll}>
+							<DsIcon icon="close" size="tiny" />
 							Clear all
-						</DsButtonV3>
+						</DsButton>
 						<DsModal.Actions>
-							<DsButtonV3 variant="primary" onClick={handleApply}>
+							<DsButton variant="primary" onClick={handleApply}>
 								Apply
-							</DsButtonV3>
+							</DsButton>
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>

@@ -6,10 +6,10 @@ import styles from './ds-select.module.scss';
 import type { DsSelectOption, DsSelectProps } from './ds-select.types';
 import { DsIcon } from '../ds-icon';
 import { type DsCheckboxProps, DsCheckbox } from '../ds-checkbox';
+import { SelectItemsTags } from './select-items-tags';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
 import { SELECT_ALL_VALUE, getUserSelectedItems } from './utils';
-import {SelectItemsTags} from "./select-items-tags";
 
 const SEARCH_THRESHOLD = 13;
 
