@@ -559,38 +559,67 @@ All new — flattened data color aliases without the `color-dap-data-` prefix.
 
 ---
 
-## 11. Typography (legacy `_root.scss` — absent from new file)
+## 11. Typography (legacy `_root.scss`)
+
+### Font family
+
+| Old Name             | New Name             | Status  |
+| -------------------- | -------------------- | ------- |
+| `--font-family-base` | `--font-family-base` | Changed |
+| `--font-family-code` | `--font-family-code` | Changed |
+
+### Font weight
+
+| Old Name                   | New Name                   | Status  |
+| -------------------------- | -------------------------- | ------- |
+| `--font-weight-regular`    | `--font-weight-regular`    | Renamed |
+| `--font-weight-medium`     | `--font-weight-medium`     | Renamed |
+| `--font-weight-semi-bold`  | `--font-weight-semi-bold`  | Renamed |
+| `--font-weight-bold`       | `--font-weight-bold`       | Renamed |
+| `--font-weight-extra-bold` | `--font-weight-extra-bold` | Renamed |
+
+### Font size
+
+| Old Name            | New Name                    | Status  |
+| ------------------- | --------------------------- | ------- |
+| `--font-size-3xl`   | `--heading-font-size-3xl`   | Renamed |
+| `--font-size-2xl`   | `--heading-font-size-2xl`   | Renamed |
+| `--font-size-xl`    | `--heading-font-size-xl`    | Renamed |
+| `--font-size-large` | `--heading-font-size-large` | Renamed |
+| `--font-size-md`    | `--body-font-size-md`       | Renamed |
+| `--font-size-sm`    | `--body-font-size-sm`       | Renamed |
+| `--font-size-xs`    | `--body-font-size-xs`       | Renamed |
+
+### Line height
+
+| Old Name              | New Name                      | Status  |
+| --------------------- | ----------------------------- | ------- |
+| `--line-height-3xl`   | `--heading-line-height-3xl`   | Renamed |
+| `--line-height-2xl`   | `--heading-line-height-2xl`   | Renamed |
+| `--line-height-xl`    | `--heading-line-height-xl`    | Renamed |
+| `--line-height-large` | `--heading-line-height-large` | Renamed |
+| `--line-height-md`    | `--body-line-height-md`       | Renamed |
+| `--line-height-sm`    | `--body-line-height-small`    | Renamed |
+| `--line-height-xs`    | `--body-line-height-xs`       | Renamed |
+
+### Paragraph spacing
+
+Unit changed from unitless integers to `px` across the scale. See the breaking-changes summary.
+
+| Old Name                    | New Name                          | Status  |
+| --------------------------- | --------------------------------- | ------- |
+| `--paragraph-spacing-3xl`   | `--heading-paragraph-space-3xl`   | Changed |
+| `--paragraph-spacing-2xl`   | `--heading-paragraph-space-2xl`   | Changed |
+| `--paragraph-spacing-xl`    | `--heading-paragraph-space-xl`    | Changed |
+| `--paragraph-spacing-large` | `--heading-paragraph-space-large` | Changed |
+| `--paragraph-spacing-md`    | `--body-paragraph-space-md`       | Changed |
+| `--paragraph-spacing-sm`    | `--body-paragraph-space-small`    | Changed |
+| `--paragraph-spacing-xs`    | `--body-paragraph-space-xs`       | Changed |
+
+### Removed (still absent from `_root_new.scss`)
 
 | Old Name                     | New Name | Status  |
 | ---------------------------- | -------- | ------- |
-| `--font-family-base`         | —        | Removed |
-| `--font-family-code`         | —        | Removed |
-| `--font-weight-regular`      | —        | Removed |
-| `--font-weight-medium`       | —        | Removed |
-| `--font-weight-semi-bold`    | —        | Removed |
-| `--font-weight-bold`         | —        | Removed |
-| `--font-weight-extra-bold`   | —        | Removed |
-| `--font-size-3xl`            | —        | Removed |
-| `--font-size-2xl`            | —        | Removed |
-| `--font-size-xl`             | —        | Removed |
-| `--font-size-large`          | —        | Removed |
-| `--font-size-md`             | —        | Removed |
-| `--font-size-sm`             | —        | Removed |
-| `--font-size-xs`             | —        | Removed |
-| `--line-height-3xl`          | —        | Removed |
-| `--line-height-2xl`          | —        | Removed |
-| `--line-height-xl`           | —        | Removed |
-| `--line-height-large`        | —        | Removed |
-| `--line-height-md`           | —        | Removed |
-| `--line-height-sm`           | —        | Removed |
-| `--line-height-xs`           | —        | Removed |
-| `--paragraph-spacing-3xl`    | —        | Removed |
-| `--paragraph-spacing-2xl`    | —        | Removed |
-| `--paragraph-spacing-xl`     | —        | Removed |
-| `--paragraph-spacing-large`  | —        | Removed |
-| `--paragraph-spacing-md`     | —        | Removed |
-| `--paragraph-spacing-sm`     | —        | Removed |
-| `--paragraph-spacing-xs`     | —        | Removed |
 | `--letter-spacing--1percent` | —        | Removed |
 | `--icon-width-extra-large`   | —        | Removed |
 | `--icon-width-large`         | —        | Removed |
@@ -756,11 +785,14 @@ The whole `--spacing-*` numeric scale does not appear in `_root_updated.scss`.
 
 ## Summary of value changes (breaking)
 
-| Token                                                    | Old value             | New value             |
-| -------------------------------------------------------- | --------------------- | --------------------- |
-| `--color-red-100` / `--negative-100`                     | `#f5c2bf`             | `#ffd2cf`             |
-| `--background-success` / `--status-bg-success`           | `#ecfdf6` (green-50)  | `#d9f7e9` (green-075) |
-| `--border-disabled`                                      | `#e5e8ed` (brand-050) | `#c7c9cc` (gray-300)  |
-| `--border-error-weak` (was `--color-border-danger-weak`) | `#f5c2bf`             | `#ffd2cf`             |
-| `--font-disabled`                                        | `#8b98a6` (gray-500)  | `#c7c9cc` (gray-300)  |
-| `--icon-error` (was `--color-icon-danger`)               | `#d70a00` (red-400)   | `#a10800` (red-500)   |
+| Token                                                    | Old value                | New value             |
+| -------------------------------------------------------- | ------------------------ | --------------------- |
+| `--color-red-100` / `--negative-100`                     | `#f5c2bf`                | `#ffd2cf`             |
+| `--background-success` / `--status-bg-success`           | `#ecfdf6` (green-50)     | `#d9f7e9` (green-075) |
+| `--border-disabled`                                      | `#e5e8ed` (brand-050)    | `#c7c9cc` (gray-300)  |
+| `--border-error-weak` (was `--color-border-danger-weak`) | `#f5c2bf`                | `#ffd2cf`             |
+| `--font-disabled`                                        | `#8b98a6` (gray-500)     | `#c7c9cc` (gray-300)  |
+| `--icon-error` (was `--color-icon-danger`)               | `#d70a00` (red-400)      | `#a10800` (red-500)   |
+| `--font-family-base`                                     | `'Roboto', sans-serif`   | `Roboto`              |
+| `--font-family-code`                                     | `'Fira Mono', monospace` | `Fira Mono`           |
+| `--paragraph-spacing-*` → `--*-paragraph-space-*`        | unitless (e.g. `8`)      | px (e.g. `8px`)       |

@@ -5,14 +5,13 @@
  * How to update this file:
  *   1. Open the DAP Design System Figma file.
  *   2. Run the variables2css plugin.
- *   3. Select collections: "DAP-root-colors", "alias", "DAP uses", "Spacing".
+ *   3. Select collections: "DAP-root-colors", "alias", "DAP uses", "Spacing", "Type Primitives".
  *   4. Config:
  *        - Type: CSS
  *        - Color: Hex
  *        - Unit: px
  *        - Tick only "Use root alias".
  *   5. Copy the plugin output and paste it over the contents of this file.
- *   6. Rename "--at&t-brand" to "--att-brand".
  */
 
 /* DAP-root-colors */
@@ -218,7 +217,7 @@
 :root {
 	/* Mode 1 */
 	/* color */
-	--att-brand: #00a8e0;
+	--at-t-brand: #00a8e0;
 	--net-gen-1: #2f34c6;
 	--net-gen-2: #292b7f;
 	--net-gen-hover-1: #25299b;
@@ -415,4 +414,38 @@
 	--3xl: 64px;
 	--4xl: 72px;
 	--5xl: 96px;
+}
+/* Type Primitives */
+:root {
+	/* Default */
+	/* number */
+	--body-paragraph-space-xs: 8px;
+	--body-font-size-xs: 12px;
+	--body-font-size-sm: 14px;
+	--body-font-size-md: 16px;
+	--body-line-height-xs: 16px;
+	--body-paragraph-space-small: 16px;
+	--heading-font-size-large: 18px;
+	--body-line-height-small: 20px;
+	--body-paragraph-space-md: 20px;
+	--heading-font-size-xl: 20px;
+	--heading-paragraph-space-large: 20px;
+	--heading-paragraph-space-xl: 20px;
+	--body-line-height-md: 24px;
+	--heading-font-size-2xl: 24px;
+	--heading-line-height-large: 24px;
+	--heading-paragraph-space-2xl: 24px;
+	--heading-line-height-xl: 26px;
+	--heading-font-size-3xl: 32px;
+	--heading-line-height-2xl: 32px;
+	--heading-line-height-3xl: 40px;
+	--heading-paragraph-space-3xl: 40px;
+	--font-weight-regular: 400;
+	--font-weight-medium: 500;
+	--font-weight-semi-bold: 600;
+	--font-weight-bold: 700;
+	--font-weight-extra-bold: 800;
+	/* string */
+	--font-family-base: Roboto;
+	--font-family-code: Fira Mono;
 }

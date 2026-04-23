@@ -22,3 +22,5 @@ subcomponents
 tosorted
 TSESTree
 unhover
+unitless
+Fira
