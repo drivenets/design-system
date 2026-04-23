@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/eslint-plugin-design-system",
-	"version": "0.0.13",
+	"version": "0.0.14",
 	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./dist/index.d.cts",
@@ -39,18 +39,18 @@
 		"build:lint": "publint && attw --pack"
 	},
 	"dependencies": {
-		"@eslint/core": "^1.1.1",
+		"@eslint/core": "catalog:",
 		"eslint-no-restricted": "^0.1.1"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.18.2",
-		"@typescript/native-preview": "7.0.0-dev.20260331.1",
-		"@vitest/coverage-v8": "^4.1.0",
-		"eslint": "^10.0.1",
-		"publint": "^0.3.18",
-		"tsdown": "^0.21.6",
-		"typescript": "^6.0.2",
-		"vitest": "^4.1.0"
+		"@arethetypeswrong/cli": "catalog:",
+		"@typescript/native-preview": "catalog:",
+		"@vitest/coverage-v8": "catalog:",
+		"eslint": "catalog:",
+		"publint": "catalog:",
+		"tsdown": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
 	},
 	"peerDependencies": {
 		"@typescript-eslint/parser": "^8.50.0",

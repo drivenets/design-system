@@ -36,8 +36,8 @@
 }
 
 @mixin grid-setup($grid-setup) {
-	gap: map.get($grid-setup, 'gutter');
-	padding: map.get($grid-setup, 'margin');
+	gap: var(--ds-grid-gutter, #{map.get($grid-setup, 'gutter')});
+	padding: var(--ds-grid-margin, #{map.get($grid-setup, 'margin')});
 	width: 100%;
 	height: 100%;
 	box-sizing: border-box;

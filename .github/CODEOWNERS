@@ -1,6 +1,14 @@
-# Codeowners & All github actions related files
+# Top-level configurations
+/* @StyleShit @aroba-dn
 /.github/ @StyleShit @aroba-dn
+/.husky/ @StyleShit @aroba-dn
+/.vscode/ @StyleShit @aroba-dn
+/.changeset/config.json @StyleShit @aroba-dn
 
+# Excluded shared files
+/pnpm-lock.yaml
+/README.md
 
 /packages/commitlint-plugin-internal/ @StyleShit
 /packages/eslint-plugin-internal/ @StyleShit
+/packages/vite-plugin/ @StyleShit

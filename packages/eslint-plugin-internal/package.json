@@ -26,16 +26,16 @@
 		"test:coverage": "pnpm test --coverage"
 	},
 	"dependencies": {
-		"@typescript-eslint/utils": "^8.58.0",
+		"@typescript-eslint/utils": "^8.58.2",
 		"ts-api-utils": "^2.5.0"
 	},
 	"devDependencies": {
-		"@typescript-eslint/rule-tester": "^8.58.0",
-		"@vitest/coverage-v8": "^4.1.0",
-		"eslint": "^10.0.1",
+		"@typescript-eslint/rule-tester": "^8.58.2",
+		"@vitest/coverage-v8": "catalog:",
+		"eslint": "catalog:",
 		"eslint-plugin-eslint-plugin": "^7.3.2",
-		"typescript": "^6.0.2",
-		"vitest": "^4.1.0"
+		"typescript": "catalog:",
+		"vitest": "catalog:"
 	},
 	"peerDependencies": {
 		"eslint": "^9.0.0 || ^10.0.0",

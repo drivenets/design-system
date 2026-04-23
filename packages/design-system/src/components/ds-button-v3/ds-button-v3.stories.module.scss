@@ -83,3 +83,9 @@
 .onDarkColumnHeader {
 	color: var(--secondary-300);
 }
+
+.responsiveRow {
+	display: flex;
+	align-items: center;
+	gap: var(--sm);
+}

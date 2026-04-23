@@ -47,13 +47,13 @@
 		"vite": "*"
 	},
 	"devDependencies": {
-		"@arethetypeswrong/cli": "^0.18.2",
-		"@typescript/native-preview": "7.0.0-dev.20260331.1",
-		"@vitest/coverage-v8": "^4.1.0",
-		"eslint": "^10.0.1",
-		"publint": "^0.3.18",
-		"tsdown": "^0.21.6",
-		"typescript": "^6.0.2",
-		"vitest": "^4.1.0"
+		"@arethetypeswrong/cli": "catalog:",
+		"@typescript/native-preview": "catalog:",
+		"@vitest/coverage-v8": "catalog:",
+		"eslint": "catalog:",
+		"publint": "catalog:",
+		"tsdown": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
 	}
 }
