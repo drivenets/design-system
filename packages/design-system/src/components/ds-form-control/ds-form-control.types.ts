@@ -22,6 +22,9 @@ export interface DsFormControlProps extends React.PropsWithChildren {
 	 */
 	required?: boolean;
 
+	/**
+	 * Optional render slots for customizing parts of the control.
+	 */
 	slots?: {
 		/**
 		 * Adornment to display at the end of the label

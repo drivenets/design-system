@@ -3,13 +3,28 @@ import type { DsTextInputProps } from '../ds-text-input';
 import type { DsTimePickerProps } from '../ds-time-picker';
 
 export interface DsDatePickerLocale {
+	/**
+	 * aria-label for the button that opens the calendar popover
+	 */
 	openCalendarLabel?: string;
+	/**
+	 * aria-label for the button that reveals the time picker when `withTime` is set
+	 */
 	timeTriggerLabel?: string;
+	/**
+	 * aria-label for the clear button
+	 */
 	clearLabel?: string;
 }
 
 export interface DsDatePickerSlotProps {
+	/**
+	 * Props forwarded to the underlying `DsTextInput` that displays the selected date.
+	 */
 	input?: DsTextInputProps;
+	/**
+	 * Props forwarded to the nested `DsTimePicker` rendered when `withTime` is set.
+	 */
 	timePicker?: DsTimePickerProps;
 }
 

@@ -23,16 +23,23 @@ export interface DsButtonV3BaseProps extends ButtonHTMLAttributes<HTMLButtonElem
 	color?: ButtonV3Color;
 
 	/**
+	 * Visual variant of the button:
+	 * - `primary` — filled, highest-emphasis action
+	 * - `secondary` — outlined, medium-emphasis action
+	 * - `tertiary` — borderless, low-emphasis action (text-like)
 	 * @default 'primary'
 	 */
 	variant?: ButtonV3Variant;
 
 	/**
+	 * Size of the button. Controls height, padding, font size, and icon size.
 	 * @default 'medium'
 	 */
 	size?: ButtonV3Size;
 
 	/**
+	 * Whether the button is in a selected/pressed state. Used for toggle buttons
+	 * and segmented controls.
 	 * @default false
 	 */
 	selected?: boolean;

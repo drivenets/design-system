@@ -99,6 +99,9 @@ export interface DsTextInputProps {
 	 */
 	tabIndex?: number;
 
+	/**
+	 * Optional render slots for customizing parts of the input.
+	 */
 	slots?: {
 		/**
 		 * Custom component to wrap the input element
