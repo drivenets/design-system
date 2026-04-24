@@ -5,7 +5,7 @@ const subscriptionTypes = ['basic', 'pro', 'enterprise'] as const satisfies Subs
 
 export const sampleFormSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
-	email: z.email('Invalid email address'),
+	email: z.string().email('Invalid email address'),
 	description: z.string().min(20, 'Short description is required (min. 20 chars)'),
 	quantity: z
 		.number('Quantity is required')
