@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{c as t,m as n,p as r,s as i}from"./runtime-E3d0h3V4.js";var a,o,s,c=e((()=>{n(),t(),[a,o]=r({name:`RenderStrategyContext`,hookName:`useRenderStrategyContext`,providerName:`<RenderStrategyPropsProvider />`}),s=e=>i()(e,[`lazyMount`,`unmountOnExit`])}));export{o as i,c as n,s as r,a as t};
