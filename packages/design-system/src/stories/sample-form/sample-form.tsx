@@ -1,54 +1,50 @@
-import { type SubmitHandler, Controller, FormProvider, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DsFormControl } from '../../components/ds-form-control';
 import { DsDateRangePicker } from '../../components/ds-date-range-picker';
 import { DsRadioGroup } from '../../components/ds-radio-group';
 import { DsCheckbox } from '../../components/ds-checkbox';
-import { DsButton } from '../../components/ds-button';
 import { DsTypography } from '../../components/ds-typography';
 import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
+import { useState } from 'react';
+import { DsButtonV3 } from '../../components/ds-button-v3';
 
 const defaultValues = {
 	name: '',
 	email: '',
 	description: '',
-	quantity: undefined,
-	birthDate: undefined,
-	eventStartDate: undefined,
-	eventEndDate: undefined,
+	quantity: null,
+	birthDate: null,
+	eventStartDate: null,
+	eventEndDate: null,
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
 };
 
-// Normalize dates to UTC to account for timezone differences in local machines vs CI.
-const toUTCMidnight = (date: Date) => new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-
-const setValueOptions = {
-	shouldValidate: true,
-	shouldTouch: true,
-	shouldDirty: true,
-} as const;
-
 const SampleForm = () => {
 	const methods = useForm<SampleFormValues>({
 		resolver: zodResolver(sampleFormSchema),
 		defaultValues: defaultValues as never,
-		mode: 'all',
+		mode: 'onChange',
 	});
 
 	const {
 		handleSubmit,
-		formState: { errors, isValid, touchedFields, isDirty },
-		setValue,
-		watch,
-		reset,
+		formState: { errors },
 		control,
 	} = methods;
 
-	const onSubmit: SubmitHandler<SampleFormValues> = (data) => {
+	const { field: eventStartField } = useController({ name: 'eventStartDate', control });
+	const { field: eventEndField } = useController({ name: 'eventEndDate', control });
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const onSubmit = async (data: SampleFormValues) => {
+		setIsSubmitting(true);
+		await new Promise((resolve) => setTimeout(resolve, 1000));
 		alert(JSON.stringify(data, null, 2));
-		reset(defaultValues as never);
+		setIsSubmitting(false);
 	};
 
 	return (
@@ -66,7 +62,7 @@ const SampleForm = () => {
 							required
 							status="error"
 							messageIcon="cancel"
-							message={fieldState.isTouched ? fieldState.error?.message : ''}
+							message={fieldState.error?.message}
 						>
 							<DsFormControl.TextInput placeholder="Enter your name" {...field} />
 						</DsFormControl>
@@ -82,7 +78,7 @@ const SampleForm = () => {
 							required
 							status="error"
 							messageIcon="cancel"
-							message={fieldState.isTouched ? fieldState.error?.message : ''}
+							message={fieldState.error?.message}
 						>
 							<DsFormControl.TextInput type="email" placeholder="Enter your email" {...field} />
 						</DsFormControl>
@@ -98,7 +94,7 @@ const SampleForm = () => {
 							required
 							status="error"
 							messageIcon="cancel"
-							message={fieldState.isTouched ? fieldState.error?.message : ''}
+							message={fieldState.error?.message}
 						>
 							<DsFormControl.NumberInput
 								placeholder="Enter quantity"
@@ -122,40 +118,35 @@ const SampleForm = () => {
 							required
 							status="error"
 							messageIcon="cancel"
-							message={fieldState.isTouched ? fieldState.error?.message : undefined}
+							message={fieldState.error?.message}
 						>
-							<DsFormControl.DatePicker
-								value={field.value ? new Date(field.value) : null}
-								onChange={(date) => field.onChange(date ? toUTCMidnight(date).toISOString() : '')}
-								onBlur={field.onBlur}
-							/>
+							<DsFormControl.DatePicker {...field} />
 						</DsFormControl>
 					)}
 				/>
 
 				<DsDateRangePicker
-					value={[
-						watch('eventStartDate') ? new Date(watch('eventStartDate')) : null,
-						watch('eventEndDate') ? new Date(watch('eventEndDate')) : null,
-					]}
+					value={[eventStartField.value, eventEndField.value]}
 					onChange={([start, end]) => {
-						setValue('eventStartDate', start ? toUTCMidnight(start).toISOString() : '', setValueOptions);
-						setValue('eventEndDate', end ? toUTCMidnight(end).toISOString() : '', setValueOptions);
+						eventStartField.onChange(start);
+						eventEndField.onChange(end);
 					}}
 					orientation="vertical"
 					hideClearAll
 					slotProps={{
+						startDatePicker: { onBlur: eventStartField.onBlur },
+						endDatePicker: { onBlur: eventEndField.onBlur },
 						startDateFormControl: {
 							required: true,
 							status: 'error',
 							messageIcon: 'cancel',
-							message: touchedFields.eventStartDate ? errors.eventStartDate?.message : undefined,
+							message: errors.eventStartDate?.message,
 						},
 						endDateFormControl: {
 							required: true,
 							status: 'error',
 							messageIcon: 'cancel',
-							message: touchedFields.eventEndDate ? errors.eventEndDate?.message : undefined,
+							message: errors.eventEndDate?.message,
 						},
 					}}
 				/>
@@ -169,7 +160,7 @@ const SampleForm = () => {
 							required
 							status="error"
 							messageIcon="cancel"
-							message={fieldState.isTouched ? fieldState.error?.message : ''}
+							message={fieldState.error?.message}
 						>
 							<DsFormControl.Select
 								value={field.value}
@@ -198,7 +189,7 @@ const SampleForm = () => {
 							required
 							status="error"
 							messageIcon="cancel"
-							message={fieldState.isTouched ? fieldState.error?.message : ''}
+							message={fieldState.error?.message}
 						>
 							<DsFormControl.Textarea placeholder="Enter your description" {...field} />
 						</DsFormControl>
@@ -215,8 +206,8 @@ const SampleForm = () => {
 								<DsRadioGroup.Item value="pro" label="Pro" />
 								<DsRadioGroup.Item value="enterprise" label="Enterprise" />
 							</DsRadioGroup.Root>
-							{fieldState.isTouched && fieldState.error && (
-								<DsTypography variant="body-xs-reg" style={{ color: 'var(--font-error)' }}>
+							{fieldState.error && (
+								<DsTypography variant="body-xs-reg" style={{ color: 'var(--background-error)' }}>
 									{fieldState.error.message}
 								</DsTypography>
 							)}
@@ -235,8 +226,8 @@ const SampleForm = () => {
 								onCheckedChange={(checked) => field.onChange(checked === true)}
 								onBlur={field.onBlur}
 							/>
-							{fieldState.isTouched && fieldState.error && (
-								<DsTypography variant="body-xs-reg" style={{ color: 'var(--font-error)' }}>
+							{fieldState.error && (
+								<DsTypography variant="body-xs-reg" style={{ color: 'var(--background-error)' }}>
 									{fieldState.error.message}
 								</DsTypography>
 							)}
@@ -244,9 +235,9 @@ const SampleForm = () => {
 					)}
 				/>
 
-				<DsButton type="submit" disabled={!isDirty || !isValid}>
+				<DsButtonV3 type="submit" disabled={isSubmitting} loading={isSubmitting}>
 					Submit
-				</DsButton>
+				</DsButtonV3>
 			</form>
 		</FormProvider>
 	);
