@@ -232,13 +232,27 @@ To give a custom component responsive props without rewriting it, wrap it with
 <Source
 	dark
 	language="tsx"
-	code={`import { withResponsiveProps } from '@drivenets/design-system';
+	code={`
+import type { ComponentProps } from 'react';
+import { withResponsiveProps } from '@drivenets/design-system';
 
-const MyLayout = ({ gap, direction }) => /_ ... _/;
+interface MyComponentProps {
+size: 'large' | 'medium' | 'small' | 'tiny';
+label: string;
+}
 
-export const MyResponsiveLayout = withResponsiveProps(MyLayout, ['gap', 'direction']);
+const MyComponent = ({ size, label }: MyComponentProps) => (
+
+<div className={\`my-component my-component--\${size}\`}>{label}</div>
+);
+
+export const MyResponsiveComponent = withResponsiveProps(MyComponent, ['size']);
+
+// No need to redefine the props — withResponsiveProps rewrites the listed keys
+// to accept responsive values, and the type is inferred automatically:
+type MyResponsiveComponentProps = ComponentProps<typeof MyResponsiveComponent>;
 
 // Consumers can now pass:
 
-<MyResponsiveLayout direction={{ md: 'column', lg: 'row' }} gap={{ md: 8, lg: 16 }} />`}
+<MyResponsiveComponent label="Hello" size={{ md: 'small', lg: 'large' }} />`}
 />
