@@ -273,8 +273,8 @@ reset(defaultValues);
   design tokens like <code>{`var(--font-error)`}</code> — no raw HTML or inline style colors.
 - Inputs with standard <code>value</code>/<code>onChange</code>/<code>onBlur</code> semantics get
   <code>{`{...field}`}</code> spread straight into them. Only map callbacks explicitly when the control
-  exposes a different shape (e.g. <code>onValueChange</code>, <code>onCheckedChange</code>, a
-  <code>Date</code> object) — no custom <code>setValue</code> helper.
+  exposes a different shape (e.g. <code>onValueChange</code>, <code>onCheckedChange</code>, a<code>Date</code>
+  object) — no custom <code>setValue</code> helper.
 - The only time <code>setValue</code> is called directly is when one input writes to multiple
   fields at once (for example <code>DsDateRangePicker</code>); in that case pass
   <code>{`{ shouldValidate, shouldTouch, shouldDirty }`}</code>.
