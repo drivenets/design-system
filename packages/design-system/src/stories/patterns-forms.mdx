@@ -1,0 +1,282 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks';
+
+<Meta title="Design System/Patterns/Forms" />
+
+# Forms
+
+Forms in the design system are built with [`react-hook-form`](https://react-hook-form.com/) and
+[`zod`](https://zod.dev/), and every input is wrapped in <code>DsFormControl</code> so labels,
+required indicators, and validation messages render consistently. This page describes the canonical
+pattern; for a runnable reference see the
+[`Examples/SampleForm`](?path=/story/examples-sampleform--default) story.
+
+## Stack
+
+| Dependency                | Why                                                                           |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `react-hook-form`         | Uncontrolled-by-default form state with minimal re-renders                    |
+| `zod`                     | Schema-first validation that also produces the form's TypeScript types        |
+| `@hookform/resolvers/zod` | Bridges a Zod schema into `react-hook-form`'s validation lifecycle            |
+| `DsFormControl`           | Unifies label, required marker, status, and message rendering for every field |
+
+## Set up the form
+
+Call <code>useForm</code> with the Zod resolver, a complete <code>defaultValues</code> object, and
+
+<code>mode: 'onChange'</code>. Wrap the tree in <code>FormProvider</code> so nested components can read
+context when needed.
+
+<Source dark language="tsx" code={`import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
+
+const defaultValues = {
+name: '',
+email: '',
+// ...one entry per schema field
+};
+
+const SampleForm = () => {
+const methods = useForm<SampleFormValues>({
+resolver: zodResolver(sampleFormSchema),
+defaultValues,
+mode: 'onChange',
+});
+
+    const {
+        handleSubmit,
+        formState: { isValid, isDirty, errors, touchedFields },
+        setValue,
+        watch,
+        reset,
+        control,
+    } = methods;
+
+    const onSubmit: SubmitHandler<SampleFormValues> = (data) => {
+        // ...submit side effect
+        reset(defaultValues);
+    };
+
+    return (
+        <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)}>{/* fields */}</form>
+        </FormProvider>
+    );
+
+};`} />
+
+Always provide a default for every schema field — leaving a field `undefined` prevents
+`react-hook-form` from tracking it as dirty or touched and breaks the submit gating below.
+
+## Define the schema
+
+Co-locate the schema in a <code>{`<form-name>-schema.ts`}</code> file next to the component. The
+schema doubles as the form's type (<code>z.infer</code>) and as the source of every error message,
+which keeps copy aligned across validation and UI.
+
+<Source dark language="typescript" code={`import { z } from 'zod';
+
+const subscriptionTypes = ['basic', 'pro', 'enterprise'] as const;
+
+export const sampleFormSchema = z.object({
+	name: z.string().min(1, 'Name is required'),
+	email: z.email('Invalid email address'),
+	description: z.string().min(20, 'Short description is required (min. 20 chars)'),
+	quantity: z.number().min(1, 'Quantity must be at least 1').max(100, 'Quantity cannot exceed 100'),
+	birthDate: z.iso.datetime('Birth date is required'),
+	acceptTerms: z.boolean().refine((v) => v, 'You must accept the terms and conditions'),
+	subscription: z.enum(subscriptionTypes, { error: () => 'Please select a subscription plan' }),
+});
+
+export type SampleFormValues = z.infer<typeof sampleFormSchema>;`} />
+
+## Bind every control with `Controller`
+
+Prefer <code>Controller</code> over <code>register</code>. A single pattern keeps every
+field consistent: <code>Controller</code> is the outer element, <code>DsFormControl</code> lives
+inside the <code>render</code> callback reading status and message from <code>fieldState</code>,
+and the input itself is driven by <code>field</code>. Gate the error message on <code>fieldState.isTouched</code> so messages only appear after the user has interacted with the field.
+
+<Source dark language="tsx" code={`<Controller
+    name="name"
+    control={control}
+    render={({ field, fieldState }) => (
+        <DsFormControl
+            label="Name"
+            required
+            status="error"
+            messageIcon="cancel"
+            message={fieldState.isTouched ? fieldState.error?.message : ''}
+        >
+            <DsFormControl.TextInput placeholder="Enter your name" {...field} />
+        </DsFormControl>
+    )}
+/>
+
+<Controller
+    name="description"
+    control={control}
+    render={({ field, fieldState }) => (
+        <DsFormControl
+            label="Description"
+            required
+            status="error"
+            messageIcon="cancel"
+            message={fieldState.isTouched ? fieldState.error?.message : ''}
+        >
+            <DsFormControl.Textarea placeholder="Enter your description" {...field} />
+        </DsFormControl>
+    )}
+/>`} />
+
+## Let `field` drive value, dirty, and touched state
+
+With <code>mode: 'onChange'</code>, <code>field.onChange(value)</code> already updates the value,
+marks the field dirty, and triggers validation; <code>field.onBlur()</code> marks the field
+touched. Skip custom <code>setValue</code> wrappers — and whenever the control accepts standard
+input semantics (<code>value</code> + <code>onChange(event)</code> + <code>onBlur</code>), spread
+
+<code>{`{...field}`}</code> into it. A custom mapper is only needed when the control expects a different
+callback shape (<code>onValueChange</code>, <code>onCheckedChange</code>, a<code>Date</code> object, etc.).
+
+If a field's raw input value can be <code>null</code> or <code>undefined</code> (for example a
+clearable select or a cleared date picker), coerce it to <code>''</code> in the mapper. An
+
+<code>undefined</code> assignment is treated as "no change" by <code>react-hook-form</code> and will not mark
+the field as dirty, which then breaks the submit gating.
+
+## Date fields
+
+Store dates as ISO strings normalized to UTC midnight so values are stable across timezones (which
+matters for snapshot tests in CI). Single-date pickers follow the same Controller-outer pattern
+as any other field. <code>DsDateRangePicker</code> is the exception: it drives two form fields
+simultaneously, so reach for <code>watch</code>, <code>formState</code>, and <code>setValue</code>
+directly, and forward error state through <code>slotProps.startDateFormControl</code> /
+
+<code>slotProps.endDateFormControl</code>.
+
+<Source dark language="tsx" code={`const toUTCMidnight = (date: Date) =>
+    new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+
+<Controller
+	name="birthDate"
+	control={control}
+	render={({ field, fieldState }) => (
+		<DsFormControl
+			label="Birth Date"
+			required
+			status="error"
+			messageIcon="cancel"
+			message={fieldState.isTouched ? fieldState.error?.message : undefined}
+		>
+			<DsFormControl.DatePicker
+				value={field.value ? new Date(field.value) : null}
+				onChange={(date) => field.onChange(date ? toUTCMidnight(date).toISOString() : '')}
+				onBlur={field.onBlur}
+			/>
+		</DsFormControl>
+	)}
+/>
+
+<DsDateRangePicker
+    value={[
+        watch('eventStartDate') ? new Date(watch('eventStartDate')) : null,
+        watch('eventEndDate') ? new Date(watch('eventEndDate')) : null,
+    ]}
+    onChange={([start, end]) => {
+        const options = { shouldValidate: true, shouldTouch: true, shouldDirty: true };
+        setValue('eventStartDate', start ? toUTCMidnight(start).toISOString() : '', options);
+        setValue('eventEndDate', end ? toUTCMidnight(end).toISOString() : '', options);
+    }}
+    slotProps={{
+        startDateFormControl: {
+            required: true,
+            status: 'error',
+            messageIcon: 'cancel',
+            message: touchedFields.eventStartDate ? errors.eventStartDate?.message : undefined,
+        },
+        endDateFormControl: {
+            required: true,
+            status: 'error',
+            messageIcon: 'cancel',
+            message: touchedFields.eventEndDate ? errors.eventEndDate?.message : undefined,
+        },
+    }}
+/>`} />
+
+## Grouped controls (radio, checkbox)
+
+<code>DsRadioGroup</code> and <code>DsCheckbox</code> render their own labels, so they sit alongside — not
+inside — <code>DsFormControl</code>. Wrap them in <code>Controller</code> just like any other field so RHF
+owns value, dirty, and touched state. When you need to render an inline error message (for example below a
+radio group), use <code>DsTypography</code> and the
+<code>--font-error</code> token — never inline styles or raw HTML elements.
+
+<Source dark language="tsx" code={`<Controller
+    name="subscription"
+    control={control}
+    render={({ field, fieldState }) => (
+        <>
+            <DsRadioGroup.Root value={field.value ?? ''} onValueChange={field.onChange}>
+                <DsRadioGroup.Item value="basic" label="Basic" />
+                <DsRadioGroup.Item value="pro" label="Pro" />
+                <DsRadioGroup.Item value="enterprise" label="Enterprise" />
+            </DsRadioGroup.Root>
+            {fieldState.isTouched && fieldState.error && (
+                <DsTypography variant="body-xs-reg" style={{ color: 'var(--font-error)' }}>
+                    {fieldState.error.message}
+                </DsTypography>
+            )}
+        </>
+    )}
+/>
+
+<Controller
+    name="acceptTerms"
+    control={control}
+    render={({ field }) => (
+        <DsCheckbox
+            label="I accept the terms and conditions"
+            checked={!!field.value}
+            onCheckedChange={(checked) => field.onChange(checked === true)}
+            onBlur={field.onBlur}
+        />
+    )}
+/>`} />
+
+## Submit gating and reset
+
+Disable submit until the user has both edited the form and it has become valid. Reset to
+
+<code>defaultValues</code> after the submit side effect so the form is ready for the next entry.
+
+<Source dark language="tsx" code={`<DsButton type="submit" disabled={!isDirty || !isValid}>
+    Submit
+</DsButton>
+
+const onSubmit: SubmitHandler<SampleFormValues> = (data) => {
+// ...side effect, e.g. mutation
+reset(defaultValues);
+};`} />
+
+## Checklist
+
+- Schema lives in a sibling <code>{`<form-name>-schema.ts`}</code> and drives both types and copy.
+- <code>useForm</code> uses <code>zodResolver</code>, <code>mode: 'onChange'</code>, and a complete
+  <code>defaultValues</code> object.
+- The form tree is wrapped in <code>FormProvider</code>.
+- Every field is bound with <code>Controller</code> — never <code>register</code>.
+- <code>Controller</code> is the outer element; <code>DsFormControl</code> lives inside
+  <code>render</code> and reads status/message from <code>fieldState</code>, gated on
+  <code>fieldState.isTouched</code>.
+- Inline text (for example grouped-control error messages) uses <code>DsTypography</code> and
+  design tokens like <code>{`var(--font-error)`}</code> — no raw HTML or inline style colors.
+- Inputs with standard <code>value</code>/<code>onChange</code>/<code>onBlur</code> semantics get
+  <code>{`{...field}`}</code> spread straight into them. Only map callbacks explicitly when the control
+  exposes a different shape (e.g. <code>onValueChange</code>, <code>onCheckedChange</code>, a
+  <code>Date</code> object) — no custom <code>setValue</code> helper.
+- The only time <code>setValue</code> is called directly is when one input writes to multiple
+  fields at once (for example <code>DsDateRangePicker</code>); in that case pass
+  <code>{`{ shouldValidate, shouldTouch, shouldDirty }`}</code>.
+- Submit is gated on <code>{`!isDirty || !isValid`}</code>; <code>reset(defaultValues)</code> runs
+  after a successful submit.

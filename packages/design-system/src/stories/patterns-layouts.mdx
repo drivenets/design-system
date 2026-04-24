@@ -1,0 +1,244 @@
+import { Meta, Source } from '@storybook/addon-docs/blocks';
+import { DsStack } from '../components/ds-stack';
+import { DsGrid, DsGridItem } from '../components/ds-grid';
+import { DsCard } from '../components/ds-card';
+import { DsDivider } from '../components/ds-divider';
+import { DsTypography } from '../components/ds-typography';
+import { DsFormControl } from '../components/ds-form-control';
+import { DsButton } from '../components/ds-button';
+import commonStyles from './stories-common.module.scss';
+
+<Meta title="Design System/Patterns/Layouts" />
+
+# Layouts & Forms
+
+Compose layouts from design-system primitives instead of bespoke CSS. Pick the right primitive
+for the job:
+
+- <code>DsStack</code> — 1D arrangement (form fields, toolbars, action rows).
+- <code>DsGrid</code> / <code>DsGridItem</code> — 2D structure on a 12-column grid (page layouts, two-column
+  forms).
+- <code>DsCard</code> — grouped surface with header/body/footer slots (section grouping, side-panels).
+- <code>DsDivider</code> — horizontal or vertical separation between sections.
+
+All layout props accept responsive values so a single tree adapts across breakpoints.
+
+## When to use which
+
+| Primitive               | Use for                                                                            | Key props                                                                       |
+| ----------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| <code>DsStack</code>    | Vertical stacks of form fields, horizontal rows of actions, anything flex-based    | `direction`, `gap`, `alignItems`, `justifyContent`, `flexWrap`, `flex`, `width` |
+| <code>DsGrid</code>     | Page layouts, side-by-side form columns, any 2D placement                          | `columns` (2–12), `rows` (1–8), `gutter`, `margin`                              |
+| <code>DsGridItem</code> | Cells inside <code>DsGrid</code>                                                   | `colSpan`, `colStart`, `rowSpan`, `rowStart`                                    |
+| <code>DsCard</code>     | Grouping a logical chunk (a section of a form, a summary panel, a selectable tile) | `size`, `selectable`, `selected`, `highlightSelected`, `disabled`               |
+| <code>DsDivider</code>  | Separating sections inside a stack or card                                         | `orientation`                                                                   |
+
+Reach for <code>DsStack</code> first. Only step up to <code>DsGrid</code> when you need two
+dimensions or precise column alignment across rows.
+
+---
+
+## Composing forms
+
+Forms are stacks of <code>DsFormControl</code>s. Use <code>DsStack</code> for the column of fields
+and for the action row; use <code>DsGrid</code> when fields pair up side-by-side; use
+
+<code>DsCard</code> to group related fields into visually distinct sections.
+
+### Single-column form
+
+The canonical pattern: a vertical stack of fields, a divider, then a right-aligned action row.
+
+<Source
+	dark
+	language="tsx"
+	code={`<form onSubmit={handleSubmit(onSubmit)}>
+    <DsStack direction="column" gap="16px" width="320px">
+        <DsFormControl label="Name" required>
+            <DsFormControl.TextInput placeholder="Enter your name" />
+        </DsFormControl>
+
+        <DsFormControl label="Email" required>
+            <DsFormControl.TextInput type="email" placeholder="Enter your email" />
+        </DsFormControl>
+
+        <DsFormControl label="Description">
+            <DsFormControl.Textarea placeholder="Tell us more" />
+        </DsFormControl>
+
+        <DsDivider />
+
+        <DsStack direction="row" justifyContent="flex-end" gap="8px">
+            <DsButton schema="secondary" variant="ghost">Cancel</DsButton>
+            <DsButton type="submit">Submit</DsButton>
+        </DsStack>
+    </DsStack>
+
+</form>`}
+/>
+
+### Two-column form
+
+Pair related fields (first/last name, start/end date) with <code>DsGrid</code> and
+
+<code>DsGridItem colSpan={6}</code>. Fields that should span the full row use
+<code>colSpan="full"</code>.
+
+<Source
+	dark
+	language="tsx"
+	code={`<DsGrid columns={12} gutter={16}>
+    <DsGridItem colSpan={6}>
+        <DsFormControl label="First name" required>
+            <DsFormControl.TextInput />
+        </DsFormControl>
+    </DsGridItem>
+    <DsGridItem colSpan={6}>
+        <DsFormControl label="Last name" required>
+            <DsFormControl.TextInput />
+        </DsFormControl>
+    </DsGridItem>
+
+    <DsGridItem colSpan="full">
+        <DsFormControl label="Email" required>
+            <DsFormControl.TextInput type="email" />
+        </DsFormControl>
+    </DsGridItem>
+
+</DsGrid>`}
+/>
+
+### Grouped sections with DsCard
+
+Longer forms are easier to scan when related fields live inside a <code>DsCard</code>. Put the
+section title in <code>DsCard.Header</code>, the fields in <code>DsCard.Body</code> (nested
+
+<code>DsStack</code>), and actions in <code>DsCard.Footer</code>.
+
+<Source
+	dark
+	language="tsx"
+	code={`<DsCard.Root>
+    <DsCard.Header>
+        <DsTypography variant="heading4">Account</DsTypography>
+    </DsCard.Header>
+    <DsCard.Body>
+        <DsStack direction="column" gap="16px">
+            <DsFormControl label="Email" required>
+                <DsFormControl.TextInput type="email" />
+            </DsFormControl>
+            <DsFormControl label="Password" required>
+                <DsFormControl.TextInput type="password" />
+            </DsFormControl>
+        </DsStack>
+    </DsCard.Body>
+    <DsCard.Footer>
+        <DsStack direction="row" justifyContent="flex-end" gap="8px">
+            <DsButton schema="secondary" variant="ghost">Cancel</DsButton>
+            <DsButton type="submit">Save</DsButton>
+        </DsStack>
+    </DsCard.Footer>
+</DsCard.Root>`}
+/>
+
+For multi-section forms, stack several cards with <code>DsStack direction="column"
+gap="24px"</code>, or separate in-card sub-sections with a horizontal <code>DsDivider</code>.
+
+### Do / don't
+
+| Do                                                                     | Don't                                            |
+| ---------------------------------------------------------------------- | ------------------------------------------------ |
+| Wrap the form body in `DsStack direction="column"`                     | Use a raw `div` with inline flex styles          |
+| Use `DsFormControl` for every field (labels, required state, messages) | Render bare inputs with a manual `label` element |
+| Let `DsGrid` handle column math on a 12-col track                      | Hand-roll percentage widths                      |
+| Align submit buttons with `DsStack justifyContent="flex-end"`          | Rely on `text-align: right` on a wrapper         |
+
+---
+
+## Responsiveness
+
+The design system targets two breakpoints, defined in
+
+<code>src/utils/responsive.ts</code>:
+
+| Breakpoint | Matches                                        |
+| ---------- | ---------------------------------------------- |
+| `md`       | narrow viewports (below `--breakpoint-lg`)     |
+| `lg`       | wide viewports (at or above `--breakpoint-lg`) |
+
+Any layout prop declared as `ResponsiveValue<T>` accepts either a plain value or a
+`Partial<Record<'lg' | 'md', T>>`. The wrapper resolves the right value for the current
+breakpoint; the underlying component never sees the responsive object.
+
+<code>DsStack</code> and <code>DsGrid</code> / <code>DsGridItem</code> are both wrapped with
+`withResponsiveProps`, so their layout props are already responsive-aware.
+
+### Example: stack that becomes a row on wide screens
+
+<Source
+	dark
+	language="tsx"
+	code={`<DsStack
+    direction={{ md: 'column', lg: 'row' }}
+    gap={{ md: 8, lg: 24 }}
+    alignItems="center"
+>
+    <DsCard.Root>{/* ... */}</DsCard.Root>
+    <DsCard.Root>{/* ... */}</DsCard.Root>
+</DsStack>`}
+/>
+
+### Example: two-column form that collapses on narrow screens
+
+<Source
+	dark
+	language="tsx"
+	code={`<DsGrid columns={12} gutter={{ md: 8, lg: 16 }}>
+    <DsGridItem colSpan={{ md: 'full', lg: 6 }}>
+        <DsFormControl label="First name">
+            <DsFormControl.TextInput />
+        </DsFormControl>
+    </DsGridItem>
+    <DsGridItem colSpan={{ md: 'full', lg: 6 }}>
+        <DsFormControl label="Last name">
+            <DsFormControl.TextInput />
+        </DsFormControl>
+    </DsGridItem>
+</DsGrid>`}
+/>
+
+### When props aren't enough
+
+For conditional rendering or logic that depends on the breakpoint, use the hooks exported from
+`responsive.ts`:
+
+<Source
+	dark
+	language="tsx"
+	code={`import { useBreakpoint, useResponsiveValue } from '@drivenets/design-system';
+
+const Toolbar = () => {
+const bp = useBreakpoint(); // 'lg' | 'md'
+const maxItems = useResponsiveValue({ md: 3, lg: 8 });
+
+    return bp === 'lg' ? <WideToolbar max={maxItems} /> : <CompactToolbar max={maxItems} />;
+
+};`}
+/>
+
+To give a custom component responsive props without rewriting it, wrap it with
+`withResponsiveProps`:
+
+<Source
+	dark
+	language="tsx"
+	code={`import { withResponsiveProps } from '@drivenets/design-system';
+
+const MyLayout = ({ gap, direction }) => /_ ... _/;
+
+export const MyResponsiveLayout = withResponsiveProps(MyLayout, ['gap', 'direction']);
+
+// Consumers can now pass:
+
+<MyResponsiveLayout direction={{ md: 'column', lg: 'row' }} gap={{ md: 8, lg: 16 }} />`}
+/>
