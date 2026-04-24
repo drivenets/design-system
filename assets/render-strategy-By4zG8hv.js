@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{c as t,m as n,p as r,s as i}from"./runtime-Dcpm2jJT.js";var a,o,s,c=e((()=>{n(),t(),[a,o]=r({name:`RenderStrategyContext`,hookName:`useRenderStrategyContext`,providerName:`<RenderStrategyPropsProvider />`}),s=e=>i()(e,[`lazyMount`,`unmountOnExit`])}));export{o as i,c as n,s as r,a as t};
