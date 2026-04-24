@@ -96,6 +96,8 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		} else {
 			resetInput();
 		}
+
+		props.onBlur?.();
 	};
 
 	const handleOpenChange = (details: Popover.OpenChangeDetails) => {

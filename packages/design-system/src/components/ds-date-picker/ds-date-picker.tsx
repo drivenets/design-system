@@ -31,6 +31,7 @@ const DsDatePicker = ({
 	slotProps,
 	onChange,
 	onOpenChange,
+	onBlur: _onBlur,
 	value: _value,
 	defaultValue: _defaultValue,
 	min: _min,
@@ -97,6 +98,8 @@ const DsDatePicker = ({
 		} else {
 			resetInput();
 		}
+
+		_onBlur?.();
 	};
 
 	const showClearButton = !hideClearButton && !disabled && !readOnly && !!value;

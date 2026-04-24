@@ -92,6 +92,11 @@ export interface DsTimePickerProps {
 	 * Called when the popover opens or closes. Receives the next `open` state.
 	 */
 	onOpenChange?: (open: boolean) => void;
+
+	/**
+	 * Called when the input is blurred
+	 */
+	onBlur?: () => void;
 }
 
 export interface DsTimePickerLocale {
