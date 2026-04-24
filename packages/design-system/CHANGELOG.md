@@ -1,5 +1,13 @@
 # @drivenets/design-system
 
+## 0.9.1
+
+### Patch Changes
+
+- d0bf909: Update dependencies
+- b2d1512: Make `DsButtonV3` `size` prop responsive
+- e1a2b8d: Add `hidden` prop to `RowActions` in `DsTable` component
+
 ## 0.9.0
 
 ### Minor Changes

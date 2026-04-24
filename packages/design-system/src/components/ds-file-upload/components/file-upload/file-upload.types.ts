@@ -94,6 +94,7 @@ export interface FileUploadProps {
 	disabled?: boolean;
 	/**
 	 * Whether the file upload layout is compact (inline)
+	 * @default false
 	 */
 	compact?: boolean;
 }

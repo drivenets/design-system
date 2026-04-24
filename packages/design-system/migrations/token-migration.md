@@ -1,0 +1,798 @@
+# Token Migration Table
+
+Merges every token from the legacy files (`_root.scss`, `_colors.scss`, `_spacing.scss`) with every token from `_root_updated.scss`.
+
+## Legend
+
+| Status  | Meaning                                                                                                | Migration strategy                                   |
+| ------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required               |
+| Changed | Same logical token but resolved value differs                                                          | Find & replace; visual testing is required           |
+| New     | No old equivalent                                                                                      |                                                      |
+| Removed | Old token with no new equivalent                                                                       | Either keep old token or find the nearest equivalent |
+
+---
+
+## 1. Primitive colors
+
+### Blue
+
+| Old Name           | New Name               | Status  |
+| ------------------ | ---------------------- | ------- |
+| `--color-blue-50`  | `--color-dap-blue-050` | Renamed |
+| —                  | `--color-dap-blue-075` | New     |
+| `--color-blue-100` | `--color-dap-blue-100` | Renamed |
+| `--color-blue-200` | `--color-dap-blue-200` | Renamed |
+| `--color-blue-300` | `--color-dap-blue-300` | Renamed |
+| `--color-blue-400` | `--color-dap-blue-400` | Renamed |
+| `--color-blue-500` | `--color-dap-blue-500` | Renamed |
+| `--color-blue-600` | `--color-dap-blue-600` | Renamed |
+| `--color-blue-700` | `--color-dap-blue-700` | Renamed |
+| `--color-blue-800` | `--color-dap-blue-800` | Renamed |
+| `--color-blue-900` | `--color-dap-blue-900` | Renamed |
+| `--color-blue-950` | `--color-dap-blue-950` | Renamed |
+
+### Brand
+
+| Old Name            | New Name                | Status  |
+| ------------------- | ----------------------- | ------- |
+| `--color-brand-50`  | `--color-dap-brand-50`  | Renamed |
+| `--color-brand-100` | `--color-dap-brand-100` | Renamed |
+| `--color-brand-200` | `--color-dap-brand-200` | Renamed |
+| `--color-brand-300` | `--color-dap-brand-300` | Renamed |
+| `--color-brand-400` | `--color-dap-brand-400` | Renamed |
+| `--color-brand-500` | `--color-dap-brand-500` | Renamed |
+| `--color-brand-600` | `--color-dap-brand-600` | Renamed |
+| `--color-brand-700` | `--color-dap-brand-700` | Renamed |
+
+### Dark Blue
+
+| Old Name                | New Name                      | Status  |
+| ----------------------- | ----------------------------- | ------- |
+| `--color-dark-blue-50`  | `--color-dap-dark-blue-050`   | Renamed |
+| `--color-dark-blue-100` | `--color-dap-dark-blue-100`   | Renamed |
+| —                       | `--color-dap-dark-blue-150`   | New     |
+| —                       | `--color-dap-dark-blue-150-2` | New     |
+| —                       | `--color-dap-dark-blue-150-3` | New     |
+| `--color-dark-blue-300` | `--color-dap-dark-blue-200`   | Renamed |
+| `--color-dark-blue-200` | `--color-dap-dark-blue-300`   | Renamed |
+| —                       | `--color-dap-dark-blue-400`   | New     |
+| —                       | `--color-dap-dark-blue-500`   | New     |
+| `--color-dark-blue-400` | `--color-dap-dark-blue-600`   | Renamed |
+| `--color-dark-blue-500` | `--color-dap-dark-blue-700`   | Renamed |
+
+### Dark Gray
+
+| Old Name                | New Name                    | Status  |
+| ----------------------- | --------------------------- | ------- |
+| `--color-dark-gray-50`  | `--color-dap-dark-gray-050` | Renamed |
+| `--color-dark-gray-100` | `--color-dap-dark-gray-100` | Renamed |
+| `--color-dark-gray-200` | `--color-dap-dark-gray-200` | Renamed |
+
+### Data
+
+| Old Name                    | New Name                              | Status  |
+| --------------------------- | ------------------------------------- | ------- |
+| `--color-data-amber`        | `--color-dap-data-amber`              | Renamed |
+| `--color-data-blue`         | `--color-dap-data-blue`               | Renamed |
+| `--color-data-deep-fuchsia` | `--color-dap-data-deep-fuchsia`       | Renamed |
+| `--color-data-deep-purple`  | `--color-dap-data-deep-purple`        | Renamed |
+| `--color-data-error`        | `--color-dap-data-error`              | Renamed |
+| `--color-data-fuchsia`      | `--color-dap-data-fuchsia`            | Renamed |
+| `--color-data-green`        | `--color-dap-data-green`              | Renamed |
+| —                           | `--color-dap-data-light-amber`        | New     |
+| —                           | `--color-dap-data-light-blue`         | New     |
+| —                           | `--color-dap-data-light-deep-fuchsia` | New     |
+| —                           | `--color-dap-data-light-deep-purple`  | New     |
+| —                           | `--color-dap-data-light-error`        | New     |
+| —                           | `--color-dap-data-light-fuchsia`      | New     |
+| —                           | `--color-dap-data-light-green`        | New     |
+| —                           | `--color-dap-data-light-lime`         | New     |
+| —                           | `--color-dap-data-light-orange`       | New     |
+| —                           | `--color-dap-data-light-pink`         | New     |
+| `--color-data-light-purple` | `--color-dap-data-light-purple`       | Renamed |
+| —                           | `--color-dap-data-light-rose`         | New     |
+| —                           | `--color-dap-data-light-teal`         | New     |
+| —                           | `--color-dap-data-light-yellow`       | New     |
+| `--color-data-lime`         | `--color-dap-data-lime`               | Renamed |
+| `--color-data-orange`       | `--color-dap-data-orange`             | Renamed |
+| `--color-data-pink`         | `--color-dap-data-pink`               | Renamed |
+| `--color-data-purple`       | `--color-dap-data-purple`             | Renamed |
+| `--color-data-rose`         | `--color-dap-data-rose`               | Renamed |
+| `--color-data-teal`         | `--color-dap-data-teal`               | Renamed |
+| `--color-data-yellow`       | `--color-dap-data-yellow`             | Renamed |
+
+### Gray
+
+| Old Name           | New Name               | Status  |
+| ------------------ | ---------------------- | ------- |
+| `--color-gray-50`  | `--color-dap-gray-050` | Renamed |
+| `--color-gray-100` | `--color-dap-gray-100` | Renamed |
+| `--color-gray-200` | `--color-dap-gray-200` | Renamed |
+| `--color-gray-300` | `--color-dap-gray-300` | Renamed |
+| `--color-gray-400` | `--color-dap-gray-400` | Renamed |
+| `--color-gray-500` | `--color-dap-gray-500` | Renamed |
+| `--color-gray-600` | `--color-dap-gray-600` | Renamed |
+| `--color-gray-700` | `--color-dap-gray-700` | Renamed |
+| `--color-gray-800` | `--color-dap-gray-800` | Renamed |
+| `--color-gray-900` | `--color-dap-gray-900` | Renamed |
+
+### Green
+
+| Old Name            | New Name                | Status  |
+| ------------------- | ----------------------- | ------- |
+| `--color-green-50`  | `--color-dap-green-050` | Renamed |
+| —                   | `--color-dap-green-075` | New     |
+| `--color-green-100` | `--color-dap-green-100` | Renamed |
+| `--color-green-200` | `--color-dap-green-200` | Renamed |
+| `--color-green-300` | `--color-dap-green-300` | Renamed |
+| `--color-green-400` | `--color-dap-green-400` | Renamed |
+| `--color-green-500` | `--color-dap-green-500` | Renamed |
+| `--color-green-600` | `--color-dap-green-600` | Renamed |
+| `--color-green-700` | `--color-dap-green-700` | Renamed |
+| `--color-green-800` | `--color-dap-green-800` | Renamed |
+| `--color-green-900` | `--color-dap-green-900` | Renamed |
+
+### Orange
+
+| Old Name             | New Name                 | Status  |
+| -------------------- | ------------------------ | ------- |
+| `--color-orange-50`  | `--color-dap-orange-050` | Renamed |
+| `--color-orange-100` | `--color-dap-orange-100` | Renamed |
+| `--color-orange-200` | `--color-dap-orange-200` | Renamed |
+| `--color-orange-300` | `--color-dap-orange-300` | Renamed |
+| `--color-orange-400` | `--color-dap-orange-400` | Renamed |
+| `--color-orange-500` | `--color-dap-orange-500` | Renamed |
+| `--color-orange-600` | `--color-dap-orange-600` | Renamed |
+| `--color-orange-700` | `--color-dap-orange-700` | Renamed |
+| `--color-orange-800` | `--color-dap-orange-800` | Renamed |
+| `--color-orange-900` | `--color-dap-orange-900` | Renamed |
+
+### Purple
+
+| Old Name             | New Name                 | Status  |
+| -------------------- | ------------------------ | ------- |
+| `--color-purple-50`  | `--color-dap-purple-050` | Renamed |
+| `--color-purple-100` | `--color-dap-purple-100` | Renamed |
+| `--color-purple-200` | `--color-dap-purple-200` | Renamed |
+| `--color-purple-300` | `--color-dap-purple-300` | Renamed |
+| `--color-purple-400` | `--color-dap-purple-400` | Renamed |
+| `--color-purple-500` | `--color-dap-purple-500` | Renamed |
+| `--color-purple-600` | `--color-dap-purple-600` | Renamed |
+| `--color-purple-700` | `--color-dap-purple-700` | Renamed |
+| `--color-purple-800` | `--color-dap-purple-800` | Renamed |
+| `--color-purple-900` | `--color-dap-purple-900` | Renamed |
+| `--color-purple-950` | `--color-dap-purple-950` | Renamed |
+
+### Red
+
+| Old Name          | New Name              | Status  |
+| ----------------- | --------------------- | ------- |
+| `--color-red-50`  | `--color-dap-red-050` | Renamed |
+| `--color-red-100` | `--color-dap-red-100` | Changed |
+| `--color-red-200` | `--color-dap-red-200` | Renamed |
+| `--color-red-300` | `--color-dap-red-300` | Renamed |
+| `--color-red-400` | `--color-dap-red-400` | Renamed |
+| `--color-red-500` | `--color-dap-red-500` | Renamed |
+| `--color-red-600` | `--color-dap-red-600` | Renamed |
+| `--color-red-700` | `--color-dap-red-700` | Renamed |
+
+---
+
+## 2. Alias scales
+
+### Brand
+
+| Old Name                    | New Name              | Status  |
+| --------------------------- | --------------------- | ------- |
+| `--color-brand-050`         | `--brand-050`         | Renamed |
+| —                           | `--brand-100`         | New     |
+| —                           | `--brand-200`         | New     |
+| —                           | `--brand-300`         | New     |
+| —                           | `--brand-400`         | New     |
+| `--color-brand-500-default` | `--brand-500-default` | Renamed |
+| —                           | `--brand-600`         | New     |
+| —                           | `--brand-700`         | New     |
+
+### Darks
+
+| Old Name            | New Name      | Status  |
+| ------------------- | ------------- | ------- |
+| `--color-darks-050` | `--darks-050` | Renamed |
+| `--color-darks-100` | `--darks-100` | Renamed |
+| `--color-darks-200` | `--darks-200` | Renamed |
+| `--color-darks-300` | `--darks-300` | Renamed |
+| `--color-darks-400` | `--darks-400` | Renamed |
+| `--color-darks-500` | `--darks-500` | Renamed |
+| `--color-darks-600` | `--darks-600` | Renamed |
+| `--color-darks-700` | `--darks-700` | Renamed |
+
+### Info
+
+| Old Name                    | New Name              | Status  |
+| --------------------------- | --------------------- | ------- |
+| `--color-info-050`          | `--info-050`          | Renamed |
+| `--color-info-100`          | `--info-100`          | Renamed |
+| `--color-info-200`          | `--info-200`          | Renamed |
+| `--color-info-300`          | `--info-300`          | Renamed |
+| `--color-info-400`          | `--info-400`          | Renamed |
+| `--color-info-500`          | `--info-500`          | Renamed |
+| `--color-info-600-default`  | `--info-600-default`  | Renamed |
+| `--color-info-700`          | `--info-700`          | Renamed |
+| `--color-info-800-progress` | `--info-800-progress` | Renamed |
+| `--color-info-900`          | `--info-900`          | Renamed |
+| `--color-info-950`          | `--info-950`          | Renamed |
+
+### Negative
+
+| Old Name                       | New Name                 | Status  |
+| ------------------------------ | ------------------------ | ------- |
+| `--color-negative-050`         | `--negative-050`         | Renamed |
+| `--color-negative-100`         | `--negative-100`         | Changed |
+| `--color-negative-200`         | `--negative-200`         | Renamed |
+| `--color-negative-300`         | `--negative-300`         | Renamed |
+| `--color-negative-400-default` | `--negative-400-default` | Renamed |
+| `--color-negative-500`         | `--negative-500`         | Renamed |
+| `--color-negative-600`         | `--negative-600`         | Renamed |
+| `--color-negative-700`         | `--negative-700`         | Renamed |
+
+### Paused
+
+| Old Name | New Name       | Status |
+| -------- | -------------- | ------ |
+| —        | `--paused-600` | New    |
+
+### Positive
+
+| Old Name                       | New Name                 | Status  |
+| ------------------------------ | ------------------------ | ------- |
+| `--color-positive-050`         | `--positive-050`         | Renamed |
+| `--color-positive-100`         | `--positive-100`         | Renamed |
+| `--color-positive-200`         | `--positive-200`         | Renamed |
+| `--color-positive-300`         | `--positive-300`         | Renamed |
+| `--color-positive-400`         | `--positive-400`         | Renamed |
+| `--color-positive-500`         | `--positive-500`         | Renamed |
+| `--color-positive-600`         | `--positive-600`         | Renamed |
+| `--color-positive-700-default` | `--positive-700-default` | Renamed |
+| `--color-positive-800`         | `--positive-800`         | Renamed |
+| `--color-positive-900`         | `--positive-900`         | Renamed |
+
+### Primary
+
+| Old Name                      | New Name                | Status  |
+| ----------------------------- | ----------------------- | ------- |
+| `--color-primary-050`         | `--primary-050`         | Renamed |
+| `--color-primary-100`         | `--primary-100`         | Renamed |
+| `--color-primary-200`         | `--primary-200`         | Renamed |
+| `--color-primary-300`         | `--primary-300`         | Renamed |
+| `--color-primary-400`         | `--primary-400`         | Renamed |
+| `--color-primary-500`         | `--primary-500`         | Renamed |
+| `--color-primary-600`         | `--primary-600`         | Renamed |
+| `--color-primary-700-default` | `--primary-700-default` | Renamed |
+| `--color-primary-800`         | `--primary-800`         | Renamed |
+| `--color-primary-900`         | `--primary-900`         | Renamed |
+| `--color-primary-950`         | `--primary-950`         | Renamed |
+
+### Secondary
+
+| Old Name                      | New Name                | Status  |
+| ----------------------------- | ----------------------- | ------- |
+| `--color-secondary-white`     | `--secondary-050`       | Renamed |
+| `--color-secondary-100`       | `--secondary-100`       | Renamed |
+| `--color-secondary-200`       | `--secondary-200`       | Renamed |
+| `--color-secondary-300`       | `--secondary-300`       | Renamed |
+| `--color-secondary-400`       | `--secondary-400`       | Renamed |
+| `--color-secondary-500-net-4` | `--secondary-500-net-4` | Renamed |
+| `--color-secondary-600-net-2` | `--secondary-600-net-2` | Renamed |
+| `--color-secondary-700-net-1` | `--secondary-700-net-1` | Renamed |
+| `--color-secondary-800`       | `--secondary-800`       | Renamed |
+| `--color-secondary-black`     | `--secondary-900`       | Renamed |
+
+### Warning
+
+| Old Name                      | New Name                | Status  |
+| ----------------------------- | ----------------------- | ------- |
+| `--color-warning-050`         | `--warning-050`         | Renamed |
+| `--color-warning-100`         | `--warning-100`         | Renamed |
+| `--color-warning-200`         | `--warning-200`         | Renamed |
+| `--color-warning-300`         | `--warning-300`         | Renamed |
+| `--color-warning-400`         | `--warning-400`         | Renamed |
+| `--color-warning-500`         | `--warning-500`         | Renamed |
+| `--color-warning-600-default` | `--warning-600-default` | Renamed |
+| `--color-warning-700`         | `--warning-700`         | Renamed |
+| `--color-warning-800`         | `--warning-800`         | Renamed |
+| `--color-warning-900`         | `--warning-900`         | Renamed |
+
+---
+
+## 3. Semantic: Background
+
+| Old Name                                     | New Name                                | Status  |
+| -------------------------------------------- | --------------------------------------- | ------- |
+| `--color-background`                         | `--background`                          | Renamed |
+| `--color-background-action`                  | `--background-action`                   | Renamed |
+| `--color-background-action-hover`            | `--background-action-hover`             | Renamed |
+| `--color-background-action-hover-weak`       | `--background-action-hover-weak`        | Renamed |
+| `--color-background-action-inverse`          | `--background-action-inverse`           | Renamed |
+| `--color-background-action-secondary`        | `--background-action-secondary`         | Renamed |
+| `--color-background-action-secondary-hover`  | `--background-action-secondary-hover`   | Renamed |
+| `--color-background-action-tertiary`         | `--background-action-tertiary-hover`    | Renamed |
+| —                                            | `--background-active-status`            | New     |
+| `--color-background-active-moderate`         | `--background-active-moderate`          | Renamed |
+| `--color-background-brand`                   | `--background-brand`                    | Renamed |
+| `--color-background-deselected`              | `--background-deselected`               | Renamed |
+| `--color-background-deselected-hover`        | `--background-deselected-hover`         | Renamed |
+| `--color-background-disable`                 | `--background-disable`                  | Renamed |
+| `--color-background-danger-strong`           | `--background-error`                    | Renamed |
+| `--color-background-danger-strong-hover`     | `--background-error-hover`              | Renamed |
+| `--color-background-danger-weak`             | `--background-error-secondary-hover`    | Renamed |
+| —                                            | `--background-error-secondary-selected` | New     |
+| —                                            | `--background-error-selected`           | New     |
+| —                                            | `--background-execution`                | New     |
+| —                                            | `--background-execution-strong`         | New     |
+| `--color-background-info`                    | `--background-info`                     | Renamed |
+| `--color-background-info-strong`             | `--background-info-strong`              | Renamed |
+| —                                            | `--background-light`                    | New     |
+| —                                            | `--background-light-disabled`           | New     |
+| —                                            | `--background-light-primary`            | New     |
+| —                                            | `--background-light-primary-hover`      | New     |
+| —                                            | `--background-light-primary-selected`   | New     |
+| —                                            | `--background-light-secondary-selected` | New     |
+| —                                            | `--background-neutral`                  | New     |
+| —                                            | `--background-overlay`                  | New     |
+| —                                            | `--background-page`                     | New     |
+| —                                            | `--background-pending`                  | New     |
+| —                                            | `--background-pending-strong`           | New     |
+| `--color-background-selected`                | `--background-primary`                  | Renamed |
+| `--color-background-selected-hover`          | `--background-primary-hover`            | Renamed |
+| —                                            | `--background-primary-selected`         | New     |
+| `--color-background-secondary`               | `--background-secondary`                | Renamed |
+| `--color-background-selected-weak`           | `--background-secondary-hover`          | Renamed |
+| `--color-background-secondary-selected-weak` | `--background-secondary-selected-weak`  | Renamed |
+| `--color-background-success`                 | `--background-success`                  | Changed |
+| `--color-background-success-strong`          | `--background-success-strong`           | Renamed |
+| `--color-background-success-stronger`        | `--background-success-strong-hover`     | Renamed |
+| `--color-background-tertiary`                | `--background-tertiary`                 | Renamed |
+| `--color-background-tertiary-selected-weak`  | `--background-tertiary-selected-weak`   | Renamed |
+| —                                            | `--background-transparent-active`       | New     |
+| —                                            | `--background-transparent-hover`        | New     |
+| `--color-background-warning`                 | `--background-warning`                  | Renamed |
+| `--color-background-warning-strong`          | `--background-warning-strong`           | Renamed |
+| `--color-background-warning-weak`            | —                                       | Removed |
+
+---
+
+## 4. Semantic: Border
+
+| Old Name                                | New Name                          | Status  |
+| --------------------------------------- | --------------------------------- | ------- |
+| `--color-border`                        | `--border`                        | Renamed |
+| `--color-border-action-primary`         | `--border-action-primary`         | Renamed |
+| `--color-border-action-primary-hover`   | `--border-action-primary-hover`   | Renamed |
+| `--color-border-action-secondary`       | `--border-action-secondary`       | Renamed |
+| `--color-border-action-secondary-hover` | `--border-action-secondary-hover` | Renamed |
+| `--color-border-contrast`               | `--border-contrast`               | Renamed |
+| `--color-border-disabled`               | `--border-disabled`               | Changed |
+| `--color-border-danger-strong`          | `--border-error`                  | Renamed |
+| —                                       | `--border-error-hover`            | New     |
+| `--color-border-danger-weak`            | `--border-error-weak`             | Changed |
+| —                                       | `--border-field`                  | New     |
+| —                                       | `--border-field-focus`            | New     |
+| —                                       | `--border-field-hover`            | New     |
+| `--color-border-inverse`                | `--border-inverse`                | Renamed |
+| —                                       | `--border-light-disabled`         | New     |
+| —                                       | `--border-light-secondary`        | New     |
+| `--color-border-secondary`              | `--border-secondary`              | Renamed |
+| —                                       | `--border-secondary-hover`        | New     |
+| `--color-border-success`                | `--border-success`                | Renamed |
+| `--color-border-tertiary`               | `--border-tertiary`               | Renamed |
+| —                                       | `--border-warning-strong`         | New     |
+
+---
+
+## 5. Semantic: Font
+
+| Old Name                              | New Name                        | Status  |
+| ------------------------------------- | ------------------------------- | ------- |
+| `--color-font-action`                 | `--font-action`                 | Renamed |
+| `--color-font-action-hover`           | `--font-action-hover`           | Renamed |
+| `--color-font-action-secondary`       | `--font-action-secondary`       | Renamed |
+| `--color-font-action-secondary-hover` | `--font-action-secondary-hover` | Renamed |
+| `--color-font-code`                   | `--font-code`                   | Renamed |
+| `--color-font-disabled`               | `--font-disabled`               | Changed |
+| `--color-font-danger`                 | `--font-error`                  | Renamed |
+| `--color-font-highlight`              | `--font-highlight`              | Renamed |
+| —                                     | `--font-light-disabled`         | New     |
+| `--color-font-main`                   | `--font-main`                   | Renamed |
+| `--color-font-on-action`              | `--font-on-action`              | Renamed |
+| `--color-font-on-disabled`            | `--font-on-disabled`            | Renamed |
+| —                                     | `--font-placeholder`            | New     |
+| `--color-font-secondary`              | `--font-secondary`              | Renamed |
+| `--color-font-success`                | `--font-success`                | Renamed |
+| `--color-font-warning`                | `--font-warning`                | Renamed |
+
+---
+
+## 6. Semantic: Icon
+
+| Old Name                             | New Name                       | Status  |
+| ------------------------------------ | ------------------------------ | ------- |
+| —                                    | `--icon-on-button`             | New     |
+| `--color-icon-primary`               | `--icon-action`                | Renamed |
+| —                                    | `--icon-action-hover`          | New     |
+| `--color-icon-secondary`             | `--icon-action-secondary`      | Renamed |
+| —                                    | `--icon-disabled`              | New     |
+| `--color-icon-danger`                | `--icon-error`                 | Changed |
+| —                                    | `--icon-execution`             | New     |
+| `--color-icon-information-main`      | `--icon-information-main`      | Renamed |
+| `--color-icon-information-secondary` | `--icon-information-secondary` | Renamed |
+| `--color-icon-inverse`               | `--icon-inverse`               | Renamed |
+| —                                    | `--icon-main`                  | New     |
+| —                                    | `--icon-on-dark-disabled`      | New     |
+| —                                    | `--icon-pause`                 | New     |
+| —                                    | `--icon-pending`               | New     |
+| —                                    | `--icon-secondary`             | New     |
+| `--color-icon-success`               | `--icon-success`               | Renamed |
+| —                                    | `--icon-success-light`         | New     |
+| `--color-icon-warning`               | `--icon-warning`               | Renamed |
+| —                                    | `--icon-warning-light`         | New     |
+
+---
+
+## 7. Outline, Shadow, Status
+
+### Outline
+
+| Old Name                   | New Name             | Status  |
+| -------------------------- | -------------------- | ------- |
+| `--color-outline-extreme`  | `--outline-extreme`  | Renamed |
+| `--color-outline-inverse`  | `--outline-inverse`  | Renamed |
+| `--color-outline-moderate` | `--outline-moderate` | Renamed |
+| `--color-outline-strong`   | `--outline-strong`   | Renamed |
+| `--color-outline-weak`     | `--outline-weak`     | Renamed |
+
+### Shadow
+
+| Old Name                  | New Name            | Status  |
+| ------------------------- | ------------------- | ------- |
+| `--color-shadow-moderate` | `--shadow-moderate` | Renamed |
+| `--color-shadow-strong`   | `--shadow-strong`   | Renamed |
+| `--color-shadow-weak`     | `--shadow-weak`     | Renamed |
+
+### Status
+
+| Old Name                     | New Name               | Status  |
+| ---------------------------- | ---------------------- | ------- |
+| `--color-status-bg-inactive` | `--status-bg-inactive` | Renamed |
+| `--color-status-bg-neutral`  | `--status-bg-neutral`  | Renamed |
+| `--color-status-bg-pending`  | `--status-bg-pending`  | Renamed |
+| `--color-status-bg-progress` | `--status-bg-progress` | Renamed |
+| `--color-status-bg-success`  | `--status-bg-success`  | Changed |
+| `--color-status-bg-warning`  | `--status-bg-warning`  | Renamed |
+| `--color-status-bg-failed`   | —                      | Removed |
+
+---
+
+## 8. Dark / Light buttons
+
+Entire group renamed `dark-buttons` → `light-buttons`.
+
+| Old Name                                                | New Name                                           | Status  |
+| ------------------------------------------------------- | -------------------------------------------------- | ------- |
+| `--color-dark-buttons-primary`                          | `--light-buttons-primary`                          | Renamed |
+| —                                                       | `--light-buttons-primary-2`                        | New     |
+| —                                                       | `--light-buttons-primary-3`                        | New     |
+| —                                                       | `--light-buttons-primary-4`                        | New     |
+| —                                                       | `--light-buttons-primary-5`                        | New     |
+| —                                                       | `--light-buttons-primary-6`                        | New     |
+| —                                                       | `--light-buttons-primary-7`                        | New     |
+| `--color-dark-buttons-primary-hover`                    | `--light-buttons-primary-hover`                    | Renamed |
+| —                                                       | `--light-buttons-primary-hover-2`                  | New     |
+| —                                                       | `--light-buttons-primary-hover-3`                  | New     |
+| —                                                       | `--light-buttons-primary-hover-4`                  | New     |
+| —                                                       | `--light-buttons-primary-hover-5`                  | New     |
+| —                                                       | `--light-buttons-primary-hover-6`                  | New     |
+| —                                                       | `--light-buttons-primary-hover-7`                  | New     |
+| `--color-dark-buttons-secondary-background`             | `--light-buttons-secondary-background`             | Renamed |
+| `--color-dark-buttons-secondary-hover`                  | `--light-buttons-secondary-hover`                  | Renamed |
+| `--color-dark-buttons-secondary-light`                  | `--light-buttons-secondary-light`                  | Renamed |
+| `--color-dark-buttons-secondary-light-hover-background` | `--light-buttons-secondary-light-hover-background` | Renamed |
+| `--color-dark-buttons-tertiary`                         | `--light-buttons-tertiary`                         | Renamed |
+| `--color-dark-buttons-tertiary-hover-background`        | `--light-buttons-tertiary-hover-background`        | Renamed |
+
+---
+
+## 9. Schema (data aliases)
+
+All new — flattened data color aliases without the `color-dap-data-` prefix.
+
+| Old Name | New Name                      | Status |
+| -------- | ----------------------------- | ------ |
+| —        | `--schema-amber`              | New    |
+| —        | `--schema-blue`               | New    |
+| —        | `--schema-deep-fuchsia`       | New    |
+| —        | `--schema-deep-purple`        | New    |
+| —        | `--schema-error`              | New    |
+| —        | `--schema-fuchsia`            | New    |
+| —        | `--schema-green`              | New    |
+| —        | `--schema-light-amber`        | New    |
+| —        | `--schema-light-blue`         | New    |
+| —        | `--schema-light-deep-fuchsia` | New    |
+| —        | `--schema-light-deep-purple`  | New    |
+| —        | `--schema-light-error`        | New    |
+| —        | `--schema-light-fuchsia`      | New    |
+| —        | `--schema-light-green`        | New    |
+| —        | `--schema-light-lime`         | New    |
+| —        | `--schema-light-orange`       | New    |
+| —        | `--schema-light-pink`         | New    |
+| —        | `--schema-light-purple`       | New    |
+| —        | `--schema-light-rose`         | New    |
+| —        | `--schema-light-teal`         | New    |
+| —        | `--schema-light-yellow`       | New    |
+| —        | `--schema-lime`               | New    |
+| —        | `--schema-orange`             | New    |
+| —        | `--schema-pink`               | New    |
+| —        | `--schema-purple`             | New    |
+| —        | `--schema-rose`               | New    |
+| —        | `--schema-teal`               | New    |
+| —        | `--schema-yellow`             | New    |
+
+---
+
+## 10. Brand vendor / misc
+
+| Old Name | New Name                          | Status |
+| -------- | --------------------------------- | ------ |
+| —        | `--att-brand`                     | New    |
+| —        | `--net-gen-1`                     | New    |
+| —        | `--net-gen-2`                     | New    |
+| —        | `--net-gen-hover-1`               | New    |
+| —        | `--net-gen-hover-2`               | New    |
+| —        | `--net-gen-logo-dark-grey`        | New    |
+| —        | `--net-gen-logo-dodger-blue`      | New    |
+| —        | `--net-gen-logo-light-grey`       | New    |
+| —        | `--net-gen-logo-ultramarine-blue` | New    |
+| —        | `--nokia-brand`                   | New    |
+| —        | `--primary-green`                 | New    |
+| —        | `--error`                         | New    |
+| —        | `--text-on-button`                | New    |
+
+---
+
+## 11. Typography (legacy `_root.scss`)
+
+### Font family
+
+| Old Name             | New Name             | Status  |
+| -------------------- | -------------------- | ------- |
+| `--font-family-base` | `--font-family-base` | Changed |
+| `--font-family-code` | `--font-family-code` | Changed |
+
+### Font weight
+
+| Old Name                   | New Name                   | Status  |
+| -------------------------- | -------------------------- | ------- |
+| `--font-weight-regular`    | `--font-weight-regular`    | Renamed |
+| `--font-weight-medium`     | `--font-weight-medium`     | Renamed |
+| `--font-weight-semi-bold`  | `--font-weight-semi-bold`  | Renamed |
+| `--font-weight-bold`       | `--font-weight-bold`       | Renamed |
+| `--font-weight-extra-bold` | `--font-weight-extra-bold` | Renamed |
+
+### Font size
+
+| Old Name            | New Name                    | Status  |
+| ------------------- | --------------------------- | ------- |
+| `--font-size-3xl`   | `--heading-font-size-3xl`   | Renamed |
+| `--font-size-2xl`   | `--heading-font-size-2xl`   | Renamed |
+| `--font-size-xl`    | `--heading-font-size-xl`    | Renamed |
+| `--font-size-large` | `--heading-font-size-large` | Renamed |
+| `--font-size-md`    | `--body-font-size-md`       | Renamed |
+| `--font-size-sm`    | `--body-font-size-sm`       | Renamed |
+| `--font-size-xs`    | `--body-font-size-xs`       | Renamed |
+
+### Line height
+
+| Old Name              | New Name                      | Status  |
+| --------------------- | ----------------------------- | ------- |
+| `--line-height-3xl`   | `--heading-line-height-3xl`   | Renamed |
+| `--line-height-2xl`   | `--heading-line-height-2xl`   | Renamed |
+| `--line-height-xl`    | `--heading-line-height-xl`    | Renamed |
+| `--line-height-large` | `--heading-line-height-large` | Renamed |
+| `--line-height-md`    | `--body-line-height-md`       | Renamed |
+| `--line-height-sm`    | `--body-line-height-small`    | Renamed |
+| `--line-height-xs`    | `--body-line-height-xs`       | Renamed |
+
+### Paragraph spacing
+
+Unit changed from unitless integers to `px` across the scale. See the breaking-changes summary.
+
+| Old Name                    | New Name                          | Status  |
+| --------------------------- | --------------------------------- | ------- |
+| `--paragraph-spacing-3xl`   | `--heading-paragraph-space-3xl`   | Changed |
+| `--paragraph-spacing-2xl`   | `--heading-paragraph-space-2xl`   | Changed |
+| `--paragraph-spacing-xl`    | `--heading-paragraph-space-xl`    | Changed |
+| `--paragraph-spacing-large` | `--heading-paragraph-space-large` | Changed |
+| `--paragraph-spacing-md`    | `--body-paragraph-space-md`       | Changed |
+| `--paragraph-spacing-sm`    | `--body-paragraph-space-small`    | Changed |
+| `--paragraph-spacing-xs`    | `--body-paragraph-space-xs`       | Changed |
+
+### Removed (still absent from `_root_new.scss`)
+
+| Old Name                     | New Name | Status  |
+| ---------------------------- | -------- | ------- |
+| `--letter-spacing--1percent` | —        | Removed |
+| `--icon-width-extra-large`   | —        | Removed |
+| `--icon-width-large`         | —        | Removed |
+| `--icon-width-medium`        | —        | Removed |
+| `--icon-width-small`         | —        | Removed |
+| `--icon-width-tiny`          | —        | Removed |
+| `--ds-table-row-small`       | —        | Removed |
+| `--ds-table-row-medium`      | —        | Removed |
+| `--ds-table-row-large`       | —        | Removed |
+| `--ds-table-header-height`   | —        | Removed |
+
+---
+
+## 12. Gradients and Markers (legacy `_root.scss` — absent from new file)
+
+| Old Name                              | New Name | Status  |
+| ------------------------------------- | -------- | ------- |
+| `--color-gradient-violet-background`  | —        | Removed |
+| `--color-gradient-violet-transparent` | —        | Removed |
+| `--color-gradient-blue-light`         | —        | Removed |
+| `--color-gradient-linear-1`           | —        | Removed |
+| `--color-marker-magenta-12`           | —        | Removed |
+| `--color-marker-magenta-60`           | —        | Removed |
+| `--color-marker-magenta-100`          | —        | Removed |
+| `--color-marker-yellow-100`           | —        | Removed |
+
+---
+
+## 13. Legacy colors (`_colors.scss`)
+
+These tokens come from the older `$colors` Sass map. Where the hex matches a new primitive, we map it; otherwise they are Removed.
+
+### Primary
+
+| Old Name                  | New Name                | Status  |
+| ------------------------- | ----------------------- | ------- |
+| `--deep-blue` (`#001a47`) | `--color-dap-brand-500` | Renamed |
+| `--white` (`#ffffff`)     | `--color-dap-gray-050`  | Renamed |
+| `--black` (`#000000`)     | `--color-dap-gray-900`  | Renamed |
+
+### Gradient (Specials)
+
+| Old Name                        | New Name | Status  |
+| ------------------------------- | -------- | ------- |
+| `--gradient-violet-background`  | —        | Removed |
+| `--gradient-violet-transparent` | —        | Removed |
+| `--gradient-blue-light`         | —        | Removed |
+
+### Neutral
+
+| Old Name                   | New Name               | Status  |
+| -------------------------- | ---------------------- | ------- |
+| `--neutral-1` (`#2c3a4b`)  | `--color-dap-gray-700` | Renamed |
+| `--neutral-2` (`#4c5f76`)  | `--color-dap-gray-600` | Renamed |
+| `--neutral-3` (`#6c7b8e`)  | —                      | Removed |
+| `--neutral-4` (`#8b98a6`)  | `--color-dap-gray-500` | Renamed |
+| `--neutral-5` (`#a0aab7`)  | —                      | Removed |
+| `--neutral-6` (`#b3bfd1`)  | —                      | Removed |
+| `--neutral-7` (`#c2cedf`)  | —                      | Removed |
+| `--neutral-8` (`#dee6f1`)  | —                      | Removed |
+| `--neutral-9` (`#eaecef`)  | —                      | Removed |
+| `--neutral-10` (`#f3f5fa`) | `--color-dap-gray-100` | Renamed |
+| `--neutral-bg` (`#dae2f4`) | —                      | Removed |
+
+### Action
+
+| Old Name                            | New Name | Status  |
+| ----------------------------------- | -------- | ------- |
+| `--action-cta1` (`#0064fa`)         | —        | Removed |
+| `--action-cta2` (`#579aff`)         | —        | Removed |
+| `--action-cta3` (`#6b7b8e`)         | —        | Removed |
+| `--action-active-light` (`#c7d8ff`) | —        | Removed |
+| `--action-hover-light` (`#e0eaff`)  | —        | Removed |
+| `--action-disabled` (`#b0b4bf`)     | —        | Removed |
+
+### System Status
+
+| Old Name                                  | New Name | Status  |
+| ----------------------------------------- | -------- | ------- |
+| `--system-status-ok` (`#067a00`)          | —        | Removed |
+| `--system-status-info` (`#005dcf`)        | —        | Removed |
+| `--system-status-error` (`#d70a00`)       | —        | Removed |
+| `--system-status-alert` (`#d04d07`)       | —        | Removed |
+| `--system-status-in-progress` (`#1513da`) | —        | Removed |
+| `--system-status-pending` (`#8836d6`)     | —        | Removed |
+
+### Utility
+
+| Old Name                            | New Name | Status  |
+| ----------------------------------- | -------- | ------- |
+| `--utility-ok` (`#d6f5cf`)          | —        | Removed |
+| `--utility-info` (`#c4dcff`)        | —        | Removed |
+| `--utility-error` (`#ffd8d6`)       | —        | Removed |
+| `--utility-alert` (`#ffeac0`)       | —        | Removed |
+| `--utility-in-progress` (`#d9d9ff`) | —        | Removed |
+| `--utility-pending` (`#ede2ff`)     | —        | Removed |
+| `--utility-disabled` (`#e3e3e3`)    | —        | Removed |
+
+### Map / Scheme
+
+| Old Name                                             | New Name | Status  |
+| ---------------------------------------------------- | -------- | ------- |
+| `--map-and-scheme-line-layer-0` (`#5452f6`)          | —        | Removed |
+| `--map-and-scheme-line-layer-01` (`#cc4c5f`)         | —        | Removed |
+| `--map-and-scheme-line-layer-02` (`#00894d`)         | —        | Removed |
+| `--map-and-scheme-line-layer-1-optical` (`#3b8edb`)  | —        | Removed |
+| `--map-and-scheme-line-layer-2-ethernet` (`#00b8d9`) | —        | Removed |
+| `--map-and-scheme-line-layer-3-routing` (`#9a55e0`)  | —        | Removed |
+| `--map-and-scheme-service-overlay` (`#c30ede`)       | —        | Removed |
+| `--map-and-scheme-pops-core-zones` (`#a92a00`)       | —        | Removed |
+| `--map-and-scheme-line-optional-1` (`#da7b2d`)       | —        | Removed |
+
+---
+
+## 14. Spacing
+
+### Numeric scale (`_spacing.scss`) — Removed
+
+The whole `--spacing-*` numeric scale does not appear in `_root_updated.scss`.
+
+| Old Name                 | New Name | Status  |
+| ------------------------ | -------- | ------- |
+| `--base-unit`            | —        | Removed |
+| `--spacing-1`            | —        | Removed |
+| `--spacing-2`            | —        | Removed |
+| `--spacing-3`            | —        | Removed |
+| `--spacing-4`            | —        | Removed |
+| `--spacing-5`            | —        | Removed |
+| `--spacing-6`            | —        | Removed |
+| `--spacing-8`            | —        | Removed |
+| `--spacing-10`           | —        | Removed |
+| `--spacing-12`           | —        | Removed |
+| `--spacing-16`           | —        | Removed |
+| `--spacing-20`           | —        | Removed |
+| `--spacing-24`           | —        | Removed |
+| `--spacing-base`         | —        | Removed |
+| `--exo-spacing-standard` | —        | Removed |
+| `--exo-spacing-small`    | —        | Removed |
+| `--exo-spacing-x-small`  | —        | Removed |
+| `--exo-spacing-2x-small` | —        | Removed |
+| `--exo-spacing-4x-small` | —        | Removed |
+
+### Named scale (T-shirt sizes) — renamed (prefix dropped)
+
+| Old Name             | New Name     | Status  |
+| -------------------- | ------------ | ------- |
+| `--spacing-none`     | `--none`     | Renamed |
+| `--spacing-4xs`      | `--4xs`      | Renamed |
+| `--spacing-3xs`      | `--3xs`      | Renamed |
+| `--spacing-2xs`      | `--2xs`      | Renamed |
+| `--spacing-xs`       | `--xs`       | Renamed |
+| `--spacing-sm`       | `--sm`       | Renamed |
+| `--spacing-standard` | `--standard` | Renamed |
+| `--spacing-md`       | `--md`       | Renamed |
+| `--spacing-lg`       | `--lg`       | Renamed |
+| `--spacing-xl`       | `--xl`       | Renamed |
+| `--spacing-2xl`      | `--2xl`      | Renamed |
+| `--spacing-3xl`      | `--3xl`      | Renamed |
+| `--spacing-4xl`      | `--4xl`      | Renamed |
+| `--spacing-5xl`      | `--5xl`      | Renamed |
+
+---
+
+## Summary of value changes (breaking)
+
+| Token                                                    | Old value                | New value             |
+| -------------------------------------------------------- | ------------------------ | --------------------- |
+| `--color-red-100` / `--negative-100`                     | `#f5c2bf`                | `#ffd2cf`             |
+| `--background-success` / `--status-bg-success`           | `#ecfdf6` (green-50)     | `#d9f7e9` (green-075) |
+| `--border-disabled`                                      | `#e5e8ed` (brand-050)    | `#c7c9cc` (gray-300)  |
+| `--border-error-weak` (was `--color-border-danger-weak`) | `#f5c2bf`                | `#ffd2cf`             |
+| `--font-disabled`                                        | `#8b98a6` (gray-500)     | `#c7c9cc` (gray-300)  |
+| `--icon-error` (was `--color-icon-danger`)               | `#d70a00` (red-400)      | `#a10800` (red-500)   |
+| `--font-family-base`                                     | `'Roboto', sans-serif`   | `Roboto`              |
+| `--font-family-code`                                     | `'Fira Mono', monospace` | `Fira Mono`           |
+| `--paragraph-spacing-*` → `--*-paragraph-space-*`        | unitless (e.g. `8`)      | px (e.g. `8px`)       |

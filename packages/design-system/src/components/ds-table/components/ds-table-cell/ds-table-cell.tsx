@@ -19,13 +19,16 @@ export const DsTableCell = <TData, TValue>({
 	primaryRowActions = [],
 	secondaryRowActions = [],
 }: DsTableCellProps<TData, TValue>) => {
-	if (primaryRowActions.length || secondaryRowActions.length) {
-		const hasSecondaryRowActions = secondaryRowActions.some((action) => !action.disabled?.(row.original));
+	const visiblePrimary = primaryRowActions.filter((action) => !action.hidden?.(row.original));
+	const visibleSecondary = secondaryRowActions.filter((action) => !action.hidden?.(row.original));
+
+	if (visiblePrimary.length || visibleSecondary.length) {
+		const hasSecondaryRowActions = visibleSecondary.length > 0;
 		return (
 			<div className={styles.lastCell}>
 				<DsDefaultTableCell cell={cell} />
 				<div className={styles.cellActions}>
-					{primaryRowActions.map((action, i) => {
+					{visiblePrimary.map((action, i) => {
 						const isDisabled = action.disabled?.(row.original);
 						const label = typeof action.label === 'function' ? action.label(row.original) : action.label;
 						return (
@@ -67,7 +70,7 @@ export const DsTableCell = <TData, TValue>({
 								</button>
 							</DsDropdownMenu.Trigger>
 							<DsDropdownMenu.Content>
-								{secondaryRowActions.map((action, i) => {
+								{visibleSecondary.map((action, i) => {
 									const label =
 										typeof action.label === 'function' ? action.label(row.original) : action.label;
 									const isDisabled = action.disabled?.(row.original);

@@ -22,6 +22,10 @@ export interface TagFilterItem {
 	 * Additional props to pass to the components
 	 */
 	slotProps?: {
+		/**
+		 * Props forwarded to the underlying `DsTag` rendered for this item. Useful
+		 * for per-item overrides such as `variant` or `size`.
+		 */
 		tag?: Partial<DsTagProps>;
 	};
 }
@@ -35,9 +39,21 @@ export interface DsTagFilterProps {
 	 * Locale object (you can pass custom strings for localization)
 	 */
 	locale?: {
+		/**
+		 * Heading label shown above the tag list (e.g., "Filters").
+		 */
 		label?: string;
+		/**
+		 * Label for the "Clear all" button.
+		 */
 		clearButton?: string;
+		/**
+		 * Label for the button that reveals hidden tags when the list overflows.
+		 */
 		showMore?: string;
+		/**
+		 * Label for the button that collapses the expanded list back to the preview.
+		 */
 		showLess?: string;
 	};
 	/**

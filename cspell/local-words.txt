@@ -25,6 +25,9 @@ subcomponents
 tosorted
 TSESTree
 unhover
+affordances
 Containerizable
 Fira
 healthcheck
+scrollers
+unitless

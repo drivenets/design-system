@@ -58,6 +58,134 @@ describe('DsTable - Row Actions', () => {
 			.toHaveAttribute('aria-disabled', 'true');
 	});
 
+	it('should hide primary action per-row via hidden callback', async () => {
+		const editHandler = vi.fn();
+		const openHandler = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				primaryRowActions={[
+					{ icon: 'edit', label: 'Edit', onClick: editHandler },
+					{
+						icon: 'open_in_new',
+						label: 'Open in New Window',
+						hidden: (data: Person) => data.firstName === 'Tanner',
+						onClick: openHandler,
+					},
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		const kevinRow = page.getByRole('row').nth(2);
+
+		await tannerRow.hover();
+		await expect
+			.element(tannerRow.getByRole('button', { name: /open in new window/i }))
+			.not.toBeInTheDocument();
+		await expect.element(tannerRow.getByRole('button', { name: /^edit$/i })).toBeVisible();
+
+		await kevinRow.hover();
+		await expect.element(kevinRow.getByRole('button', { name: /open in new window/i })).toBeVisible();
+	});
+
+	it('should hide secondary action per-row via hidden callback', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				secondaryRowActions={[
+					{
+						icon: 'delete_outline',
+						label: 'Delete',
+						hidden: (data: Person) => data.firstName === 'Tanner',
+						onClick: vi.fn(),
+					},
+					{ icon: 'info', label: 'Details', onClick: vi.fn() },
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		const kevinRow = page.getByRole('row').nth(2);
+
+		await tannerRow.hover();
+		await tannerRow.getByRole('button', { name: /more actions/i }).click();
+		await expect.element(page.getByRole('menuitem', { name: /details/i })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /delete/i })).not.toBeInTheDocument();
+		await page.getByRole('menuitem', { name: /details/i }).click();
+
+		await kevinRow.hover();
+		await kevinRow.getByRole('button', { name: /more actions/i }).click();
+		await expect.element(page.getByRole('menuitem', { name: /delete/i })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /details/i })).toBeVisible();
+	});
+
+	it('should render default cell when all actions are hidden for a row', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				primaryRowActions={[
+					{
+						icon: 'edit',
+						label: 'Edit',
+						hidden: (data: Person) => data.firstName === 'Tanner',
+						onClick: vi.fn(),
+					},
+				]}
+				secondaryRowActions={[
+					{
+						icon: 'delete_outline',
+						label: 'Delete',
+						hidden: (data: Person) => data.firstName === 'Tanner',
+						onClick: vi.fn(),
+					},
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		const kevinRow = page.getByRole('row').nth(2);
+
+		await tannerRow.hover();
+		await expect.element(tannerRow.getByRole('button', { name: /^edit$/i })).not.toBeInTheDocument();
+		await expect.element(tannerRow.getByRole('button', { name: /more actions/i })).not.toBeInTheDocument();
+
+		await kevinRow.hover();
+		await expect.element(kevinRow.getByRole('button', { name: /^edit$/i })).toBeVisible();
+		await expect.element(kevinRow.getByRole('button', { name: /more actions/i })).toBeVisible();
+	});
+
+	it('should show kebab trigger when every secondary action is disabled but none are hidden', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				secondaryRowActions={[
+					{
+						icon: 'delete_outline',
+						label: 'Delete',
+						disabled: () => true,
+						onClick: vi.fn(),
+					},
+					{
+						icon: 'info',
+						label: 'Details',
+						disabled: () => true,
+						onClick: vi.fn(),
+					},
+				]}
+			/>,
+		);
+
+		const firstDataRow = page.getByRole('row').nth(1);
+		await firstDataRow.hover();
+		await expect.element(firstDataRow.getByRole('button', { name: /more actions/i })).toBeVisible();
+	});
+
 	it('should show bulk actions when rows are selected', async () => {
 		const deleteHandler = vi.fn();
 		const notifyHandler = vi.fn();

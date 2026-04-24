@@ -1,5 +1,3 @@
-@use '../../styles/root_updated';
-
 .matrix {
 	display: flex;
 	flex-direction: column;
@@ -18,7 +16,7 @@
 	font-family: var(--font-family-base);
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-semi-bold);
-	color: var(--font-font-secondary);
+	color: var(--font-secondary);
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
 }
@@ -35,7 +33,7 @@
 	font-family: var(--font-family-base);
 	font-size: var(--font-size-xs);
 	font-weight: var(--font-weight-medium);
-	color: var(--font-font-secondary);
+	color: var(--font-secondary);
 	text-align: center;
 	text-transform: capitalize;
 }
@@ -52,7 +50,7 @@
 	font-family: var(--font-family-base);
 	font-size: var(--font-size-sm);
 	font-weight: var(--font-weight-medium);
-	color: var(--font-font-secondary);
+	color: var(--font-secondary);
 	text-transform: capitalize;
 }
 

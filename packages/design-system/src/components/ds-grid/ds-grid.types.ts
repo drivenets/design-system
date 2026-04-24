@@ -1,9 +1,6 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
-export interface DsGridProps {
-	/**
-	 * The content to be rendered inside the grid
-	 */
+export interface DsGridBaseProps {
 	children: ReactNode;
 
 	/**
@@ -17,15 +14,24 @@ export interface DsGridProps {
 	columns?: 2 | 4 | 6 | 8 | 10 | 12;
 
 	/**
-	 * Custom class names to apply to the grid
+	 * Gap between grid cells.
+	 * A number is treated as px. A string is used as-is (e.g. `"1rem"`, `"var(--grid-gutter)"`).
+	 * CSS default (when omitted): `16px` — set by `$gutter` in `_grid-variables.scss`.
 	 */
+	gutter?: number | string;
+
+	/**
+	 * Padding around the grid container.
+	 * A number is treated as px (uniform). A string is used as-is (e.g. `"16px 20px"`, `"var(--grid-margin)"`).
+	 * CSS default (when omitted): `16px 20px` — set by `$margin-y $margin-x` in `_grid-variables.scss`.
+	 */
+	margin?: number | string;
+
 	className?: string;
+	style?: CSSProperties;
 }
 
-export interface DsGridItemProps {
-	/**
-	 * The content to be rendered inside the grid item
-	 */
+export interface DsGridItemBaseProps {
 	children: ReactNode;
 
 	/**
@@ -48,8 +54,5 @@ export interface DsGridItemProps {
 	 */
 	rowStart?: number;
 
-	/**
-	 * Custom class names to apply to the grid item
-	 */
 	className?: string;
 }

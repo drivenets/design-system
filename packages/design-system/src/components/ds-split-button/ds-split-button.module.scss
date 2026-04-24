@@ -49,11 +49,11 @@ $border-width: 1px;
 	}
 
 	&:not(:disabled):is(:hover, :active, [data-selected='true']) {
-		border-right-color: var(--border-border-secondary-hover);
+		border-right-color: var(--border-secondary-hover);
 	}
 
 	&:not(:disabled):focus-visible {
-		border-right-color: var(--border-border-inverse);
+		border-right-color: var(--border-inverse);
 	}
 }
 
@@ -74,8 +74,8 @@ $border-width: 1px;
 	left: -$divider-width;
 	z-index: $divider-z-index;
 	width: $divider-width;
-	padding: var(--spacing-3xs) 0;
-	background-color: var(--background-background);
+	padding: var(--3xs) 0;
+	background-color: var(--background);
 
 	@include when-button-highlighted {
 		display: none;
@@ -86,14 +86,14 @@ $border-width: 1px;
 }
 
 .divider {
-	background-color: var(--color-border-secondary);
+	background-color: var(--border-secondary);
 	width: $divider-width;
 	height: 100%;
 
 	@include when-button-disabled {
-		background-color: var(--border-border-disabled);
+		background-color: var(--border-disabled);
 	}
 	@include when-select-disabled {
-		background-color: var(--border-border-disabled);
+		background-color: var(--border-disabled);
 	}
 }
