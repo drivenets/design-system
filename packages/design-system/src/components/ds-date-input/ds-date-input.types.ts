@@ -64,6 +64,29 @@ type DsDateInputBaseProps = Pick<
 	'disabled' | 'readOnly' | 'id' | 'open' | 'name' | 'style'
 > & {
 	/**
+	 * Unique identifier for the input field
+	 */
+	id?: string;
+	/**
+	 * HTML name attribute for the input field, used in form submissions
+	 */
+	name?: string;
+	/**
+	 * Whether the input is disabled and cannot be interacted with
+	 * @default false
+	 */
+	disabled?: boolean;
+	/**
+	 * Whether the input is read-only. The field is focusable but the value cannot
+	 * be changed.
+	 * @default false
+	 */
+	readOnly?: boolean;
+	/**
+	 * Whether the calendar popover is open (controlled). Pair with `onOpenChange`.
+	 */
+	open?: boolean;
+	/**
 	 * Callback when the open state changes
 	 * @param open - Whether the calendar is open
 	 */

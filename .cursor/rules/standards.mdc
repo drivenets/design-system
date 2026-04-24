@@ -48,7 +48,8 @@ interface DsToggleProps extends SwitchRootProps {
 
 | Requirement                                  | Details                                                                          |
 | -------------------------------------------- | -------------------------------------------------------------------------------- |
-| **No redundant JSDoc**                       | Skip `@interface` and `@type` tags; storybooks serve as living docs              |
+| **No redundant JSDoc**                       | Don't restate the prop name or type; skip `@interface` and `@type` tags          |
+| **Descriptive prop JSDoc**                   | Add `/** ... */` to every non-trivial prop in `*.types.ts` so the AI manifest (`components.json`) gets meaningful `description` fields. Explain behavior, constraints, union options, and callback arguments. Use `@default` where helpful. `DsTextInput` is the gold-standard reference. |
 | **Use full type references**                 | Import and use named types                                                       |
 | **Export from `.types.ts`**                  | Keep types in dedicated files                                                    |
 | **Export variant arrays**                    | Export `as const` arrays from types for reuse in storybook `argTypes.options`     |

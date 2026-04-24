@@ -18,6 +18,23 @@ export interface DsSegmentGroupRootProps extends Pick<
 	'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'children'
 > {
 	/**
+	 * Currently selected segment value (controlled). Pair with `onValueChange`.
+	 */
+	value?: SegmentGroupRootProps['value'];
+	/**
+	 * Initially selected segment value when uncontrolled.
+	 */
+	defaultValue?: SegmentGroupRootProps['defaultValue'];
+	/**
+	 * Whether the entire segment group is disabled.
+	 * @default false
+	 */
+	disabled?: SegmentGroupRootProps['disabled'];
+	/**
+	 * HTML name attribute used when the group participates in a form submission.
+	 */
+	name?: SegmentGroupRootProps['name'];
+	/**
 	 * Size variant of the segment group
 	 * @default 'default'
 	 */
