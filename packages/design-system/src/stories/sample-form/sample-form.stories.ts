@@ -60,6 +60,7 @@ export const Default: Story = {
 		const acceptTermsCheckbox = canvas.getByLabelText('I accept the terms and conditions');
 		await userEvent.click(acceptTermsCheckbox);
 		await userEvent.click(acceptTermsCheckbox);
+		await userEvent.tab();
 		await waitForMessage('You must accept the terms and conditions');
 
 		// 6. Activate start date and then blur it will show message
