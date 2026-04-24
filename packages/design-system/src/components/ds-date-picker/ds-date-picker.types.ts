@@ -56,6 +56,11 @@ export interface DsDatePickerProps extends Pick<
 	onOpenChange?: (open: boolean) => void;
 
 	/**
+	 * Callback when the input is blurred
+	 */
+	onBlur?: () => void;
+
+	/**
 	 * Minimum allowed datetime as Date object
 	 */
 	min?: Date;
