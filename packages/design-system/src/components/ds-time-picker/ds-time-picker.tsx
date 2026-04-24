@@ -85,6 +85,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 
 		if (!inputVal) {
 			setValue(null);
+			onBlur?.();
 			return;
 		}
 
