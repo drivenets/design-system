@@ -27,3 +27,4 @@ TSESTree
 unhover
 Containerizable
 Fira
+healthcheck

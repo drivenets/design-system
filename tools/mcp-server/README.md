@@ -8,16 +8,16 @@ Built on [@storybook/mcp](https://github.com/storybookjs/storybook/tree/next/cod
 
 ```bash
 npm install
-node server.js
+npm run dev
 ```
 
-The server starts on port 3000 by default. The MCP endpoint is at `/mcp`.
+The server starts on port 9200 by default. The MCP endpoint is at `/mcp`.
 
 ## Configuration
 
 | Variable        | Default                                     | Description                                   |
 | --------------- | ------------------------------------------- | --------------------------------------------- |
-| `PORT`          | `3000`                                      | Server port                                   |
+| `PORT`          | `9200`                                      | Server port                                   |
 | `MANIFESTS_URL` | `https://drivenets.github.io/design-system` | URL to fetch manifests from                   |
 | `MANIFESTS_DIR` | —                                           | Local directory for manifests (overrides URL) |
 
@@ -29,15 +29,24 @@ The server starts on port 3000 by default. The MCP endpoint is at `/mcp`.
 | `get-documentation`           | Get full props, stories, and code snippets for a component |
 | `get-documentation-for-story` | Get docs for a specific story variant                      |
 
+## Development
+
+```bash
+npm install          # install dependencies
+npm run dev          # start with hot-reload (tsx --watch)
+npm run build        # compile TypeScript to dist/
+npm start            # run compiled output
+```
+
 ## Testing
 
 Run with local test manifests:
 
 ```bash
-MANIFESTS_DIR=$(pwd)/test-manifests PORT=3456 node server.js
+MANIFESTS_DIR=$(pwd)/test-manifests PORT=3456 npm run dev
 ```
 
-Then verify via curl:
+Then verify:
 
 ```bash
 curl -s http://localhost:3456/health
@@ -46,20 +55,42 @@ curl -s http://localhost:3456/health
 ## Docker
 
 ```bash
-docker build -t ds-mcp-server .
-docker run -p 3000:3000 ds-mcp-server
+docker compose up -d
+curl -s http://localhost:9200/health
 ```
 
-## Integration with DAP
+## DN MCP Gateway Integration
 
-Add to your MCP client config (e.g., `~/.claude/mcp.json` or `.cursor/mcp.json`):
+This server is designed to be deployed behind the DN MCP Gateway. The gateway
+handles tool prefixing, user identity injection, circuit breaking, and access
+control. See `ARCHITECTURE.md` for the full architecture.
+
+Gateway config entry:
+
+```json
+{
+  "ds_storybook": {
+    "state": "enabled",
+    "url": "http://ds-mcp-server:9200/mcp",
+    "proxy": {
+      "prefix": "storybook",
+      "use_all_tools": true,
+      "header_enabler": "X-STORYBOOK-TOOLS"
+    }
+  }
+}
+```
+
+## Local Cursor Integration
+
+For local development (without the gateway), add to `.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "ds-storybook-mcp": {
       "type": "http",
-      "url": "http://localhost:3000/mcp"
+      "url": "http://localhost:9200/mcp"
     }
   }
 }

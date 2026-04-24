@@ -85,7 +85,7 @@ up-to-date component data.
 
 ```
 Official approach:    Storybook Dev Server → /mcp endpoint (same process)
-Our approach:         Standalone server.js → fetches manifests from GitHub Pages
+Our approach:         Standalone server (TypeScript) → fetches manifests from GitHub Pages
 ```
 
 ## High-Level Flow
@@ -124,7 +124,7 @@ Our approach:         Standalone server.js → fetches manifests from GitHub Pag
 ┌─────────────────────────────────────────────────────────────────────┐
 │  MCP Server (tools/mcp-server)                                      │
 │                                                                     │
-│  server.js                                                          │
+│  src/server.ts                                                      │
 │    fetchManifest(path)                                              │
 │      ├─ MANIFESTS_DIR set? → read from local filesystem             │
 │      └─ otherwise → fetch from MANIFESTS_URL/manifests/<file>       │
@@ -243,7 +243,7 @@ cat storybook-static/manifests/docs.json | jq '.[].title'
 @storybook/addon-mcp    (addon — preset that enables manifests + dev /mcp route)
   └─ @storybook/mcp     (protocol handler — parses manifests, implements MCP tools)
 
-server.js
+src/server.ts
   ├─ @storybook/mcp     (protocol handler — we use createStorybookMcpHandler)
   └─ srvx               (HTTP server)
 ```
@@ -251,3 +251,35 @@ server.js
 Note: `@storybook/addon-mcp` is a dependency of the **Storybook project**
 (`packages/design-system`), not of this MCP server. This server only depends on
 `@storybook/mcp` (the protocol package) and `srvx`.
+
+## DN MCP Gateway Integration
+
+When deployed behind the DN MCP Gateway, the server receives injected headers
+on every request:
+
+| Header              | Description                                                  |
+| ------------------- | ------------------------------------------------------------ |
+| `X-Email-User`      | Authenticated user's email                                   |
+| `X-Correlation-ID`  | Request trace ID for log correlation                         |
+| `X-STORYBOOK-TOOLS` | Enabler header — clients must send `enabled` to access tools |
+
+The server logs these headers on every `/mcp` request for traceability.
+
+Gateway config registers this server as:
+
+```json
+{
+  "ds_storybook": {
+    "state": "enabled",
+    "url": "http://ds-mcp-server:9200/mcp",
+    "proxy": {
+      "prefix": "storybook",
+      "use_all_tools": true,
+      "header_enabler": "X-STORYBOOK-TOOLS"
+    }
+  }
+}
+```
+
+Tools are exposed to clients as `storybook_list-all-documentation`,
+`storybook_get-documentation`, and `storybook_get-documentation-for-story`.

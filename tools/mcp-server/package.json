@@ -4,11 +4,17 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"start": "node server.js",
-		"dev": "node --watch server.js"
+		"build": "tsc",
+		"start": "node dist/server.js",
+		"dev": "tsx --watch src/server.ts"
 	},
 	"dependencies": {
-		"@storybook/mcp": "^0.7.0",
-		"srvx": "^0.8.16"
+		"@storybook/mcp": "0.7.0",
+		"srvx": "0.8.16"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.3",
+		"tsx": "^4.19.4",
+		"typescript": "^5.8.3"
 	}
 }
