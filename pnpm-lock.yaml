@@ -375,7 +375,7 @@ importers:
   packages/eslint-plugin:
     dependencies:
       '@eslint/core':
-        specifier: 'catalog:'
+        specifier: ^1.1.1
         version: 1.2.1
       '@typescript-eslint/parser':
         specifier: ^8.50.0
