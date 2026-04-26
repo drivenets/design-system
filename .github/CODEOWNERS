@@ -16,10 +16,10 @@
 /packages/design-system/* @StyleShit @aroba-dn
 
 # Excluded Design System files
-/packages/design-system/.gitignore @StyleShit @aroba-dn
-/packages/design-system/CHANGELOG.md @StyleShit @aroba-dn
-/packages/design-system/package.json @StyleShit @aroba-dn
-/packages/design-system/README.md @StyleShit @aroba-dn
+/packages/design-system/.gitignore
+/packages/design-system/CHANGELOG.md
+/packages/design-system/package.json
+/packages/design-system/README.md
 
 # ESLint plugin internal configurations
 /packages/eslint-plugin/* @StyleShit @aroba-dn
