@@ -65,18 +65,39 @@ export type DsSelectProps = {
 	renderOption?: (option: DsSelectOption) => ReactNode;
 } & (
 	| {
+			/**
+			 * When `false` or omitted, the select cannot be cleared. `onClear` is not
+			 * accepted in this branch.
+			 * @default false
+			 */
 			clearable?: undefined | false;
 			onClear?: never;
 	  }
 	| {
+			/**
+			 * When `true`, renders a clear affordance on the trigger. Pair with `onClear`.
+			 */
 			clearable: true;
+			/**
+			 * Called when the user clicks the clear affordance.
+			 */
 			onClear?: () => void;
 	  }
 ) &
 	(
 		| {
+				/**
+				 * Single-selection mode. When `false` or omitted, `value` is a single string.
+				 * @default false
+				 */
 				multiple?: undefined | false;
+				/**
+				 * Currently selected option value (controlled).
+				 */
 				value: SelectOptionValue;
+				/**
+				 * Called when the selection changes. Receives the newly selected option value.
+				 */
 				onValueChange?: (value: SelectOptionValue) => void;
 				/**
 				 * Custom render function for the selected value in the trigger.
@@ -86,8 +107,19 @@ export type DsSelectProps = {
 				renderValue?: (selectedOption: DsSelectOption) => ReactNode;
 		  }
 		| {
+				/**
+				 * Multi-selection mode. When `true`, `value` is an array of selected option
+				 * values and `onValueChange` receives the full updated array.
+				 */
 				multiple: true;
+				/**
+				 * Currently selected option values (controlled).
+				 */
 				value: SelectOptionValue[];
+				/**
+				 * Called when the selection changes. Receives the full updated array of
+				 * selected values.
+				 */
 				onValueChange?: (value: SelectOptionValue[]) => void;
 				/**
 				 * Custom render function for the selected value in the trigger.
