@@ -21,7 +21,7 @@
 /packages/design-system/package.json @StyleShit @aroba-dn
 /packages/design-system/README.md @StyleShit @aroba-dn
 
-# ESLint plugin configurations
+# ESLint plugin internal configurations
 /packages/eslint-plugin/* @StyleShit @aroba-dn
 
 # Excluded ESLint plugin files
