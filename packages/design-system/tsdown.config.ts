@@ -12,10 +12,11 @@ const SCSS_DEPRECATIONS = Object.values(sassEmbedded.deprecations).filter(
 );
 
 export default defineConfig({
+	tsconfig: './tsconfig.build.json',
 	entry: ['./src/index.ts'],
 	format: ['cjs', 'esm'],
 	platform: 'browser',
-	dts: true,
+	dts: { tsgo: true },
 	sourcemap: false,
 	clean: true,
 	outDir: 'dist',
