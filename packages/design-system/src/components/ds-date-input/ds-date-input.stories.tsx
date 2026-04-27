@@ -15,7 +15,7 @@ const MOCK_DATE = new Date('2026-01-15T12:00:00');
  * @see {@link ../ds-date-range-picker/ds-date-range-picker.stories} for date range selection examples.
  */
 const meta: Meta<typeof DsDateInput> = {
-	title: 'Design System/DateInput (Deprecated)',
+	title: 'Components/DateInput (Deprecated)',
 	component: DsDateInput,
 	parameters: {
 		layout: 'centered',

@@ -9,7 +9,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'no tags property',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -20,7 +20,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'tags without autodocs',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['deprecated'],
 				};
 
@@ -32,7 +32,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'empty tags array',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: [],
 				};
 
@@ -44,7 +44,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'inline export without autodocs',
 			code: `
 				export default {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['deprecated'],
 				};
 			`,
@@ -56,7 +56,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs as the only tag - removes the tags property',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['autodocs'],
 				};
 
@@ -64,7 +64,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					
 				};
 
@@ -85,7 +85,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs as first tag - removes autodocs and keeps the rest',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['autodocs', 'deprecated'],
 				};
 
@@ -93,7 +93,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: [ 'deprecated'],
 				};
 
@@ -114,7 +114,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs as last tag - removes autodocs and keeps the rest',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['deprecated', 'autodocs'],
 				};
 
@@ -122,7 +122,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['deprecated', ],
 				};
 
@@ -143,7 +143,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs in the middle - removes autodocs and keeps the rest',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['!dev', 'autodocs', 'deprecated'],
 				};
 
@@ -151,7 +151,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['!dev',  'deprecated'],
 				};
 
@@ -172,7 +172,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs with satisfies on tags value',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['autodocs'] satisfies string[],
 				};
 
@@ -180,7 +180,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					
 				};
 
@@ -201,7 +201,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs in the middle with satisfies on tags value',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['!dev', 'autodocs', 'deprecated'] satisfies string[],
 				};
 
@@ -209,7 +209,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['!dev',  'deprecated'] satisfies string[],
 				};
 
@@ -230,7 +230,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'autodocs with as assertion on tags value',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['autodocs'] as string[],
 				};
 
@@ -238,7 +238,7 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			`,
 			output: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					
 				};
 
@@ -259,13 +259,13 @@ ruleTester.run('no-autodocs-tag', noAutodocsTag, {
 			name: 'inline export with autodocs',
 			code: `
 				export default {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					tags: ['autodocs'],
 				};
 			`,
 			output: `
 				export default {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 					
 				};
 			`,

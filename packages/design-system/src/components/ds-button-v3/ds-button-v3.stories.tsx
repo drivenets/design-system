@@ -13,7 +13,7 @@ import {
 import storyStyles from './ds-button-v3.stories.module.scss';
 
 const meta: Meta<typeof DsButtonV3> = {
-	title: 'Design System/ButtonV3',
+	title: 'Components/ButtonV3',
 	component: DsButtonV3,
 	parameters: {
 		layout: 'centered',

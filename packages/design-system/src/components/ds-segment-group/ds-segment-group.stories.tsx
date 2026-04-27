@@ -6,7 +6,7 @@ import { DsIcon } from '../ds-icon';
 import styles from './ds-segment-group.stories.module.scss';
 
 const meta: Meta = {
-	title: 'Design System/SegmentGroup',
+	title: 'Components/SegmentGroup',
 	component: DsSegmentGroup.Root,
 	parameters: {
 		layout: 'centered',

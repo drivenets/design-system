@@ -66,7 +66,7 @@ const createMockComment = (overrides: Partial<CommentData> = {}): CommentData =>
 });
 
 const meta: Meta<typeof DsCommentBubble> = {
-	title: 'Design System/Comments/CommentBubble',
+	title: 'Components/Comments/CommentBubble',
 	component: DsCommentBubble,
 	parameters: {
 		layout: 'centered',

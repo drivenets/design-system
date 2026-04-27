@@ -4,7 +4,7 @@ import { useState } from 'react';
 import DsPasswordInput from './ds-password-input';
 
 const meta: Meta<typeof DsPasswordInput> = {
-	title: 'Design System/PasswordInput',
+	title: 'Components/PasswordInput',
 	component: DsPasswordInput,
 	parameters: {
 		layout: 'centered',

@@ -6,7 +6,7 @@ import type { DsTabsMenuActionItem } from './ds-tabs.types';
 import styles from './ds-tabs.stories.module.scss';
 
 const meta: Meta<typeof DsTabs.Root> = {
-	title: 'Design System/Tabs',
+	title: 'Components/Tabs',
 	component: DsTabs.Root,
 	parameters: {
 		layout: 'centered',

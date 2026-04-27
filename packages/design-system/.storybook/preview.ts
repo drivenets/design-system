@@ -4,6 +4,17 @@ import '../src/styles/styles.scss';
 const preview: Preview = {
 	tags: ['autodocs'],
 	parameters: {
+		options: {
+			storySort: {
+				order: [
+					'Overview',
+					'Guidelines',
+					['Colors', 'Typography', 'Layouts', 'Forms', 'Token Migration'],
+					'Components',
+					'*',
+				],
+			},
+		},
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,

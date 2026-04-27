@@ -10,7 +10,7 @@ import { DsIcon } from '../ds-icon';
 import styles from './ds-card.stories.module.scss';
 
 const meta: Meta<typeof DsCard.Root> = {
-	title: 'Design System/Card',
+	title: 'Components/Card',
 	component: DsCard.Root,
 	parameters: {
 		layout: 'centered',

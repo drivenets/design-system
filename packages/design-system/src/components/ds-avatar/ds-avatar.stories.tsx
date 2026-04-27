@@ -4,7 +4,7 @@ import { DsAvatar } from './ds-avatar';
 import styles from './ds-avatar.stories.module.scss';
 
 const meta: Meta<typeof DsAvatar> = {
-	title: 'Design System/Avatar',
+	title: 'Components/Avatar',
 	component: DsAvatar,
 	parameters: {
 		layout: 'centered',

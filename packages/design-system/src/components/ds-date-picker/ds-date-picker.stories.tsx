@@ -5,7 +5,7 @@ import type { DsDatePickerProps } from './ds-date-picker.types';
 import styles from './ds-date-picker.stories.module.scss';
 
 const meta: Meta<typeof DsDatePicker> = {
-	title: 'Design System/DatePicker',
+	title: 'Components/DatePicker',
 	component: DsDatePicker,
 	parameters: {
 		layout: 'centered',

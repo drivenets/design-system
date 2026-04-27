@@ -128,7 +128,7 @@ import Ds{Name} from './ds-{name}';
 import { ds{Name}Variants } from './ds-{name}.types';
 
 const meta: Meta<typeof Ds{Name}> = {
-  title: 'Design System/{Name}',
+  title: 'Components/{Name}',
   component: Ds{Name},
   parameters: {
     layout: 'centered',

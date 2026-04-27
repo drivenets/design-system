@@ -7,7 +7,7 @@ import { expect, userEvent } from 'storybook/test';
 import styles from './ds-stepper.stories.module.scss';
 
 export default {
-	title: 'Design System/Stepper',
+	title: 'Components/Stepper',
 	component: DsStepper,
 	parameters: {
 		layout: 'centered',

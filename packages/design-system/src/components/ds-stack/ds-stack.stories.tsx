@@ -5,7 +5,7 @@ import styles from './ds-stack.stories.module.scss';
 const Box = ({ children }: { children: React.ReactNode }) => <div className={styles.box}>{children}</div>;
 
 const meta: Meta<typeof DsStack> = {
-	title: 'Design System/Stack',
+	title: 'Components/Stack',
 	component: DsStack,
 	parameters: {
 		layout: 'centered',

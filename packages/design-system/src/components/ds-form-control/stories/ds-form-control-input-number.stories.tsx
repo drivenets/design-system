@@ -7,7 +7,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Design System/FormControl/Number',
+	title: 'Components/FormControl/Number',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',

@@ -8,7 +8,7 @@ import { FileUpload } from './components/file-upload';
 import DocsPage from './stories/adapters/simple-file-upload-adapter.docs.mdx';
 
 const meta: Meta<typeof DsFileUpload> = {
-	title: 'Design System/FileUpload',
+	title: 'Components/FileUpload',
 	component: DsFileUpload,
 	parameters: {
 		layout: 'centered',

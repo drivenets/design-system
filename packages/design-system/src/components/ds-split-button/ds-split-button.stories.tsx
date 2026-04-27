@@ -13,7 +13,7 @@ const refreshOptions = [
 ];
 
 const meta: Meta<typeof DsSplitButton> = {
-	title: 'Design System/SplitButton',
+	title: 'Components/SplitButton',
 	component: DsSplitButton,
 	parameters: {
 		layout: 'centered',
