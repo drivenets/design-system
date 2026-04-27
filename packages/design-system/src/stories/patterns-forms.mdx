@@ -5,7 +5,7 @@ import { Meta, Source } from '@storybook/addon-docs/blocks';
 # Forms
 
 Forms in the design system are built with [`react-hook-form`](https://react-hook-form.com/) and
-[`zod`](https://zod.dev/), and every input is wrapped in <code>DsFormControl</code> so labels,
+[`zod`](https://zod.dev/), and every input is wrapped in `DsFormControl` so labels,
 required indicators, and validation messages render consistently. This page describes the canonical
 pattern; for a runnable reference see the
 [`Examples/SampleForm`](?path=/story/examples-sampleform--default) story.
@@ -21,9 +21,9 @@ pattern; for a runnable reference see the
 
 ## Set up the form
 
-Call <code>useForm</code> with the Zod resolver, a complete <code>defaultValues</code> object, and <code>mode: 'onChange'</code>.
+Call `useForm` with the Zod resolver, a complete `defaultValues` object, and `mode: 'onChange'`.
 
-Wrap the tree in <code>FormProvider</code> so nested components can read
+Wrap the tree in `FormProvider` so nested components can read
 context when needed.
 
 <Source dark language="tsx" code={`
@@ -57,8 +57,8 @@ const SampleForm = () => {
 
 ## Define the schema
 
-Co-locate the schema in a <code>{`<form-name>-schema.ts`}</code> file next to the component. The
-schema doubles as the form's type (<code>z.infer</code>) and as the source of every error message,
+Co-locate the schema in a `<form-name>-schema.ts` file next to the component. The
+schema doubles as the form's type (`z.infer`) and as the source of every error message,
 which keeps copy aligned across validation and UI.
 
 <Source dark language="typescript" code={`
@@ -88,11 +88,11 @@ export type SampleFormValues = z.infer<typeof sampleFormSchema>;`} />
 
 ## Bind every control with `Controller`
 
-Prefer <code>Controller</code> over <code>register</code>. A single pattern keeps every
-field consistent: <code>Controller</code> is the outer element, <code>DsFormControl</code> lives
-inside the <code>render</code> callback reading status and message from <code>fieldState</code>,
-and the input itself is driven by <code>field</code>.
-Do **not** gate the error message on <code>fieldState.isTouched</code>.
+Prefer `Controller` over `register`. A single pattern keeps every
+field consistent: `Controller` is the outer element, `DsFormControl` lives
+inside the `render` callback reading status and message from `fieldState`,
+and the input itself is driven by `field`.
+Do **not** gate the error message on `fieldState.isTouched`.
 
 <Source dark language="tsx" code={`<Controller
     name="name"
@@ -128,23 +128,23 @@ Do **not** gate the error message on <code>fieldState.isTouched</code>.
 
 ## Let `field` drive value, dirty, and touched state
 
-With <code>mode: 'onChange'</code>, <code>field.onChange(value)</code> already updates the value,
-marks the field dirty, and triggers validation; <code>field.onBlur()</code> marks the field
-touched. Skip custom <code>setValue</code> wrappers — and whenever the control accepts standard
-input semantics (<code>value</code> + <code>onChange(event)</code> + <code>onBlur</code>), spread <code>{`{...field}`}</code> into it.
-A custom mapper is only needed when the control expects a different callback shape (<code>onValueChange</code>, <code>onCheckedChange</code>, a<code>Date</code> object, etc.).
+With `mode: 'onChange'`, `field.onChange(value)` already updates the value,
+marks the field dirty, and triggers validation; `field.onBlur()` marks the field
+touched. Skip custom `setValue` wrappers — and whenever the control accepts standard
+input semantics (`value` + `onChange(event)` + `onBlur`), spread `{...field}` into it.
+A custom mapper is only needed when the control expects a different callback shape (`onValueChange`, `onCheckedChange`, a`Date` object, etc.).
 
 ## Date fields
 
 Store dates as Date objects. Single-date pickers follow the same Controller-outer pattern
-as any other field. <code>DsDateRangePicker</code> is the exception: it drives two form fields
-simultaneously, so bind each field with <code>useController</code> and forward
+as any other field. `DsDateRangePicker` is the exception: it drives two form fields
+simultaneously, so bind each field with `useController` and forward
 
-<code>field.value</code> / <code>field.onChange</code> / <code>field.onBlur</code> through the range picker's
+`field.value` / `field.onChange` / `field.onBlur` through the range picker's
 props and slots. Error state flows through
-<code>slotProps.startDateFormControl</code> / <code>slotProps.endDateFormControl</code>;<code>onBlur</code> is
-forwarded via <code>slotProps.startDatePicker</code> / <code>slotProps.endDatePicker</code>(
-<code>DsFormControl</code> does not accept <code>onBlur</code>).
+`slotProps.startDateFormControl` / `slotProps.endDateFormControl`;`onBlur` is
+forwarded via `slotProps.startDatePicker` / `slotProps.endDatePicker`(
+`DsFormControl` does not accept `onBlur`).
 
 <Source dark language="tsx" code={`
 <Controller
@@ -192,11 +192,11 @@ const { field: eventEndField } = useController({ name: 'eventEndDate', control }
 
 ## Grouped controls (radio, checkbox)
 
-<code>DsRadioGroup</code> and <code>DsCheckbox</code> render their own labels, so they sit alongside — not
-inside — <code>DsFormControl</code>. Wrap them in <code>Controller</code> just like any other field so RHF
+`DsRadioGroup` and `DsCheckbox` render their own labels, so they sit alongside — not
+inside — `DsFormControl`. Wrap them in `Controller` just like any other field so RHF
 owns value, dirty, and touched state. When you need to render an inline error message (for example below a
-radio group), use <code>DsTypography</code> and the
-<code>--background-error</code> token — never inline styles or raw HTML elements.
+radio group), use `DsTypography` and the
+`--background-error` token — never inline styles or raw HTML elements.
 
 <Source dark language="tsx" code={`
 <Controller
@@ -236,8 +236,8 @@ radio group), use <code>DsTypography</code> and the
 Avoid disabling submit purely based on validation state. Users should be able to attempt submission and receive clear feedback about what needs fixing.
 
 - Disable submit when no meaningful action can occur (e.g. no changes in edit forms)
-- Always disable while submitting, and surface the in-flight state through <code>DsButtonV3</code>'s
-  <code>loading</code> prop so the button renders its spinner in place of the label
+- Always disable while submitting, and surface the in-flight state through `DsButtonV3`'s
+  `loading` prop so the button renders its spinner in place of the label
 - Do not gate submit on isValid
 
 For edit/update forms, disable until the user has made changes:
@@ -262,26 +262,26 @@ For create forms, keep submit enabled and rely on validation on submit:
 
 ## Checklist
 
-- Schema lives in a sibling <code>{`<form-name>-schema.ts`}</code> and drives both types and copy.
-- <code>useForm</code> uses <code>zodResolver</code>, <code>mode: 'onChange'</code>, and a complete
-  <code>defaultValues</code> object.
-- The form tree is wrapped in <code>FormProvider</code>.
-- Every field is bound with <code>Controller</code> — never <code>register</code>. Reach for
-  <code>useController</code> only when one input drives multiple fields (for example
-  <code>DsDateRangePicker</code>).
-- <code>Controller</code> is the outer element; <code>DsFormControl</code> lives inside
-  <code>render</code> and reads status/message from <code>fieldState</code>.
-- Inline text (for example grouped-control error messages) uses <code>DsTypography</code> and
-  design tokens like <code>{`var(--background-error)`}</code> — no raw HTML or inline style colors.
-- Inputs with standard <code>value</code>/<code>onChange</code>/<code>onBlur</code> semantics get
-  <code>{`{...field}`}</code> spread straight into them. Only map callbacks explicitly when the control
-  exposes a different shape (e.g. <code>onValueChange</code>, <code>onCheckedChange</code>, a<code>Date</code>
-  object) — no custom <code>setValue</code> helper.
-- When one input writes to multiple fields at once (for example <code>DsDateRangePicker</code>),
-  create a <code>useController</code> per field and call each <code>field.onChange</code> in the
-  shared handler — do not reach for <code>setValue</code>. Forward <code>field.onBlur</code>
+- Schema lives in a sibling `<form-name>-schema.ts` and drives both types and copy.
+- `useForm` uses `zodResolver`, `mode: 'onChange'`, and a complete
+  `defaultValues` object.
+- The form tree is wrapped in `FormProvider`.
+- Every field is bound with `Controller` — never `register`. Reach for
+  `useController` only when one input drives multiple fields (for example
+  `DsDateRangePicker`).
+- `Controller` is the outer element; `DsFormControl` lives inside
+  `render` and reads status/message from `fieldState`.
+- Inline text (for example grouped-control error messages) uses `DsTypography` and
+  design tokens like `{`var(--background-error)`}` — no raw HTML or inline style colors.
+- Inputs with standard `value`/`onChange`/`onBlur` semantics get
+  `{...field}` spread straight into them. Only map callbacks explicitly when the control
+  exposes a different shape (e.g. `onValueChange`, `onCheckedChange`, a`Date`
+  object) — no custom `setValue` helper.
+- When one input writes to multiple fields at once (for example `DsDateRangePicker`),
+  create a `useController` per field and call each `field.onChange` in the
+  shared handler — do not reach for `setValue`. Forward `field.onBlur`
   through the matching sub-component slot (e.g.
-  <code>{`slotProps.startDatePicker.onBlur`}</code>), not the form-control slot.
-- Submit is **not** gated on <code>isValid</code>.
-  - Edit forms: <code>{`disabled={!isDirty || isSubmitting}`}</code>
-  - Create forms: <code>{`disabled={isSubmitting}`}</code>
+  `{`slotProps.startDatePicker.onBlur`}`), not the form-control slot.
+- Submit is **not** gated on `isValid`.
+  - Edit forms: `disabled={!isDirty || isSubmitting}`
+  - Create forms: `disabled={isSubmitting}`

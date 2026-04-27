@@ -7,35 +7,35 @@ import { Meta, Source } from '@storybook/addon-docs/blocks';
 Compose layouts from design-system primitives instead of bespoke CSS. Pick the right primitive
 for the job:
 
-- <code>DsStack</code> — 1D arrangement (form fields, toolbars, action rows).
-- <code>DsGrid</code> / <code>DsGridItem</code> — 2D structure on a 12-column grid (page layouts, two-column
+- `DsStack` — 1D arrangement (form fields, toolbars, action rows).
+- `DsGrid` / `DsGridItem` — 2D structure on a 12-column grid (page layouts, two-column
   forms).
-- <code>DsCard</code> — grouped surface with header/body/footer slots (section grouping, side-panels).
-- <code>DsDivider</code> — horizontal or vertical separation between sections.
+- `DsCard` — grouped surface with header/body/footer slots (section grouping, side-panels).
+- `DsDivider` — horizontal or vertical separation between sections.
 
 All layout props accept responsive values so a single tree adapts across breakpoints.
 
 ## When to use which
 
-| Primitive               | Use for                                                                            | Key props                                                                       |
-| ----------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| <code>DsStack</code>    | Vertical stacks of form fields, horizontal rows of actions, anything flex-based    | `direction`, `gap`, `alignItems`, `justifyContent`, `flexWrap`, `flex`, `width` |
-| <code>DsGrid</code>     | Page layouts, side-by-side form columns, any 2D placement                          | `columns` (2–12), `rows` (1–8), `gutter`, `margin`                              |
-| <code>DsGridItem</code> | Cells inside <code>DsGrid</code>                                                   | `colSpan`, `colStart`, `rowSpan`, `rowStart`                                    |
-| <code>DsCard</code>     | Grouping a logical chunk (a section of a form, a summary panel, a selectable tile) | `size`, `selectable`, `selected`, `highlightSelected`, `disabled`               |
-| <code>DsDivider</code>  | Separating sections inside a stack or card                                         | `orientation`                                                                   |
+| Primitive    | Use for                                                                            | Key props                                                                       |
+| ------------ | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `DsStack`    | Vertical stacks of form fields, horizontal rows of actions, anything flex-based    | `direction`, `gap`, `alignItems`, `justifyContent`, `flexWrap`, `flex`, `width` |
+| `DsGrid`     | Page layouts, side-by-side form columns, any 2D placement                          | `columns` (2–12), `rows` (1–8), `gutter`, `margin`                              |
+| `DsGridItem` | Cells inside `DsGrid`                                                              | `colSpan`, `colStart`, `rowSpan`, `rowStart`                                    |
+| `DsCard`     | Grouping a logical chunk (a section of a form, a summary panel, a selectable tile) | `size`, `selectable`, `selected`, `highlightSelected`, `disabled`               |
+| `DsDivider`  | Separating sections inside a stack or card                                         | `orientation`                                                                   |
 
-Reach for <code>DsStack</code> first. Only step up to <code>DsGrid</code> when you need two
+Reach for `DsStack` first. Only step up to `DsGrid` when you need two
 dimensions or precise column alignment across rows.
 
 ---
 
 ## Composing forms
 
-Forms are stacks of <code>DsFormControl</code>s. Use <code>DsStack</code> for the column of fields
-and for the action row; use <code>DsGrid</code> when fields pair up side-by-side; use
+Forms are stacks of `DsFormControl`s. Use `DsStack` for the column of fields
+and for the action row; use `DsGrid` when fields pair up side-by-side; use
 
-<code>DsCard</code> to group related fields into visually distinct sections.
+`DsCard` to group related fields into visually distinct sections.
 
 ### Single-column form
 
@@ -71,10 +71,10 @@ The canonical pattern: a vertical stack of fields, a divider, then a right-align
 
 ### Two-column form
 
-Pair related fields (first/last name, start/end date) with <code>DsGrid</code> and
+Pair related fields (first/last name, start/end date) with `DsGrid` and
 
-<code>DsGridItem colSpan={6}</code>. Fields that should span the full row use
-<code>colSpan="full"</code>.
+`DsGridItem colSpan={6}`. Fields that should span the full row use
+`colSpan="full"`.
 
 <Source
 	dark
@@ -102,10 +102,10 @@ Pair related fields (first/last name, start/end date) with <code>DsGrid</code> a
 
 ### Grouped sections with DsCard
 
-Longer forms are easier to scan when related fields live inside a <code>DsCard</code>. Put the
-section title in <code>DsCard.Header</code>, the fields in <code>DsCard.Body</code> (nested
+Longer forms are easier to scan when related fields live inside a `DsCard`. Put the
+section title in `DsCard.Header`, the fields in `DsCard.Body` (nested
 
-<code>DsStack</code>), and actions in <code>DsCard.Footer</code>.
+`DsStack`), and actions in `DsCard.Footer`.
 
 <Source
 	dark
@@ -133,8 +133,8 @@ section title in <code>DsCard.Header</code>, the fields in <code>DsCard.Body</co
 </DsCard.Root>`}
 />
 
-For multi-section forms, stack several cards with <code>DsStack direction="column"
-gap="24px"</code>, or separate in-card sub-sections with a horizontal <code>DsDivider</code>.
+For multi-section forms, stack several cards with `DsStack direction="column"
+gap="24px"`, or separate in-card sub-sections with a horizontal `DsDivider`.
 
 ### Do / don't
 
@@ -151,7 +151,7 @@ gap="24px"</code>, or separate in-card sub-sections with a horizontal <code>DsDi
 
 The design system targets two breakpoints, defined in
 
-<code>src/utils/responsive.ts</code>:
+`src/utils/responsive.ts`:
 
 | Breakpoint | Matches                                        |
 | ---------- | ---------------------------------------------- |
@@ -162,7 +162,7 @@ Any layout prop declared as `ResponsiveValue<T>` accepts either a plain value or
 `Partial<Record<'lg' | 'md', T>>`. The wrapper resolves the right value for the current
 breakpoint; the underlying component never sees the responsive object.
 
-<code>DsStack</code> and <code>DsGrid</code> / <code>DsGridItem</code> are both wrapped with
+`DsStack` and `DsGrid` / `DsGridItem` are both wrapped with
 `withResponsiveProps`, so their layout props are already responsive-aware.
 
 ### Example: stack that becomes a row on wide screens
