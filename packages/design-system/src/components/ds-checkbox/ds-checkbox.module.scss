@@ -1,45 +1,91 @@
 @use '../../styles/root_new';
 @use '../../styles/typography';
 
-.root {
-	--ds-checkbox-size: 16px;
-	--ds-checkbox-radius: 2px;
-	--ds-checkbox-focus-ring-width: 2px;
-	--ds-checkbox-bg-row-hover: var(--background-secondary-hover);
-	--ds-checkbox-label-color: var(--font-main);
-	--ds-checkbox-control-bg: transparent;
-	--ds-checkbox-control-border: var(--secondary-400);
+$checkbox-size: 16px;
+$checkbox-border-radius: 2px;
+$checkbox-focus-ring-width: 2px;
+$transition-duration: 0.2s;
 
+.root {
 	position: relative;
 	display: inline-flex;
 	align-items: flex-start;
 	gap: var(--3xs);
 	padding: var(--4xs);
-	border-radius: var(--ds-checkbox-radius);
+	border-radius: $checkbox-border-radius;
 	cursor: pointer;
-	transition: background-color 0.2s ease-in-out;
+	transition: background-color $transition-duration ease-in-out;
 
 	&:hover,
 	&[data-hover],
 	&[data-focus-visible] {
-		background-color: var(--ds-checkbox-bg-row-hover);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&[data-focus-visible] {
-		outline: var(--ds-checkbox-focus-ring-width) solid var(--background-primary-hover);
+		outline: $checkbox-focus-ring-width solid var(--background-primary-hover);
 		outline-offset: 0;
+	}
+
+	.control {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		flex-shrink: 0;
+		width: $checkbox-size;
+		height: $checkbox-size;
+		border: 1px solid var(--secondary-400);
+		border-radius: $checkbox-border-radius;
+		background-color: transparent;
+		transition:
+			background-color $transition-duration ease-in-out,
+			border-color $transition-duration ease-in-out;
+	}
+
+	.indicator {
+		line-height: 0;
+		color: var(--icon-inverse);
+
+		svg {
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.labelColumn {
+		display: flex;
+		flex-direction: column;
+		gap: var(--4xs);
+		min-width: 0;
+	}
+
+	.label {
+		@include typography.body-sm-reg;
+		line-height: normal;
+		color: var(--font-main);
+	}
+
+	.labelInfo {
+		@include typography.body-xs-reg;
+		@include typography.ellipsis;
+		color: var(--font-secondary);
 	}
 
 	&[data-state='checked'],
 	&[data-state='indeterminate'] {
-		--ds-checkbox-control-bg: var(--background-primary);
-		--ds-checkbox-control-border: var(--background-primary);
+		.control {
+			background-color: var(--background-primary);
+			border-color: var(--background-primary);
+		}
 	}
 
 	&[data-disabled] {
-		--ds-checkbox-label-color: var(--font-disabled);
 		cursor: not-allowed;
 		background-color: transparent;
+
+		.label {
+			color: var(--font-disabled);
+		}
 
 		.labelInfo {
 			color: var(--font-disabled);
@@ -47,55 +93,16 @@
 
 		&[data-state='checked'],
 		&[data-state='indeterminate'] {
-			--ds-checkbox-label-color: var(--font-disabled);
-			--ds-checkbox-control-bg: var(--background-disable);
-			--ds-checkbox-control-border: var(--background-disable);
+			.label {
+				color: var(--font-disabled);
+			}
+
+			.control {
+				background-color: var(--background-disable);
+				border-color: var(--background-disable);
+			}
 		}
 	}
-}
-
-.control {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	flex-shrink: 0;
-	width: var(--ds-checkbox-size);
-	height: var(--ds-checkbox-size);
-	border: 1px solid var(--ds-checkbox-control-border);
-	border-radius: var(--ds-checkbox-radius);
-	background-color: var(--ds-checkbox-control-bg);
-	transition:
-		background-color 0.2s ease-in-out,
-		border-color 0.2s ease-in-out;
-}
-
-.indicator {
-	line-height: 0;
-	color: var(--icon-inverse);
-
-	svg {
-		width: 100%;
-		height: 100%;
-	}
-}
-
-.labelColumn {
-	display: flex;
-	flex-direction: column;
-	gap: var(--4xs);
-	min-width: 0;
-}
-
-.label {
-	@include typography.body-sm-reg;
-	line-height: normal;
-	color: var(--ds-checkbox-label-color);
-}
-
-.labelInfo {
-	@include typography.body-xs-reg;
-	@include typography.ellipsis;
-	color: var(--font-secondary);
 }
 
 // Overlay the native input over the control so `getByRole('checkbox')` clicks
@@ -106,8 +113,8 @@
 	position: absolute !important;
 	inset-block-start: var(--4xs) !important;
 	inset-inline-start: var(--4xs) !important;
-	width: var(--ds-checkbox-size) !important;
-	height: var(--ds-checkbox-size) !important;
+	width: $checkbox-size !important;
+	height: $checkbox-size !important;
 	margin: 0 !important;
 	padding: 0 !important;
 	clip: auto !important;
@@ -117,12 +124,21 @@
 }
 
 .warning {
-	--ds-checkbox-bg-row-hover: var(--background-warning);
+	&:hover,
+	&[data-hover],
+	&[data-focus-visible] {
+		background-color: var(--background-warning);
+	}
 
 	&[data-state='checked'],
 	&[data-state='indeterminate'] {
-		--ds-checkbox-label-color: var(--font-warning);
-		--ds-checkbox-control-bg: var(--background-warning-strong);
-		--ds-checkbox-control-border: var(--background-warning-strong);
+		.label {
+			color: var(--font-warning);
+		}
+
+		.control {
+			background-color: var(--background-warning-strong);
+			border-color: var(--background-warning-strong);
+		}
 	}
 }

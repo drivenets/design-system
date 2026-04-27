@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsCheckbox from './ds-checkbox';
 import { DsCheckboxGroup, useCheckboxSelectAll } from '../ds-checkbox-group';
+import { DsStack } from '../ds-stack';
 import { checkboxVariants } from './ds-checkbox.types';
 import styles from './ds-checkbox.stories.module.scss';
 
@@ -81,11 +82,11 @@ export const Indeterminate: Story = {
 
 export const Disabled: Story = {
 	render: () => (
-		<div className={styles.stack}>
+		<DsStack gap="var(--3xs)">
 			<DsCheckbox label={label} labelInfo={labelInfo} disabled />
 			<DsCheckbox label={label} labelInfo={labelInfo} disabled checked />
 			<DsCheckbox label={label} labelInfo={labelInfo} disabled checked="indeterminate" />
-		</div>
+		</DsStack>
 	),
 };
 
@@ -134,8 +135,8 @@ export const Group: Story = {
 		const [horizontal, setHorizontal] = useState<string[]>(['react']);
 
 		return (
-			<div className={styles.stack}>
-				<section className={styles.stack}>
+			<DsStack gap="var(--3xs)">
+				<DsStack gap="var(--3xs)">
 					<strong>Vertical</strong>
 					<output className={styles.output}>Selected: {vertical.join(', ')}</output>
 					<DsCheckboxGroup
@@ -148,9 +149,9 @@ export const Group: Story = {
 							<DsCheckbox key={item.value} label={item.label} value={item.value} />
 						))}
 					</DsCheckboxGroup>
-				</section>
+				</DsStack>
 
-				<section className={styles.stack}>
+				<DsStack gap="var(--3xs)">
 					<strong>Horizontal</strong>
 					<output className={styles.output}>Selected: {horizontal.join(', ')}</output>
 					<DsCheckboxGroup
@@ -163,8 +164,8 @@ export const Group: Story = {
 							<DsCheckbox key={item.value} label={item.label} value={item.value} />
 						))}
 					</DsCheckboxGroup>
-				</section>
-			</div>
+				</DsStack>
+			</DsStack>
 		);
 	},
 };
@@ -179,7 +180,7 @@ export const SelectAll: Story = {
 		});
 
 		return (
-			<div className={styles.stack}>
+			<DsStack gap="var(--3xs)">
 				<DsCheckbox label="Select all" checked={selectAllState} onCheckedChange={onSelectAllChange} />
 				<DsCheckboxGroup
 					className={styles.groupIndented}
@@ -191,7 +192,7 @@ export const SelectAll: Story = {
 						<DsCheckbox key={item.value} label={item.label} value={item.value} />
 					))}
 				</DsCheckboxGroup>
-			</div>
+			</DsStack>
 		);
 	},
 };

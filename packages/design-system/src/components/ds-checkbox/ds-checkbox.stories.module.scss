@@ -1,18 +1,5 @@
 @use '../../styles/typography';
 
-.stack {
-	display: flex;
-	flex-direction: column;
-	gap: var(--3xs);
-}
-
-.grid {
-	display: grid;
-	grid-template-columns: repeat(3, max-content);
-	gap: var(--3xs) var(--xs);
-	align-items: center;
-}
-
 .output {
 	@include typography.body-xs-reg;
 	color: var(--font-secondary);

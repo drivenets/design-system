@@ -1,6 +1,6 @@
 export type CheckedState = boolean | 'indeterminate';
 
-export interface UseCheckboxSelectAllOptions<T extends string> {
+export interface UseCheckboxSelectAllOptions<T> {
 	/** Currently selected values. */
 	value: T[];
 	/** Full set of values represented by the group. */
@@ -32,7 +32,7 @@ export interface UseCheckboxSelectAllResult {
  * - Toggling selects or clears only selectable values; preserves any already-selected
  *   non-selectable values so bulk actions don't silently mutate protected items.
  */
-export function useCheckboxSelectAll<T extends string>({
+export function useCheckboxSelectAll<T>({
 	value,
 	allValues,
 	onValueChange,

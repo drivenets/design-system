@@ -6,8 +6,12 @@ export type CheckboxVariant = (typeof checkboxVariants)[number];
 
 export interface DsCheckboxProps extends Omit<
 	ComponentPropsWithoutRef<typeof Checkbox.Root>,
-	'onCheckedChange'
+	'onCheckedChange' | 'value'
 > {
+	/**
+	 * Value when used in a group or for form submission. Coerced to string for the native control.
+	 */
+	value?: string | number;
 	/**
 	 * Visual variant of the checkbox
 	 */

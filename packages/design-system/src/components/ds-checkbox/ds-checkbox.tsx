@@ -13,6 +13,7 @@ const DsCheckbox = ({
 	labelInfo,
 	className,
 	onCheckedChange,
+	value,
 	...props
 }: DsCheckboxProps) => {
 	return (
@@ -20,6 +21,7 @@ const DsCheckbox = ({
 			className={classNames(styles.root, variant === 'warning' && styles.warning, className)}
 			onCheckedChange={(details) => onCheckedChange?.(details.checked)}
 			{...props}
+			value={value === undefined ? undefined : String(value)}
 		>
 			<Checkbox.Control className={styles.control}>
 				<Checkbox.Indicator className={styles.indicator}>
