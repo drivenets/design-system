@@ -16,7 +16,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 	valid: [
 		{
-			name: 'correct title with Design System category',
+			name: 'correct title with Components category',
 			code: `
 				const meta = {
 					component: DsButton,
@@ -250,7 +250,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 4,
 					column: 13,
 					endLine: 4,
-					endColumn: 33,
+					endColumn: 30,
 				},
 			],
 		},
@@ -282,7 +282,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 4,
 					column: 13,
 					endLine: 4,
-					endColumn: 37,
+					endColumn: 34,
 				},
 			],
 		},
@@ -322,7 +322,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 8,
 					column: 13,
 					endLine: 8,
-					endColumn: 37,
+					endColumn: 34,
 				},
 			],
 		},
@@ -383,7 +383,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 4,
 					column: 13,
 					endLine: 4,
-					endColumn: 49,
+					endColumn: 46,
 				},
 			],
 		},
