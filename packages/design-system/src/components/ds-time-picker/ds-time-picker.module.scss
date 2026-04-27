@@ -1,3 +1,5 @@
+@use '../../styles/shared/dropdown';
+
 .root {
 	&:where(:hover, :focus-within) {
 		.clearTrigger {
@@ -8,4 +10,9 @@
 
 .clearTrigger {
 	visibility: hidden;
+}
+
+.content {
+	@include dropdown.dropdown-content;
+	width: auto;
 }
