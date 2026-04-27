@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{m as t,p as n}from"./runtime-BR8NEClN.js";var r,i,a=e((()=>{t(),[r,i]=n({name:`FieldContext`,hookName:`useFieldContext`,providerName:`<FieldProvider />`,strict:!1})}));export{i as n,a as t};
