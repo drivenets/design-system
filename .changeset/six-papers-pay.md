@@ -2,4 +2,4 @@
 '@drivenets/eslint-plugin-design-system': patch
 ---
 
-Support TypeScript 6.x
+Make `@eslint/core` a peer dependency

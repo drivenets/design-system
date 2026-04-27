@@ -3,32 +3,13 @@
 	"enableGlobDot": true,
 	"useGitignore": true,
 	"import": ["@cspell/dict-cspell-bundle/cspell-ext.json", "@cspell/dict-mime-types/cspell-ext.json"],
-	"dictionaries": ["typescript", "npm", "filetypes", "softwareTerms", "mime-types"],
-	"words": [
-		"autoboot",
-		"autodocs",
-		"borderless",
-		"clickability",
-		"controlify",
-		"deslop",
-		"drivenets",
-		"evenodd",
-		"findlast",
-		"fromentries",
-		"gnmi",
-		"matchall",
-		"netural",
-		"netgen",
-		"ondark",
-		"noninteractive",
-		"onwarn",
-		"oxfmtrc",
-		"reorderable",
-		"retryable",
-		"subcomponents",
-		"tosorted",
-		"TSESTree",
-		"unhover"
+	"dictionaries": ["typescript", "npm", "filetypes", "softwareTerms", "mime-types", "local-words"],
+	"dictionaryDefinitions": [
+		{
+			"name": "local-words",
+			"path": "./cspell/local-words.txt",
+			"description": "Local words for the project"
+		}
 	],
 	"ignorePaths": [".cursor", ".git", ".github", ".vscode/extensions.json", ".cspell", "pnpm-lock.yaml"]
 }

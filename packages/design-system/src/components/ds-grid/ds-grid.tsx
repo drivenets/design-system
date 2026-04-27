@@ -1,11 +1,17 @@
-import type React from 'react';
+import type { CSSProperties } from 'react';
 import classNames from 'classnames';
-import type { DsGridItemProps, DsGridProps } from './ds-grid.types';
 
-/**
- * Design system Grid component
- */
-export const DsGrid: React.FC<DsGridProps> = ({ children, columns, rows, className }) => {
+import type { DsGridBaseProps, DsGridItemBaseProps } from './ds-grid.types';
+
+export const DsGridBase = ({
+	children,
+	columns,
+	rows,
+	gutter,
+	margin,
+	className,
+	style,
+}: DsGridBaseProps) => {
 	const gridClass = classNames(
 		'ds-grid',
 		{
@@ -15,20 +21,31 @@ export const DsGrid: React.FC<DsGridProps> = ({ children, columns, rows, classNa
 		className,
 	);
 
-	return <div className={gridClass}>{children}</div>;
+	const cssVars: Record<string, string> = {};
+
+	if (gutter !== undefined) {
+		cssVars['--ds-grid-gutter'] = typeof gutter === 'number' ? `${String(gutter)}px` : gutter;
+	}
+
+	if (margin !== undefined) {
+		cssVars['--ds-grid-margin'] = typeof margin === 'number' ? `${String(margin)}px` : margin;
+	}
+
+	return (
+		<div className={gridClass} style={{ ...style, ...cssVars } as CSSProperties}>
+			{children}
+		</div>
+	);
 };
 
-/**
- * Design system GridItem component
- */
-export const DsGridItem: React.FC<DsGridItemProps> = ({
+export const DsGridItemBase = ({
 	children,
 	colSpan,
 	colStart,
 	rowSpan,
 	rowStart,
 	className,
-}) => {
+}: DsGridItemBaseProps) => {
 	const gridItemClass = classNames(
 		{
 			[`ds-grid-col-span-${String(colSpan)}`]: colSpan,

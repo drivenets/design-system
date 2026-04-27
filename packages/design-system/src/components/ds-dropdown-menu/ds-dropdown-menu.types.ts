@@ -163,6 +163,30 @@ export interface DsDropdownMenuItemProps extends Pick<
 	'disabled' | 'asChild' | 'className' | 'style' | 'onSelect' | 'onClick' | 'value' | 'children'
 > {
 	/**
+	 * Underlying value reported to the root's `onSelect` when this item is chosen.
+	 */
+	value: Menu.ItemProps['value'];
+	/**
+	 * Whether this item is disabled and cannot be selected.
+	 * @default false
+	 */
+	disabled?: Menu.ItemProps['disabled'];
+	/**
+	 * Render the item as its direct child via Radix-style slot forwarding. Useful
+	 * for wrapping links (`<a>`) as dropdown items.
+	 * @default false
+	 */
+	asChild?: Menu.ItemProps['asChild'];
+	/**
+	 * Called when the item is selected via click or keyboard activation.
+	 */
+	onSelect?: Menu.ItemProps['onSelect'];
+	/**
+	 * Called when the item is clicked. Fires before `onSelect` and runs even when
+	 * keyboard-activated via Space/Enter.
+	 */
+	onClick?: Menu.ItemProps['onClick'];
+	/**
 	 * Whether the item is selected (applies selected styling)
 	 */
 	selected?: boolean;

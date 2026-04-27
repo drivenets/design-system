@@ -7,11 +7,37 @@ updates:
       interval: 'weekly'
     commit-message:
       prefix: 'chore'
+
+    # Should match pnpm's `minimumReleaseAge`
+    cooldown:
+      default-days: 1
+
     groups:
+      # Matching the pnpm catalog entries manually since Dependabot matches them under the production group.
+      # See: https://github.com/dependabot/dependabot-core/issues/14824
+      pnpm-catalog:
+        patterns:
+          - '@arethetypeswrong/cli'
+          - '@eslint/core'
+          - '@typescript/native-preview'
+          - '@vitest/coverage-v8'
+          - 'eslint'
+          - 'publint'
+          - 'tsdown'
+          - 'typescript'
+          - 'vitest'
+
+      # All typescript-eslint packages need to be updated together.
+      typescript-eslint:
+        patterns:
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'
+
       npm-development:
         dependency-type: 'development'
         patterns:
           - '**'
+
       npm-production:
         dependency-type: 'production'
         patterns:

@@ -25,6 +25,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		disablePortal = false,
 		locale,
 		slotProps,
+		onBlur,
 	} = props;
 	const [value, setValue] = useControlled(props.value, props.onChange, props.defaultValue ?? null);
 	const [isOpen, setIsOpen] = useControlled(props.open, props.onOpenChange, props.defaultOpen ?? false);
@@ -84,6 +85,7 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 
 		if (!inputVal) {
 			setValue(null);
+			onBlur?.();
 			return;
 		}
 
@@ -96,6 +98,8 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 		} else {
 			resetInput();
 		}
+
+		onBlur?.();
 	};
 
 	const handleOpenChange = (details: Popover.OpenChangeDetails) => {
@@ -166,7 +170,10 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 
 			<Wrapper>
 				<Popover.Positioner>
-					<Popover.Content {...slotProps?.popover}>
+					<Popover.Content
+						{...slotProps?.popover}
+						className={classNames(styles.content, slotProps?.popover?.className)}
+					>
 						<TimeScroller open={isOpen} {...timeScrollerAdapter(value, setValue, min, max)} />
 					</Popover.Content>
 				</Popover.Positioner>

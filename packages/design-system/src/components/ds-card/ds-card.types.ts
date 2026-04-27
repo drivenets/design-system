@@ -37,7 +37,9 @@ export interface DsCardRootProps extends HTMLAttributes<HTMLDivElement> {
 	highlightSelected?: boolean;
 
 	/**
-	 * Disabled state - prevents interaction
+	 * Whether the card is disabled. Prevents selection and click interactions and
+	 * visually dims the card.
+	 * @default false
 	 */
 	disabled?: boolean;
 }
