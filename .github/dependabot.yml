@@ -27,6 +27,12 @@ updates:
           - 'typescript'
           - 'vitest'
 
+      # All typescript-eslint packages need to be updated together.
+      typescript-eslint:
+        patterns:
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'
+
       npm-development:
         dependency-type: 'development'
         patterns:
