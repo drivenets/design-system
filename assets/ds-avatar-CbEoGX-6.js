@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{n as t}from"./ds-avatar-D8B3y_ig.js";var n=e((()=>{})),r=e((()=>{t(),n()}));export{r as t};
