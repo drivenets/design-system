@@ -5,10 +5,29 @@ import { Meta, Source } from '@storybook/addon-docs/blocks';
 # Forms
 
 Forms in the design system are built with [`react-hook-form`](https://react-hook-form.com/) and
-[`zod`](https://zod.dev/), and every input is wrapped in `DsFormControl` so labels,
-required indicators, and validation messages render consistently. This page describes the canonical
-pattern; for a runnable reference see the
-[`Examples/SampleForm`](?path=/story/examples-sampleform--default) story.
+[`zod`](https://zod.dev/), and every input is wrapped in
+[`DsFormControl`](?path=/docs/design-system-formcontrol-text--docs) so labels, required indicators, and
+validation messages render consistently. This page describes the canonical pattern; for a runnable
+reference see the [`Examples/SampleForm`](?path=/story/examples-sampleform--default) story.
+
+## Related components
+
+- [`DsFormControl`](?path=/docs/design-system-formcontrol-text--docs)
+  ([Textarea](?path=/docs/design-system-formcontrol-textarea--docs),
+  [Number](?path=/docs/design-system-formcontrol-number--docs),
+  [Password](?path=/docs/design-system-formcontrol-password--docs),
+  [Select](?path=/docs/design-system-formcontrol-select--docs),
+  [DatePicker](?path=/docs/design-system-formcontrol-datepicker--docs),
+  [TimePicker](?path=/docs/design-system-formcontrol-timepicker--docs))
+- [`DsTextInput`](?path=/docs/design-system-textinput--docs)
+- [`DsSelect`](?path=/docs/design-system-select--docs)
+- [`DsDatePicker`](?path=/docs/design-system-datepicker--docs) /
+  [`DsDateRangePicker`](?path=/docs/design-system-daterangepicker--docs) /
+  [`DsTimePicker`](?path=/docs/design-system-timepicker--docs)
+- [`DsRadioGroup`](?path=/docs/design-system-radiogroup--docs) /
+  [`DsCheckbox`](?path=/docs/design-system-checkbox--docs)
+- [`DsButtonV3`](?path=/docs/design-system-buttonv3--docs)
+- [`DsTypography`](?path=/docs/design-system-typography--docs)
 
 ## Stack
 
@@ -137,7 +156,8 @@ A custom mapper is only needed when the control expects a different callback sha
 ## Date fields
 
 Store dates as Date objects. Single-date pickers follow the same Controller-outer pattern
-as any other field. `DsDateRangePicker` is the exception: it drives two form fields
+as any other field. [`DsDateRangePicker`](?path=/docs/design-system-daterangepicker--docs) is the
+exception: it drives two form fields
 simultaneously, so bind each field with `useController` and forward
 
 `field.value` / `field.onChange` / `field.onBlur` through the range picker's
@@ -192,10 +212,11 @@ const { field: eventEndField } = useController({ name: 'eventEndDate', control }
 
 ## Grouped controls (radio, checkbox)
 
-`DsRadioGroup` and `DsCheckbox` render their own labels, so they sit alongside — not
-inside — `DsFormControl`. Wrap them in `Controller` just like any other field so RHF
+[`DsRadioGroup`](?path=/docs/design-system-radiogroup--docs) and
+[`DsCheckbox`](?path=/docs/design-system-checkbox--docs) render their own labels, so they sit alongside —
+not inside — `DsFormControl`. Wrap them in `Controller` just like any other field so RHF
 owns value, dirty, and touched state. When you need to render an inline error message (for example below a
-radio group), use `DsTypography` and the
+radio group), use [`DsTypography`](?path=/docs/design-system-typography--docs) and the
 `--background-error` token — never inline styles or raw HTML elements.
 
 <Source dark language="tsx" code={`
@@ -236,8 +257,9 @@ radio group), use `DsTypography` and the
 Avoid disabling submit purely based on validation state. Users should be able to attempt submission and receive clear feedback about what needs fixing.
 
 - Disable submit when no meaningful action can occur (e.g. no changes in edit forms)
-- Always disable while submitting, and surface the in-flight state through `DsButtonV3`'s
-  `loading` prop so the button renders its spinner in place of the label
+- Always disable while submitting, and surface the in-flight state through
+  [`DsButtonV3`](?path=/docs/design-system-buttonv3--docs)'s `loading` prop so the button renders its
+  spinner in place of the label
 - Do not gate submit on isValid
 
 For edit/update forms, disable until the user has made changes:

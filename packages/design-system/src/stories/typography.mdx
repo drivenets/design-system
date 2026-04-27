@@ -59,9 +59,14 @@ export const VariantShowcase = () => {
 
 # Typography
 
-Use `DsTypography` with a `variant` prop to render text with the correct size, weight,
-line height, and semantic HTML element. Variants are the preferred API; typography tokens are documented
-below for use in SCSS when a variant is not appropriate.
+Use [`DsTypography`](?path=/docs/design-system-typography--docs) with a `variant` prop to render text with
+the correct size, weight, line height, and semantic HTML element.
+
+## Which API should I use?
+
+Prefer the `variant` prop on `DsTypography` in component code. Reach for the raw typography tokens
+(`--body-font-size-md`, `--heading-line-height-2xl`, `--font-weight-semi-bold`) only in SCSS where a
+variant cannot express what you need (for example, a custom inline chart label).
 
 ## Variants
 

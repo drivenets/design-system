@@ -60,10 +60,23 @@ export const SwatchGroup = ({ label, tones }) => (
 
 Reference CSS variables instead of hard-coding hex values.
 
+## Which layer should I use?
+
+Prefer the highest layer that fits: **semantic > alias > primitive**.
+
+- **Component code (SCSS / inline styles):** always use semantic tokens (`--background-action`,
+  `--font-main`, `--border-field`).
+- **Building a new semantic token:** compose from alias tokens (`--primary-700-default`,
+  `--info-600-default`).
+- **Building a new alias token:** reach for primitives (`--color-dap-blue-500`) only here.
+
+If you are editing a component and find yourself typing `--color-dap-*` or a bare alias, stop and look
+for a semantic token first.
+
 ## 1. Primitive (DAP-root-colors)
 
-The raw palette. Prefer the alias or semantic layers below — only reach for primitive tokens when no
-suitable abstraction exists.
+The raw palette. See [Which layer should I use?](#which-layer-should-i-use) — only reach for primitive
+tokens when building a new alias.
 
 <div className={styles.layer}>
 
@@ -241,8 +254,8 @@ suitable abstraction exists.
 
 ## 2. Alias
 
-Intent-based aliases that point at the primitive palette. Prefer these over primitives when the semantic
-layer doesn't cover the use case.
+Intent-based aliases that point at the primitive palette. See [Which layer should I use?](#which-layer-should-i-use) —
+reach for these only when building a new semantic token (or extending one).
 
 <div className={styles.layer}>
 
@@ -377,7 +390,7 @@ layer doesn't cover the use case.
 ## 3. Semantic (DAP uses)
 
 Role-based tokens bound to a UI purpose (background, border, font, icon, outline, schema, shadow, status).
-Always prefer these when composing components.
+**This is the layer to use in component code.** See [Which layer should I use?](#which-layer-should-i-use).
 
 <div className={styles.layer}>
 

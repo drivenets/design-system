@@ -7,11 +7,14 @@ import { Meta, Source } from '@storybook/addon-docs/blocks';
 Compose layouts from design-system primitives instead of bespoke CSS. Pick the right primitive
 for the job:
 
-- `DsStack` — 1D arrangement (form fields, toolbars, action rows).
-- `DsGrid` / `DsGridItem` — 2D structure on a 12-column grid (page layouts, two-column
-  forms).
-- `DsCard` — grouped surface with header/body/footer slots (section grouping, side-panels).
-- `DsDivider` — horizontal or vertical separation between sections.
+- [`DsStack`](?path=/docs/design-system-stack--docs) — 1D arrangement (form fields, toolbars, action
+  rows).
+- [`DsGrid`](?path=/docs/design-system-grid--docs) / `DsGridItem` — 2D structure on a 12-column grid
+  (page layouts, two-column forms).
+- [`DsCard`](?path=/docs/design-system-card--docs) — grouped surface with header/body/footer slots
+  (section grouping, side-panels).
+- [`DsDivider`](?path=/docs/design-system-divider--docs) — horizontal or vertical separation between
+  sections.
 
 All layout props accept responsive values so a single tree adapts across breakpoints.
 
@@ -32,7 +35,7 @@ dimensions or precise column alignment across rows.
 
 ## Composing forms
 
-Forms are stacks of `DsFormControl`s. Use `DsStack` for the column of fields
+Forms are stacks of [`DsFormControl`](?path=/docs/design-system-formcontrol-text--docs)s. Use `DsStack` for the column of fields
 and for the action row; use `DsGrid` when fields pair up side-by-side; use
 
 `DsCard` to group related fields into visually distinct sections.
