@@ -30,19 +30,17 @@
 	--color-dap-blue-800: #083bc5;
 	--color-dap-blue-900: #0d379b;
 	--color-dap-blue-950: #0e235d;
+	--color-dap-brand-050: #e5e8ed;
 	--color-dap-brand-100: #bfc6d1;
 	--color-dap-brand-200: #99a3b6;
 	--color-dap-brand-300: #667691;
 	--color-dap-brand-400: #405375;
-	--color-dap-brand-50: #e5e8ed;
 	--color-dap-brand-500: #001a47;
 	--color-dap-brand-600: #001436;
 	--color-dap-brand-700: #000d24;
 	--color-dap-dark-blue-050: #b3ccff;
 	--color-dap-dark-blue-100: #85b5ff;
 	--color-dap-dark-blue-150: #5e9dff;
-	--color-dap-dark-blue-150-2: #5e9dff;
-	--color-dap-dark-blue-150-3: #5e9dff;
 	--color-dap-dark-blue-200: #3d75ff;
 	--color-dap-dark-blue-300: #1a5eff;
 	--color-dap-dark-blue-400: #2c5ed9;
@@ -135,7 +133,7 @@
 :root {
 	/* Mode 1 */
 	/* color */
-	--brand-050: var(--color-dap-brand-50);
+	--brand-050: var(--color-dap-brand-050);
 	--brand-100: var(--color-dap-brand-100);
 	--brand-200: var(--color-dap-brand-200);
 	--brand-300: var(--color-dap-brand-300);
@@ -389,7 +387,7 @@
 	--shadow-strong: #00000066;
 	--shadow-weak: #0000001a;
 	--status-bg-inactive: var(--color-dap-gray-200);
-	--status-bg-netural: var(--color-dap-gray-100);
+	--status-bg-neutral: var(--color-dap-gray-100);
 	--status-bg-pending: var(--color-dap-orange-100);
 	--status-bg-progress: var(--color-dap-blue-050);
 	--status-bg-success: var(--color-dap-green-075);
