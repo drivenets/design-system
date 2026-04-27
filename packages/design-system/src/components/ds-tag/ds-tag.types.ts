@@ -23,6 +23,9 @@ export interface DsTagProps {
 	 * Locale object (you can pass custom strings for localization)
 	 */
 	locale?: {
+		/**
+		 * aria-label for the delete button (shown when `onDelete` is provided).
+		 */
 		deleteAriaLabel?: string;
 	};
 	/**
@@ -58,6 +61,9 @@ export interface DsTagProps {
 	 */
 	disabled?: boolean;
 
+	/**
+	 * Optional render slots for customizing parts of the tag.
+	 */
 	slots?: {
 		/**
 		 * Icon to display at the start of the input

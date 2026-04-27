@@ -5,7 +5,7 @@
 	"packageManager": "pnpm@10.30.3",
 	"type": "module",
 	"scripts": {
-		"start": "pnpm run --filter @drivenets/design-system storybook",
+		"start": "pnpm run --filter @drivenets/design-system start",
 		"format": "oxfmt",
 		"format:check": "oxfmt --check",
 		"lint": "turbo run lint:root lint",
@@ -58,7 +58,8 @@
 		"syncpack": "^14.0.0",
 		"turbo": "^2.8.14",
 		"typescript": "catalog:",
-		"typescript-eslint": "^8.58.2"
+		"typescript-eslint": "^8.58.2",
+		"yaml": "^2.8.3"
 	},
 	"pnpm": {
 		"overrides": {
