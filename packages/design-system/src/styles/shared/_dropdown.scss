@@ -10,8 +10,8 @@ $dropdown-z-index: 9999;
 	@include bounding-box.bounding-box-vars;
 
 	border-radius: 4px;
-	border: 1px solid var(--color-border-secondary);
-	background: var(--color-background);
+	border: 1px solid var(--border-secondary);
+	background: var(--background);
 	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(0, 0, 0, 0.15);
 	z-index: $dropdown-z-index;
 	width: var(--reference-width);
@@ -62,26 +62,26 @@ $dropdown-z-index: 9999;
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	color: var(--color-font-main);
-	font-size: var(--font-size-sm);
-	padding: var(--spacing-xs);
+	color: var(--font-main);
+	font-size: var(--body-font-size-sm);
+	padding: var(--xs);
 	border-radius: 2px;
 	border-left: 2px solid transparent;
 	cursor: pointer;
 	outline: none;
 
 	&[data-highlighted] {
-		background: var(--color-background-selected-weak);
+		background: var(--background-secondary-hover);
 
 		.indicator,
 		.itemIcon {
-			color: var(--color-background-selected);
+			color: var(--background-primary);
 		}
 	}
 
 	&[data-disabled] {
-		color: var(--color-background-deselected);
-		background: var(--color-background-secondary-selected-weak);
+		color: var(--background-deselected);
+		background: var(--background-secondary-selected-weak);
 		cursor: not-allowed;
 
 		.indicator,

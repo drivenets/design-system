@@ -6,10 +6,10 @@
 	@include input.input-container-states;
 	max-height: input.$input-text-height-default;
 	justify-content: space-between;
-	padding: var(--spacing-xs) var(--spacing-sm);
-	gap: var(--spacing-3xs);
+	padding: var(--xs) var(--sm);
+	gap: var(--3xs);
 
-	border-color: var(--form-control-border-color, var(--color-border));
+	border-color: var(--form-control-border-color, var(--border));
 
 	&:hover:not(.disabled) {
 		border-color: var(--form-control-border-color, var(--color-border-hover));
@@ -20,8 +20,8 @@
 	}
 
 	&.disabled {
-		color: var(--color-background-deselected);
-		background: var(--color-background-secondary);
+		color: var(--background-deselected);
+		background: var(--background-secondary);
 		border-color: var(--color-border-disabled);
 		cursor: not-allowed;
 
@@ -30,13 +30,13 @@
 		}
 
 		.dateInputButton {
-			color: var(--color-background-disable);
+			color: var(--background-disable);
 			cursor: not-allowed;
 		}
 	}
 
 	&.readOnly {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 		cursor: default;
 	}
 }
@@ -57,11 +57,11 @@
 	transition: color 0.2s ease;
 
 	&:hover:not(:disabled) {
-		color: var(--color-background-action-hover);
+		color: var(--background-action-hover);
 	}
 
 	&:disabled {
-		color: var(--color-background-disable);
+		color: var(--background-disable);
 		cursor: not-allowed;
 	}
 }
@@ -72,7 +72,7 @@
 
 .content {
 	@include dropdown.dropdown-content;
-	padding: var(--spacing-standard);
+	padding: var(--standard);
 	min-width: fit-content;
 }
 
@@ -80,7 +80,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: var(--spacing-xs);
+	margin-bottom: var(--xs);
 }
 
 .viewTrigger {
@@ -91,9 +91,9 @@
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: var(--spacing-2xs) var(--spacing-xs);
-	border-radius: var(--spacing-2xs);
-	color: var(--color-font-main);
+	padding: var(--2xs) var(--xs);
+	border-radius: var(--2xs);
+	color: var(--font-main);
 	transition: background-color 0.2s;
 
 	&:hover {
@@ -109,14 +109,14 @@
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: var(--spacing-2xs);
-	border-radius: var(--spacing-2xs);
-	color: var(--color-font-secondary);
+	padding: var(--2xs);
+	border-radius: var(--2xs);
+	color: var(--font-secondary);
 	transition: all 0.2s;
 
 	&:hover {
 		background: var(--color-background-hover);
-		color: var(--color-font-main);
+		color: var(--font-main);
 	}
 
 	&:disabled {
@@ -128,7 +128,7 @@
 .calendarView {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .table {
@@ -137,28 +137,28 @@
 
 	.tableBody .tableRow .tableCellTrigger:focus-visible {
 		.tableCellTriggerValue {
-			outline: 2px solid var(--color-background-action-hover);
-			border-radius: var(--spacing-2xs);
+			outline: 2px solid var(--background-action-hover);
+			border-radius: var(--2xs);
 			border-width: 0;
 		}
 	}
 }
 
 .tableHead {
-	border-bottom: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--border);
 }
 
 .tableHeader {
 	text-align: center;
-	padding: var(--spacing-2xs);
-	color: var(--color-font-secondary);
+	padding: var(--2xs);
+	color: var(--font-secondary);
 	font-weight: var(--font-weight-medium);
 }
 
 .tableRow {
 	&:first-child {
 		.tableCellTrigger {
-			margin-top: var(--spacing-xs);
+			margin-top: var(--xs);
 		}
 	}
 }
@@ -176,17 +176,17 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: var(--spacing-xl);
-		height: var(--spacing-xl);
-		margin: var(--spacing-3xs);
-		color: var(--color-font-main);
-		border-radius: var(--spacing-xs);
+		width: var(--xl);
+		height: var(--xl);
+		margin: var(--3xs);
+		color: var(--font-main);
+		border-radius: var(--xs);
 	}
 
 	&:hover:not([data-disabled], [data-selected], [data-in-range], [data-in-hover-range])
 		.tableCellTriggerValue {
-		outline: 1px solid var(--color-border);
-		background: var(--color-background-action-hover-weak);
+		outline: 1px solid var(--border);
+		background: var(--background-action-hover-weak);
 	}
 
 	&[data-outside-range] .tableCellTriggerValue {
@@ -194,20 +194,20 @@
 	}
 
 	&[data-selected] .tableCellTriggerValue {
-		background: var(--color-background-selected);
-		color: var(--color-font-on-action);
+		background: var(--background-primary);
+		color: var(--font-on-action);
 	}
 
 	&[data-in-range]:not([data-selected]) {
 		position: relative;
 
 		.tableCellTriggerValue {
-			background: var(--color-background-action-secondary-hover);
+			background: var(--background-action-secondary-hover);
 		}
 	}
 
 	&[data-today]:not([data-selected], [data-in-range]):hover .tableCellTriggerValue {
-		border-radius: var(--spacing-xs);
+		border-radius: var(--xs);
 	}
 
 	&[data-today]:not([data-selected]) .tableCellTriggerValue {
@@ -218,7 +218,7 @@
 			position: absolute;
 			width: 75%;
 			bottom: 4px;
-			border-bottom: 1px solid var(--color-background-brand);
+			border-bottom: 1px solid var(--background-brand);
 		}
 	}
 
@@ -230,7 +230,7 @@
 			position: absolute;
 			width: 75%;
 			bottom: 4px;
-			border-bottom: 1px solid var(--color-background);
+			border-bottom: 1px solid var(--background);
 		}
 	}
 

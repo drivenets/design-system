@@ -14,7 +14,7 @@ $transition-duration: 0.2s;
 }
 
 .track {
-	stroke: var(--color-background-tertiary);
+	stroke: var(--background-tertiary);
 	transition: stroke $transition-duration;
 }
 
@@ -23,15 +23,15 @@ $transition-duration: 0.2s;
 }
 
 .default {
-	stroke: var(--color-background-selected);
+	stroke: var(--background-primary);
 }
 
 .success {
-	stroke: var(--color-background-success-strong);
+	stroke: var(--background-success-strong);
 }
 
 .error {
-	stroke: var(--color-background-danger-strong);
+	stroke: var(--background-error);
 }
 
 .center {
@@ -39,11 +39,11 @@ $transition-duration: 0.2s;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .iconSuccess {
-	color: var(--color-icon-success);
+	color: var(--icon-success);
 }
 
 .iconError {

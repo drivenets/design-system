@@ -7,20 +7,20 @@
 		.tableCell,
 		.selectableCell,
 		.expandableCell {
-			border-bottom: vars.$border-width solid var(--color-border-secondary);
+			border-bottom: vars.$border-width solid var(--border-secondary);
 		}
 	}
 
 	&:hover {
-		background-color: var(--color-background-secondary);
+		background-color: var(--background-secondary);
 	}
 
 	&[data-state='selected'] {
-		background-color: var(--color-background-selected-weak);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&[data-state='active'] {
-		background-color: var(--color-background-selected-weak);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&.clickableRow {
@@ -49,10 +49,10 @@
 }
 
 .expandedRow {
-	background-color: var(--color-background-secondary);
+	background-color: var(--background-secondary);
 
 	& > td {
-		padding: var(--spacing-standard);
+		padding: var(--standard);
 	}
 
 	@include table-mixins.expanded-row-border('bottom');
@@ -63,10 +63,10 @@
 	text-align: center;
 
 	&.isDragging {
-		background: var(--color-background-action);
+		background: var(--background-action);
 
 		.rowDragHandle {
-			color: var(--color-secondary-white);
+			color: var(--secondary-050);
 		}
 	}
 }
@@ -76,11 +76,11 @@
 .expandableCell {
 	@include typography.body-sm-reg;
 	vertical-align: middle;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .tableCell {
-	padding: 0 var(--spacing-standard);
+	padding: 0 var(--standard);
 }
 
 .expandToggleButton {

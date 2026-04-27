@@ -22,11 +22,11 @@ $transition-duration: 0.2s;
 .followingComments {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-sm);
+	gap: var(--sm);
 	flex: 1;
 	overflow-y: auto;
 	min-height: 0;
-	padding: var(--spacing-sm) 0;
+	padding: var(--sm) 0;
 
 	&::-webkit-scrollbar {
 		width: $scrollbar-width;
@@ -37,7 +37,7 @@ $transition-duration: 0.2s;
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--color-background-tertiary);
+		background: var(--background-tertiary);
 		border-radius: $scrollbar-border-radius-pill;
 		width: $scrollbar-thumb-width;
 	}

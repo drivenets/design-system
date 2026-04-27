@@ -3,7 +3,7 @@
 .modalOverlay {
 	position: fixed;
 	inset: 0;
-	background: color-mix(in srgb, var(--color-background-brand) 40%, transparent);
+	background: color-mix(in srgb, var(--background-brand) 40%, transparent);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -13,14 +13,14 @@
 .modalContent {
 	background: white;
 	border-radius: 8px;
-	padding: var(--spacing-2xl) var(--spacing-lg);
+	padding: var(--2xl) var(--lg);
 	box-shadow:
 		0 4px 6px -1px rgba(0, 0, 0, 0.1),
 		0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--spacing-lg);
+	gap: var(--lg);
 	min-width: 300px;
 }
 
@@ -30,10 +30,10 @@
 
 .modalTextPrimary {
 	@include typography.body-sm-reg;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .modalTextSecondary {
 	@include typography.body-xs-reg;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }

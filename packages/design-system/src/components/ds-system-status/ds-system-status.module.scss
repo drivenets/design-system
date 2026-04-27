@@ -16,7 +16,7 @@
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	border: 1px solid var(--white);
+	border: 1px solid var(--color-dap-gray-050);
 }
 
 .label {
@@ -79,9 +79,9 @@
 
 .disabled {
 	background: var(--utility-disabled);
-	color: var(--neutral-2);
+	color: var(--color-dap-gray-600);
 
 	.dot {
-		background: var(--neutral-2);
+		background: var(--color-dap-gray-600);
 	}
 }

@@ -11,11 +11,11 @@ $time-item-width: 48px;
 	align-items: center;
 	border-radius: 8px;
 	background: transparent;
-	color: var(--color-font-main);
+	color: var(--font-main);
 
 	&.selected {
-		background: var(--color-background-selected);
-		color: var(--color-font-on-action);
+		background: var(--background-primary);
+		color: var(--font-on-action);
 	}
 
 	&.disabled {
@@ -25,13 +25,13 @@ $time-item-width: 48px;
 
 	&:not(.selected, .disabled) {
 		&:hover {
-			border: 1px solid var(--color-border);
-			background: var(--color-background-action-hover-weak);
+			border: 1px solid var(--border);
+			background: var(--background-action-hover-weak);
 		}
 
 		&:focus-visible {
-			border: 2px solid var(--color-border-action-secondary);
-			background: var(--color-background-action-hover-weak);
+			border: 2px solid var(--border-action-secondary);
+			background: var(--background-action-hover-weak);
 		}
 	}
 }

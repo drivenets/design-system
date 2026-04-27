@@ -29,35 +29,35 @@
 .valueWithIcon {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 }
 
 .iconLabel {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--spacing-4xs);
+	gap: var(--4xs);
 }
 
 .pairsColumn {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	width: 336px;
 }
 
 .responsiveDemo {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-sm);
+	gap: var(--sm);
 }
 
 .responsiveSlider {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	font-size: 13px;
 	font-family: monospace;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .responsiveSliderInput {
@@ -67,27 +67,27 @@
 .responsivePairs {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xs);
-	border: 1px dashed var(--color-border);
+	gap: var(--xs);
+	border: 1px dashed var(--border);
 	border-radius: 4px;
-	padding: var(--spacing-sm);
+	padding: var(--sm);
 }
 
 .statusBadge {
 	display: inline-flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
-	padding: var(--spacing-4xs) var(--spacing-xs);
+	gap: var(--3xs);
+	padding: var(--4xs) var(--xs);
 	border-radius: 9999px;
 	background: var(--color-status-bg-success);
 	font-size: 12px;
 	font-weight: 500;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .tagGroup {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: flex-end;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }

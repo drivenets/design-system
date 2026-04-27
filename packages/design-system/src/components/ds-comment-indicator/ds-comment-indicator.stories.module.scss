@@ -1,15 +1,15 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-standard);
+	gap: var(--standard);
 }
 
 .header {
 	display: grid;
 	grid-template-columns: 80px repeat(3, 100px);
-	gap: var(--spacing-standard);
-	padding-bottom: var(--spacing-xs);
-	border-bottom: 1px solid var(--color-border);
+	gap: var(--standard);
+	padding-bottom: var(--xs);
+	border-bottom: 1px solid var(--border);
 	align-items: center;
 }
 
@@ -17,16 +17,16 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	font-weight: var(--font-weight-regular);
-	color: var(--color-font-main);
+	color: var(--font-main);
 	text-align: center;
 }
 
 .row {
 	display: grid;
 	grid-template-columns: 80px repeat(3, 100px);
-	gap: var(--spacing-standard);
+	gap: var(--standard);
 	align-items: center;
 }
 
@@ -34,10 +34,10 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	padding-right: var(--spacing-xs);
-	font-size: var(--font-size-sm);
+	padding-right: var(--xs);
+	font-size: var(--body-font-size-sm);
 	font-weight: var(--font-weight-regular);
-	color: var(--color-font-main);
+	color: var(--font-main);
 	text-align: right;
 }
 
@@ -49,18 +49,18 @@
 .interactiveContainer {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-standard);
-	padding: var(--spacing-standard);
+	gap: var(--standard);
+	padding: var(--standard);
 }
 
 .instructions {
 	margin: 0;
-	padding: var(--spacing-standard);
-	background: var(--color-background-secondary);
+	padding: var(--standard);
+	background: var(--background-secondary);
 	border-radius: var(--border-radius-sm);
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-md);
-	color: var(--color-font-secondary);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-md);
+	color: var(--font-secondary);
 }
 
 .indicatorWrapper {

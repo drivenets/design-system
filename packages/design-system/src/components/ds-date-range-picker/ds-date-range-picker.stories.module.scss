@@ -1,6 +1,6 @@
 .container {
 	display: flex;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	align-items: flex-end;
 	width: 500px;
 }
@@ -11,12 +11,12 @@
 
 .helperText {
 	font-size: 12px;
-	margin-top: var(--spacing-xs);
-	color: var(--color-font-secondary);
+	margin-top: var(--xs);
+	color: var(--font-secondary);
 }
 
 .dateOrRangeContainer {
 	display: flex;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	align-items: flex-end;
 }

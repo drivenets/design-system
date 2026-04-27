@@ -1,6 +1,6 @@
 .globalMessages {
 	position: fixed;
-	inset: var(--spacing-md);
+	inset: var(--md);
 	bottom: auto;
 
 	.customBody {
@@ -15,7 +15,7 @@
 }
 
 .trigger {
-	margin-bottom: var(--spacing-standard);
+	margin-bottom: var(--standard);
 }
 
 .inlineAlertBanner {
@@ -26,8 +26,8 @@
 
 .inlineActions {
 	display: flex;
-	gap: var(--spacing-xs);
-	margin-top: var(--spacing-xs);
+	gap: var(--xs);
+	margin-top: var(--xs);
 
 	button.primary {
 		display: flex;
@@ -36,8 +36,8 @@
 		gap: var(---exo-spacing-2x-small, 4px);
 		align-self: stretch;
 		border-radius: var(---exo-spacing-2x-small, 4px);
-		border: 1px solid var(--color-border);
-		background: var(--color-background);
+		border: 1px solid var(--border);
+		background: var(--background);
 	}
 }
 
@@ -49,22 +49,22 @@
 
 .customBodyText {
 	margin: 0;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .customBodyList {
 	margin: 0;
 	padding-left: 20px;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .infoBox {
-	background: var(--color-background-secondary);
+	background: var(--background-secondary);
 	padding: 12px;
 	border-radius: 6px;
 	font-size: 14px;
-	color: var(--color-font-secondary);
-	border: 1px solid var(--color-border-secondary);
+	color: var(--font-secondary);
+	border: 1px solid var(--border-secondary);
 }
 
 .securityCard {
@@ -81,7 +81,7 @@
 }
 
 .securityCardHigh {
-	background: var(--color-background-warning);
+	background: var(--background-warning);
 	border: 1px solid var(--color-border-warning);
 }
 
@@ -90,25 +90,25 @@
 }
 
 .securityCardTitleCritical {
-	color: var(--color-font-danger);
+	color: var(--font-error);
 }
 
 .securityCardTitleHigh {
-	color: var(--color-font-warning);
+	color: var(--font-warning);
 }
 
 .securityCardScore {
 	font-size: 12px;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .recommendationsBox {
-	background: var(--color-background-secondary);
+	background: var(--background-secondary);
 	padding: 12px;
 	border-radius: 6px;
 	font-size: 14px;
-	color: var(--color-font-secondary);
-	border: 1px solid var(--color-border-secondary);
+	color: var(--font-secondary);
+	border: 1px solid var(--border-secondary);
 }
 
 .securityCardsContainer {

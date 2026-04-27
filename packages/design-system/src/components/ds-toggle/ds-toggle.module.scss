@@ -34,15 +34,15 @@
 		height: var(--thumb-size);
 
 		&[data-state='unchecked'] {
-			background: var(--color-background-deselected);
+			background: var(--background-deselected);
 
 			&[data-hover] {
-				background: var(--color-background-deselected-hover);
+				background: var(--background-deselected-hover);
 			}
 
 			&[data-focus-visible] {
-				outline-color: var(--color-background-action-hover);
-				background: var(--color-background-deselected-hover);
+				outline-color: var(--background-action-hover);
+				background: var(--background-deselected-hover);
 			}
 
 			.iconCheck {
@@ -55,15 +55,15 @@
 		}
 
 		&[data-state='checked'] {
-			background: var(--color-background-selected);
+			background: var(--background-primary);
 
 			&[data-hover] {
-				background: var(--color-background-selected-hover);
+				background: var(--background-primary-hover);
 			}
 
 			&[data-focus-visible] {
-				outline-color: var(--color-background-selected);
-				background: var(--color-background-selected-hover);
+				outline-color: var(--background-primary);
+				background: var(--background-primary-hover);
 			}
 
 			.iconCheck {
@@ -77,15 +77,15 @@
 
 		&[data-disabled] {
 			cursor: not-allowed;
-			background: var(--color-background-disable);
+			background: var(--background-disable);
 
 			&[data-hover] {
-				background: var(--color-background-deselected-hover);
+				background: var(--background-deselected-hover);
 			}
 
 			&[data-focus-visible] {
-				outline-color: var(--color-background-action-hover);
-				background: var(--color-background-deselected-hover);
+				outline-color: var(--background-action-hover);
+				background: var(--background-deselected-hover);
 			}
 		}
 	}
@@ -94,7 +94,7 @@
 		border-radius: 9999px;
 		position: relative;
 		transition-property: transform;
-		background: var(--color-background);
+		background: var(--background);
 		transition-duration: var(--transition-duration);
 		height: 100%;
 		aspect-ratio: 1/1;
@@ -119,11 +119,11 @@
 		cursor: pointer;
 		display: flex;
 		flex-direction: column;
-		margin-left: var(--spacing-xs);
+		margin-left: var(--xs);
 
 		.labelInfo {
 			width: 100%;
-			color: var(--color-font-secondary);
+			color: var(--font-secondary);
 		}
 
 		&[data-disabled] {
@@ -131,13 +131,13 @@
 			cursor: default;
 
 			.labelInfo {
-				color: var(--color-background-disable);
+				color: var(--background-disable);
 			}
 		}
 	}
 
 	.icon {
-		color: var(--color-icon-inverse);
+		color: var(--icon-inverse);
 		position: absolute;
 		top: 50%;
 		transform: translateY(-50%);

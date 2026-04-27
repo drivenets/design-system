@@ -7,11 +7,11 @@
 		'description description description'
 		'actions actions actions';
 	align-items: start;
-	padding: var(--spacing-standard);
+	padding: var(--standard);
 	border-radius: 4px;
-	column-gap: var(--spacing-xs);
-	row-gap: var(--spacing-4xs);
-	color: var(--color-font-on-action);
+	column-gap: var(--xs);
+	row-gap: var(--4xs);
+	color: var(--font-on-action);
 	box-shadow: 0 1.25px 4px 0 rgba(0, 0, 0, 0.25);
 	// approx. 6 columns (64 * 2)
 	min-width: 384px;
@@ -33,19 +33,19 @@
 	}
 
 	&[data-type='success'] {
-		background: var(--color-background-success-strong);
+		background: var(--background-success-strong);
 	}
 
 	&[data-type='info'] {
-		background: var(--color-background-info-strong);
+		background: var(--background-info-strong);
 	}
 
 	&[data-type='warning'] {
-		background: var(--color-background-warning-strong);
+		background: var(--background-warning-strong);
 	}
 
 	&[data-type='error'] {
-		background: var(--color-background-danger-strong);
+		background: var(--background-error);
 	}
 
 	&:not(:has([data-scope='toast'][data-part='title'])) {
@@ -64,7 +64,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: var(--spacing-4xs);
+	border-radius: var(--4xs);
 
 	&:hover {
 		background: rgba(0, 0, 0, 0.05);
@@ -86,12 +86,12 @@
 
 .icon {
 	grid-area: icon;
-	color: var(--color-icon-inverse);
+	color: var(--icon-inverse);
 }
 
 .actions {
 	grid-area: actions;
-	margin-top: var(--spacing-sm);
+	margin-top: var(--sm);
 }
 
 @media (max-width: 640px) {

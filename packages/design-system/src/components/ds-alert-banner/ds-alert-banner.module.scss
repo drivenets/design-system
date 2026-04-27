@@ -10,11 +10,11 @@
 			'icon description close'
 			'icon actions close';
 		align-items: start;
-		padding: var(--spacing-standard);
+		padding: var(--standard);
 		border-radius: 4px;
 		border: 1px solid;
-		column-gap: var(--spacing-xs);
-		row-gap: var(--spacing-4xs);
+		column-gap: var(--xs);
+		row-gap: var(--4xs);
 
 		&:not(:has(.title)) {
 			align-items: center;
@@ -24,8 +24,8 @@
 	&.global {
 		display: flex;
 		align-items: center;
-		padding: var(--spacing-sm) var(--spacing-standard);
-		gap: var(--spacing-2xs);
+		padding: var(--sm) var(--standard);
+		gap: var(--2xs);
 		border-bottom: 2px solid;
 
 		.title {
@@ -48,57 +48,57 @@
 
 	.title {
 		grid-area: title;
-		color: var(--color-font-main);
+		color: var(--font-main);
 	}
 
 	.description {
 		grid-area: description;
-		color: var(--color-font-secondary);
-		margin-top: var(--spacing-4xs);
+		color: var(--font-secondary);
+		margin-top: var(--4xs);
 	}
 
 	.actions {
 		grid-area: actions;
 		display: inline-flex;
-		gap: var(--spacing-xs);
+		gap: var(--xs);
 	}
 
 	.closeButton {
 		grid-area: close;
 		display: flex;
-		color: var(--color-background-action);
+		color: var(--background-action);
 	}
 
 	&.infoNeutral {
-		background-color: var(--color-background-secondary);
-		border-color: var(--color-border);
+		background-color: var(--background-secondary);
+		border-color: var(--border);
 
 		.icon {
-			color: var(--color-icon-secondary);
+			color: var(--icon-action-secondary);
 		}
 	}
 
 	&.infoBlue {
-		background-color: var(--color-background-info);
-		border-color: var(--color-border-action-primary);
+		background-color: var(--background-info);
+		border-color: var(--border-action-primary);
 
 		.icon {
-			color: var(--color-icon-primary);
+			color: var(--icon-action);
 		}
 	}
 
 	&.warning {
-		background-color: var(--color-background-warning);
-		border-color: var(--color-background-warning-strong);
+		background-color: var(--background-warning);
+		border-color: var(--background-warning-strong);
 
 		.icon {
-			color: var(--color-icon-warning);
+			color: var(--icon-warning);
 		}
 	}
 
 	&.error {
-		background-color: var(--color-background-danger-weak);
-		border-color: var(--color-border-danger-strong);
+		background-color: var(--background-error-secondary-hover);
+		border-color: var(--border-error);
 
 		.icon {
 			color: var(--color-icon-danger);
@@ -107,10 +107,10 @@
 
 	&.success {
 		background-color: var(--color-background-success);
-		border-color: var(--color-border-success);
+		border-color: var(--border-success);
 
 		.icon {
-			color: var(--color-icon-success);
+			color: var(--icon-success);
 		}
 	}
 }

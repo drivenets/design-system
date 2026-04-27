@@ -3,7 +3,7 @@
 @mixin list-item {
 	cursor: pointer;
 	user-select: none;
-	color: var(--neutral-2);
+	color: var(--color-dap-gray-600);
 	padding: 0 20px;
 }
 
@@ -69,6 +69,6 @@
 	}
 
 	&::-webkit-scrollbar-thumb:hover {
-		background: var(--neutral-4);
+		background: var(--color-dap-gray-500);
 	}
 }

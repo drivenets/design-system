@@ -4,7 +4,7 @@
 
 	&[data-orientation='vertical'] {
 		flex-direction: row;
-		gap: var(--spacing-lg);
+		gap: var(--lg);
 	}
 
 	&[data-orientation='horizontal'] {

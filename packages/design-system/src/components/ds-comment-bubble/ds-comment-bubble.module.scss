@@ -19,8 +19,8 @@ $transition-duration: 0.2s;
 	display: flex;
 	flex-direction: column;
 	width: $bubble-width-thread;
-	background: var(--color-background);
-	border: $border-width solid var(--color-primary-700-default);
+	background: var(--background);
+	border: $border-width solid var(--primary-700-default);
 	border-radius: $bubble-border-radius-pill;
 	box-shadow: 0 6px 13px 0 rgba(4, 69, 204, 0.2);
 	overflow: hidden;
@@ -31,19 +31,19 @@ $transition-duration: 0.2s;
 		padding $transition-duration ease;
 
 	&.actionRequired {
-		border-color: var(--color-background-warning-strong);
+		border-color: var(--background-warning-strong);
 	}
 }
 
 .initial {
 	width: $bubble-width-initial;
 	border-width: $border-width;
-	padding: var(--spacing-sm) var(--spacing-standard);
+	padding: var(--sm) var(--standard);
 	border-radius: $bubble-border-radius-pill;
 
 	.inputArea {
 		padding: 0;
-		gap: var(--spacing-xs);
+		gap: var(--xs);
 		align-items: center;
 	}
 
@@ -57,7 +57,7 @@ $transition-duration: 0.2s;
 	.textarea {
 		padding: 0;
 		min-height: $input-min-height-initial;
-		line-height: var(--line-height-sm);
+		line-height: var(--body-line-height-small);
 		overflow: hidden;
 		resize: none;
 
@@ -70,12 +70,12 @@ $transition-duration: 0.2s;
 .typing {
 	width: $bubble-width-typing;
 	border-width: $border-width;
-	padding: var(--spacing-sm) var(--spacing-standard) 0;
+	padding: var(--sm) var(--standard) 0;
 	border-radius: $bubble-border-radius-pill;
 
 	.inputArea {
-		padding: 0 0 var(--spacing-sm);
-		border-bottom: $border-width solid var(--color-border-secondary);
+		padding: 0 0 var(--sm);
+		border-bottom: $border-width solid var(--border-secondary);
 	}
 
 	.inputWrapper {
@@ -93,14 +93,14 @@ $transition-duration: 0.2s;
 	flex-direction: column;
 
 	.inputArea {
-		border-top: $border-width solid var(--color-border-secondary);
-		padding: var(--spacing-xs) var(--spacing-standard);
+		border-top: $border-width solid var(--border-secondary);
+		padding: var(--xs) var(--standard);
 		flex-shrink: 0;
 	}
 
 	.inputWrapper {
-		background: var(--color-background);
-		padding: var(--spacing-xs) var(--spacing-sm);
+		background: var(--background);
+		padding: var(--xs) var(--sm);
 		border-radius: $bubble-border-radius-standard;
 		min-height: $input-min-height-thread;
 	}
@@ -110,9 +110,9 @@ $transition-duration: 0.2s;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--spacing-xs);
-	padding: var(--spacing-xs) var(--spacing-standard) var(--spacing-xs);
-	border-bottom: $border-width solid var(--color-border);
+	gap: var(--xs);
+	padding: var(--xs) var(--standard) var(--xs);
+	border-bottom: $border-width solid var(--border);
 	flex-shrink: 0;
 }
 
@@ -126,32 +126,32 @@ $transition-duration: 0.2s;
 .headerInfo {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .commentId {
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
-	color: var(--color-font-secondary);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
+	color: var(--font-secondary);
 }
 
 .actionRequiredBadge {
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
-	color: var(--color-font-warning);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
+	color: var(--font-warning);
 	font-weight: var(--font-weight-regular);
 }
 
 .headerRight {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .headerActions {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	opacity: 0;
 	transition: opacity $transition-duration ease;
 
@@ -163,24 +163,24 @@ $transition-duration: 0.2s;
 .inputArea {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .inputWrapper {
 	display: flex;
 	align-items: center;
 	flex: 1;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	min-height: $input-min-height-thread;
 }
 
 .searchIcon {
-	color: var(--color-font-main);
+	color: var(--font-main);
 	flex-shrink: 0;
 }
 
 .infoIcon {
-	color: var(--color-font-main);
+	color: var(--font-main);
 	flex-shrink: 0;
 }
 
@@ -191,10 +191,10 @@ $transition-duration: 0.2s;
 	padding: 0;
 	border: none;
 	background: transparent;
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
 	font-family: inherit;
-	color: var(--color-font-main);
+	color: var(--font-main);
 	resize: none;
 	overflow-y: auto;
 
@@ -215,7 +215,7 @@ $transition-duration: 0.2s;
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--color-background-tertiary);
+		background: var(--background-tertiary);
 		border-radius: $scrollbar-border-radius-pill;
 	}
 }
@@ -224,7 +224,7 @@ $transition-duration: 0.2s;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: var(--spacing-xs) 0;
+	padding: var(--xs) 0;
 
 	> :last-child {
 		margin-left: auto;
@@ -246,18 +246,18 @@ $transition-duration: 0.2s;
 .dropdownItem {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
-	padding: var(--spacing-xs) var(--spacing-sm);
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
-	color: var(--color-font-main);
+	gap: var(--xs);
+	padding: var(--xs) var(--sm);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
+	color: var(--font-main);
 	cursor: pointer;
 
 	&:hover {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 
 	&.danger {
-		color: var(--color-font-danger);
+		color: var(--font-error);
 	}
 }

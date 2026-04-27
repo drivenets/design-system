@@ -1,6 +1,6 @@
 @use '../../styles/typography';
 
-@mixin status-filled($color, $background, $label-color: var(--color-font-on-action)) {
+@mixin status-filled($color, $background, $label-color: var(--font-on-action)) {
 	color: $color;
 	background: $background;
 
@@ -15,7 +15,7 @@
 		background: $background;
 
 		.label {
-			color: var(--color-font-main);
+			color: var(--font-main);
 		}
 	}
 }
@@ -23,55 +23,51 @@
 .container {
 	display: flex;
 	align-items: center;
-	padding: var(--spacing-3xs) var(--spacing-standard) var(--spacing-3xs) var(--spacing-xs);
+	padding: var(--3xs) var(--standard) var(--3xs) var(--xs);
 	width: max-content;
-	color: var(--color-icon-inverse);
-	gap: var(--spacing-3xs);
+	color: var(--icon-inverse);
+	gap: var(--3xs);
 	border-radius: 100vmax;
 
 	&.small {
-		padding: var(--spacing-4xs) var(--spacing-xs) var(--spacing-4xs) var(--spacing-3xs);
-		gap: var(--spacing-4xs);
+		padding: var(--4xs) var(--xs) var(--4xs) var(--3xs);
+		gap: var(--4xs);
 	}
 }
 
 .active {
-	@include status-filled(var(--color-font-on-action), var(--color-background-success-strong));
-	@include status-ghost(var(--color-background-success-strong), var(--color-status-bg-success));
+	@include status-filled(var(--font-on-action), var(--background-success-strong));
+	@include status-ghost(var(--background-success-strong), var(--color-status-bg-success));
 }
 
 .running {
-	@include status-filled(var(--color-font-on-action), var(--color-background-active-moderate));
-	@include status-ghost(var(--color-icon-information-secondary), var(--color-status-bg-progress));
+	@include status-filled(var(--font-on-action), var(--background-active-moderate));
+	@include status-ghost(var(--icon-information-secondary), var(--status-bg-progress));
 }
 
 .pending {
-	@include status-filled(var(--color-font-on-action), var(--color-data-fuchsia));
-	@include status-ghost(var(--color-data-purple), var(--color-data-light-purple));
+	@include status-filled(var(--font-on-action), var(--color-dap-data-fuchsia));
+	@include status-ghost(var(--color-dap-data-purple), var(--color-dap-data-light-purple));
 }
 
 .draft {
-	@include status-filled(var(--color-font-on-action), var(--color-icon-information-main));
-	@include status-ghost(var(--color-icon-secondary), var(--color-status-bg-neutral));
+	@include status-filled(var(--font-on-action), var(--icon-information-main));
+	@include status-ghost(var(--icon-action-secondary), var(--status-bg-neutral));
 }
 
 .inactive {
-	@include status-filled(
-		var(--color-icon-secondary),
-		var(--color-background-disable),
-		var(--color-font-on-disabled)
-	);
-	@include status-ghost(var(--color-icon-secondary), var(--color-status-bg-inactive));
+	@include status-filled(var(--icon-action-secondary), var(--background-disable), var(--font-on-disabled));
+	@include status-ghost(var(--icon-action-secondary), var(--status-bg-inactive));
 }
 
 .warning {
-	@include status-filled(var(--color-font-on-action), var(--color-background-warning-strong));
-	@include status-ghost(var(--color-background-warning-strong), var(--color-status-bg-warning));
+	@include status-filled(var(--font-on-action), var(--background-warning-strong));
+	@include status-ghost(var(--background-warning-strong), var(--status-bg-warning));
 }
 
 .failed {
-	@include status-filled(var(--color-font-on-action), var(--color-background-danger-strong));
-	@include status-ghost(var(--color-background-danger-strong-hover), var(--color-status-bg-failed));
+	@include status-filled(var(--font-on-action), var(--background-error));
+	@include status-ghost(var(--background-error-hover), var(--color-status-bg-failed));
 }
 
 .label::first-letter {

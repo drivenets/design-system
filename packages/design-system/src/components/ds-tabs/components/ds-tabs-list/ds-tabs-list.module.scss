@@ -8,7 +8,7 @@ $border-width: 1px;
 		flex-direction: row;
 		align-items: center;
 		border-bottom: $border-width solid var(--color-border-main);
-		gap: var(--spacing-xs);
+		gap: var(--xs);
 	}
 
 	[data-orientation='vertical'] & {
@@ -18,10 +18,10 @@ $border-width: 1px;
 	}
 
 	[data-orientation='vertical'][data-size='medium'] & {
-		gap: var(--spacing-xs);
+		gap: var(--xs);
 	}
 
 	[data-orientation='vertical'][data-size='small'] & {
-		gap: var(--spacing-3xs);
+		gap: var(--3xs);
 	}
 }

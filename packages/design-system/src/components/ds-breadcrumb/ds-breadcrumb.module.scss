@@ -2,32 +2,32 @@
 
 @mixin breadcrumb-item {
 	@include typography.body-sm-reg;
-	color: var(--color-background-action);
+	color: var(--background-action);
 	text-decoration: none;
 	outline: none;
-	padding: var(--exo-spacing-2x-small) var(--spacing-sm);
+	padding: var(--exo-spacing-2x-small) var(--sm);
 	gap: var(--exo-spacing-2x-small);
 	border-radius: var(--exo-spacing-2x-small);
 	display: flex;
 	align-items: center;
 
 	&:hover {
-		color: var(--color-background-selected);
-		background: var(--color-background-action-tertiary);
+		color: var(--background-primary);
+		background: var(--background-action-tertiary-hover);
 	}
 
 	&:active {
-		color: var(--color-background-selected-hover);
-		background: var(--color-background-action-secondary-hover);
+		color: var(--background-primary-hover);
+		background: var(--background-action-secondary-hover);
 	}
 
 	&:focus {
-		outline: 2px solid var(--color-background-selected);
+		outline: 2px solid var(--background-primary);
 		outline-offset: 0;
 	}
 
 	&:disabled {
-		color: var(--color-background-disable);
+		color: var(--background-disable);
 	}
 }
 
@@ -95,5 +95,5 @@
 
 .itemLabel {
 	@include typography.ellipsis;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }

@@ -20,7 +20,7 @@
 		cursor: not-allowed;
 
 		.labelInfo {
-			color: var(--color-secondary-500-net-4);
+			color: var(--secondary-500-net-4);
 		}
 	}
 
@@ -30,7 +30,7 @@
 	}
 
 	&:has([data-state='unchecked']:focus-visible) {
-		border-color: var(--color-primary-800);
+		border-color: var(--primary-800);
 	}
 
 	&:has(.labelInfo) {
@@ -56,7 +56,7 @@
 		justify-content: center;
 		height: 16px;
 		width: 16px;
-		border: 2px solid var(--color-secondary-500-net-4);
+		border: 2px solid var(--secondary-500-net-4);
 		padding: 2px;
 		border-radius: 50%;
 		background: none;
@@ -65,26 +65,26 @@
 	&[data-state='checked'],
 	[data-state='checked'] > & {
 		.radioItemWrapper {
-			border-color: var(--color-primary-700-default);
+			border-color: var(--primary-700-default);
 		}
 
 		&:hover {
-			border-color: var(--color-primary-100);
+			border-color: var(--primary-100);
 		}
 	}
 
 	&[data-state='checked'][data-disabled],
 	[data-state='checked'][data-disabled] > & {
 		.radioIndicator {
-			background: var(--color-secondary-300);
+			background: var(--secondary-300);
 		}
 	}
 
 	&[data-state='unchecked'],
 	[data-state='unchecked'] > & {
 		&:hover {
-			border-color: var(--color-secondary-100);
-			background-color: var(--color-secondary-100);
+			border-color: var(--secondary-100);
+			background-color: var(--secondary-100);
 		}
 	}
 
@@ -97,7 +97,7 @@
 		}
 
 		.radioItemWrapper {
-			border-color: var(--color-secondary-300);
+			border-color: var(--secondary-300);
 		}
 	}
 }
@@ -105,7 +105,7 @@
 .radioIndicator {
 	width: 8px;
 	height: 8px;
-	background: var(--color-primary-700-default);
+	background: var(--primary-700-default);
 	border-radius: 50%;
 
 	&[data-part='indicator'] {
@@ -124,7 +124,7 @@
 
 .radioLabel {
 	@include typography.body-sm-reg;
-	color: var(--color-secondary-800);
+	color: var(--secondary-800);
 	cursor: pointer;
 }
 
@@ -132,7 +132,7 @@
 	@include typography.body-xs-reg;
 	@include typography.ellipsis;
 	position: absolute;
-	color: var(--color-secondary-600-net-2);
+	color: var(--secondary-600-net-2);
 	cursor: pointer;
 	width: 100%;
 }

@@ -1,6 +1,6 @@
 .sizesContainer {
 	display: flex;
-	gap: var(--spacing-standard);
+	gap: var(--standard);
 	align-items: center;
 }
 
@@ -10,13 +10,13 @@
 }
 
 .sizeLabel {
-	margin-bottom: var(--spacing-2xs);
-	font-size: var(--font-size-xs);
+	margin-bottom: var(--2xs);
+	font-size: var(--body-font-size-xs);
 	color: var(--color-text-secondary);
 }
 
 .customOption {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-2xs);
+	gap: var(--2xs);
 }

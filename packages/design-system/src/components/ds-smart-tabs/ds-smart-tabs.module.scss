@@ -9,34 +9,34 @@
 		@include typography.ellipsis;
 		display: flex;
 		height: 48px;
-		padding: var(--spacing-xs) var(--spacing-sm);
+		padding: var(--xs) var(--sm);
 		align-items: center;
 		gap: 8px;
 		border-radius: 4px;
-		border: 1px solid var(--color-border);
-		background: var(--color-background);
+		border: 1px solid var(--border);
+		background: var(--background);
 		min-width: 250px;
 
 		&.active {
 			@include typography.body-sm-md;
-			border-color: var(--color-border-action-secondary);
+			border-color: var(--border-action-secondary);
 
 			.icon {
-				color: var(--color-background);
-				background: var(--tab-color, var(--color-background-action));
+				color: var(--background);
+				background: var(--tab-color, var(--background-action));
 			}
 
 			.value {
-				color: var(--color-font-main);
+				color: var(--font-main);
 			}
 		}
 
 		&:hover:not(.active):not(:disabled) {
-			border-color: var(--color-border-action-primary-hover);
+			border-color: var(--border-action-primary-hover);
 		}
 
 		&:focus {
-			outline: auto var(--color-border-action-primary-hover);
+			outline: auto var(--border-action-primary-hover);
 		}
 
 		&.disabled {
@@ -48,8 +48,8 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			color: var(--color-background-action);
-			background: var(--color-background-tertiary);
+			color: var(--background-action);
+			background: var(--background-tertiary);
 			border-radius: 50%;
 			width: var(--icon-width-extra-large);
 			height: var(--icon-width-extra-large);
@@ -63,7 +63,7 @@
 
 		.content {
 			padding-right: 4px;
-			color: var(--color-font-secondary);
+			color: var(--font-secondary);
 		}
 	}
 }

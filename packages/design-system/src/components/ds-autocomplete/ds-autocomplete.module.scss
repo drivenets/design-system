@@ -28,17 +28,17 @@ $autocomplete-opacity-visible: 1;
 	@include input.input-container-states;
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 	height: $autocomplete-input-height;
 	min-height: $autocomplete-input-height;
 	max-height: $autocomplete-input-height;
 
 	&[data-focus] {
-		border-color: var(--form-control-border-color, var(--color-border-action-primary)) !important;
+		border-color: var(--form-control-border-color, var(--border-action-primary)) !important;
 	}
 
 	&[data-invalid] {
-		border-color: var(--color-background-danger-strong);
+		border-color: var(--background-error);
 	}
 }
 
@@ -57,14 +57,14 @@ $autocomplete-opacity-visible: 1;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--color-background-action);
+	color: var(--background-action);
 	flex-shrink: 0;
 }
 
 .iconContainer {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 	flex-shrink: 0;
 }
 
@@ -76,7 +76,7 @@ $autocomplete-opacity-visible: 1;
 	transition: opacity $autocomplete-animation-duration ease;
 
 	&:hover {
-		color: var(--color-background-action-hover);
+		color: var(--background-action-hover);
 	}
 }
 
@@ -90,7 +90,7 @@ $autocomplete-opacity-visible: 1;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--color-background-deselected);
+	color: var(--background-deselected);
 	transition:
 		transform $autocomplete-animation-duration ease-in-out,
 		background-color $autocomplete-animation-duration ease,
@@ -104,14 +104,14 @@ $autocomplete-opacity-visible: 1;
 	height: $autocomplete-trigger-size;
 
 	&:hover {
-		color: var(--color-background-deselected-hover);
-		background: var(--color-background-action-hover-weak);
+		color: var(--background-deselected-hover);
+		background: var(--background-action-hover-weak);
 	}
 
 	&[data-state='open'] {
 		transform: rotate($autocomplete-rotation-open);
-		color: var(--color-background-deselected-hover);
-		background: var(--color-background-action-hover-weak);
+		color: var(--background-deselected-hover);
+		background: var(--background-action-hover-weak);
 	}
 
 	&:focus-visible {
@@ -121,8 +121,8 @@ $autocomplete-opacity-visible: 1;
 }
 
 .control[data-focus] .trigger {
-	color: var(--color-background-deselected-hover);
-	background: var(--color-background-action-hover-weak);
+	color: var(--background-deselected-hover);
+	background: var(--background-action-hover-weak);
 }
 
 .positioner {
@@ -158,17 +158,17 @@ $autocomplete-opacity-visible: 1;
 	@include dropdown.dropdown-item;
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	height: $autocomplete-item-height;
 	min-height: $autocomplete-item-height;
 
 	&[data-highlighted] {
-		background: var(--color-background-secondary-selected-weak);
+		background: var(--background-secondary-selected-weak);
 	}
 }
 
 .itemIcon {
-	color: var(--color-background-deselected);
+	color: var(--background-deselected);
 	flex-shrink: 0;
 	display: flex;
 	align-items: center;
@@ -181,8 +181,8 @@ $autocomplete-opacity-visible: 1;
 	white-space: nowrap;
 
 	mark {
-		background-color: var(--color-data-yellow);
-		color: var(--color-font-main);
+		background-color: var(--color-dap-data-yellow);
+		color: var(--font-main);
 		font-weight: var(--font-weight-medium);
 		padding: 0;
 		border-radius: $autocomplete-highlight-border-radius;
@@ -191,15 +191,15 @@ $autocomplete-opacity-visible: 1;
 
 .noMatches,
 .loading {
-	padding: var(--spacing-xs);
+	padding: var(--xs);
 	color: var(--color-font-disabled);
 	text-align: center;
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 }
 
 .disabled {
 	.control {
-		color: var(--color-background-deselected);
+		color: var(--background-deselected);
 		border-color: var(--color-border-disabled);
 		cursor: not-allowed;
 
@@ -209,13 +209,13 @@ $autocomplete-opacity-visible: 1;
 		}
 
 		.trigger {
-			color: var(--color-background-disable);
+			color: var(--background-disable);
 			cursor: not-allowed;
 			background: transparent;
 
 			&:hover {
 				background: transparent;
-				color: var(--color-background-disable);
+				color: var(--background-disable);
 			}
 		}
 	}
@@ -223,11 +223,11 @@ $autocomplete-opacity-visible: 1;
 
 .invalid {
 	.control {
-		border-color: var(--color-background-danger-strong);
+		border-color: var(--background-error);
 
 		&:hover,
 		&[data-focus] {
-			border-color: var(--color-background-danger-strong) !important;
+			border-color: var(--background-error) !important;
 		}
 	}
 }

@@ -6,20 +6,20 @@ $scrollbar-thin-size: 4px;
 	&::-webkit-scrollbar {
 		width: $size;
 		height: $size;
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 
 	&::-webkit-scrollbar-track {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--color-background-deselected-hover);
+		background: var(--background-deselected-hover);
 		border-radius: $scrollbar-border-radius;
 	}
 
 	&::-webkit-scrollbar-corner {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 }
 
@@ -31,7 +31,7 @@ $scrollbar-thin-size: 4px;
 			scrollbar-width: auto;
 		}
 
-		scrollbar-color: var(--color-background-deselected-hover) var(--color-background-secondary);
+		scrollbar-color: var(--background-deselected-hover) var(--background-secondary);
 	}
 }
 

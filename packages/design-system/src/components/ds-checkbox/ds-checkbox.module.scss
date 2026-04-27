@@ -19,11 +19,11 @@
 	}
 
 	&:has(.label):has(.checkboxRoot:focus-visible) {
-		border-color: var(--color-background-selected);
+		border-color: var(--background-primary);
 	}
 
 	&:has(.label):has([data-state='unchecked']:focus-visible) {
-		border-color: var(--color-background-selected-hover);
+		border-color: var(--background-primary-hover);
 	}
 }
 
@@ -38,56 +38,56 @@
 	cursor: pointer;
 
 	&[data-disabled] {
-		border-color: var(--color-background-disable);
+		border-color: var(--background-disable);
 		pointer-events: none;
 
 		&[data-state='unchecked'] {
 			.checkboxWrapper {
-				border-color: var(--color-background-disable);
+				border-color: var(--background-disable);
 			}
 		}
 
 		&[data-state='checked'],
 		&[data-state='indeterminate'] {
 			.checkboxWrapper {
-				border-color: var(--color-background-disable);
-				background-color: var(--color-background-disable);
+				border-color: var(--background-disable);
+				background-color: var(--background-disable);
 			}
 		}
 	}
 
 	&[data-state='checked'] {
 		.checkboxWrapper {
-			border-color: var(--color-background-selected);
-			background-color: var(--color-background-selected);
+			border-color: var(--background-primary);
+			background-color: var(--background-primary);
 		}
 
 		&:hover,
 		&:focus-visible {
-			background: var(--color-background-action-secondary-hover);
+			background: var(--background-action-secondary-hover);
 		}
 	}
 
 	&[data-state='unchecked'] {
 		.checkboxWrapper {
-			border-color: var(--color-background-deselected);
+			border-color: var(--background-deselected);
 		}
 
 		&:hover,
 		&:focus-visible {
-			background: var(--color-background-action-hover-weak);
+			background: var(--background-action-hover-weak);
 		}
 	}
 
 	&[data-state='indeterminate'] {
 		.checkboxWrapper {
-			border-color: var(--color-background-selected);
-			background-color: var(--color-background-selected);
+			border-color: var(--background-primary);
+			background-color: var(--background-primary);
 		}
 
 		&:hover,
 		&:focus-visible {
-			background: var(--color-background-action-secondary-hover);
+			background: var(--background-action-secondary-hover);
 		}
 	}
 
@@ -98,7 +98,7 @@
 		align-items: center;
 		height: 16px;
 		width: 16px;
-		margin: var(--spacing-4xs);
+		margin: var(--4xs);
 		border: 2px solid transparent;
 		border-radius: 2px;
 	}
@@ -119,7 +119,7 @@
 
 .label {
 	@include typography.body-sm-reg;
-	color: var(--color-font-main);
+	color: var(--font-main);
 	cursor: pointer;
 }
 
@@ -127,7 +127,7 @@
 	@include typography.body-xs-reg;
 	@include typography.ellipsis;
 	position: absolute;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 	cursor: pointer;
 	width: 100%;
 }
@@ -140,7 +140,7 @@
 	&:has([data-state='checked']),
 	&:has([data-state='indeterminate']) {
 		.label {
-			color: var(--color-font-warning);
+			color: var(--font-warning);
 		}
 	}
 
@@ -148,13 +148,13 @@
 		&[data-state='checked'],
 		&[data-state='indeterminate'] {
 			.checkboxWrapper {
-				border-color: var(--color-background-warning-strong);
-				background-color: var(--color-background-warning-strong);
+				border-color: var(--background-warning-strong);
+				background-color: var(--background-warning-strong);
 			}
 
 			&:hover,
 			&:focus-visible {
-				background: var(--color-background-warning);
+				background: var(--background-warning);
 			}
 		}
 	}

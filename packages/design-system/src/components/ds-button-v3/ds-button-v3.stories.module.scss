@@ -14,7 +14,7 @@
 .sectionTitle {
 	margin: 0 0 var(--xs);
 	font-family: var(--font-family-base);
-	font-size: var(--font-size-xs);
+	font-size: var(--body-font-size-xs);
 	font-weight: var(--font-weight-semi-bold);
 	color: var(--font-secondary);
 	letter-spacing: 0.08em;
@@ -31,7 +31,7 @@
 .columnHeader {
 	flex: 1;
 	font-family: var(--font-family-base);
-	font-size: var(--font-size-xs);
+	font-size: var(--body-font-size-xs);
 	font-weight: var(--font-weight-medium);
 	color: var(--font-secondary);
 	text-align: center;
@@ -48,7 +48,7 @@
 	width: 120px;
 	flex-shrink: 0;
 	font-family: var(--font-family-base);
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	font-weight: var(--font-weight-medium);
 	color: var(--font-secondary);
 	text-transform: capitalize;

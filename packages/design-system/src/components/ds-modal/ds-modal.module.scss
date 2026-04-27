@@ -1,13 +1,13 @@
-$pad-x: var(--spacing-lg);
-$pad-y: var(--spacing-standard);
+$pad-x: var(--lg);
+$pad-y: var(--standard);
 $max-width: 90vw;
 $border-size: 1px;
-$border: $border-size solid var(--color-border-secondary);
+$border: $border-size solid var(--border-secondary);
 
 .overlay {
 	position: fixed;
 	inset: 0;
-	background: var(--color-background-brand);
+	background: var(--background-brand);
 	opacity: 0.4;
 	z-index: 1199;
 
@@ -43,7 +43,7 @@ $border: $border-size solid var(--color-border-secondary);
 .modal {
 	position: fixed;
 	inset: 50% auto auto 50%;
-	background: var(--color-background);
+	background: var(--background);
 	border-radius: 4px;
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
 	z-index: 1200;
@@ -98,7 +98,7 @@ $border: $border-size solid var(--color-border-secondary);
 .header {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	position: relative;
 	background: inherit;
 	flex-shrink: 0;
@@ -110,7 +110,7 @@ $border: $border-size solid var(--color-border-secondary);
 		left: $pad-x;
 		right: $pad-x;
 		height: $border-size;
-		background: var(--color-border-secondary);
+		background: var(--border-secondary);
 	}
 }
 
@@ -121,7 +121,7 @@ $border: $border-size solid var(--color-border-secondary);
 }
 
 .title {
-	color: var(--color-font-main);
+	color: var(--font-main);
 	margin: 0;
 	flex: 1;
 }
@@ -135,7 +135,7 @@ $border: $border-size solid var(--color-border-secondary);
 
 .actions {
 	display: flex;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	justify-content: flex-end;
 	margin-left: auto;
 }

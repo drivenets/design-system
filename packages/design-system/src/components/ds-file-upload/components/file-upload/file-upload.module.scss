@@ -12,9 +12,9 @@
 	align-items: center;
 	justify-content: center;
 	padding: var(--exo-spacing-small) var(--exo-spacing-standard);
-	border: var(--exo-spacing-4x-small) dashed var(--color-border);
+	border: var(--exo-spacing-4x-small) dashed var(--border);
 	border-radius: var(--exo-spacing-2x-small);
-	background-color: var(--color-background);
+	background-color: var(--background);
 	transition: all 0.2s ease;
 	cursor: pointer;
 
@@ -32,13 +32,13 @@
 	}
 
 	.dropzoneIcon {
-		color: var(--color-icon-secondary);
+		color: var(--icon-action-secondary);
 	}
 
 	.dropzoneText {
-		color: var(--color-background-deselected);
+		color: var(--background-deselected);
 		text-align: center;
-		padding: var(--spacing-3xs) 0 var(--spacing-sm) 0;
+		padding: var(--3xs) 0 var(--sm) 0;
 	}
 
 	[data-part='trigger'] {
@@ -46,13 +46,13 @@
 	}
 
 	&:hover:not([data-disabled]) {
-		border-color: var(--color-background-selected);
-		background-color: var(--color-background-selected-weak);
+		border-color: var(--background-primary);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&[data-dragging] {
-		border-color: var(--color-background-selected);
-		background-color: var(--color-background-selected-weak);
+		border-color: var(--background-primary);
+		background-color: var(--background-secondary-hover);
 		border-style: solid;
 	}
 
@@ -61,7 +61,7 @@
 
 		.dropzoneIcon,
 		.dropzoneText {
-			color: var(--color-background-disable);
+			color: var(--background-disable);
 		}
 	}
 }
@@ -71,20 +71,20 @@
 	flex-direction: column;
 	gap: var(--exo-spacing-x-small);
 	margin-top: var(--exo-spacing-x-small);
-	padding: var(--spacing-xs);
+	padding: var(--xs);
 	border-radius: var(--exo-spacing-2x-small);
-	background: var(--color-background-secondary);
+	background: var(--background-secondary);
 }
 
 .infoText {
-	color: var(--color-font-secondary);
-	margin-top: var(--spacing-2xs);
+	color: var(--font-secondary);
+	margin-top: var(--2xs);
 }
 
 .errorText {
-	color: var(--color-background-danger-strong);
+	color: var(--background-error);
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
-	margin-top: var(--spacing-2xs);
+	gap: var(--3xs);
+	margin-top: var(--2xs);
 }

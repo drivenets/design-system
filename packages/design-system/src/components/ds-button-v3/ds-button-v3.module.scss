@@ -50,29 +50,29 @@ $focus-ring-width: 2px;
 	&[data-size='large'] {
 		padding: var(--3xs) var(--sm);
 		min-height: $height-large;
-		font-size: var(--font-size-md);
-		line-height: var(--line-height-md);
+		font-size: var(--body-font-size-md);
+		line-height: var(--body-line-height-md);
 	}
 
 	&[data-size='medium'] {
 		padding: var(--3xs) var(--sm);
 		min-height: $height-medium;
-		font-size: var(--font-size-sm);
-		line-height: var(--line-height-sm);
+		font-size: var(--body-font-size-sm);
+		line-height: var(--body-line-height-small);
 	}
 
 	&[data-size='small'] {
 		padding: var(--3xs) var(--sm);
 		min-height: $height-small;
-		font-size: var(--font-size-xs);
-		line-height: var(--line-height-xs);
+		font-size: var(--body-font-size-xs);
+		line-height: var(--body-line-height-xs);
 	}
 
 	&[data-size='tiny'] {
 		min-height: var(--icon-width-tiny);
 		padding: 0 var(--3xs);
-		font-size: var(--font-size-xs);
-		line-height: var(--line-height-xs);
+		font-size: var(--body-font-size-xs);
+		line-height: var(--body-line-height-xs);
 	}
 
 	&[data-icon-only][data-size='large'] {

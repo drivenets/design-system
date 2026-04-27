@@ -10,7 +10,7 @@ $disabled-opacity: 0.5;
 	@include typography.body-sm-reg;
 	display: inline-flex;
 	align-items: center;
-	background: var(--color-background);
+	background: var(--background);
 	border-radius: var(--exo-spacing-2x-small);
 	cursor: pointer;
 	transition:
@@ -18,33 +18,33 @@ $disabled-opacity: 0.5;
 		color $transition-duration,
 		border-color $transition-duration;
 	position: relative;
-	color: var(--color-font-main);
+	color: var(--font-main);
 	border: $tab-border-width solid transparent;
 	white-space: nowrap;
 
 	&:hover:not(:disabled):not([aria-selected='true']) {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 
 		.badge {
-			background: var(--color-background-tertiary);
+			background: var(--background-tertiary);
 		}
 	}
 
 	&:active:not(:disabled):not([aria-selected='true']) {
-		background: var(--color-background-tertiary);
+		background: var(--background-tertiary);
 
 		.badge {
-			background: var(--color-background-secondary);
+			background: var(--background-secondary);
 		}
 	}
 
 	&:focus-visible:not(:disabled):not([aria-selected='true']) {
 		border-color: var(--color-border-action-hover);
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 		outline: none;
 
 		.badge {
-			background: var(--color-background-tertiary);
+			background: var(--background-tertiary);
 		}
 	}
 
@@ -56,29 +56,29 @@ $disabled-opacity: 0.5;
 
 	&[aria-selected='true'] {
 		@include typography.body-sm-md;
-		color: var(--color-background-selected);
-		background: var(--color-background);
+		color: var(--background-primary);
+		background: var(--background);
 
 		.icon {
-			color: var(--color-background-selected);
+			color: var(--background-primary);
 		}
 
 		.badge {
-			background: var(--color-background-action-secondary-hover);
-			color: var(--color-background-selected);
+			background: var(--background-action-secondary-hover);
+			color: var(--background-primary);
 		}
 
 		&:hover:not(:disabled) {
-			background: var(--color-background-selected-weak);
+			background: var(--background-secondary-hover);
 		}
 
 		&:active:not(:disabled) {
-			background: var(--color-background-selected-weak);
+			background: var(--background-secondary-hover);
 		}
 
 		&:focus-visible:not(:disabled) {
-			border-color: var(--color-background-selected);
-			background: var(--color-background-selected-weak);
+			border-color: var(--background-primary);
+			background: var(--background-secondary-hover);
 			outline: none;
 		}
 	}
@@ -87,36 +87,36 @@ $disabled-opacity: 0.5;
 	[data-orientation='horizontal'] & {
 		flex-direction: row;
 		justify-content: center;
-		gap: var(--spacing-3xs);
+		gap: var(--3xs);
 		flex: 0 0 auto;
 		width: auto;
 	}
 
 	[data-orientation='horizontal'][data-size='medium'] & {
-		padding: var(--spacing-xs) var(--spacing-sm);
+		padding: var(--xs) var(--sm);
 	}
 
 	[data-orientation='horizontal'][data-size='small'] & {
-		padding: var(--spacing-2xs) var(--spacing-sm);
+		padding: var(--2xs) var(--sm);
 	}
 
 	// Vertical orientation + size variants
 	[data-orientation='vertical'] & {
 		flex-direction: row;
 		justify-content: flex-start;
-		gap: var(--spacing-3xs);
+		gap: var(--3xs);
 		width: 100%;
 	}
 
 	[data-orientation='vertical'][data-size='medium'] & {
-		padding: var(--spacing-sm) var(--spacing-standard);
-		padding-left: var(--spacing-xs);
+		padding: var(--sm) var(--standard);
+		padding-left: var(--xs);
 		border-radius: var(--exo-spacing-2x-small) 0 0 var(--exo-spacing-2x-small);
 	}
 
 	[data-orientation='vertical'][data-size='small'] & {
-		padding: var(--spacing-xs) var(--spacing-standard);
-		padding-left: var(--spacing-xs);
+		padding: var(--xs) var(--standard);
+		padding-left: var(--xs);
 		border-radius: var(--exo-spacing-2x-small) 0 0 var(--exo-spacing-2x-small);
 	}
 }
@@ -125,7 +125,7 @@ $disabled-opacity: 0.5;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 	flex-shrink: 0;
 }
 
@@ -148,7 +148,7 @@ $disabled-opacity: 0.5;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
-	color: var(--color-font-main) !important;
+	color: var(--font-main) !important;
 	cursor: pointer;
 	border-radius: var(--exo-spacing-2x-small);
 	transition:
@@ -156,24 +156,24 @@ $disabled-opacity: 0.5;
 		color $transition-duration;
 
 	&:hover {
-		background: var(--color-background-action-secondary);
-		color: var(--color-font-main);
+		background: var(--background-action-secondary);
+		color: var(--font-main);
 	}
 
 	&:active {
-		background: var(--color-background-tertiary);
+		background: var(--background-tertiary);
 	}
 
 	&:focus-visible {
-		outline: var(--spacing-4xs) solid var(--color-border-action-hover);
-		outline-offset: var(--spacing-4xs);
+		outline: var(--4xs) solid var(--color-border-action-hover);
+		outline-offset: var(--4xs);
 	}
 
 	[aria-selected='true'] & {
-		color: var(--color-background-selected);
+		color: var(--background-primary);
 
 		&:hover {
-			background: var(--color-background);
+			background: var(--background);
 		}
 	}
 
@@ -190,20 +190,20 @@ $disabled-opacity: 0.5;
 	align-items: center;
 	justify-content: center;
 	height: $badge-height;
-	padding: 0 var(--spacing-2xs);
-	border-radius: var(--spacing-lg);
-	background: var(--color-background-secondary);
-	color: var(--color-font-main);
-	line-height: var(--line-height-xs);
+	padding: 0 var(--2xs);
+	border-radius: var(--lg);
+	background: var(--background-secondary);
+	color: var(--font-main);
+	line-height: var(--body-line-height-xs);
 	flex-shrink: 0;
 }
 
 .menuContent {
-	background: var(--color-background);
-	border: $tab-border-width solid var(--color-border-secondary);
+	background: var(--background);
+	border: $tab-border-width solid var(--border-secondary);
 	border-radius: var(--exo-spacing-2x-small);
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
-	padding: var(--spacing-3xs);
+	padding: var(--3xs);
 	width: $menu-content-width;
 }
 
@@ -211,21 +211,21 @@ $disabled-opacity: 0.5;
 	@include typography.body-sm-reg;
 	display: flex;
 	align-items: center;
-	padding: var(--spacing-3xs);
+	padding: var(--3xs);
 	border-radius: var(--exo-spacing-2x-small);
 	cursor: pointer;
-	color: var(--color-font-main);
-	background: var(--color-background);
+	color: var(--font-main);
+	background: var(--background);
 	transition: background-color $transition-duration;
 	user-select: none;
 	white-space: nowrap;
 
 	&:hover {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 
 	&:active {
-		background: var(--color-background-tertiary);
+		background: var(--background-tertiary);
 	}
 
 	&[data-disabled] {
@@ -238,5 +238,5 @@ $disabled-opacity: 0.5;
 .menuItemLabel {
 	flex: 1;
 	min-width: 0;
-	line-height: var(--line-height-sm);
+	line-height: var(--body-line-height-small);
 }

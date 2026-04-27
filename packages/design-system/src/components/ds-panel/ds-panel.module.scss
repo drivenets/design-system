@@ -1,6 +1,6 @@
 .root {
 	position: relative;
-	background: var(--white);
+	background: var(--color-dap-gray-050);
 	padding: var(--spacing-6);
 	width: 20vw;
 	min-width: 240px;
@@ -10,7 +10,7 @@
 
 	&[data-state='open']:hover,
 	&[data-state='open']:has(:focus-visible) {
-		border-color: var(--color-border);
+		border-color: var(--border);
 	}
 
 	&[data-state='closed'] {
@@ -46,10 +46,10 @@
 	height: var(--size);
 	width: var(--size);
 	padding: 1px;
-	border: 1px solid var(--color-border-secondary);
+	border: 1px solid var(--border-secondary);
 	border-radius: 100%;
-	background: var(--white);
-	color: var(--color-icon-secondary);
+	background: var(--color-dap-gray-050);
+	color: var(--icon-action-secondary);
 	top: var(--spacing-6);
 	inset-inline-start: 100%;
 	margin-inline-start: calc(var(--size) / -2);
@@ -66,13 +66,13 @@
 
 	&:hover,
 	&:focus-visible {
-		color: var(--color-icon-primary);
-		border-color: var(--color-border-action-primary);
+		color: var(--icon-action);
+		border-color: var(--border-action-primary);
 		outline: none;
-		background: var(--color-background-action-tertiary);
+		background: var(--background-action-tertiary-hover);
 
 		.root:has(&) {
-			border-color: var(--color-border-action-primary);
+			border-color: var(--border-action-primary);
 
 			// Add an inset single-sided border on hover without affecting the layout.
 			&.variantDocked[data-state='open']::before {
@@ -83,7 +83,7 @@
 				width: 1px;
 				top: 0;
 				inset-inline-end: 0;
-				background: var(--color-border-action-primary);
+				background: var(--border-action-primary);
 				pointer-events: none;
 			}
 		}

@@ -33,18 +33,18 @@
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	color: var(--color-font-secondary);
-	padding: var(--spacing-xs);
+	color: var(--font-secondary);
+	padding: var(--xs);
 	border-radius: 2px;
 	cursor: pointer;
 	outline: none;
 
 	&[data-highlighted],
 	&:hover {
-		background: var(--color-background-selected-weak);
+		background: var(--background-secondary-hover);
 
 		.itemIcon {
-			color: var(--color-background-selected);
+			color: var(--background-primary);
 		}
 	}
 }
@@ -56,14 +56,14 @@
 	text-align: start;
 
 	.trigger:not([data-disabled]) & {
-		color: var(--color-font-secondary);
+		color: var(--font-secondary);
 	}
 }
 
 .multiSelectItemsContainer {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--spacing-3xs);
-	padding: var(--spacing-3xs);
-	border-bottom: 1px solid var(--color-border-secondary);
+	gap: var(--3xs);
+	padding: var(--3xs);
+	border-bottom: 1px solid var(--border-secondary);
 }
