@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks';
 import { DsTypography } from '../components/ds-typography';
-import { semanticElementMap } from '../components/ds-typography/ds-typography.config';
+import { typographyColors, typographyVariantConfig } from '../components/ds-typography/ds-typography.config';
 import styles from './typography.module.scss';
 
 <Meta title="Guidelines/Typography" />
@@ -13,9 +13,7 @@ export const getCssVariable = (name) => {
 	return value || '—';
 };
 
-export const allVariants = /** @type {Array<keyof typeof semanticElementMap>} */ (
-	Object.keys(semanticElementMap)
-);
+export const allVariants = Object.keys(typographyVariantConfig);
 
 export const VariantShowcase = () => {
 	const sections = [
@@ -46,7 +44,7 @@ export const VariantShowcase = () => {
     							{variant}
     						</DsTypography>
     						<DsTypography variant={variant}>
-    							{sampleText} ({semanticElementMap[variant]})
+    							{sampleText} ({typographyVariantConfig[variant].element})
     						</DsTypography>
     					</div>
     				))}
@@ -56,6 +54,21 @@ export const VariantShowcase = () => {
     );
 
 };
+
+export const ColorShowcase = () => (
+	<div className="sb-unstyled">
+		{typographyColors.map((color) => (
+			<div key={color} className={styles.comparisonItem}>
+				<DsTypography variant="code-sm-reg" className={styles.comparisonLabel}>
+					{color}
+				</DsTypography>
+				<DsTypography variant="body-md-md" color={color}>
+					{sampleText}
+				</DsTypography>
+			</div>
+		))}
+	</div>
+);
 
 # Typography
 
@@ -74,6 +87,15 @@ The curated set of styles exposed through `DsTypography`. Each row shows the var
 semantic element it renders.
 
 <VariantShowcase />
+
+## Color
+
+Pass a semantic `color` prop to tint text from the `--font-*` token family. Omit to inherit from
+the surrounding context (recommended). For one-off accents, the same prop accepts any CSS color
+value: hex, `rgb()`, `hsl()`, a CSS variable, or a named color — for example
+`color="var(--color-dap-purple-600)"` or `color="#ff8800"`.
+
+<ColorShowcase />
 
 ## Tokens
 
@@ -127,3 +149,24 @@ express what you need.
 | `--heading-paragraph-space-xl`    | {getCssVariable('heading-paragraph-space-xl')}    |
 | `--heading-paragraph-space-2xl`   | {getCssVariable('heading-paragraph-space-2xl')}   |
 | `--heading-paragraph-space-3xl`   | {getCssVariable('heading-paragraph-space-3xl')}   |
+
+## Color tokens
+
+| Token                           | Value                                           |
+| ------------------------------- | ----------------------------------------------- |
+| `--font-main`                   | {getCssVariable('font-main')}                   |
+| `--font-secondary`              | {getCssVariable('font-secondary')}              |
+| `--font-action`                 | {getCssVariable('font-action')}                 |
+| `--font-action-hover`           | {getCssVariable('font-action-hover')}           |
+| `--font-action-secondary`       | {getCssVariable('font-action-secondary')}       |
+| `--font-action-secondary-hover` | {getCssVariable('font-action-secondary-hover')} |
+| `--font-disabled`               | {getCssVariable('font-disabled')}               |
+| `--font-light-disabled`         | {getCssVariable('font-light-disabled')}         |
+| `--font-on-action`              | {getCssVariable('font-on-action')}              |
+| `--font-on-disabled`            | {getCssVariable('font-on-disabled')}            |
+| `--font-placeholder`            | {getCssVariable('font-placeholder')}            |
+| `--font-highlight`              | {getCssVariable('font-highlight')}              |
+| `--font-success`                | {getCssVariable('font-success')}                |
+| `--font-warning`                | {getCssVariable('font-warning')}                |
+| `--font-error`                  | {getCssVariable('font-error')}                  |
+| `--font-code`                   | {getCssVariable('font-code')}                   |

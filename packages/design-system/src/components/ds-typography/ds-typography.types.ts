@@ -1,13 +1,24 @@
-import type React from 'react';
-import type { semanticElementMap } from './ds-typography.config';
+import type { Ref } from 'react';
+import type { typographyColors, typographyVariantConfig } from './ds-typography.config';
 
-export type SemanticVariant = keyof typeof semanticElementMap;
+export type SemanticVariant = keyof typeof typographyVariantConfig;
+export type TypographyColor = (typeof typographyColors)[number];
 
 export interface DsTypographyProps {
+	/**
+	 * Ref to the rendered element.
+	 */
+	ref?: Ref<HTMLElement>;
 	/**
 	 * The semantic variant of the component
 	 */
 	variant: SemanticVariant;
+	/**
+	 * Text color. Semantic names map to `--font-*` tokens; raw CSS color values
+	 * (hex, rgb, hsl, CSS variables, named colors) pass through unchanged.
+	 * Omit to inherit.
+	 */
+	color?: TypographyColor | (string & {});
 	/**
 	 * Additional CSS class names
 	 */
@@ -17,7 +28,7 @@ export interface DsTypographyProps {
 	 */
 	style?: React.CSSProperties;
 	/**
-	 * When true, renders as Slot component for composition without extra DOM nodes
+	 * When true, composes typography styles onto the child element without extra DOM nodes
 	 */
 	asChild?: boolean;
 	/**
