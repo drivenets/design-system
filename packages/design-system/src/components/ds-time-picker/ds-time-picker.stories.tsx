@@ -5,7 +5,7 @@ import type { DsTimePickerProps } from './ds-time-picker.types';
 import styles from './ds-time-picker.stories.module.scss';
 
 const meta: Meta<typeof DsTimePicker> = {
-	title: 'Design System/TimePicker',
+	title: 'Components/TimePicker',
 	component: DsTimePicker,
 	parameters: {
 		layout: 'centered',

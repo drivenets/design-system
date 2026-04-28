@@ -1,0 +1,629 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { useState } from 'react';
+import { DsTypography } from '../components/ds-typography';
+import styles from './colors.module.scss';
+
+<Meta title="Guidelines/Colors" />
+
+export const getCssVariable = (name) => {
+	if (typeof window === 'undefined') return '';
+	const value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	return /^#([0-9a-f]{3,8})$/i.test(value) ? value.toUpperCase() : value;
+};
+
+export const Swatch = ({ variable, label }) => {
+	const [copied, setCopied] = useState(false);
+	const handleCopy = async () => {
+		const value = getCssVariable(variable);
+		if (!value) return;
+		await navigator.clipboard.writeText(`var(--${variable})`);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 1200);
+	};
+
+    const value = getCssVariable(variable);
+
+    return (
+    	<div className={styles.swatchCol}>
+    		<button
+    			type="button"
+    			className={styles.swatchItem}
+    			style={{ background: `var(--${variable})` }}
+    			onClick={handleCopy}
+    			title={`Click to copy var(--${variable})`}
+    			aria-label={`${label} ${value}`}
+    		>
+    			<span className={styles.toneCode}>{value}</span>
+    			{copied && <span className={styles.copiedTooltip}>Copied</span>}
+    		</button>
+    		<span className={styles.toneLabel}>{label}</span>
+    		<span className={styles.toneVariable}>--{variable}</span>
+    	</div>
+    );
+
+};
+
+export const SwatchGroup = ({ label, tones }) => (
+	<div className={`${styles.group} sb-unstyled`}>
+		<DsTypography variant="heading4" className={styles.groupLabel}>
+			{label}
+		</DsTypography>
+		<div className={styles.swatchRow}>
+			{tones.map((tone) => (
+				<Swatch key={tone.variable} variable={tone.variable} label={tone.label} />
+			))}
+		</div>
+	</div>
+);
+
+# Colors
+
+Reference CSS variables instead of hard-coding hex values.
+
+## Which layer should I use?
+
+Prefer the highest layer that fits: **semantic > alias > primitive**.
+
+- **Component code (SCSS / inline styles):** always use semantic tokens (`--background-action`,
+  `--font-main`, `--border-field`).
+- **Building a new semantic token:** compose from alias tokens (`--primary-700-default`,
+  `--info-600-default`).
+- **Building a new alias token:** reach for primitives (`--color-dap-blue-500`) only here.
+
+If you are editing a component and find yourself typing `--color-dap-*` or a bare alias, stop and look
+for a semantic token first.
+
+## 1. Primitive (DAP-root-colors)
+
+The raw palette. See [Which layer should I use?](#which-layer-should-i-use) — only reach for primitive
+tokens when building a new alias.
+
+<div className={styles.layer}>
+
+<SwatchGroup
+	label="Blue"
+	tones={[
+		{ label: '050', variable: 'color-dap-blue-050' },
+		{ label: '075', variable: 'color-dap-blue-075' },
+		{ label: '100', variable: 'color-dap-blue-100' },
+		{ label: '200', variable: 'color-dap-blue-200' },
+		{ label: '300', variable: 'color-dap-blue-300' },
+		{ label: '400', variable: 'color-dap-blue-400' },
+		{ label: '500', variable: 'color-dap-blue-500' },
+		{ label: '600', variable: 'color-dap-blue-600' },
+		{ label: '700', variable: 'color-dap-blue-700' },
+		{ label: '800', variable: 'color-dap-blue-800' },
+		{ label: '900', variable: 'color-dap-blue-900' },
+		{ label: '950', variable: 'color-dap-blue-950' },
+	]}
+/>
+
+<SwatchGroup
+	label="Brand"
+	tones={[
+		{ label: '50', variable: 'color-dap-brand-50' },
+		{ label: '100', variable: 'color-dap-brand-100' },
+		{ label: '200', variable: 'color-dap-brand-200' },
+		{ label: '300', variable: 'color-dap-brand-300' },
+		{ label: '400', variable: 'color-dap-brand-400' },
+		{ label: '500', variable: 'color-dap-brand-500' },
+		{ label: '600', variable: 'color-dap-brand-600' },
+		{ label: '700', variable: 'color-dap-brand-700' },
+	]}
+/>
+
+<SwatchGroup
+	label="Dark Blue"
+	tones={[
+		{ label: '050', variable: 'color-dap-dark-blue-050' },
+		{ label: '100', variable: 'color-dap-dark-blue-100' },
+		{ label: '150', variable: 'color-dap-dark-blue-150' },
+		{ label: '200', variable: 'color-dap-dark-blue-200' },
+		{ label: '300', variable: 'color-dap-dark-blue-300' },
+		{ label: '400', variable: 'color-dap-dark-blue-400' },
+		{ label: '500', variable: 'color-dap-dark-blue-500' },
+		{ label: '600', variable: 'color-dap-dark-blue-600' },
+		{ label: '700', variable: 'color-dap-dark-blue-700' },
+	]}
+/>
+
+<SwatchGroup
+	label="Dark Gray"
+	tones={[
+		{ label: '050', variable: 'color-dap-dark-gray-050' },
+		{ label: '100', variable: 'color-dap-dark-gray-100' },
+		{ label: '200', variable: 'color-dap-dark-gray-200' },
+	]}
+/>
+
+<SwatchGroup
+	label="Gray"
+	tones={[
+		{ label: '050', variable: 'color-dap-gray-050' },
+		{ label: '100', variable: 'color-dap-gray-100' },
+		{ label: '200', variable: 'color-dap-gray-200' },
+		{ label: '300', variable: 'color-dap-gray-300' },
+		{ label: '400', variable: 'color-dap-gray-400' },
+		{ label: '500', variable: 'color-dap-gray-500' },
+		{ label: '600', variable: 'color-dap-gray-600' },
+		{ label: '700', variable: 'color-dap-gray-700' },
+		{ label: '800', variable: 'color-dap-gray-800' },
+		{ label: '900', variable: 'color-dap-gray-900' },
+	]}
+/>
+
+<SwatchGroup
+	label="Green"
+	tones={[
+		{ label: '050', variable: 'color-dap-green-050' },
+		{ label: '075', variable: 'color-dap-green-075' },
+		{ label: '100', variable: 'color-dap-green-100' },
+		{ label: '200', variable: 'color-dap-green-200' },
+		{ label: '300', variable: 'color-dap-green-300' },
+		{ label: '400', variable: 'color-dap-green-400' },
+		{ label: '500', variable: 'color-dap-green-500' },
+		{ label: '600', variable: 'color-dap-green-600' },
+		{ label: '700', variable: 'color-dap-green-700' },
+		{ label: '800', variable: 'color-dap-green-800' },
+		{ label: '900', variable: 'color-dap-green-900' },
+	]}
+/>
+
+<SwatchGroup
+	label="Orange"
+	tones={[
+		{ label: '050', variable: 'color-dap-orange-050' },
+		{ label: '100', variable: 'color-dap-orange-100' },
+		{ label: '200', variable: 'color-dap-orange-200' },
+		{ label: '300', variable: 'color-dap-orange-300' },
+		{ label: '400', variable: 'color-dap-orange-400' },
+		{ label: '500', variable: 'color-dap-orange-500' },
+		{ label: '600', variable: 'color-dap-orange-600' },
+		{ label: '700', variable: 'color-dap-orange-700' },
+		{ label: '800', variable: 'color-dap-orange-800' },
+		{ label: '900', variable: 'color-dap-orange-900' },
+	]}
+/>
+
+<SwatchGroup
+	label="Purple"
+	tones={[
+		{ label: '050', variable: 'color-dap-purple-050' },
+		{ label: '100', variable: 'color-dap-purple-100' },
+		{ label: '200', variable: 'color-dap-purple-200' },
+		{ label: '300', variable: 'color-dap-purple-300' },
+		{ label: '400', variable: 'color-dap-purple-400' },
+		{ label: '500', variable: 'color-dap-purple-500' },
+		{ label: '600', variable: 'color-dap-purple-600' },
+		{ label: '700', variable: 'color-dap-purple-700' },
+		{ label: '800', variable: 'color-dap-purple-800' },
+		{ label: '900', variable: 'color-dap-purple-900' },
+		{ label: '950', variable: 'color-dap-purple-950' },
+	]}
+/>
+
+<SwatchGroup
+	label="Red"
+	tones={[
+		{ label: '050', variable: 'color-dap-red-050' },
+		{ label: '100', variable: 'color-dap-red-100' },
+		{ label: '200', variable: 'color-dap-red-200' },
+		{ label: '300', variable: 'color-dap-red-300' },
+		{ label: '400', variable: 'color-dap-red-400' },
+		{ label: '500', variable: 'color-dap-red-500' },
+		{ label: '600', variable: 'color-dap-red-600' },
+		{ label: '700', variable: 'color-dap-red-700' },
+	]}
+/>
+
+<SwatchGroup
+	label="Data"
+	tones={[
+		{ label: 'amber', variable: 'color-dap-data-amber' },
+		{ label: 'blue', variable: 'color-dap-data-blue' },
+		{ label: 'deep-fuchsia', variable: 'color-dap-data-deep-fuchsia' },
+		{ label: 'deep-purple', variable: 'color-dap-data-deep-purple' },
+		{ label: 'error', variable: 'color-dap-data-error' },
+		{ label: 'fuchsia', variable: 'color-dap-data-fuchsia' },
+		{ label: 'green', variable: 'color-dap-data-green' },
+		{ label: 'lime', variable: 'color-dap-data-lime' },
+		{ label: 'orange', variable: 'color-dap-data-orange' },
+		{ label: 'pink', variable: 'color-dap-data-pink' },
+		{ label: 'purple', variable: 'color-dap-data-purple' },
+		{ label: 'rose', variable: 'color-dap-data-rose' },
+		{ label: 'teal', variable: 'color-dap-data-teal' },
+		{ label: 'yellow', variable: 'color-dap-data-yellow' },
+		{ label: 'light-amber', variable: 'color-dap-data-light-amber' },
+		{ label: 'light-blue', variable: 'color-dap-data-light-blue' },
+		{ label: 'light-deep-fuchsia', variable: 'color-dap-data-light-deep-fuchsia' },
+		{ label: 'light-deep-purple', variable: 'color-dap-data-light-deep-purple' },
+		{ label: 'light-error', variable: 'color-dap-data-light-error' },
+		{ label: 'light-fuchsia', variable: 'color-dap-data-light-fuchsia' },
+		{ label: 'light-green', variable: 'color-dap-data-light-green' },
+		{ label: 'light-lime', variable: 'color-dap-data-light-lime' },
+		{ label: 'light-orange', variable: 'color-dap-data-light-orange' },
+		{ label: 'light-pink', variable: 'color-dap-data-light-pink' },
+		{ label: 'light-purple', variable: 'color-dap-data-light-purple' },
+		{ label: 'light-rose', variable: 'color-dap-data-light-rose' },
+		{ label: 'light-teal', variable: 'color-dap-data-light-teal' },
+		{ label: 'light-yellow', variable: 'color-dap-data-light-yellow' },
+	]}
+/>
+
+</div>
+
+## 2. Alias
+
+Intent-based aliases that point at the primitive palette. See [Which layer should I use?](#which-layer-should-i-use) —
+reach for these only when building a new semantic token (or extending one).
+
+<div className={styles.layer}>
+
+<SwatchGroup
+	label="Brand"
+	tones={[
+		{ label: '050', variable: 'brand-050' },
+		{ label: '100', variable: 'brand-100' },
+		{ label: '200', variable: 'brand-200' },
+		{ label: '300', variable: 'brand-300' },
+		{ label: '400', variable: 'brand-400' },
+		{ label: '500 (default)', variable: 'brand-500-default' },
+		{ label: '600', variable: 'brand-600' },
+		{ label: '700', variable: 'brand-700' },
+	]}
+/>
+
+<SwatchGroup
+	label="Darks"
+	tones={[
+		{ label: '050', variable: 'darks-050' },
+		{ label: '100', variable: 'darks-100' },
+		{ label: '200', variable: 'darks-200' },
+		{ label: '300', variable: 'darks-300' },
+		{ label: '400', variable: 'darks-400' },
+		{ label: '500', variable: 'darks-500' },
+		{ label: '600', variable: 'darks-600' },
+		{ label: '700', variable: 'darks-700' },
+	]}
+/>
+
+<SwatchGroup
+	label="Info"
+	tones={[
+		{ label: '050', variable: 'info-050' },
+		{ label: '100', variable: 'info-100' },
+		{ label: '200', variable: 'info-200' },
+		{ label: '300', variable: 'info-300' },
+		{ label: '400', variable: 'info-400' },
+		{ label: '500', variable: 'info-500' },
+		{ label: '600 (default)', variable: 'info-600-default' },
+		{ label: '700', variable: 'info-700' },
+		{ label: '800 (progress)', variable: 'info-800-progress' },
+		{ label: '900', variable: 'info-900' },
+		{ label: '950', variable: 'info-950' },
+	]}
+/>
+
+<SwatchGroup
+	label="Negative"
+	tones={[
+		{ label: '050', variable: 'negative-050' },
+		{ label: '100', variable: 'negative-100' },
+		{ label: '200', variable: 'negative-200' },
+		{ label: '300', variable: 'negative-300' },
+		{ label: '400 (default)', variable: 'negative-400-default' },
+		{ label: '500', variable: 'negative-500' },
+		{ label: '600', variable: 'negative-600' },
+		{ label: '700', variable: 'negative-700' },
+	]}
+/>
+
+<SwatchGroup label="Paused" tones={[{ label: '600', variable: 'paused-600' }]} />
+
+<SwatchGroup
+	label="Positive"
+	tones={[
+		{ label: '050', variable: 'positive-050' },
+		{ label: '100', variable: 'positive-100' },
+		{ label: '200', variable: 'positive-200' },
+		{ label: '300', variable: 'positive-300' },
+		{ label: '400', variable: 'positive-400' },
+		{ label: '500', variable: 'positive-500' },
+		{ label: '600', variable: 'positive-600' },
+		{ label: '700 (default)', variable: 'positive-700-default' },
+		{ label: '800', variable: 'positive-800' },
+		{ label: '900', variable: 'positive-900' },
+	]}
+/>
+
+<SwatchGroup
+	label="Primary"
+	tones={[
+		{ label: '050', variable: 'primary-050' },
+		{ label: '100', variable: 'primary-100' },
+		{ label: '200', variable: 'primary-200' },
+		{ label: '300', variable: 'primary-300' },
+		{ label: '400', variable: 'primary-400' },
+		{ label: '500', variable: 'primary-500' },
+		{ label: '600', variable: 'primary-600' },
+		{ label: '700 (default)', variable: 'primary-700-default' },
+		{ label: '800', variable: 'primary-800' },
+		{ label: '900', variable: 'primary-900' },
+		{ label: '950', variable: 'primary-950' },
+	]}
+/>
+
+<SwatchGroup
+	label="Secondary"
+	tones={[
+		{ label: '050', variable: 'secondary-050' },
+		{ label: '100', variable: 'secondary-100' },
+		{ label: '200', variable: 'secondary-200' },
+		{ label: '300', variable: 'secondary-300' },
+		{ label: '400', variable: 'secondary-400' },
+		{ label: '500 (net-4)', variable: 'secondary-500-net-4' },
+		{ label: '600 (net-2)', variable: 'secondary-600-net-2' },
+		{ label: '700 (net-1)', variable: 'secondary-700-net-1' },
+		{ label: '800', variable: 'secondary-800' },
+		{ label: '900', variable: 'secondary-900' },
+	]}
+/>
+
+<SwatchGroup
+	label="Warning"
+	tones={[
+		{ label: '050', variable: 'warning-050' },
+		{ label: '100', variable: 'warning-100' },
+		{ label: '200', variable: 'warning-200' },
+		{ label: '300', variable: 'warning-300' },
+		{ label: '400', variable: 'warning-400' },
+		{ label: '500', variable: 'warning-500' },
+		{ label: '600 (default)', variable: 'warning-600-default' },
+		{ label: '700', variable: 'warning-700' },
+		{ label: '800', variable: 'warning-800' },
+		{ label: '900', variable: 'warning-900' },
+	]}
+/>
+
+</div>
+
+## 3. Semantic (DAP uses)
+
+Role-based tokens bound to a UI purpose (background, border, font, icon, outline, schema, shadow, status).
+**This is the layer to use in component code.** See [Which layer should I use?](#which-layer-should-i-use).
+
+<div className={styles.layer}>
+
+<SwatchGroup
+	label="Background"
+	tones={[
+		{ label: 'background', variable: 'background' },
+		{ label: 'action', variable: 'background-action' },
+		{ label: 'action-hover', variable: 'background-action-hover' },
+		{ label: 'action-hover-weak', variable: 'background-action-hover-weak' },
+		{ label: 'action-inverse', variable: 'background-action-inverse' },
+		{ label: 'action-secondary', variable: 'background-action-secondary' },
+		{ label: 'action-secondary-hover', variable: 'background-action-secondary-hover' },
+		{ label: 'action-tertiary-hover', variable: 'background-action-tertiary-hover' },
+		{ label: 'active-status', variable: 'background-active-status' },
+		{ label: 'active-moderate', variable: 'background-active-moderate' },
+		{ label: 'brand', variable: 'background-brand' },
+		{ label: 'deselected', variable: 'background-deselected' },
+		{ label: 'deselected-hover', variable: 'background-deselected-hover' },
+		{ label: 'disable', variable: 'background-disable' },
+		{ label: 'error', variable: 'background-error' },
+		{ label: 'error-hover', variable: 'background-error-hover' },
+		{ label: 'error-secondary-hover', variable: 'background-error-secondary-hover' },
+		{ label: 'error-secondary-selected', variable: 'background-error-secondary-selected' },
+		{ label: 'error-selected', variable: 'background-error-selected' },
+		{ label: 'execution', variable: 'background-execution' },
+		{ label: 'info', variable: 'background-info' },
+		{ label: 'info-strong', variable: 'background-info-strong' },
+		{ label: 'light', variable: 'background-light' },
+		{ label: 'light-disabled', variable: 'background-light-disabled' },
+		{ label: 'light-primary', variable: 'background-light-primary' },
+		{ label: 'light-primary-hover', variable: 'background-light-primary-hover' },
+		{ label: 'light-primary-selected', variable: 'background-light-primary-selected' },
+		{ label: 'light-secondary-selected', variable: 'background-light-secondary-selected' },
+		{ label: 'neutral', variable: 'background-neutral' },
+		{ label: 'overlay', variable: 'background-overlay' },
+		{ label: 'page', variable: 'background-page' },
+		{ label: 'pending', variable: 'background-pending' },
+		{ label: 'primary', variable: 'background-primary' },
+		{ label: 'primary-hover', variable: 'background-primary-hover' },
+		{ label: 'primary-selected', variable: 'background-primary-selected' },
+		{ label: 'secondary', variable: 'background-secondary' },
+		{ label: 'secondary-hover', variable: 'background-secondary-hover' },
+		{ label: 'secondary-selected-weak', variable: 'background-secondary-selected-weak' },
+		{ label: 'success', variable: 'background-success' },
+		{ label: 'success-strong', variable: 'background-success-strong' },
+		{ label: 'success-strong-hover', variable: 'background-success-strong-hover' },
+		{ label: 'tertiary', variable: 'background-tertiary' },
+		{ label: 'tertiary-selected-weak', variable: 'background-tertiary-selected-weak' },
+		{ label: 'transparent-active', variable: 'background-transparent-active' },
+		{ label: 'transparent-hover', variable: 'background-transparent-hover' },
+		{ label: 'warning', variable: 'background-warning' },
+		{ label: 'warning-strong', variable: 'background-warning-strong' },
+	]}
+/>
+
+<SwatchGroup
+	label="Border"
+	tones={[
+		{ label: 'border', variable: 'border' },
+		{ label: 'action-primary', variable: 'border-action-primary' },
+		{ label: 'action-primary-hover', variable: 'border-action-primary-hover' },
+		{ label: 'action-secondary', variable: 'border-action-secondary' },
+		{ label: 'action-secondary-hover', variable: 'border-action-secondary-hover' },
+		{ label: 'contrast', variable: 'border-contrast' },
+		{ label: 'disabled', variable: 'border-disabled' },
+		{ label: 'error', variable: 'border-error' },
+		{ label: 'error-hover', variable: 'border-error-hover' },
+		{ label: 'error-weak', variable: 'border-error-weak' },
+		{ label: 'field', variable: 'border-field' },
+		{ label: 'field-focus', variable: 'border-field-focus' },
+		{ label: 'field-hover', variable: 'border-field-hover' },
+		{ label: 'inverse', variable: 'border-inverse' },
+		{ label: 'light-disabled', variable: 'border-light-disabled' },
+		{ label: 'light-secondary', variable: 'border-light-secondary' },
+		{ label: 'secondary', variable: 'border-secondary' },
+		{ label: 'secondary-hover', variable: 'border-secondary-hover' },
+		{ label: 'success', variable: 'border-success' },
+		{ label: 'tertiary', variable: 'border-tertiary' },
+		{ label: 'warning-strong', variable: 'border-warning-strong' },
+	]}
+/>
+
+<SwatchGroup
+	label="Font"
+	tones={[
+		{ label: 'action', variable: 'font-action' },
+		{ label: 'action-hover', variable: 'font-action-hover' },
+		{ label: 'action-secondary', variable: 'font-action-secondary' },
+		{ label: 'action-secondary-hover', variable: 'font-action-secondary-hover' },
+		{ label: 'code', variable: 'font-code' },
+		{ label: 'disabled', variable: 'font-disabled' },
+		{ label: 'error', variable: 'font-error' },
+		{ label: 'highlight', variable: 'font-highlight' },
+		{ label: 'light-disabled', variable: 'font-light-disabled' },
+		{ label: 'main', variable: 'font-main' },
+		{ label: 'on-action', variable: 'font-on-action' },
+		{ label: 'on-disabled', variable: 'font-on-disabled' },
+		{ label: 'placeholder', variable: 'font-placeholder' },
+		{ label: 'secondary', variable: 'font-secondary' },
+		{ label: 'success', variable: 'font-success' },
+		{ label: 'warning', variable: 'font-warning' },
+	]}
+/>
+
+<SwatchGroup
+	label="Icon"
+	tones={[
+		{ label: 'on-button', variable: 'icon-on-button' },
+		{ label: 'action', variable: 'icon-action' },
+		{ label: 'action-hover', variable: 'icon-action-hover' },
+		{ label: 'action-secondary', variable: 'icon-action-secondary' },
+		{ label: 'disabled', variable: 'icon-disabled' },
+		{ label: 'error', variable: 'icon-error' },
+		{ label: 'execution', variable: 'icon-execution' },
+		{ label: 'information-main', variable: 'icon-information-main' },
+		{ label: 'information-secondary', variable: 'icon-information-secondary' },
+		{ label: 'inverse', variable: 'icon-inverse' },
+		{ label: 'main', variable: 'icon-main' },
+		{ label: 'on-dark-disabled', variable: 'icon-on-dark-disabled' },
+		{ label: 'pause', variable: 'icon-pause' },
+		{ label: 'pending', variable: 'icon-pending' },
+		{ label: 'secondary', variable: 'icon-secondary' },
+		{ label: 'success', variable: 'icon-success' },
+		{ label: 'success-light', variable: 'icon-success-light' },
+		{ label: 'warning', variable: 'icon-warning' },
+		{ label: 'warning-light', variable: 'icon-warning-light' },
+	]}
+/>
+
+<SwatchGroup
+	label="Outline"
+	tones={[
+		{ label: 'extreme', variable: 'outline-extreme' },
+		{ label: 'inverse', variable: 'outline-inverse' },
+		{ label: 'moderate', variable: 'outline-moderate' },
+		{ label: 'strong', variable: 'outline-strong' },
+		{ label: 'weak', variable: 'outline-weak' },
+	]}
+/>
+
+<SwatchGroup
+	label="Schema (data visualization)"
+	tones={[
+		{ label: 'amber', variable: 'schema-amber' },
+		{ label: 'blue', variable: 'schema-blue' },
+		{ label: 'deep-fuchsia', variable: 'schema-deep-fuchsia' },
+		{ label: 'deep-purple', variable: 'schema-deep-purple' },
+		{ label: 'error', variable: 'schema-error' },
+		{ label: 'fuchsia', variable: 'schema-fuchsia' },
+		{ label: 'green', variable: 'schema-green' },
+		{ label: 'lime', variable: 'schema-lime' },
+		{ label: 'orange', variable: 'schema-orange' },
+		{ label: 'pink', variable: 'schema-pink' },
+		{ label: 'purple', variable: 'schema-purple' },
+		{ label: 'rose', variable: 'schema-rose' },
+		{ label: 'teal', variable: 'schema-teal' },
+		{ label: 'yellow', variable: 'schema-yellow' },
+		{ label: 'light-amber', variable: 'schema-light-amber' },
+		{ label: 'light-blue', variable: 'schema-light-blue' },
+		{ label: 'light-deep-fuchsia', variable: 'schema-light-deep-fuchsia' },
+		{ label: 'light-deep-purple', variable: 'schema-light-deep-purple' },
+		{ label: 'light-error', variable: 'schema-light-error' },
+		{ label: 'light-fuchsia', variable: 'schema-light-fuchsia' },
+		{ label: 'light-green', variable: 'schema-light-green' },
+		{ label: 'light-lime', variable: 'schema-light-lime' },
+		{ label: 'light-orange', variable: 'schema-light-orange' },
+		{ label: 'light-pink', variable: 'schema-light-pink' },
+		{ label: 'light-purple', variable: 'schema-light-purple' },
+		{ label: 'light-rose', variable: 'schema-light-rose' },
+		{ label: 'light-teal', variable: 'schema-light-teal' },
+		{ label: 'light-yellow', variable: 'schema-light-yellow' },
+	]}
+/>
+
+<SwatchGroup
+	label="Shadow"
+	tones={[
+		{ label: 'moderate', variable: 'shadow-moderate' },
+		{ label: 'strong', variable: 'shadow-strong' },
+		{ label: 'weak', variable: 'shadow-weak' },
+	]}
+/>
+
+<SwatchGroup
+	label="Status"
+	tones={[
+		{ label: 'bg-inactive', variable: 'status-bg-inactive' },
+		{ label: 'bg-neutral', variable: 'status-bg-neutral' },
+		{ label: 'bg-pending', variable: 'status-bg-pending' },
+		{ label: 'bg-progress', variable: 'status-bg-progress' },
+		{ label: 'bg-success', variable: 'status-bg-success' },
+		{ label: 'bg-warning', variable: 'status-bg-warning' },
+	]}
+/>
+
+<SwatchGroup
+	label="Net-gen"
+	tones={[
+		{ label: 'net-gen-1', variable: 'net-gen-1' },
+		{ label: 'net-gen-2', variable: 'net-gen-2' },
+		{ label: 'net-gen-hover-1', variable: 'net-gen-hover-1' },
+		{ label: 'net-gen-hover-2', variable: 'net-gen-hover-2' },
+		{ label: 'logo-dark-grey', variable: 'net-gen-logo-dark-grey' },
+		{ label: 'logo-dodger-blue', variable: 'net-gen-logo-dodger-blue' },
+		{ label: 'logo-light-grey', variable: 'net-gen-logo-light-grey' },
+		{ label: 'logo-ultramarine-blue', variable: 'net-gen-logo-ultramarine-blue' },
+	]}
+/>
+
+<SwatchGroup
+	label="Light buttons"
+	tones={[
+		{ label: 'primary', variable: 'light-buttons-primary' },
+		{ label: 'primary-hover', variable: 'light-buttons-primary-hover' },
+		{ label: 'secondary-background', variable: 'light-buttons-secondary-background' },
+		{ label: 'secondary-hover', variable: 'light-buttons-secondary-hover' },
+		{ label: 'secondary-light', variable: 'light-buttons-secondary-light' },
+		{ label: 'secondary-light-hover-bg', variable: 'light-buttons-secondary-light-hover-background' },
+		{ label: 'tertiary', variable: 'light-buttons-tertiary' },
+		{ label: 'tertiary-hover-bg', variable: 'light-buttons-tertiary-hover-background' },
+	]}
+/>
+
+<SwatchGroup
+	label="Brand accents"
+	tones={[
+		{ label: 'AT&T', variable: 'at-t-brand' },
+		{ label: 'Nokia', variable: 'nokia-brand' },
+		{ label: 'Primary green', variable: 'primary-green' },
+		{ label: 'Error', variable: 'error' },
+		{ label: 'Text on button', variable: 'text-on-button' },
+	]}
+/>
+
+</div>

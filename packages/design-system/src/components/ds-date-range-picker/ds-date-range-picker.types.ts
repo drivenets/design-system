@@ -7,15 +7,31 @@ export const dateRangePickerOrientations = ['horizontal', 'vertical'] as const;
 export type DateRangePickerOrientation = (typeof dateRangePickerOrientations)[number];
 
 export interface DsDateRangePickerLocale {
+	/**
+	 * Label shown on the "Clear all" button.
+	 */
 	clearAllLabel?: string;
 }
 
 export type DateRangeFormControlSlotProps = Partial<Omit<DsFormControlProps, 'children'>>;
 
 export interface DsDateRangePickerSlotProps {
+	/**
+	 * Props forwarded to the start-date `DsDatePicker`.
+	 */
 	startDatePicker?: DsDatePickerProps;
+	/**
+	 * Props forwarded to the end-date `DsDatePicker`.
+	 */
 	endDatePicker?: DsDatePickerProps;
+	/**
+	 * Props forwarded to the `DsFormControl` wrapping the start-date picker
+	 * (e.g., to set a label or helper text).
+	 */
 	startDateFormControl?: DateRangeFormControlSlotProps;
+	/**
+	 * Props forwarded to the `DsFormControl` wrapping the end-date picker.
+	 */
 	endDateFormControl?: DateRangeFormControlSlotProps;
 }
 
@@ -71,10 +87,22 @@ export interface DsDateRangePickerProps {
 	 */
 	closeOnSelect?: boolean;
 
+	/**
+	 * Whether both pickers are disabled.
+	 * @default false
+	 */
 	disabled?: boolean;
 
+	/**
+	 * Whether both pickers are read-only. Inputs are focusable but values cannot
+	 * be changed.
+	 * @default false
+	 */
 	readOnly?: boolean;
 
+	/**
+	 * Additional CSS class name applied to the range picker wrapper.
+	 */
 	className?: string;
 
 	/**

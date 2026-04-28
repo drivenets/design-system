@@ -1,6 +1,14 @@
-# Token Migration Table
+import { Meta } from '@storybook/addon-docs/blocks';
 
-Merges every token from the legacy files (`_root.scss`, `_colors.scss`, `_spacing.scss`) with every token from `_root_updated.scss`.
+<Meta title="Guidelines/Token Migration" />
+
+# Token Migration
+
+Shows the mapping of old tokens to new tokens.
+
+> When replacing an old token, prefer the semantic token that expresses the role even if an alias or
+> primitive has the same value. See the layer guidance on the
+> [Colors](?path=/docs/design-system-colors--docs) page.
 
 ## Legend
 
@@ -36,7 +44,7 @@ Merges every token from the legacy files (`_root.scss`, `_colors.scss`, `_spacin
 
 | Old Name            | New Name                | Status  |
 | ------------------- | ----------------------- | ------- |
-| `--color-brand-50`  | `--color-dap-brand-50`  | Renamed |
+| `--color-brand-50`  | `--color-dap-brand-050` | Renamed |
 | `--color-brand-100` | `--color-dap-brand-100` | Renamed |
 | `--color-brand-200` | `--color-dap-brand-200` | Renamed |
 | `--color-brand-300` | `--color-dap-brand-300` | Renamed |
@@ -47,19 +55,17 @@ Merges every token from the legacy files (`_root.scss`, `_colors.scss`, `_spacin
 
 ### Dark Blue
 
-| Old Name                | New Name                      | Status  |
-| ----------------------- | ----------------------------- | ------- |
-| `--color-dark-blue-50`  | `--color-dap-dark-blue-050`   | Renamed |
-| `--color-dark-blue-100` | `--color-dap-dark-blue-100`   | Renamed |
-| —                       | `--color-dap-dark-blue-150`   | New     |
-| —                       | `--color-dap-dark-blue-150-2` | New     |
-| —                       | `--color-dap-dark-blue-150-3` | New     |
-| `--color-dark-blue-300` | `--color-dap-dark-blue-200`   | Renamed |
-| `--color-dark-blue-200` | `--color-dap-dark-blue-300`   | Renamed |
-| —                       | `--color-dap-dark-blue-400`   | New     |
-| —                       | `--color-dap-dark-blue-500`   | New     |
-| `--color-dark-blue-400` | `--color-dap-dark-blue-600`   | Renamed |
-| `--color-dark-blue-500` | `--color-dap-dark-blue-700`   | Renamed |
+| Old Name                | New Name                    | Status  |
+| ----------------------- | --------------------------- | ------- |
+| `--color-dark-blue-50`  | `--color-dap-dark-blue-050` | Renamed |
+| `--color-dark-blue-100` | `--color-dap-dark-blue-100` | Renamed |
+| —                       | `--color-dap-dark-blue-150` | New     |
+| `--color-dark-blue-300` | `--color-dap-dark-blue-200` | Renamed |
+| `--color-dark-blue-200` | `--color-dap-dark-blue-300` | Renamed |
+| —                       | `--color-dap-dark-blue-400` | New     |
+| —                       | `--color-dap-dark-blue-500` | New     |
+| `--color-dark-blue-400` | `--color-dap-dark-blue-600` | Renamed |
+| `--color-dark-blue-500` | `--color-dap-dark-blue-700` | Renamed |
 
 ### Dark Gray
 

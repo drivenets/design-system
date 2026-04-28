@@ -5,7 +5,7 @@ import { controlStatuses } from '../ds-form-control.types';
 import { DefaultDescription } from './ds-form-control-stories-shared';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Design System/FormControl/TimePicker',
+	title: 'Components/FormControl/TimePicker',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',

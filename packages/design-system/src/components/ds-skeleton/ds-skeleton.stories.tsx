@@ -14,7 +14,7 @@ import styles from './ds-skeleton.stories.module.scss';
 import skeletonStyles from './ds-skeleton.module.scss';
 
 const meta: Meta<typeof DsSkeleton.Rect> = {
-	title: 'Design System/Skeleton',
+	title: 'Components/Skeleton',
 	component: DsSkeleton.Rect,
 	parameters: {
 		layout: 'padded',

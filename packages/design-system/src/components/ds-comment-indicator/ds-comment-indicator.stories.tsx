@@ -7,7 +7,7 @@ import type { CommentData, CommentAuthor } from '../ds-comment-card';
 import styles from './ds-comment-indicator.stories.module.scss';
 
 const meta: Meta<typeof DsCommentIndicator> = {
-	title: 'Design System/Comments/CommentIndicator',
+	title: 'Components/Comments/CommentIndicator',
 	component: DsCommentIndicator,
 	parameters: {
 		layout: 'centered',

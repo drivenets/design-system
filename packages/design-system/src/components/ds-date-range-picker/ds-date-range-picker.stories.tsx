@@ -11,7 +11,7 @@ import {
 import styles from './ds-date-range-picker.stories.module.scss';
 
 const meta: Meta<typeof DsDateRangePicker> = {
-	title: 'Design System/DateRangePicker',
+	title: 'Components/DateRangePicker',
 	component: DsDateRangePicker,
 	parameters: {
 		layout: 'centered',

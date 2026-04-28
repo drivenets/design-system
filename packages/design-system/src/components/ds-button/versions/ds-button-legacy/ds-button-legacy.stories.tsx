@@ -13,7 +13,7 @@ import {
 } from './ds-button-legacy.types';
 
 const meta: Meta<typeof DsButtonLegacy> = {
-	title: 'Design System/ButtonLegacy (Deprecated)',
+	title: 'Components/ButtonLegacy (Deprecated)',
 	component: DsButtonLegacy,
 	parameters: {
 		layout: 'centered',

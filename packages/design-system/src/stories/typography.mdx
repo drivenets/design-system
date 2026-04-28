@@ -1,0 +1,129 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { DsTypography } from '../components/ds-typography';
+import { semanticElementMap } from '../components/ds-typography/ds-typography.config';
+import styles from './typography.module.scss';
+
+<Meta title="Guidelines/Typography" />
+
+export const sampleText = 'Almost before we knew it, we had left the ground.';
+
+export const getCssVariable = (name) => {
+	if (typeof window === 'undefined') return '—';
+	const value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	return value || '—';
+};
+
+export const allVariants = /** @type {Array<keyof typeof semanticElementMap>} */ (
+	Object.keys(semanticElementMap)
+);
+
+export const VariantShowcase = () => {
+	const sections = [
+		{
+			title: 'Headings',
+			variants: allVariants.filter((key) => key.startsWith('heading')),
+		},
+		{
+			title: 'Body',
+			variants: allVariants.filter((key) => key.startsWith('body')),
+		},
+		{
+			title: 'Code',
+			variants: allVariants.filter((key) => key.startsWith('code')),
+		},
+	];
+
+    return (
+    	<div className="sb-unstyled">
+    		{sections.map((section) => (
+    			<section key={section.title} className={styles.variantGroup}>
+    				<DsTypography variant="heading3" className={styles.variantGroupTitle}>
+    					{section.title}
+    				</DsTypography>
+    				{section.variants.map((variant) => (
+    					<div key={variant} className={styles.comparisonItem}>
+    						<DsTypography variant="code-sm-reg" className={styles.comparisonLabel}>
+    							{variant}
+    						</DsTypography>
+    						<DsTypography variant={variant}>
+    							{sampleText} ({semanticElementMap[variant]})
+    						</DsTypography>
+    					</div>
+    				))}
+    			</section>
+    		))}
+    	</div>
+    );
+
+};
+
+# Typography
+
+Use [`DsTypography`](?path=/docs/design-system-typography--docs) with a `variant` prop to render text with
+the correct size, weight, line height, and semantic HTML element.
+
+## Which API should I use?
+
+Prefer the `variant` prop on `DsTypography` in component code. Reach for the raw typography tokens
+(`--body-font-size-md`, `--heading-line-height-2xl`, `--font-weight-semi-bold`) only in SCSS where a
+variant cannot express what you need (for example, a custom inline chart label).
+
+## Variants
+
+The curated set of styles exposed through `DsTypography`. Each row shows the variant key and the
+semantic element it renders.
+
+<VariantShowcase />
+
+## Tokens
+
+Low-level CSS custom properties backing the variants above. Reach for these only when a variant cannot
+express what you need.
+
+## Font family
+
+| Token                | Value                                |
+| -------------------- | ------------------------------------ |
+| `--font-family-base` | {getCssVariable('font-family-base')} |
+| `--font-family-code` | {getCssVariable('font-family-code')} |
+
+## Font weight
+
+| Token                      | Value                                      |
+| -------------------------- | ------------------------------------------ |
+| `--font-weight-regular`    | {getCssVariable('font-weight-regular')}    |
+| `--font-weight-medium`     | {getCssVariable('font-weight-medium')}     |
+| `--font-weight-semi-bold`  | {getCssVariable('font-weight-semi-bold')}  |
+| `--font-weight-bold`       | {getCssVariable('font-weight-bold')}       |
+| `--font-weight-extra-bold` | {getCssVariable('font-weight-extra-bold')} |
+
+## Body type primitives
+
+| Token                          | Value                                          |
+| ------------------------------ | ---------------------------------------------- |
+| `--body-font-size-xs`          | {getCssVariable('body-font-size-xs')}          |
+| `--body-font-size-sm`          | {getCssVariable('body-font-size-sm')}          |
+| `--body-font-size-md`          | {getCssVariable('body-font-size-md')}          |
+| `--body-line-height-xs`        | {getCssVariable('body-line-height-xs')}        |
+| `--body-line-height-small`     | {getCssVariable('body-line-height-small')}     |
+| `--body-line-height-md`        | {getCssVariable('body-line-height-md')}        |
+| `--body-paragraph-space-xs`    | {getCssVariable('body-paragraph-space-xs')}    |
+| `--body-paragraph-space-small` | {getCssVariable('body-paragraph-space-small')} |
+| `--body-paragraph-space-md`    | {getCssVariable('body-paragraph-space-md')}    |
+
+## Heading type primitives
+
+| Token                             | Value                                             |
+| --------------------------------- | ------------------------------------------------- |
+| `--heading-font-size-large`       | {getCssVariable('heading-font-size-large')}       |
+| `--heading-font-size-xl`          | {getCssVariable('heading-font-size-xl')}          |
+| `--heading-font-size-2xl`         | {getCssVariable('heading-font-size-2xl')}         |
+| `--heading-font-size-3xl`         | {getCssVariable('heading-font-size-3xl')}         |
+| `--heading-line-height-large`     | {getCssVariable('heading-line-height-large')}     |
+| `--heading-line-height-xl`        | {getCssVariable('heading-line-height-xl')}        |
+| `--heading-line-height-2xl`       | {getCssVariable('heading-line-height-2xl')}       |
+| `--heading-line-height-3xl`       | {getCssVariable('heading-line-height-3xl')}       |
+| `--heading-paragraph-space-large` | {getCssVariable('heading-paragraph-space-large')} |
+| `--heading-paragraph-space-xl`    | {getCssVariable('heading-paragraph-space-xl')}    |
+| `--heading-paragraph-space-2xl`   | {getCssVariable('heading-paragraph-space-2xl')}   |
+| `--heading-paragraph-space-3xl`   | {getCssVariable('heading-paragraph-space-3xl')}   |

@@ -10,7 +10,7 @@ ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -22,7 +22,7 @@ ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 			code: `
 				export default {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 			`,
 		},
@@ -32,7 +32,7 @@ ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 			code: `
 				export default {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				} satisfies Meta<typeof DsButton>;
 			`,
 		},
@@ -42,7 +42,7 @@ ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 			code: `
 				export default {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				} as Meta<typeof DsButton>;
 			`,
 		},
@@ -62,7 +62,7 @@ ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 			name: 'meta without component property',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -104,7 +104,7 @@ ruleTester.run('require-story-meta-annotations', requireStoryMetaAnnotations, {
 			name: 'inline export without component property',
 			code: `
 				export default {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 			`,
 			errors: [

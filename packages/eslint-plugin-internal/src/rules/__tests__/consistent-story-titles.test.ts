@@ -16,11 +16,11 @@ const ruleTester = new RuleTester({
 ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 	valid: [
 		{
-			name: 'correct title with Design System category',
+			name: 'correct title with Components category',
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -44,7 +44,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button/Primary',
+					title: 'Components/Button/Primary',
 				};
 
 				export default meta;
@@ -56,7 +56,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/SubGroup/Button',
+					title: 'Components/SubGroup/Button',
 				};
 
 				export default meta;
@@ -78,7 +78,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			name: 'valid category without component property',
 			code: `
 				const meta = {
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -90,7 +90,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: Button,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -106,7 +106,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 
 				const meta = {
 					component: Button.Root,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -127,7 +127,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				export default {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 			`,
 		},
@@ -137,7 +137,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsAlertBanner,
-					title: 'Design System/AlertBanner',
+					title: 'Components/AlertBanner',
 				};
 
 				export default meta;
@@ -151,7 +151,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 
 				const meta = {
 					component: DsActiveNamespacedComponent.Root,
-					title: 'Design System/ActiveNamespacedComponent',
+					title: 'Components/ActiveNamespacedComponent',
 				};
 
 				export default meta;
@@ -163,7 +163,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button (Deprecated)',
+					title: 'Components/Button (Deprecated)',
 				};
 
 				export default meta;
@@ -185,7 +185,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			output: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -214,7 +214,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			output: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -235,7 +235,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Card',
+					title: 'Components/Card',
 				};
 
 				export default meta;
@@ -250,7 +250,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 4,
 					column: 13,
 					endLine: 4,
-					endColumn: 33,
+					endColumn: 30,
 				},
 			],
 		},
@@ -260,7 +260,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/DsButton',
+					title: 'Components/DsButton',
 				};
 
 				export default meta;
@@ -268,7 +268,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			output: `
 				const meta = {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -282,7 +282,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 4,
 					column: 13,
 					endLine: 4,
-					endColumn: 37,
+					endColumn: 34,
 				},
 			],
 		},
@@ -296,7 +296,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 
 				const meta = {
 					component: DsButton.Root,
-					title: 'Design System/DsButton',
+					title: 'Components/DsButton',
 				};
 
 				export default meta;
@@ -308,7 +308,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 
 				const meta = {
 					component: DsButton.Root,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 
 				export default meta;
@@ -322,7 +322,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 8,
 					column: 13,
 					endLine: 8,
-					endColumn: 37,
+					endColumn: 34,
 				},
 			],
 		},
@@ -340,7 +340,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			output: `
 				const meta = {
 					component: DsAlertBanner,
-					title: 'Design System/AlertBanner/Inline',
+					title: 'Components/AlertBanner/Inline',
 				};
 
 				export default meta;
@@ -361,7 +361,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			code: `
 				const meta = {
 					component: DsAlertBanner,
-					title: 'Design System/DsAlertBanner/Inline',
+					title: 'Components/DsAlertBanner/Inline',
 				};
 
 				export default meta;
@@ -369,7 +369,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			output: `
 				const meta = {
 					component: DsAlertBanner,
-					title: 'Design System/AlertBanner/Inline',
+					title: 'Components/AlertBanner/Inline',
 				};
 
 				export default meta;
@@ -383,7 +383,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					line: 4,
 					column: 13,
 					endLine: 4,
-					endColumn: 49,
+					endColumn: 46,
 				},
 			],
 		},
@@ -395,7 +395,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 
 				const meta = {
 					component: DsActiveNamespacedComponent.Root,
-					title: 'Design System/DsActiveNamespacedComponent',
+					title: 'Components/DsActiveNamespacedComponent',
 				};
 
 				export default meta;
@@ -405,7 +405,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 
 				const meta = {
 					component: DsActiveNamespacedComponent.Root,
-					title: 'Design System/ActiveNamespacedComponent',
+					title: 'Components/ActiveNamespacedComponent',
 				};
 
 				export default meta;
@@ -431,7 +431,7 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 			output: `
 				export default {
 					component: DsButton,
-					title: 'Design System/Button',
+					title: 'Components/Button',
 				};
 			`,
 			errors: [

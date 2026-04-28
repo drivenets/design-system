@@ -13,7 +13,7 @@ import type { DsDrawerColumns, DsDrawerProps } from './ds-drawer.types';
 import type { ResponsiveValue } from '../../utils/responsive';
 
 const meta: Meta<typeof DsDrawer> = {
-	title: 'Design System/Drawer',
+	title: 'Components/Drawer',
 	component: DsDrawer,
 	parameters: {
 		layout: 'fullscreen',

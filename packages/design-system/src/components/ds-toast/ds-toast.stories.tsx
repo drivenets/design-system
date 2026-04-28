@@ -8,7 +8,7 @@ import { type DsToastProps, type ToastVariant, toastVariants } from './ds-toast.
 import styles from './ds-toast.stories.module.scss';
 
 const meta: Meta<typeof DsToast> = {
-	title: 'Design System/Toast',
+	title: 'Components/Toast',
 	component: DsToast,
 	parameters: {
 		layout: 'centered',

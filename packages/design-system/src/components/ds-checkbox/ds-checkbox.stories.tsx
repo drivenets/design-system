@@ -7,7 +7,7 @@ import { checkboxVariants } from './ds-checkbox.types';
 import styles from './ds-checkbox.stories.module.scss';
 
 const meta: Meta<typeof DsCheckbox> = {
-	title: 'Design System/Checkbox',
+	title: 'Components/Checkbox',
 	component: DsCheckbox,
 	parameters: {
 		layout: 'centered',

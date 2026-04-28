@@ -1,0 +1,30 @@
+.variantGroup {
+	margin-bottom: var(--xl);
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.variantGroupTitle {
+	margin-bottom: var(--md);
+	color: var(--font-main);
+}
+
+.comparisonItem {
+	display: flex;
+	align-items: center;
+	gap: var(--standard);
+	margin-bottom: var(--sm);
+	padding: var(--xs) var(--sm);
+	border-radius: 4px;
+	background-color: var(--background);
+}
+
+.comparisonLabel {
+	min-width: 200px;
+	padding: var(--3xs) var(--xs);
+	border-radius: 4px;
+	background-color: var(--background-tertiary);
+	color: var(--font-secondary);
+}

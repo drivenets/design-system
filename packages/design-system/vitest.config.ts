@@ -44,6 +44,7 @@ export default defineConfig({
 					name: 'unit',
 					include: [testPattern('unit')],
 					css: true,
+					isolate: false,
 				},
 			},
 			{
@@ -51,6 +52,7 @@ export default defineConfig({
 				test: {
 					name: 'requires-build',
 					include: [testPattern('requires-build')],
+					isolate: false,
 				},
 			},
 			{
@@ -85,6 +87,7 @@ export default defineConfig({
 				],
 				test: {
 					name: 'storybook',
+					isolate: false,
 					testTimeout: 30000, // sample-form.stories.ts takes ~26s to run
 					browser: {
 						enabled: true,

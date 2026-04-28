@@ -1,26 +1,22 @@
-import {
-	type ControllerRenderProps,
-	type SubmitHandler,
-	Controller,
-	FormProvider,
-	useForm,
-} from 'react-hook-form';
+import { Controller, FormProvider, useController, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DsFormControl } from '../../components/ds-form-control';
 import { DsDateRangePicker } from '../../components/ds-date-range-picker';
 import { DsRadioGroup } from '../../components/ds-radio-group';
 import { DsCheckbox } from '../../components/ds-checkbox';
-import { DsButton } from '../../components/ds-button';
+import { DsTypography } from '../../components/ds-typography';
 import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
+import { useState } from 'react';
+import { DsButtonV3 } from '../../components/ds-button-v3';
 
 const defaultValues = {
 	name: '',
 	email: '',
 	description: '',
-	quantity: undefined,
-	birthDate: undefined,
-	eventStartDate: undefined,
-	eventEndDate: undefined,
+	quantity: null,
+	birthDate: null,
+	eventStartDate: null,
+	eventEndDate: null,
 	acceptTerms: false,
 	subscription: '',
 	contactMethod: '',
@@ -34,31 +30,21 @@ const SampleForm = () => {
 	});
 
 	const {
-		register,
 		handleSubmit,
-		formState: { errors, isValid, touchedFields, isDirty },
-		setValue,
-		watch,
-		trigger,
-		reset,
+		formState: { errors },
 		control,
 	} = methods;
 
-	const onSubmit: SubmitHandler<SampleFormValues> = (data: SampleFormValues) => {
-		alert(JSON.stringify(data, null, 2));
-		reset(defaultValues as never);
-	};
+	const { field: eventStartField } = useController({ name: 'eventStartDate', control });
+	const { field: eventEndField } = useController({ name: 'eventEndDate', control });
 
-	const handleValueChange = (
-		field: ControllerRenderProps<SampleFormValues> | keyof SampleFormValues,
-		value: string | number | true | undefined,
-	) => {
-		const name = typeof field === 'string' ? field : field.name;
-		setValue(name, value ?? '', {
-			shouldValidate: true,
-			shouldTouch: true,
-			shouldDirty: true,
-		});
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	const onSubmit = async (data: SampleFormValues) => {
+		setIsSubmitting(true);
+		await new Promise((resolve) => setTimeout(resolve, 1000));
+		alert(JSON.stringify(data, null, 2));
+		setIsSubmitting(false);
 	};
 
 	return (
@@ -67,131 +53,115 @@ const SampleForm = () => {
 				onSubmit={handleSubmit(onSubmit)}
 				style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '300px' }}
 			>
-				<DsFormControl
-					id="name"
-					label="Name"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.name ? errors.name?.message : ''}
-				>
-					<Controller
-						name="name"
-						control={control}
-						render={({ field }) => (
-							<DsFormControl.TextInput
-								value={field.value}
-								placeholder="Enter your name"
-								onChange={(event) => handleValueChange(field, event.target.value)}
-								onBlur={(event) => handleValueChange(field, event.target.value)}
-							/>
-						)}
-					/>
-				</DsFormControl>
+				<Controller
+					name="name"
+					control={control}
+					render={({ field, fieldState }) => (
+						<DsFormControl
+							label="Name"
+							required
+							status="error"
+							messageIcon="cancel"
+							message={fieldState.error?.message}
+						>
+							<DsFormControl.TextInput placeholder="Enter your name" {...field} />
+						</DsFormControl>
+					)}
+				/>
 
-				<DsFormControl
-					label="Email"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.email ? errors.email?.message : ''}
-				>
-					<Controller
-						name="email"
-						control={control}
-						render={({ field }) => (
-							<DsFormControl.TextInput
-								type="email"
-								value={field.value}
-								placeholder="Enter your email"
-								onChange={(event) => handleValueChange(field, event.target.value)}
-								onBlur={(event) => handleValueChange(field, event.target.value)}
-							/>
-						)}
-					/>
-				</DsFormControl>
+				<Controller
+					name="email"
+					control={control}
+					render={({ field, fieldState }) => (
+						<DsFormControl
+							label="Email"
+							required
+							status="error"
+							messageIcon="cancel"
+							message={fieldState.error?.message}
+						>
+							<DsFormControl.TextInput type="email" placeholder="Enter your email" {...field} />
+						</DsFormControl>
+					)}
+				/>
 
-				<DsFormControl
-					label="Quantity"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.quantity ? errors.quantity?.message : ''}
-				>
-					<Controller
-						name="quantity"
-						control={control}
-						render={({ field }) => (
+				<Controller
+					name="quantity"
+					control={control}
+					render={({ field, fieldState }) => (
+						<DsFormControl
+							label="Quantity"
+							required
+							status="error"
+							messageIcon="cancel"
+							message={fieldState.error?.message}
+						>
 							<DsFormControl.NumberInput
 								placeholder="Enter quantity"
 								min={1}
 								max={100}
 								step={1}
-								onValueChange={(value) => handleValueChange(field, value)}
+								value={field.value}
+								onValueChange={field.onChange}
+								onBlur={field.onBlur}
 							/>
-						)}
-					/>
-				</DsFormControl>
+						</DsFormControl>
+					)}
+				/>
 
-				<DsFormControl
-					label="Birth Date"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.birthDate ? errors.birthDate?.message : undefined}
-				>
-					<Controller
-						name="birthDate"
-						control={control}
-						render={({ field }) => (
-							<DsFormControl.DatePicker
-								value={field.value ? new Date(field.value) : null}
-								onChange={(date) => {
-									handleValueChange(field, date ? toUTCMidnight(date).toISOString() : '');
-								}}
-							/>
-						)}
-					/>
-				</DsFormControl>
+				<Controller
+					name="birthDate"
+					control={control}
+					render={({ field, fieldState }) => (
+						<DsFormControl
+							label="Birth Date"
+							required
+							status="error"
+							messageIcon="cancel"
+							message={fieldState.error?.message}
+						>
+							<DsFormControl.DatePicker {...field} />
+						</DsFormControl>
+					)}
+				/>
 
 				<DsDateRangePicker
-					value={[
-						watch('eventStartDate') ? new Date(watch('eventStartDate')) : null,
-						watch('eventEndDate') ? new Date(watch('eventEndDate')) : null,
-					]}
+					value={[eventStartField.value, eventEndField.value]}
 					onChange={([start, end]) => {
-						handleValueChange('eventStartDate', start ? toUTCMidnight(start).toISOString() : '');
-						handleValueChange('eventEndDate', end ? toUTCMidnight(end).toISOString() : '');
+						eventStartField.onChange(start);
+						eventEndField.onChange(end);
 					}}
 					orientation="vertical"
 					hideClearAll
 					slotProps={{
+						startDatePicker: { onBlur: eventStartField.onBlur },
+						endDatePicker: { onBlur: eventEndField.onBlur },
 						startDateFormControl: {
 							required: true,
 							status: 'error',
 							messageIcon: 'cancel',
-							message: touchedFields.eventStartDate ? errors.eventStartDate?.message : undefined,
+							message: errors.eventStartDate?.message,
 						},
 						endDateFormControl: {
 							required: true,
 							status: 'error',
 							messageIcon: 'cancel',
-							message: touchedFields.eventEndDate ? errors.eventEndDate?.message : undefined,
+							message: errors.eventEndDate?.message,
 						},
 					}}
 				/>
 
-				<DsFormControl
-					label="Preferred Contact Method"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.contactMethod ? errors.contactMethod?.message : ''}
-				>
-					<Controller
-						name="contactMethod"
-						control={control}
-						render={({ field }) => (
+				<Controller
+					name="contactMethod"
+					control={control}
+					render={({ field, fieldState }) => (
+						<DsFormControl
+							label="Preferred Contact Method"
+							required
+							status="error"
+							messageIcon="cancel"
+							message={fieldState.error?.message}
+						>
 							<DsFormControl.Select
 								value={field.value}
 								placeholder="Select a contact method"
@@ -202,62 +172,75 @@ const SampleForm = () => {
 									{ label: 'In-App Notification', value: 'in_app', icon: 'notifications' },
 								]}
 								clearable
-								onClear={() => handleValueChange(field, '')}
-								onValueChange={(value) => handleValueChange(field, value)}
-								onBlur={() => handleValueChange(field, field.value)}
+								onClear={() => field.onChange('')}
+								onValueChange={field.onChange}
+								onBlur={field.onBlur}
 							/>
-						)}
-					/>
-				</DsFormControl>
-
-				<DsFormControl
-					label="Description"
-					required
-					status="error"
-					messageIcon="cancel"
-					message={touchedFields.description ? errors.description?.message : ''}
-				>
-					<DsFormControl.Textarea
-						placeholder="Enter your description"
-						{...register('description', {
-							onBlur: () => trigger('description'),
-							onChange: () => trigger('description'),
-						})}
-					/>
-				</DsFormControl>
-
-				<DsRadioGroup.Root
-					value={watch('subscription')}
-					onValueChange={(value) => handleValueChange('subscription', value as string)}
-				>
-					<DsRadioGroup.Item value="basic" label="Basic" />
-					<DsRadioGroup.Item value="pro" label="Pro" />
-					<DsRadioGroup.Item value="enterprise" label="Enterprise" />
-				</DsRadioGroup.Root>
-				{errors.subscription && (
-					<span style={{ color: 'red', fontSize: '12px' }}>{errors.subscription.message}</span>
-				)}
-
-				<DsCheckbox
-					label="I accept the terms and conditions"
-					checked={watch('acceptTerms')}
-					onCheckedChange={(value) => handleValueChange('acceptTerms', value as true)}
+						</DsFormControl>
+					)}
 				/>
-				{errors.acceptTerms && (
-					<span style={{ color: 'red', fontSize: '12px' }}>{errors.acceptTerms.message}</span>
-				)}
 
-				<DsButton type="submit" disabled={!isDirty || !isValid}>
+				<Controller
+					name="description"
+					control={control}
+					render={({ field, fieldState }) => (
+						<DsFormControl
+							label="Description"
+							required
+							status="error"
+							messageIcon="cancel"
+							message={fieldState.error?.message}
+						>
+							<DsFormControl.Textarea placeholder="Enter your description" {...field} />
+						</DsFormControl>
+					)}
+				/>
+
+				<Controller
+					name="subscription"
+					control={control}
+					render={({ field, fieldState }) => (
+						<>
+							<DsRadioGroup.Root value={field.value} onValueChange={(value) => field.onChange(value ?? '')}>
+								<DsRadioGroup.Item value="basic" label="Basic" />
+								<DsRadioGroup.Item value="pro" label="Pro" />
+								<DsRadioGroup.Item value="enterprise" label="Enterprise" />
+							</DsRadioGroup.Root>
+							{fieldState.error && (
+								<DsTypography variant="body-xs-reg" style={{ color: 'var(--background-error)' }}>
+									{fieldState.error.message}
+								</DsTypography>
+							)}
+						</>
+					)}
+				/>
+
+				<Controller
+					name="acceptTerms"
+					control={control}
+					render={({ field, fieldState }) => (
+						<>
+							<DsCheckbox
+								label="I accept the terms and conditions"
+								checked={field.value}
+								onCheckedChange={(checked) => field.onChange(checked === true)}
+								onBlur={field.onBlur}
+							/>
+							{fieldState.error && (
+								<DsTypography variant="body-xs-reg" style={{ color: 'var(--background-error)' }}>
+									{fieldState.error.message}
+								</DsTypography>
+							)}
+						</>
+					)}
+				/>
+
+				<DsButtonV3 type="submit" disabled={isSubmitting} loading={isSubmitting}>
 					Submit
-				</DsButton>
+				</DsButtonV3>
 			</form>
 		</FormProvider>
 	);
-};
-
-// Normalize dates to UTC to account for timezone differences in local machines vs CI.
-const toUTCMidnight = (date: Date) => {
-	return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
 };
 
 export default SampleForm;

@@ -7,7 +7,7 @@ import DsPopover from './ds-popover';
 import './ds-popover.stories.scss';
 
 const meta: Meta<typeof DsPopover> = {
-	title: 'Design System/Popover',
+	title: 'Components/Popover',
 	component: DsPopover,
 	parameters: {
 		layout: 'centered',

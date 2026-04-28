@@ -6,7 +6,7 @@ import { useState } from 'react';
 import type { DsPanelVariant } from './ds-panel.types';
 
 export default {
-	title: 'Design System/Panel',
+	title: 'Components/Panel',
 	component: DsPanel,
 	parameters: {
 		layout: 'centered',

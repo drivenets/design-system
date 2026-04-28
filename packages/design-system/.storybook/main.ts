@@ -1,12 +1,26 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
+import remarkGfm from 'remark-gfm';
 
 // @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
 import { reactCompilerRolldownPlugin } from '../rolldown/react-compiler-rolldown-plugin.ts';
 
 const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-	addons: ['@storybook/addon-vitest', '@storybook/addon-a11y', '@storybook/addon-docs'],
+	addons: [
+		'@storybook/addon-vitest',
+		'@storybook/addon-a11y',
+		{
+			name: '@storybook/addon-docs',
+			options: {
+				mdxPluginOptions: {
+					mdxCompileOptions: {
+						remarkPlugins: [remarkGfm],
+					},
+				},
+			},
+		},
+	],
 	framework: '@storybook/react-vite',
 	viteFinal: (viteConfig) => {
 		if (!Array.isArray(viteConfig.plugins)) {

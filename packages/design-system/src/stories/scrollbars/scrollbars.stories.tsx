@@ -5,7 +5,7 @@ import styles from './scrollbars.stories.module.scss';
 
 // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
 const meta: Meta = {
-	title: 'Design System/Scrollbars',
+	title: 'Components/Scrollbars',
 	parameters: {
 		layout: 'padded',
 		docs: {

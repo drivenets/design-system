@@ -8,7 +8,7 @@ import styles from './ds-form-control.stories.module.scss';
 import { DsIcon } from '../../ds-icon';
 
 const meta: Meta<typeof DsFormControl> = {
-	title: 'Design System/FormControl/DateInput (Deprecated)',
+	title: 'Components/FormControl/DateInput (Deprecated)',
 	component: DsFormControl.DateInput,
 	parameters: {
 		layout: 'centered',

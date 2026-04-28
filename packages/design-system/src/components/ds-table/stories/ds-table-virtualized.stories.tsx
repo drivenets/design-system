@@ -13,7 +13,7 @@ import { fullHeightDecorator } from './common/story-decorators';
 import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Design System/Table/Virtualized',
+	title: 'Components/Table/Virtualized',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

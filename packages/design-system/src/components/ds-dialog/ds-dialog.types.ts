@@ -40,7 +40,16 @@ export interface DsDialogProps {
 	/**
 	 * Custom fixed position (e.g., { top: number, left: number })
 	 */
-	customPosition?: { top: number; left: number };
+	customPosition?: {
+		/**
+		 * Distance in pixels from the top of the viewport.
+		 */
+		top: number;
+		/**
+		 * Distance in pixels from the left of the viewport.
+		 */
+		left: number;
+	};
 	/**
 	 * If true, show modal overlay and center dialog (default: true)
 	 */

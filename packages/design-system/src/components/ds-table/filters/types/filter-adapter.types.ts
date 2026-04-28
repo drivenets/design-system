@@ -106,6 +106,12 @@ export interface FilterState<TValue> {
  * Column filter for TanStack Table
  */
 export interface ColumnFilterState<TValue> {
+	/**
+	 * Column identifier this filter applies to (matches the column `accessorKey`).
+	 */
 	id: string;
+	/**
+	 * Current filter value, passed to the column's filter function.
+	 */
 	value: TValue;
 }

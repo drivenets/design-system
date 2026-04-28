@@ -14,6 +14,22 @@ export interface DsModalProps extends Pick<
 	'modal' | 'closeOnEscape' | 'closeOnInteractOutside'
 > {
 	/**
+	 * Whether the modal traps focus and blocks interaction with the page behind the
+	 * backdrop. When `false`, users can continue interacting with the underlying page.
+	 * @default true
+	 */
+	modal?: DialogProps['modal'];
+	/**
+	 * Whether pressing the Escape key closes the modal.
+	 * @default true
+	 */
+	closeOnEscape?: DialogProps['closeOnEscape'];
+	/**
+	 * Whether clicking or focusing outside the modal closes it.
+	 * @default true
+	 */
+	closeOnInteractOutside?: DialogProps['closeOnInteractOutside'];
+	/**
 	 * Whether the modal is open
 	 */
 	open: boolean;
