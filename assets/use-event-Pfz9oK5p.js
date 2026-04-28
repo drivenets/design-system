@@ -1,0 +1,1 @@
+import{a as e,n as t}from"./chunk-BneVvdWh.js";import{S as n}from"./iframe-CxQ8jbXj.js";function r(e,t={}){let{sync:n=!1}=t,r=i(e);return(0,a.useCallback)((...e)=>n?queueMicrotask(()=>r.current?.(...e)):r.current?.(...e),[n,r])}function i(e){let t=(0,a.useRef)(e);return t.current=e,t}var a,o=t((()=>{a=e(n(),1)}));export{r as n,o as t};
