@@ -29,7 +29,7 @@
 			"outputs": ["dist/**"],
 			"dependsOn": ["^build"]
 		},
-		"build:lint": {
+		"lint:build": {
 			"dependsOn": ["build"]
 		}
 	}

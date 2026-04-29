@@ -32,11 +32,11 @@
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
+		"lint:build": "publint && attw --pack",
 		"typecheck": "tsgo",
 		"test": "vitest",
 		"test:coverage": "pnpm test --coverage",
-		"build": "tsdown",
-		"build:lint": "publint && attw --pack"
+		"build": "tsdown"
 	},
 	"dependencies": {
 		"eslint-no-restricted": "^0.1.1"
