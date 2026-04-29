@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";import{m as t,p as n}from"./runtime-CFE4DB3A.js";var r,i,a=e((()=>{t(),[r,i]=n({name:`FieldsetContext`,hookName:`useFieldsetContext`,providerName:`<FieldsetProvider />`,strict:!1})}));export{i as n,a as t};
