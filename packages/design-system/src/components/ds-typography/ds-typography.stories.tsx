@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import classNames from 'classnames';
+import { DsStack } from '../ds-stack';
 import { DsTypography } from './index';
 import { typographyColors, typographyVariantConfig } from './ds-typography.config';
 import storyStyles from './ds-typography.stories.module.scss';
@@ -39,7 +40,7 @@ export const Default: Story = {
 export const Variants: Story = {
 	parameters: { controls: { disable: true } },
 	render: () => (
-		<div className={storyStyles.list}>
+		<DsStack direction="column" gap="var(--sm)">
 			<div className={storyStyles.row}>
 				<code className={storyStyles.label}>heading1</code>
 				<DsTypography variant="heading1">{sample}</DsTypography>
@@ -132,14 +133,14 @@ export const Variants: Story = {
 				<code className={storyStyles.label}>code-xs-semi-bold</code>
 				<DsTypography variant="code-xs-semi-bold">{sample}</DsTypography>
 			</div>
-		</div>
+		</DsStack>
 	),
 };
 
 export const Colors: Story = {
 	parameters: { controls: { disable: true } },
 	render: () => (
-		<div className={storyStyles.list}>
+		<DsStack direction="column" gap="var(--sm)">
 			<div className={storyStyles.row}>
 				<code className={storyStyles.label}>main</code>
 				<DsTypography variant="body-md-md" color="main">
@@ -218,7 +219,7 @@ export const Colors: Story = {
 					{sample}
 				</DsTypography>
 			</div>
-		</div>
+		</DsStack>
 	),
 };
 
@@ -251,7 +252,7 @@ export const ColorsOnDark: Story = {
 export const EscapeHatch: Story = {
 	parameters: { controls: { disable: true } },
 	render: () => (
-		<div className={storyStyles.list}>
+		<DsStack direction="column" gap="var(--sm)">
 			<div className={storyStyles.row}>
 				<code className={storyStyles.label}>{'color="success"'}</code>
 				<DsTypography variant="body-md-md" color="success">
@@ -276,20 +277,20 @@ export const EscapeHatch: Story = {
 					Inline style still wins when both are set.
 				</DsTypography>
 			</div>
-		</div>
+		</DsStack>
 	),
 };
 
 export const AsChild: Story = {
 	parameters: { controls: { disable: true } },
 	render: () => (
-		<div className={storyStyles.list}>
+		<DsStack direction="column" gap="var(--sm)">
 			<DsTypography variant="heading3" asChild>
 				<a href="#anchor">Heading rendered as anchor via asChild</a>
 			</DsTypography>
 			<DsTypography variant="body-md-md" color="action" asChild>
 				<button type="button">Button styled like body-md-md / action</button>
 			</DsTypography>
-		</div>
+		</DsStack>
 	),
 };
