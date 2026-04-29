@@ -1,10 +1,17 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import type { Root } from '@radix-ui/react-checkbox';
+import { type Checkbox } from '@ark-ui/react/checkbox';
 
 export const checkboxVariants = ['default', 'warning'] as const;
 export type CheckboxVariant = (typeof checkboxVariants)[number];
 
-export interface DsCheckboxProps extends ComponentPropsWithoutRef<typeof Root> {
+export interface DsCheckboxProps extends Omit<
+	ComponentPropsWithoutRef<typeof Checkbox.Root>,
+	'onCheckedChange' | 'value'
+> {
+	/**
+	 * Value when used in a group or for form submission. Coerced to string for the native control.
+	 */
+	value?: string | number;
 	/**
 	 * Visual variant of the checkbox
 	 */
@@ -18,17 +25,11 @@ export interface DsCheckboxProps extends ComponentPropsWithoutRef<typeof Root> {
 	 */
 	labelInfo?: ReactNode;
 	/**
-	 * The controlled checked state of the checkbox
+	 * Disables the checkbox, preventing user interaction
 	 */
-	checked?: boolean | 'indeterminate';
+	disabled?: boolean;
 	/**
-	 * The default checked state of the checkbox
-	 */
-	defaultChecked?: boolean | 'indeterminate';
-	/**
-	 * Event handler called when the checked state of the checkbox changes.
-	 *
-	 * @param checked
+	 * Callback invoked when the checked state changes
 	 */
 	onCheckedChange?: (checked: boolean | 'indeterminate') => void;
 }

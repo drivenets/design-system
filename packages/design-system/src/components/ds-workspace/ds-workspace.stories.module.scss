@@ -1,0 +1,77 @@
+.headerLayout {
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+	width: 100%;
+}
+
+.headerLeft {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.headerCenter {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	gap: var(--xs);
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.headerRight {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--xs);
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+
+.projectName {
+	color: var(--font-on-action);
+}
+
+.lastUpdate {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	color: var(--font-on-action);
+	white-space: nowrap;
+}
+
+.subHeaderContent {
+	display: flex;
+	align-items: center;
+	gap: var(--sm);
+	width: 100%;
+}
+
+.mainContent {
+	padding: var(--standard);
+}
+
+.card {
+	padding: var(--lg);
+	border-radius: var(--xs);
+	border: 1px solid var(--border);
+	background: var(--background);
+	margin-bottom: var(--standard);
+}
+
+.footerContent {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	color: var(--font-secondary);
+	font-size: var(--body-font-size-xs);
+}
+
+.footerActions {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+}
