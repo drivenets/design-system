@@ -1,5 +1,4 @@
 import type React from 'react';
-import type * as RadioGroupPrimitive from '@radix-ui/react-radio-group';
 import { type RadioGroupItemProps, type RadioGroupRootProps } from '@ark-ui/react/radio-group';
 
 /**
@@ -93,9 +92,7 @@ export interface DsRadioOptionLegacy<ValueType = string> {
  * Use compound component pattern instead
  * @deprecated
  */
-export interface DsRadioGroupLegacyProps<
-	TOption extends DsRadioOptionLegacy = DsRadioOptionLegacy,
-> extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root> {
+export interface DsRadioGroupLegacyProps<TOption extends DsRadioOptionLegacy = DsRadioOptionLegacy> {
 	/**
 	 * The radio group options
 	 */
@@ -110,16 +107,18 @@ export interface DsRadioGroupLegacyProps<
 	defaultValue?: TOption['value'];
 	/**
 	 * Event handler called when the selected value changes
-	 *
-	 * @param value
 	 */
 	onValueChange?: (value: TOption['value']) => void;
+	/**
+	 * Whether the entire radio group is disabled.
+	 */
+	disabled?: boolean;
 	/**
 	 * Additional CSS class names
 	 */
 	className?: string;
 	/**
-	 * Additional styles to apply to the component
+	 * Additional inline styles
 	 */
 	style?: React.CSSProperties;
 }

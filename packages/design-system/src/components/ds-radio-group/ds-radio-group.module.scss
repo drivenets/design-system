@@ -1,90 +1,99 @@
 @use '../../styles/typography';
 
+$radio-click-target: 20px;
+$radio-circle-size: 16px;
+$radio-dot-size: 8px;
+
 .radioGroupRoot {
 	display: flex;
 	flex-direction: column;
-	gap: 12px;
+	gap: var(--standard);
 }
 
 .radioItemContainer {
-	position: relative;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: 4px;
+	column-gap: var(--3xs);
 	cursor: pointer;
-	padding-right: 1px;
-	border: 1px solid transparent;
-	border-radius: 4px;
+	border-radius: var(--4xs);
+
+	&:has(.labelInfo) {
+		align-items: flex-start;
+
+		.radioLabel {
+			padding-bottom: var(--4xs);
+			padding-right: var(--4xs);
+		}
+	}
 
 	&:has([data-disabled]) {
 		cursor: not-allowed;
 
+		.radioLabel {
+			color: var(--font-disabled);
+		}
+
 		.labelInfo {
-			color: var(--color-secondary-500-net-4);
+			color: var(--font-disabled);
 		}
 	}
 
-	&:has([data-state='checked']:focus-visible) {
-		border-radius: 4px;
-		border-color: var(--color-primary-700-net-1);
+	&:not(:has([data-disabled])):hover {
+		background-color: var(--background-secondary-hover);
 	}
 
-	&:has([data-state='unchecked']:focus-visible) {
-		border-color: var(--color-primary-800);
-	}
+	&:has([data-focus-visible]) {
+		position: relative;
+		background-color: var(--background-secondary-hover);
 
-	&:has(.labelInfo) {
-		margin-bottom: 4px;
+		&::after {
+			content: '';
+			position: absolute;
+			inset: calc(-1px - var(--4xs));
+			border: var(--4xs) solid var(--border-action-primary-hover);
+			border-radius: var(--3xs);
+			pointer-events: none;
+		}
 	}
 }
 
 .radioItem {
 	all: unset;
-	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	border: 2px solid transparent;
-	border-radius: 50%;
-	transition:
-		background-color 0.2s ease-in-out,
-		border-color 0.2s ease-in-out;
+	width: $radio-click-target;
+	height: $radio-click-target;
+	flex-shrink: 0;
 
 	.radioItemWrapper {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		height: 16px;
-		width: 16px;
-		border: 2px solid var(--color-secondary-500-net-4);
-		padding: 2px;
+		height: $radio-circle-size;
+		width: $radio-circle-size;
+		border: 1.5px solid var(--border-contrast);
 		border-radius: 50%;
-		background: none;
+		background: var(--background);
+		transition: border-color 0.2s;
 	}
 
 	&[data-state='checked'],
 	[data-state='checked'] > & {
 		.radioItemWrapper {
-			border-color: var(--color-primary-700-default);
-		}
-
-		&:hover {
-			border-color: var(--color-primary-100);
+			border-color: var(--border-action-primary);
 		}
 	}
 
 	&[data-state='checked'][data-disabled],
 	[data-state='checked'][data-disabled] > & {
-		.radioIndicator {
-			background: var(--color-secondary-300);
+		.radioItemWrapper {
+			border-color: var(--border-disabled);
 		}
-	}
 
-	&[data-state='unchecked'],
-	[data-state='unchecked'] > & {
-		&:hover {
-			border-color: var(--color-secondary-100);
-			background-color: var(--color-secondary-100);
+		.radioIndicator {
+			background: var(--border-disabled);
 		}
 	}
 
@@ -92,20 +101,16 @@
 	[data-disabled] > & {
 		pointer-events: none;
 
-		& + label {
-			pointer-events: none;
-		}
-
 		.radioItemWrapper {
-			border-color: var(--color-secondary-300);
+			border-color: var(--border-disabled);
 		}
 	}
 }
 
 .radioIndicator {
-	width: 8px;
-	height: 8px;
-	background: var(--color-primary-700-default);
+	width: $radio-dot-size;
+	height: $radio-dot-size;
+	background: var(--background-primary);
 	border-radius: 50%;
 
 	&[data-part='indicator'] {
@@ -123,16 +128,13 @@
 }
 
 .radioLabel {
-	@include typography.body-sm-reg;
-	color: var(--color-secondary-800);
-	cursor: pointer;
+	@include typography.body-sm-md;
+	color: var(--font-main);
 }
 
 .labelInfo {
-	@include typography.body-xs-reg;
-	@include typography.ellipsis;
-	position: absolute;
-	color: var(--color-secondary-600-net-2);
-	cursor: pointer;
-	width: 100%;
+	color: var(--font-secondary);
+	flex-basis: 100%;
+	padding-left: calc($radio-click-target + var(--xs));
+	padding-right: var(--4xs);
 }

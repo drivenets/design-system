@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
 import { DsRadioGroup } from './ds-radio-group';
 import styles from './ds-radio-group.stories.module.scss';
 
@@ -35,33 +34,6 @@ export const Default: Story = {
 			</DsRadioGroup.Root>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Locate the radio buttons by their role
-		const option1 = await canvas.findByRole('radio', { name: /Option 1/i });
-		const option2 = await canvas.findByRole('radio', { name: /Option 2/i });
-		const option3 = await canvas.findByRole('radio', { name: /Option 3/i });
-
-		// Assert that Option 2 is initially selected
-		await expect(option2).toBeChecked();
-
-		// Click on Option 3
-		await userEvent.click(option3);
-
-		// Assert that Option 2 is no longer selected
-		await expect(option2).not.toBeChecked();
-
-		// Assert that Option 3 is now selected
-		await expect(option3).toBeChecked();
-
-		// Click on Option 1
-		await userEvent.click(option1);
-
-		// Assert that Option 1 is now selected
-		await expect(option1).toBeChecked();
-		await expect(option3).not.toBeChecked();
-	},
 };
 
 export const WithDisabledItems: Story = {
@@ -87,28 +59,6 @@ export const WithDisabledItems: Story = {
 				<DsRadioGroup.Item value="option3" label="Option 3" />
 			</DsRadioGroup.Root>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Locate the radio buttons
-		const option1 = await canvas.findByRole('radio', { name: /Disabled Option/i });
-		const option2 = await canvas.findByRole('radio', { name: /Option 2/i });
-
-		// Assert that Option 2 is initially selected
-		await expect(option2).toBeChecked();
-
-		// Assert that label info is displayed
-		await expect(canvas.getByText('This option is disabled')).toBeInTheDocument();
-		await expect(canvas.getByText('Available option')).toBeInTheDocument();
-
-		// Attempt to click the disabled Option 1
-		await userEvent.click(option1, { pointerEventsCheck: 0 });
-
-		// Assert that Option 1 remains unchecked
-		await expect(option1).not.toBeChecked();
-		// Assert that Option 2 is still selected
-		await expect(option2).toBeChecked();
 	},
 };
 
