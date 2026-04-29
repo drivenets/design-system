@@ -6,7 +6,7 @@ One-shot migration scripts that rewrite old design-system CSS custom property na
 
 ## What it does
 
-The migration is driven by the mapping table in [`packages/design-system/src/stories/token-migration.mdx`](../../packages/design-system/src/stories/token-migration.mdx). Each mapping has a status:
+The migration is driven by the mapping table in [`src/stories/token-migration.mdx`](../../src/stories/token-migration.mdx). Each mapping has a status:
 
 | Status    | Meaning                                | How the script handles it                                                   |
 | --------- | -------------------------------------- | --------------------------------------------------------------------------- |
@@ -29,12 +29,12 @@ Files in scope: `*.scss`, `*.css`, `*.ts`, `*.tsx`, `*.js`, `*.jsx` under `packa
 
 ## Usage
 
-Run from the **repo root**. All phases support `--dry-run` to preview changes without touching files.
+Run from the **repo root** (the scripts scan `packages/` and resolve token sources at `packages/design-system/src/...`). All phases support `--dry-run` to preview changes without touching files.
 
 ### Phase 1 — Renamed (safe, automatic)
 
 ```bash
-node scripts/migrate-tokens/migrate.ts renamed
+node packages/design-system/scripts/migrate-tokens/migrate.ts renamed
 ```
 
 Rewrites every `Renamed` token. Resolved values are identical, so no visual testing is needed. Writes `reports/step-1-renamed.md`.
@@ -42,7 +42,7 @@ Rewrites every `Renamed` token. Resolved values are identical, so no visual test
 ### Phase 2 — Changed (automatic, but retest)
 
 ```bash
-node scripts/migrate-tokens/migrate.ts changed
+node packages/design-system/scripts/migrate-tokens/migrate.ts changed
 ```
 
 Rewrites every `Changed` token where the name differs, and lists usages of `Changed` tokens whose name is unchanged (those don't need a rewrite, but the value shifted under them — retest in place). Writes `reports/step-2-changed.md` with a per-component visual-retest checklist.
@@ -54,7 +54,7 @@ Rewrites every `Changed` token where the name differs, and lists usages of `Chan
 **Step 3a — generate the prep report:**
 
 ```bash
-node scripts/migrate-tokens/migrate.ts removed-prep
+node packages/design-system/scripts/migrate-tokens/migrate.ts removed-prep
 ```
 
 Writes `reports/step-3-removed-prep.md`. Each removed token gets a section with:
@@ -75,7 +75,7 @@ The script refuses to overwrite an already-edited prep report. Pass `--force` to
 **Step 3b — apply the manual replacements:**
 
 ```bash
-node scripts/migrate-tokens/migrate.ts removed-apply
+node packages/design-system/scripts/migrate-tokens/migrate.ts removed-apply
 ```
 
 Reads the filled-in prep report, performs the rewrites, and writes `reports/step-3-removed-apply.md`. Fails loudly if any `Replacement:` line is missing or still a `<placeholder>`.
@@ -85,15 +85,15 @@ Reads the filled-in prep report, performs the rewrites, and writes `reports/step
 Append `--dry-run` to any phase to compute the report without writing files:
 
 ```bash
-node scripts/migrate-tokens/migrate.ts changed --dry-run
+node packages/design-system/scripts/migrate-tokens/migrate.ts changed --dry-run
 ```
 
 ## Reusing in the applications repo
 
 The scripts are intentionally self-contained. To run them outside this repo:
 
-1. Copy this `scripts/migrate-tokens/` folder into the apps repo.
-2. Copy `packages/design-system/src/stories/token-migration.mdx` and the three source-of-truth SCSS files (`_root.scss`, `_colors.scss`, `_spacing.scss`, plus the new `_root_new.scss`) so `parse-mappings.ts` and `resolve-values.ts` resolve to the same paths — or adjust the `MDX_PATH` / `STYLES_DIR` constants at the top of those files.
+1. Copy this `migrate-tokens/` folder into the apps repo.
+2. Copy `token-migration.mdx` and the four source-of-truth SCSS files (`_root.scss`, `_colors.scss`, `_spacing.scss`, `_root_new.scss`) into a matching layout — or adjust the `MDX_PATH` constant in `parse-mappings.ts`, the `STYLES_DIR` constant in `resolve-values.ts`, and the `REPORTS_DIR` constant in `migrate.ts`.
 3. Update `SCAN_ROOTS` in `replace-tokens.ts` to point at the apps repo's source folders, and update `ALWAYS_EXCLUDED_FILES` if it has its own token definitions.
 4. Run the four phases in order: `renamed` → `changed` → `removed-prep` → (edit prep report) → `removed-apply`.
 
@@ -101,5 +101,5 @@ The scripts are intentionally self-contained. To run them outside this repo:
 
 When the applications-repo migration is done, delete:
 
-- this folder (`scripts/migrate-tokens/`),
+- this folder (`packages/design-system/scripts/migrate-tokens/`),
 - `packages/design-system/src/stories/token-migration.mdx` (its only purpose is to feed these scripts and document the rename for consumers).

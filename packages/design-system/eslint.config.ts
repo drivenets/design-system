@@ -65,7 +65,7 @@ export default defineConfig(
 	{
 		name: 'design-system/source-overrides',
 		files: ['**/*.?(m)[tj]s?(x)'],
-		ignores: ['**/*.stories.ts?(x)'],
+		ignores: ['**/*.stories.ts?(x)', 'scripts/**'],
 		rules: {
 			'no-console': 'error',
 

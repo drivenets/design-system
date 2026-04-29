@@ -4,7 +4,7 @@
 		"**/*.scss",
 		"**/simple-file-upload-adapter.ts",
 		"./packages/eslint-plugin-internal/src/rules/__tests__/fixtures/*.ts",
-		"./scripts/migrate-tokens/**"
+		"./packages/design-system/scripts/migrate-tokens/**"
 	],
 	"ignoreExportsUsedInFile": {
 		"interface": true,

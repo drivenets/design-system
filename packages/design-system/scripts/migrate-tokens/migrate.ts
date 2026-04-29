@@ -1,17 +1,17 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { hasBothNames, hasOldName, type Mapping, parseMappings, type WithOldName } from './parse-mappings';
-import { resolveAll, type ResolvedValues } from './resolve-values';
+import { hasBothNames, hasOldName, type Mapping, parseMappings, type WithOldName } from './parse-mappings.ts';
+import { resolveAll, type ResolvedValues } from './resolve-values.ts';
 import {
 	applyReplacements,
 	findUsages,
 	type Replacement,
 	type ReplaceResult,
 	type Usage,
-} from './replace-tokens';
+} from './replace-tokens.ts';
 
 const ROOT = process.cwd();
-const REPORTS_DIR = path.resolve(ROOT, 'scripts/migrate-tokens/reports');
+const REPORTS_DIR = path.resolve(ROOT, 'packages/design-system/scripts/migrate-tokens/reports');
 const PREP_REPORT = path.join(REPORTS_DIR, 'step-3-removed-prep.md');
 const APPLY_REPORT = path.join(REPORTS_DIR, 'step-3-removed-apply.md');
 
