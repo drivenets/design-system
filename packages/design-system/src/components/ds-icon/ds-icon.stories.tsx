@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import DsIcon from './ds-icon';
 import './ds-icon.stories.scss';
 import { materialIcons } from './material-icons';
-import { iconSizes, iconVariants, type IconName } from './ds-icon.types';
+import { iconColors, iconSizes, iconVariants, type IconName } from './ds-icon.types';
 import { customIcons, type CustomIconName } from './custom-icons';
 
 const meta: Meta<typeof DsIcon> = {
@@ -31,6 +31,10 @@ const meta: Meta<typeof DsIcon> = {
 			control: 'boolean',
 			description: 'Whether the icon should be filled',
 		},
+		color: {
+			control: { type: 'select' },
+			options: iconColors,
+		},
 		onClick: { action: 'clicked' },
 	},
 };
@@ -49,13 +53,15 @@ export const Colored: Story = {
 	args: {
 		size: 'medium',
 		filled: true,
-		style: { color: '#4CAF50' },
 	},
 	render: function Render(args) {
 		return (
-			<div>
-				<DsIcon {...args} icon="check_circle" />
-				<DsIcon {...args} icon="special-market" />
+			<div style={{ display: 'flex', gap: 16 }}>
+				<DsIcon {...args} icon="check_circle" color="success" />
+				<DsIcon {...args} icon="error" color="error" />
+				<DsIcon {...args} icon="warning" color="warning" />
+				<DsIcon {...args} icon="info" color="information-main" />
+				<DsIcon {...args} icon="special-market" color="action" />
 			</div>
 		);
 	},

@@ -7,6 +7,29 @@ export type IconSize = (typeof iconSizes)[number];
 export const iconVariants = ['outlined', 'rounded'] as const;
 export type IconVariant = (typeof iconVariants)[number];
 
+export const iconColors = [
+	'action',
+	'action-hover',
+	'action-secondary',
+	'disabled',
+	'error',
+	'execution',
+	'information-main',
+	'information-secondary',
+	'inverse',
+	'main',
+	'on-button',
+	'on-dark-disabled',
+	'pause',
+	'pending',
+	'secondary',
+	'success',
+	'success-light',
+	'warning',
+	'warning-light',
+] as const;
+export type IconColor = (typeof iconColors)[number];
+
 export type MaterialIconName = {
 	[K in keyof typeof materialIcons]: K extends `${IconPrefix}::${infer Name}` ? Name : never;
 }[keyof typeof materialIcons];
@@ -38,6 +61,13 @@ export interface DsIconProps {
 	 * @default false
 	 */
 	filled?: boolean;
+
+	/**
+	 * Icon color. Semantic names map to `--icon-*` tokens (e.g. `'error'` →
+	 * `var(--icon-error)`); raw CSS values (hex, rgb, hsl, CSS variables)
+	 * pass through unchanged. Omit to inherit from parent.
+	 */
+	color?: IconColor | (string & {});
 
 	/**
 	 * Additional CSS class names
