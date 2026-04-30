@@ -1,24 +1,39 @@
-import type React from 'react';
-import { Slot } from '@radix-ui/react-slot';
 import classNames from 'classnames';
 import type { DsTypographyProps } from './ds-typography.types';
-import { semanticElementMap } from './ds-typography.config';
+import { typographyColors, typographyVariantConfig } from './ds-typography.config';
 import styles from './ds-typography.module.scss';
+
+const semanticColorSet = new Set<string>(typographyColors);
+
+const resolveColor = (color: string): string =>
+	semanticColorSet.has(color) ? `var(--font-${color})` : color;
 
 /*
  * Design system Typography component that provides consistent text styling
  */
-const DsTypography: React.FC<DsTypographyProps & { ref?: React.Ref<HTMLElement> }> = ({
+const DsTypography = ({
 	ref,
 	variant,
 	asChild = false,
 	className,
+	style,
+	color,
 	children,
 	...props
-}) => {
-	const Component: React.ElementType = asChild ? Slot : semanticElementMap[variant];
+}: DsTypographyProps) => {
+	const Component = typographyVariantConfig[variant].component;
+
 	return (
-		<Component ref={ref} className={classNames(styles[variant], className)} {...props}>
+		<Component
+			// very dynamic ref in here
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			// @ts-expect-error
+			ref={ref}
+			asChild={asChild}
+			className={classNames(styles[variant], className)}
+			style={color ? { color: resolveColor(color), ...style } : style}
+			{...props}
+		>
 			{children}
 		</Component>
 	);
