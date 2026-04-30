@@ -238,7 +238,6 @@ $textarea-height-default: 120px;
 
 	&.small {
 		height: $input-text-height-small;
-		padding: var(--spacing-4xs) var(--spacing-sm);
 	}
 
 	.clearIcon {
@@ -269,7 +268,6 @@ $textarea-height-default: 120px;
 	grid-column: 1 / -1;
 	outline: none;
 	align-items: center;
-	padding: var(--spacing-3xs) var(--spacing-sm);
 
 	.triggerIcon {
 		grid-column: 3;
