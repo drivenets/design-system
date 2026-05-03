@@ -10,6 +10,9 @@
 		},
 		"install:playwright": {
 			"dependsOn": []
+		},
+		"build:storybook": {
+			"outputs": ["storybook-static/**"]
 		}
 	}
 }
