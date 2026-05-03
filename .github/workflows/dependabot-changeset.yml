@@ -1,6 +1,6 @@
 name: Dependabot Changeset
 
-on: pull_request_target
+on: pull_request
 
 permissions: {}
 
@@ -12,19 +12,7 @@ jobs:
   generate:
     name: Generate
 
-    # IMPORTANT:
-    #   NEVER REMOVE THIS CONDITION!
-    #   We're using `pull_request_target` in order to have write access to the base repository
-    #   so we'll be able to commit the changeset file.
-    #   Removing the user check could give privileged access to a potential attacker.
-    if: |
-      github.event.pull_request.user.login == 'dependabot[bot]' &&
-      ! contains(github.event.pull_request.title, 'development group')
-
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: write
 
     steps:
       - name: Checkout source code
@@ -32,6 +20,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Install Dependencies
         uses: ./.github/actions/install
@@ -42,4 +31,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Generate changeset
-        run: node .github/scripts/generate-dependabot-changeset.ts
+        run: |
+          touch ./test.txt
+          git add ./test.txt
+          git commit -m 'test'
+          git push
