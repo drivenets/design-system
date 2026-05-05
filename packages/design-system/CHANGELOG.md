@@ -1,5 +1,27 @@
 # @drivenets/design-system
 
+## 0.10.0
+
+### Minor Changes
+
+- dcd7756: sync Figma tokens with codebase
+
+### Patch Changes
+
+- c37cc37: Add `DsWorkspace` component
+- a602f56: Add `color` prop to `DsTypography` component
+- 631fc17: Update `DsCheckbox` component and use ark.
+  Add `DsCheckboxGroup` and `useCheckboxSelectAll` hook for handling nested checkboxes.
+- ec1986b: Add `onBlur` property to `DsDatePicker` and `DsTimePicker`
+- 4b3efb5: Add targeted JSDoc to component props for AI manifest quality
+- 14dd00f: Update `DsRadioGroup` component and use ark.
+- ec5df4e: Improve build process
+- 661081f: Make `gutter`, `margin` props for `DsGrid` responsive. Make `colSpan`, `rowSpan` props for `DsGridItem` responsive.
+- 1e65136: Add "special-leading-icon" to `DsIcon`
+- 9793e54: Set correct `z-index` for `DsTimePicker` dropdown
+- e314e15: Add `color` prop to `DsIcon`
+- c925bf0: Fix `DsSelect` broken spacing in small size
+
 ## 0.9.1
 
 ### Patch Changes
