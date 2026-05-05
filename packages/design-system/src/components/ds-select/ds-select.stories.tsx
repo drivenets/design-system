@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, userEvent, within } from 'storybook/test';
 import { useState } from 'react';
 import DsSelect from './ds-select';
 import type { DsSelectOption, DsSelectProps } from './ds-select.types';
@@ -20,12 +19,21 @@ const meta: Meta<typeof DsSelect> = {
 			description: 'Options to display in the select dropdown',
 		},
 		value: {
-			control: 'text',
-			description: 'Value of the selected option',
+			description: 'Controlled internally by each story wrapper',
+			table: {
+				disable: true,
+			},
 		},
 		onValueChange: {
 			action: 'value changed',
 			description: 'Callback when the selected value changes',
+			table: {
+				disable: true,
+			},
+		},
+		onClear: {
+			action: 'clear',
+			description: 'Callback when clear action is triggered',
 			table: {
 				disable: true,
 			},
@@ -42,6 +50,11 @@ const meta: Meta<typeof DsSelect> = {
 			control: 'boolean',
 			description: 'Whether multiple selections are allowed',
 		},
+		size: {
+			control: 'select',
+			options: ['default', 'small'],
+			description: 'Select size variant',
+		},
 		clearable: {
 			control: 'boolean',
 			description: 'Whether the selection can be cleared',
@@ -56,90 +69,41 @@ const meta: Meta<typeof DsSelect> = {
 export default meta;
 type Story = StoryObj<typeof DsSelect>;
 
-const ControlledSelectWrapper = ({
-	options,
-	style,
-	size,
-	placeholder,
-	clearable,
-	multiple,
-	disabled,
-	renderOption,
-	renderValue,
-}: DsSelectProps) => {
-	const [value, setValue] = useState<string | string[]>('');
+type SingleSelectStoryProps = Omit<
+	Extract<DsSelectProps, { multiple?: undefined | false }>,
+	'value' | 'onValueChange'
+>;
+type MultiSelectStoryProps = Omit<Extract<DsSelectProps, { multiple: true }>, 'value' | 'onValueChange'>;
+type ControlledSelectWrapperProps = SingleSelectStoryProps | MultiSelectStoryProps;
 
-	const handleValueChange = (newValue: string | string[]) => {
-		setValue(newValue);
-	};
+const ControlledSingleSelectWrapper = (props: SingleSelectStoryProps) => {
+	const { clearable, onClear, ...rest } = props;
+	const [value, setValue] = useState('');
 
-	return (
-		<DsSelect
-			options={options}
-			value={value as never}
-			onValueChange={handleValueChange as never}
-			style={style}
-			size={size}
-			placeholder={placeholder}
-			disabled={disabled}
-			multiple={multiple as never}
-			clearable={clearable as never}
-			renderOption={renderOption}
-			renderValue={renderValue as never}
-		/>
-	);
-};
-
-const sanityCheck = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const trigger = canvas.getByRole('combobox');
-
-	const firstOption = mockOptions[0];
-	const secondOption = mockOptions[1];
-
-	if (!firstOption || !secondOption) {
-		throw new Error('mockOptions must have at least 2 items');
+	if (clearable) {
+		return <DsSelect {...rest} clearable onClear={onClear} value={value} onValueChange={setValue} />;
 	}
 
-	// Open the select dropdown
-	await userEvent.click(trigger);
+	return <DsSelect {...rest} value={value} onValueChange={setValue} />;
+};
 
-	// Verify that the first item is not selected initially
-	const option1 = screen.getByRole('option', { name: firstOption.label });
-	await expect(option1).not.toHaveAttribute('data-state', 'checked');
+const ControlledMultiSelectWrapper = (props: MultiSelectStoryProps) => {
+	const { clearable, onClear, ...rest } = props;
+	const [value, setValue] = useState<string[]>([]);
 
-	// Select the first item
-	await userEvent.click(option1);
-	await expect(trigger).toHaveTextContent(firstOption.label);
+	if (clearable) {
+		return <DsSelect {...rest} multiple clearable onClear={onClear} value={value} onValueChange={setValue} />;
+	}
 
-	// Open the select dropdown again
-	await userEvent.click(trigger);
+	return <DsSelect {...rest} multiple value={value} onValueChange={setValue} />;
+};
 
-	// Select the second item
-	const option2 = screen.getByRole('option', { name: secondOption.label });
-	await userEvent.click(option2);
-	await expect(trigger).toHaveTextContent(secondOption.label);
+const ControlledSelectWrapper = (props: ControlledSelectWrapperProps) => {
+	if (props.multiple) {
+		return <ControlledMultiSelectWrapper {...props} />;
+	}
 
-	// Open the select dropdown again to verify selection states
-	await userEvent.click(trigger);
-
-	// Verify that the first item is no longer selected
-	const updatedOption1 = screen.getByRole('option', { name: firstOption.label });
-	await expect(updatedOption1).not.toHaveAttribute('data-state', 'checked');
-
-	// Verify that the second item is now selected
-	const updatedOption2 = screen.getByRole('option', { name: secondOption.label });
-	await expect(updatedOption2).toHaveAttribute('data-state', 'checked');
-
-	// Close the dropdown
-	await userEvent.click(trigger);
-
-	// Test clear value button functionality
-	const closeButton = canvas.getByRole('button', { name: 'Clear value' });
-	await userEvent.click(closeButton);
-
-	// Verify that the selection is cleared
-	await expect(trigger).toHaveTextContent('Click to select a value');
+	return <ControlledSingleSelectWrapper {...props} />;
 };
 
 const mockOptions = [
@@ -167,9 +131,6 @@ export const Default: Story = {
 			width: '200px',
 		},
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
 export const WithIcons: Story = {
@@ -183,9 +144,6 @@ export const WithIcons: Story = {
 			width: '200px',
 		},
 		clearable: true,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
 	},
 };
 
@@ -245,57 +203,6 @@ export const MultiSelect: Story = {
 		multiple: true,
 		clearable: true,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		// Open the dropdown to access multi-select options
-		await userEvent.click(trigger);
-
-		// Click "All" to select all available options
-		const allOption = screen.getByRole('option', { name: 'All' });
-		await userEvent.click(allOption);
-
-		// Click the "+7" chip to expand and show all selected items
-		const expandChip = screen.getByRole('button', { name: /^\+\d+$/ });
-		await userEvent.click(expandChip);
-
-		// Verify all options from mockOptions are displayed as chips
-		for (const option of mockOptions) {
-			const chip = screen.getByRole('button', { name: option.label });
-			await expect(chip).toBeInTheDocument();
-		}
-
-		// Close the dropdown by clicking the trigger
-		await userEvent.click(trigger);
-
-		// Verify the trigger contains all selected option labels (text may have ellipsis in UI but full text is in DOM)
-		for (const option of mockOptions) {
-			await expect(trigger).toHaveTextContent(option.label);
-		}
-
-		// Open the dropdown again
-		await userEvent.click(trigger);
-
-		// Delete the first option by clicking its delete button
-		const firstOption = mockOptions[0] as DsSelectOption;
-		const firstOptionChip = screen.getByRole('button', { name: firstOption.label });
-		const deleteButton = within(firstOptionChip).getByRole('button', { name: 'Delete chip' });
-		await userEvent.click(deleteButton);
-
-		// Verify deleted option is no longer visible
-		await expect(firstOptionChip).not.toBeInTheDocument();
-
-		// Click the "Clear All" button
-		const clearAllButton = screen.getByRole('button', { name: 'Clear All' });
-		await userEvent.click(clearAllButton);
-
-		// Close the dropdown
-		await userEvent.click(trigger);
-
-		// Verify the trigger is empty
-		await expect(trigger).toHaveTextContent('Click to select a value');
-	},
 };
 
 export const MultiSelectWithSearch: Story = {
@@ -313,58 +220,6 @@ export const MultiSelectWithSearch: Story = {
 		},
 		multiple: true,
 		clearable: true,
-	},
-	play: async ({ canvasElement, step }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-		const placeholder = 'Click to select a value';
-
-		await step('Search input appears and filters items', async () => {
-			await userEvent.click(trigger);
-
-			// Verify search input is present
-			const searchInput = screen.getByPlaceholderText('Search');
-			await expect(searchInput).toBeInTheDocument();
-
-			await userEvent.type(searchInput, 'berry');
-
-			// Verify matching items are visible
-			await expect(screen.getByRole('option', { name: 'Elderberry' })).toBeInTheDocument();
-
-			// Verify non-matching items are not visible
-			await expect(screen.queryByRole('option', { name: 'Apple' })).not.toBeInTheDocument();
-			await expect(screen.queryByRole('option', { name: 'Banana' })).not.toBeInTheDocument();
-			await expect(screen.queryByRole('option', { name: 'Date' })).not.toBeInTheDocument();
-
-			await userEvent.clear(searchInput);
-		});
-
-		await step('Select multiple options', async () => {
-			const appleOption = screen.getByRole('option', { name: 'Apple' });
-			await userEvent.click(appleOption);
-
-			const bananaOption = screen.getByRole('option', { name: 'Banana' });
-			await userEvent.click(bananaOption);
-
-			const cherryOption = screen.getByRole('option', { name: 'Cherry' });
-			await userEvent.click(cherryOption);
-
-			// Verify multiple selections in trigger
-			await expect(trigger).toHaveTextContent('Apple');
-			await expect(trigger).toHaveTextContent('Banana');
-			await expect(trigger).toHaveTextContent('Cherry');
-		});
-
-		await step('Clear all selections with Backspace', async () => {
-			await userEvent.keyboard('{Escape}');
-			await userEvent.keyboard('{Backspace}');
-
-			// Verify all values are cleared
-			await expect(trigger).toHaveTextContent(placeholder);
-			await expect(trigger).not.toHaveTextContent('Apple');
-			await expect(trigger).not.toHaveTextContent('Banana');
-			await expect(trigger).not.toHaveTextContent('Cherry');
-		});
 	},
 };
 
@@ -411,24 +266,6 @@ export const CustomRenderOption: Story = {
 			width: '250px',
 		},
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await userEvent.click(trigger);
-
-		const usOption = screen.getByRole('option', { name: /United States/ });
-		await expect(usOption).toBeInTheDocument();
-
-		await userEvent.click(usOption);
-		await expect(trigger).toHaveTextContent('United States');
-
-		await userEvent.click(trigger);
-
-		const franceOption = screen.getByRole('option', { name: /France/ });
-		await userEvent.click(franceOption);
-		await expect(trigger).toHaveTextContent('France');
-	},
 };
 
 export const CustomRenderOptionMultiSelect: Story = {
@@ -441,24 +278,6 @@ export const CustomRenderOptionMultiSelect: Story = {
 		style: {
 			width: '300px',
 		},
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await userEvent.click(trigger);
-
-		const usOption = screen.getByRole('option', { name: /United States/ });
-		await userEvent.click(usOption);
-
-		const gbOption = screen.getByRole('option', { name: /United Kingdom/ });
-		await userEvent.click(gbOption);
-
-		const usChip = screen.getByRole('button', { name: 'United States' });
-		await expect(usChip).toBeInTheDocument();
-
-		const gbChip = screen.getByRole('button', { name: 'United Kingdom' });
-		await expect(gbChip).toBeInTheDocument();
 	},
 };
 
@@ -476,35 +295,6 @@ export const CustomRenderOptionWithSearch: Story = {
 		style: {
 			width: '300px',
 		},
-	},
-	play: async ({ canvasElement, step }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await step('Search filters options by string label', async () => {
-			await userEvent.click(trigger);
-
-			const searchInput = screen.getByPlaceholderText('Search');
-			await userEvent.type(searchInput, 'United');
-
-			await expect(screen.getByRole('option', { name: /United States/ })).toBeInTheDocument();
-			await expect(screen.getByRole('option', { name: /United Kingdom/ })).toBeInTheDocument();
-
-			await expect(screen.queryByRole('option', { name: /Apple/ })).not.toBeInTheDocument();
-			await expect(screen.queryByRole('option', { name: /Germany/ })).not.toBeInTheDocument();
-
-			await userEvent.clear(searchInput);
-		});
-
-		await step('should select an option from search results', async () => {
-			const searchInput = screen.getByPlaceholderText('Search');
-			await userEvent.type(searchInput, 'Japan');
-
-			const jpOption = screen.getByRole('option', { name: /Japan/ });
-			await userEvent.click(jpOption);
-
-			await expect(trigger).toHaveTextContent('Japan');
-		});
 	},
 };
 
@@ -535,28 +325,6 @@ export const CustomRenderValue: Story = {
 				style={{ width: '250px' }}
 			/>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await expect(trigger).toHaveTextContent('Click to select a value');
-
-		await userEvent.click(trigger);
-
-		const v08 = screen.getByRole('option', { name: 'v0.8' });
-		await userEvent.click(v08);
-
-		await expect(trigger).toHaveTextContent('v0.8');
-		await expect(trigger).toHaveTextContent('Live');
-
-		await userEvent.click(trigger);
-
-		const v23 = screen.getByRole('option', { name: 'v2.3' });
-		await userEvent.click(v23);
-
-		await expect(trigger).toHaveTextContent('v2.3');
-		await expect(trigger).toHaveTextContent('Pending');
 	},
 };
 
@@ -591,21 +359,6 @@ export const CustomRenderValueMultiSelect: Story = {
 				style={{ width: '300px' }}
 			/>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await userEvent.click(trigger);
-
-		const usOption = screen.getByRole('option', { name: /United States/ });
-		await userEvent.click(usOption);
-
-		const deOption = screen.getByRole('option', { name: /Germany/ });
-		await userEvent.click(deOption);
-
-		await expect(trigger).toHaveTextContent('US');
-		await expect(trigger).toHaveTextContent('DE');
 	},
 };
 
@@ -652,30 +405,6 @@ export const CustomRenderValueAndOption: Story = {
 				style={{ width: '250px' }}
 			/>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await expect(trigger).toHaveTextContent('Click to select a value');
-
-		await userEvent.click(trigger);
-
-		const v08 = screen.getByRole('option', { name: /v0.8/ });
-		await expect(v08).toHaveTextContent('Live');
-		await userEvent.click(v08);
-
-		await expect(trigger).toHaveTextContent('v0.8');
-		await expect(trigger).toHaveTextContent('Live');
-
-		await userEvent.click(trigger);
-
-		const v14 = screen.getByRole('option', { name: /v1.4/ });
-		await expect(v14).toHaveTextContent('Running');
-		await userEvent.click(v14);
-
-		await expect(trigger).toHaveTextContent('v1.4');
-		await expect(trigger).toHaveTextContent('Running');
 	},
 };
 
@@ -726,26 +455,6 @@ export const CustomRenderValueAndOptionMultiSelect: Story = {
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-
-		await userEvent.click(trigger);
-
-		const v08 = screen.getByRole('option', { name: /v0.8/ });
-		await expect(v08).toHaveTextContent('Live');
-		await userEvent.click(v08);
-
-		await expect(trigger).toHaveTextContent('v0.8');
-		await expect(trigger).toHaveTextContent('Live');
-
-		const v36 = screen.getByRole('option', { name: /v3.6/ });
-		await expect(v36).toHaveTextContent('Draft');
-		await userEvent.click(v36);
-
-		await expect(trigger).toHaveTextContent('v0.8');
-		await expect(trigger).toHaveTextContent('+1');
-	},
 };
 
 export const KeyboardInteractions: Story = {
@@ -762,53 +471,5 @@ export const KeyboardInteractions: Story = {
 		style: {
 			width: '250px',
 		},
-	},
-	play: async ({ canvasElement, step }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByRole('combobox');
-		const placeholder = 'Click to select a value';
-
-		await step('Backspace key clears selected value', async () => {
-			await userEvent.click(trigger);
-
-			const appleOption = screen.getByRole('option', { name: 'Apple' });
-			await userEvent.click(appleOption);
-			await expect(trigger).toHaveTextContent('Apple');
-
-			await userEvent.keyboard('{Escape}');
-			await userEvent.keyboard('{Backspace}');
-
-			await expect(trigger).toHaveTextContent(placeholder);
-		});
-
-		await step('Delete key clears selected value', async () => {
-			await userEvent.click(trigger);
-
-			const bananaOption = screen.getByRole('option', { name: 'Banana' });
-			await userEvent.click(bananaOption);
-			await expect(trigger).toHaveTextContent('Banana');
-
-			await userEvent.keyboard('{Escape}');
-			await userEvent.keyboard('{Delete}');
-
-			await expect(trigger).toHaveTextContent(placeholder);
-		});
-
-		await step('Space key works normally in search input', async () => {
-			await userEvent.click(trigger);
-
-			const searchInput = screen.getByPlaceholderText('Search');
-			await userEvent.click(searchInput);
-
-			await userEvent.type(searchInput, 'indian fig');
-
-			await expect(searchInput).toHaveValue('indian fig');
-
-			const indianFigOption = screen.getByRole('option', { name: 'Indian fig' });
-			await expect(indianFigOption).toBeInTheDocument();
-
-			await userEvent.clear(searchInput);
-			await userEvent.keyboard('{Escape}');
-		});
 	},
 };

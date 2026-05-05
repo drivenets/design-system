@@ -50,6 +50,7 @@ import { SpecialMapView } from './special-map-view';
 
 // Misc icons
 import { SpecialHome } from './special-home';
+import { SpecialLeadingIcon } from './special-leading-icon';
 import { SpecialLego } from './special-lego';
 import { SpecialScheme } from './special-scheme';
 import { SpecialBook } from './special-book';
@@ -120,6 +121,7 @@ export const customIcons = {
 
 	// Misc
 	'special-home': SpecialHome,
+	'special-leading-icon': SpecialLeadingIcon,
 	'special-lego': SpecialLego,
 	'special-scheme': SpecialScheme,
 	'special-book': SpecialBook,

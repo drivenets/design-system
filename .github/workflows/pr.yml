@@ -149,7 +149,7 @@ jobs:
       - name: Run Build
         run: |
           pnpm build --affected
-          pnpm build:lint --affected
+          pnpm lint:build --affected
 
       - name: Run Tests With Build
         run: pnpm test:requires-build --affected

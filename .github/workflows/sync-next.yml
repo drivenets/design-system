@@ -2,6 +2,9 @@ name: Sync next branch
 
 on:
   workflow_dispatch:
+  schedule:
+    # 00:00 Israel Time (UTC+3, IDT)
+    - cron: '0 21 * * *'
 
 permissions:
   contents: write
