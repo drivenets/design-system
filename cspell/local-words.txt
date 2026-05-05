@@ -25,6 +25,4 @@ unhover
 unitless
 Fira
 scrollers
-scroller
 affordances
-renamable

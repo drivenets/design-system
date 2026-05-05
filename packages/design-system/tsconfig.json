@@ -5,6 +5,5 @@
 		"types": ["vite/client"],
 		"plugins": [{ "name": "typescript-plugin-css-modules" }]
 	},
-	"include": ["**/*", ".storybook/**/*"],
-	"exclude": ["**/dist", "**/coverage", "**/storybook-static", "scripts/**"]
+	"include": ["**/*", ".storybook/**/*"]
 }
