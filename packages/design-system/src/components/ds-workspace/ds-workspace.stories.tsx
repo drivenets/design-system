@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsWorkspace from './ds-workspace';
-import { DsButtonV3 } from '../ds-button-v3';
 import { DsTypography } from '../ds-typography';
+import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 import { DsStatusBadge } from '../ds-status-badge';
 import { DsDrawer } from '../ds-drawer';
@@ -57,9 +57,9 @@ type Story = StoryObj<typeof DsWorkspace>;
 const WorkspaceHeader = ({ onAction }: { onAction?: () => void }) => (
 	<div className={styles.headerLayout}>
 		<div className={styles.headerLeft}>
-			<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+			<DsButton variant="secondary" color="light" size="small" icon="close">
 				Close
-			</DsButtonV3>
+			</DsButton>
 		</div>
 
 		<div className={styles.headerCenter}>
@@ -75,13 +75,13 @@ const WorkspaceHeader = ({ onAction }: { onAction?: () => void }) => (
 				<DsIcon icon="history" size="small" />
 				<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 			</div>
-			<DsButtonV3 variant="secondary" color="light" size="small">
+			<DsButton variant="secondary" color="light" size="small">
 				Discard
-			</DsButtonV3>
-			<DsButtonV3 variant="primary" color="light" size="small" onClick={onAction}>
+			</DsButton>
+			<DsButton variant="primary" color="light" size="small" onClick={onAction}>
 				Save project
-			</DsButtonV3>
-			<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+			</DsButton>
+			<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 		</div>
 	</div>
 );
@@ -117,12 +117,12 @@ export const Default: Story = {
 				<div className={styles.footerContent}>
 					<span>v1.2.0</span>
 					<div className={styles.footerActions}>
-						<DsButtonV3 variant="tertiary" size="small">
+						<DsButton variant="tertiary" size="small">
 							Help
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" size="small">
+						</DsButton>
+						<DsButton variant="tertiary" size="small">
 							Feedback
-						</DsButtonV3>
+						</DsButton>
 					</div>
 				</div>
 			</DsWorkspace.Footer>
@@ -171,12 +171,12 @@ export const WithDrawer: Story = {
 						</DsDrawer.Body>
 						<DsDrawer.Footer>
 							<DsDrawer.Actions>
-								<DsButtonV3 variant="tertiary" size="large" onClick={() => setDrawerOpen(false)}>
+								<DsButton variant="tertiary" size="large" onClick={() => setDrawerOpen(false)}>
 									Cancel
-								</DsButtonV3>
-								<DsButtonV3 variant="primary" size="large">
+								</DsButton>
+								<DsButton variant="primary" size="large">
 									Save
-								</DsButtonV3>
+								</DsButton>
 							</DsDrawer.Actions>
 						</DsDrawer.Footer>
 					</DsDrawer>

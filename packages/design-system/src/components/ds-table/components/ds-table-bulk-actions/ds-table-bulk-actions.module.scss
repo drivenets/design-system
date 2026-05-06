@@ -7,7 +7,7 @@ $border-radius: 8px;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--white);
+	background-color: var(--color-dap-gray-050);
 	border-radius: $border-radius;
 	box-shadow: 0 4px 12px #0445cc66;
 	z-index: 1000;
@@ -40,12 +40,12 @@ $border-radius: 8px;
 }
 
 .selectedCountBadge {
-	color: var(--white);
+	color: var(--color-dap-gray-050);
 	margin: 0;
 }
 
 .bulkActionsInfo {
-	color: var(--neutral-2);
+	color: var(--color-dap-gray-600);
 	text-wrap: nowrap;
 	padding-left: 8px;
 	padding-right: 56px;
@@ -56,7 +56,7 @@ $border-radius: 8px;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 	width: 68px;
 	height: 48px;
 	border-radius: 0;
@@ -76,7 +76,7 @@ $border-radius: 8px;
 			right: 0;
 			width: 1px;
 			height: 100%;
-			background-color: var(--neutral-6);
+			background-color: var(--color-dap-gray-400);
 		}
 
 		&:first-child::before {
@@ -86,7 +86,7 @@ $border-radius: 8px;
 			left: 0;
 			width: 1px;
 			height: 100%;
-			background-color: var(--neutral-6);
+			background-color: var(--color-dap-gray-400);
 		}
 	}
 }
@@ -96,14 +96,14 @@ $border-radius: 8px;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	color: var(--neutral-2);
+	color: var(--color-dap-gray-600);
 	padding-left: 4px;
 	margin-right: 2px;
 	background: none;
 	border-radius: 0 $border-radius $border-radius 0;
 
 	&:hover {
-		color: var(--neutral-4);
+		color: var(--color-dap-gray-500);
 		background: inherit;
 	}
 }
