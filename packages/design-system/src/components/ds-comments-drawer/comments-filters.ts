@@ -3,8 +3,13 @@ import type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
 export type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
+/** Formats using local calendar date (not UTC) to stay consistent with applyFilters,
+ *  which treats dateFrom/dateTo as local dates via setHours(0,0,0,0). */
 const formatFilterDateForTag = (d: Date): string => {
-	return d.toISOString().split('T')[0] ?? '';
+	const year = d.getFullYear();
+	const month = String(d.getMonth() + 1).padStart(2, '0');
+	const day = String(d.getDate()).padStart(2, '0');
+	return `${String(year)}-${month}-${day}`;
 };
 
 export const initialFilterState: CommentsFilterState = {

@@ -207,9 +207,9 @@ describe('DsButton', () => {
 
 		it('primary has a non-transparent background', async () => {
 			await page.render(
-				<DsButtonV3 color="light" variant="primary">
+				<DsButton color="light" variant="primary">
 					Light
-				</DsButtonV3>,
+				</DsButton>,
 			);
 
 			const el = page.getByRole('button', { name: 'Light' }).element();
@@ -219,9 +219,9 @@ describe('DsButton', () => {
 
 		it('primary disabled has a non-transparent background', async () => {
 			await page.render(
-				<DsButtonV3 color="light" variant="primary" disabled>
+				<DsButton color="light" variant="primary" disabled>
 					Light
-				</DsButtonV3>,
+				</DsButton>,
 			);
 
 			const el = page.getByRole('button', { name: 'Light' }).element();
@@ -231,9 +231,9 @@ describe('DsButton', () => {
 
 		it('secondary selected has a non-transparent background', async () => {
 			await page.render(
-				<DsButtonV3 color="light" variant="secondary" selected>
+				<DsButton color="light" variant="secondary" selected>
 					Light
-				</DsButtonV3>,
+				</DsButton>,
 			);
 
 			const el = page.getByRole('button', { name: 'Light' }).element();

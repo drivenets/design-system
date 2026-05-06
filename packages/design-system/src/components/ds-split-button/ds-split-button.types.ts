@@ -12,7 +12,7 @@ type SelectSlotProps = DistributiveOmit<DsSelectProps, 'size'>;
 
 export interface DsSplitButtonSlotProps {
 	/**
-	 * Props forwarded to the primary action button (`DsButtonV3`). `variant`, `color`
+	 * Props forwarded to the primary action button (`DsButton`). `variant`, `color`
 	 * and `size` are controlled by the split button and cannot be overridden here.
 	 */
 	button: ButtonSlotProps;

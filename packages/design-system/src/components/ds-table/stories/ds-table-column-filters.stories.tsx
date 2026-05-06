@@ -310,11 +310,7 @@ draft and closes it (same as pressing Escape).
 		return (
 			<div className={styles.tableFilterContainer}>
 				{filterTags.length > 0 && (
-					<DsTagFilter
-						items={filterTags}
-						onClearAll={handlers.clearAll}
-						onItemDelete={handlers.deleteTag}
-					/>
+					<DsTagFilter items={filterTags} onClearAll={handlers.clearAll} onItemDelete={handlers.deleteTag} />
 				)}
 
 				<DsTable
@@ -359,11 +355,7 @@ external state, leaving other filters untouched.
 		return (
 			<div className={styles.tableFilterContainer}>
 				{filterTags.length > 0 && (
-					<DsTagFilter
-						items={filterTags}
-						onClearAll={handlers.clearAll}
-						onItemDelete={handlers.deleteTag}
-					/>
+					<DsTagFilter items={filterTags} onClearAll={handlers.clearAll} onItemDelete={handlers.deleteTag} />
 				)}
 
 				<DsTable

@@ -39,7 +39,7 @@ describe('DsStatusBadgeV2', () => {
 		const badge = page.getByRole('status').element();
 		const icon = badge.querySelector('[aria-hidden="true"]');
 		expect(icon).toBeTruthy();
-		expect(icon!.textContent).toBe('star');
+		expect(icon?.textContent).toBe('star');
 	});
 
 	it('iconOnly hides label and shows tooltip with label text on hover', async () => {

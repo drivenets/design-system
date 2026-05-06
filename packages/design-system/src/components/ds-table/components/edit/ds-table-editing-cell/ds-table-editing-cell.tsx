@@ -1,6 +1,6 @@
 import { useEffect, useRef, type FormEvent } from 'react';
 import { flexRender } from '@tanstack/react-table';
-import { DsButtonV3 } from '../../../../ds-button-v3';
+import { DsButton } from '../../../../ds-button';
 import { DsStack } from '../../../../ds-stack';
 import { useDsTableContext } from '../../../context/ds-table-context';
 import styles from './ds-table-editing-cell.module.scss';
@@ -45,7 +45,7 @@ export const DsTableEditingCell = <TData, TValue>({ cell }: DsTableEditingCellPr
 						{columnDef.editCell ? flexRender(columnDef.editCell, cell.getContext()) : null}
 					</DsStack>
 					<DsStack direction="row" gap="var(--3xs)" className={styles.actions}>
-						<DsButtonV3
+						<DsButton
 							type="button"
 							variant="tertiary"
 							size="small"
@@ -57,7 +57,7 @@ export const DsTableEditingCell = <TData, TValue>({ cell }: DsTableEditingCellPr
 							}}
 							style={{ color: 'var(--icon-error)' }}
 						/>
-						<DsButtonV3
+						<DsButton
 							type="submit"
 							variant="tertiary"
 							size="small"

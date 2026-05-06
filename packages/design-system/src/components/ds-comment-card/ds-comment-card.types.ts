@@ -73,16 +73,16 @@ export interface CommentData {
 	 */
 	isResolved: boolean;
 	/**
-	 * Ordered list of messages in the thread, from oldest to newest. The first
+	 * Ordered the list of messages in the thread, from oldest to newest. The first
 	 * message is typically the top-level comment body.
 	 */
 	messages: CommentMessage[];
 	/**
-	 * Optional tag labels used for filtering and grouping in the comments drawer.
+	 * Optional tag labels used for filtering and grouping in the comment's drawer.
 	 */
 	labels?: string[];
 	/**
-	 * Optional reference chip shown in the card header. A string renders as a tag;
+	 * Optional reference tag shown in the card header. A string renders as a tag;
 	 * any other `ReactNode` renders verbatim.
 	 */
 	referenceTag?: ReactNode;

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import styles from './column-filter-popover.module.scss';
 import type { DsTableColumnFilterPopoverProps } from './column-filter-popover.types';
 import { DsIcon } from '../../../../ds-icon';
-import { DsButtonV3 } from '../../../../ds-button-v3';
+import { DsButton } from '../../../../ds-button';
 
 // React portals bubble events through the React tree, so clicks inside the
 // popover would otherwise reach the parent `<TableHead onClick={sortHandler}>`
@@ -53,7 +53,7 @@ export const DsTableColumnFilterPopover = ({
 			positioning={{ placement: 'bottom-end', gutter: 4 }}
 		>
 			<Popover.Trigger asChild>
-				<DsButtonV3
+				<DsButton
 					variant="tertiary"
 					size="tiny"
 					className={classNames(
@@ -66,7 +66,7 @@ export const DsTableColumnFilterPopover = ({
 					onClick={(event) => event.stopPropagation()}
 				>
 					<DsIcon icon="filter_alt" variant="outlined" filled={hasActiveFilter} size="tiny" />
-				</DsButtonV3>
+				</DsButton>
 			</Popover.Trigger>
 
 			<Portal>
@@ -74,12 +74,12 @@ export const DsTableColumnFilterPopover = ({
 					<Popover.Content className={classNames(styles.content, className)} onClick={stopPropagation}>
 						<div className={styles.body}>{children}</div>
 						<div className={styles.footer}>
-							<DsButtonV3 variant="secondary" size="small" onClick={handleClear}>
+							<DsButton variant="secondary" size="small" onClick={handleClear}>
 								{clearLabel}
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" size="small" onClick={handleSave}>
+							</DsButton>
+							<DsButton variant="primary" size="small" onClick={handleSave}>
 								{saveLabel}
-							</DsButtonV3>
+							</DsButton>
 						</div>
 					</Popover.Content>
 				</Popover.Positioner>

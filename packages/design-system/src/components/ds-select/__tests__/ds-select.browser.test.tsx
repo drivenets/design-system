@@ -191,7 +191,7 @@ describe('DsSelect', () => {
 		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
 	});
 
-	it('should select all, expand +N chip, delete chip, and clear all (MultiSelect story)', async () => {
+	it('should select all, expand +N tag, delete tag, and clear all (MultiSelect story)', async () => {
 		await page.render(<ControlledSelectHarness options={mockOptions} multiple style={{ width: '250px' }} />);
 
 		const trigger = page.getByRole('combobox');
@@ -200,12 +200,12 @@ describe('DsSelect', () => {
 
 		await page.getByRole('option', { name: 'All' }).click();
 
-		const expandChip = page.getByRole('button', { name: /^\+\d+$/ });
-		await expandChip.click();
+		const expandTag = page.getByRole('button', { name: /^\+\d+$/ });
+		await expandTag.click();
 
 		for (const option of mockOptions) {
-			const chip = page.getByRole('button', { name: exactAriaName(option.label) });
-			await expect.element(chip).toBeInTheDocument();
+			const tag = page.getByRole('button', { name: exactAriaName(option.label) });
+			await expect.element(tag).toBeInTheDocument();
 		}
 
 		await trigger.click();
@@ -217,11 +217,11 @@ describe('DsSelect', () => {
 		await trigger.click();
 
 		const firstOption = mockOptions[0] as DsSelectOption;
-		const firstOptionChip = page.getByRole('button', { name: exactAriaName(firstOption.label) });
-		const deleteButton = firstOptionChip.getByRole('button', { name: 'Delete chip' });
+		const firstOptionTag = page.getByRole('button', { name: exactAriaName(firstOption.label) });
+		const deleteButton = firstOptionTag.getByRole('button', { name: 'Delete tag' });
 		await deleteButton.click();
 
-		await expect.element(firstOptionChip).not.toBeInTheDocument();
+		await expect.element(firstOptionTag).not.toBeInTheDocument();
 
 		await page.getByRole('button', { name: 'Clear All' }).click();
 
@@ -299,7 +299,7 @@ describe('DsSelect', () => {
 		await expect.element(trigger).toHaveTextContent('France');
 	});
 
-	it('should render selected items as chips with custom option markup (CustomRenderOptionMultiSelect story)', async () => {
+	it('should render selected items as tags with custom option markup (CustomRenderOptionMultiSelect story)', async () => {
 		await page.render(
 			<ControlledSelectHarness
 				options={countryOptions}

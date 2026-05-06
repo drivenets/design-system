@@ -7,7 +7,7 @@ import { DsCheckbox } from '../../components/ds-checkbox';
 import { DsTypography } from '../../components/ds-typography';
 import { sampleFormSchema, type SampleFormValues } from './sample-form-schema';
 import { useState } from 'react';
-import { DsButtonV3 } from '../../components/ds-button-v3';
+import { DsButton } from '../../components/ds-button';
 
 const defaultValues = {
 	name: '',
@@ -235,9 +235,9 @@ const SampleForm = () => {
 					)}
 				/>
 
-				<DsButtonV3 type="submit" disabled={isSubmitting} loading={isSubmitting}>
+				<DsButton type="submit" disabled={isSubmitting} loading={isSubmitting}>
 					Submit
-				</DsButtonV3>
+				</DsButton>
 			</form>
 		</FormProvider>
 	);
