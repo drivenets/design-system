@@ -67,7 +67,7 @@
 
 .failed {
 	@include status-filled(var(--font-on-action), var(--background-error));
-	@include status-ghost(var(--background-error-hover), var(--color-status-bg-failed));
+	@include status-ghost(var(--background-error-hover), var(--background-error-secondary-hover));
 }
 
 .label::first-letter {

@@ -364,7 +364,7 @@ Shows the mapping of old tokens to new tokens.
 | —                                            | `--background-transparent-hover`        | New     |
 | `--color-background-warning`                 | `--background-warning`                  | Renamed |
 | `--color-background-warning-strong`          | `--background-warning-strong`           | Renamed |
-| `--color-background-warning-weak`            | —                                       | Removed |
+| `--color-background-warning-weak`            | `--color-dap-red-050`                   | Changed |
 
 ---
 
@@ -475,7 +475,7 @@ Shows the mapping of old tokens to new tokens.
 | `--color-status-bg-progress` | `--status-bg-progress` | Renamed |
 | `--color-status-bg-success`  | `--status-bg-success`  | Changed |
 | `--color-status-bg-warning`  | `--status-bg-warning`  | Renamed |
-| `--color-status-bg-failed`   | —                      | Removed |
+| `--color-status-bg-failed`   | `--background-error-secondary-hover` | Changed |
 
 ---
 
@@ -622,7 +622,13 @@ Unit changed from unitless integers to `px` across the scale. See the breaking-c
 | `--paragraph-spacing-sm`    | `--body-paragraph-space-small`    | Changed |
 | `--paragraph-spacing-xs`    | `--body-paragraph-space-xs`       | Changed |
 
-### Removed (still absent from `_root_new.scss`)
+### Removed (kept under `_kept-tokens.scss`, pending relocation to components)
+
+These tokens have no equivalent in `_root_new.scss` and are intentionally
+preserved. Their definitions live in `packages/design-system/src/styles/_kept-tokens.scss`
+and will be moved next to the components that own them
+(`--letter-spacing--1percent` → typography mixins, `--icon-width-*` → DsIcon,
+`--ds-table-row-*` / `--ds-table-header-height` → DsTable).
 
 | Old Name                     | New Name | Status  |
 | ---------------------------- | -------- | ------- |
@@ -650,7 +656,7 @@ Unit changed from unitless integers to `px` across the scale. See the breaking-c
 | `--color-marker-magenta-12`           | —        | Removed |
 | `--color-marker-magenta-60`           | —        | Removed |
 | `--color-marker-magenta-100`          | —        | Removed |
-| `--color-marker-yellow-100`           | —        | Removed |
+| `--color-marker-yellow-100`           | `--color-dap-data-yellow` | Changed |
 
 ---
 
@@ -680,93 +686,95 @@ These tokens come from the older `$colors` Sass map. Where the hex matches a new
 | -------------------------- | ---------------------- | ------- |
 | `--neutral-1` (`#2c3a4b`)  | `--color-dap-gray-700` | Renamed |
 | `--neutral-2` (`#4c5f76`)  | `--color-dap-gray-600` | Renamed |
-| `--neutral-3` (`#6c7b8e`)  | —                      | Removed |
+| `--neutral-3` (`#6c7b8e`)  | `--color-dap-gray-500` | Changed |
 | `--neutral-4` (`#8b98a6`)  | `--color-dap-gray-500` | Renamed |
-| `--neutral-5` (`#a0aab7`)  | —                      | Removed |
-| `--neutral-6` (`#b3bfd1`)  | —                      | Removed |
-| `--neutral-7` (`#c2cedf`)  | —                      | Removed |
-| `--neutral-8` (`#dee6f1`)  | —                      | Removed |
-| `--neutral-9` (`#eaecef`)  | —                      | Removed |
+| `--neutral-5` (`#a0aab7`)  | `--color-dap-gray-400` | Changed |
+| `--neutral-6` (`#b3bfd1`)  | `--color-dap-gray-400` | Changed |
+| `--neutral-7` (`#c2cedf`)  | `--color-dap-gray-300` | Changed |
+| `--neutral-8` (`#dee6f1`)  | `--color-dap-gray-200` | Changed |
+| `--neutral-9` (`#eaecef`)  | `--color-dap-gray-200` | Changed |
 | `--neutral-10` (`#f3f5fa`) | `--color-dap-gray-100` | Renamed |
-| `--neutral-bg` (`#dae2f4`) | —                      | Removed |
+| `--neutral-bg` (`#dae2f4`) | `--color-dap-gray-200` | Changed |
 
 ### Action
 
 | Old Name                            | New Name | Status  |
 | ----------------------------------- | -------- | ------- |
-| `--action-cta1` (`#0064fa`)         | —        | Removed |
-| `--action-cta2` (`#579aff`)         | —        | Removed |
-| `--action-cta3` (`#6b7b8e`)         | —        | Removed |
-| `--action-active-light` (`#c7d8ff`) | —        | Removed |
-| `--action-hover-light` (`#e0eaff`)  | —        | Removed |
-| `--action-disabled` (`#b0b4bf`)     | —        | Removed |
+| `--action-cta1` (`#0064fa`)         | `--color-dap-blue-600`       | Changed |
+| `--action-cta2` (`#579aff`)         | `--color-dap-blue-400`       | Changed |
+| `--action-cta3` (`#6b7b8e`)         | `--color-dap-brand-300`      | Changed |
+| `--action-active-light` (`#c7d8ff`) | `--color-dap-purple-200`     | Changed |
+| `--action-hover-light` (`#e0eaff`)  | `--background-active-status` | Changed |
+| `--action-disabled` (`#b0b4bf`)     | `--color-dap-gray-400`       | Changed |
 
 ### System Status
 
 | Old Name                                  | New Name | Status  |
 | ----------------------------------------- | -------- | ------- |
-| `--system-status-ok` (`#067a00`)          | —        | Removed |
-| `--system-status-info` (`#005dcf`)        | —        | Removed |
-| `--system-status-error` (`#d70a00`)       | —        | Removed |
-| `--system-status-alert` (`#d04d07`)       | —        | Removed |
-| `--system-status-in-progress` (`#1513da`) | —        | Removed |
-| `--system-status-pending` (`#8836d6`)     | —        | Removed |
+| `--system-status-ok` (`#067a00`)          | `--color-dap-data-green`         | Changed |
+| `--system-status-info` (`#005dcf`)        | `--color-dap-blue-600`           | Changed |
+| `--system-status-error` (`#d70a00`)       | `--background-error`             | Changed |
+| `--system-status-alert` (`#d04d07`)       | `--color-dap-orange-600`         | Changed |
+| `--system-status-in-progress` (`#1513da`) | `--color-dap-blue-800`           | Changed |
+| `--system-status-pending` (`#8836d6`)     | `--color-dap-data-deep-fuchsia`  | Changed |
 
 ### Utility
 
 | Old Name                            | New Name | Status  |
 | ----------------------------------- | -------- | ------- |
-| `--utility-ok` (`#d6f5cf`)          | —        | Removed |
-| `--utility-info` (`#c4dcff`)        | —        | Removed |
-| `--utility-error` (`#ffd8d6`)       | —        | Removed |
-| `--utility-alert` (`#ffeac0`)       | —        | Removed |
-| `--utility-in-progress` (`#d9d9ff`) | —        | Removed |
-| `--utility-pending` (`#ede2ff`)     | —        | Removed |
-| `--utility-disabled` (`#e3e3e3`)    | —        | Removed |
+| `--utility-ok` (`#d6f5cf`)          | `--color-dap-data-light-green` | Changed |
+| `--utility-info` (`#c4dcff`)        | `--color-dap-blue-200`         | Changed |
+| `--utility-error` (`#ffd8d6`)       | `--color-dap-red-100`          | Changed |
+| `--utility-alert` (`#ffeac0`)       | `--schema-light-amber`         | Changed |
+| `--utility-in-progress` (`#d9d9ff`) | `--schema-light-blue`          | Changed |
+| `--utility-pending` (`#ede2ff`)     | `--background-pending`         | Changed |
+| `--utility-disabled` (`#e3e3e3`)    | `--color-dap-gray-200`         | Changed |
 
 ### Map / Scheme
 
 | Old Name                                             | New Name | Status  |
 | ---------------------------------------------------- | -------- | ------- |
-| `--map-and-scheme-line-layer-0` (`#5452f6`)          | —        | Removed |
-| `--map-and-scheme-line-layer-01` (`#cc4c5f`)         | —        | Removed |
-| `--map-and-scheme-line-layer-02` (`#00894d`)         | —        | Removed |
-| `--map-and-scheme-line-layer-1-optical` (`#3b8edb`)  | —        | Removed |
-| `--map-and-scheme-line-layer-2-ethernet` (`#00b8d9`) | —        | Removed |
-| `--map-and-scheme-line-layer-3-routing` (`#9a55e0`)  | —        | Removed |
-| `--map-and-scheme-service-overlay` (`#c30ede`)       | —        | Removed |
-| `--map-and-scheme-pops-core-zones` (`#a92a00`)       | —        | Removed |
-| `--map-and-scheme-line-optional-1` (`#da7b2d`)       | —        | Removed |
+| `--map-and-scheme-line-layer-0` (`#5452f6`)          | `--color-dap-purple-500`        | Changed |
+| `--map-and-scheme-line-layer-01` (`#cc4c5f`)         | `--color-dap-data-rose`         | Changed |
+| `--map-and-scheme-line-layer-02` (`#00894d`)         | `--color-dap-green-600`         | Changed |
+| `--map-and-scheme-line-layer-1-optical` (`#3b8edb`)  | `--color-dap-blue-400`          | Changed |
+| `--map-and-scheme-line-layer-2-ethernet` (`#00b8d9`) | `--at-t-brand`                  | Changed |
+| `--map-and-scheme-line-layer-3-routing` (`#9a55e0`)  | `--color-dap-data-deep-fuchsia` | Changed |
+| `--map-and-scheme-service-overlay` (`#c30ede`)       | `--color-dap-data-fuchsia`      | Changed |
+| `--map-and-scheme-pops-core-zones` (`#a92a00`)       | `--color-dap-orange-700`        | Changed |
+| `--map-and-scheme-line-optional-1` (`#da7b2d`)       | `--color-dap-orange-400`        | Changed |
 
 ---
 
 ## 14. Spacing
 
-### Numeric scale (`_spacing.scss`) — Removed
+### Numeric scale (`_spacing.scss`) — remapped to t-shirt sizes
 
-The whole `--spacing-*` numeric scale does not appear in `_root_updated.scss`.
+The whole `--spacing-*` numeric scale is gone; usages are remapped to the
+named t-shirt scale below. Two values (`40px`, `1px`) have no t-shirt
+equivalent and are inlined verbatim.
 
-| Old Name                 | New Name | Status  |
-| ------------------------ | -------- | ------- |
-| `--base-unit`            | —        | Removed |
-| `--spacing-1`            | —        | Removed |
-| `--spacing-2`            | —        | Removed |
-| `--spacing-3`            | —        | Removed |
-| `--spacing-4`            | —        | Removed |
-| `--spacing-5`            | —        | Removed |
-| `--spacing-6`            | —        | Removed |
-| `--spacing-8`            | —        | Removed |
-| `--spacing-10`           | —        | Removed |
-| `--spacing-12`           | —        | Removed |
-| `--spacing-16`           | —        | Removed |
-| `--spacing-20`           | —        | Removed |
-| `--spacing-24`           | —        | Removed |
-| `--spacing-base`         | —        | Removed |
-| `--exo-spacing-standard` | —        | Removed |
-| `--exo-spacing-small`    | —        | Removed |
-| `--exo-spacing-x-small`  | —        | Removed |
-| `--exo-spacing-2x-small` | —        | Removed |
-| `--exo-spacing-4x-small` | —        | Removed |
+| Old Name                 | New Name     | Status  |
+| ------------------------ | ------------ | ------- |
+| `--base-unit`            | `--3xs`      | Changed |
+| `--spacing-1`            | `--3xs`      | Changed |
+| `--spacing-2`            | `--xs`       | Changed |
+| `--spacing-3`            | `--sm`       | Changed |
+| `--spacing-4`            | `--standard` | Changed |
+| `--spacing-5`            | `--md`       | Changed |
+| `--spacing-6`            | `--lg`       | Changed |
+| `--spacing-8`            | `--xl`       | Changed |
+| `--spacing-10`           | —            | Removed |
+| `--spacing-12`           | `--2xl`      | Changed |
+| `--spacing-16`           | `--3xl`      | Changed |
+| `--spacing-20`           | `--4xl`      | Changed |
+| `--spacing-24`           | `--5xl`      | Changed |
+| `--spacing-base`         | `--standard` | Changed |
+| `--exo-spacing-standard` | `--standard` | Changed |
+| `--exo-spacing-small`    | `--sm`       | Changed |
+| `--exo-spacing-x-small`  | `--xs`       | Changed |
+| `--exo-spacing-2x-small` | `--3xs`      | Changed |
+| `--exo-spacing-4x-small` | —            | Removed |
 
 ### Named scale (T-shirt sizes) — renamed (prefix dropped)
 

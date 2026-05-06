@@ -301,7 +301,7 @@ $horizontal-description-line-clamp: 2;
 	.stepDescription {
 		font-size: var(--body-font-size-xs);
 		line-height: var(--body-line-height-xs);
-		max-height: var(--spacing-8);
+		max-height: var(--xl);
 		overflow: hidden;
 		display: -webkit-box;
 		-webkit-line-clamp: $horizontal-description-line-clamp;

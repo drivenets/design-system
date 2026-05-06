@@ -24,61 +24,61 @@
 }
 
 .healthy {
-	background: var(--utility-ok);
-	color: var(--system-status-ok);
+	background: var(--color-dap-data-light-green);
+	color: var(--color-dap-data-green);
 
 	.dot {
-		background: var(--system-status-ok);
+		background: var(--color-dap-data-green);
 	}
 }
 
 .neutral {
-	background: var(--utility-info);
-	color: var(--system-status-info);
+	background: var(--color-dap-blue-200);
+	color: var(--color-dap-blue-600);
 
 	.dot {
-		background: var(--system-status-info);
+		background: var(--color-dap-blue-600);
 	}
 }
 
 .error {
-	background: var(--utility-error);
-	color: var(--system-status-error);
+	background: var(--color-dap-red-100);
+	color: var(--background-error);
 
 	.dot {
-		background: var(--system-status-error);
+		background: var(--background-error);
 	}
 }
 
 .in-progress {
-	background: var(--utility-in-progress);
-	color: var(--system-status-in-progress);
+	background: var(--schema-light-blue);
+	color: var(--color-dap-blue-800);
 
 	.dot {
-		background: var(--system-status-in-progress);
+		background: var(--color-dap-blue-800);
 	}
 }
 
 .pending {
-	background: var(--utility-pending);
-	color: var(--system-status-pending);
+	background: var(--background-pending);
+	color: var(--color-dap-data-deep-fuchsia);
 
 	.dot {
-		background: var(--system-status-pending);
+		background: var(--color-dap-data-deep-fuchsia);
 	}
 }
 
 .alert {
-	background: var(--utility-alert);
-	color: var(--system-status-alert);
+	background: var(--schema-light-amber);
+	color: var(--color-dap-orange-600);
 
 	.dot {
-		background: var(--system-status-alert);
+		background: var(--color-dap-orange-600);
 	}
 }
 
 .disabled {
-	background: var(--utility-disabled);
+	background: var(--color-dap-gray-200);
 	color: var(--color-dap-gray-600);
 
 	.dot {

@@ -67,7 +67,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				transition,
 				...(isDragging
 					? {
-							background: 'var(--action-active-light)',
+							background: 'var(--color-dap-purple-200)',
 							boxShadow: '0 0 12px 0 rgba(0, 102, 250, 0.60)',
 							zIndex: 1,
 						}

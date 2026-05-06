@@ -11,9 +11,9 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: var(--exo-spacing-small) var(--exo-spacing-standard);
-	border: var(--exo-spacing-4x-small) dashed var(--border);
-	border-radius: var(--exo-spacing-2x-small);
+	padding: var(--sm) var(--standard);
+	border: 1px dashed var(--border);
+	border-radius: var(--3xs);
 	background-color: var(--background);
 	transition: all 0.2s ease;
 	cursor: pointer;
@@ -69,10 +69,10 @@
 .fileList {
 	display: flex;
 	flex-direction: column;
-	gap: var(--exo-spacing-x-small);
-	margin-top: var(--exo-spacing-x-small);
+	gap: var(--xs);
+	margin-top: var(--xs);
 	padding: var(--xs);
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 	background: var(--background-secondary);
 }
 

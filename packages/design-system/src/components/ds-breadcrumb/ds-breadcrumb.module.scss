@@ -5,9 +5,9 @@
 	color: var(--background-action);
 	text-decoration: none;
 	outline: none;
-	padding: var(--exo-spacing-2x-small) var(--sm);
-	gap: var(--exo-spacing-2x-small);
-	border-radius: var(--exo-spacing-2x-small);
+	padding: var(--3xs) var(--sm);
+	gap: var(--3xs);
+	border-radius: var(--3xs);
 	display: flex;
 	align-items: center;
 
@@ -82,13 +82,13 @@
 }
 
 .icon {
-	margin-right: var(--exo-spacing-2x-small);
+	margin-right: var(--3xs);
 	display: flex;
 	align-items: center;
 }
 
 .dropdownIcon {
-	margin-left: var(--exo-spacing-2x-small);
+	margin-left: var(--3xs);
 	display: flex;
 	align-items: center;
 }
