@@ -49,7 +49,7 @@ $autocomplete-opacity-visible: 1;
 	outline: none;
 
 	&::placeholder {
-		color: var(--color-font-disabled);
+		color: var(--font-disabled);
 	}
 }
 
@@ -192,7 +192,7 @@ $autocomplete-opacity-visible: 1;
 .noMatches,
 .loading {
 	padding: var(--xs);
-	color: var(--color-font-disabled);
+	color: var(--font-disabled);
 	text-align: center;
 	font-size: var(--body-font-size-sm);
 }
@@ -200,11 +200,11 @@ $autocomplete-opacity-visible: 1;
 .disabled {
 	.control {
 		color: var(--background-deselected);
-		border-color: var(--color-border-disabled);
+		border-color: var(--border-disabled);
 		cursor: not-allowed;
 
 		.input {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 			cursor: not-allowed;
 		}
 

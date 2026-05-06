@@ -53,22 +53,22 @@
 
 	&.exclude {
 		.variantIcon {
-			color: var(--color-icon-danger);
+			color: var(--icon-error);
 		}
 	}
 
 	&.disabled {
 		cursor: not-allowed;
-		color: var(--color-font-disabled);
+		color: var(--font-disabled);
 		background: var(--background);
 		border-color: var(--border-contrast);
 
 		.label {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 
 		.variantIcon {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 	}
 

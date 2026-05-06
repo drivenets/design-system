@@ -78,7 +78,7 @@ $transition-duration: 0.2s;
 
 	&[data-disabled] {
 		cursor: not-allowed;
-		border-color: var(--color-border-disabled);
+		border-color: var(--border-disabled);
 	}
 }
 

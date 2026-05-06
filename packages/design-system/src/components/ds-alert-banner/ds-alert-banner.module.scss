@@ -101,12 +101,12 @@
 		border-color: var(--border-error);
 
 		.icon {
-			color: var(--color-icon-danger);
+			color: var(--icon-error);
 		}
 	}
 
 	&.success {
-		background-color: var(--color-background-success);
+		background-color: var(--background-success);
 		border-color: var(--border-success);
 
 		.icon {

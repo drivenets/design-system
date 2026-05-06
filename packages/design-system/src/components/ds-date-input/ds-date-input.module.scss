@@ -22,11 +22,11 @@
 	&.disabled {
 		color: var(--background-deselected);
 		background: var(--background-secondary);
-		border-color: var(--color-border-disabled);
+		border-color: var(--border-disabled);
 		cursor: not-allowed;
 
 		.input {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 
 		.dateInputButton {
@@ -190,7 +190,7 @@
 	}
 
 	&[data-outside-range] .tableCellTriggerValue {
-		color: var(--color-font-disabled);
+		color: var(--font-disabled);
 	}
 
 	&[data-selected] .tableCellTriggerValue {
@@ -235,7 +235,7 @@
 	}
 
 	&[data-disabled] .tableCellTriggerValue {
-		color: var(--color-font-disabled);
+		color: var(--font-disabled);
 		cursor: not-allowed;
 		opacity: 0.5;
 	}

@@ -51,7 +51,7 @@ $disabled-opacity: 0.5;
 	&:disabled {
 		cursor: not-allowed;
 		opacity: $disabled-opacity;
-		color: var(--color-font-disabled);
+		color: var(--font-disabled);
 	}
 
 	&[aria-selected='true'] {

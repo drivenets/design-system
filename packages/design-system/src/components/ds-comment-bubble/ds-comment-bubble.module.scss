@@ -62,7 +62,7 @@ $transition-duration: 0.2s;
 		resize: none;
 
 		&::placeholder {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 	}
 }
@@ -199,7 +199,7 @@ $transition-duration: 0.2s;
 	overflow-y: auto;
 
 	&::placeholder {
-		color: var(--color-font-disabled);
+		color: var(--font-disabled);
 	}
 
 	&:focus {

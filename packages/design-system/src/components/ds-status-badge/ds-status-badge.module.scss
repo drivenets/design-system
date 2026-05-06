@@ -37,7 +37,7 @@
 
 .active {
 	@include status-filled(var(--font-on-action), var(--background-success-strong));
-	@include status-ghost(var(--background-success-strong), var(--color-status-bg-success));
+	@include status-ghost(var(--background-success-strong), var(--status-bg-success));
 }
 
 .running {

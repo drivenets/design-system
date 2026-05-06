@@ -49,14 +49,14 @@ $form-control-description-max-height: calc(
 		position: relative;
 		top: -1px;
 		right: -1px;
-		color: var(--color-icon-danger);
+		color: var(--icon-error);
 	}
 
 	&.disabled {
 		color: var(--color-background-disabled);
 
 		&::after {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 	}
 }

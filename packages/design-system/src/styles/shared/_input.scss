@@ -61,7 +61,7 @@ $textarea-height-default: 120px;
 		cursor: not-allowed;
 
 		.input {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 
 		.iconButton {
@@ -126,7 +126,7 @@ $textarea-height-default: 120px;
 		}
 
 		.itemValue {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 		}
 	}
 }

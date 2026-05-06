@@ -127,7 +127,7 @@
 		}
 
 		&[data-disabled] {
-			color: var(--color-font-disabled);
+			color: var(--font-disabled);
 			cursor: default;
 
 			.labelInfo {
