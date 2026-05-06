@@ -622,29 +622,6 @@ Unit changed from unitless integers to `px` across the scale. See the breaking-c
 | `--paragraph-spacing-sm`    | `--body-paragraph-space-small`    | Changed |
 | `--paragraph-spacing-xs`    | `--body-paragraph-space-xs`       | Changed |
 
-### Removed (kept under `_kept-tokens.scss`, pending relocation to components)
-
-These tokens have no equivalent in `_root_new.scss` and are intentionally
-preserved. Their definitions live in `packages/design-system/src/styles/_kept-tokens.scss`
-and will be moved next to the components that own them
-(`--letter-spacing--1percent` → typography mixins, `--icon-width-*` → DsIcon,
-`--ds-table-row-*` / `--ds-table-header-height` → DsTable).
-
-| Old Name                     | New Name | Status  |
-| ---------------------------- | -------- | ------- |
-| `--letter-spacing--1percent` | —        | Removed |
-| `--icon-width-extra-large`   | —        | Removed |
-| `--icon-width-large`         | —        | Removed |
-| `--icon-width-medium`        | —        | Removed |
-| `--icon-width-small`         | —        | Removed |
-| `--icon-width-tiny`          | —        | Removed |
-| `--ds-table-row-small`       | —        | Removed |
-| `--ds-table-row-medium`      | —        | Removed |
-| `--ds-table-row-large`       | —        | Removed |
-| `--ds-table-header-height`   | —        | Removed |
-
----
-
 ## 12. Gradients and Markers (legacy `_root.scss` — absent from new file)
 
 | Old Name                              | New Name | Status  |

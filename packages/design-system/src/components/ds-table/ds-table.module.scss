@@ -2,6 +2,13 @@
 @use '../../styles/utilities' as utils;
 @use './styles/variables' as vars;
 
+:root {
+	--ds-table-row-small: 36px;
+	--ds-table-row-medium: 48px;
+	--ds-table-row-large: 64px;
+	--ds-table-header-height: 45px;
+}
+
 $bulk-actions-height: 60px;
 
 .container {
