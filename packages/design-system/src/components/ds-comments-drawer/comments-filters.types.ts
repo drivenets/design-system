@@ -1,19 +1,19 @@
 export interface FilterTag {
 	/**
-	 * Stable identifier for the chip, used when removing it from the filter state
+	 * Stable identifier for the tag, used when removing it from the filter state
 	 */
 	id: string;
 	/**
-	 * Human-readable label rendered inside the chip
+	 * Human-readable label rendered inside the tag
 	 */
 	label: string;
 	/**
-	 * Identifier of the filter category this chip belongs to (e.g., `authors`,
+	 * Identifier of the filter category this tag belongs to (e.g., `authors`,
 	 * `labels`, `statuses`). Maps to a key on `CommentsFilterState`.
 	 */
 	filterId: string;
 	/**
-	 * Underlying filter value this chip represents (e.g., an author id or a status
+	 * Underlying filter value this tag represents (e.g., an author id or a status
 	 * value). Used to remove the value from the corresponding array in
 	 * `CommentsFilterState`.
 	 */

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsWorkspaceLayout from './ds-workspace-layout';
-import { DsButtonV3 } from '../ds-button-v3';
+import { DsButton } from '../ds-button';
 import { DsTypography } from '../ds-typography';
 import { DsIcon } from '../ds-icon';
 import { DsStatusBadge } from '../ds-status-badge';
@@ -78,9 +78,9 @@ export const Default: Story = {
 			<DsWorkspaceLayout.Header>
 				<div className={styles.headerLayout}>
 					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+						<DsButton variant="secondary" color="light" size="small" icon="close">
 							Close
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.headerCenter}>
 						<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -94,13 +94,13 @@ export const Default: Story = {
 							<DsIcon icon="history" size="small" />
 							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
+						<DsButton variant="secondary" color="light" size="small">
 							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
+						</DsButton>
+						<DsButton variant="primary" color="light" size="small">
 							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+						</DsButton>
+						<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 					</div>
 				</div>
 			</DsWorkspaceLayout.Header>
@@ -127,12 +127,12 @@ export const Default: Story = {
 				<div className={styles.footerContent}>
 					<span>v1.2.0</span>
 					<div className={styles.footerActions}>
-						<DsButtonV3 variant="tertiary" size="small">
+						<DsButton variant="tertiary" size="small">
 							Help
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" size="small">
+						</DsButton>
+						<DsButton variant="tertiary" size="small">
 							Feedback
-						</DsButtonV3>
+						</DsButton>
 					</div>
 				</div>
 			</DsWorkspaceLayout.Footer>
@@ -149,9 +149,9 @@ export const WithDrawer: Story = {
 				<DsWorkspaceLayout.Header>
 					<div className={styles.headerLayout}>
 						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							<DsButton variant="secondary" color="light" size="small" icon="close">
 								Close
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.headerCenter}>
 							<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -165,13 +165,13 @@ export const WithDrawer: Story = {
 								<DsIcon icon="history" size="small" />
 								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
+							<DsButton variant="secondary" color="light" size="small">
 								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
+							</DsButton>
+							<DsButton variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
 								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+							</DsButton>
+							<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 						</div>
 					</div>
 				</DsWorkspaceLayout.Header>
@@ -203,12 +203,12 @@ export const WithDrawer: Story = {
 						</DsDrawer.Body>
 						<DsDrawer.Footer>
 							<DsDrawer.Actions>
-								<DsButtonV3 variant="tertiary" size="large" onClick={() => setDrawerOpen(false)}>
+								<DsButton variant="tertiary" size="large" onClick={() => setDrawerOpen(false)}>
 									Cancel
-								</DsButtonV3>
-								<DsButtonV3 variant="primary" size="large">
+								</DsButton>
+								<DsButton variant="primary" size="large">
 									Save
-								</DsButtonV3>
+								</DsButton>
 							</DsDrawer.Actions>
 						</DsDrawer.Footer>
 					</DsDrawer>
@@ -233,9 +233,9 @@ export const WithDrawerAndBackdrop: Story = {
 				<DsWorkspaceLayout.Header>
 					<div className={styles.headerLayout}>
 						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							<DsButton variant="secondary" color="light" size="small" icon="close">
 								Close
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.headerCenter}>
 							<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -249,13 +249,13 @@ export const WithDrawerAndBackdrop: Story = {
 								<DsIcon icon="history" size="small" />
 								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
+							<DsButton variant="secondary" color="light" size="small">
 								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
+							</DsButton>
+							<DsButton variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
 								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+							</DsButton>
+							<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 						</div>
 					</div>
 				</DsWorkspaceLayout.Header>
@@ -303,9 +303,9 @@ export const FillParent: Story = {
 				<DsWorkspaceLayout.Header>
 					<div className={styles.headerLayout}>
 						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							<DsButton variant="secondary" color="light" size="small" icon="close">
 								Close
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.headerCenter}>
 							<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -319,13 +319,13 @@ export const FillParent: Story = {
 								<DsIcon icon="history" size="small" />
 								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
+							<DsButton variant="secondary" color="light" size="small">
 								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small">
+							</DsButton>
+							<DsButton variant="primary" color="light" size="small">
 								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+							</DsButton>
+							<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 						</div>
 					</div>
 				</DsWorkspaceLayout.Header>
@@ -352,9 +352,9 @@ export const HeaderOnly: Story = {
 			<DsWorkspaceLayout.Header>
 				<div className={styles.headerLayout}>
 					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+						<DsButton variant="secondary" color="light" size="small" icon="close">
 							Close
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.headerCenter}>
 						<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -368,13 +368,13 @@ export const HeaderOnly: Story = {
 							<DsIcon icon="history" size="small" />
 							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
+						<DsButton variant="secondary" color="light" size="small">
 							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
+						</DsButton>
+						<DsButton variant="primary" color="light" size="small">
 							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+						</DsButton>
+						<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 					</div>
 				</div>
 			</DsWorkspaceLayout.Header>
@@ -398,9 +398,9 @@ export const ExtendedStepperBelow: Story = {
 			<DsWorkspaceLayout.Header>
 				<div className={styles.headerLayout}>
 					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+						<DsButton variant="secondary" color="light" size="small" icon="close">
 							Close
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.headerCenter}>
 						<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -414,13 +414,13 @@ export const ExtendedStepperBelow: Story = {
 							<DsIcon icon="history" size="small" />
 							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
+						<DsButton variant="secondary" color="light" size="small">
 							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
+						</DsButton>
+						<DsButton variant="primary" color="light" size="small">
 							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+						</DsButton>
+						<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 					</div>
 				</div>
 			</DsWorkspaceLayout.Header>
@@ -429,9 +429,9 @@ export const ExtendedStepperBelow: Story = {
 					<div className={styles.extendedMainContent}>
 						<div className={styles.extendedTitleRow}>
 							<DsTypography variant="heading3">Project workspace</DsTypography>
-							<DsButtonV3 variant="secondary" size="small" icon="edit">
+							<DsButton variant="secondary" size="small" icon="edit">
 								Edit
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.card}>
 							<DsTypography variant="body-md-reg">
@@ -468,9 +468,9 @@ export const ExtendedStepperAside: Story = {
 			<DsWorkspaceLayout.Header>
 				<div className={styles.headerLayout}>
 					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+						<DsButton variant="secondary" color="light" size="small" icon="close">
 							Close
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.headerCenter}>
 						<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -484,13 +484,13 @@ export const ExtendedStepperAside: Story = {
 							<DsIcon icon="history" size="small" />
 							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
+						<DsButton variant="secondary" color="light" size="small">
 							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
+						</DsButton>
+						<DsButton variant="primary" color="light" size="small">
 							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+						</DsButton>
+						<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 					</div>
 				</div>
 			</DsWorkspaceLayout.Header>
@@ -524,9 +524,9 @@ export const ExtendedStepperAside: Story = {
 					<div className={styles.extendedMainContent}>
 						<div className={styles.extendedTitleRow}>
 							<DsTypography variant="heading3">Project workspace</DsTypography>
-							<DsButtonV3 variant="secondary" size="small" icon="edit">
+							<DsButton variant="secondary" size="small" icon="edit">
 								Edit
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.card}>
 							<DsTypography variant="body-md-reg">
@@ -551,9 +551,9 @@ export const ExtendedSideMenuAndLeftPanel: Story = {
 				<DsWorkspaceLayout.Header>
 					<div className={styles.headerLayout}>
 						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							<DsButton variant="secondary" color="light" size="small" icon="close">
 								Close
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.headerCenter}>
 							<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -567,13 +567,13 @@ export const ExtendedSideMenuAndLeftPanel: Story = {
 								<DsIcon icon="history" size="small" />
 								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
+							<DsButton variant="secondary" color="light" size="small">
 								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small">
+							</DsButton>
+							<DsButton variant="primary" color="light" size="small">
 								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+							</DsButton>
+							<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 						</div>
 					</div>
 				</DsWorkspaceLayout.Header>
@@ -626,9 +626,9 @@ export const ExtendedSideMenuAndLeftPanel: Story = {
 						<div className={styles.extendedMainContent}>
 							<div className={styles.extendedTitleRow}>
 								<DsTypography variant="heading3">Project workspace</DsTypography>
-								<DsButtonV3 variant="secondary" size="small" icon="edit">
+								<DsButton variant="secondary" size="small" icon="edit">
 									Edit
-								</DsButtonV3>
+								</DsButton>
 							</div>
 							<div className={styles.card}>
 								<DsTypography variant="body-md-reg">
@@ -651,9 +651,9 @@ export const ExtendedWithCanvas: Story = {
 			<DsWorkspaceLayout.Header>
 				<div className={styles.headerLayout}>
 					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+						<DsButton variant="secondary" color="light" size="small" icon="close">
 							Close
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.headerCenter}>
 						<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -667,13 +667,13 @@ export const ExtendedWithCanvas: Story = {
 							<DsIcon icon="history" size="small" />
 							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
+						<DsButton variant="secondary" color="light" size="small">
 							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
+						</DsButton>
+						<DsButton variant="primary" color="light" size="small">
 							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+						</DsButton>
+						<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 					</div>
 				</div>
 			</DsWorkspaceLayout.Header>
@@ -681,9 +681,9 @@ export const ExtendedWithCanvas: Story = {
 				<DsWorkspaceLayout.Content>
 					<div className={styles.extendedTitleRow}>
 						<DsTypography variant="heading3">Network topology</DsTypography>
-						<DsButtonV3 variant="secondary" size="small" icon="fullscreen">
+						<DsButton variant="secondary" size="small" icon="fullscreen">
 							Expand
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.canvasSurface} aria-label="Canvas">
 						<DsTypography variant="body-md-reg">
@@ -706,9 +706,9 @@ export const ExtendedSideMenuLeftPanel: Story = {
 				<DsWorkspaceLayout.Header>
 					<div className={styles.headerLayout}>
 						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							<DsButton variant="secondary" color="light" size="small" icon="close">
 								Close
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.headerCenter}>
 							<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -722,13 +722,13 @@ export const ExtendedSideMenuLeftPanel: Story = {
 								<DsIcon icon="history" size="small" />
 								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
+							<DsButton variant="secondary" color="light" size="small">
 								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small">
+							</DsButton>
+							<DsButton variant="primary" color="light" size="small">
 								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+							</DsButton>
+							<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 						</div>
 					</div>
 				</DsWorkspaceLayout.Header>
@@ -794,9 +794,9 @@ export const ExtendedSideMenuLeftPanel: Story = {
 						<div className={styles.extendedMainContent}>
 							<div className={styles.extendedTitleRow}>
 								<DsTypography variant="heading3">Project workspace</DsTypography>
-								<DsButtonV3 variant="secondary" size="small" icon="edit">
+								<DsButton variant="secondary" size="small" icon="edit">
 									Edit
-								</DsButtonV3>
+								</DsButton>
 							</div>
 							<div className={styles.card}>
 								<DsTypography variant="body-md-reg">
@@ -823,9 +823,9 @@ export const ExtendedCombined: Story = {
 				<DsWorkspaceLayout.Header>
 					<div className={styles.headerLayout}>
 						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							<DsButton variant="secondary" color="light" size="small" icon="close">
 								Close
-							</DsButtonV3>
+							</DsButton>
 						</div>
 						<div className={styles.headerCenter}>
 							<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -839,13 +839,13 @@ export const ExtendedCombined: Story = {
 								<DsIcon icon="history" size="small" />
 								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
+							<DsButton variant="secondary" color="light" size="small">
 								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
+							</DsButton>
+							<DsButton variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
 								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+							</DsButton>
+							<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 						</div>
 					</div>
 				</DsWorkspaceLayout.Header>
@@ -911,9 +911,9 @@ export const ExtendedCombined: Story = {
 						<div className={styles.extendedMainContent}>
 							<div className={styles.extendedTitleRow}>
 								<DsTypography variant="heading3">Project workspace</DsTypography>
-								<DsButtonV3 variant="secondary" size="small" icon="edit">
+								<DsButton variant="secondary" size="small" icon="edit">
 									Edit
-								</DsButtonV3>
+								</DsButton>
 							</div>
 							<div className={styles.card}>
 								<DsTypography variant="body-md-reg">
@@ -950,9 +950,9 @@ export const ExtendedWorkflowInfoPanel: Story = {
 			<DsWorkspaceLayout.Header>
 				<div className={styles.headerLayout}>
 					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+						<DsButton variant="secondary" color="light" size="small" icon="close">
 							Close
-						</DsButtonV3>
+						</DsButton>
 					</div>
 					<div className={styles.headerCenter}>
 						<DsTypography variant="body-sm-reg" className={styles.projectName}>
@@ -966,13 +966,13 @@ export const ExtendedWorkflowInfoPanel: Story = {
 							<DsIcon icon="history" size="small" />
 							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
 						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
+						<DsButton variant="secondary" color="light" size="small">
 							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
+						</DsButton>
+						<DsButton variant="primary" color="light" size="small">
 							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
+						</DsButton>
+						<DsButton variant="tertiary" color="light" size="small" icon="more_vert" />
 					</div>
 				</div>
 			</DsWorkspaceLayout.Header>

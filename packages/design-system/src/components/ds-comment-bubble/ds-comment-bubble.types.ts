@@ -91,7 +91,7 @@ export interface DsCommentBubbleProps {
 	 */
 	onMessageResolved?: (messageId: string) => void;
 	/**
-	 * Optional reference chip shown in the bubble header. A string is rendered as a
+	 * Optional reference tag shown in the bubble header. A string is rendered as a
 	 * `DsTag` with a sell icon; any other `ReactNode` is rendered verbatim.
 	 */
 	referenceTag?: ReactNode;

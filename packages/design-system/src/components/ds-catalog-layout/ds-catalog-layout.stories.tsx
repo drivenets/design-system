@@ -13,7 +13,7 @@ import DsCatalogLayout from './ds-catalog-layout';
 import { CatalogLayoutEmptyIllustration } from './catalog-layout-empty-illustration';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
-import { DsButtonV3 } from '../ds-button-v3';
+import { DsButton } from '../ds-button';
 import { DsSplitButton } from '../ds-split-button';
 import { DsTable } from '../ds-table';
 import { DsAvatar } from '../ds-avatar';
@@ -134,9 +134,9 @@ const TopBarNavigation = () => (
 			</div>
 		</div>
 		<div className={styles.topBarTrailing}>
-			<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
+			<DsButton variant="primary" size="small" icon="special-netgen-s">
 				NetGen
-			</DsButtonV3>
+			</DsButton>
 			<div className={styles.topBarUserMenu}>
 				<DsAvatar name="PH" size="regular" type="circle" />
 				<DsIcon icon="keyboard_arrow_down" size="small" />
@@ -185,7 +185,7 @@ const ContentHeaderActions = () => {
 	return (
 		<>
 			<DsTextInput className={styles.contentHeaderSearch} placeholder="Search" />
-			<DsButtonV3 variant="secondary" size="medium" icon="filter_list" aria-label="Filter" />
+			<DsButton variant="secondary" size="medium" icon="filter_list" aria-label="Filter" />
 			<DsSplitButton
 				slotProps={{
 					button: { icon: 'refresh', 'aria-label': 'Refresh' },
@@ -197,9 +197,9 @@ const ContentHeaderActions = () => {
 					},
 				}}
 			/>
-			<DsButtonV3 variant="secondary" size="medium" icon="add">
+			<DsButton variant="secondary" size="medium" icon="add">
 				New
-			</DsButtonV3>
+			</DsButton>
 		</>
 	);
 };
@@ -285,9 +285,9 @@ export const Empty: Story = {
 						</DsCatalogLayout.ContentHeader>
 						<EmptyStateCard>
 							<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
-							<DsButtonV3 variant="primary" size="small">
+							<DsButton variant="primary" size="small">
 								Clear filters
-							</DsButtonV3>
+							</DsButton>
 						</EmptyStateCard>
 					</DsCatalogLayout.Content>
 				</DsCatalogLayout.Body>
