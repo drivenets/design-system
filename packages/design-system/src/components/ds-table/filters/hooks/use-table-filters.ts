@@ -1,6 +1,6 @@
 import { type ReactNode, useState } from 'react';
 import type { CellContext, ColumnDef } from '@tanstack/react-table';
-import type { ChipItem } from '../../../ds-chip-group';
+import type { TagFilterItem } from '../../../ds-tag-filter';
 import type {
 	AnyAdapter,
 	ColumnFilterState,
@@ -29,7 +29,7 @@ export interface UseTableFiltersOptions<TData, TValue, TCellValue> {
 
 	/**
 	 * Controlled mode: Callback when filters change.
-	 * Called by applyFilters(), deleteChip(), clearAll().
+	 * Called by applyFilters(), deleteTag(), clearAll().
 	 */
 	onFiltersChange?: (filters: FilterState<TValue>) => void;
 }
@@ -46,9 +46,9 @@ export interface UseTableFiltersResult<TData, TValue> {
 	columnFilters: ColumnFilterState<TValue>[];
 
 	/**
-	 * Filter chips for display (derived from applied state)
+	 * Filter tags for display (derived from applied state)
 	 */
-	filterChips: ChipItem[];
+	filterTags: TagFilterItem[];
 
 	/**
 	 * Filter navigation items with active counts
@@ -70,8 +70,8 @@ export interface UseTableFiltersResult<TData, TValue> {
 		applyFilters: () => void;
 		/** Clear all filters */
 		clearAll: () => void;
-		/** Delete a specific filter chip */
-		deleteChip: (chip: ChipItem) => void;
+		/** Delete a specific filter tag */
+		deleteTag: (tag: TagFilterItem) => void;
 	};
 
 	/**
@@ -82,21 +82,21 @@ export interface UseTableFiltersResult<TData, TValue> {
 
 /**
  * Hook to orchestrate table filtering with adapters.
- * Manages filter state, generates chips, and handles column definitions.
+ * Manages filter state, generates tags, and handles column definitions.
  *
  * **Uncontrolled mode** (default): Filters are managed internally.
  * **Controlled mode**: Filters are managed externally via appliedFilters/onFiltersChange.
  *
  * @example
  * // Uncontrolled mode
- * const { filterChips, handlers } = useTableFilters({
+ * const { filterTags, handlers } = useTableFilters({
  *   filterAdapters: adapters,
  *   baseColumns: columns,
  * });
  *
  * @example
  * // Controlled mode (e.g., URL-driven filtering)
- * const { filterChips, handlers } = useTableFilters({
+ * const { filterTags, handlers } = useTableFilters({
  *   filterAdapters: adapters,
  *   baseColumns: columns,
  *   appliedFilters: filtersFromUrl,
@@ -134,9 +134,9 @@ export function useTableFilters<TData, TValue, TCellValue>({
 		})
 		.map(([id, value]) => ({ id, value }));
 
-	const filterChips = _filterAdapters.flatMap((adapter) => {
+	const filterTags = _filterAdapters.flatMap((adapter) => {
 		const value = appliedFilters[adapter.id];
-		return value !== undefined ? adapter.toChips(value) : [];
+		return value !== undefined ? adapter.toTags(value) : [];
 	});
 
 	const filterNavItems: FilterNavItem[] = _filterAdapters.map((adapter) => ({
@@ -185,8 +185,8 @@ export function useTableFilters<TData, TValue, TCellValue>({
 		setAppliedFilters({});
 	};
 
-	const deleteChip = (chip: ChipItem) => {
-		const filterKey = typeof chip.metadata?.key === 'string' ? chip.metadata.key : undefined;
+	const deleteTag = (tag: TagFilterItem) => {
+		const filterKey = typeof tag.metadata?.key === 'string' ? tag.metadata.key : undefined;
 		if (!filterKey) {
 			return;
 		}
@@ -201,7 +201,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 			return;
 		}
 
-		const newValue = adapter.fromChip(chip, currentValue);
+		const newValue = adapter.fromTag(tag, currentValue);
 
 		const newFilters =
 			adapter.getActiveFiltersCount(newValue) === 0
@@ -226,14 +226,14 @@ export function useTableFilters<TData, TValue, TCellValue>({
 	return {
 		filterState: draftFilters,
 		columnFilters,
-		filterChips,
+		filterTags,
 		filterNavItems,
 		enhancedColumns,
 		handlers: {
 			updateFilter,
 			applyFilters,
 			clearAll,
-			deleteChip,
+			deleteTag,
 		},
 		renderFilterContent,
 	};

@@ -128,9 +128,7 @@ export const DsCommentBubble = ({
 						<div className={styles.headerActions}>
 							<DsDropdownMenu.Root>
 								<DsDropdownMenu.Trigger asChild>
-									<DsButton design="v1.2" buttonType="tertiary" size="tiny" aria-label="More actions">
-										<DsIcon icon="more_vert" size="tiny" />
-									</DsButton>
+									<DsButton icon="more_vert" variant="tertiary" size="tiny" aria-label="More actions" />
 								</DsDropdownMenu.Trigger>
 								<DsDropdownMenu.Content className={styles.dropdownContent}>
 									{!hideActionRequired && (
@@ -155,27 +153,23 @@ export const DsCommentBubble = ({
 
 							{onResolve && (
 								<DsButton
-									design="v1.2"
-									buttonType="tertiary"
+									icon="check_circle"
+									variant="tertiary"
 									size="tiny"
 									onClick={() => onResolve()}
 									aria-label="Resolve"
-								>
-									<DsIcon icon="check_circle" size="tiny" />
-								</DsButton>
+								/>
 							)}
 						</div>
 
 						{onClose && (
 							<DsButton
-								design="v1.2"
-								buttonType="tertiary"
+								icon="close"
+								variant="tertiary"
 								size="tiny"
 								onClick={() => onClose()}
 								aria-label="Close"
-							>
-								<DsIcon icon="close" size="tiny" />
-							</DsButton>
+							/>
 						)}
 					</div>
 				</div>
@@ -209,15 +203,13 @@ export const DsCommentBubble = ({
 
 				{(isInitialMode || hasThread) && (
 					<DsButton
-						design="v1.2"
-						buttonType="primary"
+						icon="send"
+						variant="primary"
 						size="small"
 						disabled={!hasContent}
 						onClick={handleSend}
 						aria-label="Send"
-					>
-						<DsIcon icon="send" size="tiny" />
-					</DsButton>
+					/>
 				)}
 			</div>
 
@@ -233,15 +225,13 @@ export const DsCommentBubble = ({
 					)}
 
 					<DsButton
-						design="v1.2"
-						buttonType="primary"
+						icon="send"
+						variant="primary"
 						size="small"
 						disabled={!hasContent}
 						onClick={handleSend}
 						aria-label="Send"
-					>
-						<DsIcon icon="send" size="tiny" />
-					</DsButton>
+					/>
 				</div>
 			)}
 		</div>

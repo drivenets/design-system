@@ -5,8 +5,7 @@ import DsDrawer from './ds-drawer';
 import { DsButton } from '../ds-button';
 import { DsTextInput } from '../ds-text-input';
 import { DsIcon } from '../ds-icon';
-// TODO: Use DsStatusBadge instead.
-import { DsSystemStatus } from '../ds-system-status';
+import { DsStatusBadge } from '../ds-status-badge';
 import styles from './ds-drawer.stories.module.scss';
 import { DsTypography } from '../ds-typography';
 import type { DsDrawerColumns, DsDrawerProps } from './ds-drawer.types';
@@ -82,7 +81,7 @@ export const Default: Story = {
 			<>
 				<DsDrawer.Header>
 					<DsDrawer.Title>
-						Default Drawer <DsSystemStatus status="healthy" label="Active" />
+						Default Drawer <DsStatusBadge status="active" label="Active" />
 					</DsDrawer.Title>
 					<div className={styles.headerActions}>
 						<button className={styles.expand} aria-label="Expand">
@@ -126,10 +125,10 @@ export const Default: Story = {
 				</DsDrawer.Body>
 				<DsDrawer.Footer>
 					<DsDrawer.Actions>
-						<DsButton design="v1.2" buttonType="tertiary" size="large">
+						<DsButton variant="tertiary" size="large">
 							Cancel
 						</DsButton>
-						<DsButton design="v1.2" size="large">
+						<DsButton variant="primary" size="large">
 							Save
 						</DsButton>
 					</DsDrawer.Actions>
@@ -165,7 +164,7 @@ export const WithTabs: Story = {
 			<>
 				<DsDrawer.Header>
 					<DsDrawer.Title>
-						Drawer with Tabs <DsSystemStatus status="healthy" label="Active" />
+						Drawer with Tabs <DsStatusBadge status="active" label="Active" />
 					</DsDrawer.Title>
 					<div className={styles.headerActions}>
 						<button className={styles.expand} aria-label="Expand">
@@ -193,10 +192,10 @@ export const WithTabs: Story = {
 				</DsDrawer.Body>
 				<DsDrawer.Footer>
 					<DsDrawer.Actions>
-						<DsButton design="v1.2" buttonType="tertiary" size="large">
+						<DsButton variant="tertiary" size="large">
 							Cancel
 						</DsButton>
-						<DsButton design="v1.2" size="large">
+						<DsButton variant="primary" size="large">
 							Save
 						</DsButton>
 					</DsDrawer.Actions>

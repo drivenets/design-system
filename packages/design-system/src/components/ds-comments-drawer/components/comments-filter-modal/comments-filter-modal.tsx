@@ -7,7 +7,7 @@ import { DsTypography } from '../../../ds-typography';
 import { DsCheckbox } from '../../../ds-checkbox';
 import { DsButton } from '../../../ds-button';
 import { DsIcon } from '../../../ds-icon';
-import { DsDateInput } from '../../../ds-date-input';
+import { DsDatePicker } from '../../../ds-date-picker';
 
 export const CommentsFilterModal = ({
 	open,
@@ -42,12 +42,12 @@ export const CommentsFilterModal = ({
 		});
 	};
 
-	const handleDateFromChange = (value: string | undefined) => {
-		onFiltersChange({ ...filters, dateFrom: value });
+	const handleDateFromChange = (value: Date | null) => {
+		onFiltersChange({ ...filters, dateFrom: value ?? undefined });
 	};
 
-	const handleDateToChange = (value: string | undefined) => {
-		onFiltersChange({ ...filters, dateTo: value });
+	const handleDateToChange = (value: Date | null) => {
+		onFiltersChange({ ...filters, dateTo: value ?? undefined });
 	};
 
 	const filterCounts = {
@@ -160,10 +160,10 @@ export const CommentsFilterModal = ({
 								<DsTypography variant="body-sm-md" className={styles.dateLabel}>
 									From
 								</DsTypography>
-								<DsDateInput
-									value={filters.dateFrom}
-									onValueChange={handleDateFromChange}
-									max={filters.dateTo}
+								<DsDatePicker
+									value={filters.dateFrom ?? null}
+									onChange={handleDateFromChange}
+									max={filters.dateTo ?? undefined}
 									placeholder="Select start date"
 									disablePortal
 								/>
@@ -172,10 +172,10 @@ export const CommentsFilterModal = ({
 								<DsTypography variant="body-sm-md" className={styles.dateLabel}>
 									To
 								</DsTypography>
-								<DsDateInput
-									value={filters.dateTo}
-									onValueChange={handleDateToChange}
-									min={filters.dateFrom}
+								<DsDatePicker
+									value={filters.dateTo ?? null}
+									onChange={handleDateToChange}
+									min={filters.dateFrom ?? undefined}
 									placeholder="Select end date"
 									disablePortal
 								/>
@@ -204,12 +204,12 @@ export const CommentsFilterModal = ({
 			</DsModal.Body>
 
 			<DsModal.Footer className={styles.footer}>
-				<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={onClearAll}>
+				<DsButton variant="secondary" onClick={onClearAll}>
 					<DsIcon icon="close" size="tiny" />
 					Clear all
 				</DsButton>
 				<DsModal.Actions>
-					<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={onApply}>
+					<DsButton variant="primary" onClick={onApply}>
 						Apply
 					</DsButton>
 				</DsModal.Actions>

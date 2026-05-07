@@ -3,65 +3,12 @@ import { createPlugin } from './create-plugin';
 
 const eslintPlugin = createPlugin(
 	'@drivenets/design-system',
-	{
-		name: 'no-deprecated-ds-button-legacy-design',
-		selector: JSXElementAttribute('DsButton', 'design', 'legacy'),
-		message: `Using the 'legacy' design for DsButton is deprecated. Use 'v1.2' instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-button-empty-design',
-		selector: `${JSXElement('DsButton')}:not(:has( > ${JSXAttribute('design')} )) > .name`,
-		message: `Omitting the design attribute for DsButton is not allowed. Pass 'design="v1.2"' so the new design is used.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-dialog',
-		selector: JSXElementName('DsDialog'),
-		message: `DsDialog is deprecated. Use DsModal or DsConfirmation instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-confirmation',
-		selector: JSXElementName('DsConfirmation'),
-		message: `DsConfirmation is deprecated. Use DsModal instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-system-status',
-		selector: JSXElementName('DsSystemStatus'),
-		message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-dropdown-menu-legacy',
-		selector: JSXElementName('DsDropdownMenuLegacy'),
-		message: `DsDropdownMenuLegacy is deprecated. Use DsDropdownMenu instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-radio-group-legacy',
-		selector: JSXElementName('DsRadioGroupLegacy'),
-		message: `DsRadioGroupLegacy is deprecated. Use DsRadioGroup instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-chip',
-		selector: JSXElementName('DsChip'),
-		message: `DsChip is deprecated. Use DsTag instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-chip-group',
-		selector: JSXElementName('DsChipGroup'),
-		message: `DsChipGroup is deprecated. Use DsTagFilter instead.`,
-	},
-
-	{
-		name: 'no-deprecated-ds-date-input',
-		selector: JSXElementName('DsDateInput'),
-		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,
-	},
+	// Example test for deprecated components, for future reference
+	// 	{
+	// 		name: 'no-deprecated-ds-date-input',
+	// 		selector: JSXElementName('DsDateInput'),
+	// 		message: `DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead.`,
+	// 	},
 
 	{
 		name: 'no-native-button',

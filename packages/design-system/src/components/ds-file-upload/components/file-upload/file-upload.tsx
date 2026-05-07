@@ -63,7 +63,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 					{dropzoneText}
 				</DsTypography>
 				<ArkUiFileUpload.Trigger asChild>
-					<DsButton design="v1.2" variant="ghost" size="small" disabled={disabled}>
+					<DsButton variant="secondary" size="small" disabled={disabled}>
 						{triggerText}
 					</DsButton>
 				</ArkUiFileUpload.Trigger>

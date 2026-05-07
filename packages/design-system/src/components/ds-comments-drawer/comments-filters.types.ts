@@ -1,19 +1,19 @@
 export interface FilterTag {
 	/**
-	 * Stable identifier for the chip, used when removing it from the filter state
+	 * Stable identifier for the tag, used when removing it from the filter state
 	 */
 	id: string;
 	/**
-	 * Human-readable label rendered inside the chip
+	 * Human-readable label rendered inside the tag
 	 */
 	label: string;
 	/**
-	 * Identifier of the filter category this chip belongs to (e.g., `authors`,
+	 * Identifier of the filter category this tag belongs to (e.g., `authors`,
 	 * `labels`, `statuses`). Maps to a key on `CommentsFilterState`.
 	 */
 	filterId: string;
 	/**
-	 * Underlying filter value this chip represents (e.g., an author id or a status
+	 * Underlying filter value this tag represents (e.g., an author id or a status
 	 * value). Used to remove the value from the corresponding array in
 	 * `CommentsFilterState`.
 	 */
@@ -29,11 +29,11 @@ export interface CommentsFilterState {
 	/**
 	 * Lower bound of the createdAt range as an ISO date string, inclusive.
 	 */
-	dateFrom?: string;
+	dateFrom?: Date;
 	/**
 	 * Upper bound of the createdAt range as an ISO date string, inclusive.
 	 */
-	dateTo?: string;
+	dateTo?: Date;
 	/**
 	 * Label strings currently included in the filter. Empty array means no label
 	 * filter is applied.

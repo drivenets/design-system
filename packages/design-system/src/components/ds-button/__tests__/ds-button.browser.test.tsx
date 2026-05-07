@@ -1,13 +1,13 @@
 import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import { DsButtonV3 } from '../index';
+import { DsButton } from '../index';
 
-describe('DsButtonV3', () => {
+describe('DsButton', () => {
 	it('calls onClick when clicked', async () => {
 		const onClick = vi.fn();
 
-		await page.render(<DsButtonV3 onClick={onClick}>Click me</DsButtonV3>);
+		await page.render(<DsButton onClick={onClick}>Click me</DsButton>);
 
 		await page.getByRole('button', { name: 'Click me' }).click();
 
@@ -18,9 +18,9 @@ describe('DsButtonV3', () => {
 		const onClick = vi.fn();
 
 		await page.render(
-			<DsButtonV3 onClick={onClick} disabled>
+			<DsButton onClick={onClick} disabled>
 				Click me
-			</DsButtonV3>,
+			</DsButton>,
 		);
 
 		const button = page.getByRole('button', { name: 'Click me', disabled: true });
@@ -32,7 +32,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('applies selected state', async () => {
-		await page.render(<DsButtonV3 selected>Label</DsButtonV3>);
+		await page.render(<DsButton selected>Label</DsButton>);
 
 		const button = page.getByRole('button', { name: 'Label' });
 
@@ -40,7 +40,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('sets data-color for error palette', async () => {
-		await page.render(<DsButtonV3 color="error">Delete</DsButtonV3>);
+		await page.render(<DsButton color="error">Delete</DsButton>);
 
 		const button = page.getByRole('button', { name: 'Delete' });
 
@@ -48,7 +48,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('applies iconOnly layout when icon is set without children', async () => {
-		await page.render(<DsButtonV3 icon="check_circle" aria-label="Confirm" />);
+		await page.render(<DsButton icon="check_circle" aria-label="Confirm" />);
 
 		const button = page.getByRole('button', { name: 'Confirm' });
 
@@ -56,7 +56,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('does not apply iconOnly layout when icon is set with children', async () => {
-		await page.render(<DsButtonV3 icon="check_circle">Save</DsButtonV3>);
+		await page.render(<DsButton icon="check_circle">Save</DsButton>);
 
 		const button = page.getByRole('button', { name: 'Save' });
 
@@ -64,7 +64,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('renders native submit button type', async () => {
-		await page.render(<DsButtonV3 type="submit">Send</DsButtonV3>);
+		await page.render(<DsButton type="submit">Send</DsButton>);
 
 		const button = page.getByRole('button', { name: 'Send' });
 
@@ -72,13 +72,13 @@ describe('DsButtonV3', () => {
 	});
 
 	it('merges className', async () => {
-		await page.render(<DsButtonV3 className="extra">X</DsButtonV3>);
+		await page.render(<DsButton className="extra">X</DsButton>);
 
 		await expect.element(page.getByRole('button', { name: 'X' })).toHaveClass('extra');
 	});
 
 	it('sets aria-busy and data-loading when loading', async () => {
-		await page.render(<DsButtonV3 loading>Save</DsButtonV3>);
+		await page.render(<DsButton loading>Save</DsButton>);
 
 		const button = page.getByRole('button', { name: 'Save' });
 
@@ -87,7 +87,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('renders spinner instead of icon when loading', async () => {
-		await page.render(<DsButtonV3 loading icon="check_circle" aria-label="Saving" />);
+		await page.render(<DsButton loading icon="check_circle" aria-label="Saving" />);
 
 		const button = page.getByRole('button', { name: 'Saving' });
 
@@ -102,9 +102,9 @@ describe('DsButtonV3', () => {
 		const onClick = vi.fn();
 
 		await page.render(
-			<DsButtonV3 loading onClick={onClick}>
+			<DsButton loading onClick={onClick}>
 				Save
-			</DsButtonV3>,
+			</DsButton>,
 		);
 
 		await page.getByRole('button', { name: 'Save' }).click({ force: true });
@@ -115,9 +115,9 @@ describe('DsButtonV3', () => {
 	it('sets data-variant for each variant', async () => {
 		for (const variant of ['primary', 'secondary', 'tertiary'] as const) {
 			await page.render(
-				<DsButtonV3 variant={variant} aria-label={variant}>
+				<DsButton variant={variant} aria-label={variant}>
 					Label
-				</DsButtonV3>,
+				</DsButton>,
 			);
 
 			await expect
@@ -127,7 +127,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('applies default props when none are specified', async () => {
-		await page.render(<DsButtonV3>Default</DsButtonV3>);
+		await page.render(<DsButton>Default</DsButton>);
 
 		const button = page.getByRole('button', { name: 'Default' });
 
@@ -139,7 +139,7 @@ describe('DsButtonV3', () => {
 	it('forwards ref to the button element', async () => {
 		const ref = createRef<HTMLButtonElement>();
 
-		await page.render(<DsButtonV3 ref={ref}>Ref</DsButtonV3>);
+		await page.render(<DsButton ref={ref}>Ref</DsButton>);
 
 		expect(ref.current).toBeInstanceOf(HTMLButtonElement);
 		expect(ref.current?.textContent).toBe('Ref');
@@ -149,9 +149,9 @@ describe('DsButtonV3', () => {
 		const onClick = vi.fn();
 
 		await page.render(
-			<DsButtonV3 loading onClick={onClick}>
+			<DsButton loading onClick={onClick}>
 				Saving
-			</DsButtonV3>,
+			</DsButton>,
 		);
 
 		const button = page.getByRole('button', { name: 'Saving', disabled: true });
@@ -164,9 +164,9 @@ describe('DsButtonV3', () => {
 
 	it('loading + disabled shows spinner with disabled styling', async () => {
 		await page.render(
-			<DsButtonV3 loading disabled>
+			<DsButton loading disabled>
 				Saving
-			</DsButtonV3>,
+			</DsButton>,
 		);
 
 		const button = page.getByRole('button', { name: 'Saving', disabled: true });
@@ -178,9 +178,9 @@ describe('DsButtonV3', () => {
 
 	it('selected + disabled does not remove selected styling', async () => {
 		await page.render(
-			<DsButtonV3 selected disabled>
+			<DsButton selected disabled>
 				Toggle
-			</DsButtonV3>,
+			</DsButton>,
 		);
 
 		const button = page.getByRole('button', { name: 'Toggle', disabled: true });
@@ -192,9 +192,9 @@ describe('DsButtonV3', () => {
 
 	it('spreads rest props onto the button element', async () => {
 		await page.render(
-			<DsButtonV3 data-testid="my-btn" aria-label="Spread">
+			<DsButton data-testid="my-btn" aria-label="Spread">
 				Rest
-			</DsButtonV3>,
+			</DsButton>,
 		);
 
 		const button = page.getByRole('button', { name: 'Spread' });

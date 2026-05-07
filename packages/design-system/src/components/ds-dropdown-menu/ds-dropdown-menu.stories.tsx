@@ -244,10 +244,10 @@ export const CheckboxList: Story = {
 						</DsDropdownMenu.ItemGroup>
 					)}
 					<DsDropdownMenu.Actions>
-						<DsButton design="v1.2" buttonType="secondary" size="small" onClick={handleCancel}>
+						<DsButton variant="secondary" size="small" onClick={handleCancel}>
 							Cancel
 						</DsButton>
-						<DsButton design="v1.2" buttonType="primary" size="small" onClick={handleApply}>
+						<DsButton variant="primary" size="small" onClick={handleApply}>
 							Apply
 						</DsButton>
 					</DsDropdownMenu.Actions>
@@ -398,13 +398,13 @@ export const RadioList: Story = {
 						))}
 					</DsRadioGroup.Root>
 					<DsDropdownMenu.Actions>
-						<DsButton design="v1.2" variant="danger" size="small" onClick={handleReset}>
+						<DsButton variant="primary" color="error" size="small" onClick={handleReset}>
 							Reset
 						</DsButton>
-						<DsButton design="v1.2" buttonType="secondary" size="small" onClick={handleCancel}>
+						<DsButton variant="secondary" size="small" onClick={handleCancel}>
 							Cancel
 						</DsButton>
-						<DsButton design="v1.2" buttonType="primary" size="small" onClick={handleApply}>
+						<DsButton variant="primary" size="small" onClick={handleApply}>
 							Apply
 						</DsButton>
 					</DsDropdownMenu.Actions>
@@ -434,9 +434,7 @@ export const ActionMenu: Story = {
 		return (
 			<DsDropdownMenu.Root>
 				<DsDropdownMenu.Trigger asChild>
-					<DsButton design="v1.2" buttonType="secondary">
-						<DsIcon icon="more_vert" />
-					</DsButton>
+					<DsButton icon="more_vert" variant="secondary" />
 				</DsDropdownMenu.Trigger>
 				<DsDropdownMenu.Content>
 					<DsDropdownMenu.Item value="edit" onSelect={handleEdit}>

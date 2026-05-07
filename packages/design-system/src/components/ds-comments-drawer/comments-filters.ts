@@ -3,6 +3,15 @@ import type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
 export type { FilterTag, CommentsFilterState } from './comments-filters.types';
 
+/** Formats using local calendar date (not UTC) to stay consistent with applyFilters,
+ *  which treats dateFrom/dateTo as local dates via setHours(0,0,0,0). */
+const formatFilterDateForTag = (d: Date): string => {
+	const year = d.getFullYear();
+	const month = String(d.getMonth() + 1).padStart(2, '0');
+	const day = String(d.getDate()).padStart(2, '0');
+	return `${String(year)}-${month}-${day}`;
+};
+
 export const initialFilterState: CommentsFilterState = {
 	authors: [],
 	labels: [],
@@ -42,6 +51,7 @@ export const applyFilters = (
 
 		if (filters.dateFrom) {
 			const fromDate = new Date(filters.dateFrom);
+			fromDate.setHours(0, 0, 0, 0);
 			if (comment.createdAt < fromDate) {
 				return false;
 			}
@@ -89,8 +99,8 @@ export const filtersToTags = (filters: CommentsFilterState, authorMap: Map<strin
 	});
 
 	if (filters.dateFrom || filters.dateTo) {
-		const from = filters.dateFrom || '...';
-		const to = filters.dateTo || '...';
+		const from = filters.dateFrom ? formatFilterDateForTag(filters.dateFrom) : '...';
+		const to = filters.dateTo ? formatFilterDateForTag(filters.dateTo) : '...';
 		tags.push({
 			id: 'date-range',
 			label: `Date: ${from} to ${to}`,

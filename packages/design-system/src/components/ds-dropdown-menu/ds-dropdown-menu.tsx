@@ -1,13 +1,11 @@
 import type React from 'react';
 import { createContext, Fragment, useContext, useState } from 'react';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { Menu } from '@ark-ui/react/menu';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import styles from './ds-dropdown-menu.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
-import { DsTextInput } from '../ds-text-input';
 import type {
 	DsDropdownMenuActionsProps,
 	DsDropdownMenuContentProps,
@@ -17,7 +15,6 @@ import type {
 	DsDropdownMenuItemGroupProps,
 	DsDropdownMenuItemIndicatorProps,
 	DsDropdownMenuItemProps,
-	DsDropdownMenuLegacyProps,
 	DsDropdownMenuPositioning,
 	DsDropdownMenuRootProps,
 	DsDropdownMenuSeparatorProps,
@@ -278,95 +275,6 @@ const TriggerItem: React.FC<DsDropdownMenuTriggerItemProps> = ({ className, styl
 		</Menu.TriggerItem>
 	);
 };
-
-/**
- * DEPRECATED: Legacy DsDropdownMenu component with options array
- * Use compound component pattern instead
- * @deprecated
- */
-/* c8 ignore start */
-export const DsDropdownMenuLegacy: React.FC<DsDropdownMenuLegacyProps> = ({
-	options,
-	children,
-	contentGap = 0,
-	className,
-	style,
-	align = 'center',
-	side = 'bottom',
-	disablePortal = false,
-	disableSearch = true,
-	selected,
-	onSelect,
-}) => {
-	const [open, setOpen] = useState(false);
-	const [searchTerm, setSearchTerm] = useState('');
-
-	const Wrapper = disablePortal ? Fragment : DropdownMenu.Portal;
-
-	const filteredOptions = disableSearch
-		? options
-		: options.filter((option) => option.label.toLowerCase().includes(searchTerm.toLowerCase()));
-
-	return (
-		<DropdownMenu.Root open={open} onOpenChange={setOpen}>
-			<DropdownMenu.Trigger asChild>{children}</DropdownMenu.Trigger>
-			<Wrapper>
-				<DropdownMenu.Content
-					className={classNames(styles.contentLegacy, styles.viewportLegacy)}
-					sideOffset={contentGap}
-					align={align}
-					side={side}
-				>
-					{!disableSearch && (
-						<DsTextInput
-							placeholder="Search"
-							value={searchTerm}
-							onValueChange={setSearchTerm}
-							slots={{
-								startAdornment: <DsIcon icon="search" size="tiny" />,
-							}}
-							onKeyDown={(e) => e.stopPropagation()}
-						/>
-					)}
-					{filteredOptions.map((option, i) => (
-						<DropdownMenu.Item
-							key={i}
-							disabled={option.disabled}
-							className={classNames(
-								styles.itemLegacy,
-								{
-									[styles.selected]: selected === option.value,
-								},
-								className,
-							)}
-							style={style}
-							onClick={(e) => {
-								e.stopPropagation();
-
-								if (!option.disabled) {
-									if (option.value) {
-										onSelect?.(option.value);
-									}
-									option.onClick?.(e);
-									setOpen(false);
-								}
-							}}
-						>
-							{option.icon && <DsIcon icon={option.icon} className={styles.itemIcon} />}
-							<span className={styles.label}>{option.label}</span>
-							{option.value && selected === option.value && (
-								<span className={styles.indicator}>
-									<DsIcon icon="check" />
-								</span>
-							)}
-						</DropdownMenu.Item>
-					))}
-				</DropdownMenu.Content>
-			</Wrapper>
-		</DropdownMenu.Root>
-	);
-};
-/* c8 ignore stop */
 
 /**
  * Design system  DsDropdownMenu component

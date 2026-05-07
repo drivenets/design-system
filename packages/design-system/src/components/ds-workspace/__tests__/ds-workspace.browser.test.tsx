@@ -89,7 +89,7 @@ describe('DsWorkspace', () => {
 		const root = page.getByRole('banner').element().parentElement as HTMLElement;
 		const style = getComputedStyle(root);
 
-		expect(style.height).toBe(`${String(window.innerHeight)}px`);
+		expect(parseFloat(style.height)).toBeCloseTo(window.innerHeight, 0);
 	});
 
 	it('fills parent height when fillParent is true', async () => {

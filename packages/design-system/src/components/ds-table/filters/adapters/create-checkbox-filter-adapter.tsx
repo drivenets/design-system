@@ -26,10 +26,10 @@ export interface CheckboxFilterAdapterConfig<TData, TValue> {
 	renderer?: (item: CheckboxFilterItem<TValue>) => ReactNode;
 
 	/**
-	 * Optional custom chip label generator
+	 * Optional custom tag label generator
 	 * @default (item) => `${label}: ${item.label}`
 	 */
-	chipLabelTemplate?: (item: CheckboxFilterItem<TValue>) => string;
+	tagLabelTemplate?: (item: CheckboxFilterItem<TValue>) => string;
 
 	/**
 	 * Optional custom cell renderer for table column
@@ -58,7 +58,7 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 		label,
 		items,
 		renderer,
-		chipLabelTemplate = (item) => `${label}: ${item.label}`,
+		tagLabelTemplate = (item) => `${label}: ${item.label}`,
 		cellRenderer,
 		getRowValue = (row) => row.getValue(id),
 	} = config;
@@ -81,11 +81,10 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 
 		cellRenderer,
 
-		toChips: (selectedItems) => {
-			// Generate chips for all selected items
+		toTags: (selectedItems) => {
 			return selectedItems.map((item) => ({
 				id: `${id}_${String(item.value)}`,
-				label: chipLabelTemplate(item),
+				label: tagLabelTemplate(item),
 				metadata: {
 					key: id,
 					value: item.value,
@@ -93,8 +92,8 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 			}));
 		},
 
-		fromChip: (chip, currentValue) => {
-			return currentValue.filter((item) => item.value !== chip.metadata?.value);
+		fromTag: (tag, currentValue) => {
+			return currentValue.filter((item) => item.value !== tag.metadata?.value);
 		},
 
 		getActiveFiltersCount: (selectedItems) => {

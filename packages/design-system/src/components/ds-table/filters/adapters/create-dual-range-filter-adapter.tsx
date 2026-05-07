@@ -1,5 +1,5 @@
 import type { Row } from '@tanstack/react-table';
-import type { ChipItem } from '../../../ds-chip-group';
+import type { TagFilterItem } from '../../../ds-tag-filter';
 import type { FilterAdapter } from '../types/filter-adapter.types';
 import { RangeFilter } from '../components/range-filter';
 import { createFilterAdapter } from './create-filter-adapter';
@@ -31,7 +31,7 @@ export interface DualRangeFilterAdapterConfig<TData> {
 	fields: Record<string, string>;
 
 	/**
-	 * Optional formatter for chip display
+	 * Optional formatter for tag display
 	 * @default (num) => num.toLocaleString('en-US')
 	 */
 	formatNumber?: (num: number) => string;
@@ -91,8 +91,8 @@ export function createDualRangeFilterAdapter<TData>(
 
 		cellRenderer: undefined, // Let the column definition handle rendering
 
-		toChips: (value) => {
-			const chips: ChipItem[] = [];
+		toTags: (value) => {
+			const tags: TagFilterItem[] = [];
 
 			Object.entries(value).forEach(([fieldKey, range]) => {
 				const hasFilter = range.from !== undefined || range.to !== undefined;
@@ -102,7 +102,7 @@ export function createDualRangeFilterAdapter<TData>(
 					const fromText = range.from !== undefined ? formatNumber(range.from) : '';
 					const toText = range.to !== undefined ? formatNumber(range.to) : '';
 
-					chips.push({
+					tags.push({
 						id: `${id}_${fieldKey}`,
 						label: `${fieldLabel}: From ${fromText} to ${toText}`,
 						metadata: {
@@ -115,11 +115,11 @@ export function createDualRangeFilterAdapter<TData>(
 				}
 			});
 
-			return chips;
+			return tags;
 		},
 
-		fromChip: (chip, currentValue) => {
-			const fieldKey = chip.metadata?.field as string;
+		fromTag: (tag, currentValue) => {
+			const fieldKey = tag.metadata?.field as string;
 			if (!fieldKey) {
 				return currentValue;
 			}

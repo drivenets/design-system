@@ -1,4 +1,3 @@
-@use '../../styles/typography';
 @use '../../styles/shared/dropdown';
 
 .content {
@@ -110,21 +109,4 @@
 
 .triggerItemIcon {
 	margin-left: auto;
-}
-
-/** Legacy classes */
-.contentLegacy {
-	@include dropdown.dropdown-content;
-	min-width: 200px;
-	width: var(--radix-select-trigger-width);
-}
-
-.viewportLegacy {
-	@include dropdown.dropdown-viewport;
-}
-
-.itemLegacy {
-	@include dropdown.dropdown-item;
-	@include typography.p-special;
-	@include typography.ellipsis;
 }
