@@ -12,12 +12,12 @@ Shows the mapping of old tokens to new tokens.
 
 ## Legend
 
-| Status  | Meaning                                                                                                | Migration strategy                                   |
-| ------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- |
-| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required               |
-| Changed | Same logical token but resolved value differs                                                          | Find & replace; visual testing is required           |
-| New     | No old equivalent                                                                                      |                                                      |
-| Removed | Old token with no new equivalent                                                                       | Either keep old token or find the nearest equivalent |
+| Status  | Meaning                                                                                                | Migration strategy                                                                                                                                     |
+| ------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required                                                                                                                 |
+| Changed | Resolved value differs                                                                                 | Find & replace; visual testing is required                                                                                                             |
+| New     | No old equivalent                                                                                      |                                                                                                                                                        |
+| Removed | Old token with no new equivalent                                                                       | The **New Name** column holds a literal CSS value that the script substitutes verbatim, unwrapping any `var(--token)` so the resulting CSS stays valid |
 
 ---
 
@@ -467,14 +467,14 @@ Shows the mapping of old tokens to new tokens.
 
 ### Status
 
-| Old Name                     | New Name               | Status  |
-| ---------------------------- | ---------------------- | ------- |
-| `--color-status-bg-inactive` | `--status-bg-inactive` | Renamed |
-| `--color-status-bg-neutral`  | `--status-bg-neutral`  | Renamed |
-| `--color-status-bg-pending`  | `--status-bg-pending`  | Renamed |
-| `--color-status-bg-progress` | `--status-bg-progress` | Renamed |
-| `--color-status-bg-success`  | `--status-bg-success`  | Changed |
-| `--color-status-bg-warning`  | `--status-bg-warning`  | Renamed |
+| Old Name                     | New Name                             | Status  |
+| ---------------------------- | ------------------------------------ | ------- |
+| `--color-status-bg-inactive` | `--status-bg-inactive`               | Renamed |
+| `--color-status-bg-neutral`  | `--status-bg-neutral`                | Renamed |
+| `--color-status-bg-pending`  | `--status-bg-pending`                | Renamed |
+| `--color-status-bg-progress` | `--status-bg-progress`               | Renamed |
+| `--color-status-bg-success`  | `--status-bg-success`                | Changed |
+| `--color-status-bg-warning`  | `--status-bg-warning`                | Renamed |
 | `--color-status-bg-failed`   | `--background-error-secondary-hover` | Changed |
 
 ---
@@ -624,16 +624,16 @@ Unit changed from unitless integers to `px` across the scale. See the breaking-c
 
 ## 12. Gradients and Markers (legacy `_root.scss` — absent from new file)
 
-| Old Name                              | New Name | Status  |
-| ------------------------------------- | -------- | ------- |
-| `--color-gradient-violet-background`  | —        | Removed |
-| `--color-gradient-violet-transparent` | —        | Removed |
-| `--color-gradient-blue-light`         | —        | Removed |
-| `--color-gradient-linear-1`           | —        | Removed |
-| `--color-marker-magenta-12`           | —        | Removed |
-| `--color-marker-magenta-60`           | —        | Removed |
-| `--color-marker-magenta-100`          | —        | Removed |
-| `--color-marker-yellow-100`           | `--color-dap-data-yellow` | Changed |
+| Old Name                              | New Name                                                                         | Status  |
+| ------------------------------------- | -------------------------------------------------------------------------------- | ------- |
+| `--color-gradient-violet-background`  | `linear-gradient(90deg, #001b48 -0.12%, #312e81 99.86%)`                         | Removed |
+| `--color-gradient-violet-transparent` | `linear-gradient(180deg, rgba(30, 89, 215, 0.4) 0%, rgba(0, 27, 72, 0.16) 100%)` | Removed |
+| `--color-gradient-blue-light`         | `linear-gradient(116deg, #e9eefc 22.81%, #d6e2ff 99.14%)`                        | Removed |
+| `--color-gradient-linear-1`           | `linear-gradient(90deg, #014afb 0%, #152a7e 100%)`                               | Removed |
+| `--color-marker-magenta-12`           | `rgba(255, 0, 183, 0.12)`                                                        | Removed |
+| `--color-marker-magenta-60`           | `rgba(255, 0, 183, 0.6)`                                                         | Removed |
+| `--color-marker-magenta-100`          | `rgba(255, 0, 183)`                                                              | Removed |
+| `--color-marker-yellow-100`           | `--color-dap-data-yellow`                                                        | Changed |
 
 ---
 
@@ -651,11 +651,11 @@ These tokens come from the older `$colors` Sass map. Where the hex matches a new
 
 ### Gradient (Specials)
 
-| Old Name                        | New Name | Status  |
-| ------------------------------- | -------- | ------- |
-| `--gradient-violet-background`  | —        | Removed |
-| `--gradient-violet-transparent` | —        | Removed |
-| `--gradient-blue-light`         | —        | Removed |
+| Old Name                        | New Name                                                                         | Status  |
+| ------------------------------- | -------------------------------------------------------------------------------- | ------- |
+| `--gradient-violet-background`  | `linear-gradient(90deg, #001b48 -0.12%, #312e81 99.86%)`                         | Removed |
+| `--gradient-violet-transparent` | `linear-gradient(180deg, rgba(30, 89, 215, 0.4) 0%, rgba(0, 27, 72, 0.16) 100%)` | Removed |
+| `--gradient-blue-light`         | `linear-gradient(116deg, #e9eefc 22.81%, #d6e2ff 99.14%)`                        | Removed |
 
 ### Neutral
 
@@ -675,8 +675,8 @@ These tokens come from the older `$colors` Sass map. Where the hex matches a new
 
 ### Action
 
-| Old Name                            | New Name | Status  |
-| ----------------------------------- | -------- | ------- |
+| Old Name                            | New Name                     | Status  |
+| ----------------------------------- | ---------------------------- | ------- |
 | `--action-cta1` (`#0064fa`)         | `--color-dap-blue-600`       | Changed |
 | `--action-cta2` (`#579aff`)         | `--color-dap-blue-400`       | Changed |
 | `--action-cta3` (`#6b7b8e`)         | `--color-dap-brand-300`      | Changed |
@@ -686,19 +686,19 @@ These tokens come from the older `$colors` Sass map. Where the hex matches a new
 
 ### System Status
 
-| Old Name                                  | New Name | Status  |
-| ----------------------------------------- | -------- | ------- |
-| `--system-status-ok` (`#067a00`)          | `--color-dap-data-green`         | Changed |
-| `--system-status-info` (`#005dcf`)        | `--color-dap-blue-600`           | Changed |
-| `--system-status-error` (`#d70a00`)       | `--background-error`             | Changed |
-| `--system-status-alert` (`#d04d07`)       | `--color-dap-orange-600`         | Changed |
-| `--system-status-in-progress` (`#1513da`) | `--color-dap-blue-800`           | Changed |
-| `--system-status-pending` (`#8836d6`)     | `--color-dap-data-deep-fuchsia`  | Changed |
+| Old Name                                  | New Name                        | Status  |
+| ----------------------------------------- | ------------------------------- | ------- |
+| `--system-status-ok` (`#067a00`)          | `--color-dap-data-green`        | Changed |
+| `--system-status-info` (`#005dcf`)        | `--color-dap-blue-600`          | Changed |
+| `--system-status-error` (`#d70a00`)       | `--background-error`            | Changed |
+| `--system-status-alert` (`#d04d07`)       | `--color-dap-orange-600`        | Changed |
+| `--system-status-in-progress` (`#1513da`) | `--color-dap-blue-800`          | Changed |
+| `--system-status-pending` (`#8836d6`)     | `--color-dap-data-deep-fuchsia` | Changed |
 
 ### Utility
 
-| Old Name                            | New Name | Status  |
-| ----------------------------------- | -------- | ------- |
+| Old Name                            | New Name                       | Status  |
+| ----------------------------------- | ------------------------------ | ------- |
 | `--utility-ok` (`#d6f5cf`)          | `--color-dap-data-light-green` | Changed |
 | `--utility-info` (`#c4dcff`)        | `--color-dap-blue-200`         | Changed |
 | `--utility-error` (`#ffd8d6`)       | `--color-dap-red-100`          | Changed |
@@ -709,8 +709,8 @@ These tokens come from the older `$colors` Sass map. Where the hex matches a new
 
 ### Map / Scheme
 
-| Old Name                                             | New Name | Status  |
-| ---------------------------------------------------- | -------- | ------- |
+| Old Name                                             | New Name                        | Status  |
+| ---------------------------------------------------- | ------------------------------- | ------- |
 | `--map-and-scheme-line-layer-0` (`#5452f6`)          | `--color-dap-purple-500`        | Changed |
 | `--map-and-scheme-line-layer-01` (`#cc4c5f`)         | `--color-dap-data-rose`         | Changed |
 | `--map-and-scheme-line-layer-02` (`#00894d`)         | `--color-dap-green-600`         | Changed |
@@ -733,25 +733,25 @@ equivalent and are inlined verbatim.
 
 | Old Name                 | New Name     | Status  |
 | ------------------------ | ------------ | ------- |
-| `--base-unit`            | `--3xs`      | Changed |
-| `--spacing-1`            | `--3xs`      | Changed |
-| `--spacing-2`            | `--xs`       | Changed |
-| `--spacing-3`            | `--sm`       | Changed |
-| `--spacing-4`            | `--standard` | Changed |
-| `--spacing-5`            | `--md`       | Changed |
-| `--spacing-6`            | `--lg`       | Changed |
-| `--spacing-8`            | `--xl`       | Changed |
-| `--spacing-10`           | —            | Removed |
-| `--spacing-12`           | `--2xl`      | Changed |
-| `--spacing-16`           | `--3xl`      | Changed |
+| `--base-unit`            | `--3xs`      | Renamed |
+| `--spacing-1`            | `--3xs`      | Renamed |
+| `--spacing-2`            | `--xs`       | Renamed |
+| `--spacing-3`            | `--sm`       | Renamed |
+| `--spacing-4`            | `--standard` | Renamed |
+| `--spacing-5`            | `--md`       | Renamed |
+| `--spacing-6`            | `--lg`       | Renamed |
+| `--spacing-8`            | `--xl`       | Renamed |
+| `--spacing-10`           | `40px`       | Removed |
+| `--spacing-12`           | `--2xl`      | Renamed |
+| `--spacing-16`           | `--3xl`      | Renamed |
 | `--spacing-20`           | `--4xl`      | Changed |
-| `--spacing-24`           | `--5xl`      | Changed |
-| `--spacing-base`         | `--standard` | Changed |
-| `--exo-spacing-standard` | `--standard` | Changed |
-| `--exo-spacing-small`    | `--sm`       | Changed |
-| `--exo-spacing-x-small`  | `--xs`       | Changed |
-| `--exo-spacing-2x-small` | `--3xs`      | Changed |
-| `--exo-spacing-4x-small` | —            | Removed |
+| `--spacing-24`           | `--5xl`      | Renamed |
+| `--spacing-base`         | `--standard` | Renamed |
+| `--exo-spacing-standard` | `--standard` | Renamed |
+| `--exo-spacing-small`    | `--sm`       | Renamed |
+| `--exo-spacing-x-small`  | `--xs`       | Renamed |
+| `--exo-spacing-2x-small` | `--3xs`      | Renamed |
+| `--exo-spacing-4x-small` | `1px`        | Removed |
 
 ### Named scale (T-shirt sizes) — renamed (prefix dropped)
 
@@ -776,14 +776,108 @@ equivalent and are inlined verbatim.
 
 ## Summary of value changes (breaking)
 
-| Token                                                    | Old value                | New value             |
-| -------------------------------------------------------- | ------------------------ | --------------------- |
-| `--color-red-100` / `--negative-100`                     | `#f5c2bf`                | `#ffd2cf`             |
-| `--background-success` / `--status-bg-success`           | `#ecfdf6` (green-50)     | `#d9f7e9` (green-075) |
-| `--border-disabled`                                      | `#e5e8ed` (brand-050)    | `#c7c9cc` (gray-300)  |
-| `--border-error-weak` (was `--color-border-danger-weak`) | `#f5c2bf`                | `#ffd2cf`             |
-| `--font-disabled`                                        | `#8b98a6` (gray-500)     | `#c7c9cc` (gray-300)  |
-| `--icon-error` (was `--color-icon-danger`)               | `#d70a00` (red-400)      | `#a10800` (red-500)   |
-| `--font-family-base`                                     | `'Roboto', sans-serif`   | `Roboto`              |
-| `--font-family-code`                                     | `'Fira Mono', monospace` | `Fira Mono`           |
-| `--paragraph-spacing-*` → `--*-paragraph-space-*`        | unitless (e.g. `8`)      | px (e.g. `8px`)       |
+Every row tagged `Changed` in the tables above. Visual retesting is required wherever these tokens are consumed.
+
+### Primitive / Alias colors
+
+| Token (old → new)                         | Old value | New value |
+| ----------------------------------------- | --------- | --------- |
+| `--color-red-100` → `--color-dap-red-100` | `#f5c2bf` | `#ffd2cf` |
+| `--color-negative-100` → `--negative-100` | `#f5c2bf` | `#ffd2cf` |
+
+### Semantic: Background / Border / Font / Icon / Status
+
+| Token (old → new)                                                 | Old value             | New value             |
+| ----------------------------------------------------------------- | --------------------- | --------------------- |
+| `--color-background-success` → `--background-success`             | `#ecfdf6` (green-50)  | `#d9f7e9` (green-075) |
+| `--color-background-warning-weak` → `--color-dap-red-050`         | `#ffedf0` (red-50)    | `#ffedf0` (red-050)   |
+| `--color-border-disabled` → `--border-disabled`                   | `#e5e8ed` (brand-050) | `#c7c9cc` (gray-300)  |
+| `--color-border-danger-weak` → `--border-error-weak`              | `#f5c2bf` (red-100)   | `#ffd2cf` (red-100)   |
+| `--color-font-disabled` → `--font-disabled`                       | `#8b98a6` (gray-500)  | `#c7c9cc` (gray-300)  |
+| `--color-icon-danger` → `--icon-error`                            | `#d70a00` (red-400)   | `#a10800` (red-500)   |
+| `--color-status-bg-success` → `--status-bg-success`               | `#ecfdf6` (green-50)  | `#d9f7e9` (green-075) |
+| `--color-status-bg-failed` → `--background-error-secondary-hover` | `#ffedf0` (red-50)    | `#ffedf0` (red-050)   |
+
+> `--color-background-warning-weak` and `--color-status-bg-failed` resolve to the same hex before and after, but their semantic role changed (no longer aliased through the deprecated `negative-050` / `background-danger-weak` chain). Listed here for completeness.
+
+### Typography
+
+| Token (old → new)                                 | Old value                | New value       |
+| ------------------------------------------------- | ------------------------ | --------------- |
+| `--font-family-base`                              | `'Roboto', sans-serif`   | `Roboto`        |
+| `--font-family-code`                              | `'Fira Mono', monospace` | `Fira Mono`     |
+| `--paragraph-spacing-*` → `--*-paragraph-space-*` | unitless (e.g. `8`)      | px (e.g. `8px`) |
+
+### Markers (legacy `_root.scss`)
+
+| Token (old → new)                                       | Old value | New value |
+| ------------------------------------------------------- | --------- | --------- |
+| `--color-marker-yellow-100` → `--color-dap-data-yellow` | `#fff500` | `#ffc107` |
+
+### Legacy `_colors.scss` — Neutrals
+
+| Token (old → new)                       | Old value | New value |
+| --------------------------------------- | --------- | --------- |
+| `--neutral-3` → `--color-dap-gray-500`  | `#6c7b8e` | `#8b98a6` |
+| `--neutral-5` → `--color-dap-gray-400`  | `#a0aab7` | `#a5afba` |
+| `--neutral-6` → `--color-dap-gray-400`  | `#b3bfd1` | `#a5afba` |
+| `--neutral-7` → `--color-dap-gray-300`  | `#c2cedf` | `#c7c9cc` |
+| `--neutral-8` → `--color-dap-gray-200`  | `#dee6f1` | `#e5e8ed` |
+| `--neutral-9` → `--color-dap-gray-200`  | `#eaecef` | `#e5e8ed` |
+| `--neutral-bg` → `--color-dap-gray-200` | `#dae2f4` | `#e5e8ed` |
+
+### Legacy `_colors.scss` — Action
+
+| Token (old → new)                                     | Old value | New value            |
+| ----------------------------------------------------- | --------- | -------------------- |
+| `--action-cta1` → `--color-dap-blue-600`              | `#0064fa` | `#0661ff`            |
+| `--action-cta2` → `--color-dap-blue-400`              | `#579aff` | `#48aaff`            |
+| `--action-cta3` → `--color-dap-brand-300`             | `#6b7b8e` | `#667691`            |
+| `--action-active-light` → `--color-dap-purple-200`    | `#c7d8ff` | `#c5d0f8`            |
+| `--action-hover-light` → `--background-active-status` | `#e0eaff` | `#e1efff` (blue-075) |
+| `--action-disabled` → `--color-dap-gray-400`          | `#b0b4bf` | `#a5afba`            |
+
+### Legacy `_colors.scss` — System Status
+
+| Token (old → new)                                           | Old value | New value           |
+| ----------------------------------------------------------- | --------- | ------------------- |
+| `--system-status-ok` → `--color-dap-data-green`             | `#067a00` | `#43a047`           |
+| `--system-status-info` → `--color-dap-blue-600`             | `#005dcf` | `#0661ff`           |
+| `--system-status-error` → `--background-error`              | `#d70a00` | `#d70a00` (red-400) |
+| `--system-status-alert` → `--color-dap-orange-600`          | `#d04d07` | `#c9510c`           |
+| `--system-status-in-progress` → `--color-dap-blue-800`      | `#1513da` | `#083bc5`           |
+| `--system-status-pending` → `--color-dap-data-deep-fuchsia` | `#8836d6` | `#9c27b0`           |
+
+> `--system-status-error` resolves to the same hex before and after; flagged `Changed` because the role moved from a primitive to the semantic `--background-error`.
+
+### Legacy `_colors.scss` — Utility
+
+| Token (old → new)                               | Old value | New value |
+| ----------------------------------------------- | --------- | --------- |
+| `--utility-ok` → `--color-dap-data-light-green` | `#d6f5cf` | `#d9ecda` |
+| `--utility-info` → `--color-dap-blue-200`       | `#c4dcff` | `#b5ddff` |
+| `--utility-error` → `--color-dap-red-100`       | `#ffd8d6` | `#ffd2cf` |
+| `--utility-alert` → `--schema-light-amber`      | `#ffeac0` | `#ffeacc` |
+| `--utility-in-progress` → `--schema-light-blue` | `#d9d9ff` | `#d7daf7` |
+| `--utility-pending` → `--background-pending`    | `#ede2ff` | `#e6e9fb` |
+| `--utility-disabled` → `--color-dap-gray-200`   | `#e3e3e3` | `#e5e8ed` |
+
+### Legacy `_colors.scss` — Map / Scheme
+
+| Token (old → new)                                                         | Old value | New value |
+| ------------------------------------------------------------------------- | --------- | --------- |
+| `--map-and-scheme-line-layer-0` → `--color-dap-purple-500`                | `#5452f6` | `#4a61e3` |
+| `--map-and-scheme-line-layer-01` → `--color-dap-data-rose`                | `#cc4c5f` | `#d81b60` |
+| `--map-and-scheme-line-layer-02` → `--color-dap-green-600`                | `#00894d` | `#028764` |
+| `--map-and-scheme-line-layer-1-optical` → `--color-dap-blue-400`          | `#3b8edb` | `#48aaff` |
+| `--map-and-scheme-line-layer-2-ethernet` → `--at-t-brand`                 | `#00b8d9` | `#00a8e0` |
+| `--map-and-scheme-line-layer-3-routing` → `--color-dap-data-deep-fuchsia` | `#9a55e0` | `#9c27b0` |
+| `--map-and-scheme-service-overlay` → `--color-dap-data-fuchsia`           | `#c30ede` | `#d602ee` |
+| `--map-and-scheme-pops-core-zones` → `--color-dap-orange-700`             | `#a92a00` | `#9a3412` |
+| `--map-and-scheme-line-optional-1` → `--color-dap-orange-400`             | `#da7b2d` | `#fc9947` |
+
+### Spacing (numeric → t-shirt)
+
+| Token (old → new)        | Old value | New value | Δ        |
+| ------------------------ | --------- | --------- | -------- |
+| `--spacing-20` → `--4xl` | `80px`    | `72px`    | **−8px** |
