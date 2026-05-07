@@ -1,6 +1,6 @@
 .container {
 	display: flex;
-	gap: var(--spacing-lg);
+	gap: var(--lg);
 	align-items: flex-start;
 }
 
@@ -9,22 +9,22 @@
 	justify-content: space-between;
 	align-items: center;
 	width: 100%;
-	background: var(--color-orange-200);
+	background: var(--color-dap-orange-200);
 }
 
 .statsBlock {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 }
 
 .dataList {
 	display: grid;
 	grid-template-columns: 1fr auto;
-	gap: var(--spacing-3xs) var(--spacing-sm);
+	gap: var(--3xs) var(--sm);
 	width: 100%;
-	border-top: 1px solid var(--color-border-contrast);
-	padding-top: var(--spacing-3xs);
+	border-top: 1px solid var(--border-contrast);
+	padding-top: var(--3xs);
 }
 
 // Color utility classes
@@ -37,17 +37,17 @@
 }
 
 .footer {
-	border-top: 1px solid var(--color-border-secondary);
+	border-top: 1px solid var(--border-secondary);
 }
 
 .collapsibleButton {
-	margin-right: var(--spacing-xs);
+	margin-right: var(--xs);
 }
 
 .collapseHeader {
 	display: flex;
 	align-items: center;
-	background: var(--color-background-tertiary);
+	background: var(--background-tertiary);
 }
 
 .collapseRoot {

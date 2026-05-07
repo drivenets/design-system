@@ -4,7 +4,7 @@
 
 	&:not(.expanded) {
 		gap: 0;
-		padding-inline: var(--spacing-xs);
+		padding-inline: var(--xs);
 	}
 
 	.trigger:focus {

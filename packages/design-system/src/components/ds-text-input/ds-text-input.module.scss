@@ -2,7 +2,7 @@
 
 .textInputContainer {
 	@include input.inputContainer;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .input {

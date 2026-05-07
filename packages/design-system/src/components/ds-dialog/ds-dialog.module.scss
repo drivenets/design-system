@@ -14,7 +14,7 @@
 	--_shadow-size: 18px;
 	--_shadow-y-offset: 6px;
 
-	background: var(--white, #fff);
+	background: var(--color-dap-gray-050, #fff);
 	border-radius: 8px;
 	box-shadow: 0 var(--_shadow-y-offset) var(--_shadow-size) 0 rgba(4, 69, 204, 0.3);
 	padding: 12px;
@@ -34,7 +34,7 @@
 .title {
 	@include typography.p-base;
 	@include typography.medium;
-	color: var(--neutral-1);
+	color: var(--color-dap-gray-700);
 }
 
 .description {

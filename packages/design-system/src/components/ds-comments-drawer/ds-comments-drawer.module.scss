@@ -6,13 +6,13 @@ $scrollbar-border-radius-pill: 9999px;
 .headerActions {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .divider {
 	width: $divider-width;
 	height: $divider-height;
-	background: var(--color-border-secondary);
+	background: var(--border-secondary);
 }
 
 .searchInput {
@@ -22,8 +22,8 @@ $scrollbar-border-radius-pill: 9999px;
 .body {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-standard);
-	padding: var(--spacing-standard);
+	gap: var(--standard);
+	padding: var(--standard);
 	overflow-y: auto;
 
 	&::-webkit-scrollbar {
@@ -35,7 +35,7 @@ $scrollbar-border-radius-pill: 9999px;
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--color-background-tertiary);
+		background: var(--background-tertiary);
 		border-radius: $scrollbar-border-radius-pill;
 	}
 }
@@ -45,16 +45,16 @@ $scrollbar-border-radius-pill: 9999px;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	padding: var(--spacing-xl);
+	padding: var(--xl);
 	text-align: center;
-	color: var(--color-font-secondary);
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
-	gap: var(--spacing-sm);
+	color: var(--font-secondary);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
+	gap: var(--sm);
 }
 
 .emptyIcon {
-	color: var(--color-icon-secondary);
+	color: var(--icon-action-secondary);
 }
 
 .filterTagsToolbar {

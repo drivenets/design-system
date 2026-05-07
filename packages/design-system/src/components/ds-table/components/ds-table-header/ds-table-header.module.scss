@@ -5,7 +5,7 @@
 	position: sticky;
 	top: 0;
 	z-index: 10;
-	background-color: var(--color-background);
+	background-color: var(--background);
 }
 
 .virtualizedHeader {
@@ -45,9 +45,9 @@
 
 .headerCell {
 	@include typography.body-sm-md;
-	color: var(--color-font-main);
+	color: var(--font-main);
 	text-align: left;
-	padding: 0 var(--spacing-standard);
+	padding: 0 var(--standard);
 	height: var(--ds-table-header-height);
 
 	&.sortableHeader {
@@ -63,7 +63,7 @@
 		height: 24px;
 
 		&.pageButtonIcon {
-			color: var(--neutral-4);
+			color: var(--color-dap-gray-500);
 			transition: transform 0.2s ease-in-out;
 		}
 	}

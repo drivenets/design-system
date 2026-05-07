@@ -1,5 +1,5 @@
 .description {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 	flex-basis: 100%;
 }
 
@@ -15,36 +15,36 @@
 	.divider {
 		width: 1px;
 		height: var(--icon-width-tiny);
-		background: var(--color-border-secondary);
-		margin: var(--spacing-2xs) var(--spacing-xs);
+		background: var(--border-secondary);
+		margin: var(--2xs) var(--xs);
 	}
 }
 
 .tabs {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
-	margin: 0 var(--spacing-standard);
-	border-bottom: 1px solid var(--color-border);
-	background: var(--color-background);
-	padding: var(--spacing-lg) var(--spacing-standard) 0 var(--spacing-standard);
+	gap: var(--xs);
+	margin: 0 var(--standard);
+	border-bottom: 1px solid var(--border);
+	background: var(--background);
+	padding: var(--lg) var(--standard) 0 var(--standard);
 
 	.tab {
-		padding: var(--spacing-2xs) var(--spacing-sm);
+		padding: var(--2xs) var(--sm);
 		border-bottom: 2px solid transparent;
-		color: var(--color-font-main);
+		color: var(--font-main);
 		transition:
 			color 0.2s ease,
 			border-color 0.2s ease;
 		cursor: pointer;
 
 		&:hover {
-			color: var(--color-font-action);
+			color: var(--font-action);
 		}
 
 		&.selected {
-			color: var(--color-font-action);
-			border-bottom: 2px solid var(--color-font-action);
+			color: var(--font-action);
+			border-bottom: 2px solid var(--font-action);
 		}
 	}
 }
@@ -63,11 +63,11 @@
 .section {
 	display: flex;
 	flex-direction: column;
-	background: var(--color-background);
+	background: var(--background);
 	flex: 1;
 
 	.sectionHeader {
-		padding: var(--spacing-lg) var(--spacing-standard) var(--spacing-3xs) var(--spacing-standard);
+		padding: var(--lg) var(--standard) var(--3xs) var(--standard);
 	}
 
 	.sectionContent {
@@ -75,7 +75,7 @@
 		justify-content: center;
 		align-items: center;
 		flex: 1;
-		margin: var(--spacing-xs) var(--spacing-standard);
+		margin: var(--xs) var(--standard);
 		background: var(--Marker-Magenta-12, rgba(255, 0, 183, 0.12));
 		color: var(--Marker-Magenta-60, rgba(255, 0, 183, 0.6));
 	}
@@ -88,8 +88,8 @@
 .responsiveButtons {
 	display: flex;
 	flex-wrap: wrap;
-	gap: var(--spacing-xs);
-	margin-top: var(--spacing-sm);
+	gap: var(--xs);
+	margin-top: var(--sm);
 }
 
 .contentSection {

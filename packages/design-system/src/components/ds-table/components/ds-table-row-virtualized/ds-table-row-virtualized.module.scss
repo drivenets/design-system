@@ -8,20 +8,20 @@
 	width: 100%;
 
 	&:hover {
-		background-color: var(--color-background-secondary);
+		background-color: var(--background-secondary);
 	}
 
 	&[data-state='selected'] {
-		background-color: var(--color-background-selected-weak);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&[data-state='active'] {
-		background-color: var(--color-background-selected-weak);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&:not(:last-child):not(.expandedRowContent) {
 		> td {
-			border-bottom: vars.$border-width solid var(--color-border-secondary);
+			border-bottom: vars.$border-width solid var(--border-secondary);
 		}
 	}
 
@@ -58,22 +58,22 @@
 	display: flex;
 	align-items: center;
 	@include typography.body-sm-reg;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .cell {
-	padding: 0 var(--spacing-standard);
+	padding: 0 var(--standard);
 }
 
 .expandedRowContent {
-	background-color: var(--color-background-secondary);
+	background-color: var(--background-secondary);
 
 	& > td {
 		display: flex;
 		flex-direction: column;
 		flex: 1;
-		padding: var(--spacing-standard);
-		background-color: var(--color-background-secondary);
+		padding: var(--standard);
+		background-color: var(--background-secondary);
 	}
 
 	@include table-mixins.expanded-row-border('bottom');

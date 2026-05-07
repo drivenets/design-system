@@ -29,13 +29,13 @@ describe('DsTypography color', () => {
 
 	it('escape hatch: arbitrary CSS variable via color prop passes through', async () => {
 		await page.render(
-			<DsTypography variant="body-md-reg" color="var(--color-blue-500)">
+			<DsTypography variant="body-md-reg" color="var(--color-dap-blue-500)">
 				blue
 			</DsTypography>,
 		);
 
 		const el = page.getByText('blue').element() as HTMLElement;
-		expect(el.style.color).toBe('var(--color-blue-500)');
+		expect(el.style.color).toBe('var(--color-dap-blue-500)');
 	});
 
 	it('escape hatch: hex literal via color prop is preserved (browser canonicalizes to rgb)', async () => {

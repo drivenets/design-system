@@ -4,11 +4,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: var(--spacing-xs);
-	padding: var(--spacing-xs) var(--spacing-sm);
-	border: 1px solid var(--neutral-4);
+	gap: var(--xs);
+	padding: var(--xs) var(--sm);
+	border: 1px solid var(--color-dap-gray-500);
 	border-radius: 4px;
-	background: var(--white);
+	background: var(--color-dap-gray-050);
 	cursor: pointer;
 	transition: border-color 0.2s;
 
@@ -22,15 +22,15 @@
 
 	span {
 		font-size: 14px;
-		color: var(--neutral-1);
+		color: var(--color-dap-gray-700);
 	}
 }
 
 .danger {
-	color: var(--color-background-danger-strong-hover);
+	color: var(--background-error-hover);
 
 	&:hover {
-		background-color: var(--color-background-danger-weak);
+		background-color: var(--background-error-secondary-hover);
 	}
 }
 
@@ -43,12 +43,12 @@
 
 .item-label {
 	@include typography.ellipsis;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .item-description {
 	@include typography.ellipsis;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .radio-group {
@@ -56,7 +56,7 @@
 }
 
 .radio-selected {
-	background-color: var(--color-background-selected-weak);
+	background-color: var(--background-secondary-hover);
 }
 
 .trigger-item-expand {

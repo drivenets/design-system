@@ -14,9 +14,9 @@ $transition-duration: 0.2s;
 	width: $indicator-size;
 	height: $indicator-size;
 	padding: 0;
-	border: $border-width solid var(--color-border);
-	border-radius: var(--spacing-standard) var(--spacing-standard) var(--spacing-standard) 0;
-	background: var(--color-background);
+	border: $border-width solid var(--border);
+	border-radius: var(--standard) var(--standard) var(--standard) 0;
+	background: var(--background);
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
 	cursor: pointer;
 	transition:
@@ -29,8 +29,8 @@ $transition-duration: 0.2s;
 	}
 
 	&:not(.actionRequired):hover {
-		background: var(--color-background-secondary);
-		border-color: var(--color-border-action-secondary-hover);
+		background: var(--background-secondary);
+		border-color: var(--border-action-secondary-hover);
 	}
 }
 
@@ -44,16 +44,16 @@ $transition-duration: 0.2s;
 		font-size: $plus-icon-font-size;
 		font-weight: var(--font-weight-semi-bold);
 		line-height: 0;
-		color: var(--color-font-main);
+		color: var(--font-main);
 	}
 }
 
 .actionRequired {
-	background: var(--color-background-warning-strong);
+	background: var(--background-warning-strong);
 
 	&:hover {
-		background: var(--color-background-danger-strong-hover);
-		border-color: var(--color-border-action-secondary-hover);
+		background: var(--background-error-hover);
+		border-color: var(--border-action-secondary-hover);
 	}
 }
 

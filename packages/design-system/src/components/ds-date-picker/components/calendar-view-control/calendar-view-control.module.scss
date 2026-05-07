@@ -2,7 +2,7 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: var(--spacing-sm);
+	margin-bottom: var(--sm);
 }
 
 .viewTrigger {
@@ -13,9 +13,9 @@
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: var(--spacing-2xs) var(--spacing-xs);
-	border-radius: var(--spacing-2xs);
-	color: var(--color-font-main);
+	padding: var(--2xs) var(--xs);
+	border-radius: var(--2xs);
+	color: var(--font-main);
 	transition: background-color 0.2s;
 
 	&:hover {
@@ -31,14 +31,14 @@
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: var(--spacing-2xs);
-	border-radius: var(--spacing-2xs);
-	color: var(--color-font-secondary);
+	padding: var(--2xs);
+	border-radius: var(--2xs);
+	color: var(--font-secondary);
 	transition: all 0.2s;
 
 	&:hover {
 		background: var(--color-background-hover);
-		color: var(--color-font-main);
+		color: var(--font-main);
 	}
 
 	&:disabled {

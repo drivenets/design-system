@@ -144,7 +144,7 @@ export const WithStartAdornment: Story = {
 			startAdornment: (
 				<span
 					style={{
-						color: 'var(--color-font-secondary)',
+						color: 'var(--font-secondary)',
 						fontSize: '12px',
 						fontWeight: 'bold',
 					}}
@@ -222,7 +222,7 @@ export const CustomEmailAdornments: Story = {
 								borderRadius: '4px',
 								padding: '2px 6px',
 								fontSize: '12px',
-								color: 'var(--color-font-secondary)',
+								color: 'var(--font-secondary)',
 								fontWeight: 'bold',
 							}}
 						>
@@ -302,7 +302,7 @@ export const Interactive: Story = {
 					}}
 					style={{ width: '200px' }}
 				/>
-				<div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--color-font-secondary)' }}>
+				<div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--font-secondary)' }}>
 					Character count: {value.length}
 				</div>
 			</>

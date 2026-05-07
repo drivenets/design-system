@@ -1,21 +1,21 @@
 .storiesContainer {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xl);
+	gap: var(--xl);
 }
 
 .storiesRow {
 	display: flex;
-	gap: var(--spacing-3xl);
+	gap: var(--3xl);
 }
 
 .sectionTitle {
-	margin-bottom: var(--spacing-sm);
+	margin-bottom: var(--sm);
 	font-weight: 500;
 }
 
 .storiesList {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }

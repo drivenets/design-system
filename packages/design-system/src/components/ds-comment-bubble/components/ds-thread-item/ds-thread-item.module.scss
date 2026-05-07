@@ -7,8 +7,8 @@ $transition-duration: 0.2s;
 
 .threadItem {
 	display: flex;
-	gap: var(--spacing-lg);
-	padding: var(--spacing-sm) var(--spacing-standard);
+	gap: var(--lg);
+	padding: var(--sm) var(--standard);
 	position: relative;
 
 	&:hover {
@@ -48,17 +48,17 @@ $transition-duration: 0.2s;
 	width: $avatar-size;
 	height: $avatar-size;
 	border-radius: $border-radius-circle;
-	background: var(--color-background-tertiary);
+	background: var(--background-tertiary);
 	font-size: $avatar-fallback-font-size;
 	font-weight: var(--font-weight-semi-bold);
-	color: var(--color-font-main);
+	color: var(--font-main);
 	text-transform: uppercase;
 }
 
 .content {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 	flex: 1;
 	min-width: 0;
 }
@@ -66,29 +66,29 @@ $transition-duration: 0.2s;
 .header {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	height: $header-height;
 }
 
 .authorName {
-	font-size: var(--font-size-md);
+	font-size: var(--body-font-size-md);
 	font-weight: var(--font-weight-semi-bold);
-	line-height: var(--line-height-md);
-	color: var(--color-font-main);
+	line-height: var(--body-line-height-md);
+	color: var(--font-main);
 }
 
 .timestamp {
-	font-size: var(--font-size-md);
+	font-size: var(--body-font-size-md);
 	font-weight: var(--font-weight-regular);
-	line-height: var(--line-height-md);
-	color: var(--color-font-secondary);
+	line-height: var(--body-line-height-md);
+	color: var(--font-secondary);
 }
 
 .message {
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	font-weight: var(--font-weight-regular);
-	line-height: var(--line-height-sm);
-	color: var(--color-font-main);
+	line-height: var(--body-line-height-small);
+	color: var(--font-main);
 	word-wrap: break-word;
 	white-space: pre-wrap;
 }
@@ -96,7 +96,7 @@ $transition-duration: 0.2s;
 .actions {
 	display: flex;
 	align-items: flex-start;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	opacity: 0;
 	transition: opacity $transition-duration ease;
 }
@@ -112,9 +112,9 @@ $transition-duration: 0.2s;
 
 .editActions {
 	display: flex;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	justify-content: flex-end;
-	margin-top: var(--spacing-xs);
+	margin-top: var(--xs);
 }
 
 .dropdownContent {

@@ -13,7 +13,7 @@ export const DefaultDescription = () => (
 				padding: 0,
 				margin: 0,
 				cursor: 'pointer',
-				color: 'var(--color-icon-primary)',
+				color: 'var(--icon-action)',
 				textDecoration: 'underline',
 				fontSize: 'inherit',
 				fontFamily: 'inherit',

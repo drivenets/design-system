@@ -154,6 +154,35 @@ jobs:
       - name: Run Tests With Build
         run: pnpm test:requires-build --affected
 
+  build-storybook:
+    name: Build Storybook
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Cache turbo
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-build-storybook-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-build-storybook-
+
+      - name: Run Build Storybook
+        run: pnpm build:storybook --affected
+
   packages-versions:
     name: Check Packages Versions
     runs-on: ubuntu-latest

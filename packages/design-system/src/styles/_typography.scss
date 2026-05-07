@@ -158,7 +158,7 @@
 	text-align: left;
 }
 
-@mixin heading($font-weight: var(--font-size-3xl), $line-height: var(--line-height-3xl)) {
+@mixin heading($font-weight: var(--heading-font-size-3xl), $line-height: var(--heading-line-height-3xl)) {
 	@include font-base;
 	font-size: $font-weight;
 	font-weight: var(--font-weight-semi-bold);
@@ -171,22 +171,22 @@
 }
 
 @mixin heading2 {
-	@include heading(var(--font-size-2xl), var(--line-height-2xl));
+	@include heading(var(--heading-font-size-2xl), var(--heading-line-height-2xl));
 }
 
 @mixin heading3 {
-	@include heading(var(--font-size-xl), var(--line-height-xl));
+	@include heading(var(--heading-font-size-xl), var(--heading-line-height-xl));
 }
 
 @mixin heading4 {
-	@include heading(var(--font-size-large), var(--line-height-large));
+	@include heading(var(--heading-font-size-large), var(--heading-line-height-large));
 }
 
 @mixin body-md($font-weight: var(--font-weight-regular)) {
 	@include font-base;
-	font-size: var(--font-size-md);
+	font-size: var(--body-font-size-md);
 	font-weight: $font-weight;
-	line-height: var(--line-height-md);
+	line-height: var(--body-line-height-md);
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
@@ -213,9 +213,9 @@
 
 @mixin body-sm($font-weight: var(--font-weight-regular)) {
 	@include font-base;
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	font-weight: $font-weight;
-	line-height: var(--line-height-sm);
+	line-height: var(--body-line-height-small);
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
@@ -242,9 +242,9 @@
 
 @mixin body-xs($font-weight: var(--font-weight-regular)) {
 	@include font-base;
-	font-size: var(--font-size-xs);
+	font-size: var(--body-font-size-xs);
 	font-weight: $font-weight;
-	line-height: var(--line-height-xs);
+	line-height: var(--body-line-height-xs);
 }
 
 @mixin body-xs-reg {
@@ -270,9 +270,9 @@
 
 @mixin code-sm($font-weight: var(--font-weight-regular)) {
 	@include code-base;
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	font-weight: $font-weight;
-	line-height: var(--line-height-sm);
+	line-height: var(--body-line-height-small);
 	letter-spacing: var(--letter-spacing--1percent);
 }
 
@@ -286,9 +286,9 @@
 
 @mixin code-xs($font-weight: var(--font-weight-regular)) {
 	@include code-base;
-	font-size: var(--font-size-xs);
+	font-size: var(--body-font-size-xs);
 	font-weight: $font-weight;
-	line-height: var(--line-height-xs);
+	line-height: var(--body-line-height-xs);
 	letter-spacing: var(--letter-spacing--1percent);
 }
 

@@ -6,7 +6,7 @@ $color-primary-active: var(--action-active-light);
 $color-primary-disabled: var(--action-disabled);
 
 $color-secondary-default: var(--action-cta3);
-$color-secondary-hover: var(--neutral-4);
+$color-secondary-hover: var(--color-dap-gray-500);
 $color-secondary-disabled: var(--action-disabled);
 
 $color-error-default: var(--system-status-error);
@@ -14,9 +14,9 @@ $color-error-hover: var(--utility-error);
 $color-error-active: var(--utility-error);
 $color-error-disabled: var(--action-disabled);
 
-$color-white: var(--white);
+$color-white: var(--color-dap-gray-050);
 $color-neutral-6: var(--utility-disabled);
-$color-neutral-4: var(--neutral-4);
+$color-neutral-4: var(--color-dap-gray-500);
 
 @mixin button-filled($background, $hover, $active, $disabled) {
 	background: $background;

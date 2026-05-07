@@ -10,21 +10,21 @@
 .root[data-orientation='horizontal'] {
 	display: grid;
 	grid-template-columns: auto 1fr;
-	column-gap: var(--spacing-xs);
+	column-gap: var(--xs);
 	align-items: start;
 }
 
 .label {
-	padding-bottom: var(--spacing-4xs);
-	padding-left: var(--spacing-sm);
-	color: var(--color-font-main);
+	padding-bottom: var(--4xs);
+	padding-left: var(--sm);
+	color: var(--font-main);
 	white-space: nowrap;
 	flex-shrink: 0;
 }
 
 .root[data-orientation='horizontal'] .label {
 	padding-bottom: 0;
-	padding-top: var(--spacing-3xs);
+	padding-top: var(--3xs);
 }
 
 .valueContainer {
@@ -43,8 +43,8 @@
 	width: 100%;
 	min-width: 0;
 	min-height: 28px;
-	padding: var(--spacing-3xs) var(--spacing-sm);
-	color: var(--color-font-secondary);
+	padding: var(--3xs) var(--sm);
+	color: var(--font-secondary);
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;

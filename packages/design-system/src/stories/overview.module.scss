@@ -1,7 +1,7 @@
 .root {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-lg);
+	gap: var(--lg);
 }
 
 .hero {
@@ -12,7 +12,7 @@
 .heroHeader {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
+	gap: var(--sm);
 }
 
 .logo {
@@ -20,13 +20,13 @@
 }
 
 .heroDescription {
-	margin-top: var(--spacing-sm);
-	color: var(--color-font-secondary);
+	margin-top: var(--sm);
+	color: var(--font-secondary);
 }
 
 .links {
 	display: flex;
-	gap: var(--spacing-standard);
+	gap: var(--standard);
 }
 
 .link {
@@ -45,25 +45,25 @@
 .sectionHeader {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
-	margin-bottom: var(--spacing-lg);
+	gap: var(--xs);
+	margin-bottom: var(--lg);
 }
 
 .sectionDescription {
-	margin-bottom: var(--spacing-lg);
-	color: var(--color-font-secondary);
+	margin-bottom: var(--lg);
+	color: var(--font-secondary);
 }
 
 .steps {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-md);
+	gap: var(--md);
 }
 
 .step {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 
 	:global(.docblock-source) {
 		margin: 0;
@@ -71,5 +71,5 @@
 }
 
 .stepHint {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }

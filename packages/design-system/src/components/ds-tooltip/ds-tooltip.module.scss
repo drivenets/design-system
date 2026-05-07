@@ -1,7 +1,7 @@
 .tooltip {
-	color: var(--color-font-on-action);
-	background-color: var(--color-background-brand);
-	padding: var(--spacing-xs) var(--spacing-sm);
+	color: var(--font-on-action);
+	background-color: var(--background-brand);
+	padding: var(--xs) var(--sm);
 	border-radius: var(--exo-spacing-2x-small);
 	max-width: 384px;
 	overflow-wrap: break-word;
@@ -9,5 +9,5 @@
 }
 
 .arrow {
-	fill: var(--neutral-1);
+	fill: var(--color-dap-gray-700);
 }

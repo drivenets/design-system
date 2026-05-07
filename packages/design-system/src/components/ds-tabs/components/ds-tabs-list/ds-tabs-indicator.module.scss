@@ -5,7 +5,7 @@ $transition-duration: 0.2s;
 
 .indicator {
 	position: absolute;
-	background: var(--color-background-selected);
+	background: var(--background-primary);
 	transition:
 		left $transition-duration ease-in-out,
 		top $transition-duration ease-in-out,

@@ -1,9 +1,9 @@
 .my-grid {
-	background: var(--neutral-10);
+	background: var(--color-dap-gray-100);
 }
 
 .card {
-	background: var(--white);
+	background: var(--color-dap-gray-050);
 	border: 1px solid var(--neutral-7);
 	padding: 12px 16px;
 	box-shadow: 0 1.25px 4px 0 rgba(0, 0, 0, 0.2509803922);
@@ -11,7 +11,7 @@
 }
 
 .navigation-grid {
-	background: var(--color-secondary-100);
+	background: var(--secondary-100);
 }
 
 .layout {
@@ -27,7 +27,7 @@
 			display: flex;
 			justify-content: center;
 			width: 256px;
-			background: var(--color-secondary-300);
+			background: var(--secondary-300);
 
 			.toggle {
 				align-self: center;
@@ -35,7 +35,7 @@
 		}
 
 		.title {
-			background: var(--color-secondary-200);
+			background: var(--secondary-200);
 			flex: 1;
 		}
 	}
@@ -47,7 +47,7 @@
 
 	.sidebar {
 		width: 256px;
-		background: var(--color-secondary-400);
+		background: var(--secondary-400);
 		transition: width 0.3s ease;
 
 		&.collapsed {

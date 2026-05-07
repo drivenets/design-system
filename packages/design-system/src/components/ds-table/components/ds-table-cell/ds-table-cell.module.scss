@@ -35,7 +35,7 @@
 	cursor: pointer;
 	outline: none;
 	transition: background 0.15s;
-	color: var(--color-icon-secondary);
+	color: var(--icon-action-secondary);
 
 	&.disabled {
 		opacity: 0.5;
@@ -45,11 +45,11 @@
 
 	&:hover,
 	&[data-state='open'] {
-		background: var(--color-background-action-hover-weak);
-		color: var(--color-font-action);
+		background: var(--background-action-hover-weak);
+		color: var(--font-action);
 	}
 }
 
 .secondaryActionsTrigger {
-	margin-inline-start: var(--spacing-sm);
+	margin-inline-start: var(--sm);
 }

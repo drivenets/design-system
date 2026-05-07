@@ -20,7 +20,7 @@
 
 .progressArc {
 	transition: stroke-dasharray 0.3s ease-in-out;
-	stroke: var(--color-background-selected);
+	stroke: var(--background-primary);
 
 	button &,
 	[role='button'] & {

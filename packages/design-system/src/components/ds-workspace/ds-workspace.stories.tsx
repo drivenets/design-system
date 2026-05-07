@@ -244,7 +244,7 @@ export const WithDrawerAndBackdrop: Story = {
 
 export const FillParent: Story = {
 	render: () => (
-		<div style={{ height: 400, border: '2px dashed var(--color-border)' }}>
+		<div style={{ height: 400, border: '2px dashed var(--border)' }}>
 			<DsWorkspace fillParent>
 				<DsWorkspace.Header>
 					<WorkspaceHeader />

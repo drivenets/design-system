@@ -17,7 +17,7 @@
 	border-radius: 4px;
 	font-size: 12px;
 	font-weight: 600;
-	color: var(--white);
+	color: var(--color-dap-gray-050);
 
 	&--single {
 		background-color: var(--system-status-ok);
@@ -49,13 +49,13 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: var(--spacing-md) var(--spacing-standard);
+	padding: var(--md) var(--standard);
 }
 
 .headerLeft {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .filterBody {
@@ -72,23 +72,23 @@
 }
 
 .filterTabList {
-	border-right: 1px solid var(--color-border-secondary);
-	background: var(--color-background-secondary);
+	border-right: 1px solid var(--border-secondary);
+	background: var(--background-secondary);
 	flex-basis: 40%;
 }
 
 .filterContent {
 	flex: 1;
-	padding: var(--spacing-md);
+	padding: var(--md);
 	overflow-y: auto;
-	background: var(--color-background);
+	background: var(--background);
 }
 
 .filterFooter {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: var(--spacing-sm) var(--spacing-standard);
+	padding: var(--sm) var(--standard);
 	flex-shrink: 0;
 }
 
@@ -101,7 +101,7 @@
 .filterTabBadge {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	flex-shrink: 0;
 }
 
@@ -109,13 +109,13 @@
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	background: var(--color-background-selected);
-	border: 1px solid var(--color-background);
+	background: var(--background-primary);
+	border: 1px solid var(--background);
 	flex-shrink: 0;
 }
 
 .filterTabCount {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .programmaticSelectionDemo {
@@ -231,19 +231,19 @@
 
 // Drawer story styles
 .drawerContent {
-	padding: var(--spacing-lg);
+	padding: var(--lg);
 }
 
 .drawerHeader {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: var(--spacing-lg);
+	margin-bottom: var(--lg);
 }
 
 .drawerTitle {
 	margin: 0;
-	font-size: var(--font-size-2xl);
+	font-size: var(--heading-font-size-2xl);
 	font-weight: var(--font-weight-semi-bold);
 }
 
@@ -251,7 +251,7 @@
 	background: none;
 	border: none;
 	cursor: pointer;
-	padding: var(--spacing-xs);
+	padding: var(--xs);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -259,7 +259,7 @@
 	transition: background-color 0.2s ease;
 
 	&:hover {
-		background-color: var(--color-background-action-hover-weak);
+		background-color: var(--background-action-hover-weak);
 	}
 }
 
@@ -275,16 +275,16 @@
 }
 
 .drawerDetailLabel {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 	font-weight: var(--font-weight-medium);
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	margin-bottom: var(--spacing-1);
 }
 
 .drawerDetailValue {
 	margin: 0;
-	font-size: var(--font-size-md);
-	color: var(--color-font-main);
+	font-size: var(--body-font-size-md);
+	color: var(--font-main);
 }
 
 .drawerDetailValueCapitalized {
@@ -292,36 +292,36 @@
 }
 
 .drawerProgressContainer {
-	margin-top: var(--spacing-xs);
+	margin-top: var(--xs);
 }
 
 .drawerNote {
-	margin-top: var(--spacing-lg);
+	margin-top: var(--lg);
 	padding: var(--spacing-4);
-	background: var(--color-background-info);
+	background: var(--background-info);
 	border-radius: 4px;
 
 	p {
 		margin: 0;
-		font-size: var(--font-size-sm);
-		color: var(--color-font-secondary);
+		font-size: var(--body-font-size-sm);
+		color: var(--font-secondary);
 	}
 }
 
 .debugPanel {
-	padding: var(--spacing-md);
-	background: var(--color-background-secondary);
-	border: 1px solid var(--color-border-secondary);
+	padding: var(--md);
+	background: var(--background-secondary);
+	border: 1px solid var(--border-secondary);
 	border-radius: 4px;
 }
 
 .debugCode {
-	margin: var(--spacing-xs) 0 0;
-	padding: var(--spacing-sm);
-	background: var(--color-background);
+	margin: var(--xs) 0 0;
+	padding: var(--sm);
+	background: var(--background);
 	border-radius: 4px;
 	font-family: monospace;
-	font-size: var(--font-size-sm);
+	font-size: var(--body-font-size-sm);
 	overflow-x: auto;
 	white-space: pre-wrap;
 	word-break: break-all;

@@ -8,12 +8,12 @@ $border-radius: 4px;
 	width: 100%;
 
 	&.sizeSmall {
-		gap: var(--spacing-4xs);
+		gap: var(--4xs);
 	}
 
 	&.sizeMedium,
 	&.sizeLarge {
-		gap: var(--spacing-3xs);
+		gap: var(--3xs);
 	}
 }
 
@@ -25,18 +25,18 @@ $border-radius: 4px;
 
 .label {
 	@include typography.body-sm-md;
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .valueText {
 	@include typography.body-sm-reg;
-	color: var(--color-font-main);
+	color: var(--font-main);
 	flex-shrink: 0;
 }
 
 .track {
 	width: 100%;
-	background-color: var(--color-background-tertiary);
+	background-color: var(--background-tertiary);
 	border-radius: $border-radius;
 	overflow: hidden;
 }
@@ -60,41 +60,41 @@ $border-radius: 4px;
 }
 
 .variantProgress {
-	background-color: var(--color-background-selected);
+	background-color: var(--background-primary);
 }
 
 .variantInterrupted {
-	background-color: var(--color-background-warning-strong);
+	background-color: var(--background-warning-strong);
 }
 
 .variantSuccess {
-	background-color: var(--color-background-success-strong);
+	background-color: var(--background-success-strong);
 }
 
 .variantError {
-	background-color: var(--color-background-danger-strong);
+	background-color: var(--background-error);
 }
 
 .caption {
 	@include typography.body-xs-reg;
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
-	padding-top: var(--spacing-4xs);
+	gap: var(--3xs);
+	padding-top: var(--4xs);
 }
 
 .captionDefault {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .captionSuccess {
-	color: var(--color-background-success-strong);
+	color: var(--background-success-strong);
 }
 
 .captionError {
-	color: var(--color-background-danger-strong);
+	color: var(--background-error);
 }
 
 .captionInterrupted {
-	color: var(--color-font-warning);
+	color: var(--font-warning);
 }
