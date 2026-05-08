@@ -1,6 +1,10 @@
 // typography is defined in: https://www.figma.com/design/XJwVCvDPhD0dMTP4vr3xY3/%F0%9F%A6%95-%F0%9F%AA%86Style-%26-Design-System?node-id=4804-91960&node-type=frame&t=6LW93tAe2no6Rhgx-0
 @use 'variables' as var;
 
+:root {
+	--letter-spacing--1percent: -0.01em;
+}
+
 @mixin base-font {
 	font-family: var.$font-family-base;
 	font-weight: var.$font-weight-regular;

@@ -38,16 +38,16 @@ $button-size-large: 40px;
 	padding-block: 0;
 	padding-inline: 0;
 	border: 2px solid transparent;
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 
 	.content {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: var(--exo-spacing-2x-small);
+		gap: var(--3xs);
 		padding: 0 var(--sm);
 		border: 1px solid transparent;
-		border-radius: var(--exo-spacing-2x-small);
+		border-radius: var(--3xs);
 		flex-grow: 1;
 	}
 
@@ -116,7 +116,7 @@ $button-size-large: 40px;
 
 			.content {
 				border-color: var(--background);
-				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+				border-radius: calc(var(--3xs) / 2);
 			}
 		}
 
@@ -207,7 +207,7 @@ $button-size-large: 40px;
 			.content {
 				border-color: var(--background);
 				background: var(--background-action-hover-weak);
-				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+				border-radius: calc(var(--3xs) / 2);
 			}
 		}
 
@@ -318,7 +318,7 @@ $button-size-large: 40px;
 
 			.content {
 				border-color: var(--background);
-				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+				border-radius: calc(var(--3xs) / 2);
 			}
 		}
 
@@ -448,7 +448,7 @@ $button-size-large: 40px;
 
 			.content {
 				border-color: var(--font-on-action);
-				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+				border-radius: calc(var(--3xs) / 2);
 			}
 		}
 
@@ -496,7 +496,7 @@ $button-size-large: 40px;
 				border-color: transparent;
 				background: var(--light-buttons-secondary-background);
 				color: var(--light-buttons-secondary-hover);
-				border-radius: calc(var(--exo-spacing-2x-small) / 2);
+				border-radius: calc(var(--3xs) / 2);
 			}
 		}
 
@@ -544,7 +544,7 @@ $button-size-large: 40px;
 			.content {
 				background: var(--Dark-Buttons-secondary-light-hover-background);
 				color: var(--light-buttons-tertiary);
-				border-radius: var(--exo-spacing-2x-small);
+				border-radius: var(--3xs);
 			}
 		}
 
@@ -592,7 +592,7 @@ $button-size-large: 40px;
 			.content {
 				background: var(--Dark-Buttons-secondary-light-hover-background);
 				color: var(--light-buttons-tertiary);
-				border-radius: var(--exo-spacing-2x-small);
+				border-radius: var(--3xs);
 			}
 		}
 

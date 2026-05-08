@@ -31,11 +31,11 @@
 
 	button.primary {
 		display: flex;
-		padding: var(---exo-spacing-2x-small, 4px) var(--sm, 12px);
+		padding: var(---3xs, 4px) var(--sm, 12px);
 		align-items: center;
-		gap: var(---exo-spacing-2x-small, 4px);
+		gap: var(---3xs, 4px);
 		align-self: stretch;
-		border-radius: var(---exo-spacing-2x-small, 4px);
+		border-radius: var(---3xs, 4px);
 		border: 1px solid var(--border);
 		background: var(--background);
 	}

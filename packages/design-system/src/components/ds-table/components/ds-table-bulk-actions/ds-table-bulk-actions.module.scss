@@ -34,7 +34,7 @@
 }
 
 .selectedCountContainer {
-	background-color: var(--action-cta1);
+	background-color: var(--color-dap-blue-600);
 	display: flex;
 	align-items: center;
 	padding: 6px 22px;
@@ -63,14 +63,14 @@
 		align-items: center;
 		justify-content: center;
 		gap: var(--3xs);
-		border-right: 1px solid var(--neutral-6);
+		border-right: 1px solid var(--color-dap-gray-400);
 		width: 68px;
 		height: 48px;
 		border-radius: 0;
 	}
 
 	> .actionButton:first-child {
-		border-left: 1px solid var(--neutral-6);
+		border-left: 1px solid var(--color-dap-gray-400);
 	}
 }
 
