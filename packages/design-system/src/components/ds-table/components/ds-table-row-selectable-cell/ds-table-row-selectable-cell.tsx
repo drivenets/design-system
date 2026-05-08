@@ -17,14 +17,9 @@ export const DsTableRowSelectableCell = <TData,>({
 				className={stylesShared.checkboxContainer}
 				checked={isSelected}
 				disabled={!row.getCanSelect()}
-				onClick={(e) => {
-					e.stopPropagation();
-					const toggleHandler = row.getToggleSelectedHandler();
-					toggleHandler(e);
-				}}
-				onDoubleClick={(e: React.MouseEvent) => {
-					e.stopPropagation();
-				}}
+				onCheckedChange={(checked) => row.toggleSelected(!!checked)}
+				onClick={(e) => e.stopPropagation()}
+				onDoubleClick={(e: React.MouseEvent) => e.stopPropagation()}
 			/>
 		</TableCell>
 	);

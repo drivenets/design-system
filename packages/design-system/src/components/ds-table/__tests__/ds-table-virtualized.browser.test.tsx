@@ -19,6 +19,8 @@ function generateTestData(count: number): Person[] {
 
 const largeData = generateTestData(200);
 
+const CHECKBOX_ROOT_LABEL = 'label[data-scope="checkbox"][data-part="root"]';
+
 describe('DsTable Virtualized', () => {
 	it('should show empty state when no data', async () => {
 		await page.render(
@@ -35,10 +37,17 @@ describe('DsTable Virtualized', () => {
 			</div>,
 		);
 
-		const firstRowCheckbox = page.getByRole('checkbox').nth(1);
+		const firstRowRoot = document.querySelector<HTMLLabelElement>(
+			`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`,
+		);
+		if (!firstRowRoot) {
+			throw new Error('Expected first visible body row checkbox root');
+		}
 
-		await firstRowCheckbox.click();
-		await expect.element(firstRowCheckbox).toBeChecked();
+		const firstRowCheckboxInput = page.getByRole('checkbox').nth(1);
+
+		await page.elementLocator(firstRowRoot).click();
+		await expect.element(firstRowCheckboxInput).toBeChecked();
 
 		const scrollContainer = document.querySelector('[class*="virtualizedContainer"]');
 
@@ -60,7 +69,7 @@ describe('DsTable Virtualized', () => {
 			scrollContainer.scrollTop = 0;
 		}
 
-		await expect.element(page.getByRole('checkbox').nth(1), { timeout: 2000 }).toBeChecked();
+		await expect.element(firstRowCheckboxInput, { timeout: 2000 }).toBeChecked();
 	});
 
 	it('should support expansion with virtualization', async () => {

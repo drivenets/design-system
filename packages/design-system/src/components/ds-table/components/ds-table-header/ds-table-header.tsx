@@ -38,11 +38,8 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 												? 'indeterminate'
 												: false
 									}
-									onClick={(e) => {
-										e.stopPropagation();
-										const toggleHandler = table.getToggleAllRowsSelectedHandler();
-										toggleHandler(e);
-									}}
+									onCheckedChange={(checked) => table.toggleAllRowsSelected(!!checked)}
+									onClick={(e) => e.stopPropagation()}
 								/>
 							)}
 						</TableHead>
