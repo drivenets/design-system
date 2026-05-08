@@ -72,8 +72,7 @@
 }
 
 .tableCell,
-.selectableCell,
-.expandableCell {
+.selectableCell {
 	@include typography.body-sm-reg;
 	vertical-align: middle;
 	color: var(--font-main);
@@ -83,15 +82,7 @@
 	padding: 0 var(--standard);
 }
 
-.expandToggleButton {
-	background: none;
-	border: none;
+.expandableCell {
 	padding: 0;
-	margin: 0;
-	cursor: pointer;
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	opacity: 1;
-	transition-property: opacity, background-color;
+	text-align: center;
 }

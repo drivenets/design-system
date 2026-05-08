@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { useImperativeHandle } from 'react';
+import { useImperativeHandle, useMemo } from 'react';
 import {
+	type ColumnDef,
 	type RowSelectionState,
 	type ColumnFiltersState,
 	getCoreRowModel,
+	getExpandedRowModel,
 	getFilteredRowModel,
 	getSortedRowModel,
 	type SortingState,
@@ -17,10 +19,11 @@ import { DsTableHeader } from './components/ds-table-header';
 import styles from './ds-table.module.scss';
 import type { DsDataTableProps, DsTableRowSize } from './ds-table.types';
 import { DsTableRow } from './components/ds-table-row';
+import { DsTableRowExpandableCell } from './components/ds-table-row-expandable-cell';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { type DsTableContextType, DsTableContext } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
-import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
+import { EMPTY_TABLE_STATE_TEXT, EXPANDER_COLUMN_ID, EXPANDER_COLUMN_WIDTH } from './utils/constants';
 
 // Row size to pixel height mapping (matches CSS variables)
 const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
@@ -34,7 +37,7 @@ const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
  */
 const DsTable = <TData extends { id: string }, TValue>({
 	ref,
-	columns,
+	columns: columnsProp,
 	data: tableData,
 	virtualized = false,
 	virtualizedOptions,
@@ -122,6 +125,23 @@ const DsTable = <TData extends { id: string }, TValue>({
 		onSelectionChange?.(newRowSelection);
 	};
 
+	const columns = useMemo<ColumnDef<TData, TValue>[]>(() => {
+		if (!expandable) {
+			return columnsProp;
+		}
+
+		const expanderColumn: ColumnDef<TData, TValue> = {
+			id: EXPANDER_COLUMN_ID,
+			size: EXPANDER_COLUMN_WIDTH,
+			enableSorting: false,
+			enableResizing: false,
+			header: () => null,
+			cell: ({ row }) => (row.getCanExpand() ? <DsTableRowExpandableCell row={row} /> : null),
+		};
+
+		return [expanderColumn, ...columnsProp];
+	}, [columnsProp, expandable]);
+
 	const table = useReactTable({
 		data: reorderable ? data : tableData,
 		columns,
@@ -133,6 +153,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 		onColumnVisibilityChange: handleColumnVisibilityChange, // TODO: looks like this is not used, since visibility is handled from the outside
 		onRowSelectionChange: handleRowSelectionChange,
 		getRowId: (row) => row.id,
+		getExpandedRowModel: getExpandedRowModel(),
+		getRowCanExpand: typeof expandable === 'function' ? (row) => expandable(row.original) : () => expandable,
 		state: {
 			sorting,
 			columnFilters,
@@ -191,7 +213,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	const renderEmptyState = () => (
 		<TableRow>
 			<TableCell
-				colSpan={columns.length + (expandable ? 1 : 0) + (selectable ? 1 : 0)}
+				colSpan={columns.length + (selectable ? 1 : 0) + (reorderable ? 1 : 0)}
 				className={styles.emptyState}
 			>
 				{emptyState || EMPTY_TABLE_STATE_TEXT}

@@ -10,7 +10,7 @@ import { useDsTableContext } from '../../context/ds-table-context';
 import { getColumnSizeStyle } from '../../utils/column-size';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
-	const { stickyHeader, bordered, expandable, selectable, reorderable, showSelectAllCheckbox, virtualized } =
+	const { stickyHeader, bordered, selectable, reorderable, showSelectAllCheckbox, virtualized } =
 		useDsTableContext<TData, unknown>();
 
 	return (
@@ -47,24 +47,24 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 							)}
 						</TableHead>
 					)}
-					{expandable && <TableHead className={classnames(styles.headerCell, styles.expandColumn)} />}
 					{reorderable && (
 						<TableHead className={classnames(styles.headerCell, styles.reorderColumn)}>Order</TableHead>
 					)}
 					{headerGroup.headers.map((header) => {
 						const headerStyle = getColumnSizeStyle(header.column.getSize(), virtualized);
+						const canSort = header.column.getCanSort();
 
 						return (
 							<TableHead
 								key={header.id}
-								className={classnames(styles.headerCell, header.column.getCanSort() && styles.sortableHeader)}
+								className={classnames(styles.headerCell, canSort && styles.sortableHeader)}
 								onClick={header.column.getToggleSortingHandler()}
 								style={headerStyle}
 							>
 								{header.isPlaceholder ? null : (
 									<div className={styles.headerSortContainer}>
 										<div>{flexRender(header.column.columnDef.header, header.getContext())}</div>
-										{header.column.getCanSort() && (
+										{canSort && (
 											<div className={styles.pageButtonIconContainer}>
 												{{
 													asc: (

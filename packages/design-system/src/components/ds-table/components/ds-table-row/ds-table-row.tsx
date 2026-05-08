@@ -6,12 +6,12 @@ import { DsIcon } from '../../../ds-icon';
 import { TableCell, TableRow } from '../core-table';
 import { DsTableCell } from '../ds-table-cell';
 import { DsTableRowSelectableCell } from '../ds-table-row-selectable-cell';
-import { DsTableRowExpandableCell } from '../ds-table-row-expandable-cell';
 import type { DsTableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
+import { EXPANDER_COLUMN_ID } from '../../utils/constants';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
@@ -40,7 +40,6 @@ const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleP
 
 const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) => {
 	const {
-		expandable,
 		selectable,
 		reorderable,
 		onRowClick,
@@ -53,7 +52,6 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 		activeRowId,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
-	const isExpandable = typeof expandable === 'function' ? expandable(row.original) : expandable;
 	const isActive = activeRowId === row.id;
 
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -99,13 +97,6 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				{selectable && (
 					<DsTableRowSelectableCell row={row} isSelected={isSelected} className={styles.selectableCell} />
 				)}
-				{expandable && (
-					<DsTableRowExpandableCell
-						row={row}
-						className={styles.expandableCell}
-						buttonClassName={styles.expandToggleButton}
-					/>
-				)}
 				{reorderable && (
 					<DsRowDragHandle isDragging={isDragging} attributes={attributes} listeners={listeners} />
 				)}
@@ -114,7 +105,14 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 					const cellStyle = getColumnSizeStyle(cell.column.getSize());
 
 					return (
-						<TableCell key={cell.id} className={styles.tableCell} style={cellStyle}>
+						<TableCell
+							key={cell.id}
+							className={classnames(
+								styles.tableCell,
+								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
+							)}
+							style={cellStyle}
+						>
 							{isLastColumn ? (
 								<DsTableCell
 									row={row}
@@ -133,12 +131,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 			{isExpanded && renderExpandedRow && (
 				<TableRow className={styles.expandedRow}>
 					<TableCell
-						colSpan={
-							row.getVisibleCells().length +
-							(selectable ? 1 : 0) +
-							(isExpandable ? 1 : 0) +
-							(reorderable ? 1 : 0)
-						}
+						colSpan={row.getVisibleCells().length + (selectable ? 1 : 0) + (reorderable ? 1 : 0)}
 						className={styles.tableCell}
 					>
 						{renderExpandedRow(row.original)}

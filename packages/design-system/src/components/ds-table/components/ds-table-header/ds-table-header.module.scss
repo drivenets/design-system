@@ -38,11 +38,6 @@
 	width: vars.$reorder-column-width;
 }
 
-.expandColumn {
-	width: vars.$expand-column-width;
-	padding: 0;
-}
-
 .headerCell {
 	@include typography.body-sm-md;
 	color: var(--font-main);
