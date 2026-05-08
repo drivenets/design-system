@@ -7,10 +7,6 @@ export interface DsTableRowExpandableCellProps<TData> {
 	 */
 	row: Row<TData>;
 	/**
-	 * Additional CSS class name applied to the cell element.
-	 */
-	className?: string;
-	/**
 	 * Additional CSS class name applied to the expand/collapse button.
 	 */
 	buttonClassName?: string;
