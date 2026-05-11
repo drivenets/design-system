@@ -162,6 +162,13 @@ export interface DsTableApi<TData> {
 	 * ```
 	 */
 	expandRows: (rowIds: string[]) => void;
+
+	/**
+	 * Gets the scroll position of the table
+	 *
+	 * @returns Scroll position
+	 */
+	getScrollPosition: () => Omit<ScrollParams, 'scrollDirection'> | null;
 }
 
 /**

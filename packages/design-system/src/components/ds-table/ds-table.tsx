@@ -204,6 +204,21 @@ const DsTable = <TData extends { id: string }, TValue>({
 				rowIds.forEach((id) => (expansion[id] = true));
 				table.setExpanded(expansion);
 			},
+			getScrollPosition: () => {
+				const container = tableContainerRef.current;
+				if (!container) {
+					return null;
+				}
+
+				const { scrollTop, scrollHeight, clientHeight } = container;
+
+				return {
+					scrollOffset: scrollTop,
+					totalContentHeight: scrollHeight,
+					viewportHeight: clientHeight,
+					bottomOffset: scrollHeight - scrollTop - clientHeight,
+				};
+			},
 		}),
 		[table],
 	);

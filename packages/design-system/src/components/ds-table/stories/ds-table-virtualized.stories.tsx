@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
-import type { ScrollParams } from '../';
+import type { DsTableApi, ScrollParams } from '../';
 import { DsSpinner } from '../../ds-spinner';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
@@ -48,8 +48,10 @@ export const VirtualizedSelectable: Story = {
 			return simulateApiCall(() => generatePersonData(start, size, sorting));
 		};
 
-		const pageSize = 50;
+		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
+
+		const tableRef = useRef<DsTableApi<Person>>(null);
 
 		const {
 			data: infiniteQueryData,
@@ -87,19 +89,34 @@ export const VirtualizedSelectable: Story = {
 		const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
 		const totalFetched = flatData.length;
 
-		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
+		const fetchMoreOnBottomReached = useCallback(
+			async (bottomOffset: number) => {
+				const finishedFetching = totalFetched >= totalRows;
+
+				const scrollThreshold = 500;
+				const shouldFetchMore = bottomOffset <= scrollThreshold;
+
+				if (!isFetching && !finishedFetching && shouldFetchMore) {
+					await fetchNextPage();
+				}
+			},
+			[fetchNextPage, isFetching, totalFetched, totalRows],
+		);
+
+		const handleScroll = async (params: ScrollParams) => {
 			args.onScroll?.(params);
-			const { bottomOffset } = params;
-
-			const finishedFetching = totalFetched >= totalRows;
-
-			const scrollThreshold = 500;
-			const shouldFetchMore = bottomOffset <= scrollThreshold;
-
-			if (!isFetching && !finishedFetching && shouldFetchMore) {
-				await fetchNextPage();
-			}
+			await fetchMoreOnBottomReached(params.bottomOffset);
 		};
+
+		//a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+		useEffect(() => {
+			void (async () => {
+				const scrollPosition = tableRef.current?.getScrollPosition();
+				if (scrollPosition) {
+					await fetchMoreOnBottomReached(scrollPosition.bottomOffset);
+				}
+			})();
+		}, [fetchMoreOnBottomReached]);
 
 		return (
 			<div className={styles.virtualizedDemoContainer}>
@@ -124,9 +141,10 @@ export const VirtualizedSelectable: Story = {
 				<div className={styles.virtualizedTableWrapper}>
 					<DsTable
 						{...args}
+						ref={tableRef}
 						data={flatData}
 						onSortingChange={setSorting}
-						onScroll={fetchMoreOnBottomReached}
+						onScroll={handleScroll}
 						virtualized={true}
 					/>
 					{isLoading && (
@@ -163,8 +181,10 @@ export const VirtualizedExpandable: Story = {
 			return simulateApiCall(() => generatePersonData(start, size, sorting));
 		};
 
-		const pageSize = 50;
+		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
+
+		const tableRef = useRef<DsTableApi<Person>>(null);
 
 		const {
 			data: infiniteQueryData,
@@ -201,19 +221,34 @@ export const VirtualizedExpandable: Story = {
 		const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
 		const totalFetched = flatData.length;
 
-		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
+		const fetchMoreOnBottomReached = useCallback(
+			async (bottomOffset: number) => {
+				const finishedFetching = totalFetched >= totalRows;
+
+				const scrollThreshold = 500;
+				const shouldFetchMore = bottomOffset <= scrollThreshold;
+
+				if (!isFetching && !finishedFetching && shouldFetchMore) {
+					await fetchNextPage();
+				}
+			},
+			[fetchNextPage, isFetching, totalFetched, totalRows],
+		);
+
+		const handleScroll = async (params: ScrollParams) => {
 			args.onScroll?.(params);
-			const { bottomOffset } = params;
-
-			const finishedFetching = totalFetched >= totalRows;
-
-			const scrollThreshold = 500;
-			const shouldFetchMore = bottomOffset <= scrollThreshold;
-
-			if (!isFetching && !finishedFetching && shouldFetchMore) {
-				await fetchNextPage();
-			}
+			await fetchMoreOnBottomReached(params.bottomOffset);
 		};
+
+		//a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+		useEffect(() => {
+			void (async () => {
+				const scrollPosition = tableRef.current?.getScrollPosition();
+				if (scrollPosition) {
+					await fetchMoreOnBottomReached(scrollPosition.bottomOffset);
+				}
+			})();
+		}, [fetchMoreOnBottomReached]);
 
 		return (
 			<div className={styles.virtualizedDemoContainer}>
@@ -238,9 +273,10 @@ export const VirtualizedExpandable: Story = {
 				<div className={styles.virtualizedTableWrapper}>
 					<DsTable
 						{...args}
+						ref={tableRef}
 						data={flatData}
 						onSortingChange={setSorting}
-						onScroll={fetchMoreOnBottomReached}
+						onScroll={handleScroll}
 						virtualized={true}
 						expandable={true}
 						renderExpandedRow={(row) => (
