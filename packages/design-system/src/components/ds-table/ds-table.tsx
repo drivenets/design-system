@@ -66,6 +66,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	columnVisibility: externalColumnVisibility,
 	onColumnVisibilityChange,
 	activeRowId,
+	infiniteScroll,
 }: DsDataTableProps<TData, TValue>) => {
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -276,6 +277,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 								overscan={virtualizedOptions?.overscan}
 								onScroll={onScroll}
 								rowSelection={rowSelection}
+								infiniteScroll={infiniteScroll}
 							/>
 						) : (
 							<TableBody>

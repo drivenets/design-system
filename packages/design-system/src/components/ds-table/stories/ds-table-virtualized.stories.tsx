@@ -4,7 +4,6 @@ import { useMemo, useState } from 'react';
 import type { ColumnDef, SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
-import type { ScrollParams } from '../';
 import { DsSpinner } from '../../ds-spinner';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
@@ -34,6 +33,20 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			staleTime: 5 * 60 * 1000,
+			gcTime: 10 * 60 * 1000,
+			refetchOnWindowFocus: false,
+		},
+	},
+});
+
+const fetchData = async (start: number, size: number, sorting: SortingState, totalRows?: number) => {
+	return simulateApiCall(() => generatePersonData(start, size, sorting, totalRows));
+};
+
 export const EmptyState: Story = {
 	args: {
 		virtualized: true,
@@ -44,11 +57,7 @@ export const EmptyState: Story = {
 export const VirtualizedSelectable: Story = {
 	name: 'Virtualized Selectable Table',
 	render: function Render(args) {
-		const fetchData = async (start: number, size: number, sorting: SortingState) => {
-			return simulateApiCall(() => generatePersonData(start, size, sorting));
-		};
-
-		const pageSize = 50;
+		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
 
 		const {
@@ -67,16 +76,7 @@ export const VirtualizedSelectable: Story = {
 				getNextPageParam: (_lastGroup, groups) => groups.length,
 				placeholderData: keepPreviousData,
 			},
-			// assuming the app is wrapped inside QueryClientProvider below is no longer needed
-			new QueryClient({
-				defaultOptions: {
-					queries: {
-						staleTime: 5 * 60 * 1000,
-						gcTime: 10 * 60 * 1000,
-						refetchOnWindowFocus: false,
-					},
-				},
-			}),
+			queryClient,
 		);
 
 		const flatData = useMemo(
@@ -85,21 +85,7 @@ export const VirtualizedSelectable: Story = {
 		);
 
 		const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
-		const totalFetched = flatData.length;
-
-		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
-			args.onScroll?.(params);
-			const { bottomOffset } = params;
-
-			const finishedFetching = totalFetched >= totalRows;
-
-			const scrollThreshold = 500;
-			const shouldFetchMore = bottomOffset <= scrollThreshold;
-
-			if (!isFetching && !finishedFetching && shouldFetchMore) {
-				await fetchNextPage();
-			}
-		};
+		const hasMore = flatData.length < totalRows;
 
 		return (
 			<div className={styles.virtualizedDemoContainer}>
@@ -126,8 +112,12 @@ export const VirtualizedSelectable: Story = {
 						{...args}
 						data={flatData}
 						onSortingChange={setSorting}
-						onScroll={fetchMoreOnBottomReached}
 						virtualized={true}
+						infiniteScroll={{
+							hasMore,
+							isLoadingMore: isFetching,
+							onLoadMore: fetchNextPage,
+						}}
 					/>
 					{isLoading && (
 						<div className={styles.loadingOverlay}>
@@ -159,11 +149,7 @@ export const VirtualizedSelectable: Story = {
 export const VirtualizedExpandable: Story = {
 	name: 'Virtualized Expandable Table',
 	render: function Render(args) {
-		const fetchData = async (start: number, size: number, sorting: SortingState) => {
-			return simulateApiCall(() => generatePersonData(start, size, sorting));
-		};
-
-		const pageSize = 50;
+		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
 
 		const {
@@ -182,15 +168,7 @@ export const VirtualizedExpandable: Story = {
 				getNextPageParam: (_lastGroup, groups) => groups.length,
 				placeholderData: keepPreviousData,
 			},
-			new QueryClient({
-				defaultOptions: {
-					queries: {
-						staleTime: 5 * 60 * 1000,
-						gcTime: 10 * 60 * 1000,
-						refetchOnWindowFocus: false,
-					},
-				},
-			}),
+			queryClient,
 		);
 
 		const flatData = useMemo(
@@ -199,21 +177,7 @@ export const VirtualizedExpandable: Story = {
 		);
 
 		const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
-		const totalFetched = flatData.length;
-
-		const fetchMoreOnBottomReached = async (params: ScrollParams) => {
-			args.onScroll?.(params);
-			const { bottomOffset } = params;
-
-			const finishedFetching = totalFetched >= totalRows;
-
-			const scrollThreshold = 500;
-			const shouldFetchMore = bottomOffset <= scrollThreshold;
-
-			if (!isFetching && !finishedFetching && shouldFetchMore) {
-				await fetchNextPage();
-			}
-		};
+		const hasMore = flatData.length < totalRows;
 
 		return (
 			<div className={styles.virtualizedDemoContainer}>
@@ -240,9 +204,13 @@ export const VirtualizedExpandable: Story = {
 						{...args}
 						data={flatData}
 						onSortingChange={setSorting}
-						onScroll={fetchMoreOnBottomReached}
 						virtualized={true}
 						expandable={true}
+						infiniteScroll={{
+							hasMore,
+							isLoadingMore: isFetching,
+							onLoadMore: fetchNextPage,
+						}}
 						renderExpandedRow={(row) => (
 							<>
 								<div className={styles.expandedRowDetails}>
@@ -297,5 +265,70 @@ export const VirtualizedExpandable: Story = {
 			return col;
 		}),
 		onScroll: fn(),
+	},
+};
+
+export const InfiniteScroll: Story = {
+	name: 'Virtualized Infinite Scroll',
+	render: function Render(args) {
+		const pageSize = 5;
+		const totalRows = 60;
+		const [sorting, setSorting] = useState<SortingState>([]);
+
+		const {
+			data: infiniteQueryData,
+			fetchNextPage,
+			isFetching,
+		} = useInfiniteQuery(
+			{
+				queryKey: ['people-autofill', sorting],
+				queryFn: async ({ pageParam }) => {
+					const start = pageParam * pageSize;
+					return await fetchData(start, pageSize, sorting, totalRows);
+				},
+				initialPageParam: 0,
+				getNextPageParam: (_lastGroup, groups) => groups.length,
+				placeholderData: keepPreviousData,
+			},
+			queryClient,
+		);
+
+		const flatData = useMemo(
+			() => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+			[infiniteQueryData],
+		);
+
+		const fetchedTotal = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? totalRows;
+		const hasMore = flatData.length < fetchedTotal;
+
+		return (
+			<div className={styles.virtualizedDemoContainer}>
+				<div className={styles.virtualizedDemoHeader}>
+					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Infinite Scroll</h4>
+					<p className={styles.virtualizedDemoHeader__description}>
+						The first page only returns {pageSize} rows - too few to fill the viewport. With{' '}
+						<code>autoFill: true</code> (the default), the Table keeps requesting pages until the content
+						becomes scrollable.
+					</p>
+					<p className={styles.virtualizedDemoHeader__stats}>
+						({flatData.length} of {fetchedTotal} rows fetched)
+					</p>
+				</div>
+
+				<div className={styles.virtualizedTableWrapper}>
+					<DsTable
+						{...args}
+						data={flatData}
+						onSortingChange={setSorting}
+						virtualized={true}
+						infiniteScroll={{
+							hasMore,
+							isLoadingMore: isFetching,
+							onLoadMore: fetchNextPage,
+						}}
+					/>
+				</div>
+			</div>
+		);
 	},
 };
