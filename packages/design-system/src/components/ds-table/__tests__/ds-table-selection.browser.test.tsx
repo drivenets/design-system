@@ -54,6 +54,40 @@ describe('DsTable Selection', () => {
 		}
 	});
 
+	it('should not propagate checkbox click or double click to the row', async () => {
+		const onRowClick = vi.fn();
+		const onRowDoubleClick = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				selectable
+				showSelectAllCheckbox={false}
+				onRowClick={onRowClick}
+				onRowDoubleClick={onRowDoubleClick}
+			/>,
+		);
+
+		const firstRowCheckboxRoot = document.querySelector(
+			`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`,
+		) as HTMLLabelElement;
+
+		await page.elementLocator(firstRowCheckboxRoot).click();
+		expect(onRowClick).not.toHaveBeenCalled();
+
+		await page.elementLocator(firstRowCheckboxRoot).dblClick();
+		expect(onRowDoubleClick).not.toHaveBeenCalled();
+		expect(onRowClick).not.toHaveBeenCalled();
+
+		const firstNameCell = document.querySelector('tbody tr:nth-child(1) td:nth-child(2)');
+		if (!(firstNameCell instanceof HTMLElement)) {
+			throw new Error('Expected first name cell in first body row');
+		}
+		await page.elementLocator(firstNameCell).click();
+		expect(onRowClick).toHaveBeenCalledTimes(1);
+	});
+
 	it('should support programmatic row selection via ref API', async () => {
 		function ProgrammaticSelectionWrapper() {
 			const tableRef = useRef<DsTableApi<Person>>(null);
