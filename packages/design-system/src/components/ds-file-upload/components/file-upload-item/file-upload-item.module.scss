@@ -10,9 +10,9 @@
 		gap: var(--2xs);
 		width: 100%;
 		background-color: var(--background);
-		padding: var(--4xs) var(--exo-spacing-x-small);
+		padding: var(--4xs) var(--xs);
 		border: 1px solid transparent;
-		border-radius: var(--exo-spacing-2x-small);
+		border-radius: var(--3xs);
 		transition: all 0.2s ease;
 
 		&:hover {
@@ -86,7 +86,7 @@
 	width: 100%;
 	height: 100%;
 	background-color: var(--background-tertiary);
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 	overflow: hidden;
 }
 

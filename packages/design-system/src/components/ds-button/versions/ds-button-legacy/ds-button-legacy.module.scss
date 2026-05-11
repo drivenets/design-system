@@ -1,21 +1,21 @@
 @use '../../../../styles/typography';
 
-$color-primary-default: var(--action-cta1);
-$color-primary-hover: var(--action-hover-light);
-$color-primary-active: var(--action-active-light);
-$color-primary-disabled: var(--action-disabled);
+$color-primary-default: var(--color-dap-blue-600);
+$color-primary-hover: var(--background-active-status);
+$color-primary-active: var(--color-dap-purple-200);
+$color-primary-disabled: var(--color-dap-gray-400);
 
-$color-secondary-default: var(--action-cta3);
+$color-secondary-default: var(--color-dap-brand-300);
 $color-secondary-hover: var(--color-dap-gray-500);
-$color-secondary-disabled: var(--action-disabled);
+$color-secondary-disabled: var(--color-dap-gray-400);
 
-$color-error-default: var(--system-status-error);
-$color-error-hover: var(--utility-error);
-$color-error-active: var(--utility-error);
-$color-error-disabled: var(--action-disabled);
+$color-error-default: var(--background-error);
+$color-error-hover: var(--color-dap-red-100);
+$color-error-active: var(--color-dap-red-100);
+$color-error-disabled: var(--color-dap-gray-400);
 
 $color-white: var(--color-dap-gray-050);
-$color-neutral-6: var(--utility-disabled);
+$color-neutral-6: var(--color-dap-gray-200);
 $color-neutral-4: var(--color-dap-gray-500);
 
 @mixin button-filled($background, $hover, $active, $disabled) {

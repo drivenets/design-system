@@ -11,7 +11,7 @@ $disabled-opacity: 0.5;
 	display: inline-flex;
 	align-items: center;
 	background: var(--background);
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 	cursor: pointer;
 	transition:
 		background-color $transition-duration,
@@ -111,13 +111,13 @@ $disabled-opacity: 0.5;
 	[data-orientation='vertical'][data-size='medium'] & {
 		padding: var(--sm) var(--standard);
 		padding-left: var(--xs);
-		border-radius: var(--exo-spacing-2x-small) 0 0 var(--exo-spacing-2x-small);
+		border-radius: var(--3xs) 0 0 var(--3xs);
 	}
 
 	[data-orientation='vertical'][data-size='small'] & {
 		padding: var(--xs) var(--standard);
 		padding-left: var(--xs);
-		border-radius: var(--exo-spacing-2x-small) 0 0 var(--exo-spacing-2x-small);
+		border-radius: var(--3xs) 0 0 var(--3xs);
 	}
 }
 
@@ -150,7 +150,7 @@ $disabled-opacity: 0.5;
 	flex-shrink: 0;
 	color: var(--font-main) !important;
 	cursor: pointer;
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 	transition:
 		background-color $transition-duration,
 		color $transition-duration;
@@ -201,7 +201,7 @@ $disabled-opacity: 0.5;
 .menuContent {
 	background: var(--background);
 	border: $tab-border-width solid var(--border-secondary);
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
 	padding: var(--3xs);
 	width: $menu-content-width;
@@ -212,7 +212,7 @@ $disabled-opacity: 0.5;
 	display: flex;
 	align-items: center;
 	padding: var(--3xs);
-	border-radius: var(--exo-spacing-2x-small);
+	border-radius: var(--3xs);
 	cursor: pointer;
 	color: var(--font-main);
 	background: var(--background);

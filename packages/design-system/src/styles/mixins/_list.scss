@@ -17,7 +17,7 @@
 }
 
 @mixin list-item-wrapper-hover {
-	background: var(--action-hover-light);
+	background: var(--background-active-status);
 	border-radius: 4px;
 }
 
@@ -37,8 +37,8 @@
 }
 
 @mixin list-item-selected {
-	color: var(--action-cta1);
-	background: var(--action-active-light);
+	color: var(--color-dap-blue-600);
+	background: var(--color-dap-purple-200);
 	border-radius: 4px;
 }
 
@@ -47,7 +47,7 @@
 	right: 0;
 	width: 3px;
 	height: 24px;
-	background: var(--action-cta1);
+	background: var(--color-dap-blue-600);
 }
 
 @mixin list-scroll {
@@ -60,11 +60,11 @@
 	}
 
 	&::-webkit-scrollbar-track {
-		background: var(--neutral-8);
+		background: var(--color-dap-gray-200);
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--neutral-6);
+		background: var(--color-dap-gray-400);
 		border-radius: 3px;
 	}
 
