@@ -98,9 +98,6 @@ jobs:
       - name: Install Dependencies
         uses: ./.github/actions/install
 
-      - name: Ensure updated npm
-        run: npm install -g npm@11.7.0 # npm >= 11.5.1 is required for trusted publishing
-
       - name: Download build
         uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v8.0.1
         with:
