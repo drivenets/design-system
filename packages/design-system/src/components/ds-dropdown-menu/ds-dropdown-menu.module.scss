@@ -49,6 +49,14 @@
 			}
 		}
 	}
+
+	&.variant-error {
+		color: var(--font-error);
+
+		&[data-highlighted] {
+			background: var(--background-error-secondary-hover);
+		}
+	}
 }
 
 .itemIcon {

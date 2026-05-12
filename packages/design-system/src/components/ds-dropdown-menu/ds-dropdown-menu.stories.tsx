@@ -143,6 +143,12 @@ export const CheckboxList: Story = {
 		const items = [
 			{ id: 'item1', label: 'Menu text 1', description: 'Info Text' },
 			{ id: 'item2', label: 'Menu text 2', description: 'Info Text' },
+			{
+				id: 'item-error',
+				label: 'Error item',
+				description: 'Something went wrong',
+				variant: 'error' as const,
+			},
 		];
 
 		const groupedItems = [
@@ -202,23 +208,32 @@ export const CheckboxList: Story = {
 							}}
 						/>
 					</DsDropdownMenu.Header>
-					{filteredItems.map((item) => (
-						<DsDropdownMenu.Item key={item.id} value={item.id}>
-							<DsCheckbox
-								tabIndex={-1}
-								checked={selected.has(item.id)}
-								onCheckedChange={() => toggleSelection(item.id)}
-							/>
-							<div className="item-content">
-								<DsTypography className="item-label" variant="body-sm-reg">
-									{item.label}
-								</DsTypography>
-								<DsTypography className="item-description" variant="body-xs-reg">
-									{item.description}
-								</DsTypography>
-							</div>
-						</DsDropdownMenu.Item>
-					))}
+					{filteredItems.map((item) => {
+						const isError = 'variant' in item && item.variant === 'error';
+						const errorStyle = isError ? { color: 'var(--font-error)' } : undefined;
+
+						return (
+							<DsDropdownMenu.Item key={item.id} value={item.id} variant={isError ? 'error' : undefined}>
+								{isError ? (
+									<DsIcon icon="search" size="tiny" />
+								) : (
+									<DsCheckbox
+										tabIndex={-1}
+										checked={selected.has(item.id)}
+										onCheckedChange={() => toggleSelection(item.id)}
+									/>
+								)}
+								<div className="item-content">
+									<DsTypography className="item-label" variant="body-sm-reg" style={errorStyle}>
+										{item.label}
+									</DsTypography>
+									<DsTypography className="item-description" variant="body-xs-reg" style={errorStyle}>
+										{item.description}
+									</DsTypography>
+								</div>
+							</DsDropdownMenu.Item>
+						);
+					})}
 					{!!filteredGroupedItems.length && (
 						<DsDropdownMenu.ItemGroup>
 							<DsDropdownMenu.ItemGroupLabel>Group Name</DsDropdownMenu.ItemGroupLabel>
