@@ -1,12 +1,6 @@
 name: Install
 description: Install Node.js, pnpm, and dependencies
 
-inputs:
-  skip-install:
-    description: Skip installation of dependencies
-    required: false
-    default: false
-
 runs:
   using: composite
   steps:
@@ -21,7 +15,6 @@ runs:
         node-version-file: .nvmrc
 
     - name: Install Dependencies
-      if: ${{ inputs.skip-install != 'true' }}
       shell: bash
       env:
         # Skip Husky installation.
