@@ -1,3 +1,4 @@
+affordances
 autoboot
 autodocs
 borderless
@@ -7,6 +8,7 @@ deslop
 drivenets
 evenodd
 findlast
+Fira
 fromentries
 gnmi
 matchall
@@ -18,11 +20,10 @@ onwarn
 oxfmtrc
 reorderable
 retryable
+scrollers
 subcomponents
 tosorted
 TSESTree
 unhover
 unitless
-Fira
-scrollers
-affordances
+unrs
