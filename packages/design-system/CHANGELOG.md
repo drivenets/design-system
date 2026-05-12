@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.11.1
+
+### Patch Changes
+
+- ae315b6: Improve release process
+
 ## 0.11.0
 
 ### Minor Changes
