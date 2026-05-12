@@ -97,14 +97,9 @@ jobs:
 
       - name: Install Dependencies
         uses: ./.github/actions/install
-        with:
-          skip-install: true
 
       - name: Ensure updated npm
         run: npm install -g npm@11.7.0 # npm >= 11.5.1 is required for trusted publishing
-
-      - name: Install changeset
-        run: pnpm install -g @changesets/cli@^2.30.0
 
       - name: Download build
         uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v8.0.1
@@ -115,6 +110,6 @@ jobs:
       - name: Publish
         uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1.8.0
         with:
-          publish: changeset publish
+          publish: pnpm changeset publish
         env:
           NPM_TOKEN: '' # https://github.com/changesets/action/issues/542#issuecomment-3642334398
