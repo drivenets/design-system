@@ -21,7 +21,7 @@ runs:
         node-version-file: .nvmrc
 
     - name: Install Dependencies
-      if: inputs.skip-install == false
+      if: ${{ inputs.skip-install != 'true' }}
       shell: bash
       env:
         # Skip Husky installation.
