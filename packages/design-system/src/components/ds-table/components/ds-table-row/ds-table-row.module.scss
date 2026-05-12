@@ -4,9 +4,7 @@
 
 .tableRow {
 	&:not(:last-child) {
-		.tableCell,
-		.selectableCell,
-		.expandableCell {
+		.tableCell {
 			border-bottom: vars.$border-width solid var(--border-secondary);
 		}
 	}
@@ -71,18 +69,15 @@
 	}
 }
 
-.tableCell,
-.selectableCell {
+.tableCell {
 	@include typography.body-sm-reg;
 	vertical-align: middle;
 	color: var(--font-main);
-}
-
-.tableCell {
 	padding: 0 var(--standard);
 }
 
-.expandableCell {
+.expandableCell,
+.selectableCell {
 	padding: 0;
 	text-align: center;
 }

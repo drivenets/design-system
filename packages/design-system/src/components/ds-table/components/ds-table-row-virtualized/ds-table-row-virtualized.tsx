@@ -3,10 +3,9 @@ import styles from './ds-table-row-virtualized.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getColumnSizeStyle } from '../../utils/column-size';
 import { TableCell, TableRow } from '../core-table';
-import { DsTableRowSelectableCell } from '../ds-table-row-selectable-cell';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
 import { DsTableCell } from '../ds-table-cell';
-import { EXPANDER_COLUMN_ID } from '../../utils/constants';
+import { EXPANDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
 export const DsTableRowVirtualized = <TData,>({
 	row,
@@ -18,7 +17,6 @@ export const DsTableRowVirtualized = <TData,>({
 	isExpandedRowContent,
 }: DsTableRowVirtualizedProps<TData>) => {
 	const {
-		selectable,
 		bordered,
 		rowSize,
 		activeRowId,
@@ -67,9 +65,6 @@ export const DsTableRowVirtualized = <TData,>({
 				<TableCell>{renderExpandedRow?.(row.original)}</TableCell>
 			) : (
 				<>
-					{selectable && (
-						<DsTableRowSelectableCell row={row} isSelected={isSelected} className={styles.selectableCell} />
-					)}
 					{row.getVisibleCells().map((cell, idx) => {
 						const isLastColumn = idx === row.getVisibleCells().length - 1;
 						const cellStyle = getColumnSizeStyle(cell.column.getSize(), true);
@@ -81,6 +76,7 @@ export const DsTableRowVirtualized = <TData,>({
 								className={classnames(
 									styles.cell,
 									cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
+									cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
 								)}
 							>
 								{isLastColumn ? (

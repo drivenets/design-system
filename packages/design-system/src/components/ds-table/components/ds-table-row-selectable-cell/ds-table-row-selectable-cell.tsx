@@ -1,26 +1,17 @@
 import type React from 'react';
-import { TableCell } from '../core-table';
 import { DsCheckbox } from '../../../ds-checkbox';
 import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableRowSelectableCellProps } from './ds-table-row-selectable-cell.types';
-import classnames from 'classnames';
-import styles from './ds-table-row-selectable-cell.module.scss';
 
-export const DsTableRowSelectableCell = <TData,>({
-	row,
-	isSelected,
-	className,
-}: DsTableRowSelectableCellProps<TData>) => {
+export const DsTableRowSelectableCell = <TData,>({ row }: DsTableRowSelectableCellProps<TData>) => {
 	return (
-		<TableCell className={classnames(styles.cell, className)}>
-			<DsCheckbox
-				className={stylesShared.checkboxContainer}
-				checked={isSelected}
-				disabled={!row.getCanSelect()}
-				onCheckedChange={(checked) => row.toggleSelected(!!checked)}
-				onClick={(e) => e.stopPropagation()}
-				onDoubleClick={(e: React.MouseEvent) => e.stopPropagation()}
-			/>
-		</TableCell>
+		<DsCheckbox
+			className={stylesShared.checkboxContainer}
+			checked={row.getIsSelected()}
+			disabled={!row.getCanSelect()}
+			onCheckedChange={(checked) => row.toggleSelected(!!checked)}
+			onClick={(e) => e.stopPropagation()}
+			onDoubleClick={(e: React.MouseEvent) => e.stopPropagation()}
+		/>
 	);
 };

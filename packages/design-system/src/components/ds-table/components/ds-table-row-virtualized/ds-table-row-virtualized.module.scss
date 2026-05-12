@@ -52,19 +52,16 @@
 	}
 }
 
-.cell,
-.selectableCell {
+.cell {
 	display: flex;
 	align-items: center;
 	@include typography.body-sm-reg;
 	color: var(--font-main);
-}
-
-.cell {
 	padding: 0 var(--standard);
 }
 
-.expandableCell {
+.expandableCell,
+.selectableCell {
 	padding: 0;
 	justify-content: center;
 }
