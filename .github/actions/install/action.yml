@@ -20,4 +20,4 @@ runs:
         # Skip Husky installation.
         # See: https://github.com/typicode/husky/blob/ec10d87db/index.js#L9
         HUSKY: '0'
-      run: pnpm i --ignore-scripts
+      run: pnpm i
