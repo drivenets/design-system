@@ -139,18 +139,6 @@ const DsTable = <TData extends { id: string }, TValue>({
 	const columns = useMemo<ColumnDef<TData, TValue>[]>(() => {
 		const augmentedColumns: ColumnDef<TData, TValue>[] = [...columnsProp];
 
-		if (hasExpanderColumn) {
-			const expanderColumn: ColumnDef<TData, TValue> = {
-				id: EXPANDER_COLUMN_ID,
-				size: EXPANDER_COLUMN_WIDTH,
-				enableSorting: false,
-				enableResizing: false,
-				header: () => null,
-				cell: ({ row }) => (row.getCanExpand() ? <DsTableRowExpandableCell row={row} /> : null),
-			};
-			augmentedColumns.unshift(expanderColumn);
-		}
-
 		if (hasSelectColumn) {
 			const selectColumn: ColumnDef<TData, TValue> = {
 				id: SELECT_COLUMN_ID,
@@ -161,6 +149,18 @@ const DsTable = <TData extends { id: string }, TValue>({
 				cell: ({ row }) => <DsTableRowSelectableCell row={row} />,
 			};
 			augmentedColumns.unshift(selectColumn);
+		}
+
+		if (hasExpanderColumn) {
+			const expanderColumn: ColumnDef<TData, TValue> = {
+				id: EXPANDER_COLUMN_ID,
+				size: EXPANDER_COLUMN_WIDTH,
+				enableSorting: false,
+				enableResizing: false,
+				header: () => null,
+				cell: ({ row }) => (row.getCanExpand() ? <DsTableRowExpandableCell row={row} /> : null),
+			};
+			augmentedColumns.unshift(expanderColumn);
 		}
 
 		return augmentedColumns;
