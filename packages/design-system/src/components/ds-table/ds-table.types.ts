@@ -365,7 +365,7 @@ export interface DsDataTableProps<TData, TValue> {
 	 * error handling, and retry.
 	 *
 	 * Only takes effect when `virtualized` is `true`. Passing this prop without
-	 * `virtualized` logs a development-mode warning and is otherwise ignored.
+	 * `virtualized` is ignored.
 	 *
 	 * @example
 	 * ```tsx
