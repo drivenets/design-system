@@ -1,5 +1,22 @@
 # @drivenets/design-system
 
+## 0.11.1
+
+### Patch Changes
+
+- ae315b6: Improve release process
+
+## 0.11.0
+
+### Minor Changes
+
+- 8723a60: Migrate DS codebase to new tokens
+
+### Patch Changes
+
+- c4d5afd: Add `variant` prop to `DsDropdownMenuItem`
+- a3d191b: Fix `DsTable` row selection
+
 ## 0.10.0
 
 ### Minor Changes

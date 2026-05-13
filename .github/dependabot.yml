@@ -10,7 +10,7 @@ updates:
 
     # Should match pnpm's `minimumReleaseAge`
     cooldown:
-      default-days: 1
+      default-days: 1 # zizmor: ignore[dependabot-cooldown] We're fine with 1 day.
 
     groups:
       # Matching the pnpm catalog entries manually since Dependabot matches them under the production group.
@@ -47,6 +47,10 @@ updates:
     directories:
       - '/'
       - '/.github/actions/*'
+
+    cooldown:
+      default-days: 1 # zizmor: ignore[dependabot-cooldown] We're fine with 1 day.
+
     schedule:
       interval: 'weekly'
     commit-message:

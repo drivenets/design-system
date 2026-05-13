@@ -2,4 +2,4 @@
 '@drivenets/design-system': patch
 ---
 
-Fix `DsTable` row selection
+Style fixes for `DsDropdownMenu`
