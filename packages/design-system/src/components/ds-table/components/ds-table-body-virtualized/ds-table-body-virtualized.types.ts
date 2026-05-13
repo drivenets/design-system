@@ -87,8 +87,11 @@ export interface InfiniteScrollConfig {
 
 	/**
 	 * Whether a fetch is currently in flight. While `true`, the Table will not
-	 * call `onLoadMore` again. The Table also uses the transition to `true` to
-	 * clear its internal in-flight latch.
+	 * call `onLoadMore` again. Set this synchronously inside your handler (or
+	 * track it with a state hook flipped before the fetch starts) if
+	 * `onLoadMore` is not idempotent and you need one-call-per-page semantics;
+	 * consumers using idempotent fetchers (e.g. React Query's `fetchNextPage`)
+	 * can safely leave this unset.
 	 *
 	 * @default false
 	 */

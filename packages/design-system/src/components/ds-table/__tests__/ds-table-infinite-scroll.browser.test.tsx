@@ -155,38 +155,4 @@ describe('DsTable infinite scroll', () => {
 		await new Promise((resolve) => setTimeout(resolve, 200));
 		expect(onLoadMore).not.toHaveBeenCalled();
 	});
-
-	it('latch: rapid scroll events before isLoadingMore propagates fire onLoadMore at most once', async () => {
-		const onLoadMore = vi.fn();
-		const tallData = generateTestData(200);
-
-		await page.render(
-			<div style={{ height: '400px' }}>
-				<DsTable
-					columns={columns}
-					data={tallData}
-					virtualized
-					infiniteScroll={{
-						hasMore: true,
-						isLoadingMore: false,
-						onLoadMore,
-						thresholdPx: 200,
-						autoFill: false,
-					}}
-				/>
-			</div>,
-		);
-
-		const container = getScrollContainer();
-		container.scrollTop = container.scrollHeight - container.clientHeight - 150;
-
-		await expect.poll(() => onLoadMore.mock.calls.length, { timeout: 2000 }).toBeGreaterThan(0);
-
-		for (let i = 0; i < 5; i++) {
-			container.scrollTop = container.scrollHeight - container.clientHeight - 100 - i;
-		}
-
-		await new Promise((resolve) => setTimeout(resolve, 200));
-		expect(onLoadMore).toHaveBeenCalledTimes(1);
-	});
 });
