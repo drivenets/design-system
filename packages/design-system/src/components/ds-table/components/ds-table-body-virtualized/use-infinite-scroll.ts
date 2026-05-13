@@ -27,18 +27,9 @@ export const useInfiniteScroll = (
 	const autoFill = config?.autoFill ?? DEFAULT_AUTO_FILL;
 
 	const loadDataIfNeeded = () => {
-		if (!config) {
-			return;
-		}
-		if (!hasMore) {
-			return;
-		}
-		if (isLoadingMore) {
-			return;
-		}
-
 		const el = scrollElementRef.current;
-		if (!el) {
+
+		if (!config || !hasMore || isLoadingMore || !el) {
 			return;
 		}
 
