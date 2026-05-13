@@ -5,13 +5,12 @@ import { CSS } from '@dnd-kit/utilities';
 import { DsIcon } from '../../../ds-icon';
 import { TableCell, TableRow } from '../core-table';
 import { DsTableCell } from '../ds-table-cell';
-import { DsTableRowSelectableCell } from '../ds-table-row-selectable-cell';
 import type { DsTableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
-import { EXPANDER_COLUMN_ID } from '../../utils/constants';
+import { EXPANDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
@@ -40,7 +39,6 @@ const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleP
 
 const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) => {
 	const {
-		selectable,
 		reorderable,
 		onRowClick,
 		onRowDoubleClick,
@@ -94,9 +92,6 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				onClick={() => onRowClick?.(row.original)}
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
-				{selectable && (
-					<DsTableRowSelectableCell row={row} isSelected={isSelected} className={styles.selectableCell} />
-				)}
 				{reorderable && (
 					<DsRowDragHandle isDragging={isDragging} attributes={attributes} listeners={listeners} />
 				)}
@@ -110,6 +105,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 							className={classnames(
 								styles.tableCell,
 								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
+								cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
 							)}
 							style={cellStyle}
 						>
@@ -131,7 +127,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 			{isExpanded && renderExpandedRow && (
 				<TableRow className={styles.expandedRow}>
 					<TableCell
-						colSpan={row.getVisibleCells().length + (selectable ? 1 : 0) + (reorderable ? 1 : 0)}
+						colSpan={row.getVisibleCells().length + (reorderable ? 1 : 0)}
 						className={styles.tableCell}
 					>
 						{renderExpandedRow(row.original)}

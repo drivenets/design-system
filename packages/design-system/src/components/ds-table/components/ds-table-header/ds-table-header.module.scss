@@ -15,11 +15,6 @@
 .headerRow {
 	.headerCell {
 		border-bottom: 1px solid var(--color-dap-gray-400);
-
-		&.selectColumn {
-			width: vars.$select-column-width;
-			padding: 0;
-		}
 	}
 
 	&.headerRowNoBorder {
@@ -62,6 +57,10 @@
 			transition: transform 0.2s ease-in-out;
 		}
 	}
+}
+
+.selectHeaderCell {
+	padding: 0;
 }
 
 .headerSortContainer {
