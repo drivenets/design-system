@@ -1,7 +1,7 @@
 import type { Ref } from 'react';
 import classNames from 'classnames';
 import styles from './ds-status-badge-v2.module.scss';
-import type { DsStatusBadgeV2Props } from './ds-status-badge-v2.types';
+import type { DsStatusBadgeV2BaseProps } from './ds-status-badge-v2.types';
 import { phaseIconMap } from './phase-config';
 import { DsIcon } from '../ds-icon';
 import { DsTooltip } from '../ds-tooltip';
@@ -18,7 +18,7 @@ const DsStatusBadgeV2 = ({
 	style,
 	ref,
 	'aria-label': ariaLabel,
-}: DsStatusBadgeV2Props) => {
+}: DsStatusBadgeV2BaseProps) => {
 	const resolvedIcon = icon === null ? null : (icon ?? phaseIconMap[phase]);
 	const hasIcon = resolvedIcon !== null;
 	const isTextOnly = !hasIcon;

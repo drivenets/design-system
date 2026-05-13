@@ -1,5 +1,6 @@
 import type { CSSProperties, Ref } from 'react';
 import type { IconType } from '../ds-icon';
+import type { ResponsiveValue } from '../../utils/responsive';
 
 export const statusBadgeV2Phases = [
 	'not-started',
@@ -22,23 +23,18 @@ export type StatusBadgeV2Variant = (typeof statusBadgeV2Variants)[number];
 export const statusBadgeV2Sizes = ['medium', 'small'] as const;
 export type StatusBadgeV2Size = (typeof statusBadgeV2Sizes)[number];
 
-export interface DsStatusBadgeV2Props {
+export interface DsStatusBadgeV2BaseProps {
 	/**
 	 * Lifecycle phase that determines color and default icon.
 	 * Each phase maps to a color palette and a default Material Symbols icon.
 	 */
 	phase: StatusBadgeV2Phase;
 
-	/**
-	 * Domain-specific text label. Always required for accessibility.
-	 * Displayed as text in the badge unless `iconOnly` is true,
-	 * in which case it becomes the tooltip content.
-	 */
 	label: string;
 
 	/**
-	 * Override the default phase icon. Pass `null` to force a text-only badge
-	 * (no icon rendered). When omitted, the default icon for the phase is used.
+	 * Override the default phase icon. Pass `null` to force a text-only badge.
+	 * When omitted, the default icon for the phase is used.
 	 */
 	icon?: IconType | null;
 
@@ -58,20 +54,20 @@ export interface DsStatusBadgeV2Props {
 	variant?: StatusBadgeV2Variant;
 
 	/**
-	 * Badge size controlling height, padding, and icon dimensions.
+	 * Badge size controlling height, padding, and icon dimensions. Responsive.
 	 * @default 'medium'
 	 */
 	size?: StatusBadgeV2Size;
 
-	/** Additional CSS class name merged onto the root element. */
 	className?: string;
 
-	/** Inline styles applied to the root element. */
 	style?: CSSProperties;
 
-	/** Ref forwarded to the root element. */
 	ref?: Ref<HTMLElement>;
 
-	/** Accessible label for screen readers. Overrides the label. */
 	'aria-label'?: string;
+}
+
+export interface DsStatusBadgeV2Props extends Omit<DsStatusBadgeV2BaseProps, 'size'> {
+	size?: ResponsiveValue<StatusBadgeV2Size>;
 }

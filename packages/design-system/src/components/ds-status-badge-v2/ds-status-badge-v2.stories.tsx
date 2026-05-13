@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsStatusBadgeV2 from './ds-status-badge-v2';
+import { DsStatusBadgeV2 as DsStatusBadgeV2Responsive } from './index';
 import {
 	type StatusBadgeV2Phase,
 	statusBadgeV2Phases,
@@ -430,6 +431,25 @@ export const PhaseReference: Story = {
 					</tr>
 				</tbody>
 			</table>
+		</DsStack>
+	),
+};
+
+export const ResponsiveSize: Story = {
+	parameters: { layout: 'centered' },
+	render: () => (
+		<DsStack direction="row" gap="var(--sm)" alignItems="center" flexWrap="wrap">
+			<DsStatusBadgeV2Responsive
+				phase="active"
+				label="lg: medium / md: small"
+				size={{ lg: 'medium', md: 'small' }}
+			/>
+			<DsStatusBadgeV2Responsive
+				phase="pending"
+				label="lg: small / md: medium"
+				size={{ lg: 'small', md: 'medium' }}
+			/>
+			<DsStatusBadgeV2Responsive phase="execution" label="static: medium" size="medium" />
 		</DsStack>
 	),
 };
