@@ -6,6 +6,7 @@ import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
 import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
 import { TableBody, TableRow, TableCell } from '../core-table';
 import { EMPTY_TABLE_STATE_TEXT } from '../../utils/constants';
+import { useInfiniteScroll } from './use-infinite-scroll';
 
 export const DsTableBodyVirtualized = <TData,>({
 	table,
@@ -15,6 +16,7 @@ export const DsTableBodyVirtualized = <TData,>({
 	overscan,
 	onScroll,
 	rowSelection,
+	infiniteScroll,
 }: DsTableBodyVirtualizedProps<TData>) => {
 	const rowsMapRef = useRef(new Map<string, HTMLTableRowElement>());
 	const rowHeightsMapRef = useRef(new Map<string, number>());
@@ -29,6 +31,8 @@ export const DsTableBodyVirtualized = <TData,>({
 		const item = rowsAndExpandedRowContent[index];
 		return item ? `${item.row.id}${item.isExpandedRowContent ? '-expanded-content' : ''}` : String(index);
 	};
+
+	const { loadDataIfNeeded } = useInfiniteScroll(tableContainerRef, rows.length, infiniteScroll);
 
 	const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
 		count: rowsAndExpandedRowContent.length,
@@ -56,17 +60,21 @@ export const DsTableBodyVirtualized = <TData,>({
 				});
 			});
 
-			if (sync && onScroll) {
-				const scrollOffset = instance.scrollOffset || 0;
-				const totalContentHeight = instance.getTotalSize();
-				const viewportHeight = instance.scrollElement?.clientHeight;
-				const scrollDirection = instance.scrollDirection;
+			if (sync) {
+				if (onScroll) {
+					const scrollOffset = instance.scrollOffset || 0;
+					const totalContentHeight = instance.getTotalSize();
+					const viewportHeight = instance.scrollElement?.clientHeight;
+					const scrollDirection = instance.scrollDirection;
 
-				if (viewportHeight) {
-					const bottomOffset = totalContentHeight - (scrollOffset + viewportHeight);
+					if (viewportHeight) {
+						const bottomOffset = totalContentHeight - (scrollOffset + viewportHeight);
 
-					onScroll({ scrollOffset, totalContentHeight, viewportHeight, bottomOffset, scrollDirection });
+						onScroll({ scrollOffset, totalContentHeight, viewportHeight, bottomOffset, scrollDirection });
+					}
 				}
+
+				loadDataIfNeeded();
 			}
 		},
 	});

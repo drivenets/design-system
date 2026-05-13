@@ -64,7 +64,7 @@ $dropdown-z-index: 9999;
 	gap: 10px;
 	color: var(--font-main);
 	font-size: var(--body-font-size-sm);
-	padding: var(--xs);
+	padding: var(--xs) var(--sm) var(--xs) var(--xs);
 	border-radius: 2px;
 	border-left: 2px solid transparent;
 	cursor: pointer;
