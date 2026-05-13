@@ -27,3 +27,7 @@ TSESTree
 unhover
 unitless
 unrs
+Fira
+scrollers
+affordances
+timelapse

@@ -47,6 +47,7 @@ export * from './components/ds-spinner';
 export * from './components/ds-split-button';
 export * from './components/ds-stack';
 export * from './components/ds-status-badge';
+export * from './components/ds-status-badge-v2';
 export * from './components/ds-stepper';
 export * from './components/ds-system-status';
 export * from './components/ds-table';
