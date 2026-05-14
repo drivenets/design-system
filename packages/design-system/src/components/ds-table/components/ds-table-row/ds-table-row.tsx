@@ -10,20 +10,22 @@ import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
-import { EXPANDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
+import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
 	attributes: ReturnType<typeof useSortable>['attributes'];
 	listeners: ReturnType<typeof useSortable>['listeners'];
+	style?: React.CSSProperties;
 }
 
-const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleProps) => {
+const DsRowDragHandle = ({ isDragging, attributes, listeners, style }: DsRowDragHandleProps) => {
 	return (
 		<TableCell
 			className={classnames(styles.tableCell, styles.cellReorder, {
 				[styles.isDragging]: isDragging,
 			})}
+			style={style}
 		>
 			<DsIcon
 				className={styles.rowDragHandle}
@@ -92,12 +94,22 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				onClick={() => onRowClick?.(row.original)}
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
-				{reorderable && (
-					<DsRowDragHandle isDragging={isDragging} attributes={attributes} listeners={listeners} />
-				)}
 				{row.getVisibleCells().map((cell, idx) => {
-					const isLastColumn = idx === row.getVisibleCells().length - 1;
 					const cellStyle = getColumnSizeStyle(cell.column.getSize());
+
+					if (cell.column.id === REORDER_COLUMN_ID) {
+						return (
+							<DsRowDragHandle
+								key={cell.id}
+								isDragging={isDragging}
+								attributes={attributes}
+								listeners={listeners}
+								style={cellStyle}
+							/>
+						);
+					}
+
+					const isLastColumn = idx === row.getVisibleCells().length - 1;
 
 					return (
 						<TableCell
@@ -126,10 +138,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 
 			{isExpanded && renderExpandedRow && (
 				<TableRow className={styles.expandedRow}>
-					<TableCell
-						colSpan={row.getVisibleCells().length + (reorderable ? 1 : 0)}
-						className={styles.tableCell}
-					>
+					<TableCell colSpan={row.getVisibleCells().length} className={styles.tableCell}>
 						{renderExpandedRow(row.original)}
 					</TableCell>
 				</TableRow>

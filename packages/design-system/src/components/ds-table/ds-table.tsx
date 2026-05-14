@@ -29,6 +29,8 @@ import {
 	EMPTY_TABLE_STATE_TEXT,
 	EXPANDER_COLUMN_ID,
 	EXPANDER_COLUMN_WIDTH,
+	REORDER_COLUMN_ID,
+	REORDER_COLUMN_WIDTH,
 	SELECT_COLUMN_ID,
 	SELECT_COLUMN_WIDTH,
 } from './utils/constants';
@@ -136,6 +138,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const hasExpanderColumn = !!expandable;
 	const hasSelectColumn = !!selectable;
+	const hasReorderColumn = reorderable && !virtualized;
 
 	const columns = useMemo<ColumnDef<TData, TValue>[]>(() => {
 		const augmentedColumns: ColumnDef<TData, TValue>[] = [...columnsProp];
@@ -164,8 +167,22 @@ const DsTable = <TData extends { id: string }, TValue>({
 			augmentedColumns.unshift(expanderColumn);
 		}
 
+		if (hasReorderColumn) {
+			// Cell is rendered inline by DsTableRow when it encounters REORDER_COLUMN_ID,
+			// since the drag handle needs row-level useSortable state.
+			const reorderColumn: ColumnDef<TData, TValue> = {
+				id: REORDER_COLUMN_ID,
+				size: REORDER_COLUMN_WIDTH,
+				enableSorting: false,
+				enableResizing: false,
+				header: 'Order',
+				cell: () => null,
+			};
+			augmentedColumns.unshift(reorderColumn);
+		}
+
 		return augmentedColumns;
-	}, [columnsProp, hasExpanderColumn, hasSelectColumn, showSelectAllCheckbox]);
+	}, [columnsProp, hasExpanderColumn, hasReorderColumn, hasSelectColumn, showSelectAllCheckbox]);
 
 	const table = useReactTable({
 		data: reorderable ? data : tableData,
@@ -237,7 +254,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const renderEmptyState = () => (
 		<TableRow>
-			<TableCell colSpan={columns.length + (reorderable ? 1 : 0)} className={styles.emptyState}>
+			<TableCell colSpan={columns.length} className={styles.emptyState}>
 				{emptyState || EMPTY_TABLE_STATE_TEXT}
 			</TableCell>
 		</TableRow>

@@ -11,7 +11,7 @@ import { SELECT_COLUMN_ID } from '../../utils/constants';
 import { DsStack } from '../../../ds-stack';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
-	const { stickyHeader, bordered, reorderable, virtualized } = useDsTableContext<TData, unknown>();
+	const { stickyHeader, bordered, virtualized } = useDsTableContext<TData, unknown>();
 
 	return (
 		<TableHeader
@@ -26,9 +26,6 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 						virtualized && styles.headerRowVirtualized,
 					)}
 				>
-					{reorderable && (
-						<TableHead className={classnames(styles.headerCell, styles.reorderColumn)}>Order</TableHead>
-					)}
 					{headerGroup.headers.map((header) => {
 						const headerStyle = getColumnSizeStyle(header.column.getSize(), virtualized);
 						const canSort = header.column.getCanSort();
