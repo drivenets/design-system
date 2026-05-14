@@ -23,7 +23,7 @@ export type StatusBadgeV2Variant = (typeof statusBadgeV2Variants)[number];
 export const statusBadgeV2Sizes = ['medium', 'small'] as const;
 export type StatusBadgeV2Size = (typeof statusBadgeV2Sizes)[number];
 
-interface DsStatusBadgeV2SharedProps {
+export interface DsStatusBadgeV2SharedProps {
 	/**
 	 * Lifecycle phase that determines color and default icon.
 	 * Each phase maps to a color palette and a default Material Symbols icon.
@@ -68,16 +68,7 @@ export type StatusBadgeV2IconOnlyProps =
 			icon?: IconType;
 	  }
 	| {
-			/**
-			 * When true, hides the label text and renders icon-only.
-			 * The label is used as tooltip content instead.
-			 * @default false
-			 */
 			iconOnly?: false;
-			/**
-			 * Override the default phase icon. Pass `null` to force a text-only badge.
-			 * When omitted, the default icon for the phase is used.
-			 */
 			icon?: IconType | null;
 	  };
 
