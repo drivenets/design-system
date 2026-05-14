@@ -10,16 +10,13 @@ services:
       dockerfile: Dockerfile
     container_name: ds-mcp-server
     ports:
-      - '${PORT:-9200}:9200'
+      - '${DS_MCP_PORT:-6006}:6006'
     networks:
       - proxy
-    environment:
-      - PORT=9200
-      - MANIFESTS_URL=https://drivenets.github.io/design-system
     restart: unless-stopped
     healthcheck:
-      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:9200/health']
+      test: ['CMD', 'wget', '--spider', '-q', 'http://localhost:6006/']
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 5s
+      start_period: 30s

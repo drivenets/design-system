@@ -1,97 +1,80 @@
 # DriveNets DS Storybook MCP Server
 
-MCP server that provides AI agents with DriveNets Design System component knowledge.
+Dockerized Storybook instance that serves DS component knowledge to AI agents
+via the [MCP protocol](https://modelcontextprotocol.io/).
 
-Built on [@storybook/mcp](https://github.com/storybookjs/storybook/tree/next/code/addons/mcp) and [srvx](https://srvx.unjs.io/).
+Built on [@storybook/addon-mcp](https://storybook.js.org/docs/sharing/mcp) —
+Storybook natively serves the `/mcp` endpoint when the addon is enabled.
 
-## Quick Start
+## How it works
 
-```bash
-npm install
-npm run dev
+```
+Dockerfile clones drivenets/design-system repo
+        |
+        v
+pnpm install (all workspace dependencies)
+        |
+        v
+storybook dev --ci --port 6006 --host 0.0.0.0
+        |
+        v
+Storybook serves UI on / and MCP on /mcp
+        |
+        v
+AI agents query components via MCP protocol
 ```
 
-The server starts on port 9200 by default. The MCP endpoint is at `/mcp`.
+No custom server code — Storybook IS the MCP server.
 
-## Configuration
+## Tools exposed
 
-| Variable        | Default                                     | Description                                   |
-| --------------- | ------------------------------------------- | --------------------------------------------- |
-| `PORT`          | `9200`                                      | Server port                                   |
-| `MANIFESTS_URL` | `https://drivenets.github.io/design-system` | URL to fetch manifests from                   |
-| `MANIFESTS_DIR` | —                                           | Local directory for manifests (overrides URL) |
+| Tool                          | Description                                            |
+| ----------------------------- | ------------------------------------------------------ |
+| `list-all-documentation`      | List all components and docs entries with IDs          |
+| `get-documentation`           | Get full props, stories, code snippets for a component |
+| `get-documentation-for-story` | Get docs for a specific story variant                  |
 
-## Tools Exposed
+## Local testing
 
-| Tool                          | Description                                                |
-| ----------------------------- | ---------------------------------------------------------- |
-| `list-all-documentation`      | List all components and docs entries with IDs              |
-| `get-documentation`           | Get full props, stories, and code snippets for a component |
-| `get-documentation-for-story` | Get docs for a specific story variant                      |
-
-## Development
+Build and run:
 
 ```bash
-npm install          # install dependencies
-npm run dev          # start with hot-reload (tsx --watch)
-npm run build        # compile TypeScript to dist/
-npm start            # run compiled output
-```
-
-## Testing
-
-Run with local test manifests:
-
-```bash
-MANIFESTS_DIR=$(pwd)/test-manifests PORT=3456 npm run dev
-```
-
-Then verify:
-
-```bash
-curl -s http://localhost:3456/health
-```
-
-## Docker
-
-```bash
+cd tools/mcp-server
 docker compose up -d
-curl -s http://localhost:9200/health
 ```
 
-## DN MCP Gateway Integration
+Verify:
 
-This server is designed to be deployed behind the DN MCP Gateway. The gateway
-handles tool prefixing, user identity injection, circuit breaking, and access
-control. See `ARCHITECTURE.md` for the full architecture.
+```bash
+# Health check (Storybook UI)
+curl -s http://localhost:6006/ | head -5
 
-Gateway config entry:
-
-```json
-{
-  "ds_storybook": {
-    "state": "enabled",
-    "url": "http://ds-mcp-server:9200/mcp",
-    "proxy": {
-      "prefix": "storybook",
-      "use_all_tools": true,
-      "header_enabler": "X-STORYBOOK-TOOLS"
-    }
-  }
-}
+# MCP tool discovery
+curl -s -X POST http://localhost:6006/mcp \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json, text/event-stream" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
 ```
 
-## Local Cursor Integration
+## Cursor integration
 
-For local development (without the gateway), add to `.cursor/mcp.json`:
+Add to `.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "ds-storybook-mcp": {
-      "type": "http",
-      "url": "http://localhost:9200/mcp"
+      "url": "http://localhost:6006/mcp"
     }
   }
 }
+```
+
+## Updating
+
+To pick up DS changes, rebuild the image:
+
+```bash
+docker compose build --no-cache
+docker compose up -d
 ```
