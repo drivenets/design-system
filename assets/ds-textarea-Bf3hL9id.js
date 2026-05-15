@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{n as t}from"./ds-textarea-0zuFaVJ1.js";var n=e((()=>{})),r=e((()=>{t(),n()}));export{r as t};
