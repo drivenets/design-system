@@ -323,17 +323,17 @@ const DsTable = <TData extends { id: string }, TValue>({
 						)}
 					</Table>
 				</DragWrapper>
+				{selectable && actions.length > 0 && (
+					<DsTableBulkActions
+						numSelectedRows={selectedRows.length}
+						actions={actions.map((action) => ({
+							...action,
+							onClick: () => action.onClick(selectedRows),
+						}))}
+						onClearSelection={table.resetRowSelection}
+					/>
+				)}
 			</div>
-			{selectable && actions.length > 0 && (
-				<DsTableBulkActions
-					numSelectedRows={selectedRows.length}
-					actions={actions.map((action) => ({
-						...action,
-						onClick: () => action.onClick(selectedRows),
-					}))}
-					onClearSelection={table.resetRowSelection}
-				/>
-			)}
 		</DsTableContext.Provider>
 	);
 };

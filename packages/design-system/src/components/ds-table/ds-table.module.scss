@@ -1,5 +1,4 @@
 @use '../../styles/typography';
-@use '../../styles/utilities' as utils;
 @use '../../styles/scrollbars' as scrollbars;
 @use './styles/variables' as vars;
 
@@ -10,9 +9,10 @@
 	--ds-table-header-height: 45px;
 }
 
-$bulk-actions-height: 60px;
+$bulk-actions-reserved-space: 80px;
 
 .container {
+	position: relative;
 	border-radius: vars.$border-radius;
 	border-width: vars.$border-width;
 	border-style: solid;
@@ -41,7 +41,6 @@ $bulk-actions-height: 60px;
 	thead {
 		display: block;
 		flex-shrink: 0;
-		padding-right: scrollbars.$scrollbar-thin-size;
 	}
 
 	tbody {
@@ -49,7 +48,6 @@ $bulk-actions-height: 60px;
 		overflow-y: auto;
 		flex: 1;
 		min-height: 0;
-		scrollbar-gutter: stable;
 
 		@include scrollbars.scrollbar-on-hover;
 	}
@@ -82,8 +80,17 @@ $bulk-actions-height: 60px;
 	width: 100%;
 }
 
+.bulkActionsVisible {
+	tbody {
+		padding-bottom: $bulk-actions-reserved-space;
+	}
+}
+
 .emptyState {
+	flex: 1;
+	min-width: 0;
 	height: vars.$empty-state-height;
+	justify-content: center;
 	text-align: center;
 }
 
@@ -109,7 +116,6 @@ $bulk-actions-height: 60px;
 	thead {
 		display: block;
 		flex-shrink: 0;
-		padding-right: scrollbars.$scrollbar-thin-size;
 	}
 
 	tbody {
@@ -125,8 +131,4 @@ $bulk-actions-height: 60px;
 		display: flex;
 		align-items: center;
 	}
-}
-
-.bulkActionsVisible {
-	padding-bottom: $bulk-actions-height;
 }
