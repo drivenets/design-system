@@ -20,6 +20,7 @@ const config: StorybookConfig = {
 				},
 			},
 		},
+		'@storybook/addon-mcp',
 	],
 	framework: '@storybook/react-vite',
 	viteFinal: (viteConfig) => {
