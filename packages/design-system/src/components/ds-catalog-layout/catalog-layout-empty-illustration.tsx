@@ -1,6 +1,6 @@
 import type { FC, SVGProps } from 'react';
 
-export const CatalogEmptyIllustration: FC<SVGProps<SVGSVGElement>> = (props) => (
+export const CatalogLayoutEmptyIllustration: FC<SVGProps<SVGSVGElement>> = (props) => (
 	<svg
 		width="250"
 		height="200"

@@ -6,7 +6,7 @@ export * from './components/ds-breadcrumb';
 export * from './components/ds-button';
 export * from './components/ds-button-v3';
 export * from './components/ds-card';
-export * from './components/ds-catalog';
+export * from './components/ds-catalog-layout';
 export * from './components/ds-checkbox';
 export * from './components/ds-checkbox-group';
 export * from './components/ds-chip';

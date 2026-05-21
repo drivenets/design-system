@@ -9,8 +9,8 @@ import {
 	createRouter,
 	RouterProvider,
 } from '@tanstack/react-router';
-import DsCatalog from './ds-catalog';
-import { CatalogEmptyIllustration } from './catalog-empty-illustration';
+import DsCatalogLayout from './ds-catalog-layout';
+import { CatalogLayoutEmptyIllustration } from './catalog-layout-empty-illustration';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
 import { DsButtonV3 } from '../ds-button-v3';
@@ -20,14 +20,14 @@ import { DsAvatar } from '../ds-avatar';
 import { DsBreadcrumb, type DsBreadcrumbItem } from '../ds-breadcrumb';
 import { DsIcon, type IconType } from '../ds-icon';
 import { DsSmartTabs } from '../ds-smart-tabs';
-import styles from './ds-catalog.stories.module.scss';
+import styles from './ds-catalog-layout.stories.module.scss';
 
 const catalogBreadcrumbItems: DsBreadcrumbItem[] = [
 	{ type: 'link', label: 'Automation', href: '/automation', icon: 'precision_manufacturing' },
 	{ type: 'link', label: 'Planned executions', href: '/planned-executions', icon: 'event' },
 ];
 
-const createCatalogStoryRouter = (Story: ComponentType, initialPath: string) => {
+const createCatalogLayoutStoryRouter = (Story: ComponentType, initialPath: string) => {
 	const rootRoute = createRootRoute({
 		component: () => <Story />,
 	});
@@ -57,7 +57,7 @@ const createCatalogStoryRouter = (Story: ComponentType, initialPath: string) => 
 };
 
 const withTanStackRouter = (Story: ComponentType, initialPath = '/planned-executions') => (
-	<RouterProvider router={createCatalogStoryRouter(Story, initialPath)} />
+	<RouterProvider router={createCatalogLayoutStoryRouter(Story, initialPath)} />
 );
 
 type CatalogRow = { id: string; name: string; status: string };
@@ -73,9 +73,9 @@ const catalogData: CatalogRow[] = [
 	{ id: '3', name: 'NE-003', status: 'Inactive' },
 ];
 
-const meta: Meta<typeof DsCatalog> = {
-	title: 'Components/Catalog',
-	component: DsCatalog,
+const meta: Meta<typeof DsCatalogLayout> = {
+	title: 'Components/CatalogLayout',
+	component: DsCatalogLayout,
 	decorators: [(Story) => withTanStackRouter(Story, '/planned-executions')],
 	parameters: {
 		layout: 'fullscreen',
@@ -88,16 +88,16 @@ menu items, table/list, empty state).
 
 **Regions**
 
-- \`Catalog\` — full-viewport flex column surface
-- \`Catalog.Header\` — slot for top bar navigation (full width)
-- \`Catalog.Body\` — horizontal row containing the optional side menu and the content column
-- \`Catalog.SideMenu\` — collapsible icon rail (60px); on hover, an absolute panel overlays at 256px
-  without shifting content; when \`pinned\`, the 256px panel pushes the content. Reflects pinned state
-  via a \`data-pinned\` attribute, so consumers can target the rail in CSS to reveal labels on hover/pin.
-- \`Catalog.Content\` — content column with vertical 24px margin and horizontal margins of 24px
+- \`CatalogLayout\` — full-viewport flex column surface
+- \`CatalogLayout.Header\` — slot for top bar navigation (full width)
+- \`CatalogLayout.Body\` — horizontal row containing the optional side menu and the content column
+- \`CatalogLayout.SideMenu\` — collapsible icon rail (60px); on hover, an absolute panel overlays at
+  256px without shifting content; when \`pinned\`, the 256px panel pushes the content. Pass
+  \`onPinnedChange\` to render the built-in pin/unpin button (top-right of the expanded panel).
+- \`CatalogLayout.Content\` — content column with vertical 24px margin and horizontal margins of 24px
   (with side menu) or 40px (without). Vertical gap is 16px.
-- \`Catalog.ContentHeader\` — title row with optional trailing actions; optional children render as a
-  content-header item below the title row (e.g. a smart tabs group).
+- \`CatalogLayout.ContentHeader\` — title row with optional trailing actions; optional children
+  render as a content-header item below the title row (e.g. a smart tabs group).
 
 Result regions (table/list), empty states, and side-menu items are intentionally consumer-owned.
 				`,
@@ -117,7 +117,7 @@ Result regions (table/list), empty states, and side-menu items are intentionally
 
 export default meta;
 
-type Story = StoryObj<typeof DsCatalog>;
+type Story = StoryObj<typeof DsCatalogLayout>;
 
 const refreshOptions = [
 	{ label: '30s', value: '30' },
@@ -228,79 +228,93 @@ const ResultsCard = ({ children }: { children: ReactNode }) => (
 
 const EmptyStateCard = ({ children }: { children: ReactNode }) => (
 	<div className={styles.emptyCard} role="status">
-		<CatalogEmptyIllustration className={styles.emptyIllustration} aria-hidden="true" />
+		<CatalogLayoutEmptyIllustration className={styles.emptyIllustration} aria-hidden="true" />
 		<div className={styles.emptyCardContent}>{children}</div>
 	</div>
 );
 
-interface CatalogShellProps {
+interface CatalogLayoutShellProps {
 	withSideMenu?: boolean;
 	pinned?: boolean;
+	onPinnedChange?: (pinned: boolean) => void;
 	children: ReactNode;
 }
 
-const CatalogShell = ({ withSideMenu = true, pinned, children }: CatalogShellProps) => (
-	<DsCatalog>
-		<DsCatalog.Header>
+const CatalogLayoutShell = ({
+	withSideMenu = true,
+	pinned,
+	onPinnedChange,
+	children,
+}: CatalogLayoutShellProps) => (
+	<DsCatalogLayout>
+		<DsCatalogLayout.Header>
 			<TopBarNavigation />
-		</DsCatalog.Header>
-		<DsCatalog.Body>
+		</DsCatalogLayout.Header>
+		<DsCatalogLayout.Body>
 			{withSideMenu ? (
-				<DsCatalog.SideMenu pinned={pinned} className={styles.sideMenu}>
+				<DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={onPinnedChange} className={styles.sideMenu}>
 					<SideMenuItems />
-				</DsCatalog.SideMenu>
+				</DsCatalogLayout.SideMenu>
 			) : null}
-			<DsCatalog.Content>{children}</DsCatalog.Content>
-		</DsCatalog.Body>
-	</DsCatalog>
+			<DsCatalogLayout.Content>{children}</DsCatalogLayout.Content>
+		</DsCatalogLayout.Body>
+	</DsCatalogLayout>
 );
 
 export const Default: Story = {
-	render: () => (
-		<CatalogShell>
-			<DsCatalog.ContentHeader
-				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
-				headerActions={<ContentHeaderActions />}
-			>
-				<SmartTabsItem />
-			</DsCatalog.ContentHeader>
-			<ResultsCard>
-				<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
-			</ResultsCard>
-		</CatalogShell>
-	),
+	render: function Render() {
+		const [pinned, setPinned] = useState(false);
+
+		return (
+			<CatalogLayoutShell pinned={pinned} onPinnedChange={setPinned}>
+				<DsCatalogLayout.ContentHeader
+					title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+					headerActions={<ContentHeaderActions />}
+				>
+					<SmartTabsItem />
+				</DsCatalogLayout.ContentHeader>
+				<ResultsCard>
+					<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+				</ResultsCard>
+			</CatalogLayoutShell>
+		);
+	},
 };
 
 export const Empty: Story = {
-	render: () => (
-		<CatalogShell>
-			<DsCatalog.ContentHeader
-				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
-				headerActions={<ContentHeaderActions />}
-			>
-				<SmartTabsItem />
-			</DsCatalog.ContentHeader>
-			<EmptyStateCard>
-				<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
-				<DsButtonV3 variant="primary" size="small">
-					Clear filters
-				</DsButtonV3>
-			</EmptyStateCard>
-		</CatalogShell>
-	),
+	render: function Render() {
+		const [pinned, setPinned] = useState(false);
+
+		return (
+			<CatalogLayoutShell pinned={pinned} onPinnedChange={setPinned}>
+				<DsCatalogLayout.ContentHeader
+					title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+					headerActions={<ContentHeaderActions />}
+				>
+					<SmartTabsItem />
+				</DsCatalogLayout.ContentHeader>
+				<EmptyStateCard>
+					<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
+					<DsButtonV3 variant="primary" size="small">
+						Clear filters
+					</DsButtonV3>
+				</EmptyStateCard>
+			</CatalogLayoutShell>
+		);
+	},
 };
 
 export const WithoutSideMenu: Story = {
 	render: () => (
-		<CatalogShell withSideMenu={false}>
-			<DsCatalog.ContentHeader
+		<CatalogLayoutShell withSideMenu={false}>
+			<DsCatalogLayout.ContentHeader
 				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
 				headerActions={<ContentHeaderActions />}
 			/>
 			<ResultsCard>
 				<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
 			</ResultsCard>
-		</CatalogShell>
+		</CatalogLayoutShell>
 	),
 };
 
@@ -309,20 +323,15 @@ export const SideMenuPinned: Story = {
 		const [pinned, setPinned] = useState(true);
 
 		return (
-			<CatalogShell pinned={pinned}>
-				<DsCatalog.ContentHeader
+			<CatalogLayoutShell pinned={pinned} onPinnedChange={setPinned}>
+				<DsCatalogLayout.ContentHeader
 					title={<DsTypography variant="heading3">Pinned side menu</DsTypography>}
-					headerActions={
-						<DsButtonV3 variant="tertiary" size="small" onClick={() => setPinned((current) => !current)}>
-							{pinned ? 'Unpin' : 'Pin'}
-						</DsButtonV3>
-					}
 				/>
 				<DsTypography variant="body-md-reg">
-					When the side menu is pinned, the expanded panel pushes the content area to the right. Click the
-					button above to toggle the pinned state.
+					When the side menu is pinned, the expanded panel pushes the content area to the right. Use the pin
+					button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
 				</DsTypography>
-			</CatalogShell>
+			</CatalogLayoutShell>
 		);
 	},
 };
@@ -330,30 +339,32 @@ export const SideMenuPinned: Story = {
 export const FillParent: Story = {
 	render: () => (
 		<div className={styles.fillParentWrapper}>
-			<DsCatalog fillParent>
-				<DsCatalog.Header>
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Header>
 					<TopBarNavigation />
-				</DsCatalog.Header>
-				<DsCatalog.Body>
-					<DsCatalog.Content>
-						<DsCatalog.ContentHeader title={<DsTypography variant="heading3">Fill parent</DsTypography>} />
+				</DsCatalogLayout.Header>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader
+							title={<DsTypography variant="heading3">Fill parent</DsTypography>}
+						/>
 						<DsTypography variant="body-md-reg">
 							This catalog layout fills its parent container (400px) instead of the viewport.
 						</DsTypography>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>
 		</div>
 	),
 };
 
 export const HeaderOnly: Story = {
 	render: () => (
-		<CatalogShell withSideMenu={false}>
-			<DsCatalog.ContentHeader title={<DsTypography variant="heading3">Minimal layout</DsTypography>} />
+		<CatalogLayoutShell withSideMenu={false}>
+			<DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Minimal layout</DsTypography>} />
 			<DsTypography variant="body-md-reg">
 				All sub-components are optional. Use only the regions your page needs.
 			</DsTypography>
-		</CatalogShell>
+		</CatalogLayoutShell>
 	),
 };

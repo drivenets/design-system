@@ -1,27 +1,27 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 
-import DsCatalog from '../ds-catalog';
+import DsCatalogLayout from '../ds-catalog-layout';
 
-describe('DsCatalog', () => {
+describe('DsCatalogLayout', () => {
 	it('renders compound parts in the expected vertical order', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Header>
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Header>
 					<span>App header</span>
-				</DsCatalog.Header>
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu>
+				</DsCatalogLayout.Header>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu>
 						<span>Side menu</span>
-					</DsCatalog.SideMenu>
-					<DsCatalog.Content>
-						<DsCatalog.ContentHeader title={<span>Page title</span>}>
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader title={<span>Page title</span>}>
 							<span>Smart tabs</span>
-						</DsCatalog.ContentHeader>
+						</DsCatalogLayout.ContentHeader>
 						<span>Results</span>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		await expect.element(page.getByText('App header')).toBeVisible();
@@ -40,11 +40,11 @@ describe('DsCatalog', () => {
 
 	it('uses semantic HTML for the top header region', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Header>
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Header>
 					<span>App header</span>
-				</DsCatalog.Header>
-			</DsCatalog>,
+				</DsCatalogLayout.Header>
+			</DsCatalogLayout>,
 		);
 
 		const header = page.getByText('App header').element().parentElement;
@@ -54,11 +54,11 @@ describe('DsCatalog', () => {
 
 	it('fills the viewport height by default', async () => {
 		await page.render(
-			<DsCatalog>
-				<DsCatalog.Header>
+			<DsCatalogLayout>
+				<DsCatalogLayout.Header>
 					<span>App header</span>
-				</DsCatalog.Header>
-			</DsCatalog>,
+				</DsCatalogLayout.Header>
+			</DsCatalogLayout>,
 		);
 
 		const root = page.getByText('App header').element().parentElement?.parentElement as HTMLElement;
@@ -72,11 +72,11 @@ describe('DsCatalog', () => {
 
 		await page.render(
 			<div style={{ height: parentHeight }}>
-				<DsCatalog fillParent>
-					<DsCatalog.Header>
+				<DsCatalogLayout fillParent>
+					<DsCatalogLayout.Header>
 						<span>App header</span>
-					</DsCatalog.Header>
-				</DsCatalog>
+					</DsCatalogLayout.Header>
+				</DsCatalogLayout>
 			</div>,
 		);
 
@@ -90,16 +90,16 @@ describe('DsCatalog', () => {
 		let refElement: HTMLDivElement | null = null;
 
 		await page.render(
-			<DsCatalog
+			<DsCatalogLayout
 				fillParent
 				ref={(el) => {
 					refElement = el;
 				}}
 			>
-				<DsCatalog.Header>
+				<DsCatalogLayout.Header>
 					<span>App header</span>
-				</DsCatalog.Header>
-			</DsCatalog>,
+				</DsCatalogLayout.Header>
+			</DsCatalogLayout>,
 		);
 
 		await expect.element(page.getByText('App header')).toBeVisible();
@@ -108,11 +108,11 @@ describe('DsCatalog', () => {
 
 	it('merges custom className on the root', async () => {
 		await page.render(
-			<DsCatalog fillParent className="my-catalog">
-				<DsCatalog.Header>
+			<DsCatalogLayout fillParent className="my-catalog">
+				<DsCatalogLayout.Header>
 					<span>App header</span>
-				</DsCatalog.Header>
-			</DsCatalog>,
+				</DsCatalogLayout.Header>
+			</DsCatalogLayout>,
 		);
 
 		const root = page.getByText('App header').element().parentElement?.parentElement;
@@ -121,13 +121,13 @@ describe('DsCatalog', () => {
 
 	it('applies 40px horizontal padding on content when there is no side menu', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.Content data-testid="content">
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.Content data-testid="content">
 						<span>Content</span>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		const content = page.getByTestId('content').element();
@@ -140,16 +140,16 @@ describe('DsCatalog', () => {
 
 	it('applies 24px horizontal padding on content when a side menu is present', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu>
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu>
 						<span>Nav</span>
-					</DsCatalog.SideMenu>
-					<DsCatalog.Content data-testid="content">
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content data-testid="content">
 						<span>Content</span>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		const content = page.getByTestId('content').element();
@@ -162,13 +162,13 @@ describe('DsCatalog', () => {
 
 	it('uses 24px vertical padding on content', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.Content data-testid="content">
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.Content data-testid="content">
 						<span>Content</span>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		const content = page.getByTestId('content').element();
@@ -180,16 +180,16 @@ describe('DsCatalog', () => {
 
 	it('applies 256px width on a pinned side menu', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu pinned data-testid="side-menu">
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu pinned data-testid="side-menu">
 						<span>Nav</span>
-					</DsCatalog.SideMenu>
-					<DsCatalog.Content>
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content>
 						<span>Content</span>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		const sideMenu = page.getByTestId('side-menu').element();
@@ -199,16 +199,16 @@ describe('DsCatalog', () => {
 
 	it('applies 60px collapsed width on the side menu by default', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu data-testid="side-menu">
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu data-testid="side-menu">
 						<span>Nav</span>
-					</DsCatalog.SideMenu>
-					<DsCatalog.Content>
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content>
 						<span>Content</span>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		const sideMenu = page.getByTestId('side-menu').element();
@@ -218,18 +218,18 @@ describe('DsCatalog', () => {
 
 	it('renders the optional content-header item below the title row', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.Content>
-						<DsCatalog.ContentHeader
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader
 							title={<span>Title</span>}
 							headerActions={<button type="button">Action</button>}
 						>
 							<span>Tabs item</span>
-						</DsCatalog.ContentHeader>
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+						</DsCatalogLayout.ContentHeader>
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		await expect.element(page.getByText('Title')).toBeVisible();
@@ -243,17 +243,84 @@ describe('DsCatalog', () => {
 
 	it('omits the content-header item slot when no children are provided', async () => {
 		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.Content>
-						<DsCatalog.ContentHeader title={<span>Just a title</span>} />
-					</DsCatalog.Content>
-				</DsCatalog.Body>
-			</DsCatalog>,
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader title={<span>Just a title</span>} />
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
 		);
 
 		const titleRow = page.getByText('Just a title').element().parentElement;
 		const contentHeader = titleRow?.parentElement;
 		expect(contentHeader?.children.length).toBe(1);
+	});
+
+	it('renders the pin button only when onPinnedChange is provided', async () => {
+		const { rerender } = await page.render(
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu>
+						<span>Nav</span>
+					</DsCatalogLayout.SideMenu>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
+		);
+
+		expect(page.getByRole('button', { name: /pin side menu/i, includeHidden: true }).query()).toBeNull();
+
+		await rerender(
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu onPinnedChange={() => {}}>
+						<span>Nav</span>
+					</DsCatalogLayout.SideMenu>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
+		);
+
+		await expect
+			.element(page.getByRole('button', { name: 'Pin side menu', includeHidden: true }))
+			.toBeInTheDocument();
+	});
+
+	it('toggles pinned state via the pin button when pinned', async () => {
+		const onPinnedChange = vi.fn();
+
+		await page.render(
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu pinned onPinnedChange={onPinnedChange}>
+						<span>Nav</span>
+					</DsCatalogLayout.SideMenu>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
+		);
+
+		const button = page.getByRole('button', { name: 'Unpin side menu' });
+		await expect.element(button).toBeVisible();
+		expect(button.element().getAttribute('aria-pressed')).toBe('true');
+
+		await button.click();
+		expect(onPinnedChange).toHaveBeenCalledExactlyOnceWith(false);
+	});
+
+	it('uses the localized pin button label when provided', async () => {
+		await page.render(
+			<DsCatalogLayout fillParent>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu
+						pinned
+						onPinnedChange={() => {}}
+						pinButtonLabel={{ pin: 'Pin', unpin: 'Detacher' }}
+					>
+						<span>Nav</span>
+					</DsCatalogLayout.SideMenu>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Detacher' })).toBeVisible();
 	});
 });
