@@ -4,7 +4,7 @@ import styles from './ds-catalog.module.scss';
 import { DsCatalogContext, useDsCatalogContext } from './ds-catalog.context';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
-import emptyIllustration from './assets/catalog-empty-illustration.svg';
+import { CatalogEmptyIllustration } from './components/catalog-empty-illustration';
 import type {
 	DsCatalogProps,
 	DsCatalogHeaderProps,
@@ -126,12 +126,9 @@ const Results = ({ className, ...rest }: DsCatalogResultsProps) => (
 
 const Empty = ({ className, children, ...rest }: DsCatalogEmptyProps) => (
 	<div {...rest} className={classNames(styles.empty, className)} role="status">
-		<img
+		<CatalogEmptyIllustration
 			className={styles.emptyIllustration}
-			src={emptyIllustration}
-			alt=""
-			width={250}
-			height={200}
+			aria-hidden="true"
 			data-testid="catalog-empty-illustration"
 		/>
 		{children ? <div className={styles.emptyContent}>{children}</div> : null}
