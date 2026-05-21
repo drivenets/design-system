@@ -3,7 +3,9 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 
-import { createManifestProvider, STALE_RETRY_MS } from '../manifest-provider.js';
+import { createManifestProvider } from '../manifest-provider.js';
+
+const STALE_RETRY_MS = 30 * 1000;
 
 type Provider = ReturnType<typeof createManifestProvider>;
 

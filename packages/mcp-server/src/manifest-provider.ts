@@ -2,9 +2,9 @@ import { basename, resolve } from 'node:path';
 import { readFile } from 'node:fs/promises';
 import type { StorybookContext } from '@storybook/mcp';
 
-export const DEFAULT_MANIFESTS_URL = 'https://drivenets.github.io/design-system';
-export const DEFAULT_TTL_MS = 10 * 60 * 1000;
-export const STALE_RETRY_MS = 30 * 1000;
+const DEFAULT_MANIFESTS_URL = 'https://drivenets.github.io/design-system';
+const DEFAULT_TTL_MS = 10 * 60 * 1000;
+const STALE_RETRY_MS = 30 * 1000;
 
 export interface ManifestProviderOptions {
 	/**
