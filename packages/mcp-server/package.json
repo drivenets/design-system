@@ -1,0 +1,59 @@
+{
+	"name": "@drivenets/ds-storybook-mcp",
+	"version": "0.0.1",
+	"license": "Apache-2.0",
+	"description": "Stdio-based MCP server exposing the DriveNets Design System Storybook documentation to AI agents (Cursor, Claude Code, Codex).",
+	"type": "module",
+	"bin": {
+		"ds-storybook-mcp": "./dist/cli.js"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/server.d.ts",
+			"import": "./dist/server.js"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE",
+		"CHANGELOG.md"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/drivenets/design-system.git",
+		"directory": "packages/mcp-server"
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings=0 .",
+		"build": "tsdown",
+		"dev": "tsx src/cli.ts",
+		"start": "node dist/cli.js",
+		"typecheck": "tsgo",
+		"test": "vitest",
+		"test:coverage": "pnpm test --coverage",
+		"lint:build": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL"
+	},
+	"dependencies": {
+		"@storybook/mcp": "0.7.0",
+		"@tmcp/adapter-valibot": "^0.1.6",
+		"@tmcp/transport-stdio": "^0.4.3",
+		"tmcp": "^1.19.4",
+		"valibot": "^1.2.0"
+	},
+	"devDependencies": {
+		"@arethetypeswrong/cli": "catalog:",
+		"eslint": "catalog:",
+		"@types/node": "^25.3.5",
+		"@typescript/native-preview": "catalog:",
+		"@vitest/coverage-v8": "catalog:",
+		"publint": "catalog:",
+		"tsdown": "catalog:",
+		"tsx": "^4.19.4",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}
