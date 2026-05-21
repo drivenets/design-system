@@ -2,20 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 import styles from './ds-catalog.module.scss';
 import { DsCatalogContext, useDsCatalogContext } from './ds-catalog.context';
-import { DsIcon } from '../ds-icon';
-import { DsTypography } from '../ds-typography';
-import { CatalogEmptyIllustration } from './components/catalog-empty-illustration';
 import type {
 	DsCatalogProps,
 	DsCatalogHeaderProps,
 	DsCatalogSideMenuProps,
-	DsCatalogSideMenuItemProps,
 	DsCatalogBodyProps,
-	DsCatalogMainProps,
 	DsCatalogContentProps,
 	DsCatalogContentHeaderProps,
-	DsCatalogResultsProps,
-	DsCatalogEmptyProps,
 } from './ds-catalog.types';
 
 const DsCatalog = ({ className, fillParent = false, ...rest }: DsCatalogProps) => {
@@ -64,35 +57,6 @@ const SideMenu = ({ className, pinned = false, children, ...rest }: DsCatalogSid
 	);
 };
 
-const SideMenuItem = ({
-	className,
-	icon,
-	label,
-	selected = false,
-	'aria-label': ariaLabel,
-	...rest
-}: DsCatalogSideMenuItemProps) => (
-	<button
-		type="button"
-		{...rest}
-		className={classNames(styles.sideMenuItem, className)}
-		aria-label={ariaLabel ?? label}
-		aria-current={selected ? 'page' : undefined}
-		{...(selected ? { 'data-selected': '' } : {})}
-	>
-		<DsIcon icon={icon} size="small" />
-		{label ? (
-			<DsTypography variant="body-sm-md" className={styles.sideMenuItemLabel}>
-				{label}
-			</DsTypography>
-		) : null}
-	</button>
-);
-
-const Main = ({ className, ...rest }: DsCatalogMainProps) => (
-	<div {...rest} className={classNames(styles.main, className)} />
-);
-
 const Content = ({ className, ...rest }: DsCatalogContentProps) => {
 	const { hasSideMenu } = useDsCatalogContext();
 
@@ -120,29 +84,10 @@ const ContentHeader = ({
 	</div>
 );
 
-const Results = ({ className, ...rest }: DsCatalogResultsProps) => (
-	<div {...rest} className={classNames(styles.results, className)} role="region" />
-);
-
-const Empty = ({ className, children, ...rest }: DsCatalogEmptyProps) => (
-	<div {...rest} className={classNames(styles.empty, className)} role="status">
-		<CatalogEmptyIllustration
-			className={styles.emptyIllustration}
-			aria-hidden="true"
-			data-testid="catalog-empty-illustration"
-		/>
-		{children ? <div className={styles.emptyContent}>{children}</div> : null}
-	</div>
-);
-
 DsCatalog.Header = Header;
 DsCatalog.Body = Body;
 DsCatalog.SideMenu = SideMenu;
-DsCatalog.SideMenuItem = SideMenuItem;
-DsCatalog.Main = Main;
 DsCatalog.Content = Content;
 DsCatalog.ContentHeader = ContentHeader;
-DsCatalog.Results = Results;
-DsCatalog.Empty = Empty;
 
 export default DsCatalog;

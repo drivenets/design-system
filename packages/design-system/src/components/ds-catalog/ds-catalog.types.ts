@@ -1,5 +1,4 @@
 import type { ComponentPropsWithRef, ReactNode } from 'react';
-import type { IconType } from '../ds-icon';
 
 export interface DsCatalogProps extends ComponentPropsWithRef<'div'> {
 	/**
@@ -20,27 +19,14 @@ export interface DsCatalogSideMenuProps extends ComponentPropsWithRef<'aside'> {
 	 * to the right; when `false`, the collapsed rail is shown and hovering the rail overlays an
 	 * expanded panel without shifting the content. Consumers manage the pinned state externally
 	 * (e.g. by rendering their own pin affordance inside the side menu).
+	 *
+	 * The pinned state is also reflected as a `data-pinned` attribute on the rendered `<aside>`,
+	 * so consumers can target nested items with descendant selectors (e.g. expand a label only
+	 * when the rail is hovered or pinned).
 	 * @default false
 	 */
 	pinned?: boolean;
 }
-
-export interface DsCatalogSideMenuItemProps extends ComponentPropsWithRef<'button'> {
-	/** Material icon name shown as the rail glyph; always visible. */
-	icon: IconType;
-	/**
-	 * Visible only when the side menu is expanded (hovered or pinned). Also used as the implicit
-	 * `aria-label` when the prop is omitted, so users of the collapsed rail still get a label.
-	 */
-	label?: string;
-	/**
-	 * Marks the item as the active page; renders as `aria-current="page"` for accessibility.
-	 * @default false
-	 */
-	selected?: boolean;
-}
-
-export type DsCatalogMainProps = ComponentPropsWithRef<'div'>;
 
 export type DsCatalogContentProps = ComponentPropsWithRef<'div'>;
 
@@ -58,7 +44,3 @@ export interface DsCatalogContentHeaderProps extends Omit<ComponentPropsWithRef<
 	 */
 	children?: ReactNode;
 }
-
-export type DsCatalogResultsProps = ComponentPropsWithRef<'div'>;
-
-export type DsCatalogEmptyProps = ComponentPropsWithRef<'div'>;

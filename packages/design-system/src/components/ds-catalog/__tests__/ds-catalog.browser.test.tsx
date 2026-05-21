@@ -14,16 +14,12 @@ describe('DsCatalog', () => {
 					<DsCatalog.SideMenu>
 						<span>Side menu</span>
 					</DsCatalog.SideMenu>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.ContentHeader title={<span>Page title</span>}>
-								<span>Smart tabs</span>
-							</DsCatalog.ContentHeader>
-							<DsCatalog.Results>
-								<span>Results</span>
-							</DsCatalog.Results>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content>
+						<DsCatalog.ContentHeader title={<span>Page title</span>}>
+							<span>Smart tabs</span>
+						</DsCatalog.ContentHeader>
+						<span>Results</span>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -32,7 +28,6 @@ describe('DsCatalog', () => {
 		await expect.element(page.getByText('Side menu')).toBeVisible();
 		await expect.element(page.getByText('Page title')).toBeVisible();
 		await expect.element(page.getByText('Smart tabs')).toBeVisible();
-		await expect.element(page.getByRole('region')).toBeVisible();
 		await expect.element(page.getByText('Results')).toBeVisible();
 
 		const headerRect = page.getByText('App header').element().getBoundingClientRect();
@@ -128,11 +123,9 @@ describe('DsCatalog', () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content data-testid="content">
-							<span>Content</span>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content data-testid="content">
+						<span>Content</span>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -152,11 +145,9 @@ describe('DsCatalog', () => {
 					<DsCatalog.SideMenu>
 						<span>Nav</span>
 					</DsCatalog.SideMenu>
-					<DsCatalog.Main>
-						<DsCatalog.Content data-testid="content">
-							<span>Content</span>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content data-testid="content">
+						<span>Content</span>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -173,11 +164,9 @@ describe('DsCatalog', () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content data-testid="content">
-							<span>Content</span>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content data-testid="content">
+						<span>Content</span>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -196,11 +185,9 @@ describe('DsCatalog', () => {
 					<DsCatalog.SideMenu pinned data-testid="side-menu">
 						<span>Nav</span>
 					</DsCatalog.SideMenu>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<span>Content</span>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content>
+						<span>Content</span>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -217,11 +204,9 @@ describe('DsCatalog', () => {
 					<DsCatalog.SideMenu data-testid="side-menu">
 						<span>Nav</span>
 					</DsCatalog.SideMenu>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<span>Content</span>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content>
+						<span>Content</span>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -231,55 +216,18 @@ describe('DsCatalog', () => {
 		expect(getComputedStyle(sideMenu).width).toBe('60px');
 	});
 
-	it('exposes selected side menu items via aria-current', async () => {
-		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu>
-						<DsCatalog.SideMenuItem icon="home" label="Home" />
-						<DsCatalog.SideMenuItem icon="event" label="Planned executions" selected />
-					</DsCatalog.SideMenu>
-				</DsCatalog.Body>
-			</DsCatalog>,
-		);
-
-		const selected = page.getByRole('button', { name: 'Planned executions' }).element();
-		expect(selected.getAttribute('aria-current')).toBe('page');
-		expect(selected.getAttribute('data-selected')).toBe('');
-
-		const unselected = page.getByRole('button', { name: 'Home' }).element();
-		expect(unselected.getAttribute('aria-current')).toBeNull();
-	});
-
-	it('uses label as aria-label when aria-label is not provided', async () => {
-		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu>
-						<DsCatalog.SideMenuItem icon="home" label="Home" />
-					</DsCatalog.SideMenu>
-				</DsCatalog.Body>
-			</DsCatalog>,
-		);
-
-		const item = page.getByRole('button', { name: 'Home' }).element();
-		expect(item.getAttribute('aria-label')).toBe('Home');
-	});
-
 	it('renders the optional content-header item below the title row', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.ContentHeader
-								title={<span>Title</span>}
-								headerActions={<button type="button">Action</button>}
-							>
-								<span>Tabs item</span>
-							</DsCatalog.ContentHeader>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content>
+						<DsCatalog.ContentHeader
+							title={<span>Title</span>}
+							headerActions={<button type="button">Action</button>}
+						>
+							<span>Tabs item</span>
+						</DsCatalog.ContentHeader>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -297,11 +245,9 @@ describe('DsCatalog', () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.ContentHeader title={<span>Just a title</span>} />
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content>
+						<DsCatalog.ContentHeader title={<span>Just a title</span>} />
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>,
 		);
@@ -309,44 +255,5 @@ describe('DsCatalog', () => {
 		const titleRow = page.getByText('Just a title').element().parentElement;
 		const contentHeader = titleRow?.parentElement;
 		expect(contentHeader?.children.length).toBe(1);
-	});
-
-	it('applies a border on the results region', async () => {
-		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.Results data-testid="results">
-								<span>Table</span>
-							</DsCatalog.Results>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
-				</DsCatalog.Body>
-			</DsCatalog>,
-		);
-
-		const results = page.getByTestId('results').element();
-		expect(getComputedStyle(results).borderWidth).not.toBe('0px');
-	});
-
-	it('renders the empty state illustration and children', async () => {
-		await page.render(
-			<DsCatalog fillParent>
-				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.Empty>
-								<span>No records found</span>
-							</DsCatalog.Empty>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
-				</DsCatalog.Body>
-			</DsCatalog>,
-		);
-
-		await expect.element(page.getByRole('status')).toBeVisible();
-		await expect.element(page.getByText('No records found')).toBeVisible();
-		await expect.element(page.getByTestId('catalog-empty-illustration')).toBeVisible();
 	});
 });

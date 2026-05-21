@@ -1,4 +1,5 @@
-import { useState, type ComponentType, type ReactNode } from 'react';
+import { useState, type ButtonHTMLAttributes, type ComponentType, type ReactNode } from 'react';
+import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ColumnDef } from '@tanstack/react-table';
 import {
@@ -9,6 +10,7 @@ import {
 	RouterProvider,
 } from '@tanstack/react-router';
 import DsCatalog from './ds-catalog';
+import { CatalogEmptyIllustration } from './catalog-empty-illustration';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
 import { DsButtonV3 } from '../ds-button-v3';
@@ -16,7 +18,7 @@ import { DsSplitButton } from '../ds-split-button';
 import { DsTable } from '../ds-table';
 import { DsAvatar } from '../ds-avatar';
 import { DsBreadcrumb, type DsBreadcrumbItem } from '../ds-breadcrumb';
-import { DsIcon } from '../ds-icon';
+import { DsIcon, type IconType } from '../ds-icon';
 import { DsSmartTabs } from '../ds-smart-tabs';
 import styles from './ds-catalog.stories.module.scss';
 
@@ -80,20 +82,24 @@ const meta: Meta<typeof DsCatalog> = {
 		docs: {
 			description: {
 				component: `
-Compound layout for data-heavy catalog pages (tables/lists).
+Compound layout for data-heavy catalog pages (tables/lists). Provides the structural shell —
+the regions and breakpoints — and lets consumers fill in app-specific content (top bar, side
+menu items, table/list, empty state).
 
 **Regions**
 
 - \`Catalog\` — full-viewport flex column surface
 - \`Catalog.Header\` — slot for top bar navigation (full width)
-- \`Catalog.Body\` — horizontal body row containing the optional side menu and the main column
-- \`Catalog.SideMenu\` — collapsible icon rail (60px); on hover it overlays an expanded panel (256px) without shifting content; when \`pinned\`, the expanded panel pushes the content
-- \`Catalog.SideMenuItem\` — icon nav item; the optional label is visible when expanded
-- \`Catalog.Main\` — main column
-- \`Catalog.Content\` — content column with vertical 24px margin and horizontal margins of 24px (with side menu) or 40px (without). Vertical gap is 16px.
-- \`Catalog.ContentHeader\` — title row with optional trailing actions; optional children render as a content-header item below the title row (e.g. a smart tabs group)
-- \`Catalog.Results\` — flex-growing table/list region with border + background
-- \`Catalog.Empty\` — empty state with illustration and optional children below
+- \`Catalog.Body\` — horizontal row containing the optional side menu and the content column
+- \`Catalog.SideMenu\` — collapsible icon rail (60px); on hover, an absolute panel overlays at 256px
+  without shifting content; when \`pinned\`, the 256px panel pushes the content. Reflects pinned state
+  via a \`data-pinned\` attribute, so consumers can target the rail in CSS to reveal labels on hover/pin.
+- \`Catalog.Content\` — content column with vertical 24px margin and horizontal margins of 24px
+  (with side menu) or 40px (without). Vertical gap is 16px.
+- \`Catalog.ContentHeader\` — title row with optional trailing actions; optional children render as a
+  content-header item below the title row (e.g. a smart tabs group).
+
+Result regions (table/list), empty states, and side-menu items are intentionally consumer-owned.
 				`,
 			},
 		},
@@ -139,15 +145,37 @@ const TopBarNavigation = () => (
 	</div>
 );
 
+interface SideMenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	icon: IconType;
+	label: string;
+	selected?: boolean;
+}
+
+const SideMenuItem = ({ icon, label, selected = false, className, ...rest }: SideMenuItemProps) => (
+	<button
+		type="button"
+		{...rest}
+		className={classNames(styles.sideMenuItem, className)}
+		aria-label={rest['aria-label'] ?? label}
+		aria-current={selected ? 'page' : undefined}
+		{...(selected ? { 'data-selected': '' } : {})}
+	>
+		<DsIcon icon={icon} size="small" />
+		<DsTypography variant="body-sm-md" className={styles.sideMenuItemLabel}>
+			{label}
+		</DsTypography>
+	</button>
+);
+
 const SideMenuItems = () => (
 	<>
-		<DsCatalog.SideMenuItem icon="readiness_score" label="Readiness" />
-		<DsCatalog.SideMenuItem icon="view_list" label="View list" />
-		<DsCatalog.SideMenuItem icon="input_circle" label="Inputs" />
-		<DsCatalog.SideMenuItem icon="calendar_today" label="Planned executions" selected />
-		<DsCatalog.SideMenuItem icon="autoplay" label="Autoplay" />
-		<DsCatalog.SideMenuItem icon="checklist" label="Checklist" />
-		<DsCatalog.SideMenuItem icon="help" label="Help" />
+		<SideMenuItem icon="readiness_score" label="Readiness" />
+		<SideMenuItem icon="view_list" label="View list" />
+		<SideMenuItem icon="input_circle" label="Inputs" />
+		<SideMenuItem icon="calendar_today" label="Planned executions" selected />
+		<SideMenuItem icon="autoplay" label="Autoplay" />
+		<SideMenuItem icon="checklist" label="Checklist" />
+		<SideMenuItem icon="help" label="Help" />
 	</>
 );
 
@@ -194,6 +222,17 @@ const SmartTabsItem = () => {
 	);
 };
 
+const ResultsCard = ({ children }: { children: ReactNode }) => (
+	<div className={styles.resultsCard}>{children}</div>
+);
+
+const EmptyStateCard = ({ children }: { children: ReactNode }) => (
+	<div className={styles.emptyCard} role="status">
+		<CatalogEmptyIllustration className={styles.emptyIllustration} aria-hidden="true" />
+		<div className={styles.emptyCardContent}>{children}</div>
+	</div>
+);
+
 interface CatalogShellProps {
 	withSideMenu?: boolean;
 	pinned?: boolean;
@@ -207,13 +246,11 @@ const CatalogShell = ({ withSideMenu = true, pinned, children }: CatalogShellPro
 		</DsCatalog.Header>
 		<DsCatalog.Body>
 			{withSideMenu ? (
-				<DsCatalog.SideMenu pinned={pinned}>
+				<DsCatalog.SideMenu pinned={pinned} className={styles.sideMenu}>
 					<SideMenuItems />
 				</DsCatalog.SideMenu>
 			) : null}
-			<DsCatalog.Main>
-				<DsCatalog.Content>{children}</DsCatalog.Content>
-			</DsCatalog.Main>
+			<DsCatalog.Content>{children}</DsCatalog.Content>
 		</DsCatalog.Body>
 	</DsCatalog>
 );
@@ -227,11 +264,9 @@ export const Default: Story = {
 			>
 				<SmartTabsItem />
 			</DsCatalog.ContentHeader>
-			<DsCatalog.Results>
-				<div className={styles.tableWrapper}>
-					<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
-				</div>
-			</DsCatalog.Results>
+			<ResultsCard>
+				<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+			</ResultsCard>
 		</CatalogShell>
 	),
 };
@@ -245,12 +280,12 @@ export const Empty: Story = {
 			>
 				<SmartTabsItem />
 			</DsCatalog.ContentHeader>
-			<DsCatalog.Empty>
+			<EmptyStateCard>
 				<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
 				<DsButtonV3 variant="primary" size="small">
 					Clear filters
 				</DsButtonV3>
-			</DsCatalog.Empty>
+			</EmptyStateCard>
 		</CatalogShell>
 	),
 };
@@ -262,11 +297,9 @@ export const WithoutSideMenu: Story = {
 				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
 				headerActions={<ContentHeaderActions />}
 			/>
-			<DsCatalog.Results>
-				<div className={styles.tableWrapper}>
-					<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
-				</div>
-			</DsCatalog.Results>
+			<ResultsCard>
+				<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+			</ResultsCard>
 		</CatalogShell>
 	),
 };
@@ -302,14 +335,12 @@ export const FillParent: Story = {
 					<TopBarNavigation />
 				</DsCatalog.Header>
 				<DsCatalog.Body>
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.ContentHeader title={<DsTypography variant="heading3">Fill parent</DsTypography>} />
-							<DsTypography variant="body-md-reg">
-								This catalog layout fills its parent container (400px) instead of the viewport.
-							</DsTypography>
-						</DsCatalog.Content>
-					</DsCatalog.Main>
+					<DsCatalog.Content>
+						<DsCatalog.ContentHeader title={<DsTypography variant="heading3">Fill parent</DsTypography>} />
+						<DsTypography variant="body-md-reg">
+							This catalog layout fills its parent container (400px) instead of the viewport.
+						</DsTypography>
+					</DsCatalog.Content>
 				</DsCatalog.Body>
 			</DsCatalog>
 		</div>
