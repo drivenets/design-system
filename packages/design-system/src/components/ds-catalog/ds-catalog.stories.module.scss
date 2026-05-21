@@ -1,4 +1,4 @@
-.catalogHeader {
+.topBar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -9,14 +9,14 @@
 	background: var(--background);
 }
 
-.catalogHeaderLeading {
+.topBarLeading {
 	display: flex;
 	flex: 1;
 	align-items: center;
 	min-width: 0;
 }
 
-.catalogHeaderLogo {
+.topBarLogo {
 	flex-shrink: 0;
 	width: 174px;
 	height: 54px;
@@ -28,29 +28,23 @@
 	);
 }
 
-.catalogHeaderBreadcrumbs {
+.topBarBreadcrumbs {
 	display: flex;
 	align-items: center;
 	margin-inline-start: var(--standard);
 }
 
-.catalogHeaderTrailing {
+.topBarTrailing {
 	display: flex;
 	flex-shrink: 0;
 	align-items: center;
 	gap: var(--standard);
 }
 
-.catalogHeaderUserMenu {
+.topBarUserMenu {
 	display: flex;
 	align-items: center;
 	gap: var(--3xs);
-}
-
-.contentHeaderActions {
-	display: flex;
-	align-items: center;
-	gap: var(--xs);
 }
 
 .contentHeaderSearch {

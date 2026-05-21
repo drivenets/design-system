@@ -14,7 +14,6 @@ import type {
 	DsCatalogMainProps,
 	DsCatalogContentProps,
 	DsCatalogContentHeaderProps,
-	DsCatalogControlsProps,
 	DsCatalogResultsProps,
 	DsCatalogEmptyProps,
 } from './ds-catalog.types';
@@ -45,14 +44,8 @@ const Body = ({ className, ...rest }: DsCatalogBodyProps) => (
 	<div {...rest} className={classNames(styles.body, className)} />
 );
 
-const SideMenu = ({
-	className,
-	pinned: controlledPinned = false,
-	children,
-	...rest
-}: DsCatalogSideMenuProps) => {
+const SideMenu = ({ className, pinned = false, children, ...rest }: DsCatalogSideMenuProps) => {
 	const { registerSideMenu, unregisterSideMenu } = useDsCatalogContext();
-	const pinned = controlledPinned;
 
 	useEffect(() => {
 		registerSideMenu();
@@ -111,15 +104,20 @@ const Content = ({ className, ...rest }: DsCatalogContentProps) => {
 	);
 };
 
-const ContentHeader = ({ className, title, headerActions, ...rest }: DsCatalogContentHeaderProps) => (
+const ContentHeader = ({
+	className,
+	title,
+	headerActions,
+	children,
+	...rest
+}: DsCatalogContentHeaderProps) => (
 	<div {...rest} className={classNames(styles.contentHeader, className)}>
-		<div className={styles.contentHeaderTitle}>{title}</div>
-		{headerActions ? <div className={styles.contentHeaderActions}>{headerActions}</div> : null}
+		<div className={styles.contentHeaderTitleRow}>
+			<div className={styles.contentHeaderTitle}>{title}</div>
+			{headerActions ? <div className={styles.contentHeaderActions}>{headerActions}</div> : null}
+		</div>
+		{children ? <div className={styles.contentHeaderItem}>{children}</div> : null}
 	</div>
-);
-
-const Controls = ({ className, ...rest }: DsCatalogControlsProps) => (
-	<div {...rest} className={classNames(styles.controls, className)} />
 );
 
 const Results = ({ className, ...rest }: DsCatalogResultsProps) => (
@@ -147,7 +145,6 @@ DsCatalog.SideMenuItem = SideMenuItem;
 DsCatalog.Main = Main;
 DsCatalog.Content = Content;
 DsCatalog.ContentHeader = ContentHeader;
-DsCatalog.Controls = Controls;
 DsCatalog.Results = Results;
 DsCatalog.Empty = Empty;
 

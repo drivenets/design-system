@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from 'react';
+import { useState, type ComponentType, type ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ColumnDef } from '@tanstack/react-table';
 import {
@@ -82,20 +82,19 @@ const meta: Meta<typeof DsCatalog> = {
 				component: `
 Compound layout for data-heavy catalog pages (tables/lists).
 
-Design-mandated name \`DsCatalog\` — use for any list/table page shell, not only catalog routes.
+**Regions**
 
-- **Catalog** — full-viewport flex column surface
-- **Catalog.Header** — slot for app top bar navigation (full width)
-- **Catalog.Body** — horizontal body row (side menu + main)
-- **Catalog.SideMenu** — collapsible icon rail (60px), hover overlay expand (256px), pinned push expand
-- **Catalog.SideMenuItem** — icon nav item with optional label (visible when expanded)
-- **Catalog.Main** — main column
-- **Catalog.Content** — content column with margins
-- **Catalog.ContentHeader** — page title (heading3) + actions row
-- **Catalog.Controls** — smart tabs / filters row (wraps to multiple rows when needed)
-- **Catalog.Results** — flex-growing table/list region with border
-- **Catalog.Empty** — empty state with illustration + children below
-        `,
+- \`Catalog\` — full-viewport flex column surface
+- \`Catalog.Header\` — slot for top bar navigation (full width)
+- \`Catalog.Body\` — horizontal body row containing the optional side menu and the main column
+- \`Catalog.SideMenu\` — collapsible icon rail (60px); on hover it overlays an expanded panel (256px) without shifting content; when \`pinned\`, the expanded panel pushes the content
+- \`Catalog.SideMenuItem\` — icon nav item; the optional label is visible when expanded
+- \`Catalog.Main\` — main column
+- \`Catalog.Content\` — content column with vertical 24px margin and horizontal margins of 24px (with side menu) or 40px (without). Vertical gap is 16px.
+- \`Catalog.ContentHeader\` — title row with optional trailing actions; optional children render as a content-header item below the title row (e.g. a smart tabs group)
+- \`Catalog.Results\` — flex-growing table/list region with border + background
+- \`Catalog.Empty\` — empty state with illustration and optional children below
+				`,
 			},
 		},
 	},
@@ -114,7 +113,33 @@ export default meta;
 
 type Story = StoryObj<typeof DsCatalog>;
 
-const catalogSideMenu = (
+const refreshOptions = [
+	{ label: '30s', value: '30' },
+	{ label: '1m', value: '60' },
+	{ label: '5m', value: '300' },
+];
+
+const TopBarNavigation = () => (
+	<div className={styles.topBar}>
+		<div className={styles.topBarLeading}>
+			<div className={styles.topBarLogo} />
+			<div className={styles.topBarBreadcrumbs}>
+				<DsBreadcrumb items={catalogBreadcrumbItems} />
+			</div>
+		</div>
+		<div className={styles.topBarTrailing}>
+			<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
+				NetGen
+			</DsButtonV3>
+			<div className={styles.topBarUserMenu}>
+				<DsAvatar name="PH" size="regular" type="circle" />
+				<DsIcon icon="keyboard_arrow_down" size="small" />
+			</div>
+		</div>
+	</div>
+);
+
+const SideMenuItems = () => (
 	<>
 		<DsCatalog.SideMenuItem icon="readiness_score" label="Readiness" />
 		<DsCatalog.SideMenuItem icon="view_list" label="View list" />
@@ -126,17 +151,11 @@ const catalogSideMenu = (
 	</>
 );
 
-const refreshOptions = [
-	{ label: '30s', value: '30' },
-	{ label: '1m', value: '60' },
-	{ label: '5m', value: '300' },
-];
-
 const ContentHeaderActions = () => {
 	const [refreshInterval, setRefreshInterval] = useState('30');
 
 	return (
-		<div className={styles.contentHeaderActions}>
+		<>
 			<DsTextInput className={styles.contentHeaderSearch} placeholder="Search" />
 			<DsButtonV3 variant="secondary" size="medium" icon="filter_list" aria-label="Filter" />
 			<DsSplitButton
@@ -153,11 +172,11 @@ const ContentHeaderActions = () => {
 			<DsButtonV3 variant="secondary" size="medium" icon="add">
 				New
 			</DsButtonV3>
-		</div>
+		</>
 	);
 };
 
-const CatalogControls = () => {
+const SmartTabsItem = () => {
 	const [activeTab, setActiveTab] = useState('all');
 
 	return (
@@ -175,137 +194,80 @@ const CatalogControls = () => {
 	);
 };
 
-const CatalogPageContent = ({ showTable = true }: { showTable?: boolean }) => (
-	<>
-		<DsCatalog.ContentHeader
-			title={<DsTypography variant="heading3">Planned executions</DsTypography>}
-			headerActions={<ContentHeaderActions />}
-		/>
+interface CatalogShellProps {
+	withSideMenu?: boolean;
+	pinned?: boolean;
+	children: ReactNode;
+}
 
-		<DsCatalog.Controls>
-			<CatalogControls />
-		</DsCatalog.Controls>
+const CatalogShell = ({ withSideMenu = true, pinned, children }: CatalogShellProps) => (
+	<DsCatalog>
+		<DsCatalog.Header>
+			<TopBarNavigation />
+		</DsCatalog.Header>
+		<DsCatalog.Body>
+			{withSideMenu ? (
+				<DsCatalog.SideMenu pinned={pinned}>
+					<SideMenuItems />
+				</DsCatalog.SideMenu>
+			) : null}
+			<DsCatalog.Main>
+				<DsCatalog.Content>{children}</DsCatalog.Content>
+			</DsCatalog.Main>
+		</DsCatalog.Body>
+	</DsCatalog>
+);
 
-		{showTable ? (
+export const Default: Story = {
+	render: () => (
+		<CatalogShell>
+			<DsCatalog.ContentHeader
+				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+				headerActions={<ContentHeaderActions />}
+			>
+				<SmartTabsItem />
+			</DsCatalog.ContentHeader>
 			<DsCatalog.Results>
 				<div className={styles.tableWrapper}>
 					<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
 				</div>
 			</DsCatalog.Results>
-		) : (
+		</CatalogShell>
+	),
+};
+
+export const Empty: Story = {
+	render: () => (
+		<CatalogShell>
+			<DsCatalog.ContentHeader
+				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+				headerActions={<ContentHeaderActions />}
+			>
+				<SmartTabsItem />
+			</DsCatalog.ContentHeader>
 			<DsCatalog.Empty>
 				<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
 				<DsButtonV3 variant="primary" size="small">
 					Clear filters
 				</DsButtonV3>
 			</DsCatalog.Empty>
-		)}
-	</>
-);
-
-export const Default: Story = {
-	render: () => (
-		<DsCatalog>
-			<DsCatalog.Header>
-				<div className={styles.catalogHeader}>
-					<div className={styles.catalogHeaderLeading}>
-						<div className={styles.catalogHeaderLogo} />
-						<div className={styles.catalogHeaderBreadcrumbs}>
-							<DsBreadcrumb items={catalogBreadcrumbItems} />
-						</div>
-					</div>
-					<div className={styles.catalogHeaderTrailing}>
-						<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
-							NetGen
-						</DsButtonV3>
-						<div className={styles.catalogHeaderUserMenu}>
-							<DsAvatar name="PH" size="regular" type="circle" />
-							<DsIcon icon="keyboard_arrow_down" size="small" />
-						</div>
-					</div>
-				</div>
-			</DsCatalog.Header>
-
-			<DsCatalog.Body>
-				<DsCatalog.SideMenu>{catalogSideMenu}</DsCatalog.SideMenu>
-
-				<DsCatalog.Main>
-					<DsCatalog.Content>
-						<CatalogPageContent />
-					</DsCatalog.Content>
-				</DsCatalog.Main>
-			</DsCatalog.Body>
-		</DsCatalog>
-	),
-};
-
-export const Empty: Story = {
-	render: () => (
-		<DsCatalog>
-			<DsCatalog.Header>
-				<div className={styles.catalogHeader}>
-					<div className={styles.catalogHeaderLeading}>
-						<div className={styles.catalogHeaderLogo} />
-						<div className={styles.catalogHeaderBreadcrumbs}>
-							<DsBreadcrumb items={catalogBreadcrumbItems} />
-						</div>
-					</div>
-					<div className={styles.catalogHeaderTrailing}>
-						<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
-							NetGen
-						</DsButtonV3>
-						<div className={styles.catalogHeaderUserMenu}>
-							<DsAvatar name="PH" size="regular" type="circle" />
-							<DsIcon icon="keyboard_arrow_down" size="small" />
-						</div>
-					</div>
-				</div>
-			</DsCatalog.Header>
-
-			<DsCatalog.Body>
-				<DsCatalog.SideMenu>{catalogSideMenu}</DsCatalog.SideMenu>
-
-				<DsCatalog.Main>
-					<DsCatalog.Content>
-						<CatalogPageContent showTable={false} />
-					</DsCatalog.Content>
-				</DsCatalog.Main>
-			</DsCatalog.Body>
-		</DsCatalog>
+		</CatalogShell>
 	),
 };
 
 export const WithoutSideMenu: Story = {
 	render: () => (
-		<DsCatalog>
-			<DsCatalog.Header>
-				<div className={styles.catalogHeader}>
-					<div className={styles.catalogHeaderLeading}>
-						<div className={styles.catalogHeaderLogo} />
-						<div className={styles.catalogHeaderBreadcrumbs}>
-							<DsBreadcrumb items={catalogBreadcrumbItems} />
-						</div>
-					</div>
-					<div className={styles.catalogHeaderTrailing}>
-						<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
-							NetGen
-						</DsButtonV3>
-						<div className={styles.catalogHeaderUserMenu}>
-							<DsAvatar name="PH" size="regular" type="circle" />
-							<DsIcon icon="keyboard_arrow_down" size="small" />
-						</div>
-					</div>
+		<CatalogShell withSideMenu={false}>
+			<DsCatalog.ContentHeader
+				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+				headerActions={<ContentHeaderActions />}
+			/>
+			<DsCatalog.Results>
+				<div className={styles.tableWrapper}>
+					<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
 				</div>
-			</DsCatalog.Header>
-
-			<DsCatalog.Body>
-				<DsCatalog.Main>
-					<DsCatalog.Content>
-						<CatalogPageContent />
-					</DsCatalog.Content>
-				</DsCatalog.Main>
-			</DsCatalog.Body>
-		</DsCatalog>
+			</DsCatalog.Results>
+		</CatalogShell>
 	),
 };
 
@@ -314,47 +276,20 @@ export const SideMenuPinned: Story = {
 		const [pinned, setPinned] = useState(true);
 
 		return (
-			<DsCatalog>
-				<DsCatalog.Header>
-					<div className={styles.catalogHeader}>
-						<div className={styles.catalogHeaderLeading}>
-							<div className={styles.catalogHeaderLogo} />
-							<div className={styles.catalogHeaderBreadcrumbs}>
-								<DsBreadcrumb items={catalogBreadcrumbItems} />
-							</div>
-						</div>
-						<div className={styles.catalogHeaderTrailing}>
-							<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
-								NetGen
-							</DsButtonV3>
-							<div className={styles.catalogHeaderUserMenu}>
-								<DsAvatar name="PH" size="regular" type="circle" />
-								<DsIcon icon="keyboard_arrow_down" size="small" />
-							</div>
-						</div>
-					</div>
-				</DsCatalog.Header>
-
-				<DsCatalog.Body>
-					<DsCatalog.SideMenu pinned={pinned} onPinnedChange={setPinned}>
-						{catalogSideMenu}
-					</DsCatalog.SideMenu>
-
-					<DsCatalog.Main>
-						<DsCatalog.Content>
-							<DsCatalog.ContentHeader
-								title={<DsTypography variant="heading3">Pinned side menu</DsTypography>}
-								headerActions={
-									<DsButtonV3 variant="tertiary" size="small" onClick={() => setPinned(!pinned)}>
-										{pinned ? 'Unpin' : 'Pin'}
-									</DsButtonV3>
-								}
-							/>
-							<CatalogPageContent />
-						</DsCatalog.Content>
-					</DsCatalog.Main>
-				</DsCatalog.Body>
-			</DsCatalog>
+			<CatalogShell pinned={pinned}>
+				<DsCatalog.ContentHeader
+					title={<DsTypography variant="heading3">Pinned side menu</DsTypography>}
+					headerActions={
+						<DsButtonV3 variant="tertiary" size="small" onClick={() => setPinned((current) => !current)}>
+							{pinned ? 'Unpin' : 'Pin'}
+						</DsButtonV3>
+					}
+				/>
+				<DsTypography variant="body-md-reg">
+					When the side menu is pinned, the expanded panel pushes the content area to the right. Click the
+					button above to toggle the pinned state.
+				</DsTypography>
+			</CatalogShell>
 		);
 	},
 };
@@ -364,25 +299,8 @@ export const FillParent: Story = {
 		<div className={styles.fillParentWrapper}>
 			<DsCatalog fillParent>
 				<DsCatalog.Header>
-					<div className={styles.catalogHeader}>
-						<div className={styles.catalogHeaderLeading}>
-							<div className={styles.catalogHeaderLogo} />
-							<div className={styles.catalogHeaderBreadcrumbs}>
-								<DsBreadcrumb items={catalogBreadcrumbItems} />
-							</div>
-						</div>
-						<div className={styles.catalogHeaderTrailing}>
-							<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
-								NetGen
-							</DsButtonV3>
-							<div className={styles.catalogHeaderUserMenu}>
-								<DsAvatar name="PH" size="regular" type="circle" />
-								<DsIcon icon="keyboard_arrow_down" size="small" />
-							</div>
-						</div>
-					</div>
+					<TopBarNavigation />
 				</DsCatalog.Header>
-
 				<DsCatalog.Body>
 					<DsCatalog.Main>
 						<DsCatalog.Content>
@@ -400,37 +318,11 @@ export const FillParent: Story = {
 
 export const HeaderOnly: Story = {
 	render: () => (
-		<DsCatalog>
-			<DsCatalog.Header>
-				<div className={styles.catalogHeader}>
-					<div className={styles.catalogHeaderLeading}>
-						<div className={styles.catalogHeaderLogo} />
-						<div className={styles.catalogHeaderBreadcrumbs}>
-							<DsBreadcrumb items={catalogBreadcrumbItems} />
-						</div>
-					</div>
-					<div className={styles.catalogHeaderTrailing}>
-						<DsButtonV3 variant="primary" size="small" icon="special-netgen-s">
-							NetGen
-						</DsButtonV3>
-						<div className={styles.catalogHeaderUserMenu}>
-							<DsAvatar name="PH" size="regular" type="circle" />
-							<DsIcon icon="keyboard_arrow_down" size="small" />
-						</div>
-					</div>
-				</div>
-			</DsCatalog.Header>
-
-			<DsCatalog.Body>
-				<DsCatalog.Main>
-					<DsCatalog.Content>
-						<DsCatalog.ContentHeader title={<DsTypography variant="heading3">Minimal layout</DsTypography>} />
-						<DsTypography variant="body-md-reg">
-							All sub-components are optional. Use only the regions your page needs.
-						</DsTypography>
-					</DsCatalog.Content>
-				</DsCatalog.Main>
-			</DsCatalog.Body>
-		</DsCatalog>
+		<CatalogShell withSideMenu={false}>
+			<DsCatalog.ContentHeader title={<DsTypography variant="heading3">Minimal layout</DsTypography>} />
+			<DsTypography variant="body-md-reg">
+				All sub-components are optional. Use only the regions your page needs.
+			</DsTypography>
+		</CatalogShell>
 	),
 };

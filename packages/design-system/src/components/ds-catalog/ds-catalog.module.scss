@@ -4,10 +4,10 @@
 	--ds-catalog-side-menu-padding-top: 28px;
 	--ds-catalog-side-menu-padding-x: 10px;
 	--ds-catalog-content-gap: var(--standard);
-	--ds-catalog-header-controls-gap: var(--sm);
+	--ds-catalog-content-header-gap: var(--sm);
 	--ds-catalog-margin-y: var(--lg);
 	--ds-catalog-margin-x-with-side: var(--lg);
-	--ds-catalog-margin-x-no-side: var(--lg);
+	--ds-catalog-margin-x-no-side: 40px;
 
 	display: flex;
 	flex-direction: column;
@@ -56,6 +56,7 @@
 	overflow: hidden;
 	border-inline-end: 1px solid var(--border);
 	background: var(--background);
+	transition: width 0.2s;
 }
 
 .sideMenu[data-pinned] .sideMenuPanel {
@@ -83,6 +84,9 @@
 	background: transparent;
 	cursor: pointer;
 	color: var(--font-main);
+	transition:
+		background-color 0.2s,
+		color 0.2s;
 
 	&:hover:not([data-selected]) {
 		background: var(--background-action-tertiary-hover);
@@ -148,9 +152,17 @@
 .contentHeader {
 	display: flex;
 	flex-shrink: 0;
-	align-items: center;
+	flex-direction: column;
 	align-self: stretch;
+	gap: var(--ds-catalog-content-header-gap);
+	width: 100%;
+}
+
+.contentHeaderTitleRow {
+	display: flex;
+	align-items: center;
 	justify-content: space-between;
+	gap: var(--sm);
 	width: 100%;
 	min-height: 36px;
 }
@@ -169,25 +181,11 @@
 	gap: var(--xs);
 }
 
-.contentHeader + .controls {
-	margin-top: calc(var(--ds-catalog-header-controls-gap) - var(--ds-catalog-content-gap));
-}
-
-.controls {
+.contentHeaderItem {
 	display: flex;
 	flex-shrink: 0;
-	flex-wrap: wrap;
-	align-self: stretch;
-	align-items: center;
-	align-content: flex-start;
-	gap: var(--xs);
 	width: 100%;
 	min-width: 0;
-
-	> * {
-		flex: 1 1 100%;
-		min-width: 0;
-	}
 }
 
 .results {
@@ -208,18 +206,22 @@
 	flex: 1;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: safe center;
 	gap: var(--standard);
 	min-height: 0;
 	width: 100%;
+	padding: var(--xl) var(--lg);
+	overflow: auto;
 	border: 1px solid var(--border);
 	border-radius: var(--3xs);
 	background: var(--background);
 }
 
 .emptyIllustration {
+	flex-shrink: 0;
 	width: 250px;
 	height: 200px;
+	max-width: 100%;
 }
 
 .emptyContent {

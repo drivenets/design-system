@@ -8,7 +8,6 @@ export type {
 	DsCatalogMainProps,
 	DsCatalogContentProps,
 	DsCatalogContentHeaderProps,
-	DsCatalogControlsProps,
 	DsCatalogResultsProps,
 	DsCatalogEmptyProps,
 } from './ds-catalog.types';

@@ -4,7 +4,7 @@ import { page } from 'vitest/browser';
 import DsCatalog from '../ds-catalog';
 
 describe('DsCatalog', () => {
-	it('renders compound parts in vertical order', async () => {
+	it('renders compound parts in the expected vertical order', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Header>
@@ -16,10 +16,9 @@ describe('DsCatalog', () => {
 					</DsCatalog.SideMenu>
 					<DsCatalog.Main>
 						<DsCatalog.Content>
-							<DsCatalog.ContentHeader title={<span>Page title</span>} />
-							<DsCatalog.Controls>
-								<span>Controls</span>
-							</DsCatalog.Controls>
+							<DsCatalog.ContentHeader title={<span>Page title</span>}>
+								<span>Smart tabs</span>
+							</DsCatalog.ContentHeader>
 							<DsCatalog.Results>
 								<span>Results</span>
 							</DsCatalog.Results>
@@ -32,19 +31,19 @@ describe('DsCatalog', () => {
 		await expect.element(page.getByText('App header')).toBeVisible();
 		await expect.element(page.getByText('Side menu')).toBeVisible();
 		await expect.element(page.getByText('Page title')).toBeVisible();
-		await expect.element(page.getByText('Controls')).toBeVisible();
+		await expect.element(page.getByText('Smart tabs')).toBeVisible();
 		await expect.element(page.getByRole('region')).toBeVisible();
 		await expect.element(page.getByText('Results')).toBeVisible();
 
 		const headerRect = page.getByText('App header').element().getBoundingClientRect();
-		const sideMenuRect = page.getByText('Side menu').element().getBoundingClientRect();
 		const titleRect = page.getByText('Page title').element().getBoundingClientRect();
+		const tabsRect = page.getByText('Smart tabs').element().getBoundingClientRect();
 
-		expect(sideMenuRect.top).toBeGreaterThanOrEqual(headerRect.bottom);
 		expect(titleRect.top).toBeGreaterThanOrEqual(headerRect.bottom);
+		expect(tabsRect.top).toBeGreaterThanOrEqual(titleRect.bottom);
 	});
 
-	it('uses semantic HTML for header', async () => {
+	it('uses semantic HTML for the top header region', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Header>
@@ -58,7 +57,7 @@ describe('DsCatalog', () => {
 		expect(header?.tagName).toBe('HEADER');
 	});
 
-	it('fills viewport height by default', async () => {
+	it('fills the viewport height by default', async () => {
 		await page.render(
 			<DsCatalog>
 				<DsCatalog.Header>
@@ -73,7 +72,7 @@ describe('DsCatalog', () => {
 		expect(parseFloat(style.height)).toBeCloseTo(window.innerHeight, 0);
 	});
 
-	it('fills parent height when fillParent is true', async () => {
+	it('fills the parent height when fillParent is true', async () => {
 		const parentHeight = 400;
 
 		await page.render(
@@ -92,7 +91,7 @@ describe('DsCatalog', () => {
 		expect(Math.round(height)).toBe(parentHeight);
 	});
 
-	it('forwards ref to root element', async () => {
+	it('forwards ref to the root element', async () => {
 		let refElement: HTMLDivElement | null = null;
 
 		await page.render(
@@ -112,7 +111,7 @@ describe('DsCatalog', () => {
 		expect(refElement).toBeInstanceOf(HTMLDivElement);
 	});
 
-	it('merges custom className on root', async () => {
+	it('merges custom className on the root', async () => {
 		await page.render(
 			<DsCatalog fillParent className="my-catalog">
 				<DsCatalog.Header>
@@ -125,7 +124,7 @@ describe('DsCatalog', () => {
 		expect(root?.classList.contains('my-catalog')).toBe(true);
 	});
 
-	it('applies lg margins without side menu', async () => {
+	it('applies 40px horizontal padding on content when there is no side menu', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
@@ -141,11 +140,12 @@ describe('DsCatalog', () => {
 		const content = page.getByTestId('content').element();
 		const style = getComputedStyle(content);
 
-		expect(style.paddingInline).not.toBe('');
 		expect(content.className).not.toMatch(/contentWithSideMenu/);
+		expect(style.paddingLeft).toBe('40px');
+		expect(style.paddingRight).toBe('40px');
 	});
 
-	it('applies side-menu horizontal margins when side menu is present', async () => {
+	it('applies 24px horizontal padding on content when a side menu is present', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
@@ -162,10 +162,34 @@ describe('DsCatalog', () => {
 		);
 
 		const content = page.getByTestId('content').element();
+		const style = getComputedStyle(content);
+
 		expect(content.className).toMatch(/contentWithSideMenu/);
+		expect(style.paddingLeft).toBe('24px');
+		expect(style.paddingRight).toBe('24px');
 	});
 
-	it('applies pinned width on side menu', async () => {
+	it('uses 24px vertical padding on content', async () => {
+		await page.render(
+			<DsCatalog fillParent>
+				<DsCatalog.Body>
+					<DsCatalog.Main>
+						<DsCatalog.Content data-testid="content">
+							<span>Content</span>
+						</DsCatalog.Content>
+					</DsCatalog.Main>
+				</DsCatalog.Body>
+			</DsCatalog>,
+		);
+
+		const content = page.getByTestId('content').element();
+		const style = getComputedStyle(content);
+
+		expect(style.paddingTop).toBe('24px');
+		expect(style.paddingBottom).toBe('24px');
+	});
+
+	it('applies 256px width on a pinned side menu', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
@@ -186,7 +210,7 @@ describe('DsCatalog', () => {
 		expect(parseFloat(getComputedStyle(sideMenu).width)).toBeCloseTo(256, 0);
 	});
 
-	it('collapsed side menu uses collapsed width', async () => {
+	it('applies 60px collapsed width on the side menu by default', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
@@ -207,7 +231,87 @@ describe('DsCatalog', () => {
 		expect(getComputedStyle(sideMenu).width).toBe('60px');
 	});
 
-	it('applies border on results region', async () => {
+	it('exposes selected side menu items via aria-current', async () => {
+		await page.render(
+			<DsCatalog fillParent>
+				<DsCatalog.Body>
+					<DsCatalog.SideMenu>
+						<DsCatalog.SideMenuItem icon="home" label="Home" />
+						<DsCatalog.SideMenuItem icon="event" label="Planned executions" selected />
+					</DsCatalog.SideMenu>
+				</DsCatalog.Body>
+			</DsCatalog>,
+		);
+
+		const selected = page.getByRole('button', { name: 'Planned executions' }).element();
+		expect(selected.getAttribute('aria-current')).toBe('page');
+		expect(selected.getAttribute('data-selected')).toBe('');
+
+		const unselected = page.getByRole('button', { name: 'Home' }).element();
+		expect(unselected.getAttribute('aria-current')).toBeNull();
+	});
+
+	it('uses label as aria-label when aria-label is not provided', async () => {
+		await page.render(
+			<DsCatalog fillParent>
+				<DsCatalog.Body>
+					<DsCatalog.SideMenu>
+						<DsCatalog.SideMenuItem icon="home" label="Home" />
+					</DsCatalog.SideMenu>
+				</DsCatalog.Body>
+			</DsCatalog>,
+		);
+
+		const item = page.getByRole('button', { name: 'Home' }).element();
+		expect(item.getAttribute('aria-label')).toBe('Home');
+	});
+
+	it('renders the optional content-header item below the title row', async () => {
+		await page.render(
+			<DsCatalog fillParent>
+				<DsCatalog.Body>
+					<DsCatalog.Main>
+						<DsCatalog.Content>
+							<DsCatalog.ContentHeader
+								title={<span>Title</span>}
+								headerActions={<button type="button">Action</button>}
+							>
+								<span>Tabs item</span>
+							</DsCatalog.ContentHeader>
+						</DsCatalog.Content>
+					</DsCatalog.Main>
+				</DsCatalog.Body>
+			</DsCatalog>,
+		);
+
+		await expect.element(page.getByText('Title')).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Action' })).toBeVisible();
+		await expect.element(page.getByText('Tabs item')).toBeVisible();
+
+		const titleRect = page.getByText('Title').element().getBoundingClientRect();
+		const tabsRect = page.getByText('Tabs item').element().getBoundingClientRect();
+		expect(tabsRect.top).toBeGreaterThanOrEqual(titleRect.bottom);
+	});
+
+	it('omits the content-header item slot when no children are provided', async () => {
+		await page.render(
+			<DsCatalog fillParent>
+				<DsCatalog.Body>
+					<DsCatalog.Main>
+						<DsCatalog.Content>
+							<DsCatalog.ContentHeader title={<span>Just a title</span>} />
+						</DsCatalog.Content>
+					</DsCatalog.Main>
+				</DsCatalog.Body>
+			</DsCatalog>,
+		);
+
+		const titleRow = page.getByText('Just a title').element().parentElement;
+		const contentHeader = titleRow?.parentElement;
+		expect(contentHeader?.children.length).toBe(1);
+	});
+
+	it('applies a border on the results region', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
@@ -226,7 +330,7 @@ describe('DsCatalog', () => {
 		expect(getComputedStyle(results).borderWidth).not.toBe('0px');
 	});
 
-	it('renders empty state illustration and children', async () => {
+	it('renders the empty state illustration and children', async () => {
 		await page.render(
 			<DsCatalog fillParent>
 				<DsCatalog.Body>
