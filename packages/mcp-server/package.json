@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/ds-storybook-mcp",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"license": "Apache-2.0",
 	"description": "Stdio-based MCP server exposing the DriveNets Design System Storybook documentation to AI agents (Cursor, Claude Code, Codex).",
 	"type": "module",
