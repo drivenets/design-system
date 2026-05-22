@@ -1,6 +1,7 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
+	tsconfig: './tsconfig.build.json',
 	entry: ['src/cli.ts', 'src/server.ts'],
 	format: 'esm',
 	dts: { tsgo: true },

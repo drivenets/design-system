@@ -1,0 +1,6 @@
+// We need this file so the production build doesn't emit `.d.ts`
+// files for development configs from the root directory.
+{
+	"extends": "./tsconfig.json",
+	"include": ["./src/**/*"]
+}
