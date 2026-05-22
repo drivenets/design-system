@@ -1,0 +1,1 @@
+import{n as e}from"./chunk-BneVvdWh.js";import{t}from"./ds-icon-BqUNdP3y.js";import{n}from"./ds-smart-tabs-ChU5sJLE.js";var r=e((()=>{t()})),i=e((()=>{n(),r()}));export{i as t};
