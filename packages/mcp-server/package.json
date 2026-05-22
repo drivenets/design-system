@@ -23,9 +23,8 @@
 		"access": "public"
 	},
 	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/drivenets/design-system.git",
-		"directory": "packages/mcp-server"
+		"url": "https://github.com/drivenets/design-system",
+		"directory": "/packages/mcp-server"
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
