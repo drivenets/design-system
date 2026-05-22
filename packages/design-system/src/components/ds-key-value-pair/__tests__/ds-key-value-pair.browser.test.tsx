@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { describe, expect, it } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { page } from 'vitest/browser';
 
 import DsKeyValuePair from '../ds-key-value-pair';
 import { DsTextInput } from '../../ds-text-input';
@@ -16,6 +16,23 @@ const MANUFACTURER_OPTIONS: DsSelectOption[] = [
 	{ label: 'Arista Networks', value: 'arista' },
 	{ label: 'Nokia', value: 'nokia' },
 ];
+
+// `userEvent.tab()` is unreliable when the next focus target is a `<div tabindex="0">` inside the
+// vitest browser iframe. Focus the editable container directly to trigger the `:focus-within`
+// reveal deterministically.
+const focusEditableContainerOf = (text: string) => {
+	const container = page.getByText(text).element().closest<HTMLElement>('[data-editable="true"]');
+
+	if (!container) {
+		throw new Error(`No editable value-container ancestor for text "${text}"`);
+	}
+
+	container.focus();
+};
+
+const blurActiveElement = () => {
+	(document.activeElement as HTMLElement | null)?.blur();
+};
 
 describe('DsKeyValuePair', () => {
 	it('should render read-only vertical layout', async () => {
@@ -67,7 +84,7 @@ describe('DsKeyValuePair', () => {
 
 		await expect.element(page.getByText('99887766')).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('99887766');
 
 		await expect.element(page.getByRole('textbox')).toBeVisible();
 	});
@@ -98,18 +115,16 @@ describe('DsKeyValuePair', () => {
 
 		await expect.element(page.getByText('99887766')).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('99887766');
 
 		const input = page.getByRole('textbox');
 		await expect.element(input).toBeVisible();
-
-		await userEvent.tab();
 
 		await input.clear();
 		await input.fill('NEW SERIAL');
 		await expect.element(input).toHaveValue('NEW SERIAL');
 
-		await userEvent.tab();
+		blurActiveElement();
 
 		await expect.element(page.getByText('99887766')).toBeVisible();
 	});
@@ -130,10 +145,10 @@ describe('DsKeyValuePair', () => {
 
 		await expect.element(page.getByText('Initial')).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('Initial');
 		const input = page.getByRole('textbox');
 		await input.fill('Updated');
-		await userEvent.tab();
+		blurActiveElement();
 
 		await expect.element(page.getByText('Updated')).toBeVisible();
 	});
@@ -165,7 +180,7 @@ describe('DsKeyValuePair', () => {
 		await expect.element(page.getByText('Editable value')).toBeVisible();
 		await expect.element(page.getByText('info').first()).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('Editable value');
 
 		await expect.element(page.getByRole('textbox')).toBeVisible();
 	});
