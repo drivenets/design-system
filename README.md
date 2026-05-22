@@ -74,72 +74,21 @@ pnpm install
 
 ### Cursor AI Tooling
 
-This repo includes rules, skills, and notepads in `.cursor/` to support AI-powered development.
+This repo includes skills, subagents in `.cursor/`, and project skills in `.agents/skills/` to support AI-powered development.
 
-#### Rules (`.cursor/rules/`)
+- **Vocabulary:** [CONTEXT.md](CONTEXT.md) · **Decisions:** [docs/adr/](docs/adr/)
+- **How-to:** [`.agents/skills/`](.agents/skills/) — index in [AGENTS.md](AGENTS.md#project-skills)
+- **Package boundaries:** `.cursor/rules/monorepo.mdc` on `packages/**/*`
+- **Checkers:** [AGENTS.md](AGENTS.md) (design-system, eslint-plugin, vite-plugin sections)
 
-Auto-applied contextual guidance for the AI agent.
+#### Skills
 
-| Rule                 | Scope                             | Description                                      |
-| -------------------- | --------------------------------- | ------------------------------------------------ |
-| `standards.mdc`      | Always                            | Code standards, component API design             |
-| `checkers.mdc`       | Always                            | How to run lint / test / typecheck               |
-| `react-patterns.mdc` | `**/*.tsx`, `**/*.ts`             | Hooks, memoization, React 19, Ark UI             |
-| `storybook.mdc`      | `**/*.stories.tsx`                | Story layout, args, styling, mockdate            |
-| `browser-tests.mdc`  | `**/__tests__/*.browser.test.tsx` | Vitest browser test patterns and a11y queries    |
-| `scss.mdc`           | `**/*.scss`                       | Design tokens, no !important, mixins             |
-| `design-system.mdc`  | `packages/**/components/**/*`     | Component conventions, primitive library choices |
-| `monorepo.mdc`       | `packages/**/*`                   | Import boundaries                                |
-| `code-review.mdc`    | Manual / on diff                  | PR workflow, checklist, inline review comments   |
-
-#### Skills (`.cursor/skills/`)
-
-Multi-step workflows the AI agent executes on request.
-
-| Skill                   | Trigger                     | What it does                                                     |
-| ----------------------- | --------------------------- | ---------------------------------------------------------------- |
-| **component-scaffold**  | "Scaffold a new component"  | Checks Ark UI, creates files, wires exports, generates stories   |
-| **figma-to-component**  | "Implement this Figma link" | Extracts design context + tokens from Figma, scaffolds component |
-| **pr-prep**             | "Prepare my PR"             | Runs lint/typecheck/test on diff, validates changeset            |
-| **migrate-story-tests** | "Migrate tests for ds-X"    | Converts Storybook play functions to Vitest browser tests        |
-| **rca-debug**           | "Debug this" / "RCA"        | Structured root cause analysis for persistent bugs               |
-| **deslop**              | "Clean up this code"        | Removes AI-generated code slop, fixes style                      |
-| **get-pr-comments**     | "Get PR comments"           | Fetches and summarizes review comments from the active PR        |
-
-#### Notepads (`.cursor/notepads/`)
-
-Reusable prompt snippets you invoke with `@` in Cursor chat.
-
-| Notepad          | Usage                                              |
-| ---------------- | -------------------------------------------------- |
-| **check-ark-ui** | Query Ark UI for primitives before building custom |
+- **Skills** (`.agents/skills/`) — [AGENTS.md#project-skills](AGENTS.md#project-skills); flows in [docs/agents/skills.md](docs/agents/skills.md)
+- **Subagents** (`.cursor/agents/`) — [docs/agents/subagents.md](docs/agents/subagents.md)
 
 #### How to use
 
-**Rules** activate automatically based on file context — no action needed.
-The one exception is `code-review.mdc`, which you trigger manually:
-
-```
-"Review my changes"                →  inline REVIEW-* comments on your diff
-```
-
-**Skills** are triggered with natural language in chat:
-
-```
-"Scaffold a ds-tooltip component"  →  component-scaffold
-"Implement this <figma-url>"       →  figma-to-component
-"Prepare my PR"                    →  pr-prep
-"Migrate tests for ds-toggle"      →  migrate-story-tests
-"Debug this" / "RCA"               →  rca-debug
-"Clean up this code"               →  deslop
-"Get PR comments"                  →  get-pr-comments
-```
-
-**Notepads** are invoked with `@` in Cursor chat:
-
-```
-@check-ark-ui                      →  check Ark UI before building custom
-```
+**Skills** — invoke by task or file type; orchestrators list which skills to read fully. See [AGENTS.md#project-skills](AGENTS.md#project-skills).
 
 #### Example: building a component from scratch
 
@@ -149,11 +98,10 @@ The one exception is `code-review.mdc`, which you trigger manually:
      wires barrel exports, generates stories (+ optional browser tests)
    → with a Figma URL: also extracts design tokens, maps to CSS
      custom properties, and pre-fills styles/variants/stories
-   → rules like react-patterns, scss, storybook, design-system
-     auto-apply as the agent touches .tsx, .scss, .stories.tsx files
+   → agent reads skills per file type (ark-ui, component-api, react-patterns, scss, storybook, …)
 
 2. Iterate on the component in chat
-   → rules keep guiding the agent (tokens, no !important, a11y queries, etc.)
+   → read the matching skill for each file you touch
 
 3. Add or extend `__tests__/*.browser.test.tsx` for interactions you care about
 

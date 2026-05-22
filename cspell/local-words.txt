@@ -34,4 +34,7 @@ timelapse
 tmcp
 modelcontextprotocol
 unstub
+cursoragents
+mktemp
+
 cachified
