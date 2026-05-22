@@ -47,7 +47,7 @@
 	"devDependencies": {
 		"@arethetypeswrong/cli": "catalog:",
 		"eslint": "catalog:",
-		"@types/node": "^25.3.5",
+		"@types/node": "^25.9.1",
 		"@typescript/native-preview": "catalog:",
 		"@vitest/coverage-v8": "catalog:",
 		"publint": "catalog:",
