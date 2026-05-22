@@ -58,7 +58,7 @@
 		"syncpack": "^14.0.0",
 		"turbo": "^2.8.14",
 		"typescript": "catalog:",
-		"typescript-eslint": "^8.58.2",
+		"typescript-eslint": "^8.59.4",
 		"yaml": "^2.8.3"
 	}
 }
