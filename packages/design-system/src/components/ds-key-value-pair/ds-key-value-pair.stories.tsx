@@ -153,14 +153,7 @@ export const Group: Story = {
 					keyLabel="SN"
 					value={serial}
 					orientation="horizontal"
-					editInput={
-						<DsTextInput
-							value={serial}
-							onValueChange={setSerial}
-							size="small"
-							className={storyStyles.narrowInput}
-						/>
-					}
+					editInput={<DsTextInput value={serial} onValueChange={setSerial} size="small" />}
 				/>
 				<DsKeyValuePair keyLabel="Model" value="Cisco RTR-X2000" readOnly orientation="horizontal" />
 				<DsKeyValuePair
@@ -214,14 +207,7 @@ export const ResponsiveWidth: Story = {
 						keyLabel="Serial Number"
 						value={serial}
 						orientation="horizontal"
-						editInput={
-							<DsTextInput
-								value={serial}
-								onValueChange={setSerial}
-								size="small"
-								className={storyStyles.narrowInput}
-							/>
-						}
+						editInput={<DsTextInput value={serial} onValueChange={setSerial} size="small" />}
 					/>
 					<DsKeyValuePair keyLabel="Model" value="Cisco RTR-X2000" readOnly orientation="horizontal" />
 					<DsKeyValuePair
