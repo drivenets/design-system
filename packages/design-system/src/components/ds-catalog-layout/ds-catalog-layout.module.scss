@@ -37,6 +37,7 @@
 .sideMenu {
 	position: relative;
 	flex-shrink: 0;
+	min-width: 0;
 	height: 100%;
 	width: var(--ds-catalog-layout-side-menu-collapsed-width);
 	z-index: 100;
@@ -60,16 +61,11 @@
 	transition: width 0.2s;
 }
 
-.sideMenu[data-pinned] .sideMenuPanel {
-	width: 100%;
+.sideMenu[data-expanded] .sideMenuPanel {
+	width: var(--ds-catalog-layout-side-menu-expanded-width);
 }
 
 .sideMenu[data-expanded]:not([data-pinned]) .sideMenuPanel {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 10;
-	width: var(--ds-catalog-layout-side-menu-expanded-width);
 	box-shadow: 0 4px 16px rgb(0 0 0 / 12%);
 }
 
