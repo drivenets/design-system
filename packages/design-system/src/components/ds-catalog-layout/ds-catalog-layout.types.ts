@@ -15,12 +15,9 @@ export type DsCatalogLayoutBodyProps = ComponentPropsWithRef<'div'>;
 
 export interface DsCatalogLayoutSideMenuProps extends ComponentPropsWithRef<'aside'> {
 	/**
-	 * Whether the side menu is pinned open. When `true`, the expanded width pushes the content area
-	 * to the right; when `false`, the collapsed rail is shown and hovering the rail overlays an
-	 * expanded panel without shifting the content.
-	 *
-	 * Reflected as a `data-pinned` attribute on the rendered `<aside>` so consumers can target nested
-	 * items with descendant selectors (e.g. expand a label only when the rail is hovered or pinned).
+	 * Whether the side menu is pinned open. When `true`, the expanded panel pushes the content area
+	 * to the right; when `false`, the collapsed rail is shown and hovering it overlays the expanded
+	 * panel without shifting the content.
 	 * @default false
 	 */
 	pinned?: boolean;
@@ -31,10 +28,20 @@ export interface DsCatalogLayoutSideMenuProps extends ComponentPropsWithRef<'asi
 	 */
 	onPinnedChange?: (pinned: boolean) => void;
 	/**
-	 * Localized label used by the pin/unpin button for accessibility. Provide both states.
-	 * @default { pin: 'Pin side menu', unpin: 'Unpin side menu' }
+	 * Locale object (you can pass custom strings for localization).
 	 */
-	pinButtonLabel?: { pin: string; unpin: string };
+	locale?: {
+		/**
+		 * aria-label for the pin button when the side menu is collapsed/unpinned.
+		 * @default 'Pin side menu'
+		 */
+		pinButtonLabel?: string;
+		/**
+		 * aria-label for the pin button when the side menu is pinned.
+		 * @default 'Unpin side menu'
+		 */
+		unpinButtonLabel?: string;
+	};
 }
 
 export type DsCatalogLayoutContentProps = ComponentPropsWithRef<'div'>;

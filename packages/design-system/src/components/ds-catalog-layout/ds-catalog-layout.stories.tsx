@@ -233,50 +233,32 @@ const EmptyStateCard = ({ children }: { children: ReactNode }) => (
 	</div>
 );
 
-interface CatalogLayoutShellProps {
-	withSideMenu?: boolean;
-	pinned?: boolean;
-	onPinnedChange?: (pinned: boolean) => void;
-	children: ReactNode;
-}
-
-const CatalogLayoutShell = ({
-	withSideMenu = true,
-	pinned,
-	onPinnedChange,
-	children,
-}: CatalogLayoutShellProps) => (
-	<DsCatalogLayout>
-		<DsCatalogLayout.Header>
-			<TopBarNavigation />
-		</DsCatalogLayout.Header>
-		<DsCatalogLayout.Body>
-			{withSideMenu ? (
-				<DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={onPinnedChange} className={styles.sideMenu}>
-					<SideMenuItems />
-				</DsCatalogLayout.SideMenu>
-			) : null}
-			<DsCatalogLayout.Content>{children}</DsCatalogLayout.Content>
-		</DsCatalogLayout.Body>
-	</DsCatalogLayout>
-);
-
 export const Default: Story = {
 	render: function Render() {
 		const [pinned, setPinned] = useState(false);
 
 		return (
-			<CatalogLayoutShell pinned={pinned} onPinnedChange={setPinned}>
-				<DsCatalogLayout.ContentHeader
-					title={<DsTypography variant="heading3">Planned executions</DsTypography>}
-					headerActions={<ContentHeaderActions />}
-				>
-					<SmartTabsItem />
-				</DsCatalogLayout.ContentHeader>
-				<ResultsCard>
-					<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
-				</ResultsCard>
-			</CatalogLayoutShell>
+			<DsCatalogLayout>
+				<DsCatalogLayout.Header>
+					<TopBarNavigation />
+				</DsCatalogLayout.Header>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+						<SideMenuItems />
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader
+							title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+							headerActions={<ContentHeaderActions />}
+						>
+							<SmartTabsItem />
+						</DsCatalogLayout.ContentHeader>
+						<ResultsCard>
+							<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+						</ResultsCard>
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>
 		);
 	},
 };
@@ -286,35 +268,52 @@ export const Empty: Story = {
 		const [pinned, setPinned] = useState(false);
 
 		return (
-			<CatalogLayoutShell pinned={pinned} onPinnedChange={setPinned}>
-				<DsCatalogLayout.ContentHeader
-					title={<DsTypography variant="heading3">Planned executions</DsTypography>}
-					headerActions={<ContentHeaderActions />}
-				>
-					<SmartTabsItem />
-				</DsCatalogLayout.ContentHeader>
-				<EmptyStateCard>
-					<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
-					<DsButtonV3 variant="primary" size="small">
-						Clear filters
-					</DsButtonV3>
-				</EmptyStateCard>
-			</CatalogLayoutShell>
+			<DsCatalogLayout>
+				<DsCatalogLayout.Header>
+					<TopBarNavigation />
+				</DsCatalogLayout.Header>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+						<SideMenuItems />
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader
+							title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+							headerActions={<ContentHeaderActions />}
+						>
+							<SmartTabsItem />
+						</DsCatalogLayout.ContentHeader>
+						<EmptyStateCard>
+							<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
+							<DsButtonV3 variant="primary" size="small">
+								Clear filters
+							</DsButtonV3>
+						</EmptyStateCard>
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>
 		);
 	},
 };
 
 export const WithoutSideMenu: Story = {
 	render: () => (
-		<CatalogLayoutShell withSideMenu={false}>
-			<DsCatalogLayout.ContentHeader
-				title={<DsTypography variant="heading3">Planned executions</DsTypography>}
-				headerActions={<ContentHeaderActions />}
-			/>
-			<ResultsCard>
-				<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
-			</ResultsCard>
-		</CatalogLayoutShell>
+		<DsCatalogLayout>
+			<DsCatalogLayout.Header>
+				<TopBarNavigation />
+			</DsCatalogLayout.Header>
+			<DsCatalogLayout.Body>
+				<DsCatalogLayout.Content>
+					<DsCatalogLayout.ContentHeader
+						title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+						headerActions={<ContentHeaderActions />}
+					/>
+					<ResultsCard>
+						<DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+					</ResultsCard>
+				</DsCatalogLayout.Content>
+			</DsCatalogLayout.Body>
+		</DsCatalogLayout>
 	),
 };
 
@@ -323,15 +322,25 @@ export const SideMenuPinned: Story = {
 		const [pinned, setPinned] = useState(true);
 
 		return (
-			<CatalogLayoutShell pinned={pinned} onPinnedChange={setPinned}>
-				<DsCatalogLayout.ContentHeader
-					title={<DsTypography variant="heading3">Pinned side menu</DsTypography>}
-				/>
-				<DsTypography variant="body-md-reg">
-					When the side menu is pinned, the expanded panel pushes the content area to the right. Use the pin
-					button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
-				</DsTypography>
-			</CatalogLayoutShell>
+			<DsCatalogLayout>
+				<DsCatalogLayout.Header>
+					<TopBarNavigation />
+				</DsCatalogLayout.Header>
+				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+						<SideMenuItems />
+					</DsCatalogLayout.SideMenu>
+					<DsCatalogLayout.Content>
+						<DsCatalogLayout.ContentHeader
+							title={<DsTypography variant="heading3">Pinned side menu</DsTypography>}
+						/>
+						<DsTypography variant="body-md-reg">
+							When the side menu is pinned, the expanded panel pushes the content area to the right. Use the
+							pin button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
+						</DsTypography>
+					</DsCatalogLayout.Content>
+				</DsCatalogLayout.Body>
+			</DsCatalogLayout>
 		);
 	},
 };
@@ -360,11 +369,20 @@ export const FillParent: Story = {
 
 export const HeaderOnly: Story = {
 	render: () => (
-		<CatalogLayoutShell withSideMenu={false}>
-			<DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Minimal layout</DsTypography>} />
-			<DsTypography variant="body-md-reg">
-				All sub-components are optional. Use only the regions your page needs.
-			</DsTypography>
-		</CatalogLayoutShell>
+		<DsCatalogLayout>
+			<DsCatalogLayout.Header>
+				<TopBarNavigation />
+			</DsCatalogLayout.Header>
+			<DsCatalogLayout.Body>
+				<DsCatalogLayout.Content>
+					<DsCatalogLayout.ContentHeader
+						title={<DsTypography variant="heading3">Minimal layout</DsTypography>}
+					/>
+					<DsTypography variant="body-md-reg">
+						All sub-components are optional. Use only the regions your page needs.
+					</DsTypography>
+				</DsCatalogLayout.Content>
+			</DsCatalogLayout.Body>
+		</DsCatalogLayout>
 	),
 };

@@ -64,7 +64,7 @@
 	width: 100%;
 }
 
-.sideMenu:not([data-pinned]):hover .sideMenuPanel {
+.sideMenu[data-expanded]:not([data-pinned]) .sideMenuPanel {
 	position: absolute;
 	top: 0;
 	left: 0;
@@ -111,8 +111,7 @@
 	}
 }
 
-.sideMenu[data-pinned] .sideMenuPinButton,
-.sideMenu:not([data-pinned]):hover .sideMenuPinButton {
+.sideMenu[data-expanded] .sideMenuPinButton {
 	opacity: 1;
 	visibility: visible;
 }

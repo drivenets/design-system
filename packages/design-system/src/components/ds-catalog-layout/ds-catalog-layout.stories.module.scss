@@ -48,13 +48,11 @@
 }
 
 .sideMenu {
-	&[data-pinned] .sideMenuItem,
-	&:not([data-pinned]):hover .sideMenuItem {
+	&[data-expanded] .sideMenuItem {
 		justify-content: flex-start;
 	}
 
-	&[data-pinned] .sideMenuItemLabel,
-	&:not([data-pinned]):hover .sideMenuItemLabel {
+	&[data-expanded] .sideMenuItemLabel {
 		max-width: 180px;
 		opacity: 1;
 		margin-inline-start: var(--xs);

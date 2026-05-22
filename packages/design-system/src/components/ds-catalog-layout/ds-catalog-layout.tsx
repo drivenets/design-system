@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, type MouseEvent } from 'react';
 import classNames from 'classnames';
 import styles from './ds-catalog-layout.module.scss';
 import { DsCatalogLayoutContext, useDsCatalogLayoutContext } from './ds-catalog-layout.context';
@@ -12,9 +12,9 @@ import type {
 	DsCatalogLayoutContentHeaderProps,
 } from './ds-catalog-layout.types';
 
-const DEFAULT_PIN_BUTTON_LABEL = Object.freeze({
-	pin: 'Pin side menu',
-	unpin: 'Unpin side menu',
+const DEFAULT_LOCALE = Object.freeze({
+	pinButtonLabel: 'Pin side menu',
+	unpinButtonLabel: 'Unpin side menu',
 });
 
 const DsCatalogLayout = ({ className, fillParent = false, ...rest }: DsCatalogLayoutProps) => {
@@ -47,11 +47,14 @@ const SideMenu = ({
 	className,
 	pinned = false,
 	onPinnedChange,
-	pinButtonLabel = DEFAULT_PIN_BUTTON_LABEL,
+	locale,
 	children,
+	onMouseEnter,
+	onMouseLeave,
 	...rest
 }: DsCatalogLayoutSideMenuProps) => {
 	const { registerSideMenu, unregisterSideMenu } = useDsCatalogLayoutContext();
+	const [isHovering, setIsHovering] = useState(false);
 
 	useEffect(() => {
 		registerSideMenu();
@@ -59,13 +62,32 @@ const SideMenu = ({
 		return unregisterSideMenu;
 	}, [registerSideMenu, unregisterSideMenu]);
 
-	const ariaLabel = pinned ? pinButtonLabel.unpin : pinButtonLabel.pin;
+	// Hover is tracked in JS (rather than CSS `:hover`) so that toggling `pinned` while the user is
+	// hovering the panel doesn't collapse it. Without this, unpinning shrinks the <aside> away from
+	// under the pointer and CSS `:hover` no longer matches.
+	const isExpanded = pinned || isHovering;
+	const ariaLabel = pinned
+		? (locale?.unpinButtonLabel ?? DEFAULT_LOCALE.unpinButtonLabel)
+		: (locale?.pinButtonLabel ?? DEFAULT_LOCALE.pinButtonLabel);
+
+	const handleMouseEnter = (event: MouseEvent<HTMLElement>) => {
+		setIsHovering(true);
+		onMouseEnter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent<HTMLElement>) => {
+		setIsHovering(false);
+		onMouseLeave?.(event);
+	};
 
 	return (
 		<aside
 			{...rest}
 			className={classNames(styles.sideMenu, className)}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
 			{...(pinned ? { 'data-pinned': '' } : {})}
+			{...(isExpanded ? { 'data-expanded': '' } : {})}
 		>
 			<div className={styles.sideMenuPanel}>
 				{onPinnedChange ? (

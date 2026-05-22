@@ -1,4 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
+import { useState } from 'react';
+import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 
 import DsCatalogLayout from '../ds-catalog-layout';
@@ -285,25 +286,37 @@ describe('DsCatalogLayout', () => {
 			.toBeInTheDocument();
 	});
 
-	it('toggles pinned state via the pin button when pinned', async () => {
-		const onPinnedChange = vi.fn();
+	it('toggles the side menu between pinned (256px push) and collapsed (60px) states', async () => {
+		const ControlledLayout = () => {
+			const [pinned, setPinned] = useState(true);
 
-		await page.render(
-			<DsCatalogLayout fillParent>
-				<DsCatalogLayout.Body>
-					<DsCatalogLayout.SideMenu pinned onPinnedChange={onPinnedChange}>
-						<span>Nav</span>
-					</DsCatalogLayout.SideMenu>
-				</DsCatalogLayout.Body>
-			</DsCatalogLayout>,
-		);
+			return (
+				<DsCatalogLayout fillParent>
+					<DsCatalogLayout.Body>
+						<DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} data-testid="side-menu">
+							<span>Nav</span>
+						</DsCatalogLayout.SideMenu>
+					</DsCatalogLayout.Body>
+				</DsCatalogLayout>
+			);
+		};
 
-		const button = page.getByRole('button', { name: 'Unpin side menu' });
-		await expect.element(button).toBeVisible();
-		expect(button.element().getAttribute('aria-pressed')).toBe('true');
+		await page.render(<ControlledLayout />);
 
-		await button.click();
-		expect(onPinnedChange).toHaveBeenCalledExactlyOnceWith(false);
+		const sideMenu = page.getByTestId('side-menu');
+		const unpinButton = page.getByRole('button', { name: 'Unpin side menu' });
+
+		await expect.element(unpinButton).toBeVisible();
+		expect(sideMenu.element().getAttribute('data-pinned')).toBe('');
+		expect(parseFloat(getComputedStyle(sideMenu.element()).width)).toBeCloseTo(256, 0);
+
+		await unpinButton.click();
+
+		const pinButton = page.getByRole('button', { name: 'Pin side menu', includeHidden: true });
+		await expect.element(pinButton).toBeInTheDocument();
+		expect(pinButton.element().getAttribute('aria-pressed')).toBe('false');
+		expect(sideMenu.element().getAttribute('data-pinned')).toBeNull();
+		expect(parseFloat(getComputedStyle(sideMenu.element()).width)).toBeCloseTo(60, 0);
 	});
 
 	it('uses the localized pin button label when provided', async () => {
@@ -313,7 +326,7 @@ describe('DsCatalogLayout', () => {
 					<DsCatalogLayout.SideMenu
 						pinned
 						onPinnedChange={() => {}}
-						pinButtonLabel={{ pin: 'Pin', unpin: 'Detacher' }}
+						locale={{ unpinButtonLabel: 'Detacher' }}
 					>
 						<span>Nav</span>
 					</DsCatalogLayout.SideMenu>
