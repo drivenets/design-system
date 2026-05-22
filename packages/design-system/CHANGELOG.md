@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.12.1
+
+### Patch Changes
+
+- aa6d1e5: Add `DsCatalogLayout` component
+
 ## 0.12.0
 
 ### Minor Changes
