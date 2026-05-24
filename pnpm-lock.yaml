@@ -179,8 +179,8 @@ importers:
   packages/design-system:
     dependencies:
       '@ark-ui/react':
-        specifier: ^5.36.1
-        version: 5.36.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^5.36.2
+        version: 5.36.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@dnd-kit/core':
         specifier: ^6.3.1
         version: 6.3.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -218,14 +218,14 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@tanstack/react-virtual':
-        specifier: ^3.13.24
-        version: 3.13.24(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^3.13.25
+        version: 3.13.25(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@zag-js/react':
-        specifier: ^1.40.0
-        version: 1.40.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+        specifier: ^1.41.0
+        version: 1.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       '@zag-js/steps':
-        specifier: ^1.40.0
-        version: 1.40.0
+        specifier: ^1.41.0
+        version: 1.41.0
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -444,7 +444,7 @@ importers:
         version: 0.7.0(typescript@6.0.3)
       '@tmcp/adapter-valibot':
         specifier: ^0.1.6
-        version: 0.1.6(tmcp@1.19.4(typescript@6.0.3))(valibot@1.2.0(typescript@6.0.3))
+        version: 0.1.6(tmcp@1.19.4(typescript@6.0.3))(valibot@1.4.0(typescript@6.0.3))
       '@tmcp/transport-stdio':
         specifier: ^0.4.3
         version: 0.4.3(tmcp@1.19.4(typescript@6.0.3))
@@ -452,8 +452,8 @@ importers:
         specifier: ^1.19.4
         version: 1.19.4(typescript@6.0.3)
       valibot:
-        specifier: ^1.2.0
-        version: 1.2.0(typescript@6.0.3)
+        specifier: ^1.4.0
+        version: 1.4.0(typescript@6.0.3)
     devDependencies:
       '@arethetypeswrong/cli':
         specifier: 'catalog:'
@@ -537,8 +537,8 @@ packages:
     resolution: {integrity: sha512-GiwTmBFOU1/+UVNqqCGzFJYfBXEytUkiI+iRZ6Qx7KmUVtLm00sYySkfe203C9QtPG11yOz1ZaMek8dT/xnlgg==}
     engines: {node: '>=20'}
 
-  '@ark-ui/react@5.36.1':
-    resolution: {integrity: sha512-nGicHRBnQcKlUcBMZXJC+j0CdfoXgEHV7+aerLghgYp7FIb7bHNTzYsy5+2nnybayq0fuKNRRhjckdrbzxPElg==}
+  '@ark-ui/react@5.36.2':
+    resolution: {integrity: sha512-2lrZ7+Qtlj7hGx4qU2jZkE892JNrkULg/fUxqUuqmQfv9UGAXhdcw1Hr3N+zBgMDVz3aqip0Qa4v0Mox09MMvg==}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -2831,8 +2831,8 @@ packages:
       react: '>=16.8'
       react-dom: '>=16.8'
 
-  '@tanstack/react-virtual@3.13.24':
-    resolution: {integrity: sha512-aIJvz5OSkhNIhZIpYivrxrPTKYsjW9Uzy+sP/mx0S3sev2HyvPb7xmjbYvokzEpfgYHy/HjzJ2zFAETuUfgCpg==}
+  '@tanstack/react-virtual@3.13.25':
+    resolution: {integrity: sha512-bmNoqMu6gcAW9JGrKVB0Q1tN1i5RONZF8r1fW0bbE4Oyf3DwEGnzzQJ2OW+Ozg1P4s8PyugkHg2ULZoFQN+cqw==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -2849,8 +2849,8 @@ packages:
     resolution: {integrity: sha512-ldZXEhOBb8Is7xLs01fR3YEc3DERiz5silj8tnGkFZytt1abEvl/GhUmCE0PMLaMPTa3Jk4HbKmRlHmu+gCftg==}
     engines: {node: '>=12'}
 
-  '@tanstack/virtual-core@3.14.0':
-    resolution: {integrity: sha512-JLANqGy/D6k4Ujmh8Tr25lGimuOXNiaVyXaCAZS0W+1390sADdGnyUdSWNIfd49gebtIxGMij4IktRVzrdr12Q==}
+  '@tanstack/virtual-core@3.15.0':
+    resolution: {integrity: sha512-0AwPGx0I8QxPYjAxShT/+z+ZOe9u8mW5rsXvivCTjRfRmz9a43+3mRyi4wwlyoUqOC56q/jatKa0Bh9M99BEHQ==}
 
   '@testing-library/dom@10.4.1':
     resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
@@ -3362,6 +3362,9 @@ packages:
   '@zag-js/anatomy@1.40.0':
     resolution: {integrity: sha512-oiB4uAaV//L38JluLVPtOHO3xvqambrfrXVOoq4kmNrBv1LLlCmFvrXA2HOR9lakn4ExK27XSUrKhUN7YlKjfQ==}
 
+  '@zag-js/anatomy@1.41.0':
+    resolution: {integrity: sha512-0M/bWcYbWgM09HEhfU0GvpKgPt3I4vakjr21FHcjTNK2vYRC1oz2GHc/y9ArJa4jXe0piTiPbACzMK1/z2ukRw==}
+
   '@zag-js/angle-slider@1.40.0':
     resolution: {integrity: sha512-6X6bOBoCyYG0/lFY0Y+AXJZZG6CeYQiWkcMXvegxCC2zxthodqOVzkVOASW+6rzLjn2bru+V5O9RMjNgmCumKg==}
 
@@ -3407,6 +3410,9 @@ packages:
   '@zag-js/core@1.40.0':
     resolution: {integrity: sha512-0YcqCh7TmhSonkbKM/7NWolxlaQgvvXgqedocW9oeRYiDJIpBZyRqnHPoGAS2XwbBPkCnrqSosxSF5yBjhZpgw==}
 
+  '@zag-js/core@1.41.0':
+    resolution: {integrity: sha512-CkX9xjNCTlOLwJNRZs4+Rse+bPVQWaNmfSTGa7m0FRR4XWf66/bx5YTpHNTKKmPL8KWjHCvlvSeN6uHDeSBs/w==}
+
   '@zag-js/date-input@1.40.0':
     resolution: {integrity: sha512-/VU8g3dugggC5xW2OJW1KONWzPkEbK/yLA0lPxymW/Uo0ixh2mKJUVTOTqDFWf1b0vzLX2XlYoLL+I2ryUyPvA==}
     peerDependencies:
@@ -3430,6 +3436,9 @@ packages:
 
   '@zag-js/dom-query@1.40.0':
     resolution: {integrity: sha512-4J3EO2gHpZ1VZiGLuMlH6G1Tsp4gKB8PPt2yKeNQWYGEXyrHUXrvMhRUzv7Z4/2I1s1tnxlFG4F8ovB3kTpz/Q==}
+
+  '@zag-js/dom-query@1.41.0':
+    resolution: {integrity: sha512-10KVw1sZNKsiGcR9nC+xazn6r2hAijrJFcMJWWmtrXuskezV04/axCaWdEGHkPloddaoADecWwCAsD4+kOmKFg==}
 
   '@zag-js/drawer@1.40.0':
     resolution: {integrity: sha512-N2OR5ZYuTsWkYYmwsNgmL+wfuM3qUxB8GAfo53AWvOh07QUVz1Dvh1WP4km5L6Tkz4UBQZACu8T/ZLyeZ+PdWg==}
@@ -3524,6 +3533,12 @@ packages:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
 
+  '@zag-js/react@1.41.0':
+    resolution: {integrity: sha512-2pCnYIB59ni9iQod6uA+IjuaQC5despPZ1emDPmPqBroosybZm1YIM+sdm+X0XItoJus0hqrMZ5LIjVeL1Nwkg==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-dom: '>=18.0.0'
+
   '@zag-js/rect-utils@1.40.0':
     resolution: {integrity: sha512-ikgLuE4rLlACm4mGLp6Ga8sJA44uFwohA1nVmb95sQ+VIyx2naf91CEF7SMrZVEwFKHaHpxdKVQSZLRjJqO/dw==}
 
@@ -3551,8 +3566,14 @@ packages:
   '@zag-js/steps@1.40.0':
     resolution: {integrity: sha512-5sVFzcIYubCn1nJSQIx9WWNlJuFoOJMpkD/ZMwNp0LzpnmnspsCOmdnQUWEftMQ1KdwZ+qNgfo/+kHclb9cBjg==}
 
+  '@zag-js/steps@1.41.0':
+    resolution: {integrity: sha512-eFQDuhu+DzqHG3y/0BrfSiHRjpxowrjaov7cz1+oCvQtDig55KAxaDnM72hnYzM01FIhKnOreA0aVVDlCt9DUg==}
+
   '@zag-js/store@1.40.0':
     resolution: {integrity: sha512-EmgYIdbNZ4TN4Qht/jugY4UVkaWx69l8P1qiX23U4YwqNLq10tyOJmcXWbvsrprU1dGb24B+xq0WBm/RIjw4WA==}
+
+  '@zag-js/store@1.41.0':
+    resolution: {integrity: sha512-hnXqp1HrpP4pfn86NlI1i9yFo236sjhyMErIA2gxm/6L0FpcP3V/ooVSoQgKE9rTSurpDAmVqg6jBb+DxXzaIQ==}
 
   '@zag-js/switch@1.40.0':
     resolution: {integrity: sha512-hUH3AF79ndSFZxt7Plw7mVZV0QlM0kFqKwrAGBEOE77P3rKpOsMJ3wWgMb3w6nwlxGQsbwmMgAFvYUslLpM4Lg==}
@@ -3587,8 +3608,14 @@ packages:
   '@zag-js/types@1.40.0':
     resolution: {integrity: sha512-LVvxEyqFv/u9SEe5xdivvG2vYb9cCmbkD+5r6s+IGljpDLaRgv4BYyxEh40ri1ai070tL08ZKmoLfx2/xfvY/A==}
 
+  '@zag-js/types@1.41.0':
+    resolution: {integrity: sha512-CNTzGNjJU1e7VAzucjcjqBzpU7e1EBwRH29hCdyoigB4e4uDb+NrKUBHyAkfBVeNMLhpmXxnQfMDlvYt7K3W1A==}
+
   '@zag-js/utils@1.40.0':
     resolution: {integrity: sha512-XUpqDtXfHe7CySjOhLPLj9H8rxbiFUJAGgmBzNdpsGPP4wx12cpOXrpSjRXZ2kMwooMPz/P7RPDBteto8sqhAQ==}
+
+  '@zag-js/utils@1.41.0':
+    resolution: {integrity: sha512-WUCIw+W4MYKYfyKad0LLNNqhL58/cRAAAVjLqDch05c1dZ0yhZq3t81jWeYUwiPnprt9V+BtGJEFMnWhdfxsBA==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -6206,6 +6233,14 @@ packages:
       typescript:
         optional: true
 
+  valibot@1.4.0:
+    resolution: {integrity: sha512-iC/x7fVcSyOwlm/VSt7RlHnzNGLGvR9GnxdifUeWoCJo0q4ZZvrVkIHC6faTlkxG47I2Y4UrFquPuVHCrOnrLg==}
+    peerDependencies:
+      typescript: ^6.0.3
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   validate-npm-package-name@5.0.1:
     resolution: {integrity: sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -6453,7 +6488,7 @@ snapshots:
       typescript: 6.0.3
       validate-npm-package-name: 5.0.1
 
-  '@ark-ui/react@5.36.1(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@ark-ui/react@5.36.2(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@internationalized/date': 3.12.0
       '@zag-js/accordion': 1.40.0
@@ -8562,9 +8597,9 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
-  '@tanstack/react-virtual@3.13.24(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+  '@tanstack/react-virtual@3.13.25(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
     dependencies:
-      '@tanstack/virtual-core': 3.14.0
+      '@tanstack/virtual-core': 3.15.0
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
@@ -8579,7 +8614,7 @@ snapshots:
 
   '@tanstack/table-core@8.21.3': {}
 
-  '@tanstack/virtual-core@3.14.0': {}
+  '@tanstack/virtual-core@3.15.0': {}
 
   '@testing-library/dom@10.4.1':
     dependencies:
@@ -8611,6 +8646,13 @@ snapshots:
       '@valibot/to-json-schema': 1.7.0(valibot@1.2.0(typescript@6.0.3))
       tmcp: 1.19.4(typescript@6.0.3)
       valibot: 1.2.0(typescript@6.0.3)
+
+  '@tmcp/adapter-valibot@0.1.6(tmcp@1.19.4(typescript@6.0.3))(valibot@1.4.0(typescript@6.0.3))':
+    dependencies:
+      '@standard-schema/spec': 1.1.0
+      '@valibot/to-json-schema': 1.7.0(valibot@1.4.0(typescript@6.0.3))
+      tmcp: 1.19.4(typescript@6.0.3)
+      valibot: 1.4.0(typescript@6.0.3)
 
   '@tmcp/session-manager@0.2.2(tmcp@1.19.4(typescript@6.0.3))':
     dependencies:
@@ -8951,6 +8993,10 @@ snapshots:
     dependencies:
       valibot: 1.2.0(typescript@6.0.3)
 
+  '@valibot/to-json-schema@1.7.0(valibot@1.4.0(typescript@6.0.3))':
+    dependencies:
+      valibot: 1.4.0(typescript@6.0.3)
+
   '@vitejs/plugin-react@6.0.1(@rolldown/plugin-babel@0.2.2(@babel/core@7.29.0)(@babel/runtime@7.29.2)(rolldown@1.0.0-rc.17)(vite@8.0.5(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.5.2)(esbuild@0.17.19)(jiti@2.6.1)(less@4.6.4)(sass-embedded@1.99.0)(sass@1.99.0)(stylus@0.62.0)(tsx@4.22.3)(yaml@2.8.3)))(babel-plugin-react-compiler@1.0.0)(vite@8.0.5(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)(@types/node@25.5.2)(esbuild@0.17.19)(jiti@2.6.1)(less@4.6.4)(sass-embedded@1.99.0)(sass@1.99.0)(stylus@0.62.0)(tsx@4.22.3)(yaml@2.8.3))':
     dependencies:
       '@rolldown/pluginutils': 1.0.0-rc.7
@@ -9118,6 +9164,8 @@ snapshots:
 
   '@zag-js/anatomy@1.40.0': {}
 
+  '@zag-js/anatomy@1.41.0': {}
+
   '@zag-js/angle-slider@1.40.0':
     dependencies:
       '@zag-js/anatomy': 1.40.0
@@ -9232,6 +9280,11 @@ snapshots:
       '@zag-js/dom-query': 1.40.0
       '@zag-js/utils': 1.40.0
 
+  '@zag-js/core@1.41.0':
+    dependencies:
+      '@zag-js/dom-query': 1.41.0
+      '@zag-js/utils': 1.41.0
+
   '@zag-js/date-input@1.40.0(@internationalized/date@3.12.0)':
     dependencies:
       '@internationalized/date': 3.12.0
@@ -9281,6 +9334,10 @@ snapshots:
   '@zag-js/dom-query@1.40.0':
     dependencies:
       '@zag-js/types': 1.40.0
+
+  '@zag-js/dom-query@1.41.0':
+    dependencies:
+      '@zag-js/types': 1.41.0
 
   '@zag-js/drawer@1.40.0':
     dependencies:
@@ -9510,6 +9567,15 @@ snapshots:
       react: 19.2.4
       react-dom: 19.2.4(react@19.2.4)
 
+  '@zag-js/react@1.41.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)':
+    dependencies:
+      '@zag-js/core': 1.41.0
+      '@zag-js/store': 1.41.0
+      '@zag-js/types': 1.41.0
+      '@zag-js/utils': 1.41.0
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
+
   '@zag-js/rect-utils@1.40.0': {}
 
   '@zag-js/remove-scroll@1.40.0':
@@ -9573,7 +9639,19 @@ snapshots:
       '@zag-js/types': 1.40.0
       '@zag-js/utils': 1.40.0
 
+  '@zag-js/steps@1.41.0':
+    dependencies:
+      '@zag-js/anatomy': 1.41.0
+      '@zag-js/core': 1.41.0
+      '@zag-js/dom-query': 1.41.0
+      '@zag-js/types': 1.41.0
+      '@zag-js/utils': 1.41.0
+
   '@zag-js/store@1.40.0':
+    dependencies:
+      proxy-compare: 3.0.1
+
+  '@zag-js/store@1.41.0':
     dependencies:
       proxy-compare: 3.0.1
 
@@ -9673,7 +9751,13 @@ snapshots:
     dependencies:
       csstype: 3.2.3
 
+  '@zag-js/types@1.41.0':
+    dependencies:
+      csstype: 3.2.3
+
   '@zag-js/utils@1.40.0': {}
+
+  '@zag-js/utils@1.41.0': {}
 
   acorn-jsx@5.3.2(acorn@8.16.0):
     dependencies:
@@ -12316,7 +12400,7 @@ snapshots:
       json-rpc-2.0: 1.7.1
       sqids: 0.3.0
       uri-template-matcher: 1.1.2
-      valibot: 1.2.0(typescript@6.0.3)
+      valibot: 1.4.0(typescript@6.0.3)
     transitivePeerDependencies:
       - typescript
 
@@ -12568,6 +12652,10 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   valibot@1.2.0(typescript@6.0.3):
+    optionalDependencies:
+      typescript: 6.0.3
+
+  valibot@1.4.0(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
 
