@@ -71,7 +71,7 @@ async function formatChangeset(changesetId: string) {
 	const changesetPath = getChangesetPath(changesetId);
 
 	const changeset = await fs.readFile(changesetPath, 'utf8');
-	const formattedChangeset = await oxfmt.format(changesetPath, changeset, oxfmtConfig as oxfmt.FormatOptions);
+	const formattedChangeset = await oxfmt.format(changesetPath, changeset, oxfmtConfig as oxfmt.FormatConfig);
 
 	await fs.writeFile(changesetPath, formattedChangeset.code);
 }
