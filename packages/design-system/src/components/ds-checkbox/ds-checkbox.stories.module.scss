@@ -6,5 +6,10 @@
 }
 
 .groupIndented {
-	margin-left: var(--2xs);
+	margin-left: var(--lg);
+	margin-bottom: var(--xs);
+}
+
+.groupItem {
+	margin: var(--xs);
 }
