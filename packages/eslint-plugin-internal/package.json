@@ -33,7 +33,7 @@
 		"@typescript-eslint/rule-tester": "^8.58.2",
 		"@vitest/coverage-v8": "catalog:",
 		"eslint": "catalog:",
-		"eslint-plugin-eslint-plugin": "^7.3.2",
+		"eslint-plugin-eslint-plugin": "^7.3.3",
 		"typescript": "catalog:",
 		"vitest": "catalog:"
 	},
