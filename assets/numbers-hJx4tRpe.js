@@ -1,1 +1,0 @@
-import{n as e}from"./chunk-BneVvdWh.js";var t,n=e((()=>{t=e=>Math.min(100,Math.max(0,e))}));export{n,t};
