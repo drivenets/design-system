@@ -1,4 +1,4 @@
-# @drivenets/ds-storybook-mcp
+# @drivenets/design-system-mcp
 
 Stdio-based [MCP](https://modelcontextprotocol.io) server that exposes the DriveNets Design System Storybook documentation to AI agents (Cursor, Claude Code, Codex, MCP Inspector, …).
 
@@ -14,7 +14,7 @@ No install needed — just point your MCP client at `npx`:
     "drivenets-ds": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@drivenets/ds-storybook-mcp"]
+      "args": ["-y", "@drivenets/design-system-mcp"]
     }
   }
 }
@@ -22,19 +22,19 @@ No install needed — just point your MCP client at `npx`:
 
 Drop that snippet into:
 
-| Client        | File                                                                     |
-| ------------- | ------------------------------------------------------------------------ |
-| Cursor        | `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global)            |
-| Claude Code   | `~/.config/claude/mcp.json` or via `claude mcp add` / `/mcp` UI          |
-| Codex         | `~/.codex/config.toml` under `[mcp_servers.drivenets-ds]`                |
-| MCP Inspector | `npx @modelcontextprotocol/inspector npx -y @drivenets/ds-storybook-mcp` |
+| Client        | File                                                                      |
+| ------------- | ------------------------------------------------------------------------- |
+| Cursor        | `.cursor/mcp.json` (project) or `~/.cursor/mcp.json` (global)             |
+| Claude Code   | `~/.config/claude/mcp.json` or via `claude mcp add` / `/mcp` UI           |
+| Codex         | `~/.codex/config.toml` under `[mcp_servers.drivenets-ds]`                 |
+| MCP Inspector | `npx @modelcontextprotocol/inspector npx -y @drivenets/design-system-mcp` |
 
 Codex equivalent (TOML):
 
 ```toml
 [mcp_servers.drivenets-ds]
 command = "npx"
-args = ["-y", "@drivenets/ds-storybook-mcp"]
+args = ["-y", "@drivenets/design-system-mcp"]
 ```
 
 ## Tools exposed
@@ -54,7 +54,7 @@ If the network is unreachable, tool calls return an error.
 ## Local development against an unpublished build
 
 ```bash
-pnpm --filter @drivenets/ds-storybook-mcp build
+pnpm --filter @drivenets/design-system-mcp build
 ```
 
 Wire the local build into your client:
@@ -74,7 +74,7 @@ Wire the local build into your client:
 Or run directly from source with hot-reload:
 
 ```bash
-pnpm --filter @drivenets/ds-storybook-mcp dev
+pnpm --filter @drivenets/design-system-mcp dev
 ```
 
 ### Smoke test the protocol
@@ -103,13 +103,13 @@ You should see a JSON-RPC `tools/list` response containing `list-all-documentati
 
 This package participates in the monorepo's [Changesets](https://github.com/changesets/changesets) release flow.
 
-1. `pnpm changeset` — pick `@drivenets/ds-storybook-mcp`, choose semver bump, write a short summary.
+1. `pnpm changeset` — pick `@drivenets/design-system-mcp`, choose semver bump, write a short summary.
 2. Commit & merge to `main`. The release pipeline builds and runs `pnpm publish -r --access public`.
 
 For a one-off publish from a local machine:
 
 ```bash
-pnpm --filter @drivenets/ds-storybook-mcp build
-pnpm --filter @drivenets/ds-storybook-mcp lint:build   # publint + attw sanity check
-pnpm --filter @drivenets/ds-storybook-mcp publish --access public
+pnpm --filter @drivenets/design-system-mcp build
+pnpm --filter @drivenets/design-system-mcp lint:build   # publint + attw sanity check
+pnpm --filter @drivenets/design-system-mcp publish --access public
 ```

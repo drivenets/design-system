@@ -13,7 +13,7 @@ import { createManifestProvider, type ManifestProviderOptions } from './manifest
 
 export interface CreateServerOptions extends ManifestProviderOptions {
 	/**
-	 * Server name advertised to MCP clients. Defaults to `ds-storybook-mcp`.
+	 * Server name advertised to MCP clients. Defaults to `design-system-mcp`.
 	 */
 	name: string;
 	/**

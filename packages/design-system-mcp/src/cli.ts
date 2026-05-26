@@ -8,10 +8,10 @@ interface ParsedFlags {
 	version?: boolean;
 }
 
-const HELP = `ds-storybook-mcp — stdio MCP server for the DriveNets Design System
+const HELP = `design-system-mcp — stdio MCP server for the DriveNets Design System
 
 Usage:
-  ds-storybook-mcp [options]
+  design-system-mcp [options]
 
 Options:
   -h, --help              Show this help.
@@ -28,14 +28,14 @@ Example MCP client config (Cursor, Claude Code, Codex):
       "drivenets-ds": {
         "type": "stdio",
         "command": "npx",
-        "args": ["-y", "@drivenets/ds-storybook-mcp"]
+        "args": ["-y", "@drivenets/design-system-mcp"]
       }
     }
   }
 `;
 
 function exitWithError(message: string): never {
-	process.stderr.write(`ds-storybook-mcp: ${message}\n`);
+	process.stderr.write(`design-system-mcp: ${message}\n`);
 	process.exit(1);
 }
 

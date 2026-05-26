@@ -1,4 +1,4 @@
-# @drivenets/ds-storybook-mcp
+# @drivenets/design-system-mcp
 
 ## 0.1.1
 
