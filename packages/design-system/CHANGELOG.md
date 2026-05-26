@@ -1,5 +1,25 @@
 # @drivenets/design-system
 
+## 0.12.1
+
+### Patch Changes
+
+- aa6d1e5: Add `DsCatalogLayout` component
+
+## 0.12.0
+
+### Minor Changes
+
+- ba113ed: Add `DsStatusBadgeV2` component.
+  Deprecate `DsStatusBadge` component.
+- c7579a1: Add `infiniteScroll` prop to `DsTable`, letting it handle viewport/scroll and auto-fill pagination while consumers manage data and loading state.
+
+### Patch Changes
+
+- 665acbc: Update styling for `DsKeyValuePair` component
+- 8b3a7fb: Fix `DsAutocomplete` placeholder color
+- de59a6c: Style fixes for `DsDropdownMenu`
+
 ## 0.11.1
 
 ### Patch Changes

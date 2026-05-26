@@ -146,7 +146,12 @@ export const Group: Story = {
 						name="framework-vertical"
 					>
 						{frameworkItems.map((item) => (
-							<DsCheckbox key={item.value} label={item.label} value={item.value} />
+							<DsCheckbox
+								key={item.value}
+								label={item.label}
+								value={item.value}
+								className={styles.groupItem}
+							/>
 						))}
 					</DsCheckboxGroup>
 				</DsStack>
@@ -161,7 +166,12 @@ export const Group: Story = {
 						name="framework-horizontal"
 					>
 						{frameworkItems.map((item) => (
-							<DsCheckbox key={item.value} label={item.label} value={item.value} />
+							<DsCheckbox
+								key={item.value}
+								label={item.label}
+								value={item.value}
+								className={styles.groupItem}
+							/>
 						))}
 					</DsCheckboxGroup>
 				</DsStack>
@@ -189,7 +199,7 @@ export const SelectAll: Story = {
 					name="framework"
 				>
 					{frameworkItems.map((item) => (
-						<DsCheckbox key={item.value} label={item.label} value={item.value} />
+						<DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} />
 					))}
 				</DsCheckboxGroup>
 			</DsStack>
