@@ -4,13 +4,14 @@
 
 This monorepo contains the following packages:
 
-| Package                                  | Description                                                         |
-| ---------------------------------------- | ------------------------------------------------------------------- |
-| `@drivenets/design-system`               | The core design system package                                      |
-| `@drivenets/eslint-plugin-design-system` | ESLint plugin for enforcing design system rules                     |
-| `@drivenets/vite-plugin-design-system`   | Vite plugin for integrating the design system                       |
-| `@drivenets/commitlint-plugin-internal`  | Commitlint plugin for enforcing internal commit conventions         |
-| `@drivenets/eslint-plugin-internal`      | ESLint plugin for enforcing internal conventions & coding standards |
+| Package                                  | Description                                                                                             |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `@drivenets/design-system`               | The core design system package                                                                          |
+| `@drivenets/eslint-plugin-design-system` | ESLint plugin for enforcing design system rules                                                         |
+| `@drivenets/vite-plugin-design-system`   | Vite plugin for integrating the design system                                                           |
+| `@drivenets/commitlint-plugin-internal`  | Commitlint plugin for enforcing internal commit conventions                                             |
+| `@drivenets/eslint-plugin-internal`      | ESLint plugin for enforcing internal conventions & coding standards                                     |
+| `@drivenets/ds-storybook-mcp`            | MCP server exposing Storybook component docs to AI clients ([packages/mcp-server](packages/mcp-server)) |
 
 ## Storybook Deployment
 
@@ -23,7 +24,7 @@ Storybook is automatically deployed to GitHub Pages on every PR merge to the def
 ### Prerequisites
 
 - Node 24+
-- pnpm 10.30.3
+- pnpm 11+
 
 We recommend [fnm](https://github.com/Schniz/fnm), [nvm](https://github.com/nvm-sh/nvm), or [mise](https://github.com/jdx/mise) to manage these versions.
 
@@ -72,51 +73,32 @@ pnpm install
 
 ---
 
-### Cursor AI Tooling
+### AI development
 
-This repo includes skills, subagents in `.cursor/`, and project skills in `.agents/skills/` to support AI-powered development.
+LLM skills and subagents live in this repo.
 
-- **Vocabulary:** [CONTEXT.md](CONTEXT.md) · **Decisions:** [docs/adr/](docs/adr/)
-- **How-to:** [`.agents/skills/`](.agents/skills/) — index in [AGENTS.md](AGENTS.md#project-skills)
-- **Package boundaries:** `.cursor/rules/monorepo.mdc` on `packages/**/*`
-- **Checkers:** [AGENTS.md](AGENTS.md) (design-system, eslint-plugin, vite-plugin sections)
+- [docs/agents/README.md](docs/agents/README.md) — agent doc index
+- [AGENTS.md](AGENTS.md) — checkers and skill catalog
+- [CONTEXT.md](CONTEXT.md) — design-system vocabulary for agents (Component, Variant, Locale, …); glossary only, not how-to
+- [docs/adr/](docs/adr/) — load-bearing decisions agents must not contradict (primitive stack, props layer, interaction testing, doc layout)
 
-#### Skills
+#### Storybook MCP (`@drivenets/ds-storybook-mcp`)
 
-- **Skills** (`.agents/skills/`) — [AGENTS.md#project-skills](AGENTS.md#project-skills); flows in [docs/agents/skills.md](docs/agents/skills.md)
-- **Subagents** (`.cursor/agents/`) — [docs/agents/subagents.md](docs/agents/subagents.md)
+Stdio MCP server that exposes published Storybook manifests (props, stories, snippets) to Cursor, Claude Code, Codex, etc. Full setup: [packages/mcp-server/README.md](packages/mcp-server/README.md).
 
-#### How to use
-
-**Skills** — invoke by task or file type; orchestrators list which skills to read fully. See [AGENTS.md#project-skills](AGENTS.md#project-skills).
-
-#### Example: building a component from scratch
-
+```json
+{
+  "mcpServers": {
+    "drivenets-ds": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@drivenets/ds-storybook-mcp"]
+    }
+  }
+}
 ```
-1. "Scaffold a ds-card component" (or "Implement this <figma-url>")
-   → agent checks Ark UI for primitives, creates all files,
-     wires barrel exports, generates stories (+ optional browser tests)
-   → with a Figma URL: also extracts design tokens, maps to CSS
-     custom properties, and pre-fills styles/variants/stories
-   → agent reads skills per file type (ark-ui, component-api, react-patterns, scss, storybook, …)
 
-2. Iterate on the component in chat
-   → read the matching skill for each file you touch
-
-3. Add or extend `__tests__/*.browser.test.tsx` for interactions you care about
-
-4. "Review my changes"
-   → agent diffs against origin/main and drops inline REVIEW-* comments
-
-5. Fix flagged issues
-
-6. "Prepare my PR"
-   → agent runs lint, typecheck, tests on changed files,
-     validates stories/SCSS/TS patterns, checks changeset,
-     outputs a pass/fail report
-
-7. All green → push and open PR
-```
+Add to `.cursor/mcp.json` (project) or your client’s global MCP config. Local dev: `pnpm --filter @drivenets/ds-storybook-mcp dev`.
 
 ---
 

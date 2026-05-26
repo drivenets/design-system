@@ -15,7 +15,6 @@ All project skills live in **`.agents/skills/`**. Convention guidance is skill-o
 | **Skill index**     | `AGENTS.md`                       | Checkers + catalog (bullets) |
 | **Skill bodies**    | `.agents/skills/*/SKILL.md`       | Read fully when invoked      |
 | **Package context** | `AGENTS.md#design-system-package` | File → skill map for ds-\*   |
-| **Rules**           | `.cursor/rules/monorepo.mdc`      | Package import boundaries    |
 
 ## Typical flows
 
