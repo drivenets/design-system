@@ -12,7 +12,6 @@ No install needed — just point your MCP client at `npx`:
 {
   "mcpServers": {
     "drivenets-ds": {
-      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@drivenets/design-system-mcp"]
     }
@@ -50,66 +49,3 @@ args = ["-y", "@drivenets/design-system-mcp"]
 Manifests are fetched from `https://drivenets.github.io/design-system/manifests/*.json` (the published DS Storybook on GitHub Pages — always latest). They're cached in-memory for the lifetime of the process; concurrent requests for the same manifest share a single in-flight promise; rejected requests are evicted so the next call retries.
 
 If the network is unreachable, tool calls return an error.
-
-## Local development against an unpublished build
-
-```bash
-pnpm --filter @drivenets/design-system-mcp build
-```
-
-Wire the local build into your client:
-
-```json
-{
-  "mcpServers": {
-    "drivenets-ds-local": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["/absolute/path/to/design-system/packages/mcp-server/dist/cli.js"]
-    }
-  }
-}
-```
-
-Or run directly from source with hot-reload:
-
-```bash
-pnpm --filter @drivenets/design-system-mcp dev
-```
-
-### Smoke test the protocol
-
-```bash
-printf '%s\n' \
-  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"smoke","version":"0"}}}' \
-  '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
-  '{"jsonrpc":"2.0","id":2,"method":"tools/list"}' \
-  | node packages/mcp-server/dist/cli.js
-```
-
-You should see a JSON-RPC `tools/list` response containing `list-all-documentation`, `get-documentation`, and `get-documentation-for-story`.
-
-## Scripts
-
-| Script            | Purpose                                             |
-| ----------------- | --------------------------------------------------- |
-| `pnpm build`      | Build with `tsdown` to `dist/`                      |
-| `pnpm dev`        | Run `src/cli.ts` directly via `tsx` (no build step) |
-| `pnpm start`      | Run the compiled `dist/cli.js`                      |
-| `pnpm typecheck`  | `tsgo` typecheck                                    |
-| `pnpm lint:build` | `publint` + `attw` against a `pnpm pack` tarball    |
-
-## Publishing
-
-This package participates in the monorepo's [Changesets](https://github.com/changesets/changesets) release flow.
-
-1. `pnpm changeset` — pick `@drivenets/design-system-mcp`, choose semver bump, write a short summary.
-2. Commit & merge to `main`. The release pipeline builds and runs `pnpm publish -r --access public`.
-
-For a one-off publish from a local machine:
-
-```bash
-pnpm --filter @drivenets/design-system-mcp build
-pnpm --filter @drivenets/design-system-mcp lint:build   # publint + attw sanity check
-pnpm --filter @drivenets/design-system-mcp publish --access public
-```
