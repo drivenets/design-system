@@ -30,6 +30,7 @@
 		"lint:build": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL"
 	},
 	"dependencies": {
+		"@epic-web/cachified": "^5.6.2",
 		"@storybook/mcp": "0.7.0",
 		"@tmcp/adapter-valibot": "^0.1.6",
 		"@tmcp/transport-stdio": "^0.4.3",
