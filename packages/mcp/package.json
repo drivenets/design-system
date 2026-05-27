@@ -23,7 +23,6 @@
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
 		"build": "tsdown",
-		"dev": "tsx src/cli.ts",
 		"start": "node dist/cli.js",
 		"typecheck": "tsgo",
 		"test": "vitest",
@@ -39,13 +38,12 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "catalog:",
-		"eslint": "catalog:",
 		"@types/node": "^25.9.1",
 		"@typescript/native-preview": "catalog:",
 		"@vitest/coverage-v8": "catalog:",
+		"eslint": "catalog:",
 		"publint": "catalog:",
 		"tsdown": "catalog:",
-		"tsx": "^4.19.4",
 		"typescript": "catalog:",
 		"vitest": "catalog:"
 	}
