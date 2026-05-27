@@ -7,7 +7,6 @@ export default defineConfig({
 	dts: { tsgo: true },
 	sourcemap: false,
 	clean: true,
-	shims: true,
 	deps: {
 		skipNodeModulesBundle: true,
 	},
