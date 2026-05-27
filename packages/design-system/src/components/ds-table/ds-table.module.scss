@@ -41,6 +41,10 @@ $bulk-actions-reserved-space: 80px;
 	thead {
 		display: block;
 		flex-shrink: 0;
+		overflow-y: scroll;
+		scrollbar-gutter: stable;
+
+		@include scrollbars.scrollbar-on-hover;
 	}
 
 	tbody {
@@ -48,6 +52,7 @@ $bulk-actions-reserved-space: 80px;
 		overflow-y: auto;
 		flex: 1;
 		min-height: 0;
+		scrollbar-gutter: stable;
 
 		@include scrollbars.scrollbar-on-hover;
 	}
@@ -87,11 +92,17 @@ $bulk-actions-reserved-space: 80px;
 }
 
 .emptyState {
+	// colSpan in markup isn't honored by flex row layout, so the cell stretches
+	// across the row; stretch the inner content so it occupies full table width
 	flex: 1;
 	min-width: 0;
 	height: vars.$empty-state-height;
 	justify-content: center;
 	text-align: center;
+
+	> * {
+		flex: 1;
+	}
 }
 
 .virtualizedContainer {
@@ -116,11 +127,16 @@ $bulk-actions-reserved-space: 80px;
 	thead {
 		display: block;
 		flex-shrink: 0;
+		overflow-y: scroll;
+		scrollbar-gutter: stable;
+
+		@include scrollbars.scrollbar-on-hover;
 	}
 
 	tbody {
 		flex: 1;
 		min-height: 0;
+		scrollbar-gutter: stable;
 	}
 
 	thead tr {
