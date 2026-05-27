@@ -41,9 +41,9 @@
                            │  fetch (per process, in-memory cache + dedupe)
                            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│  MCP Server (packages/mcp-server) — stdio                           │
+│  MCP Server (packages/mcp) — stdio                           │
 │                                                                     │
-│  bin/design-system-mcp  →  dist/cli.js                               │
+│  bin/mcp  →  dist/cli.js                               │
 │    │                                                                │
 │    │  parseArgs / env vars                                          │
 │    ▼                                                                │

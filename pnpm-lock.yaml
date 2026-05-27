@@ -366,7 +366,7 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
 
-  packages/design-system-mcp:
+  packages/mcp:
     dependencies:
       '@storybook/mcp':
         specifier: 0.7.0
