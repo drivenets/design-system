@@ -10,7 +10,6 @@
 /README.md
 /AGENTS.md
 /CONTEXT.md
-/docs/agents/*
 
 # Design System internal configurations
 /packages/design-system/.storybook/ @StyleShit @aroba-dn
