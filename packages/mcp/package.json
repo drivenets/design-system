@@ -5,20 +5,22 @@
 	"description": "Stdio-based MCP server exposing the DriveNets Design System Storybook documentation to AI agents (Cursor, Claude Code, Codex).",
 	"type": "module",
 	"bin": {
-		"design-system-mcp": "./dist/cli.js"
+		"drivenets-design-system-mcp": "./dist/cli.js"
 	},
 	"files": [
-		"dist",
 		"README.md",
+		"CHANGELOG.md",
 		"LICENSE",
-		"CHANGELOG.md"
+		"./dist",
+		"./src",
+		"!**/__tests__"
 	],
 	"publishConfig": {
 		"access": "public"
 	},
 	"repository": {
 		"url": "https://github.com/drivenets/design-system",
-		"directory": "/packages/mcp-server"
+		"directory": "/packages/mcp"
 	},
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
