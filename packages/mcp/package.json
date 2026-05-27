@@ -7,12 +7,6 @@
 	"bin": {
 		"design-system-mcp": "./dist/cli.js"
 	},
-	"exports": {
-		".": {
-			"types": "./dist/server.d.ts",
-			"import": "./dist/server.js"
-		}
-	},
 	"files": [
 		"dist",
 		"README.md",
