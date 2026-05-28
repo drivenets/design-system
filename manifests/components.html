@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/87 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/87 infos</a><span class="filter-pill ok" aria-disabled="true">510 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/87 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/87 infos</a><span class="filter-pill ok" aria-disabled="true">511 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -18910,7 +18910,7 @@ status: (typeof systemStatuses)[number]</code></pre>
       <div class="badges">
         <label for="c-62-components-table-props" class="badge ok as-toggle">33 prop types</label>
         
-        <label for="c-62-components-table-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-62-components-table-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -19254,6 +19254,23 @@ zebra?: boolean</code></pre>
     columns={columns}
     stickyHeader
     bordered={false}
+    fullWidth
+    expandable={false}
+    emptyState={&lt;TableEmptyState /&gt;}
+    onRowClick={fn()}
+    data={defaultData} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Horizontal Scroll</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const HorizontalScroll = () =&gt; &lt;DsTable
+    columns={horizontalScrollColumns}
+    stickyHeader
+    bordered
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
