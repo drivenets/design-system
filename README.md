@@ -4,13 +4,14 @@
 
 This monorepo contains the following packages:
 
-| Package                                  | Description                                                         |
-| ---------------------------------------- | ------------------------------------------------------------------- |
-| `@drivenets/design-system`               | The core design system package                                      |
-| `@drivenets/eslint-plugin-design-system` | ESLint plugin for enforcing design system rules                     |
-| `@drivenets/vite-plugin-design-system`   | Vite plugin for integrating the design system                       |
-| `@drivenets/commitlint-plugin-internal`  | Commitlint plugin for enforcing internal commit conventions         |
-| `@drivenets/eslint-plugin-internal`      | ESLint plugin for enforcing internal conventions & coding standards |
+| Package                                  | Description                                                                               |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `@drivenets/design-system`               | The core design system package                                                            |
+| `@drivenets/eslint-plugin-design-system` | ESLint plugin for enforcing design system rules                                           |
+| `@drivenets/vite-plugin-design-system`   | Vite plugin for integrating the design system                                             |
+| `@drivenets/commitlint-plugin-internal`  | Commitlint plugin for enforcing internal commit conventions                               |
+| `@drivenets/eslint-plugin-internal`      | ESLint plugin for enforcing internal conventions & coding standards                       |
+| `@drivenets/design-system-mcp`           | MCP server exposing Storybook component docs to AI clients ([packages/mcp](packages/mcp)) |
 
 ## Storybook Deployment
 
@@ -23,7 +24,7 @@ Storybook is automatically deployed to GitHub Pages on every PR merge to the def
 ### Prerequisites
 
 - Node 24+
-- pnpm 10.30.3
+- pnpm 11+
 
 We recommend [fnm](https://github.com/Schniz/fnm), [nvm](https://github.com/nvm-sh/nvm), or [mise](https://github.com/jdx/mise) to manage these versions.
 
@@ -72,102 +73,40 @@ pnpm install
 
 ---
 
-### Cursor AI Tooling
+### AI development
 
-This repo includes rules, skills, and notepads in `.cursor/` to support AI-powered development.
+LLM skills and subagents live in this repo.
 
-#### Rules (`.cursor/rules/`)
+- [docs/agents/README.md](docs/agents/README.md) — agent doc index
+- [AGENTS.md](AGENTS.md) — checkers and skill catalog
+- [CONTEXT.md](CONTEXT.md) — design-system vocabulary for agents (Component, Variant, Locale, …); glossary only, not how-to
+- [docs/adr/](docs/adr/) — load-bearing decisions agents must not contradict (primitive stack, props layer, interaction testing, doc layout)
 
-Auto-applied contextual guidance for the AI agent.
+#### DS MCP (`@drivenets/design-system-mcp`)
 
-| Rule                 | Scope                             | Description                                      |
-| -------------------- | --------------------------------- | ------------------------------------------------ |
-| `standards.mdc`      | Always                            | Code standards, component API design             |
-| `checkers.mdc`       | Always                            | How to run lint / test / typecheck               |
-| `react-patterns.mdc` | `**/*.tsx`, `**/*.ts`             | Hooks, memoization, React 19, Ark UI             |
-| `storybook.mdc`      | `**/*.stories.tsx`                | Story layout, args, styling, mockdate            |
-| `browser-tests.mdc`  | `**/__tests__/*.browser.test.tsx` | Vitest browser test patterns and a11y queries    |
-| `scss.mdc`           | `**/*.scss`                       | Design tokens, no !important, mixins             |
-| `design-system.mdc`  | `packages/**/components/**/*`     | Component conventions, primitive library choices |
-| `monorepo.mdc`       | `packages/**/*`                   | Import boundaries                                |
-| `code-review.mdc`    | Manual / on diff                  | PR workflow, checklist, inline review comments   |
+Stdio MCP server for Storybook manifests (props, stories, guidelines, snippets). Full setup: [packages/mcp/README.md](packages/mcp/README.md).
 
-#### Skills (`.cursor/skills/`)
-
-Multi-step workflows the AI agent executes on request.
-
-| Skill                   | Trigger                     | What it does                                                     |
-| ----------------------- | --------------------------- | ---------------------------------------------------------------- |
-| **component-scaffold**  | "Scaffold a new component"  | Checks Ark UI, creates files, wires exports, generates stories   |
-| **figma-to-component**  | "Implement this Figma link" | Extracts design context + tokens from Figma, scaffolds component |
-| **pr-prep**             | "Prepare my PR"             | Runs lint/typecheck/test on diff, validates changeset            |
-| **migrate-story-tests** | "Migrate tests for ds-X"    | Converts Storybook play functions to Vitest browser tests        |
-| **rca-debug**           | "Debug this" / "RCA"        | Structured root cause analysis for persistent bugs               |
-| **deslop**              | "Clean up this code"        | Removes AI-generated code slop, fixes style                      |
-| **get-pr-comments**     | "Get PR comments"           | Fetches and summarizes review comments from the active PR        |
-
-#### Notepads (`.cursor/notepads/`)
-
-Reusable prompt snippets you invoke with `@` in Cursor chat.
-
-| Notepad          | Usage                                              |
-| ---------------- | -------------------------------------------------- |
-| **check-ark-ui** | Query Ark UI for primitives before building custom |
-
-#### How to use
-
-**Rules** activate automatically based on file context — no action needed.
-The one exception is `code-review.mdc`, which you trigger manually:
+- **Published** — `npx @drivenets/design-system-mcp` (GitHub Pages manifests)
+- **Local** — `pnpm start`, then MCP with `--manifests-url http://localhost:6006` ([details](packages/mcp/README.md#local-storybook-unpublished-changes))
+  - before that run `pnpm --filter @drivenets/design-system-mcp build`
 
 ```
-"Review my changes"                →  inline REVIEW-* comments on your diff
-```
-
-**Skills** are triggered with natural language in chat:
-
-```
-"Scaffold a ds-tooltip component"  →  component-scaffold
-"Implement this <figma-url>"       →  figma-to-component
-"Prepare my PR"                    →  pr-prep
-"Migrate tests for ds-toggle"      →  migrate-story-tests
-"Debug this" / "RCA"               →  rca-debug
-"Clean up this code"               →  deslop
-"Get PR comments"                  →  get-pr-comments
-```
-
-**Notepads** are invoked with `@` in Cursor chat:
-
-```
-@check-ark-ui                      →  check Ark UI before building custom
-```
-
-#### Example: building a component from scratch
-
-```
-1. "Scaffold a ds-card component" (or "Implement this <figma-url>")
-   → agent checks Ark UI for primitives, creates all files,
-     wires barrel exports, generates stories (+ optional browser tests)
-   → with a Figma URL: also extracts design tokens, maps to CSS
-     custom properties, and pre-fills styles/variants/stories
-   → rules like react-patterns, scss, storybook, design-system
-     auto-apply as the agent touches .tsx, .scss, .stories.tsx files
-
-2. Iterate on the component in chat
-   → rules keep guiding the agent (tokens, no !important, a11y queries, etc.)
-
-3. Add or extend `__tests__/*.browser.test.tsx` for interactions you care about
-
-4. "Review my changes"
-   → agent diffs against origin/main and drops inline REVIEW-* comments
-
-5. Fix flagged issues
-
-6. "Prepare my PR"
-   → agent runs lint, typecheck, tests on changed files,
-     validates stories/SCSS/TS patterns, checks changeset,
-     outputs a pass/fail report
-
-7. All green → push and open PR
+{
+  "mcpServers": {
+    "drivenets-ds": {
+      "command": "npx",
+      "args": ["-y", "@drivenets/design-system-mcp"]
+    },
+    "drivenets-ds-local": {
+      "command": "node",
+      "args": [
+        "packages/mcp/dist/cli.js",
+        "--manifests-url",
+        "http://localhost:6006"
+      ]
+    }
+  }
+}
 ```
 
 ---

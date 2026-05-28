@@ -171,7 +171,7 @@ If gh-pages is unreachable and the consumer didn't set `--manifests-dir`, tool c
 @storybook/addon-mcp    (addon — preset that enables manifests + dev /mcp route)
   └─ @storybook/mcp     (protocol handler — exposes addList/addGet/addGetStoryDocumentationTool)
 
-packages/mcp-server
+packages/mcp
   ├─ @storybook/mcp       (registers three Storybook tools on a tmcp server)
   ├─ tmcp                 (MCP server core)
   ├─ @tmcp/adapter-valibot (JSON-schema generation for tool input schemas)
