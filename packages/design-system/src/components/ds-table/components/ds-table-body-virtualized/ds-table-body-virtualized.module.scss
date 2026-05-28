@@ -1,9 +1,28 @@
+@use '../../../../styles/scrollbars' as scrollbars;
+
 .body {
-	display: grid;
+	display: block;
+	position: relative;
+	overflow-y: auto;
+	flex: 1;
+	min-height: 0;
+	scrollbar-gutter: stable;
+
+	@include scrollbars.scrollbar-on-hover;
+}
+
+// 1px row pinned at `top: <totalSize>` (set inline) so absolutely-positioned
+// rows extend the parent's scrollable overflow area.
+.sentinel {
+	position: absolute;
+	left: 0;
+	width: 1px;
+	height: 1px;
+	pointer-events: none;
+	visibility: hidden;
 }
 
 .emptyState {
 	position: absolute;
 	inset: 0;
-	top: var(--ds-table-header-height);
 }

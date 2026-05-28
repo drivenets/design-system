@@ -1,14 +1,14 @@
 @use '../../../../styles/typography';
 
 .bulkActionsContainer {
-	position: fixed;
+	position: absolute;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
 	background-color: var(--color-dap-gray-050);
 	border-radius: 8px;
 	box-shadow: 0 4px 12px #0445cc66;
-	z-index: 1000;
+	z-index: 1;
 	display: flex;
 	align-items: center;
 	border-radius: 8px;

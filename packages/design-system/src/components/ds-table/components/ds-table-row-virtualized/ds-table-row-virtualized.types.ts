@@ -25,7 +25,7 @@ export interface DsTableRowVirtualizedProps<TData> {
 	/**
 	 * TanStack virtualizer driving the scroll window for the table body.
 	 */
-	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
+	rowVirtualizer: Virtualizer<HTMLTableSectionElement, HTMLTableRowElement>;
 	/**
 	 * Virtual item descriptor for this row (index, start, size) from the virtualizer.
 	 */

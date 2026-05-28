@@ -50,6 +50,8 @@
 	background-color: var(--background-secondary);
 
 	& > td {
+		flex: 1;
+		min-width: 0;
 		padding: var(--standard);
 	}
 
@@ -80,4 +82,5 @@
 .selectableCell {
 	padding: 0;
 	text-align: center;
+	justify-content: center;
 }

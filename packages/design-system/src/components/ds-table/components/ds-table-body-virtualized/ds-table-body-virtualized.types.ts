@@ -1,4 +1,4 @@
-import { type RefObject, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { type RowSelectionState, type Table } from '@tanstack/react-table';
 
 export interface DsTableBodyVirtualizedProps<TData> {
@@ -7,11 +7,6 @@ export interface DsTableBodyVirtualizedProps<TData> {
 	 * and column state.
 	 */
 	table: Table<TData>;
-	/**
-	 * Ref to the scrollable container that hosts the virtualized rows. Required by
-	 * the virtualizer to measure viewport size and listen for scroll events.
-	 */
-	tableContainerRef: RefObject<HTMLDivElement | null>;
 	/**
 	 * Optional content rendered in place of rows when the table has no data.
 	 */
