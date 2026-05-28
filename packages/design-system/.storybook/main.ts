@@ -1,5 +1,4 @@
 import type { StorybookConfig } from '@storybook/react-vite';
-import { vitePluginDesignSystem } from '@drivenets/vite-plugin-design-system';
 import remarkGfm from 'remark-gfm';
 
 // @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
@@ -28,7 +27,6 @@ const config: StorybookConfig = {
 			viteConfig.plugins = [];
 		}
 
-		viteConfig.plugins.push(vitePluginDesignSystem());
 		viteConfig.plugins.unshift(reactCompilerRolldownPlugin()); // Must be first.
 
 		return viteConfig;
