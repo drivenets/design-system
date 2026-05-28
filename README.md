@@ -4,14 +4,14 @@
 
 This monorepo contains the following packages:
 
-| Package                                  | Description                                                                                             |
-| ---------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `@drivenets/design-system`               | The core design system package                                                                          |
-| `@drivenets/eslint-plugin-design-system` | ESLint plugin for enforcing design system rules                                                         |
-| `@drivenets/vite-plugin-design-system`   | Vite plugin for integrating the design system                                                           |
-| `@drivenets/commitlint-plugin-internal`  | Commitlint plugin for enforcing internal commit conventions                                             |
-| `@drivenets/eslint-plugin-internal`      | ESLint plugin for enforcing internal conventions & coding standards                                     |
-| `@drivenets/ds-storybook-mcp`            | MCP server exposing Storybook component docs to AI clients ([packages/mcp-server](packages/mcp-server)) |
+| Package                                  | Description                                                                               |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `@drivenets/design-system`               | The core design system package                                                            |
+| `@drivenets/eslint-plugin-design-system` | ESLint plugin for enforcing design system rules                                           |
+| `@drivenets/vite-plugin-design-system`   | Vite plugin for integrating the design system                                             |
+| `@drivenets/commitlint-plugin-internal`  | Commitlint plugin for enforcing internal commit conventions                               |
+| `@drivenets/eslint-plugin-internal`      | ESLint plugin for enforcing internal conventions & coding standards                       |
+| `@drivenets/design-system-mcp`           | MCP server exposing Storybook component docs to AI clients ([packages/mcp](packages/mcp)) |
 
 ## Storybook Deployment
 
@@ -82,23 +82,32 @@ LLM skills and subagents live in this repo.
 - [CONTEXT.md](CONTEXT.md) — design-system vocabulary for agents (Component, Variant, Locale, …); glossary only, not how-to
 - [docs/adr/](docs/adr/) — load-bearing decisions agents must not contradict (primitive stack, props layer, interaction testing, doc layout)
 
-#### Storybook MCP (`@drivenets/ds-storybook-mcp`)
+#### DS MCP (`@drivenets/design-system-mcp`)
 
-Stdio MCP server that exposes published Storybook manifests (props, stories, snippets) to Cursor, Claude Code, Codex, etc. Full setup: [packages/mcp-server/README.md](packages/mcp-server/README.md).
+Stdio MCP server for Storybook manifests (props, stories, guidelines, snippets). Full setup: [packages/mcp/README.md](packages/mcp/README.md).
 
-```json
+- **Published** — `npx @drivenets/design-system-mcp` (GitHub Pages manifests)
+- **Local** — `pnpm start`, then MCP with `--manifests-url http://localhost:6006` ([details](packages/mcp/README.md#local-storybook-unpublished-changes))
+  - before that run `pnpm --filter @drivenets/design-system-mcp build`
+
+```
 {
   "mcpServers": {
     "drivenets-ds": {
-      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@drivenets/ds-storybook-mcp"]
+      "args": ["-y", "@drivenets/design-system-mcp"]
+    },
+    "drivenets-ds-local": {
+      "command": "node",
+      "args": [
+        "packages/mcp/dist/cli.js",
+        "--manifests-url",
+        "http://localhost:6006"
+      ]
     }
   }
 }
 ```
-
-Add to `.cursor/mcp.json` (project) or your client’s global MCP config. Local dev: `pnpm --filter @drivenets/ds-storybook-mcp dev`.
 
 ---
 

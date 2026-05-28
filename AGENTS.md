@@ -115,6 +115,7 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 ## Additional rules
 
 - **Domain glossary:** [CONTEXT.md](CONTEXT.md) · **ADRs:** [docs/adr/](docs/adr/)
+- **DS MCP:** [packages/mcp/README.md](packages/mcp/README.md) — Storybook docs for agents (`list-all-documentation`, `get-documentation`); local dev uses `pnpm start` + `--manifests-url http://localhost:6006`
 - **Flows:** [docs/agents/skills.md](docs/agents/skills.md)
 - **Subagents:** [docs/agents/subagents.md](docs/agents/subagents.md)
 
@@ -143,7 +144,7 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 - [`browser-tests`](.agents/skills/browser-tests/SKILL.md) — add/edit `*.browser.test.tsx`; Vitest browser patterns, a11y queries, Ark locators
 - [`storybook`](.agents/skills/storybook/SKILL.md) — edit `*.stories.tsx`; story variants, mockdate, args, no play functions
 - [`component-scaffold`](.agents/skills/component-scaffold/SKILL.md) — "scaffold a new component"; orchestrator for files, exports, skill read order
-- [`figma-to-component`](.agents/skills/figma-to-component/SKILL.md) — Figma URL; tokens and scaffold from design
+- [`figma-to-component`](.agents/skills/figma-to-component/SKILL.md) — Figma URL; trust boundary, Figma/DS MCP orchestration, then component-scaffold
 - [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md) — "migrate tests for ds-X"; Storybook `play` → browser tests
 - [`code-review`](.agents/skills/code-review/SKILL.md) — "review my changes"; PR checklist and inline review
 - [`pr-prep`](.agents/skills/pr-prep/SKILL.md) — "prepare my PR"; lint, typecheck, test on diff, changeset
