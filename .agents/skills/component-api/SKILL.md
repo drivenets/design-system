@@ -27,7 +27,7 @@ Conventions for `packages/design-system/src/components/**/ds-*.types.ts`.
 
 - Export variant arrays as `as const` + derived union type (Storybook `argTypes.options`).
 - `Ds{Name}Props` interface in dedicated `.types.ts`.
-- Prop JSDoc for non-trivial props → [ts-standards](../ts-standards/SKILL.md).
+- Prop JSDoc: document non-obvious behavior, units, or constraints; skip `ref`, `className`, and `style`. Don't restate the prop name or TypeScript type. See [ts-standards](../ts-standards/SKILL.md) for `@default` and export style.
 - Don't `extends` Ark/library root props → [ark-ui](../ark-ui/SKILL.md).
 
 ```typescript

@@ -1,6 +1,6 @@
 ---
 name: storybook
-description: Write and update Storybook stories for design-system components. Use when editing `*.stories.tsx`, adding story variants, mockdate decorators, or removing Storybook play functions.
+description: Write and update Storybook stories for design-system components. Use when editing `*.stories.tsx`, adding story variants, decorators, or removing Storybook play functions.
 ---
 
 # Storybook Skill
@@ -13,7 +13,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 - Controlled story (`useState` in `render`) when component supports it
 - Localized story when component has `locale` prop
 - Combined states (e.g. checked + disabled)
-- Args flow to component — don't hardcode in `render` what belongs in `args`
+- Args flow to a component — don't hardcode in `render` what belongs in `args`
 - Hide internal args: `className`, `style`, `ref` → `table: { disable: true }`
 - Import variant arrays from `*.types.ts` for `argTypes.options`
 
@@ -58,49 +58,15 @@ export const Default: Story = {
 };
 ```
 
-## Date mocking
+## AI / MCP manifests
 
-Use `mockdate` in a **decorator**, not `vi.useFakeTimers` (breaks Ark UI timers).
+Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI best practices](https://storybook.js.org/docs/ai/best-practices):
 
-```tsx
-import { useEffect } from 'react';
-import MockDate from 'mockdate';
-import type { Decorator } from '@storybook/react-vite';
-
-// mockdate instead of vi.useFakeTimers — Ark uses setTimeout/setInterval
-const withFixedDate: Decorator = (Story) => {
-  useEffect(() => {
-    MockDate.set('2026-01-15');
-    return () => MockDate.reset();
-  }, []);
-  return <Story />;
-};
-```
-
-Date **assertions** → browser tests with same `mockdate` approach if needed.
-
-## Controlled & localized examples
-
-Controlled `render` with `useState` — see [react-patterns](../react-patterns/SKILL.md).
-
-```tsx
-export const Controlled: Story = {
-  render: (args) => {
-    const [value, setValue] = useState('initial');
-    return <DsInput {...args} value={value} onChange={setValue} />;
-  },
-};
-
-export const Localized: Story = {
-  args: { locale: { clearAll: 'Clear', showMore: 'More' } },
-};
-```
-
-## No play / migrate to browser tests
-
-Remove existing `play` functions; convert via [migrate-story-tests](../migrate-story-tests/SKILL.md).
-
-**AI slop in stories** — `play` that only checks `toBeInTheDocument()` for something Default already proves. Delete or migrate meaningful behavior to browser tests.
+- **One concept per story** — not a kitchen-sink `SizesAndVariants` story.
+- **Component JSDoc** — summary/description on the export; prop descriptions on non-obvious props ([component-api](../component-api/SKILL.md)).
+- **Story JSDoc** — explain _why_ to use the variant, not only what it renders.
+- **MDX guidelines** — put token values and rules in the file body, not only in runtime `{map}` loops agents cannot see.
+- **Exclude noise** — `tags: ['!manifest']` on anti-pattern or human-only stories/docs.
 
 ## Related
 

@@ -74,7 +74,7 @@ Before submitting a PR:
 - [ ] Matches Figma design
 - [ ] Storybook examples show all states (controlled + localized)
 - [ ] No cross-component internal imports
-- [ ] No unnecessary `useMemo`/`useCallback`
+- [ ] No unnecessary `useMemo`/`useCallback` (except under `ds-table/` — excluded from React Compiler; see [react-patterns](../react-patterns/SKILL.md))
 - [ ] Check Ark UI for existing primitives before custom implementation
 - [ ] No `overflow: hidden` as a band-aid for layout bugs
 - [ ] No raw `<img>` — use DS components (e.g., `DsAvatar`) with fallback

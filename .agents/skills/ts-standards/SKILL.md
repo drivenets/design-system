@@ -9,14 +9,14 @@ Applies to `packages/**/*.ts` and `packages/**/*.tsx` (design-system, eslint-plu
 
 ## Types and exports
 
-| Requirement                        | Details                                                                                              |
-| ---------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| **No redundant JSDoc**             | Don't restate prop name or type; skip `@interface` / `@type`                                         |
-| **Descriptive prop JSDoc**         | Non-trivial props in `*.types.ts` for AI manifest; `@default` when helpful. Reference: `DsTextInput` |
-| **Full type references**           | Import named types                                                                                   |
-| **Export from `.types.ts`**        | Dedicated type files for components                                                                  |
-| **Export variant arrays**          | `as const` for Storybook `argTypes.options` — see [component-api](../component-api/SKILL.md)         |
-| **`Object.freeze` config exports** | Prevent mutation on mapping objects                                                                  |
+| Requirement                        | Details                                                                                      |
+| ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| **No redundant JSDoc**             | Don't restate name or type; skip `@interface` / `@type`                                      |
+| **Prop JSDoc on ds-\* APIs**       | [component-api](../component-api/SKILL.md) — `@default` in `*.types.ts` when helpful         |
+| **Full type references**           | Import named types                                                                           |
+| **Export from `.types.ts`**        | Dedicated type files for components                                                          |
+| **Export variant arrays**          | `as const` for Storybook `argTypes.options` — see [component-api](../component-api/SKILL.md) |
+| **`Object.freeze` config exports** | Prevent mutation on mapping objects                                                          |
 
 ```typescript
 export const loaderVariants = ['spinner', 'pulsing'] as const;

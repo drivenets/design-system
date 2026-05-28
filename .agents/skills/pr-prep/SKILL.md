@@ -26,25 +26,7 @@ Categorize files by type:
 
 ### Step 2: Run checkers on changed files only
 
-Run these in parallel where possible:
-
-**Lint** (on each changed TS/TSX/SCSS file):
-
-```bash
-pnpm eslint <file1> <file2> ...
-```
-
-**Typecheck** (per affected package):
-
-```bash
-pnpm --filter @drivenets/design-system typecheck
-```
-
-**Tests** (if test files or source files with matching tests changed):
-
-```bash
-pnpm --filter @drivenets/design-system test <test-file> --run
-```
+Use [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers) — lint changed paths, typecheck affected packages, run matching tests with `--run`. For [Other packages](../../../AGENTS.md#other-packages), use that section’s filter commands when the diff is not design-system-only.
 
 For new components or substantial interaction/behavior changes, confirm an updated `*.browser.test.tsx` exists under the component's `__tests__/` when appropriate.
 
@@ -68,10 +50,10 @@ For every `.tsx` / `.ts` in the diff:
 
 1. Check for cross-component imports (importing from `../ds-other-component/`) -- flag as violation. Only allow main components imports, not utilities or subcomponents.
 2. Check for `forwardRef` usage -- flag as deprecated.
-3. Check for `vi.useFakeTimers` in story files -- should use `mockdate`.
-4. Check for raw `<img` tags in component `.tsx` files (not stories) -- should use `DsAvatar` or equivalent DS component with fallback.
-5. Check for spread of native objects (`{...file}`, `{...blob}`) -- flag as prototype loss risk.
-6. In `.stories.tsx` and `.browser.test.tsx` files, check for AI-generated test smell: assertions that only check `toBeTruthy()` / `toBeInTheDocument()` without testing behavior unique to that scenario -- flag as likely useless AI-generated test.
+3. Check for raw `<img` tags in component `.tsx` files (not stories) -- should use `DsAvatar` or an equivalent DS a component with fallback.
+4. In `.stories.tsx` and `.browser.test.tsx` files, check for AI-generated test smell: assertions that only check `toBeTruthy()` / `toBeInTheDocument()` without testing behavior unique to that scenario -- flag as likely useless AI-generated test.
+
+Date/time in stories and browser tests: follow [storybook](../storybook/SKILL.md) and [browser-tests](../browser-tests/SKILL.md)
 
 ### Step 6: Check changeset
 
@@ -102,12 +84,11 @@ PR Preparation Report
 [PASS/FAIL] No forwardRef ........ {details}
 [PASS/FAIL] No overflow:hidden ... {details}
 [PASS/FAIL] No raw <img> ........ {details}
-[PASS/FAIL] No native spread .... {details}
 [PASS/FAIL] No webkit-only ..... {details}
 [PASS/FAIL] No AI test slop .... {details}
 [PASS/FAIL] Changeset ............ {details}
 
-{N}/15 checks passed.
+{N}/14 checks passed.
 ```
 
 If all pass, the PR is ready for submission. If any fail, list the specific files and lines that need fixing.

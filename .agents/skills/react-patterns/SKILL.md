@@ -9,10 +9,11 @@ Applies to `packages/design-system/**/*.tsx` (components, stories, browser tests
 
 ## Memoization
 
-| Requirement                                | Details                                |
-| ------------------------------------------ | -------------------------------------- |
-| **No unnecessary `useMemo`/`useCallback`** | React Compiler handles most cases      |
-| **Justify memoization**                    | Only when profiling shows real benefit |
+| Requirement                                | Details                                                                  |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| **No unnecessary `useMemo`/`useCallback`** | React Compiler handles most cases                                        |
+| **Justify memoization**                    | Only when profiling shows real benefit                                   |
+| **`ds-table/` exception**                  | Excluded from React Compiler (TanStack Table/Virtual) — allow to memoize |
 
 ```typescript
 // Bad
@@ -37,11 +38,11 @@ const handleClick = () => onChange(value);
 const [local, setLocal] = useState(prop);
 useEffect(() => setLocal(prop), [prop]);
 
-// Good
-const value = isControlled ? externalValue : internalValue;
+// Good — use the shared hook in components
+const [value, setValue] = useControlled(valueProp, onValueChange, defaultValue);
 ```
 
-Controlled wrappers in tests/stories: see [browser-tests](../browser-tests/SKILL.md) and [storybook](../storybook/SKILL.md) — same `useState` pattern applies.
+`useControlled` lives in `packages/design-system/src/utils/use-controlled.ts`. Controlled wrappers in tests/stories: see [browser-tests](../browser-tests/SKILL.md) and [storybook](../storybook/SKILL.md) — inline `useState` is fine there.
 
 ## Hooks
 
@@ -69,10 +70,6 @@ const DsButton = ({ ref, ...props }: DsButtonProps) => <button ref={ref} {...pro
 | **Don't spread native objects**       | `{...file}` loses `File` prototype           |
 | **Event propagation**                 | Stop propagation in nested clickable content |
 | **Validate, don't silently fallback** | Reject bad input values                      |
-
-```tsx
-const copy = new File([originalFile], originalFile.name, { type: originalFile.type });
-```
 
 ## Related
 

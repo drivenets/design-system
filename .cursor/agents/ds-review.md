@@ -10,18 +10,9 @@ You review design-system changes in the current branch diff. Be specific; max **
 ## Process
 
 1. Diff: `git diff origin/main...HEAD` (adjust base if needed).
-2. Read [code-review](../../.agents/skills/code-review/SKILL.md) for PR workflow and checklist.
-3. Cross-check changed files — file → skill table in [code-review](../../.agents/skills/code-review/SKILL.md#code-review-process); read each `SKILL.md` fully for paths in the diff.
-
-## Focus areas
-
-- Cross-component internal imports (`../ds-other/...` utilities)
-- Props layer exposes library internals; missing `className` / `style` / `ref`
-- SCSS: hardcoded colors/spacing, `!important`, `overflow: hidden` band-aids
-- Stories: inline styles, missing controlled/localized stories, leftover `play`
-- Browser tests: `getByTestId` without reason, `toBeVisible()`-only tests, no behavior assertion
-- `useMemo`/`useCallback` without justification
-- Raw `<img>` instead of DS image components
+2. Read [code-review](../../.agents/skills/code-review/SKILL.md) **fully** — PR workflow, checklist, file → skill table.
+3. For each path in the diff, read the linked skill(s) from that table **fully** ([component-api](../../.agents/skills/component-api/SKILL.md), [react-patterns](../../.agents/skills/react-patterns/SKILL.md), [scss](../../.agents/skills/scss/SKILL.md), [storybook](../../.agents/skills/storybook/SKILL.md), [browser-tests](../../.agents/skills/browser-tests/SKILL.md), [ark-ui](../../.agents/skills/ark-ui/SKILL.md) as applicable). Apply those skills — do not restate their rules here.
+4. Flag violations against the [PR checklist](../../.agents/skills/code-review/SKILL.md#pr-checklist) and linked skills only.
 
 ## Comment format (for parent to post)
 

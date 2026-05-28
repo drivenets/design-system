@@ -142,7 +142,7 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 - [`scss`](.agents/skills/scss/SKILL.md) — edit `*.scss`; tokens, focus/disabled, CSS modules
 - [`ts-standards`](.agents/skills/ts-standards/SKILL.md) — edit `.ts` / `.tsx`; JSDoc, exports, Object.freeze
 - [`browser-tests`](.agents/skills/browser-tests/SKILL.md) — add/edit `*.browser.test.tsx`; Vitest browser patterns, a11y queries, Ark locators
-- [`storybook`](.agents/skills/storybook/SKILL.md) — edit `*.stories.tsx`; story variants, mockdate, args, no play functions
+- [`storybook`](.agents/skills/storybook/SKILL.md) — edit `*.stories.tsx`; story variants, args, MCP-friendly docs, no play functions
 - [`component-scaffold`](.agents/skills/component-scaffold/SKILL.md) — "scaffold a new component"; orchestrator for files, exports, skill read order
 - [`figma-to-component`](.agents/skills/figma-to-component/SKILL.md) — Figma URL; trust boundary, Figma/DS MCP orchestration, then component-scaffold
 - [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md) — "migrate tests for ds-X"; Storybook `play` → browser tests
