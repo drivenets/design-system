@@ -2,14 +2,11 @@
 @use '../../styles/variables' as vars;
 
 .stickyHeader {
-	position: sticky;
-	top: 0;
-	z-index: 10;
 	background-color: var(--background);
 }
 
 .virtualizedHeader {
-	display: grid;
+	display: block;
 }
 
 .headerRow {
@@ -57,6 +54,7 @@
 
 .selectHeaderCell {
 	padding: 0;
+	justify-content: center;
 }
 
 .headerSortContainer {

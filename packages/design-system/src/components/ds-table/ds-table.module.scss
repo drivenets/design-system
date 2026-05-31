@@ -1,5 +1,5 @@
 @use '../../styles/typography';
-@use '../../styles/utilities' as utils;
+@use '../../styles/scrollbars' as scrollbars;
 @use './styles/variables' as vars;
 
 :root {
@@ -9,9 +9,10 @@
 	--ds-table-header-height: 45px;
 }
 
-$bulk-actions-height: 60px;
+$bulk-actions-reserved-space: 80px;
 
 .container {
+	position: relative;
 	border-radius: vars.$border-radius;
 	border-width: vars.$border-width;
 	border-style: solid;
@@ -21,7 +22,51 @@ $bulk-actions-height: 60px;
 
 .dataTableContainer {
 	max-height: 100%;
-	overflow: auto;
+	overflow-x: auto;
+	overflow-y: hidden;
+	display: flex;
+	flex-direction: column;
+
+	@include scrollbars.scrollbar-on-hover;
+
+	> table {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		min-height: 0;
+		width: max-content;
+		min-width: 100%;
+	}
+
+	thead {
+		display: block;
+		flex-shrink: 0;
+		overflow-y: scroll;
+		scrollbar-gutter: stable;
+
+		@include scrollbars.scrollbar-on-hover;
+	}
+
+	tbody {
+		display: block;
+		overflow-y: auto;
+		flex: 1;
+		min-height: 0;
+		scrollbar-gutter: stable;
+
+		@include scrollbars.scrollbar-on-hover;
+	}
+
+	thead tr,
+	tbody tr {
+		display: flex;
+	}
+
+	thead th,
+	tbody td {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .table {
@@ -40,21 +85,66 @@ $bulk-actions-height: 60px;
 	width: 100%;
 }
 
-.emptyState {
-	height: vars.$empty-state-height;
-	text-align: center;
+.bulkActionsVisible {
+	tbody {
+		padding-bottom: $bulk-actions-reserved-space;
+	}
 }
 
-.virtualized {
-	display: grid;
+.emptyState {
+	// colSpan in markup isn't honored by flex row layout, so the cell stretches
+	// across the row; stretch the inner content so it occupies full table width
+	flex: 1;
+	min-width: 0;
+	height: vars.$empty-state-height;
+	justify-content: center;
+	text-align: center;
+
+	> * {
+		flex: 1;
+	}
 }
 
 .virtualizedContainer {
 	position: relative;
 	height: vars.$virtualized-height;
-	overflow: auto;
-}
+	overflow-x: auto;
+	overflow-y: hidden;
+	display: flex;
+	flex-direction: column;
 
-.bulkActionsVisible {
-	padding-bottom: $bulk-actions-height;
+	@include scrollbars.scrollbar-on-hover;
+
+	> table {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		min-height: 0;
+		width: max-content;
+		min-width: 100%;
+	}
+
+	thead {
+		display: block;
+		flex-shrink: 0;
+		overflow-y: scroll;
+		scrollbar-gutter: stable;
+
+		@include scrollbars.scrollbar-on-hover;
+	}
+
+	tbody {
+		flex: 1;
+		min-height: 0;
+		scrollbar-gutter: stable;
+	}
+
+	thead tr {
+		display: flex;
+	}
+
+	thead th {
+		display: flex;
+		align-items: center;
+	}
 }

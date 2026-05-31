@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "drivenets-ds": {
+      "command": "npx",
+      "args": ["-y", "@drivenets/design-system-mcp"]
+    },
+    "drivenets-ds-local": {
+      "command": "node",
+      "args": [
+        "packages/mcp/dist/cli.js",
+        "--manifests-url",
+        "http://localhost:6006"
+      ]
+    }
+  }
+}
