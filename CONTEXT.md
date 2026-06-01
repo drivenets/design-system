@@ -48,6 +48,34 @@ _Avoid_: replacement, v2 component (as a synonym for the pattern name)
 A **Component** (or prop type) still exported but documented as superseded; Storybook uses the `deprecated` tag.
 _Avoid_: legacy, old (without linking to the successor)
 
+**Workspace page**:
+A full-screen DAP route for a multi-step **Project** (create, view, or approve) with persistent header chrome and a structured body.
+_Avoid_: project page, wizard page, fullscreen layout (generic)
+
+**Workspace layout mode**:
+Either the simple shell (`Header`, optional `SubHeader`, `Content`, optional `Footer`) or the extended shell that swaps root `Content` for `Body` plus optional `SideMenu`, `LeftPanel`, and `Content` nested inside `Body`. Extended regions are opt-in; root-level `Content` keeps the simple shell default and must not change behavior for existing consumers.
+_Avoid_: layout prop, variant enum on the root component
+
+**Workspace body**:
+The region below the workspace header: optional top/bottom stepper bands plus a horizontal band for navigation chrome and main work area.
+_Avoid_: content (when meaning the whole page), main
+
+**Side menu panel** (workspace):
+Optional workspace-body chrome: vertical section navigation (collapsed rail, hover expand, optional pin) beside the work area; does not set **Content area** horizontal margins.
+_Avoid_: left nav, sidebar, catalog side menu (different page type)
+
+**Left side panel** (workspace):
+Optional docked panel in the workspace body that consumes width and pushes the **Content area** aside; when present, **Content area** uses 24px horizontal margins.
+_Avoid_: drawer, right side panel, side menu panel
+
+**Content area** (workspace):
+The primary work column (`DsWorkspaceLayout.Content`): column layout with 24px vertical margins, 16px gap, and 40px horizontal margins (24px when a **Left side panel** is present). Layout chrome only — title line and content items are consumer markup inside the slot. `SideMenu` does not affect horizontal margins.
+_Avoid_: main content, body, canvas (canvas is one kind of content)
+
+**Right side panel** (workspace):
+Optional drawer overlay scoped to the **Content area** only — workspace header and body chrome (side menu, left panel) stay visible; composed with `DsDrawer` inside **Content area**, not a push layout region.
+_Avoid_: left side panel, side menu panel, modal, body-wide overlay (unless product explicitly requires it)
+
 ## Relationships
 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
@@ -56,6 +84,10 @@ _Avoid_: legacy, old (without linking to the successor)
 - A **Successor component** supersedes a **Deprecated component**; both may ship until consumers migrate
 - **Tokens** flow from design into SCSS; **Components** consume tokens, not raw hex from Figma in new work
 - **Changesets** attach to package releases; a new **Component** or breaking API change typically needs one
+- A **Workspace page** has one header and one **Workspace body**; the body may combine **Side menu panel**, **Left side panel**, **Content area**, and **Right side panel**
+- **Side menu panel** and **Left side panel** differ: only **Left side panel** toggles **Content area** horizontal margins (24px vs 40px)
+- **Left side panel** pushes layout; **Right side panel** overlays **Content area** via `DsDrawer` (no symmetric right layout slot)
+- **Workspace layout mode** is opt-in: `Body` with `SideMenu` / `LeftPanel` adds horizontal chrome; `Content` always applies content-area spacing
 
 ## Example dialogue
 
@@ -64,6 +96,12 @@ _Avoid_: legacy, old (without linking to the successor)
 
 > **Dev:** "We're shipping `DsButtonV3` but `DsButton` is still exported."
 > **Domain expert:** "That's a **Successor component**. Leave `DsButton` as **Deprecated component** with `@deprecated` JSDoc until product apps migrate; new internal usage should import **Successor** only."
+
+> **Dev:** "Should the comments drawer cover the side menu?"
+> **Domain expert:** "No — **Right side panel** overlays **Content area** only. Header and body chrome stay visible; use `DsDrawer` inside **Content area**, not a full-body overlay."
+
+> **Dev:** "Should we add `ContentTitle` and `ContentItems` slots?"
+> **Domain expert:** "No — **Content area** is `Content`. Workspace exposes layout regions; page content (title line, content items) stays in consumer children."
 
 ## Flagged ambiguities
 
