@@ -4,7 +4,9 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'cron'
+      cronjob: 'every other sunday at 07:00'
+      timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'chore'
 
@@ -52,7 +54,9 @@ updates:
       default-days: 1 # zizmor: ignore[dependabot-cooldown] We're fine with 1 day.
 
     schedule:
-      interval: 'weekly'
+      interval: 'cron'
+      cronjob: 'every other sunday at 07:00'
+      timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'ci'
     groups:
