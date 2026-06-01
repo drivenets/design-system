@@ -4,11 +4,11 @@ import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsIcon } from '../../ds-icon';
 import DsTable from '../ds-table';
-import { DsButton } from '../../ds-button';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { DsModal } from '../../ds-modal';
 import { DsVerticalTabs } from '../../ds-vertical-tabs';
 import { DsTypography } from '../../ds-typography';
-import { DsChipGroup } from '../../ds-chip-group';
+import { DsTagFilter } from '../../ds-tag-filter';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
 import type { FilterNavItem } from '../filters/types/filter-adapter.types';
 import { type Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
@@ -281,7 +281,7 @@ function MyTable() {
 
   const {
     columnFilters,       // For TanStack Table
-    filterChips,         // For DsChipGroup
+    filterChips,         // For DsTagFilter
     filterNavItems,      // For filter navigation (FilterNavItem[])
     enhancedColumns,     // Columns with filters
     handlers,            // { applyFilters, clearAll, deleteChip }
@@ -293,12 +293,10 @@ function MyTable() {
 
   return (
     <>
-      <DsButton onClick={() => setIsModalOpen(true)}>
-        <DsIcon icon="filter_list" />
-      </DsButton>
+      <DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsModalOpen(true)} />
 
       {filterChips.length > 0 && (
-        <DsChipGroup
+        <DsTagFilter
           items={filterChips}
           onClearAll={handlers.clearAll}
           onItemDelete={handlers.deleteChip}
@@ -354,7 +352,7 @@ createCustomFilterAdapter({
   label: 'Display Label',
   initialValue: { /* your state */ },
   filterFn: (row, columnId, filterValue) => boolean,
-  toChips: (value) => FilterChipItem[],
+  toChips: (value) => TagFilterItem[],
   fromChip: (chip, currentValue) => newValue,
   getActiveFiltersCount: (value) => number,              // 0 means none active
   renderFilter: (value, onChange) => ReactNode,
@@ -426,7 +424,7 @@ This story demonstrates the complete filter system with:
    \`\`\`typescript
    const {
      columnFilters,       // Pass to DsTable
-     filterChips,         // Pass to DsChipGroup
+     filterChips,         // Pass to DsTagFilter
      filterNavItems,      // Pass to DsVerticalTabs in modal
      enhancedColumns,     // Pass to DsTable (includes filter functions)
      handlers,            // { applyFilters, clearAll, deleteChip }
@@ -490,9 +488,9 @@ const handleValueChange = (value: string | null) => {
   </DsModal.Body>
 
   <DsModal.Footer className={styles.filterFooter}>
-    <DsButton onClick={handleClearAll}>Clear all</DsButton>
+    <DsButtonV3 variant="secondary" onClick={handleClearAll}>Clear all</DsButtonV3>
     <DsModal.Actions>
-      <DsButton onClick={handleApply}>Apply</DsButton>
+      <DsButtonV3 onClick={handleApply}>Apply</DsButtonV3>
     </DsModal.Actions>
   </DsModal.Footer>
 </DsModal>
@@ -571,14 +569,12 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			<div className={styles.tableFilterContainer}>
 				{/* Toolbar with filter button */}
 				<div className={styles.toolbar}>
-					<DsButton design="v1.2" buttonType="secondary" onClick={() => setIsOpen(true)}>
-						<DsIcon size="tiny" icon="filter_list" />
-					</DsButton>
+					<DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsOpen(true)} />
 				</div>
 
 				{/* Filter chips (automatically generated from filter state) */}
 				{filterChips.length > 0 && (
-					<DsChipGroup items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+					<DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
 				)}
 
 				{/* Table with enhanced columns (includes filter functions) */}
@@ -616,14 +612,13 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 					</DsModal.Body>
 
 					<DsModal.Footer className={styles.filterFooter}>
-						<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={handleClearAll}>
-							<DsIcon icon="close" size="tiny" />
+						<DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>
 							Clear all
-						</DsButton>
+						</DsButtonV3>
 						<DsModal.Actions>
-							<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={handleApply}>
+							<DsButtonV3 variant="primary" onClick={handleApply}>
 								Apply
-							</DsButton>
+							</DsButtonV3>
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>
@@ -700,9 +695,11 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 
 		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
 
-		// 9. Delete individual chip
+		// 9. Delete individual chip. DsTagFilter renders a `Delete tag` X inside each
+		// chip; the chip itself is also role="button", so the nested button is
+		// excluded from the accessibility tree — query by label directly.
 		const activeChip = canvas.getByRole('button', { name: /status: active/i });
-		const deleteButton = within(activeChip).getByRole('button', { name: /delete/i });
+		const deleteButton = within(activeChip).getByLabelText(/delete tag/i);
 		await userEvent.click(deleteButton);
 
 		await expect(canvas.queryByRole('button', { name: /status: active/i })).not.toBeInTheDocument();
@@ -811,13 +808,11 @@ The debug panel below shows the current filter state as JSON.
 				</div>
 
 				<div className={styles.toolbar}>
-					<DsButton design="v1.2" buttonType="secondary" onClick={() => setIsOpen(true)}>
-						<DsIcon size="tiny" icon="filter_list" />
-					</DsButton>
+					<DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsOpen(true)} />
 				</div>
 
 				{filterChips.length > 0 && (
-					<DsChipGroup items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+					<DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
 				)}
 
 				<DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
@@ -853,14 +848,13 @@ The debug panel below shows the current filter state as JSON.
 					</DsModal.Body>
 
 					<DsModal.Footer className={styles.filterFooter}>
-						<DsButton design="v1.2" variant="filled" buttonType="secondary" onClick={handleClearAll}>
-							<DsIcon icon="close" size="tiny" />
+						<DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>
 							Clear all
-						</DsButton>
+						</DsButtonV3>
 						<DsModal.Actions>
-							<DsButton design="v1.2" variant="filled" buttonType="primary" onClick={handleApply}>
+							<DsButtonV3 variant="primary" onClick={handleApply}>
 								Apply
-							</DsButton>
+							</DsButtonV3>
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>

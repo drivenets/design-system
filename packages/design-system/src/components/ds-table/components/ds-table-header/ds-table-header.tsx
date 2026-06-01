@@ -9,6 +9,8 @@ import { useDsTableContext } from '../../context/ds-table-context';
 import { getColumnSizeStyle } from '../../utils/column-size';
 import { SELECT_COLUMN_ID } from '../../utils/constants';
 import { DsStack } from '../../../ds-stack';
+import { DsTableColumnFilterPopover } from '../../filters/components/column-filter-popover';
+import type { ResolvedColumnFilter } from '../../filters/types/filter-adapter.types';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 	const { stickyHeader, bordered, virtualized } = useDsTableContext<TData, unknown>();
@@ -31,6 +33,11 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 						const canSort = header.column.getCanSort();
 						const isSelectColumn = header.column.id === SELECT_COLUMN_ID;
 
+						const metaFilter = header.column.columnDef.meta?.filter;
+						const resolvedFilter: ResolvedColumnFilter | undefined =
+							metaFilter && 'render' in metaFilter ? metaFilter : undefined;
+						const hasActiveColumnFilter = resolvedFilter?.hasActiveFilter ?? false;
+
 						return (
 							<TableHead
 								key={header.id}
@@ -38,6 +45,8 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 									styles.headerCell,
 									canSort && styles.sortableHeader,
 									isSelectColumn && styles.selectHeaderCell,
+									resolvedFilter && styles.filterableHeader,
+									hasActiveColumnFilter && styles.filterActive,
 								)}
 								onClick={header.column.getToggleSortingHandler()}
 								style={headerStyle}
@@ -65,6 +74,19 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 												}[header.column.getIsSorted() as string] ?? (
 													<div className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)} />
 												)}
+											</div>
+										)}
+										{resolvedFilter && (
+											<div className={styles.filterTriggerContainer}>
+												<DsTableColumnFilterPopover
+													filterId={resolvedFilter.filterId}
+													hasActiveFilter={resolvedFilter.hasActiveFilter}
+													onApply={resolvedFilter.onApply}
+													onClear={resolvedFilter.onClear}
+													onCancel={resolvedFilter.onCancel}
+												>
+													{resolvedFilter.render()}
+												</DsTableColumnFilterPopover>
 											</div>
 										)}
 									</div>
