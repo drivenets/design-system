@@ -569,7 +569,12 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			<div className={styles.tableFilterContainer}>
 				{/* Toolbar with filter button */}
 				<div className={styles.toolbar}>
-					<DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsOpen(true)} />
+					<DsButtonV3
+						variant="secondary"
+						icon="filter_list"
+						aria-label="Filter"
+						onClick={() => setIsOpen(true)}
+					/>
 				</div>
 
 				{/* Filter chips (automatically generated from filter state) */}
@@ -808,7 +813,12 @@ The debug panel below shows the current filter state as JSON.
 				</div>
 
 				<div className={styles.toolbar}>
-					<DsButtonV3 variant="secondary" icon="filter_list" onClick={() => setIsOpen(true)} />
+					<DsButtonV3
+						variant="secondary"
+						icon="filter_list"
+						aria-label="Filter"
+						onClick={() => setIsOpen(true)}
+					/>
 				</div>
 
 				{filterChips.length > 0 && (
