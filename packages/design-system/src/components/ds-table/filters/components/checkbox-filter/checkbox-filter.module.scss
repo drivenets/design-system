@@ -1,0 +1,36 @@
+@use '../../../../../styles/typography';
+
+.root {
+	display: flex;
+	flex-direction: column;
+	min-width: 248px;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	max-height: 280px;
+	overflow-y: auto;
+}
+
+.empty {
+	@include typography.body-sm-reg;
+	color: var(--font-secondary);
+	padding: var(--xs) var(--3xs);
+	text-align: center;
+}
+
+.checkboxItem {
+	display: flex;
+	width: 100%;
+	align-items: center;
+	gap: var(--xs);
+	padding: var(--xs);
+	min-height: 40px;
+	border-radius: 4px;
+
+	/* Highlight bg is the focus indicator (matches DsDropdownMenu items). */
+	&[data-focus-visible] {
+		outline: none;
+	}
+}

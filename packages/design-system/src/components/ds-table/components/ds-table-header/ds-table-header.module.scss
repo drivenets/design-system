@@ -64,3 +64,25 @@
 	gap: vars.$header-sort-gap;
 	height: 100%;
 }
+
+.filterTriggerContainer {
+	display: inline-flex;
+	align-items: center;
+	margin-left: vars.$header-sort-gap;
+}
+
+.filterableHeader {
+	&:hover .filterTriggerContainer > * {
+		opacity: 1;
+	}
+
+	&:focus-within .filterTriggerContainer > * {
+		opacity: 1;
+	}
+}
+
+.filterActive {
+	.filterTriggerContainer > * {
+		opacity: 1;
+	}
+}
