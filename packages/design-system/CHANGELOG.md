@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.12.2
+
+### Patch Changes
+
+- 556aacd: Update `DsTable` scroll, use thin scrollbar for header
+
 ## 0.12.1
 
 ### Patch Changes
