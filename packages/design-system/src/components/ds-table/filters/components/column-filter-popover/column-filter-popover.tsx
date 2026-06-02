@@ -56,8 +56,9 @@ export const DsTableColumnFilterPopover = ({
 			unmountOnExit
 		>
 			<Popover.Trigger asChild>
-				<button
-					type="button"
+				<DsButtonV3
+					variant="tertiary"
+					size="tiny"
 					className={classNames(
 						styles.trigger,
 						hasActiveFilter && styles.triggerActive,
@@ -69,7 +70,7 @@ export const DsTableColumnFilterPopover = ({
 					onClick={(event) => event.stopPropagation()}
 				>
 					<DsIcon icon="filter_alt" variant="outlined" filled={hasActiveFilter} size="tiny" />
-				</button>
+				</DsButtonV3>
 			</Popover.Trigger>
 
 			<Portal>
