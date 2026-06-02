@@ -1,6 +1,4 @@
 import { addons } from 'storybook/manager-api';
-import { drivenetsStorybookTheme } from './theme';
+import { darkTheme } from './themes';
 
-addons.setConfig({
-	theme: drivenetsStorybookTheme,
-});
+addons.setConfig({ theme: darkTheme });

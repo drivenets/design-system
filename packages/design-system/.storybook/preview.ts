@@ -1,12 +1,12 @@
 import type { Preview } from '@storybook/react-vite';
 import '../src/styles/styles.scss';
-import { drivenetsStorybookTheme } from './theme';
+import { lightTheme } from './themes';
 
 const preview: Preview = {
 	tags: ['autodocs'],
 	parameters: {
 		docs: {
-			theme: drivenetsStorybookTheme,
+			theme: lightTheme,
 		},
 		options: {
 			storySort: {
