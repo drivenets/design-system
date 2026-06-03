@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -20032,7 +20032,7 @@ zebra?: boolean</code></pre>
                 ...col,
                 header: &#39;Profile Progress&#39;,
                 cell: (info) =&gt; &lt;ProgressInfographic value={info.getValue() as number} /&gt;,
-            } as ColumnDef&lt;Person&gt;;
+            };
         } else if (&#39;accessorKey&#39; in col &amp;&amp; col.accessorKey === &#39;status&#39;) {
             return {
                 ...col,
@@ -20044,7 +20044,7 @@ zebra?: boolean</code></pre>
                         {info.getValue() as string}
                     &lt;/span&gt;
                 ),
-            } as ColumnDef&lt;Person&gt;;
+            };
         }
         return col;
     })}
@@ -22416,7 +22416,7 @@ zebra?: boolean</code></pre>
                             return {
                                 ...col,
                                 size: 100,
-                            } as ColumnDef&lt;Person&gt;;
+                            };
                         }
                         return col;
                     })}
@@ -22510,7 +22510,7 @@ zebra?: boolean</code></pre>
                             return {
                                 ...col,
                                 size: 100,
-                            } as ColumnDef&lt;Person&gt;;
+                            };
                         }
                         return col;
                     })}
