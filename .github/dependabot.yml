@@ -27,7 +27,7 @@ updates:
           - 'typescript'
           - 'vitest'
 
-      # All eslint-related packages are better be updated together.
+      # All eslint-related packages are better to be updated together.
       eslint:
         patterns:
           - '*eslint*'
