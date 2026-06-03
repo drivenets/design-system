@@ -17,6 +17,8 @@ updates:
     groups:
       # Matching the pnpm catalog entries manually since Dependabot matches them under the production group.
       # See: https://github.com/dependabot/dependabot-core/issues/14824
+      #
+      # Note: Excluding eslint-related packages since they have their own group.
       pnpm-catalog:
         patterns:
           - '@arethetypeswrong/cli'
