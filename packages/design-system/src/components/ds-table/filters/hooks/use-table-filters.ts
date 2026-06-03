@@ -128,7 +128,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 				}
 
 				const cellRenderer = adapter.cellRenderer;
-				const appliedValue = appliedFilters[adapter.id] as TValue | undefined;
+				const appliedValue = appliedFilters[adapter.id];
 				const resolvedFilter: ResolvedColumnFilter | undefined = metaFilter
 					? {
 							filterId: adapter.id,
