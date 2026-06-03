@@ -45,6 +45,7 @@ const DsFormControl = ({
 	id,
 	status,
 	label,
+	hideLabel = false,
 	required = false,
 	slots,
 	message,
@@ -68,17 +69,19 @@ const DsFormControl = ({
 				)}
 				style={style}
 			>
-				<div className={styles.labelContainer}>
-					<label
-						htmlFor={controlId}
-						className={classNames(styles.label, {
-							[styles.required]: required,
-						})}
-					>
-						{label}
-					</label>
-					{slots?.endAdornment && <div className={styles.endAdornment}>{slots.endAdornment}</div>}
-				</div>
+				{!hideLabel && (
+					<div className={styles.labelContainer}>
+						<label
+							htmlFor={controlId}
+							className={classNames(styles.label, {
+								[styles.required]: required,
+							})}
+						>
+							{label}
+						</label>
+						{slots?.endAdornment && <div className={styles.endAdornment}>{slots.endAdornment}</div>}
+					</div>
+				)}
 
 				{children}
 
