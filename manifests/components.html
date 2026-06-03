@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/87 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/87 infos</a><span class="filter-pill ok" aria-disabled="true">511 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/87 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/87 infos</a><span class="filter-pill ok" aria-disabled="true">518 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -27440,19 +27440,19 @@ value?: string</code></pre>
   no-story-error
   no-doc-error"
   role="listitem"
-  aria-label="DsWorkspace">
+  aria-label="DsWorkspaceLayout">
   <div class="head">
     <div class="title">
-      <h2><span class="status-dot dot-ok"></span> DsWorkspace</h2>
+      <h2><span class="status-dot dot-ok"></span> DsWorkspaceLayout</h2>
       <div class="badges">
-        <label for="c-84-components-workspace-props" class="badge ok as-toggle">1 prop type</label>
-        <label for="c-84-components-workspace-info" class="badge info as-toggle">1 info</label>
-        <label for="c-84-components-workspace-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-84-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-84-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
+        <label for="c-84-components-workspacelayout-stories" class="badge ok as-toggle">12 stories</label>
         
         
       </div>
     </div>
-    <div class="meta" title="./src/components/ds-workspace/ds-workspace.stories.tsx">components-workspace · ./src/components/ds-workspace/ds-workspace.stories.tsx</div>
+    <div class="meta" title="./src/components/ds-workspace-layout/ds-workspace-layout.stories.tsx">components-workspacelayout · ./src/components/ds-workspace-layout/ds-workspace-layout.stories.tsx</div>
     
     
     
@@ -27460,11 +27460,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-84-components-workspace-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-84-components-workspace-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-84-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-84-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-84-components-workspace-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-84-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27483,7 +27483,7 @@ value?: string</code></pre>
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
               <span class="badge ok">1 prop type</span>
             </div>
-            <pre><code>Component: src/components/ds-workspace/ds-workspace.tsx::default</code></pre>
+            <pre><code>Component: src/components/ds-workspace-layout/ds-workspace-layout.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>/**
  * Whether the workspace should fill its parent height (`100%`) instead of the viewport (`100vh`).
@@ -27501,7 +27501,18 @@ fillParent?: boolean = false</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButtonV3, DsDrawer, DsIcon, DsStatusBadge, DsTypography, DsWorkspace } from "@drivenets/design-system";</code></pre>
+                <pre><code>import {
+    DsButtonV3,
+    DsDrawer,
+    DsIcon,
+    DsNextStepButton,
+    DsStatusBadge,
+    DsStep,
+    DsStepContent,
+    DsStepper,
+    DsTypography,
+    DsWorkspaceLayout,
+} from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27513,32 +27524,56 @@ fillParent?: boolean = false</code></pre>
               
               
               <pre><code>const Default = () =&gt; (
-    &lt;DsWorkspace&gt;
-        &lt;DsWorkspace.Header&gt;
-            &lt;WorkspaceHeader /&gt;
-        &lt;/DsWorkspace.Header&gt;
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;div className={styles.headerLayout}&gt;
+                &lt;div className={styles.headerLeft}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerCenter}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerRight}&gt;
+                    &lt;div className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
 
-        &lt;DsWorkspace.SubHeader&gt;
+        &lt;DsWorkspaceLayout.SubHeader&gt;
             &lt;div className={styles.subHeaderContent}&gt;
                 &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Dashboard&lt;/DsTypography&gt;
                 &lt;DsTypography variant=&quot;body-xs-reg&quot;&gt;Last updated 2 min ago&lt;/DsTypography&gt;
             &lt;/div&gt;
-        &lt;/DsWorkspace.SubHeader&gt;
+        &lt;/DsWorkspaceLayout.SubHeader&gt;
 
-        &lt;DsWorkspace.Content&gt;
-            &lt;div className={styles.mainContent}&gt;
-                &lt;div className={styles.card}&gt;
-                    &lt;DsTypography variant=&quot;heading3&quot;&gt;Welcome&lt;/DsTypography&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This is the main content area of the workspace.&lt;/DsTypography&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.card}&gt;
-                    &lt;DsTypography variant=&quot;heading3&quot;&gt;Section 2&lt;/DsTypography&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Another content section.&lt;/DsTypography&gt;
-                &lt;/div&gt;
+        &lt;DsWorkspaceLayout.Content&gt;
+            &lt;div className={styles.card}&gt;
+                &lt;DsTypography variant=&quot;heading3&quot;&gt;Welcome&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This is the main content area of the workspace.&lt;/DsTypography&gt;
             &lt;/div&gt;
-        &lt;/DsWorkspace.Content&gt;
+            &lt;div className={styles.card}&gt;
+                &lt;DsTypography variant=&quot;heading3&quot;&gt;Section 2&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Another content section.&lt;/DsTypography&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Content&gt;
 
-        &lt;DsWorkspace.Footer&gt;
+        &lt;DsWorkspaceLayout.Footer&gt;
             &lt;div className={styles.footerContent}&gt;
                 &lt;span&gt;v1.2.0&lt;/span&gt;
                 &lt;div className={styles.footerActions}&gt;
@@ -27550,8 +27585,8 @@ fillParent?: boolean = false</code></pre>
                     &lt;/DsButtonV3&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-        &lt;/DsWorkspace.Footer&gt;
-    &lt;/DsWorkspace&gt;
+        &lt;/DsWorkspaceLayout.Footer&gt;
+    &lt;/DsWorkspaceLayout&gt;
 );</code></pre>
             </div>
             <div class="note ok">
@@ -27561,30 +27596,54 @@ fillParent?: boolean = false</code></pre>
               </div>
               
               
-              <pre><code>const WithDrawer = function Render() {
+              <pre><code>const WithDrawer = () =&gt; {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
-        &lt;DsWorkspace&gt;
-            &lt;DsWorkspace.Header&gt;
-                &lt;WorkspaceHeader onAction={() =&gt; setDrawerOpen(true)} /&gt;
-            &lt;/DsWorkspace.Header&gt;
+        &lt;DsWorkspaceLayout&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.headerLayout}&gt;
+                    &lt;div className={styles.headerLeft}&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                            Close
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerCenter}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                            Untitled Project -23-May-2024 04:47 PM
+                        &lt;/DsTypography&gt;
+                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerRight}&gt;
+                        &lt;div className={styles.lastUpdate}&gt;
+                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
 
-            &lt;DsWorkspace.SubHeader&gt;
+            &lt;DsWorkspaceLayout.SubHeader&gt;
                 &lt;div className={styles.subHeaderContent}&gt;
                     &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Dashboard&lt;/DsTypography&gt;
                 &lt;/div&gt;
-            &lt;/DsWorkspace.SubHeader&gt;
+            &lt;/DsWorkspaceLayout.SubHeader&gt;
 
-            &lt;DsWorkspace.Content&gt;
-                &lt;div className={styles.mainContent}&gt;
-                    &lt;div className={styles.card}&gt;
-                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Drawer containment&lt;/DsTypography&gt;
-                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                            Click &amp;quot;Save project&amp;quot; in the header to open the drawer. It renders inside Content —
-                            below the header/subheader and above the footer.
-                        &lt;/DsTypography&gt;
-                    &lt;/div&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.card}&gt;
+                    &lt;DsTypography variant=&quot;heading3&quot;&gt;Drawer containment&lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                        Click &amp;quot;Save project&amp;quot; in the header to open the drawer. It renders inside Content —
+                        below the header/subheader and above the footer.
+                    &lt;/DsTypography&gt;
                 &lt;/div&gt;
 
                 &lt;DsDrawer open={drawerOpen} onOpenChange={setDrawerOpen} columns={4}&gt;
@@ -27593,11 +27652,9 @@ fillParent?: boolean = false</code></pre>
                         &lt;DsDrawer.CloseTrigger /&gt;
                     &lt;/DsDrawer.Header&gt;
                     &lt;DsDrawer.Body&gt;
-                        &lt;div className={styles.mainContent}&gt;
-                            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                                This drawer is contained within the content area.
-                            &lt;/DsTypography&gt;
-                        &lt;/div&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                            This drawer is contained within the content area.
+                        &lt;/DsTypography&gt;
                     &lt;/DsDrawer.Body&gt;
                     &lt;DsDrawer.Footer&gt;
                         &lt;DsDrawer.Actions&gt;
@@ -27610,14 +27667,14 @@ fillParent?: boolean = false</code></pre>
                         &lt;/DsDrawer.Actions&gt;
                     &lt;/DsDrawer.Footer&gt;
                 &lt;/DsDrawer&gt;
-            &lt;/DsWorkspace.Content&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
 
-            &lt;DsWorkspace.Footer&gt;
+            &lt;DsWorkspaceLayout.Footer&gt;
                 &lt;div className={styles.footerContent}&gt;
                     &lt;span&gt;v1.2.0&lt;/span&gt;
                 &lt;/div&gt;
-            &lt;/DsWorkspace.Footer&gt;
-        &lt;/DsWorkspace&gt;
+            &lt;/DsWorkspaceLayout.Footer&gt;
+        &lt;/DsWorkspaceLayout&gt;
     );
 };</code></pre>
             </div>
@@ -27628,30 +27685,54 @@ fillParent?: boolean = false</code></pre>
               </div>
               
               
-              <pre><code>const WithDrawerAndBackdrop = function Render() {
+              <pre><code>const WithDrawerAndBackdrop = () =&gt; {
     const [drawerOpen, setDrawerOpen] = useState(false);
 
     return (
-        &lt;DsWorkspace&gt;
-            &lt;DsWorkspace.Header&gt;
-                &lt;WorkspaceHeader onAction={() =&gt; setDrawerOpen(true)} /&gt;
-            &lt;/DsWorkspace.Header&gt;
+        &lt;DsWorkspaceLayout&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.headerLayout}&gt;
+                    &lt;div className={styles.headerLeft}&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                            Close
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerCenter}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                            Untitled Project -23-May-2024 04:47 PM
+                        &lt;/DsTypography&gt;
+                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerRight}&gt;
+                        &lt;div className={styles.lastUpdate}&gt;
+                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
 
-            &lt;DsWorkspace.SubHeader&gt;
+            &lt;DsWorkspaceLayout.SubHeader&gt;
                 &lt;div className={styles.subHeaderContent}&gt;
                     &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Dashboard&lt;/DsTypography&gt;
                 &lt;/div&gt;
-            &lt;/DsWorkspace.SubHeader&gt;
+            &lt;/DsWorkspaceLayout.SubHeader&gt;
 
-            &lt;DsWorkspace.Content&gt;
-                &lt;div className={styles.mainContent}&gt;
-                    &lt;div className={styles.card}&gt;
-                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Backdrop containment&lt;/DsTypography&gt;
-                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                            Click &amp;quot;Save project&amp;quot; to open the drawer. The backdrop only covers the content area,
-                            not the header or footer.
-                        &lt;/DsTypography&gt;
-                    &lt;/div&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.card}&gt;
+                    &lt;DsTypography variant=&quot;heading3&quot;&gt;Backdrop containment&lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                        Click &amp;quot;Save project&amp;quot; to open the drawer. The backdrop only covers the content area,
+                        not the header or footer.
+                    &lt;/DsTypography&gt;
                 &lt;/div&gt;
 
                 &lt;DsDrawer open={drawerOpen} onOpenChange={setDrawerOpen} columns={4} backdrop&gt;
@@ -27660,19 +27741,17 @@ fillParent?: boolean = false</code></pre>
                         &lt;DsDrawer.CloseTrigger /&gt;
                     &lt;/DsDrawer.Header&gt;
                     &lt;DsDrawer.Body&gt;
-                        &lt;div className={styles.mainContent}&gt;
-                            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;The backdrop is scoped to the content area.&lt;/DsTypography&gt;
-                        &lt;/div&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;The backdrop is scoped to the content area.&lt;/DsTypography&gt;
                     &lt;/DsDrawer.Body&gt;
                 &lt;/DsDrawer&gt;
-            &lt;/DsWorkspace.Content&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
 
-            &lt;DsWorkspace.Footer&gt;
+            &lt;DsWorkspaceLayout.Footer&gt;
                 &lt;div className={styles.footerContent}&gt;
                     &lt;span&gt;v1.2.0&lt;/span&gt;
                 &lt;/div&gt;
-            &lt;/DsWorkspace.Footer&gt;
-        &lt;/DsWorkspace&gt;
+            &lt;/DsWorkspaceLayout.Footer&gt;
+        &lt;/DsWorkspaceLayout&gt;
     );
 };</code></pre>
             </div>
@@ -27684,26 +27763,50 @@ fillParent?: boolean = false</code></pre>
               
               
               <pre><code>const FillParent = () =&gt; (
-    &lt;div style={{ height: 400, border: &#39;2px dashed var(--border)&#39; }}&gt;
-        &lt;DsWorkspace fillParent&gt;
-            &lt;DsWorkspace.Header&gt;
-                &lt;WorkspaceHeader /&gt;
-            &lt;/DsWorkspace.Header&gt;
-
-            &lt;DsWorkspace.Content&gt;
-                &lt;div className={styles.mainContent}&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                        This workspace fills its parent container (400px) instead of the viewport.
-                    &lt;/DsTypography&gt;
+    &lt;div className={styles.fillParentHost}&gt;
+        &lt;DsWorkspaceLayout fillParent&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.headerLayout}&gt;
+                    &lt;div className={styles.headerLeft}&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                            Close
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerCenter}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                            Untitled Project -23-May-2024 04:47 PM
+                        &lt;/DsTypography&gt;
+                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerRight}&gt;
+                        &lt;div className={styles.lastUpdate}&gt;
+                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                    &lt;/div&gt;
                 &lt;/div&gt;
-            &lt;/DsWorkspace.Content&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
 
-            &lt;DsWorkspace.Footer&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                    This workspace fills its parent container (400px) instead of the viewport.
+                &lt;/DsTypography&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
+
+            &lt;DsWorkspaceLayout.Footer&gt;
                 &lt;div className={styles.footerContent}&gt;
                     &lt;span&gt;v1.2.0&lt;/span&gt;
                 &lt;/div&gt;
-            &lt;/DsWorkspace.Footer&gt;
-        &lt;/DsWorkspace&gt;
+            &lt;/DsWorkspaceLayout.Footer&gt;
+        &lt;/DsWorkspaceLayout&gt;
     &lt;/div&gt;
 );</code></pre>
             </div>
@@ -27715,22 +27818,691 @@ fillParent?: boolean = false</code></pre>
               
               
               <pre><code>const HeaderOnly = () =&gt; (
-    &lt;DsWorkspace&gt;
-        &lt;DsWorkspace.Header&gt;
-            &lt;WorkspaceHeader /&gt;
-        &lt;/DsWorkspace.Header&gt;
-
-        &lt;DsWorkspace.Content&gt;
-            &lt;div className={styles.mainContent}&gt;
-                &lt;div className={styles.card}&gt;
-                    &lt;DsTypography variant=&quot;heading3&quot;&gt;No SubHeader or Footer&lt;/DsTypography&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                        All sub-components are optional. Use only what you need.
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;div className={styles.headerLayout}&gt;
+                &lt;div className={styles.headerLeft}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerCenter}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
                     &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerRight}&gt;
+                    &lt;div className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
                 &lt;/div&gt;
             &lt;/div&gt;
-        &lt;/DsWorkspace.Content&gt;
-    &lt;/DsWorkspace&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+
+        &lt;DsWorkspaceLayout.Content&gt;
+            &lt;div className={styles.card}&gt;
+                &lt;DsTypography variant=&quot;heading3&quot;&gt;No SubHeader or Footer&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                    All sub-components are optional. Use only what you need.
+                &lt;/DsTypography&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Content&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended Stepper Below</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Horizontal stepper band in Footer below the body row.</div>
+              <pre><code>const ExtendedStepperBelow = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;div className={styles.headerLayout}&gt;
+                &lt;div className={styles.headerLeft}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerCenter}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerRight}&gt;
+                    &lt;div className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+        &lt;DsWorkspaceLayout.Body&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.extendedMainContent}&gt;
+                    &lt;div className={styles.extendedTitleRow}&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
+                            Edit
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.card}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                            Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
+                            Body.
+                        &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
+        &lt;/DsWorkspaceLayout.Body&gt;
+        &lt;DsWorkspaceLayout.Footer&gt;
+            &lt;div className={styles.footerStepper}&gt;
+                &lt;DsStepper
+                    count={workspaceSteps.length}
+                    orientation=&quot;horizontal&quot;
+                    actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
+                &gt;
+                    {workspaceSteps.map((step, index) =&gt; (
+                        &lt;DsStep index={index} key={index}&gt;
+                            &lt;DsStepContent index={index} label={step.label} description={step.description} /&gt;
+                        &lt;/DsStep&gt;
+                    ))}
+                &lt;/DsStepper&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Footer&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended Stepper Aside</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Vertical stepper in LeftPanel beside Content.</div>
+              <pre><code>const ExtendedStepperAside = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;div className={styles.headerLayout}&gt;
+                &lt;div className={styles.headerLeft}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerCenter}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerRight}&gt;
+                    &lt;div className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+        &lt;DsWorkspaceLayout.Body&gt;
+            &lt;DsWorkspaceLayout.LeftPanel&gt;
+                &lt;div className={styles.leftPanelContent}&gt;
+                    &lt;div className={styles.leftPanelHeader}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Steps&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.leftPanelBody}&gt;
+                        &lt;DsStepper count={workspaceSteps.length}&gt;
+                            {workspaceSteps.map((step, index) =&gt; (
+                                &lt;DsStep index={index} key={index}&gt;
+                                    &lt;DsStepContent
+                                        index={index}
+                                        label={step.label}
+                                        description={step.description}
+                                        actions={
+                                            &lt;DsNextStepButton&gt;
+                                                {index === workspaceSteps.length - 1 ? &#39;Finish&#39; : &#39;Next&#39;}
+                                            &lt;/DsNextStepButton&gt;
+                                        }
+                                    /&gt;
+                                &lt;/DsStep&gt;
+                            ))}
+                        &lt;/DsStepper&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.LeftPanel&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.extendedMainContent}&gt;
+                    &lt;div className={styles.extendedTitleRow}&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
+                            Edit
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.card}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                            Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
+                            Body.
+                        &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
+        &lt;/DsWorkspaceLayout.Body&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended Side Menu And Left Panel</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Side menu rail and docked left panel together.</div>
+              <pre><code>const ExtendedSideMenuAndLeftPanel = () =&gt; {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        &lt;DsWorkspaceLayout&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.headerLayout}&gt;
+                    &lt;div className={styles.headerLeft}&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                            Close
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerCenter}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                            Untitled Project -23-May-2024 04:47 PM
+                        &lt;/DsTypography&gt;
+                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerRight}&gt;
+                        &lt;div className={styles.lastUpdate}&gt;
+                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
+            &lt;DsWorkspaceLayout.Body&gt;
+                &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
+                    &lt;button
+                        type=&quot;button&quot;
+                        className={styles.sideMenuItem}
+                        aria-label=&quot;Overview&quot;
+                        aria-current=&quot;page&quot;
+                        data-selected
+                    &gt;
+                        &lt;DsIcon icon=&quot;dashboard&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Overview
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Resources&quot;&gt;
+                        &lt;DsIcon icon=&quot;view_list&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Resources
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Settings&quot;&gt;
+                        &lt;DsIcon icon=&quot;settings&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Settings
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Help&quot;&gt;
+                        &lt;DsIcon icon=&quot;help&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Help
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                &lt;/DsWorkspaceLayout.SideMenu&gt;
+                &lt;DsWorkspaceLayout.LeftPanel&gt;
+                    &lt;div className={styles.leftPanelContent}&gt;
+                        &lt;div className={styles.leftPanelHeader}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Filters&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.leftPanelBody}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;
+                                Docked panel in the left side panel slot — always visible, no collapse.
+                            &lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/DsWorkspaceLayout.LeftPanel&gt;
+                &lt;DsWorkspaceLayout.Content&gt;
+                    &lt;div className={styles.extendedMainContent}&gt;
+                        &lt;div className={styles.extendedTitleRow}&gt;
+                            &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
+                            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
+                                Edit
+                            &lt;/DsButtonV3&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.card}&gt;
+                            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                                Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
+                                Body.
+                            &lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/DsWorkspaceLayout.Content&gt;
+            &lt;/DsWorkspaceLayout.Body&gt;
+        &lt;/DsWorkspaceLayout&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended With Canvas</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Full-bleed canvas content inside Content.</div>
+              <pre><code>const ExtendedWithCanvas = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;div className={styles.headerLayout}&gt;
+                &lt;div className={styles.headerLeft}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerCenter}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerRight}&gt;
+                    &lt;div className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+        &lt;DsWorkspaceLayout.Body&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.extendedTitleRow}&gt;
+                    &lt;DsTypography variant=&quot;heading3&quot;&gt;Network topology&lt;/DsTypography&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;fullscreen&quot;&gt;
+                        Expand
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.canvasSurface} aria-label=&quot;Canvas&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                        Map or diagram canvas fills the remaining content area.
+                    &lt;/DsTypography&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
+        &lt;/DsWorkspaceLayout.Body&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended Side Menu Left Panel</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Side menu with left panel — navigation rail plus push panel.</div>
+              <pre><code>const ExtendedSideMenuLeftPanel = () =&gt; {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        &lt;DsWorkspaceLayout&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.headerLayout}&gt;
+                    &lt;div className={styles.headerLeft}&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                            Close
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerCenter}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                            Untitled Project -23-May-2024 04:47 PM
+                        &lt;/DsTypography&gt;
+                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerRight}&gt;
+                        &lt;div className={styles.lastUpdate}&gt;
+                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
+            &lt;DsWorkspaceLayout.Body&gt;
+                &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
+                    &lt;button
+                        type=&quot;button&quot;
+                        className={styles.sideMenuItem}
+                        aria-label=&quot;Overview&quot;
+                        aria-current=&quot;page&quot;
+                        data-selected
+                    &gt;
+                        &lt;DsIcon icon=&quot;dashboard&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Overview
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Resources&quot;&gt;
+                        &lt;DsIcon icon=&quot;view_list&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Resources
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Settings&quot;&gt;
+                        &lt;DsIcon icon=&quot;settings&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Settings
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Help&quot;&gt;
+                        &lt;DsIcon icon=&quot;help&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Help
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                &lt;/DsWorkspaceLayout.SideMenu&gt;
+                &lt;DsWorkspaceLayout.LeftPanel&gt;
+                    &lt;div className={styles.leftPanelContent}&gt;
+                        &lt;div className={styles.leftPanelHeader}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Section navigation&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.leftPanelBody}&gt;
+                            &lt;DsStepper count={workspaceSteps.length}&gt;
+                                {workspaceSteps.map((step, index) =&gt; (
+                                    &lt;DsStep index={index} key={index}&gt;
+                                        &lt;DsStepContent
+                                            index={index}
+                                            label={step.label}
+                                            description={step.description}
+                                            actions={
+                                                &lt;DsNextStepButton&gt;
+                                                    {index === workspaceSteps.length - 1 ? &#39;Finish&#39; : &#39;Next&#39;}
+                                                &lt;/DsNextStepButton&gt;
+                                            }
+                                        /&gt;
+                                    &lt;/DsStep&gt;
+                                ))}
+                            &lt;/DsStepper&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/DsWorkspaceLayout.LeftPanel&gt;
+                &lt;DsWorkspaceLayout.Content&gt;
+                    &lt;div className={styles.extendedMainContent}&gt;
+                        &lt;div className={styles.extendedTitleRow}&gt;
+                            &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
+                            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
+                                Edit
+                            &lt;/DsButtonV3&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.card}&gt;
+                            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                                Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
+                                Body.
+                            &lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/DsWorkspaceLayout.Content&gt;
+            &lt;/DsWorkspaceLayout.Body&gt;
+        &lt;/DsWorkspaceLayout&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended Combined</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Side menu, left panel, and right drawer combined.</div>
+              <pre><code>const ExtendedCombined = () =&gt; {
+    const [pinned, setPinned] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+
+    return (
+        &lt;DsWorkspaceLayout&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.headerLayout}&gt;
+                    &lt;div className={styles.headerLeft}&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                            Close
+                        &lt;/DsButtonV3&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerCenter}&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                            Untitled Project -23-May-2024 04:47 PM
+                        &lt;/DsTypography&gt;
+                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.headerRight}&gt;
+                        &lt;div className={styles.lastUpdate}&gt;
+                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
+            &lt;DsWorkspaceLayout.Body&gt;
+                &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
+                    &lt;button
+                        type=&quot;button&quot;
+                        className={styles.sideMenuItem}
+                        aria-label=&quot;Overview&quot;
+                        aria-current=&quot;page&quot;
+                        data-selected
+                    &gt;
+                        &lt;DsIcon icon=&quot;dashboard&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Overview
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Resources&quot;&gt;
+                        &lt;DsIcon icon=&quot;view_list&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Resources
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Settings&quot;&gt;
+                        &lt;DsIcon icon=&quot;settings&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Settings
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                    &lt;button type=&quot;button&quot; className={styles.sideMenuItem} aria-label=&quot;Help&quot;&gt;
+                        &lt;DsIcon icon=&quot;help&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.sideMenuItemLabel}&gt;
+                            Help
+                        &lt;/DsTypography&gt;
+                    &lt;/button&gt;
+                &lt;/DsWorkspaceLayout.SideMenu&gt;
+                &lt;DsWorkspaceLayout.LeftPanel&gt;
+                    &lt;div className={styles.leftPanelContent}&gt;
+                        &lt;div className={styles.leftPanelHeader}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Steps&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.leftPanelBody}&gt;
+                            &lt;DsStepper count={workspaceSteps.length}&gt;
+                                {workspaceSteps.map((step, index) =&gt; (
+                                    &lt;DsStep index={index} key={index}&gt;
+                                        &lt;DsStepContent
+                                            index={index}
+                                            label={step.label}
+                                            description={step.description}
+                                            actions={
+                                                &lt;DsNextStepButton&gt;
+                                                    {index === workspaceSteps.length - 1 ? &#39;Finish&#39; : &#39;Next&#39;}
+                                                &lt;/DsNextStepButton&gt;
+                                            }
+                                        /&gt;
+                                    &lt;/DsStep&gt;
+                                ))}
+                            &lt;/DsStepper&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/DsWorkspaceLayout.LeftPanel&gt;
+                &lt;DsWorkspaceLayout.Content&gt;
+                    &lt;div className={styles.extendedMainContent}&gt;
+                        &lt;div className={styles.extendedTitleRow}&gt;
+                            &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
+                            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
+                                Edit
+                            &lt;/DsButtonV3&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.card}&gt;
+                            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                                Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
+                                Body.
+                            &lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;DsDrawer open={drawerOpen} onOpenChange={setDrawerOpen} columns={4} backdrop&gt;
+                        &lt;DsDrawer.Header&gt;
+                            &lt;DsDrawer.Title&gt;Comments&lt;/DsDrawer.Title&gt;
+                            &lt;DsDrawer.CloseTrigger /&gt;
+                        &lt;/DsDrawer.Header&gt;
+                        &lt;DsDrawer.Body&gt;
+                            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Right drawer scoped to Content.&lt;/DsTypography&gt;
+                        &lt;/DsDrawer.Body&gt;
+                    &lt;/DsDrawer&gt;
+                &lt;/DsWorkspaceLayout.Content&gt;
+            &lt;/DsWorkspaceLayout.Body&gt;
+            &lt;DsWorkspaceLayout.Footer&gt;
+                &lt;div className={styles.footerContent}&gt;
+                    &lt;span&gt;v1.2.0&lt;/span&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Footer&gt;
+        &lt;/DsWorkspaceLayout&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Extended Workflow Info Panel</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Illustrative workflow information panel composed in Content.</div>
+              <pre><code>const ExtendedWorkflowInfoPanel = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;div className={styles.headerLayout}&gt;
+                &lt;div className={styles.headerLeft}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerCenter}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/div&gt;
+                &lt;div className={styles.headerRight}&gt;
+                    &lt;div className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+        &lt;DsWorkspaceLayout.Body&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.extendedMainContent}&gt;
+                    &lt;div className={styles.extendedTitleRow}&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Approval workflow&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.workflowInfoPanel}&gt;
+                        &lt;div className={styles.workflowInfoItem}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Status&lt;/DsTypography&gt;
+                            &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.workflowInfoItem}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Owner&lt;/DsTypography&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Network Operations&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                        &lt;div className={styles.workflowInfoItem}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Last review&lt;/DsTypography&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;2 days ago&lt;/DsTypography&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div className={styles.card}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                            Workflow metadata is consumer markup — not a design-system layout slot.
+                        &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
+        &lt;/DsWorkspaceLayout.Body&gt;
+    &lt;/DsWorkspaceLayout&gt;
 );</code></pre>
             </div>
         </div>
