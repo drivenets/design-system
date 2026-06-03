@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
+import type { VisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsCheckbox } from '../../ds-checkbox';
 import DsTable from '../ds-table';
@@ -40,7 +40,7 @@ export const WithProgressInfographic: Story = {
 					...col,
 					header: 'Profile Progress',
 					cell: (info) => <ProgressInfographic value={info.getValue() as number} />,
-				} as ColumnDef<Person>;
+				};
 			} else if ('accessorKey' in col && col.accessorKey === 'status') {
 				return {
 					...col,
@@ -52,7 +52,7 @@ export const WithProgressInfographic: Story = {
 							{info.getValue() as string}
 						</span>
 					),
-				} as ColumnDef<Person>;
+				};
 			}
 			return col;
 		}),
