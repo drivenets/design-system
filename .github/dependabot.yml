@@ -5,7 +5,8 @@ updates:
     directory: '/'
     schedule:
       interval: 'cron'
-      cronjob: 'every other sunday at 07:00'
+      # Every other Sunday at 07:00.
+      cronjob: '0 7 * * sun%2'
       timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'chore'
@@ -55,7 +56,8 @@ updates:
 
     schedule:
       interval: 'cron'
-      cronjob: 'every other sunday at 07:00'
+      # Every other Sunday at 07:00.
+      cronjob: '0 7 * * sun%2'
       timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'ci'
