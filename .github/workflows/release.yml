@@ -41,6 +41,7 @@ jobs:
         with:
           commit: 'chore(release): publish'
           title: 'chore(release): publish'
+          commitMode: 'github-api'
 
   build:
     name: Build for publish
