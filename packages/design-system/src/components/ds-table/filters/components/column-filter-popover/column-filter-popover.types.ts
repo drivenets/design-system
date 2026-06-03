@@ -10,8 +10,6 @@ export interface ColumnFilterPopoverLocale {
 }
 
 export interface DsTableColumnFilterPopoverProps {
-	/** Stable column / adapter id. Drives aria attributes. */
-	filterId: string;
 	/** Body rendered above the Clear / Save footer. */
 	children: ReactNode;
 	/** Whether the column has an applied filter; drives the trigger's active state. */

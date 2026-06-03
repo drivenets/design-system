@@ -17,7 +17,6 @@ const stopPropagation = (event: MouseEvent) => event.stopPropagation();
  * adapter UI as the body, Clear / Save footer wired to `useTableFilters`.
  */
 export const DsTableColumnFilterPopover = ({
-	filterId,
 	children,
 	hasActiveFilter,
 	onApply,
@@ -52,8 +51,6 @@ export const DsTableColumnFilterPopover = ({
 			open={open}
 			onOpenChange={handleOpenChange}
 			positioning={{ placement: 'bottom-end', gutter: 4 }}
-			lazyMount
-			unmountOnExit
 		>
 			<Popover.Trigger asChild>
 				<DsButtonV3
@@ -65,7 +62,6 @@ export const DsTableColumnFilterPopover = ({
 						open && styles.triggerOpen,
 					)}
 					aria-label={triggerAriaLabel}
-					aria-controls={`column-filter-${filterId}`}
 					data-active={hasActiveFilter ? 'true' : undefined}
 					onClick={(event) => event.stopPropagation()}
 				>
@@ -75,11 +71,7 @@ export const DsTableColumnFilterPopover = ({
 
 			<Portal>
 				<Popover.Positioner>
-					<Popover.Content
-						id={`column-filter-${filterId}`}
-						className={classNames(styles.content, className)}
-						onClick={stopPropagation}
-					>
+					<Popover.Content className={classNames(styles.content, className)} onClick={stopPropagation}>
 						<div className={styles.body}>{children}</div>
 						<div className={styles.footer}>
 							<DsButtonV3 variant="secondary" size="small" onClick={handleClear}>

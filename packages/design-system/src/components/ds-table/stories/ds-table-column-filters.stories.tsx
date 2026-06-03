@@ -268,26 +268,10 @@ function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
 }`;
 
 const meta: Meta<typeof DsTable<DeviceRow, unknown>> = {
-	title: 'Components/Table/Column Filters',
+	title: 'Components/Table/Filters',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
-		docs: {
-			description: {
-				component: `
-Per-column filter popover anchored to a header cell. Opt a column in by
-setting \`meta.filter\` on its \`ColumnDef\`, register the matching adapter
-with \`useTableFilters\`, and feed the hook's \`enhancedColumns\` +
-\`columnFilters\` back into \`DsTable\`.
-
-The header renders a ghost filter button that appears on hover; clicking
-opens a popover with the adapter's UI (search + "All" + checkbox list when
-\`searchable\` / \`selectAll\` are enabled on \`createCheckboxFilterAdapter\`)
-and a \`Clear\` / \`Save\` footer. The same hook also returns chips for the
-\`DsTagFilter\` "Filtered by" bar above the table.
-				`,
-			},
-		},
 	},
 	decorators: [fullHeightDecorator],
 };
@@ -297,9 +281,23 @@ export default meta;
 type Story = StoryObj<typeof DsTable<DeviceRow, unknown>>;
 
 export const ColumnFilters: Story = {
-	name: 'Filter by column content',
+	name: 'Per-Column — Popover',
 	parameters: {
 		docs: {
+			description: {
+				story: `
+Per-column filter popover anchored to a header cell. Opt a column in by
+setting \`meta.filter\` on its \`ColumnDef\`, register the matching adapter
+with \`useTableFilters\`, and feed the hook's \`enhancedColumns\` +
+\`columnFilters\` back into \`DsTable\`.
+
+The header renders a ghost filter button that appears on hover; clicking
+opens a popover with the adapter's UI (search + "All" + checkbox list when
+\`searchable\` / \`selectAll\` are enabled on \`createCheckboxFilterAdapter\`)
+and a \`Clear\` / \`Save\` footer. Clicking outside the popover discards the
+draft and closes it (same as pressing Escape).
+				`,
+			},
 			source: { code: uncontrolledSource },
 		},
 	},
@@ -333,7 +331,7 @@ export const ColumnFilters: Story = {
 };
 
 export const ControlledColumnFilters: Story = {
-	name: 'Controlled (external applied filters)',
+	name: 'Per-Column — Controlled',
 	parameters: {
 		docs: {
 			description: {

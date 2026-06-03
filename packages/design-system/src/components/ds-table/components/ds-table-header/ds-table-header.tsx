@@ -79,7 +79,6 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 										{resolvedFilter && (
 											<div className={styles.filterTriggerContainer}>
 												<DsTableColumnFilterPopover
-													filterId={resolvedFilter.filterId}
 													hasActiveFilter={resolvedFilter.hasActiveFilter}
 													onApply={resolvedFilter.onApply}
 													onClear={resolvedFilter.onClear}

@@ -102,6 +102,26 @@ describe('DsTable - column filters', () => {
 		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).not.toBeChecked();
 	});
 
+	it('closes the popover and discards the draft when the user clicks outside', async () => {
+		await page.render(
+			<div>
+				<button type="button">Outside</button>
+				<TableWithColumnFilters />
+			</div>,
+		);
+
+		const triggerLocator = page.getByRole('button', { name: 'Filter column' });
+		await triggerLocator.click();
+		await page.getByRole('checkbox', { name: 'OLT' }).click();
+		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).toBeChecked();
+
+		await page.getByRole('button', { name: 'Outside' }).click();
+		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).not.toBeInTheDocument();
+
+		await triggerLocator.click();
+		await expect.element(page.getByRole('checkbox', { name: 'OLT' })).not.toBeChecked();
+	});
+
 	it('filters the in-popover list with the search input', async () => {
 		await page.render(<TableWithColumnFilters />);
 

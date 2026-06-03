@@ -399,7 +399,7 @@ export default meta;
 type Story = StoryObj<typeof DsTable<Workflow, unknown>>;
 
 export const FiltersPanel: Story = {
-	name: 'With Filters Panel',
+	name: 'Toolbar — Filters Panel',
 	parameters: {
 		docs: {
 			description: {
@@ -720,7 +720,7 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 };
 
 export const Controlled: Story = {
-	name: 'Controlled Mode',
+	name: 'Toolbar — Controlled',
 	parameters: {
 		docs: {
 			description: {
