@@ -20,20 +20,18 @@ updates:
       pnpm-catalog:
         patterns:
           - '@arethetypeswrong/cli'
-          - '@eslint/core'
           - '@typescript/native-preview'
           - '@vitest/coverage-v8'
-          - 'eslint'
           - 'publint'
           - 'tsdown'
           - 'typescript'
           - 'vitest'
 
-      # All typescript-eslint packages need to be updated together.
-      typescript-eslint:
+      # All eslint-related packages are better be updated together.
+      eslint:
         patterns:
-          - 'typescript-eslint'
-          - '@typescript-eslint/*'
+          - '*eslint*'
+          - 'globals'
 
       npm-development:
         dependency-type: 'development'
