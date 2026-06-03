@@ -30,7 +30,7 @@ export default defineConfig(
 		...reactHooks.configs.flat.recommended,
 	},
 
-	jsxA11y.flatConfigs.recommended as Config,
+	jsxA11y.flatConfigs.recommended,
 
 	storybook.configs['flat/recommended'] as Config,
 

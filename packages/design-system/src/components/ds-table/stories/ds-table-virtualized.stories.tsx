@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { useMemo, useState } from 'react';
-import type { ColumnDef, SortingState } from '@tanstack/react-table';
+import type { SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
 import { DsSpinner } from '../../ds-spinner';
@@ -138,7 +138,7 @@ export const VirtualizedSelectable: Story = {
 				return {
 					...col,
 					size: 100,
-				} as ColumnDef<Person>;
+				};
 			}
 			return col;
 		}),
@@ -260,7 +260,7 @@ export const VirtualizedExpandable: Story = {
 				return {
 					...col,
 					size: 100,
-				} as ColumnDef<Person>;
+				};
 			}
 			return col;
 		}),
