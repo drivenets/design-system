@@ -367,40 +367,40 @@ const editableColumns: ColumnDef<Person>[] = [
 	},
 	{
 		...baseColumn('firstName'),
-		editCell: (info) => (
-			<DsTableEditCellText cellContext={info as CellContext<Person, string>} placeholder="Enter first name" />
+		editCell: (info: CellContext<Person, string>) => (
+			<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
 		),
 	},
 	{
 		...baseColumn('lastName'),
-		editCell: (info) => (
-			<DsTableEditCellText cellContext={info as CellContext<Person, string>} placeholder="Enter last name" />
+		editCell: (info: CellContext<Person, string>) => (
+			<DsTableEditCellText cellContext={info} placeholder="Enter last name" />
 		),
 	},
 	{
 		...baseColumn('age'),
 		size: 100,
-		editCell: (info) => (
-			<DsTableEditCellNumber cellContext={info as CellContext<Person, number>} min={0} max={120} />
+		editCell: (info: CellContext<Person, number>) => (
+			<DsTableEditCellNumber cellContext={info} min={0} max={120} />
 		),
 	},
 	{
 		...baseColumn('visits'),
 		size: 100,
-		editCell: (info) => <DsTableEditCellNumber cellContext={info as CellContext<Person, number>} min={0} />,
+		editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
 	},
 	{
 		...baseColumn('status'),
 		size: 160,
 		cell: (info) => statusLabels[info.getValue() as Status],
-		editCell: (info) => (
-			<DsTableEditCellSelect cellContext={info as CellContext<Person, string>} options={statusOptions} />
+		editCell: (info: CellContext<Person, string>) => (
+			<DsTableEditCellSelect cellContext={info} options={statusOptions} />
 		),
 	},
 	{
 		...baseColumn('progress'),
-		editCell: (info) => (
-			<DsTableEditCellNumber cellContext={info as CellContext<Person, number>} min={0} max={100} />
+		editCell: (info: CellContext<Person, number>) => (
+			<DsTableEditCellNumber cellContext={info} min={0} max={100} />
 		),
 	},
 ];

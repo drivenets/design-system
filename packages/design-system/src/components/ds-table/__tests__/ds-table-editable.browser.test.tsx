@@ -43,27 +43,27 @@ const TableWrapper = ({ onCellEdit, onRowClick, onRowDoubleClick }: WrapperProps
 			accessorKey: 'firstName',
 			header: 'First Name',
 			cell: (info) => info.getValue(),
-			editCell: (info) => <DsTableEditCellText cellContext={info as CellContext<TestRow, string>} />,
+			editCell: (info: CellContext<TestRow, string>) => <DsTableEditCellText cellContext={info} />,
 		},
 		{
 			accessorKey: 'age',
 			header: 'Age',
 			cell: (info) => info.getValue(),
-			editCell: (info) => <DsTableEditCellNumber cellContext={info as CellContext<TestRow, number>} />,
+			editCell: (info: CellContext<TestRow, number>) => <DsTableEditCellNumber cellContext={info} />,
 		},
 		{
 			accessorKey: 'status',
 			header: 'Status',
 			cell: (info) => info.getValue(),
-			editCell: (info) => (
-				<DsTableEditCellSelect cellContext={info as CellContext<TestRow, string>} options={statusOptions} />
+			editCell: (info: CellContext<TestRow, string>) => (
+				<DsTableEditCellSelect cellContext={info} options={statusOptions} />
 			),
 		},
 		{
 			accessorKey: 'active',
 			header: 'Active',
 			cell: (info) => ((info.getValue() as boolean) ? 'Yes' : 'No'),
-			editCell: (info) => <DsTableEditCellCheckbox cellContext={info as CellContext<TestRow, boolean>} />,
+			editCell: (info: CellContext<TestRow, boolean>) => <DsTableEditCellCheckbox cellContext={info} />,
 		},
 	];
 
