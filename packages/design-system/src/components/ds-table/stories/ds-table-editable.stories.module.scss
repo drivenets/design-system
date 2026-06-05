@@ -1,0 +1,31 @@
+.readOnlyCell {
+	color: var(--font-secondary);
+}
+
+.tagDisplay {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--3xs);
+	align-items: center;
+	min-height: 32px;
+	min-width: 60px;
+	padding: var(--3xs) var(--xs);
+	border-radius: 4px;
+	cursor: text;
+}
+
+.tagDisplayEmpty {
+	color: var(--font-secondary);
+	font-style: italic;
+}
+
+.progressEditor {
+	gap: var(--3xs);
+	width: 100%;
+}
+
+.presetList {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--3xs);
+}
