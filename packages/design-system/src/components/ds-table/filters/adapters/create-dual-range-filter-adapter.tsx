@@ -1,5 +1,5 @@
 import type { Row } from '@tanstack/react-table';
-import type { ChipItem } from '../../../ds-chip-group';
+import type { TagFilterItem } from '../../../ds-tag-filter';
 import type { FilterAdapter } from '../types/filter-adapter.types';
 import { RangeFilter } from '../components/range-filter';
 import { createFilterAdapter } from './create-filter-adapter';
@@ -14,39 +14,18 @@ export interface DualRangeFilterValue {
 }
 
 export interface DualRangeFilterAdapterConfig<TData> {
-	/**
-	 * Unique identifier (should match column accessorKey)
-	 */
+	/** Unique id, should match the column `accessorKey`. */
 	id: string;
-
-	/**
-	 * Display label for filter navigation
-	 */
 	label: string;
-
-	/**
-	 * Field configurations: { fieldKey: displayLabel }
-	 * Example: { running: 'Running', completed: 'Completed' }
-	 */
+	/** Field key → display label, e.g. `{ running: 'Running' }`. */
 	fields: Record<string, string>;
-
-	/**
-	 * Optional formatter for chip display
-	 * @default (num) => num.toLocaleString('en-US')
-	 */
+	/** @default (num) => num.toLocaleString('en-US') */
 	formatNumber?: (num: number) => string;
-
-	/**
-	 * How to extract the value object from a row
-	 * @default (row) => row.getValue(id)
-	 */
+	/** @default (row) => row.getValue(id) */
 	getRowValue?: (row: Row<TData>) => Record<string, number>;
 }
 
-/**
- * Factory function to create a dual-range filter adapter
- * Handles filtering on multiple numeric ranges within a single column
- */
+/** Filter over multiple numeric ranges within one column (AND across fields). */
 export function createDualRangeFilterAdapter<TData>(
 	config: DualRangeFilterAdapterConfig<TData>,
 ): FilterAdapter<TData, DualRangeFilterValue, Record<string, number>> {
@@ -71,7 +50,6 @@ export function createDualRangeFilterAdapter<TData>(
 		filterFn: (row, columnId, filterValue) => {
 			const rowValue = getRowValue(row);
 
-			// Check each field's range
 			for (const [fieldKey, range] of Object.entries(filterValue)) {
 				const hasFilter = range.from !== undefined || range.to !== undefined;
 				const fieldValue = rowValue[fieldKey];
@@ -80,8 +58,9 @@ export function createDualRangeFilterAdapter<TData>(
 					const matchesFrom = range.from === undefined || fieldValue >= range.from;
 					const matchesTo = range.to === undefined || fieldValue <= range.to;
 
+					// AND across fields: every range with a bound must match.
 					if (!matchesFrom || !matchesTo) {
-						return false; // AND logic: all ranges must match
+						return false;
 					}
 				}
 			}
@@ -89,10 +68,10 @@ export function createDualRangeFilterAdapter<TData>(
 			return true;
 		},
 
-		cellRenderer: undefined, // Let the column definition handle rendering
+		cellRenderer: undefined,
 
 		toChips: (value) => {
-			const chips: ChipItem[] = [];
+			const chips: TagFilterItem[] = [];
 
 			Object.entries(value).forEach(([fieldKey, range]) => {
 				const hasFilter = range.from !== undefined || range.to !== undefined;
