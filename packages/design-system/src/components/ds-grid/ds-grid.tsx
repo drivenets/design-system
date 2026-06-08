@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react';
 import classNames from 'classnames';
 
 import type { DsGridBaseProps, DsGridItemBaseProps } from './ds-grid.types';
@@ -32,7 +31,7 @@ export const DsGridBase = ({
 	}
 
 	return (
-		<div className={gridClass} style={{ ...style, ...cssVars } as CSSProperties}>
+		<div className={gridClass} style={{ ...style, ...cssVars }}>
 			{children}
 		</div>
 	);

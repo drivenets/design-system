@@ -10,7 +10,7 @@ import { fullHeightDecorator } from './common/story-decorators';
 import { StatusItem, TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Components/Table/Search and Filtering',
+	title: 'Components/Table/Filters',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
@@ -32,7 +32,7 @@ export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
 export const AdvancedSearch: Story = {
-	name: 'With External Global Search',
+	name: 'Search — Global Input',
 	render: function Render(args) {
 		const [globalFilter, setGlobalFilter] = useState('');
 
@@ -66,7 +66,7 @@ export const AdvancedSearch: Story = {
 };
 
 export const TabFilters: Story = {
-	name: 'With Tab Filters',
+	name: 'Tabs — Status Filter',
 	render: function Render(args) {
 		const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 		const [activeTab, setActiveTab] = useState<Status | 'all'>('all');

@@ -4,7 +4,10 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
+      interval: 'cron'
+      # Every other Sunday at 07:00.
+      cronjob: '0 7 * * sun%2'
+      timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'chore'
 
@@ -15,23 +18,23 @@ updates:
     groups:
       # Matching the pnpm catalog entries manually since Dependabot matches them under the production group.
       # See: https://github.com/dependabot/dependabot-core/issues/14824
+      #
+      # Note: Excluding eslint-related packages since they have their own group.
       pnpm-catalog:
         patterns:
           - '@arethetypeswrong/cli'
-          - '@eslint/core'
           - '@typescript/native-preview'
           - '@vitest/coverage-v8'
-          - 'eslint'
           - 'publint'
           - 'tsdown'
           - 'typescript'
           - 'vitest'
 
-      # All typescript-eslint packages need to be updated together.
-      typescript-eslint:
+      # All eslint-related packages are better to be updated together.
+      eslint:
         patterns:
-          - 'typescript-eslint'
-          - '@typescript-eslint/*'
+          - '*eslint*'
+          - 'globals'
 
       npm-development:
         dependency-type: 'development'
@@ -52,7 +55,10 @@ updates:
       default-days: 1 # zizmor: ignore[dependabot-cooldown] We're fine with 1 day.
 
     schedule:
-      interval: 'weekly'
+      interval: 'cron'
+      # Every other Sunday at 07:00.
+      cronjob: '0 7 * * sun%2'
+      timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'ci'
     groups:
