@@ -34,3 +34,13 @@ unrs
 Versionable
 zizmor
 zizmorcore
+Fira
+scrollers
+affordances
+timelapse
+tmcp
+modelcontextprotocol
+unstub
+cursoragents
+mktemp
+cachified

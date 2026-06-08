@@ -298,18 +298,11 @@ const DsTable = <TData extends { id: string }, TValue>({
 				)}
 			>
 				<DragWrapper>
-					<Table
-						className={classnames(
-							fullWidth && styles.fullWidth,
-							!bordered && styles.tableNoBorder,
-							virtualized && styles.virtualized,
-						)}
-					>
+					<Table className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}>
 						<DsTableHeader table={table} />
 						{virtualized ? (
 							<DsTableBodyVirtualized
 								table={table}
-								tableContainerRef={tableContainerRef}
 								emptyState={emptyState}
 								estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
 								overscan={virtualizedOptions?.overscan}
@@ -330,17 +323,17 @@ const DsTable = <TData extends { id: string }, TValue>({
 						)}
 					</Table>
 				</DragWrapper>
+				{selectable && actions.length > 0 && (
+					<DsTableBulkActions
+						numSelectedRows={selectedRows.length}
+						actions={actions.map((action) => ({
+							...action,
+							onClick: () => action.onClick(selectedRows),
+						}))}
+						onClearSelection={table.resetRowSelection}
+					/>
+				)}
 			</div>
-			{selectable && actions.length > 0 && (
-				<DsTableBulkActions
-					numSelectedRows={selectedRows.length}
-					actions={actions.map((action) => ({
-						...action,
-						onClick: () => action.onClick(selectedRows),
-					}))}
-					onClearSelection={table.resetRowSelection}
-				/>
-			)}
 		</DsTableContext.Provider>
 	);
 };

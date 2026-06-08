@@ -1,0 +1,196 @@
+.headerLayout {
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+	width: 100%;
+}
+
+.headerLeft {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.headerCenter {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	gap: var(--xs);
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.headerRight {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--xs);
+	flex-shrink: 0;
+	white-space: nowrap;
+}
+
+.projectName {
+	color: var(--font-on-action);
+}
+
+.lastUpdate {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	color: var(--font-on-action);
+	white-space: nowrap;
+}
+
+.subHeaderContent {
+	display: flex;
+	align-items: center;
+	gap: var(--sm);
+	width: 100%;
+}
+
+.card {
+	padding: var(--lg);
+	border-radius: var(--xs);
+	border: 1px solid var(--border);
+	background: var(--background);
+	margin-bottom: var(--standard);
+}
+
+.footerContent {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	color: var(--font-secondary);
+	font-size: var(--body-font-size-xs);
+}
+
+.footerActions {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+}
+
+.fillParentHost {
+	height: 400px;
+	border: 2px dashed var(--border);
+}
+
+.extendedMainContent {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--standard);
+	min-height: 0;
+}
+
+.extendedTitleRow {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sm);
+	width: 100%;
+}
+
+.footerStepper {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	overflow-x: auto;
+}
+
+.sideMenu {
+	&[data-expanded] .sideMenuItem {
+		justify-content: flex-start;
+	}
+
+	&[data-expanded] .sideMenuItemLabel {
+		max-width: 180px;
+		opacity: 1;
+		margin-inline-start: var(--xs);
+	}
+}
+
+.sideMenuItem {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 10px;
+	border: none;
+	border-radius: var(--3xs);
+	background: transparent;
+	cursor: pointer;
+	color: var(--font-main);
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+
+	&:hover:not([data-selected]) {
+		background: var(--background-action-tertiary-hover);
+	}
+
+	&[data-selected] {
+		background: var(--background-action-tertiary);
+		color: var(--font-action);
+	}
+}
+
+.sideMenuItemLabel {
+	max-width: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	opacity: 0;
+	transition:
+		max-width 0.2s,
+		opacity 0.2s,
+		margin-inline-start 0.2s;
+}
+
+.leftPanelContent {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+	border-inline-end: 1px solid var(--border);
+	background: var(--background);
+}
+
+.leftPanelHeader {
+	flex-shrink: 0;
+	padding: var(--standard);
+	border-bottom: 1px solid var(--border);
+}
+
+.leftPanelBody {
+	flex: 1;
+	min-height: 0;
+	padding: var(--standard);
+	overflow: auto;
+}
+
+.canvasSurface {
+	flex: 1;
+	min-height: 0;
+	border-radius: var(--xs);
+	border: 1px solid var(--border);
+	background: var(--background-page);
+}
+
+.workflowInfoPanel {
+	display: flex;
+	flex-direction: column;
+	gap: var(--sm);
+	padding: var(--standard);
+	border-radius: var(--xs);
+	border: 1px solid var(--border);
+	background: var(--background);
+}
+
+.workflowInfoItem {
+	display: flex;
+	flex-direction: column;
+	gap: var(--3xs);
+}

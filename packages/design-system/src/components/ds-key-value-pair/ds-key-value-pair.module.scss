@@ -35,7 +35,6 @@
 }
 
 .root[data-orientation='horizontal'] .valueContainer {
-	justify-items: end;
 	min-width: 0;
 }
 
@@ -48,10 +47,6 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
-}
-
-.root[data-orientation='horizontal'] .valueDisplay {
-	text-align: end;
 }
 
 .editorSlot {

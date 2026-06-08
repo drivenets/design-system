@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 
@@ -17,9 +17,46 @@ const MANUFACTURER_OPTIONS: DsSelectOption[] = [
 	{ label: 'Nokia', value: 'nokia' },
 ];
 
+// `userEvent.tab()` is unreliable when the next focus target is a `<div tabindex="0">` inside the
+// vitest browser iframe. Focus the editable container directly to trigger the `:focus-within`
+// reveal deterministically.
+const focusEditableContainerOf = (text: string) => {
+	const container = page.getByText(text).element().closest<HTMLElement>('[data-editable="true"]');
+
+	if (!container) {
+		throw new Error(`No editable value-container ancestor for text "${text}"`);
+	}
+
+	container.focus();
+};
+
+const blurActiveElement = () => {
+	(document.activeElement as HTMLElement | null)?.blur();
+};
+
+const MOUSE_PARK_TEST_ID = 'ds-key-value-pair-mouse-park';
+
+// Renders the component above an inline "parking" element and moves the mouse to that element.
+// The component CSS hides the value display on `:hover`, so cursor position carried over from a
+// previous test (or from `input.fill()`) can mask the value display. Parking the mouse on a
+// dedicated inert element keeps the tests deterministic regardless of carry-over.
+const renderWithParkedMouse = async (component: ReactNode) => {
+	await page.render(
+		<>
+			{component}
+			<div data-testid={MOUSE_PARK_TEST_ID} style={{ width: 40, height: 40, marginTop: 200 }} />
+		</>,
+	);
+	await parkMouse();
+};
+
+const parkMouse = async () => {
+	await userEvent.hover(page.getByTestId(MOUSE_PARK_TEST_ID));
+};
+
 describe('DsKeyValuePair', () => {
 	it('should render read-only vertical layout', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair keyLabel="Start time" value="2024-05-23 16:47" readOnly orientation="vertical" />,
 		);
 
@@ -28,7 +65,7 @@ describe('DsKeyValuePair', () => {
 	});
 
 	it('should render read-only horizontal layout', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair keyLabel="MAC" value="00:1A:2B:3C:4D:5E" readOnly orientation="horizontal" />,
 		);
 
@@ -37,7 +74,7 @@ describe('DsKeyValuePair', () => {
 	});
 
 	it('should render custom label content', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair
 				keyLabel={
 					<span>
@@ -56,7 +93,7 @@ describe('DsKeyValuePair', () => {
 	});
 
 	it('should reveal editor on focus in editable vertical mode', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair
 				keyLabel="Serial Number"
 				value="99887766"
@@ -67,13 +104,13 @@ describe('DsKeyValuePair', () => {
 
 		await expect.element(page.getByText('99887766')).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('99887766');
 
 		await expect.element(page.getByRole('textbox')).toBeVisible();
 	});
 
 	it('should render editable horizontal layout', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair
 				keyLabel="Model"
 				value="Cisco RTR-X2000"
@@ -87,7 +124,7 @@ describe('DsKeyValuePair', () => {
 	});
 
 	it('should support keyboard edit cycle: tab in, edit, tab out', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair
 				keyLabel="Serial Number"
 				value="99887766"
@@ -98,18 +135,17 @@ describe('DsKeyValuePair', () => {
 
 		await expect.element(page.getByText('99887766')).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('99887766');
 
 		const input = page.getByRole('textbox');
 		await expect.element(input).toBeVisible();
-
-		await userEvent.tab();
 
 		await input.clear();
 		await input.fill('NEW SERIAL');
 		await expect.element(input).toHaveValue('NEW SERIAL');
 
-		await userEvent.tab();
+		blurActiveElement();
+		await parkMouse();
 
 		await expect.element(page.getByText('99887766')).toBeVisible();
 	});
@@ -126,20 +162,21 @@ describe('DsKeyValuePair', () => {
 			);
 		}
 
-		await page.render(<Controlled />);
+		await renderWithParkedMouse(<Controlled />);
 
 		await expect.element(page.getByText('Initial')).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('Initial');
 		const input = page.getByRole('textbox');
 		await input.fill('Updated');
-		await userEvent.tab();
+		blurActiveElement();
+		await parkMouse();
 
 		await expect.element(page.getByText('Updated')).toBeVisible();
 	});
 
 	it('should reveal editor with trailing icon on focus', async () => {
-		await page.render(
+		await renderWithParkedMouse(
 			<DsKeyValuePair
 				keyLabel="Editable"
 				orientation="horizontal"
@@ -165,13 +202,13 @@ describe('DsKeyValuePair', () => {
 		await expect.element(page.getByText('Editable value')).toBeVisible();
 		await expect.element(page.getByText('info').first()).toBeVisible();
 
-		await userEvent.tab();
+		focusEditableContainerOf('Editable value');
 
 		await expect.element(page.getByRole('textbox')).toBeVisible();
 	});
 
 	it('should fall back to value display without editInput', async () => {
-		await page.render(<DsKeyValuePair keyLabel="MFR" value="Cisco Systems" readOnly={false} />);
+		await renderWithParkedMouse(<DsKeyValuePair keyLabel="MFR" value="Cisco Systems" readOnly={false} />);
 
 		await expect.element(page.getByText('Cisco Systems')).toBeVisible();
 	});
@@ -207,7 +244,7 @@ describe('DsKeyValuePair', () => {
 			);
 		}
 
-		await page.render(<Group />);
+		await renderWithParkedMouse(<Group />);
 
 		await expect.element(page.getByText('MAC')).toBeInTheDocument();
 		await expect.element(page.getByText('MFR')).toBeInTheDocument();
@@ -248,7 +285,7 @@ describe('DsKeyValuePair', () => {
 			);
 		}
 
-		await page.render(<Responsive />);
+		await renderWithParkedMouse(<Responsive />);
 
 		await expect.element(page.getByText('MAC')).toBeInTheDocument();
 		await expect.element(page.getByText('00:1A:2B:3C:4D:5E')).toBeVisible();
@@ -323,7 +360,7 @@ describe('DsKeyValuePair', () => {
 			);
 		}
 
-		await page.render(<ValueTypes />);
+		await renderWithParkedMouse(<ValueTypes />);
 
 		await expect.element(page.getByText('Read only value')).toBeVisible();
 		await expect.element(page.getByText('Active')).toBeVisible();

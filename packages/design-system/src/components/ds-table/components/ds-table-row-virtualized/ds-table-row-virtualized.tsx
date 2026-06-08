@@ -67,7 +67,7 @@ export const DsTableRowVirtualized = <TData,>({
 				<>
 					{row.getVisibleCells().map((cell, idx) => {
 						const isLastColumn = idx === row.getVisibleCells().length - 1;
-						const cellStyle = getColumnSizeStyle(cell.column.getSize(), true);
+						const cellStyle = getColumnSizeStyle(cell.column.getSize());
 
 						return (
 							<TableCell
