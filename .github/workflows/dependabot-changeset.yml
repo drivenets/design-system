@@ -1,6 +1,6 @@
 name: Dependabot Changeset
 
-on: pull_request_target # zizmor: ignore[dangerous-triggers] Need write base reepo write access to commit the changeset. See warning below.
+on: pull_request_target # zizmor: ignore[dangerous-triggers] Need write base repo write access to commit the changeset. See warning below.
 
 permissions: {}
 
