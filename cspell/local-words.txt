@@ -1,9 +1,12 @@
 affordances
+aroba
+artipacked
 autoboot
 autodocs
 borderless
 clickability
 controlify
+cooldown
 deslop
 drivenets
 evenodd
@@ -22,11 +25,15 @@ reorderable
 retryable
 scrollers
 subcomponents
+timelapse
 tosorted
 TSESTree
 unhover
 unitless
 unrs
+Versionable
+zizmor
+zizmorcore
 Fira
 scrollers
 affordances
@@ -36,5 +43,4 @@ modelcontextprotocol
 unstub
 cursoragents
 mktemp
-
 cachified
