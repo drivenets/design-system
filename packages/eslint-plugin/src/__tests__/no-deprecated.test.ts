@@ -91,15 +91,34 @@ ruleTester.run('no-deprecated-ds-confirmation', plugin.rules['no-deprecated-ds-c
 	],
 });
 
+ruleTester.run('no-deprecated-ds-status-badge', plugin.rules['no-deprecated-ds-status-badge'], {
+	valid: ['<DsStatusBadgeV2 />'],
+
+	invalid: [
+		{
+			code: '<DsStatusBadge />',
+			errors: [
+				{
+					message: `DsStatusBadge is deprecated. Use DsStatusBadgeV2 instead.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 15,
+				},
+			],
+		},
+	],
+});
+
 ruleTester.run('no-deprecated-ds-system-status', plugin.rules['no-deprecated-ds-system-status'], {
-	valid: ['<DsStatusBadge />'],
+	valid: ['<DsStatusBadgeV2 />'],
 
 	invalid: [
 		{
 			code: '<DsSystemStatus />',
 			errors: [
 				{
-					message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.`,
+					message: `DsSystemStatus is deprecated. Use DsStatusBadgeV2 instead.`,
 					line: 1,
 					endLine: 1,
 					column: 2,

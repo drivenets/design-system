@@ -5,26 +5,27 @@ import { CSS } from '@dnd-kit/utilities';
 import { DsIcon } from '../../../ds-icon';
 import { TableCell, TableRow } from '../core-table';
 import { DsTableCell } from '../ds-table-cell';
-import { DsTableRowSelectableCell } from '../ds-table-row-selectable-cell';
-import { DsTableRowExpandableCell } from '../ds-table-row-expandable-cell';
 import type { DsTableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
+import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
 interface DsRowDragHandleProps {
 	isDragging: boolean;
 	attributes: ReturnType<typeof useSortable>['attributes'];
 	listeners: ReturnType<typeof useSortable>['listeners'];
+	style?: React.CSSProperties;
 }
 
-const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleProps) => {
+const DsRowDragHandle = ({ isDragging, attributes, listeners, style }: DsRowDragHandleProps) => {
 	return (
 		<TableCell
 			className={classnames(styles.tableCell, styles.cellReorder, {
 				[styles.isDragging]: isDragging,
 			})}
+			style={style}
 		>
 			<DsIcon
 				className={styles.rowDragHandle}
@@ -40,8 +41,6 @@ const DsRowDragHandle = ({ isDragging, attributes, listeners }: DsRowDragHandleP
 
 const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) => {
 	const {
-		expandable,
-		selectable,
 		reorderable,
 		onRowClick,
 		onRowDoubleClick,
@@ -53,7 +52,6 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 		activeRowId,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
-	const isExpandable = typeof expandable === 'function' ? expandable(row.original) : expandable;
 	const isActive = activeRowId === row.id;
 
 	const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -67,7 +65,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				transition,
 				...(isDragging
 					? {
-							background: 'var(--action-active-light)',
+							background: 'var(--color-dap-purple-200)',
 							boxShadow: '0 0 12px 0 rgba(0, 102, 250, 0.60)',
 							zIndex: 1,
 						}
@@ -96,25 +94,33 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				onClick={() => onRowClick?.(row.original)}
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
-				{selectable && (
-					<DsTableRowSelectableCell row={row} isSelected={isSelected} className={styles.selectableCell} />
-				)}
-				{expandable && (
-					<DsTableRowExpandableCell
-						row={row}
-						className={styles.expandableCell}
-						buttonClassName={styles.expandToggleButton}
-					/>
-				)}
-				{reorderable && (
-					<DsRowDragHandle isDragging={isDragging} attributes={attributes} listeners={listeners} />
-				)}
 				{row.getVisibleCells().map((cell, idx) => {
-					const isLastColumn = idx === row.getVisibleCells().length - 1;
 					const cellStyle = getColumnSizeStyle(cell.column.getSize());
 
+					if (cell.column.id === REORDER_COLUMN_ID) {
+						return (
+							<DsRowDragHandle
+								key={cell.id}
+								isDragging={isDragging}
+								attributes={attributes}
+								listeners={listeners}
+								style={cellStyle}
+							/>
+						);
+					}
+
+					const isLastColumn = idx === row.getVisibleCells().length - 1;
+
 					return (
-						<TableCell key={cell.id} className={styles.tableCell} style={cellStyle}>
+						<TableCell
+							key={cell.id}
+							className={classnames(
+								styles.tableCell,
+								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
+								cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
+							)}
+							style={cellStyle}
+						>
 							{isLastColumn ? (
 								<DsTableCell
 									row={row}
@@ -132,15 +138,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 
 			{isExpanded && renderExpandedRow && (
 				<TableRow className={styles.expandedRow}>
-					<TableCell
-						colSpan={
-							row.getVisibleCells().length +
-							(selectable ? 1 : 0) +
-							(isExpandable ? 1 : 0) +
-							(reorderable ? 1 : 0)
-						}
-						className={styles.tableCell}
-					>
+					<TableCell colSpan={row.getVisibleCells().length} className={styles.tableCell}>
 						{renderExpandedRow(row.original)}
 					</TableCell>
 				</TableRow>

@@ -7,7 +7,7 @@ name: PR Labeler
 #   DO NOT CHECK OUT THE REPO IN THIS WORKFLOW
 #
 #   See: https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/
-on: ['pull_request_target']
+on: pull_request_target # zizmor: ignore[dangerous-triggers] See above warning.
 
 permissions: {}
 
@@ -30,8 +30,13 @@ jobs:
       ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]')
 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
       - name: Label PR
-        uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6.0.1
+        uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6.1.0
         with:
           configuration-path: .github/labeler-config.yml
           sync-labels: true

@@ -5,6 +5,8 @@ import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 
+const CHECKBOX_ROOT_LABEL = 'label[data-scope="checkbox"][data-part="root"]';
+
 describe('DsTable Selection', () => {
 	it('should select and deselect rows via checkboxes', async () => {
 		const onSelectionChange = vi.fn();
@@ -18,16 +20,24 @@ describe('DsTable Selection', () => {
 			/>,
 		);
 
-		const selectAll = page.getByRole('checkbox').nth(0);
-		const firstRowCheckbox = page.getByRole('checkbox').nth(1);
+		const selectAllRoot = document.querySelector(`th ${CHECKBOX_ROOT_LABEL}`) as HTMLLabelElement;
+		const firstRowRoot = document.querySelector(
+			`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`,
+		) as HTMLLabelElement;
 
-		await expect.element(selectAll).not.toBeChecked();
+		const selectAllLabel = page.elementLocator(selectAllRoot);
+		const firstRowLabel = page.elementLocator(firstRowRoot);
 
-		await firstRowCheckbox.click();
-		await expect.element(firstRowCheckbox).toBeChecked();
+		const selectAllInput = page.getByRole('checkbox').nth(0);
+		const firstRowInput = page.getByRole('checkbox').nth(1);
+
+		await expect.element(selectAllInput).not.toBeChecked();
+
+		await firstRowLabel.click();
+		await expect.element(firstRowInput).toBeChecked();
 		expect(onSelectionChange).toHaveBeenCalled();
 
-		await selectAll.click();
+		await selectAllLabel.click();
 
 		const checkboxesAfterSelectAll = page.getByRole('checkbox').all();
 
@@ -35,13 +45,47 @@ describe('DsTable Selection', () => {
 			await expect.element(checkbox).toBeChecked();
 		}
 
-		await selectAll.click();
+		await selectAllLabel.click();
 
 		const checkboxesAfterDeselectAll = page.getByRole('checkbox').all();
 
 		for (const checkbox of checkboxesAfterDeselectAll.slice(1)) {
 			await expect.element(checkbox).not.toBeChecked();
 		}
+	});
+
+	it('should not propagate checkbox click or double click to the row', async () => {
+		const onRowClick = vi.fn();
+		const onRowDoubleClick = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				selectable
+				showSelectAllCheckbox={false}
+				onRowClick={onRowClick}
+				onRowDoubleClick={onRowDoubleClick}
+			/>,
+		);
+
+		const firstRowCheckboxRoot = document.querySelector(
+			`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`,
+		) as HTMLLabelElement;
+
+		await page.elementLocator(firstRowCheckboxRoot).click();
+		expect(onRowClick).not.toHaveBeenCalled();
+
+		await page.elementLocator(firstRowCheckboxRoot).dblClick();
+		expect(onRowDoubleClick).not.toHaveBeenCalled();
+		expect(onRowClick).not.toHaveBeenCalled();
+
+		const firstNameCell = document.querySelector('tbody tr:nth-child(1) td:nth-child(2)');
+		if (!(firstNameCell instanceof HTMLElement)) {
+			throw new Error('Expected first name cell in first body row');
+		}
+		await page.elementLocator(firstNameCell).click();
+		expect(onRowClick).toHaveBeenCalledTimes(1);
 	});
 
 	it('should support programmatic row selection via ref API', async () => {
@@ -131,17 +175,70 @@ describe('DsTable Selection', () => {
 
 		await expect.element(page.getByText('Selected: 0 / 2')).toBeVisible();
 
-		await page.getByRole('checkbox').nth(0).click();
+		const firstRowRoot = document.querySelector<HTMLLabelElement>(
+			`tbody tr:nth-child(1) ${CHECKBOX_ROOT_LABEL}`,
+		);
+		const secondRowRoot = document.querySelector<HTMLLabelElement>(
+			`tbody tr:nth-child(2) ${CHECKBOX_ROOT_LABEL}`,
+		);
+		if (!firstRowRoot || !secondRowRoot) {
+			throw new Error('Expected first and second body row checkbox roots');
+		}
+
+		await page.elementLocator(firstRowRoot).click();
 		await expect.element(page.getByText('Selected: 1 / 2')).toBeVisible();
 
-		await page.getByRole('checkbox').nth(1).click();
+		await page.elementLocator(secondRowRoot).click();
 		await expect.element(page.getByText('Selected: 2 / 2')).toBeVisible();
 
 		await expect.element(page.getByRole('checkbox').nth(2)).toBeDisabled();
 
-		await page.getByRole('checkbox').nth(0).click();
+		await page.elementLocator(firstRowRoot).click();
 		await expect.element(page.getByText('Selected: 1 / 2')).toBeVisible();
 
 		await expect.element(page.getByRole('checkbox').nth(2)).not.toBeDisabled();
+	});
+
+	it('should render select column alongside the reorder drag handle', async () => {
+		const onSelectionChange = vi.fn();
+		const onOrderChange = vi.fn();
+		const onRowClick = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				selectable
+				reorderable
+				onSelectionChange={onSelectionChange}
+				onOrderChange={onOrderChange}
+				onRowClick={onRowClick}
+			/>,
+		);
+
+		const headerCells = document.querySelectorAll('thead tr > th');
+		expect(headerCells[0]?.textContent).toContain('Order');
+		expect(headerCells[1]?.querySelector(CHECKBOX_ROOT_LABEL)).not.toBeNull();
+
+		const firstRowCells = document.querySelectorAll('tbody tr:nth-child(1) > td');
+		expect(firstRowCells).toHaveLength(columns.length + 2);
+
+		const firstRowCheckboxRoot = firstRowCells[1]?.querySelector(CHECKBOX_ROOT_LABEL) as HTMLLabelElement;
+
+		await page.elementLocator(firstRowCheckboxRoot).click();
+		expect(onSelectionChange).toHaveBeenLastCalledWith({ '1': true });
+		await expect.element(page.getByRole('row').nth(1)).toHaveAttribute('data-state', 'selected');
+
+		const dragHandle = document.querySelector('tbody tr:nth-child(1) > td:nth-child(1)') as HTMLElement;
+		await page.elementLocator(dragHandle).click();
+		expect(onRowClick).not.toHaveBeenCalled();
+
+		const selectAllRoot = document.querySelector(`th ${CHECKBOX_ROOT_LABEL}`) as HTMLLabelElement;
+		await page.elementLocator(selectAllRoot).click();
+		for (const checkbox of page.getByRole('checkbox').all().slice(1)) {
+			await expect.element(checkbox).toBeChecked();
+		}
+
+		expect(onOrderChange).not.toHaveBeenCalled();
 	});
 });

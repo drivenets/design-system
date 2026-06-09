@@ -7,51 +7,51 @@ $transition-duration: 0.2s;
 @mixin node-row {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 	border-radius: 4px;
 	cursor: pointer;
 	user-select: none;
 	width: 100%;
 	background: transparent;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 
 	--ds-tree-depth: calc(var(--depth) - 1);
 	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
 	--ds-tree-icon-offset: calc(#{$half-icon} * var(--ds-tree-depth));
-	--ds-tree-offset: calc(var(--spacing-3xs) + var(--ds-tree-indent-offset) + var(--ds-tree-icon-offset));
+	--ds-tree-offset: calc(var(--3xs) + var(--ds-tree-indent-offset) + var(--ds-tree-icon-offset));
 
 	padding-inline-start: var(--ds-tree-offset);
-	padding-inline-end: var(--spacing-3xs);
+	padding-inline-end: var(--3xs);
 
 	&:hover {
-		background: var(--color-background-action-hover-weak);
+		background: var(--background-action-hover-weak);
 	}
 
 	&[data-focus] {
 		position: relative;
 		outline: none;
-		background: var(--color-background-action-hover-weak);
+		background: var(--background-action-hover-weak);
 
 		&::after {
 			content: '';
 			position: absolute;
 			inset: 0;
 			z-index: 2;
-			border: 2px solid var(--color-border-action-primary-hover);
+			border: 2px solid var(--border-action-primary-hover);
 			border-radius: inherit;
 			pointer-events: none;
 		}
 	}
 
 	&[data-selected] {
-		background: var(--color-background-action-secondary-hover);
+		background: var(--background-action-secondary-hover);
 	}
 
 	&[data-disabled] {
 		cursor: not-allowed;
 		pointer-events: none;
 		.itemText {
-			color: var(--color-secondary-300);
+			color: var(--secondary-300);
 		}
 	}
 
@@ -65,7 +65,7 @@ $transition-duration: 0.2s;
 	flex: 1;
 	display: inline-flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 	min-width: 0;
 
 	@include typography.ellipsis;
@@ -79,7 +79,7 @@ $transition-duration: 0.2s;
 	&[data-size='medium'] {
 		.branchControl,
 		.item {
-			padding-block: var(--spacing-xs);
+			padding-block: var(--xs);
 		}
 
 		.branchText,
@@ -91,7 +91,7 @@ $transition-duration: 0.2s;
 	&[data-size='small'] {
 		.branchControl,
 		.item {
-			padding-block: var(--spacing-2xs);
+			padding-block: var(--2xs);
 		}
 
 		.branchText,
@@ -121,7 +121,7 @@ $transition-duration: 0.2s;
 	flex-shrink: 0;
 	width: var(--icon-width-tiny);
 	height: var(--icon-width-tiny);
-	color: var(--color-font-main);
+	color: var(--font-main);
 	transform-origin: center;
 	transition: transform $transition-duration;
 
@@ -132,7 +132,7 @@ $transition-duration: 0.2s;
 
 .branchText {
 	@include node-text;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .branchContent {
@@ -153,11 +153,11 @@ $transition-duration: 0.2s;
 	z-index: 1;
 	width: 1px;
 	height: 100%;
-	background: var(--color-border-secondary);
+	background: var(--border-secondary);
 
 	--ds-tree-depth: calc(var(--depth) - 1);
 	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
-	--ds-tree-guide-offset: calc(var(--spacing-3xs) + var(--ds-tree-indent-offset));
+	--ds-tree-guide-offset: calc(var(--3xs) + var(--ds-tree-indent-offset));
 	--ds-tree-icon-offset: calc(#{$half-icon} * var(--depth));
 
 	inset-inline-start: calc(var(--ds-tree-guide-offset) + var(--ds-tree-icon-offset));
@@ -169,7 +169,7 @@ $transition-duration: 0.2s;
 
 .itemText {
 	@include node-text;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .itemIndicator {
@@ -185,7 +185,7 @@ $transition-duration: 0.2s;
 	width: 4px;
 	height: 4px;
 	border-radius: 50%;
-	background-color: var(--color-font-main);
+	background-color: var(--font-main);
 }
 
 .itemAction {
@@ -198,11 +198,11 @@ $transition-duration: 0.2s;
 	padding: 0;
 	opacity: 0;
 	cursor: pointer;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 	transition: opacity $transition-duration;
 
 	&:hover {
-		color: var(--color-font-main);
+		color: var(--font-main);
 	}
 }
 
@@ -216,8 +216,8 @@ $transition-duration: 0.2s;
 	&[data-state='checked'],
 	&[data-state='indeterminate'] {
 		.nodeCheckboxBox {
-			background-color: var(--color-background-selected);
-			border-color: var(--color-background-selected);
+			background-color: var(--background-primary);
+			border-color: var(--background-primary);
 		}
 	}
 
@@ -225,13 +225,13 @@ $transition-duration: 0.2s;
 		cursor: not-allowed;
 
 		.nodeCheckboxBox {
-			border-color: var(--color-background-disable);
+			border-color: var(--background-disable);
 		}
 
 		&[data-state='checked'] .nodeCheckboxBox,
 		&[data-state='indeterminate'] .nodeCheckboxBox {
-			background-color: var(--color-background-disable);
-			border-color: var(--color-background-disable);
+			background-color: var(--background-disable);
+			border-color: var(--background-disable);
 		}
 	}
 }
@@ -243,9 +243,9 @@ $transition-duration: 0.2s;
 	align-items: center;
 	width: 16px;
 	height: 16px;
-	border: 1.5px solid var(--color-background-deselected);
+	border: 1.5px solid var(--background-deselected);
 	border-radius: 2px;
-	color: var(--color-secondary-white);
+	color: var(--secondary-050);
 	transition:
 		background-color $transition-duration,
 		border-color $transition-duration;

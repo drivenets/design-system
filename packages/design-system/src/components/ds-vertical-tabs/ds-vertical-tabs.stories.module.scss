@@ -29,20 +29,20 @@
 .tabItemCount {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .tabItemDot {
 	width: 10px;
 	height: 10px;
 	border-radius: 50%;
-	background: var(--color-background-selected);
-	border: 1px solid var(--color-background);
+	background: var(--background-primary);
+	border: 1px solid var(--background);
 	flex-shrink: 0;
 }
 
 .tabItemCountText {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 // Interactive story footer

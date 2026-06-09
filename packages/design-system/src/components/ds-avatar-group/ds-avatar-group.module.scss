@@ -5,7 +5,7 @@
 	align-items: center;
 
 	.avatarItem {
-		border: $avatar-border-width solid var(--color-background);
+		border: $avatar-border-width solid var(--background);
 
 		&:not(:first-child) {
 			margin-left: $avatar-overlap-default;
@@ -24,9 +24,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		background-color: var(--color-background);
-		color: var(--color-font-action);
-		border: $avatar-border-width solid var(--color-background);
+		background-color: var(--background);
+		color: var(--font-action);
+		border: $avatar-border-width solid var(--background);
 		margin-left: $avatar-overlap-default;
 		font-weight: var(--font-weight-medium);
 		z-index: 1;
@@ -64,7 +64,7 @@
 	.tooltipList {
 		display: flex;
 		flex-direction: column;
-		gap: var(--spacing-3xs);
-		padding: var(--spacing-3xs) 0;
+		gap: var(--3xs);
+		padding: var(--3xs) 0;
 	}
 }

@@ -1,6 +1,6 @@
 name: Dependabot Changeset
 
-on: pull_request_target
+on: pull_request_target # zizmor: ignore[dangerous-triggers] Need write base repo write access to commit the changeset. See warning below.
 
 permissions: {}
 
@@ -19,13 +19,13 @@ jobs:
     #   Removing the user check could give privileged access to a potential attacker.
     if: |
       github.event.pull_request.user.login == 'dependabot[bot]' &&
-      ! contains(github.event.pull_request.title, 'development group')
+      startsWith(github.head_ref, 'dependabot/npm_and_yarn/npm-production-')
 
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to commit the changeset.
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}

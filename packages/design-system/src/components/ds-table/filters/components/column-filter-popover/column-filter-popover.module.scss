@@ -1,0 +1,42 @@
+.trigger {
+	min-width: var(--icon-width-tiny);
+	padding: 0;
+	opacity: 0;
+	transition: opacity 0.2s;
+}
+
+.triggerActive,
+.triggerOpen {
+	opacity: 1;
+	color: var(--icon-information-main, var(--color-dap-primary-500));
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+	min-width: 280px;
+	max-width: 320px;
+	padding: var(--standard);
+	background: var(--background);
+	border: 1px solid var(--border-secondary);
+	border-radius: 4px;
+	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
+	z-index: 1000;
+
+	&[hidden] {
+		display: none;
+	}
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+}
+
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--xs);
+}

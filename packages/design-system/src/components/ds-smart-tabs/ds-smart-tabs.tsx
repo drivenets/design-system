@@ -6,15 +6,15 @@ import styles from './ds-smart-tabs.module.scss';
 import type { Color, DsSmartTabProps, DsSmartTabsProps } from './ds-smart-tabs.types';
 
 const colorMap: Record<Color, string> = {
-	'dark-blue': 'var(--color-background-info-strong)',
-	'light-blue': 'var(--color-background-active-moderate)',
-	'dark-gray': 'var(--color-background-brand)',
-	green: 'var(--color-background-success-strong)',
-	fuchsia: 'var(--color-data-fuchsia)',
-	blue: 'var(--color-icon-information-secondary)',
-	gray: 'var(--color-icon-information-main)',
-	red: 'var(--color-icon-warning)',
-	amber: 'var(--color-data-amber)',
+	'dark-blue': 'var(--background-info-strong)',
+	'light-blue': 'var(--background-active-moderate)',
+	'dark-gray': 'var(--background-brand)',
+	green: 'var(--background-success-strong)',
+	fuchsia: 'var(--color-dap-data-fuchsia)',
+	blue: 'var(--icon-information-secondary)',
+	gray: 'var(--icon-information-main)',
+	red: 'var(--icon-warning)',
+	amber: 'var(--color-dap-data-amber)',
 };
 
 interface SmartTabsContextType {

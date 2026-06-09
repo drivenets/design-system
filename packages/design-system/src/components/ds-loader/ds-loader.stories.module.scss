@@ -1,12 +1,12 @@
 .inlineContainer {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-sm);
+	gap: var(--sm);
 }
 
 .variantComparisonContainer {
 	display: flex;
-	gap: var(--spacing-2xl);
+	gap: var(--2xl);
 	align-items: center;
 }
 
@@ -14,22 +14,22 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: var(--spacing-sm);
+	gap: var(--sm);
 }
 
 .variantLabel {
 	font-size: 12px;
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .usageExamplesContainer {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-xl);
+	gap: var(--xl);
 }
 
 .usageSection {
-	margin-bottom: var(--spacing-sm);
+	margin-bottom: var(--sm);
 }
 
 .centeredContainer {
@@ -44,10 +44,10 @@
 
 .multipleLoadersContainer {
 	display: flex;
-	gap: var(--spacing-standard);
+	gap: var(--standard);
 }
 
 .customPropsLoader {
-	padding: var(--spacing-standard);
+	padding: var(--standard);
 	background-color: var(--color-bg-secondary);
 }

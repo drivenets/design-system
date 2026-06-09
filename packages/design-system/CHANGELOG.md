@@ -1,5 +1,64 @@
 # @drivenets/design-system
 
+## 0.12.1
+
+### Patch Changes
+
+- aa6d1e5: Add `DsCatalogLayout` component
+
+## 0.12.0
+
+### Minor Changes
+
+- ba113ed: Add `DsStatusBadgeV2` component.
+  Deprecate `DsStatusBadge` component.
+- c7579a1: Add `infiniteScroll` prop to `DsTable`, letting it handle viewport/scroll and auto-fill pagination while consumers manage data and loading state.
+
+### Patch Changes
+
+- 665acbc: Update styling for `DsKeyValuePair` component
+- 8b3a7fb: Fix `DsAutocomplete` placeholder color
+- de59a6c: Style fixes for `DsDropdownMenu`
+
+## 0.11.1
+
+### Patch Changes
+
+- ae315b6: Improve release process
+
+## 0.11.0
+
+### Minor Changes
+
+- 8723a60: Migrate DS codebase to new tokens
+
+### Patch Changes
+
+- c4d5afd: Add `variant` prop to `DsDropdownMenuItem`
+- a3d191b: Fix `DsTable` row selection
+
+## 0.10.0
+
+### Minor Changes
+
+- dcd7756: sync Figma tokens with codebase
+
+### Patch Changes
+
+- c37cc37: Add `DsWorkspace` component
+- a602f56: Add `color` prop to `DsTypography` component
+- 631fc17: Update `DsCheckbox` component and use ark.
+  Add `DsCheckboxGroup` and `useCheckboxSelectAll` hook for handling nested checkboxes.
+- ec1986b: Add `onBlur` property to `DsDatePicker` and `DsTimePicker`
+- 4b3efb5: Add targeted JSDoc to component props for AI manifest quality
+- 14dd00f: Update `DsRadioGroup` component and use ark.
+- ec5df4e: Improve build process
+- 661081f: Make `gutter`, `margin` props for `DsGrid` responsive. Make `colSpan`, `rowSpan` props for `DsGridItem` responsive.
+- 1e65136: Add "special-leading-icon" to `DsIcon`
+- 9793e54: Set correct `z-index` for `DsTimePicker` dropdown
+- e314e15: Add `color` prop to `DsIcon`
+- c925bf0: Fix `DsSelect` broken spacing in small size
+
 ## 0.9.1
 
 ### Patch Changes

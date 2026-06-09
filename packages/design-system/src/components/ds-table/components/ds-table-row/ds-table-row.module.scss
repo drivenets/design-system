@@ -4,23 +4,21 @@
 
 .tableRow {
 	&:not(:last-child) {
-		.tableCell,
-		.selectableCell,
-		.expandableCell {
-			border-bottom: vars.$border-width solid var(--color-border-secondary);
+		.tableCell {
+			border-bottom: vars.$border-width solid var(--border-secondary);
 		}
 	}
 
 	&:hover {
-		background-color: var(--color-background-secondary);
+		background-color: var(--background-secondary);
 	}
 
 	&[data-state='selected'] {
-		background-color: var(--color-background-selected-weak);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&[data-state='active'] {
-		background-color: var(--color-background-selected-weak);
+		background-color: var(--background-secondary-hover);
 	}
 
 	&.clickableRow {
@@ -49,10 +47,12 @@
 }
 
 .expandedRow {
-	background-color: var(--color-background-secondary);
+	background-color: var(--background-secondary);
 
 	& > td {
-		padding: var(--spacing-standard);
+		flex: 1;
+		min-width: 0;
+		padding: var(--standard);
 	}
 
 	@include table-mixins.expanded-row-border('bottom');
@@ -63,35 +63,24 @@
 	text-align: center;
 
 	&.isDragging {
-		background: var(--color-background-action);
+		background: var(--background-action);
 
 		.rowDragHandle {
-			color: var(--color-secondary-white);
+			color: var(--secondary-050);
 		}
 	}
 }
 
-.tableCell,
-.selectableCell,
-.expandableCell {
+.tableCell {
 	@include typography.body-sm-reg;
 	vertical-align: middle;
-	color: var(--color-font-main);
+	color: var(--font-main);
+	padding: 0 var(--standard);
 }
 
-.tableCell {
-	padding: 0 var(--spacing-standard);
-}
-
-.expandToggleButton {
-	background: none;
-	border: none;
+.expandableCell,
+.selectableCell {
 	padding: 0;
-	margin: 0;
-	cursor: pointer;
-	display: inline-flex;
-	align-items: center;
+	text-align: center;
 	justify-content: center;
-	opacity: 1;
-	transition-property: opacity, background-color;
 }

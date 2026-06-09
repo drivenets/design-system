@@ -5,6 +5,9 @@ import remarkGfm from 'remark-gfm';
 // @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
 import { reactCompilerRolldownPlugin } from '../rolldown/react-compiler-rolldown-plugin.ts';
 
+// @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
+import { createFontLinksHtml } from './create-font-links-html.ts';
+
 const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 	addons: [
@@ -20,8 +23,10 @@ const config: StorybookConfig = {
 				},
 			},
 		},
+		'@storybook/addon-mcp',
 	],
 	framework: '@storybook/react-vite',
+	managerHead: (head = '') => `${head}\n${createFontLinksHtml()}`,
 	viteFinal: (viteConfig) => {
 		if (!Array.isArray(viteConfig.plugins)) {
 			viteConfig.plugins = [];

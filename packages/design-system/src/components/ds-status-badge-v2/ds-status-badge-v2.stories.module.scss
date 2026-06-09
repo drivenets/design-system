@@ -1,0 +1,29 @@
+.sectionTitle {
+	font-weight: 600;
+	font-size: 14px;
+	color: var(--font-main);
+}
+
+.docsTable {
+	border-collapse: collapse;
+	font-size: 13px;
+	color: var(--font-main);
+
+	th,
+	td {
+		padding: var(--xs) var(--standard);
+		text-align: left;
+		border-bottom: 1px solid var(--border-main);
+	}
+
+	th {
+		font-weight: 600;
+	}
+
+	code {
+		font-size: 12px;
+		padding: 2px 6px;
+		border-radius: 4px;
+		background: var(--background-secondary);
+	}
+}

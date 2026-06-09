@@ -3,7 +3,7 @@
 	border: none;
 	padding: 0;
 	cursor: pointer;
-	color: var(--neutral-3);
+	color: var(--color-dap-gray-500);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -12,12 +12,12 @@
 	border-radius: 50%;
 
 	&:hover {
-		color: var(--neutral-2);
-		background-color: var(--neutral-10);
+		color: var(--color-dap-gray-600);
+		background-color: var(--color-dap-gray-100);
 	}
 
 	&:focus {
-		outline: 2px solid var(--action-cta1);
+		outline: 2px solid var(--color-dap-blue-600);
 		outline-offset: 2px;
 	}
 }

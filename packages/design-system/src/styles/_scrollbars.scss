@@ -6,20 +6,20 @@ $scrollbar-thin-size: 4px;
 	&::-webkit-scrollbar {
 		width: $size;
 		height: $size;
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 
 	&::-webkit-scrollbar-track {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background: var(--color-background-deselected-hover);
+		background: var(--background-deselected-hover);
 		border-radius: $scrollbar-border-radius;
 	}
 
 	&::-webkit-scrollbar-corner {
-		background: var(--color-background-secondary);
+		background: var(--background-secondary);
 	}
 }
 
@@ -31,7 +31,44 @@ $scrollbar-thin-size: 4px;
 			scrollbar-width: auto;
 		}
 
-		scrollbar-color: var(--color-background-deselected-hover) var(--color-background-secondary);
+		scrollbar-color: var(--background-deselected-hover) var(--background-secondary);
+	}
+}
+
+@mixin scrollbar-on-hover {
+	&::-webkit-scrollbar {
+		width: $scrollbar-thin-size;
+		height: $scrollbar-thin-size;
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-corner {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: transparent;
+		border-radius: $scrollbar-border-radius;
+		transition: background-color 0.2s;
+	}
+
+	&:hover::-webkit-scrollbar-thumb {
+		background-color: var(--background-tertiary);
+	}
+
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: var(--background-deselected-hover);
+	}
+
+	scrollbar-width: thin;
+	scrollbar-color: transparent transparent;
+
+	&:hover {
+		scrollbar-color: var(--background-tertiary) transparent;
 	}
 }
 

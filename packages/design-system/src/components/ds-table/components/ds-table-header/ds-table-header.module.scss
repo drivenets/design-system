@@ -2,24 +2,16 @@
 @use '../../styles/variables' as vars;
 
 .stickyHeader {
-	position: sticky;
-	top: 0;
-	z-index: 10;
-	background-color: var(--color-background);
+	background-color: var(--background);
 }
 
 .virtualizedHeader {
-	display: grid;
+	display: block;
 }
 
 .headerRow {
 	.headerCell {
-		border-bottom: 1px solid var(--neutral-6);
-
-		&.selectColumn {
-			width: vars.$select-column-width;
-			padding: 0;
-		}
+		border-bottom: 1px solid var(--color-dap-gray-400);
 	}
 
 	&.headerRowNoBorder {
@@ -34,20 +26,11 @@
 	width: 100%;
 }
 
-.reorderColumn {
-	width: vars.$reorder-column-width;
-}
-
-.expandColumn {
-	width: vars.$expand-column-width;
-	padding: 0;
-}
-
 .headerCell {
 	@include typography.body-sm-md;
-	color: var(--color-font-main);
+	color: var(--font-main);
 	text-align: left;
-	padding: 0 var(--spacing-standard);
+	padding: 0 var(--standard);
 	height: var(--ds-table-header-height);
 
 	&.sortableHeader {
@@ -63,10 +46,15 @@
 		height: 24px;
 
 		&.pageButtonIcon {
-			color: var(--neutral-4);
+			color: var(--color-dap-gray-500);
 			transition: transform 0.2s ease-in-out;
 		}
 	}
+}
+
+.selectHeaderCell {
+	padding: 0;
+	justify-content: center;
 }
 
 .headerSortContainer {
@@ -75,4 +63,26 @@
 	justify-content: space-between;
 	gap: vars.$header-sort-gap;
 	height: 100%;
+}
+
+.filterTriggerContainer {
+	display: inline-flex;
+	align-items: center;
+	margin-left: vars.$header-sort-gap;
+}
+
+.filterableHeader {
+	&:hover .filterTriggerContainer > * {
+		opacity: 1;
+	}
+
+	&:focus-within .filterTriggerContainer > * {
+		opacity: 1;
+	}
+}
+
+.filterActive {
+	.filterTriggerContainer > * {
+		opacity: 1;
+	}
 }

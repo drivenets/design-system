@@ -16,15 +16,20 @@
 	&[hidden] {
 		display: none;
 	}
+
+	&[data-nested='menu'] {
+		margin-top: -1px;
+		z-index: 10000;
+	}
 }
 
 .header {
 	position: sticky;
 	top: 0;
 	z-index: 1;
-	padding: var(--spacing-3xs);
-	border-bottom: 1px solid var(--color-border-secondary);
-	background-color: var(--color-background);
+	padding: var(--3xs);
+	border-bottom: 1px solid var(--border-secondary);
+	background-color: var(--background);
 }
 
 .item {
@@ -33,7 +38,7 @@
 	.triggerItem {
 		display: flex;
 		align-items: center;
-		gap: var(--spacing-xs);
+		gap: var(--xs);
 	}
 
 	&.selected {
@@ -45,8 +50,16 @@
 
 		&:hover {
 			.indicator {
-				color: var(--color-background-selected);
+				color: var(--background-primary);
 			}
+		}
+	}
+
+	&.variant-error {
+		color: var(--font-error);
+
+		&[data-highlighted] {
+			background: var(--background-error-secondary-hover);
 		}
 	}
 }
@@ -61,8 +74,8 @@
 
 .separator {
 	height: 1px;
-	background-color: var(--color-border-secondary);
-	margin: var(--spacing-4xs) var(--spacing-xs);
+	background-color: var(--border-secondary);
+	margin: var(--4xs) var(--xs);
 }
 
 .actions {
@@ -72,17 +85,17 @@
 	display: flex;
 	align-items: center;
 	justify-content: flex-end;
-	gap: var(--spacing-xs);
-	padding: var(--spacing-3xs) var(--spacing-xs);
-	border-top: 1px solid var(--color-border-secondary);
-	background-color: var(--color-background);
+	gap: var(--xs);
+	padding: var(--3xs) var(--xs);
+	border-top: 1px solid var(--border-secondary);
+	background-color: var(--background);
 }
 
 .groupLabel {
 	display: flex;
 	align-items: center;
-	padding: var(--spacing-3xs) var(--spacing-xs);
-	background-color: var(--color-background);
+	padding: var(--3xs) var(--xs);
+	background-color: var(--background);
 	outline-offset: -1px;
 
 	&Collapsible {
@@ -94,7 +107,7 @@
 		transition: background-color 0.15s ease;
 
 		&:hover {
-			background-color: var(--color-background-action-hover-weak);
+			background-color: var(--background-action-hover-weak);
 		}
 	}
 }

@@ -1,0 +1,152 @@
+.topBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
+	min-height: 54px;
+	padding: 0 var(--standard) 0 0;
+	border-bottom: 1px solid var(--border);
+	background: var(--background);
+}
+
+.topBarLeading {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	min-width: 0;
+}
+
+.topBarLogo {
+	flex-shrink: 0;
+	width: 174px;
+	height: 54px;
+	background: radial-gradient(
+		ellipse at 28% 40%,
+		rgba(1, 75, 253, 1) 0%,
+		rgba(10, 60, 194, 1) 46%,
+		rgba(21, 42, 126, 1) 100%
+	);
+}
+
+.topBarBreadcrumbs {
+	display: flex;
+	align-items: center;
+	margin-inline-start: var(--standard);
+}
+
+.topBarTrailing {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: var(--standard);
+}
+
+.topBarUserMenu {
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+}
+
+.sideMenu {
+	&[data-expanded] .sideMenuItem {
+		justify-content: flex-start;
+	}
+
+	&[data-expanded] .sideMenuItemLabel {
+		max-width: 180px;
+		opacity: 1;
+		margin-inline-start: var(--xs);
+	}
+}
+
+.sideMenuItem {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	padding: 10px;
+	border: none;
+	border-radius: var(--3xs);
+	background: transparent;
+	cursor: pointer;
+	color: var(--font-main);
+	transition:
+		background-color 0.2s,
+		color 0.2s;
+
+	&:hover:not([data-selected]) {
+		background: var(--background-action-tertiary-hover);
+	}
+
+	&[data-selected] {
+		background: var(--background-action-secondary-hover);
+		color: var(--background-action);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--background-action);
+		outline-offset: 2px;
+	}
+}
+
+.sideMenuItemLabel {
+	overflow: hidden;
+	max-width: 0;
+	opacity: 0;
+	white-space: nowrap;
+	transition:
+		max-width 0.2s,
+		opacity 0.2s;
+}
+
+.contentHeaderSearch {
+	width: 280px;
+}
+
+.resultsCard {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-height: 0;
+	width: 100%;
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+	background: var(--background);
+}
+
+.emptyCard {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	align-items: center;
+	justify-content: safe center;
+	gap: var(--standard);
+	min-height: 0;
+	width: 100%;
+	padding: var(--xl) var(--lg);
+	overflow: auto;
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+	background: var(--background);
+}
+
+.emptyIllustration {
+	flex-shrink: 0;
+	width: 250px;
+	height: 200px;
+	max-width: 100%;
+}
+
+.emptyCardContent {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--xs);
+	text-align: center;
+}
+
+.fillParentWrapper {
+	height: 400px;
+	border: 2px dashed var(--border);
+}

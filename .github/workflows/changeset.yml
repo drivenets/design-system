@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -46,7 +46,9 @@ jobs:
       # Returns exit code 1 when there are changes without changesets attached to them.
       # See: https://github.com/changesets/changesets/blob/main/docs/automating-changesets.md#blocking
       - name: Run Changesets
-        run: pnpm changeset status --since origin/${{ github.event.pull_request.base.ref }}
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+        run: pnpm changeset status --since "origin/$BASE_REF"
 
   disallow-major-release:
     name: Disallow Major Release
@@ -64,7 +66,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           persist-credentials: false

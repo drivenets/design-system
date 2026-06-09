@@ -8,6 +8,8 @@
 # Excluded shared files
 /pnpm-lock.yaml
 /README.md
+/AGENTS.md
+/CONTEXT.md
 
 # Design System internal configurations
 /packages/design-system/.storybook/ @StyleShit @aroba-dn

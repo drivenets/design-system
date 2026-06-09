@@ -8,7 +8,7 @@ import type {
 } from '@tanstack/react-table';
 import type { IconType } from '../ds-icon';
 import type { RowAction, SecondaryRowAction } from './components/ds-table-cell';
-import type { ScrollParams } from './components/ds-table-body-virtualized';
+import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-body-virtualized';
 
 /**
  * Row size variants based on Figma design specifications
@@ -163,6 +163,8 @@ export interface DsTableApi<TData> {
 	 */
 	expandRows: (rowIds: string[]) => void;
 }
+
+export type { InfiniteScrollConfig } from './components/ds-table-body-virtualized';
 
 /**
  * Represents a bulk action that can be performed on multiple selected rows
@@ -356,6 +358,30 @@ export interface DsDataTableProps<TData, TValue> {
 	 * ```
 	 */
 	onScroll?: (params: ScrollParams) => void;
+
+	/**
+	 * Configures infinite scroll for the virtualized table. The Table owns viewport/scroll
+	 * detection and the auto-fill loop; the consumer owns fetching, pagination state,
+	 * error handling, and retry.
+	 *
+	 * Only takes effect when `virtualized` is `true`. Passing this prop without
+	 * `virtualized` is ignored.
+	 *
+	 * @example
+	 * ```tsx
+	 * <DsTable
+	 *   virtualized
+	 *   data={rows}
+	 *   columns={columns}
+	 *   infiniteScroll={{
+	 *     hasMore,
+	 *     isLoadingMore,
+	 *     onLoadMore: fetchNextPage,
+	 *   }}
+	 * />
+	 * ```
+	 */
+	infiniteScroll?: InfiniteScrollConfig;
 
 	/**
 	 * Actions to be shown in the bulk actions

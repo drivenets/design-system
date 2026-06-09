@@ -8,9 +8,9 @@ $transition-duration: 0.2s;
 .card {
 	display: flex;
 	width: 100%;
-	border: $border-width solid var(--color-border);
-	border-radius: var(--spacing-3xs);
-	background: var(--color-background);
+	border: $border-width solid var(--border);
+	border-radius: var(--3xs);
+	background: var(--background);
 	overflow: hidden;
 	cursor: pointer;
 	text-align: left;
@@ -20,8 +20,8 @@ $transition-duration: 0.2s;
 		box-shadow $transition-duration ease;
 
 	&:hover {
-		background: var(--color-background-action-hover-weak);
-		border-color: var(--color-border);
+		background: var(--background-action-hover-weak);
+		border-color: var(--border);
 		box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.1);
 
 		.actions {
@@ -36,10 +36,10 @@ $transition-duration: 0.2s;
 .sideColor {
 	width: $side-color-width;
 	flex-shrink: 0;
-	background: var(--color-background-info-strong);
+	background: var(--background-info-strong);
 
 	&.actionRequired {
-		background: var(--color-background-warning-strong);
+		background: var(--background-warning-strong);
 	}
 }
 
@@ -53,57 +53,57 @@ $transition-duration: 0.2s;
 .header {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-3xs);
-	padding: var(--spacing-xs) var(--spacing-standard);
-	padding-bottom: var(--spacing-3xs);
+	gap: var(--3xs);
+	padding: var(--xs) var(--standard);
+	padding-bottom: var(--3xs);
 }
 
 .headerTop {
 	display: flex;
 	align-items: flex-start;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 }
 
 .headerLeft {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-	gap: var(--spacing-sm);
+	gap: var(--sm);
 	min-width: 0;
 }
 
 .commentInfo {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
+	gap: var(--xs);
 }
 
 .commentId {
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
-	color: var(--color-font-secondary);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
+	color: var(--font-secondary);
 }
 
 .authorInfo {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-xs);
-	font-size: var(--font-size-sm);
-	line-height: var(--line-height-sm);
+	gap: var(--xs);
+	font-size: var(--body-font-size-sm);
+	line-height: var(--body-line-height-small);
 }
 
 .authorName {
-	color: var(--color-font-main);
+	color: var(--font-main);
 }
 
 .timestamp {
-	color: var(--color-font-secondary);
+	color: var(--font-secondary);
 }
 
 .actions {
 	display: flex;
 	align-items: center;
-	gap: var(--spacing-3xs);
+	gap: var(--3xs);
 	opacity: 0;
 	visibility: hidden;
 	transition:
@@ -118,12 +118,12 @@ $transition-duration: 0.2s;
 		}
 
 		&:hover {
-			background: var(--color-background-action-hover-weak) !important;
-			background-color: var(--color-background-action-hover-weak) !important;
+			background: var(--background-action-hover-weak) !important;
+			background-color: var(--background-action-hover-weak) !important;
 
 			> * {
-				background: var(--color-background-action-hover-weak) !important;
-				background-color: var(--color-background-action-hover-weak) !important;
+				background: var(--background-action-hover-weak) !important;
+				background-color: var(--background-action-hover-weak) !important;
 			}
 		}
 	}
@@ -132,14 +132,14 @@ $transition-duration: 0.2s;
 .body {
 	display: flex;
 	flex-direction: column;
-	gap: var(--spacing-3xs);
-	padding: var(--spacing-xs) var(--spacing-standard);
+	gap: var(--3xs);
+	padding: var(--xs) var(--standard);
 }
 
 .message {
-	font-size: var(--font-size-xs);
-	line-height: var(--line-height-xs);
-	color: var(--color-font-main);
+	font-size: var(--body-font-size-xs);
+	line-height: var(--body-line-height-xs);
+	color: var(--font-main);
 	word-wrap: break-word;
 
 	&.truncated {
@@ -152,9 +152,9 @@ $transition-duration: 0.2s;
 }
 
 .replyCount {
-	font-size: var(--font-size-xs);
-	line-height: var(--line-height-xs);
-	color: var(--color-font-secondary);
+	font-size: var(--body-font-size-xs);
+	line-height: var(--body-line-height-xs);
+	color: var(--font-secondary);
 }
 
 .dropdownContent {

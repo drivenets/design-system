@@ -1,0 +1,53 @@
+{
+	"name": "@drivenets/design-system-mcp",
+	"version": "0.1.2",
+	"license": "Apache-2.0",
+	"description": "Stdio-based MCP server exposing the DriveNets Design System Storybook documentation to AI agents (Cursor, Claude Code, Codex).",
+	"type": "module",
+	"bin": {
+		"drivenets-design-system-mcp": "./dist/cli.js"
+	},
+	"files": [
+		"README.md",
+		"CHANGELOG.md",
+		"LICENSE",
+		"./dist",
+		"./src",
+		"!**/__tests__"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"url": "https://github.com/drivenets/design-system",
+		"directory": "/packages/mcp"
+	},
+	"scripts": {
+		"lint": "eslint --max-warnings=0 .",
+		"build": "tsdown",
+		"start": "node dist/cli.js",
+		"typecheck": "tsgo",
+		"test": "vitest",
+		"test:coverage": "pnpm test --coverage",
+		"lint:build": "TARBALL=$(pnpm pack | tail -n1) && publint $TARBALL && attw $TARBALL; rm -f $TARBALL"
+	},
+	"dependencies": {
+		"@epic-web/cachified": "^5.6.2",
+		"@storybook/mcp": "0.7.0",
+		"@tmcp/adapter-valibot": "^0.1.6",
+		"@tmcp/transport-stdio": "^0.4.3",
+		"tmcp": "^1.19.4",
+		"valibot": "^1.2.0"
+	},
+	"devDependencies": {
+		"@arethetypeswrong/cli": "catalog:",
+		"@types/node": "^25.9.1",
+		"@typescript/native-preview": "catalog:",
+		"@vitest/coverage-v8": "catalog:",
+		"eslint": "catalog:",
+		"publint": "catalog:",
+		"tsdown": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}

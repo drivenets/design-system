@@ -1,5 +1,19 @@
 # @drivenets/eslint-plugin-design-system
 
+## 0.0.16
+
+### Patch Changes
+
+- ba113ed: Add `DsStatusBadgeV2` component.
+  Deprecate `DsStatusBadge` component.
+
+## 0.0.15
+
+### Patch Changes
+
+- ec5df4e: Improve build process
+- 3d8f9e1: Make `@eslint/core` a peer dependency
+
 ## 0.0.14
 
 ### Patch Changes
