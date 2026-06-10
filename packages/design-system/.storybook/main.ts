@@ -8,6 +8,8 @@ import { reactCompilerRolldownPlugin } from '../rolldown/react-compiler-rolldown
 // @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
 import { createFontLinksHtml } from './create-font-links-html.ts';
 
+process.exit(1);
+
 const config: StorybookConfig = {
 	stories: ['../src/**/!(*.docs).mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
 	addons: [
