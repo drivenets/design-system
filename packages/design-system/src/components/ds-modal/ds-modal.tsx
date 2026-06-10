@@ -4,6 +4,7 @@ import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import type { DsModalProps } from './ds-modal.types';
 import styles from './ds-modal.module.scss';
+import { useArkDialogBodyLockCleanup } from '../../utils/use-ark-dialog-body-lock-cleanup';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
@@ -24,6 +25,8 @@ const DsModal = ({
 	children,
 	onOpenChange,
 }: DsModalProps) => {
+	useArkDialogBodyLockCleanup(open, modal);
+
 	const handleOpenChange = (details: { open: boolean }) => {
 		onOpenChange(details.open);
 	};
