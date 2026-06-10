@@ -2,7 +2,7 @@
 # `pull_request_target` and have access to the secrets.
 #
 # If an attacker edits this workflow and removes the Dependabot condition, it should still be safe because
-# the workflow won't have access to secrets.
+# the workflow will run in the fork context and won't have access to secrets.
 name: Dependabot Side Effects
 
 on: pull_request
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to commit the changeset.
+      - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to commit the changes.
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
@@ -37,7 +37,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: Generate changeset
-
         # Generate changeset only for production dependencies changes.
         if: startsWith(github.head_ref, 'dependabot/npm_and_yarn/npm-production-')
         run: |
