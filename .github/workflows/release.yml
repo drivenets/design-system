@@ -31,9 +31,16 @@ jobs:
         with:
           fetch-depth: 0
           filter: 'blob:none'
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          persist-credentials: true
 
       - name: Install Dependencies
         uses: ./.github/actions/install
+
+      - name: Setup Git User
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Create or update release PR
         id: changesets
@@ -41,7 +48,7 @@ jobs:
         with:
           commit: 'chore(release): publish'
           title: 'chore(release): publish'
-          commitMode: 'github-api'
+          setupGitUser: false
 
   build:
     name: Build for publish
