@@ -19,22 +19,30 @@ updates:
       # Matching the pnpm catalog entries manually since Dependabot matches them under the production group.
       # See: https://github.com/dependabot/dependabot-core/issues/14824
       #
-      # Note: Excluding eslint-related packages since they have their own group.
+      # Note: Excluding packages that have their own groups (eslint, vitest, storybook, etc.).
       pnpm-catalog:
         patterns:
           - '@arethetypeswrong/cli'
           - '@typescript/native-preview'
-          - '@vitest/coverage-v8'
           - 'publint'
           - 'tsdown'
           - 'typescript'
-          - 'vitest'
 
       # All eslint-related packages are better to be updated together.
       eslint:
         patterns:
           - '*eslint*'
           - 'globals'
+
+      # All storybook-related packages are better to be updated together.
+      storybook:
+        patterns:
+          - '*storybook*'
+
+      # All vitest-related packages are better to be updated together.
+      vitest:
+        patterns:
+          - '*vitest*'
 
       npm-development:
         dependency-type: 'development'

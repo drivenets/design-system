@@ -11,5 +11,5 @@
 			"description": "Local words for the project"
 		}
 	],
-	"ignorePaths": [".cursor", ".git", ".github", ".vscode/extensions.json", ".cspell", "pnpm-lock.yaml"]
+	"ignorePaths": [".cursor", ".git", ".vscode/extensions.json", ".cspell", "pnpm-lock.yaml"]
 }
