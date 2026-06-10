@@ -1,0 +1,56 @@
+# This workflow should run only for Dependabot PRs, so we can safely use `pull_request` trigger instead of
+# `pull_request_target` and have access to the secrets.
+#
+# If an attacker edits this workflow and removes the Dependabot condition, it should still be safe because
+# the workflow will run in the fork context and won't have access to secrets.
+name: Dependabot Side Effects
+
+on: pull_request
+
+permissions: {}
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.event.pull_request.number }}'
+  cancel-in-progress: true
+
+jobs:
+  run:
+    name: Run
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to commit the changes.
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Configure git user
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+      - name: Generate changeset
+        # Generate changeset only for production dependencies changes.
+        if: startsWith(github.head_ref, 'dependabot/npm_and_yarn/npm-production-')
+        run: |
+          node .github/scripts/generate-dependabot-changeset.ts
+
+          git add -A
+          git commit -m "chore: update changeset" -n || echo "No changeset to commit"
+
+      - name: Deduplicate Dependencies
+        run: |
+          pnpm dedupe
+
+          git add -A
+          git commit -m "chore: deduplicate dependencies" -n || echo "No deduplication to commit"
+
+      - name: Push Changes
+        run: git push
