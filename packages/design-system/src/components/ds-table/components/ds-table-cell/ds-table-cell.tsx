@@ -2,16 +2,11 @@ import { type Cell, flexRender } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
+import { useDsTableContext } from '../../context/ds-table-context';
+import { DsTableEditableCell } from '../edit/ds-table-editable-cell';
+import { DsTableEditingCell } from '../edit/ds-table-editing-cell';
 import styles from './ds-table-cell.module.scss';
 import type { DsTableCellProps } from './ds-table-cell.types';
-
-const DsDefaultTableCell = <TData, TValue>({ cell }: { cell: Cell<TData, TValue> }) => {
-	return (
-		<div className={styles.tableCellEllipsis}>
-			{flexRender(cell.column.columnDef.cell, cell.getContext())}
-		</div>
-	);
-};
 
 export const DsTableCell = <TData, TValue>({
 	row,
@@ -19,14 +14,19 @@ export const DsTableCell = <TData, TValue>({
 	primaryRowActions = [],
 	secondaryRowActions = [],
 }: DsTableCellProps<TData, TValue>) => {
+	const { editing } = useDsTableContext<TData, TValue>();
+	const isCellBeingEdited =
+		editing !== null && editing.cell.row.id === row.id && editing.cell.column.id === cell.column.id;
+
 	const visiblePrimary = primaryRowActions.filter((action) => !action.hidden?.(row.original));
 	const visibleSecondary = secondaryRowActions.filter((action) => !action.hidden?.(row.original));
 
-	if (visiblePrimary.length || visibleSecondary.length) {
+	if (!isCellBeingEdited && (visiblePrimary.length || visibleSecondary.length)) {
 		const hasSecondaryRowActions = visibleSecondary.length > 0;
+
 		return (
 			<div className={styles.lastCell}>
-				<DsDefaultTableCell cell={cell} />
+				<CellContent cell={cell} isCellBeingEdited={isCellBeingEdited} />
 				<div className={styles.cellActions}>
 					{visiblePrimary.map((action, i) => {
 						const isDisabled = action.disabled?.(row.original);
@@ -95,5 +95,36 @@ export const DsTableCell = <TData, TValue>({
 			</div>
 		);
 	}
-	return <DsDefaultTableCell cell={cell} />;
+
+	return <CellContent cell={cell} isCellBeingEdited={isCellBeingEdited} />;
+};
+
+interface CellContentProps<TData, TValue> {
+	cell: Cell<TData, TValue>;
+	isCellBeingEdited: boolean;
+}
+
+const CellContent = <TData, TValue>({ cell, isCellBeingEdited }: CellContentProps<TData, TValue>) => {
+	const columnDef = cell.column.columnDef;
+	const isEditable = typeof columnDef.editCell === 'function';
+
+	if (isCellBeingEdited) {
+		return <DsTableEditingCell cell={cell} />;
+	}
+
+	if (isEditable) {
+		return (
+			<DsTableEditableCell cell={cell}>
+				<div className={styles.tableCellEllipsis}>
+					{flexRender(cell.column.columnDef.cell, cell.getContext())}
+				</div>
+			</DsTableEditableCell>
+		);
+	}
+
+	return (
+		<div className={styles.tableCellEllipsis}>
+			{flexRender(cell.column.columnDef.cell, cell.getContext())}
+		</div>
+	);
 };
