@@ -27,9 +27,10 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
 
-          # We're using a deploy key here to be able to override the the branch protection rules.
-          # Force push is only allowed for admins, and the default `GITHUB_TOKEN` doesn't have admin
-          # permissions, and it can't be added to the bypass list, while a deploy key can.
+          # We're using a deploy key here so committing changes will trigger CI workflows run, as opposed to
+          # the default `GITHUB_TOKEN` that doesn't trigger them.
+          #
+          # See: https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow
           ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Install Dependencies
