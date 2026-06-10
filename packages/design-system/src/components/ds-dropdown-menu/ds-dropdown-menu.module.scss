@@ -16,6 +16,11 @@
 	&[hidden] {
 		display: none;
 	}
+
+	&[data-nested='menu'] {
+		margin-top: -1px;
+		z-index: 10000;
+	}
 }
 
 .header {

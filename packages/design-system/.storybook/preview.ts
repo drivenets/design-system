@@ -1,9 +1,13 @@
 import type { Preview } from '@storybook/react-vite';
 import '../src/styles/styles.scss';
+import { lightTheme } from './themes';
 
 const preview: Preview = {
 	tags: ['autodocs'],
 	parameters: {
+		docs: {
+			theme: lightTheme,
+		},
 		options: {
 			storySort: {
 				order: [

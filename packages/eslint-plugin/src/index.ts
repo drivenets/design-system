@@ -28,9 +28,15 @@ const eslintPlugin = createPlugin(
 	},
 
 	{
+		name: 'no-deprecated-ds-status-badge',
+		selector: JSXElementName('DsStatusBadge'),
+		message: `DsStatusBadge is deprecated. Use DsStatusBadgeV2 instead.`,
+	},
+
+	{
 		name: 'no-deprecated-ds-system-status',
 		selector: JSXElementName('DsSystemStatus'),
-		message: `DsSystemStatus is deprecated. Use DsStatusBadge instead.`,
+		message: `DsSystemStatus is deprecated. Use DsStatusBadgeV2 instead.`,
 	},
 
 	{

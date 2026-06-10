@@ -1,7 +1,5 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { promisify } from 'node:util';
-import { exec } from 'node:child_process';
 import * as oxfmt from 'oxfmt';
 import * as git from '@changesets/git';
 import getChangesets from '@changesets/read';
@@ -10,8 +8,6 @@ import { type Changeset } from '@changesets/types';
 import { shouldSkipPackage } from '@changesets/should-skip-package';
 import oxfmtConfig from '../../.oxfmtrc.json' with { type: 'json' };
 import changesetConfig from '../../.changeset/config.json' with { type: 'json' };
-
-const execAsync = promisify(exec);
 
 const BASE_BRANCH = 'origin/' + changesetConfig.baseBranch;
 const ROOT_DIR = path.resolve(import.meta.dirname, '../../');
@@ -50,11 +46,6 @@ await formatChangeset(changesetId);
 
 console.log('Added new changeset');
 
-await git.add('-A', ROOT_DIR);
-await git.commit('chore: update changeset', ROOT_DIR);
-
-await execAsync('git push', { cwd: ROOT_DIR });
-
 async function getExistingChangeset() {
 	return (await getChangesets(ROOT_DIR, BASE_BRANCH)).find(
 		(changeset) => changeset.summary === newChangeset.summary,
@@ -71,7 +62,7 @@ async function formatChangeset(changesetId: string) {
 	const changesetPath = getChangesetPath(changesetId);
 
 	const changeset = await fs.readFile(changesetPath, 'utf8');
-	const formattedChangeset = await oxfmt.format(changesetPath, changeset, oxfmtConfig as oxfmt.FormatOptions);
+	const formattedChangeset = await oxfmt.format(changesetPath, changeset, oxfmtConfig as oxfmt.FormatConfig);
 
 	await fs.writeFile(changesetPath, formattedChangeset.code);
 }

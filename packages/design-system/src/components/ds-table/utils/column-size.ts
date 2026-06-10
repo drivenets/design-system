@@ -2,19 +2,20 @@ import type { CSSProperties } from 'react';
 import { defaultColumnSizing } from '@tanstack/react-table';
 
 /**
- * Generates the appropriate style object for a table column/cell based on its size and virtualization state
+ * Generates the appropriate style object for a table column/cell based on its size
+ *
+ * Custom-sized columns get a fixed `width` plus `minWidth` and `flexShrink: 0` so
+ * they enforce horizontal overflow on the table container. Default-sized columns
+ * grow to fill the row evenly via `flex: 1`.
  *
  * @param columnSize - The size of the column
- * @param virtualized - Whether the table is virtualized
- * @returns Style object or undefined if no custom styling is needed
+ * @returns Style object for the column/cell
  */
-export const getColumnSizeStyle = (columnSize: number, virtualized?: boolean): CSSProperties | undefined => {
+export const getColumnSizeStyle = (columnSize: number): CSSProperties => {
 	const hasCustomSize = columnSize !== defaultColumnSizing.size;
 	if (hasCustomSize) {
-		return { width: columnSize };
+		return { width: columnSize, minWidth: columnSize, flexShrink: 0 };
 	}
 
-	if (virtualized) {
-		return { flex: 1 };
-	}
+	return { flex: 1, minWidth: 0 };
 };

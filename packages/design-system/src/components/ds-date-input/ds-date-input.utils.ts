@@ -23,7 +23,7 @@ interface ParsedDateRange {
  */
 export const isoStringToDateValue = (isoDate: string): DateValue | undefined => {
 	try {
-		return parseDate(isoDate) as unknown as DateValue;
+		return parseDate(isoDate);
 	} catch {
 		return undefined;
 	}
@@ -109,7 +109,7 @@ const parseDateString = (dateStr: string): DateValue | null => {
 		return null;
 	}
 
-	return new CalendarDate(yearNum, monthNum, dayNum) as unknown as DateValue;
+	return new CalendarDate(yearNum, monthNum, dayNum);
 };
 
 /**

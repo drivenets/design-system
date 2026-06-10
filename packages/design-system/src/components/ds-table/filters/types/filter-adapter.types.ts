@@ -1,117 +1,84 @@
 import type { ReactNode } from 'react';
 import type { Row } from '@tanstack/react-table';
-import type { ChipItem } from '../../../ds-chip-group';
+import type { TagFilterItem } from '../../../ds-tag-filter';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyAdapter = FilterAdapter<any, any, any>;
 
 /**
- * Base filter adapter interface that all filters must implement
- * This provides a consistent contract for filter behavior
- *
- * @template TData - The row data type
- * @template TFilterValue - The filter state value type
- * @template TCellValue - The actual cell value type from the table (defaults to unknown)
+ * Contract every filter implements. `TData` is the row type, `TFilterValue`
+ * the adapter's state, `TCellValue` the cell value returned by the column.
  */
 export interface FilterAdapter<TData, TFilterValue, TCellValue = unknown> {
-	/**
-	 * Unique identifier for the filter (should match column accessorKey)
-	 */
+	/** Unique id, should match the column `accessorKey`. */
 	id: string;
-
-	/**
-	 * Display label for the filter in the navigation
-	 */
+	/** Display label used in the filter navigation. */
 	label: string;
-
-	/**
-	 * Initial/default value for the filter state
-	 */
+	/** Initial / reset value. */
 	initialValue: TFilterValue;
-
-	/**
-	 * TanStack Table filter function
-	 * Determines if a row matches the current filter value
-	 */
+	/** TanStack `filterFn` — returns whether a row matches the current value. */
 	columnFilterFn: (row: Row<TData>, columnId: string, filterValue: TFilterValue) => boolean;
-
-	/**
-	 * Optional custom cell renderer for the table column
-	 * Receives the actual cell value from the table, not the filter value
-	 * If not provided, default rendering will be used
-	 */
+	/** Optional cell renderer; receives the cell value, not the filter value. */
 	cellRenderer?: (value: TCellValue) => ReactNode;
-
 	/**
-	 * Convert filter value to filter chips for display
-	 * Returns empty array if no chips should be shown
+	 * Convert the filter value into chips for `DsTagFilter`. Each chip's
+	 * `metadata.key` / `metadata.value` must let `fromChip` undo it.
 	 */
-	toChips: (value: TFilterValue) => ChipItem[];
-
-	/**
-	 * Remove a chip from the filter value
-	 * Returns updated filter value with the chip's effect removed
-	 */
-	fromChip: (chip: ChipItem, currentValue: TFilterValue) => TFilterValue;
-
-	/**
-	 * Calculate how many active filters are applied
-	 * Used for the count indicator in filter navigation
-	 * Can also be used to check if filter is active (count > 0)
-	 */
+	toChips: (value: TFilterValue) => TagFilterItem[];
+	/** Remove a chip's effect from the current value. */
+	fromChip: (chip: TagFilterItem, currentValue: TFilterValue) => TFilterValue;
+	/** Number of active sub-filters; `0` means the filter is inactive. */
 	getActiveFiltersCount: (value: TFilterValue) => number;
-
-	/**
-	 * Reset filter to initial state
-	 */
+	/** Return the initial value. */
 	reset: () => TFilterValue;
-
-	/**
-	 * Render the filter UI component
-	 * Receives current value and onChange callback
-	 */
+	/** Render the filter UI for a given value + onChange. */
 	renderFilter: (value: TFilterValue, onChange: (value: TFilterValue) => void) => ReactNode;
 }
 
-/**
- * Filter navigation item used to render filter tabs in the UI
- */
 export interface FilterNavItem {
-	/**
-	 * Unique identifier for the filter (matches FilterAdapter.id)
-	 */
+	/** Matches `FilterAdapter.id`. */
 	id: string;
-	/**
-	 * Display label for the filter tab
-	 */
 	label: string;
-	/**
-	 * Optional count badge to display active filters
-	 */
+	/** Active filter count badge. */
 	count?: number;
-	/**
-	 * Whether this filter is disabled
-	 */
 	disabled?: boolean;
 }
 
-/**
- * Filter state managed by useTableFilters hook
- */
+/** Map of filter id → adapter value. */
 export interface FilterState<TValue> {
 	[filterId: string]: TValue;
 }
 
-/**
- * Column filter for TanStack Table
- */
 export interface ColumnFilterState<TValue> {
-	/**
-	 * Column identifier this filter applies to (matches the column `accessorKey`).
-	 */
+	/** Column id (matches the column `accessorKey`). */
 	id: string;
-	/**
-	 * Current filter value, passed to the column's filter function.
-	 */
+	/** Value passed to the column's filter function. */
 	value: TValue;
+}
+
+/**
+ * Set by the consumer on `column.meta.filter` to opt a column into the
+ * per-column filter popover. Provide an `adapter` inline or just `adapterId`
+ * to resolve against `useTableFilters({ filterAdapters })`.
+ */
+export interface ColumnFilterMeta {
+	/** Mutually exclusive with `adapterId`. */
+	adapter?: AnyAdapter;
+	/** Mutually exclusive with `adapter`. */
+	adapterId?: string;
+}
+
+/**
+ * What `useTableFilters` injects onto `column.meta.filter` of each enhanced
+ * column. Consumers don't build this — they set `ColumnFilterMeta` and the
+ * hook swaps it for this resolved shape on `enhancedColumns`.
+ */
+export interface ResolvedColumnFilter {
+	filterId: string;
+	hasActiveFilter: boolean;
+	/** Renders the adapter's filter UI for this column. */
+	render: () => ReactNode;
+	onApply: () => void;
+	onClear: () => void;
+	onCancel: () => void;
 }

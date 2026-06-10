@@ -2,24 +2,16 @@
 @use '../../styles/variables' as vars;
 
 .stickyHeader {
-	position: sticky;
-	top: 0;
-	z-index: 10;
 	background-color: var(--background);
 }
 
 .virtualizedHeader {
-	display: grid;
+	display: block;
 }
 
 .headerRow {
 	.headerCell {
 		border-bottom: 1px solid var(--color-dap-gray-400);
-
-		&.selectColumn {
-			width: vars.$select-column-width;
-			padding: 0;
-		}
 	}
 
 	&.headerRowNoBorder {
@@ -32,10 +24,6 @@
 .headerRowVirtualized {
 	display: flex;
 	width: 100%;
-}
-
-.reorderColumn {
-	width: vars.$reorder-column-width;
 }
 
 .headerCell {
@@ -64,10 +52,37 @@
 	}
 }
 
+.selectHeaderCell {
+	padding: 0;
+	justify-content: center;
+}
+
 .headerSortContainer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	gap: vars.$header-sort-gap;
 	height: 100%;
+}
+
+.filterTriggerContainer {
+	display: inline-flex;
+	align-items: center;
+	margin-left: vars.$header-sort-gap;
+}
+
+.filterableHeader {
+	&:hover .filterTriggerContainer > * {
+		opacity: 1;
+	}
+
+	&:focus-within .filterTriggerContainer > * {
+		opacity: 1;
+	}
+}
+
+.filterActive {
+	.filterTriggerContainer > * {
+		opacity: 1;
+	}
 }

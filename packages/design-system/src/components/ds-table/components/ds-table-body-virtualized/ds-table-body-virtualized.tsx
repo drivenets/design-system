@@ -6,18 +6,20 @@ import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
 import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
 import { TableBody, TableRow, TableCell } from '../core-table';
 import { EMPTY_TABLE_STATE_TEXT } from '../../utils/constants';
+import { useInfiniteScroll } from './use-infinite-scroll';
 
 export const DsTableBodyVirtualized = <TData,>({
 	table,
-	tableContainerRef,
 	emptyState,
 	estimateSize,
 	overscan,
 	onScroll,
 	rowSelection,
+	infiniteScroll,
 }: DsTableBodyVirtualizedProps<TData>) => {
 	const rowsMapRef = useRef(new Map<string, HTMLTableRowElement>());
 	const rowHeightsMapRef = useRef(new Map<string, number>());
+	const tbodyRef = useRef<HTMLTableSectionElement>(null);
 
 	const { rows } = table.getRowModel();
 
@@ -30,14 +32,16 @@ export const DsTableBodyVirtualized = <TData,>({
 		return item ? `${item.row.id}${item.isExpandedRowContent ? '-expanded-content' : ''}` : String(index);
 	};
 
-	const rowVirtualizer = useVirtualizer<HTMLDivElement, HTMLTableRowElement>({
+	const { loadDataIfNeeded } = useInfiniteScroll(tbodyRef, rows.length, infiniteScroll);
+
+	const rowVirtualizer = useVirtualizer<HTMLTableSectionElement, HTMLTableRowElement>({
 		count: rowsAndExpandedRowContent.length,
 		estimateSize: (index) => {
 			const cachedHeight = rowHeightsMapRef.current.get(getItemKey(index));
 			return cachedHeight || estimateSize;
 		}, // estimate row height for accurate scrollbar dragging
 		getItemKey,
-		getScrollElement: () => tableContainerRef.current,
+		getScrollElement: () => tbodyRef.current,
 		// measure dynamic row height, except in firefox because it measures table border height incorrectly
 		measureElement:
 			typeof window !== 'undefined' && navigator.userAgent.indexOf('Firefox') === -1
@@ -56,17 +60,21 @@ export const DsTableBodyVirtualized = <TData,>({
 				});
 			});
 
-			if (sync && onScroll) {
-				const scrollOffset = instance.scrollOffset || 0;
-				const totalContentHeight = instance.getTotalSize();
-				const viewportHeight = instance.scrollElement?.clientHeight;
-				const scrollDirection = instance.scrollDirection;
+			if (sync) {
+				if (onScroll) {
+					const scrollOffset = instance.scrollOffset || 0;
+					const totalContentHeight = instance.getTotalSize();
+					const viewportHeight = instance.scrollElement?.clientHeight;
+					const scrollDirection = instance.scrollDirection;
 
-				if (viewportHeight) {
-					const bottomOffset = totalContentHeight - (scrollOffset + viewportHeight);
+					if (viewportHeight) {
+						const bottomOffset = totalContentHeight - (scrollOffset + viewportHeight);
 
-					onScroll({ scrollOffset, totalContentHeight, viewportHeight, bottomOffset, scrollDirection });
+						onScroll({ scrollOffset, totalContentHeight, viewportHeight, bottomOffset, scrollDirection });
+					}
 				}
+
+				loadDataIfNeeded();
 			}
 		},
 	});
@@ -78,6 +86,7 @@ export const DsTableBodyVirtualized = <TData,>({
 
 	return (
 		<DsTableBody
+			ref={tbodyRef}
 			rowsMapRef={rowsMapRef}
 			rowHeightsMapRef={rowHeightsMapRef}
 			rowVirtualizer={rowVirtualizer}
@@ -89,7 +98,8 @@ export const DsTableBodyVirtualized = <TData,>({
 };
 
 interface DsTableBodyProps<TData> {
-	rowVirtualizer: Virtualizer<HTMLDivElement, HTMLTableRowElement>;
+	ref: RefObject<HTMLTableSectionElement | null>;
+	rowVirtualizer: Virtualizer<HTMLTableSectionElement, HTMLTableRowElement>;
 	rowsMapRef: RefObject<Map<string, HTMLTableRowElement>>;
 	rowHeightsMapRef: RefObject<Map<string, number>>;
 	rowsAndExpandedRowContent: {
@@ -101,6 +111,7 @@ interface DsTableBodyProps<TData> {
 }
 
 function DsTableBody<TData>({
+	ref,
 	rowVirtualizer,
 	rowsMapRef,
 	rowHeightsMapRef,
@@ -109,14 +120,10 @@ function DsTableBody<TData>({
 	rowSelection,
 }: DsTableBodyProps<TData>) {
 	const virtualRows = rowVirtualizer.getVirtualItems();
+	const totalSize = rowVirtualizer.getTotalSize();
 
 	return (
-		<TableBody
-			className={styles.body}
-			style={{
-				height: `${rowVirtualizer.getTotalSize().toString()}px`, // tells scrollbar how big the table is
-			}}
-		>
+		<TableBody ref={ref} className={styles.body}>
 			{virtualRows.length > 0 ? (
 				virtualRows.map((virtualRow) => {
 					const row = rowsAndExpandedRowContent[virtualRow.index];
@@ -142,6 +149,10 @@ function DsTableBody<TData>({
 					<TableCell className={styles.emptyState}>{emptyState || EMPTY_TABLE_STATE_TEXT}</TableCell>
 				</TableRow>
 			)}
+
+			<tr aria-hidden className={styles.sentinel} style={{ top: `${totalSize.toString()}px` }}>
+				<td />
+			</tr>
 		</TableBody>
 	);
 }

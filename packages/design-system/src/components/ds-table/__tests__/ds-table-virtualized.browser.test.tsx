@@ -49,7 +49,7 @@ describe('DsTable Virtualized', () => {
 		await page.elementLocator(firstRowRoot).click();
 		await expect.element(firstRowCheckboxInput).toBeChecked();
 
-		const scrollContainer = document.querySelector('[class*="virtualizedContainer"]');
+		const scrollContainer = document.querySelector('[class*="virtualizedContainer"] tbody');
 
 		if (scrollContainer) {
 			scrollContainer.scrollTop = scrollContainer.scrollHeight;
@@ -88,7 +88,7 @@ describe('DsTable Virtualized', () => {
 		await page.getByRole('button', { name: 'chevron_right' }).nth(0).click();
 		await expect.element(page.getByText('Expanded: First1')).toBeVisible();
 
-		const scrollContainer = document.querySelector('[class*="virtualizedContainer"]');
+		const scrollContainer = document.querySelector('[class*="virtualizedContainer"] tbody');
 
 		if (scrollContainer) {
 			scrollContainer.scrollTop = scrollContainer.scrollHeight;

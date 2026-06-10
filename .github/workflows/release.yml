@@ -27,7 +27,7 @@ jobs:
     steps:
       # changesets/action commits the release PR via git push, so it needs the persisted GITHUB_TOKEN.
       - name: Checkout source code # zizmor: ignore[artipacked]
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
           filter: 'blob:none'
@@ -37,10 +37,11 @@ jobs:
 
       - name: Create or update release PR
         id: changesets
-        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1.8.0
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
           commit: 'chore(release): publish'
           title: 'chore(release): publish'
+          commitMode: 'github-api'
 
   build:
     name: Build for publish
@@ -53,7 +54,7 @@ jobs:
 
     steps:
       - name: Checkout source code
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           persist-credentials: false
 
@@ -94,7 +95,7 @@ jobs:
 
     steps:
       - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to push tags.
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Install Dependencies
         uses: ./.github/actions/install
@@ -106,7 +107,7 @@ jobs:
           path: packages
 
       - name: Publish
-        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b # v1.8.0
+        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
           publish: pnpm changeset publish
         env:

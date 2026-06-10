@@ -198,4 +198,47 @@ describe('DsTable Selection', () => {
 
 		await expect.element(page.getByRole('checkbox').nth(2)).not.toBeDisabled();
 	});
+
+	it('should render select column alongside the reorder drag handle', async () => {
+		const onSelectionChange = vi.fn();
+		const onOrderChange = vi.fn();
+		const onRowClick = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				selectable
+				reorderable
+				onSelectionChange={onSelectionChange}
+				onOrderChange={onOrderChange}
+				onRowClick={onRowClick}
+			/>,
+		);
+
+		const headerCells = document.querySelectorAll('thead tr > th');
+		expect(headerCells[0]?.textContent).toContain('Order');
+		expect(headerCells[1]?.querySelector(CHECKBOX_ROOT_LABEL)).not.toBeNull();
+
+		const firstRowCells = document.querySelectorAll('tbody tr:nth-child(1) > td');
+		expect(firstRowCells).toHaveLength(columns.length + 2);
+
+		const firstRowCheckboxRoot = firstRowCells[1]?.querySelector(CHECKBOX_ROOT_LABEL) as HTMLLabelElement;
+
+		await page.elementLocator(firstRowCheckboxRoot).click();
+		expect(onSelectionChange).toHaveBeenLastCalledWith({ '1': true });
+		await expect.element(page.getByRole('row').nth(1)).toHaveAttribute('data-state', 'selected');
+
+		const dragHandle = document.querySelector('tbody tr:nth-child(1) > td:nth-child(1)') as HTMLElement;
+		await page.elementLocator(dragHandle).click();
+		expect(onRowClick).not.toHaveBeenCalled();
+
+		const selectAllRoot = document.querySelector(`th ${CHECKBOX_ROOT_LABEL}`) as HTMLLabelElement;
+		await page.elementLocator(selectAllRoot).click();
+		for (const checkbox of page.getByRole('checkbox').all().slice(1)) {
+			await expect.element(checkbox).toBeChecked();
+		}
+
+		expect(onOrderChange).not.toHaveBeenCalled();
+	});
 });
