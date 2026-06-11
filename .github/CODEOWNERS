@@ -17,8 +17,9 @@
 /packages/design-system/vitest/ @StyleShit @aroba-dn
 /packages/design-system/* @StyleShit @aroba-dn
 
-# ESLint plugin internal configurations
-/packages/eslint-plugin/* @StyleShit @aroba-dn
+# Other publishable packages
+/packages/eslint-plugin @StyleShit @aroba-dn
+/packages/vite-plugin @StyleShit
 
 # Excluded publishable packages files
 /packages/design-system/.gitignore
@@ -37,4 +38,3 @@
 # Other packages
 /packages/commitlint-plugin-internal/ @StyleShit
 /packages/eslint-plugin-internal/ @StyleShit
-/packages/vite-plugin/ @StyleShit
