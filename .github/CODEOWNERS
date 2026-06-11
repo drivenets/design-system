@@ -17,20 +17,29 @@
 /packages/design-system/vitest/ @StyleShit @aroba-dn
 /packages/design-system/* @StyleShit @aroba-dn
 
-# Excluded Design System files
-/packages/design-system/.gitignore
-/packages/design-system/CHANGELOG.md
-/packages/design-system/package.json
-/packages/design-system/README.md
+# MCP server internal configurations
+/packages/mcp/* @StyleShit @aroba-dn
 
 # ESLint plugin internal configurations
 /packages/eslint-plugin/* @StyleShit @aroba-dn
 
-# Excluded ESLint plugin files
-/packages/eslint-plugin/CHANGELOG.md
-/packages/eslint-plugin/README.md
+# Vite plugin
+/packages/vite-plugin @StyleShit
 
-# Other packages
+# Internal packages
 /packages/commitlint-plugin-internal/ @StyleShit
 /packages/eslint-plugin-internal/ @StyleShit
-/packages/vite-plugin/ @StyleShit
+
+# Excluded publishable packages files
+/packages/design-system/*.md
+/packages/design-system/package.json
+/packages/design-system/.gitignore
+
+/packages/eslint-plugin/*.md
+/packages/eslint-plugin/package.json
+
+/packages/vite-plugin/*.md
+/packages/vite-plugin/package.json
+
+/packages/mcp/*.md
+/packages/mcp/package.json
