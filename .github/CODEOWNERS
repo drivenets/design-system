@@ -31,9 +31,9 @@
 /packages/eslint-plugin-internal/ @StyleShit
 
 # Excluded publishable packages files
-/packages/design-system/.gitignore
 /packages/design-system/*.md
 /packages/design-system/package.json
+/packages/design-system/.gitignore
 
 /packages/eslint-plugin/*.md
 /packages/eslint-plugin/package.json
