@@ -8,7 +8,6 @@ const config: UserConfig = {
 	plugins: [designSystem],
 	rules: {
 		'design-system/exclamation-mark': [RuleConfigSeverity.Error, hasBreakingChanges ? 'always' : 'never'],
-
 		'design-system/require-jira-ticket': [RuleConfigSeverity.Error, 'always', { prefix: 'AR' }],
 	},
 };

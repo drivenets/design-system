@@ -7,16 +7,16 @@ type ChangesetStatus = {
 const changesetStatusFile = process.argv[2];
 
 if (!changesetStatusFile || !fs.existsSync(changesetStatusFile)) {
-	exit(false);
+	exitWithOutput(false);
 }
 
 const status = JSON.parse(fs.readFileSync(changesetStatusFile, 'utf-8')) as ChangesetStatus;
 
 const hasMajor = status.releases.some((release) => release.type === 'major');
 
-exit(hasMajor);
+exitWithOutput(hasMajor);
 
-function exit(hasMajor: boolean): never {
+function exitWithOutput(hasMajor: boolean): never {
 	const outputFile = process.env.GITHUB_OUTPUT;
 
 	if (outputFile) {
