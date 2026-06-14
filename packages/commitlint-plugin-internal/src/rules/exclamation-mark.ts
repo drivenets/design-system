@@ -5,7 +5,7 @@ export const exclamationMark: Rule<void> = ({ header }, when = 'never') => {
 		return [true];
 	}
 
-	// To avoid ReDos. See:
+	// To prevent ReDos. See:
 	// https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS
 	if (header.length > 1000) {
 		throw new Error('Commit message is too long');
