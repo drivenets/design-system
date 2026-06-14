@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to commit the build.
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           fetch-depth: 0
 
@@ -49,9 +49,7 @@ jobs:
           echo "LAST_COMMIT=$LAST_COMMIT" >> "$GITHUB_ENV"
 
       - name: Setup Git User
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        uses: ./.github/actions/setup-git-user
 
       - name: Deploy
         run: |

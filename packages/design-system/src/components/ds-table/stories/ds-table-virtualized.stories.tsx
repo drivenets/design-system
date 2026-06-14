@@ -1,13 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { useMemo, useState } from 'react';
-import type { ColumnDef, SortingState } from '@tanstack/react-table';
+import type { CellContext, ColumnDef, SortingState } from '@tanstack/react-table';
 import { keepPreviousData, QueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import DsTable from '../ds-table';
+import {
+	DsTableEditCellNumber,
+	DsTableEditCellSelect,
+	DsTableEditCellText,
+} from '../components/edit/cell-editors';
 import { DsSpinner } from '../../ds-spinner';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
-import { columns, defaultData, type Person } from './common/story-data';
+import editableStyles from './ds-table-editable.stories.module.scss';
+import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { TableEmptyState } from './components';
 
@@ -100,13 +106,6 @@ export const VirtualizedSelectable: Story = {
 					</p>
 				</div>
 
-				{import.meta.env.NODE_ENV === 'development' && (
-					<p className={styles.developmentNotice}>
-						<strong>Notice:</strong> You are currently running React in development mode. Virtualized
-						rendering performance will be slightly degraded until this application is built for production.
-					</p>
-				)}
-
 				<div className={styles.virtualizedTableWrapper}>
 					<DsTable
 						{...args}
@@ -138,7 +137,7 @@ export const VirtualizedSelectable: Story = {
 				return {
 					...col,
 					size: 100,
-				} as ColumnDef<Person>;
+				};
 			}
 			return col;
 		}),
@@ -191,13 +190,6 @@ export const VirtualizedExpandable: Story = {
 						({flatData.length} of {totalRows} rows fetched)
 					</p>
 				</div>
-
-				{import.meta.env.NODE_ENV === 'development' && (
-					<p className={styles.developmentNotice}>
-						<strong>Notice:</strong> You are currently running React in development mode. Virtualized
-						rendering performance will be slightly degraded until this application is built for production.
-					</p>
-				)}
 
 				<div className={styles.virtualizedTableWrapper}>
 					<DsTable
@@ -260,7 +252,7 @@ export const VirtualizedExpandable: Story = {
 				return {
 					...col,
 					size: 100,
-				} as ColumnDef<Person>;
+				};
 			}
 			return col;
 		}),
@@ -325,6 +317,126 @@ export const InfiniteScroll: Story = {
 							hasMore,
 							isLoadingMore: isFetching,
 							onLoadMore: fetchNextPage,
+						}}
+					/>
+				</div>
+			</div>
+		);
+	},
+};
+
+const statusOptions = [
+	{ label: 'Single', value: 'single' },
+	{ label: 'Relationship', value: 'relationship' },
+	{ label: 'Complicated', value: 'complicated' },
+];
+
+const statusLabels: Record<Status, string> = {
+	single: 'Single',
+	relationship: 'Relationship',
+	complicated: 'Complicated',
+};
+
+const VIRTUALIZED_ROW_COUNT = 1_000;
+
+const updateRow = <K extends keyof Person>(
+	rows: Person[],
+	rowId: string,
+	columnId: K,
+	value: Person[K],
+): Person[] => rows.map((row) => (row.id === rowId ? { ...row, [columnId]: value } : row));
+
+const hasAccessorKey = <K extends keyof Person>(
+	column: ColumnDef<Person>,
+	key: K,
+): column is ColumnDef<Person> & { accessorKey: K } => 'accessorKey' in column && column.accessorKey === key;
+
+const baseColumn = (accessorKey: keyof Person): ColumnDef<Person> =>
+	columns.find((column) => hasAccessorKey(column, accessorKey)) ?? {
+		accessorKey,
+		header: accessorKey,
+		cell: (info) => info.getValue(),
+	};
+
+const editableColumns: ColumnDef<Person>[] = [
+	{
+		accessorKey: 'id',
+		header: 'ID',
+		size: 60,
+		cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,
+	},
+	{
+		...baseColumn('firstName'),
+		editCell: (info: CellContext<Person, string>) => (
+			<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+		),
+	},
+	{
+		...baseColumn('lastName'),
+		editCell: (info: CellContext<Person, string>) => (
+			<DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+		),
+	},
+	{
+		...baseColumn('age'),
+		size: 100,
+		editCell: (info: CellContext<Person, number>) => (
+			<DsTableEditCellNumber cellContext={info} min={0} max={120} />
+		),
+	},
+	{
+		...baseColumn('visits'),
+		size: 100,
+		editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
+	},
+	{
+		...baseColumn('status'),
+		size: 160,
+		cell: (info) => statusLabels[info.getValue() as Status],
+		editCell: (info: CellContext<Person, string>) => (
+			<DsTableEditCellSelect cellContext={info} options={statusOptions} />
+		),
+	},
+	{
+		...baseColumn('progress'),
+		editCell: (info: CellContext<Person, number>) => (
+			<DsTableEditCellNumber cellContext={info} min={0} max={100} />
+		),
+	},
+];
+
+export const VirtualizedEditable: Story = {
+	name: 'Virtualized Editable Table',
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Editable cells work with row virtualization for large datasets. Scroll through thousands of rows and double-click any editable cell to edit in place.',
+			},
+		},
+	},
+	render: function Render(args) {
+		const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+		return (
+			<div className={styles.virtualizedDemoContainer}>
+				<div className={styles.virtualizedDemoHeader}>
+					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Editable Table</h4>
+					<p className={styles.virtualizedDemoHeader__description}>
+						Inline editing with row virtualization. Scroll through {VIRTUALIZED_ROW_COUNT.toLocaleString()}{' '}
+						rows and double-click a cell to edit in place.
+					</p>
+					<p className={styles.virtualizedDemoHeader__stats}>({data.length.toLocaleString()} rows loaded)</p>
+				</div>
+
+				<div className={styles.virtualizedTableWrapper}>
+					<DsTable
+						{...args}
+						data={data}
+						columns={editableColumns}
+						virtualized
+						onCellEdit={(row: Person, columnId, value) => {
+							setData((rows) => updateRow(rows, row.id, columnId as keyof Person, value as never));
 						}}
 					/>
 				</div>

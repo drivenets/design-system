@@ -43,7 +43,7 @@ const DsTag = ({
 	const handleKeyDownTag = (event: KeyboardEvent<HTMLElement>) => {
 		if (onClick && (event.key === 'Enter' || event.key === ' ')) {
 			event.preventDefault();
-			onClick(event as KeyboardEvent<HTMLDivElement>);
+			onClick(event);
 
 			return;
 		}
@@ -66,7 +66,7 @@ const DsTag = ({
 	const handleClick = (event: MouseEvent<HTMLElement>) => {
 		if (onClick) {
 			event.preventDefault();
-			onClick(event as MouseEvent<HTMLDivElement>);
+			onClick(event);
 		}
 	};
 

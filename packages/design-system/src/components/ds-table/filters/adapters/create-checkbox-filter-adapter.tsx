@@ -1,54 +1,36 @@
 import type { ReactNode } from 'react';
 import type { Row } from '@tanstack/react-table';
 import type { FilterAdapter } from '../types/filter-adapter.types';
-import { type CheckboxFilterItem, CheckboxFilter } from '../components/checkbox-filter';
+import {
+	type CheckboxFilterItem,
+	type CheckboxFilterLocale,
+	CheckboxFilter,
+} from '../components/checkbox-filter';
 import { createFilterAdapter } from './create-filter-adapter';
 
 export interface CheckboxFilterAdapterConfig<TData, TValue> {
-	/**
-	 * Unique identifier (should match column accessorKey)
-	 */
+	/** Unique id, should match the column `accessorKey`. */
 	id: string;
-
-	/**
-	 * Display label for filter navigation
-	 */
 	label: string;
-
-	/**
-	 * Available items to select from
-	 */
+	/** Selectable items. */
 	items: CheckboxFilterItem<TValue>[];
-
-	/**
-	 * Optional custom renderer for each item
-	 */
+	/** Custom row renderer; defaults to `item.label`. */
 	renderer?: (item: CheckboxFilterItem<TValue>) => ReactNode;
-
-	/**
-	 * Optional custom chip label generator
-	 * @default (item) => `${label}: ${item.label}`
-	 */
+	/** @default (item) => `${label}: ${item.label}` */
 	chipLabelTemplate?: (item: CheckboxFilterItem<TValue>) => string;
-
-	/**
-	 * Optional custom cell renderer for table column
-	 */
 	cellRenderer?: (value: TValue) => ReactNode;
-
-	/**
-	 * How to extract the value from a row for comparison
-	 * @default (row) => row.getValue(id)
-	 */
+	/** @default (row) => row.getValue(id) */
 	getRowValue?: (row: Row<TData>) => TValue;
+	/** Show a search input above the list. @default false */
+	searchable?: boolean;
+	/** Show an "All" toggle that selects / clears every (visible) item. @default false */
+	selectAll?: boolean;
+	locale?: CheckboxFilterLocale;
 }
 
 /**
- * Factory function to create a checkbox filter adapter
- *
- * Handles multi-select checkbox filtering with inclusion model:
- * - Empty selection = show all data (no filter active)
- * - Selected items = show only those items
+ * Multi-select inclusion filter: empty selection shows every row, selected
+ * items show only those rows.
  */
 export function createCheckboxFilterAdapter<TData, TValue = string>(
 	config: CheckboxFilterAdapterConfig<TData, TValue>,
@@ -61,20 +43,21 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 		chipLabelTemplate = (item) => `${label}: ${item.label}`,
 		cellRenderer,
 		getRowValue = (row) => row.getValue(id),
+		searchable = false,
+		selectAll = false,
+		locale,
 	} = config;
 
 	return createFilterAdapter<TData, CheckboxFilterItem<TValue>[], TValue>({
 		id,
 		label,
-		initialValue: [], // Start with nothing selected (show all)
+		initialValue: [],
 
 		filterFn: (row, columnId, filterValue) => {
-			// Empty selection = no filter = show all
 			if (filterValue.length === 0) {
 				return true;
 			}
 
-			// Otherwise, show only selected items
 			const rowValue = getRowValue(row);
 			return filterValue.some((item) => item.value === rowValue);
 		},
@@ -82,7 +65,6 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 		cellRenderer,
 
 		toChips: (selectedItems) => {
-			// Generate chips for all selected items
 			return selectedItems.map((item) => ({
 				id: `${id}_${String(item.value)}`,
 				label: chipLabelTemplate(item),
@@ -98,7 +80,6 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 		},
 
 		getActiveFiltersCount: (selectedItems) => {
-			// Count = number of selected items (0 means none selected)
 			return selectedItems.length;
 		},
 
@@ -109,6 +90,9 @@ export function createCheckboxFilterAdapter<TData, TValue = string>(
 					renderer={renderer}
 					selectedItems={value}
 					onSelectionChange={onChange}
+					searchable={searchable}
+					selectAll={selectAll}
+					locale={locale}
 				/>
 			);
 		},
