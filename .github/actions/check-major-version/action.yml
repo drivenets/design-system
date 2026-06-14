@@ -2,12 +2,8 @@ name: Check Major Version
 description: |
   Check whether the changeset contains a major version bump
 
-  NOTE: This actions requires dependencies to be installed and `fetch-depth: 0` in `actions/checkout` to work.
-
-inputs:
-  base-ref:
-    description: The base ref to compare the changeset against
-    default: main
+  NOTE: This action requires dependencies to be installed and `fetch-depth: 0` in `actions/checkout` to work,
+        and should only be used in pull requests.
 
 outputs:
   has-major:
@@ -21,7 +17,7 @@ runs:
       id: check
       shell: bash
       env:
-        BASE_REF: ${{ inputs.base-ref }}
+        BASE_REF: ${{ github.event.pull_request.base.ref }}
       run: |
         OUTPUT_FILE=./.changeset-status.json
 

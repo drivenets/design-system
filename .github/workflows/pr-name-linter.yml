@@ -47,8 +47,6 @@ jobs:
       - name: Check for breaking changes
         id: check-major
         uses: ./.github/actions/check-major-version
-        with:
-          base-ref: ${{ github.event.pull_request.base.ref }}
 
       - name: Run PR name linter
         env:
