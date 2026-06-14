@@ -1,8 +1,14 @@
 import { type Rule } from '@commitlint/types';
 
-export const requireExclamationMark: Rule<void> = ({ header }, when = 'never') => {
+export const exclamationMark: Rule<void> = ({ header }, when = 'never') => {
 	if (!header) {
 		return [true];
+	}
+
+	// To avoid ReDos. See:
+	// https://owasp.org/www-community/attacks/Regular_expression_Denial_of_Service_-_ReDoS
+	if (header.length > 1000) {
+		throw new Error('Commit message is too long');
 	}
 
 	// Taken from:
