@@ -1,0 +1,11 @@
+name: Setup Git User
+description: Setup Git User
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Git User
+      shell: bash
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
