@@ -75,9 +75,11 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Check for Major Changeset
-        run: |
-          pnpm changeset status --since origin/main --output=./.changeset-status.json &> /dev/null || true
+        id: check-major
+        uses: ./.github/actions/check-major-version
 
-          if [ -f ./.changeset-status.json ]; then
-            node .github/scripts/check-major-version.ts ./.changeset-status.json
-          fi
+      - name: Disallow Major Release
+        if: steps.check-major.outputs.has-major == 'true'
+        run: |
+          echo "Error: Major changesets are not allowed. Did you mean to create a minor or patch changeset instead?"
+          exit 1

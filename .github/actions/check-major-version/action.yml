@@ -1,0 +1,30 @@
+name: Check Major Version
+description: |
+  Check whether the changeset contains a major version bump
+
+  NOTE: This actions requires dependencies to be installed and `fetch-depth: 0` in `actions/checkout` to work.
+
+inputs:
+  base-ref:
+    description: The base ref to compare the changeset against
+    default: main
+
+outputs:
+  has-major:
+    description: Whether the changeset contains a major version bump ('true' or 'false')
+    value: ${{ steps.check.outputs.has-major }}
+
+runs:
+  using: composite
+  steps:
+    - name: Check for Major Changeset
+      id: check
+      shell: bash
+      env:
+        BASE_REF: ${{ inputs.base-ref }}
+      run: |
+        OUTPUT_FILE=./.changeset-status.json
+
+        pnpm changeset status --since "origin/$BASE_REF" --output="$OUTPUT_FILE" &> /dev/null || true
+
+        node .github/scripts/check-major-version.ts "$OUTPUT_FILE"
