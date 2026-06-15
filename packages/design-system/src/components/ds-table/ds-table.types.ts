@@ -1,4 +1,5 @@
 import type React from 'react';
+import './ds-table-column.types';
 import type {
 	ColumnDef,
 	ColumnFiltersState,
@@ -440,4 +441,55 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Callback when column visibility changes
 	 */
 	onColumnVisibilityChange?: (visibility: VisibilityState) => void;
+
+	/**
+	 * Callback fired when an editable cell commits a new value via one of the
+	 * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
+	 * expected to update the row data in response.
+	 *
+	 * Commits occur on confirm (check button or Enter). Opening another cell
+	 * discards the previous draft without calling this callback.
+	 *
+	 * @param row - The row data of the cell that was edited
+	 * @param columnId - The id of the column whose cell was edited
+	 * @param value - The new committed value
+	 *
+	 * @example
+	 * ```tsx
+	 * const [people, setPeople] = useState(initialPeople);
+	 *
+	 * <DsTable
+	 *   data={people}
+	 *   columns={columns}
+	 *   onCellEdit={(row, columnId, value) => {
+	 *     setPeople((rows) =>
+	 *       rows.map((r) => (r.id === row.id ? { ...r, [columnId]: value } : r)),
+	 *     );
+	 *   }}
+	 * />
+	 * ```
+	 */
+	onCellEdit?: (row: TData, columnId: string, value: TValue) => void;
+
+	/**
+	 * Validates a cell value before it is committed. Return `null` to allow the
+	 * commit (which fires `onCellEdit`), or an error message string to reject it
+	 * and keep the cell in edit mode. Synchronous only.
+	 *
+	 *
+	 * @param row - The row data of the cell being edited
+	 * @param columnId - The id of the column whose cell is being edited
+	 * @param value - The candidate value to validate
+	 *
+	 * @example
+	 * ```tsx
+	 * <DsTable
+	 *   data={people}
+	 *   columns={columns}
+	 *   onCellValidate={(row, columnId, value) => validateField(columnId)(value, row)}
+	 *   onCellEdit={...}
+	 * />
+	 * ```
+	 */
+	onCellValidate?: (row: TData, columnId: string, value: TValue) => string | null;
 }

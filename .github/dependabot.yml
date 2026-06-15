@@ -38,11 +38,15 @@ updates:
       storybook:
         patterns:
           - '*storybook*'
+        exclude-patterns:
+          - '*eslint*'
 
       # All vitest-related packages are better to be updated together.
       vitest:
         patterns:
           - '*vitest*'
+        exclude-patterns:
+          - '*eslint*'
 
       npm-development:
         dependency-type: 'development'
