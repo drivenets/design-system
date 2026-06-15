@@ -3,9 +3,6 @@ name: Sync next branch
 on:
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
   sync:
     name: Sync
@@ -16,6 +13,10 @@ jobs:
         with:
           ref: next
           fetch-depth: 0
+
+          # We're using a deploy key here to be able to override the the branch protection rules.
+          # Force push is only allowed for admins, and the default `GITHUB_TOKEN` doesn't have admin
+          # permissions, and it can't be added to the bypass list, while a deploy key can.
           ssh-key: ${{ secrets.DEPLOY_KEY }}
           persist-credentials: false
 
