@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import styles from './ds-table-row-virtualized.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getColumnSizeStyle } from '../../utils/column-size';
+import { isFirstLeafColumnOfGroup } from '../../grouping';
 import { TableCell, TableRow } from '../core-table';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
 import { DsTableCell } from '../ds-table-cell';
@@ -77,6 +78,7 @@ export const DsTableRowVirtualized = <TData,>({
 									styles.cell,
 									cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 									cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
+									isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
 								)}
 							>
 								{isLastColumn ? (

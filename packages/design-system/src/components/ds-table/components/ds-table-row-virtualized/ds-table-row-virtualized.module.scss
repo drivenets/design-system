@@ -66,6 +66,10 @@
 	justify-content: center;
 }
 
+.groupStart {
+	border-left: vars.$group-border-width solid var(--border);
+}
+
 .expandedRowContent {
 	background-color: var(--background-secondary);
 

@@ -16,6 +16,10 @@ export interface DsTableContextType<TData, TValue> extends Partial<DsDataTablePr
 	 * ID of the currently active row
 	 */
 	activeRowId?: string | null;
+	/**
+	 * Toggles the collapsed state of a column group by its id.
+	 */
+	onToggleColumnGroup?: (groupId: string) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
