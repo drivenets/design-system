@@ -23,7 +23,7 @@ import { DsTableRowExpandableCell } from './components/ds-table-row-expandable-c
 import { DsTableRowSelectableCell } from './components/ds-table-row-selectable-cell';
 import { DsTableHeaderSelectableCell } from './components/ds-table-header-selectable-cell';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
-import { type DsTableContextType, DsTableContext } from './context/ds-table-context';
+import { type DsTableContextType, DsTableContext, useEditingState } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
 import {
@@ -81,6 +81,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 	locale,
 	activeRowId,
 	infiniteScroll,
+	onCellEdit,
+	onCellValidate,
 }: DsDataTableProps<TData, TValue>) => {
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -282,6 +284,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const isBulkActionsVisible = selectable && actions.length > 0 && selectedRows.length > 0;
 
+	const editingState = useEditingState<TData, TValue>(onCellEdit, onCellValidate);
+
 	const contextValue: DsTableContextType<TData, TValue> = {
 		stickyHeader,
 		bordered,
@@ -301,6 +305,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 		collapsedColumnGroups,
 		onToggleColumnGroup: toggleColumnGroup,
 		locale,
+		onCellEdit,
+		...editingState,
 	};
 
 	return (

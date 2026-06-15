@@ -79,6 +79,7 @@ export const DsTableRowVirtualized = <TData,>({
 									cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 									cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
 									isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
+									typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 								)}
 							>
 								{isLastColumn ? (

@@ -120,6 +120,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 								cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
 								isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
+								typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 							)}
 							style={cellStyle}
 						>
