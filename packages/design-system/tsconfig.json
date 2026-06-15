@@ -2,7 +2,7 @@
 	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"rootDirs": ["./", "./.scss-dts"],
-		"types": ["vite/client"],
+		"types": ["vite/client", "@figma/code-connect/figma-types"],
 		"plugins": [{ "name": "typescript-plugin-css-modules" }]
 	},
 	"include": ["**/*", ".storybook/**/*"]
