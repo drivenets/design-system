@@ -41,9 +41,7 @@ jobs:
           echo "LAST_COMMIT=$LAST_COMMIT" >> "$GITHUB_ENV"
 
       - name: Setup Git User
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        uses: ./.github/actions/setup-git-user
 
       - name: Deploy
         run: |

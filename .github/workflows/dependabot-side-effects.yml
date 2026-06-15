@@ -31,10 +31,8 @@ jobs:
       - name: Install Dependencies
         uses: ./.github/actions/install
 
-      - name: Configure git user
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      - name: Setup Git User
+        uses: ./.github/actions/setup-git-user
 
       - name: Generate changeset
         # Generate changeset only for production dependencies changes.

@@ -31,6 +31,8 @@ jobs:
         with:
           fetch-depth: 0
           filter: 'blob:none'
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          persist-credentials: true
 
       - name: Install Dependencies
         uses: ./.github/actions/install
@@ -41,7 +43,6 @@ jobs:
         with:
           commit: 'chore(release): publish'
           title: 'chore(release): publish'
-          commitMode: 'github-api'
 
   build:
     name: Build for publish
