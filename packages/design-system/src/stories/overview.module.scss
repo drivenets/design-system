@@ -73,3 +73,21 @@
 .stepHint {
 	color: var(--font-secondary);
 }
+
+.docsLink {
+	width: fit-content;
+	color: var(--font-action);
+	text-decoration: none;
+	transition: color 0.2s;
+
+	&:hover {
+		color: var(--font-action-hover);
+		text-decoration: underline;
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: 2px;
+		border-radius: var(--4xs);
+	}
+}
