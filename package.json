@@ -21,7 +21,7 @@
 		"test:coverage": "turbo run test:coverage",
 		"test:requires-build": "turbo run test:requires-build",
 		"build": "turbo run build",
-		"build:storybook": "turbo run build:storybook",
+		"build:storybook": "pnpm run --filter=@drivenets/design-system build:storybook",
 		"changelog": "changeset",
 		"prepare": "husky",
 		"pre-commit": "lint-staged"
