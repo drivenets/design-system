@@ -1,3 +1,4 @@
+/* eslint-disable eslint-plugin/require-test-error-positions -- We don't care about the specific location of the error in this rule */
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import { noUselessTsxExtension } from '../no-useless-tsx-extension';
 
