@@ -19,11 +19,11 @@ jobs:
           ssh-key: ${{ secrets.DEPLOY_KEY }}
           persist-credentials: false
 
+      - name: Setup Git User
+        uses: ./.github/actions/setup-git-user
+
       - name: Rebase onto main
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git rebase origin/main
+        run: git rebase origin/main
 
       - name: Force push
         run: git push --force-with-lease

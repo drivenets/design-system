@@ -1,0 +1,28 @@
+.root {
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+	width: 100%;
+	min-width: 0;
+	padding: 0 var(--standard);
+	height: 100%;
+
+	&:focus-within {
+		outline: none;
+	}
+
+	.editButton {
+		flex-shrink: 0;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	&:hover,
+	&:focus-within,
+	&[data-active] {
+		.editButton {
+			opacity: 1;
+			pointer-events: auto;
+		}
+	}
+}

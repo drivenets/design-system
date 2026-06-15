@@ -118,6 +118,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 								styles.tableCell,
 								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 								cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
+								typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 							)}
 							style={cellStyle}
 						>
