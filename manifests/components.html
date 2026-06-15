@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -31549,6 +31549,37 @@ export default [
     // your config
     designSystem.configs.recommended,
 ];`} language=&quot;typescript&quot; /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;DsDivider /&gt;
+
+&lt;div&gt;
+  &lt;div className={styles.sectionHeader}&gt;
+    &lt;DsIcon icon=&quot;smart_toy&quot; size=&quot;medium&quot; /&gt;
+    &lt;DsTypography variant=&quot;heading2&quot;&gt;Design System MCP&lt;/DsTypography&gt;
+  &lt;/div&gt;
+
+&lt;DsTypography variant=&quot;body-md-reg&quot; asChild className={styles.sectionDescription}&gt;
+	&lt;span&gt;
+		Give your AI assistant (Cursor, Claude Code, Codex, …) access to live component docs, props, and code
+		snippets straight from this Storybook. The command below adds the MCP server to every IDE on your machine.
+	&lt;/span&gt;
+&lt;/DsTypography&gt;
+
+  &lt;div className={styles.steps}&gt;
+    &lt;div className={styles.step}&gt;
+      &lt;Source dark code=&quot;npx add-mcp@latest -g @drivenets/design-system-mcp&quot; language=&quot;bash&quot; /&gt;
+      &lt;DsTypography variant=&quot;body-sm-reg&quot; asChild className={styles.docsLink}&gt;
+        &lt;a
+          href=&quot;https://github.com/drivenets/design-system/blob/main/packages/mcp/README.md&quot;
+          target=&quot;_blank&quot;
+          rel=&quot;noopener noreferrer&quot;
+        &gt;
+          Manual config &amp; per-IDE details →
+        &lt;/a&gt;
+      &lt;/DsTypography&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
