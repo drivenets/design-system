@@ -77,7 +77,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	columnVisibility: externalColumnVisibility,
 	onColumnVisibilityChange,
 	collapsedColumnGroups: externalCollapsedColumnGroups,
-	onColumnGroupsCollapsedChange,
+	onCollapsedColumnGroupsChange,
 	locale,
 	activeRowId,
 	infiniteScroll,
@@ -130,7 +130,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	const { collapsedColumnGroups, toggleColumnGroup, collapsedVisibility } = useColumnGroups({
 		columns: columnsProp,
 		collapsedColumnGroups: externalCollapsedColumnGroups,
-		onColumnGroupsCollapsedChange,
+		onCollapsedColumnGroupsChange,
 	});
 
 	const columnVisibility = useMemo(

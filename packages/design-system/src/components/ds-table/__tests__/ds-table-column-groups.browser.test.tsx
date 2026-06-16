@@ -74,6 +74,21 @@ describe('DsTable - column groups', () => {
 		await expect.element(page.getByText('Last Name')).not.toBeInTheDocument();
 	});
 
+	it('overrides the toggle accessible labels via the locale prop', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={rows}
+				locale={{ collapseColumnGroup: 'Hide group', expandColumnGroup: 'Show group' }}
+			/>,
+		);
+
+		await page.getByRole('button', { name: 'Hide group' }).click();
+
+		await expect.element(page.getByText('Last Name')).not.toBeInTheDocument();
+		await expect.element(page.getByRole('button', { name: 'Show group' })).toBeVisible();
+	});
+
 	it('supports controlled collapse state via callback', async () => {
 		const onChange = vi.fn();
 
@@ -84,7 +99,7 @@ describe('DsTable - column groups', () => {
 					columns={columns}
 					data={rows}
 					collapsedColumnGroups={collapsed}
-					onColumnGroupsCollapsedChange={(next) => {
+					onCollapsedColumnGroupsChange={(next) => {
 						onChange(next);
 						setCollapsed(next);
 					}}

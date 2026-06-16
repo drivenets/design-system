@@ -93,7 +93,7 @@ export const Controlled: Story = {
 		const [collapsed, setCollapsed] = useState<string[]>(['activity']);
 
 		return (
-			<DsTable {...args} collapsedColumnGroups={collapsed} onColumnGroupsCollapsedChange={setCollapsed} />
+			<DsTable {...args} collapsedColumnGroups={collapsed} onCollapsedColumnGroupsChange={setCollapsed} />
 		);
 	},
 };

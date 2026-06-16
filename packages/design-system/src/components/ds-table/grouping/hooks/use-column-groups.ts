@@ -18,7 +18,7 @@ interface UseColumnGroupsParams<TData, TValue> {
 	/**
 	 * Called with the next list of collapsed group ids whenever a group is toggled.
 	 */
-	onColumnGroupsCollapsedChange?: (collapsedGroupIds: string[]) => void;
+	onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) => void;
 }
 
 interface UseColumnGroupsResult {
@@ -41,13 +41,13 @@ interface UseColumnGroupsResult {
 
 /**
  * Manages column-group collapse state. Supports both controlled
- * (`collapsedColumnGroups` + `onColumnGroupsCollapsedChange`) and uncontrolled
+ * (`collapsedColumnGroups` + `onCollapsedColumnGroupsChange`) and uncontrolled
  * usage (seeded from `meta.group.defaultCollapsed`).
  */
 export const useColumnGroups = <TData, TValue>({
 	columns,
 	collapsedColumnGroups,
-	onColumnGroupsCollapsedChange,
+	onCollapsedColumnGroupsChange,
 }: UseColumnGroupsParams<TData, TValue>): UseColumnGroupsResult => {
 	const [internalCollapsed, setInternalCollapsed] = useState<string[]>(() =>
 		getInitialCollapsedGroups(columns),
@@ -65,7 +65,7 @@ export const useColumnGroups = <TData, TValue>({
 			setInternalCollapsed(next);
 		}
 
-		onColumnGroupsCollapsedChange?.(next);
+		onCollapsedColumnGroupsChange?.(next);
 	};
 
 	const collapsedVisibility = useMemo(

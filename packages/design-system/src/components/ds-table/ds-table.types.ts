@@ -479,7 +479,7 @@ export interface DsDataTableProps<TData, TValue> {
 	 *
 	 * <DsTable
 	 *   collapsedColumnGroups={collapsed}
-	 *   onColumnGroupsCollapsedChange={setCollapsed}
+	 *   onCollapsedColumnGroupsChange={setCollapsed}
 	 * />
 	 * ```
 	 */
@@ -489,7 +489,7 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Callback fired with the next list of collapsed group ids when a group's
 	 * collapse toggle is clicked.
 	 */
-	onColumnGroupsCollapsedChange?: (collapsedGroupIds: string[]) => void;
+	onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) => void;
 
 	/**
 	 * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
