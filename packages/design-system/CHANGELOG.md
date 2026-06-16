@@ -1,5 +1,20 @@
 # @drivenets/design-system
 
+## 0.13.0
+
+### Minor Changes
+
+- 1c3f97b: Rename `DsWorkspace` to `DsWorkspaceLayout`.
+  Add extended layout compound parts (`Body`, `SideMenu`, `LeftPanel`). `Content` now always applies content-area spacing — visual change for existing simple-shell consumers.
+- 86c0781: Add inline editing to `DsTable`
+
+### Patch Changes
+
+- fab30fb: Add "hideLabel" prop to "DsFormControl" component
+- f58b04d: Fix a big body scroll lock issue on drawer/modal close.
+- 556aacd: Update `DsTable` scroll, use thin scrollbar for header
+- d637626: Add column filtering functionality to `DsTable`
+
 ## 0.12.1
 
 ### Patch Changes
