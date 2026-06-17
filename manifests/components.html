@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/87 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/87 infos</a><span class="filter-pill ok" aria-disabled="true">518 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/88 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/88 infos</a><span class="filter-pill ok" aria-disabled="true">521 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -18948,7 +18948,7 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-62-components-table-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-62-components-table-props" class="badge ok as-toggle">38 prop types</label>
         
         <label for="c-62-components-table-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -18977,7 +18977,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -19014,6 +19014,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -19087,6 +19105,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -19136,6 +19160,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -19385,7 +19415,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-63-components-table-active-row-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-63-components-table-active-row-props" class="badge ok as-toggle">38 prop types</label>
         
         <label for="c-63-components-table-active-row-stories" class="badge ok as-toggle">1 story</label>
         
@@ -19414,7 +19444,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -19451,6 +19481,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -19524,6 +19572,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -19573,6 +19627,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -19859,7 +19919,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-64-components-table-filters-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-64-components-table-filters-props" class="badge ok as-toggle">38 prop types</label>
         
         <label for="c-64-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -19888,7 +19948,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -19925,6 +19985,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -19998,6 +20076,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -20047,6 +20131,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -20304,14 +20394,14 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-65-components-table-columns-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-65-components-table-column-groups-props" class="badge ok as-toggle">38 prop types</label>
         
-        <label for="c-65-components-table-columns-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-65-components-table-column-groups-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
     </div>
-    <div class="meta" title="./src/components/ds-table/stories/ds-table-columns.stories.tsx">components-table-columns · ./src/components/ds-table/stories/ds-table-columns.stories.tsx</div>
+    <div class="meta" title="./src/components/ds-table/stories/ds-table-column-groups.stories.tsx">components-table-column-groups · ./src/components/ds-table/stories/ds-table-column-groups.stories.tsx</div>
     
     <div class="hint">Design system Table component</div>
     
@@ -20320,10 +20410,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-65-components-table-columns-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-65-components-table-column-groups-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-65-components-table-columns-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-65-components-table-column-groups-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -20333,7 +20423,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20370,6 +20460,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -20443,6 +20551,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -20492,6 +20606,467 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
+
+/**
+ * Callback when column filters change
+ */
+onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
+
+/**
+ * Callback when column visibility changes
+ */
+onColumnVisibilityChange?: (visibility: VisibilityState) =&gt; void
+
+/**
+ * Callback when the order of rows changes via drag &amp; drop
+ */
+onOrderChange?: (newData: TData[]) =&gt; void
+
+/**
+ * Function to handle row click
+ */
+onRowClick?: (row: TData) =&gt; void
+
+/**
+ * Function to handle row double click
+ */
+onRowDoubleClick?: (row: TData) =&gt; void
+
+/**
+ * Function to handle scroll events in virtualized tables.
+ * Called when the user scrolls within the table container.
+ * 
+ * @param params - Scroll parameters containing scroll position and dimensions
+ * 
+ * @example
+ * ```tsx
+ * const handleScroll = ({ scrollOffset, totalContentHeight, viewportHeight }) =&gt; {
+ *   const distanceFromBottom = totalContentHeight - scrollOffset - viewportHeight;
+ *   if (distanceFromBottom &lt; 500) {
+ *     // Fetch more data when within 500px of bottom
+ *     fetchNextPage();
+ *   }
+ * };
+ * ```
+ */
+onScroll?: (params: ScrollParams) =&gt; void
+
+/**
+ * Function to handle selection change
+ */
+onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
+
+/**
+ * Function to handle sorting change
+ */
+onSortingChange?: (sorting: SortingState) =&gt; void
+
+/**
+ * Function to handle table creation
+ */
+onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
+
+/**
+ * Primary actions to be shown on each row (on hover)
+ */
+primaryRowActions?: RowAction&lt;TData&gt;[] = []
+
+/**
+ * Ref to the table API
+ */
+ref?: React.RefObject&lt;DsTableApi&lt;TData&gt; | null&gt;
+
+/**
+ * Function to render the expanded row
+ */
+renderExpandedRow?: (row: TData) =&gt; React.ReactNode
+
+/**
+ * Whether the table rows are reorderable via drag &amp; drop
+ * @note This feature does not work when virtualization is enabled
+ */
+reorderable?: boolean = false
+
+/**
+ * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * @default &#39;medium&#39;
+ */
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39; = &#39;medium&#39;
+
+/**
+ * Secondary actions to be shown in a dropdown on each row (on hover)
+ */
+secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
+
+/**
+ * Whether the table rows are selectable. Can be a boolean or a function that receives row data and returns whether it can be selected.
+ * @default false
+ * @example
+ * ```tsx
+ * // Enable selection for all rows
+ * selectable={true}
+ * 
+ * // Disable selection for rows where status is &#39;archived&#39;
+ * selectable={(rowData) =&gt; rowData.status !== &#39;archived&#39;}
+ * 
+ * // Limit selection to max 3 rows (note: use state to track current selection)
+ * selectable={(rowData) =&gt; {
+ *   // This will be called for each row during render
+ *   const selectedIds = Object.keys(rowSelection).filter(id =&gt; rowSelection[id]);
+ *   return selectedIds.includes(rowData.id) || selectedIds.length &lt; 3;
+ * }}
+ * ```
+ */
+selectable?: boolean | ((rowData: TData) =&gt; boolean) = false
+
+/**
+ * Whether to show the select/deselect all checkbox in the header
+ * @default true
+ */
+showSelectAllCheckbox?: boolean = true
+
+/**
+ * Whether the table has sticky header
+ */
+stickyHeader?: boolean = true
+
+/**
+ * Whether the table is virtualized
+ * @default false
+ */
+virtualized?: boolean = false
+
+/**
+ * Options for the virtualized table
+ */
+virtualizedOptions?: {
+	/**
+	 * Estimate size of the table
+	 */
+	estimateSize?: number;
+
+	/**
+	 * Overscan of the table
+	 */
+	overscan?: number;
+}
+
+/**
+ * Whether the table has zebra stripes
+ */
+zebra?: boolean</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DsTable
+    columns={buildColumns()}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    emptyState={&lt;TableEmptyState /&gt;} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Initially Collapsed</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const InitiallyCollapsed = () =&gt; &lt;DsTable
+    columns={buildColumns(true)}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    emptyState={&lt;TableEmptyState /&gt;} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Controlled = () =&gt; {
+    const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;activity&#39;]);
+
+    return (
+        &lt;DsTable
+            columns={buildColumns()}
+            data={defaultData}
+            stickyHeader
+            bordered
+            fullWidth
+            selectable
+            emptyState={&lt;TableEmptyState /&gt;}
+            collapsedColumnGroups={collapsed}
+            onCollapsedColumnGroupsChange={setCollapsed} /&gt;
+    );
+};</code></pre>
+            </div>
+        </div>
+    
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  no-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DsTable">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DsTable</h2>
+      <div class="badges">
+        <label for="c-66-components-table-columns-props" class="badge ok as-toggle">38 prop types</label>
+        
+        <label for="c-66-components-table-columns-stories" class="badge ok as-toggle">2 stories</label>
+        
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/ds-table/stories/ds-table-columns.stories.tsx">components-table-columns · ./src/components/ds-table/stories/ds-table-columns.stories.tsx</div>
+    
+    <div class="hint">Design system Table component</div>
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  
+  <input id="c-66-components-table-columns-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+  <input id="c-66-components-table-columns-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">38 prop types</span>
+            </div>
+            <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Actions to be shown in the bulk actions
+ */
+actions?: Action&lt;TData&gt;[] = []
+
+/**
+ * ID of the currently active row (useful for showing drawer/panel associations)
+ * When set, the row with this ID will be visually highlighted with a persistent active state
+ * @example
+ * ```tsx
+ * const [activeRowId, setActiveRowId] = useState&lt;string | null&gt;(null);
+ * const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+ * 
+ * &lt;DsTable
+ *   activeRowId={isDrawerOpen ? activeRowId : null}
+ *   onRowClick={(row) =&gt; {
+ *     setActiveRowId(row.id);
+ *     setIsDrawerOpen(true);
+ *   }}
+ * /&gt;
+ * ```
+ */
+activeRowId?: string | null
+
+/**
+ * Whether the table has bordered cells
+ */
+bordered?: boolean = true
+
+/**
+ * Class name of the table
+ */
+className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
+
+/**
+ * External column filters state
+ */
+columnFilters?: ColumnFiltersState
+
+/**
+ * Columns of the table
+ */
+columns: ColumnDef&lt;TData, TValue&gt;[]
+
+/**
+ * External column visibility state
+ * @example
+ * ```tsx
+ * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
+ *   age: false, // hide age column
+ *   status: true, // show status column
+ * });
+ * 
+ * &lt;DsTable
+ *   columnVisibility={columnVisibility}
+ *   onColumnVisibilityChange={setColumnVisibility}
+ * /&gt;
+ * ```
+ */
+columnVisibility?: VisibilityState
+
+/**
+ * Data of the table
+ */
+data: TData[]
+
+/**
+ * Empty state of the table
+ */
+emptyState?: React.ReactNode
+
+/**
+ * Whether the table is expandable or if an individual row should be expandable
+ */
+expandable?: boolean | ((row: TData) =&gt; boolean) = false
+
+/**
+ * Whether the table is full width
+ */
+fullWidth?: boolean = true
+
+/**
+ * Configures infinite scroll for the virtualized table. The Table owns viewport/scroll
+ * detection and the auto-fill loop; the consumer owns fetching, pagination state,
+ * error handling, and retry.
+ * 
+ * Only takes effect when `virtualized` is `true`. Passing this prop without
+ * `virtualized` is ignored.
+ * 
+ * @example
+ * ```tsx
+ * &lt;DsTable
+ *   virtualized
+ *   data={rows}
+ *   columns={columns}
+ *   infiniteScroll={{
+ *     hasMore,
+ *     isLoadingMore,
+ *     onLoadMore: fetchNextPage,
+ *   }}
+ * /&gt;
+ * ```
+ */
+infiniteScroll?: InfiniteScrollConfig
+
+/**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
+ * Callback fired when an editable cell commits a new value via one of the
+ * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
+ * expected to update the row data in response.
+ * 
+ * Commits occur on confirm (check button or Enter). Opening another cell
+ * discards the previous draft without calling this callback.
+ * 
+ * @param row - The row data of the cell that was edited
+ * @param columnId - The id of the column whose cell was edited
+ * @param value - The new committed value
+ * 
+ * @example
+ * ```tsx
+ * const [people, setPeople] = useState(initialPeople);
+ * 
+ * &lt;DsTable
+ *   data={people}
+ *   columns={columns}
+ *   onCellEdit={(row, columnId, value) =&gt; {
+ *     setPeople((rows) =&gt;
+ *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
+ *     );
+ *   }}
+ * /&gt;
+ * ```
+ */
+onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+
+/**
+ * Validates a cell value before it is committed. Return `null` to allow the
+ * commit (which fires `onCellEdit`), or an error message string to reject it
+ * and keep the cell in edit mode. Synchronous only.
+ * 
+ * 
+ * @param row - The row data of the cell being edited
+ * @param columnId - The id of the column whose cell is being edited
+ * @param value - The candidate value to validate
+ * 
+ * @example
+ * ```tsx
+ * &lt;DsTable
+ *   data={people}
+ *   columns={columns}
+ *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
+ *   onCellEdit={...}
+ * /&gt;
+ * ```
+ */
+onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -20772,9 +21347,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-66-components-table-editable-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-67-components-table-editable-props" class="badge ok as-toggle">38 prop types</label>
         
-        <label for="c-66-components-table-editable-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-67-components-table-editable-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -20788,10 +21363,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-66-components-table-editable-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-67-components-table-editable-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-66-components-table-editable-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-67-components-table-editable-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -20801,7 +21376,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20838,6 +21413,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -20911,6 +21504,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -20960,6 +21559,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -21299,9 +21904,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-67-components-table-expansion-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-68-components-table-expansion-props" class="badge ok as-toggle">38 prop types</label>
         
-        <label for="c-67-components-table-expansion-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-68-components-table-expansion-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -21315,10 +21920,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-67-components-table-expansion-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-68-components-table-expansion-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-67-components-table-expansion-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-68-components-table-expansion-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -21328,7 +21933,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21365,6 +21970,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -21438,6 +22061,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -21487,6 +22116,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -21806,9 +22441,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-68-components-table-row-actions-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-69-components-table-row-actions-props" class="badge ok as-toggle">38 prop types</label>
         
-        <label for="c-68-components-table-row-actions-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-69-components-table-row-actions-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -21822,10 +22457,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-68-components-table-row-actions-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-69-components-table-row-actions-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-68-components-table-row-actions-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-69-components-table-row-actions-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -21835,7 +22470,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21872,6 +22507,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -21945,6 +22598,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -21994,6 +22653,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -22388,9 +23053,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-69-components-table-selection-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-70-components-table-selection-props" class="badge ok as-toggle">38 prop types</label>
         
-        <label for="c-69-components-table-selection-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-70-components-table-selection-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -22404,10 +23069,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-69-components-table-selection-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-70-components-table-selection-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-69-components-table-selection-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-70-components-table-selection-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -22417,7 +23082,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22454,6 +23119,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -22527,6 +23210,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -22576,6 +23265,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -22902,9 +23597,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-70-components-table-virtualized-props" class="badge ok as-toggle">35 prop types</label>
+        <label for="c-71-components-table-virtualized-props" class="badge ok as-toggle">38 prop types</label>
         
-        <label for="c-70-components-table-virtualized-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-71-components-table-virtualized-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -22918,10 +23613,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-70-components-table-virtualized-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-71-components-table-virtualized-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-70-components-table-virtualized-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-71-components-table-virtualized-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -22931,7 +23626,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">35 prop types</span>
+              <span class="badge ok">38 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22968,6 +23663,24 @@ bordered?: boolean = true
  * Class name of the table
  */
 className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
 
 /**
  * External column filters state
@@ -23041,6 +23754,12 @@ fullWidth?: boolean = true
 infiniteScroll?: InfiniteScrollConfig
 
 /**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
  * Callback fired when an editable cell commits a new value via one of the
  * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
  * expected to update the row data in response.
@@ -23090,6 +23809,12 @@ onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
  * ```
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
 
 /**
  * Callback when column filters change
@@ -23609,9 +24334,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsTabs.Root</h2>
       <div class="badges">
-        <label for="c-71-components-tabs-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-71-components-tabs-info" class="badge info as-toggle">1 info</label>
-        <label for="c-71-components-tabs-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-72-components-tabs-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-72-components-tabs-info" class="badge info as-toggle">1 info</label>
+        <label for="c-72-components-tabs-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -23623,9 +24348,9 @@ zebra?: boolean</code></pre>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-71-components-tabs-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-71-components-tabs-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-71-components-tabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-72-components-tabs-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-72-components-tabs-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-72-components-tabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -24279,9 +25004,9 @@ export const DsTabs = {
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTag</h2>
       <div class="badges">
-        <label for="c-72-components-tag-props" class="badge ok as-toggle">12 prop types</label>
+        <label for="c-73-components-tag-props" class="badge ok as-toggle">12 prop types</label>
         
-        <label for="c-72-components-tag-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-73-components-tag-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -24295,10 +25020,10 @@ export const DsTabs = {
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-72-components-tag-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-73-components-tag-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-72-components-tag-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-73-components-tag-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -24519,9 +25244,9 @@ variant?: (typeof tagVariants)[number] = &#39;default&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTagFilter</h2>
       <div class="badges">
-        <label for="c-73-components-tagfilter-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-74-components-tagfilter-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-73-components-tagfilter-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-74-components-tagfilter-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -24535,10 +25260,10 @@ variant?: (typeof tagVariants)[number] = &#39;default&#39;</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-73-components-tagfilter-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-74-components-tagfilter-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-73-components-tagfilter-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-74-components-tagfilter-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -24916,9 +25641,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextarea</h2>
       <div class="badges">
-        <label for="c-74-components-textarea-props" class="badge ok as-toggle">15 prop types</label>
-        <label for="c-74-components-textarea-info" class="badge info as-toggle">1 info</label>
-        <label for="c-74-components-textarea-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-75-components-textarea-props" class="badge ok as-toggle">15 prop types</label>
+        <label for="c-75-components-textarea-info" class="badge info as-toggle">1 info</label>
+        <label for="c-75-components-textarea-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -24931,11 +25656,11 @@ style?: CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-74-components-textarea-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-74-components-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-75-components-textarea-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-75-components-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-74-components-textarea-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-75-components-textarea-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -25095,9 +25820,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextInput</h2>
       <div class="badges">
-        <label for="c-75-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
-        <label for="c-75-components-textinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-75-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-76-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
+        <label for="c-76-components-textinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-76-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -25110,11 +25835,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-75-components-textinput-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-75-components-textinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-76-components-textinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-76-components-textinput-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-75-components-textinput-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-76-components-textinput-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -25550,9 +26275,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsThreadItem</h2>
       <div class="badges">
-        <label for="c-76-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
-        <label for="c-76-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
-        <label for="c-76-components-comments-threaditem-stories" class="badge ok as-toggle">17 stories</label>
+        <label for="c-77-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-77-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
+        <label for="c-77-components-comments-threaditem-stories" class="badge ok as-toggle">17 stories</label>
         
         
       </div>
@@ -25565,11 +26290,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-76-components-comments-threaditem-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-76-components-comments-threaditem-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-77-components-comments-threaditem-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-77-components-comments-threaditem-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-76-components-comments-threaditem-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-77-components-comments-threaditem-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -25925,9 +26650,9 @@ Line 3: Final line with conclusion`} /&gt;;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTimePicker</h2>
       <div class="badges">
-        <label for="c-77-components-timepicker-props" class="badge ok as-toggle">19 prop types</label>
-        <label for="c-77-components-timepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-77-components-timepicker-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-78-components-timepicker-props" class="badge ok as-toggle">19 prop types</label>
+        <label for="c-78-components-timepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-78-components-timepicker-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -25940,11 +26665,11 @@ Line 3: Final line with conclusion`} /&gt;;</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-77-components-timepicker-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-77-components-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-78-components-timepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-78-components-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-77-components-timepicker-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-78-components-timepicker-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -26222,9 +26947,9 @@ value?: Date | null</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToast</h2>
       <div class="badges">
-        <label for="c-78-components-toast-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-79-components-toast-props" class="badge ok as-toggle">7 prop types</label>
         
-        <label for="c-78-components-toast-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-79-components-toast-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -26238,10 +26963,10 @@ value?: Date | null</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-78-components-toast-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-79-components-toast-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-78-components-toast-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-79-components-toast-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -26534,9 +27259,9 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToggle</h2>
       <div class="badges">
-        <label for="c-79-components-toggle-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-80-components-toggle-props" class="badge ok as-toggle">9 prop types</label>
         
-        <label for="c-79-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-80-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -26550,10 +27275,10 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-79-components-toggle-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-80-components-toggle-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-79-components-toggle-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-80-components-toggle-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -26707,9 +27432,9 @@ style?: CSSProperties = {}</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
-        <label for="c-80-components-tooltip-props" class="badge ok as-toggle">3 prop types</label>
-        <label for="c-80-components-tooltip-info" class="badge info as-toggle">1 info</label>
-        <label for="c-80-components-tooltip-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-81-components-tooltip-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-81-components-tooltip-info" class="badge info as-toggle">1 info</label>
+        <label for="c-81-components-tooltip-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -26722,11 +27447,11 @@ style?: CSSProperties = {}</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-80-components-tooltip-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-80-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-81-components-tooltip-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-81-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-80-components-tooltip-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-81-components-tooltip-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -26854,9 +27579,9 @@ slotProps?: {
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsTree.Root</h2>
       <div class="badges">
-        <label for="c-81-components-tree-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-81-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-81-components-tree-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-82-components-tree-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-82-components-tree-info" class="badge info as-toggle">1 info</label>
+        <label for="c-82-components-tree-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -26868,9 +27593,9 @@ slotProps?: {
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-81-components-tree-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-81-components-tree-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-81-components-tree-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-82-components-tree-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-82-components-tree-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-82-components-tree-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -27221,9 +27946,9 @@ export const DsTree = {
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTypography</h2>
       <div class="badges">
-        <label for="c-82-components-typography-props" class="badge ok as-toggle">7 prop types</label>
-        <label for="c-82-components-typography-info" class="badge info as-toggle">1 info</label>
-        <label for="c-82-components-typography-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-83-components-typography-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-83-components-typography-info" class="badge info as-toggle">1 info</label>
+        <label for="c-83-components-typography-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -27236,11 +27961,11 @@ export const DsTree = {
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-82-components-typography-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-82-components-typography-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-83-components-typography-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-83-components-typography-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-82-components-typography-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-83-components-typography-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27616,9 +28341,9 @@ variant: keyof typeof typographyVariantConfig</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsVerticalTabs</h2>
       <div class="badges">
-        <label for="c-83-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-84-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-83-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-84-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -27632,10 +28357,10 @@ variant: keyof typeof typographyVariantConfig</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-83-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-84-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-83-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-84-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27809,9 +28534,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsWorkspaceLayout</h2>
       <div class="badges">
-        <label for="c-84-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
-        <label for="c-84-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
-        <label for="c-84-components-workspacelayout-stories" class="badge ok as-toggle">12 stories</label>
+        <label for="c-85-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-85-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
+        <label for="c-85-components-workspacelayout-stories" class="badge ok as-toggle">12 stories</label>
         
         
       </div>
@@ -27824,11 +28549,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-84-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-84-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-85-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-85-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-84-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-85-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -28887,8 +29612,8 @@ fillParent?: boolean = false</code></pre>
       <h2><span class="status-dot dot-ok"></span> SampleForm</h2>
       <div class="badges">
         
-        <label for="c-85-examples-sampleform-info" class="badge info as-toggle">1 info</label>
-        <label for="c-85-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-86-examples-sampleform-info" class="badge info as-toggle">1 info</label>
+        <label for="c-86-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -28901,8 +29626,8 @@ fillParent?: boolean = false</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-85-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-85-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-86-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-86-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -28957,9 +29682,9 @@ fillParent?: boolean = false</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> Scrollbars</h2>
       <div class="badges">
-        <label for="c-86-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-86-components-scrollbars-info" class="badge info as-toggle">1 info</label>
-        <label for="c-86-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-87-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-87-components-scrollbars-info" class="badge info as-toggle">1 info</label>
+        <label for="c-87-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -28971,9 +29696,9 @@ fillParent?: boolean = false</code></pre>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-86-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-86-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-86-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-87-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-87-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-87-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
