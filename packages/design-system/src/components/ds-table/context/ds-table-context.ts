@@ -23,6 +23,10 @@ export interface DsTableContextType<TData, TValue> extends Partial<DsDataTablePr
 	 * ID of the currently active row
 	 */
 	activeRowId?: string | null;
+	/**
+	 * Toggles the collapsed state of a column group by its id.
+	 */
+	onToggleColumnGroup?: (groupId: string) => void;
 	/** The cell currently in edit mode, if any. */
 	editing: EditingState<TData, TValue> | null;
 	beginEdit: (cell: Cell<TData, TValue>) => void;
