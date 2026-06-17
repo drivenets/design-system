@@ -1,5 +1,5 @@
 import { flexRender } from '@tanstack/react-table';
-import { DsIcon } from '../../../ds-icon';
+import { DsButtonV3 } from '../../../ds-button-v3';
 import { TableHead } from '../core-table';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getGroupColumnSizeStyle } from '../../grouping';
@@ -31,16 +31,16 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 					{flexRender(header.column.columnDef.header, header.getContext())}
 				</span>
 				{isCollapsible && (
-					<button
-						type="button"
+					<DsButtonV3
+						variant="secondary"
+						size="tiny"
+						icon={isCollapsed ? 'chevron_right' : 'chevron_left'}
 						className={styles.collapseToggle}
 						aria-label={toggleLabel}
 						aria-expanded={!isCollapsed}
 						title={toggleLabel}
 						onClick={handleToggle}
-					>
-						<DsIcon icon={isCollapsed ? 'chevron_right' : 'chevron_left'} size="small" />
-					</button>
+					/>
 				)}
 			</div>
 		</TableHead>

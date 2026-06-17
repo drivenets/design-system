@@ -27,27 +27,5 @@
 }
 
 .collapseToggle {
-	display: inline-flex;
 	flex-shrink: 0;
-	align-items: center;
-	justify-content: center;
-	width: 24px;
-	height: 24px;
-	padding: 0;
-	border: vars.$border-width solid var(--border);
-	border-radius: vars.$border-radius;
-	background: transparent;
-	color: var(--icon-main);
-	cursor: pointer;
-	transition: box-shadow 0.2s;
-
-	&:hover {
-		box-shadow: 0 1px 4px 0 var(--shadow-moderate);
-	}
-
-	&[data-focus-visible],
-	&:focus-visible {
-		outline: vars.$group-border-width solid var(--border-action-primary);
-		outline-offset: -2px;
-	}
 }

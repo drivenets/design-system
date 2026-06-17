@@ -1,5 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
+import { useControlled } from '../../../../utils/use-controlled';
 import { getCollapsedColumnVisibility, getInitialCollapsedGroups } from '../utils/column-group';
 
 interface UseColumnGroupsParams<TData, TValue> {
@@ -49,23 +50,18 @@ export const useColumnGroups = <TData, TValue>({
 	collapsedColumnGroups,
 	onCollapsedColumnGroupsChange,
 }: UseColumnGroupsParams<TData, TValue>): UseColumnGroupsResult => {
-	const [internalCollapsed, setInternalCollapsed] = useState<string[]>(() =>
+	const [collapsed, setCollapsed] = useControlled(
+		collapsedColumnGroups,
+		onCollapsedColumnGroupsChange,
 		getInitialCollapsedGroups(columns),
 	);
-
-	const isControlled = collapsedColumnGroups !== undefined;
-	const collapsed = isControlled ? collapsedColumnGroups : internalCollapsed;
 
 	const toggleColumnGroup = (groupId: string) => {
 		const next = collapsed.includes(groupId)
 			? collapsed.filter((id) => id !== groupId)
 			: [...collapsed, groupId];
 
-		if (!isControlled) {
-			setInternalCollapsed(next);
-		}
-
-		onCollapsedColumnGroupsChange?.(next);
+		setCollapsed(next);
 	};
 
 	const collapsedVisibility = useMemo(
