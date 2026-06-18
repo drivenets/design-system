@@ -1,0 +1,10 @@
+{
+	"codeConnect": {
+		"include": ["**/*.figma.ts", "**/*.stories.tsx"],
+		"importPaths": {
+			"src/components/*": "@drivenets/design-system"
+		},
+		"label": "React",
+		"language": "jsx"
+	}
+}

@@ -1,0 +1,63 @@
+name: Figma Code Connect
+
+on:
+  pull_request:
+    paths: &figma_paths
+      - packages/design-system/**/*.figma.ts
+      - packages/design-system/figma.config.json
+      - packages/design-system/package.json
+      - .github/workflows/figma-code-connect.yml
+  push:
+    branches:
+      - main
+    paths: *figma_paths
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  validate:
+    name: Validate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Validate Code Connect files
+        run: pnpm --filter @drivenets/design-system figma:validate
+
+  publish:
+    name: Publish
+    if: github.repository_owner == 'drivenets' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    concurrency:
+      group: figma-code-connect @ main
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Publish Code Connect files
+        run: pnpm --filter @drivenets/design-system figma:publish
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
