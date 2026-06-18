@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import styles from './ds-tag.module.scss';
 import type { DsTagProps } from './ds-tag.types';
 import { DsIcon } from '../ds-icon';
+import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 
 /**
@@ -11,6 +12,7 @@ import { DsTypography } from '../ds-typography';
 const DsTag = ({
 	ref,
 	label,
+	value,
 	className,
 	style = {},
 	size = 'medium',
@@ -102,9 +104,20 @@ const DsTag = ({
 						))}
 				</span>
 			)}
-			<DsTypography variant={size === 'small' ? 'body-xs-reg' : 'body-sm-reg'} className={styles.label}>
-				{label}
-			</DsTypography>
+			{variant === 'key-value' ? (
+				<DsStack direction="row" alignItems="center" gap="var(--3xs)" className={styles.keyValue}>
+					<DsTypography variant={size === 'small' ? 'body-xs-md' : 'body-sm-md'} className={styles.key}>
+						{label}
+					</DsTypography>
+					<DsTypography variant={size === 'small' ? 'body-xs-reg' : 'body-sm-reg'} className={styles.value}>
+						{value}
+					</DsTypography>
+				</DsStack>
+			) : (
+				<DsTypography variant={size === 'small' ? 'body-xs-reg' : 'body-sm-reg'} className={styles.label}>
+					{label}
+				</DsTypography>
+			)}
 			{onDelete && !disabled && (
 				<button
 					type="button"

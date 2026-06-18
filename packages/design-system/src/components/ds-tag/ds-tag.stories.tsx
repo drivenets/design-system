@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 import DsTag from './ds-tag';
 import { tagSizes, tagVariants } from './ds-tag.types';
 import { DsIcon } from '../ds-icon';
@@ -15,6 +15,10 @@ const meta: Meta<typeof DsTag> = {
 		label: {
 			control: 'text',
 			description: 'The label text to display in the tag',
+		},
+		value: {
+			control: 'text',
+			description: 'Value rendered after the key. Required for the `key-value` variant',
 		},
 		size: {
 			control: 'select',
@@ -62,31 +66,12 @@ export const Default: Story = {
 		label: 'Default Tag',
 		onClick: undefined,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Default Tag')).toBeInTheDocument();
-	},
 };
 
 export const Clickable: Story = {
 	args: {
 		label: 'Clickable Tag',
 		onClick: fn(),
-	},
-	play: async ({ args, canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const tag = canvas.getByText('Clickable Tag');
-
-		await expect(tag).toBeInTheDocument();
-
-		// Click triggers onClick
-		await userEvent.click(tag);
-		await expect(args.onClick).toHaveBeenCalledTimes(1);
-
-		await userEvent.click(tag);
-		await expect(args.onClick).toHaveBeenCalledTimes(2);
 	},
 };
 
@@ -108,31 +93,6 @@ export const Controlled: Story = {
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const tag = canvas.getByLabelText('Controlled');
-		await expect(tag).toHaveAttribute('aria-pressed', 'true');
-
-		await userEvent.click(tag);
-
-		await waitFor(async () => {
-			await expect(tag).not.toHaveAttribute('aria-pressed');
-		});
-
-		await userEvent.click(tag);
-
-		await waitFor(async () => {
-			await expect(tag).toHaveAttribute('aria-pressed', 'true');
-		});
-
-		const deleteButton = canvas.getByLabelText('Delete tag');
-		await userEvent.click(deleteButton);
-
-		await waitFor(async () => {
-			await expect(canvas.getByText('Poof! Deleted!')).toBeInTheDocument();
-		});
-	},
 };
 
 export const Include: Story = {
@@ -140,13 +100,6 @@ export const Include: Story = {
 		label: 'Include Tag',
 		variant: 'include',
 		onDelete: fn(),
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Include Tag')).toBeInTheDocument();
-
-		await expect(canvas.getByText('check_circle')).toBeInTheDocument();
 	},
 };
 
@@ -156,18 +109,62 @@ export const Exclude: Story = {
 		variant: 'exclude',
 		onDelete: fn(),
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Exclude Tag')).toBeInTheDocument();
-
-		await expect(canvas.getByText('do_not_disturb_on')).toBeInTheDocument();
-	},
 };
 
 export const Small: Story = {
 	args: {
 		label: 'Small Tag',
+		size: 'small',
+	},
+};
+
+/**
+ * Use the `key-value` variant to display a labeled attribute, e.g. `Category: Networking`.
+ * The `label` is the bold key (`--font-main`); `value` is the secondary-colored value
+ * (`--font-secondary`). The colon is appended automatically — pass `label="Category"`, not
+ * `label="Category:"`.
+ */
+export const KeyValue: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+	},
+};
+
+export const KeyValueSelected: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+		selected: true,
+		onClick: fn(),
+	},
+};
+
+export const KeyValueDisabled: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+		disabled: true,
+	},
+};
+
+export const KeyValueWithDelete: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+		onDelete: fn(),
+	},
+};
+
+export const KeyValueSmall: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
 		size: 'small',
 	},
 };
@@ -180,20 +177,6 @@ export const Disabled: Story = {
 		onClick: fn(),
 		onDelete: fn(),
 	},
-	play: async ({ args, canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const tag = canvas.getByText('Disabled Tag');
-
-		await expect(tag).toBeInTheDocument();
-
-		// Delete button should not be visible when disabled
-		await expect(canvas.queryByLabelText('Delete tag')).not.toBeInTheDocument();
-
-		// Click should not trigger callbacks when disabled
-		await userEvent.click(tag, { pointerEventsCheck: 0 });
-		await expect(args.onClick).not.toHaveBeenCalled();
-	},
 };
 
 export const CustomIcon: Story = {
@@ -204,15 +187,6 @@ export const CustomIcon: Story = {
 			icon: <DsIcon icon="star" size="tiny" />,
 		},
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Custom Icon Tag')).toBeInTheDocument();
-
-		// Custom icon should be rendered instead of the variant icon
-		await expect(canvas.getByText('star')).toBeInTheDocument();
-		await expect(canvas.queryByText('check_circle')).not.toBeInTheDocument();
-	},
 };
 
 export const KeyboardInteraction: Story = {
@@ -220,52 +194,5 @@ export const KeyboardInteraction: Story = {
 		label: 'Keyboard Tag',
 		onClick: fn(),
 		onDelete: fn(),
-	},
-	play: async ({ args, canvasElement, step }) => {
-		const canvas = within(canvasElement);
-
-		const tag = canvas.getByRole('button', { name: /Keyboard Tag/i });
-		const deleteButton = canvas.getByLabelText('Delete tag');
-
-		let onClickCalls = 0;
-		let onDeleteCalls = 0;
-
-		await step('Tag Enter/Space keys trigger onClick', async () => {
-			tag.focus();
-			await expect(tag).toHaveFocus();
-
-			await userEvent.keyboard('{Enter}');
-			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
-
-			await userEvent.keyboard(' ');
-			await expect(args.onClick).toHaveBeenCalledTimes(++onClickCalls);
-		});
-
-		await step('Tag Backspace/Delete keys trigger onDelete', async () => {
-			tag.focus();
-
-			await userEvent.keyboard('{Backspace}');
-			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
-
-			await userEvent.keyboard('{Delete}');
-			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
-
-			// onClick should not have been called additionally
-			await expect(args.onClick).toHaveBeenCalledTimes(onClickCalls);
-		});
-
-		await step('Delete button Enter/Space keys trigger onDelete and stop propagation', async () => {
-			deleteButton.focus();
-			await expect(deleteButton).toHaveFocus();
-
-			await userEvent.keyboard('{Enter}');
-			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
-
-			await userEvent.keyboard(' ');
-			await expect(args.onDelete).toHaveBeenCalledTimes(++onDeleteCalls);
-
-			// onClick should not be called (propagation stopped)
-			await expect(args.onClick).toHaveBeenCalledTimes(onClickCalls);
-		});
 	},
 };

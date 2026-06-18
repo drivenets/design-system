@@ -63,7 +63,9 @@
 		background: var(--background);
 		border-color: var(--border-contrast);
 
-		.label {
+		.label,
+		.key,
+		.value {
 			color: var(--font-disabled);
 		}
 
@@ -103,6 +105,25 @@
 
 .label {
 	@include typography.ellipsis;
+}
+
+.keyValue {
+	min-width: 0;
+}
+
+.key {
+	flex-shrink: 0;
+	color: var(--font-main);
+
+	&::after {
+		content: ':';
+	}
+}
+
+.value {
+	@include typography.ellipsis;
+
+	color: var(--font-secondary);
 }
 
 .icon {
