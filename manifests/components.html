@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/88 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/88 infos</a><span class="filter-pill ok" aria-disabled="true">521 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/88 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/88 infos</a><span class="filter-pill ok" aria-disabled="true">526 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -25004,9 +25004,9 @@ export const DsTabs = {
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTag</h2>
       <div class="badges">
-        <label for="c-73-components-tag-props" class="badge ok as-toggle">12 prop types</label>
+        <label for="c-73-components-tag-props" class="badge ok as-toggle">6 prop types</label>
         
-        <label for="c-73-components-tag-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-73-components-tag-stories" class="badge ok as-toggle">14 stories</label>
         
         
       </div>
@@ -25033,83 +25033,21 @@ export const DsTabs = {
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">12 prop types</span>
+              <span class="badge ok">6 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-tag/ds-tag.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
-            <pre><code>/**
- * Additional CSS class names
- */
-className?: string
+            <pre><code>disabled?: any = false
 
-/**
- * Whether the tag is disabled
- * @default false
- */
-disabled?: boolean = false
+locale?: any = {}
 
-/**
- * The label text to display in the tag
- */
-label: ReactNode
+selected?: any = false
 
-/**
- * Locale object (you can pass custom strings for localization)
- */
-locale?: {
-	/**
-	 * aria-label for the delete button (shown when `onDelete` is provided).
-	 */
-	deleteAriaLabel?: string;
-} = {}
+size?: any = &#39;medium&#39;
 
-/**
- * Optional click handler, if not present Tag will not be in &quot;clickable&quot; state
- */
-onClick?: (event: MouseEvent&lt;HTMLElement&gt; | KeyboardEvent&lt;HTMLElement&gt;) =&gt; void
+style?: any = {}
 
-/**
- * Callback function when the delete icon is clicked
- */
-onDelete?: (event: MouseEvent&lt;HTMLElement&gt; | KeyboardEvent&lt;HTMLElement&gt;) =&gt; void
-
-/**
- * Ref to the tag element
- */
-ref?: Ref&lt;HTMLElement&gt;
-
-/**
- * Whether the tag is in a selected/pressed state
- * @default false
- */
-selected?: boolean = false
-
-/**
- * Size of the tag
- * @default &#39;medium&#39;
- */
-size?: (typeof tagSizes)[number] = &#39;medium&#39;
-
-/**
- * Optional render slots for customizing parts of the tag.
- */
-slots?: {
-	/**
-	 * Icon to display at the start of the input
-	 */
-	icon?: ReactNode;
-}
-
-/**
- * Additional styles to apply to the component
- */
-style?: CSSProperties = {}
-
-/**
- * Variant of the tag
- * @default &#39;default&#39;
- */
-variant?: (typeof tagVariants)[number] = &#39;default&#39;</code></pre>
+variant?: any = &#39;default&#39;</code></pre>
           </div>
         </div>
     
@@ -25194,6 +25132,56 @@ variant?: (typeof tagVariants)[number] = &#39;default&#39;</code></pre>
               
               
               <pre><code>const Small = () =&gt; &lt;DsTag label=&quot;Small Tag&quot; size=&quot;small&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Key Value</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Use the `key-value` variant to display a labeled attribute, e.g. `Category: Networking`. The `label` is the bold key (`--font-main`); `value` is the secondary-colored value (`--font-secondary`). The colon is appended automatically — pass `label=&quot;Category&quot;`, not `label=&quot;Category:&quot;`.</div>
+              <pre><code>const KeyValue = () =&gt; &lt;DsTag variant=&quot;key-value&quot; label=&quot;Category&quot; value=&quot;Networking&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Key Value Selected</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const KeyValueSelected = () =&gt; &lt;DsTag
+    variant=&quot;key-value&quot;
+    label=&quot;Category&quot;
+    value=&quot;Networking&quot;
+    selected
+    onClick={fn()} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Key Value Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const KeyValueDisabled = () =&gt; &lt;DsTag variant=&quot;key-value&quot; label=&quot;Category&quot; value=&quot;Networking&quot; disabled /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Key Value With Delete</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const KeyValueWithDelete = () =&gt; &lt;DsTag variant=&quot;key-value&quot; label=&quot;Category&quot; value=&quot;Networking&quot; onDelete={fn()} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Key Value Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const KeyValueSmall = () =&gt; &lt;DsTag variant=&quot;key-value&quot; label=&quot;Category&quot; value=&quot;Networking&quot; size=&quot;small&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
