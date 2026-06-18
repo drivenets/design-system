@@ -416,6 +416,10 @@ ruleTester.run('consistent-story-titles', consistentStoryTitles, {
 					data: {
 						expectedName: 'ActiveNamespacedComponent',
 					},
+					line: 6,
+					column: 13,
+					endLine: 6,
+					endColumn: 53,
 				},
 			],
 		},
