@@ -3,16 +3,16 @@ import type { CSSProperties, KeyboardEvent, MouseEvent, ReactNode, Ref } from 'r
 export const tagSizes = ['medium', 'small'] as const;
 export type TagSize = (typeof tagSizes)[number];
 
-export const tagVariants = ['default', 'include', 'exclude'] as const;
+export const tagVariants = ['default', 'include', 'exclude', 'key-value'] as const;
 export type TagVariant = (typeof tagVariants)[number];
 
-export interface DsTagProps {
+interface DsTagBaseProps {
 	/**
 	 * Ref to the tag element
 	 */
 	ref?: Ref<HTMLElement>;
 	/**
-	 * The label text to display in the tag
+	 * The label text to display in the tag. For the `key-value` variant this is the key.
 	 */
 	label: ReactNode;
 	/**
@@ -51,11 +51,6 @@ export interface DsTagProps {
 	 */
 	selected?: boolean;
 	/**
-	 * Variant of the tag
-	 * @default 'default'
-	 */
-	variant?: TagVariant;
-	/**
 	 * Whether the tag is disabled
 	 * @default false
 	 */
@@ -71,3 +66,22 @@ export interface DsTagProps {
 		icon?: ReactNode;
 	};
 }
+
+interface DsTagStandardProps extends DsTagBaseProps {
+	/**
+	 * Variant of the tag
+	 * @default 'default'
+	 */
+	variant?: 'default' | 'include' | 'exclude';
+	value?: never;
+}
+
+interface DsTagKeyValueProps extends DsTagBaseProps {
+	variant: 'key-value';
+	/**
+	 * Secondary-colored value rendered after the key (`label`). Required for the `key-value` variant.
+	 */
+	value: ReactNode;
+}
+
+export type DsTagProps = DsTagStandardProps | DsTagKeyValueProps;

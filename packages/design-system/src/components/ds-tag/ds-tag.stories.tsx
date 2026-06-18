@@ -16,6 +16,10 @@ const meta: Meta<typeof DsTag> = {
 			control: 'text',
 			description: 'The label text to display in the tag',
 		},
+		value: {
+			control: 'text',
+			description: 'Value rendered after the key. Required for the `key-value` variant',
+		},
 		size: {
 			control: 'select',
 			options: tagSizes,
@@ -168,6 +172,58 @@ export const Exclude: Story = {
 export const Small: Story = {
 	args: {
 		label: 'Small Tag',
+		size: 'small',
+	},
+};
+
+/**
+ * Use the `key-value` variant to display a labeled attribute, e.g. `Category: Networking`.
+ * The `label` is the bold key (`--font-main`); `value` is the secondary-colored value
+ * (`--font-secondary`). The colon is appended automatically — pass `label="Category"`, not
+ * `label="Category:"`.
+ */
+export const KeyValue: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+	},
+};
+
+export const KeyValueSelected: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+		selected: true,
+		onClick: fn(),
+	},
+};
+
+export const KeyValueDisabled: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+		disabled: true,
+	},
+};
+
+export const KeyValueWithDelete: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
+		onDelete: fn(),
+	},
+};
+
+/** Key-value variant at `small` size — key uses `body-xs-md`, value `body-xs-reg`. */
+export const KeyValueSmall: Story = {
+	args: {
+		variant: 'key-value',
+		label: 'Category',
+		value: 'Networking',
 		size: 'small',
 	},
 };

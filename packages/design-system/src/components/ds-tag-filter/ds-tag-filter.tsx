@@ -5,7 +5,7 @@ import styles from './ds-tag-filter.module.scss';
 import type { DsTagFilterProps, TagFilterItem } from './ds-tag-filter.types';
 import { useTagOverflowCalculation } from './hooks/use-tag-overflow-calculation';
 import { DsTypography } from '../ds-typography';
-import { DsTag } from '../ds-tag';
+import { DsTag, type DsTagProps } from '../ds-tag';
 import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 
@@ -51,20 +51,19 @@ const DsTagFilter = ({
 		return null;
 	}
 
-	const renderTag = (item: TagFilterItem) => {
-		const tagProps = item.slotProps?.tag || {};
+	// Merging per-item overrides with the filter-controlled props drops the
+	// discriminated-union narrowing of `DsTagProps` (a known TS spread limitation),
+	// so build the props once and assert the union type.
+	const buildTagProps = (item: TagFilterItem): DsTagProps =>
+		({
+			...item.slotProps?.tag,
+			label: item.label,
+			selected: item.selected,
+			onClick: onItemSelect ? () => onItemSelect(item) : undefined,
+			onDelete: onItemDelete ? () => onItemDelete(item) : undefined,
+		}) as DsTagProps;
 
-		return (
-			<DsTag
-				{...tagProps}
-				key={item.id}
-				label={item.label}
-				selected={item.selected}
-				onClick={onItemSelect ? () => onItemSelect(item) : undefined}
-				onDelete={onItemDelete ? () => onItemDelete(item) : undefined}
-			/>
-		);
-	};
+	const renderTag = (item: TagFilterItem) => <DsTag key={item.id} {...buildTagProps(item)} />;
 
 	const handleExpandToggle = () => {
 		const newExpanded = !expanded;
@@ -75,14 +74,7 @@ const DsTagFilter = ({
 	const measurementContainer = (
 		<div ref={measurementRef} className={styles.measurementContainer} aria-hidden="true">
 			{items.map((item) => (
-				<DsTag
-					key={item.id}
-					data-measure-tag=""
-					label={item.label}
-					selected={item.selected}
-					onClick={onItemSelect ? () => onItemSelect(item) : undefined}
-					onDelete={onItemDelete ? () => onItemDelete(item) : undefined}
-				/>
+				<DsTag key={item.id} data-measure-tag="" {...buildTagProps(item)} />
 			))}
 		</div>
 	);
