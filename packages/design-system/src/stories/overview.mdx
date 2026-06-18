@@ -123,4 +123,35 @@ export default [
   </div>
 </div>
 
+<DsDivider />
+
+<div>
+  <div className={styles.sectionHeader}>
+    <DsIcon icon="smart_toy" size="medium" />
+    <DsTypography variant="heading2">Design System MCP</DsTypography>
+  </div>
+
+<DsTypography variant="body-md-reg" asChild className={styles.sectionDescription}>
+	<span>
+		Give your AI assistant (Cursor, Claude Code, Codex, …) access to live component docs, props, and code
+		snippets straight from this Storybook. The command below adds the MCP server to every IDE on your machine.
+	</span>
+</DsTypography>
+
+  <div className={styles.steps}>
+    <div className={styles.step}>
+      <Source dark code="npx add-mcp@latest -g @drivenets/design-system-mcp" language="bash" />
+      <DsTypography variant="body-sm-reg" asChild className={styles.docsLink}>
+        <a
+          href="https://github.com/drivenets/design-system/blob/main/packages/mcp/README.md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Manual config & per-IDE details →
+        </a>
+      </DsTypography>
+    </div>
+  </div>
+</div>
+
 </div>

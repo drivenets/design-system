@@ -1,5 +1,11 @@
 # @drivenets/vite-plugin-design-system
 
+## 0.0.9
+
+### Patch Changes
+
+- 14abf56: Export fonts URLs
+
 ## 0.0.8
 
 ### Patch Changes
