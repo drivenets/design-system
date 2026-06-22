@@ -1,6 +1,6 @@
 {
 	"codeConnect": {
-		"include": ["**/*.figma.ts", "**/*.stories.tsx"],
+		"include": ["**/*.figma.ts"],
 		"importPaths": {
 			"src/components/*": "@drivenets/design-system"
 		},
