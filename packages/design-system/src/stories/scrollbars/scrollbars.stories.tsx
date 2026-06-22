@@ -11,7 +11,8 @@ const meta: Meta = {
 		docs: {
 			description: {
 				component: `
-All scrollbars are styled automatically by the design system.
+All scrollbars are styled automatically by the design system and auto-hide until you hover the scrollable region.
+At rest the thumb is subtle (10px); on hover it widens (12px) and darkens for clearer affordance.
 You can add a \`.scrollbar-thin\` class to the element in order to make its scrollbar thin.
 				`,
 			},
