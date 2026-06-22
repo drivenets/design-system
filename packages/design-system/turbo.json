@@ -14,6 +14,15 @@
 		"build:storybook": {
 			"outputs": ["storybook-static/**"],
 			"inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/vite-plugin/**"]
+		},
+		"figma:validate": {
+			"dependsOn": [],
+			"inputs": ["**/*.figma.ts", "figma.config.json", "package.json"]
+		},
+		"figma:publish": {
+			"dependsOn": [],
+			"inputs": ["**/*.figma.ts", "figma.config.json", "package.json"],
+			"passThroughEnv": ["FIGMA_ACCESS_TOKEN"]
 		}
 	}
 }
