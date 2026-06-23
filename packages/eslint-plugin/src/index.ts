@@ -70,6 +70,13 @@ const eslintPlugin = createPlugin(
 	},
 
 	{
+		// Matches only the bare callable `<DsPopover>`, not the compound `<DsPopover.Root>` etc.
+		name: 'no-deprecated-ds-popover-legacy',
+		selector: JSXElementName('DsPopover'),
+		message: `The DsPopover callable form (with a 'trigger' prop) is deprecated. Use the compound API: DsPopover.Root with DsPopover.Trigger and DsPopover.Panel.`,
+	},
+
+	{
 		name: 'no-native-button',
 		selector: [
 			JSXElementName('button'),
