@@ -50,14 +50,14 @@ jobs:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: pnpm changeset status --since "origin/$BASE_REF"
 
-  disallow-major-release:
-    name: Disallow Major Release
+  disallow-major-version:
+    name: Disallow Major Version
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
 
-    # Block major releases only on main, allow on next.
+    # Block major versions only on main, allow on next.
     # Skip release & dependabot PRs.
     if: |
       github.event.pull_request.base.ref == 'main' &&
@@ -75,9 +75,11 @@ jobs:
         uses: ./.github/actions/install
 
       - name: Check for Major Changeset
-        run: |
-          pnpm changeset status --since origin/main --output=./.changeset-status.json &> /dev/null || true
+        id: check-major
+        uses: ./.github/actions/check-major-version
 
-          if [ -f ./.changeset-status.json ]; then
-            node .github/scripts/check-major-version.ts ./.changeset-status.json
-          fi
+      - name: Disallow Major Version
+        if: steps.check-major.outputs.has-major == 'true'
+        run: |
+          echo "Error: Major changesets are not allowed. Did you mean to create a minor or patch changeset instead?"
+          exit 1

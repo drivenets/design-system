@@ -23,8 +23,9 @@ import { DsTableRowExpandableCell } from './components/ds-table-row-expandable-c
 import { DsTableRowSelectableCell } from './components/ds-table-row-selectable-cell';
 import { DsTableHeaderSelectableCell } from './components/ds-table-header-selectable-cell';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
-import { type DsTableContextType, DsTableContext } from './context/ds-table-context';
+import { type DsTableContextType, DsTableContext, useEditingState } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
+import { useColumnGroups } from './grouping';
 import {
 	EMPTY_TABLE_STATE_TEXT,
 	EXPANDER_COLUMN_ID,
@@ -75,8 +76,13 @@ const DsTable = <TData extends { id: string }, TValue>({
 	onColumnFiltersChange,
 	columnVisibility: externalColumnVisibility,
 	onColumnVisibilityChange,
+	collapsedColumnGroups: externalCollapsedColumnGroups,
+	onCollapsedColumnGroupsChange,
+	locale,
 	activeRowId,
 	infiniteScroll,
+	onCellEdit,
+	onCellValidate,
 }: DsDataTableProps<TData, TValue>) => {
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -107,12 +113,12 @@ const DsTable = <TData extends { id: string }, TValue>({
 		}
 	};
 
-	const columnVisibility = externalColumnVisibility ?? internalColumnVisibility;
+	const baseColumnVisibility = externalColumnVisibility ?? internalColumnVisibility;
 	const handleColumnVisibilityChange = (
 		updaterOrValue: VisibilityState | ((old: VisibilityState) => VisibilityState),
 	) => {
 		const newVisibility =
-			typeof updaterOrValue === 'function' ? updaterOrValue(columnVisibility) : updaterOrValue;
+			typeof updaterOrValue === 'function' ? updaterOrValue(baseColumnVisibility) : updaterOrValue;
 
 		if (onColumnVisibilityChange) {
 			onColumnVisibilityChange(newVisibility);
@@ -120,6 +126,17 @@ const DsTable = <TData extends { id: string }, TValue>({
 			setInternalColumnVisibility(newVisibility);
 		}
 	};
+
+	const { collapsedColumnGroups, toggleColumnGroup, collapsedVisibility } = useColumnGroups({
+		columns: columnsProp,
+		collapsedColumnGroups: externalCollapsedColumnGroups,
+		onCollapsedColumnGroupsChange,
+	});
+
+	const columnVisibility = useMemo(
+		() => ({ ...baseColumnVisibility, ...collapsedVisibility }),
+		[baseColumnVisibility, collapsedVisibility],
+	);
 
 	const handleSortingChange = (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
 		const newSorting = typeof updaterOrValue === 'function' ? updaterOrValue(sorting) : updaterOrValue;
@@ -267,6 +284,8 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const isBulkActionsVisible = selectable && actions.length > 0 && selectedRows.length > 0;
 
+	const editingState = useEditingState<TData, TValue>(onCellEdit, onCellValidate);
+
 	const contextValue: DsTableContextType<TData, TValue> = {
 		stickyHeader,
 		bordered,
@@ -283,6 +302,11 @@ const DsTable = <TData extends { id: string }, TValue>({
 		renderExpandedRow,
 		virtualized,
 		activeRowId,
+		collapsedColumnGroups,
+		onToggleColumnGroup: toggleColumnGroup,
+		locale,
+		onCellEdit,
+		...editingState,
 	};
 
 	return (

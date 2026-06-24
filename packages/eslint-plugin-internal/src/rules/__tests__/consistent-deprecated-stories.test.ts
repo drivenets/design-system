@@ -526,10 +526,18 @@ ruleTester.run('consistent-deprecated-stories', consistentDeprecatedStories, {
 				{
 					messageId: 'missingDeprecatedTag',
 					data: { component: 'DsDeprecatedTypedComponent' },
+					line: 4,
+					column: 18,
+					endLine: 7,
+					endColumn: 6,
 				},
 				{
 					messageId: 'missingDeprecatedSuffix',
 					data: { component: 'DsDeprecatedTypedComponent' },
+					line: 5,
+					column: 13,
+					endLine: 5,
+					endColumn: 50,
 				},
 			],
 		},

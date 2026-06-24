@@ -66,6 +66,10 @@
 	justify-content: center;
 }
 
+.groupStart {
+	border-left: vars.$group-border-width solid var(--border);
+}
+
 .expandedRowContent {
 	background-color: var(--background-secondary);
 
@@ -78,4 +82,23 @@
 	}
 
 	@include table-mixins.expanded-row-border('bottom');
+}
+
+.row td.editableCell {
+	padding: 1px;
+
+	&:hover {
+		border: 1px solid var(--border-secondary-hover);
+	}
+
+	&:focus-within {
+		border: 1px solid var(--border-action-primary);
+	}
+
+	&:hover,
+	&:focus-within {
+		padding: 0;
+		border-bottom-width: 2px;
+		background: var(--background);
+	}
 }

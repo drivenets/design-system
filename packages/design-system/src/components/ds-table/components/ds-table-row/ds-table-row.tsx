@@ -10,6 +10,7 @@ import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
 import { getColumnSizeStyle } from '../../utils/column-size';
+import { isFirstLeafColumnOfGroup } from '../../grouping';
 import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
 interface DsRowDragHandleProps {
@@ -118,6 +119,8 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 								styles.tableCell,
 								cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 								cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
+								isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
+								typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 							)}
 							style={cellStyle}
 						>
