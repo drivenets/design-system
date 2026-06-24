@@ -588,7 +588,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/88 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/88 infos</a><span class="filter-pill ok" aria-disabled="true">526 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/88 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">51/88 infos</a><span class="filter-pill ok" aria-disabled="true">529 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
@@ -14862,31 +14862,31 @@ value?: string</code></pre>
 <article
   class="card 
   no-error 
-  has-info 
+  no-info 
   no-story-error
   no-doc-error"
   role="listitem"
-  aria-label="DsPopover">
+  aria-label="DsPopover.Root">
   <div class="head">
     <div class="title">
-      <h2><span class="status-dot dot-ok"></span> DsPopover</h2>
+      <h2><span class="status-dot dot-ok"></span> DsPopover.Root</h2>
       <div class="badges">
         <label for="c-46-components-popover-props" class="badge ok as-toggle">5 prop types</label>
-        <label for="c-46-components-popover-info" class="badge info as-toggle">1 info</label>
-        <label for="c-46-components-popover-stories" class="badge ok as-toggle">1 story</label>
+        
+        <label for="c-46-components-popover-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
     </div>
     <div class="meta" title="./src/components/ds-popover/ds-popover.stories.tsx">components-popover · ./src/components/ds-popover/ds-popover.stories.tsx</div>
     
-    
-    
+    <div class="hint">Legacy single-element form. Keeps the old call signature and `side` default (&#39;top&#39;) compiling and opening, but now renders the new fixed-width panel — styling differs from the old Radix popover and the Radix `Popover.Close` context is no longer wired.</div>
+    <div class="kv"><span class="chip">deprecated: Migrate to the compound API (`DsPopover.Root` / `.Trigger` / `.Panel`).</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-46-components-popover-info" class="tg tg-info" type="checkbox" hidden />
+  
   <input id="c-46-components-popover-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
@@ -14895,13 +14895,6 @@ value?: string</code></pre>
   <div class="panels">
     
     
-        <div class="panel panel-info">
-          
-    <div class="note info">
-      <div class="note-title">Info</div>
-      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
-    </div>
-        </div>
     
         <div class="panel panel-props">
           <div class="note ok">
@@ -14909,32 +14902,32 @@ value?: string</code></pre>
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
               <span class="badge ok">5 prop types</span>
             </div>
-            <pre><code>Component: src/components/ds-popover/ds-popover.tsx::default</code></pre>
+            <pre><code>Component: src/components/ds-popover/ds-popover.tsx</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>/**
- * The alignment of the popover content
+ * @default &#39;center&#39;
  */
-align?: &#39;start&#39; | &#39;center&#39; | &#39;end&#39; = &#39;center&#39;
+align?: (typeof popoverAligns)[number] = &#39;center&#39;
 
 /**
- * The content to be rendered inside the popover
+ * Panel content.
  */
-children: React.ReactNode
+children: ReactNode
 
 /**
- * Additional CSS class names
+ * Forwarded to the panel.
  */
 className?: string
 
 /**
- * The position of the popover relative to the trigger element
+ * @default &#39;top&#39;
  */
-side?: &#39;top&#39; | &#39;right&#39; | &#39;bottom&#39; | &#39;left&#39; = &#39;top&#39;
+side?: (typeof popoverSides)[number] = &#39;top&#39;
 
 /**
- * The element that triggers the popover
+ * Element that toggles the popover.
  */
-trigger: React.ReactNode</code></pre>
+trigger: ReactNode</code></pre>
           </div>
         </div>
     
@@ -14946,37 +14939,120 @@ trigger: React.ReactNode</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsIcon, DsPopover } from "@drivenets/design-system";
-import { Close as PopoverClose } from "@radix-ui/react-popover";</code></pre>
+                <pre><code>import {
+    DsAvatar,
+    DsButtonV3,
+    DsDivider,
+    DsIcon,
+    DsPopover,
+    DsStack,
+    DsStatusBadgeV2,
+    DsTypography,
+} from "@drivenets/design-system";</code></pre>
               </div>
           
           
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Default</span>
+                <span class="ex-name">With Content Items And CTA</span>
                 <span class="badge ok">story ok</span>
               </div>
               
               
-              <pre><code>const Default = () =&gt; &lt;DsPopover
-    trigger={(&lt;DsButton&gt;
-        &lt;DsIcon icon=&quot;info&quot; /&gt;Open Popover
-                    &lt;/DsButton&gt;)}&gt;(&lt;div&gt;
-        &lt;strong&gt;ID:&lt;/strong&gt;123456, Dallas, USA
-                        &lt;p&gt;Facility Types: Tier 1, Tier 2&lt;/p&gt;
-        &lt;p&gt;Devices: 11, 2898&lt;/p&gt;
-        &lt;div style={{ display: &#39;flex&#39;, justifyContent: &#39;flex-end&#39;, gap: &#39;8px&#39; }}&gt;
-            &lt;PopoverClose asChild&gt;
-                &lt;DsIcon className=&quot;action-icon&quot; icon=&quot;fullscreen&quot; /&gt;
-            &lt;/PopoverClose&gt;
-            &lt;PopoverClose asChild&gt;
-                &lt;DsIcon className=&quot;action-icon&quot; icon=&quot;view_list&quot; /&gt;
-            &lt;/PopoverClose&gt;
-            &lt;PopoverClose asChild&gt;
-                &lt;DsIcon className=&quot;action-icon&quot; icon=&quot;star&quot; /&gt;
-            &lt;/PopoverClose&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;)&lt;/DsPopover&gt;;</code></pre>
+              <pre><code>const WithContentItemsAndCTA = () =&gt; &lt;DsPopover.Root side=&quot;bottom&quot; align=&quot;center&quot; gutter={8} modal={false} defaultOpen={false}&gt;
+    &lt;DsPopover.Trigger&gt;
+        &lt;DsButtonV3 variant=&quot;secondary&quot;&gt;Release lock&lt;/DsButtonV3&gt;
+    &lt;/DsPopover.Trigger&gt;
+    &lt;DsPopover.Panel&gt;
+        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;lock&quot; color=&quot;action-secondary&quot; /&gt;}&gt;Release lock
+                            &lt;/DsPopover.Header&gt;
+        &lt;DsPopover.Content&gt;
+            &lt;DsPopover.ContentItem status={&lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;Active&quot; size=&quot;small&quot; /&gt;}&gt;Releases a physical lock on a device or asset, granting immediate access to the selected inventory
+                                        item.
+                                    &lt;/DsPopover.ContentItem&gt;
+            &lt;DsDivider /&gt;
+            &lt;DsPopover.ContentItem headline=&quot;Last version: 2.3.4&quot;&gt;
+                &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap=&quot;var(--xs)&quot;&gt;
+                    &lt;DsAvatar name=&quot;John Smith&quot; size=&quot;xsm&quot; /&gt;
+                    &lt;DsTypography variant=&quot;body-xs-reg&quot; color=&quot;secondary&quot;&gt;John Smith • 23-May-2024 04:47 PM
+                                                    &lt;/DsTypography&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsPopover.ContentItem&gt;
+            &lt;DsDivider /&gt;
+            &lt;DsPopover.ContentItem headline=&quot;Category&quot;&gt;
+                &lt;DsIcon icon=&quot;sell&quot; size=&quot;small&quot; color=&quot;secondary&quot; /&gt;DAP / Inventory / Physical
+                                    &lt;/DsPopover.ContentItem&gt;
+        &lt;/DsPopover.Content&gt;
+        &lt;DsPopover.Footer&gt;
+            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;check_circle&quot;&gt;Confirm
+                                    &lt;/DsButtonV3&gt;
+        &lt;/DsPopover.Footer&gt;
+    &lt;/DsPopover.Panel&gt;
+&lt;/DsPopover.Root&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Single Content Item</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const SingleContentItem = () =&gt; &lt;DsPopover.Root side=&quot;bottom&quot; align=&quot;center&quot; gutter={8} modal={false} defaultOpen={false}&gt;
+    &lt;DsPopover.Trigger&gt;
+        &lt;DsButtonV3 variant=&quot;secondary&quot;&gt;Set element status&lt;/DsButtonV3&gt;
+    &lt;/DsPopover.Trigger&gt;
+    &lt;DsPopover.Panel&gt;
+        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;account_tree&quot; color=&quot;action-secondary&quot; /&gt;}&gt;Set element status
+                            &lt;/DsPopover.Header&gt;
+        &lt;DsPopover.Content&gt;
+            &lt;DsPopover.ContentItem
+                status={&lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label=&quot;Node not connected&quot; size=&quot;small&quot; /&gt;}&gt;This node has no outgoing connections. Link it to another node to continue the workflow.
+                                    &lt;/DsPopover.ContentItem&gt;
+        &lt;/DsPopover.Content&gt;
+    &lt;/DsPopover.Panel&gt;
+&lt;/DsPopover.Root&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Legacy</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Legacy single-element call form (`@deprecated`). The old `trigger` / `side` / `align` API still compiles and runs — it now renders the new light panel. Prefer the compound API shown above.</div>
+              <pre><code>const Legacy = () =&gt; (
+    &lt;DsPopover side=&quot;top&quot; trigger={&lt;DsButtonV3 variant=&quot;secondary&quot;&gt;Legacy call form&lt;/DsButtonV3&gt;}&gt;
+        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;lock&quot; color=&quot;action-secondary&quot; /&gt;}&gt;
+            Legacy call form
+        &lt;/DsPopover.Header&gt;
+        &lt;DsPopover.Content&gt;
+            &lt;DsPopover.ContentItem&gt;
+                Still works after the rewrite — same one-liner, new panel styling.
+            &lt;/DsPopover.ContentItem&gt;
+        &lt;/DsPopover.Content&gt;
+    &lt;/DsPopover&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Image</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithImage = () =&gt; &lt;DsPopover.Root side=&quot;bottom&quot; align=&quot;center&quot; gutter={8} modal={false} defaultOpen={false}&gt;
+    &lt;DsPopover.Trigger&gt;
+        &lt;DsButtonV3 variant=&quot;secondary&quot;&gt;London&lt;/DsButtonV3&gt;
+    &lt;/DsPopover.Trigger&gt;
+    &lt;DsPopover.Panel&gt;
+        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;location_on&quot; color=&quot;action-secondary&quot; /&gt;}&gt;London
+                            &lt;/DsPopover.Header&gt;
+        &lt;DsPopover.Content&gt;
+            &lt;DsPopover.ContentItem&gt;
+                &lt;img className={styles.image} src={PLACEHOLDER_IMAGE} alt=&quot;Map of London&quot; /&gt;
+            &lt;/DsPopover.ContentItem&gt;
+        &lt;/DsPopover.Content&gt;
+    &lt;/DsPopover.Panel&gt;
+&lt;/DsPopover.Root&gt;;</code></pre>
             </div>
         </div>
     
