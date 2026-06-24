@@ -45,24 +45,6 @@
 	padding: var(--standard) var(--lg);
 }
 
-.item {
-	display: flex;
-	flex-direction: column;
-	gap: var(--xs);
-}
-
-.itemHeader {
-	display: flex;
-	align-items: center;
-	gap: var(--xs);
-}
-
-.itemBody {
-	display: flex;
-	align-items: center;
-	gap: var(--xs);
-}
-
 .footer {
 	display: flex;
 	align-items: center;

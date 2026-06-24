@@ -4,6 +4,8 @@ import { DsIcon } from '../ds-icon';
 import { DsAvatar } from '../ds-avatar';
 import { DsDivider } from '../ds-divider';
 import { DsStatusBadgeV2 } from '../ds-status-badge-v2';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import { DsPopover } from './ds-popover';
 import { popoverAligns, popoverSides } from './ds-popover.types';
 import styles from './ds-popover.stories.module.scss';
@@ -62,10 +64,12 @@ export const WithContentItemsAndCTA: Story = {
 					</DsPopover.ContentItem>
 					<DsDivider />
 					<DsPopover.ContentItem headline="Last version: 2.3.4">
-						<div className={styles.metaRow}>
+						<DsStack direction="row" alignItems="center" gap="var(--xs)">
 							<DsAvatar name="John Smith" size="xsm" />
-							<span className={styles.metaText}>John Smith &bull; 23-May-2024 04:47 PM</span>
-						</div>
+							<DsTypography variant="body-xs-reg" color="secondary">
+								John Smith &bull; 23-May-2024 04:47 PM
+							</DsTypography>
+						</DsStack>
 					</DsPopover.ContentItem>
 					<DsDivider />
 					<DsPopover.ContentItem headline="Category">

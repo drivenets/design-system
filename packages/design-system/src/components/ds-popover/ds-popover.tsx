@@ -1,6 +1,7 @@
 import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
+import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 import styles from './ds-popover.module.scss';
 import type {
@@ -97,23 +98,25 @@ const DsPopoverContentItem = ({
 	const hasHeader = Boolean(status) || Boolean(headline);
 
 	return (
-		<div className={classNames(styles.item, className)} style={style}>
+		<DsStack direction="column" gap="var(--xs)" className={className} style={style}>
 			{hasHeader && (
-				<div className={styles.itemHeader}>
+				<DsStack direction="row" alignItems="center" gap="var(--xs)">
 					{status}
 					{headline && (
 						<DsTypography variant="body-sm-semi-bold" color="main">
 							{headline}
 						</DsTypography>
 					)}
-				</div>
+				</DsStack>
 			)}
 			{children && (
 				<DsTypography variant="body-sm-reg" color="main" asChild>
-					<div className={styles.itemBody}>{children}</div>
+					<DsStack direction="row" alignItems="center" gap="var(--xs)">
+						{children}
+					</DsStack>
 				</DsTypography>
 			)}
-		</div>
+		</DsStack>
 	);
 };
 

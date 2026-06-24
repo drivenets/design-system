@@ -1,16 +1,3 @@
-@use '../../styles/typography';
-
-.metaRow {
-	display: flex;
-	align-items: center;
-	gap: var(--xs);
-}
-
-.metaText {
-	@include typography.body-xs-reg;
-	color: var(--font-secondary);
-}
-
 .image {
 	display: block;
 	width: 100%;
