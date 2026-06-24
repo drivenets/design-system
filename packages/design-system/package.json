@@ -44,7 +44,7 @@
 		"lint:build": "publint && attw --pack",
 		"typecheck": "pnpm generate-scss-dts && tsgo; EXIT_CODE=$?; rm -rf .scss-dts; exit $EXIT_CODE",
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
-		"figma:validate": "figma connect parse --exit-on-unreadable-files",
+		"figma:lint": "figma connect parse --exit-on-unreadable-files",
 		"figma:publish": "figma connect publish --exit-on-unreadable-files",
 		"test": "vitest --project=\"!requires-build\"",
 		"test:coverage": "pnpm test --coverage",

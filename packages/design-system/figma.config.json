@@ -5,6 +5,7 @@
 			"src/components/*": "@drivenets/design-system"
 		},
 		"label": "React",
-		"language": "jsx"
+		"language": "tsx",
+		"parser": "react"
 	}
 }

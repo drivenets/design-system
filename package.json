@@ -22,8 +22,8 @@
 		"test:requires-build": "turbo run test:requires-build",
 		"build": "turbo run build",
 		"build:storybook": "turbo run build:storybook",
-		"figma:validate": "turbo run figma:validate",
-		"figma:publish": "turbo run figma:publish",
+		"figma:lint": "turbo run figma:lint",
+		"figma:publish": "pnpm run --filter @drivenets/design-system figma:publish",
 		"changelog": "changeset",
 		"prepare": "husky",
 		"pre-commit": "lint-staged"

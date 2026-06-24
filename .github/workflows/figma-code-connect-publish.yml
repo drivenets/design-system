@@ -1,25 +1,26 @@
 name: Figma Code Connect Publish
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions: {}
+
+concurrency:
+  group: '${{ github.workflow }} @ ${{ github.ref }}'
+  cancel-in-progress: false # Ensure that previous runs aren't cancelled and leave the publish in a broken state.
 
 jobs:
   publish:
     name: Publish
-    if: github.repository_owner == 'drivenets'
     runs-on: ubuntu-latest
+
+    if: github.repository_owner == 'drivenets'
 
     permissions:
       contents: read
-
-    concurrency:
-      group: figma-code-connect @ main
-      cancel-in-progress: false
 
     steps:
       - name: Checkout source code
@@ -30,15 +31,7 @@ jobs:
       - name: Install Dependencies
         uses: ./.github/actions/install
 
-      - name: Cache turbo
-        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-        with:
-          path: .turbo
-          key: ${{ runner.os }}-turbo-figma-publish-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-figma-publish-
-
-      - name: Publish Code Connect files
+      - name: Publish
         run: pnpm figma:publish
         env:
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
