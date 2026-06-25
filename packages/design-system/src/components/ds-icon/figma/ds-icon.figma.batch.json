@@ -1,0 +1,2873 @@
+[
+	{
+		"templateFile": "./ds-icon-material.figma.batch.ts",
+		"components": [
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25032",
+				"icon": "account_balance",
+				"filled": false,
+				"id": "ds-icon-o-account_balance",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3125",
+				"icon": "account_circle",
+				"filled": false,
+				"id": "ds-icon-o-account_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3119",
+				"icon": "account_tree",
+				"filled": false,
+				"id": "ds-icon-o-account_tree",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25031",
+				"icon": "activity_zone",
+				"filled": false,
+				"id": "ds-icon-o-activity_zone",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25025",
+				"icon": "acute",
+				"filled": false,
+				"id": "ds-icon-o-acute",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3151",
+				"icon": "add",
+				"filled": false,
+				"id": "ds-icon-o-add",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-413",
+				"icon": "add_box",
+				"filled": false,
+				"id": "ds-icon-o-add_box",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3188",
+				"icon": "add_circle",
+				"filled": false,
+				"id": "ds-icon-o-add_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18214-925",
+				"icon": "add_comment",
+				"filled": false,
+				"id": "ds-icon-o-add_comment",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25030",
+				"icon": "add_home",
+				"filled": false,
+				"id": "ds-icon-o-add_home",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25033",
+				"icon": "add_home_work",
+				"filled": false,
+				"id": "ds-icon-o-add_home_work",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3435",
+				"icon": "add_triangle",
+				"filled": false,
+				"id": "ds-icon-o-add_triangle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24035-666",
+				"icon": "admin_panel_settings",
+				"filled": false,
+				"id": "ds-icon-o-admin_panel_settings",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3145",
+				"icon": "airline_stops",
+				"filled": false,
+				"id": "ds-icon-o-airline_stops",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25069",
+				"icon": "alarm",
+				"filled": false,
+				"id": "ds-icon-o-alarm",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25067",
+				"icon": "alarm_add",
+				"filled": false,
+				"id": "ds-icon-o-alarm_add",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25066",
+				"icon": "alarm_on",
+				"filled": false,
+				"id": "ds-icon-o-alarm_on",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15026-8550",
+				"icon": "apps",
+				"filled": false,
+				"id": "ds-icon-o-apps",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18919",
+				"icon": "arrow_back",
+				"filled": false,
+				"id": "ds-icon-o-arrow_back",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-349",
+				"icon": "arrow_circle_down",
+				"filled": false,
+				"id": "ds-icon-o-arrow_circle_down",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-351",
+				"icon": "arrow_circle_left",
+				"filled": false,
+				"id": "ds-icon-o-arrow_circle_left",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-324",
+				"icon": "arrow_circle_right",
+				"filled": false,
+				"id": "ds-icon-o-arrow_circle_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-350",
+				"icon": "arrow_circle_up",
+				"filled": false,
+				"id": "ds-icon-o-arrow_circle_up",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18921",
+				"icon": "arrow_downward",
+				"filled": false,
+				"id": "ds-icon-o-arrow_downward",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3420",
+				"icon": "arrow_drop_down",
+				"filled": false,
+				"id": "ds-icon-o-arrow_drop_down",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3419",
+				"icon": "arrow_drop_up",
+				"filled": false,
+				"id": "ds-icon-o-arrow_drop_up",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18922",
+				"icon": "arrow_forward",
+				"filled": false,
+				"id": "ds-icon-o-arrow_forward",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3196",
+				"icon": "arrow_insert",
+				"filled": false,
+				"id": "ds-icon-o-arrow_insert",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-882",
+				"icon": "arrow_menu_open",
+				"filled": false,
+				"id": "ds-icon-o-arrow_menu_open",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-216098",
+				"icon": "arrow_range",
+				"filled": false,
+				"id": "ds-icon-o-arrow_range",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16670-217567",
+				"icon": "arrow_right",
+				"filled": false,
+				"id": "ds-icon-o-arrow_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3120",
+				"icon": "arrow_split",
+				"filled": false,
+				"id": "ds-icon-o-arrow_split",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17891-229417",
+				"icon": "arrow_top_right",
+				"filled": false,
+				"id": "ds-icon-o-arrow_top_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18398-13596",
+				"icon": "arrow_upload_ready",
+				"filled": false,
+				"id": "ds-icon-o-arrow_upload_ready",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18920",
+				"icon": "arrow_upward",
+				"filled": false,
+				"id": "ds-icon-o-arrow_upward",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-884",
+				"icon": "article",
+				"filled": false,
+				"id": "ds-icon-o-article",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17584-9324",
+				"icon": "aspect_ratio",
+				"filled": false,
+				"id": "ds-icon-o-aspect_ratio",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=22014-1686",
+				"icon": "assistant_on_hub",
+				"filled": false,
+				"id": "ds-icon-o-assistant_on_hub",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15345-20716",
+				"icon": "audio_video_receiver",
+				"filled": false,
+				"id": "ds-icon-o-audio_video_receiver",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15424-18940",
+				"icon": "auto_transmission",
+				"filled": false,
+				"id": "ds-icon-o-auto_transmission",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-305",
+				"icon": "automation",
+				"filled": false,
+				"id": "ds-icon-o-automation",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-414",
+				"icon": "autoplay",
+				"filled": false,
+				"id": "ds-icon-o-autoplay",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15242-226102",
+				"icon": "autorenew",
+				"filled": false,
+				"id": "ds-icon-o-autorenew",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-358",
+				"icon": "avg_pace",
+				"filled": false,
+				"id": "ds-icon-o-avg_pace",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=19474-5457",
+				"icon": "beenhere",
+				"filled": false,
+				"id": "ds-icon-o-beenhere",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3133",
+				"icon": "block",
+				"filled": false,
+				"id": "ds-icon-o-block",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3128",
+				"icon": "bolt",
+				"filled": false,
+				"id": "ds-icon-o-bolt",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24375-576",
+				"icon": "bookmark",
+				"filled": false,
+				"id": "ds-icon-o-bookmark",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-883",
+				"icon": "bookmark_star",
+				"filled": false,
+				"id": "ds-icon-o-bookmark_star",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-19020",
+				"icon": "brick",
+				"filled": false,
+				"id": "ds-icon-o-brick",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=38371-44448",
+				"icon": "browse",
+				"filled": false,
+				"id": "ds-icon-o-browse",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15512-17041",
+				"icon": "bug_report",
+				"filled": false,
+				"id": "ds-icon-o-bug_report",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3150",
+				"icon": "cable",
+				"filled": false,
+				"id": "ds-icon-o-cable",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3156",
+				"icon": "cached",
+				"filled": false,
+				"id": "ds-icon-o-cached",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18954",
+				"icon": "calendar_clock",
+				"filled": false,
+				"id": "ds-icon-o-calendar_clock",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18953",
+				"icon": "calendar_today",
+				"filled": false,
+				"id": "ds-icon-o-calendar_today",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-298",
+				"icon": "call_merge",
+				"filled": false,
+				"id": "ds-icon-o-call_merge",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3113",
+				"icon": "cancel",
+				"filled": false,
+				"id": "ds-icon-o-cancel",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3118",
+				"icon": "cell_tower",
+				"filled": false,
+				"id": "ds-icon-o-cell_tower",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15778-30858",
+				"icon": "change_circle",
+				"filled": false,
+				"id": "ds-icon-o-change_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20112-7876",
+				"icon": "chat",
+				"filled": false,
+				"id": "ds-icon-o-chat",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15516-7832",
+				"icon": "chat_bubble",
+				"filled": false,
+				"id": "ds-icon-o-chat_bubble",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13674-30295",
+				"icon": "check",
+				"filled": false,
+				"id": "ds-icon-o-check",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3137",
+				"icon": "check_circle",
+				"filled": false,
+				"id": "ds-icon-o-check_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15607-9922",
+				"icon": "checklist",
+				"filled": false,
+				"id": "ds-icon-o-checklist",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14864-17103",
+				"icon": "chips",
+				"filled": false,
+				"id": "ds-icon-o-chips",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24063-346315",
+				"icon": "chronic",
+				"filled": false,
+				"id": "ds-icon-o-chronic",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36295-26041",
+				"icon": "clock_arrow_down",
+				"filled": false,
+				"id": "ds-icon-o-clock_arrow_down",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3143",
+				"icon": "close",
+				"filled": false,
+				"id": "ds-icon-o-close",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24231-60020",
+				"icon": "close_fullscreen",
+				"filled": false,
+				"id": "ds-icon-o-close_fullscreen",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=19477-21312",
+				"icon": "cloud_upload",
+				"filled": false,
+				"id": "ds-icon-o-cloud_upload",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3160",
+				"icon": "code",
+				"filled": false,
+				"id": "ds-icon-o-code",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3138",
+				"icon": "collapse_all",
+				"filled": false,
+				"id": "ds-icon-o-collapse_all",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18526-49715",
+				"icon": "comment",
+				"filled": false,
+				"id": "ds-icon-o-comment",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18998",
+				"icon": "commit",
+				"filled": false,
+				"id": "ds-icon-o-commit",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-881",
+				"icon": "component_exchange",
+				"filled": false,
+				"id": "ds-icon-o-component_exchange",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-876",
+				"icon": "contact_support",
+				"filled": false,
+				"id": "ds-icon-o-contact_support",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14886-47497",
+				"icon": "content_copy",
+				"filled": false,
+				"id": "ds-icon-o-content_copy",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-215997",
+				"icon": "content_cut",
+				"filled": false,
+				"id": "ds-icon-o-content_cut",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24035-668",
+				"icon": "content_paste_search",
+				"filled": false,
+				"id": "ds-icon-o-content_paste_search",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36381-15686",
+				"icon": "control_point_duplicate",
+				"filled": false,
+				"id": "ds-icon-o-control_point_duplicate",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3114",
+				"icon": "conversion_path",
+				"filled": false,
+				"id": "ds-icon-o-conversion_path",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17006-216135",
+				"icon": "conversion_path_off",
+				"filled": false,
+				"id": "ds-icon-o-conversion_path_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-215983",
+				"icon": "copy_all",
+				"filled": false,
+				"id": "ds-icon-o-copy_all",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15431-2466",
+				"icon": "coronavirus",
+				"filled": false,
+				"id": "ds-icon-o-coronavirus",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15948-6629",
+				"icon": "counter_0",
+				"filled": false,
+				"id": "ds-icon-o-counter_0",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15958-6704",
+				"icon": "counter_1",
+				"filled": false,
+				"id": "ds-icon-o-counter_1",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10384",
+				"icon": "counter_2",
+				"filled": false,
+				"id": "ds-icon-o-counter_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10385",
+				"icon": "counter_3",
+				"filled": false,
+				"id": "ds-icon-o-counter_3",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10386",
+				"icon": "counter_4",
+				"filled": false,
+				"id": "ds-icon-o-counter_4",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10387",
+				"icon": "counter_5",
+				"filled": false,
+				"id": "ds-icon-o-counter_5",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10401",
+				"icon": "counter_6",
+				"filled": false,
+				"id": "ds-icon-o-counter_6",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10415",
+				"icon": "counter_7",
+				"filled": false,
+				"id": "ds-icon-o-counter_7",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10429",
+				"icon": "counter_8",
+				"filled": false,
+				"id": "ds-icon-o-counter_8",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10443",
+				"icon": "counter_9",
+				"filled": false,
+				"id": "ds-icon-o-counter_9",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3155",
+				"icon": "crisis_alert",
+				"filled": false,
+				"id": "ds-icon-o-crisis_alert",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3131",
+				"icon": "dangerous",
+				"filled": false,
+				"id": "ds-icon-o-dangerous",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17716-6923",
+				"icon": "database",
+				"filled": false,
+				"id": "ds-icon-o-database",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24035-632",
+				"icon": "database_upload",
+				"filled": false,
+				"id": "ds-icon-o-database_upload",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32889-315614",
+				"icon": "dehaze",
+				"filled": false,
+				"id": "ds-icon-o-dehaze",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3141",
+				"icon": "delete",
+				"filled": false,
+				"id": "ds-icon-o-delete",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33069-47495",
+				"icon": "deployed_code",
+				"filled": false,
+				"id": "ds-icon-o-deployed_code",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3135",
+				"icon": "deployed_code_alert",
+				"filled": false,
+				"id": "ds-icon-o-deployed_code_alert",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=22888-113001",
+				"icon": "description",
+				"filled": false,
+				"id": "ds-icon-o-description",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-19051",
+				"icon": "design_services",
+				"filled": false,
+				"id": "ds-icon-o-design_services",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18819-6660",
+				"icon": "desktop_windows",
+				"filled": false,
+				"id": "ds-icon-o-desktop_windows",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18271-278371",
+				"icon": "disabled_by_default",
+				"filled": false,
+				"id": "ds-icon-o-disabled_by_default",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3116",
+				"icon": "distance",
+				"filled": false,
+				"id": "ds-icon-o-distance",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21984-1595",
+				"icon": "dns",
+				"filled": false,
+				"id": "ds-icon-o-dns",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3153",
+				"icon": "do_not_disturb_on",
+				"filled": false,
+				"id": "ds-icon-o-do_not_disturb_on",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15242-241038",
+				"icon": "docs",
+				"filled": false,
+				"id": "ds-icon-o-docs",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16694",
+				"icon": "document_search",
+				"filled": false,
+				"id": "ds-icon-o-document_search",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18999",
+				"icon": "download",
+				"filled": false,
+				"id": "ds-icon-o-download",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18348-71534",
+				"icon": "draft",
+				"filled": false,
+				"id": "ds-icon-o-draft",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18295-283879",
+				"icon": "draft_orders",
+				"filled": false,
+				"id": "ds-icon-o-draft_orders",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14855-13304",
+				"icon": "drag_indicator",
+				"filled": false,
+				"id": "ds-icon-o-drag_indicator",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-19006",
+				"icon": "edit",
+				"filled": false,
+				"id": "ds-icon-o-edit",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33389-6596",
+				"icon": "edit_square",
+				"filled": false,
+				"id": "ds-icon-o-edit_square",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16609-186739",
+				"icon": "emergency",
+				"filled": false,
+				"id": "ds-icon-o-emergency",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3117",
+				"icon": "error",
+				"filled": false,
+				"id": "ds-icon-o-error",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35655-37298",
+				"icon": "event",
+				"filled": false,
+				"id": "ds-icon-o-event",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35703-334437",
+				"icon": "event_busy",
+				"filled": false,
+				"id": "ds-icon-o-event_busy",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18961",
+				"icon": "event_repeat",
+				"filled": false,
+				"id": "ds-icon-o-event_repeat",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35655-37284",
+				"icon": "event_upcoming",
+				"filled": false,
+				"id": "ds-icon-o-event_upcoming",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14864-10439",
+				"icon": "expand_all",
+				"filled": false,
+				"id": "ds-icon-o-expand_all",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15936-10271",
+				"icon": "expand_circle_right",
+				"filled": false,
+				"id": "ds-icon-o-expand_circle_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15228-6249",
+				"icon": "explore",
+				"filled": false,
+				"id": "ds-icon-o-explore",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24949",
+				"icon": "eye_tracking",
+				"filled": false,
+				"id": "ds-icon-o-eye_tracking",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3124",
+				"icon": "family_history",
+				"filled": false,
+				"id": "ds-icon-o-family_history",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18348-71533",
+				"icon": "file_copy",
+				"filled": false,
+				"id": "ds-icon-o-file_copy",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34623-33968",
+				"icon": "file_json",
+				"filled": false,
+				"id": "ds-icon-o-file_json",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25024",
+				"icon": "filter_alt",
+				"filled": false,
+				"id": "ds-icon-o-filter_alt",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-365",
+				"icon": "filter_list",
+				"filled": false,
+				"id": "ds-icon-o-filter_list",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3149",
+				"icon": "find_in_page",
+				"filled": false,
+				"id": "ds-icon-o-find_in_page",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3198",
+				"icon": "fit_page_width",
+				"filled": false,
+				"id": "ds-icon-o-fit_page_width",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-880",
+				"icon": "fit_screen",
+				"filled": false,
+				"id": "ds-icon-o-fit_screen",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-19027",
+				"icon": "flag",
+				"filled": false,
+				"id": "ds-icon-o-flag",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17946-229363",
+				"icon": "flag_circle",
+				"filled": false,
+				"id": "ds-icon-o-flag_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18216-281840",
+				"icon": "flex_direction",
+				"filled": false,
+				"id": "ds-icon-o-flex_direction",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35800-6721",
+				"icon": "flowchart",
+				"filled": false,
+				"id": "ds-icon-o-flowchart",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=23586-40771",
+				"icon": "flowsheet",
+				"filled": false,
+				"id": "ds-icon-o-flowsheet",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25034",
+				"icon": "fmd_bad",
+				"filled": false,
+				"id": "ds-icon-o-fmd_bad",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18215-278716",
+				"icon": "folder",
+				"filled": false,
+				"id": "ds-icon-o-folder",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=30834-26391",
+				"icon": "folder_check_2",
+				"filled": false,
+				"id": "ds-icon-o-folder_check_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18298-285079",
+				"icon": "folder_copy",
+				"filled": false,
+				"id": "ds-icon-o-folder_copy",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18315-596",
+				"icon": "folder_data",
+				"filled": false,
+				"id": "ds-icon-o-folder_data",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15878-45694",
+				"icon": "folder_managed",
+				"filled": false,
+				"id": "ds-icon-o-folder_managed",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18349-71554",
+				"icon": "format_line_spacing",
+				"filled": false,
+				"id": "ds-icon-o-format_line_spacing",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17891-229416",
+				"icon": "forward",
+				"filled": false,
+				"id": "ds-icon-o-forward",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24950",
+				"icon": "frame_inspect",
+				"filled": false,
+				"id": "ds-icon-o-frame_inspect",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15348-24619",
+				"icon": "fullscreen",
+				"filled": false,
+				"id": "ds-icon-o-fullscreen",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3121",
+				"icon": "graph_1",
+				"filled": false,
+				"id": "ds-icon-o-graph_1",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3122",
+				"icon": "graph_2",
+				"filled": false,
+				"id": "ds-icon-o-graph_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3146",
+				"icon": "grid_view",
+				"filled": false,
+				"id": "ds-icon-o-grid_view",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20112-7890",
+				"icon": "groups",
+				"filled": false,
+				"id": "ds-icon-o-groups",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=29482-45765",
+				"icon": "handyman",
+				"filled": false,
+				"id": "ds-icon-o-handyman",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3129",
+				"icon": "help",
+				"filled": false,
+				"id": "ds-icon-o-help",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25065",
+				"icon": "history_2",
+				"filled": false,
+				"id": "ds-icon-o-history_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17485-21845",
+				"icon": "home",
+				"filled": false,
+				"id": "ds-icon-o-home",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25029",
+				"icon": "home_work",
+				"filled": false,
+				"id": "ds-icon-o-home_work",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16662",
+				"icon": "hourglass",
+				"filled": false,
+				"id": "ds-icon-o-hourglass",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=29482-45764",
+				"icon": "imagesearch_roller",
+				"filled": false,
+				"id": "ds-icon-o-imagesearch_roller",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3148",
+				"icon": "info",
+				"filled": false,
+				"id": "ds-icon-o-info",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15566-1085",
+				"icon": "input_circle",
+				"filled": false,
+				"id": "ds-icon-o-input_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24914",
+				"icon": "instant_mix",
+				"filled": false,
+				"id": "ds-icon-o-instant_mix",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16707",
+				"icon": "inventory_2",
+				"filled": false,
+				"id": "ds-icon-o-inventory_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16155-18303",
+				"icon": "keep",
+				"filled": false,
+				"id": "ds-icon-o-keep",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16155-18310",
+				"icon": "keep_off",
+				"filled": false,
+				"id": "ds-icon-o-keep_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18283-282915",
+				"icon": "keyboard_alt",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_alt",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25076",
+				"icon": "keyboard_arrow_down",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_arrow_down",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25095",
+				"icon": "keyboard_arrow_left",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_arrow_left",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25096",
+				"icon": "keyboard_arrow_right",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_arrow_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25097",
+				"icon": "keyboard_arrow_up",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_arrow_up",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3171",
+				"icon": "keyboard_capslock_badge",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_capslock_badge",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14864-10437",
+				"icon": "keyboard_double_arrow_left",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_double_arrow_left",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14864-10436",
+				"icon": "keyboard_double_arrow_right",
+				"filled": false,
+				"id": "ds-icon-o-keyboard_double_arrow_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=22697-16149",
+				"icon": "lab_profile",
+				"filled": false,
+				"id": "ds-icon-o-lab_profile",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32862-308655",
+				"icon": "label",
+				"filled": false,
+				"id": "ds-icon-o-label",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-412",
+				"icon": "label_important",
+				"filled": false,
+				"id": "ds-icon-o-label_important",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32862-308669",
+				"icon": "label_off",
+				"filled": false,
+				"id": "ds-icon-o-label_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3115",
+				"icon": "lan",
+				"filled": false,
+				"id": "ds-icon-o-lan",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13476-2007",
+				"icon": "language",
+				"filled": false,
+				"id": "ds-icon-o-language",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16641",
+				"icon": "lasso_select",
+				"filled": false,
+				"id": "ds-icon-o-lasso_select",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=26435-20535",
+				"icon": "last_page",
+				"filled": false,
+				"id": "ds-icon-o-last_page",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-216011",
+				"icon": "layers",
+				"filled": false,
+				"id": "ds-icon-o-layers",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3123",
+				"icon": "leaderboard",
+				"filled": false,
+				"id": "ds-icon-o-leaderboard",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24948",
+				"icon": "left_panel_open",
+				"filled": false,
+				"id": "ds-icon-o-left_panel_open",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3142",
+				"icon": "lightbulb_2",
+				"filled": false,
+				"id": "ds-icon-o-lightbulb_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-216073",
+				"icon": "line_end_circle",
+				"filled": false,
+				"id": "ds-icon-o-line_end_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-216072",
+				"icon": "line_start_circle",
+				"filled": false,
+				"id": "ds-icon-o-line_start_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17006-216136",
+				"icon": "link_off",
+				"filled": false,
+				"id": "ds-icon-o-link_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3159",
+				"icon": "list",
+				"filled": false,
+				"id": "ds-icon-o-list",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25027",
+				"icon": "list_alt",
+				"filled": false,
+				"id": "ds-icon-o-list_alt",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25028",
+				"icon": "local_library",
+				"filled": false,
+				"id": "ds-icon-o-local_library",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24946",
+				"icon": "location_on",
+				"filled": false,
+				"id": "ds-icon-o-location_on",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=29482-31635",
+				"icon": "lock",
+				"filled": false,
+				"id": "ds-icon-o-lock",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15496-21525",
+				"icon": "lock_reset",
+				"filled": false,
+				"id": "ds-icon-o-lock_reset",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36790-61934",
+				"icon": "login",
+				"filled": false,
+				"id": "ds-icon-o-login",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36637-30956",
+				"icon": "logout",
+				"filled": false,
+				"id": "ds-icon-o-logout",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20112-7869",
+				"icon": "mail",
+				"filled": false,
+				"id": "ds-icon-o-mail",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15516-7833",
+				"icon": "mark_chat_unread",
+				"filled": false,
+				"id": "ds-icon-o-mark_chat_unread",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21984-1588",
+				"icon": "memory",
+				"filled": false,
+				"id": "ds-icon-o-memory",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32889-315640",
+				"icon": "menu_open",
+				"filled": false,
+				"id": "ds-icon-o-menu_open",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-879",
+				"icon": "mic",
+				"filled": false,
+				"id": "ds-icon-o-mic",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=23018-1065",
+				"icon": "mitre",
+				"filled": false,
+				"id": "ds-icon-o-mitre",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33000-586",
+				"icon": "monitor_heart",
+				"filled": false,
+				"id": "ds-icon-o-monitor_heart",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3421",
+				"icon": "more_horiz",
+				"filled": false,
+				"id": "ds-icon-o-more_horiz",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3422",
+				"icon": "more_vert",
+				"filled": false,
+				"id": "ds-icon-o-more_vert",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15431-2453",
+				"icon": "move_group",
+				"filled": false,
+				"id": "ds-icon-o-move_group",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=22012-1659",
+				"icon": "near_me",
+				"filled": false,
+				"id": "ds-icon-o-near_me",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15420-16530",
+				"icon": "network_check",
+				"filled": false,
+				"id": "ds-icon-o-network_check",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17006-216333",
+				"icon": "new_window",
+				"filled": false,
+				"id": "ds-icon-o-new_window",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=38235-2601",
+				"icon": "no_encryption",
+				"filled": false,
+				"id": "ds-icon-o-no_encryption",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3197",
+				"icon": "not_started",
+				"filled": false,
+				"id": "ds-icon-o-not_started",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3162",
+				"icon": "notifications",
+				"filled": false,
+				"id": "ds-icon-o-notifications",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3127",
+				"icon": "notifications_active",
+				"filled": false,
+				"id": "ds-icon-o-notifications_active",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3132",
+				"icon": "notifications_unread",
+				"filled": false,
+				"id": "ds-icon-o-notifications_unread",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32974-9395",
+				"icon": "numbers",
+				"filled": false,
+				"id": "ds-icon-o-numbers",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17175-1614",
+				"icon": "open_in_full",
+				"filled": false,
+				"id": "ds-icon-o-open_in_full",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3136",
+				"icon": "open_in_new",
+				"filled": false,
+				"id": "ds-icon-o-open_in_new",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=23595-98959",
+				"icon": "outbound",
+				"filled": false,
+				"id": "ds-icon-o-outbound",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-386",
+				"icon": "pause_circle",
+				"filled": false,
+				"id": "ds-icon-o-pause_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14827-11020",
+				"icon": "pending",
+				"filled": false,
+				"id": "ds-icon-o-pending",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32974-9402",
+				"icon": "percent",
+				"filled": false,
+				"id": "ds-icon-o-percent",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16989-8801",
+				"icon": "person",
+				"filled": false,
+				"id": "ds-icon-o-person",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36632-736",
+				"icon": "person_check",
+				"filled": false,
+				"id": "ds-icon-o-person_check",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15705-35194",
+				"icon": "play_circle",
+				"filled": false,
+				"id": "ds-icon-o-play_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33389-3887",
+				"icon": "playlist_add",
+				"filled": false,
+				"id": "ds-icon-o-playlist_add",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24442-32558",
+				"icon": "playlist_add_check",
+				"filled": false,
+				"id": "ds-icon-o-playlist_add_check",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24442-32557",
+				"icon": "playlist_remove",
+				"filled": false,
+				"id": "ds-icon-o-playlist_remove",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24957",
+				"icon": "polyline",
+				"filled": false,
+				"id": "ds-icon-o-polyline",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17006-216332",
+				"icon": "post_add",
+				"filled": false,
+				"id": "ds-icon-o-post_add",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14827-617",
+				"icon": "progress_activity",
+				"filled": false,
+				"id": "ds-icon-o-progress_activity",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16168-11074",
+				"icon": "readiness_score",
+				"filled": false,
+				"id": "ds-icon-o-readiness_score",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-291",
+				"icon": "rebase",
+				"filled": false,
+				"id": "ds-icon-o-rebase",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18283-282914",
+				"icon": "redo",
+				"filled": false,
+				"id": "ds-icon-o-redo",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15242-226109",
+				"icon": "refresh",
+				"filled": false,
+				"id": "ds-icon-o-refresh",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18874",
+				"icon": "remove",
+				"filled": false,
+				"id": "ds-icon-o-remove",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-379",
+				"icon": "remove_done",
+				"filled": false,
+				"id": "ds-icon-o-remove_done",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=23970-615",
+				"icon": "repeat",
+				"filled": false,
+				"id": "ds-icon-o-repeat",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3126",
+				"icon": "report",
+				"filled": false,
+				"id": "ds-icon-o-report",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15512-21223",
+				"icon": "restore_page",
+				"filled": false,
+				"id": "ds-icon-o-restore_page",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24947",
+				"icon": "right_panel_open",
+				"filled": false,
+				"id": "ds-icon-o-right_panel_open",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=9281-55047",
+				"icon": "route",
+				"filled": false,
+				"id": "ds-icon-o-route",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=25569-24225",
+				"icon": "save",
+				"filled": false,
+				"id": "ds-icon-o-save",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=25569-24239",
+				"icon": "save_as",
+				"filled": false,
+				"id": "ds-icon-o-save_as",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25068",
+				"icon": "schedule",
+				"filled": false,
+				"id": "ds-icon-o-schedule",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3158",
+				"icon": "sdk",
+				"filled": false,
+				"id": "ds-icon-o-sdk",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3130",
+				"icon": "search",
+				"filled": false,
+				"id": "ds-icon-o-search",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15808-40627",
+				"icon": "search_insights",
+				"filled": false,
+				"id": "ds-icon-o-search_insights",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18450-63718",
+				"icon": "send",
+				"filled": false,
+				"id": "ds-icon-o-send",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3111",
+				"icon": "settings",
+				"filled": false,
+				"id": "ds-icon-o-settings",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24035-667",
+				"icon": "settings_account_box",
+				"filled": false,
+				"id": "ds-icon-o-settings_account_box",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15424-18741",
+				"icon": "settings_applications",
+				"filled": false,
+				"id": "ds-icon-o-settings_applications",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-3199",
+				"icon": "settings_b_roll",
+				"filled": false,
+				"id": "ds-icon-o-settings_b_roll",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=23585-36163",
+				"icon": "settings_backup_restore",
+				"filled": false,
+				"id": "ds-icon-o-settings_backup_restore",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33069-45461",
+				"icon": "share",
+				"filled": false,
+				"id": "ds-icon-o-share",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16996-216031",
+				"icon": "share_off",
+				"filled": false,
+				"id": "ds-icon-o-share_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15345-20723",
+				"icon": "shelves",
+				"filled": false,
+				"id": "ds-icon-o-shelves",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16661-11827",
+				"icon": "shoppingmode",
+				"filled": false,
+				"id": "ds-icon-o-shoppingmode",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15424-22345",
+				"icon": "smart_toy",
+				"filled": false,
+				"id": "ds-icon-o-smart_toy",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=19401-13054",
+				"icon": "sort",
+				"filled": false,
+				"id": "ds-icon-o-sort",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15496-21259",
+				"icon": "source_notes",
+				"filled": false,
+				"id": "ds-icon-o-source_notes",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15420-16537",
+				"icon": "speed",
+				"filled": false,
+				"id": "ds-icon-o-speed",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15496-21245",
+				"icon": "splitscreen",
+				"filled": false,
+				"id": "ds-icon-o-splitscreen",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33579-2923",
+				"icon": "splitscreen_left",
+				"filled": false,
+				"id": "ds-icon-o-splitscreen_left",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=33579-2937",
+				"icon": "splitscreen_right",
+				"filled": false,
+				"id": "ds-icon-o-splitscreen_right",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15228-6242",
+				"icon": "stacks",
+				"filled": false,
+				"id": "ds-icon-o-stacks",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=30833-26316",
+				"icon": "star",
+				"filled": false,
+				"id": "ds-icon-o-star",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15948-6655",
+				"icon": "stars",
+				"filled": false,
+				"id": "ds-icon-o-stars",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20957-33428",
+				"icon": "stat_2",
+				"filled": false,
+				"id": "ds-icon-o-stat_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20957-33414",
+				"icon": "stat_minus_2",
+				"filled": false,
+				"id": "ds-icon-o-stat_minus_2",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36790-61912",
+				"icon": "step_into",
+				"filled": false,
+				"id": "ds-icon-o-step_into",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36790-61913",
+				"icon": "step_out",
+				"filled": false,
+				"id": "ds-icon-o-step_out",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36790-61911",
+				"icon": "step_over",
+				"filled": false,
+				"id": "ds-icon-o-step_over",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14827-11019",
+				"icon": "stop_circle",
+				"filled": false,
+				"id": "ds-icon-o-stop_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15774-30784",
+				"icon": "stylus_note",
+				"filled": false,
+				"id": "ds-icon-o-stylus_note",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14842-10671",
+				"icon": "swap_vert",
+				"filled": false,
+				"id": "ds-icon-o-swap_vert",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-378",
+				"icon": "sweep",
+				"filled": false,
+				"id": "ds-icon-o-sweep",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35099-72498",
+				"icon": "sync_alt",
+				"filled": false,
+				"id": "ds-icon-o-sync_alt",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18271-278372",
+				"icon": "tab_close",
+				"filled": false,
+				"id": "ds-icon-o-tab_close",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24035-659",
+				"icon": "tab_inactive",
+				"filled": false,
+				"id": "ds-icon-o-tab_inactive",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=22012-1649",
+				"icon": "target",
+				"filled": false,
+				"id": "ds-icon-o-target",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35800-6708",
+				"icon": "task",
+				"filled": false,
+				"id": "ds-icon-o-task",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15516-226550",
+				"icon": "task_alt",
+				"filled": false,
+				"id": "ds-icon-o-task_alt",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=22012-1669",
+				"icon": "terminal",
+				"filled": false,
+				"id": "ds-icon-o-terminal",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15241-27750",
+				"icon": "text_compare",
+				"filled": false,
+				"id": "ds-icon-o-text_compare",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21647-2289",
+				"icon": "thumb_down",
+				"filled": false,
+				"id": "ds-icon-o-thumb_down",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21647-2288",
+				"icon": "thumb_up",
+				"filled": false,
+				"id": "ds-icon-o-thumb_up",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16706",
+				"icon": "timer_pause",
+				"filled": false,
+				"id": "ds-icon-o-timer_pause",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=23018-1079",
+				"icon": "topic",
+				"filled": false,
+				"id": "ds-icon-o-topic",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21984-1602",
+				"icon": "touch_app",
+				"filled": false,
+				"id": "ds-icon-o-touch_app",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17099-217423",
+				"icon": "tour",
+				"filled": false,
+				"id": "ds-icon-o-tour",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-25026",
+				"icon": "traffic",
+				"filled": false,
+				"id": "ds-icon-o-traffic",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-24915",
+				"icon": "tune",
+				"filled": false,
+				"id": "ds-icon-o-tune",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18283-282913",
+				"icon": "undo",
+				"filled": false,
+				"id": "ds-icon-o-undo",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17584-9304",
+				"icon": "ungroup",
+				"filled": false,
+				"id": "ds-icon-o-ungroup",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18296-283899",
+				"icon": "unpublished",
+				"filled": false,
+				"id": "ds-icon-o-unpublished",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=32862-309286",
+				"icon": "upload",
+				"filled": false,
+				"id": "ds-icon-o-upload",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-18997",
+				"icon": "upload_file",
+				"filled": false,
+				"id": "ds-icon-o-upload_file",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=36381-15685",
+				"icon": "video_library",
+				"filled": false,
+				"id": "ds-icon-o-video_library",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15689-27266",
+				"icon": "view_apps",
+				"filled": false,
+				"id": "ds-icon-o-view_apps",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-411",
+				"icon": "view_list",
+				"filled": false,
+				"id": "ds-icon-o-view_list",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13456-19013",
+				"icon": "visibility",
+				"filled": false,
+				"id": "ds-icon-o-visibility",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13326-3147",
+				"icon": "visibility_off",
+				"filled": false,
+				"id": "ds-icon-o-visibility_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21647-2290",
+				"icon": "volume_up",
+				"filled": false,
+				"id": "ds-icon-o-volume_up",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15783-13661",
+				"icon": "warning",
+				"filled": false,
+				"id": "ds-icon-o-warning",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15251-36856",
+				"icon": "water_full",
+				"filled": false,
+				"id": "ds-icon-o-water_full",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20112-7885",
+				"icon": "webhook",
+				"filled": false,
+				"id": "ds-icon-o-webhook",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17441-8707",
+				"icon": "width_normal",
+				"filled": false,
+				"id": "ds-icon-o-width_normal",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-877",
+				"icon": "zoom_in",
+				"filled": false,
+				"id": "ds-icon-o-zoom_in",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13477-878",
+				"icon": "zoom_out",
+				"filled": false,
+				"id": "ds-icon-o-zoom_out",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17048",
+				"icon": "add_circle",
+				"filled": true,
+				"id": "ds-icon-s-add_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17051",
+				"icon": "add_triangle",
+				"filled": true,
+				"id": "ds-icon-s-add_triangle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18578-15016",
+				"icon": "alarm",
+				"filled": true,
+				"id": "ds-icon-s-alarm",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=25574-24291",
+				"icon": "block",
+				"filled": true,
+				"id": "ds-icon-s-block",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=24375-28755",
+				"icon": "bookmark",
+				"filled": true,
+				"id": "ds-icon-s-bookmark",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15516-225378",
+				"icon": "build_circle",
+				"filled": true,
+				"id": "ds-icon-s-build_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35391-34591",
+				"icon": "calendar_today",
+				"filled": true,
+				"id": "ds-icon-s-calendar_today",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17046",
+				"icon": "cancel",
+				"filled": true,
+				"id": "ds-icon-s-cancel",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15778-30857",
+				"icon": "change_circle",
+				"filled": true,
+				"id": "ds-icon-s-change_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17047",
+				"icon": "check_circle",
+				"filled": true,
+				"id": "ds-icon-s-check_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=25271-12964",
+				"icon": "design_services",
+				"filled": true,
+				"id": "ds-icon-s-design_services",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17049",
+				"icon": "do_not_disturb_on",
+				"filled": true,
+				"id": "ds-icon-s-do_not_disturb_on",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17052",
+				"icon": "error",
+				"filled": true,
+				"id": "ds-icon-s-error",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35703-334423",
+				"icon": "event",
+				"filled": true,
+				"id": "ds-icon-s-event",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35703-334422",
+				"icon": "event_busy",
+				"filled": true,
+				"id": "ds-icon-s-event_busy",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=18580-28078",
+				"icon": "event_repeat",
+				"filled": true,
+				"id": "ds-icon-s-event_repeat",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=35630-26813",
+				"icon": "flag",
+				"filled": true,
+				"id": "ds-icon-s-flag",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=19560-583",
+				"icon": "flag_circle",
+				"filled": true,
+				"id": "ds-icon-s-flag_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=13480-17050",
+				"icon": "info",
+				"filled": true,
+				"id": "ds-icon-s-info",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16210-43793",
+				"icon": "keep",
+				"filled": true,
+				"id": "ds-icon-s-keep",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=16210-43794",
+				"icon": "keep_off",
+				"filled": true,
+				"id": "ds-icon-s-keep_off",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=21988-15092",
+				"icon": "notifications_active",
+				"filled": true,
+				"id": "ds-icon-s-notifications_active",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=27340-24988",
+				"icon": "pause",
+				"filled": true,
+				"id": "ds-icon-s-pause",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14827-6255",
+				"icon": "pause_circle",
+				"filled": true,
+				"id": "ds-icon-s-pause_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14827-6254",
+				"icon": "pending",
+				"filled": true,
+				"id": "ds-icon-s-pending",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=27340-24989",
+				"icon": "play_circle",
+				"filled": true,
+				"id": "ds-icon-s-play_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16727",
+				"icon": "power_settings_circle",
+				"filled": true,
+				"id": "ds-icon-s-power_settings_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=25573-24265",
+				"icon": "schedule",
+				"filled": true,
+				"id": "ds-icon-s-schedule",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=30833-26323",
+				"icon": "star",
+				"filled": true,
+				"id": "ds-icon-s-star",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14827-6253",
+				"icon": "stop_circle",
+				"filled": true,
+				"id": "ds-icon-s-stop_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15774-30792",
+				"icon": "stylus_note",
+				"filled": true,
+				"id": "ds-icon-s-stylus_note",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=15516-225377",
+				"icon": "swap_horizontal_circle",
+				"filled": true,
+				"id": "ds-icon-s-swap_horizontal_circle",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16734",
+				"icon": "timelapse",
+				"filled": true,
+				"id": "ds-icon-s-timelapse",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=34412-16741",
+				"icon": "verified",
+				"filled": true,
+				"id": "ds-icon-s-verified",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=20186-59044",
+				"icon": "visibility",
+				"filled": true,
+				"id": "ds-icon-s-visibility",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=14849-15600",
+				"icon": "warning",
+				"filled": true,
+				"id": "ds-icon-s-warning",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=17441-8721",
+				"icon": "width_normal",
+				"filled": true,
+				"id": "ds-icon-s-width_normal",
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			}
+		]
+	},
+	{
+		"templateFile": "./ds-icon-special.figma.batch.ts",
+		"components": [
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=30840-14651",
+				"id": "ds-icon-set-misc",
+				"variantProp": "type",
+				"typeMap": {
+					"Market": "special-market",
+					"Site T1": "special-site-t1",
+					"Site T2": "special-site-t2",
+					"Site T3": "special-site-t3",
+					"Site T4": "special-site-t4",
+					"Site Unknown": "special-site-unknown",
+					"Site Generic": "special-site-generic",
+					"Discovered NE": "special-discovered-ne",
+					"Upgrading": "special-upgrading",
+					"Cluster NE": "special-cluster-ne",
+					"Standalone": "special-standalone",
+					"Autoboot Profiles": "special-autoboot-profiles",
+					"Automation": "special-automation",
+					"Stacks": "special-stacks",
+					"Packages": "special-packages",
+					"Map View": "special-map-view",
+					"Home": "special-home",
+					"Lego": "special-lego",
+					"Sheme": "special-scheme",
+					"Book": "special-book",
+					"Device": "special-device",
+					"Grouped Devices": "special-grouped-devices",
+					"Fiber Circiut": "special-fiber-circuit",
+					"NetGen": "special-netgen",
+					"NetGen-S": "special-netgen-s",
+					"filter_list_active": "special-filter-list-active",
+					"Alarm Settings": "special-alarm-settings",
+					"NE Health": "special-ne-health",
+					"Hardware": "special-hardware",
+					"Modules": "special-modules",
+					"Resources": "special-resources",
+					"Version Control": "special-version-control",
+					"Software": "special-software",
+					"Conflicted NEs": "special-conflicted-nes",
+					"Yang Version Control": "special-yang-version-control",
+					"Old BaseOS": "special-old-base-os",
+					"General details": "special-general-details",
+					"Config Template": "special-config-template",
+					"Compare": "special-compare",
+					"Webhook": "special-webhook",
+					"gNMI": "special-gnmi",
+					"cached_active": "special-cached-active"
+				},
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			},
+			{
+				"url": "https://figma.com/file/nha3m67y7S57cHCSuQO2gp/?node-id=30840-14650",
+				"id": "ds-icon-set-ne-nav",
+				"variantProp": "type",
+				"typeMap": {
+					"360 Dashboard": "special-ne-nav-360-dashboard",
+					"Components": "special-ne-nav-components",
+					"Topology": "special-ne-nav-topology",
+					"Stacks": "special-ne-nav-stacks",
+					"Settings": "special-ne-nav-settings",
+					"Message Support": "special-ne-nav-message-support",
+					"Logging": "special-ne-nav-logging",
+					"Terminal": "special-ne-nav-terminal",
+					"Instal Log": "special-ne-nav-instal-log"
+				},
+				"source": "https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-icon",
+				"component": "DsIcon"
+			}
+		]
+	}
+]
