@@ -76,14 +76,19 @@ const iconFromChild =
 		: undefined;
 const icon = iconFromSwap ?? (iconFromChild ? resolveIcon(iconFromChild) : undefined);
 
-const labelNode = instance.findText('Button', { traverseInstances: true });
-const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Label';
-
-const iconProp = showIcon && icon ? figma.code`, icon: '${icon}'` : '';
-const loadingProp = loading ? ', loading: true' : '';
+// The split button's button slot is intended for an icon-only button, so emit
+// `icon` (and `loading`) rather than a text `children` label.
+// While loading, a spinner replaces the icon, so omit it
+// (the leading icon is the component's default placeholder in that state).
+const buttonProps = [
+	!loading && showIcon && icon ? `icon: '${icon}'` : undefined,
+	loading ? 'loading: true' : undefined,
+]
+	.filter(Boolean)
+	.join(', ');
 
 export default {
-	example: figma.code`<DsSplitButton size="${size}"${disabled ? ' disabled' : ''} slotProps={{ button: { children: '${label}'${iconProp}${loadingProp} }, select: { options: [], value: '' } }} />`,
+	example: figma.code`<DsSplitButton size="${size}"${disabled ? ' disabled' : ''} slotProps={{ button: { ${buttonProps} }, select: { options: [], value: '' } }} />`,
 	imports: ["import { DsSplitButton } from '@drivenets/design-system'"],
 	id: 'ds-split-button',
 	metadata: { nestable: false },
