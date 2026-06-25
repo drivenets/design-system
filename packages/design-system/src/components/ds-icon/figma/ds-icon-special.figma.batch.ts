@@ -14,5 +14,5 @@ export default {
 		: figma.code`{/* This icon is not available in @drivenets/design-system */}`,
 	imports: ["import { DsIcon } from '@drivenets/design-system'"],
 	id: batch.id,
-	metadata: { nestable: true },
+	metadata: { nestable: true, props: { icon } },
 };
