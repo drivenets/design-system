@@ -8,6 +8,7 @@
 //   Password            -> DsPasswordInput
 //   Standard/Error/Read -> DsTextInput
 import figma from 'figma';
+import { defineFigmaTemplate } from '../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
@@ -41,7 +42,7 @@ const sizeAttr = size === 'small' ? 'size="small"' : '';
 const componentName =
 	type === 'number' ? 'DsNumberInput' : type === 'password' ? 'DsPasswordInput' : 'DsTextInput';
 
-export default {
+export default defineFigmaTemplate({
 	example:
 		type === 'number'
 			? figma.code`<DsNumberInput ${sizeAttr} ${disabled ? 'disabled' : ''} />`
@@ -51,4 +52,4 @@ export default {
 	imports: [`import { ${componentName} } from '@drivenets/design-system'`],
 	id: 'ds-text-input',
 	metadata: { nestable: true },
-};
+});

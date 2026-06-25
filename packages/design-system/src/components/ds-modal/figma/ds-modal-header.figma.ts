@@ -7,15 +7,16 @@
 // booleans (status badge, description, tags, etc.) have no code-component prop and
 // are omitted.
 import figma from 'figma';
+import { defineFigmaTemplate } from '../../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
 const titleNode = instance.findText('Left side', { traverseInstances: true });
 const title = titleNode.type === 'TEXT' ? titleNode.textContent : 'Modal title';
 
-export default {
+export default defineFigmaTemplate({
 	example: figma.code`<DsModal.Header><DsModal.Title>${title}</DsModal.Title><DsModal.CloseTrigger /></DsModal.Header>`,
 	imports: ["import { DsModal } from '@drivenets/design-system'"],
 	id: 'ds-modal-header',
 	metadata: { nestable: true },
-};
+});

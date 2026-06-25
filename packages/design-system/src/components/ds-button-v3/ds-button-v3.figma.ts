@@ -2,6 +2,7 @@
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-button-v3
 // component=DsButtonV3
 import figma from 'figma';
+import { defineFigmaTemplate } from '../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
@@ -34,7 +35,7 @@ const showIcon = structure.type === 'INSTANCE' ? structure.getBoolean('Show icon
 const labelNode = instance.findText('Button', { traverseInstances: true });
 const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Button';
 
-export default {
+export default defineFigmaTemplate({
 	example: iconOnly
 		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''} icon="check_circle" aria-label="${label}" />`
 		: showIcon
@@ -43,4 +44,4 @@ export default {
 	imports: ["import { DsButtonV3 } from '@drivenets/design-system'"],
 	id: 'ds-button-v3',
 	metadata: { nestable: true },
-};
+});

@@ -2,6 +2,7 @@
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-status-badge-v2
 // component=DsStatusBadgeV2
 import figma from 'figma';
+import { defineFigmaTemplate } from '../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
@@ -28,7 +29,7 @@ const structure = instance.getEnum('structure', {
 const labelNode = instance.findText('Active', { traverseInstances: true });
 const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Active';
 
-export default {
+export default defineFigmaTemplate({
 	example:
 		structure === 'icon-only'
 			? figma.code`<DsStatusBadgeV2 phase="${phase}" label="${label}" variant="${variant}" size="${size}" iconOnly />`
@@ -38,4 +39,4 @@ export default {
 	imports: ["import { DsStatusBadgeV2 } from '@drivenets/design-system'"],
 	id: 'ds-status-badge-v2',
 	metadata: { nestable: true },
-};
+});
