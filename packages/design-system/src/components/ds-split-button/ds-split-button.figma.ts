@@ -1,32 +1,26 @@
-// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=31065-2352
-// source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-button-v3
-// component=DsButtonV3
+// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=32830-9950
+// source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-split-button
+// component=DsSplitButton
 import figma from 'figma';
 
 const instance = figma.selectedInstance;
 
-const variant = instance.getEnum('Variant', {
-	primary: 'primary',
-	secondary: 'secondary',
-	tertiary: 'tertiary',
+const state = instance.getEnum('state', {
+	default: 'default',
+	hover: 'hover',
+	select: 'select',
+	focus: 'focus',
+	disabled: 'disabled',
+	running: 'running',
 });
-const size = instance.getEnum('Size', {
-	tiny: 'tiny',
-	small: 'small',
-	medium: 'medium',
-	large: 'large',
-});
-const colorVariant = instance.getEnum('Color', { default: 'default', error: 'error' });
-const isLight = instance.getEnum('light', { true: true, false: false });
-const color = isLight ? 'light' : colorVariant;
-const disabled = instance.getEnum('State', {
-	default: false,
-	hover: false,
-	focus: false,
-	active: false,
-	disabled: true,
-});
-const iconOnly = instance.getEnum('Icon', { 'icon-only': true, text: false });
+const disabled = state === 'disabled';
+const loading = state === 'running';
+
+const button = instance.findInstance('DAP_Button_v03', { traverseInstances: true });
+const size =
+	button.type === 'INSTANCE'
+		? button.getEnum('Size', { tiny: 'small', small: 'small', medium: 'medium', large: 'medium' })
+		: 'medium';
 
 const structure = instance.findInstance('.button-structure', { traverseInstances: true });
 const showIcon = structure.type === 'INSTANCE' ? structure.getBoolean('Show icon') : false;
@@ -82,18 +76,20 @@ const iconFromChild =
 		: undefined;
 const icon = iconFromSwap ?? (iconFromChild ? resolveIcon(iconFromChild) : undefined);
 
-const labelNode = instance.findText('Button', { traverseInstances: true });
-const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Button';
-
-const iconProp = icon ? figma.code` icon="${icon}"` : '';
+// The split button's button slot is intended for an icon-only button, so emit
+// `icon` (and `loading`) rather than a text `children` label.
+// While loading, a spinner replaces the icon, so omit it
+// (the leading icon is the component's default placeholder in that state).
+const buttonProps = [
+	!loading && showIcon && icon ? `icon: '${icon}'` : undefined,
+	loading ? 'loading: true' : undefined,
+]
+	.filter(Boolean)
+	.join(', ');
 
 export default {
-	example: iconOnly
-		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''}${iconProp} aria-label="${label}" />`
-		: showIcon && icon
-			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''} icon="${icon}">${label}</DsButtonV3>`
-			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''}>${label}</DsButtonV3>`,
-	imports: ["import { DsButtonV3 } from '@drivenets/design-system'"],
-	id: 'ds-button-v3',
-	metadata: { nestable: true },
+	example: figma.code`<DsSplitButton size="${size}"${disabled ? ' disabled' : ''} slotProps={{ button: { ${buttonProps} }, select: { options: [], value: '' } }} />`,
+	imports: ["import { DsSplitButton } from '@drivenets/design-system'"],
+	id: 'ds-split-button',
+	metadata: { nestable: false },
 };
