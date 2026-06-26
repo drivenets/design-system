@@ -25,7 +25,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		docs: {
 			description: {
 				component:
-					'Inline editable cells. Define `ColumnDef.editCell` to make a column editable. Double-click the view cell to enter edit mode. Press Enter or the check button to commit, Escape or the close button to cancel. Only one cell can be in edit mode at a time.',
+					'Inline editable cells. Define `ColumnDef.editCell` to make a column editable. Double-click the view cell to enter edit mode. Press Enter or the check button to commit, Escape or the close button to cancel. Only one cell can be in edit mode at a time. Use `ColumnDef.editDisabled` to lock individual cells: return `true` to show a lock icon, or `{ reason }` to add a tooltip explaining why editing is unavailable.',
 			},
 		},
 	},
@@ -149,6 +149,15 @@ export const Editable: Story = {
 				size: 100,
 				cell: (info) => info.getValue(),
 				editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
+				editDisabled: (info: CellContext<Person, number>) => {
+					if (info.row.original.status === 'complicated') {
+						return { reason: 'Visits are locked while the status is “Complicated”.' };
+					}
+					if (info.row.original.age >= 40) {
+						return true;
+					}
+					return false;
+				},
 			},
 			{
 				accessorKey: 'status',
