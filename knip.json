@@ -2,6 +2,7 @@
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"ignore": [
 		"**/*.figma.ts",
+		"**/*.figma.batch.ts",
 		"**/*.scss",
 		"**/simple-file-upload-adapter.ts",
 		"./packages/eslint-plugin-internal/src/rules/__tests__/fixtures/*.ts"

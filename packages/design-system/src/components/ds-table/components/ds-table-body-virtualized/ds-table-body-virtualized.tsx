@@ -110,7 +110,7 @@ interface DsTableBodyProps<TData> {
 	rowSelection: RowSelectionState;
 }
 
-function DsTableBody<TData>({
+export function DsTableBody<TData>({
 	ref,
 	rowVirtualizer,
 	rowsMapRef,
@@ -121,6 +121,11 @@ function DsTableBody<TData>({
 }: DsTableBodyProps<TData>) {
 	const virtualRows = rowVirtualizer.getVirtualItems();
 	const totalSize = rowVirtualizer.getTotalSize();
+
+	// Gate the empty state on real data count, not on rendered virtual rows.
+	// getVirtualItems() transiently returns [] while the virtualizer re-measures
+	// after a `data` swap; rendering nothing for that frame avoids an empty-state flash.
+	const hasNoData = rowsAndExpandedRowContent.length === 0;
 
 	return (
 		<TableBody ref={ref} className={styles.body}>
@@ -144,11 +149,11 @@ function DsTableBody<TData>({
 						/>
 					);
 				})
-			) : (
+			) : hasNoData ? (
 				<TableRow>
 					<TableCell className={styles.emptyState}>{emptyState || EMPTY_TABLE_STATE_TEXT}</TableCell>
 				</TableRow>
-			)}
+			) : null}
 
 			<tr aria-hidden className={styles.sentinel} style={{ top: `${totalSize.toString()}px` }}>
 				<td />

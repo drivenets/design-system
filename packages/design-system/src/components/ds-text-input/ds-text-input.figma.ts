@@ -8,7 +8,6 @@
 //   Password            -> DsPasswordInput
 //   Standard/Error/Read -> DsTextInput
 import figma from 'figma';
-import { defineFigmaTemplate } from '../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
@@ -42,7 +41,13 @@ const sizeAttr = size === 'small' ? 'size="small"' : '';
 const componentName =
 	type === 'number' ? 'DsNumberInput' : type === 'password' ? 'DsPasswordInput' : 'DsTextInput';
 
-export default defineFigmaTemplate({
+// `DsFormControl` member name and attribute string, surfaced so a parent `DsFormControl`
+// template can emit `<DsFormControl.${fcMember} ${fcProps} />`.
+const fcMember = type === 'number' ? 'NumberInput' : type === 'password' ? 'PasswordInput' : 'TextInput';
+
+const fcProps = [sizeAttr, disabled ? 'disabled' : '', readOnly ? 'readOnly' : ''].filter(Boolean).join(' ');
+
+export default {
 	example:
 		type === 'number'
 			? figma.code`<DsNumberInput ${sizeAttr} ${disabled ? 'disabled' : ''} />`
@@ -51,5 +56,5 @@ export default defineFigmaTemplate({
 				: figma.code`<DsTextInput ${sizeAttr} ${disabled ? 'disabled' : ''} ${readOnly ? 'readOnly' : ''} />`,
 	imports: [`import { ${componentName} } from '@drivenets/design-system'`],
 	id: 'ds-text-input',
-	metadata: { nestable: true },
-});
+	metadata: { nestable: true, props: { fcMember, fcProps } },
+};
