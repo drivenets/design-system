@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsDrawer from '../ds-drawer';
 import type { DsDrawerProps } from '../ds-drawer.types';
@@ -18,6 +18,36 @@ const ControlledDrawer = (props: Partial<DsDrawerProps>) => {
 					<DsDrawer.CloseTrigger />
 				</DsDrawer.Header>
 				<DsDrawer.Body>{props.children ?? <p>Body content</p>}</DsDrawer.Body>
+			</DsDrawer>
+		</>
+	);
+};
+
+const UnmountWhileOpenDrawer = (props: Partial<DsDrawerProps>) => {
+	const [open, setOpen] = useState(false);
+	const [mounted, setMounted] = useState(true);
+
+	if (!mounted) {
+		return <div>unmounted</div>;
+	}
+
+	return (
+		<>
+			<button type="button" onClick={() => setOpen(true)}>
+				Open Drawer
+			</button>
+			<DsDrawer open={open} onOpenChange={setOpen} backdrop portal {...props}>
+				<DsDrawer.Body>
+					<button
+						type="button"
+						onClick={() => {
+							setOpen(false);
+							setMounted(false);
+						}}
+					>
+						Close and Unmount
+					</button>
+				</DsDrawer.Body>
 			</DsDrawer>
 		</>
 	);
@@ -47,5 +77,47 @@ describe('DsDrawer', () => {
 		const backdrop = document.querySelector<HTMLElement>('[data-part="backdrop"]');
 		await expect.element(backdrop).toBeInTheDocument();
 		await expect.element(backdrop).toHaveAttribute('data-state', 'open');
+	});
+
+	it('should release body scroll-lock when unmounted while open', async () => {
+		await page.render(<UnmountWhileOpenDrawer />);
+
+		await page.getByRole('button', { name: /open drawer/i }).click();
+		await expect.element(page.getByRole('dialog')).toHaveAttribute('data-state', 'open');
+		expect(document.body.hasAttribute('data-scroll-lock')).toBe(true);
+
+		await page.getByRole('button', { name: /close and unmount/i }).click();
+		await expect.element(page.getByText('unmounted')).toBeInTheDocument();
+
+		await vi.waitFor(() => {
+			expect(document.body.hasAttribute('data-scroll-lock')).toBe(false);
+			expect(document.body.style.pointerEvents).not.toBe('none');
+			expect(document.body.getAttribute('aria-hidden')).toBeNull();
+		});
+	});
+
+	it('should release body scroll-lock when parent unmounts an open drawer', async () => {
+		const OpenDrawer = () => (
+			<DsDrawer open onOpenChange={() => {}} backdrop portal>
+				<DsDrawer.Body>hello</DsDrawer.Body>
+			</DsDrawer>
+		);
+
+		const { rerender } = await page.render(<OpenDrawer />);
+
+		await expect.element(page.getByRole('dialog')).toHaveAttribute('data-state', 'open');
+		await vi.waitFor(() => {
+			expect(document.body.hasAttribute('data-scroll-lock')).toBe(true);
+			expect(document.body.style.pointerEvents).toBe('none');
+		});
+
+		await rerender(<div>gone</div>);
+		await expect.element(page.getByText('gone')).toBeInTheDocument();
+
+		await vi.waitFor(() => {
+			expect(document.body.hasAttribute('data-scroll-lock')).toBe(false);
+			expect(document.body.style.pointerEvents).not.toBe('none');
+			expect(document.body.getAttribute('aria-hidden')).toBeNull();
+		});
 	});
 });

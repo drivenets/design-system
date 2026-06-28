@@ -1,0 +1,11 @@
+{
+	"codeConnect": {
+		"include": ["**/*.figma.ts", "**/*.figma.batch.json"],
+		"importPaths": {
+			"src/components/*": "@drivenets/design-system"
+		},
+		"label": "React",
+		"language": "tsx",
+		"parser": "react"
+	}
+}
