@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/design-system-mcp",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"license": "Apache-2.0",
 	"description": "Stdio-based MCP server exposing the DriveNets Design System Storybook documentation to AI agents (Cursor, Claude Code, Codex).",
 	"type": "module",
@@ -37,7 +37,7 @@
 		"@tmcp/adapter-valibot": "^0.1.6",
 		"@tmcp/transport-stdio": "^0.4.3",
 		"tmcp": "^1.19.4",
-		"valibot": "^1.2.0"
+		"valibot": "^1.4.1"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "catalog:",

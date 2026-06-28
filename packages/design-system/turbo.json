@@ -10,6 +10,10 @@
 		},
 		"install:playwright": {
 			"dependsOn": []
+		},
+		"figma:lint": {
+			"dependsOn": [],
+			"inputs": ["**/*.figma.ts", "figma.config.json"]
 		}
 	}
 }

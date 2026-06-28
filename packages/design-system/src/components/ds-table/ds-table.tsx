@@ -25,6 +25,7 @@ import { DsTableHeaderSelectableCell } from './components/ds-table-header-select
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { type DsTableContextType, DsTableContext, useEditingState } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
+import { useColumnGroups } from './grouping';
 import {
 	EMPTY_TABLE_STATE_TEXT,
 	EXPANDER_COLUMN_ID,
@@ -75,6 +76,9 @@ const DsTable = <TData extends { id: string }, TValue>({
 	onColumnFiltersChange,
 	columnVisibility: externalColumnVisibility,
 	onColumnVisibilityChange,
+	collapsedColumnGroups: externalCollapsedColumnGroups,
+	onCollapsedColumnGroupsChange,
+	locale,
 	activeRowId,
 	infiniteScroll,
 	onCellEdit,
@@ -109,12 +113,12 @@ const DsTable = <TData extends { id: string }, TValue>({
 		}
 	};
 
-	const columnVisibility = externalColumnVisibility ?? internalColumnVisibility;
+	const baseColumnVisibility = externalColumnVisibility ?? internalColumnVisibility;
 	const handleColumnVisibilityChange = (
 		updaterOrValue: VisibilityState | ((old: VisibilityState) => VisibilityState),
 	) => {
 		const newVisibility =
-			typeof updaterOrValue === 'function' ? updaterOrValue(columnVisibility) : updaterOrValue;
+			typeof updaterOrValue === 'function' ? updaterOrValue(baseColumnVisibility) : updaterOrValue;
 
 		if (onColumnVisibilityChange) {
 			onColumnVisibilityChange(newVisibility);
@@ -122,6 +126,17 @@ const DsTable = <TData extends { id: string }, TValue>({
 			setInternalColumnVisibility(newVisibility);
 		}
 	};
+
+	const { collapsedColumnGroups, toggleColumnGroup, collapsedVisibility } = useColumnGroups({
+		columns: columnsProp,
+		collapsedColumnGroups: externalCollapsedColumnGroups,
+		onCollapsedColumnGroupsChange,
+	});
+
+	const columnVisibility = useMemo(
+		() => ({ ...baseColumnVisibility, ...collapsedVisibility }),
+		[baseColumnVisibility, collapsedVisibility],
+	);
 
 	const handleSortingChange = (updaterOrValue: SortingState | ((old: SortingState) => SortingState)) => {
 		const newSorting = typeof updaterOrValue === 'function' ? updaterOrValue(sorting) : updaterOrValue;
@@ -287,6 +302,9 @@ const DsTable = <TData extends { id: string }, TValue>({
 		renderExpandedRow,
 		virtualized,
 		activeRowId,
+		collapsedColumnGroups,
+		onToggleColumnGroup: toggleColumnGroup,
+		locale,
 		onCellEdit,
 		...editingState,
 	};

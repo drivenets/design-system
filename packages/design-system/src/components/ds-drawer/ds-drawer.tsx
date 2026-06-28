@@ -6,6 +6,7 @@ import type { DsDrawerProps } from './ds-drawer.types';
 import styles from './ds-drawer.module.scss';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
+import { useArkDialogBodyLockCleanup } from '../../utils/use-ark-dialog-body-lock-cleanup';
 import { useResponsiveValue } from '../../utils/responsive';
 
 const DsDrawer = ({
@@ -22,6 +23,7 @@ const DsDrawer = ({
 	children,
 }: DsDrawerProps) => {
 	const resolvedColumns = useResponsiveValue(columns);
+	useArkDialogBodyLockCleanup(open, backdrop);
 
 	const handleOpenChange = (details: { open: boolean }) => {
 		onOpenChange(details.open);

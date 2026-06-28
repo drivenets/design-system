@@ -236,3 +236,32 @@ jobs:
         env:
           ACTIONLINT: ${{ steps.install_actionlint.outputs.executable }}
         run: '"$ACTIONLINT" -color'
+
+  figma-code-connect-lint:
+    name: Figma Code Connect Lint
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Cache turbo
+        uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-figma-lint-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-figma-lint-
+
+      - name: Lint
+        run: pnpm figma:lint

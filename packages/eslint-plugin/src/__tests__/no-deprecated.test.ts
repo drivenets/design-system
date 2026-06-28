@@ -227,3 +227,22 @@ ruleTester.run('no-deprecated-ds-date-input', plugin.rules['no-deprecated-ds-dat
 		},
 	],
 });
+
+ruleTester.run('no-deprecated-ds-popover-legacy', plugin.rules['no-deprecated-ds-popover-legacy'], {
+	valid: ['<DsPopover.Root />', '<DsPopover.Trigger />', '<DsPopover.Panel />'],
+
+	invalid: [
+		{
+			code: '<DsPopover trigger={<button />}>Content</DsPopover>',
+			errors: [
+				{
+					message: `The DsPopover callable form (with a 'trigger' prop) is deprecated. Use the compound API: DsPopover.Root with DsPopover.Trigger and DsPopover.Panel.`,
+					line: 1,
+					endLine: 1,
+					column: 2,
+					endColumn: 11,
+				},
+			],
+		},
+	],
+});
