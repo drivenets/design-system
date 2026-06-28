@@ -35,7 +35,7 @@ export default {
 			: structure === 'text-only'
 				? figma.code`<DsStatusBadgeV2 phase="${phase}" label="${label}" variant="${variant}" size="${size}" icon={null} />`
 				: figma.code`<DsStatusBadgeV2 phase="${phase}" label="${label}" variant="${variant}" size="${size}" />`,
-	imports: ["import { DsStatusBadgeV2 } from '@drivenets/design-system'"],
+	imports: ["import { DsStatusBadgeV2 } from '@drivenets/design-system';"],
 	id: 'ds-status-badge-v2',
 	metadata: { nestable: true },
 } satisfies figma.Template;

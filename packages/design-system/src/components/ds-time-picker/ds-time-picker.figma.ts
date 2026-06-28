@@ -12,7 +12,7 @@ export default {
 	example: figma.code`const [value, setValue] = useState<Date | null>(null);
 
 <DsTimePicker value={value} onChange={setValue} placeholder="hh:mm AM/PM" />`,
-	imports: ["import { DsTimePicker } from '@drivenets/design-system'", "import { useState } from 'react'"],
+	imports: ["import { DsTimePicker } from '@drivenets/design-system';", "import { useState } from 'react';"],
 	id: 'ds-time-picker',
 	metadata: { nestable: true, props: { fcMember: 'TimePicker', fcProps: '' } },
 } satisfies figma.Template;

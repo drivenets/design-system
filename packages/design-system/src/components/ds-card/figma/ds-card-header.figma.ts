@@ -9,7 +9,7 @@ import figma from 'figma';
 
 export default {
 	example: figma.code`<DsCard.Header>Card title</DsCard.Header>`,
-	imports: ["import { DsCard } from '@drivenets/design-system'"],
+	imports: ["import { DsCard } from '@drivenets/design-system';"],
 	id: 'ds-card-header',
 	metadata: { nestable: true },
 } satisfies figma.Template;

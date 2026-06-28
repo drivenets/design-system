@@ -12,7 +12,7 @@ const content = instance.getSlot('Modal content slot');
 
 export default {
 	example: figma.code`<DsModal.Body>${content}</DsModal.Body>`,
-	imports: ["import { DsModal } from '@drivenets/design-system'"],
+	imports: ["import { DsModal } from '@drivenets/design-system';"],
 	id: 'ds-modal-content',
 	metadata: { nestable: true },
 } satisfies figma.Template;

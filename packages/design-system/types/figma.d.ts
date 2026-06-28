@@ -5,12 +5,14 @@ import type figma from 'figma';
 declare module 'figma' {
 	export interface Template {
 		id: Id;
-		imports: [DsImport, ...string[]];
+		imports: [DsImport, ...AnyImport[]];
 		example: figma.TemplateStringResult;
 		metadata?: Omit<figma.TemplateMetadata, '__props'>;
 	}
 
 	type Id = `ds-${string}`;
 
-	type DsImport = `import { ${string} } from '@drivenets/design-system'`;
+	type DsImport = `import { ${string} } from '@drivenets/design-system';`;
+
+	type AnyImport = `import ${string} from '${string}';`;
 }
