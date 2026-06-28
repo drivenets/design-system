@@ -85,6 +85,10 @@
 	justify-content: center;
 }
 
+.groupStart {
+	border-left: vars.$group-border-width solid var(--border);
+}
+
 .tableRow .editableCell {
 	padding: 1px;
 

@@ -17,6 +17,31 @@ import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-b
 export type DsTableRowSize = 'small' | 'medium' | 'large';
 
 /**
+ * Overridable, user-facing strings used by the table (e.g. accessible labels for
+ * the column-group collapse toggle). Pass a partial object via the `locale` prop
+ * to localize.
+ */
+export interface DsTableLocale {
+	/**
+	 * Accessible label for the toggle that collapses a column group.
+	 */
+	collapseColumnGroup: string;
+
+	/**
+	 * Accessible label for the toggle that expands a column group.
+	 */
+	expandColumnGroup: string;
+}
+
+/**
+ * Default English strings for {@link DsTableLocale}.
+ */
+export const defaultDsTableLocale: DsTableLocale = Object.freeze({
+	collapseColumnGroup: 'Collapse column group',
+	expandColumnGroup: 'Expand column group',
+});
+
+/**
  * API for programmatically controlling a DsTable component.
  * This interface provides methods to interact with the table's selection, sorting, filtering, and pagination features.
  *
@@ -441,6 +466,36 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Callback when column visibility changes
 	 */
 	onColumnVisibilityChange?: (visibility: VisibilityState) => void;
+
+	/**
+	 * Controlled list of collapsed column-group ids. A group is collapsible when its
+	 * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+	 * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+	 * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+	 *
+	 * @example
+	 * ```tsx
+	 * const [collapsed, setCollapsed] = useState<string[]>(['equipment']);
+	 *
+	 * <DsTable
+	 *   collapsedColumnGroups={collapsed}
+	 *   onCollapsedColumnGroupsChange={setCollapsed}
+	 * />
+	 * ```
+	 */
+	collapsedColumnGroups?: string[];
+
+	/**
+	 * Callback fired with the next list of collapsed group ids when a group's
+	 * collapse toggle is clicked.
+	 */
+	onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) => void;
+
+	/**
+	 * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+	 * over the built-in English defaults.
+	 */
+	locale?: Partial<DsTableLocale>;
 
 	/**
 	 * Callback fired when an editable cell commits a new value via one of the

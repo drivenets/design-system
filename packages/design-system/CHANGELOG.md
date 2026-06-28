@@ -1,5 +1,36 @@
 # @drivenets/design-system
 
+## 0.14.0
+
+### Minor Changes
+
+- c075421: Change `DsPopover` by adding new components, and preserving old API.
+- 261991f: Add `key-value` variant and optional `value` prop (only accessible in `key-value` variant) to `DsTag`.
+- cfd37ce: Scrollbars now auto-hide and only show on hover. At rest the thumb is subtle (10px); on hover it widens (12px) and darkens for clearer affordance, with rounded corners and a semi-transparent track.
+
+### Patch Changes
+
+- 0537552: Sync tokens with Figma variables
+- 0671c4e: Update dependencies
+- 1b5d16a: Fix wrong tokens in `DsButtonV3` for `light` color.
+- 2a36ac1: Add grouping functionality to `DsTable`
+- 7b82a7a: Fix virtualized `DsTable` briefly flashing its empty state when the `data` prop changes.
+
+## 0.13.0
+
+### Minor Changes
+
+- 1c3f97b: Rename `DsWorkspace` to `DsWorkspaceLayout`.
+  Add extended layout compound parts (`Body`, `SideMenu`, `LeftPanel`). `Content` now always applies content-area spacing — visual change for existing simple-shell consumers.
+- 86c0781: Add inline editing to `DsTable`
+
+### Patch Changes
+
+- fab30fb: Add "hideLabel" prop to "DsFormControl" component
+- f58b04d: Fix a big body scroll lock issue on drawer/modal close.
+- 556aacd: Update `DsTable` scroll, use thin scrollbar for header
+- d637626: Add column filtering functionality to `DsTable`
+
 ## 0.12.1
 
 ### Patch Changes

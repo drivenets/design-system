@@ -201,4 +201,44 @@ describe('DsButtonV3', () => {
 
 		await expect.element(button).toHaveAttribute('data-testid', 'my-btn');
 	});
+
+	describe('color="light" renders a visible background', () => {
+		const transparent = 'rgba(0, 0, 0, 0)';
+
+		it('primary has a non-transparent background', async () => {
+			await page.render(
+				<DsButtonV3 color="light" variant="primary">
+					Light
+				</DsButtonV3>,
+			);
+
+			const el = page.getByRole('button', { name: 'Light' }).element();
+
+			expect(getComputedStyle(el).backgroundColor).not.toBe(transparent);
+		});
+
+		it('primary disabled has a non-transparent background', async () => {
+			await page.render(
+				<DsButtonV3 color="light" variant="primary" disabled>
+					Light
+				</DsButtonV3>,
+			);
+
+			const el = page.getByRole('button', { name: 'Light' }).element();
+
+			expect(getComputedStyle(el).backgroundColor).not.toBe(transparent);
+		});
+
+		it('secondary selected has a non-transparent background', async () => {
+			await page.render(
+				<DsButtonV3 color="light" variant="secondary" selected>
+					Light
+				</DsButtonV3>,
+			);
+
+			const el = page.getByRole('button', { name: 'Light' }).element();
+
+			expect(getComputedStyle(el).backgroundColor).not.toBe(transparent);
+		});
+	});
 });
