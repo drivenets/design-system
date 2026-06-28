@@ -1,10 +1,11 @@
 {
 	"$schema": "https://unpkg.com/knip@5/schema.json",
 	"ignore": [
-		"**/*.figma.ts",
-		"**/*.figma.batch.ts",
-		"**/*.scss",
-		"**/simple-file-upload-adapter.ts",
+		"./packages/design-system/**/*.scss",
+		"./packages/design-system/**/*.figma.ts",
+		"./packages/design-system/**/*.figma.batch.ts",
+		"./packages/design-system/types/**/figma.d.ts",
+		"./packages/design-system/src/components/ds-file-upload/stories/adapters/simple-file-upload-adapter.ts",
 		"./packages/eslint-plugin-internal/src/rules/__tests__/fixtures/*.ts"
 	],
 	"ignoreExportsUsedInFile": {
