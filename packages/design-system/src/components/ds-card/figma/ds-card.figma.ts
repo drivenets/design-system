@@ -69,4 +69,4 @@ export default {
 	imports: ["import { DsCard } from '@drivenets/design-system'"],
 	id: 'ds-card',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

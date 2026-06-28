@@ -73,4 +73,4 @@ export default {
 	imports: ["import { DsFormControl } from '@drivenets/design-system'"],
 	id: 'ds-form-control',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

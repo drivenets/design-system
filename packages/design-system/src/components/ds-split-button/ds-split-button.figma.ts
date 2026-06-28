@@ -92,4 +92,4 @@ export default {
 	imports: ["import { DsSplitButton } from '@drivenets/design-system'"],
 	id: 'ds-split-button',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

@@ -14,4 +14,4 @@ export default {
 	imports: ["import { DsTable } from '@drivenets/design-system'"],
 	id: 'ds-table-expandable',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

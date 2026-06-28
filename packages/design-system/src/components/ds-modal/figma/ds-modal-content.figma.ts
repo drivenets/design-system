@@ -5,15 +5,14 @@
 // `DAP_modal-content_v02` maps to `DsModal.Body`. Its freeform `Modal content slot`
 // becomes the body children.
 import figma from 'figma';
-import { defineFigmaTemplate } from '../../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
 const content = instance.getSlot('Modal content slot');
 
-export default defineFigmaTemplate({
+export default {
 	example: figma.code`<DsModal.Body>${content}</DsModal.Body>`,
 	imports: ["import { DsModal } from '@drivenets/design-system'"],
 	id: 'ds-modal-content',
 	metadata: { nestable: true },
-});
+} satisfies figma.Template;

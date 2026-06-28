@@ -50,4 +50,4 @@ export default {
 	imports: ["import { DsSelect } from '@drivenets/design-system'"],
 	id: 'ds-select',
 	metadata: { nestable: true, props: { fcMember: 'Select', fcProps: attrs } },
-};
+} satisfies figma.Template;

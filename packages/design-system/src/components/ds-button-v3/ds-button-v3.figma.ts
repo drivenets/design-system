@@ -96,4 +96,4 @@ export default {
 	imports: ["import { DsButtonV3 } from '@drivenets/design-system'"],
 	id: 'ds-button-v3',
 	metadata: { nestable: true },
-};
+} satisfies figma.Template;

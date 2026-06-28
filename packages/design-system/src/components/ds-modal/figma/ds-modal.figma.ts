@@ -7,7 +7,6 @@
 // so swapped variants stay in sync. The `Type` variant (confirmation/form) has no
 // `DsModal` prop equivalent — both render the same composition.
 import figma from 'figma';
-import { defineFigmaTemplate } from '../../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
@@ -29,9 +28,9 @@ if (footer.type === 'INSTANCE') {
 	footerCode = footer.executeTemplate().example;
 }
 
-export default defineFigmaTemplate({
+export default {
 	example: figma.code`<DsModal open columns={6} onOpenChange={() => {}}>${headerCode}${contentCode}${footerCode}</DsModal>`,
 	imports: ["import { DsModal } from '@drivenets/design-system'"],
 	id: 'ds-modal',
 	metadata: { nestable: false },
-});
+} satisfies figma.Template;

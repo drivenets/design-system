@@ -12,4 +12,4 @@ export default {
 	imports: ["import { DsCard } from '@drivenets/design-system'"],
 	id: 'ds-card-header',
 	metadata: { nestable: true },
-};
+} satisfies figma.Template;

@@ -57,4 +57,4 @@ export default {
 	imports: [`import { ${componentName} } from '@drivenets/design-system'`],
 	id: 'ds-text-input',
 	metadata: { nestable: true, props: { fcMember, fcProps } },
-};
+} satisfies figma.Template;

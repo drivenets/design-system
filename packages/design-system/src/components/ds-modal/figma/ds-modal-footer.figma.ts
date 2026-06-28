@@ -6,15 +6,14 @@
 // `right side buttons` slot resolves its `DAP_Button_v03` instances via the
 // existing `ds-button-v3` Code Connect.
 import figma from 'figma';
-import { defineFigmaTemplate } from '../../../utils/define-figma-template';
 
 const instance = figma.selectedInstance;
 
 const rightButtons = instance.getSlot('right side buttons');
 
-export default defineFigmaTemplate({
+export default {
 	example: figma.code`<DsModal.Footer><DsModal.Actions>${rightButtons}</DsModal.Actions></DsModal.Footer>`,
 	imports: ["import { DsModal } from '@drivenets/design-system'"],
 	id: 'ds-modal-footer',
 	metadata: { nestable: true },
-});
+} satisfies figma.Template;
