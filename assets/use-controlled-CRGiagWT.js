@@ -1,1 +1,0 @@
-import{i as e,s as t}from"./preload-helper-xPQekRTU.js";import{X as n}from"./iframe-WTiOXMpf.js";import{t as r}from"./compiler-runtime-H8lMLIG-.js";var i,a,o,s=e((()=>{i=r(),a=t(n(),1),o=(e,t,n)=>{let r=(0,i.c)(3),o=e!==void 0&&t!==void 0,[s,c]=(0,a.useState)(e??n),l=o?e:s,u=o?t:c,d;return r[0]!==u||r[1]!==l?(d=[l,u],r[0]=u,r[1]=l,r[2]=d):d=r[2],d}}));export{o as n,s as t};

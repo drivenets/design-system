@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -24519,7 +24519,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Baseline horizontal tabs with icon + badge — the default layout for most pages.</div>
               <pre><code>const Default = () =&gt; {
     const [selected, setSelected] = useState(&#39;overview&#39;);
 
@@ -24571,7 +24571,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">`size=&quot;small&quot;` horizontal tabs for dense toolbars and compact headers.</div>
               <pre><code>const HorizontalSmall = () =&gt; {
     const [selected, setSelected] = useState(&#39;dashboard&#39;);
 
@@ -24623,7 +24623,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Per-tab dropdown via `menuActionItems` + `onMenuActionSelect`. Use when a tab needs contextual actions (edit, duplicate, delete) without leaving the tab bar.</div>
               <pre><code>const WithMenuActions = () =&gt; {
     const [selected, setSelected] = useState(&#39;tab1&#39;);
 
@@ -24692,7 +24692,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">`orientation=&quot;vertical&quot;` — side navigation for settings-style layouts.</div>
               <pre><code>const Vertical = () =&gt; {
     const [selected, setSelected] = useState(&#39;profile&#39;);
 
@@ -24755,7 +24755,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Compact vertical tabs (`size=&quot;small&quot;`) for narrow side panels.</div>
               <pre><code>const VerticalSmall = () =&gt; {
     const [selected, setSelected] = useState(&#39;general&#39;);
 
@@ -24814,7 +24814,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Vertical tabs that also carry per-tab `menuActionItems` dropdowns.</div>
               <pre><code>const VerticalWithMenuActions = () =&gt; {
     const [selected, setSelected] = useState(&#39;profile&#39;);
 
@@ -24913,7 +24913,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Mixes enabled and `disabled` tabs — disabled tabs are not selectable.</div>
               <pre><code>const WithDisabled = () =&gt; {
     const [selected, setSelected] = useState(&#39;active1&#39;);
 
@@ -24951,7 +24951,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Labels only (no `icon`), optional `badge` — minimal text-driven tab bar.</div>
               <pre><code>const TextOnly = () =&gt; {
     const [selected, setSelected] = useState(&#39;home&#39;);
 
@@ -25001,7 +25001,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Adds a `tooltip` per tab — use for icon-light tabs that need extra context on hover.</div>
               <pre><code>const WithTooltips = () =&gt; {
     const [selected, setSelected] = useState(&#39;dashboard&#39;);
 
@@ -31006,7 +31006,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Baseline horizontal tabs with icon + badge — the default layout for most pages.</div>
               <pre><code>const Default = () =&gt; {
     const [selected, setSelected] = useState(&#39;overview&#39;);
 
@@ -31058,7 +31058,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">`size=&quot;small&quot;` horizontal tabs for dense toolbars and compact headers.</div>
               <pre><code>const HorizontalSmall = () =&gt; {
     const [selected, setSelected] = useState(&#39;dashboard&#39;);
 
@@ -31110,7 +31110,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Per-tab dropdown via `menuActionItems` + `onMenuActionSelect`. Use when a tab needs contextual actions (edit, duplicate, delete) without leaving the tab bar.</div>
               <pre><code>const WithMenuActions = () =&gt; {
     const [selected, setSelected] = useState(&#39;tab1&#39;);
 
@@ -31179,7 +31179,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">`orientation=&quot;vertical&quot;` — side navigation for settings-style layouts.</div>
               <pre><code>const Vertical = () =&gt; {
     const [selected, setSelected] = useState(&#39;profile&#39;);
 
@@ -31242,7 +31242,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Compact vertical tabs (`size=&quot;small&quot;`) for narrow side panels.</div>
               <pre><code>const VerticalSmall = () =&gt; {
     const [selected, setSelected] = useState(&#39;general&#39;);
 
@@ -31301,7 +31301,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Vertical tabs that also carry per-tab `menuActionItems` dropdowns.</div>
               <pre><code>const VerticalWithMenuActions = () =&gt; {
     const [selected, setSelected] = useState(&#39;profile&#39;);
 
@@ -31400,7 +31400,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Mixes enabled and `disabled` tabs — disabled tabs are not selectable.</div>
               <pre><code>const WithDisabled = () =&gt; {
     const [selected, setSelected] = useState(&#39;active1&#39;);
 
@@ -31438,7 +31438,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Labels only (no `icon`), optional `badge` — minimal text-driven tab bar.</div>
               <pre><code>const TextOnly = () =&gt; {
     const [selected, setSelected] = useState(&#39;home&#39;);
 
@@ -31488,7 +31488,7 @@ export const DsTabs = {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Adds a `tooltip` per tab — use for icon-light tabs that need extra context on hover.</div>
               <pre><code>const WithTooltips = () =&gt; {
     const [selected, setSelected] = useState(&#39;dashboard&#39;);
 
