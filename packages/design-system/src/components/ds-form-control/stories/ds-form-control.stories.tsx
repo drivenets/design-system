@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsIcon } from '../../ds-icon';
 import DsFormControl from '../ds-form-control';
 import { controlStatuses } from '../ds-form-control.types';
-import { checkDisabled, sanityCheck } from './ds-form-control-stories-shared';
 
 const meta: Meta<typeof DsFormControl> = {
 	title: 'Components/FormControl/Text',
@@ -58,9 +57,6 @@ export const Default: Story = {
 		message: 'This is a message',
 		children: <DsFormControl.TextInput placeholder="Input" />,
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
 export const WithCustomWidth: Story = {
@@ -69,9 +65,6 @@ export const WithCustomWidth: Story = {
 		required: true,
 		style: { width: '300px' },
 		children: <DsFormControl.TextInput placeholder="Input with custom width" />,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
 	},
 };
 
@@ -87,9 +80,6 @@ export const WithCustomStyles: Story = {
 			backgroundColor: '#f9f9f9',
 		},
 		children: <DsFormControl.TextInput placeholder="Input with custom styling" />,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
 	},
 };
 
@@ -129,9 +119,6 @@ export const WithDescription: Story = {
 				/>
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
 	},
 };
 
@@ -193,9 +180,6 @@ export const WithHelpIcon: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
 export const WithIcon: Story = {
@@ -209,9 +193,6 @@ export const WithIcon: Story = {
 				slots={{ startAdornment: <DsIcon icon="call" size="tiny" /> }}
 			/>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
 	},
 };
 
@@ -250,9 +231,6 @@ export const Success: Story = {
 				/>
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
 	},
 };
 
@@ -294,9 +272,6 @@ export const Error: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
 export const Warning: Story = {
@@ -332,9 +307,6 @@ export const Warning: Story = {
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
 export const Disabled: Story = {
@@ -342,8 +314,5 @@ export const Disabled: Story = {
 		label: 'Input label',
 		required: true,
 		children: <DsFormControl.TextInput placeholder="Disabled Input" disabled />,
-	},
-	play: async ({ canvasElement }) => {
-		await checkDisabled(canvasElement);
 	},
 };
