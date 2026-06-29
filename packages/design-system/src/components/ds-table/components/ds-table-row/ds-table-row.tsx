@@ -51,6 +51,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 		primaryRowActions,
 		secondaryRowActions,
 		activeRowId,
+		loading,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
@@ -90,6 +91,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 					onRowClick && styles.clickableRow,
 					!bordered && styles.rowNoBorder,
 					isExpanded && styles.expanded,
+					loading && styles.loadingRow,
 				)}
 				style={rowStyle}
 				onClick={() => onRowClick?.(row.original)}
