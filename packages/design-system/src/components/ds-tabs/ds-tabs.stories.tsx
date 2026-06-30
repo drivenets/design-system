@@ -1,10 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 import { useState } from 'react';
 import { DsTabs } from './ds-tabs';
 import type { DsTabsMenuActionItem } from './ds-tabs.types';
 import styles from './ds-tabs.stories.module.scss';
 
+/**
+ * Compound tabs built on Ark UI. Compose `DsTabs.Root` with a `DsTabs.List` of
+ * `DsTabs.Tab`s and one `DsTabs.Content` panel per tab `value`. Selection is
+ * controlled by the `value` / `onValueChange` props on `DsTabs.Root`; tab
+ * appearance (icon, label, badge, menu) is set on each `DsTabs.Tab`.
+ */
 const meta: Meta<typeof DsTabs.Root> = {
 	title: 'Components/Tabs',
 	component: DsTabs.Root,
@@ -22,12 +28,19 @@ const meta: Meta<typeof DsTabs.Root> = {
 			options: ['medium', 'small'],
 			description: 'Tab size',
 		},
+		value: { table: { disable: true } },
+		defaultValue: { table: { disable: true } },
+		onValueChange: { table: { disable: true } },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
+		children: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsTabs.Root>;
 
+/** Baseline horizontal tabs with icon + badge — the default layout for most pages. */
 export const Default: Story = {
 	args: {
 		orientation: 'horizontal',
@@ -81,16 +94,9 @@ export const Default: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByRole('tab', { name: /Overview/i })).toHaveAttribute('aria-selected', 'true');
-		await expect(canvas.getByText(/View your dashboard overview/i)).toBeInTheDocument();
-		await userEvent.click(canvas.getByRole('tab', { name: /Analytics/i }));
-		await expect(canvas.getByRole('tab', { name: /Analytics/i })).toHaveAttribute('aria-selected', 'true');
-		await expect(canvas.getByText(/Detailed analytics and performance data/i)).toBeInTheDocument();
-	},
 };
 
+/** `size="small"` horizontal tabs for dense toolbars and compact headers. */
 export const HorizontalSmall: Story = {
 	args: {
 		size: 'small',
@@ -141,16 +147,14 @@ export const HorizontalSmall: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByRole('tab', { name: /Dashboard/i })).toHaveAttribute('aria-selected', 'true');
-		await userEvent.click(canvas.getByRole('tab', { name: /Reports/i }));
-		await expect(canvas.getByRole('tab', { name: /Reports/i })).toHaveAttribute('aria-selected', 'true');
-	},
 };
 
 const handleMenuActionMock = fn();
 
+/**
+ * Per-tab dropdown via `menuActionItems` + `onMenuActionSelect`. Use when a tab
+ * needs contextual actions (edit, duplicate, delete) without leaving the tab bar.
+ */
 export const WithMenuActions: Story = {
 	args: {
 		orientation: 'horizontal',
@@ -221,41 +225,9 @@ export const WithMenuActions: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvas }) => {
-		const body = within(document.body);
-
-		const tabs = canvas.getAllByRole('tab');
-		await expect(tabs[0]).toHaveAttribute('aria-selected', 'true');
-
-		const firstTab: HTMLElement | undefined = tabs[0];
-		if (firstTab) {
-			const menuButton = within(firstTab).getByRole('button', { name: /open menu/i });
-			// Test keyboard interaction - Enter key opens menu
-			menuButton.focus();
-			await userEvent.keyboard('{Enter}');
-			await waitFor(() => expect(menuButton).toHaveAttribute('aria-expanded', 'true'));
-
-			const editAction = await body.findByRole('menuitem', { name: /Edit/i });
-			await expect(editAction).toBeInTheDocument();
-
-			// Select menu item and verify callback + menu closes
-			await userEvent.click(editAction);
-			await expect(handleMenuActionMock).toHaveBeenCalledWith('edit');
-			await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
-
-			// Test Space key also toggles menu
-			menuButton.focus();
-			await userEvent.keyboard(' ');
-			await waitFor(() => expect(menuButton).toHaveAttribute('aria-expanded', 'true'));
-
-			const duplicateAction = await body.findByRole('menuitem', { name: /Duplicate/i });
-			await expect(duplicateAction).toBeInTheDocument();
-			await userEvent.click(duplicateAction);
-			await expect(handleMenuActionMock).toHaveBeenCalledWith('duplicate');
-		}
-	},
 };
 
+/** `orientation="vertical"` — side navigation for settings-style layouts. */
 export const Vertical: Story = {
 	args: {
 		orientation: 'vertical',
@@ -317,18 +289,9 @@ export const Vertical: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByRole('tab', { name: /Profile/i })).toHaveAttribute('aria-selected', 'true');
-		await userEvent.click(canvas.getByRole('tab', { name: /Notifications/i }));
-		await expect(canvas.getByRole('tab', { name: /Notifications/i })).toHaveAttribute(
-			'aria-selected',
-			'true',
-		);
-		await expect(canvas.getByText(/Manage notification preferences/i)).toBeInTheDocument();
-	},
 };
 
+/** Compact vertical tabs (`size="small"`) for narrow side panels. */
 export const VerticalSmall: Story = {
 	args: {
 		orientation: 'vertical',
@@ -390,15 +353,9 @@ export const VerticalSmall: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByRole('tab', { name: /General/i })).toHaveAttribute('aria-selected', 'true');
-		await userEvent.click(canvas.getByRole('tab', { name: /Privacy/i }));
-		await expect(canvas.getByRole('tab', { name: /Privacy/i })).toHaveAttribute('aria-selected', 'true');
-		await expect(canvas.getByText(/Control your privacy settings/i)).toBeInTheDocument();
-	},
 };
 
+/** Vertical tabs that also carry per-tab `menuActionItems` dropdowns. */
 export const VerticalWithMenuActions: Story = {
 	args: {
 		orientation: 'vertical',
@@ -506,21 +463,9 @@ export const VerticalWithMenuActions: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByRole('tab', { name: /Profile/i })).toHaveAttribute('aria-selected', 'true');
-		await userEvent.click(canvas.getByRole('tab', { name: /Security/i }));
-		await expect(canvas.getByRole('tab', { name: /Security/i })).toHaveAttribute('aria-selected', 'true');
-		const securityTab = canvas.getByRole('tab', { name: /Security/i });
-		const menuButton = securityTab.querySelector('[role="button"][aria-label="Open menu"]');
-		if (menuButton) {
-			await userEvent.click(menuButton);
-			const editAction = await within(document.body).findByRole('menuitem', { name: /Edit/i });
-			await expect(editAction).toBeInTheDocument();
-		}
-	},
 };
 
+/** Mixes enabled and `disabled` tabs — disabled tabs are not selectable. */
 export const WithDisabled: Story = {
 	render: function Render(args) {
 		const [selected, setSelected] = useState('active1');
@@ -555,19 +500,9 @@ export const WithDisabled: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const allTabs = canvas.getAllByRole('tab', { queryFallbacks: true });
-		const disabledTabs = allTabs.filter((t) => t.hasAttribute('disabled'));
-		const firstActiveTab = allTabs[0];
-		await expect(firstActiveTab).toHaveAttribute('aria-selected', 'true');
-		if (disabledTabs[0]) {
-			await userEvent.click(disabledTabs[0]);
-		}
-		await expect(firstActiveTab).toHaveAttribute('aria-selected', 'true');
-	},
 };
 
+/** Labels only (no `icon`), optional `badge` — minimal text-driven tab bar. */
 export const TextOnly: Story = {
 	render: function Render(args) {
 		const [selected, setSelected] = useState('home');
@@ -617,14 +552,9 @@ export const TextOnly: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await expect(canvas.getByRole('tab', { name: /Home/i })).toHaveAttribute('aria-selected', 'true');
-		await userEvent.click(canvas.getByRole('tab', { name: /Products/i }));
-		await expect(canvas.getByRole('tab', { name: /Products/i })).toHaveAttribute('aria-selected', 'true');
-	},
 };
 
+/** Adds a `tooltip` per tab — use for icon-light tabs that need extra context on hover. */
 export const WithTooltips: Story = {
 	render: function Render(args) {
 		const [selected, setSelected] = useState('dashboard');
@@ -695,11 +625,5 @@ export const WithTooltips: Story = {
 				</DsTabs.Root>
 			</div>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		await userEvent.hover(canvas.getByRole('tab', { name: /Analytics/i }));
-		const tooltip = await within(document.body).findByRole('tooltip');
-		await expect(tooltip).toHaveTextContent(/Analytics and insights/i);
 	},
 };

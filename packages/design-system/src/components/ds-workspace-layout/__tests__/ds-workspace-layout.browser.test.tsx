@@ -88,9 +88,13 @@ describe('DsWorkspaceLayout', () => {
 		);
 
 		const root = page.getByRole('banner').element().parentElement as HTMLElement;
-		const style = getComputedStyle(root);
+		const { height } = root.getBoundingClientRect();
 
-		expect(style.height).toBe(`${String(window.innerHeight)}px`);
+		// `100vh` resolves to a subpixel height on fractional-DPR displays (e.g.
+		// 896.25px), while `window.innerHeight` is integer-rounded — compare the
+		// rendered height to the viewport within a <1px delta instead of an exact
+		// string match.
+		expect(Math.abs(height - window.innerHeight)).toBeLessThan(1);
 	});
 
 	it('fills parent height when fillParent is true', async () => {
