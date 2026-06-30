@@ -56,6 +56,13 @@
 		transform 0.2s ease,
 		width 0.2s ease;
 
+	// A closed (or closing) drawer is invisible but stays mounted and transformed.
+	// Without this it still hit-tests and can swallow clicks on neighboring UI when
+	// docked at a non-zero offset. Keep it click-through whenever it is not open.
+	&[data-state='closed'] {
+		pointer-events: none;
+	}
+
 	&.position-end {
 		right: 0;
 		transform-origin: 100% 50%;

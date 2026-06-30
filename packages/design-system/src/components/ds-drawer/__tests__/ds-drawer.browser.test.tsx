@@ -90,6 +90,66 @@ describe('DsDrawer', () => {
 		await expect.element(drawer).toHaveAttribute('data-state', 'closed');
 	});
 
+	it('should not intercept pointer events on sibling UI once closed', async () => {
+		const onSiblingClick = vi.fn();
+
+		const InsetDrawerOverSibling = () => {
+			const [open, setOpen] = useState(true);
+
+			return (
+				<div style={{ position: 'relative', width: '400px', height: '200px' }}>
+					<button type="button" onClick={() => setOpen(false)}>
+						Close drawer
+					</button>
+					<button
+						type="button"
+						onClick={onSiblingClick}
+						style={{ position: 'absolute', top: '12px', right: '12px' }}
+					>
+						Sibling field
+					</button>
+					{/* Force the closed drawer to overlap the sibling (no slide-away) so the
+					    test fails if a closed drawer keeps intercepting pointer events. */}
+					<DsDrawer
+						open={open}
+						onOpenChange={setOpen}
+						style={{ width: '200px', transform: 'translateX(0)', animation: 'none' }}
+					>
+						<DsDrawer.Body>Drawer content</DsDrawer.Body>
+					</DsDrawer>
+				</div>
+			);
+		};
+
+		await page.render(<InsetDrawerOverSibling />);
+
+		const drawer = page.getByRole('dialog');
+		await expect.element(drawer).toHaveAttribute('data-state', 'open');
+
+		await page.getByRole('button', { name: /close drawer/i }).click();
+		await expect.element(drawer).toHaveAttribute('data-state', 'closed');
+
+		await page.getByRole('button', { name: /sibling field/i }).click();
+		expect(onSiblingClick).toHaveBeenCalledTimes(1);
+	});
+
+	it('should keep its own controls interactive while open', async () => {
+		const onInsideClick = vi.fn();
+
+		await page.render(
+			<DsDrawer open onOpenChange={() => {}}>
+				<DsDrawer.Body>
+					<button type="button" onClick={onInsideClick}>
+						Inside action
+					</button>
+				</DsDrawer.Body>
+			</DsDrawer>,
+		);
+
+		await page.getByRole('button', { name: /inside action/i }).click();
+		expect(onInsideClick).toHaveBeenCalledTimes(1);
+	});
+
 	it('should render backdrop when enabled', async () => {
 		await page.render(<ControlledDrawer backdrop />);
 
