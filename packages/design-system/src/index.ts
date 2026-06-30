@@ -39,6 +39,7 @@ export * from './components/ds-popover';
 export * from './components/ds-progress-arc';
 export * from './components/ds-progress-donut';
 export * from './components/ds-progress-linear';
+export * from './components/ds-progress-task-bar';
 export * from './components/ds-radio-group';
 export * from './components/ds-segment-group';
 export * from './components/ds-select';

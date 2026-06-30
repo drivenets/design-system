@@ -1,0 +1,20 @@
+.wrapper {
+	width: 220px;
+}
+
+.gallery {
+	display: flex;
+	flex-direction: column;
+	gap: var(--lg);
+	width: 220px;
+}
+
+.sample {
+	display: flex;
+	flex-direction: column;
+	gap: var(--3xs);
+}
+
+.sampleTitle {
+	color: var(--font-main);
+}
