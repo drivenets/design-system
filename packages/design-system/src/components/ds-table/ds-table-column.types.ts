@@ -26,5 +26,11 @@ declare module '@tanstack/react-table' {
 		 * columns without `editCell`.
 		 */
 		editDisabled?: (context: CellContext<TData, TValue>) => DsTableEditDisabledResult;
+
+		/**
+		 * Renders this column's cell content while the table is `loading`.
+		 * When omitted, a default text skeleton is rendered.
+		 */
+		loadingCell?: (context: CellContext<TData, TValue>) => ReactNode;
 	}
 }
