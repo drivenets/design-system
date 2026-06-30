@@ -9,7 +9,7 @@
 		}
 	}
 
-	&:hover {
+	&:not(.loadingRow):hover {
 		background-color: var(--background-secondary);
 	}
 

@@ -33,3 +33,8 @@ export const REORDER_COLUMN_ID = 'reorder';
  * Width (in px) of the reorder column.
  */
 export const REORDER_COLUMN_WIDTH = 60;
+
+/**
+ * Number of placeholder skeleton rows rendered while the table is `loading`.
+ */
+export const SKELETON_ROW_COUNT = 5;

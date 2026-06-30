@@ -315,6 +315,13 @@ export interface DsDataTableProps<TData, TValue> {
 	rowSize?: DsTableRowSize;
 
 	/**
+	 * When `true`, renders placeholder skeleton rows instead of the data. Column
+	 * headers stay intact and row interactions are disabled while loading.
+	 * @default false
+	 */
+	loading?: boolean;
+
+	/**
 	 * Whether the table is expandable or if an individual row should be expandable
 	 */
 	expandable?: boolean | ((row: TData) => boolean);

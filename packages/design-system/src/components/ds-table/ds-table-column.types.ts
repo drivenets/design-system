@@ -8,5 +8,11 @@ declare module '@tanstack/react-table' {
 		 * When omitted, the column is not editable.
 		 */
 		editCell?: (context: CellContext<TData, TValue>) => ReactNode;
+
+		/**
+		 * Renders this column's cell content while the table is `loading`.
+		 * When omitted, a default text skeleton is rendered.
+		 */
+		loadingCell?: (context: CellContext<TData, TValue>) => ReactNode;
 	}
 }

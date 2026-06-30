@@ -26,6 +26,7 @@ export const DsTableRowVirtualized = <TData,>({
 		renderExpandedRow,
 		onRowClick,
 		onRowDoubleClick,
+		loading,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
@@ -58,6 +59,7 @@ export const DsTableRowVirtualized = <TData,>({
 				onRowClick && styles.clickableRow,
 				!bordered && styles.rowNoBorder,
 				isExpanded && styles.expanded,
+				loading && styles.loadingRow,
 			)}
 			onClick={isExpandedRowContent ? undefined : () => onRowClick?.(row.original)}
 			onDoubleClick={isExpandedRowContent ? undefined : () => onRowDoubleClick?.(row.original)}
