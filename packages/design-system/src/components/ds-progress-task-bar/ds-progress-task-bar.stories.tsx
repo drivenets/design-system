@@ -104,8 +104,11 @@ export const Localized: Story = {
 		failed: 100,
 		total: 1000,
 		locale: {
+			// cspell:disable-next-line
 			completed: 'Terminé',
+			// cspell:disable-next-line
 			running: 'En cours',
+			// cspell:disable-next-line
 			failed: 'Échoué',
 			total: (value) => `sur ${value}`,
 		},
