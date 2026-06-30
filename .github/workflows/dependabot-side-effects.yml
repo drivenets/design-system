@@ -22,10 +22,15 @@ jobs:
 
     steps:
       - name: Checkout source code # zizmor: ignore[artipacked] Need persisted token to commit the changes.
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           fetch-depth: 0
           ref: ${{ github.head_ref }}
+
+          # We're using a deploy key here so committing changes will trigger CI workflows run, as opposed to
+          # the default `GITHUB_TOKEN` that doesn't trigger them.
+          #
+          # See: https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow
           ssh-key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Install Dependencies
