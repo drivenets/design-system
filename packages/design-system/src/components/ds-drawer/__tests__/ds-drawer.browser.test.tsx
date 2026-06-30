@@ -23,6 +23,30 @@ const ControlledDrawer = (props: Partial<DsDrawerProps>) => {
 	);
 };
 
+const TypeAheadDrawer = (props: Partial<DsDrawerProps>) => {
+	const [query, setQuery] = useState('');
+
+	return (
+		<>
+			<input
+				type="text"
+				aria-label="Search"
+				value={query}
+				onChange={(event) => setQuery(event.target.value)}
+			/>
+			<DsDrawer open={query.length > 0} onOpenChange={(open) => !open && setQuery('')} {...props}>
+				<DsDrawer.Header>
+					<DsDrawer.Title>Suggestions</DsDrawer.Title>
+					<DsDrawer.CloseTrigger />
+				</DsDrawer.Header>
+				<DsDrawer.Body>
+					<p>Body content</p>
+				</DsDrawer.Body>
+			</DsDrawer>
+		</>
+	);
+};
+
 const UnmountWhileOpenDrawer = (props: Partial<DsDrawerProps>) => {
 	const [open, setOpen] = useState(false);
 	const [mounted, setMounted] = useState(true);
@@ -77,6 +101,28 @@ describe('DsDrawer', () => {
 		const backdrop = document.querySelector<HTMLElement>('[data-part="backdrop"]');
 		await expect.element(backdrop).toBeInTheDocument();
 		await expect.element(backdrop).toHaveAttribute('data-state', 'open');
+	});
+
+	it('should keep focus in the field when onOpenAutoFocus calls preventDefault', async () => {
+		const onOpenAutoFocus = vi.fn((event: Event) => event.preventDefault());
+		await page.render(<TypeAheadDrawer onOpenAutoFocus={onOpenAutoFocus} />);
+
+		const input = page.getByRole('textbox', { name: /search/i });
+		await input.fill('a');
+
+		await expect.element(page.getByRole('dialog')).toHaveAttribute('data-state', 'open');
+		await vi.waitFor(() => expect(onOpenAutoFocus).toHaveBeenCalled());
+		await expect.element(input).toHaveFocus();
+	});
+
+	it('should move focus into the drawer on open by default', async () => {
+		await page.render(<TypeAheadDrawer />);
+
+		const input = page.getByRole('textbox', { name: /search/i });
+		await input.fill('a');
+
+		await expect.element(page.getByRole('dialog')).toHaveAttribute('data-state', 'open');
+		await expect.element(input).not.toHaveFocus();
 	});
 
 	it('should release body scroll-lock when unmounted while open', async () => {

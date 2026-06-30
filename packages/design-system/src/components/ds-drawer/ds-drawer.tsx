@@ -1,5 +1,5 @@
 import { type CSSProperties, type ReactNode, Fragment } from 'react';
-import { Dialog } from '@ark-ui/react/dialog';
+import { Dialog, type DialogRootProps } from '@ark-ui/react/dialog';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import type { DsDrawerProps } from './ds-drawer.types';
@@ -12,6 +12,7 @@ import { useResponsiveValue } from '../../utils/responsive';
 const DsDrawer = ({
 	open,
 	onOpenChange,
+	onOpenAutoFocus,
 	columns = 4,
 	position = 'end',
 	backdrop = false,
@@ -29,6 +30,21 @@ const DsDrawer = ({
 		onOpenChange(details.open);
 	};
 
+	// Mirrors Radix's `onOpenAutoFocus`. Ark reads `initialFocusEl` when the drawer
+	// opens to decide what to focus. To honor `preventDefault()`, we point initial
+	// focus back at the element that was focused when the drawer opened (e.g. the
+	// input that triggered it), so the caret stays put. Returning `undefined` keeps
+	// Ark's default of focusing the first element inside the drawer. The cast covers
+	// the `undefined` branch, which sits outside Ark's `MaybeElement` return type.
+	const initialFocusEl = (onOpenAutoFocus
+		? () => {
+				const event = new Event('openAutoFocus', { cancelable: true });
+				onOpenAutoFocus(event);
+
+				return event.defaultPrevented ? (document.activeElement as HTMLElement | null) : undefined;
+			}
+		: undefined) as unknown as DialogRootProps['initialFocusEl'];
+
 	const Wrapper = portal ? Portal : Fragment;
 
 	return (
@@ -39,6 +55,7 @@ const DsDrawer = ({
 			closeOnEscape={closeOnEscape}
 			closeOnInteractOutside={closeOnInteractOutside}
 			preventScroll={backdrop}
+			initialFocusEl={initialFocusEl}
 		>
 			<Wrapper>
 				{backdrop && <Dialog.Backdrop className={styles.backdrop} />}
