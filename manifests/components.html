@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -21966,6 +21966,15 @@ zebra?: boolean</code></pre>
             size: 100,
             cell: (info) =&gt; info.getValue(),
             editCell: (info: CellContext&lt;Person, number&gt;) =&gt; &lt;DsTableEditCellNumber cellContext={info} min={0} /&gt;,
+            editDisabled: (info: CellContext&lt;Person, number&gt;) =&gt; {
+                if (info.row.original.status === &#39;complicated&#39;) {
+                    return { reason: &#39;Visits are locked while the status is “Complicated”.&#39; };
+                }
+                if (info.row.original.age &gt;= 40) {
+                    return true;
+                }
+                return false;
+            },
         },
         {
             accessorKey: &#39;status&#39;,
