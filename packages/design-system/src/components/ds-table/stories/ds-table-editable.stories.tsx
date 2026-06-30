@@ -22,12 +22,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
-		docs: {
-			description: {
-				component:
-					'Inline editable cells. Define `ColumnDef.editCell` to make a column editable. Double-click the view cell to enter edit mode. Press Enter or the check button to commit, Escape or the close button to cancel. Only one cell can be in edit mode at a time. Use `ColumnDef.editDisabled` to lock individual cells: return `true` to show a lock icon, or `{ reason }` to add a tooltip explaining why editing is unavailable.',
-			},
-		},
 	},
 	args: {
 		stickyHeader: true,
