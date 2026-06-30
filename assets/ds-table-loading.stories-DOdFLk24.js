@@ -1,0 +1,5 @@
+import{i as e}from"./preload-helper-xPQekRTU.js";import{t}from"./jsx-runtime-CaZkqeYb.js";import{n,t as r}from"./ds-table-CE3APueA.js";import{n as i,t as a}from"./ds-skeleton-2u8PES4e.js";import{c as o,l as s,n as c,t as l,u}from"./components-DHPdRzAK.js";import{n as d,t as f}from"./story-decorators-9jfApPlh.js";var p,m,h,g;e((()=>{n(),a(),u(),d(),l(),p=t(),m={title:`Components/Table/Loading`,component:r,parameters:{layout:`fullscreen`},args:{columns:o.map((e,t)=>t===0?Object.assign({},e,{loadingCell:()=>(0,p.jsx)(i.Circle,{size:`sm`})}):e),data:s,stickyHeader:!0,bordered:!0,fullWidth:!0,emptyState:(0,p.jsx)(c,{})},decorators:[f]},h={args:{loading:!0}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
+  args: {
+    loading: true
+  }
+}`,...h.parameters?.docs?.source}}},g=[`Loading`]}))();export{h as Loading,g as __namedExportsOrder,m as default};

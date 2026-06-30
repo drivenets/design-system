@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-xPQekRTU.js";import{i as t,t as n}from"./ds-spinner.types-D9pXrZR5.js";var r=e((()=>{t(),n()}));export{r as t};
