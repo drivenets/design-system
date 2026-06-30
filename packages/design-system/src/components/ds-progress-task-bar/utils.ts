@@ -16,8 +16,7 @@ const ABBREVIATION_FLOOR = 1_000;
 // above it, show a whole number (e.g. 87K).
 const DECIMAL_THRESHOLD = 10;
 
-const stripTrailingZero = (value: number): string =>
-	value % 1 === 0 ? String(value) : value.toFixed(1);
+const stripTrailingZero = (value: number): string => (value % 1 === 0 ? String(value) : value.toFixed(1));
 
 /**
  * Format a task count for the legend, following the design's abbreviation rules:

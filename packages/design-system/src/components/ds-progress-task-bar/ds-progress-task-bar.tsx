@@ -79,12 +79,7 @@ const DsProgressTaskBar = ({
 							<span key={status} className={styles.status}>
 								<DsTooltip content={mergedLocale[status]}>
 									<span className={styles.statusIcon}>
-										<DsIcon
-											icon={statusIcon[status]}
-											size="tiny"
-											color={statusIconColor[status]}
-											filled
-										/>
+										<DsIcon icon={statusIcon[status]} size="tiny" color={statusIconColor[status]} filled />
 									</span>
 								</DsTooltip>
 								<span className={classNames(styles.count, statusCountClass[status])}>

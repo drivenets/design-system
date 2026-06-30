@@ -1,5 +1,5 @@
 ---
-"@drivenets/design-system": patch
+'@drivenets/design-system': patch
 ---
 
 Add `DsProgressTaskBar` component

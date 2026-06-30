@@ -56,11 +56,11 @@ describe('DsProgressTaskBar', () => {
 	});
 
 	it('uses the locale override for tooltips', async () => {
-		await page.render(
-			<DsProgressTaskBar completed={300} total={1000} locale={{ completed: 'Terminé' }} />,
-		);
+		// cspell:disable-next-line
+		await page.render(<DsProgressTaskBar completed={300} total={1000} locale={{ completed: 'Terminé' }} />);
 
 		await page.getByText('check_circle').hover();
+		// cspell:disable-next-line
 		await expect.element(page.getByRole('tooltip', { name: 'Terminé' })).toBeVisible();
 	});
 
