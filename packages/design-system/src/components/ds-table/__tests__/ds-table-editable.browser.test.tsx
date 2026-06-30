@@ -50,6 +50,15 @@ const TableWrapper = ({ onCellEdit, onRowClick, onRowDoubleClick }: WrapperProps
 			header: 'Age',
 			cell: (info) => info.getValue(),
 			editCell: (info: CellContext<TestRow, number>) => <DsTableEditCellNumber cellContext={info} />,
+			editDisabled: (info: CellContext<TestRow, number>) => {
+				if (info.row.original.id === '1') {
+					return { reason: 'Age is locked' };
+				}
+				if (info.row.original.id === '2') {
+					return true;
+				}
+				return false;
+			},
 		},
 		{
 			accessorKey: 'status',
@@ -95,6 +104,15 @@ const getEditableCell = (rowIndex: number, columnIndex: number): HTMLElement => 
 	const cell = document.querySelector(selector);
 	if (!(cell instanceof HTMLElement)) {
 		throw new Error(`Expected editable cell at row ${String(rowIndex)} col ${String(columnIndex)}`);
+	}
+	return cell;
+};
+
+const getCell = (rowIndex: number, columnIndex: number): HTMLElement => {
+	const selector = `tbody tr:nth-child(${String(rowIndex)}) td:nth-child(${String(columnIndex)})`;
+	const cell = document.querySelector(selector);
+	if (!(cell instanceof HTMLElement)) {
+		throw new Error(`Expected cell at row ${String(rowIndex)} col ${String(columnIndex)}`);
 	}
 	return cell;
 };
@@ -222,6 +240,41 @@ describe('DsTable Editable Cells', () => {
 		const editingInput = page.getByRole('textbox').first();
 		await expect.element(editingInput).toBeVisible();
 		await expect.element(editingInput).toHaveValue('Kevin');
+	});
+
+	it('locked cell with a reason: shows the lock icon and double-click does not enter edit mode', async () => {
+		const onCellEdit = vi.fn();
+
+		await page.render(<TableWrapper onCellEdit={onCellEdit} />);
+
+		const ageCell = getCell(1, 2);
+		const lockIcon = page.elementLocator(ageCell).getByRole('img', { name: 'Editing disabled' });
+		await expect.element(lockIcon).toBeVisible();
+
+		await page.elementLocator(ageCell).dblClick();
+
+		await expect.element(page.getByRole('spinbutton')).not.toBeInTheDocument();
+		expect(onCellEdit).not.toHaveBeenCalled();
+	});
+
+	it('locked cell with a reason: hovering the lock icon reveals the reason tooltip', async () => {
+		await page.render(<TableWrapper />);
+
+		const ageCell = getCell(1, 2);
+		await page.elementLocator(ageCell).getByRole('img', { name: 'Editing disabled' }).hover();
+
+		await expect.element(page.getByRole('tooltip', { name: 'Age is locked' })).toBeVisible();
+	});
+
+	it('locked cell without a reason: shows the lock icon and no tooltip on hover', async () => {
+		await page.render(<TableWrapper />);
+
+		const ageCell = getCell(2, 2);
+		const lockIcon = page.elementLocator(ageCell).getByRole('img', { name: 'Editing disabled' });
+		await expect.element(lockIcon).toBeVisible();
+
+		await lockIcon.hover();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 	});
 
 	it('row interactions: single-click on an editable cell does not fire onRowDoubleClick', async () => {
