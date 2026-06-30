@@ -133,6 +133,29 @@ describe('DsDrawer', () => {
 		expect(onSiblingClick).toHaveBeenCalledTimes(1);
 	});
 
+	it('should force closed pointer-events to none over an inline pointer-events:auto', async () => {
+		await page.render(<ControlledDrawer />);
+
+		await page.getByRole('button', { name: /open drawer/i }).click();
+		const drawer = page.getByRole('dialog');
+		await expect.element(drawer).toHaveAttribute('data-state', 'open');
+
+		await page.getByRole('button', { name: /close/i }).click();
+		await expect.element(drawer).toHaveAttribute('data-state', 'closed');
+
+		// When this drawer is open in a multi-layer Ark dialog stack (e.g. a non-modal
+		// drawer opened over another dialog, as in the workflow builder), Ark writes an
+		// inline `pointer-events: auto` onto the content element. Inline normally beats a
+		// class rule, so the closed drawer would keep swallowing clicks on neighboring UI.
+		// Ark owns that inline value, so we can't feed it through `style`; instead set it
+		// directly here and assert the closed-state rule still wins (this is what makes the
+		// rule `!important`).
+		const closedDrawer = drawer.element() as HTMLElement;
+		closedDrawer.style.pointerEvents = 'auto';
+		expect(closedDrawer.style.pointerEvents).toBe('auto');
+		expect(getComputedStyle(closedDrawer).pointerEvents).toBe('none');
+	});
+
 	it('should keep its own controls interactive while open', async () => {
 		const onInsideClick = vi.fn();
 
