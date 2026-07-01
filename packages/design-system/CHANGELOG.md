@@ -1,5 +1,12 @@
 # @drivenets/design-system
 
+## 0.14.1
+
+### Patch Changes
+
+- 99099bc: Add a `loading` prop to `DsTable`
+- c429032: Add `ColumnDef.editDisabled` to `DsTable` for locking individual editable cells.
+
 ## 0.14.0
 
 ### Minor Changes
