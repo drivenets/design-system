@@ -1,65 +1,12 @@
-@use '../../styles/typography';
-
 $bar-height: 8px;
 $segment-min-width: 4px;
-
-.root {
-	display: flex;
-	flex-direction: column;
-	gap: var(--xs);
-	width: 100%;
-}
-
-.values {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-}
-
-.legend {
-	display: flex;
-	align-items: center;
-	gap: var(--3xs);
-	min-width: 0;
-}
-
-.status {
-	display: flex;
-	align-items: center;
-	gap: var(--4xs);
-	cursor: default;
-}
 
 .statusIcon {
 	display: inline-flex;
 }
 
-.count {
-	@include typography.body-xs-reg;
-}
-
-.countCompleted {
-	color: var(--font-success);
-}
-
-.countRunning {
-	color: var(--font-action);
-}
-
-.countFailed {
-	color: var(--font-error);
-}
-
-.empty {
-	@include typography.body-xs-reg;
-	color: var(--font-secondary);
-}
-
 .total {
-	@include typography.body-xs-reg;
 	flex-shrink: 0;
-	color: var(--font-secondary);
-	text-align: right;
 }
 
 .bar {

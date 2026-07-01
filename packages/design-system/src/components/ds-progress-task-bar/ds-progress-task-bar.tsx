@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 
 import { DsIcon, type IconColor, type IconName } from '../ds-icon';
+import { DsStack } from '../ds-stack';
 import { DsTooltip } from '../ds-tooltip';
+import { DsTypography, type TypographyColor } from '../ds-typography';
 
 import styles from './ds-progress-task-bar.module.scss';
 import {
@@ -24,10 +26,10 @@ const statusIconColor: Record<TaskBarStatus, IconColor> = Object.freeze({
 	failed: 'error',
 });
 
-const statusCountClass: Record<TaskBarStatus, string> = Object.freeze({
-	completed: styles.countCompleted,
-	running: styles.countRunning,
-	failed: styles.countFailed,
+const statusTextColor: Record<TaskBarStatus, TypographyColor> = Object.freeze({
+	completed: 'success',
+	running: 'action',
+	failed: 'error',
 });
 
 const statusSegmentClass: Record<TaskBarStatus, string> = Object.freeze({
@@ -69,29 +71,38 @@ const DsProgressTaskBar = ({
 		denominator > 0 ? `${String((counts[status] / denominator) * 100)}%` : '0%';
 
 	return (
-		<div ref={ref} className={classNames(styles.root, className)} style={style}>
-			<div className={styles.values}>
-				<div className={styles.legend}>
+		<DsStack ref={ref} direction="column" gap="var(--xs)" width="100%" className={className} style={style}>
+			<DsStack direction="row" alignItems="center" justifyContent="space-between">
+				<DsStack direction="row" alignItems="center" gap="var(--3xs)">
 					{activeStatuses.length === 0 ? (
-						<span className={styles.empty}>0</span>
+						<DsTypography variant="body-xs-reg" color="secondary">
+							0
+						</DsTypography>
 					) : (
 						activeStatuses.map((status) => (
-							<span key={status} className={styles.status}>
+							<DsStack key={status} direction="row" alignItems="center" gap="var(--4xs)">
 								<DsTooltip content={mergedLocale[status]}>
 									<span className={styles.statusIcon}>
-										<DsIcon icon={statusIcon[status]} size="tiny" color={statusIconColor[status]} filled />
+										<DsIcon
+											icon={statusIcon[status]}
+											size="tiny"
+											color={statusIconColor[status]}
+											filled
+										/>
 									</span>
 								</DsTooltip>
-								<span className={classNames(styles.count, statusCountClass[status])}>
+								<DsTypography variant="body-xs-reg" color={statusTextColor[status]}>
 									{formatCount(counts[status])}
-								</span>
-							</span>
+								</DsTypography>
+							</DsStack>
 						))
 					)}
-				</div>
+				</DsStack>
 
-				<span className={styles.total}>{mergedLocale.total(formatCount(denominator))}</span>
-			</div>
+				<DsTypography variant="body-xs-reg" color="secondary" className={styles.total}>
+					{mergedLocale.total(formatCount(denominator))}
+				</DsTypography>
+			</DsStack>
 
 			<div
 				className={styles.bar}
@@ -109,7 +120,7 @@ const DsProgressTaskBar = ({
 					</DsTooltip>
 				))}
 			</div>
-		</div>
+		</DsStack>
 	);
 };
 
