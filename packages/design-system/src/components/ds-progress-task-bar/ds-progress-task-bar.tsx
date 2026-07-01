@@ -83,12 +83,7 @@ const DsProgressTaskBar = ({
 							<DsStack key={status} direction="row" alignItems="center" gap="var(--4xs)">
 								<DsTooltip content={mergedLocale[status]}>
 									<span className={styles.statusIcon}>
-										<DsIcon
-											icon={statusIcon[status]}
-											size="tiny"
-											color={statusIconColor[status]}
-											filled
-										/>
+										<DsIcon icon={statusIcon[status]} size="tiny" color={statusIconColor[status]} filled />
 									</span>
 								</DsTooltip>
 								<DsTypography variant="body-xs-reg" color={statusTextColor[status]}>

@@ -22,9 +22,7 @@ const attrs = [
 	.join(' ');
 
 export default {
-	example: zero
-		? figma.code`<DsProgressTaskBar total={999} />`
-		: figma.code`<DsProgressTaskBar ${attrs} />`,
+	example: zero ? figma.code`<DsProgressTaskBar total={999} />` : figma.code`<DsProgressTaskBar ${attrs} />`,
 	imports: ["import { DsProgressTaskBar } from '@drivenets/design-system'"],
 	id: 'ds-progress-task-bar',
 	metadata: { nestable: false },
