@@ -54,7 +54,7 @@ export default {
 			: type === 'password'
 				? figma.code`<DsPasswordInput ${sizeAttr} ${disabled ? 'disabled' : ''} />`
 				: figma.code`<DsTextInput ${sizeAttr} ${disabled ? 'disabled' : ''} ${readOnly ? 'readOnly' : ''} />`,
-	imports: [`import { ${componentName} } from '@drivenets/design-system'`],
+	imports: [`import { ${componentName} } from '@drivenets/design-system';`],
 	id: 'ds-text-input',
 	metadata: { nestable: true, props: { fcMember, fcProps } },
-};
+} satisfies figma.Template;

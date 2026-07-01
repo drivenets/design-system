@@ -93,7 +93,7 @@ export default {
 		: showIcon && icon
 			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''} icon="${icon}">${label}</DsButtonV3>`
 			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''}>${label}</DsButtonV3>`,
-	imports: ["import { DsButtonV3 } from '@drivenets/design-system'"],
+	imports: ["import { DsButtonV3 } from '@drivenets/design-system';"],
 	id: 'ds-button-v3',
 	metadata: { nestable: true },
-};
+} satisfies figma.Template;

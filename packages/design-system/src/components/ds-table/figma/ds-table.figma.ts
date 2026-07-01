@@ -10,7 +10,7 @@ import figma from 'figma';
 
 export default {
 	example: figma.code`<DsTable columns={columns} data={data} />`,
-	imports: ["import { DsTable } from '@drivenets/design-system'"],
+	imports: ["import { DsTable } from '@drivenets/design-system';"],
 	id: 'ds-table',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

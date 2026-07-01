@@ -66,7 +66,7 @@ if (footer.type === 'INSTANCE') {
 
 export default {
 	example: figma.code`<DsCard.Root size="${size}"${flagsAttr}>${headerCode}${contentCode}${footerCode}</DsCard.Root>`,
-	imports: ["import { DsCard } from '@drivenets/design-system'"],
+	imports: ["import { DsCard } from '@drivenets/design-system';"],
 	id: 'ds-card',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

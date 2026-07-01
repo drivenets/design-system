@@ -89,7 +89,7 @@ const buttonProps = [
 
 export default {
 	example: figma.code`<DsSplitButton size="${size}"${disabled ? ' disabled' : ''} slotProps={{ button: { ${buttonProps} }, select: { options: [], value: '' } }} />`,
-	imports: ["import { DsSplitButton } from '@drivenets/design-system'"],
+	imports: ["import { DsSplitButton } from '@drivenets/design-system';"],
 	id: 'ds-split-button',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

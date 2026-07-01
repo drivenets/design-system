@@ -11,7 +11,7 @@ import figma from 'figma';
 
 export default {
 	example: figma.code`<DsTable columns={columns} data={data} expandable renderExpandedRow={(row) => null} />`,
-	imports: ["import { DsTable } from '@drivenets/design-system'"],
+	imports: ["import { DsTable } from '@drivenets/design-system';"],
 	id: 'ds-table-expandable',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

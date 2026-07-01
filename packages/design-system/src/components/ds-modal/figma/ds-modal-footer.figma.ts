@@ -13,7 +13,7 @@ const rightButtons = instance.getSlot('right side buttons');
 
 export default {
 	example: figma.code`<DsModal.Footer><DsModal.Actions>${rightButtons}</DsModal.Actions></DsModal.Footer>`,
-	imports: ["import { DsModal } from '@drivenets/design-system'"],
+	imports: ["import { DsModal } from '@drivenets/design-system';"],
 	id: 'ds-modal-footer',
 	metadata: { nestable: true },
-};
+} satisfies figma.Template;

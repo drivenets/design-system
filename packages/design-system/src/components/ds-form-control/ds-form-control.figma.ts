@@ -70,7 +70,7 @@ const formControlAttrs = [labelAttr, requiredAttr, hideLabelAttr, statusAttr, me
 
 export default {
 	example: figma.code`<DsFormControl ${formControlAttrs}>${description}${child}</DsFormControl>`,
-	imports: ["import { DsFormControl } from '@drivenets/design-system'"],
+	imports: ["import { DsFormControl } from '@drivenets/design-system';"],
 	id: 'ds-form-control',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;

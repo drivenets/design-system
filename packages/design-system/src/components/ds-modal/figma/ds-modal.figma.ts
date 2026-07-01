@@ -30,7 +30,7 @@ if (footer.type === 'INSTANCE') {
 
 export default {
 	example: figma.code`<DsModal open columns={6} onOpenChange={() => {}}>${headerCode}${contentCode}${footerCode}</DsModal>`,
-	imports: ["import { DsModal } from '@drivenets/design-system'"],
+	imports: ["import { DsModal } from '@drivenets/design-system';"],
 	id: 'ds-modal',
 	metadata: { nestable: false },
-};
+} satisfies figma.Template;
