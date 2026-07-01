@@ -11,18 +11,30 @@
 		outline: none;
 	}
 
-	.editButton {
+	.editButton,
+	.lockIcon {
 		flex-shrink: 0;
 		opacity: 0;
 		pointer-events: none;
 	}
 
+	.lockIcon {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 	&:hover,
 	&:focus-within,
 	&[data-active] {
-		.editButton {
+		.editButton,
+		.lockIcon {
 			opacity: 1;
 			pointer-events: auto;
 		}
+	}
+
+	&[data-locked] {
+		cursor: default;
 	}
 }
