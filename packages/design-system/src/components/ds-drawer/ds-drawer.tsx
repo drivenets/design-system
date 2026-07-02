@@ -43,7 +43,7 @@ const DsDrawer = ({
 
 				return event.defaultPrevented ? (document.activeElement as HTMLElement | null) : undefined;
 			}
-		: undefined) as unknown as DialogRootProps['initialFocusEl'];
+		: undefined) as DialogRootProps['initialFocusEl'];
 
 	const Wrapper = portal ? Portal : Fragment;
 
