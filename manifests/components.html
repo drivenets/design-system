@@ -588,7 +588,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/90 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/90 infos</a><span class="filter-pill ok" aria-disabled="true">539 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/90 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/90 infos</a><span class="filter-pill ok" aria-disabled="true">540 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
@@ -7919,9 +7919,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsDrawer</h2>
       <div class="badges">
-        <label for="c-24-components-drawer-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-24-components-drawer-props" class="badge ok as-toggle">12 prop types</label>
         <label for="c-24-components-drawer-info" class="badge info as-toggle">1 info</label>
-        <label for="c-24-components-drawer-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-24-components-drawer-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -7955,7 +7955,7 @@ style?: React.CSSProperties</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">11 prop types</span>
+              <span class="badge ok">12 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-drawer/ds-drawer.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -7985,6 +7985,14 @@ closeOnInteractOutside?: any = false
  * @default 4
  */
 columns?: T | Responsive&lt;T&gt; = 4
+
+/**
+ * Called when focus is about to move into the drawer as it opens.
+ * Call `event.preventDefault()` to stop the drawer from stealing focus,
+ * keeping the caret where it was (e.g. in a text input that triggered the
+ * drawer). Useful for type-ahead / popover patterns.
+ */
+onOpenAutoFocus?: (event: Event) =&gt; void
 
 /**
  * Callback when the drawer open state changes
@@ -8407,6 +8415,40 @@ style?: CSSProperties</code></pre>
                         &lt;DsTypography variant=&quot;heading2&quot; className={styles.sectionContent}&gt;Out of scope section
                                                         &lt;/DsTypography&gt;
                     &lt;/div&gt;
+                &lt;/DsDrawer.Body&gt;
+            &lt;/DsDrawer&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Prevent Open Auto Focus</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">On open the drawer normally focuses its first element. Pass `onOpenAutoFocus` and call `event.preventDefault()` to keep the caret in the field that opened the drawer — useful for search / type-ahead patterns where the drawer behaves like a popover anchored to an input.</div>
+              <pre><code>const PreventOpenAutoFocus = () =&gt; {
+    const [query, setQuery] = useState(&#39;&#39;);
+
+    return (
+        &lt;div className={styles.storyWrapper}&gt;
+            &lt;DsTextInput
+                placeholder=&quot;Start typing to open the drawer&quot;
+                value={query}
+                onValueChange={setQuery}
+                slots={{ startAdornment: &lt;DsIcon icon=&quot;search&quot; size=&quot;tiny&quot; /&gt; }} /&gt;
+            &lt;DsDrawer
+                onOpenAutoFocus={fn((event: Event) =&gt; event.preventDefault())}
+                open={query.length &gt; 0}
+                onOpenChange={(open) =&gt; !open &amp;&amp; setQuery(&#39;&#39;)}&gt;
+                &lt;DsDrawer.Header&gt;
+                    &lt;DsDrawer.Title&gt;Suggestions&lt;/DsDrawer.Title&gt;
+                    &lt;DsDrawer.CloseTrigger /&gt;
+                &lt;/DsDrawer.Header&gt;
+                &lt;DsDrawer.Body className={styles.body}&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Focus stayed in the input — keep typing without losing your place.
+                                                &lt;/DsTypography&gt;
                 &lt;/DsDrawer.Body&gt;
             &lt;/DsDrawer&gt;
         &lt;/div&gt;
