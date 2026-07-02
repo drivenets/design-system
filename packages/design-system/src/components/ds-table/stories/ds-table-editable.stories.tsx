@@ -36,9 +36,6 @@ export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
 export const Editable: Story = {
-	parameters: {
-		docs: { source: { type: 'code' } },
-	},
 	render: function Render(args) {
 		const [data, setData] = useState(defaultData);
 

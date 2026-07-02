@@ -15,6 +15,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 - Combined states (e.g. checked + disabled)
 - Args flow to a component — don't hardcode in `render` what belongs in `args`
 - Prefer args-driven one-concept stories over `render` — Storybook serializes `render` JSX verbatim into the docs snippet (wrappers, `fn()`, etc.); args stories produce clean, copy-paste snippets
+- Keep `args` self-contained — inline object/array literals per story rather than referencing shared module-level consts; consts appear unexpanded in MCP/Docs snippets and break copy-paste. Duplication across stories is the accepted tradeoff.
 - Don't set `children: undefined` (or other `undefined` args) — it emits `>{undefined}` in the snippet; omit the prop instead
 - Hide internal args: `className`, `style`, `ref` → `table: { disable: true }`
 - Import variant arrays from `*.types.ts` for `argTypes.options`

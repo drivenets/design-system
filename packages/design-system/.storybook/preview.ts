@@ -7,6 +7,7 @@ const preview: Preview = {
 	parameters: {
 		docs: {
 			theme: lightTheme,
+			source: { type: 'code' },
 		},
 		options: {
 			storySort: {
