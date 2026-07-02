@@ -5,12 +5,6 @@
 	padding: var(--2xl);
 }
 
-.section {
-	display: flex;
-	flex-direction: column;
-	gap: var(--sm);
-}
-
 .sectionTitle {
 	margin: 0 0 var(--xs);
 	font-family: var(--font-family-base);
@@ -38,12 +32,6 @@
 	text-transform: capitalize;
 }
 
-.row {
-	display: flex;
-	align-items: center;
-	gap: var(--sm);
-}
-
 .rowLabel {
 	width: 120px;
 	flex-shrink: 0;
@@ -52,12 +40,6 @@
 	font-weight: var(--font-weight-medium);
 	color: var(--font-secondary);
 	text-transform: capitalize;
-}
-
-.cell {
-	flex: 1;
-	display: flex;
-	justify-content: center;
 }
 
 .onDark {
@@ -80,10 +62,4 @@
 
 .onDarkColumnHeader {
 	color: var(--secondary-300);
-}
-
-.responsiveRow {
-	display: flex;
-	align-items: center;
-	gap: var(--sm);
 }
