@@ -67,6 +67,7 @@ Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI be
 - **Story JSDoc** — explain _why_ to use the variant, not only what it renders.
 - **MDX guidelines** — put token values and rules in the file body, not only in runtime `{map}` loops agents cannot see.
 - **Exclude noise** — `tags: ['!manifest']` on anti-pattern or human-only stories/docs.
+- **Exclude performance panel** — opt a component out of the ⚡ performance panel with `parameters: { performancePanel: { disable: true } }`.
 
 ## Related
 
