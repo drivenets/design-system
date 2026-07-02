@@ -1,0 +1,39 @@
+$bar-height: 8px;
+$segment-min-width: 4px;
+
+.statusIcon {
+	display: inline-flex;
+}
+
+.total {
+	flex-shrink: 0;
+}
+
+.bar {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: $bar-height;
+	overflow: hidden;
+	background-color: var(--background-action-secondary-hover);
+	border-radius: var(--3xs);
+}
+
+.segment {
+	flex: none;
+	min-width: $segment-min-width;
+	height: 100%;
+	transition: width 0.2s ease;
+}
+
+.segmentCompleted {
+	background-color: var(--background-success-medium);
+}
+
+.segmentRunning {
+	background-color: var(--background-light-primary);
+}
+
+.segmentFailed {
+	background-color: var(--background-error);
+}

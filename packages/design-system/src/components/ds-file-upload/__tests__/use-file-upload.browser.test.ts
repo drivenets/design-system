@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { renderHook } from 'vitest-browser-react';
-import { useFileUpload, type FileUploadAdapter } from '..';
+import { RetryableFileUploadError, useFileUpload, type FileUploadAdapter } from '..';
 import { MockFileUploadAdapter } from '../stories/adapters/mock-file-upload-adapter';
 
 const createMockFile = (name = 'test') => {
@@ -189,6 +189,37 @@ describe('useFileUpload', () => {
 
 			await act(async () => {
 				await result.current.cancelUpload(fileId);
+			});
+
+			expect(firstFile(result).status).toBe('cancelled');
+		});
+
+		it('should keep cancelled status when the aborted upload rejects afterwards', async () => {
+			const adapter: FileUploadAdapter = {
+				upload: ({ signal }) =>
+					new Promise((_resolve, reject) => {
+						signal?.addEventListener('abort', () => {
+							reject(new RetryableFileUploadError('Upload cancelled'));
+						});
+					}),
+			};
+
+			const { result, act } = await renderHook(() => useFileUpload({ adapter }));
+
+			await act(() => {
+				result.current.addFiles([createMockFile()]);
+			});
+
+			await vi.waitFor(() => {
+				expect(firstFile(result).status).toBe('uploading');
+			});
+
+			const fileId = firstFile(result).id;
+
+			await act(async () => {
+				await result.current.cancelUpload(fileId);
+				// Flush the microtask queued by the adapter's abort-driven rejection.
+				await Promise.resolve();
 			});
 
 			expect(firstFile(result).status).toBe('cancelled');
