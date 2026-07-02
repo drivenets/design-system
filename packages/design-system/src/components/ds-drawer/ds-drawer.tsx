@@ -36,14 +36,16 @@ const DsDrawer = ({
 	// input that triggered it), so the caret stays put. Returning `undefined` keeps
 	// Ark's default of focusing the first element inside the drawer. The cast covers
 	// the `undefined` branch, which sits outside Ark's `MaybeElement` return type.
-	const initialFocusEl = (onOpenAutoFocus
-		? () => {
-				const event = new Event('openAutoFocus', { cancelable: true });
-				onOpenAutoFocus(event);
+	const initialFocusEl = (
+		onOpenAutoFocus
+			? () => {
+					const event = new Event('openAutoFocus', { cancelable: true });
+					onOpenAutoFocus(event);
 
-				return event.defaultPrevented ? (document.activeElement as HTMLElement | null) : undefined;
-			}
-		: undefined) as DialogRootProps['initialFocusEl'];
+					return event.defaultPrevented ? (document.activeElement as HTMLElement | null) : undefined;
+				}
+			: undefined
+	) as DialogRootProps['initialFocusEl'];
 
 	const Wrapper = portal ? Portal : Fragment;
 
