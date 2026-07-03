@@ -24,7 +24,6 @@ const config: StorybookConfig = {
 			},
 		},
 		'@storybook/addon-mcp',
-		// Enabled for every story by default.
 		'@github-ui/storybook-addon-performance-panel',
 	],
 	framework: '@storybook/react-vite',
