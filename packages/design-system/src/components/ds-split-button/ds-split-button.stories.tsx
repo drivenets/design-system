@@ -113,6 +113,7 @@ export const Disabled: Story = {
  * `loading` flag from the async action to reflect real usage.
  */
 export const Controlled: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const [value, setValue] = useState('30');
 		const [loading, setLoading] = useState(false);
