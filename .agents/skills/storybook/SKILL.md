@@ -14,7 +14,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 - Localized story when component has `locale` prop
 - Combined states (e.g. checked + disabled)
 - Args flow to a component — don't hardcode in `render` what belongs in `args`
-- Prefer args-driven one-concept stories over `render` — Storybook serializes `render` JSX verbatim into the docs snippet (wrappers, `fn()`, etc.); args stories produce clean, copy-paste snippets
+- Prefer args-driven one-concept stories over `render` — args-only stories produce clean, copy-paste snippets via dynamic source. Exception: **compound components** with multiple sub-components (`DsX.Title`, `DsX.Body`, …) — put sub-components in `render`, not `args.children` with a Fragment;
 - Keep `args` self-contained — inline object/array literals per story rather than referencing shared module-level consts; consts appear unexpanded in MCP/Docs snippets and break copy-paste. Duplication across stories is the accepted tradeoff.
 - Don't set `children: undefined` (or other `undefined` args) — it emits `>{undefined}` in the snippet; omit the prop instead
 - Hide internal args: `className`, `style`, `ref` → `table: { disable: true }`
@@ -72,6 +72,15 @@ export const Default: Story = {
   ],
 };
 ```
+
+## Docs source snippets
+
+Storybook's default `source.type` is `auto`: args-driven stories generate clean copy-paste JSX (`<DsX prop="value" />`).
+
+- **Args-driven stories** (default): rely on `auto`/`dynamic`; no override needed.
+- **Compound components**: put `DsX.SubComponent` children in `render`, not `args.children` with `<>...</>`. Fragment-wrapped args produce `React.Fragment` and wrong sub-component names in Show code. Set `displayName` on sub-components as defense-in-depth.
+- **Controlled / hook stories** (`useState` in `render`): add per-story `parameters: { docs: { source: { type: 'code' } } }` so the full render function (including hooks) appears in Show code.
+- **Showcase matrices**: hide the panel with `docs.canvas.sourceState: 'none'` (see below).
 
 ## Showcase / matrix stories
 
