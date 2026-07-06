@@ -24,16 +24,24 @@ const config: StorybookConfig = {
 			},
 		},
 		'@storybook/addon-mcp',
+		'@github-ui/storybook-addon-performance-panel',
 	],
 	framework: '@storybook/react-vite',
 	managerHead: (head = '') => `${head}\n${createFontLinksHtml()}`,
-	viteFinal: (viteConfig) => {
+	viteFinal: (viteConfig, { configType }) => {
 		if (!Array.isArray(viteConfig.plugins)) {
 			viteConfig.plugins = [];
 		}
 
 		viteConfig.plugins.push(vitePluginDesignSystem());
 		viteConfig.plugins.unshift(reactCompilerRolldownPlugin()); // Must be first.
+
+		// https://github.github.com/storybook-addon-performance-panel/docs/setup#react-profiling-in-production
+		if (configType === 'PRODUCTION') {
+			viteConfig.resolve ??= {};
+			viteConfig.resolve.alias ??= {};
+			(viteConfig.resolve.alias as Record<string, string>)['react-dom/client'] = 'react-dom/profiling';
+		}
 
 		return viteConfig;
 	},

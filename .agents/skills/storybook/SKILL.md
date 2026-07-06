@@ -99,6 +99,7 @@ Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI be
 - **Story JSDoc** — plain prose explaining _why_ to use the variant, not only what it renders. Do NOT add `@summary` to a story: Autodocs renders a story's leading JSDoc verbatim under the title, so the tag shows as literal text. The manifest falls back to the description.
 - **MDX guidelines** — put token values and rules in the file body, not only in runtime `{map}` loops agents cannot see.
 - **Exclude noise** — `tags: ['!manifest']` on anti-pattern or human-only stories/docs.
+- **Exclude performance panel** — opt a component out of the ⚡ performance panel with `parameters: { performancePanel: { disable: true } }`.
 - **Verify locally** — with Storybook running (`pnpm start`), the dev server exposes a built-in MCP at `http://localhost:6006/mcp`. Use whichever configured MCP server points at that URL (the alias is per-developer) to check your changes: `list-all-documentation` (confirm `!manifest` stories are absent) and `get-documentation` / `get-documentation-for-story` (confirm snippets render `<DsX>` not the HOC name, descriptions have no `@summary`, props look right). This is not `packages/mcp`, which serves published docs to DS _consumers_.
 
 ## Related
