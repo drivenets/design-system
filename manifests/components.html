@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -33122,6 +33122,38 @@ export default [
           rel=&quot;noopener noreferrer&quot;
         &gt;
           Manual config &amp; per-IDE details →
+        &lt;/a&gt;
+      &lt;/DsTypography&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;DsDivider /&gt;
+
+&lt;div&gt;
+  &lt;div className={styles.sectionHeader}&gt;
+    &lt;DsIcon icon=&quot;bolt&quot; size=&quot;medium&quot; /&gt;
+    &lt;DsTypography variant=&quot;heading2&quot;&gt;Performance Panel&lt;/DsTypography&gt;
+  &lt;/div&gt;
+
+&lt;DsTypography variant=&quot;body-md-reg&quot; asChild className={styles.sectionDescription}&gt;
+	&lt;span&gt;
+		Every story has a live ⚡ Performance tab at the bottom of the Canvas. It tracks frame timing (FPS), input
+		responsiveness (INP), long tasks, layout shift (CLS), React render metrics (mount, slow updates, render
+		cascades), and memory in real time as you interact — so you can catch regressions while developing, before
+		they ship. Open a story in Canvas view and interact with it to populate the metrics.
+	&lt;/span&gt;
+&lt;/DsTypography&gt;
+
+  &lt;div className={styles.steps}&gt;
+    &lt;div className={styles.step}&gt;
+      &lt;DsTypography variant=&quot;body-sm-reg&quot; asChild className={styles.docsLink}&gt;
+        &lt;a
+          href=&quot;https://github.github.com/storybook-addon-performance-panel/&quot;
+          target=&quot;_blank&quot;
+          rel=&quot;noopener noreferrer&quot;
+        &gt;
+          Metrics reference &amp; how to read them →
         &lt;/a&gt;
       &lt;/DsTypography&gt;
     &lt;/div&gt;
