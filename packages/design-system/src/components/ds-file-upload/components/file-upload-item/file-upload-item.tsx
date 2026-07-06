@@ -52,8 +52,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					<DsTooltip content="Retry">
 						<DsButton
 							type="button"
-							design="v1.2"
-							buttonType="tertiary"
+							variant="tertiary"
 							aria-label={`Retry ${name} upload`}
 							onClick={() => onRetry(id)}
 						>
@@ -66,8 +65,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					<DsTooltip content="Remove">
 						<DsButton
 							type="button"
-							design="v1.2"
-							buttonType="tertiary"
+							variant="tertiary"
 							aria-label={`Remove ${name} upload`}
 							onClick={() => onRemove?.(id)}
 						>
@@ -80,8 +78,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					<DsTooltip content="Cancel">
 						<DsButton
 							type="button"
-							design="v1.2"
-							buttonType="tertiary"
+							variant="tertiary"
 							aria-label={`Cancel ${name} upload`}
 							onClick={() => onCancel(id)}
 						>
@@ -94,8 +91,7 @@ export const FileUploadItem: React.FC<FileUploadItemProps> = ({
 					<DsTooltip content="Delete">
 						<DsButton
 							type="button"
-							design="v1.2"
-							buttonType="tertiary"
+							variant="tertiary"
 							aria-label={`Delete ${name}`}
 							onClick={() => onDelete?.(id)}
 						>

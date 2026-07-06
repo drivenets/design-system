@@ -1,5 +1,5 @@
 import { flexRender } from '@tanstack/react-table';
-import { DsButtonV3 } from '../../../ds-button-v3';
+import { DsButton } from '../../../ds-button';
 import { TableHead } from '../core-table';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getGroupColumnSizeStyle } from '../../grouping';
@@ -31,7 +31,7 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 					{flexRender(header.column.columnDef.header, header.getContext())}
 				</span>
 				{isCollapsible && (
-					<DsButtonV3
+					<DsButton
 						variant="secondary"
 						size="tiny"
 						icon={isCollapsed ? 'chevron_right' : 'chevron_left'}

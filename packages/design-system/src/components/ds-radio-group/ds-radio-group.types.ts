@@ -1,4 +1,3 @@
-import type React from 'react';
 import { type RadioGroupItemProps, type RadioGroupRootProps } from '@ark-ui/react/radio-group';
 
 /**
@@ -61,64 +60,4 @@ export interface DsRadioGroupItemProps extends Pick<
 	 * Optional additional info text displayed below the label
 	 */
 	labelInfo?: string;
-}
-
-/**
- * DEPRECATED: Legacy radio option configuration
- * Use compound component pattern instead: <DsRadioGroup.Root><DsRadioGroup.Item /></DsRadioGroup.Root>
- * @deprecated
- */
-export interface DsRadioOptionLegacy<ValueType = string> {
-	/**
-	 * Display label for the radio option
-	 */
-	label: string;
-	/**
-	 * Value associated with this radio option
-	 */
-	value: ValueType;
-	/**
-	 * Additional label info for the radio option
-	 */
-	labelInfo?: string;
-	/**
-	 * Whether this radio option is disabled
-	 */
-	disabled?: boolean;
-}
-
-/**
- * DEPRECATED: Legacy props for DsRadioGroupLegacy component
- * Use compound component pattern instead
- * @deprecated
- */
-export interface DsRadioGroupLegacyProps<TOption extends DsRadioOptionLegacy = DsRadioOptionLegacy> {
-	/**
-	 * The radio group options
-	 */
-	options: TOption[];
-	/**
-	 * The selected value
-	 */
-	value?: TOption['value'];
-	/**
-	 * The default selected value
-	 */
-	defaultValue?: TOption['value'];
-	/**
-	 * Event handler called when the selected value changes
-	 */
-	onValueChange?: (value: TOption['value']) => void;
-	/**
-	 * Whether the entire radio group is disabled.
-	 */
-	disabled?: boolean;
-	/**
-	 * Additional CSS class names
-	 */
-	className?: string;
-	/**
-	 * Additional inline styles
-	 */
-	style?: React.CSSProperties;
 }

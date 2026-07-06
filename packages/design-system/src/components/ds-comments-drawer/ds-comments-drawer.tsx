@@ -114,9 +114,7 @@ export const DsCommentsDrawer = ({
 					<DsDrawer.Title>{commentCount} Comments</DsDrawer.Title>
 
 					<div className={styles.headerActions}>
-						<DsButton design="v1.2" buttonType="tertiary" size="small" aria-label="More actions">
-							<DsIcon icon="more_vert" size="tiny" />
-						</DsButton>
+						<DsButton icon="more_vert" variant="tertiary" size="small" aria-label="More actions" />
 
 						<div className={styles.divider} />
 
@@ -136,19 +134,17 @@ export const DsCommentsDrawer = ({
 					/>
 
 					<DsButton
-						design="v1.2"
-						buttonType="tertiary"
+						icon="filter_list"
+						variant="tertiary"
 						size="small"
 						aria-label="Filter"
 						onClick={handleFilterClick}
-					>
-						<DsIcon icon="filter_list" size="tiny" />
-					</DsButton>
+					/>
 				</DsDrawer.Toolbar>
 
 				{hasResolved && (
 					<DsDrawer.Toolbar>
-						<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleShowResolvedToggle}>
+						<DsButton variant="tertiary" size="small" onClick={handleShowResolvedToggle}>
 							{showResolved ? 'Hide' : 'Show'} resolved ({resolvedCount})
 						</DsButton>
 					</DsDrawer.Toolbar>

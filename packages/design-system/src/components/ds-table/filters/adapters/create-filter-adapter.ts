@@ -8,8 +8,8 @@ export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> 
 	initialValue: TFilterValue;
 	/** TanStack `filterFn` for this column. */
 	filterFn: FilterAdapter<TData, TFilterValue, TCellValue>['columnFilterFn'];
-	toChips: FilterAdapter<TData, TFilterValue, TCellValue>['toChips'];
-	fromChip: FilterAdapter<TData, TFilterValue, TCellValue>['fromChip'];
+	toTags: FilterAdapter<TData, TFilterValue, TCellValue>['toTags'];
+	fromTag: FilterAdapter<TData, TFilterValue, TCellValue>['fromTag'];
 	getActiveFiltersCount: FilterAdapter<TData, TFilterValue, TCellValue>['getActiveFiltersCount'];
 	renderFilter: (value: TFilterValue, onChange: (value: TFilterValue) => void) => ReactNode;
 	/** Cell renderer; receives the cell value, not the filter value. */
@@ -19,7 +19,7 @@ export interface FilterAdapterConfig<TData, TFilterValue, TCellValue = unknown> 
 /**
  * Base factory used by every specialized adapter. Reach for it only when
  * `createCheckboxFilterAdapter` / `createDualRangeFilterAdapter` don't fit
- * (custom UI, mixed sub-filters, bespoke chip logic).
+ * (custom UI, mixed sub-filters, bespoke tag logic).
  */
 export function createFilterAdapter<TData, TFilterValue, TCellValue = unknown>(
 	config: FilterAdapterConfig<TData, TFilterValue, TCellValue>,
@@ -30,8 +30,8 @@ export function createFilterAdapter<TData, TFilterValue, TCellValue = unknown>(
 		initialValue: config.initialValue,
 		columnFilterFn: config.filterFn,
 		cellRenderer: config.cellRenderer,
-		toChips: config.toChips,
-		fromChip: config.fromChip,
+		toTags: config.toTags,
+		fromTag: config.fromTag,
 		getActiveFiltersCount: config.getActiveFiltersCount,
 		reset: () => config.initialValue,
 		renderFilter: config.renderFilter,

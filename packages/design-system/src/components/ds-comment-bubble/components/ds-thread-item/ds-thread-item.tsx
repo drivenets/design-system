@@ -79,10 +79,10 @@ export const DsThreadItem = ({
 							rows={3}
 						/>
 						<div className={styles.editActions}>
-							<DsButton design="v1.2" buttonType="tertiary" size="small" onClick={handleCancelEdit}>
+							<DsButton variant="tertiary" size="small" onClick={handleCancelEdit}>
 								Cancel
 							</DsButton>
-							<DsButton design="v1.2" size="small" onClick={handleSaveEdit} disabled={isSaveDisabled}>
+							<DsButton variant="primary" size="small" onClick={handleSaveEdit} disabled={isSaveDisabled}>
 								Save
 							</DsButton>
 						</div>
@@ -97,9 +97,7 @@ export const DsThreadItem = ({
 					{hasEditActions && (
 						<DsDropdownMenu.Root>
 							<DsDropdownMenu.Trigger asChild>
-								<DsButton design="v1.2" buttonType="tertiary" size="tiny" aria-label="More actions">
-									<DsIcon icon="more_vert" size="tiny" />
-								</DsButton>
+								<DsButton icon="more_vert" variant="tertiary" size="tiny" aria-label="More actions" />
 							</DsDropdownMenu.Trigger>
 							<DsDropdownMenu.Content className={styles.dropdownContent}>
 								{onEdit && (
@@ -122,8 +120,7 @@ export const DsThreadItem = ({
 					)}
 					{onResolved && (
 						<DsButton
-							design="v1.2"
-							buttonType="tertiary"
+							variant="tertiary"
 							size="tiny"
 							onClick={() => onResolved(id)}
 							aria-label="Mark message as resolved"

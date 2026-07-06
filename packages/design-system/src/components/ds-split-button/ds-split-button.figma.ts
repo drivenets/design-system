@@ -25,7 +25,7 @@ const size =
 const structure = instance.findInstance('.button-structure', { traverseInstances: true });
 const showIcon = structure.type === 'INSTANCE' ? structure.getBoolean('Show icon') : false;
 
-// `DsButtonV3.icon` is an icon-name string. Swapped icons keep the placeholder layer
+// `DsButton.icon` is an icon-name string. Swapped icons keep the placeholder layer
 // name (e.g. `DAP_GM_O_check_circle`), so resolve via Code Connect ID or metadata.
 const toIconName = (name: string): string =>
 	name

@@ -83,10 +83,8 @@ export function DsExpandableTextInput({
 
 				endAdornment: (
 					<DsButton
-						design="v1.2"
 						size={clearButtonSize}
-						buttonType="tertiary"
-						variant="filled"
+						variant="tertiary"
 						className={styles.clearTrigger}
 						onClick={() => {
 							setExpanded(false);

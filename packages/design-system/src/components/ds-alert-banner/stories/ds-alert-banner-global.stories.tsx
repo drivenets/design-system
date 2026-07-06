@@ -61,10 +61,10 @@ export const InfoBlue: Story = {
 					bit longer so that you can see how spacing within an alert works with this kind of content.
 				</DsAlertBanner.Body>
 				<DsAlertBanner.Actions>
-					<DsButton design="v1.2" variant="danger" size="small">
+					<DsButton variant="primary" color="error" size="small">
 						Proceed
 					</DsButton>
-					<DsButton design="v1.2" buttonType="secondary" size="small">
+					<DsButton variant="secondary" size="small">
 						Skip
 					</DsButton>
 				</DsAlertBanner.Actions>
@@ -135,10 +135,10 @@ export const WithActions: Story = {
 							a bit longer so that you can see how spacing within an alert works with this kind of content.
 						</DsAlertBanner.Body>
 						<DsAlertBanner.Actions>
-							<DsButton design="v1.2" variant="danger" size="small">
+							<DsButton variant="primary" color="error" size="small">
 								Proceed
 							</DsButton>
-							<DsButton design="v1.2" buttonType="secondary" size="small">
+							<DsButton variant="secondary" size="small">
 								Skip
 							</DsButton>
 						</DsAlertBanner.Actions>
@@ -217,13 +217,13 @@ export const CustomBody: Story = {
 							</div>
 						</DsAlertBanner.Body>
 						<DsAlertBanner.Actions>
-							<DsButton design="v1.2" variant="danger" size="small">
+							<DsButton variant="primary" color="error" size="small">
 								Fix Now
 							</DsButton>
-							<DsButton design="v1.2" buttonType="secondary" size="small">
+							<DsButton variant="secondary" size="small">
 								View Details
 							</DsButton>
-							<DsButton design="v1.2" buttonType="secondary" size="small">
+							<DsButton variant="secondary" size="small">
 								Ignore
 							</DsButton>
 						</DsAlertBanner.Actions>

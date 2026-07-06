@@ -17,15 +17,15 @@
 		transition: width 0.3s ease-in-out;
 
 		&--low {
-			background-color: var(--background-error);
+			background-color: var(--background-background-negative);
 		}
 
 		&--medium {
-			background-color: var(--color-dap-blue-600);
+			background-color: var(--background-background-info-strong);
 		}
 
 		&--high {
-			background-color: var(--color-dap-data-green);
+			background-color: var(--background-background-positive-strong);
 		}
 	}
 }

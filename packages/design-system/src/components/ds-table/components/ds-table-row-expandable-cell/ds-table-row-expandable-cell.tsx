@@ -14,8 +14,7 @@ export const DsTableRowExpandableCell = <TData,>({
 
 	return (
 		<DsButton
-			design="v1.2"
-			buttonType="tertiary"
+			variant="tertiary"
 			size="small"
 			className={classnames(styles.button, buttonClassName)}
 			onClick={(e: React.MouseEvent) => {

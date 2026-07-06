@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import { DsButtonV3 } from '../../../../ds-button-v3';
+import { DsButton } from '../../../../ds-button';
 import { DsIcon } from '../../../../ds-icon';
 import { DsTooltip } from '../../../../ds-tooltip';
 import styles from './ds-table-editable-cell.module.scss';
@@ -45,7 +45,7 @@ export const DsTableEditableCell = <TData, TValue>({
 			aria-label="Double-click to edit"
 		>
 			{children}
-			<DsButtonV3
+			<DsButton
 				className={styles.editButton}
 				variant="tertiary"
 				size="small"

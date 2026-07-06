@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DsButtonV3 } from '../ds-button-v3';
+import { DsButton } from '../ds-button';
 import { DsIcon } from '../ds-icon';
 import { DsAvatar } from '../ds-avatar';
 import { DsDivider } from '../ds-divider';
@@ -51,7 +51,7 @@ export const WithContentItemsAndCTA: Story = {
 	render: (args) => (
 		<DsPopover.Root {...args}>
 			<DsPopover.Trigger>
-				<DsButtonV3 variant="secondary">Release lock</DsButtonV3>
+				<DsButton variant="secondary">Release lock</DsButton>
 			</DsPopover.Trigger>
 			<DsPopover.Panel>
 				<DsPopover.Header icon={<DsIcon icon="lock" color="action-secondary" />}>
@@ -78,9 +78,9 @@ export const WithContentItemsAndCTA: Story = {
 					</DsPopover.ContentItem>
 				</DsPopover.Content>
 				<DsPopover.Footer>
-					<DsButtonV3 variant="secondary" size="small" icon="check_circle">
+					<DsButton variant="secondary" size="small" icon="check_circle">
 						Confirm
-					</DsButtonV3>
+					</DsButton>
 				</DsPopover.Footer>
 			</DsPopover.Panel>
 		</DsPopover.Root>
@@ -91,7 +91,7 @@ export const SingleContentItem: Story = {
 	render: (args) => (
 		<DsPopover.Root {...args}>
 			<DsPopover.Trigger>
-				<DsButtonV3 variant="secondary">Set element status</DsButtonV3>
+				<DsButton variant="secondary">Set element status</DsButton>
 			</DsPopover.Trigger>
 			<DsPopover.Panel>
 				<DsPopover.Header icon={<DsIcon icon="account_tree" color="action-secondary" />}>
@@ -117,7 +117,7 @@ export const SingleContentItem: Story = {
 export const Legacy: Story = {
 	tags: ['deprecated'],
 	render: () => (
-		<DsPopover side="top" trigger={<DsButtonV3 variant="secondary">Legacy call form</DsButtonV3>}>
+		<DsPopover side="top" trigger={<DsButton variant="secondary">Legacy call form</DsButton>}>
 			<DsPopover.Header icon={<DsIcon icon="lock" color="action-secondary" />}>
 				Legacy call form
 			</DsPopover.Header>
@@ -134,7 +134,7 @@ export const WithImage: Story = {
 	render: (args) => (
 		<DsPopover.Root {...args}>
 			<DsPopover.Trigger>
-				<DsButtonV3 variant="secondary">London</DsButtonV3>
+				<DsButton variant="secondary">London</DsButton>
 			</DsPopover.Trigger>
 			<DsPopover.Panel>
 				<DsPopover.Header icon={<DsIcon icon="location_on" color="action-secondary" />}>
