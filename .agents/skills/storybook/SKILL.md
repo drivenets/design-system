@@ -79,7 +79,7 @@ Storybook's default `source.type` is `auto`: args-driven stories generate clean 
 
 - **Args-driven stories** (default): rely on `auto`/`dynamic`; no override needed.
 - **Compound components**: put `DsX.SubComponent` children in `render`, not `args.children` with `<>...</>`. Fragment-wrapped args produce `React.Fragment` and wrong sub-component names in Show code. Set `displayName` on sub-components as defense-in-depth.
-- **`render` with logic before `return`** (`useState`, `useEffect`, custom handlers, etc.): add per-story `parameters: { docs: { source: { type: 'code' } } }`. Default `auto`/`dynamic` strips everything before `return` and only emits resolved JSX — fine for a bare `render: (args) => (<DsX {...args}>…</DsX>)`, wrong for async/controlled patterns.
+- **`render` with logic before `return`** (`useState`, `useEffect`, custom handlers, etc.): add per-story `parameters: { docs: { source: { type: 'code' } } }`. Inline `<DsX … />` in the `render` return — do **not** extract a story-only wrapper component; wrappers leak into Show code and MCP snippets. Inline complex `args` (e.g. `items` arrays) in `render` too when agents need that structure in snippets — not only in `args`. Duplicate the render body across stories when needed. Do **not** use `parameters.docs.source.code` string snippets. Default `auto`/`dynamic` strips everything before `return` and only emits resolved JSX — fine for a bare `render: (args) => (<DsX {...args}>…</DsX>)`, wrong for async/controlled patterns.
 - **`render` that goes straight to `return`** (compound sub-components, no hooks/handlers): rely on `auto`/`dynamic`; do **not** add `type: 'code'`.
 - **Showcase matrices**: hide the panel with `docs.canvas.sourceState: 'none'` (see below).
 
