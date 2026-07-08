@@ -107,4 +107,7 @@ DsFormControl.Textarea = controlify(DsTextarea);
 DsFormControl.Select = controlify(DsSelect);
 DsFormControl.Description = DsFormControlDescription;
 
+DsFormControl.displayName = 'DsFormControl';
+DsFormControl.Description.displayName = 'DsFormControl.Description';
+
 export default DsFormControl;

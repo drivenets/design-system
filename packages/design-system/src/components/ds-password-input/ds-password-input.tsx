@@ -64,4 +64,6 @@ const DsPasswordInput: FC<DsPasswordInputProps> = ({
 	);
 };
 
+DsPasswordInput.displayName = 'DsPasswordInput';
+
 export default DsPasswordInput;

@@ -116,3 +116,5 @@ export function DsStep({
 		</Wrapper>
 	);
 }
+
+DsStep.displayName = 'DsStep';

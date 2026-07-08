@@ -10,3 +10,5 @@ export const DsTabsContent = ({ value, className, style, children }: DsTabsConte
 		</Tabs.Content>
 	);
 };
+
+DsTabsContent.displayName = 'DsTabs.Content';

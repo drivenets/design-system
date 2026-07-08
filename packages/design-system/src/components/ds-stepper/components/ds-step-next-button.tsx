@@ -20,3 +20,5 @@ export function DsNextStepButton({ children, size = 'small', ...rest }: DsNextSt
 		</DsButton>
 	);
 }
+
+DsNextStepButton.displayName = 'DsNextStepButton';

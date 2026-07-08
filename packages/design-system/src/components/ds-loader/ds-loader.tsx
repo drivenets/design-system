@@ -15,4 +15,6 @@ const DsLoader = ({ variant = 'spinner', className, ...props }: DsLoaderProps) =
 	);
 };
 
+DsLoader.displayName = 'DsLoader';
+
 export default DsLoader;

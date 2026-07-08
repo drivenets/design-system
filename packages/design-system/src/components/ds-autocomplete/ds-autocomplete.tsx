@@ -140,3 +140,5 @@ export const DsAutocomplete = ({
 		</Combobox.Root>
 	);
 };
+
+DsAutocomplete.displayName = 'DsAutocomplete';

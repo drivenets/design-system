@@ -33,4 +33,6 @@ const DsSkeletonRect = ({
 	);
 };
 
+DsSkeletonRect.displayName = 'DsSkeletonRect';
+
 export default DsSkeletonRect;

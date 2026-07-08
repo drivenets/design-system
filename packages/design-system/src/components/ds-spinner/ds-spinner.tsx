@@ -48,4 +48,6 @@ const DsSpinner: React.FC<DsSpinnerProps> = ({ size = 'medium', className, style
 	);
 };
 
+DsSpinner.displayName = 'DsSpinner';
+
 export default DsSpinner;

@@ -119,4 +119,6 @@ DsAlertBanner.Title = Title;
 DsAlertBanner.Body = Body;
 DsAlertBanner.Actions = Actions;
 
+DsAlertBanner.displayName = 'DsAlertBanner';
+
 export default DsAlertBanner;

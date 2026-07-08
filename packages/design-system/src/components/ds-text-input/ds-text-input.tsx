@@ -76,4 +76,6 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	);
 };
 
+DsTextInput.displayName = 'DsTextInput';
+
 export default DsTextInput;

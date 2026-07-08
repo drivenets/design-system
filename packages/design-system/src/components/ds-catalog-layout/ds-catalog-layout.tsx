@@ -121,10 +121,18 @@ const ContentHeader = ({
 	</div>
 );
 
+Header.displayName = 'DsCatalogLayout.Header';
+Body.displayName = 'DsCatalogLayout.Body';
+SideMenu.displayName = 'DsCatalogLayout.SideMenu';
+Content.displayName = 'DsCatalogLayout.Content';
+ContentHeader.displayName = 'DsCatalogLayout.ContentHeader';
+
 DsCatalogLayout.Header = Header;
 DsCatalogLayout.Body = Body;
 DsCatalogLayout.SideMenu = SideMenu;
 DsCatalogLayout.Content = Content;
 DsCatalogLayout.ContentHeader = ContentHeader;
+
+DsCatalogLayout.displayName = 'DsCatalogLayout';
 
 export default DsCatalogLayout;

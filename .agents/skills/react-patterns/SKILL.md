@@ -71,6 +71,10 @@ const DsButton = ({ ref, ...props }: DsButtonProps) => <button ref={ref} {...pro
 | **Event propagation**                 | Stop propagation in nested clickable content |
 | **Validate, don't silently fallback** | Reject bad input values                      |
 
+## displayName
+
+Set `displayName` on every new public `Ds*` export (`DsX.displayName = 'DsX'`; compound members: `DsX.Sub.displayName = 'DsX.Sub'`).
+
 ## Related
 
 - Stories: [storybook](../storybook/SKILL.md)

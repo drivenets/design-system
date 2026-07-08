@@ -17,4 +17,6 @@ const DsCheckboxGroup: React.FC<DsCheckboxGroupProps> = ({
 	);
 };
 
+DsCheckboxGroup.displayName = 'DsCheckboxGroup';
+
 export default DsCheckboxGroup;

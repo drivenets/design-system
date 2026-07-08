@@ -25,7 +25,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ds{Name}Variants } from './ds-{name}.types';
-import Ds{Name} from './ds-{name}';
+import { Ds{Name} } from './index'; // public export — use ./index when a barrel/HOC exists
 
 const meta: Meta<typeof Ds{Name}> = {
   title: 'Components/{Name}',
@@ -43,17 +43,32 @@ export default meta;
 type Story = StoryObj<typeof Ds{Name}>;
 ```
 
-## Wrapped components (HOC)
+When no `index.ts` barrel exists, import the default export from `./ds-{name}` instead. **Never** point `meta.component` at a base file when a `withResponsiveProps` wrapper in `index.ts` is the public API — Show code uses `meta.component` for args-only stories and needs the wrapped export's `displayName`.
 
-If the public export is wrapped (e.g. `withResponsiveProps`), the HOC's `displayName` is `withResponsiveProps(DsX)`, which leaks into docs code snippets. Set the public name in `index.ts`:
+## Component displayName (mandatory)
+
+Every public `Ds*` React export used in stories must set `displayName` to its consumer-facing name. Required for correct **Show code** in production Storybook (React Compiler mangles runtime names → `<P` instead of `<DsX`), HOC-wrapped exports, and compound sub-members in `render`.
 
 ```ts
-export const DsX = withResponsiveProps(DsXBase, ['size']);
+// Single export — end of ds-{name}.tsx
+DsSelect.displayName = 'DsSelect';
 
-DsX.displayName = 'DsX';
+// default export
+DsFormControl.displayName = 'DsFormControl';
+
+// HOC / withResponsiveProps — index.ts on wrapped export
+DsStack.displayName = 'DsStack';
+
+// Compound API — each member
+DsTabs.Root.displayName = 'DsTabs.Root';
+DsAlertBanner.Title.displayName = 'DsAlertBanner.Title';
 ```
 
-Keep `meta.component` pointed at the wrapped export (what consumers import). Precedent: `ds-stack/index.ts`, `ds-split-button/index.ts`.
+Keep `meta.component` pointed at the wrapped export (what consumers import). Precedents: `ds-stack/index.ts`, `ds-split-button/index.ts`, `ds-status-badge-v2/index.ts`, `ds-alert-banner/ds-alert-banner.tsx`.
+
+**Import rule:** stories import the same symbol as `meta.component`. HOC-wrapped components (`withResponsiveProps`) → `import { DsX } from './index'`. Do not import the base file for `meta.component` while consumers use the barrel.
+
+Do **not** set `displayName` on hooks (`useToaster`), types, or internal HOC helpers (`controlify` wrappers).
 
 ## Styling
 
@@ -75,9 +90,9 @@ export const Default: Story = {
 
 ## Docs source snippets
 
-Storybook's default `source.type` is `auto`: args-driven stories generate clean copy-paste JSX (`<DsX prop="value" />`).
+Storybook's default `source.type` is `auto`. Args-only stories (no `render`) always use **dynamic** serialization — there is no story JSX to lift. They need `displayName` on `meta.component` (React Compiler mangles runtime names otherwise → `<N>` instead of `<DsX>`).
 
-- **Args-driven stories** (default): rely on `auto`/`dynamic`; no override needed.
+- **Args-driven stories** (default): rely on `auto`/`dynamic`; require `displayName` + correct `meta.component` import (see above).
 - **Compound components**: put `DsX.SubComponent` children in `render`, not `args.children` with `<>...</>`. Fragment-wrapped args produce `React.Fragment` and wrong sub-component names in Show code. Set `displayName` on sub-components as defense-in-depth.
 - **`render` with logic before `return`** (`useState`, `useEffect`, custom handlers, etc.): add per-story `parameters: { docs: { source: { type: 'code' } } }`. Inline `<DsX … />` in the `render` return — do **not** extract a story-only wrapper component; wrappers leak into Show code and MCP snippets. Inline complex `args` (e.g. `items` arrays) in `render` too when agents need that structure in snippets — not only in `args`. Duplicate the render body across stories when needed. Do **not** use `parameters.docs.source.code` string snippets. Default `auto`/`dynamic` strips everything before `return` and only emits resolved JSX — fine for a bare `render: (args) => (<DsX {...args}>…</DsX>)`, wrong for async/controlled patterns.
 - **`render` that goes straight to `return`** (compound sub-components, no hooks/handlers): rely on `auto`/`dynamic`; do **not** add `type: 'code'`.

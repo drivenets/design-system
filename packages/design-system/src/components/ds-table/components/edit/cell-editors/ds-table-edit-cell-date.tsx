@@ -48,3 +48,4 @@ export const DsTableEditCellDate = <TData extends RowData>({
 		</TableEditFormControl>
 	);
 };
+DsTableEditCellDate.displayName = 'DsTableEditCellDate';

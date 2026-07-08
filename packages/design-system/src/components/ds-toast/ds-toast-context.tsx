@@ -77,3 +77,4 @@ export const useToaster = (): DsToastContextType => {
 	}
 	return context;
 };
+DsToastProvider.displayName = 'DsToastProvider';

@@ -30,4 +30,6 @@ const DsTooltip: FC<DsTooltipProps> = ({ content, children, slotProps }) => {
 	);
 };
 
+DsTooltip.displayName = 'DsTooltip';
+
 export default DsTooltip;

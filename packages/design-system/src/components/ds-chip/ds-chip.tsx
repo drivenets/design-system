@@ -71,4 +71,6 @@ const DsChip: React.FC<DsChipProps> = ({
 	);
 };
 
+DsChip.displayName = 'DsChip';
+
 export default DsChip;

@@ -44,4 +44,6 @@ const DsKeyValuePair = ({
 	);
 };
 
+DsKeyValuePair.displayName = 'DsKeyValuePair';
+
 export default DsKeyValuePair;

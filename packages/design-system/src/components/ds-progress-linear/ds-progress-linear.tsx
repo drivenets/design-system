@@ -104,4 +104,6 @@ const DsProgressLinear = ({
 	);
 };
 
+DsProgressLinear.displayName = 'DsProgressLinear';
+
 export default DsProgressLinear;

@@ -170,6 +170,14 @@ const Actions = ({
 	</div>
 );
 
+Header.displayName = 'DsDrawer.Header';
+Title.displayName = 'DsDrawer.Title';
+CloseTrigger.displayName = 'DsDrawer.CloseTrigger';
+Toolbar.displayName = 'DsDrawer.Toolbar';
+Body.displayName = 'DsDrawer.Body';
+Footer.displayName = 'DsDrawer.Footer';
+Actions.displayName = 'DsDrawer.Actions';
+
 DsDrawer.Header = Header;
 DsDrawer.Title = Title;
 DsDrawer.CloseTrigger = CloseTrigger;
@@ -177,5 +185,7 @@ DsDrawer.Toolbar = Toolbar;
 DsDrawer.Body = Body;
 DsDrawer.Footer = Footer;
 DsDrawer.Actions = Actions;
+
+DsDrawer.displayName = 'DsDrawer';
 
 export default DsDrawer;

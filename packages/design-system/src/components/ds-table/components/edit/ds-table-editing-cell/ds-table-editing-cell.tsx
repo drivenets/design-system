@@ -74,3 +74,4 @@ export const DsTableEditingCell = <TData, TValue>({ cell }: DsTableEditingCellPr
 		</div>
 	);
 };
+DsTableEditingCell.displayName = 'DsTableEditingCell';

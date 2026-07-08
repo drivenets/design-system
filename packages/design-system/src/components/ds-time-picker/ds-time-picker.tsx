@@ -182,4 +182,6 @@ const DsTimePicker = (props: DsTimePickerProps) => {
 	);
 };
 
+DsTimePicker.displayName = 'DsTimePicker';
+
 export default DsTimePicker;

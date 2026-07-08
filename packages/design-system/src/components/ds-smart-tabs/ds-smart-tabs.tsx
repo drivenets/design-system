@@ -108,6 +108,10 @@ const DsSmartTabs = ({
 	);
 };
 
+DsSmartTab.displayName = 'DsSmartTabs.Tab';
+
 DsSmartTabs.Tab = DsSmartTab;
+
+DsSmartTabs.displayName = 'DsSmartTabs';
 
 export default DsSmartTabs;

@@ -39,4 +39,6 @@ const DsStatusBadge: React.FC<DsStatusBadgeProps> = ({
 	);
 };
 
+DsStatusBadge.displayName = 'DsStatusBadge';
+
 export default DsStatusBadge;

@@ -46,3 +46,4 @@ export const DsCommentIndicator = ({
 		</button>
 	);
 };
+DsCommentIndicator.displayName = 'DsCommentIndicator';

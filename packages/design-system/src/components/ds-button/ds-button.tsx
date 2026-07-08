@@ -9,4 +9,6 @@ const DsButton = (props: DsButtonUnifiedProps) => {
 	return <DsButtonLegacy {...props} />;
 };
 
+DsButton.displayName = 'DsButton';
+
 export default DsButton;

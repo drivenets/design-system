@@ -39,4 +39,6 @@ const DsTypography = ({
 	);
 };
 
+DsTypography.displayName = 'DsTypography';
+
 export default DsTypography;

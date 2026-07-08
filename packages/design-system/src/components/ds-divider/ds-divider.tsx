@@ -19,4 +19,6 @@ const DsDivider: React.FC<DsDividerProps> = ({ orientation = 'horizontal', compo
 	return <Component role="separator" aria-orientation={orientation} className={classes} style={style} />;
 };
 
+DsDivider.displayName = 'DsDivider';
+
 export default DsDivider;

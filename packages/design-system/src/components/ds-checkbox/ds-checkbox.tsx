@@ -42,4 +42,6 @@ const DsCheckbox = ({
 	);
 };
 
+DsCheckbox.displayName = 'DsCheckbox';
+
 export default DsCheckbox;

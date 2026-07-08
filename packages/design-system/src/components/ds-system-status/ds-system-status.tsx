@@ -30,4 +30,6 @@ const DsSystemStatus: React.FC<DsSystemStatusProps> = ({ status, label, classNam
 	);
 };
 
+DsSystemStatus.displayName = 'DsSystemStatus';
+
 export default DsSystemStatus;
