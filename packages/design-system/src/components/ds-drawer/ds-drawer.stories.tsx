@@ -482,8 +482,7 @@ export const PreventOpenAutoFocus: Story = {
 		const input = canvas.getByPlaceholderText(/start typing/i);
 		await userEvent.type(input, 'hello');
 
-		const drawer = await canvas.findByRole('dialog');
-		await expect(drawer).toBeVisible();
+		await waitFor(() => expect(canvas.getByRole('dialog')).toBeVisible());
 
 		await waitFor(() => expect(input).toHaveFocus());
 		await expect(args.onOpenAutoFocus).toHaveBeenCalled();
