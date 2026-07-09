@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -2443,6 +2443,11 @@ const Footer = ({ className, children, ref, ...rest }: DsCardFooterProps) =&gt; 
 		{children}
 	&lt;/div&gt;
 );
+
+Root.displayName = &#39;DsCard.Root&#39;;
+Header.displayName = &#39;DsCard.Header&#39;;
+Body.displayName = &#39;DsCard.Body&#39;;
+Footer.displayName = &#39;DsCard.Footer&#39;;
 
 export const DsCard = {
 	Root,
@@ -16023,6 +16028,9 @@ export const DsSegmentGroup = {
 	Item,
 	ItemText,
 };
+DsSegmentGroup.Root.displayName = &#39;DsSegmentGroup.Root&#39;;
+DsSegmentGroup.Item.displayName = &#39;DsSegmentGroup.Item&#39;;
+DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
 </code></pre></div>
     </div>
         </div>
@@ -18015,12 +18023,7 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import {
-    DsIcon,
-    DsStack,
-    DsStatusBadgeV2,
-    DsStatusBadgeV2 as DsStatusBadgeV2Responsive,
-} from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsIcon, DsStack, DsStatusBadgeV2 } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -18409,17 +18412,9 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
               
               <pre><code>const ResponsiveSize = () =&gt; (
     &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--sm)&quot; alignItems=&quot;center&quot; flexWrap=&quot;wrap&quot;&gt;
-        &lt;DsStatusBadgeV2Responsive
-            phase=&quot;active&quot;
-            label=&quot;lg: medium / md: small&quot;
-            size={{ lg: &#39;medium&#39;, md: &#39;small&#39; }}
-        /&gt;
-        &lt;DsStatusBadgeV2Responsive
-            phase=&quot;pending&quot;
-            label=&quot;lg: small / md: medium&quot;
-            size={{ lg: &#39;small&#39;, md: &#39;medium&#39; }}
-        /&gt;
-        &lt;DsStatusBadgeV2Responsive phase=&quot;execution&quot; label=&quot;static: medium&quot; size=&quot;medium&quot; /&gt;
+        &lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;lg: medium / md: small&quot; size={{ lg: &#39;medium&#39;, md: &#39;small&#39; }} /&gt;
+        &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label=&quot;lg: small / md: medium&quot; size={{ lg: &#39;small&#39;, md: &#39;medium&#39; }} /&gt;
+        &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label=&quot;static: medium&quot; size=&quot;medium&quot; /&gt;
     &lt;/DsStack&gt;
 );</code></pre>
             </div>
@@ -24950,6 +24945,8 @@ const DsTabsRoot = ({
 	);
 };
 
+DsTabsRoot.displayName = &#39;DsTabs.Root&#39;;
+
 export const DsTabs = {
 	Root: DsTabsRoot,
 	List: DsTabsList,
@@ -28332,6 +28329,22 @@ const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemAct
 	&lt;/button&gt;
 );
 
+DsTreeRoot.displayName = &#39;DsTree.Root&#39;;
+DsTreeTree.displayName = &#39;DsTree.Tree&#39;;
+Object.defineProperty(TreeView.NodeProvider, &#39;displayName&#39;, { value: &#39;DsTree.NodeProvider&#39; });
+Object.defineProperty(TreeView.NodeContext, &#39;displayName&#39;, { value: &#39;DsTree.NodeContext&#39; });
+DsTreeBranch.displayName = &#39;DsTree.Branch&#39;;
+DsTreeBranchControl.displayName = &#39;DsTree.BranchControl&#39;;
+DsTreeBranchIndicator.displayName = &#39;DsTree.BranchIndicator&#39;;
+DsTreeBranchText.displayName = &#39;DsTree.BranchText&#39;;
+DsTreeBranchContent.displayName = &#39;DsTree.BranchContent&#39;;
+DsTreeBranchIndentGuide.displayName = &#39;DsTree.BranchIndentGuide&#39;;
+DsTreeItem.displayName = &#39;DsTree.Item&#39;;
+DsTreeItemText.displayName = &#39;DsTree.ItemText&#39;;
+DsTreeItemIndicator.displayName = &#39;DsTree.ItemIndicator&#39;;
+DsTreeItemAction.displayName = &#39;DsTree.ItemAction&#39;;
+DsTreeNodeCheckbox.displayName = &#39;DsTree.NodeCheckbox&#39;;
+
 export const DsTree = {
 	Root: DsTreeRoot,
 	Tree: DsTreeTree,
@@ -30764,6 +30777,11 @@ const Footer = ({ className, children, ref, ...rest }: DsCardFooterProps) =&gt; 
 	&lt;/div&gt;
 );
 
+Root.displayName = &#39;DsCard.Root&#39;;
+Header.displayName = &#39;DsCard.Header&#39;;
+Body.displayName = &#39;DsCard.Body&#39;;
+Footer.displayName = &#39;DsCard.Footer&#39;;
+
 export const DsCard = {
 	Root,
 	Header,
@@ -31306,6 +31324,9 @@ export const DsSegmentGroup = {
 	Item,
 	ItemText,
 };
+DsSegmentGroup.Root.displayName = &#39;DsSegmentGroup.Root&#39;;
+DsSegmentGroup.Item.displayName = &#39;DsSegmentGroup.Item&#39;;
+DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
 </code></pre></div>
     </div>
         </div>
@@ -31590,6 +31611,8 @@ const DsTabsRoot = ({
 		&lt;/Tabs.Root&gt;
 	);
 };
+
+DsTabsRoot.displayName = &#39;DsTabs.Root&#39;;
 
 export const DsTabs = {
 	Root: DsTabsRoot,
@@ -32375,6 +32398,22 @@ const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemAct
 		{children}
 	&lt;/button&gt;
 );
+
+DsTreeRoot.displayName = &#39;DsTree.Root&#39;;
+DsTreeTree.displayName = &#39;DsTree.Tree&#39;;
+Object.defineProperty(TreeView.NodeProvider, &#39;displayName&#39;, { value: &#39;DsTree.NodeProvider&#39; });
+Object.defineProperty(TreeView.NodeContext, &#39;displayName&#39;, { value: &#39;DsTree.NodeContext&#39; });
+DsTreeBranch.displayName = &#39;DsTree.Branch&#39;;
+DsTreeBranchControl.displayName = &#39;DsTree.BranchControl&#39;;
+DsTreeBranchIndicator.displayName = &#39;DsTree.BranchIndicator&#39;;
+DsTreeBranchText.displayName = &#39;DsTree.BranchText&#39;;
+DsTreeBranchContent.displayName = &#39;DsTree.BranchContent&#39;;
+DsTreeBranchIndentGuide.displayName = &#39;DsTree.BranchIndentGuide&#39;;
+DsTreeItem.displayName = &#39;DsTree.Item&#39;;
+DsTreeItemText.displayName = &#39;DsTree.ItemText&#39;;
+DsTreeItemIndicator.displayName = &#39;DsTree.ItemIndicator&#39;;
+DsTreeItemAction.displayName = &#39;DsTree.ItemAction&#39;;
+DsTreeNodeCheckbox.displayName = &#39;DsTree.NodeCheckbox&#39;;
 
 export const DsTree = {
 	Root: DsTreeRoot,
