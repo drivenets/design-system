@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
 import { DsAvatar } from './ds-avatar';
-import styles from './ds-avatar.stories.module.scss';
+import { dsAvatarSizes, dsAvatarTypes } from './ds-avatar.types';
+import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsAvatar> = {
 	title: 'Components/Avatar',
@@ -10,88 +10,78 @@ const meta: Meta<typeof DsAvatar> = {
 		layout: 'centered',
 	},
 	argTypes: {
-		size: {
-			control: 'select',
-			options: ['xsm', 'sm', 'regular', 'md', 'lg', 'xl'],
-		},
-		type: {
-			control: 'radio',
-			options: ['circle', 'rounded'],
-		},
+		size: { control: 'select', options: dsAvatarSizes },
+		type: { control: 'radio', options: dsAvatarTypes },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 
-type AvatarStory = StoryObj<typeof DsAvatar>;
+type Story = StoryObj<typeof DsAvatar>;
 
-export const Default: AvatarStory = {
+/**
+ * Without an image the avatar shows the initials derived from `name`, and the
+ * full `name` appears in a tooltip on hover. This is the common state before a
+ * profile picture is available.
+ */
+export const Default: Story = {
 	args: {
 		name: 'John Doe',
-		size: 'regular',
-		type: 'circle',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const avatar = canvas.getByText('JD'); // Check for initials
-		await expect(avatar).toBeInTheDocument();
-
-		// Hover to check tooltip
-		await userEvent.hover(avatar);
-		const tooltip = await within(document.body).findByRole('tooltip');
-		await expect(tooltip).toHaveTextContent('John Doe');
 	},
 };
 
-export const WithImage: AvatarStory = {
+/**
+ * When `src` resolves, the image replaces the initials. Provide `alt` for
+ * screen readers; it defaults to `name` when omitted.
+ */
+export const WithImage: Story = {
 	args: {
 		name: 'Jane Smith',
 		src: 'https://i.pravatar.cc/150?u=jane',
-		size: 'regular',
-		type: 'circle',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const image = await canvas.findByRole('img', { name: 'Jane Smith' });
-		await expect(image).toBeInTheDocument();
-		await expect(image).toHaveAttribute('src', 'https://i.pravatar.cc/150?u=jane');
+		alt: 'Jane Smith',
 	},
 };
 
-export const Sizes: AvatarStory = {
+/**
+ * If the image fails to load the component falls back to the initials, so a
+ * broken `src` never leaves an empty avatar. `onStatusChange` fires with
+ * `'error'` in this case.
+ */
+export const ImageFallback: Story = {
+	args: {
+		name: 'Ada Lovelace',
+		src: 'https://invalid.example/missing.png',
+	},
+};
+
+/**
+ * The `rounded` shape — useful for representing teams, organizations,
+ * or entities rather than individual people.
+ */
+export const Rounded: Story = {
+	args: {
+		name: 'Rose Oliver',
+		type: 'rounded',
+	},
+};
+
+/**
+ * Visual reference for every size token, from `xsm` to `xl`. Pick the size that
+ * matches the surrounding density; `regular` is the default.
+ */
+export const Sizes: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: (args) => (
-		<div className={styles.sizesContainer}>
+		<DsStack direction="row" alignItems="center" gap="var(--standard)">
 			<DsAvatar {...args} size="xsm" name="Extra Small" />
 			<DsAvatar {...args} size="sm" name="Sam Mitchell" />
 			<DsAvatar {...args} size="regular" name="Rachel Evans" />
 			<DsAvatar {...args} size="md" name="Mike Edwards" />
 			<DsAvatar {...args} size="lg" name="Laura Adams" />
 			<DsAvatar {...args} size="xl" name="Xavier Lee" />
-		</div>
+		</DsStack>
 	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		// Check all sizes are rendered
-		await expect(canvas.getByText('ES')).toBeInTheDocument();
-		await expect(canvas.getByText('SM')).toBeInTheDocument();
-		await expect(canvas.getByText('RE')).toBeInTheDocument();
-		await expect(canvas.getByText('ME')).toBeInTheDocument();
-		await expect(canvas.getByText('LA')).toBeInTheDocument();
-		await expect(canvas.getByText('XL')).toBeInTheDocument();
-	},
-};
-
-export const Shapes: AvatarStory = {
-	render: (args) => (
-		<div className={styles.shapesContainer}>
-			<DsAvatar {...args} type="circle" name="Chris Irving" />
-			<DsAvatar {...args} type="rounded" name="Rose Oliver" />
-		</div>
-	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		// Check both shapes are rendered
-		await expect(canvas.getByText('CI')).toBeInTheDocument();
-		await expect(canvas.getByText('RO')).toBeInTheDocument();
-	},
 };

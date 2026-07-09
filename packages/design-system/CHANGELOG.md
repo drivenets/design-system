@@ -1,5 +1,18 @@
 # @drivenets/design-system
 
+## 0.15.0
+
+### Minor Changes
+
+- b9bf892: Add an `onOpenAutoFocus` prop to `DsDrawer`. Call `event.preventDefault()` to stop the drawer from stealing focus on open, keeping the caret where it was (e.g. in a text input that triggered the drawer) for type-ahead / popover patterns.
+
+### Patch Changes
+
+- b9bf892: Fix `DsDrawer` intercepting pointer events while closed. A closed (or closing) drawer stays mounted and transformed; for inset/offset drawers this could land the invisible content over neighboring UI and swallow its clicks. Closed-state content is now `pointer-events: none`, so a closed drawer is fully click-through regardless of docked position, while open drawers (including during the open animation) stay interactive.
+- f672a7c: Add `DsProgressTaskBar` component
+- 99099bc: Add a `loading` prop to `DsTable`
+- c429032: Add `ColumnDef.editDisabled` to `DsTable` for locking individual editable cells.
+
 ## 0.14.0
 
 ### Minor Changes
