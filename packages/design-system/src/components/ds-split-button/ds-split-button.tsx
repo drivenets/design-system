@@ -4,6 +4,12 @@ import styles from './ds-split-button.module.scss';
 import type { DsSplitButtonProps, SplitButtonSize } from './ds-split-button.types';
 import { DsButtonV3 } from '../ds-button-v3';
 
+/**
+ * Secondary action button paired with a dropdown select for choosing a related option.
+ * Both slots share a size and disabled state controlled by the split button.
+ *
+ * @summary split action button with a primary action and an option select
+ */
 const DsSplitButton = ({
 	ref,
 	className,

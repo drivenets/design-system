@@ -11,6 +11,12 @@ const iconSizeMap: Record<ButtonV3Size, IconSize> = Object.freeze({
 	tiny: 'tiny',
 });
 
+/**
+ * Button for user-triggered actions that do not navigate to another route.
+ * Supports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.
+ *
+ * @summary action button with color/variant/size, icon-only, loading and selected states
+ */
 const DsButtonV3 = ({
 	ref,
 	className,

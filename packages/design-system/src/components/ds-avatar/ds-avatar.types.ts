@@ -1,7 +1,10 @@
 import type { CSSProperties } from 'react';
 
-export type DsAvatarSize = 'xsm' | 'sm' | 'regular' | 'md' | 'lg' | 'xl';
-export type DsAvatarType = 'circle' | 'rounded';
+export const dsAvatarSizes = ['xsm', 'sm', 'regular', 'md', 'lg', 'xl'] as const;
+export const dsAvatarTypes = ['circle', 'rounded'] as const;
+
+export type DsAvatarSize = (typeof dsAvatarSizes)[number];
+export type DsAvatarType = (typeof dsAvatarTypes)[number];
 
 export interface DsAvatarProps {
 	/**

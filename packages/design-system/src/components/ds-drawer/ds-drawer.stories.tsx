@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import classNames from 'classnames';
 import DsDrawer from './ds-drawer';
 import { DsButton } from '../ds-button';
@@ -54,6 +55,9 @@ A composable drawer component that supports:
 		closeOnInteractOutside: {
 			control: 'boolean',
 			description: 'Close when clicking outside',
+		},
+		onOpenAutoFocus: {
+			table: { disable: true },
 		},
 	},
 };
@@ -433,5 +437,55 @@ export const ToggleFullSize: Story = {
 				</DsDrawer>
 			</div>
 		);
+	},
+};
+
+/**
+ * On open the drawer normally focuses its first element. Pass `onOpenAutoFocus`
+ * and call `event.preventDefault()` to keep the caret in the field that opened the
+ * drawer — useful for search / type-ahead patterns where the drawer behaves like a
+ * popover anchored to an input.
+ */
+export const PreventOpenAutoFocus: Story = {
+	args: {
+		onOpenAutoFocus: fn((event: Event) => event.preventDefault()),
+	},
+	render: function Render(args: DsDrawerProps) {
+		const [query, setQuery] = useState('');
+
+		return (
+			<div className={styles.storyWrapper}>
+				<DsTextInput
+					placeholder="Start typing to open the drawer"
+					value={query}
+					onValueChange={setQuery}
+					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+				/>
+
+				<DsDrawer {...args} open={query.length > 0} onOpenChange={(open) => !open && setQuery('')}>
+					<DsDrawer.Header>
+						<DsDrawer.Title>Suggestions</DsDrawer.Title>
+						<DsDrawer.CloseTrigger />
+					</DsDrawer.Header>
+					<DsDrawer.Body className={styles.body}>
+						<DsTypography variant="body-md-reg">
+							Focus stayed in the input — keep typing without losing your place.
+						</DsTypography>
+					</DsDrawer.Body>
+				</DsDrawer>
+			</div>
+		);
+	},
+	play: async ({ canvasElement, args }) => {
+		const canvas = within(canvasElement);
+
+		const input = canvas.getByPlaceholderText(/start typing/i);
+		await userEvent.type(input, 'hello');
+
+		const drawer = await canvas.findByRole('dialog');
+		await expect(drawer).toBeVisible();
+
+		await waitFor(() => expect(input).toHaveFocus());
+		await expect(args.onOpenAutoFocus).toHaveBeenCalled();
 	},
 };
