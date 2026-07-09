@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/89 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/89 infos</a><span class="filter-pill ok" aria-disabled="true">542 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/89 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/89 infos</a><span class="filter-pill ok" aria-disabled="true">544 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -27964,9 +27964,9 @@ style?: CSSProperties = {}</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
-        <label for="c-82-components-tooltip-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-82-components-tooltip-props" class="badge ok as-toggle">6 prop types</label>
         <label for="c-82-components-tooltip-info" class="badge info as-toggle">1 info</label>
-        <label for="c-82-components-tooltip-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-82-components-tooltip-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -28000,7 +28000,7 @@ style?: CSSProperties = {}</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">3 prop types</span>
+              <span class="badge ok">6 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-tooltip/ds-tooltip.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -28013,6 +28013,22 @@ children: ReactNode
  * Tooltip content
  */
 content?: string | ReactNode
+
+/**
+ * When true the trigger renders but the tooltip never opens.
+ */
+disabled?: boolean = false
+
+/**
+ * Anchors the tooltip to a virtual rect instead of the trigger, re-evaluated on
+ * each reposition. Return `null` to fall back to the trigger.
+ */
+getAnchorRect?: () =&gt; TooltipAnchorRect | null
+
+/**
+ * Placement relative to the trigger; `-start` / `-end` align to that edge.
+ */
+placement?: (typeof tooltipPlacements)[number] = &#39;top&#39;
 
 /**
  * Props forwarded to nested sub-components.
@@ -28073,6 +28089,24 @@ slotProps?: {
         &lt;br /&gt;
         &lt;span style={{ color: &#39;#9cdcfe&#39; }}&gt;No truncation should occur.&lt;/span&gt;
     &lt;/div&gt;)}&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Placement End</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const PlacementEnd = () =&gt; &lt;DsTooltip content=&quot;Anchored to the end of the trigger.&quot; placement=&quot;top-end&quot;&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;DsTooltip content=&quot;You should not see this tooltip.&quot; disabled&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
