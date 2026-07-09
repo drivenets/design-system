@@ -138,3 +138,122 @@ describe('DsTypography asChild', () => {
 		expect(ref.current?.tagName).toBe('BUTTON');
 	});
 });
+
+const longText =
+	'The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.';
+
+describe('DsTypography truncate', () => {
+	it('single-line truncate clips to one line with an ellipsis', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg" truncate>
+					{longText}
+				</DsTypography>
+			</div>,
+		);
+
+		const el = page.getByText(longText).element() as HTMLElement;
+		const computed = getComputedStyle(el);
+
+		expect(computed.whiteSpace).toBe('nowrap');
+		expect(computed.textOverflow).toBe('ellipsis');
+		expect(computed.overflow).toBe('hidden');
+		expect(el.scrollWidth).toBeGreaterThan(el.clientWidth);
+	});
+
+	it('numeric truncate clamps to the requested number of lines', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg" truncate={3}>
+					{longText}
+				</DsTypography>
+			</div>,
+		);
+
+		const el = page.getByText(longText).element() as HTMLElement;
+
+		expect(el.style.getPropertyValue('--ds-typography-line-clamp')).toBe('3');
+		expect(getComputedStyle(el).webkitLineClamp).toBe('3');
+	});
+
+	it('values below 1 clamp to a single line', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg" truncate={0}>
+					{longText}
+				</DsTypography>
+			</div>,
+		);
+
+		const el = page.getByText(longText).element() as HTMLElement;
+
+		expect(getComputedStyle(el).whiteSpace).toBe('nowrap');
+	});
+
+	it('does not clip when truncate is omitted', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg">{longText}</DsTypography>
+			</div>,
+		);
+
+		const el = page.getByText(longText).element() as HTMLElement;
+
+		expect(getComputedStyle(el).whiteSpace).not.toBe('nowrap');
+		expect(getComputedStyle(el).textOverflow).not.toBe('ellipsis');
+	});
+});
+
+describe('DsTypography tooltip on truncation', () => {
+	it('shows the full text in a tooltip when the text overflows', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg" truncate tooltip>
+					{longText}
+				</DsTypography>
+			</div>,
+		);
+
+		await page.getByText(longText, { exact: true }).hover();
+		await expect.element(page.getByRole('tooltip', { name: longText })).toBeVisible();
+	});
+
+	it('does not show a tooltip when the text fits', async () => {
+		await page.render(
+			<div style={{ width: 600 }}>
+				<DsTypography variant="body-md-reg" truncate tooltip>
+					Short text
+				</DsTypography>
+			</div>,
+		);
+
+		await page.getByText('Short text').hover();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+	});
+
+	it('does not show a tooltip when tooltip is enabled but truncate is off', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg" tooltip>
+					{longText}
+				</DsTypography>
+			</div>,
+		);
+
+		await page.getByText(longText).hover();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+	});
+
+	it('uses tooltipContent as an override for the tooltip body', async () => {
+		await page.render(
+			<div style={{ width: 120 }}>
+				<DsTypography variant="body-md-reg" truncate tooltip tooltipContent="Full override text">
+					{longText}
+				</DsTypography>
+			</div>,
+		);
+
+		await page.getByText(longText, { exact: true }).hover();
+		await expect.element(page.getByRole('tooltip', { name: 'Full override text' })).toBeVisible();
+	});
+});

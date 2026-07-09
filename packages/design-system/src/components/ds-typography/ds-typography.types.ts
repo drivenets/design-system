@@ -32,6 +32,19 @@ export interface DsTypographyProps {
 	 */
 	asChild?: boolean;
 	/**
+	 * Truncates overflowing text with an ellipsis. A number clamps to that many lines
+	 * (`true` is a single line). Needs a width-constrained layout context.
+	 */
+	truncate?: boolean | number;
+	/**
+	 * Reveals the full text in a tooltip on hover/focus, but only while it overflows.
+	 */
+	tooltip?: boolean;
+	/**
+	 * Tooltip content override; defaults to `children`.
+	 */
+	tooltipContent?: React.ReactNode;
+	/**
 	 * The content of the component
 	 */
 	children: React.ReactNode;
