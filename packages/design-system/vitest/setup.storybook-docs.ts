@@ -54,79 +54,7 @@ async function isStorybookReachable(url: string): Promise<boolean> {
 	}
 }
 
-// Vitest runs project globalSetup even when that project is excluded via
-// `--project="!storybook-docs"`. Parse argv so we can no-op when docs tests
-// are not part of the current run (e.g. default `pnpm test` / `test:coverage`).
-function parseProjectCliArgs(): string[] {
-	const projects: string[] = [];
-
-	for (let index = 0; index < process.argv.length; index += 1) {
-		const arg = process.argv[index];
-		if (!arg) {
-			continue;
-		}
-
-		if (arg === '--project') {
-			const value = process.argv[index + 1];
-			if (value) {
-				projects.push(...value.split(',').map((project) => project.trim()));
-			}
-			continue;
-		}
-
-		if (arg.startsWith('--project=')) {
-			projects.push(
-				...arg
-					.slice('--project='.length)
-					.split(',')
-					.map((project) => project.trim()),
-			);
-		}
-	}
-
-	return projects;
-}
-
-function isStorybookDocsProjectSelected(): boolean {
-	const projects = parseProjectCliArgs();
-
-	if (projects.length === 0) {
-		// No --project filter: all projects run, including storybook-docs.
-		return true;
-	}
-
-	const included = new Set<string>();
-	const excluded = new Set<string>();
-
-	for (const project of projects) {
-		if (project.startsWith('!')) {
-			excluded.add(project.slice(1));
-			continue;
-		}
-
-		included.add(project);
-	}
-
-	if (excluded.has('storybook-docs')) {
-		return false;
-	}
-
-	if (included.size > 0) {
-		// Positive selection (e.g. `--project=browser`): only run when storybook-docs is listed.
-		return included.has('storybook-docs');
-	}
-
-	// Exclusion-only filters (e.g. `--project=!requires-build`): storybook-docs still runs.
-	return true;
-}
-
 export default async function globalSetup() {
-	// Skip serving storybook-static when docs tests are excluded. CI runs
-	// `test:coverage` before `build:storybook`, so storybook-static/ may not exist yet.
-	if (!isStorybookDocsProjectSelected()) {
-		return;
-	}
-
 	const configuredUrl = process.env.STORYBOOK_URL;
 
 	if (configuredUrl) {
