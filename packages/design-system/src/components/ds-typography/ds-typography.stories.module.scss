@@ -23,3 +23,24 @@
 .onDarkLabel {
 	color: var(--secondary-300);
 }
+
+.truncateBox {
+	width: 260px;
+	padding: var(--sm);
+	border: 1px dashed var(--border);
+	border-radius: var(--3xs);
+	resize: horizontal;
+	overflow: auto;
+}
+
+.placementViewport {
+	display: flex;
+	flex-direction: column;
+	gap: var(--md);
+	min-height: 100vh;
+	padding: var(--md);
+}
+
+.pushToBottom {
+	margin-top: auto;
+}

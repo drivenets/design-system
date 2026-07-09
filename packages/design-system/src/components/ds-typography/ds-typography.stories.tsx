@@ -7,6 +7,8 @@ import storyStyles from './ds-typography.stories.module.scss';
 
 const variantOptions = Object.keys(typographyVariantConfig);
 const sample = 'The quick brown fox jumps over the lazy dog.';
+const longSample =
+	'The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.';
 
 const meta: Meta<typeof DsTypography> = {
 	title: 'Components/Typography',
@@ -16,6 +18,13 @@ const meta: Meta<typeof DsTypography> = {
 		variant: { control: 'select', options: variantOptions },
 		color: { control: 'select', options: typographyColors },
 		asChild: { control: 'boolean' },
+		truncate: {
+			control: 'select',
+			options: ['off', 'single', '2 lines', '3 lines'],
+			mapping: { off: false, single: true, '2 lines': 2, '3 lines': 3 },
+		},
+		tooltip: { control: 'boolean' },
+		tooltipContent: { table: { disable: true } },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
 		ref: { table: { disable: true } },
@@ -292,5 +301,96 @@ export const AsChild: Story = {
 				<button type="button">Button styled like body-md-md / action</button>
 			</DsTypography>
 		</DsStack>
+	),
+};
+
+export const TruncateSingleLine: Story = {
+	parameters: { controls: { disable: true } },
+	render: () => (
+		<div className={storyStyles.truncateBox}>
+			<DsTypography variant="body-md-reg" truncate>
+				{longSample}
+			</DsTypography>
+		</div>
+	),
+};
+
+export const TruncateMultipleLines: Story = {
+	parameters: { controls: { disable: true } },
+	render: () => (
+		<DsStack direction="column" gap="var(--sm)">
+			<div className={storyStyles.truncateBox}>
+				<code className={storyStyles.label}>truncate={'{2}'}</code>
+				<DsTypography variant="body-md-reg" truncate={2}>
+					{longSample}
+				</DsTypography>
+			</div>
+			<div className={storyStyles.truncateBox}>
+				<code className={storyStyles.label}>truncate={'{3}'}</code>
+				<DsTypography variant="body-md-reg" truncate={3}>
+					{longSample}
+				</DsTypography>
+			</div>
+		</DsStack>
+	),
+};
+
+export const TruncateWithTooltip: Story = {
+	parameters: { controls: { disable: true } },
+	render: () => (
+		<DsStack direction="column" gap="var(--md)">
+			<div className={storyStyles.truncateBox}>
+				<code className={storyStyles.label}>overflowing — tooltip on hover</code>
+				<DsTypography variant="body-md-reg" truncate tooltip>
+					{longSample}
+				</DsTypography>
+			</div>
+			<div className={storyStyles.truncateBox}>
+				<code className={storyStyles.label}>fits — no tooltip</code>
+				<DsTypography variant="body-md-reg" truncate tooltip>
+					Short text
+				</DsTypography>
+			</div>
+			<div className={storyStyles.truncateBox}>
+				<code className={storyStyles.label}>2 lines + tooltip</code>
+				<DsTypography variant="body-md-reg" truncate={2} tooltip>
+					{longSample}
+				</DsTypography>
+			</div>
+		</DsStack>
+	),
+};
+
+export const TruncateTooltipPlacement: Story = {
+	parameters: { controls: { disable: true }, layout: 'fullscreen' },
+	render: () => (
+		<div className={storyStyles.placementViewport}>
+			<div className={storyStyles.truncateBox}>
+				<code className={storyStyles.label}>near top — tooltip flips to bottom, arrow at ellipsis</code>
+				<DsTypography variant="body-md-reg" truncate tooltip>
+					{longSample}
+				</DsTypography>
+			</div>
+			<div className={classNames(storyStyles.truncateBox, storyStyles.pushToBottom)}>
+				<code className={storyStyles.label}>near bottom — tooltip on top, arrow at ellipsis</code>
+				<DsTypography variant="body-md-reg" truncate tooltip>
+					{longSample}
+				</DsTypography>
+			</div>
+		</div>
+	),
+};
+
+export const Playground: Story = {
+	args: {
+		variant: 'body-md-reg',
+		truncate: true,
+		tooltip: true,
+		children: longSample,
+	},
+	render: (args) => (
+		<div className={storyStyles.truncateBox}>
+			<DsTypography {...args} />
+		</div>
 	),
 };
