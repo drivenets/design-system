@@ -46,11 +46,12 @@
 		"generate-scss-dts": "typed-scss-modules ./src -o ./.scss-dts --nameFormat all --exportType default > /dev/null 2>&1",
 		"figma:lint": "figma connect parse --exit-on-unreadable-files",
 		"figma:publish": "figma connect publish --exit-on-unreadable-files",
-		"test": "vitest --project=\"!requires-build\"",
+		"test": "vitest --project=\"!requires-build\" --project=\"!storybook-docs\"",
 		"test:coverage": "pnpm test --coverage",
 		"test:unit": "vitest --project=unit",
 		"test:browser": "vitest --project=browser",
 		"test:requires-build": "vitest --project=requires-build",
+		"test:storybook-docs": "pnpm build:storybook && vitest --project=storybook-docs",
 		"build": "tsdown",
 		"build:watch": "pnpm build --watch",
 		"build:storybook": "storybook build"

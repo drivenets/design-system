@@ -1,0 +1,163 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DsBreadcrumb docs snippets > Default > MCP manifest snippet matches staged authoring rules 1`] = `
+"const Default = function Render(args) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const items: DsBreadcrumbItem[] = [
+        { type: 'link', label: 'Home', href: '/', icon: 'home' },
+        { type: 'link', label: 'Inventory', href: '/inventory', icon: 'settings' },
+        { type: 'link', label: 'Catalog', href: '/inventory/catalog', icon: 'newspaper' },
+    ];
+    const depth = location.pathname.split('/').filter(Boolean).length;
+    const visibleItems = items.slice(0, depth + 1);
+
+    return (
+        <DsBreadcrumb
+            items={visibleItems}
+            onSelect={(href) => {
+                args.onSelect?.(href);
+                void navigate({ to: href });
+            }}
+        />
+    );
+};"
+`;
+
+exports[`DsBreadcrumb docs snippets > Default > Show code panel matches staged authoring rules 1`] = `
+"{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  decorators: [Story => withTanStackRouter(Story, '/inventory/catalog')],
+  render: function Render(args) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const items: DsBreadcrumbItem[] = [{
+      type: 'link',
+      label: 'Home',
+      href: '/',
+      icon: 'home'
+    }, {
+      type: 'link',
+      label: 'Inventory',
+      href: '/inventory',
+      icon: 'settings'
+    }, {
+      type: 'link',
+      label: 'Catalog',
+      href: '/inventory/catalog',
+      icon: 'newspaper'
+    }];
+    const depth = location.pathname.split('/').filter(Boolean).length;
+    const visibleItems = items.slice(0, depth + 1);
+    return <DsBreadcrumb items={visibleItems} onSelect={href => {
+      args.onSelect?.(href);
+      void navigate({
+        to: href
+      });
+    }} />;
+  }
+}"
+`;
+
+exports[`DsBreadcrumb docs snippets > With Dropdown > MCP manifest snippet matches staged authoring rules 1`] = `
+"const WithDropdown = function Render(args) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const items: DsBreadcrumbItem[] = [
+        { type: 'link', label: 'Home', href: '/' },
+        { type: 'link', label: 'Network Visibility', href: '/network' },
+        {
+            type: 'dropdown',
+            label: 'Vienna HQ',
+            icon: 'location_on',
+            options: [
+                { label: 'Vienna HQ', href: '/network/vienna' },
+                { label: 'Paris Office', href: '/network/paris' },
+            ],
+        },
+        {
+            type: 'dropdown',
+            label: 'Router A',
+            icon: 'device_hub',
+            options: [
+                { label: 'Router A', href: '/network/vienna/router-a' },
+                { label: 'Switch B', href: '/network/vienna/switch-b' },
+            ],
+        },
+    ];
+    const depth = location.pathname.split('/').filter(Boolean).length;
+    const visibleItems = items.slice(0, depth + 1);
+
+    return (
+        <DsBreadcrumb
+            items={visibleItems}
+            onSelect={(href) => {
+                args.onSelect?.(href);
+                void navigate({ to: href });
+            }}
+        />
+    );
+};"
+`;
+
+exports[`DsBreadcrumb docs snippets > With Dropdown > Show code panel matches staged authoring rules 1`] = `
+"{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  decorators: [Story => withTanStackRouter(Story, '/network/vienna/router-a')],
+  render: function Render(args) {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const items: DsBreadcrumbItem[] = [{
+      type: 'link',
+      label: 'Home',
+      href: '/'
+    }, {
+      type: 'link',
+      label: 'Network Visibility',
+      href: '/network'
+    }, {
+      type: 'dropdown',
+      label: 'Vienna HQ',
+      icon: 'location_on',
+      options: [{
+        label: 'Vienna HQ',
+        href: '/network/vienna'
+      }, {
+        label: 'Paris Office',
+        href: '/network/paris'
+      }]
+    }, {
+      type: 'dropdown',
+      label: 'Router A',
+      icon: 'device_hub',
+      options: [{
+        label: 'Router A',
+        href: '/network/vienna/router-a'
+      }, {
+        label: 'Switch B',
+        href: '/network/vienna/switch-b'
+      }]
+    }];
+    const depth = location.pathname.split('/').filter(Boolean).length;
+    const visibleItems = items.slice(0, depth + 1);
+    return <DsBreadcrumb items={visibleItems} onSelect={href => {
+      args.onSelect?.(href);
+      void navigate({
+        to: href
+      });
+    }} />;
+  }
+}"
+`;

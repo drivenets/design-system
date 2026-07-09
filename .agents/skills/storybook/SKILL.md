@@ -98,6 +98,19 @@ Storybook's default `source.type` is `auto`. Args-only stories (no `render`) alw
 - **`render` that goes straight to `return`** (compound sub-components, no hooks/handlers): rely on `auto`/`dynamic`; do **not** add `type: 'code'`.
 - **Showcase matrices**: hide the panel with `docs.canvas.sourceState: 'none'` (see below).
 
+## Snippet verification
+
+Show code (Autodocs panel) and MCP manifest snippets are **different outputs** — verify both when `type: 'code'` is set.
+
+| Output            | What it shows                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| **Show code**     | Serialized story (`parameters`, `decorators`, `render`) when `type: 'code'`; clean JSX when `auto` |
+| **MCP `snippet`** | Evaluated `render` body only                                                                       |
+
+Verify both via `*.docs.test.ts` — see [docs-tests](../docs-tests/SKILL.md). For ad-hoc agent MCP checks during story authoring, use `pnpm start` + `--manifests-url http://localhost:6006` (separate from docs tests).
+
+Add or update `*.docs.test.ts` when changing stories that expose Show code — see [docs-tests](../docs-tests/SKILL.md).
+
 ## Showcase / matrix stories
 
 For visual-only grids (size/variant matrices) that aren't real usage examples:
@@ -115,10 +128,12 @@ Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI be
 - **MDX guidelines** — put token values and rules in the file body, not only in runtime `{map}` loops agents cannot see.
 - **Exclude noise** — `tags: ['!manifest']` on anti-pattern or human-only stories/docs.
 - **Exclude performance panel** — opt a component out of the ⚡ performance panel with `parameters: { performancePanel: { disable: true } }`.
-- **Verify locally** — with Storybook running (`pnpm start`), the dev server exposes a built-in MCP at `http://localhost:6006/mcp`. Use whichever configured MCP server points at that URL (the alias is per-developer) to check your changes: `list-all-documentation` (confirm `!manifest` stories are absent) and `get-documentation` / `get-documentation-for-story` (confirm snippets render `<DsX>` not the HOC name, descriptions have no `@summary`, props look right). This is not `packages/mcp`, which serves published docs to DS _consumers_.
+- **Verify manifest snippets** — with Storybook running (`pnpm start`), use local MCP (`http://localhost:6006/mcp` or `--manifests-url http://localhost:6006`): `list-all-documentation`, `get-documentation` / `get-documentation-for-story`. Confirm manifest render snippets use `<DsX>` not HOC names, descriptions have no `@summary`, `!manifest` stories are absent. This checks **agent-facing** snippets only — not the Autodocs Show code panel. Not `packages/mcp`, which serves published docs to DS _consumers_.
+- **Verify Show code** — run `*.docs.test.ts` per [docs-tests](../docs-tests/SKILL.md). Published `@drivenets/design-system-mcp` serves DS consumers and may lag local edits.
 
 ## Related
 
 - New component: [component-scaffold](../component-scaffold/SKILL.md)
 - Behavioral tests: [browser-tests](../browser-tests/SKILL.md)
+- Show code / MCP snippet tests: [docs-tests](../docs-tests/SKILL.md)
 - React in stories: [react-patterns](../react-patterns/SKILL.md)

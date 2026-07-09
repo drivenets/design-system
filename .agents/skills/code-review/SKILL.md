@@ -41,6 +41,7 @@ Refactor card to use CSS modules and fix hover state selector specificity
 | `ds-*.tsx` (not stories/tests) | [react-patterns](../react-patterns/SKILL.md); [ark-ui](../ark-ui/SKILL.md) if Ark    |
 | `*.stories.tsx`                | [storybook](../storybook/SKILL.md), [react-patterns](../react-patterns/SKILL.md)     |
 | `*.browser.test.tsx`           | [browser-tests](../browser-tests/SKILL.md)                                           |
+| `*.docs.test.ts`               | [docs-tests](../docs-tests/SKILL.md)                                                 |
 | `*.module.scss`                | [scss](../scss/SKILL.md)                                                             |
 
 3. Flag only clear, high-severity issues (max 10 inline comments)

@@ -120,6 +120,15 @@ jobs:
       - name: Run Tests
         run: pnpm test:coverage --affected
 
+      - name: Build Storybook for docs snippet tests
+        run: pnpm build:storybook --affected
+
+      - name: Install Playwright Chromium
+        run: pnpm --filter @drivenets/design-system install:playwright
+
+      - name: Run Storybook docs snippet tests
+        run: pnpm --filter @drivenets/design-system exec vitest --project=storybook-docs --run
+
   build:
     name: Build
     runs-on: ubuntu-latest

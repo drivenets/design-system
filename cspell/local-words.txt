@@ -4,6 +4,7 @@ artipacked
 autoboot
 autodocs
 borderless
+buttonv
 clickability
 controlify
 cooldown
@@ -17,6 +18,7 @@ gnmi
 matchall
 netgen
 netural
+networkidle
 noninteractive
 ondark
 onwarn

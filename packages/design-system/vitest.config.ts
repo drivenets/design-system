@@ -98,10 +98,19 @@ export default defineConfig({
 					setupFiles: ['.storybook/vitest.setup.ts'],
 				},
 			},
+			{
+				extends: true,
+				test: {
+					name: 'storybook-docs',
+					include: [testPattern('docs')],
+					globalSetup: ['./vitest/setup.storybook-docs.ts'],
+					testTimeout: 60_000,
+				},
+			},
 		],
 	},
 });
 
-function testPattern(type: 'unit' | 'requires-build' | 'browser') {
+function testPattern(type: 'unit' | 'requires-build' | 'browser' | 'docs') {
 	return `**/*.${type}.test.{ts,tsx}`;
 }
