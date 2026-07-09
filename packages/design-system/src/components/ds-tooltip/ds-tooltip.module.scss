@@ -1,4 +1,7 @@
+@use '../../styles/typography';
+
 .tooltip {
+	--arrow-size: 7px;
 	color: var(--font-on-action);
 	background-color: var(--background-brand);
 	padding: var(--xs) var(--sm);
@@ -8,6 +11,10 @@
 	z-index: 9999;
 }
 
+.text {
+	@include typography.body-xs-reg;
+}
+
 .arrow {
-	fill: var(--color-dap-gray-700);
+	--arrow-background: var(--color-dap-gray-700);
 }

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsTooltip from './ds-tooltip';
+import { tooltipPlacements } from './ds-tooltip.types';
 import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsTooltip> = {
@@ -12,6 +13,13 @@ const meta: Meta<typeof DsTooltip> = {
 		content: {
 			control: 'text',
 			description: 'Content displayed within the tooltip',
+		},
+		placement: {
+			control: 'select',
+			options: tooltipPlacements,
+		},
+		disabled: {
+			control: 'boolean',
 		},
 		children: {
 			control: 'object',
@@ -47,6 +55,22 @@ export const RichContent: Story = {
 				<span style={{ color: '#9cdcfe' }}>No truncation should occur.</span>
 			</div>
 		),
+		children: <DsIcon icon="info" />,
+	},
+};
+
+export const PlacementEnd: Story = {
+	args: {
+		content: 'Anchored to the end of the trigger.',
+		placement: 'top-end',
+		children: <DsIcon icon="info" />,
+	},
+};
+
+export const Disabled: Story = {
+	args: {
+		content: 'You should not see this tooltip.',
+		disabled: true,
 		children: <DsIcon icon="info" />,
 	},
 };
