@@ -588,7 +588,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/89 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/89 infos</a><span class="filter-pill ok" aria-disabled="true">544 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/89 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">52/89 infos</a><span class="filter-pill ok" aria-disabled="true">549 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
@@ -28512,9 +28512,9 @@ export const DsTree = {
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTypography</h2>
       <div class="badges">
-        <label for="c-84-components-typography-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-84-components-typography-props" class="badge ok as-toggle">10 prop types</label>
         <label for="c-84-components-typography-info" class="badge info as-toggle">1 info</label>
-        <label for="c-84-components-typography-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-84-components-typography-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -28548,7 +28548,7 @@ export const DsTree = {
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">7 prop types</span>
+              <span class="badge ok">10 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-typography/ds-typography.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -28583,6 +28583,22 @@ ref?: Ref&lt;HTMLElement&gt;
  * Additional styles to apply to the typography component
  */
 style?: React.CSSProperties
+
+/**
+ * Reveals the full text in a tooltip on hover/focus, but only while it overflows.
+ */
+tooltip?: boolean = false
+
+/**
+ * Tooltip content override; defaults to `children`.
+ */
+tooltipContent?: React.ReactNode
+
+/**
+ * Truncates overflowing text with an ellipsis. A number clamps to that many lines
+ * (`true` is a single line). Needs a width-constrained layout context.
+ */
+truncate?: boolean | number = false
 
 /**
  * The semantic variant of the component
@@ -28889,6 +28905,110 @@ variant: keyof typeof typographyVariantConfig</code></pre>
         &lt;/DsTypography&gt;
     &lt;/DsStack&gt;
 );</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Truncate Single Line</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TruncateSingleLine = () =&gt; (
+    &lt;div className={storyStyles.truncateBox}&gt;
+        &lt;DsTypography variant=&quot;body-md-reg&quot; truncate&gt;
+            {longSample}
+        &lt;/DsTypography&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Truncate Multiple Lines</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TruncateMultipleLines = () =&gt; (
+    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
+        &lt;div className={storyStyles.truncateBox}&gt;
+            &lt;code className={storyStyles.label}&gt;truncate={&#39;{2}&#39;}&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={2}&gt;
+                {longSample}
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+        &lt;div className={storyStyles.truncateBox}&gt;
+            &lt;code className={storyStyles.label}&gt;truncate={&#39;{3}&#39;}&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={3}&gt;
+                {longSample}
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+    &lt;/DsStack&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Truncate With Tooltip</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TruncateWithTooltip = () =&gt; (
+    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--md)&quot;&gt;
+        &lt;div className={storyStyles.truncateBox}&gt;
+            &lt;code className={storyStyles.label}&gt;overflowing — tooltip on hover&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
+                {longSample}
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+        &lt;div className={storyStyles.truncateBox}&gt;
+            &lt;code className={storyStyles.label}&gt;fits — no tooltip&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
+                Short text
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+        &lt;div className={storyStyles.truncateBox}&gt;
+            &lt;code className={storyStyles.label}&gt;2 lines + tooltip&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={2} tooltip&gt;
+                {longSample}
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+    &lt;/DsStack&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Truncate Tooltip Placement</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TruncateTooltipPlacement = () =&gt; (
+    &lt;div className={storyStyles.placementViewport}&gt;
+        &lt;div className={storyStyles.truncateBox}&gt;
+            &lt;code className={storyStyles.label}&gt;near top — tooltip flips to bottom, arrow at ellipsis&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
+                {longSample}
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+        &lt;div className={classNames(storyStyles.truncateBox, storyStyles.pushToBottom)}&gt;
+            &lt;code className={storyStyles.label}&gt;near bottom — tooltip on top, arrow at ellipsis&lt;/code&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
+                {longSample}
+            &lt;/DsTypography&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Playground</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Playground = () =&gt; &lt;div className={storyStyles.truncateBox}&gt;
+    &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;{longSample}&lt;/DsTypography&gt;
+&lt;/div&gt;;</code></pre>
             </div>
         </div>
     
