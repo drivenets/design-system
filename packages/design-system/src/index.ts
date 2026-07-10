@@ -42,6 +42,7 @@ export * from './components/ds-progress-linear';
 export * from './components/ds-radio-group';
 export * from './components/ds-segment-group';
 export * from './components/ds-select';
+export * from './components/ds-site-node';
 export * from './components/ds-skeleton';
 export * from './components/ds-smart-tabs';
 export * from './components/ds-spinner';
