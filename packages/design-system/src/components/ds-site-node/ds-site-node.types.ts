@@ -27,8 +27,9 @@ export interface DsSiteNodeProps {
 	className?: string;
 	style?: CSSProperties;
 	/**
-	 * Accessible name for the node. Defaults to the tier + site code (or the
-	 * overflow label) so screen readers announce the node without extra markup.
+	 * Overrides the accessible name. By default the node is named by its visible
+	 * content (tier + site code, or the overflow label); set this to give the
+	 * overflow node a more descriptive name, e.g. `"Show 2 more sites"`.
 	 */
 	'aria-label'?: string;
 	onClick?: (event: MouseEvent<HTMLButtonElement>) => void;

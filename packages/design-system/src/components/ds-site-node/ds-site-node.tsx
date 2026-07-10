@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import type { DsSiteNodeProps } from './ds-site-node.types';
 import { useIsOverflowing } from './hooks/use-is-overflowing';
+import { DsStack } from '../ds-stack';
 import { DsTooltip } from '../ds-tooltip';
 import { DsTypography } from '../ds-typography';
 import styles from './ds-site-node.module.scss';
@@ -22,9 +23,6 @@ const DsSiteNode = ({
 
 	const { ref: siteCodeRef, isOverflowing } = useIsOverflowing<HTMLSpanElement>(siteCode);
 
-	const accessibleName =
-		ariaLabel ?? (isOverflow ? overflowLabel : [tier, siteCode].filter(Boolean).join(', '));
-
 	return (
 		<button
 			ref={ref}
@@ -38,7 +36,7 @@ const DsSiteNode = ({
 				className,
 			)}
 			style={style}
-			aria-label={accessibleName || undefined}
+			aria-label={ariaLabel}
 			aria-current={isSelected ? true : undefined}
 			onClick={onClick}
 		>
@@ -48,11 +46,16 @@ const DsSiteNode = ({
 				</DsTypography>
 			) : (
 				<>
-					<span className={classNames(styles.pill, { [styles.pillMuted]: isMuted })}>
+					<DsStack
+						direction="row"
+						alignItems="center"
+						justifyContent="center"
+						className={classNames(styles.pill, { [styles.pillMuted]: isMuted })}
+					>
 						<DsTypography variant="body-xs-md" color={isMuted ? 'on-disabled' : 'on-action'}>
 							{tier}
 						</DsTypography>
-					</span>
+					</DsStack>
 
 					<span ref={siteCodeRef} className={styles.siteCode}>
 						<DsTooltip content={isOverflowing ? siteCode : undefined}>

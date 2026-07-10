@@ -3,11 +3,11 @@ import { page } from 'vitest/browser';
 import DsSiteNode from '../ds-site-node';
 
 describe('DsSiteNode', () => {
-	it('exposes tier and site code as the accessible name and fires onClick', async () => {
+	it('names the node from its tier and site code content and fires onClick', async () => {
 		const onClick = vi.fn();
 		await page.render(<DsSiteNode tier="T1" siteCode="OKCAOKLU" onClick={onClick} />);
 
-		const node = page.getByRole('button', { name: 'T1, OKCAOKLU' });
+		const node = page.getByRole('button', { name: /T1\s+OKCAOKLU/ });
 		await node.click();
 
 		expect(onClick).toHaveBeenCalledOnce();
@@ -17,7 +17,7 @@ describe('DsSiteNode', () => {
 		const onClick = vi.fn();
 		await page.render(<DsSiteNode state="muted" tier="T1" siteCode="OKCAOKLU" onClick={onClick} />);
 
-		const node = page.getByRole('button', { name: 'T1, OKCAOKLU' });
+		const node = page.getByRole('button', { name: /OKCAOKLU/ });
 		await expect.element(node).not.toBeDisabled();
 		await node.click();
 
@@ -27,7 +27,7 @@ describe('DsSiteNode', () => {
 	it('marks the selected node with aria-current', async () => {
 		await page.render(<DsSiteNode state="selected" tier="T1" siteCode="OKCAOKLU" />);
 
-		const node = page.getByRole('button', { name: 'T1, OKCAOKLU' });
+		const node = page.getByRole('button', { name: /OKCAOKLU/ });
 		await expect.element(node).toHaveAttribute('aria-current', 'true');
 	});
 
@@ -41,7 +41,7 @@ describe('DsSiteNode', () => {
 		expect(onClick).toHaveBeenCalledOnce();
 	});
 
-	it('lets a custom aria-label override the derived name', async () => {
+	it('supports a custom aria-label override', async () => {
 		await page.render(<DsSiteNode tier="T1" siteCode="OKCAOKLU" aria-label="Tier 1, London site" />);
 
 		await expect.element(page.getByRole('button', { name: 'Tier 1, London site' })).toBeVisible();
