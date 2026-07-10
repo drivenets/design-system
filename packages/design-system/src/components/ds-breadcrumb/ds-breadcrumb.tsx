@@ -91,4 +91,6 @@ const DsBreadcrumb: React.FC<DsBreadcrumbProps> = ({ items, onSelect, className 
 	);
 };
 
+DsBreadcrumb.displayName = 'DsBreadcrumb';
+
 export default DsBreadcrumb;

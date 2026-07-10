@@ -112,3 +112,4 @@ export function DsExpandableTextInput({
 function InputExpander({ children }: { children: ReactNode }) {
 	return <div className={styles.inputExpander}>{children}</div>;
 }
+DsExpandableTextInput.displayName = 'DsExpandableTextInput';

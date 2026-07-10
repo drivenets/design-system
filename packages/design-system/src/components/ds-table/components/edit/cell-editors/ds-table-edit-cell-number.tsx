@@ -49,3 +49,4 @@ export const DsTableEditCellNumber = <TData extends RowData>({
 		</TableEditFormControl>
 	);
 };
+DsTableEditCellNumber.displayName = 'DsTableEditCellNumber';

@@ -79,6 +79,11 @@ const Footer = ({ className, children, ref, ...rest }: DsCardFooterProps) => (
 	</div>
 );
 
+Root.displayName = 'DsCard.Root';
+Header.displayName = 'DsCard.Header';
+Body.displayName = 'DsCard.Body';
+Footer.displayName = 'DsCard.Footer';
+
 export const DsCard = {
 	Root,
 	Header,

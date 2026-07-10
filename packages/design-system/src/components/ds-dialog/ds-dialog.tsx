@@ -67,4 +67,6 @@ const DsDialog: React.FC<DsDialogProps> = ({
 	);
 };
 
+DsDialog.displayName = 'DsDialog';
+
 export default DsDialog;

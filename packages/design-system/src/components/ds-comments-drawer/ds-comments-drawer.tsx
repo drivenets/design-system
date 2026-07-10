@@ -207,3 +207,4 @@ export const DsCommentsDrawer = ({
 		</>
 	);
 };
+DsCommentsDrawer.displayName = 'DsCommentsDrawer';

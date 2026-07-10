@@ -80,4 +80,6 @@ const DsProgressDonut = ({
 	);
 };
 
+DsProgressDonut.displayName = 'DsProgressDonut';
+
 export default DsProgressDonut;

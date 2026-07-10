@@ -3,14 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import { DsSplitButton } from './';
 import { splitButtonSizes } from './ds-split-button.types';
-import type { DsSelectProps } from '../ds-select';
-
-const refreshOptions = [
-	{ label: '30s', value: '30' },
-	{ label: '1m', value: '60' },
-	{ label: '5m', value: '300' },
-	{ label: '10m', value: '600' },
-];
 
 const meta: Meta<typeof DsSplitButton> = {
 	title: 'Components/SplitButton',
@@ -21,15 +13,6 @@ const meta: Meta<typeof DsSplitButton> = {
 	args: {
 		size: 'medium',
 		disabled: false,
-		slotProps: {
-			button: { icon: 'refresh' },
-			select: {
-				options: refreshOptions,
-				value: '30',
-				onValueChange: fn(),
-				multiple: false,
-			},
-		},
 	},
 	argTypes: {
 		size: { control: 'radio', options: splitButtonSizes },
@@ -45,6 +28,92 @@ export default meta;
 type Story = StoryObj<typeof DsSplitButton>;
 
 export const Default: Story = {
+	args: {
+		slotProps: {
+			button: { icon: 'refresh', 'aria-label': 'Refresh' },
+			select: {
+				options: [
+					{ label: '30s', value: '30' },
+					{ label: '1m', value: '60' },
+				],
+				value: '30',
+				onValueChange: fn(),
+				multiple: false,
+			},
+		},
+	},
+};
+
+/**
+ * Compact layout for dense toolbars; the select switches to its small size to
+ * stay aligned with the primary action.
+ */
+export const Small: Story = {
+	args: {
+		size: 'small',
+		slotProps: {
+			button: { icon: 'refresh', 'aria-label': 'Refresh' },
+			select: {
+				options: [
+					{ label: '30s', value: '30' },
+					{ label: '1m', value: '60' },
+				],
+				value: '30',
+				onValueChange: fn(),
+				multiple: false,
+			},
+		},
+	},
+};
+
+/**
+ * Shows a spinner on the primary action and blocks its click. Use while the
+ * action triggered by the button is in progress; the select stays interactive.
+ */
+export const Loading: Story = {
+	args: {
+		slotProps: {
+			button: { icon: 'refresh', 'aria-label': 'Refresh', loading: true },
+			select: {
+				options: [
+					{ label: '30s', value: '30' },
+					{ label: '1m', value: '60' },
+				],
+				value: '30',
+				onValueChange: fn(),
+				multiple: false,
+			},
+		},
+	},
+};
+
+/**
+ * Non-interactive state for both slots when the action is currently unavailable.
+ */
+export const Disabled: Story = {
+	args: {
+		disabled: true,
+		slotProps: {
+			button: { icon: 'refresh', 'aria-label': 'Refresh' },
+			select: {
+				options: [
+					{ label: '30s', value: '30' },
+					{ label: '1m', value: '60' },
+				],
+				value: '30',
+				onValueChange: fn(),
+				multiple: false,
+			},
+		},
+	},
+};
+
+/**
+ * Wire the select `value`/`onValueChange` to local state and drive the button
+ * `loading` flag from the async action to reflect real usage.
+ */
+export const Controlled: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const [value, setValue] = useState('30');
 		const [loading, setLoading] = useState(false);
@@ -59,39 +128,22 @@ export const Default: Story = {
 				{...args}
 				slotProps={{
 					button: {
-						...args.slotProps.button,
-						loading,
 						icon: 'refresh',
+						'aria-label': 'Refresh',
+						loading,
 						onClick: handleAction,
 					},
 					select: {
-						...args.slotProps.select,
+						options: [
+							{ label: '30s', value: '30' },
+							{ label: '1m', value: '60' },
+						],
 						value,
 						onValueChange: setValue,
-					} as DsSelectProps,
+						multiple: false,
+					},
 				}}
 			/>
 		);
-	},
-};
-
-export const Loading: Story = {
-	args: {
-		slotProps: {
-			button: {
-				loading: true,
-			},
-			select: {
-				options: refreshOptions,
-				value: '30',
-				onValueChange: fn(),
-			},
-		},
-	},
-};
-
-export const Disabled: Story = {
-	args: {
-		disabled: true,
 	},
 };

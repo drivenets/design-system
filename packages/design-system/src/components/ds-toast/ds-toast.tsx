@@ -51,4 +51,7 @@ const DsToastGroup: React.FC<{ toaster: CreateToasterReturn }> = ({ toaster }) =
 	return <Toaster toaster={toaster}>{(toast: DsToastProps) => <DsToast {...toast} />}</Toaster>;
 };
 
+DsToast.displayName = 'DsToast';
+DsToastGroup.displayName = 'DsToastGroup';
+
 export { DsToast, DsToastGroup };

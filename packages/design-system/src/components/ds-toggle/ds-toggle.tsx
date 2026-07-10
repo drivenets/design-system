@@ -75,4 +75,6 @@ const DsToggle = ({
 	);
 };
 
+DsToggle.displayName = 'DsToggle';
+
 export default DsToggle;

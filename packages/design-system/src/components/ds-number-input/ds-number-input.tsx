@@ -71,4 +71,6 @@ const DsNumberInput: FC<DsNumberInputProps> = ({
 	);
 };
 
+DsNumberInput.displayName = 'DsNumberInput';
+
 export default DsNumberInput;

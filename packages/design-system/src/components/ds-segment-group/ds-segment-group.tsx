@@ -74,3 +74,6 @@ export const DsSegmentGroup = {
 	Item,
 	ItemText,
 };
+DsSegmentGroup.Root.displayName = 'DsSegmentGroup.Root';
+DsSegmentGroup.Item.displayName = 'DsSegmentGroup.Item';
+DsSegmentGroup.ItemText.displayName = 'DsSegmentGroup.ItemText';

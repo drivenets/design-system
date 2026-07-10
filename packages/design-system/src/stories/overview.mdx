@@ -154,4 +154,36 @@ export default [
   </div>
 </div>
 
+<DsDivider />
+
+<div>
+  <div className={styles.sectionHeader}>
+    <DsIcon icon="bolt" size="medium" />
+    <DsTypography variant="heading2">Performance Panel</DsTypography>
+  </div>
+
+<DsTypography variant="body-md-reg" asChild className={styles.sectionDescription}>
+	<span>
+		Every story has a live ⚡ Performance tab at the bottom of the Canvas. It tracks frame timing (FPS), input
+		responsiveness (INP), long tasks, layout shift (CLS), React render metrics (mount, slow updates, render
+		cascades), and memory in real time as you interact — so you can catch regressions while developing, before
+		they ship. Open a story in Canvas view and interact with it to populate the metrics.
+	</span>
+</DsTypography>
+
+  <div className={styles.steps}>
+    <div className={styles.step}>
+      <DsTypography variant="body-sm-reg" asChild className={styles.docsLink}>
+        <a
+          href="https://github.github.com/storybook-addon-performance-panel/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Metrics reference & how to read them →
+        </a>
+      </DsTypography>
+    </div>
+  </div>
+</div>
+
 </div>

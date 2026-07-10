@@ -45,4 +45,6 @@ const DsIcon = ({
 	);
 };
 
+DsIcon.displayName = 'DsIcon';
+
 export default DsIcon;

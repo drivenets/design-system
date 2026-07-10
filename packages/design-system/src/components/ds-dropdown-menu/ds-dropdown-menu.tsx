@@ -414,3 +414,16 @@ export const DsDropdownMenu = {
 	ItemGroupContent,
 	Separator,
 };
+DsDropdownMenu.Root.displayName = 'DsDropdownMenu.Root';
+DsDropdownMenu.Trigger.displayName = 'DsDropdownMenu.Trigger';
+DsDropdownMenu.Content.displayName = 'DsDropdownMenu.Content';
+DsDropdownMenu.Item.displayName = 'DsDropdownMenu.Item';
+DsDropdownMenu.ItemIndicator.displayName = 'DsDropdownMenu.ItemIndicator';
+DsDropdownMenu.TriggerItem.displayName = 'DsDropdownMenu.TriggerItem';
+DsDropdownMenu.Header.displayName = 'DsDropdownMenu.Header';
+DsDropdownMenu.Actions.displayName = 'DsDropdownMenu.Actions';
+DsDropdownMenu.ItemGroup.displayName = 'DsDropdownMenu.ItemGroup';
+DsDropdownMenu.ItemGroupLabel.displayName = 'DsDropdownMenu.ItemGroupLabel';
+DsDropdownMenu.ItemGroupContent.displayName = 'DsDropdownMenu.ItemGroupContent';
+DsDropdownMenu.Separator.displayName = 'DsDropdownMenu.Separator';
+DsDropdownMenuLegacy.displayName = 'DsDropdownMenuLegacy';

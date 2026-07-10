@@ -138,11 +138,20 @@ const Actions = ({
 	</div>
 );
 
+Header.displayName = 'DsModal.Header';
+Title.displayName = 'DsModal.Title';
+CloseTrigger.displayName = 'DsModal.CloseTrigger';
+Body.displayName = 'DsModal.Body';
+Footer.displayName = 'DsModal.Footer';
+Actions.displayName = 'DsModal.Actions';
+
 DsModal.Header = Header;
 DsModal.Title = Title;
 DsModal.CloseTrigger = CloseTrigger;
 DsModal.Body = Body;
 DsModal.Footer = Footer;
 DsModal.Actions = Actions;
+
+DsModal.displayName = 'DsModal';
 
 export default DsModal;

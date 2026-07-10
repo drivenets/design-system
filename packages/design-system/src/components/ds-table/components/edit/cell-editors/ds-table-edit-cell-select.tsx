@@ -34,3 +34,4 @@ export const DsTableEditCellSelect = <TData extends RowData>({
 		</TableEditFormControl>
 	);
 };
+DsTableEditCellSelect.displayName = 'DsTableEditCellSelect';

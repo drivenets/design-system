@@ -43,4 +43,6 @@ const DsFileUpload: React.FC<DsFileUploadProps> = ({
 	return <FileUpload {...fileUploadProps} {...props} />;
 };
 
+DsFileUpload.displayName = 'DsFileUpload';
+
 export default DsFileUpload;

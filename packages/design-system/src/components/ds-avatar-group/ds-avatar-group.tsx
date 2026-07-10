@@ -49,3 +49,4 @@ export const DsAvatarGroup: FC<DsAvatarGroupProps> = ({
 		</div>
 	);
 };
+DsAvatarGroup.displayName = 'DsAvatarGroup';

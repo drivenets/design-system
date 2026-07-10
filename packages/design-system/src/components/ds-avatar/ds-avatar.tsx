@@ -6,7 +6,11 @@ import type { DsAvatarProps } from './ds-avatar.types';
 import { DsTooltip } from '../ds-tooltip';
 
 /**
- * DsAvatar component for displaying user profile pictures or initials
+ * @summary Displays a user's profile picture, falling back to initials.
+ *
+ * Renders a circular or rounded avatar from an image `src`. When the image is
+ * missing or fails to load, the trimmed initials derived from `name` are shown
+ * instead, and `name` is surfaced in a tooltip on hover.
  */
 export const DsAvatar: FC<DsAvatarProps> = ({
 	src,
@@ -40,3 +44,4 @@ export const DsAvatar: FC<DsAvatarProps> = ({
 		</DsTooltip>
 	);
 };
+DsAvatar.displayName = 'DsAvatar';

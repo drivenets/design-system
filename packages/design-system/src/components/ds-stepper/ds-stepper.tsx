@@ -58,3 +58,4 @@ export function DsStepper({
 		</StepperContext.Provider>
 	);
 }
+DsStepper.displayName = 'DsStepper';

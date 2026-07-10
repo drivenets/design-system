@@ -119,4 +119,6 @@ const DsChipGroup: React.FC<DsChipGroupProps> = ({
 	);
 };
 
+DsChipGroup.displayName = 'DsChipGroup';
+
 export default DsChipGroup;

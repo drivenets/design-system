@@ -136,3 +136,4 @@ export const DsThreadItem = ({
 		</div>
 	);
 };
+DsThreadItem.displayName = 'DsThreadItem';

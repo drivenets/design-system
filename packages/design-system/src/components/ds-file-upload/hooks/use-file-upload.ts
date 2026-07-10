@@ -224,6 +224,13 @@ export function useFileUpload({
 			updateFileProgress(fileId, 100);
 			onFileUploadComplete?.(fileId, result);
 		} catch (error) {
+			// A fired abort signal means the upload was cancelled or removed by the
+			// user. Adapters reject with a (retryable) error on abort, but that must
+			// not overwrite the terminal status owned by cancelUpload/removeFile.
+			if (abortController.signal.aborted) {
+				return;
+			}
+
 			const errorMessage = error instanceof Error ? error.message : 'Upload failed';
 			// Determine status based on error type
 			// Unknown errors are treated as retryable (network errors, etc.)

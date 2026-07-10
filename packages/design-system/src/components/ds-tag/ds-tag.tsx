@@ -134,4 +134,6 @@ const DsTag = ({
 	);
 };
 
+DsTag.displayName = 'DsTag';
+
 export default DsTag;

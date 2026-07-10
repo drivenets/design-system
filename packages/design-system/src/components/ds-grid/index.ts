@@ -8,3 +8,6 @@ export const DsGridItem = withResponsiveProps(DsGridItemBase, ['colSpan', 'rowSp
 
 export type DsGridProps = ComponentProps<typeof DsGrid>;
 export type DsGridItemProps = ComponentProps<typeof DsGridItem>;
+
+DsGrid.displayName = 'DsGrid';
+DsGridItem.displayName = 'DsGridItem';

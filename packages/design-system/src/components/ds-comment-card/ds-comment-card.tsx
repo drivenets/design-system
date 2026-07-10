@@ -169,3 +169,4 @@ export const DsCommentCard = ({
 		</button>
 	);
 };
+DsCommentCard.displayName = 'DsCommentCard';

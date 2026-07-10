@@ -6,8 +6,11 @@ import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
 /**
- * Design system AlertBanner component
- * Controlled component that displays alert messages with different variants
+ * @summary Controlled banner for surfacing contextual status messages.
+ *
+ * Renders as an inline bordered card or a full-width global bar, with five
+ * severity variants, an optional icon, and an optional close button. Compose the
+ * content with `DsAlertBanner.Title`, `DsAlertBanner.Body`, and `DsAlertBanner.Actions`.
  */
 const DsAlertBanner = ({
 	open,
@@ -108,8 +111,14 @@ const Actions = ({
 	</div>
 );
 
+Title.displayName = 'DsAlertBanner.Title';
+Body.displayName = 'DsAlertBanner.Body';
+Actions.displayName = 'DsAlertBanner.Actions';
+
 DsAlertBanner.Title = Title;
 DsAlertBanner.Body = Body;
 DsAlertBanner.Actions = Actions;
+
+DsAlertBanner.displayName = 'DsAlertBanner';
 
 export default DsAlertBanner;

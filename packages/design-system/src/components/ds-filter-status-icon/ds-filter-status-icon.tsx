@@ -33,3 +33,4 @@ export const DsFilterStatusIcon = ({
 		/>
 	);
 };
+DsFilterStatusIcon.displayName = 'DsFilterStatusIcon';

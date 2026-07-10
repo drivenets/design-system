@@ -1,5 +1,21 @@
 @use '../../styles/typography';
 
+.truncateSingle {
+	display: block;
+	max-width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.truncateMultiline {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: var(--ds-typography-line-clamp);
+	line-clamp: var(--ds-typography-line-clamp);
+	overflow: hidden;
+}
+
 .heading1 {
 	@include typography.heading1;
 }

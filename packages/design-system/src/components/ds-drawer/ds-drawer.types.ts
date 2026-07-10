@@ -21,6 +21,13 @@ export interface DsDrawerProps extends Pick<DialogProps, 'closeOnEscape' | 'clos
 	 */
 	onOpenChange: (open: boolean) => void;
 	/**
+	 * Called when focus is about to move into the drawer as it opens.
+	 * Call `event.preventDefault()` to stop the drawer from stealing focus,
+	 * keeping the caret where it was (e.g. in a text input that triggered the
+	 * drawer). Useful for type-ahead / popover patterns.
+	 */
+	onOpenAutoFocus?: (event: Event) => void;
+	/**
 	 * Number of grid columns the drawer should span (1-12).
 	 * Accepts a responsive value, e.g. `{ lg: 4, md: 6 }`.
 	 * @default 4

@@ -15,3 +15,4 @@ DsConfirmation.CloseTrigger = DsModal.CloseTrigger;
 DsConfirmation.Body = DsModal.Body;
 DsConfirmation.Footer = DsModal.Footer;
 DsConfirmation.Actions = DsModal.Actions;
+DsConfirmation.displayName = 'DsConfirmation';
