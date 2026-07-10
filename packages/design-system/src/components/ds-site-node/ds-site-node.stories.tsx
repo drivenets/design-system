@@ -36,7 +36,7 @@ export const Selected: Story = {
 	args: { state: 'selected', tier: 'T1', siteCode: 'OKCAOKLU' },
 };
 
-/** Not part of the current path/hop. Visually de-emphasised but still fully clickable — not disabled. */
+/** Not part of the current path/hop. Visually de-emphasized but still fully clickable — not disabled. */
 export const Muted: Story = {
 	args: { state: 'muted', tier: 'T1', siteCode: 'OKCAOKLU' },
 };

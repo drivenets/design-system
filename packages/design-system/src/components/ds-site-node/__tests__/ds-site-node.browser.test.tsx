@@ -13,7 +13,7 @@ describe('DsSiteNode', () => {
 		expect(onClick).toHaveBeenCalledOnce();
 	});
 
-	it('keeps the muted state clickable (de-emphasised, not disabled)', async () => {
+	it('keeps the muted state clickable (de-emphasized, not disabled)', async () => {
 		const onClick = vi.fn();
 		await page.render(<DsSiteNode state="muted" tier="T1" siteCode="OKCAOKLU" onClick={onClick} />);
 
