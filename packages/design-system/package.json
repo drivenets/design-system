@@ -101,7 +101,7 @@
 		"@types/react-dom": "^19.2.3",
 		"@typescript/native-preview": "catalog:",
 		"@vitejs/plugin-react": "^6.0.2",
-		"@vitest/browser-playwright": "^4.1.7",
+		"@vitest/browser-playwright": "^4.1.10",
 		"@vitest/coverage-v8": "catalog:",
 		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "catalog:",

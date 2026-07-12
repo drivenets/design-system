@@ -9,12 +9,12 @@ catalog:
   '@arethetypeswrong/cli': ^0.18.2
   '@eslint/core': ^1.1.1
   '@typescript/native-preview': 7.0.0-dev.20260521.1
-  '@vitest/coverage-v8': ^4.1.7
+  '@vitest/coverage-v8': ^4.1.10
   eslint: ^10.0.1
   publint: ^0.3.21
   tsdown: ^0.22.0
   typescript: ^6.0.3
-  vitest: ^4.1.7
+  vitest: ^4.1.10
 
 allowBuilds:
   '@parcel/watcher': false
