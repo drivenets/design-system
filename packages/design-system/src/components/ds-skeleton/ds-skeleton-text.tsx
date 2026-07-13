@@ -46,4 +46,6 @@ const DsSkeletonText = ({
 	);
 };
 
+DsSkeletonText.displayName = 'DsSkeletonText';
+
 export default DsSkeletonText;

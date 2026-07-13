@@ -12,3 +12,5 @@ export const DsTabsList = ({ className, style, children }: DsTabsListProps) => {
 		</Tabs.List>
 	);
 };
+
+DsTabsList.displayName = 'DsTabs.List';

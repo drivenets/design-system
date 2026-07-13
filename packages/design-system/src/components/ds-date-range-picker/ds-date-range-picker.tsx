@@ -98,4 +98,6 @@ const DsDateRangePicker = ({
 	);
 };
 
+DsDateRangePicker.displayName = 'DsDateRangePicker';
+
 export default DsDateRangePicker;

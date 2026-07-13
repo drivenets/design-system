@@ -25,3 +25,4 @@ export const DsTableEditCellCheckbox = <TData extends RowData>({
 		/>
 	);
 };
+DsTableEditCellCheckbox.displayName = 'DsTableEditCellCheckbox';

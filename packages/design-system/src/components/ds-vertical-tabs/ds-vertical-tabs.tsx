@@ -73,8 +73,14 @@ const DsVerticalTabsContent = ({ value, className, children }: DsVerticalTabsCon
 	);
 };
 
+DsVerticalTabsList.displayName = 'DsVerticalTabs.List';
+DsVerticalTabsTab.displayName = 'DsVerticalTabs.Tab';
+DsVerticalTabsContent.displayName = 'DsVerticalTabs.Content';
+
 DsVerticalTabs.List = DsVerticalTabsList;
 DsVerticalTabs.Tab = DsVerticalTabsTab;
 DsVerticalTabs.Content = DsVerticalTabsContent;
+
+DsVerticalTabs.displayName = 'DsVerticalTabs';
 
 export default DsVerticalTabs;

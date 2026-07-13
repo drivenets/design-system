@@ -127,3 +127,5 @@ export const DsTabsTab = ({
 		</>
 	);
 };
+
+DsTabsTab.displayName = 'DsTabs.Tab';

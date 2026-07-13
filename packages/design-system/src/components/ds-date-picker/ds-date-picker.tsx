@@ -211,4 +211,6 @@ const DsDatePicker = ({
 	);
 };
 
+DsDatePicker.displayName = 'DsDatePicker';
+
 export default DsDatePicker;

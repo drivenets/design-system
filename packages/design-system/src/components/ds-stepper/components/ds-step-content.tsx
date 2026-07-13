@@ -48,3 +48,5 @@ export function DsStepContent({ index, label, description, actions }: DsStepCont
 		</div>
 	);
 }
+
+DsStepContent.displayName = 'DsStepContent';

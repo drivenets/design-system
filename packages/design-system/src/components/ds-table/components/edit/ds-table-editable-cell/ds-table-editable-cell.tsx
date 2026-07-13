@@ -56,3 +56,4 @@ export const DsTableEditableCell = <TData, TValue>({
 		</div>
 	);
 };
+DsTableEditableCell.displayName = 'DsTableEditableCell';

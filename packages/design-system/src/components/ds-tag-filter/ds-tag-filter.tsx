@@ -133,4 +133,6 @@ const DsTagFilter = ({
 	);
 };
 
+DsTagFilter.displayName = 'DsTagFilter';
+
 export default DsTagFilter;

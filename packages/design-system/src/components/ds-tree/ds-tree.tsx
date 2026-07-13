@@ -153,6 +153,22 @@ const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemAct
 	</button>
 );
 
+DsTreeRoot.displayName = 'DsTree.Root';
+DsTreeTree.displayName = 'DsTree.Tree';
+Object.defineProperty(TreeView.NodeProvider, 'displayName', { value: 'DsTree.NodeProvider' });
+Object.defineProperty(TreeView.NodeContext, 'displayName', { value: 'DsTree.NodeContext' });
+DsTreeBranch.displayName = 'DsTree.Branch';
+DsTreeBranchControl.displayName = 'DsTree.BranchControl';
+DsTreeBranchIndicator.displayName = 'DsTree.BranchIndicator';
+DsTreeBranchText.displayName = 'DsTree.BranchText';
+DsTreeBranchContent.displayName = 'DsTree.BranchContent';
+DsTreeBranchIndentGuide.displayName = 'DsTree.BranchIndentGuide';
+DsTreeItem.displayName = 'DsTree.Item';
+DsTreeItemText.displayName = 'DsTree.ItemText';
+DsTreeItemIndicator.displayName = 'DsTree.ItemIndicator';
+DsTreeItemAction.displayName = 'DsTree.ItemAction';
+DsTreeNodeCheckbox.displayName = 'DsTree.NodeCheckbox';
+
 export const DsTree = {
 	Root: DsTreeRoot,
 	Tree: DsTreeTree,

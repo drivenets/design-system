@@ -119,4 +119,6 @@ const DsProgressTaskBar = ({
 	);
 };
 
+DsProgressTaskBar.displayName = 'DsProgressTaskBar';
+
 export default DsProgressTaskBar;

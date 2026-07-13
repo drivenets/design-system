@@ -247,3 +247,4 @@ export const DsCommentBubble = ({
 		</div>
 	);
 };
+DsCommentBubble.displayName = 'DsCommentBubble';

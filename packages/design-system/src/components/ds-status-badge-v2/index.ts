@@ -11,3 +11,5 @@ export type {
 	DsStatusBadgeV2Props,
 } from './ds-status-badge-v2.types';
 export { statusBadgeV2Phases, statusBadgeV2Variants, statusBadgeV2Sizes } from './ds-status-badge-v2.types';
+
+DsStatusBadgeV2.displayName = 'DsStatusBadgeV2';

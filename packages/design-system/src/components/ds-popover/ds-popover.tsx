@@ -146,6 +146,15 @@ const DsPopoverLegacy = ({
 	</DsPopoverRoot>
 );
 
+DsPopoverLegacy.displayName = 'DsPopover';
+DsPopoverRoot.displayName = 'DsPopover.Root';
+DsPopoverTrigger.displayName = 'DsPopover.Trigger';
+DsPopoverPanel.displayName = 'DsPopover.Panel';
+DsPopoverHeader.displayName = 'DsPopover.Header';
+DsPopoverContent.displayName = 'DsPopover.Content';
+DsPopoverContentItem.displayName = 'DsPopover.ContentItem';
+DsPopoverFooter.displayName = 'DsPopover.Footer';
+
 export const DsPopover = Object.assign(DsPopoverLegacy, {
 	Root: DsPopoverRoot,
 	Trigger: DsPopoverTrigger,

@@ -44,3 +44,4 @@ export const DsAvatar: FC<DsAvatarProps> = ({
 		</DsTooltip>
 	);
 };
+DsAvatar.displayName = 'DsAvatar';

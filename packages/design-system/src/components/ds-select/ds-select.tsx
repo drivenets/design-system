@@ -271,4 +271,6 @@ function getItemCheckedState({
 	return someSelected ? 'indeterminate' : false;
 }
 
+DsSelect.displayName = 'DsSelect';
+
 export default DsSelect;

@@ -386,4 +386,6 @@ const DsTable = <TData extends { id: string }, TValue>({
 	);
 };
 
+DsTable.displayName = 'DsTable';
+
 export default DsTable;

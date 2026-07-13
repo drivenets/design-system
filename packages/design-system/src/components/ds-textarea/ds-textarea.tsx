@@ -46,4 +46,6 @@ const DsTextarea: React.FC<DsTextareaProps> = ({
 	);
 };
 
+DsTextarea.displayName = 'DsTextarea';
+
 export default DsTextarea;

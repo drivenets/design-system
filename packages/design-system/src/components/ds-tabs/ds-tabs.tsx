@@ -38,6 +38,8 @@ const DsTabsRoot = ({
 	);
 };
 
+DsTabsRoot.displayName = 'DsTabs.Root';
+
 export const DsTabs = {
 	Root: DsTabsRoot,
 	List: DsTabsList,

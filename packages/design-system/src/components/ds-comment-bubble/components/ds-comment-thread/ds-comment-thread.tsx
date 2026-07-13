@@ -81,3 +81,4 @@ export const DsCommentThread = ({
 		</div>
 	);
 };
+DsCommentThread.displayName = 'DsCommentThread';

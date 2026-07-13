@@ -26,4 +26,6 @@ const DsSkeletonCircle = ({ size = 'regular', color = 'gray', className, style }
 	);
 };
 
+DsSkeletonCircle.displayName = 'DsSkeletonCircle';
+
 export default DsSkeletonCircle;

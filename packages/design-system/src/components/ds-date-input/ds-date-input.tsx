@@ -307,4 +307,6 @@ const YearView = () => (
 	</DatePicker.View>
 );
 
+DsDateInput.displayName = 'DsDateInput';
+
 export default DsDateInput;

@@ -108,4 +108,6 @@ const DsProgressArc = ({
 	);
 };
 
+DsProgressArc.displayName = 'DsProgressArc';
+
 export default DsProgressArc;

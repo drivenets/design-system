@@ -122,3 +122,6 @@ export const DsRadioGroup = {
 	Root,
 	Item,
 };
+DsRadioGroup.Root.displayName = 'DsRadioGroup.Root';
+DsRadioGroup.Item.displayName = 'DsRadioGroup.Item';
+DsRadioGroupLegacy.displayName = 'DsRadioGroupLegacy';

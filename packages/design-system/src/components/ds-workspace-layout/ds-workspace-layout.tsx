@@ -124,6 +124,14 @@ const LeftPanel = ({ className, ...rest }: DsWorkspaceLayoutLeftPanelProps) => {
 	return <aside {...rest} className={classNames(styles.leftPanel, className)} />;
 };
 
+Header.displayName = 'DsWorkspaceLayout.Header';
+SubHeader.displayName = 'DsWorkspaceLayout.SubHeader';
+Content.displayName = 'DsWorkspaceLayout.Content';
+Footer.displayName = 'DsWorkspaceLayout.Footer';
+Body.displayName = 'DsWorkspaceLayout.Body';
+SideMenu.displayName = 'DsWorkspaceLayout.SideMenu';
+LeftPanel.displayName = 'DsWorkspaceLayout.LeftPanel';
+
 DsWorkspaceLayout.Header = Header;
 DsWorkspaceLayout.SubHeader = SubHeader;
 DsWorkspaceLayout.Content = Content;
@@ -131,5 +139,7 @@ DsWorkspaceLayout.Footer = Footer;
 DsWorkspaceLayout.Body = Body;
 DsWorkspaceLayout.SideMenu = SideMenu;
 DsWorkspaceLayout.LeftPanel = LeftPanel;
+
+DsWorkspaceLayout.displayName = 'DsWorkspaceLayout';
 
 export default DsWorkspaceLayout;
