@@ -80,12 +80,12 @@ $dropdown-z-index: 9999;
 	}
 
 	&[data-disabled] {
-		color: var(--background-deselected);
-		background: var(--background-secondary-selected-weak);
+		color: var(--font-disabled);
 		cursor: not-allowed;
 
 		.indicator,
 		.itemIcon {
+			color: var(--font-disabled);
 			pointer-events: none;
 		}
 	}
