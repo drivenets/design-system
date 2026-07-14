@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/90 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">53/90 infos</a><span class="filter-pill ok" aria-disabled="true">554 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">54/91 infos</a><span class="filter-pill ok" aria-disabled="true">559 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -8146,7 +8146,7 @@ style?: CSSProperties</code></pre>
       <div class="badges">
         <label for="c-24-components-dropdownmenu-props" class="badge ok as-toggle">11 prop types</label>
         
-        <label for="c-24-components-dropdownmenu-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-24-components-dropdownmenu-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -8249,6 +8249,7 @@ style?: CSSProperties</code></pre>
                   <span class="ex-name">Imports</span>
                 </div>
                 <pre><code>import {
+    DsAvatar,
     DsButton,
     DsCheckbox,
     DsDropdownMenu,
@@ -8256,6 +8257,7 @@ style?: CSSProperties</code></pre>
     DsRadioGroup,
     DsTextInput,
     DsTypography,
+    DsUserCard,
 } from "@drivenets/design-system";</code></pre>
               </div>
           
@@ -8643,6 +8645,46 @@ style?: CSSProperties</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
+                <span class="ex-name">User Menu</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const UserMenu = () =&gt; {
+    const handleProfile = () =&gt; console.log(&#39;Profile clicked&#39;);
+    const handleSettings = () =&gt; console.log(&#39;Settings clicked&#39;);
+    const handleLogout = () =&gt; console.log(&#39;Log out clicked&#39;);
+
+    return (
+        &lt;DsDropdownMenu.Root positioning={{ placement: &#39;bottom-end&#39; }}&gt;
+            &lt;DsDropdownMenu.Trigger asChild&gt;
+                &lt;DsButton design=&quot;v1.2&quot; buttonType=&quot;secondary&quot;&gt;
+                    &lt;DsAvatar name=&quot;Mockup Developer&quot; size=&quot;sm&quot; /&gt;
+                &lt;/DsButton&gt;
+            &lt;/DsDropdownMenu.Trigger&gt;
+            &lt;DsDropdownMenu.Content&gt;
+                &lt;DsUserCard name=&quot;Mockup Developer&quot; subtitle=&quot;developer@mock.local&quot; /&gt;
+                &lt;DsDropdownMenu.Item value=&quot;profile&quot; onSelect={handleProfile}&gt;
+                    &lt;DsIcon icon=&quot;person&quot; /&gt;
+                    &lt;span&gt;Profile&lt;/span&gt;
+                &lt;/DsDropdownMenu.Item&gt;
+                &lt;DsDropdownMenu.Item value=&quot;settings&quot; onSelect={handleSettings}&gt;
+                    &lt;DsIcon icon=&quot;settings&quot; /&gt;
+                    &lt;span&gt;Settings&lt;/span&gt;
+                &lt;/DsDropdownMenu.Item&gt;
+                &lt;DsDropdownMenu.Actions align=&quot;stretch&quot;&gt;
+                    &lt;DsDropdownMenu.Item value=&quot;logout&quot; onSelect={handleLogout}&gt;
+                        &lt;DsIcon icon=&quot;logout&quot; /&gt;
+                        &lt;span&gt;Log out&lt;/span&gt;
+                    &lt;/DsDropdownMenu.Item&gt;
+                &lt;/DsDropdownMenu.Actions&gt;
+            &lt;/DsDropdownMenu.Content&gt;
+        &lt;/DsDropdownMenu.Root&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
                 <span class="ex-name">Action Menu</span>
                 <span class="badge ok">story ok</span>
               </div>
@@ -8696,6 +8738,65 @@ style?: CSSProperties</code></pre>
                 &lt;DsDropdownMenu.Item value=&quot;delete&quot; onSelect={handleDelete} className=&quot;danger&quot;&gt;
                     &lt;DsIcon icon=&quot;delete&quot; /&gt;
                     &lt;span&gt;Delete item&lt;/span&gt;
+                &lt;/DsDropdownMenu.Item&gt;
+            &lt;/DsDropdownMenu.Content&gt;
+        &lt;/DsDropdownMenu.Root&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Nested Submenus (3 levels)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const NestedSubmenus = () =&gt; {
+    const handleBlank = () =&gt; console.log(&#39;Blank document clicked&#39;);
+    const handleResume = () =&gt; console.log(&#39;Resume template clicked&#39;);
+    const handleInvoice = () =&gt; console.log(&#39;Invoice template clicked&#39;);
+    const handleLetter = () =&gt; console.log(&#39;Letter template clicked&#39;);
+    const handleOpen = () =&gt; console.log(&#39;Open clicked&#39;);
+
+    return (
+        &lt;DsDropdownMenu.Root&gt;
+            &lt;DsDropdownMenu.Trigger className=&quot;trigger&quot;&gt;
+                &lt;span&gt;File&lt;/span&gt;
+                &lt;DsIcon icon=&quot;arrow_drop_down&quot; /&gt;
+            &lt;/DsDropdownMenu.Trigger&gt;
+            &lt;DsDropdownMenu.Content&gt;
+                &lt;DsDropdownMenu.Root positioning={{ placement: &#39;right-start&#39; }}&gt;
+                    &lt;DsDropdownMenu.TriggerItem className=&quot;action-menu-item&quot;&gt;
+                        &lt;DsIcon icon=&quot;note_add&quot; /&gt;
+                        &lt;span&gt;New&lt;/span&gt;
+                    &lt;/DsDropdownMenu.TriggerItem&gt;
+                    &lt;DsDropdownMenu.Content&gt;
+                        &lt;DsDropdownMenu.Item value=&quot;blank&quot; onSelect={handleBlank}&gt;
+                            &lt;DsIcon icon=&quot;description&quot; /&gt;
+                            &lt;span&gt;Blank Document&lt;/span&gt;
+                        &lt;/DsDropdownMenu.Item&gt;
+                        &lt;DsDropdownMenu.Root positioning={{ placement: &#39;right-start&#39; }}&gt;
+                            &lt;DsDropdownMenu.TriggerItem className=&quot;action-menu-item&quot;&gt;
+                                &lt;DsIcon icon=&quot;dashboard&quot; /&gt;
+                                &lt;span&gt;From Template&lt;/span&gt;
+                            &lt;/DsDropdownMenu.TriggerItem&gt;
+                            &lt;DsDropdownMenu.Content&gt;
+                                &lt;DsDropdownMenu.Item value=&quot;template-resume&quot; onSelect={handleResume}&gt;
+                                    &lt;span&gt;Resume&lt;/span&gt;
+                                &lt;/DsDropdownMenu.Item&gt;
+                                &lt;DsDropdownMenu.Item value=&quot;template-invoice&quot; onSelect={handleInvoice}&gt;
+                                    &lt;span&gt;Invoice&lt;/span&gt;
+                                &lt;/DsDropdownMenu.Item&gt;
+                                &lt;DsDropdownMenu.Item value=&quot;template-letter&quot; onSelect={handleLetter}&gt;
+                                    &lt;span&gt;Letter&lt;/span&gt;
+                                &lt;/DsDropdownMenu.Item&gt;
+                            &lt;/DsDropdownMenu.Content&gt;
+                        &lt;/DsDropdownMenu.Root&gt;
+                    &lt;/DsDropdownMenu.Content&gt;
+                &lt;/DsDropdownMenu.Root&gt;
+                &lt;DsDropdownMenu.Item value=&quot;open&quot; onSelect={handleOpen}&gt;
+                    &lt;DsIcon icon=&quot;folder_open&quot; /&gt;
+                    &lt;span&gt;Open…&lt;/span&gt;
                 &lt;/DsDropdownMenu.Item&gt;
             &lt;/DsDropdownMenu.Content&gt;
         &lt;/DsDropdownMenu.Root&gt;
@@ -29185,6 +29286,136 @@ variant: keyof typeof typographyVariantConfig</code></pre>
 <article
   class="card 
   no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DsUserCard">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DsUserCard</h2>
+      <div class="badges">
+        <label for="c-86-components-usercard-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-86-components-usercard-info" class="badge info as-toggle">1 info</label>
+        <label for="c-86-components-usercard-stories" class="badge ok as-toggle">3 stories</label>
+        
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/ds-user-card/ds-user-card.stories.tsx">components-usercard · ./src/components/ds-user-card/ds-user-card.stories.tsx</div>
+    <div>Compact identity header pairing an avatar with a name and optional subtitle. Presentational card used as the header of a user menu. Renders a medium `DsAvatar` (initials fallback derived from `name`) beside a two-line text block; both lines truncate with an ellipsis when they overflow.</div>
+    
+    <div class="kv"><span class="chip">summary: Compact identity header pairing an avatar with a name and optional subtitle. Presentational card used as the header of a user menu. Renders a medium `DsAvatar` (initials fallback derived from `name`) beside a two-line text block; both lines truncate with an ellipsis when they overflow.</span></div>
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-86-components-usercard-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-86-components-usercard-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+  <input id="c-86-components-usercard-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">5 prop types</span>
+            </div>
+            <pre><code>Component: src/components/ds-user-card/ds-user-card.tsx::DsUserCard</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Custom class name applied to the root element.
+ */
+className?: string
+
+/**
+ * Full name shown as the title. Also drives the avatar initials fallback,
+ * image alt text, and hover tooltip.
+ */
+name: string
+
+/**
+ * Avatar image URL. Falls back to initials derived from `name` when omitted
+ * or when the image fails to load.
+ */
+src?: string
+
+/**
+ * Custom inline styles applied to the root element.
+ */
+style?: CSSProperties
+
+/**
+ * Secondary line rendered under the name, such as an email address or role.
+ */
+subtitle?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DsUserCard } from "@drivenets/design-system";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The identity header of a user menu: a medium avatar (initials fallback from `name`) beside the name and an optional `subtitle` such as an email or role.</div>
+              <pre><code>const Default = () =&gt; &lt;DsUserCard name=&quot;Mockup Developer&quot; subtitle=&quot;developer@mock.local&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Image</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">When `src` resolves, the avatar shows the photo instead of initials. The `name` is still used for the image alt text and hover tooltip.</div>
+              <pre><code>const WithImage = () =&gt; &lt;DsUserCard
+    name=&quot;Jane Smith&quot;
+    subtitle=&quot;jane.smith@drivenets.com&quot;
+    src=&quot;https://i.pravatar.cc/150?u=jane&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Long Text Overflow</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Both rows are single-line and truncate with an ellipsis when they exceed the available width, keeping the header height stable regardless of content length.</div>
+              <pre><code>const LongTextOverflow = () =&gt; &lt;DsUserCard
+    name=&quot;A very long one. We need to think of some natural text in here.&quot;
+    subtitle=&quot;A very long one. Maybe a little longer? We need to think of some natural text in here.&quot; /&gt;;</code></pre>
+            </div>
+        </div>
+    
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
   no-info 
   no-story-error
   no-doc-error"
@@ -29194,9 +29425,9 @@ variant: keyof typeof typographyVariantConfig</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsVerticalTabs</h2>
       <div class="badges">
-        <label for="c-86-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-87-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-86-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-87-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -29210,10 +29441,10 @@ variant: keyof typeof typographyVariantConfig</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-86-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-87-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-86-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-87-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -29387,9 +29618,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsWorkspaceLayout</h2>
       <div class="badges">
-        <label for="c-87-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
-        <label for="c-87-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
-        <label for="c-87-components-workspacelayout-stories" class="badge ok as-toggle">12 stories</label>
+        <label for="c-88-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-88-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
+        <label for="c-88-components-workspacelayout-stories" class="badge ok as-toggle">12 stories</label>
         
         
       </div>
@@ -29402,11 +29633,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-87-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-87-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-88-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-88-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-87-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-88-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30465,8 +30696,8 @@ fillParent?: boolean = false</code></pre>
       <h2><span class="status-dot dot-ok"></span> SampleForm</h2>
       <div class="badges">
         
-        <label for="c-88-examples-sampleform-info" class="badge info as-toggle">1 info</label>
-        <label for="c-88-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-89-examples-sampleform-info" class="badge info as-toggle">1 info</label>
+        <label for="c-89-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -30479,8 +30710,8 @@ fillParent?: boolean = false</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-88-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-88-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-89-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-89-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -30535,9 +30766,9 @@ fillParent?: boolean = false</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> Scrollbars</h2>
       <div class="badges">
-        <label for="c-89-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-89-components-scrollbars-info" class="badge info as-toggle">1 info</label>
-        <label for="c-89-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-90-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-90-components-scrollbars-info" class="badge info as-toggle">1 info</label>
+        <label for="c-90-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -30549,9 +30780,9 @@ fillParent?: boolean = false</code></pre>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-89-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-89-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-89-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-90-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-90-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-90-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
