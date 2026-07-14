@@ -35,9 +35,11 @@ interface GroupContextValue {
 
 const GroupContext = createContext<GroupContextValue | null>(null);
 
+const MENU_GUTTER = 4;
+
 const DEFAULT_POSITIONING: DsDropdownMenuPositioning = {
 	placement: 'bottom-start' as const,
-	gutter: 4,
+	gutter: MENU_GUTTER,
 };
 
 /**
@@ -158,15 +160,18 @@ const Header: React.FC<DsDropdownMenuHeaderProps> = ({ children, className, styl
 };
 
 /**
- * Actions component - footer container for action buttons
+ * Actions component - sticky bottom slot for action buttons (`align="end"`) or
+ * full-width elements like a logout item (`align="stretch"`).
  */
-const Actions: React.FC<DsDropdownMenuActionsProps> = ({ children, className, style }) => {
+const Actions: React.FC<DsDropdownMenuActionsProps> = ({ children, align = 'end', className, style }) => {
 	return (
 		<div
-			className={classNames(styles.actions, className)}
+			className={classNames(
+				styles.actions,
+				align === 'stretch' ? styles.actionsStretch : styles.actionsRow,
+				className,
+			)}
 			style={style}
-			role="menu"
-			aria-label="Menu actions"
 		>
 			{children}
 		</div>
