@@ -63,7 +63,6 @@ describe('DsBreadcrumb docs snippets', () => {
         storyName: 'Default',
       });
 
-      expect(snippet).toContain("type: 'code'");
       expect(snippet).toMatchSnapshot();
     });
 

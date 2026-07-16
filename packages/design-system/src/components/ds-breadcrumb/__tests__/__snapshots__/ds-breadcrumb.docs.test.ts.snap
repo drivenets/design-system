@@ -3,18 +3,15 @@
 exports[`DsBreadcrumb docs snippets > Default > MCP manifest snippet matches staged authoring rules 1`] = `
 "const Default = function Render(args) {
     const navigate = useNavigate();
-    const location = useLocation();
     const items: DsBreadcrumbItem[] = [
         { type: 'link', label: 'Home', href: '/', icon: 'home' },
         { type: 'link', label: 'Inventory', href: '/inventory', icon: 'settings' },
         { type: 'link', label: 'Catalog', href: '/inventory/catalog', icon: 'newspaper' },
     ];
-    const depth = location.pathname.split('/').filter(Boolean).length;
-    const visibleItems = items.slice(0, depth + 1);
 
     return (
         <DsBreadcrumb
-            items={visibleItems}
+            items={items}
             onSelect={(href) => {
                 args.onSelect?.(href);
                 void navigate({ to: href });
@@ -36,7 +33,6 @@ exports[`DsBreadcrumb docs snippets > Default > Show code panel matches staged a
   decorators: [Story => withTanStackRouter(Story, '/inventory/catalog')],
   render: function Render(args) {
     const navigate = useNavigate();
-    const location = useLocation();
     const items: DsBreadcrumbItem[] = [{
       type: 'link',
       label: 'Home',
@@ -53,9 +49,7 @@ exports[`DsBreadcrumb docs snippets > Default > Show code panel matches staged a
       href: '/inventory/catalog',
       icon: 'newspaper'
     }];
-    const depth = location.pathname.split('/').filter(Boolean).length;
-    const visibleItems = items.slice(0, depth + 1);
-    return <DsBreadcrumb items={visibleItems} onSelect={href => {
+    return <DsBreadcrumb items={items} onSelect={href => {
       args.onSelect?.(href);
       void navigate({
         to: href
@@ -68,7 +62,6 @@ exports[`DsBreadcrumb docs snippets > Default > Show code panel matches staged a
 exports[`DsBreadcrumb docs snippets > With Dropdown > MCP manifest snippet matches staged authoring rules 1`] = `
 "const WithDropdown = function Render(args) {
     const navigate = useNavigate();
-    const location = useLocation();
     const items: DsBreadcrumbItem[] = [
         { type: 'link', label: 'Home', href: '/' },
         { type: 'link', label: 'Network Visibility', href: '/network' },
@@ -91,12 +84,10 @@ exports[`DsBreadcrumb docs snippets > With Dropdown > MCP manifest snippet match
             ],
         },
     ];
-    const depth = location.pathname.split('/').filter(Boolean).length;
-    const visibleItems = items.slice(0, depth + 1);
 
     return (
         <DsBreadcrumb
-            items={visibleItems}
+            items={items}
             onSelect={(href) => {
                 args.onSelect?.(href);
                 void navigate({ to: href });
@@ -118,7 +109,6 @@ exports[`DsBreadcrumb docs snippets > With Dropdown > Show code panel matches st
   decorators: [Story => withTanStackRouter(Story, '/network/vienna/router-a')],
   render: function Render(args) {
     const navigate = useNavigate();
-    const location = useLocation();
     const items: DsBreadcrumbItem[] = [{
       type: 'link',
       label: 'Home',
@@ -150,9 +140,7 @@ exports[`DsBreadcrumb docs snippets > With Dropdown > Show code panel matches st
         href: '/network/vienna/switch-b'
       }]
     }];
-    const depth = location.pathname.split('/').filter(Boolean).length;
-    const visibleItems = items.slice(0, depth + 1);
-    return <DsBreadcrumb items={visibleItems} onSelect={href => {
+    return <DsBreadcrumb items={items} onSelect={href => {
       args.onSelect?.(href);
       void navigate({
         to: href
