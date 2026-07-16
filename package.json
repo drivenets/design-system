@@ -20,6 +20,7 @@
 		"test": "turbo run test",
 		"test:coverage": "turbo run test:coverage",
 		"test:requires-build": "turbo run test:requires-build",
+		"test:storybook-docs": "turbo run test:storybook-docs",
 		"build": "turbo run build",
 		"build:storybook": "turbo run build:storybook",
 		"figma:lint": "turbo run figma:lint",

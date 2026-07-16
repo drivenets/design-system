@@ -34,7 +34,7 @@ For new components or substantial interaction/behavior changes, confirm an updat
 
 Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../docs-tests/SKILL.md):
 
-1. **Show code + manifest (primary)** — `pnpm --filter @drivenets/design-system test:storybook-docs <matching *.docs.test.ts path> --run`.
+1. **Show code + manifest (primary)** — `pnpm test:storybook-docs -- src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run`.
 2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
 
 Add `*.docs.test.ts` when introducing stories without one.

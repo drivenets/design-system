@@ -13,7 +13,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 - Controlled story (`useState` in `render`) when component supports it
 - Localized story when component has `locale` prop
 - Combined states (e.g. checked + disabled)
-- **Docs tests (mandatory)** — add or update `__tests__/ds-{name}.docs.test.ts` for every story that exposes Show code or MCP snippets. Skip only `!manifest` / `sourceState: 'none'` showcase matrices. Run `pnpm --filter @drivenets/design-system test:storybook-docs <path> --run` before marking story work done — see [docs-tests](../docs-tests/SKILL.md)
+- **Docs tests (mandatory)** — add or update `__tests__/ds-{name}.docs.test.ts` for every story that exposes Show code or MCP snippets. Skip only `!manifest` / `sourceState: 'none'` showcase matrices. Run `pnpm test:storybook-docs -- src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run` before marking story work done — see [docs-tests](../docs-tests/SKILL.md)
 - Args flow to a component — don't hardcode in `render` what belongs in `args`
 - Prefer args-driven one-concept stories over `render` — args-only stories produce clean, copy-paste snippets via dynamic source. Exception: **compound components** with multiple sub-components (`DsX.Title`, `DsX.Body`, …) — put sub-components in `render`, not `args.children` with a Fragment;
 - Keep `args` self-contained — inline object/array literals per story rather than referencing shared module-level consts; consts appear unexpanded in MCP/Docs snippets and break copy-paste. Duplication across stories is the accepted tradeoff.

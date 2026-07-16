@@ -28,13 +28,13 @@ pnpm --filter @drivenets/vite-plugin-design-system test --run -t "snapshot"
 
 ## When to Run What
 
-| Changed                    | Run                                                                                                                                |
-| -------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `*.test.ts` file           | `pnpm --filter <pkg> test <path> --run`                                                                                            |
-| `*.docs.test.ts` file      | `pnpm --filter @drivenets/design-system test:storybook-docs <path> --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
-| Source file with tests     | Lint the file + run related tests                                                                                                  |
-| Source file, no tests      | Lint the file + typecheck the package                                                                                              |
-| SCSS file in design-system | Lint the file                                                                                                                      |
+| Changed                    | Run                                                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `*.test.ts` file           | `pnpm --filter <pkg> test <path> --run`                                                                                                                |
+| `*.docs.test.ts` file      | `pnpm test:storybook-docs -- src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
+| Source file with tests     | Lint the file + run related tests                                                                                                                      |
+| Source file, no tests      | Lint the file + typecheck the package                                                                                                                  |
+| SCSS file in design-system | Lint the file                                                                                                                                          |
 
 ## Notes
 

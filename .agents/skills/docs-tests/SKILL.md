@@ -20,7 +20,7 @@ Both use the same `STORYBOOK_URL` from global setup — not filesystem reads, no
 
 ## Production target
 
-- `pnpm test:storybook-docs` runs `build:storybook` then vitest `--project=storybook-docs`.
+- `pnpm test:storybook-docs` runs turbo `test:storybook-docs` (depends on cached `build:storybook` + `install:playwright`), then vitest `--project=storybook-docs`.
 - Global setup ([`setup.storybook-docs.ts`](../../../packages/design-system/vitest/setup.storybook-docs.ts)) serves `storybook-static/` on an ephemeral port (same artifact as GitHub Pages).
 - Do **not** run docs tests against `pnpm start` (dev server). Show code snippets differ there because React Compiler is not applied the same way as in the production Storybook build.
 
@@ -109,7 +109,7 @@ Do not add `*.docs.test.ts` coverage for stories with `docs.canvas.sourceState: 
 ## Commands
 
 ```bash
-pnpm --filter @drivenets/design-system test:storybook-docs packages/design-system/src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run
+pnpm test:storybook-docs -- src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run
 ```
 
 Update snapshots after verifying output: add `--run -u`.

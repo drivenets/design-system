@@ -51,7 +51,7 @@
 		"test:unit": "vitest --project=unit",
 		"test:browser": "vitest --project=browser",
 		"test:requires-build": "vitest --project=requires-build",
-		"test:storybook-docs": "pnpm build:storybook && vitest --project=storybook-docs",
+		"test:storybook-docs": "vitest --project=storybook-docs",
 		"build": "tsdown",
 		"build:watch": "pnpm build --watch",
 		"build:storybook": "storybook build"

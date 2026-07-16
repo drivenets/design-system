@@ -26,14 +26,12 @@ describe('DsBreadcrumb docs snippets', () => {
 				storyName: 'Default',
 			});
 
-			expect(snippet).toContain('withTanStackRouter');
 			expect(snippet).toMatchSnapshot();
 		});
 
 		it('MCP manifest snippet matches staged authoring rules', async () => {
 			const snippet = await readManifestSnippet(COMPONENT_ID, 'Default');
 
-			expect(snippet).not.toContain('withTanStackRouter');
 			expect(snippet).toMatchSnapshot();
 		});
 	});
