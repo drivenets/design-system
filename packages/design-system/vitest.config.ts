@@ -20,6 +20,10 @@ export default defineConfig({
 				'**/*.scss',
 				'dist/**',
 
+				// figma code connect templates
+				'**/*.figma.{ts,tsx}',
+				'**/*.figma.batch.{ts,tsx}',
+
 				// deprecated components
 				'**/ds-chip/**',
 				'**/ds-chip-group/**',
