@@ -30,7 +30,7 @@ export const typographyVariantConfig = {
 	heading4: { element: 'h4', component: ark.h4 },
 } as const;
 
-/** Semantic text colors backed by `--font-*` tokens in `_root_new.scss`. */
+/** Semantic text colors backed by `--font-*` tokens in `_root.scss`. */
 export const typographyColors = [
 	'main',
 	'secondary',
