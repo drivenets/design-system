@@ -5,7 +5,7 @@ description: Write and run Storybook docs snippet tests (`*.docs.test.ts`) for S
 
 # Docs Tests Skill
 
-Verify Autodocs **Show code** panel text and MCP manifest snippets in `ds-{name}/__tests__/ds-{name}.docs.test.ts` — not in `*.browser.test.tsx` ([browser-tests](../browser-tests/SKILL.md)).
+Verify Autodocs **Show code** panel text and MCP manifest snippets via the global [`docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts) — not in `*.browser.test.tsx` ([browser-tests](../browser-tests/SKILL.md)).
 
 Story authoring rules: [storybook](../storybook/SKILL.md) "Docs source snippets" + "Snippet verification".
 
@@ -27,92 +27,55 @@ Both use the same `STORYBOOK_URL` from global setup — not filesystem reads, no
 ## File layout
 
 ```
-ds-{name}/__tests__/
-├── ds-{name}.docs.test.ts
-└── __snapshots__/ds-{name}.docs.test.ts.snap
+packages/design-system/tests/storybook/
+└── docs-snippets.docs.test.ts
+
+ds-{name}/__tests__/__snapshots__/
+└── ds-{name}.docs.snap
 ```
 
-## Quick start
+Coverage is centralized in the global test runner; each component gets one aggregated golden snapshot file colocated in its `__tests__/__snapshots__/` folder.
 
-```tsx
-import { chromium, type Browser, type Page } from 'playwright';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { readManifestSnippet } from '../../../../tests/storybook/read-manifest-snippet';
-import { readShowCodeSnippet } from '../../../../tests/storybook/read-show-code';
+## Opt in a component
 
-const DOCS_STORY_ID = 'components-breadcrumb--docs';
-const COMPONENT_ID = 'components-breadcrumb';
+Add one folder string to the `COMPONENTS` allowlist in [`docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts):
 
-describe('DsBreadcrumb docs snippets', () => {
-  let browser: Browser;
-  let page: Page;
-
-  beforeAll(async () => {
-    browser = await chromium.launch({ headless: true });
-    page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
-  });
-
-  afterAll(async () => {
-    await browser.close();
-  });
-
-  describe('Default', () => {
-    it('Show code panel matches staged authoring rules', async () => {
-      const snippet = await readShowCodeSnippet(page, {
-        docsStoryId: DOCS_STORY_ID,
-        storyName: 'Default',
-      });
-
-      expect(snippet).toMatchSnapshot();
-    });
-
-    it('MCP manifest snippet matches staged authoring rules', async () => {
-      const snippet = await readManifestSnippet(COMPONENT_ID, 'Default');
-
-      expect(snippet).toMatchSnapshot();
-    });
-  });
-});
+```ts
+const COMPONENTS = ['ds-button-v3', 'ds-breadcrumb', 'ds-your-component'];
 ```
 
-Examples: [`ds-breadcrumb.docs.test.ts`](../../../packages/design-system/src/components/ds-breadcrumb/__tests__/ds-breadcrumb.docs.test.ts), [`ds-button-v3.docs.test.ts`](../../../packages/design-system/src/components/ds-button-v3/__tests__/ds-button-v3.docs.test.ts).
+The test fetches `storybook-static/manifests/components.json`, matches each entry by `path` (`path.includes('/<folder>/')`), and snapshots every manifest story (stories tagged `!manifest` are already excluded from the manifest).
 
-## IDs
+No per-component test file, no manual story enumeration, no `DOCS_STORY_ID` / `COMPONENT_ID` constants.
 
-| Constant        | Derivation                           | Example                                                   |
-| --------------- | ------------------------------------ | --------------------------------------------------------- |
-| `DOCS_STORY_ID` | Story `title` kebab-cased + `--docs` | `Components/ButtonV3` → `components-buttonv3--docs`       |
-| `COMPONENT_ID`  | Key in built `components.json`       | `components-buttonv3` (not always `components-button-v3`) |
+## How it works
 
-Confirm `COMPONENT_ID` after `pnpm build:storybook`:
+1. Top-level `await` fetches `components.json` from the served `storybook-static/`.
+2. Allowlisted components are resolved by folder name against each entry's `path`.
+3. For each component, one test collects Show code + MCP manifest snippets for every manifest story and writes a single aggregated golden document via `toMatchFileSnapshot`.
+4. Golden files are colocated at `src/components/<folder>/__tests__/__snapshots__/<folder>.docs.snap`.
 
-```bash
-node -e "const m=require('./packages/design-system/storybook-static/manifests/components.json'); console.log(Object.keys(m.components).filter(k=>k.includes('your-component')))"
-```
-
-Story names in tests match Autodocs `h3` titles (`IconOnly` → `"Icon Only"`).
+If a story has no Autodocs **Show code** button, the test fails loudly. Non-Show-code stories must be tagged `!manifest` so they are excluded from the manifest.
 
 ## Assertions
 
-- **Snapshots** — `expect(snippet).toMatchSnapshot()` for full-text regression.
-- **Story-specific `toContain`** — when a variant has a distinguishing prop or pattern (e.g. `loading`, `type: 'code'`). No shared assertion helper; no generic `<DsX>` tag check.
-
-| Rule                                   | Show code test                            | MCP test             |
-| -------------------------------------- | ----------------------------------------- | -------------------- |
-| Story-specific props or patterns       | `toContain` for the distinguishing detail | same when applicable |
-| `decorators` visible in Show code only | `toContain('decorator')` when applicable  | do not assert in MCP |
+- **Snapshot only** — one aggregated golden file per component via `expect(document).toMatchFileSnapshot(path)`. Each file contains every story's Show code and MCP manifest snippets. No per-story `toContain` guards.
 
 ## Skip
 
-Do not add `*.docs.test.ts` coverage for stories with `docs.canvas.sourceState: 'none'` or showcase matrices tagged `!manifest`.
+Stories with `docs.canvas.sourceState: 'none'` or showcase matrices must be tagged `!manifest` so they are excluded from `components.json` and therefore from docs test coverage.
 
 ## Commands
 
 ```bash
-pnpm test:storybook-docs -- src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run
+pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run
 ```
 
 Update snapshots after verifying output: add `--run -u`.
+
+## Stage 2 (future)
+
+Once every component is in the allowlist, delete `COMPONENTS` and iterate `Object.keys(manifest.components)` for zero-maintenance full coverage.
 
 ## Related
 

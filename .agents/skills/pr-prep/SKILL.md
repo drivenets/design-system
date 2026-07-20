@@ -34,10 +34,10 @@ For new components or substantial interaction/behavior changes, confirm an updat
 
 Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../docs-tests/SKILL.md):
 
-1. **Show code + manifest (primary)** — `pnpm test:storybook-docs -- src/components/ds-{name}/__tests__/ds-{name}.docs.test.ts --run`.
+1. **Show code + manifest (primary)** — `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run`.
 2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
 
-Add `*.docs.test.ts` when introducing stories without one.
+Add the component's folder to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
 
 ### Step 3: Review changed files against project rules
 
