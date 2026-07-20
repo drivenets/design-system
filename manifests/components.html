@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -34973,7 +34973,11 @@ For create forms, keep submit enabled and rely on validation on submit:
 
 # Token Migration
 
-Shows the mapping of old tokens to new tokens.
+Maps old token names to their current replacements.
+
+&gt; **The old tokens no longer exist in the codebase.** This page is kept as a
+&gt; lookup reference because Figma designs and older documentation may still use the old names — use it
+&gt; to find the token you should apply instead.
 
 &gt; When replacing an old token, prefer the semantic token that expresses the role even if an alias or
 &gt; primitive has the same value. See the layer guidance on the
@@ -34981,12 +34985,12 @@ Shows the mapping of old tokens to new tokens.
 
 ## Legend
 
-| Status  | Meaning                                                                                                | Migration strategy                                                                                                                                     |
-| ------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find &amp; replace; no testing is required                                                                                                                 |
-| Changed | Resolved value differs                                                                                 | Find &amp; replace; visual testing is required                                                                                                             |
-| New     | No old equivalent                                                                                      |                                                                                                                                                        |
-| Removed | Old token with no new equivalent                                                                       | The **New Name** column holds a literal CSS value that the script substitutes verbatim, unwrapping any `var(--token)` so the resulting CSS stays valid |
+| Status  | Meaning                                                                                                | Migration strategy                                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find &amp; replace; no testing is required                                                                                               |
+| Changed | Resolved value differs                                                                                 | Find &amp; replace; visual testing is required                                                                                           |
+| New     | No old equivalent                                                                                      |                                                                                                                                      |
+| Removed | Old token with no new equivalent                                                                       | The **New Name** column holds a literal CSS value to use verbatim (any `var(--token)` is unwrapped so the resulting CSS stays valid) |
 
 ---
 

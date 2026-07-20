@@ -1,1 +1,0 @@
-import{i as e}from"./preload-helper-xPQekRTU.js";import{t}from"./ds-icon-BSzT40CK.js";import{n}from"./ds-smart-tabs-BG1n7Cak.js";var r=e((()=>{t()})),i=e((()=>{n(),r()}));export{i as t};
