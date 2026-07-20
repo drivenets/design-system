@@ -6,7 +6,7 @@
 <DsButtonV3
   color="default"
   icon="check_circle"
-  onClick={function RU(){}}
+  onClick={() => {}}
   size="medium"
   variant="primary"
 >
@@ -28,7 +28,7 @@ const Default = () => <DsButtonV3
   color="default"
   icon="check_circle"
   loading
-  onClick={function RU(){}}
+  onClick={() => {}}
   size="medium"
   variant="primary"
 >
@@ -45,7 +45,7 @@ const Loading = () => <DsButtonV3 onClick={fn()} variant="primary" loading />;
   color="default"
   disabled
   icon="check_circle"
-  onClick={function RU(){}}
+  onClick={() => {}}
   size="medium"
   variant="primary"
 >
@@ -62,7 +62,7 @@ const Disabled = () => <DsButtonV3 onClick={fn()} variant="primary" disabled />;
   aria-label="Confirm"
   color="default"
   icon="check_circle"
-  onClick={function RU(){}}
+  onClick={() => {}}
   size="medium"
   variant="primary"
 />
@@ -82,7 +82,7 @@ const IconOnly = () => <DsButtonV3
 <DsButtonV3
   color="default"
   icon="check_circle"
-  onClick={function RU(){}}
+  onClick={() => {}}
   selected
   size="medium"
   variant="secondary"
@@ -99,7 +99,7 @@ const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected /
 <DsButtonV3
   color="light"
   icon="check_circle"
-  onClick={function RU(){}}
+  onClick={() => {}}
   size="medium"
   variant="primary"
 >
