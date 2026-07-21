@@ -22,7 +22,11 @@ const registry: Record<string, FieldInfo> = {
 	select: { component: 'DsSelect', fcMember: 'Select', invalid: true, data: 'options={[]} value=""' },
 	date: { component: 'DsDateInput', fcMember: 'DateInput' },
 	time: { component: 'DsTimePicker', fcMember: 'TimePicker' },
-	autocompleteSearch: { component: 'DsAutocomplete', invalid: true, data: 'options={[]} showTrigger={false}' },
+	autocompleteSearch: {
+		component: 'DsAutocomplete',
+		invalid: true,
+		data: 'options={[]} showTrigger={false}',
+	},
 	autocompleteCombobox: { component: 'DsAutocomplete', invalid: true, data: 'options={[]}' },
 };
 

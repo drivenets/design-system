@@ -7,7 +7,8 @@ const instance = figma.selectedInstance;
 
 const inner = instance.findInstance('DAP_checkbox_v03', { traverseInstances: true });
 
-const color = inner.type === 'INSTANCE' ? inner.getEnum('color', { Default: 'default', warning: 'warning' }) : 'default';
+const color =
+	inner.type === 'INSTANCE' ? inner.getEnum('color', { Default: 'default', warning: 'warning' }) : 'default';
 
 const checked =
 	inner.type === 'INSTANCE'
