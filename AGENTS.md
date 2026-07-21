@@ -10,7 +10,7 @@ pnpm eslint packages/eslint-plugin/src/
 pnpm eslint --fix packages/design-system/src/components/ds-button/
 ```
 
-## Type Checking (tsgo)
+## Type Checking (tsc)
 
 ```bash
 pnpm --filter @drivenets/design-system typecheck
