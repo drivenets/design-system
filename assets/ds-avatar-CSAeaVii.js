@@ -1,0 +1,1 @@
+import{i as e}from"./preload-helper-xPQekRTU.js";import{a as t,r as n}from"./ds-avatar.types-6fbA_Itc.js";var r=e((()=>{t(),n()}));export{r as t};

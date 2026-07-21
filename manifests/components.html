@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -1608,18 +1608,15 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
               <div class="hint">A standard link trail where the last segment is the current page. Icons on earlier segments give quick visual anchors; clicking a parent link shortens the trail to match the new location.</div>
               <pre><code>const Default = function Render(args) {
     const navigate = useNavigate();
-    const location = useLocation();
     const items: DsBreadcrumbItem[] = [
         { type: &#39;link&#39;, label: &#39;Home&#39;, href: &#39;/&#39;, icon: &#39;home&#39; },
         { type: &#39;link&#39;, label: &#39;Inventory&#39;, href: &#39;/inventory&#39;, icon: &#39;settings&#39; },
         { type: &#39;link&#39;, label: &#39;Catalog&#39;, href: &#39;/inventory/catalog&#39;, icon: &#39;newspaper&#39; },
     ];
-    const depth = location.pathname.split(&#39;/&#39;).filter(Boolean).length;
-    const visibleItems = items.slice(0, depth + 1);
 
     return (
         &lt;DsBreadcrumb
-            items={visibleItems}
+            items={items}
             onSelect={(href) =&gt; {
                 args.onSelect?.(href);
                 void navigate({ to: href });
@@ -1637,7 +1634,6 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
               <div class="hint">Dropdown segments expose sibling destinations at a given depth — useful when the user can land on any of several peers (sites, devices, folders) at the same level. The trigger shows the option matching the current path.</div>
               <pre><code>const WithDropdown = function Render(args) {
     const navigate = useNavigate();
-    const location = useLocation();
     const items: DsBreadcrumbItem[] = [
         { type: &#39;link&#39;, label: &#39;Home&#39;, href: &#39;/&#39; },
         { type: &#39;link&#39;, label: &#39;Network Visibility&#39;, href: &#39;/network&#39; },
@@ -1660,12 +1656,10 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
             ],
         },
     ];
-    const depth = location.pathname.split(&#39;/&#39;).filter(Boolean).length;
-    const visibleItems = items.slice(0, depth + 1);
 
     return (
         &lt;DsBreadcrumb
-            items={visibleItems}
+            items={items}
             onSelect={(href) =&gt; {
                 args.onSelect?.(href);
                 void navigate({ to: href });
