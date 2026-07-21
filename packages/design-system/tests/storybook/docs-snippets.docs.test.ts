@@ -10,12 +10,8 @@ const packageRoot = path.resolve(dirname, '../../');
 
 const COMPONENTS = ['button-v3', 'breadcrumb'];
 
-function getComponentDirectoryName(name: string): string {
-	return `ds-${name}`;
-}
-
 function getComponentSnapshotPath(name: string): string {
-	const folder = getComponentDirectoryName(name);
+	const folder = `ds-${name}`;
 
 	return path.join(packageRoot, 'src/components', folder, '__tests__/__snapshots__', `${folder}.docs.snap`);
 }
