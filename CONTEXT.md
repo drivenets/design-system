@@ -52,6 +52,18 @@ _Avoid_: replacement, v2 component (as a synonym for the pattern name)
 A **Component** (or prop type) still exported but documented as superseded; Storybook uses the `deprecated` tag.
 _Avoid_: legacy, old (without linking to the successor)
 
+**User card**:
+A presentational **Component** (`DsUserCard`) showing a person's identity as an avatar plus a title (their name) and an optional subtitle (role, email, etc.). Display only — not clickable on its own.
+_Avoid_: profile card, user tile, account card
+
+**User menu**:
+A composed pattern — not its own **Component** — built from a **Component** menu (`DsDropdownMenu`) with a **User card** in the header region and a single full-width action (typically logout) in the **Menu footer**. Assembled in product/story code, never exported as `DsUserMenu`.
+_Avoid_: DsUserMenu, account menu (as a component name), profile dropdown
+
+**Menu footer**:
+A menu region for one full-width, prominent action (e.g. logout), distinct from the actions row (right-aligned Cancel/Apply-style buttons). Both are sticky, bordered regions of a **Component** menu.
+_Avoid_: actions bar (that is the button row), toolbar
+
 **Workspace page**:
 A full-screen DAP route for a multi-step **Project** (create, view, or approve) with persistent header chrome and a structured body.
 _Avoid_: project page, wizard page, fullscreen layout (generic)
