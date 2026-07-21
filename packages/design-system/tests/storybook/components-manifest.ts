@@ -31,7 +31,7 @@ async function fetchManifest(): Promise<ComponentsManifest> {
 	return (await response.json()) as ComponentsManifest;
 }
 
-export async function getManifest(): Promise<ComponentsManifest> {
+async function getManifest(): Promise<ComponentsManifest> {
 	manifestPromise ??= fetchManifest();
 
 	return manifestPromise;
