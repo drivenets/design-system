@@ -5,7 +5,7 @@ import figma from 'figma';
 
 const instance = figma.selectedInstance;
 
-const variant = instance.getEnum('Variant', {
+const variant = instance.getEnum('buttonType', {
 	primary: 'primary',
 	secondary: 'secondary',
 	tertiary: 'tertiary',
