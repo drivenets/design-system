@@ -13,7 +13,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 - Controlled story (`useState` in `render`) when component supports it
 - Localized story when component has `locale` prop
 - Combined states (e.g. checked + disabled)
-- **Docs tests (mandatory)** — coverage lives in the global runner [`tests/storybook/docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts); opt a component in by adding its folder string to the `COMPONENTS` allowlist. Every non-`!manifest` / non-`sourceState: 'none'` story is snapshotted automatically. Run `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` before marking story work done — see [docs-tests](../docs-tests/SKILL.md)
+- **Docs tests (mandatory)** — coverage lives in the global runner [`tests/storybook/docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts); opt a component in by adding its kebab folder suffix (without the `ds-` prefix) to the `COMPONENTS` allowlist. Every non-`!manifest` / non-`sourceState: 'none'` story is snapshotted automatically. Run `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` before marking story work done — see [docs-tests](../docs-tests/SKILL.md)
 - Args flow to a component — don't hardcode in `render` what belongs in `args`
 - Prefer args-driven one-concept stories over `render` — args-only stories produce clean, copy-paste snippets via dynamic source. Exception: **compound components** with multiple sub-components (`DsX.Title`, `DsX.Body`, …) — put sub-components in `render`, not `args.children` with a Fragment;
 - Keep `args` self-contained — inline object/array literals per story rather than referencing shared module-level consts; consts appear unexpanded in MCP/Docs snippets and break copy-paste. Duplication across stories is the accepted tradeoff.
@@ -112,7 +112,7 @@ Show code (Autodocs panel) and MCP manifest snippets are **different outputs** �
 
 Workflow — see [docs-tests](../docs-tests/SKILL.md):
 
-Add the component's folder to the `COMPONENTS` allowlist (if not already there) and regenerate its golden snapshot when changing stories that expose Show code — see [docs-tests](../docs-tests/SKILL.md).
+Add the component's kebab folder suffix (without the `ds-` prefix) to the `COMPONENTS` allowlist (if not already there) and regenerate its golden snapshot when changing stories that expose Show code — see [docs-tests](../docs-tests/SKILL.md).
 
 ## Showcase / matrix stories
 

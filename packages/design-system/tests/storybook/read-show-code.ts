@@ -1,4 +1,4 @@
-import type { Page } from 'playwright';
+import type { Frame, Page } from 'playwright';
 import { getStorybookUrl } from './storybook-url';
 
 export interface ReadShowCodeSnippetOptions {
@@ -6,11 +6,20 @@ export interface ReadShowCodeSnippetOptions {
 	storyName: string;
 }
 
-function getDocsIframe(page: Page) {
-	const frame = page.frames().find((f) => f.url().includes('iframe'));
+async function getDocsIframe(page: Page): Promise<Frame> {
+	// Storybook renders Autodocs inside its preview iframe, which is attached asynchronously
+	// after the manager boots — wait for it rather than reading frames right after navigation.
+	const iframeElement = await page.waitForSelector('#storybook-preview-iframe', {
+		state: 'attached',
+		timeout: 60_000,
+	});
+	const frame = await iframeElement.contentFrame();
+
 	if (!frame) {
 		throw new Error('Storybook docs iframe not found');
 	}
+
+	await frame.waitForLoadState('domcontentloaded');
 
 	return frame;
 }
@@ -25,7 +34,7 @@ export async function readShowCodeSnippet(
 		timeout: 60_000,
 	});
 
-	const frame = getDocsIframe(page);
+	const frame = await getDocsIframe(page);
 	const section = frame.locator('h3', { hasText: new RegExp(`^${storyName}$`) }).locator('..');
 	const showCodeButton = section.locator('button', { hasText: 'Show code' });
 
@@ -38,16 +47,21 @@ export async function readShowCodeSnippet(
 	const source = section.locator('pre');
 	await source.waitFor({ state: 'visible', timeout: 10_000 });
 
-	const deadline = Date.now() + 10_000;
-	let text = (await source.innerText()).trim();
+	// The syntax-highlighted source renders after the panel becomes visible, so wait for the
+	// element to hold non-whitespace text rather than snapshotting an empty panel.
+	const sourceHandle = await source.elementHandle();
 
-	while (!text && Date.now() < deadline) {
-		await page.waitForTimeout(100);
-		text = (await source.innerText()).trim();
+	if (!sourceHandle) {
+		throw new Error(`Show code panel not found for story "${storyName}" in ${docsStoryId}`);
 	}
-	if (!text) {
+
+	try {
+		await frame.waitForFunction((element) => element.textContent.trim().length > 0, sourceHandle, {
+			timeout: 10_000,
+		});
+	} catch {
 		throw new Error(`Show code panel is empty for story "${storyName}" in ${docsStoryId}`);
 	}
 
-	return text;
+	return (await source.innerText()).trim();
 }

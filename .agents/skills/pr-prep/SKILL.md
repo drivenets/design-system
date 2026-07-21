@@ -37,7 +37,7 @@ Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../
 1. **Show code + manifest (primary)** — `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run`.
 2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
 
-Add the component's folder to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
+Add the component's kebab folder suffix (without the `ds-` prefix, e.g. `button-v3`) to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
 
 ### Step 3: Review changed files against project rules
 

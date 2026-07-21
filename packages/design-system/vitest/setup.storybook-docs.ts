@@ -1,47 +1,21 @@
 import { createServer, type Server } from 'node:http';
-import { existsSync, statSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import serveHandler from 'serve-handler';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const STORYBOOK_STATIC_DIR = path.join(dirname, '../storybook-static');
 
-const MIME_TYPES: Record<string, string> = {
-	'.html': 'text/html',
-	'.js': 'text/javascript',
-	'.mjs': 'text/javascript',
-	'.css': 'text/css',
-	'.json': 'application/json',
-	'.svg': 'image/svg+xml',
-	'.png': 'image/png',
-	'.woff2': 'font/woff2',
-};
-
 function createStaticServer(root: string): Server {
-	return createServer(async (request, response) => {
-		const url = new URL(request.url ?? '/', 'http://localhost');
-		let filePath = path.join(root, decodeURIComponent(url.pathname));
-
-		if (url.pathname.endsWith('/')) {
-			filePath = path.join(filePath, 'index.html');
-		}
-
-		if (!existsSync(filePath) || statSync(filePath).isDirectory()) {
-			filePath = path.join(root, 'index.html');
-		}
-
-		try {
-			const content = await readFile(filePath);
-			const extension = path.extname(filePath);
-			response.writeHead(200, {
-				'Content-Type': MIME_TYPES[extension] ?? 'application/octet-stream',
-			});
-			response.end(content);
-		} catch {
-			response.writeHead(404);
-			response.end('Not found');
-		}
+	return createServer((request, response) => {
+		// Existing files (assets, iframe.html, manifests) are served directly; any other path
+		// falls back to index.html so Storybook boots from `/?path=...` (SPA-style routing).
+		void serveHandler(request, response, {
+			public: root,
+			cleanUrls: false,
+			rewrites: [{ source: '**', destination: '/index.html' }],
+		});
 	});
 }
 

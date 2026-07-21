@@ -11,10 +11,10 @@ Story authoring rules: [storybook](../storybook/SKILL.md) "Docs source snippets"
 
 ## What docs tests verify
 
-| Output           | Mechanism                                                         | Data source                                                                                            |
-| ---------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| **Show code**    | Playwright opens Autodocs, clicks **Show code**, reads `pre` text | [`read-show-code.ts`](../../../packages/design-system/tests/storybook/read-show-code.ts)               |
-| **MCP manifest** | HTTP `fetch` of `components.json`                                 | [`read-manifest-snippet.ts`](../../../packages/design-system/tests/storybook/read-manifest-snippet.ts) |
+| Output           | Mechanism                                                         | Data source                                                                                        |
+| ---------------- | ----------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Show code**    | Playwright opens Autodocs, clicks **Show code**, reads `pre` text | [`read-show-code.ts`](../../../packages/design-system/tests/storybook/read-show-code.ts)           |
+| **MCP manifest** | HTTP `fetch` of `components.json`                                 | [`components-manifest.ts`](../../../packages/design-system/tests/storybook/components-manifest.ts) |
 
 Both use the same `STORYBOOK_URL` from global setup — not filesystem reads, not the Storybook `/mcp` JSON-RPC endpoint.
 
@@ -38,13 +38,13 @@ Coverage is centralized in the global test runner; each component gets one aggre
 
 ## Opt in a component
 
-Add one folder string to the `COMPONENTS` allowlist in [`docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts):
+Add one kebab folder suffix (the `ds-` prefix is implied) to the `COMPONENTS` allowlist in [`docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts):
 
 ```ts
-const COMPONENTS = ['ds-button-v3', 'ds-breadcrumb', 'ds-your-component'];
+const COMPONENTS = ['button-v3', 'breadcrumb', 'your-component'];
 ```
 
-The test fetches `storybook-static/manifests/components.json`, matches each entry by `path` (`path.includes('/<folder>/')`), and snapshots every manifest story (stories tagged `!manifest` are already excluded from the manifest).
+The runner builds the folder as `ds-${name}`, fetches `storybook-static/manifests/components.json` once (cached in [`components-manifest.ts`](../../../packages/design-system/tests/storybook/components-manifest.ts)), resolves each entry by matching `path` (`path.includes('/ds-${name}/')`), and snapshots every manifest story (stories tagged `!manifest` are already excluded from the manifest). Path matching is used because the manifest id derives from the story title via Storybook's `toId` (`Components/ButtonV3` → `components-buttonv3`) and is not recoverable from the folder name.
 
 No per-component test file, no manual story enumeration, no `DOCS_STORY_ID` / `COMPONENT_ID` constants.
 
@@ -75,7 +75,7 @@ Update snapshots after verifying output: add `--run -u`.
 
 ## Stage 2 (future)
 
-Once every component is in the allowlist, delete `COMPONENTS` and iterate `Object.keys(manifest.components)` for zero-maintenance full coverage.
+Once every component is in the allowlist, delete `COMPONENTS` and iterate `Object.values(manifest.components)`, deriving each folder from its `path`, for zero-maintenance full coverage.
 
 ## Related
 

@@ -1,74 +1,21 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { readManifestSnippet } from './read-manifest-snippet';
+import { afterAll, beforeAll, describe, it } from 'vitest';
+import { getStorySnippet, resolveComponent, type ManifestComponent } from './components-manifest';
 import { readShowCodeSnippet } from './read-show-code';
-import { getStorybookUrl } from './storybook-url';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, '../../');
 
-const COMPONENTS = ['ds-button-v3', 'ds-breadcrumb'];
+const COMPONENTS = ['button-v3', 'breadcrumb'];
 
-interface ManifestStory {
-	id: string;
-	name: string;
-	snippet?: string;
-	description?: string;
+function getComponentDirectoryName(name: string): string {
+	return `ds-${name}`;
 }
 
-interface ManifestComponent {
-	id: string;
-	name: string;
-	path: string;
-	stories?: ManifestStory[];
-}
-
-interface ComponentsManifest {
-	components: Record<string, ManifestComponent>;
-}
-
-async function fetchComponentsManifest(): Promise<ComponentsManifest> {
-	const storybookUrl = getStorybookUrl();
-	const response = await fetch(`${storybookUrl}/manifests/components.json`);
-
-	if (!response.ok) {
-		throw new Error(`Failed to fetch components manifest (${String(response.status)}) from ${storybookUrl}`);
-	}
-
-	return (await response.json()) as ComponentsManifest;
-}
-
-function resolveAllowlistedComponents(
-	manifest: ComponentsManifest,
-	allowlist: string[],
-): ManifestComponent[] {
-	const allComponents = Object.values(manifest.components);
-
-	return allowlist.map((folder) => {
-		const component = allComponents.find((entry) => entry.path.includes(`/${folder}/`));
-
-		if (!component) {
-			throw new Error(`No manifest component found for folder "${folder}"`);
-		}
-
-		return component;
-	});
-}
-
-function getComponentFolder(componentPath: string): string {
-	const match = /components\/([^/]+)\//.exec(componentPath);
-
-	if (!match?.[1]) {
-		throw new Error(`Could not derive component folder from path "${componentPath}"`);
-	}
-
-	return match[1];
-}
-
-function getComponentSnapshotPath(componentPath: string): string {
-	const folder = getComponentFolder(componentPath);
+function getComponentSnapshotPath(name: string): string {
+	const folder = getComponentDirectoryName(name);
 
 	return path.join(packageRoot, 'src/components', folder, '__tests__/__snapshots__', `${folder}.docs.snap`);
 }
@@ -81,7 +28,7 @@ async function buildComponentDocsSnapshot(page: Page, component: ManifestCompone
 			docsStoryId: `${component.id}--docs`,
 			storyName: story.name,
 		});
-		const manifestSnippet = await readManifestSnippet(component.id, story.name);
+		const manifestSnippet = await getStorySnippet(component.id, story.name);
 
 		sections.push(
 			`## ${story.name}`,
@@ -98,27 +45,32 @@ async function buildComponentDocsSnapshot(page: Page, component: ManifestCompone
 	return sections.join('\n').trimEnd();
 }
 
-const manifest = await fetchComponentsManifest();
-const components = resolveAllowlistedComponents(manifest, COMPONENTS);
+const components = await Promise.all(
+	COMPONENTS.map(async (name) => ({ name, component: await resolveComponent(name) })),
+);
 
-describe.sequential('docs snippets', () => {
+describe('docs snippets', () => {
 	let browser: Browser;
-	let page: Page;
 
 	beforeAll(async () => {
 		browser = await chromium.launch({ headless: true });
-		page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
 	});
 
 	afterAll(async () => {
 		await browser.close();
 	});
 
-	describe.each(components)('$name', (component) => {
-		it('docs snippets match staged authoring rules', async () => {
-			const document = await buildComponentDocsSnapshot(page, component);
+	for (const { name, component } of components) {
+		it.concurrent(`${component.name} docs snippets match staged authoring rules`, async ({ expect }) => {
+			const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
 
-			await expect(document).toMatchFileSnapshot(getComponentSnapshotPath(component.path));
+			try {
+				const document = await buildComponentDocsSnapshot(page, component);
+
+				await expect(document).toMatchFileSnapshot(getComponentSnapshotPath(name));
+			} finally {
+				await page.close();
+			}
 		});
-	});
+	}
 });
