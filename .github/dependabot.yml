@@ -23,7 +23,7 @@ updates:
       pnpm-catalog:
         patterns:
           - '@arethetypeswrong/cli'
-          - '@typescript/native-preview'
+          - '@typescript/native'
           - 'publint'
           - 'tsdown'
           - 'typescript'
@@ -73,6 +73,12 @@ updates:
       timezone: 'Asia/Jerusalem'
     commit-message:
       prefix: 'ci'
+
     groups:
+      # All codeql-action sub-actions (init, analyze, etc.) share a version and need to be updated together.
+      codeql:
+        patterns:
+          - 'github/codeql-action*'
+
       github-actions:
         group-by: dependency-name
