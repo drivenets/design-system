@@ -4,7 +4,11 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # Token Migration
 
-Shows the mapping of old tokens to new tokens.
+Maps old token names to their current replacements.
+
+> **The old tokens no longer exist in the codebase.** This page is kept as a
+> lookup reference because Figma designs and older documentation may still use the old names — use it
+> to find the token you should apply instead.
 
 > When replacing an old token, prefer the semantic token that expresses the role even if an alias or
 > primitive has the same value. See the layer guidance on the
@@ -12,12 +16,12 @@ Shows the mapping of old tokens to new tokens.
 
 ## Legend
 
-| Status  | Meaning                                                                                                | Migration strategy                                                                                                                                     |
-| ------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required                                                                                                                 |
-| Changed | Resolved value differs                                                                                 | Find & replace; visual testing is required                                                                                                             |
-| New     | No old equivalent                                                                                      |                                                                                                                                                        |
-| Removed | Old token with no new equivalent                                                                       | The **New Name** column holds a literal CSS value that the script substitutes verbatim, unwrapping any `var(--token)` so the resulting CSS stays valid |
+| Status  | Meaning                                                                                                | Migration strategy                                                                                                                   |
+| ------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Renamed | Same resolved value; name changed (trivially shortened, semantically renamed, or numeric key remapped) | Find & replace; no testing is required                                                                                               |
+| Changed | Resolved value differs                                                                                 | Find & replace; visual testing is required                                                                                           |
+| New     | No old equivalent                                                                                      |                                                                                                                                      |
+| Removed | Old token with no new equivalent                                                                       | The **New Name** column holds a literal CSS value to use verbatim (any `var(--token)` is unwrapped so the resulting CSS stays valid) |
 
 ---
 

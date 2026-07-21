@@ -69,6 +69,33 @@ describe('DsDropdownMenu', () => {
 		expect(onSelect).not.toHaveBeenCalled();
 	});
 
+	it('renders a stretched actions slot whose item participates in menu selection', async () => {
+		const onSelect = vi.fn();
+
+		await page.render(
+			<DsDropdownMenu.Root onSelect={onSelect}>
+				<DsDropdownMenu.Trigger>
+					<span>Account</span>
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+					<DsDropdownMenu.Actions align="stretch">
+						<DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+					</DsDropdownMenu.Actions>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>,
+		);
+
+		await page.getByRole('button', { name: 'Account' }).click();
+
+		const logout = page.getByRole('menuitem', { name: 'Log out' });
+		await expect.element(logout).toBeVisible();
+
+		await logout.click();
+
+		expect(onSelect).toHaveBeenCalledWith('logout');
+	});
+
 	describe('collapsible groups (uncontrolled)', () => {
 		function CheckboxListDropdown() {
 			const [open, setOpen] = useState(false);

@@ -7,10 +7,10 @@ description: SCSS and CSS modules for design-system components. Use when editing
 
 ## Design tokens
 
-| Requirement             | Details                              |
-| ----------------------- | ------------------------------------ |
-| **Use design tokens**   | all from `src/styles/_root_new.scss` |
-| **No hardcoded colors** | CSS custom properties only           |
+| Requirement             | Details                          |
+| ----------------------- | -------------------------------- |
+| **Use design tokens**   | all from `src/styles/_root.scss` |
+| **No hardcoded colors** | CSS custom properties only       |
 
 ## Focus and interaction
 
