@@ -33,7 +33,7 @@
 	"scripts": {
 		"lint": "eslint --max-warnings=0 .",
 		"lint:build": "publint && attw --pack",
-		"typecheck": "tsgo",
+		"typecheck": "tsc",
 		"test": "vitest",
 		"test:coverage": "pnpm test --coverage",
 		"build": "tsdown"
@@ -43,7 +43,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "catalog:",
-		"@typescript/native-preview": "catalog:",
+		"@typescript/native": "catalog:",
 		"@vitest/coverage-v8": "catalog:",
 		"eslint": "catalog:",
 		"publint": "catalog:",
