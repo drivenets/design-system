@@ -71,7 +71,7 @@ describe('docs snippets', () => {
 
 	for (const { name, component } of components) {
 		it.concurrent(`${component.name} docs snippets match staged authoring rules`, async ({ expect }) => {
-			const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
+			const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, timezoneId: 'UTC' });
 
 			try {
 				const document = await buildComponentDocsSnapshot(page, component);
