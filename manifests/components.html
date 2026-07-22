@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">54/91 infos</a><span class="filter-pill ok" aria-disabled="true">559 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">573 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -784,15 +784,11 @@ variant?: (typeof alertBannerVariants)[number] = &#39;info-blue&#39;</code></pre
               </div>
               
               <div class="hint">Global layout (`inline: false`) is a full-width bar designed for the top of a page. The title is hidden and the body truncates, so lead with a concise `DsAlertBanner.Body`.</div>
-              <pre><code>const Global = () =&gt; &lt;DsAlertBanner
-    open
-    onOpenChange={fn()}
-    inline={false}
-    variant=&quot;info-blue&quot;
-    icon=&quot;info&quot;
-    closable&gt;
-    &lt;DsAlertBanner.Body&gt;A new version is available. Refresh to update.&lt;/DsAlertBanner.Body&gt;
-&lt;/DsAlertBanner&gt;;</code></pre>
+              <pre><code>const Global = () =&gt; (
+    &lt;DsAlertBanner inline={false} variant=&quot;info-blue&quot; icon=&quot;info&quot; closable open onOpenChange={() =&gt; {}}&gt;
+        &lt;DsAlertBanner.Body&gt;A new version is available. Refresh to update.&lt;/DsAlertBanner.Body&gt;
+    &lt;/DsAlertBanner&gt;
+);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -1059,14 +1055,17 @@ style?: React.CSSProperties</code></pre>
               </div>
               
               <div class="hint">Search mode hides the trigger arrow so the list only opens while typing. Use it for search-style inputs where a persistent dropdown affordance would imply a short, fixed list.</div>
-              <pre><code>const SearchMode = () =&gt; &lt;DsAutocomplete
-    showTrigger={false}
-    placeholder=&quot;Start typing to search...&quot;
-    options={[
-        { value: &#39;apple&#39;, label: &#39;Apple&#39; },
-        { value: &#39;banana&#39;, label: &#39;Banana&#39; },
-        { value: &#39;cherry&#39;, label: &#39;Cherry&#39; },
-    ]} /&gt;;</code></pre>
+              <pre><code>const SearchMode = () =&gt; (
+    &lt;DsAutocomplete
+        showTrigger={false}
+        placeholder=&quot;Start typing to search...&quot;
+        options={[
+            { value: &#39;apple&#39;, label: &#39;Apple&#39; },
+            { value: &#39;banana&#39;, label: &#39;Banana&#39; },
+            { value: &#39;cherry&#39;, label: &#39;Cherry&#39; },
+        ]}
+    /&gt;
+);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -1107,14 +1106,17 @@ style?: React.CSSProperties</code></pre>
               </div>
               
               <div class="hint">Disable match highlighting when the emphasized `mark` styling would compete with the option content, or when matches are handled server-side and no local query is available.</div>
-              <pre><code>const WithoutHighlight = () =&gt; &lt;DsAutocomplete
-    highlightMatch={false}
-    placeholder=&quot;Select or type to search...&quot;
-    options={[
-        { value: &#39;apple&#39;, label: &#39;Apple&#39; },
-        { value: &#39;banana&#39;, label: &#39;Banana&#39; },
-        { value: &#39;cherry&#39;, label: &#39;Cherry&#39; },
-    ]} /&gt;;</code></pre>
+              <pre><code>const WithoutHighlight = () =&gt; (
+    &lt;DsAutocomplete
+        highlightMatch={false}
+        placeholder=&quot;Select or type to search...&quot;
+        options={[
+            { value: &#39;apple&#39;, label: &#39;Apple&#39; },
+            { value: &#39;banana&#39;, label: &#39;Banana&#39; },
+            { value: &#39;cherry&#39;, label: &#39;Cherry&#39; },
+        ]}
+    /&gt;
+);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -1185,8 +1187,6 @@ style?: React.CSSProperties</code></pre>
     const [loading, setLoading] = useState(false);
 
     const handleInputValueChange = async (value: string) =&gt; {
-        args.onInputValueChange?.(value);
-
         if (!value) {
             setOptions([]);
             return;
@@ -1400,7 +1400,7 @@ type?: (typeof dsAvatarTypes)[number] = &#39;circle&#39;</code></pre>
 <article
   class="card 
   no-error 
-  no-info 
+  has-info 
   no-story-error
   no-doc-error"
   role="listitem"
@@ -1410,21 +1410,21 @@ type?: (typeof dsAvatarTypes)[number] = &#39;circle&#39;</code></pre>
       <h2><span class="status-dot dot-ok"></span> DsAvatarGroup</h2>
       <div class="badges">
         <label for="c-3-components-avatargroup-props" class="badge ok as-toggle">5 prop types</label>
-        
-        <label for="c-3-components-avatargroup-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-3-components-avatargroup-info" class="badge info as-toggle">1 info</label>
+        <label for="c-3-components-avatargroup-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
     </div>
     <div class="meta" title="./src/components/ds-avatar-group/ds-avatar-group.stories.tsx">components-avatargroup · ./src/components/ds-avatar-group/ds-avatar-group.stories.tsx</div>
+    <div>Overlapping avatars with overflow collapse and tooltip. Renders a row of {@link DsAvatar} members that share `size` and `type`. When `avatars.length` exceeds `max`, the remainder collapse behind a `+N` indicator; hovering it lists the hidden names in a tooltip.</div>
     
-    <div class="hint">DsAvatarGroup component for displaying a list of avatars with overlap</div>
-    
+    <div class="kv"><span class="chip">summary: Overlapping avatars with overflow collapse and tooltip. Renders a row of {@link DsAvatar} members that share `size` and `type`. When `avatars.length` exceeds `max`, the remainder collapse behind a `+N` indicator; hovering it lists the hidden names in a tooltip.</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  
+  <input id="c-3-components-avatargroup-info" class="tg tg-info" type="checkbox" hidden />
   <input id="c-3-components-avatargroup-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
@@ -1433,6 +1433,13 @@ type?: (typeof dsAvatarTypes)[number] = &#39;circle&#39;</code></pre>
   <div class="panels">
     
     
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
     
         <div class="panel panel-props">
           <div class="note ok">
@@ -1443,7 +1450,9 @@ type?: (typeof dsAvatarTypes)[number] = &#39;circle&#39;</code></pre>
             <pre><code>Component: src/components/ds-avatar-group/ds-avatar-group.tsx::DsAvatarGroup</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>/**
- * Array of avatar items
+ * Avatar items to display. Each item accepts `DsAvatar` props except `size`
+ * and `type`, which are set on the group. `name` is required; `src` and `alt`
+ * are optional — without `src`, initials are shown per `DsAvatar`.
  */
 avatars: Omit&lt;DsAvatarProps, &#39;size&#39; | &#39;type&#39;&gt;[]
 
@@ -1480,7 +1489,7 @@ type?: (typeof dsAvatarTypes)[number] = &#39;circle&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsAvatarGroup } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsAvatarGroup, DsStack } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -1490,32 +1499,60 @@ type?: (typeof dsAvatarTypes)[number] = &#39;circle&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = () =&gt; &lt;DsAvatarGroup avatars={sampleAvatars} /&gt;;</code></pre>
+              <div class="hint">When the number of avatars is at or below `max`, every member is shown with no overflow indicator. Use this for small, fixed-size groups such as assignees on a card. Omit `src` to show initials until a profile picture is available.</div>
+              <pre><code>const Default = () =&gt; &lt;DsAvatarGroup
+    avatars={[{ name: &#39;Alice Freeman&#39; }, { name: &#39;Bob Smith&#39; }, { name: &#39;Charlie Davis&#39; }]} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Variants</span>
+                <span class="ex-name">Overflow</span>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">When `avatars.length` exceeds `max`, the group collapses the remainder behind a `+N` indicator. Hovering the indicator reveals the hidden names in a tooltip.</div>
+              <pre><code>const Overflow = () =&gt; &lt;DsAvatarGroup
+    max={3}
+    avatars={[
+        { name: &#39;Alice Freeman&#39;, src: &#39;https://i.pravatar.cc/150?u=alice&#39; },
+        { name: &#39;Bob Smith&#39;, src: &#39;https://i.pravatar.cc/150?u=bob&#39; },
+        { name: &#39;Charlie Davis&#39;, src: &#39;https://i.pravatar.cc/150?u=charlie&#39; },
+        { name: &#39;Diana Prince&#39;, src: &#39;https://i.pravatar.cc/150?u=diana&#39; },
+        { name: &#39;Edward Norton&#39;, src: &#39;https://i.pravatar.cc/150?u=edward&#39; },
+        { name: &#39;Fiona Gallagher&#39;, src: &#39;https://i.pravatar.cc/150?u=fiona&#39; },
+    ]} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const Variants = () =&gt; (
-    &lt;div className={styles.variantsContainer}&gt;
-        &lt;div&gt;
-            &lt;h3&gt;Default Group (max 5)&lt;/h3&gt;
-            &lt;DsAvatarGroup avatars={sampleAvatars} /&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h3&gt;Small Rounded Group&lt;/h3&gt;
-            &lt;DsAvatarGroup avatars={sampleAvatars} size=&quot;sm&quot; type=&quot;rounded&quot; /&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h3&gt;Large Group (max 3)&lt;/h3&gt;
-            &lt;DsAvatarGroup avatars={sampleAvatars} size=&quot;lg&quot; max={3} /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Use `size=&quot;sm&quot;` in tighter layouts — for example table rows or compact metadata lines. `regular` is the default.</div>
+              <pre><code>const Small = () =&gt; &lt;DsAvatarGroup
+    size=&quot;sm&quot;
+    avatars={[
+        { name: &#39;Alice Freeman&#39;, src: &#39;https://i.pravatar.cc/150?u=alice&#39; },
+        { name: &#39;Bob Smith&#39;, src: &#39;https://i.pravatar.cc/150?u=bob&#39; },
+        { name: &#39;Charlie Davis&#39;, src: &#39;https://i.pravatar.cc/150?u=charlie&#39; },
+    ]} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Rounded</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The `rounded` shape — useful for representing teams, organizations, or entities rather than individual people. Combined with `max`, overflow uses the same rounded indicator style.</div>
+              <pre><code>const Rounded = () =&gt; &lt;DsAvatarGroup
+    type=&quot;rounded&quot;
+    max={3}
+    avatars={[
+        { name: &#39;Alice Freeman&#39;, src: &#39;https://i.pravatar.cc/150?u=alice&#39; },
+        { name: &#39;Bob Smith&#39;, src: &#39;https://i.pravatar.cc/150?u=bob&#39; },
+        { name: &#39;Charlie Davis&#39;, src: &#39;https://i.pravatar.cc/150?u=charlie&#39; },
+        { name: &#39;Diana Prince&#39;, src: &#39;https://i.pravatar.cc/150?u=diana&#39; },
+        { name: &#39;Edward Norton&#39;, src: &#39;https://i.pravatar.cc/150?u=edward&#39; },
+    ]} /&gt;;</code></pre>
             </div>
         </div>
     
@@ -2311,7 +2348,7 @@ variant?: (typeof buttonV3Variants)[number] = &#39;primary&#39;</code></pre>
       <div class="badges">
         <label for="c-8-components-card-err" class="badge err as-toggle">prop type error</label>
         <label for="c-8-components-card-info" class="badge info as-toggle">1 info</label>
-        <label for="c-8-components-card-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-8-components-card-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -2410,9 +2447,8 @@ const Root = ({
 };
 
 /**
- * Card header - contains title and extra content.
- * Use with DsCard.Title and DsCard.Extra for standard layout,
- * or provide custom children for full flexibility.
+ * Card header — title row and optional trailing content.
+ * Provide custom children for full layout flexibility.
  */
 const Header = ({ className, children, ref, ...rest }: DsCardHeaderProps) =&gt; (
 	&lt;div ref={ref} className={classNames(styles.header, className)} {...rest}&gt;
@@ -2632,7 +2668,7 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCard, DsIcon, DsStatusBadge, DsTypography } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsCard, DsIcon, DsStack, DsStatusBadge, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -2642,7 +2678,7 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Default card is a static display container with no interactions.</div>
               <pre><code>const Default = () =&gt; &lt;DsCard.Root size=&quot;medium&quot;&gt;
     &lt;DsCard.Header&gt;Card Title&lt;/DsCard.Header&gt;
     &lt;DsCard.Body&gt;Card content goes here&lt;/DsCard.Body&gt;
@@ -2650,29 +2686,27 @@ export type DsCardFooterProps = DsCardSlotProps;
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Sizes</span>
+                <span class="ex-name">Small</span>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Small width (224px). Use for compact lists or side panels.</div>
+              <pre><code>const Small = () =&gt; &lt;DsCard.Root size=&quot;small&quot;&gt;
+    &lt;DsCard.Header&gt;Small Card&lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;Compact content area&lt;/DsCard.Body&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const Sizes = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;DsCard.Root size=&quot;small&quot;&gt;
-            &lt;DsCard.Header&gt;Small Card&lt;/DsCard.Header&gt;
-            &lt;DsCard.Body&gt;Small content&lt;/DsCard.Body&gt;
-        &lt;/DsCard.Root&gt;
-
-        &lt;DsCard.Root size=&quot;medium&quot;&gt;
-            &lt;DsCard.Header&gt;Medium Card&lt;/DsCard.Header&gt;
-            &lt;DsCard.Body&gt;Medium content&lt;/DsCard.Body&gt;
-        &lt;/DsCard.Root&gt;
-
-        &lt;DsCard.Root size=&quot;large&quot;&gt;
-            &lt;DsCard.Header&gt;Large Card&lt;/DsCard.Header&gt;
-            &lt;DsCard.Body&gt;Large content&lt;/DsCard.Body&gt;
-        &lt;/DsCard.Root&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Large width (368px). Use for detail panels and metric-heavy layouts.</div>
+              <pre><code>const Large = () =&gt; &lt;DsCard.Root size=&quot;large&quot;&gt;
+    &lt;DsCard.Header&gt;Large Card&lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;Room for richer content and multiple sections&lt;/DsCard.Body&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -2680,22 +2714,22 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithHeaderAndFooter = () =&gt; (
-    &lt;DsCard.Root size=&quot;large&quot;&gt;
-        &lt;DsCard.Header className={styles.headerRow}&gt;
-            &lt;DsTypography variant=&quot;heading3&quot;&gt;Card Title&lt;/DsTypography&gt;
-            &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; ghost /&gt;
-        &lt;/DsCard.Header&gt;
-        &lt;DsCard.Body className={styles.statsBlock}&gt;
+              <div class="hint">Compose header, body, and footer slots for structured card layouts. `styles.*` classes are story-only layout helpers — not part of the DsCard API.</div>
+              <pre><code>const WithHeaderAndFooter = () =&gt; &lt;DsCard.Root size=&quot;large&quot;&gt;
+    &lt;DsCard.Header className={styles.headerRow}&gt;
+        &lt;DsTypography variant=&quot;heading3&quot;&gt;Card Title&lt;/DsTypography&gt;
+        &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; ghost /&gt;
+    &lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;
+        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
             &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;12 of 12 Devices&lt;/DsTypography&gt;
             &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Success 10 | Failed 1 | Skipped 1&lt;/DsTypography&gt;
-        &lt;/DsCard.Body&gt;
-        &lt;DsCard.Footer className={styles.footer}&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last updated: 2 min ago&lt;/DsTypography&gt;
-        &lt;/DsCard.Footer&gt;
-    &lt;/DsCard.Root&gt;
-);</code></pre>
+        &lt;/DsStack&gt;
+    &lt;/DsCard.Body&gt;
+    &lt;DsCard.Footer className={styles.footer}&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last updated: 2 min ago&lt;/DsTypography&gt;
+    &lt;/DsCard.Footer&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -2703,43 +2737,37 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const StepCard = () =&gt; (
-    &lt;DsCard.Root size=&quot;large&quot;&gt;
-        &lt;DsCard.Header className={styles.headerRow}&gt;
-            &lt;DsTypography variant=&quot;heading3&quot;&gt;Canary&lt;/DsTypography&gt;
-            &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; label=&quot;Complete&quot; /&gt;
-        &lt;/DsCard.Header&gt;
-        &lt;DsCard.Body className={styles.statsBlock}&gt;
+              <div class="hint">A realistic step card showing deployment status with detailed metrics. `styles.*` classes are story-only layout helpers — not part of the DsCard API.</div>
+              <pre><code>const StepCard = () =&gt; &lt;DsCard.Root size=&quot;large&quot;&gt;
+    &lt;DsCard.Header className={styles.headerRow}&gt;
+        &lt;DsTypography variant=&quot;heading3&quot;&gt;Canary&lt;/DsTypography&gt;
+        &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; label=&quot;Complete&quot; /&gt;
+    &lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;
+        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
             &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;12 of 12 Devices&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                Success 10 | Failed 1 | Skipped 1
-            &lt;/DsTypography&gt;
-        &lt;/DsCard.Body&gt;
-        &lt;DsCard.Body className={styles.dataList}&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Config Push&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;
-                Complete
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Dwell Time (60 min.)&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;
-                Complete
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failed&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                1 (8%)
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failure threshold&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                5 or 10%
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Threshold state&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                Normal
-            &lt;/DsTypography&gt;
-        &lt;/DsCard.Body&gt;
-    &lt;/DsCard.Root&gt;
-);</code></pre>
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Success 10 | Failed 1 | Skipped 1
+                                    &lt;/DsTypography&gt;
+        &lt;/DsStack&gt;
+    &lt;/DsCard.Body&gt;
+    &lt;DsCard.Body className={styles.dataList}&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Config Push&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;success&quot;&gt;Complete
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Dwell Time (60 min.)&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;success&quot;&gt;Complete
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failed&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;1 (8%)
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failure threshold&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;5 or 10%
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Threshold state&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Normal
+                            &lt;/DsTypography&gt;
+    &lt;/DsCard.Body&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -2747,8 +2775,8 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Selectable = () =&gt; &lt;DsCard.Root selectable selected={false} onClick={fn()}&gt;
+              <div class="hint">Selectable cards act as buttons. Pair `selectable` with a controlled `selected` prop and wire `onClick` to update selection — see Selectable Controlled.</div>
+              <pre><code>const Selectable = () =&gt; &lt;DsCard.Root selectable selected={false}&gt;
     &lt;DsCard.Header&gt;Selectable Card&lt;/DsCard.Header&gt;
     &lt;DsCard.Body&gt;Click to select this card&lt;/DsCard.Body&gt;
 &lt;/DsCard.Root&gt;;</code></pre>
@@ -2759,7 +2787,7 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">When `highlightSelected` is true, selected cards display a highlighted background color.</div>
               <pre><code>const HighlightSelected = () =&gt; &lt;DsCard.Root selectable selected highlightSelected&gt;
     &lt;DsCard.Header&gt;Highlighted Card&lt;/DsCard.Header&gt;
     &lt;DsCard.Body&gt;This card has a highlighted background when selected&lt;/DsCard.Body&gt;
@@ -2771,8 +2799,8 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const SelectableControlled = function Render() {
+              <div class="hint">Wire `selected` and `onClick` to local state for a controlled selectable card. MCP snippet shows the evaluated render body — use that pattern in product code.</div>
+              <pre><code>const SelectableControlled = () =&gt; {
     const [selected, setSelected] = useState(false);
 
     return (
@@ -2789,34 +2817,10 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Disabled = () =&gt; &lt;DsCard.Root size=&quot;large&quot; selectable disabled onClick={fn()}&gt;
-    &lt;DsCard.Header className={styles.headerRow}&gt;
-        &lt;DsTypography variant=&quot;heading3&quot;&gt;Canary&lt;/DsTypography&gt;
-        &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; label=&quot;Complete&quot; /&gt;
-    &lt;/DsCard.Header&gt;
-    &lt;DsCard.Body className={styles.statsBlock}&gt;
-        &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;12 of 12 Devices&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;Success 10 | Failed 1 | Skipped 1
-                            &lt;/DsTypography&gt;
-    &lt;/DsCard.Body&gt;
-    &lt;DsCard.Body className={styles.dataList}&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Config Push&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;Complete
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Dwell Time (60 min.)&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;Complete
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failed&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;1 (8%)
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failure threshold&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;5 or 10%
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Threshold state&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;Normal
-                            &lt;/DsTypography&gt;
-    &lt;/DsCard.Body&gt;
+              <div class="hint">Disabled cards cannot be interacted with and are visually dimmed.</div>
+              <pre><code>const Disabled = () =&gt; &lt;DsCard.Root selectable selected={false} disabled&gt;
+    &lt;DsCard.Header&gt;Unavailable step&lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;Cannot select this card.&lt;/DsCard.Body&gt;
 &lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -2825,8 +2829,8 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Collapsible = function Render() {
+              <div class="hint">Collapsible card pattern using composition. Click the header to toggle body visibility. This is not built-in functionality — use local state to implement. `styles.*` classes are story-only layout helpers — not part of the DsCard API.</div>
+              <pre><code>const Collapsible = () =&gt; {
     const [expanded, setExpanded] = useState(true);
 
     return (
@@ -2836,24 +2840,19 @@ export type DsCardFooterProps = DsCardSlotProps;
                     type=&quot;button&quot;
                     className={styles.collapsibleButton}
                     onClick={() =&gt; setExpanded(!expanded)}
-                    aria-expanded={expanded}
-                &gt;
+                    aria-expanded={expanded}&gt;
                     &lt;DsIcon
                         icon=&quot;expand_more&quot;
-                        style={{
-                            transform: expanded ? &#39;rotate(180deg)&#39; : &#39;rotate(0deg)&#39;,
-                            transition: &#39;transform 150ms ease-in-out&#39;,
-                        }}
-                    /&gt;
+                        className={styles.collapsibleIcon}
+                        data-expanded={expanded} /&gt;
                 &lt;/button&gt;
                 &lt;DsTypography variant=&quot;heading3&quot;&gt;Collapsible Card&lt;/DsTypography&gt;
             &lt;/DsCard.Header&gt;
             &lt;DsCard.Body className={styles.collapsibleContent} data-collapsed={!expanded}&gt;
                 &lt;div className={styles.collapsibleContentInner}&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                        This content can be collapsed by clicking the header. The height animates smoothly using CSS
-                        Grid.
-                    &lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This content can be collapsed by clicking the header. The height animates smoothly using CSS
+                                                    Grid.
+                                                &lt;/DsTypography&gt;
                 &lt;/div&gt;
             &lt;/DsCard.Body&gt;
         &lt;/DsCard.Root&gt;
@@ -2879,7 +2878,7 @@ export type DsCardFooterProps = DsCardSlotProps;
       <div class="badges">
         <label for="c-9-components-cataloglayout-props" class="badge ok as-toggle">1 prop type</label>
         <label for="c-9-components-cataloglayout-info" class="badge info as-toggle">1 info</label>
-        <label for="c-9-components-cataloglayout-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-9-components-cataloglayout-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -2957,8 +2956,8 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = function Render() {
+              <div class="hint">Full catalog page with side menu, content header (title, actions, smart tabs), and a results table. Wire `pinned` / `onPinnedChange` on `SideMenu` to let users pin the expanded panel.</div>
+              <pre><code>const Default = () =&gt; {
     const [pinned, setPinned] = useState(false);
 
     return (
@@ -2973,12 +2972,16 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 &lt;DsCatalogLayout.Content&gt;
                     &lt;DsCatalogLayout.ContentHeader
                         title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Planned executions&lt;/DsTypography&gt;}
-                        headerActions={&lt;ContentHeaderActions /&gt;}
-                    &gt;
+                        headerActions={&lt;ContentHeaderActions /&gt;}&gt;
                         &lt;SmartTabsItem /&gt;
                     &lt;/DsCatalogLayout.ContentHeader&gt;
                     &lt;ResultsCard&gt;
-                        &lt;DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth /&gt;
+                        &lt;DsTable
+                            columns={catalogColumns}
+                            data={catalogData}
+                            stickyHeader
+                            bordered
+                            fullWidth /&gt;
                     &lt;/ResultsCard&gt;
                 &lt;/DsCatalogLayout.Content&gt;
             &lt;/DsCatalogLayout.Body&gt;
@@ -2992,8 +2995,8 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Empty = function Render() {
+              <div class="hint">Same shell as the default catalog page, but the results region shows a consumer-owned empty state instead of a table — for example when filters return no rows.</div>
+              <pre><code>const Empty = () =&gt; {
     const [pinned, setPinned] = useState(false);
 
     return (
@@ -3008,15 +3011,13 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 &lt;DsCatalogLayout.Content&gt;
                     &lt;DsCatalogLayout.ContentHeader
                         title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Planned executions&lt;/DsTypography&gt;}
-                        headerActions={&lt;ContentHeaderActions /&gt;}
-                    &gt;
+                        headerActions={&lt;ContentHeaderActions /&gt;}&gt;
                         &lt;SmartTabsItem /&gt;
                     &lt;/DsCatalogLayout.ContentHeader&gt;
                     &lt;EmptyStateCard&gt;
                         &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;No matching records found.&lt;/DsTypography&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; size=&quot;small&quot;&gt;
-                            Clear filters
-                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; size=&quot;small&quot;&gt;Clear filters
+                                                        &lt;/DsButtonV3&gt;
                     &lt;/EmptyStateCard&gt;
                 &lt;/DsCatalogLayout.Content&gt;
             &lt;/DsCatalogLayout.Body&gt;
@@ -3030,25 +3031,27 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithoutSideMenu = () =&gt; (
-    &lt;DsCatalogLayout&gt;
-        &lt;DsCatalogLayout.Header&gt;
-            &lt;TopBarNavigation /&gt;
-        &lt;/DsCatalogLayout.Header&gt;
-        &lt;DsCatalogLayout.Body&gt;
-            &lt;DsCatalogLayout.Content&gt;
-                &lt;DsCatalogLayout.ContentHeader
-                    title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Planned executions&lt;/DsTypography&gt;}
-                    headerActions={&lt;ContentHeaderActions /&gt;}
-                /&gt;
-                &lt;ResultsCard&gt;
-                    &lt;DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth /&gt;
-                &lt;/ResultsCard&gt;
-            &lt;/DsCatalogLayout.Content&gt;
-        &lt;/DsCatalogLayout.Body&gt;
-    &lt;/DsCatalogLayout&gt;
-);</code></pre>
+              <div class="hint">Omit `SideMenu` when the page does not need section navigation. Content margins widen automatically because the layout detects the absence of a side menu.</div>
+              <pre><code>const WithoutSideMenu = () =&gt; &lt;DsCatalogLayout&gt;
+    &lt;DsCatalogLayout.Header&gt;
+        &lt;TopBarNavigation /&gt;
+    &lt;/DsCatalogLayout.Header&gt;
+    &lt;DsCatalogLayout.Body&gt;
+        &lt;DsCatalogLayout.Content&gt;
+            &lt;DsCatalogLayout.ContentHeader
+                title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Planned executions&lt;/DsTypography&gt;}
+                headerActions={&lt;ContentHeaderActions /&gt;} /&gt;
+            &lt;ResultsCard&gt;
+                &lt;DsTable
+                    columns={catalogColumns}
+                    data={catalogData}
+                    stickyHeader
+                    bordered
+                    fullWidth /&gt;
+            &lt;/ResultsCard&gt;
+        &lt;/DsCatalogLayout.Content&gt;
+    &lt;/DsCatalogLayout.Body&gt;
+&lt;/DsCatalogLayout&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3056,8 +3059,8 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const SideMenuPinned = function Render() {
+              <div class="hint">Start with `pinned` set to `true` to show the expanded side menu pushing content. Users can toggle via the built-in pin button when `onPinnedChange` is provided.</div>
+              <pre><code>const SideMenuPinned = () =&gt; {
     const [pinned, setPinned] = useState(true);
 
     return (
@@ -3070,13 +3073,44 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                     &lt;SideMenuItems /&gt;
                 &lt;/DsCatalogLayout.SideMenu&gt;
                 &lt;DsCatalogLayout.Content&gt;
+                    &lt;DsCatalogLayout.ContentHeader title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Pinned side menu&lt;/DsTypography&gt;} /&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;When the side menu is pinned, the expanded panel pushes the content area to the right. Use the
+                                                    pin button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
+                                                &lt;/DsTypography&gt;
+                &lt;/DsCatalogLayout.Content&gt;
+            &lt;/DsCatalogLayout.Body&gt;
+        &lt;/DsCatalogLayout&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Locale</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pass `locale` on `SideMenu` to customize the pin/unpin button `aria-label` strings for localization.</div>
+              <pre><code>const Locale = () =&gt; {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        &lt;DsCatalogLayout&gt;
+            &lt;DsCatalogLayout.Body&gt;
+                &lt;DsCatalogLayout.SideMenu
+                    pinned={pinned}
+                    onPinnedChange={setPinned}
+                    className={styles.sideMenu}
+                    locale={{
+                        pinButtonLabel: &#39;Pin sidebar menu&#39;,
+                        unpinButtonLabel: &#39;Unpin sidebar menu&#39;,
+                    }}&gt;
+                    &lt;SideMenuItems /&gt;
+                &lt;/DsCatalogLayout.SideMenu&gt;
+                &lt;DsCatalogLayout.Content&gt;
                     &lt;DsCatalogLayout.ContentHeader
-                        title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Pinned side menu&lt;/DsTypography&gt;}
-                    /&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                        When the side menu is pinned, the expanded panel pushes the content area to the right. Use the
-                        pin button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
-                    &lt;/DsTypography&gt;
+                        title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Localized pin labels&lt;/DsTypography&gt;} /&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Hover or pin the side menu and inspect the pin button aria-label.
+                                                &lt;/DsTypography&gt;
                 &lt;/DsCatalogLayout.Content&gt;
             &lt;/DsCatalogLayout.Body&gt;
         &lt;/DsCatalogLayout&gt;
@@ -3089,26 +3123,19 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const FillParent = () =&gt; (
-    &lt;div className={styles.fillParentWrapper}&gt;
-        &lt;DsCatalogLayout fillParent&gt;
-            &lt;DsCatalogLayout.Header&gt;
-                &lt;TopBarNavigation /&gt;
-            &lt;/DsCatalogLayout.Header&gt;
-            &lt;DsCatalogLayout.Body&gt;
-                &lt;DsCatalogLayout.Content&gt;
-                    &lt;DsCatalogLayout.ContentHeader
-                        title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Fill parent&lt;/DsTypography&gt;}
-                    /&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                        This catalog layout fills its parent container (400px) instead of the viewport.
-                    &lt;/DsTypography&gt;
-                &lt;/DsCatalogLayout.Content&gt;
-            &lt;/DsCatalogLayout.Body&gt;
-        &lt;/DsCatalogLayout&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Set `fillParent` when the layout lives inside an existing app shell that already manages height, so the catalog fills its parent (`100%`) instead of the viewport (`100vh`).</div>
+              <pre><code>const FillParent = () =&gt; &lt;DsCatalogLayout fillParent&gt;
+    &lt;DsCatalogLayout.Header&gt;
+        &lt;TopBarNavigation /&gt;
+    &lt;/DsCatalogLayout.Header&gt;
+    &lt;DsCatalogLayout.Body&gt;
+        &lt;DsCatalogLayout.Content&gt;
+            &lt;DsCatalogLayout.ContentHeader title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Fill parent&lt;/DsTypography&gt;} /&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This catalog layout fills its parent container (400px) instead of the viewport.
+                                    &lt;/DsTypography&gt;
+        &lt;/DsCatalogLayout.Content&gt;
+    &lt;/DsCatalogLayout.Body&gt;
+&lt;/DsCatalogLayout&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3116,24 +3143,19 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const HeaderOnly = () =&gt; (
-    &lt;DsCatalogLayout&gt;
-        &lt;DsCatalogLayout.Header&gt;
-            &lt;TopBarNavigation /&gt;
-        &lt;/DsCatalogLayout.Header&gt;
-        &lt;DsCatalogLayout.Body&gt;
-            &lt;DsCatalogLayout.Content&gt;
-                &lt;DsCatalogLayout.ContentHeader
-                    title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Minimal layout&lt;/DsTypography&gt;}
-                /&gt;
-                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                    All sub-components are optional. Use only the regions your page needs.
-                &lt;/DsTypography&gt;
-            &lt;/DsCatalogLayout.Content&gt;
-        &lt;/DsCatalogLayout.Body&gt;
-    &lt;/DsCatalogLayout&gt;
-);</code></pre>
+              <div class="hint">Every sub-component is optional — compose only the regions your page needs. Here, only the header and a minimal content column are used.</div>
+              <pre><code>const HeaderOnly = () =&gt; &lt;DsCatalogLayout&gt;
+    &lt;DsCatalogLayout.Header&gt;
+        &lt;TopBarNavigation /&gt;
+    &lt;/DsCatalogLayout.Header&gt;
+    &lt;DsCatalogLayout.Body&gt;
+        &lt;DsCatalogLayout.Content&gt;
+            &lt;DsCatalogLayout.ContentHeader title={&lt;DsTypography variant=&quot;heading3&quot;&gt;Minimal layout&lt;/DsTypography&gt;} /&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;All sub-components are optional. Use only the regions your page needs.
+                                    &lt;/DsTypography&gt;
+        &lt;/DsCatalogLayout.Content&gt;
+    &lt;/DsCatalogLayout.Body&gt;
+&lt;/DsCatalogLayout&gt;;</code></pre>
             </div>
         </div>
     
@@ -3143,7 +3165,7 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
 <article
   class="card 
   no-error 
-  no-info 
+  has-info 
   no-story-error
   no-doc-error"
   role="listitem"
@@ -3153,21 +3175,21 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
       <h2><span class="status-dot dot-ok"></span> DsCheckbox</h2>
       <div class="badges">
         <label for="c-10-components-checkbox-props" class="badge ok as-toggle">6 prop types</label>
-        
+        <label for="c-10-components-checkbox-info" class="badge info as-toggle">1 info</label>
         <label for="c-10-components-checkbox-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
     </div>
     <div class="meta" title="./src/components/ds-checkbox/ds-checkbox.stories.tsx">components-checkbox · ./src/components/ds-checkbox/ds-checkbox.stories.tsx</div>
+    <div>Checkbox for single and grouped selection Checkbox for boolean and multi-select inputs. Use standalone for a single toggle, or compose inside `DsCheckboxGroup` for multi-select lists. Import `useCheckboxSelectAll` from `ds-checkbox-group` for parent &quot;select all&quot; checkboxes. `checked` accepts `true`, `false`, or `&quot;indeterminate&quot;`.</div>
     
-    <div class="hint">Design system Checkbox component</div>
-    
+    <div class="kv"><span class="chip">summary: Checkbox for single and grouped selection Checkbox for boolean and multi-select inputs. Use standalone for a single toggle, or compose inside `DsCheckboxGroup` for multi-select lists. Import `useCheckboxSelectAll` from `ds-checkbox-group` for parent &quot;select all&quot; checkboxes. `checked` accepts `true`, `false`, or `&quot;indeterminate&quot;`.</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  
+  <input id="c-10-components-checkbox-info" class="tg tg-info" type="checkbox" hidden />
   <input id="c-10-components-checkbox-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
@@ -3176,6 +3198,13 @@ import { RouterProvider } from "@tanstack/react-router";</code></pre>
   <div class="panels">
     
     
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
     
         <div class="panel panel-props">
           <div class="note ok">
@@ -3235,8 +3264,32 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Standalone checkbox with a primary label and supporting info text. Omit `checked` for uncontrolled usage; pair with `onCheckedChange` when the parent owns state.</div>
+              <pre><code>const Default = () =&gt; &lt;DsCheckbox label=&quot;Enable notifications&quot; labelInfo=&quot;Receive email updates&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const Default = () =&gt; &lt;DsCheckbox label={label} labelInfo={labelInfo} className=&quot;custom-checkbox&quot; /&gt;;</code></pre>
+              <div class="hint">Controlled checkbox where the parent holds `checked` and updates it via `onCheckedChange`. Use this pattern for forms and settings that sync with external state.</div>
+              <pre><code>const Controlled = function Render() {
+    const [checked, setChecked] = useState(false);
+
+    return (
+        &lt;DsCheckbox
+            label=&quot;Enable notifications&quot;
+            labelInfo=&quot;Receive email updates&quot;
+            checked={checked}
+            onCheckedChange={(newState) =&gt; {
+                if (typeof newState === &#39;boolean&#39;) {
+                    setChecked(newState);
+                }
+            }}
+        /&gt;
+    );
+};</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3244,14 +3297,14 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Controlled checkbox in indeterminate state. Use when a parent represents a partial selection, such as a &quot;select all&quot; row with only some children checked.</div>
               <pre><code>const Indeterminate = function Render() {
     const [checked, setChecked] = useState&lt;boolean | &#39;indeterminate&#39;&gt;(&#39;indeterminate&#39;);
 
     return (
         &lt;DsCheckbox
-            label={label}
-            labelInfo={labelInfo}
+            label=&quot;Enable notifications&quot;
+            labelInfo=&quot;Receive email updates&quot;
             checked={checked}
             onCheckedChange={(newState) =&gt; setChecked(newState)}
         /&gt;
@@ -3264,14 +3317,12 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Disabled = () =&gt; (
-    &lt;DsStack gap=&quot;var(--3xs)&quot;&gt;
-        &lt;DsCheckbox label={label} labelInfo={labelInfo} disabled /&gt;
-        &lt;DsCheckbox label={label} labelInfo={labelInfo} disabled checked /&gt;
-        &lt;DsCheckbox label={label} labelInfo={labelInfo} disabled checked=&quot;indeterminate&quot; /&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
+              <div class="hint">Disabled checkbox that cannot be interacted with. Combine with `checked` or `checked=&quot;indeterminate&quot;` to show how each visual state appears when inactive.</div>
+              <pre><code>const Disabled = () =&gt; &lt;DsCheckbox
+    label=&quot;Enable notifications&quot;
+    labelInfo=&quot;Receive email updates&quot;
+    disabled
+    checked /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3279,8 +3330,12 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const ReadOnly = () =&gt; &lt;DsCheckbox label={label} labelInfo={labelInfo} readOnly checked /&gt;;</code></pre>
+              <div class="hint">Read-only checkbox displays its state without allowing user changes. Use when the value is informational and must not be toggled inline.</div>
+              <pre><code>const ReadOnly = () =&gt; &lt;DsCheckbox
+    label=&quot;Enable notifications&quot;
+    labelInfo=&quot;Receive email updates&quot;
+    readOnly
+    checked /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3288,17 +3343,11 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Warning = () =&gt; &lt;DsCheckbox variant=&quot;warning&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Warning With Label</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WarningWithLabel = () =&gt; &lt;DsCheckbox variant=&quot;warning&quot; label={label} labelInfo={labelInfo} /&gt;;</code></pre>
+              <div class="hint">Warning variant for checkboxes that need elevated visual attention, such as destructive or high-impact opt-ins.</div>
+              <pre><code>const Warning = () =&gt; &lt;DsCheckbox
+    variant=&quot;warning&quot;
+    label=&quot;Enable notifications&quot;
+    labelInfo=&quot;Receive email updates&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -3306,15 +3355,15 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Warning variant in a controlled indeterminate state for partial selections that also need elevated visual attention.</div>
               <pre><code>const WarningIndeterminate = function Render() {
     const [checked, setChecked] = useState&lt;boolean | &#39;indeterminate&#39;&gt;(&#39;indeterminate&#39;);
 
     return (
         &lt;DsCheckbox
             variant=&quot;warning&quot;
-            label={label}
-            labelInfo={labelInfo}
+            label=&quot;Enable notifications&quot;
+            labelInfo=&quot;Receive email updates&quot;
             checked={checked}
             onCheckedChange={(newState) =&gt; setChecked(newState)}
         /&gt;
@@ -3327,53 +3376,21 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Multi-select checkbox group. Compose `DsCheckbox` children inside `DsCheckboxGroup`, pass each item a `value`, and control selection with `value` / `onValueChange` on the group.</div>
               <pre><code>const Group = function Render() {
-    const [vertical, setVertical] = useState&lt;string[]&gt;([&#39;react&#39;]);
-    const [horizontal, setHorizontal] = useState&lt;string[]&gt;([&#39;react&#39;]);
+    const [value, setValue] = useState&lt;string[]&gt;([&#39;react&#39;]);
+    const frameworkItems = [
+        { label: &#39;React&#39;, value: &#39;react&#39; },
+        { label: &#39;Solid&#39;, value: &#39;solid&#39; },
+        { label: &#39;Vue&#39;, value: &#39;vue&#39; },
+    ];
 
     return (
-        &lt;DsStack gap=&quot;var(--3xs)&quot;&gt;
-            &lt;DsStack gap=&quot;var(--3xs)&quot;&gt;
-                &lt;strong&gt;Vertical&lt;/strong&gt;
-                &lt;output className={styles.output}&gt;Selected: {vertical.join(&#39;, &#39;)}&lt;/output&gt;
-                &lt;DsCheckboxGroup
-                    orientation=&quot;vertical&quot;
-                    value={vertical}
-                    onValueChange={setVertical}
-                    name=&quot;framework-vertical&quot;
-                &gt;
-                    {frameworkItems.map((item) =&gt; (
-                        &lt;DsCheckbox
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                            className={styles.groupItem}
-                        /&gt;
-                    ))}
-                &lt;/DsCheckboxGroup&gt;
-            &lt;/DsStack&gt;
-
-            &lt;DsStack gap=&quot;var(--3xs)&quot;&gt;
-                &lt;strong&gt;Horizontal&lt;/strong&gt;
-                &lt;output className={styles.output}&gt;Selected: {horizontal.join(&#39;, &#39;)}&lt;/output&gt;
-                &lt;DsCheckboxGroup
-                    orientation=&quot;horizontal&quot;
-                    value={horizontal}
-                    onValueChange={setHorizontal}
-                    name=&quot;framework-horizontal&quot;
-                &gt;
-                    {frameworkItems.map((item) =&gt; (
-                        &lt;DsCheckbox
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                            className={styles.groupItem}
-                        /&gt;
-                    ))}
-                &lt;/DsCheckboxGroup&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
+        &lt;DsCheckboxGroup orientation=&quot;vertical&quot; value={value} onValueChange={setValue} name=&quot;framework&quot;&gt;
+            {frameworkItems.map((item) =&gt; (
+                &lt;DsCheckbox key={item.value} label={item.label} value={item.value} /&gt;
+            ))}
+        &lt;/DsCheckboxGroup&gt;
     );
 };</code></pre>
             </div>
@@ -3383,26 +3400,26 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Select-all pattern for a checkbox group. Use `useCheckboxSelectAll` from `ds-checkbox-group` to derive the parent checkbox state and toggle every item.</div>
               <pre><code>const SelectAll = function Render() {
     const [value, setValue] = useState&lt;string[]&gt;([]);
+    const frameworkItems = [
+        { label: &#39;React&#39;, value: &#39;react&#39; },
+        { label: &#39;Solid&#39;, value: &#39;solid&#39; },
+        { label: &#39;Vue&#39;, value: &#39;vue&#39; },
+    ];
     const { selectAllState, onSelectAllChange } = useCheckboxSelectAll({
         value,
-        allValues: frameworkValues,
+        allValues: frameworkItems.map((item) =&gt; item.value),
         onValueChange: setValue,
     });
 
     return (
         &lt;DsStack gap=&quot;var(--3xs)&quot;&gt;
             &lt;DsCheckbox label=&quot;Select all&quot; checked={selectAllState} onCheckedChange={onSelectAllChange} /&gt;
-            &lt;DsCheckboxGroup
-                className={styles.groupIndented}
-                value={value}
-                onValueChange={setValue}
-                name=&quot;framework&quot;
-            &gt;
+            &lt;DsCheckboxGroup value={value} onValueChange={setValue} name=&quot;framework&quot;&gt;
                 {frameworkItems.map((item) =&gt; (
-                    &lt;DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} /&gt;
+                    &lt;DsCheckbox key={item.value} label={item.label} value={item.value} /&gt;
                 ))}
             &lt;/DsCheckboxGroup&gt;
         &lt;/DsStack&gt;
@@ -6605,15 +6622,15 @@ readOnly?: boolean</code></pre>
       <div class="badges">
         <label for="c-19-components-datepicker-props" class="badge ok as-toggle">15 prop types</label>
         <label for="c-19-components-datepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-19-components-datepicker-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-19-components-datepicker-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
     </div>
     <div class="meta" title="./src/components/ds-date-picker/ds-date-picker.stories.tsx">components-datepicker · ./src/components/ds-date-picker/ds-date-picker.stories.tsx</div>
+    <div>Date and optional time input with calendar popover and manual typing. Supports controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes. Pass `withTime` to include a nested time picker. A clear button appears when a value is set unless `hideClearButton` is set.</div>
     
-    
-    
+    <div class="kv"><span class="chip">summary: Date and optional time input with calendar popover and manual typing. Supports controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes. Pass `withTime` to include a nested time picker. A clear button appears when a value is set unless `hideClearButton` is set.</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
@@ -6664,7 +6681,7 @@ disablePortal?: boolean = false
 
 /**
  * Whether to hide the clear button
- * @default true
+ * @default false
  */
 hideClearButton?: boolean = false
 
@@ -6743,12 +6760,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = () =&gt; {
-    const [value, setValue] = useState&lt;Date | null&gt;(null);
-
-    return &lt;DsDatePicker className={styles.container} value={value} onChange={setValue} /&gt;;
-};</code></pre>
+              <div class="hint">The default date picker is uncontrolled — the user picks a date from the calendar or types directly into the input. Reach for this when the parent does not need to own the selected value.</div>
+              <pre><code>const Default = () =&gt; &lt;DsDatePicker name=&quot;eventDate&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6756,12 +6769,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithTime = () =&gt; {
-    const [value, setValue] = useState&lt;Date | null&gt;(null);
-
-    return &lt;DsDatePicker withTime className={styles.container} value={value} onChange={setValue} /&gt;;
-};</code></pre>
+              <div class="hint">Enable `withTime` to show a nested time picker inside the calendar popover. Use it when the user must select both a date and a time in a single control.</div>
+              <pre><code>const WithTime = () =&gt; &lt;DsDatePicker withTime /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6769,29 +6778,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithDefaultValue = () =&gt; &lt;DsDatePicker
-    className={styles.container}
-    withTime
-    defaultValue={new Date(&#39;2024-12-25T14:30:00&#39;)} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Controlled</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Controlled = () =&gt; {
-    const [value, setValue] = useState&lt;Date | null&gt;(new Date(&#39;2026-01-15T09:45:00&#39;));
-
-    return (
-        &lt;div className={styles.container}&gt;
-            &lt;DsDatePicker withTime value={value} onChange={setValue} /&gt;
-            &lt;p className={styles.infoContainer}&gt;Value: {value?.toLocaleString() ?? &#39;undefined&#39;}&lt;/p&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+              <div class="hint">Pass `defaultValue` to pre-fill the input in uncontrolled mode. The value can still be changed or cleared by the user.</div>
+              <pre><code>const WithDefaultValue = () =&gt; &lt;DsDatePicker withTime defaultValue={new Date(&#39;2024-12-25T14:30:00Z&#39;)} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6799,11 +6787,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Disabled = () =&gt; &lt;DsDatePicker
-    className={styles.container}
-    value={new Date(&#39;2024-12-25T14:30:00&#39;)}
-    disabled /&gt;;</code></pre>
+              <div class="hint">The disabled state blocks all interaction and dims the control. Uses a fixed `value` for display — no `onChange` is needed when the field is not editable. Use it when the field depends on another selection that has not been made yet.</div>
+              <pre><code>const Disabled = () =&gt; &lt;DsDatePicker value={new Date(&#39;2024-12-25T14:30:00Z&#39;)} disabled /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6811,11 +6796,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const ReadOnly = () =&gt; &lt;DsDatePicker
-    className={styles.container}
-    value={new Date(&#39;2024-12-25T14:30:00&#39;)}
-    readOnly /&gt;;</code></pre>
+              <div class="hint">Read-only keeps the value visible but prevents editing. Uses a fixed `value` for display — no `onChange` is needed when the field is not editable.</div>
+              <pre><code>const ReadOnly = () =&gt; &lt;DsDatePicker value={new Date(&#39;2024-12-25T14:30:00Z&#39;)} readOnly /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6823,29 +6805,49 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Set `min` and `max` to constrain the selectable date range. Dates outside the range are rejected on blur and cannot be picked from the calendar.</div>
+              <pre><code>const WithMinMax = () =&gt; &lt;DsDatePicker
+    withTime
+    min={new Date(&#39;2024-12-01T00:30:00Z&#39;)}
+    max={new Date(&#39;2025-01-31T23:20:00Z&#39;)} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Hidden Clear Button</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const WithMinMax = () =&gt; {
-    const [value, setValue] = useState&lt;Date | null&gt;(null);
+              <div class="hint">Hides the clear button even when a value is selected. By default the clear button is shown whenever the picker has a value.</div>
+              <pre><code>const HiddenClearButton = () =&gt; &lt;DsDatePicker value={new Date(&#39;2024-12-25T14:30:00Z&#39;)} hideClearButton /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">In controlled mode the parent owns `value` and receives updates via `onChange`. Use this pattern when the selected date drives other UI or must be validated externally.</div>
+              <pre><code>const Controlled = () =&gt; {
+    const [value, setValue] = useState&lt;Date | null&gt;(new Date(&#39;2026-01-15T09:45:00Z&#39;));
 
-    return (
-        &lt;div className={styles.container}&gt;
-            &lt;DsDatePicker
-                withTime
-                min={(() =&gt; {
-                    const date = new Date();
-                    return new Date(date.getFullYear(), date.getMonth(), 1, 0, 30);
-                })()}
-                max={(() =&gt; {
-                    const date = new Date();
-                    return new Date(date.getFullYear(), date.getMonth() + 2, 0, 23, 20); // last day of next month
-                })()}
-                value={value}
-                onChange={setValue} /&gt;
-            &lt;p className={styles.helperText}&gt;Allowed: {args.min?.toLocaleString()}- {args.max?.toLocaleString()}
-            &lt;/p&gt;
-        &lt;/div&gt;
-    );
+    return &lt;DsDatePicker withTime value={value} onChange={setValue} /&gt;;
 };</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Localized</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The `locale` prop overrides aria-labels for the calendar trigger, clear button, and time trigger so the component can be translated. Only the strings passed are overridden; omitted keys keep their defaults.</div>
+              <pre><code>const Localized = () =&gt; &lt;DsDatePicker
+    value={new Date(&#39;2024-12-25T14:30:00Z&#39;)}
+    withTime
+    locale={{
+        openCalendarLabel: &#39;Open calendar&#39;,
+        clearLabel: &#39;Clear date&#39;,
+        timeTriggerLabel: &#39;Choose time&#39;,
+    }} /&gt;;</code></pre>
             </div>
         </div>
     
@@ -6866,7 +6868,7 @@ withTime?: boolean = false</code></pre>
       <div class="badges">
         <label for="c-20-components-daterangepicker-props" class="badge ok as-toggle">15 prop types</label>
         <label for="c-20-components-daterangepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-20-components-daterangepicker-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-20-components-daterangepicker-stories" class="badge ok as-toggle">12 stories</label>
         
         
       </div>
@@ -6999,7 +7001,7 @@ withTime?: boolean = false</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsDatePicker, DsDateRangePicker, DsSegmentGroup } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsDatePicker, DsDateRangePicker, DsSegmentGroup, DsStack } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -7009,12 +7011,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = () =&gt; {
-    const [value, setValue] = useState&lt;DateRangeValue&gt;([null, null]);
-
-    return &lt;DsDateRangePicker className={styles.container} value={value} onChange={setValue} /&gt;;
-};</code></pre>
+              <div class="hint">The default range picker is uncontrolled with empty start and end dates. Value shape is `[startDate, endDate]` where each element is a `Date` or `null`.</div>
+              <pre><code>const Default = () =&gt; &lt;DsDateRangePicker /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7022,12 +7020,19 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Enable `withTime` to show a nested time picker inside each date field&#39;s calendar popover.</div>
+              <pre><code>const WithTime = () =&gt; &lt;DsDateRangePicker withTime /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Default Value</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const WithTime = () =&gt; {
-    const [value, setValue] = useState&lt;DateRangeValue&gt;([null, null]);
-
-    return &lt;DsDateRangePicker withTime className={styles.container} value={value} onChange={setValue} /&gt;;
-};</code></pre>
+              <div class="hint">Pass `defaultValue` as a `[start, end]` tuple to pre-fill the range in uncontrolled mode. The user can still change or clear either date.</div>
+              <pre><code>const WithDefaultValue = () =&gt; &lt;DsDateRangePicker
+    withTime
+    defaultValue={[new Date(&#39;2024-12-25T14:30:00&#39;), new Date(&#39;2024-12-31T18:00:00&#39;)]} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7035,18 +7040,8 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Vertical = () =&gt; {
-    const [value, setValue] = useState&lt;DateRangeValue&gt;([null, null]);
-
-    return (
-        &lt;DsDateRangePicker
-            orientation=&quot;vertical&quot;
-            className={styles.verticalContainer}
-            value={value}
-            onChange={setValue} /&gt;
-    );
-};</code></pre>
+              <div class="hint">Stacks start and end pickers vertically instead of side by side.</div>
+              <pre><code>const Vertical = () =&gt; &lt;DsDateRangePicker orientation=&quot;vertical&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7054,30 +7049,11 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithMinMax = () =&gt; {
-    const [value, setValue] = useState&lt;DateRangeValue&gt;([null, null]);
-
-    return (
-        &lt;div&gt;
-            &lt;DsDateRangePicker
-                withTime
-                min={(() =&gt; {
-                    const date = new Date();
-                    return new Date(date.getFullYear(), date.getMonth(), 1, 0, 30);
-                })()}
-                max={(() =&gt; {
-                    const date = new Date();
-                    return new Date(date.getFullYear(), date.getMonth() + 2, 0, 23, 20); // last day of next month
-                })()}
-                className={styles.container}
-                value={value}
-                onChange={setValue} /&gt;
-            &lt;p className={styles.helperText}&gt;Allowed: {args.min?.toLocaleString()}- {args.max?.toLocaleString()}
-            &lt;/p&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+              <div class="hint">Set `min` and `max` to constrain the selectable date range for both pickers. Dates outside the range cannot be picked from the calendar.</div>
+              <pre><code>const WithMinMax = () =&gt; &lt;DsDateRangePicker
+    withTime
+    min={new Date(&#39;2024-12-01T00:30:00&#39;)}
+    max={new Date(&#39;2025-01-31T23:20:00&#39;)} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7085,11 +7061,21 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">The disabled state blocks all interaction on both pickers. Use `value` to show a fixed range.</div>
               <pre><code>const Disabled = () =&gt; &lt;DsDateRangePicker
-    className={styles.container}
     value={[new Date(&#39;2026-01-10T00:00:00&#39;), new Date(&#39;2026-01-20T00:00:00&#39;)]}
     disabled /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Read Only</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Read-only keeps the range visible but prevents editing. Inputs remain focusable for copy/accessibility but values cannot be changed.</div>
+              <pre><code>const ReadOnly = () =&gt; &lt;DsDateRangePicker
+    value={[new Date(&#39;2026-01-10T00:00:00&#39;), new Date(&#39;2026-01-20T00:00:00&#39;)]}
+    readOnly /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7097,21 +7083,47 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Hides the &quot;Clear all&quot; action even when dates are selected.</div>
+              <pre><code>const HiddenClearAll = () =&gt; &lt;DsDateRangePicker
+    defaultValue={[new Date(&#39;2026-01-10T00:00:00&#39;), new Date(&#39;2026-01-20T00:00:00&#39;)]}
+    hideClearAll /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Labels</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const HiddenClearAll = () =&gt; {
-    const [value, setValue] = useState&lt;DateRangeValue&gt;([
-        new Date(&#39;2026-01-10T00:00:00&#39;),
-        new Date(&#39;2026-01-20T00:00:00&#39;),
-    ]);
+              <div class="hint">Override the default &quot;Start date&quot; / &quot;End date&quot; labels via `slotProps` on the wrapping form controls.</div>
+              <pre><code>const CustomLabels = () =&gt; &lt;DsDateRangePicker
+    slotProps={{
+        startDateFormControl: { label: &#39;From&#39; },
+        endDateFormControl: { label: &#39;To&#39; },
+    }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">In controlled mode the parent owns `value` and receives updates via `onChange`. Use this when the selected range drives other UI or must be validated externally.</div>
+              <pre><code>const Controlled = function Render() {
+    const [value, setValue] = useState&lt;DateRangeValue&gt;([null, null]);
 
-    return (
-        &lt;DsDateRangePicker
-            hideClearAll
-            className={styles.container}
-            value={value}
-            onChange={setValue} /&gt;
-    );
+    return &lt;DsDateRangePicker value={value} onChange={setValue} /&gt;;
 };</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Localized</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Custom clear-all button label via the `locale` prop.</div>
+              <pre><code>const Localized = () =&gt; &lt;DsDateRangePicker
+    locale={{ clearAllLabel: &#39;Effacer tout&#39; }}
+    defaultValue={[new Date(&#39;2026-01-10T00:00:00&#39;), new Date(&#39;2026-01-20T00:00:00&#39;)]} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7119,43 +7131,25 @@ withTime?: boolean = false</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const DateOrRange = function Render(args) {
+              <div class="hint">Composition pattern: toggle between a single date picker and a range picker with a segment group. Not a built-in component feature — implement with local state in the parent.</div>
+              <pre><code>const DateOrRange = function Render() {
     const [mode, setMode] = useState(&#39;date&#39;);
     const [dateValue, setDateValue] = useState&lt;Date | null&gt;(null);
     const [rangeValue, setRangeValue] = useState&lt;DateRangeValue&gt;([null, null]);
 
     return (
-        &lt;div className={styles.dateOrRangeContainer}&gt;
+        &lt;&gt;
             &lt;DsSegmentGroup.Root value={mode} onValueChange={(v) =&gt; setMode(v ?? &#39;date&#39;)} size=&quot;default&quot;&gt;
                 &lt;DsSegmentGroup.Item value=&quot;date&quot; label=&quot;Date&quot; /&gt;
                 &lt;DsSegmentGroup.Item value=&quot;range&quot; label=&quot;Range&quot; /&gt;
             &lt;/DsSegmentGroup.Root&gt;
 
             {mode === &#39;date&#39; ? (
-                &lt;DsDatePicker
-                    value={dateValue}
-                    onChange={(v) =&gt; {
-                        setDateValue(v);
-                        args.onChange?.([v, null]);
-                    }}
-                    min={args.min}
-                    max={args.max}
-                    withTime={args.withTime}
-                    disabled={args.disabled}
-                    readOnly={args.readOnly}
-                /&gt;
+                &lt;DsDatePicker value={dateValue} onChange={setDateValue} /&gt;
             ) : (
-                &lt;DsDateRangePicker
-                    {...args}
-                    value={rangeValue}
-                    onChange={(v) =&gt; {
-                        setRangeValue(v);
-                        args.onChange?.(v);
-                    }}
-                /&gt;
+                &lt;DsDateRangePicker value={rangeValue} onChange={setRangeValue} /&gt;
             )}
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -7178,15 +7172,15 @@ withTime?: boolean = false</code></pre>
       <div class="badges">
         <label for="c-21-components-dialog-props" class="badge ok as-toggle">11 prop types</label>
         <label for="c-21-components-dialog-info" class="badge info as-toggle">1 info</label>
-        <label for="c-21-components-dialog-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-21-components-dialog-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
     </div>
     <div class="meta" title="./src/components/ds-dialog/ds-dialog.stories.tsx">components-dialog · ./src/components/ds-dialog/ds-dialog.stories.tsx</div>
+    <div>Lightweight controlled dialog for simple panels and popovers. Renders a Radix dialog with required accessible title, optional description, and custom body content. Use for focused overlays and menu-style panels. Prefer `DsModal` when you need structured header, body, and footer sections.</div>
     
-    
-    
+    <div class="kv"><span class="chip">summary: Lightweight controlled dialog for simple panels and popovers. Renders a Radix dialog with required accessible title, optional description, and custom body content. Use for focused overlays and menu-style panels. Prefer `DsModal` when you need structured header, body, and footer sections.</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
@@ -7290,29 +7284,29 @@ title: string</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsDialog, DsIcon } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButton, DsDialog } from "@drivenets/design-system";</code></pre>
               </div>
           
           
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Centered</span>
+                <span class="ex-name">Default</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Centered = () =&gt; {
-    const [open, setOpen] = React.useState(false);
+              <div class="hint">Default modal dialog centered on the screen with an overlay backdrop. Use when you need to focus attention on a short task or confirmation.</div>
+              <pre><code>const Default = () =&gt; {
+    const [open, setOpen] = useState(false);
 
     return (
         &lt;&gt;
             &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open Dialog&lt;/DsButton&gt;
             &lt;DsDialog
+                title=&quot;Confirm action&quot;
+                description=&quot;Review the details before continuing.&quot;
                 open={open}
-                onOpenChange={setOpen}
-                title=&quot;Centered Dialog&quot;
-                description=&quot;This dialog appears in the center of the screen&quot;&gt;
-                &lt;div className={styles.dialogContent}&gt;This is a centered dialog example&lt;/div&gt;
+                onOpenChange={setOpen}&gt;
+                &lt;p&gt;Dialog body content goes here.&lt;/p&gt;
             &lt;/DsDialog&gt;
         &lt;/&gt;
     );
@@ -7324,24 +7318,99 @@ title: string</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Dialog placed at fixed viewport coordinates instead of centered. Pass pixel `top` and `left` values relative to the viewport — not relative to a trigger.</div>
               <pre><code>const CustomPosition = () =&gt; {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
 
     return (
         &lt;&gt;
-            &lt;DsIcon
-                className={styles.menuIcon}
-                icon=&quot;menu&quot;
-                size=&quot;large&quot;
-                onClick={() =&gt; setOpen(true)} /&gt;
+            &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open at fixed position&lt;/DsButton&gt;
             &lt;DsDialog
+                title=&quot;Fixed position panel&quot;
+                description=&quot;This dialog is positioned at fixed viewport coordinates.&quot;
+                customPosition={{ top: 60, left: 20 }}
                 open={open}
-                onOpenChange={setOpen}
-                title=&quot;Custom Position Dialog&quot;
-                description=&quot;This dialog appears relative to the menu icon&quot;
-                customPosition={{ top: 60, left: 20 }}&gt;
-                &lt;div className={styles.dialogContent}&gt;This is a custom positioned dialog example&lt;/div&gt;
+                onOpenChange={setOpen}&gt;
+                &lt;p&gt;Content appears at the configured top and left offsets.&lt;/p&gt;
+            &lt;/DsDialog&gt;
+        &lt;/&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Anchored To Trigger</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Positions the dialog below the trigger element using `anchorRef`. Prefer this over `customPosition` when the panel should follow a specific button or control.</div>
+              <pre><code>const AnchoredToTrigger = () =&gt; {
+    const [open, setOpen] = useState(false);
+    const anchorRef = useRef&lt;HTMLButtonElement&gt;(null);
+
+    return (
+        &lt;&gt;
+            &lt;button type=&quot;button&quot; ref={anchorRef} onClick={() =&gt; setOpen(true)}&gt;Open menu
+                                &lt;/button&gt;
+            &lt;DsDialog
+                title=&quot;Menu panel&quot;
+                description=&quot;Options related to the menu trigger.&quot;
+                anchorRef={anchorRef}
+                open={open}
+                onOpenChange={setOpen}&gt;
+                &lt;p&gt;Panel content anchored below the trigger.&lt;/p&gt;
+            &lt;/DsDialog&gt;
+        &lt;/&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Non Modal</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Non-modal dialog without an overlay backdrop. The page behind remains interactive while the dialog is open.</div>
+              <pre><code>const NonModal = () =&gt; {
+    const [open, setOpen] = useState(false);
+
+    return (
+        &lt;&gt;
+            &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open Dialog&lt;/DsButton&gt;
+            &lt;DsDialog
+                title=&quot;Non-modal panel&quot;
+                description=&quot;This dialog has no overlay backdrop.&quot;
+                modal={false}
+                open={open}
+                onOpenChange={setOpen}&gt;
+                &lt;p&gt;The page behind stays interactive while this panel is open.&lt;/p&gt;
+            &lt;/DsDialog&gt;
+        &lt;/&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Hidden Accessible Labels</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Visually hides the title and description while keeping them available to screen readers. Use when the dialog content already provides a visible heading.</div>
+              <pre><code>const HiddenAccessibleLabels = () =&gt; {
+    const [open, setOpen] = useState(false);
+
+    return (
+        &lt;&gt;
+            &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open settings&lt;/DsButton&gt;
+            &lt;DsDialog
+                title=&quot;Settings&quot;
+                description=&quot;Adjust your preferences.&quot;
+                hideTitle
+                hideDescription
+                open={open}
+                onOpenChange={setOpen}&gt;
+                &lt;h2&gt;Settings&lt;/h2&gt;
+                &lt;p&gt;Title and description are hidden visually but announced to assistive tech.&lt;/p&gt;
             &lt;/DsDialog&gt;
         &lt;/&gt;
     );
@@ -31029,7 +31098,7 @@ export const CombinedExample: Story = {
       <div class="badges">
         <label for="c-error-0-components-card-err" class="badge err as-toggle">prop type error</label>
         <label for="c-error-0-components-card-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-0-components-card-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-error-0-components-card-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -31128,9 +31197,8 @@ const Root = ({
 };
 
 /**
- * Card header - contains title and extra content.
- * Use with DsCard.Title and DsCard.Extra for standard layout,
- * or provide custom children for full flexibility.
+ * Card header — title row and optional trailing content.
+ * Provide custom children for full layout flexibility.
  */
 const Header = ({ className, children, ref, ...rest }: DsCardHeaderProps) =&gt; (
 	&lt;div ref={ref} className={classNames(styles.header, className)} {...rest}&gt;
@@ -31350,7 +31418,7 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCard, DsIcon, DsStatusBadge, DsTypography } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsCard, DsIcon, DsStack, DsStatusBadge, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -31360,7 +31428,7 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Default card is a static display container with no interactions.</div>
               <pre><code>const Default = () =&gt; &lt;DsCard.Root size=&quot;medium&quot;&gt;
     &lt;DsCard.Header&gt;Card Title&lt;/DsCard.Header&gt;
     &lt;DsCard.Body&gt;Card content goes here&lt;/DsCard.Body&gt;
@@ -31368,29 +31436,27 @@ export type DsCardFooterProps = DsCardSlotProps;
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Sizes</span>
+                <span class="ex-name">Small</span>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Small width (224px). Use for compact lists or side panels.</div>
+              <pre><code>const Small = () =&gt; &lt;DsCard.Root size=&quot;small&quot;&gt;
+    &lt;DsCard.Header&gt;Small Card&lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;Compact content area&lt;/DsCard.Body&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const Sizes = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;DsCard.Root size=&quot;small&quot;&gt;
-            &lt;DsCard.Header&gt;Small Card&lt;/DsCard.Header&gt;
-            &lt;DsCard.Body&gt;Small content&lt;/DsCard.Body&gt;
-        &lt;/DsCard.Root&gt;
-
-        &lt;DsCard.Root size=&quot;medium&quot;&gt;
-            &lt;DsCard.Header&gt;Medium Card&lt;/DsCard.Header&gt;
-            &lt;DsCard.Body&gt;Medium content&lt;/DsCard.Body&gt;
-        &lt;/DsCard.Root&gt;
-
-        &lt;DsCard.Root size=&quot;large&quot;&gt;
-            &lt;DsCard.Header&gt;Large Card&lt;/DsCard.Header&gt;
-            &lt;DsCard.Body&gt;Large content&lt;/DsCard.Body&gt;
-        &lt;/DsCard.Root&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Large width (368px). Use for detail panels and metric-heavy layouts.</div>
+              <pre><code>const Large = () =&gt; &lt;DsCard.Root size=&quot;large&quot;&gt;
+    &lt;DsCard.Header&gt;Large Card&lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;Room for richer content and multiple sections&lt;/DsCard.Body&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -31398,22 +31464,22 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithHeaderAndFooter = () =&gt; (
-    &lt;DsCard.Root size=&quot;large&quot;&gt;
-        &lt;DsCard.Header className={styles.headerRow}&gt;
-            &lt;DsTypography variant=&quot;heading3&quot;&gt;Card Title&lt;/DsTypography&gt;
-            &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; ghost /&gt;
-        &lt;/DsCard.Header&gt;
-        &lt;DsCard.Body className={styles.statsBlock}&gt;
+              <div class="hint">Compose header, body, and footer slots for structured card layouts. `styles.*` classes are story-only layout helpers — not part of the DsCard API.</div>
+              <pre><code>const WithHeaderAndFooter = () =&gt; &lt;DsCard.Root size=&quot;large&quot;&gt;
+    &lt;DsCard.Header className={styles.headerRow}&gt;
+        &lt;DsTypography variant=&quot;heading3&quot;&gt;Card Title&lt;/DsTypography&gt;
+        &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; ghost /&gt;
+    &lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;
+        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
             &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;12 of 12 Devices&lt;/DsTypography&gt;
             &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Success 10 | Failed 1 | Skipped 1&lt;/DsTypography&gt;
-        &lt;/DsCard.Body&gt;
-        &lt;DsCard.Footer className={styles.footer}&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last updated: 2 min ago&lt;/DsTypography&gt;
-        &lt;/DsCard.Footer&gt;
-    &lt;/DsCard.Root&gt;
-);</code></pre>
+        &lt;/DsStack&gt;
+    &lt;/DsCard.Body&gt;
+    &lt;DsCard.Footer className={styles.footer}&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last updated: 2 min ago&lt;/DsTypography&gt;
+    &lt;/DsCard.Footer&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -31421,43 +31487,37 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const StepCard = () =&gt; (
-    &lt;DsCard.Root size=&quot;large&quot;&gt;
-        &lt;DsCard.Header className={styles.headerRow}&gt;
-            &lt;DsTypography variant=&quot;heading3&quot;&gt;Canary&lt;/DsTypography&gt;
-            &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; label=&quot;Complete&quot; /&gt;
-        &lt;/DsCard.Header&gt;
-        &lt;DsCard.Body className={styles.statsBlock}&gt;
+              <div class="hint">A realistic step card showing deployment status with detailed metrics. `styles.*` classes are story-only layout helpers — not part of the DsCard API.</div>
+              <pre><code>const StepCard = () =&gt; &lt;DsCard.Root size=&quot;large&quot;&gt;
+    &lt;DsCard.Header className={styles.headerRow}&gt;
+        &lt;DsTypography variant=&quot;heading3&quot;&gt;Canary&lt;/DsTypography&gt;
+        &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; label=&quot;Complete&quot; /&gt;
+    &lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;
+        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
             &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;12 of 12 Devices&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                Success 10 | Failed 1 | Skipped 1
-            &lt;/DsTypography&gt;
-        &lt;/DsCard.Body&gt;
-        &lt;DsCard.Body className={styles.dataList}&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Config Push&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;
-                Complete
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Dwell Time (60 min.)&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;
-                Complete
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failed&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                1 (8%)
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failure threshold&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                5 or 10%
-            &lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Threshold state&lt;/DsTypography&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;
-                Normal
-            &lt;/DsTypography&gt;
-        &lt;/DsCard.Body&gt;
-    &lt;/DsCard.Root&gt;
-);</code></pre>
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Success 10 | Failed 1 | Skipped 1
+                                    &lt;/DsTypography&gt;
+        &lt;/DsStack&gt;
+    &lt;/DsCard.Body&gt;
+    &lt;DsCard.Body className={styles.dataList}&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Config Push&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;success&quot;&gt;Complete
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Dwell Time (60 min.)&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;success&quot;&gt;Complete
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failed&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;1 (8%)
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failure threshold&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;5 or 10%
+                            &lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Threshold state&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Normal
+                            &lt;/DsTypography&gt;
+    &lt;/DsCard.Body&gt;
+&lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -31465,8 +31525,8 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Selectable = () =&gt; &lt;DsCard.Root selectable selected={false} onClick={fn()}&gt;
+              <div class="hint">Selectable cards act as buttons. Pair `selectable` with a controlled `selected` prop and wire `onClick` to update selection — see Selectable Controlled.</div>
+              <pre><code>const Selectable = () =&gt; &lt;DsCard.Root selectable selected={false}&gt;
     &lt;DsCard.Header&gt;Selectable Card&lt;/DsCard.Header&gt;
     &lt;DsCard.Body&gt;Click to select this card&lt;/DsCard.Body&gt;
 &lt;/DsCard.Root&gt;;</code></pre>
@@ -31477,7 +31537,7 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">When `highlightSelected` is true, selected cards display a highlighted background color.</div>
               <pre><code>const HighlightSelected = () =&gt; &lt;DsCard.Root selectable selected highlightSelected&gt;
     &lt;DsCard.Header&gt;Highlighted Card&lt;/DsCard.Header&gt;
     &lt;DsCard.Body&gt;This card has a highlighted background when selected&lt;/DsCard.Body&gt;
@@ -31489,8 +31549,8 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const SelectableControlled = function Render() {
+              <div class="hint">Wire `selected` and `onClick` to local state for a controlled selectable card. MCP snippet shows the evaluated render body — use that pattern in product code.</div>
+              <pre><code>const SelectableControlled = () =&gt; {
     const [selected, setSelected] = useState(false);
 
     return (
@@ -31507,34 +31567,10 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Disabled = () =&gt; &lt;DsCard.Root size=&quot;large&quot; selectable disabled onClick={fn()}&gt;
-    &lt;DsCard.Header className={styles.headerRow}&gt;
-        &lt;DsTypography variant=&quot;heading3&quot;&gt;Canary&lt;/DsTypography&gt;
-        &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; label=&quot;Complete&quot; /&gt;
-    &lt;/DsCard.Header&gt;
-    &lt;DsCard.Body className={styles.statsBlock}&gt;
-        &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;12 of 12 Devices&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;Success 10 | Failed 1 | Skipped 1
-                            &lt;/DsTypography&gt;
-    &lt;/DsCard.Body&gt;
-    &lt;DsCard.Body className={styles.dataList}&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Config Push&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;Complete
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Dwell Time (60 min.)&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSuccess}&gt;Complete
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failed&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;1 (8%)
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Failure threshold&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;5 or 10%
-                            &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Threshold state&lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.textSecondary}&gt;Normal
-                            &lt;/DsTypography&gt;
-    &lt;/DsCard.Body&gt;
+              <div class="hint">Disabled cards cannot be interacted with and are visually dimmed.</div>
+              <pre><code>const Disabled = () =&gt; &lt;DsCard.Root selectable selected={false} disabled&gt;
+    &lt;DsCard.Header&gt;Unavailable step&lt;/DsCard.Header&gt;
+    &lt;DsCard.Body&gt;Cannot select this card.&lt;/DsCard.Body&gt;
 &lt;/DsCard.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -31543,8 +31579,8 @@ export type DsCardFooterProps = DsCardSlotProps;
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Collapsible = function Render() {
+              <div class="hint">Collapsible card pattern using composition. Click the header to toggle body visibility. This is not built-in functionality — use local state to implement. `styles.*` classes are story-only layout helpers — not part of the DsCard API.</div>
+              <pre><code>const Collapsible = () =&gt; {
     const [expanded, setExpanded] = useState(true);
 
     return (
@@ -31554,24 +31590,19 @@ export type DsCardFooterProps = DsCardSlotProps;
                     type=&quot;button&quot;
                     className={styles.collapsibleButton}
                     onClick={() =&gt; setExpanded(!expanded)}
-                    aria-expanded={expanded}
-                &gt;
+                    aria-expanded={expanded}&gt;
                     &lt;DsIcon
                         icon=&quot;expand_more&quot;
-                        style={{
-                            transform: expanded ? &#39;rotate(180deg)&#39; : &#39;rotate(0deg)&#39;,
-                            transition: &#39;transform 150ms ease-in-out&#39;,
-                        }}
-                    /&gt;
+                        className={styles.collapsibleIcon}
+                        data-expanded={expanded} /&gt;
                 &lt;/button&gt;
                 &lt;DsTypography variant=&quot;heading3&quot;&gt;Collapsible Card&lt;/DsTypography&gt;
             &lt;/DsCard.Header&gt;
             &lt;DsCard.Body className={styles.collapsibleContent} data-collapsed={!expanded}&gt;
                 &lt;div className={styles.collapsibleContentInner}&gt;
-                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
-                        This content can be collapsed by clicking the header. The height animates smoothly using CSS
-                        Grid.
-                    &lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This content can be collapsed by clicking the header. The height animates smoothly using CSS
+                                                    Grid.
+                                                &lt;/DsTypography&gt;
                 &lt;/div&gt;
             &lt;/DsCard.Body&gt;
         &lt;/DsCard.Root&gt;
