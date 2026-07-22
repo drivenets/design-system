@@ -4,21 +4,66 @@
 
 ### Show code
 <DsCheckbox
-  className="custom-checkbox"
-  label="Text for label"
-  labelInfo="Text for info"
+  label="Enable notifications"
+  labelInfo="Receive email updates"
 />
 
 ### MCP manifest
-const Default = () => <DsCheckbox label={label} labelInfo={labelInfo} className="custom-checkbox" />;
+const Default = () => <DsCheckbox label="Enable notifications" labelInfo="Receive email updates" />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [checked, setChecked] = useState(false);
+    return <DsCheckbox label="Enable notifications" labelInfo="Receive email updates" checked={checked} onCheckedChange={newState => {
+      if (typeof newState === 'boolean') {
+        setChecked(newState);
+      }
+    }} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [checked, setChecked] = useState(false);
+
+    return (
+        <DsCheckbox
+            label="Enable notifications"
+            labelInfo="Receive email updates"
+            checked={checked}
+            onCheckedChange={(newState) => {
+                if (typeof newState === 'boolean') {
+                    setChecked(newState);
+                }
+            }}
+        />
+    );
+};
 
 ## Indeterminate
 
 ### Show code
 {
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
   render: function Render() {
     const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
-    return <DsCheckbox label={label} labelInfo={labelInfo} checked={checked} onCheckedChange={newState => setChecked(newState)} />;
+    return <DsCheckbox label="Enable notifications" labelInfo="Receive email updates" checked={checked} onCheckedChange={newState => setChecked(newState)} />;
   }
 }
 
@@ -28,8 +73,8 @@ const Indeterminate = function Render() {
 
     return (
         <DsCheckbox
-            label={label}
-            labelInfo={labelInfo}
+            label="Enable notifications"
+            labelInfo="Receive email updates"
             checked={checked}
             onCheckedChange={(newState) => setChecked(newState)}
         />
@@ -39,63 +84,66 @@ const Indeterminate = function Render() {
 ## Disabled
 
 ### Show code
-{
-  render: () => <DsStack gap="var(--3xs)">
-            <DsCheckbox label={label} labelInfo={labelInfo} disabled />
-            <DsCheckbox label={label} labelInfo={labelInfo} disabled checked />
-            <DsCheckbox label={label} labelInfo={labelInfo} disabled checked="indeterminate" />
-        </DsStack>
-}
+<DsCheckbox
+  checked
+  disabled
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+/>
 
 ### MCP manifest
-const Disabled = () => (
-    <DsStack gap="var(--3xs)">
-        <DsCheckbox label={label} labelInfo={labelInfo} disabled />
-        <DsCheckbox label={label} labelInfo={labelInfo} disabled checked />
-        <DsCheckbox label={label} labelInfo={labelInfo} disabled checked="indeterminate" />
-    </DsStack>
-);
+const Disabled = () => <DsCheckbox
+    label="Enable notifications"
+    labelInfo="Receive email updates"
+    disabled
+    checked />;
 
 ## Read Only
 
 ### Show code
 <DsCheckbox
   checked
-  label="Text for label"
-  labelInfo="Text for info"
+  label="Enable notifications"
+  labelInfo="Receive email updates"
   readOnly
 />
 
 ### MCP manifest
-const ReadOnly = () => <DsCheckbox label={label} labelInfo={labelInfo} readOnly checked />;
+const ReadOnly = () => <DsCheckbox
+    label="Enable notifications"
+    labelInfo="Receive email updates"
+    readOnly
+    checked />;
 
 ## Warning
 
 ### Show code
-<DsCheckbox variant="warning" />
-
-### MCP manifest
-const Warning = () => <DsCheckbox variant="warning" />;
-
-## Warning With Label
-
-### Show code
 <DsCheckbox
-  label="Text for label"
-  labelInfo="Text for info"
+  label="Enable notifications"
+  labelInfo="Receive email updates"
   variant="warning"
 />
 
 ### MCP manifest
-const WarningWithLabel = () => <DsCheckbox variant="warning" label={label} labelInfo={labelInfo} />;
+const Warning = () => <DsCheckbox
+    variant="warning"
+    label="Enable notifications"
+    labelInfo="Receive email updates" />;
 
 ## Warning Indeterminate
 
 ### Show code
 {
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
   render: function Render() {
     const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
-    return <DsCheckbox variant="warning" label={label} labelInfo={labelInfo} checked={checked} onCheckedChange={newState => setChecked(newState)} />;
+    return <DsCheckbox variant="warning" label="Enable notifications" labelInfo="Receive email updates" checked={checked} onCheckedChange={newState => setChecked(newState)} />;
   }
 }
 
@@ -106,8 +154,8 @@ const WarningIndeterminate = function Render() {
     return (
         <DsCheckbox
             variant="warning"
-            label={label}
-            labelInfo={labelInfo}
+            label="Enable notifications"
+            labelInfo="Receive email updates"
             checked={checked}
             onCheckedChange={(newState) => setChecked(newState)}
         />
@@ -118,76 +166,46 @@ const WarningIndeterminate = function Render() {
 
 ### Show code
 {
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
   render: function Render() {
-    const [vertical, setVertical] = useState<string[]>(['react']);
-    const [horizontal, setHorizontal] = useState<string[]>(['react']);
-    return <DsStack gap="var(--3xs)">
-                <DsStack gap="var(--3xs)">
-                    <strong>Vertical</strong>
-                    <output className={styles.output}>Selected: {vertical.join(', ')}</output>
-                    <DsCheckboxGroup orientation="vertical" value={vertical} onValueChange={setVertical} name="framework-vertical">
-                        {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} />)}
-                    </DsCheckboxGroup>
-                </DsStack>
-
-                <DsStack gap="var(--3xs)">
-                    <strong>Horizontal</strong>
-                    <output className={styles.output}>Selected: {horizontal.join(', ')}</output>
-                    <DsCheckboxGroup orientation="horizontal" value={horizontal} onValueChange={setHorizontal} name="framework-horizontal">
-                        {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} />)}
-                    </DsCheckboxGroup>
-                </DsStack>
-            </DsStack>;
+    const [value, setValue] = useState<string[]>(['react']);
+    const frameworkItems = [{
+      label: 'React',
+      value: 'react'
+    }, {
+      label: 'Solid',
+      value: 'solid'
+    }, {
+      label: 'Vue',
+      value: 'vue'
+    }];
+    return <DsCheckboxGroup orientation="vertical" value={value} onValueChange={setValue} name="framework">
+                {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} />)}
+            </DsCheckboxGroup>;
   }
 }
 
 ### MCP manifest
 const Group = function Render() {
-    const [vertical, setVertical] = useState<string[]>(['react']);
-    const [horizontal, setHorizontal] = useState<string[]>(['react']);
+    const [value, setValue] = useState<string[]>(['react']);
+    const frameworkItems = [
+        { label: 'React', value: 'react' },
+        { label: 'Solid', value: 'solid' },
+        { label: 'Vue', value: 'vue' },
+    ];
 
     return (
-        <DsStack gap="var(--3xs)">
-            <DsStack gap="var(--3xs)">
-                <strong>Vertical</strong>
-                <output className={styles.output}>Selected: {vertical.join(', ')}</output>
-                <DsCheckboxGroup
-                    orientation="vertical"
-                    value={vertical}
-                    onValueChange={setVertical}
-                    name="framework-vertical"
-                >
-                    {frameworkItems.map((item) => (
-                        <DsCheckbox
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                            className={styles.groupItem}
-                        />
-                    ))}
-                </DsCheckboxGroup>
-            </DsStack>
-
-            <DsStack gap="var(--3xs)">
-                <strong>Horizontal</strong>
-                <output className={styles.output}>Selected: {horizontal.join(', ')}</output>
-                <DsCheckboxGroup
-                    orientation="horizontal"
-                    value={horizontal}
-                    onValueChange={setHorizontal}
-                    name="framework-horizontal"
-                >
-                    {frameworkItems.map((item) => (
-                        <DsCheckbox
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                            className={styles.groupItem}
-                        />
-                    ))}
-                </DsCheckboxGroup>
-            </DsStack>
-        </DsStack>
+        <DsCheckboxGroup orientation="vertical" value={value} onValueChange={setValue} name="framework">
+            {frameworkItems.map((item) => (
+                <DsCheckbox key={item.value} label={item.label} value={item.value} />
+            ))}
+        </DsCheckboxGroup>
     );
 };
 
@@ -195,20 +213,37 @@ const Group = function Render() {
 
 ### Show code
 {
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
   render: function Render() {
     const [value, setValue] = useState<string[]>([]);
+    const frameworkItems = [{
+      label: 'React',
+      value: 'react'
+    }, {
+      label: 'Solid',
+      value: 'solid'
+    }, {
+      label: 'Vue',
+      value: 'vue'
+    }];
     const {
       selectAllState,
       onSelectAllChange
     } = useCheckboxSelectAll({
       value,
-      allValues: frameworkValues,
+      allValues: frameworkItems.map(item => item.value),
       onValueChange: setValue
     });
     return <DsStack gap="var(--3xs)">
                 <DsCheckbox label="Select all" checked={selectAllState} onCheckedChange={onSelectAllChange} />
-                <DsCheckboxGroup className={styles.groupIndented} value={value} onValueChange={setValue} name="framework">
-                    {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} />)}
+                <DsCheckboxGroup value={value} onValueChange={setValue} name="framework">
+                    {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} />)}
                 </DsCheckboxGroup>
             </DsStack>;
   }
@@ -217,23 +252,23 @@ const Group = function Render() {
 ### MCP manifest
 const SelectAll = function Render() {
     const [value, setValue] = useState<string[]>([]);
+    const frameworkItems = [
+        { label: 'React', value: 'react' },
+        { label: 'Solid', value: 'solid' },
+        { label: 'Vue', value: 'vue' },
+    ];
     const { selectAllState, onSelectAllChange } = useCheckboxSelectAll({
         value,
-        allValues: frameworkValues,
+        allValues: frameworkItems.map((item) => item.value),
         onValueChange: setValue,
     });
 
     return (
         <DsStack gap="var(--3xs)">
             <DsCheckbox label="Select all" checked={selectAllState} onCheckedChange={onSelectAllChange} />
-            <DsCheckboxGroup
-                className={styles.groupIndented}
-                value={value}
-                onValueChange={setValue}
-                name="framework"
-            >
+            <DsCheckboxGroup value={value} onValueChange={setValue} name="framework">
                 {frameworkItems.map((item) => (
-                    <DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} />
+                    <DsCheckbox key={item.value} label={item.label} value={item.value} />
                 ))}
             </DsCheckboxGroup>
         </DsStack>

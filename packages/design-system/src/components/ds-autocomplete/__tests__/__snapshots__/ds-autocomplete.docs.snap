@@ -36,36 +36,31 @@ const Default = () => <DsAutocomplete
 ## Search Mode
 
 ### Show code
-<DsAutocomplete
-  onInputValueChange={() => {}}
-  onOpenChange={() => {}}
-  onValueChange={() => {}}
-  options={[
-    {
-      label: 'Apple',
-      value: 'apple'
-    },
-    {
-      label: 'Banana',
-      value: 'banana'
-    },
-    {
-      label: 'Cherry',
-      value: 'cherry'
-    }
-  ]}
-  placeholder="Start typing to search..."
-/>
+{
+  render: () => <DsAutocomplete showTrigger={false} placeholder="Start typing to search..." options={[{
+    value: 'apple',
+    label: 'Apple'
+  }, {
+    value: 'banana',
+    label: 'Banana'
+  }, {
+    value: 'cherry',
+    label: 'Cherry'
+  }]} />
+}
 
 ### MCP manifest
-const SearchMode = () => <DsAutocomplete
-    showTrigger={false}
-    placeholder="Start typing to search..."
-    options={[
-        { value: 'apple', label: 'Apple' },
-        { value: 'banana', label: 'Banana' },
-        { value: 'cherry', label: 'Cherry' },
-    ]} />;
+const SearchMode = () => (
+    <DsAutocomplete
+        showTrigger={false}
+        placeholder="Start typing to search..."
+        options={[
+            { value: 'apple', label: 'Apple' },
+            { value: 'banana', label: 'Banana' },
+            { value: 'cherry', label: 'Cherry' },
+        ]}
+    />
+);
 
 ## With Start Adornment
 
@@ -142,36 +137,31 @@ const WithOptionIcons = () => <DsAutocomplete
 ## Without Highlight
 
 ### Show code
-<DsAutocomplete
-  onInputValueChange={() => {}}
-  onOpenChange={() => {}}
-  onValueChange={() => {}}
-  options={[
-    {
-      label: 'Apple',
-      value: 'apple'
-    },
-    {
-      label: 'Banana',
-      value: 'banana'
-    },
-    {
-      label: 'Cherry',
-      value: 'cherry'
-    }
-  ]}
-  placeholder="Select or type to search..."
-/>
+{
+  render: () => <DsAutocomplete highlightMatch={false} placeholder="Select or type to search..." options={[{
+    value: 'apple',
+    label: 'Apple'
+  }, {
+    value: 'banana',
+    label: 'Banana'
+  }, {
+    value: 'cherry',
+    label: 'Cherry'
+  }]} />
+}
 
 ### MCP manifest
-const WithoutHighlight = () => <DsAutocomplete
-    highlightMatch={false}
-    placeholder="Select or type to search..."
-    options={[
-        { value: 'apple', label: 'Apple' },
-        { value: 'banana', label: 'Banana' },
-        { value: 'cherry', label: 'Cherry' },
-    ]} />;
+const WithoutHighlight = () => (
+    <DsAutocomplete
+        highlightMatch={false}
+        placeholder="Select or type to search..."
+        options={[
+            { value: 'apple', label: 'Apple' },
+            { value: 'banana', label: 'Banana' },
+            { value: 'cherry', label: 'Cherry' },
+        ]}
+    />
+);
 
 ## Loading
 
@@ -311,7 +301,6 @@ const Localized = () => <DsAutocomplete
     const [options, setOptions] = useState<DsAutocompleteOption[]>([]);
     const [loading, setLoading] = useState(false);
     const handleInputValueChange = async (value: string) => {
-      args.onInputValueChange?.(value);
       if (!value) {
         setOptions([]);
         return;
@@ -343,8 +332,6 @@ const AsyncSearch = () => {
     const [loading, setLoading] = useState(false);
 
     const handleInputValueChange = async (value: string) => {
-        args.onInputValueChange?.(value);
-
         if (!value) {
             setOptions([]);
             return;

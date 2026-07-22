@@ -123,28 +123,18 @@ const Success = () => <DsAlertBanner open onOpenChange={fn()} inline variant="su
 ## Global
 
 ### Show code
-<DsAlertBanner
-  closable
-  icon="info"
-  onOpenChange={() => {}}
-  open
-  variant="info-blue"
->
-  <DsAlertBanner.Body>
-    A new version is available. Refresh to update.
-  </DsAlertBanner.Body>
-</DsAlertBanner>
+{
+  render: () => <DsAlertBanner inline={false} variant="info-blue" icon="info" closable open onOpenChange={() => {}}>
+            <DsAlertBanner.Body>A new version is available. Refresh to update.</DsAlertBanner.Body>
+        </DsAlertBanner>
+}
 
 ### MCP manifest
-const Global = () => <DsAlertBanner
-    open
-    onOpenChange={fn()}
-    inline={false}
-    variant="info-blue"
-    icon="info"
-    closable>
-    <DsAlertBanner.Body>A new version is available. Refresh to update.</DsAlertBanner.Body>
-</DsAlertBanner>;
+const Global = () => (
+    <DsAlertBanner inline={false} variant="info-blue" icon="info" closable open onOpenChange={() => {}}>
+        <DsAlertBanner.Body>A new version is available. Refresh to update.</DsAlertBanner.Body>
+    </DsAlertBanner>
+);
 
 ## Closable
 
