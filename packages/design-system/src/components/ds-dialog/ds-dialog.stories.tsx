@@ -120,12 +120,7 @@ export const AnchoredToTrigger: Story = {
 				<button type="button" ref={anchorRef} onClick={() => setOpen(true)}>
 					Open menu
 				</button>
-				<DsDialog
-					{...args}
-					anchorRef={anchorRef as React.RefObject<HTMLElement>}
-					open={open}
-					onOpenChange={setOpen}
-				>
+				<DsDialog {...args} anchorRef={anchorRef} open={open} onOpenChange={setOpen}>
 					<p>Panel content anchored below the trigger.</p>
 				</DsDialog>
 			</>

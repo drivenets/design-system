@@ -115,7 +115,7 @@ const CustomPosition = () => {
                 <button type="button" ref={anchorRef} onClick={() => setOpen(true)}>
                     Open menu
                 </button>
-                <DsDialog {...args} anchorRef={anchorRef as React.RefObject<HTMLElement>} open={open} onOpenChange={setOpen}>
+                <DsDialog {...args} anchorRef={anchorRef} open={open} onOpenChange={setOpen}>
                     <p>Panel content anchored below the trigger.</p>
                 </DsDialog>
             </>;
@@ -134,7 +134,7 @@ const AnchoredToTrigger = () => {
             <DsDialog
                 title="Menu panel"
                 description="Options related to the menu trigger."
-                anchorRef={anchorRef as React.RefObject<HTMLElement>}
+                anchorRef={anchorRef}
                 open={open}
                 onOpenChange={setOpen}>
                 <p>Panel content anchored below the trigger.</p>
