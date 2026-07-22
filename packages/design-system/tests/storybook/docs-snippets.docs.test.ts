@@ -8,7 +8,20 @@ import { readShowCodeSnippet } from './read-show-code';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, '../../');
 
-const COMPONENTS = ['button-v3', 'breadcrumb'];
+const COMPONENTS = [
+	'alert-banner',
+	'autocomplete',
+	'avatar',
+	'avatar-group',
+	'breadcrumb',
+	'button-v3',
+	'card',
+	'catalog-layout',
+	'checkbox',
+	'date-picker',
+	'date-range-picker',
+	'dialog',
+];
 
 function getComponentSnapshotPath(name: string): string {
 	const folder = `ds-${name}`;

@@ -1,0 +1,145 @@
+# DsDatePicker docs snippets
+
+## Default
+
+### Show code
+<DsDatePicker
+  className="_container_vw7zj_1"
+  onChange={() => {}}
+  value={null}
+/>
+
+### MCP manifest
+const Default = () => {
+    const [value, setValue] = useState<Date | null>(null);
+
+    return <DsDatePicker className={styles.container} value={value} onChange={setValue} />;
+};
+
+## With Time
+
+### Show code
+<DsDatePicker
+  className="_container_vw7zj_1"
+  onChange={() => {}}
+  value={null}
+  withTime
+/>
+
+### MCP manifest
+const WithTime = () => {
+    const [value, setValue] = useState<Date | null>(null);
+
+    return <DsDatePicker withTime className={styles.container} value={value} onChange={setValue} />;
+};
+
+## With Default Value
+
+### Show code
+<DsDatePicker
+  className="_container_vw7zj_1"
+  defaultValue={new Date("2024-12-25T13:30:00.000Z")}
+  withTime
+/>
+
+### MCP manifest
+const WithDefaultValue = () => <DsDatePicker
+    className={styles.container}
+    withTime
+    defaultValue={new Date('2024-12-25T14:30:00')} />;
+
+## Controlled
+
+### Show code
+<div className="_container_vw7zj_1">
+  <DsDatePicker
+    onChange={() => {}}
+    value={new Date("2026-01-15T08:45:00.000Z")}
+    withTime
+  />
+  <p className="_infoContainer_vw7zj_11">
+    Value: 1/15/2026, 9:45:00 AM
+  </p>
+</div>
+
+### MCP manifest
+const Controlled = () => {
+    const [value, setValue] = useState<Date | null>(new Date('2026-01-15T09:45:00'));
+
+    return (
+        <div className={styles.container}>
+            <DsDatePicker withTime value={value} onChange={setValue} />
+            <p className={styles.infoContainer}>Value: {value?.toLocaleString() ?? 'undefined'}</p>
+        </div>
+    );
+};
+
+## Disabled
+
+### Show code
+<DsDatePicker
+  className="_container_vw7zj_1"
+  disabled
+  value={new Date("2024-12-25T13:30:00.000Z")}
+/>
+
+### MCP manifest
+const Disabled = () => <DsDatePicker
+    className={styles.container}
+    value={new Date('2024-12-25T14:30:00')}
+    disabled />;
+
+## Read Only
+
+### Show code
+<DsDatePicker
+  className="_container_vw7zj_1"
+  readOnly
+  value={new Date("2024-12-25T13:30:00.000Z")}
+/>
+
+### MCP manifest
+const ReadOnly = () => <DsDatePicker
+    className={styles.container}
+    value={new Date('2024-12-25T14:30:00')}
+    readOnly />;
+
+## With Min Max
+
+### Show code
+<div className="_container_vw7zj_1">
+  <DsDatePicker
+    max={new Date("2026-08-31T21:20:00.000Z")}
+    min={new Date("2026-06-30T22:30:00.000Z")}
+    onChange={() => {}}
+    value={null}
+    withTime
+  />
+  <p className="_helperText_vw7zj_5">
+    Allowed: 7/1/2026, 12:30:00 AM - 8/31/2026, 11:20:00 PM
+  </p>
+</div>
+
+### MCP manifest
+const WithMinMax = () => {
+    const [value, setValue] = useState<Date | null>(null);
+
+    return (
+        <div className={styles.container}>
+            <DsDatePicker
+                withTime
+                min={(() => {
+                    const date = new Date();
+                    return new Date(date.getFullYear(), date.getMonth(), 1, 0, 30);
+                })()}
+                max={(() => {
+                    const date = new Date();
+                    return new Date(date.getFullYear(), date.getMonth() + 2, 0, 23, 20); // last day of next month
+                })()}
+                value={value}
+                onChange={setValue} />
+            <p className={styles.helperText}>Allowed: {args.min?.toLocaleString()}- {args.max?.toLocaleString()}
+            </p>
+        </div>
+    );
+};

@@ -1,0 +1,291 @@
+# DsCatalogLayout docs snippets
+
+## Default
+
+### Show code
+{
+  render: function Render() {
+    const [pinned, setPinned] = useState(false);
+    return <DsCatalogLayout>
+                <DsCatalogLayout.Header>
+                    <TopBarNavigation />
+                </DsCatalogLayout.Header>
+                <DsCatalogLayout.Body>
+                    <DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+                        <SideMenuItems />
+                    </DsCatalogLayout.SideMenu>
+                    <DsCatalogLayout.Content>
+                        <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Planned executions</DsTypography>} headerActions={<ContentHeaderActions />}>
+                            <SmartTabsItem />
+                        </DsCatalogLayout.ContentHeader>
+                        <ResultsCard>
+                            <DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+                        </ResultsCard>
+                    </DsCatalogLayout.Content>
+                </DsCatalogLayout.Body>
+            </DsCatalogLayout>;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        <DsCatalogLayout>
+            <DsCatalogLayout.Header>
+                <TopBarNavigation />
+            </DsCatalogLayout.Header>
+            <DsCatalogLayout.Body>
+                <DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+                    <SideMenuItems />
+                </DsCatalogLayout.SideMenu>
+                <DsCatalogLayout.Content>
+                    <DsCatalogLayout.ContentHeader
+                        title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+                        headerActions={<ContentHeaderActions />}
+                    >
+                        <SmartTabsItem />
+                    </DsCatalogLayout.ContentHeader>
+                    <ResultsCard>
+                        <DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+                    </ResultsCard>
+                </DsCatalogLayout.Content>
+            </DsCatalogLayout.Body>
+        </DsCatalogLayout>
+    );
+};
+
+## Empty
+
+### Show code
+{
+  render: function Render() {
+    const [pinned, setPinned] = useState(false);
+    return <DsCatalogLayout>
+                <DsCatalogLayout.Header>
+                    <TopBarNavigation />
+                </DsCatalogLayout.Header>
+                <DsCatalogLayout.Body>
+                    <DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+                        <SideMenuItems />
+                    </DsCatalogLayout.SideMenu>
+                    <DsCatalogLayout.Content>
+                        <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Planned executions</DsTypography>} headerActions={<ContentHeaderActions />}>
+                            <SmartTabsItem />
+                        </DsCatalogLayout.ContentHeader>
+                        <EmptyStateCard>
+                            <DsTypography variant="body-md-reg">No matching records found.</DsTypography>
+                            <DsButtonV3 variant="primary" size="small">
+                                Clear filters
+                            </DsButtonV3>
+                        </EmptyStateCard>
+                    </DsCatalogLayout.Content>
+                </DsCatalogLayout.Body>
+            </DsCatalogLayout>;
+  }
+}
+
+### MCP manifest
+const Empty = function Render() {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        <DsCatalogLayout>
+            <DsCatalogLayout.Header>
+                <TopBarNavigation />
+            </DsCatalogLayout.Header>
+            <DsCatalogLayout.Body>
+                <DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+                    <SideMenuItems />
+                </DsCatalogLayout.SideMenu>
+                <DsCatalogLayout.Content>
+                    <DsCatalogLayout.ContentHeader
+                        title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+                        headerActions={<ContentHeaderActions />}
+                    >
+                        <SmartTabsItem />
+                    </DsCatalogLayout.ContentHeader>
+                    <EmptyStateCard>
+                        <DsTypography variant="body-md-reg">No matching records found.</DsTypography>
+                        <DsButtonV3 variant="primary" size="small">
+                            Clear filters
+                        </DsButtonV3>
+                    </EmptyStateCard>
+                </DsCatalogLayout.Content>
+            </DsCatalogLayout.Body>
+        </DsCatalogLayout>
+    );
+};
+
+## Without Side Menu
+
+### Show code
+{
+  render: () => <DsCatalogLayout>
+            <DsCatalogLayout.Header>
+                <TopBarNavigation />
+            </DsCatalogLayout.Header>
+            <DsCatalogLayout.Body>
+                <DsCatalogLayout.Content>
+                    <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Planned executions</DsTypography>} headerActions={<ContentHeaderActions />} />
+                    <ResultsCard>
+                        <DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+                    </ResultsCard>
+                </DsCatalogLayout.Content>
+            </DsCatalogLayout.Body>
+        </DsCatalogLayout>
+}
+
+### MCP manifest
+const WithoutSideMenu = () => (
+    <DsCatalogLayout>
+        <DsCatalogLayout.Header>
+            <TopBarNavigation />
+        </DsCatalogLayout.Header>
+        <DsCatalogLayout.Body>
+            <DsCatalogLayout.Content>
+                <DsCatalogLayout.ContentHeader
+                    title={<DsTypography variant="heading3">Planned executions</DsTypography>}
+                    headerActions={<ContentHeaderActions />}
+                />
+                <ResultsCard>
+                    <DsTable columns={catalogColumns} data={catalogData} stickyHeader bordered fullWidth />
+                </ResultsCard>
+            </DsCatalogLayout.Content>
+        </DsCatalogLayout.Body>
+    </DsCatalogLayout>
+);
+
+## Side Menu Pinned
+
+### Show code
+{
+  render: function Render() {
+    const [pinned, setPinned] = useState(true);
+    return <DsCatalogLayout>
+                <DsCatalogLayout.Header>
+                    <TopBarNavigation />
+                </DsCatalogLayout.Header>
+                <DsCatalogLayout.Body>
+                    <DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+                        <SideMenuItems />
+                    </DsCatalogLayout.SideMenu>
+                    <DsCatalogLayout.Content>
+                        <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Pinned side menu</DsTypography>} />
+                        <DsTypography variant="body-md-reg">
+                            When the side menu is pinned, the expanded panel pushes the content area to the right. Use the
+                            pin button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
+                        </DsTypography>
+                    </DsCatalogLayout.Content>
+                </DsCatalogLayout.Body>
+            </DsCatalogLayout>;
+  }
+}
+
+### MCP manifest
+const SideMenuPinned = function Render() {
+    const [pinned, setPinned] = useState(true);
+
+    return (
+        <DsCatalogLayout>
+            <DsCatalogLayout.Header>
+                <TopBarNavigation />
+            </DsCatalogLayout.Header>
+            <DsCatalogLayout.Body>
+                <DsCatalogLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
+                    <SideMenuItems />
+                </DsCatalogLayout.SideMenu>
+                <DsCatalogLayout.Content>
+                    <DsCatalogLayout.ContentHeader
+                        title={<DsTypography variant="heading3">Pinned side menu</DsTypography>}
+                    />
+                    <DsTypography variant="body-md-reg">
+                        When the side menu is pinned, the expanded panel pushes the content area to the right. Use the
+                        pin button in the top-right of the side menu (visible when expanded) to toggle the pinned state.
+                    </DsTypography>
+                </DsCatalogLayout.Content>
+            </DsCatalogLayout.Body>
+        </DsCatalogLayout>
+    );
+};
+
+## Fill Parent
+
+### Show code
+{
+  render: () => <div className={styles.fillParentWrapper}>
+            <DsCatalogLayout fillParent>
+                <DsCatalogLayout.Header>
+                    <TopBarNavigation />
+                </DsCatalogLayout.Header>
+                <DsCatalogLayout.Body>
+                    <DsCatalogLayout.Content>
+                        <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Fill parent</DsTypography>} />
+                        <DsTypography variant="body-md-reg">
+                            This catalog layout fills its parent container (400px) instead of the viewport.
+                        </DsTypography>
+                    </DsCatalogLayout.Content>
+                </DsCatalogLayout.Body>
+            </DsCatalogLayout>
+        </div>
+}
+
+### MCP manifest
+const FillParent = () => (
+    <div className={styles.fillParentWrapper}>
+        <DsCatalogLayout fillParent>
+            <DsCatalogLayout.Header>
+                <TopBarNavigation />
+            </DsCatalogLayout.Header>
+            <DsCatalogLayout.Body>
+                <DsCatalogLayout.Content>
+                    <DsCatalogLayout.ContentHeader
+                        title={<DsTypography variant="heading3">Fill parent</DsTypography>}
+                    />
+                    <DsTypography variant="body-md-reg">
+                        This catalog layout fills its parent container (400px) instead of the viewport.
+                    </DsTypography>
+                </DsCatalogLayout.Content>
+            </DsCatalogLayout.Body>
+        </DsCatalogLayout>
+    </div>
+);
+
+## Header Only
+
+### Show code
+{
+  render: () => <DsCatalogLayout>
+            <DsCatalogLayout.Header>
+                <TopBarNavigation />
+            </DsCatalogLayout.Header>
+            <DsCatalogLayout.Body>
+                <DsCatalogLayout.Content>
+                    <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Minimal layout</DsTypography>} />
+                    <DsTypography variant="body-md-reg">
+                        All sub-components are optional. Use only the regions your page needs.
+                    </DsTypography>
+                </DsCatalogLayout.Content>
+            </DsCatalogLayout.Body>
+        </DsCatalogLayout>
+}
+
+### MCP manifest
+const HeaderOnly = () => (
+    <DsCatalogLayout>
+        <DsCatalogLayout.Header>
+            <TopBarNavigation />
+        </DsCatalogLayout.Header>
+        <DsCatalogLayout.Body>
+            <DsCatalogLayout.Content>
+                <DsCatalogLayout.ContentHeader
+                    title={<DsTypography variant="heading3">Minimal layout</DsTypography>}
+                />
+                <DsTypography variant="body-md-reg">
+                    All sub-components are optional. Use only the regions your page needs.
+                </DsTypography>
+            </DsCatalogLayout.Content>
+        </DsCatalogLayout.Body>
+    </DsCatalogLayout>
+);

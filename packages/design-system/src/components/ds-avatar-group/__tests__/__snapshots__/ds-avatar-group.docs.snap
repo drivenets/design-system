@@ -1,0 +1,91 @@
+# DsAvatarGroup docs snippets
+
+## Default
+
+### Show code
+<DsAvatarGroup
+ avatars={[
+   {
+     name: 'Alice Freeman',
+     src: 'https://i.pravatar.cc/150?u=alice'
+   },
+   {
+     name: 'Bob Smith',
+     src: 'https://i.pravatar.cc/150?u=bob'
+   },
+   {
+     name: 'Charlie Davis',
+     src: 'https://i.pravatar.cc/150?u=charlie'
+   },
+   {
+     name: 'Diana Prince',
+     src: 'https://i.pravatar.cc/150?u=diana'
+   },
+   {
+     name: 'Edward Norton',
+     src: 'https://i.pravatar.cc/150?u=edward'
+   },
+   {
+     name: 'Fiona Gallagher',
+     src: 'https://i.pravatar.cc/150?u=fiona'
+   },
+   {
+     name: 'George Miller',
+     src: 'https://i.pravatar.cc/150?u=george'
+   },
+   {
+     name: 'Hannah Abbott',
+     src: 'https://i.pravatar.cc/150?u=hannah'
+   }
+ ]}
+/>
+
+### MCP manifest
+const Default = () => <DsAvatarGroup avatars={sampleAvatars} />;
+
+## Variants
+
+### Show code
+{
+  render: () => <div className={styles.variantsContainer}>
+            <div>
+                <h3>Default Group (max 5)</h3>
+                <DsAvatarGroup avatars={sampleAvatars} />
+            </div>
+            <div>
+                <h3>Small Rounded Group</h3>
+                <DsAvatarGroup avatars={sampleAvatars} size="sm" type="rounded" />
+            </div>
+            <div>
+                <h3>Large Group (max 3)</h3>
+                <DsAvatarGroup avatars={sampleAvatars} size="lg" max={3} />
+            </div>
+        </div>,
+  play: async ({
+    canvasElement
+  }) => {
+    const canvas = within(canvasElement);
+
+    // Check that overflow indicators are present
+    const overflowIndicators = canvas.getAllByText(/^\+\d+$/);
+    await expect(overflowIndicators.length).toBeGreaterThan(0);
+  }
+}
+
+### MCP manifest
+const Variants = () => (
+    <div className={styles.variantsContainer}>
+        <div>
+            <h3>Default Group (max 5)</h3>
+            <DsAvatarGroup avatars={sampleAvatars} />
+        </div>
+        <div>
+            <h3>Small Rounded Group</h3>
+            <DsAvatarGroup avatars={sampleAvatars} size="sm" type="rounded" />
+        </div>
+        <div>
+            <h3>Large Group (max 3)</h3>
+            <DsAvatarGroup avatars={sampleAvatars} size="lg" max={3} />
+        </div>
+    </div>
+);

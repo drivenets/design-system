@@ -1,0 +1,85 @@
+# DsDialog docs snippets
+
+## Centered
+
+### Show code
+<>
+  <DsButton onClick={() => {}}>
+    Open Dialog
+  </DsButton>
+  <DsDialog
+    description="This dialog appears in the center of the screen"
+    onOpenChange={() => {}}
+    title="Centered Dialog"
+  >
+    <div className="_dialogContent_1o9hi_5">
+      This is a centered dialog example
+    </div>
+  </DsDialog>
+</>
+
+### MCP manifest
+const Centered = () => {
+    const [open, setOpen] = React.useState(false);
+
+    return (
+        <>
+            <DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
+            <DsDialog
+                open={open}
+                onOpenChange={setOpen}
+                title="Centered Dialog"
+                description="This dialog appears in the center of the screen">
+                <div className={styles.dialogContent}>This is a centered dialog example</div>
+            </DsDialog>
+        </>
+    );
+};
+
+## Custom Position
+
+### Show code
+<>
+  <DsIcon
+    className="_menuIcon_1o9hi_10"
+    icon="menu"
+    onClick={() => {}}
+    size="large"
+  />
+  <DsDialog
+    customPosition={{
+      left: 20,
+      top: 60
+    }}
+    description="This dialog appears relative to the menu icon"
+    onOpenChange={() => {}}
+    title="Custom Position Dialog"
+  >
+    <div className="_dialogContent_1o9hi_5">
+      This is a custom positioned dialog example
+    </div>
+  </DsDialog>
+</>
+
+### MCP manifest
+const CustomPosition = () => {
+    const [open, setOpen] = React.useState(false);
+
+    return (
+        <>
+            <DsIcon
+                className={styles.menuIcon}
+                icon="menu"
+                size="large"
+                onClick={() => setOpen(true)} />
+            <DsDialog
+                open={open}
+                onOpenChange={setOpen}
+                title="Custom Position Dialog"
+                description="This dialog appears relative to the menu icon"
+                customPosition={{ top: 60, left: 20 }}>
+                <div className={styles.dialogContent}>This is a custom positioned dialog example</div>
+            </DsDialog>
+        </>
+    );
+};

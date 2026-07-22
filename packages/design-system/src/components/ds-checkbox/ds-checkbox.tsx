@@ -5,7 +5,13 @@ import type { DsCheckboxProps } from './ds-checkbox.types';
 import { DsIcon } from '../ds-icon';
 
 /**
- * Design system Checkbox component
+ * @summary Checkbox for single and grouped selection
+ *
+ * Checkbox for boolean and multi-select inputs. Use standalone for a single
+ * toggle, or compose inside `DsCheckboxGroup` for multi-select lists. Import
+ * `useCheckboxSelectAll` from `ds-checkbox-group` for parent "select all"
+ * checkboxes. `checked` accepts `true`, `false`, or `"indeterminate"`.
+ *
  */
 const DsCheckbox = ({
 	variant = 'default',
