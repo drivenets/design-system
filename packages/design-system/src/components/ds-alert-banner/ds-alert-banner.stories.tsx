@@ -135,14 +135,8 @@ export const Success: Story = {
  * `DsAlertBanner.Body`.
  */
 export const Global: Story = {
-	args: {
-		inline: false,
-		variant: 'info-blue',
-		icon: 'info',
-		closable: true,
-	},
-	render: (args) => (
-		<DsAlertBanner {...args}>
+	render: () => (
+		<DsAlertBanner inline={false} variant="info-blue" icon="info" closable open onOpenChange={() => {}}>
 			<DsAlertBanner.Body>A new version is available. Refresh to update.</DsAlertBanner.Body>
 		</DsAlertBanner>
 	),

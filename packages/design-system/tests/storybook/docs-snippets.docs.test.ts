@@ -8,7 +8,20 @@ import { readShowCodeSnippet } from './read-show-code';
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, '../../');
 
-const COMPONENTS = ['button-v3', 'breadcrumb'];
+const COMPONENTS = [
+	'alert-banner',
+	'autocomplete',
+	'avatar',
+	'avatar-group',
+	'breadcrumb',
+	'button-v3',
+	'card',
+	'catalog-layout',
+	'checkbox',
+	'date-picker',
+	'date-range-picker',
+	'dialog',
+];
 
 function getComponentSnapshotPath(name: string): string {
 	const folder = `ds-${name}`;
@@ -58,7 +71,7 @@ describe('docs snippets', () => {
 
 	for (const { name, component } of components) {
 		it.concurrent(`${component.name} docs snippets match staged authoring rules`, async ({ expect }) => {
-			const page = await browser.newPage({ viewport: { width: 1400, height: 900 } });
+			const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, timezoneId: 'UTC' });
 
 			try {
 				const document = await buildComponentDocsSnapshot(page, component);

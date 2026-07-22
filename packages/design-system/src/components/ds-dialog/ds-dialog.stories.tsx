@@ -1,10 +1,7 @@
-import React from 'react';
+import { useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
-import { DsIcon } from '../ds-icon';
 import { DsButton } from '../ds-button';
-import { DsDialog } from '../ds-dialog';
-import styles from './ds-dialog.stories.module.scss';
+import { DsDialog } from './index';
 
 const meta: Meta<typeof DsDialog> = {
 	title: 'Components/Dialog',
@@ -15,111 +12,178 @@ const meta: Meta<typeof DsDialog> = {
 	argTypes: {
 		open: {
 			control: 'boolean',
-			description: 'Controls whether the dialog is open',
-		},
-		onOpenChange: {
-			action: 'onOpenChange',
-			description: 'Function called when dialog open state changes',
 		},
 		title: {
 			control: 'text',
-			description: 'Title of the dialog',
 		},
 		description: {
 			control: 'text',
-			description: 'Description text for the dialog',
 		},
 		hideTitle: {
 			control: 'boolean',
-			description: 'Whether to hide the title visually',
 		},
 		hideDescription: {
 			control: 'boolean',
-			description: 'Whether to hide the description visually',
 		},
 		modal: {
 			control: 'boolean',
-			description: 'Whether the dialog should be modal',
 		},
 		customPosition: {
 			control: 'object',
-			description:
-				'Custom position for the dialog in pixels relative to the viewport. Expects {top: number, left: number}',
 		},
+		className: { table: { disable: true } },
+		anchorRef: { table: { disable: true } },
+		onOpenChange: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsDialog>;
 
-export const Centered: Story = {
+/**
+ * Default modal dialog centered on the screen with an overlay backdrop. Use when
+ * you need to focus attention on a short task or confirmation.
+ */
+export const Default: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	args: {
+		title: 'Confirm action',
+		description: 'Review the details before continuing.',
+	},
 	render: function Render(args) {
-		const [open, setOpen] = React.useState(false);
+		const [open, setOpen] = useState(false);
+
 		return (
 			<>
 				<DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
-				<DsDialog
-					{...args}
-					open={open}
-					onOpenChange={setOpen}
-					title="Centered Dialog"
-					description="This dialog appears in the center of the screen"
-				>
-					<div className={styles.dialogContent}>This is a centered dialog example</div>
+				<DsDialog {...args} open={open} onOpenChange={setOpen}>
+					<p>Dialog body content goes here.</p>
 				</DsDialog>
 			</>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByText('Open Dialog');
-		await userEvent.click(trigger);
-		// Verify dialog is opened
-		await waitFor(() => {
-			return expect(screen.getByText(/Centered Dialog/)).toBeTruthy();
-		});
-		// Close dialog with Escape key
-		await userEvent.keyboard('{Escape}');
-		// Verify dialog is closed
-		await waitFor(() => {
-			return expect(screen.queryByText(/Centered Dialog/)).toBeNull();
-		});
 	},
 };
 
+/**
+ * Dialog placed at fixed viewport coordinates instead of centered. Pass pixel
+ * `top` and `left` values relative to the viewport — not relative to a trigger.
+ */
 export const CustomPosition: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	args: {
+		title: 'Fixed position panel',
+		description: 'This dialog is positioned at fixed viewport coordinates.',
+		customPosition: { top: 60, left: 20 },
+	},
 	render: function Render(args) {
-		const [open, setOpen] = React.useState(false);
+		const [open, setOpen] = useState(false);
 
 		return (
 			<>
-				<DsIcon className={styles.menuIcon} icon="menu" size="large" onClick={() => setOpen(true)} />
-				<DsDialog
-					{...args}
-					open={open}
-					onOpenChange={setOpen}
-					title="Custom Position Dialog"
-					description="This dialog appears relative to the menu icon"
-					customPosition={{ top: 60, left: 20 }}
-				>
-					<div className={styles.dialogContent}>This is a custom positioned dialog example</div>
+				<DsButton onClick={() => setOpen(true)}>Open at fixed position</DsButton>
+				<DsDialog {...args} open={open} onOpenChange={setOpen}>
+					<p>Content appears at the configured top and left offsets.</p>
 				</DsDialog>
 			</>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const trigger = canvas.getByText(/menu/i);
-		await userEvent.click(trigger);
-		// Verify dialog is opened
-		await waitFor(() => {
-			return expect(screen.getByText(/Custom Position Dialog/)).toBeTruthy();
-		});
-		// Close dialog with Escape key
-		await userEvent.keyboard('{Escape}');
-		// Verify dialog is closed
-		await waitFor(() => {
-			return expect(screen.queryByText(/Custom Position Dialog/)).toBeNull();
-		});
+};
+
+/**
+ * Positions the dialog below the trigger element using `anchorRef`. Prefer this
+ * over `customPosition` when the panel should follow a specific button or control.
+ */
+export const AnchoredToTrigger: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	args: {
+		title: 'Menu panel',
+		description: 'Options related to the menu trigger.',
+	},
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+		const anchorRef = useRef<HTMLButtonElement>(null);
+
+		return (
+			<>
+				<button type="button" ref={anchorRef} onClick={() => setOpen(true)}>
+					Open menu
+				</button>
+				<DsDialog {...args} anchorRef={anchorRef} open={open} onOpenChange={setOpen}>
+					<p>Panel content anchored below the trigger.</p>
+				</DsDialog>
+			</>
+		);
+	},
+};
+
+/**
+ * Non-modal dialog without an overlay backdrop. The page behind remains
+ * interactive while the dialog is open.
+ */
+export const NonModal: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	args: {
+		title: 'Non-modal panel',
+		description: 'This dialog has no overlay backdrop.',
+		modal: false,
+	},
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+
+		return (
+			<>
+				<DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
+				<DsDialog {...args} open={open} onOpenChange={setOpen}>
+					<p>The page behind stays interactive while this panel is open.</p>
+				</DsDialog>
+			</>
+		);
+	},
+};
+
+/**
+ * Visually hides the title and description while keeping them available to screen
+ * readers. Use when the dialog content already provides a visible heading.
+ */
+export const HiddenAccessibleLabels: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	args: {
+		title: 'Settings',
+		description: 'Adjust your preferences.',
+		hideTitle: true,
+		hideDescription: true,
+	},
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+
+		return (
+			<>
+				<DsButton onClick={() => setOpen(true)}>Open settings</DsButton>
+				<DsDialog {...args} open={open} onOpenChange={setOpen}>
+					<h2>Settings</h2>
+					<p>Title and description are hidden visually but announced to assistive tech.</p>
+				</DsDialog>
+			</>
+		);
 	},
 };

@@ -20,6 +20,13 @@ import { DayView } from './components/day-view';
 import { MonthView } from './components/month-view';
 import { YearView } from './components/year-view';
 
+/**
+ * @summary Date and optional time input with calendar popover and manual typing.
+ *
+ * Supports controlled (`value` + `onChange`) and uncontrolled (`defaultValue`) modes.
+ * Pass `withTime` to include a nested time picker. A clear button appears when a
+ * value is set unless `hideClearButton` is set.
+ */
 const DsDatePicker = ({
 	placeholder,
 	className,

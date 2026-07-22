@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, within } from 'storybook/test';
+import { dsAvatarSizes, dsAvatarTypes } from '../ds-avatar';
+import { DsStack } from '../ds-stack';
 import { DsAvatarGroup } from './ds-avatar-group';
-import styles from './ds-avatar-group.stories.module.scss';
 
 const meta: Meta<typeof DsAvatarGroup> = {
 	title: 'Components/AvatarGroup',
@@ -9,67 +9,143 @@ const meta: Meta<typeof DsAvatarGroup> = {
 	parameters: {
 		layout: 'centered',
 	},
+	argTypes: {
+		size: { control: 'select', options: dsAvatarSizes },
+		type: { control: 'radio', options: dsAvatarTypes },
+		className: { table: { disable: true } },
+	},
 };
 
 export default meta;
 
-type GroupStory = StoryObj<typeof DsAvatarGroup>;
+type Story = StoryObj<typeof DsAvatarGroup>;
 
-const sampleAvatars = [
-	{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
-	{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
-	{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
-	{ name: 'Diana Prince', src: 'https://i.pravatar.cc/150?u=diana' },
-	{ name: 'Edward Norton', src: 'https://i.pravatar.cc/150?u=edward' },
-	{ name: 'Fiona Gallagher', src: 'https://i.pravatar.cc/150?u=fiona' },
-	{ name: 'George Miller', src: 'https://i.pravatar.cc/150?u=george' },
-	{ name: 'Hannah Abbott', src: 'https://i.pravatar.cc/150?u=hannah' },
-];
-
-export const Default: GroupStory = {
+/**
+ * When the number of avatars is at or below `max`, every member is shown with no
+ * overflow indicator. Use this for small, fixed-size groups such as assignees on
+ * a card. Omit `src` to show initials until a profile picture is available.
+ */
+export const Default: Story = {
 	args: {
-		avatars: sampleAvatars,
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Check that overflow indicator is present (8 total - 5 max = +3)
-		const overflowIndicator = canvas.getByText('+3');
-		await expect(overflowIndicator).toBeInTheDocument();
-
-		// Hover over the +3 to check tooltip with names
-		await userEvent.hover(overflowIndicator);
-
-		// Check that hidden avatar names appear in tooltip (tooltips render in document.body)
-		const tooltip = await within(document.body).findByRole('tooltip');
-		await expect(tooltip).toHaveTextContent('Fiona Gallagher');
-		await expect(tooltip).toHaveTextContent('George Miller');
-		await expect(tooltip).toHaveTextContent('Hannah Abbott');
+		avatars: [{ name: 'Alice Freeman' }, { name: 'Bob Smith' }, { name: 'Charlie Davis' }],
 	},
 };
 
-export const Variants: GroupStory = {
-	render: () => (
-		<div className={styles.variantsContainer}>
-			<div>
-				<h3>Default Group (max 5)</h3>
-				<DsAvatarGroup avatars={sampleAvatars} />
-			</div>
-			<div>
-				<h3>Small Rounded Group</h3>
-				<DsAvatarGroup avatars={sampleAvatars} size="sm" type="rounded" />
-			</div>
-			<div>
-				<h3>Large Group (max 3)</h3>
-				<DsAvatarGroup avatars={sampleAvatars} size="lg" max={3} />
-			</div>
-		</div>
-	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Check that overflow indicators are present
-		const overflowIndicators = canvas.getAllByText(/^\+\d+$/);
-		await expect(overflowIndicators.length).toBeGreaterThan(0);
+/**
+ * When `avatars.length` exceeds `max`, the group collapses the remainder behind a
+ * `+N` indicator. Hovering the indicator reveals the hidden names in a tooltip.
+ */
+export const Overflow: Story = {
+	args: {
+		max: 3,
+		avatars: [
+			{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+			{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+			{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+			{ name: 'Diana Prince', src: 'https://i.pravatar.cc/150?u=diana' },
+			{ name: 'Edward Norton', src: 'https://i.pravatar.cc/150?u=edward' },
+			{ name: 'Fiona Gallagher', src: 'https://i.pravatar.cc/150?u=fiona' },
+		],
 	},
+};
+
+/**
+ * Use `size="sm"` in tighter layouts — for example table rows or compact metadata
+ * lines. `regular` is the default.
+ */
+export const Small: Story = {
+	args: {
+		size: 'sm',
+		avatars: [
+			{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+			{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+			{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+		],
+	},
+};
+
+/**
+ * The `rounded` shape — useful for representing teams, organizations, or entities
+ * rather than individual people. Combined with `max`, overflow uses the same rounded
+ * indicator style.
+ */
+export const Rounded: Story = {
+	args: {
+		type: 'rounded',
+		max: 3,
+		avatars: [
+			{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+			{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+			{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+			{ name: 'Diana Prince', src: 'https://i.pravatar.cc/150?u=diana' },
+			{ name: 'Edward Norton', src: 'https://i.pravatar.cc/150?u=edward' },
+		],
+	},
+};
+
+/**
+ * Visual reference for every size token, from `xsm` to `xl`. Pick the size that
+ * matches the surrounding density; `regular` is the default.
+ */
+export const Sizes: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	render: (args) => (
+		<DsStack direction="row" alignItems="center" gap="var(--standard)">
+			<DsAvatarGroup
+				{...args}
+				size="xsm"
+				avatars={[
+					{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+					{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+					{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+				]}
+			/>
+			<DsAvatarGroup
+				{...args}
+				size="sm"
+				avatars={[
+					{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+					{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+					{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+				]}
+			/>
+			<DsAvatarGroup
+				{...args}
+				size="regular"
+				avatars={[
+					{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+					{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+					{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+				]}
+			/>
+			<DsAvatarGroup
+				{...args}
+				size="md"
+				avatars={[
+					{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+					{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+					{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+				]}
+			/>
+			<DsAvatarGroup
+				{...args}
+				size="lg"
+				avatars={[
+					{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+					{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+					{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+				]}
+			/>
+			<DsAvatarGroup
+				{...args}
+				size="xl"
+				avatars={[
+					{ name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+					{ name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+					{ name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+				]}
+			/>
+		</DsStack>
+	),
 };

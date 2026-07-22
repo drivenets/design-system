@@ -36,9 +36,13 @@ export async function readShowCodeSnippet(
 
 	const frame = await getDocsIframe(page);
 	const section = frame.locator('h3', { hasText: new RegExp(`^${storyName}$`) }).locator('..');
-	const showCodeButton = section.locator('button', { hasText: 'Show code' });
+	const showCodeButton = section.locator('button', { hasText: 'Show code' }).first();
 
-	if ((await showCodeButton.count()) === 0) {
+	// Autodocs renders each story section asynchronously after the iframe's domcontentloaded, so
+	// wait for the control instead of racing the render with an immediate count under CI load.
+	try {
+		await showCodeButton.waitFor({ state: 'visible', timeout: 30_000 });
+	} catch {
 		throw new Error(`Show code button not found for story "${storyName}" in ${docsStoryId}`);
 	}
 
