@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -7219,7 +7219,7 @@ withTime?: boolean = false</code></pre>
             <pre><code>/**
  * Ref to the element the dialog should be anchored to (for relative placement)
  */
-anchorRef?: React.RefObject&lt;HTMLElement&gt;
+anchorRef?: React.RefObject&lt;HTMLElement | null&gt;
 
 /**
  * The content to render inside the dialog.
