@@ -436,6 +436,47 @@ export const Controlled: Story = {
 	},
 };
 
+export const ControlledFocus: Story = {
+	args: {
+		size: 'medium',
+	},
+	render: function Render(args) {
+		const collection = createDsTreeCollection(sideNavNodes);
+		const [focusedValue, setFocusedValue] = useState<string | null>('firewall-1');
+
+		return (
+			<div>
+				<div>Focused: {focusedValue ?? 'none'}</div>
+
+				<DsTree.Root
+					size={args.size}
+					collection={collection}
+					defaultExpandedValue={['network']}
+					focusedValue={focusedValue}
+					onFocusChange={(details: { focusedValue: string | null }) => setFocusedValue(details.focusedValue)}
+				>
+					<DsTree.Tree>
+						{collection.rootNode.children?.map((node, index) => (
+							<SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />
+						))}
+					</DsTree.Tree>
+				</DsTree.Root>
+			</div>
+		);
+	},
+	play: async ({ canvasElement }) => {
+		const canvas = within(canvasElement);
+
+		await expect(canvas.getByText('Focused: firewall-1')).toBeVisible();
+		await expect(getTreeItem(canvasElement, 'firewall-1')).toHaveAttribute('data-focus');
+
+		const firewallSecondary = getTreeItem(canvasElement, 'firewall-2');
+		await userEvent.click(firewallSecondary);
+		await expect(canvas.getByText('Focused: firewall-2')).toBeVisible();
+		await expect(getTreeItem(canvasElement, 'firewall-2')).toHaveAttribute('data-focus');
+	},
+};
+
 export const CheckboxWithIcons: Story = {
 	args: {
 		onCheckedChange: fn(),
