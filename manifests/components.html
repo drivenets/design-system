@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">573 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">574 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -28462,7 +28462,7 @@ slotProps?: {
       <div class="badges">
         <label for="c-84-components-tree-err" class="badge err as-toggle">prop type error</label>
         <label for="c-84-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-84-components-tree-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-84-components-tree-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -28532,6 +28532,9 @@ const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 	checkedValue,
 	defaultCheckedValue,
 	onCheckedChange,
+	focusedValue,
+	defaultFocusedValue,
+	onFocusChange,
 	typeahead = true,
 	lazyMount = true,
 	unmountOnExit,
@@ -28550,6 +28553,9 @@ const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 		checkedValue={checkedValue}
 		defaultCheckedValue={defaultCheckedValue}
 		onCheckedChange={onCheckedChange}
+		focusedValue={focusedValue}
+		defaultFocusedValue={defaultFocusedValue}
+		onFocusChange={onFocusChange}
 		typeahead={typeahead}
 		lazyMount={lazyMount}
 		unmountOnExit={unmountOnExit}
@@ -28756,6 +28762,36 @@ export const DsTree = {
                 }
                 expandedValue={expandedValue}
                 onExpandedChange={(details: { expandedValue: string[] }) =&gt; setExpandedValue(details.expandedValue)}&gt;
+                &lt;DsTree.Tree&gt;
+                    {collection.rootNode.children?.map((node, index) =&gt; (
+                        &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
+                    ))}
+                &lt;/DsTree.Tree&gt;
+            &lt;/DsTree.Root&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled Focus</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ControlledFocus = () =&gt; {
+    const collection = createDsTreeCollection(sideNavNodes);
+    const [focusedValue, setFocusedValue] = useState&lt;string | null&gt;(&#39;firewall-1&#39;);
+
+    return (
+        &lt;div&gt;
+            &lt;div&gt;Focused: {focusedValue ?? &#39;none&#39;}&lt;/div&gt;
+            &lt;DsTree.Root
+                size=&quot;medium&quot;
+                collection={collection}
+                defaultExpandedValue={[&#39;network&#39;]}
+                focusedValue={focusedValue}
+                onFocusChange={(details: { focusedValue: string | null }) =&gt; setFocusedValue(details.focusedValue)}&gt;
                 &lt;DsTree.Tree&gt;
                     {collection.rootNode.children?.map((node, index) =&gt; (
                         &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
@@ -32624,7 +32660,7 @@ export const DsTabs = {
       <div class="badges">
         <label for="c-error-3-components-tree-err" class="badge err as-toggle">prop type error</label>
         <label for="c-error-3-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-3-components-tree-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-error-3-components-tree-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -32694,6 +32730,9 @@ const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 	checkedValue,
 	defaultCheckedValue,
 	onCheckedChange,
+	focusedValue,
+	defaultFocusedValue,
+	onFocusChange,
 	typeahead = true,
 	lazyMount = true,
 	unmountOnExit,
@@ -32712,6 +32751,9 @@ const DsTreeRoot = &lt;T extends DsTreeNode = DsTreeNode&gt;({
 		checkedValue={checkedValue}
 		defaultCheckedValue={defaultCheckedValue}
 		onCheckedChange={onCheckedChange}
+		focusedValue={focusedValue}
+		defaultFocusedValue={defaultFocusedValue}
+		onFocusChange={onFocusChange}
 		typeahead={typeahead}
 		lazyMount={lazyMount}
 		unmountOnExit={unmountOnExit}
@@ -32918,6 +32960,36 @@ export const DsTree = {
                 }
                 expandedValue={expandedValue}
                 onExpandedChange={(details: { expandedValue: string[] }) =&gt; setExpandedValue(details.expandedValue)}&gt;
+                &lt;DsTree.Tree&gt;
+                    {collection.rootNode.children?.map((node, index) =&gt; (
+                        &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
+                    ))}
+                &lt;/DsTree.Tree&gt;
+            &lt;/DsTree.Root&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled Focus</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ControlledFocus = () =&gt; {
+    const collection = createDsTreeCollection(sideNavNodes);
+    const [focusedValue, setFocusedValue] = useState&lt;string | null&gt;(&#39;firewall-1&#39;);
+
+    return (
+        &lt;div&gt;
+            &lt;div&gt;Focused: {focusedValue ?? &#39;none&#39;}&lt;/div&gt;
+            &lt;DsTree.Root
+                size=&quot;medium&quot;
+                collection={collection}
+                defaultExpandedValue={[&#39;network&#39;]}
+                focusedValue={focusedValue}
+                onFocusChange={(details: { focusedValue: string | null }) =&gt; setFocusedValue(details.focusedValue)}&gt;
                 &lt;DsTree.Tree&gt;
                     {collection.rootNode.children?.map((node, index) =&gt; (
                         &lt;SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} /&gt;
