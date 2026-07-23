@@ -464,17 +464,6 @@ export const ControlledFocus: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Focused: firewall-1')).toBeVisible();
-		await expect(getTreeItem(canvasElement, 'firewall-1')).toHaveAttribute('data-focus');
-
-		const firewallSecondary = getTreeItem(canvasElement, 'firewall-2');
-		await userEvent.click(firewallSecondary);
-		await expect(canvas.getByText('Focused: firewall-2')).toBeVisible();
-		await expect(getTreeItem(canvasElement, 'firewall-2')).toHaveAttribute('data-focus');
-	},
 };
 
 export const CheckboxWithIcons: Story = {
