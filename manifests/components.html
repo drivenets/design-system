@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">574 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">577 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -19304,9 +19304,9 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-63-components-table-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-63-components-table-props" class="badge ok as-toggle">40 prop types</label>
         
-        <label for="c-63-components-table-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-63-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -19333,7 +19333,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -19415,6 +19415,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -19689,7 +19695,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsStack, DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -19709,6 +19715,37 @@ zebra?: boolean</code></pre>
     emptyState={&lt;TableEmptyState /&gt;}
     onRowClick={fn()}
     data={defaultData} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Controls</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pass arbitrary content to the pinned `controls` slot rendered above the header. The consumer owns the layout; here a source selector sits on the left and action buttons on the right. The controls bar stays fixed while the table scrolls.</div>
+              <pre><code>const WithControls = () =&gt; &lt;DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={&lt;TableEmptyState /&gt;}
+    onRowClick={fn()}
+    data={defaultData}
+    controls={(&lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+            RED version V2
+        &lt;/DsButtonV3&gt;
+        &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                Import RED
+            &lt;/DsButtonV3&gt;
+            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                Export RED
+            &lt;/DsButtonV3&gt;
+            &lt;DsButtonV3 size=&quot;small&quot;&gt;Actions&lt;/DsButtonV3&gt;
+        &lt;/DsStack&gt;
+    &lt;/DsStack&gt;)} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -19778,7 +19815,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-64-components-table-active-row-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-64-components-table-active-row-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-64-components-table-active-row-stories" class="badge ok as-toggle">1 story</label>
         
@@ -19807,7 +19844,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -19889,6 +19926,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -20289,7 +20332,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-65-components-table-filters-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-65-components-table-filters-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-65-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -20318,7 +20361,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20400,6 +20443,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -20771,9 +20820,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-66-components-table-column-groups-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-66-components-table-column-groups-props" class="badge ok as-toggle">40 prop types</label>
         
-        <label for="c-66-components-table-column-groups-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-66-components-table-column-groups-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -20800,7 +20849,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20882,6 +20931,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -21156,7 +21211,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsStack, DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -21216,6 +21271,36 @@ zebra?: boolean</code></pre>
     );
 };</code></pre>
             </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Controls</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The pinned `controls` slot renders above grouped, collapsible headers, confirming the controls bar coexists with column groups and row selection.</div>
+              <pre><code>const WithControls = () =&gt; &lt;DsTable
+    columns={buildColumns()}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    emptyState={&lt;TableEmptyState /&gt;}
+    controls={(&lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+            RED version V2
+        &lt;/DsButtonV3&gt;
+        &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                Import RED
+            &lt;/DsButtonV3&gt;
+            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                Export RED
+            &lt;/DsButtonV3&gt;
+            &lt;DsButtonV3 size=&quot;small&quot;&gt;Actions&lt;/DsButtonV3&gt;
+        &lt;/DsStack&gt;
+    &lt;/DsStack&gt;)} /&gt;;</code></pre>
+            </div>
         </div>
     
     
@@ -21233,7 +21318,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-67-components-table-columns-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-67-components-table-columns-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-67-components-table-columns-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -21262,7 +21347,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21344,6 +21429,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -21738,7 +21829,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-68-components-table-editable-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-68-components-table-editable-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-68-components-table-editable-stories" class="badge ok as-toggle">1 story</label>
         
@@ -21767,7 +21858,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21849,6 +21940,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -22311,7 +22408,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-69-components-table-expansion-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-69-components-table-expansion-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-69-components-table-expansion-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -22340,7 +22437,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22422,6 +22519,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -22855,7 +22958,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-70-components-table-loading-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-70-components-table-loading-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-70-components-table-loading-stories" class="badge ok as-toggle">1 story</label>
         
@@ -22884,7 +22987,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22966,6 +23069,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -23277,7 +23386,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-71-components-table-row-actions-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-71-components-table-row-actions-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-71-components-table-row-actions-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -23306,7 +23415,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23388,6 +23497,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -23896,7 +24011,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-72-components-table-selection-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-72-components-table-selection-props" class="badge ok as-toggle">40 prop types</label>
         
         <label for="c-72-components-table-selection-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -23925,7 +24040,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24007,6 +24122,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -24447,9 +24568,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-73-components-table-virtualized-props" class="badge ok as-toggle">39 prop types</label>
+        <label for="c-73-components-table-virtualized-props" class="badge ok as-toggle">40 prop types</label>
         
-        <label for="c-73-components-table-virtualized-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-73-components-table-virtualized-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -24476,7 +24597,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">39 prop types</span>
+              <span class="badge ok">40 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24558,6 +24679,12 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * ```
  */
 columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
 
 /**
  * Data of the table
@@ -24833,7 +24960,9 @@ zebra?: boolean</code></pre>
                   <span class="ex-name">Imports</span>
                 </div>
                 <pre><code>import {
+    DsButtonV3,
     DsSpinner,
+    DsStack,
     DsTable,
     DsTableEditCellNumber,
     DsTableEditCellSelect,
@@ -25170,6 +25299,46 @@ zebra?: boolean</code></pre>
                         setData((rows) =&gt; updateRow(rows, row.id, columnId as keyof Person, value as never));
                     }} /&gt;
             &lt;/div&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Virtualized With Controls</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const VirtualizedWithControls = () =&gt; {
+    const [data] = useState(() =&gt; generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={&lt;TableEmptyState /&gt;}
+                onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+                controls={(&lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                        RED version V2
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                            Import RED
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
+                            Export RED
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 size=&quot;small&quot;&gt;Actions&lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;)}
+                data={data}
+                virtualized /&gt;
         &lt;/div&gt;
     );
 };</code></pre>
