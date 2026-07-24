@@ -129,6 +129,16 @@ Before finishing, verify:
 
 Validation: follow [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers) on touched paths (component-scaffold Step 9).
 
+## Figma Code Connect (`*.figma.ts`)
+
+A component's `*.figma.ts` file maps the Figma component to its React API for Code Connect (config: `packages/design-system/figma.config.json`). If you add or edit one, keep it in sync with the component's public props and validate that it parses:
+
+```bash
+pnpm --filter @drivenets/design-system figma:lint
+```
+
+See [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse). This parse is enforced in CI (`figma-code-connect-lint`) and checked on review — see [code-review](../code-review/SKILL.md).
+
 ## Skill chain (summary)
 
 ```

@@ -43,8 +43,10 @@ Refactor card to use CSS modules and fix hover state selector specificity
 | `*.browser.test.tsx`             | [browser-tests](../browser-tests/SKILL.md)                                           |
 | `*.docs.test.ts` / `*.docs.snap` | [docs-tests](../docs-tests/SKILL.md)                                                 |
 | `*.module.scss`                  | [scss](../scss/SKILL.md)                                                             |
+| `*.figma.ts` (Code Connect)      | [figma-to-component](../figma-to-component/SKILL.md); validate parse (see step 3)    |
 
-3. Flag only clear, high-severity issues (max 10 inline comments)
+3. When any `*.figma.ts` (Figma Code Connect) file is in the diff, validate that all Code Connect files still parse: `pnpm --filter @drivenets/design-system figma:lint` (see [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse)). Flag any file that fails to parse.
+4. Flag only clear, high-severity issues (max 10 inline comments)
 
 ### Inline comment format
 
@@ -73,6 +75,8 @@ Before submitting a PR:
 - [ ] Types exported from `.types.ts` with variant arrays
 - [ ] Code is well-spaced and readable
 - [ ] Matches Figma design
+- [ ] Figma Code Connect parses (`pnpm --filter @drivenets/design-system figma:lint`) when `*.figma.ts` changed
+- [ ] Sibling `*.figma.ts` mapping still matches the component API when props/variants/defaults changed (parse alone won't catch drift)
 - [ ] Storybook examples show all states (controlled + localized)
 - [ ] No cross-component internal imports
 - [ ] No unnecessary `useMemo`/`useCallback` (except under `ds-table/` — excluded from React Compiler; see [react-patterns](../react-patterns/SKILL.md))

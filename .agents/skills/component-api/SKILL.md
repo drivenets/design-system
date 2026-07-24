@@ -29,6 +29,7 @@ Conventions for `packages/design-system/src/components/**/ds-*.types.ts`.
 - `Ds{Name}Props` interface in dedicated `.types.ts`.
 - Prop JSDoc: document non-obvious behavior, units, or constraints; skip `ref`, `className`, and `style`. Don't restate the prop name or TypeScript type. See [ts-standards](../ts-standards/SKILL.md) for `@default` and export style.
 - Don't `extends` Ark/library root props → [ark-ui](../ark-ui/SKILL.md).
+- **Keep Figma Code Connect in sync.** If the component has a sibling `*.figma.ts` (Code Connect), update its mapping (`getEnum(...)` values, `example` JSX) whenever you change variant arrays, prop names, or defaults. `pnpm figma:lint` only checks the file parses — it will **not** catch a mapping that has silently drifted from the current API. Validate parse after editing: `pnpm --filter @drivenets/design-system figma:lint` (see [AGENTS.md](../../../AGENTS.md#figma-code-connect-parse)).
 
 ```typescript
 // Good
@@ -55,3 +56,4 @@ interface DsToggleProps extends SwitchRootProps {}
 - TS/JSDoc: [ts-standards](../ts-standards/SKILL.md)
 - Implementation: [react-patterns](../react-patterns/SKILL.md)
 - Scaffold: [component-scaffold](../component-scaffold/SKILL.md)
+- Figma Code Connect: [figma-to-component](../figma-to-component/SKILL.md)

@@ -26,15 +26,26 @@ pnpm --filter @drivenets/eslint-plugin-design-system test src/__tests__/ --run
 pnpm --filter @drivenets/vite-plugin-design-system test --run -t "snapshot"
 ```
 
+## Figma Code Connect (parse)
+
+Validate that Code Connect `*.figma.ts` files parse when any of them change:
+
+```bash
+pnpm --filter @drivenets/design-system figma:lint
+```
+
+Runs `figma connect parse --exit-on-unreadable-files` (no Figma token required). Enforced in CI by the `figma-code-connect-lint` job.
+
 ## When to Run What
 
-| Changed                    | Run                                                                                                                                     |
-| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `*.test.ts` file           | `pnpm --filter <pkg> test <path> --run`                                                                                                 |
-| Docs snippet coverage      | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
-| Source file with tests     | Lint the file + run related tests                                                                                                       |
-| Source file, no tests      | Lint the file + typecheck the package                                                                                                   |
-| SCSS file in design-system | Lint the file                                                                                                                           |
+| Changed                     | Run                                                                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `*.test.ts` file            | `pnpm --filter <pkg> test <path> --run`                                                                                                 |
+| Docs snippet coverage       | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
+| Source file with tests      | Lint the file + run related tests                                                                                                       |
+| Source file, no tests       | Lint the file + typecheck the package                                                                                                   |
+| SCSS file in design-system  | Lint the file                                                                                                                           |
+| `*.figma.ts` (Code Connect) | `pnpm --filter @drivenets/design-system figma:lint`                                                                                     |
 
 ## Notes
 
