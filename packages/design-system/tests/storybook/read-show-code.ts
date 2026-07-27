@@ -55,10 +55,6 @@ export async function readShowCodeSnippet(
 	// element to hold non-whitespace text rather than snapshotting an empty panel.
 	const sourceHandle = await source.elementHandle();
 
-	if (!sourceHandle) {
-		throw new Error(`Show code panel not found for story "${storyName}" in ${docsStoryId}`);
-	}
-
 	try {
 		await frame.waitForFunction((element) => element.textContent.trim().length > 0, sourceHandle, {
 			timeout: 10_000,
