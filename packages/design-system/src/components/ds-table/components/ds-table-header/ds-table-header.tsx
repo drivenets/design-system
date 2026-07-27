@@ -15,12 +15,10 @@ import { DsTableGroupHeaderCell } from '../ds-table-group-header-cell';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
-	const { stickyHeader, bordered, virtualized } = useDsTableContext<TData, unknown>();
+	const { bordered, virtualized } = useDsTableContext<TData, unknown>();
 
 	return (
-		<TableHeader
-			className={classnames(stickyHeader && styles.stickyHeader, virtualized && styles.virtualizedHeader)}
-		>
+		<TableHeader className={classnames(styles.header, virtualized && styles.virtualizedHeader)}>
 			{table.getHeaderGroups().map((headerGroup) => (
 				<TableRow
 					key={headerGroup.id}

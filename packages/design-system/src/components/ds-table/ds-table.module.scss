@@ -18,9 +18,24 @@ $bulk-actions-reserved-space: 80px;
 	border-style: solid;
 	border-color: var(--color-dap-gray-400);
 	background: var(--background);
+	display: flex;
+	flex-direction: column;
+	max-height: 100%;
+	overflow: hidden;
+}
+
+.controls {
+	background: var(--background);
+	border-bottom: 1px solid var(--border);
+	padding: var(--xs) var(--standard);
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
 }
 
 .dataTableContainer {
+	flex: 1;
+	min-height: 0;
 	max-height: 100%;
 	overflow-x: auto;
 	overflow-y: hidden;
