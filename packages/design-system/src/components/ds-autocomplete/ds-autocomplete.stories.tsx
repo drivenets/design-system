@@ -62,15 +62,17 @@ export const Default: Story = {
  * search-style inputs where a persistent dropdown affordance would imply a short, fixed list.
  */
 export const SearchMode: Story = {
-	args: {
-		showTrigger: false,
-		placeholder: 'Start typing to search...',
-		options: [
-			{ value: 'apple', label: 'Apple' },
-			{ value: 'banana', label: 'Banana' },
-			{ value: 'cherry', label: 'Cherry' },
-		],
-	},
+	render: () => (
+		<DsAutocomplete
+			showTrigger={false}
+			placeholder="Start typing to search..."
+			options={[
+				{ value: 'apple', label: 'Apple' },
+				{ value: 'banana', label: 'Banana' },
+				{ value: 'cherry', label: 'Cherry' },
+			]}
+		/>
+	),
 };
 
 /**
@@ -110,15 +112,17 @@ export const WithOptionIcons: Story = {
  * option content, or when matches are handled server-side and no local query is available.
  */
 export const WithoutHighlight: Story = {
-	args: {
-		highlightMatch: false,
-		placeholder: 'Select or type to search...',
-		options: [
-			{ value: 'apple', label: 'Apple' },
-			{ value: 'banana', label: 'Banana' },
-			{ value: 'cherry', label: 'Cherry' },
-		],
-	},
+	render: () => (
+		<DsAutocomplete
+			highlightMatch={false}
+			placeholder="Select or type to search..."
+			options={[
+				{ value: 'apple', label: 'Apple' },
+				{ value: 'banana', label: 'Banana' },
+				{ value: 'cherry', label: 'Cherry' },
+			]}
+		/>
+	),
 };
 
 /**
@@ -193,8 +197,6 @@ export const AsyncSearch: Story = {
 		const [loading, setLoading] = useState(false);
 
 		const handleInputValueChange = async (value: string) => {
-			args.onInputValueChange?.(value);
-
 			if (!value) {
 				setOptions([]);
 				return;

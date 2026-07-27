@@ -1,0 +1,126 @@
+# DsDatePicker docs snippets
+
+## Default
+
+### Show code
+<DsDatePicker name="eventDate" />
+
+### MCP manifest
+const Default = () => <DsDatePicker name="eventDate" />;
+
+## With Time
+
+### Show code
+<DsDatePicker withTime />
+
+### MCP manifest
+const WithTime = () => <DsDatePicker withTime />;
+
+## With Default Value
+
+### Show code
+<DsDatePicker
+  defaultValue={new Date("2024-12-25T14:30:00.000Z")}
+  withTime
+/>
+
+### MCP manifest
+const WithDefaultValue = () => <DsDatePicker withTime defaultValue={new Date('2024-12-25T14:30:00Z')} />;
+
+## Disabled
+
+### Show code
+<DsDatePicker
+  disabled
+  value={new Date("2024-12-25T14:30:00.000Z")}
+/>
+
+### MCP manifest
+const Disabled = () => <DsDatePicker value={new Date('2024-12-25T14:30:00Z')} disabled />;
+
+## Read Only
+
+### Show code
+<DsDatePicker
+  readOnly
+  value={new Date("2024-12-25T14:30:00.000Z")}
+/>
+
+### MCP manifest
+const ReadOnly = () => <DsDatePicker value={new Date('2024-12-25T14:30:00Z')} readOnly />;
+
+## With Min Max
+
+### Show code
+<DsDatePicker
+  max={new Date("2025-01-31T23:20:00.000Z")}
+  min={new Date("2024-12-01T00:30:00.000Z")}
+  withTime
+/>
+
+### MCP manifest
+const WithMinMax = () => <DsDatePicker
+    withTime
+    min={new Date('2024-12-01T00:30:00Z')}
+    max={new Date('2025-01-31T23:20:00Z')} />;
+
+## Hidden Clear Button
+
+### Show code
+<DsDatePicker
+  hideClearButton
+  value={new Date("2024-12-25T14:30:00.000Z")}
+/>
+
+### MCP manifest
+const HiddenClearButton = () => <DsDatePicker value={new Date('2024-12-25T14:30:00Z')} hideClearButton />;
+
+## Controlled
+
+### Show code
+{
+  args: {
+    withTime: true
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [value, setValue] = useState<Date | null>(new Date('2026-01-15T09:45:00Z'));
+    return <DsDatePicker {...args} value={value} onChange={setValue} />;
+  }
+}
+
+### MCP manifest
+const Controlled = () => {
+    const [value, setValue] = useState<Date | null>(new Date('2026-01-15T09:45:00Z'));
+
+    return <DsDatePicker withTime value={value} onChange={setValue} />;
+};
+
+## Localized
+
+### Show code
+<DsDatePicker
+  locale={{
+    clearLabel: 'Clear date',
+    openCalendarLabel: 'Open calendar',
+    timeTriggerLabel: 'Choose time'
+  }}
+  value={new Date("2024-12-25T14:30:00.000Z")}
+  withTime
+/>
+
+### MCP manifest
+const Localized = () => <DsDatePicker
+    value={new Date('2024-12-25T14:30:00Z')}
+    withTime
+    locale={{
+        openCalendarLabel: 'Open calendar',
+        clearLabel: 'Clear date',
+        timeTriggerLabel: 'Choose time',
+    }} />;

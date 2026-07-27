@@ -1,0 +1,418 @@
+# DsAutocomplete docs snippets
+
+## Default
+
+### Show code
+<DsAutocomplete
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[
+    {
+      label: 'Apple',
+      value: 'apple'
+    },
+    {
+      label: 'Banana',
+      value: 'banana'
+    },
+    {
+      label: 'Cherry',
+      value: 'cherry'
+    }
+  ]}
+  placeholder="Select or type to search..."
+/>
+
+### MCP manifest
+const Default = () => <DsAutocomplete
+    placeholder="Select or type to search..."
+    options={[
+        { value: 'apple', label: 'Apple' },
+        { value: 'banana', label: 'Banana' },
+        { value: 'cherry', label: 'Cherry' },
+    ]} />;
+
+## Search Mode
+
+### Show code
+{
+  render: () => <DsAutocomplete showTrigger={false} placeholder="Start typing to search..." options={[{
+    value: 'apple',
+    label: 'Apple'
+  }, {
+    value: 'banana',
+    label: 'Banana'
+  }, {
+    value: 'cherry',
+    label: 'Cherry'
+  }]} />
+}
+
+### MCP manifest
+const SearchMode = () => (
+    <DsAutocomplete
+        showTrigger={false}
+        placeholder="Start typing to search..."
+        options={[
+            { value: 'apple', label: 'Apple' },
+            { value: 'banana', label: 'Banana' },
+            { value: 'cherry', label: 'Cherry' },
+        ]}
+    />
+);
+
+## With Start Adornment
+
+### Show code
+<DsAutocomplete
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[
+    {
+      label: 'United States',
+      value: 'us'
+    },
+    {
+      label: 'United Kingdom',
+      value: 'uk'
+    },
+    {
+      label: 'Canada',
+      value: 'ca'
+    }
+  ]}
+  placeholder="Search countries..."
+  startAdornment={<DsIcon aria-label="search icon" icon="search" size="medium"/>}
+/>
+
+### MCP manifest
+const WithStartAdornment = () => <DsAutocomplete
+    showTrigger={false}
+    startAdornment={<DsIcon icon="search" size="medium" aria-label="search icon" />}
+    placeholder="Search countries..."
+    options={[
+        { value: 'us', label: 'United States' },
+        { value: 'uk', label: 'United Kingdom' },
+        { value: 'ca', label: 'Canada' },
+    ]} />;
+
+## With Option Icons
+
+### Show code
+<DsAutocomplete
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[
+    {
+      icon: 'nutrition',
+      label: 'Apple',
+      value: 'apple'
+    },
+    {
+      icon: 'nutrition',
+      label: 'Banana',
+      value: 'banana'
+    },
+    {
+      icon: 'nutrition',
+      label: 'Cherry',
+      value: 'cherry'
+    }
+  ]}
+  placeholder="Select a fruit..."
+/>
+
+### MCP manifest
+const WithOptionIcons = () => <DsAutocomplete
+    placeholder="Select a fruit..."
+    options={[
+        { value: 'apple', label: 'Apple', icon: 'nutrition' },
+        { value: 'banana', label: 'Banana', icon: 'nutrition' },
+        { value: 'cherry', label: 'Cherry', icon: 'nutrition' },
+    ]} />;
+
+## Without Highlight
+
+### Show code
+{
+  render: () => <DsAutocomplete highlightMatch={false} placeholder="Select or type to search..." options={[{
+    value: 'apple',
+    label: 'Apple'
+  }, {
+    value: 'banana',
+    label: 'Banana'
+  }, {
+    value: 'cherry',
+    label: 'Cherry'
+  }]} />
+}
+
+### MCP manifest
+const WithoutHighlight = () => (
+    <DsAutocomplete
+        highlightMatch={false}
+        placeholder="Select or type to search..."
+        options={[
+            { value: 'apple', label: 'Apple' },
+            { value: 'banana', label: 'Banana' },
+            { value: 'cherry', label: 'Cherry' },
+        ]}
+    />
+);
+
+## Loading
+
+### Show code
+<DsAutocomplete
+  loading
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[]}
+  placeholder="Loading options..."
+/>
+
+### MCP manifest
+const Loading = () => <DsAutocomplete loading placeholder="Loading options..." options={[]} />;
+
+## Disabled
+
+### Show code
+<DsAutocomplete
+  disabled
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[
+    {
+      label: 'Apple',
+      value: 'apple'
+    },
+    {
+      label: 'Banana',
+      value: 'banana'
+    },
+    {
+      label: 'Cherry',
+      value: 'cherry'
+    }
+  ]}
+  placeholder="Disabled autocomplete"
+/>
+
+### MCP manifest
+const Disabled = () => <DsAutocomplete
+    disabled
+    placeholder="Disabled autocomplete"
+    options={[
+        { value: 'apple', label: 'Apple' },
+        { value: 'banana', label: 'Banana' },
+        { value: 'cherry', label: 'Cherry' },
+    ]} />;
+
+## Invalid
+
+### Show code
+<DsAutocomplete
+  invalid
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[
+    {
+      label: 'Apple',
+      value: 'apple'
+    },
+    {
+      label: 'Banana',
+      value: 'banana'
+    },
+    {
+      label: 'Cherry',
+      value: 'cherry'
+    }
+  ]}
+  placeholder="Invalid autocomplete"
+/>
+
+### MCP manifest
+const Invalid = () => <DsAutocomplete
+    invalid
+    placeholder="Invalid autocomplete"
+    options={[
+        { value: 'apple', label: 'Apple' },
+        { value: 'banana', label: 'Banana' },
+        { value: 'cherry', label: 'Cherry' },
+    ]} />;
+
+## Localized
+
+### Show code
+<DsAutocomplete
+  locale={{
+    loading: 'Fetching...',
+    noMatches: 'No matching options found'
+  }}
+  onInputValueChange={() => {}}
+  onOpenChange={() => {}}
+  onValueChange={() => {}}
+  options={[
+    {
+      label: 'Apple',
+      value: 'apple'
+    },
+    {
+      label: 'Banana',
+      value: 'banana'
+    },
+    {
+      label: 'Cherry',
+      value: 'cherry'
+    }
+  ]}
+  placeholder="Search or type..."
+/>
+
+### MCP manifest
+const Localized = () => <DsAutocomplete
+    locale={{ loading: 'Fetching...', noMatches: 'No matching options found' }}
+    placeholder="Search or type..."
+    options={[
+        { value: 'apple', label: 'Apple' },
+        { value: 'banana', label: 'Banana' },
+        { value: 'cherry', label: 'Cherry' },
+    ]} />;
+
+## Async Search
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const [options, setOptions] = useState<DsAutocompleteOption[]>([]);
+    const [loading, setLoading] = useState(false);
+    const handleInputValueChange = async (value: string) => {
+      if (!value) {
+        setOptions([]);
+        return;
+      }
+      setLoading(true);
+      const countries: DsAutocompleteOption[] = [{
+        value: 'us',
+        label: 'United States'
+      }, {
+        value: 'uk',
+        label: 'United Kingdom'
+      }, {
+        value: 'ca',
+        label: 'Canada'
+      }];
+      await new Promise(resolve => setTimeout(resolve, 150));
+      setOptions(countries.filter(c => c.label.toLowerCase().includes(value.toLowerCase())));
+      setLoading(false);
+    };
+    return <DsAutocomplete {...args} options={options} loading={loading} onInputValueChange={handleInputValueChange} showTrigger={false} startAdornment={<DsIcon icon="search" size="medium" aria-label="search icon" />} placeholder="Search countries (async)..." locale={{
+      noMatches: 'No results found'
+    }} />;
+  }
+}
+
+### MCP manifest
+const AsyncSearch = () => {
+    const [options, setOptions] = useState<DsAutocompleteOption[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    const handleInputValueChange = async (value: string) => {
+        if (!value) {
+            setOptions([]);
+            return;
+        }
+
+        setLoading(true);
+        const countries: DsAutocompleteOption[] = [
+            { value: 'us', label: 'United States' },
+            { value: 'uk', label: 'United Kingdom' },
+            { value: 'ca', label: 'Canada' },
+        ];
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        setOptions(countries.filter((c) => c.label.toLowerCase().includes(value.toLowerCase())));
+        setLoading(false);
+    };
+
+    return (
+        <DsAutocomplete
+            options={options}
+            loading={loading}
+            onInputValueChange={handleInputValueChange}
+            showTrigger={false}
+            startAdornment={<DsIcon icon="search" size="medium" aria-label="search icon" />}
+            placeholder="Search countries (async)..."
+            locale={{ noMatches: 'No results found' }} />
+    );
+};
+
+## Async Options
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const [options, setOptions] = useState<DsAutocompleteOption[]>([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+      const load = async () => {
+        await new Promise(resolve => setTimeout(resolve, 150));
+        setOptions([{
+          value: 'us',
+          label: 'United States'
+        }, {
+          value: 'uk',
+          label: 'United Kingdom'
+        }, {
+          value: 'ca',
+          label: 'Canada'
+        }]);
+        setLoading(false);
+      };
+      void load();
+    }, []);
+    return <DsAutocomplete {...args} options={options} loading={loading} placeholder="Select a country..." />;
+  }
+}
+
+### MCP manifest
+const AsyncOptions = () => {
+    const [options, setOptions] = useState<DsAutocompleteOption[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const load = async () => {
+            await new Promise((resolve) => setTimeout(resolve, 150));
+            setOptions([
+                { value: 'us', label: 'United States' },
+                { value: 'uk', label: 'United Kingdom' },
+                { value: 'ca', label: 'Canada' },
+            ]);
+            setLoading(false);
+        };
+
+        void load();
+    }, []);
+
+    return <DsAutocomplete options={options} loading={loading} placeholder="Select a country..." />;
+};

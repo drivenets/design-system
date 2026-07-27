@@ -6,7 +6,6 @@ import {
 	createRoute,
 	createRouter,
 	RouterProvider,
-	useLocation,
 	useNavigate,
 } from '@tanstack/react-router';
 import DsBreadcrumb from './ds-breadcrumb';
@@ -116,18 +115,15 @@ export const Default: Story = {
 	decorators: [(Story) => withTanStackRouter(Story, '/inventory/catalog')],
 	render: function Render(args) {
 		const navigate = useNavigate();
-		const location = useLocation();
 		const items: DsBreadcrumbItem[] = [
 			{ type: 'link', label: 'Home', href: '/', icon: 'home' },
 			{ type: 'link', label: 'Inventory', href: '/inventory', icon: 'settings' },
 			{ type: 'link', label: 'Catalog', href: '/inventory/catalog', icon: 'newspaper' },
 		];
-		const depth = location.pathname.split('/').filter(Boolean).length;
-		const visibleItems = items.slice(0, depth + 1);
 
 		return (
 			<DsBreadcrumb
-				items={visibleItems}
+				items={items}
 				onSelect={(href) => {
 					args.onSelect?.(href);
 					void navigate({ to: href });
@@ -147,7 +143,6 @@ export const WithDropdown: Story = {
 	decorators: [(Story) => withTanStackRouter(Story, '/network/vienna/router-a')],
 	render: function Render(args) {
 		const navigate = useNavigate();
-		const location = useLocation();
 		const items: DsBreadcrumbItem[] = [
 			{ type: 'link', label: 'Home', href: '/' },
 			{ type: 'link', label: 'Network Visibility', href: '/network' },
@@ -170,12 +165,10 @@ export const WithDropdown: Story = {
 				],
 			},
 		];
-		const depth = location.pathname.split('/').filter(Boolean).length;
-		const visibleItems = items.slice(0, depth + 1);
 
 		return (
 			<DsBreadcrumb
-				items={visibleItems}
+				items={items}
 				onSelect={(href) => {
 					args.onSelect?.(href);
 					void navigate({ to: href });

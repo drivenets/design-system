@@ -1,0 +1,292 @@
+# DsAlertBanner docs snippets
+
+## Default
+
+### Show code
+<DsAlertBanner
+  icon="info"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="info-blue"
+>
+  <DsAlertBanner.Title>
+    Information
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    This is a blue informational alert message.
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const Default = () => <DsAlertBanner open onOpenChange={fn()} inline variant="info-blue" icon="info">
+    <DsAlertBanner.Title>Information</DsAlertBanner.Title>
+    <DsAlertBanner.Body>This is a blue informational alert message.</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## Info Neutral
+
+### Show code
+<DsAlertBanner
+  icon="info"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="info-neutral"
+>
+  <DsAlertBanner.Title>
+    Information
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    This is an informational alert message.
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const InfoNeutral = () => <DsAlertBanner open onOpenChange={fn()} inline variant="info-neutral" icon="info">
+    <DsAlertBanner.Title>Information</DsAlertBanner.Title>
+    <DsAlertBanner.Body>This is an informational alert message.</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## Warning
+
+### Show code
+<DsAlertBanner
+  icon="warning"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="warning"
+>
+  <DsAlertBanner.Title>
+    Warning
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    This is a warning alert message. Please pay attention.
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const Warning = () => <DsAlertBanner open onOpenChange={fn()} inline variant="warning" icon="warning">
+    <DsAlertBanner.Title>Warning</DsAlertBanner.Title>
+    <DsAlertBanner.Body>This is a warning alert message. Please pay attention.</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## Error
+
+### Show code
+<DsAlertBanner
+  icon="error"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="error"
+>
+  <DsAlertBanner.Title>
+    Error
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    Something went wrong. Please try again.
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const Error = () => <DsAlertBanner open onOpenChange={fn()} inline variant="error" icon="error">
+    <DsAlertBanner.Title>Error</DsAlertBanner.Title>
+    <DsAlertBanner.Body>Something went wrong. Please try again.</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## Success
+
+### Show code
+<DsAlertBanner
+  icon="check_circle"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="success"
+>
+  <DsAlertBanner.Title>
+    Success
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    Your action was completed successfully!
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const Success = () => <DsAlertBanner open onOpenChange={fn()} inline variant="success" icon="check_circle">
+    <DsAlertBanner.Title>Success</DsAlertBanner.Title>
+    <DsAlertBanner.Body>Your action was completed successfully!</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## Global
+
+### Show code
+{
+  render: () => <DsAlertBanner inline={false} variant="info-blue" icon="info" closable open onOpenChange={() => {}}>
+            <DsAlertBanner.Body>A new version is available. Refresh to update.</DsAlertBanner.Body>
+        </DsAlertBanner>
+}
+
+### MCP manifest
+const Global = () => (
+    <DsAlertBanner inline={false} variant="info-blue" icon="info" closable open onOpenChange={() => {}}>
+        <DsAlertBanner.Body>A new version is available. Refresh to update.</DsAlertBanner.Body>
+    </DsAlertBanner>
+);
+
+## Closable
+
+### Show code
+<DsAlertBanner
+  closable
+  icon="info"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="info-neutral"
+>
+  <DsAlertBanner.Title>
+    Dismissible
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    You can close this banner with the button on the right.
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const Closable = () => <DsAlertBanner
+    open
+    onOpenChange={fn()}
+    inline
+    variant="info-neutral"
+    icon="info"
+    closable>
+    <DsAlertBanner.Title>Dismissible</DsAlertBanner.Title>
+    <DsAlertBanner.Body>You can close this banner with the button on the right.</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## With Actions
+
+### Show code
+<DsAlertBanner
+  icon="warning"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="warning"
+>
+  <DsAlertBanner.Title>
+    Attention needed
+  </DsAlertBanner.Title>
+  <DsAlertBanner.Body>
+    You successfully read this important alert message. Choose how you want to proceed.
+  </DsAlertBanner.Body>
+  <DsAlertBanner.Actions>
+    <DsButtonV3
+      color="error"
+      size="small"
+      variant="primary"
+    >
+      Proceed
+    </DsButtonV3>
+    <DsButtonV3
+      size="small"
+      variant="secondary"
+    >
+      Skip
+    </DsButtonV3>
+  </DsAlertBanner.Actions>
+</DsAlertBanner>
+
+### MCP manifest
+const WithActions = () => <DsAlertBanner open onOpenChange={fn()} inline variant="warning" icon="warning">
+    <DsAlertBanner.Title>Attention needed</DsAlertBanner.Title>
+    <DsAlertBanner.Body>You successfully read this important alert message. Choose how you want to proceed.
+                    </DsAlertBanner.Body>
+    <DsAlertBanner.Actions>
+        <DsButtonV3 color="error" variant="primary" size="small">Proceed
+                            </DsButtonV3>
+        <DsButtonV3 variant="secondary" size="small">Skip
+                            </DsButtonV3>
+    </DsAlertBanner.Actions>
+</DsAlertBanner>;
+
+## Without Title
+
+### Show code
+<DsAlertBanner
+  closable
+  icon="error"
+  inline
+  onOpenChange={() => {}}
+  open
+  variant="error"
+>
+  <DsAlertBanner.Body>
+    Something went wrong. Please try again.
+  </DsAlertBanner.Body>
+</DsAlertBanner>
+
+### MCP manifest
+const WithoutTitle = () => <DsAlertBanner open onOpenChange={fn()} inline variant="error" icon="error" closable>
+    <DsAlertBanner.Body>Something went wrong. Please try again.</DsAlertBanner.Body>
+</DsAlertBanner>;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const [open, setOpen] = useState(false);
+    return <DsStack direction="column" alignItems="flex-start" gap="var(--standard)" width="400px">
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setOpen(true)}>
+                    Show alert banner
+                </DsButtonV3>
+                <DsAlertBanner {...args} open={open} onOpenChange={setOpen}>
+                    <DsAlertBanner.Title>Attention needed</DsAlertBanner.Title>
+                    <DsAlertBanner.Body>Close this banner and use the button to bring it back.</DsAlertBanner.Body>
+                </DsAlertBanner>
+            </DsStack>;
+  },
+  args: {
+    inline: true,
+    variant: 'warning',
+    icon: 'warning',
+    closable: true
+  }
+}
+
+### MCP manifest
+const Controlled = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <DsStack
+            direction="column"
+            alignItems="flex-start"
+            gap="var(--standard)"
+            width="400px">
+            <DsButtonV3 variant="secondary" size="small" onClick={() => setOpen(true)}>Show alert banner
+                                </DsButtonV3>
+            <DsAlertBanner
+                inline
+                variant="warning"
+                icon="warning"
+                closable
+                open={open}
+                onOpenChange={setOpen}>
+                <DsAlertBanner.Title>Attention needed</DsAlertBanner.Title>
+                <DsAlertBanner.Body>Close this banner and use the button to bring it back.</DsAlertBanner.Body>
+            </DsAlertBanner>
+        </DsStack>
+    );
+};

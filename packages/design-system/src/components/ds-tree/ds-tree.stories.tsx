@@ -436,6 +436,36 @@ export const Controlled: Story = {
 	},
 };
 
+export const ControlledFocus: Story = {
+	args: {
+		size: 'medium',
+	},
+	render: function Render(args) {
+		const collection = createDsTreeCollection(sideNavNodes);
+		const [focusedValue, setFocusedValue] = useState<string | null>('firewall-1');
+
+		return (
+			<div>
+				<div>Focused: {focusedValue ?? 'none'}</div>
+
+				<DsTree.Root
+					size={args.size}
+					collection={collection}
+					defaultExpandedValue={['network']}
+					focusedValue={focusedValue}
+					onFocusChange={(details: { focusedValue: string | null }) => setFocusedValue(details.focusedValue)}
+				>
+					<DsTree.Tree>
+						{collection.rootNode.children?.map((node, index) => (
+							<SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />
+						))}
+					</DsTree.Tree>
+				</DsTree.Root>
+			</div>
+		);
+	},
+};
+
 export const CheckboxWithIcons: Story = {
 	args: {
 		onCheckedChange: fn(),

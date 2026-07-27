@@ -1,0 +1,240 @@
+# DsDialog docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    title: 'Confirm action',
+    description: 'Review the details before continuing.'
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
+                <DsDialog {...args} open={open} onOpenChange={setOpen}>
+                    <p>Dialog body content goes here.</p>
+                </DsDialog>
+            </>;
+  }
+}
+
+### MCP manifest
+const Default = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
+            <DsDialog
+                title="Confirm action"
+                description="Review the details before continuing."
+                open={open}
+                onOpenChange={setOpen}>
+                <p>Dialog body content goes here.</p>
+            </DsDialog>
+        </>
+    );
+};
+
+## Custom Position
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    title: 'Fixed position panel',
+    description: 'This dialog is positioned at fixed viewport coordinates.',
+    customPosition: {
+      top: 60,
+      left: 20
+    }
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButton onClick={() => setOpen(true)}>Open at fixed position</DsButton>
+                <DsDialog {...args} open={open} onOpenChange={setOpen}>
+                    <p>Content appears at the configured top and left offsets.</p>
+                </DsDialog>
+            </>;
+  }
+}
+
+### MCP manifest
+const CustomPosition = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButton onClick={() => setOpen(true)}>Open at fixed position</DsButton>
+            <DsDialog
+                title="Fixed position panel"
+                description="This dialog is positioned at fixed viewport coordinates."
+                customPosition={{ top: 60, left: 20 }}
+                open={open}
+                onOpenChange={setOpen}>
+                <p>Content appears at the configured top and left offsets.</p>
+            </DsDialog>
+        </>
+    );
+};
+
+## Anchored To Trigger
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    title: 'Menu panel',
+    description: 'Options related to the menu trigger.'
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    const anchorRef = useRef<HTMLButtonElement>(null);
+    return <>
+                <button type="button" ref={anchorRef} onClick={() => setOpen(true)}>
+                    Open menu
+                </button>
+                <DsDialog {...args} anchorRef={anchorRef} open={open} onOpenChange={setOpen}>
+                    <p>Panel content anchored below the trigger.</p>
+                </DsDialog>
+            </>;
+  }
+}
+
+### MCP manifest
+const AnchoredToTrigger = () => {
+    const [open, setOpen] = useState(false);
+    const anchorRef = useRef<HTMLButtonElement>(null);
+
+    return (
+        <>
+            <button type="button" ref={anchorRef} onClick={() => setOpen(true)}>Open menu
+                                </button>
+            <DsDialog
+                title="Menu panel"
+                description="Options related to the menu trigger."
+                anchorRef={anchorRef}
+                open={open}
+                onOpenChange={setOpen}>
+                <p>Panel content anchored below the trigger.</p>
+            </DsDialog>
+        </>
+    );
+};
+
+## Non Modal
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    title: 'Non-modal panel',
+    description: 'This dialog has no overlay backdrop.',
+    modal: false
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
+                <DsDialog {...args} open={open} onOpenChange={setOpen}>
+                    <p>The page behind stays interactive while this panel is open.</p>
+                </DsDialog>
+            </>;
+  }
+}
+
+### MCP manifest
+const NonModal = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButton onClick={() => setOpen(true)}>Open Dialog</DsButton>
+            <DsDialog
+                title="Non-modal panel"
+                description="This dialog has no overlay backdrop."
+                modal={false}
+                open={open}
+                onOpenChange={setOpen}>
+                <p>The page behind stays interactive while this panel is open.</p>
+            </DsDialog>
+        </>
+    );
+};
+
+## Hidden Accessible Labels
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    title: 'Settings',
+    description: 'Adjust your preferences.',
+    hideTitle: true,
+    hideDescription: true
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButton onClick={() => setOpen(true)}>Open settings</DsButton>
+                <DsDialog {...args} open={open} onOpenChange={setOpen}>
+                    <h2>Settings</h2>
+                    <p>Title and description are hidden visually but announced to assistive tech.</p>
+                </DsDialog>
+            </>;
+  }
+}
+
+### MCP manifest
+const HiddenAccessibleLabels = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButton onClick={() => setOpen(true)}>Open settings</DsButton>
+            <DsDialog
+                title="Settings"
+                description="Adjust your preferences."
+                hideTitle
+                hideDescription
+                open={open}
+                onOpenChange={setOpen}>
+                <h2>Settings</h2>
+                <p>Title and description are hidden visually but announced to assistive tech.</p>
+            </DsDialog>
+        </>
+    );
+};

@@ -73,6 +73,12 @@ const catalogData: CatalogRow[] = [
 	{ id: '3', name: 'NE-003', status: 'Inactive' },
 ];
 
+const refreshOptions = [
+	{ label: '30s', value: '30' },
+	{ label: '1m', value: '60' },
+	{ label: '5m', value: '300' },
+];
+
 const meta: Meta<typeof DsCatalogLayout> = {
 	title: 'Components/CatalogLayout',
 	component: DsCatalogLayout,
@@ -85,6 +91,9 @@ const meta: Meta<typeof DsCatalogLayout> = {
 Compound layout for data-heavy catalog pages (tables/lists). Provides the structural shell —
 the regions and breakpoints — and lets consumers fill in app-specific content (top bar, side
 menu items, table/list, empty state).
+
+Start with the **Side Menu Pinned** story for the pin/unpin interaction, then **Default** for the
+full region map.
 
 **Regions**
 
@@ -119,12 +128,6 @@ export default meta;
 
 type Story = StoryObj<typeof DsCatalogLayout>;
 
-const refreshOptions = [
-	{ label: '30s', value: '30' },
-	{ label: '1m', value: '60' },
-	{ label: '5m', value: '300' },
-];
-
 const TopBarNavigation = () => (
 	<div className={styles.topBar}>
 		<div className={styles.topBarLeading}>
@@ -144,6 +147,8 @@ const TopBarNavigation = () => (
 		</div>
 	</div>
 );
+
+TopBarNavigation.displayName = 'TopBarNavigation';
 
 interface SideMenuItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 	icon: IconType;
@@ -167,6 +172,8 @@ const SideMenuItem = ({ icon, label, selected = false, className, ...rest }: Sid
 	</button>
 );
 
+SideMenuItem.displayName = 'SideMenuItem';
+
 const SideMenuItems = () => (
 	<>
 		<SideMenuItem icon="readiness_score" label="Readiness" />
@@ -178,6 +185,8 @@ const SideMenuItems = () => (
 		<SideMenuItem icon="help" label="Help" />
 	</>
 );
+
+SideMenuItems.displayName = 'SideMenuItems';
 
 const ContentHeaderActions = () => {
 	const [refreshInterval, setRefreshInterval] = useState('30');
@@ -204,6 +213,8 @@ const ContentHeaderActions = () => {
 	);
 };
 
+ContentHeaderActions.displayName = 'ContentHeaderActions';
+
 const SmartTabsItem = () => {
 	const [activeTab, setActiveTab] = useState('all');
 
@@ -222,9 +233,13 @@ const SmartTabsItem = () => {
 	);
 };
 
+SmartTabsItem.displayName = 'SmartTabsItem';
+
 const ResultsCard = ({ children }: { children: ReactNode }) => (
 	<div className={styles.resultsCard}>{children}</div>
 );
+
+ResultsCard.displayName = 'ResultsCard';
 
 const EmptyStateCard = ({ children }: { children: ReactNode }) => (
 	<div className={styles.emptyCard} role="status">
@@ -233,12 +248,19 @@ const EmptyStateCard = ({ children }: { children: ReactNode }) => (
 	</div>
 );
 
+EmptyStateCard.displayName = 'EmptyStateCard';
+
+/**
+ * Full catalog page with side menu, content header (title, actions, smart tabs), and a results
+ * table. Wire `pinned` / `onPinnedChange` on `SideMenu` to let users pin the expanded panel.
+ */
 export const Default: Story = {
-	render: function Render() {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render(args) {
 		const [pinned, setPinned] = useState(false);
 
 		return (
-			<DsCatalogLayout>
+			<DsCatalogLayout {...args}>
 				<DsCatalogLayout.Header>
 					<TopBarNavigation />
 				</DsCatalogLayout.Header>
@@ -263,12 +285,17 @@ export const Default: Story = {
 	},
 };
 
+/**
+ * Same shell as the default catalog page, but the results region shows a consumer-owned empty
+ * state instead of a table — for example when filters return no rows.
+ */
 export const Empty: Story = {
-	render: function Render() {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render(args) {
 		const [pinned, setPinned] = useState(false);
 
 		return (
-			<DsCatalogLayout>
+			<DsCatalogLayout {...args}>
 				<DsCatalogLayout.Header>
 					<TopBarNavigation />
 				</DsCatalogLayout.Header>
@@ -296,9 +323,13 @@ export const Empty: Story = {
 	},
 };
 
+/**
+ * Omit `SideMenu` when the page does not need section navigation. Content margins widen
+ * automatically because the layout detects the absence of a side menu.
+ */
 export const WithoutSideMenu: Story = {
-	render: () => (
-		<DsCatalogLayout>
+	render: (args) => (
+		<DsCatalogLayout {...args}>
 			<DsCatalogLayout.Header>
 				<TopBarNavigation />
 			</DsCatalogLayout.Header>
@@ -317,12 +348,17 @@ export const WithoutSideMenu: Story = {
 	),
 };
 
+/**
+ * Start with `pinned` set to `true` to show the expanded side menu pushing content. Users can
+ * toggle via the built-in pin button when `onPinnedChange` is provided.
+ */
 export const SideMenuPinned: Story = {
-	render: function Render() {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render(args) {
 		const [pinned, setPinned] = useState(true);
 
 		return (
-			<DsCatalogLayout>
+			<DsCatalogLayout {...args}>
 				<DsCatalogLayout.Header>
 					<TopBarNavigation />
 				</DsCatalogLayout.Header>
@@ -345,31 +381,84 @@ export const SideMenuPinned: Story = {
 	},
 };
 
-export const FillParent: Story = {
-	render: () => (
-		<div className={styles.fillParentWrapper}>
-			<DsCatalogLayout fillParent>
-				<DsCatalogLayout.Header>
-					<TopBarNavigation />
-				</DsCatalogLayout.Header>
+/**
+ * Pass `locale` on `SideMenu` to customize the pin/unpin button `aria-label` strings for
+ * localization.
+ */
+export const Locale: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render(args) {
+		const [pinned, setPinned] = useState(false);
+
+		return (
+			<DsCatalogLayout {...args}>
 				<DsCatalogLayout.Body>
+					<DsCatalogLayout.SideMenu
+						pinned={pinned}
+						onPinnedChange={setPinned}
+						className={styles.sideMenu}
+						locale={{
+							pinButtonLabel: 'Pin sidebar menu',
+							unpinButtonLabel: 'Unpin sidebar menu',
+						}}
+					>
+						<SideMenuItems />
+					</DsCatalogLayout.SideMenu>
 					<DsCatalogLayout.Content>
 						<DsCatalogLayout.ContentHeader
-							title={<DsTypography variant="heading3">Fill parent</DsTypography>}
+							title={<DsTypography variant="heading3">Localized pin labels</DsTypography>}
 						/>
 						<DsTypography variant="body-md-reg">
-							This catalog layout fills its parent container (400px) instead of the viewport.
+							Hover or pin the side menu and inspect the pin button aria-label.
 						</DsTypography>
 					</DsCatalogLayout.Content>
 				</DsCatalogLayout.Body>
 			</DsCatalogLayout>
-		</div>
+		);
+	},
+};
+
+/**
+ * Set `fillParent` when the layout lives inside an existing app shell that already manages
+ * height, so the catalog fills its parent (`100%`) instead of the viewport (`100vh`).
+ */
+export const FillParent: Story = {
+	args: {
+		fillParent: true,
+	},
+	decorators: [
+		(Story) => (
+			<div className={styles.fillParentWrapper}>
+				<Story />
+			</div>
+		),
+	],
+	render: (args) => (
+		<DsCatalogLayout {...args}>
+			<DsCatalogLayout.Header>
+				<TopBarNavigation />
+			</DsCatalogLayout.Header>
+			<DsCatalogLayout.Body>
+				<DsCatalogLayout.Content>
+					<DsCatalogLayout.ContentHeader
+						title={<DsTypography variant="heading3">Fill parent</DsTypography>}
+					/>
+					<DsTypography variant="body-md-reg">
+						This catalog layout fills its parent container (400px) instead of the viewport.
+					</DsTypography>
+				</DsCatalogLayout.Content>
+			</DsCatalogLayout.Body>
+		</DsCatalogLayout>
 	),
 };
 
+/**
+ * Every sub-component is optional — compose only the regions your page needs. Here, only the
+ * header and a minimal content column are used.
+ */
 export const HeaderOnly: Story = {
-	render: () => (
-		<DsCatalogLayout>
+	render: (args) => (
+		<DsCatalogLayout {...args}>
 			<DsCatalogLayout.Header>
 				<TopBarNavigation />
 			</DsCatalogLayout.Header>

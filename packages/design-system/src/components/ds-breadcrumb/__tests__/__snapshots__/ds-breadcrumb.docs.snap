@@ -1,0 +1,151 @@
+# DsBreadcrumb docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  decorators: [Story => withTanStackRouter(Story, '/inventory/catalog')],
+  render: function Render(args) {
+    const navigate = useNavigate();
+    const items: DsBreadcrumbItem[] = [{
+      type: 'link',
+      label: 'Home',
+      href: '/',
+      icon: 'home'
+    }, {
+      type: 'link',
+      label: 'Inventory',
+      href: '/inventory',
+      icon: 'settings'
+    }, {
+      type: 'link',
+      label: 'Catalog',
+      href: '/inventory/catalog',
+      icon: 'newspaper'
+    }];
+    return <DsBreadcrumb items={items} onSelect={href => {
+      args.onSelect?.(href);
+      void navigate({
+        to: href
+      });
+    }} />;
+  }
+}
+
+### MCP manifest
+const Default = function Render(args) {
+    const navigate = useNavigate();
+    const items: DsBreadcrumbItem[] = [
+        { type: 'link', label: 'Home', href: '/', icon: 'home' },
+        { type: 'link', label: 'Inventory', href: '/inventory', icon: 'settings' },
+        { type: 'link', label: 'Catalog', href: '/inventory/catalog', icon: 'newspaper' },
+    ];
+
+    return (
+        <DsBreadcrumb
+            items={items}
+            onSelect={(href) => {
+                args.onSelect?.(href);
+                void navigate({ to: href });
+            }}
+        />
+    );
+};
+
+## With Dropdown
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  decorators: [Story => withTanStackRouter(Story, '/network/vienna/router-a')],
+  render: function Render(args) {
+    const navigate = useNavigate();
+    const items: DsBreadcrumbItem[] = [{
+      type: 'link',
+      label: 'Home',
+      href: '/'
+    }, {
+      type: 'link',
+      label: 'Network Visibility',
+      href: '/network'
+    }, {
+      type: 'dropdown',
+      label: 'Vienna HQ',
+      icon: 'location_on',
+      options: [{
+        label: 'Vienna HQ',
+        href: '/network/vienna'
+      }, {
+        label: 'Paris Office',
+        href: '/network/paris'
+      }]
+    }, {
+      type: 'dropdown',
+      label: 'Router A',
+      icon: 'device_hub',
+      options: [{
+        label: 'Router A',
+        href: '/network/vienna/router-a'
+      }, {
+        label: 'Switch B',
+        href: '/network/vienna/switch-b'
+      }]
+    }];
+    return <DsBreadcrumb items={items} onSelect={href => {
+      args.onSelect?.(href);
+      void navigate({
+        to: href
+      });
+    }} />;
+  }
+}
+
+### MCP manifest
+const WithDropdown = function Render(args) {
+    const navigate = useNavigate();
+    const items: DsBreadcrumbItem[] = [
+        { type: 'link', label: 'Home', href: '/' },
+        { type: 'link', label: 'Network Visibility', href: '/network' },
+        {
+            type: 'dropdown',
+            label: 'Vienna HQ',
+            icon: 'location_on',
+            options: [
+                { label: 'Vienna HQ', href: '/network/vienna' },
+                { label: 'Paris Office', href: '/network/paris' },
+            ],
+        },
+        {
+            type: 'dropdown',
+            label: 'Router A',
+            icon: 'device_hub',
+            options: [
+                { label: 'Router A', href: '/network/vienna/router-a' },
+                { label: 'Switch B', href: '/network/vienna/switch-b' },
+            ],
+        },
+    ];
+
+    return (
+        <DsBreadcrumb
+            items={items}
+            onSelect={(href) => {
+                args.onSelect?.(href);
+                void navigate({ to: href });
+            }}
+        />
+    );
+};

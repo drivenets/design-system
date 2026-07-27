@@ -1,0 +1,218 @@
+# DsDateRangePicker docs snippets
+
+## Default
+
+### Show code
+<DsDateRangePicker />
+
+### MCP manifest
+const Default = () => <DsDateRangePicker />;
+
+## With Time
+
+### Show code
+<DsDateRangePicker withTime />
+
+### MCP manifest
+const WithTime = () => <DsDateRangePicker withTime />;
+
+## With Default Value
+
+### Show code
+<DsDateRangePicker
+  defaultValue={[
+    new Date('2024-12-25T14:30:00.000Z'),
+    new Date('2024-12-31T18:00:00.000Z')
+  ]}
+  withTime
+/>
+
+### MCP manifest
+const WithDefaultValue = () => <DsDateRangePicker
+    withTime
+    defaultValue={[new Date('2024-12-25T14:30:00'), new Date('2024-12-31T18:00:00')]} />;
+
+## Vertical
+
+### Show code
+<DsDateRangePicker orientation="vertical" />
+
+### MCP manifest
+const Vertical = () => <DsDateRangePicker orientation="vertical" />;
+
+## With Min Max
+
+### Show code
+<DsDateRangePicker
+  max={new Date("2025-01-31T23:20:00.000Z")}
+  min={new Date("2024-12-01T00:30:00.000Z")}
+  withTime
+/>
+
+### MCP manifest
+const WithMinMax = () => <DsDateRangePicker
+    withTime
+    min={new Date('2024-12-01T00:30:00')}
+    max={new Date('2025-01-31T23:20:00')} />;
+
+## Disabled
+
+### Show code
+<DsDateRangePicker
+  disabled
+  value={[
+    new Date('2026-01-10T00:00:00.000Z'),
+    new Date('2026-01-20T00:00:00.000Z')
+  ]}
+/>
+
+### MCP manifest
+const Disabled = () => <DsDateRangePicker
+    value={[new Date('2026-01-10T00:00:00'), new Date('2026-01-20T00:00:00')]}
+    disabled />;
+
+## Read Only
+
+### Show code
+<DsDateRangePicker
+  readOnly
+  value={[
+    new Date('2026-01-10T00:00:00.000Z'),
+    new Date('2026-01-20T00:00:00.000Z')
+  ]}
+/>
+
+### MCP manifest
+const ReadOnly = () => <DsDateRangePicker
+    value={[new Date('2026-01-10T00:00:00'), new Date('2026-01-20T00:00:00')]}
+    readOnly />;
+
+## Hidden Clear All
+
+### Show code
+<DsDateRangePicker
+  defaultValue={[
+    new Date('2026-01-10T00:00:00.000Z'),
+    new Date('2026-01-20T00:00:00.000Z')
+  ]}
+  hideClearAll
+/>
+
+### MCP manifest
+const HiddenClearAll = () => <DsDateRangePicker
+    defaultValue={[new Date('2026-01-10T00:00:00'), new Date('2026-01-20T00:00:00')]}
+    hideClearAll />;
+
+## Custom Labels
+
+### Show code
+<DsDateRangePicker
+ slotProps={{
+   endDateFormControl: {
+     label: 'To'
+   },
+   startDateFormControl: {
+     label: 'From'
+   }
+ }}
+/>
+
+### MCP manifest
+const CustomLabels = () => <DsDateRangePicker
+    slotProps={{
+        startDateFormControl: { label: 'From' },
+        endDateFormControl: { label: 'To' },
+    }} />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<DateRangeValue>([null, null]);
+    return <DsDateRangePicker value={value} onChange={setValue} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState<DateRangeValue>([null, null]);
+
+    return <DsDateRangePicker value={value} onChange={setValue} />;
+};
+
+## Localized
+
+### Show code
+<DsDateRangePicker
+  defaultValue={[
+    new Date('2026-01-10T00:00:00.000Z'),
+    new Date('2026-01-20T00:00:00.000Z')
+  ]}
+  locale={{
+    clearAllLabel: 'Effacer tout'
+  }}
+/>
+
+### MCP manifest
+const Localized = () => <DsDateRangePicker
+    locale={{ clearAllLabel: 'Effacer tout' }}
+    defaultValue={[new Date('2026-01-10T00:00:00'), new Date('2026-01-20T00:00:00')]} />;
+
+## Date Or Range
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  decorators: [Story => <DsStack direction="row" gap="xs" alignItems="flex-end">
+                <Story />
+            </DsStack>],
+  render: function Render() {
+    const [mode, setMode] = useState('date');
+    const [dateValue, setDateValue] = useState<Date | null>(null);
+    const [rangeValue, setRangeValue] = useState<DateRangeValue>([null, null]);
+    return <>
+                <DsSegmentGroup.Root value={mode} onValueChange={v => setMode(v ?? 'date')} size="default">
+                    <DsSegmentGroup.Item value="date" label="Date" />
+                    <DsSegmentGroup.Item value="range" label="Range" />
+                </DsSegmentGroup.Root>
+
+                {mode === 'date' ? <DsDatePicker value={dateValue} onChange={setDateValue} /> : <DsDateRangePicker value={rangeValue} onChange={setRangeValue} />}
+            </>;
+  }
+}
+
+### MCP manifest
+const DateOrRange = function Render() {
+    const [mode, setMode] = useState('date');
+    const [dateValue, setDateValue] = useState<Date | null>(null);
+    const [rangeValue, setRangeValue] = useState<DateRangeValue>([null, null]);
+
+    return (
+        <>
+            <DsSegmentGroup.Root value={mode} onValueChange={(v) => setMode(v ?? 'date')} size="default">
+                <DsSegmentGroup.Item value="date" label="Date" />
+                <DsSegmentGroup.Item value="range" label="Range" />
+            </DsSegmentGroup.Root>
+
+            {mode === 'date' ? (
+                <DsDatePicker value={dateValue} onChange={setDateValue} />
+            ) : (
+                <DsDateRangePicker value={rangeValue} onChange={setRangeValue} />
+            )}
+        </>
+    );
+};

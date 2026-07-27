@@ -38,6 +38,9 @@ const DsTreeRoot = <T extends DsTreeNode = DsTreeNode>({
 	checkedValue,
 	defaultCheckedValue,
 	onCheckedChange,
+	focusedValue,
+	defaultFocusedValue,
+	onFocusChange,
 	typeahead = true,
 	lazyMount = true,
 	unmountOnExit,
@@ -56,6 +59,9 @@ const DsTreeRoot = <T extends DsTreeNode = DsTreeNode>({
 		checkedValue={checkedValue}
 		defaultCheckedValue={defaultCheckedValue}
 		onCheckedChange={onCheckedChange}
+		focusedValue={focusedValue}
+		defaultFocusedValue={defaultFocusedValue}
+		onFocusChange={onFocusChange}
 		typeahead={typeahead}
 		lazyMount={lazyMount}
 		unmountOnExit={unmountOnExit}
