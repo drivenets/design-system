@@ -8,13 +8,13 @@ blockExoticSubdeps: true
 catalog:
   '@arethetypeswrong/cli': ^0.18.2
   '@eslint/core': ^1.1.1
-  '@typescript/native-preview': 7.0.0-dev.20260521.1
-  '@vitest/coverage-v8': ^4.1.7
+  '@typescript/native': 'npm:typescript@^7.0.2'
+  '@vitest/coverage-v8': ^4.1.10
   eslint: ^10.0.1
-  publint: ^0.3.21
-  tsdown: ^0.22.0
-  typescript: ^6.0.3
-  vitest: ^4.1.7
+  publint: ^0.3.22
+  tsdown: ^0.22.14
+  typescript: 'npm:@typescript/typescript6'
+  vitest: ^4.1.10
 
 allowBuilds:
   '@parcel/watcher': false
@@ -22,6 +22,7 @@ allowBuilds:
   unrs-resolver: false
 
 overrides:
+  '@typescript/native-preview': '-'
   array-includes: 'npm:@nolyfill/array-includes@^1'
   array.prototype.findlast: 'npm:@nolyfill/array.prototype.findlast@^1'
   array.prototype.flat: 'npm:@nolyfill/array.prototype.flat@^1'

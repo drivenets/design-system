@@ -36,7 +36,7 @@ export interface DsDialogProps {
 	/**
 	 * Ref to the element the dialog should be anchored to (for relative placement)
 	 */
-	anchorRef?: React.RefObject<HTMLElement>;
+	anchorRef?: React.RefObject<HTMLElement | null>;
 	/**
 	 * Custom fixed position (e.g., { top: number, left: number })
 	 */

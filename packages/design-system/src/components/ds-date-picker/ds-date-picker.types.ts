@@ -98,7 +98,7 @@ export interface DsDatePickerProps extends Pick<
 
 	/**
 	 * Whether to hide the clear button
-	 * @default true
+	 * @default false
 	 */
 	hideClearButton?: boolean;
 

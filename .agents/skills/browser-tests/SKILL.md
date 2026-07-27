@@ -118,4 +118,5 @@ pnpm eslint packages/design-system/src/components/ds-{name}/
 - **Migrate from Storybook play**: [migrate-story-tests](../migrate-story-tests/SKILL.md)
 - **New component**: [component-scaffold](../component-scaffold/SKILL.md)
 - **React state in tests**: [react-patterns](../react-patterns/SKILL.md)
+- **Docs snippet tests**: [docs-tests](../docs-tests/SKILL.md)
 - **Examples**: `packages/design-system/src/components/*/__tests__/*.browser.test.tsx`

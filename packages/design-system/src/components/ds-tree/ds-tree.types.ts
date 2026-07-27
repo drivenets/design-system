@@ -116,6 +116,22 @@ export interface DsTreeRootProps<T extends DsTreeNode = DsTreeNode> extends DsTr
 	onCheckedChange?: ArkTreeView.RootProps<T>['onCheckedChange'];
 
 	/**
+	 * Id of the node with keyboard focus (controlled). Use with `onFocusChange`.
+	 * When `null`, Ark treats the first node as focused for roving-tabindex purposes.
+	 */
+	focusedValue?: string | null;
+	/**
+	 * Id of the node focused initially when uncontrolled. When `null` (the Ark
+	 * default), the first node receives focus for roving-tabindex purposes.
+	 */
+	defaultFocusedValue?: string | null;
+	/**
+	 * Called when the focused node changes. Receives the Ark focus-change details
+	 * including the new `focusedValue` (or `null` when nothing is focused).
+	 */
+	onFocusChange?: ArkTreeView.RootProps<T>['onFocusChange'];
+
+	/**
 	 * Whether to enable typeahead navigation — typing characters focuses matching nodes.
 	 */
 	typeahead?: boolean;

@@ -5,6 +5,9 @@ import type { IconType } from '../ds-icon';
 export const dropdownMenuItemVariants = ['default', 'error'] as const;
 export type DropdownMenuItemVariant = (typeof dropdownMenuItemVariants)[number];
 
+export const dropdownMenuActionsAlignments = ['end', 'stretch'] as const;
+export type DropdownMenuActionsAlign = (typeof dropdownMenuActionsAlignments)[number];
+
 /**
  * Base positioning type
  */
@@ -242,9 +245,15 @@ export interface DsDropdownMenuHeaderProps {
  */
 export interface DsDropdownMenuActionsProps {
 	/**
-	 * The action buttons or elements
+	 * The action buttons or full-width elements pinned to the bottom of the menu.
 	 */
 	children: ReactNode;
+	/**
+	 * How children are laid out. `end` is a right-aligned button row (e.g.
+	 * Cancel/Apply); `stretch` stacks full-width children (e.g. a logout item).
+	 * @default 'end'
+	 */
+	align?: DropdownMenuActionsAlign;
 	/**
 	 * Optional CSS class name
 	 */

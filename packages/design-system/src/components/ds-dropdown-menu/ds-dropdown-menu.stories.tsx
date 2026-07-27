@@ -8,6 +8,8 @@ import { DsCheckbox } from '../ds-checkbox';
 import { DsTypography } from '../ds-typography';
 import { DsButton } from '../ds-button';
 import { DsRadioGroup } from '../ds-radio-group';
+import { DsUserCard } from '../ds-user-card';
+import { DsAvatar } from '../ds-avatar';
 import './ds-dropdown-menu.stories.scss';
 
 const meta: Meta<typeof DsDropdownMenu.Root> = {
@@ -429,6 +431,49 @@ export const RadioList: Story = {
 	},
 };
 
+export const UserMenu: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'The User Menu composed pattern: a `DsUserCard` header identifying the signed-in user, a list of account actions, and a full-width logout action pinned in a sticky `Actions align="stretch"` slot. User Menu is not a component — it is this composition of `DsUserCard`, `DsDropdownMenu.Item`s, and `DsDropdownMenu.Actions`.',
+			},
+		},
+	},
+	render: () => {
+		const handleProfile = () => console.log('Profile clicked');
+		const handleSettings = () => console.log('Settings clicked');
+		const handleLogout = () => console.log('Log out clicked');
+
+		return (
+			<DsDropdownMenu.Root positioning={{ placement: 'bottom-end' }}>
+				<DsDropdownMenu.Trigger asChild>
+					<DsButton design="v1.2" buttonType="secondary">
+						<DsAvatar name="Mockup Developer" size="sm" />
+					</DsButton>
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsUserCard name="Mockup Developer" subtitle="developer@mock.local" />
+					<DsDropdownMenu.Item value="profile" onSelect={handleProfile}>
+						<DsIcon icon="person" />
+						<span>Profile</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Item value="settings" onSelect={handleSettings}>
+						<DsIcon icon="settings" />
+						<span>Settings</span>
+					</DsDropdownMenu.Item>
+					<DsDropdownMenu.Actions align="stretch">
+						<DsDropdownMenu.Item value="logout" onSelect={handleLogout}>
+							<DsIcon icon="logout" />
+							<span>Log out</span>
+						</DsDropdownMenu.Item>
+					</DsDropdownMenu.Actions>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
+	},
+};
+
 export const ActionMenu: Story = {
 	parameters: {
 		docs: {
@@ -486,6 +531,69 @@ export const ActionMenu: Story = {
 					<DsDropdownMenu.Item value="delete" onSelect={handleDelete} className="danger">
 						<DsIcon icon="delete" />
 						<span>Delete item</span>
+					</DsDropdownMenu.Item>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>
+		);
+	},
+};
+
+export const NestedSubmenus: Story = {
+	name: 'Nested Submenus (3 levels)',
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Submenus nest arbitrarily deep by nesting a `Root` + `TriggerItem` + `Content` inside a parent `Content`. Here a top-level "New" item opens a submenu whose "From Template" item opens a third-level submenu. Each nested `Root` needs its own `placement` (`right-start`) so the flyout opens beside its trigger.',
+			},
+		},
+	},
+	render: () => {
+		const handleBlank = () => console.log('Blank document clicked');
+		const handleResume = () => console.log('Resume template clicked');
+		const handleInvoice = () => console.log('Invoice template clicked');
+		const handleLetter = () => console.log('Letter template clicked');
+		const handleOpen = () => console.log('Open clicked');
+
+		return (
+			<DsDropdownMenu.Root>
+				<DsDropdownMenu.Trigger className="trigger">
+					<span>File</span>
+					<DsIcon icon="arrow_drop_down" />
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsDropdownMenu.Root positioning={{ placement: 'right-start' }}>
+						<DsDropdownMenu.TriggerItem className="action-menu-item">
+							<DsIcon icon="note_add" />
+							<span>New</span>
+						</DsDropdownMenu.TriggerItem>
+						<DsDropdownMenu.Content>
+							<DsDropdownMenu.Item value="blank" onSelect={handleBlank}>
+								<DsIcon icon="description" />
+								<span>Blank Document</span>
+							</DsDropdownMenu.Item>
+							<DsDropdownMenu.Root positioning={{ placement: 'right-start' }}>
+								<DsDropdownMenu.TriggerItem className="action-menu-item">
+									<DsIcon icon="dashboard" />
+									<span>From Template</span>
+								</DsDropdownMenu.TriggerItem>
+								<DsDropdownMenu.Content>
+									<DsDropdownMenu.Item value="template-resume" onSelect={handleResume}>
+										<span>Resume</span>
+									</DsDropdownMenu.Item>
+									<DsDropdownMenu.Item value="template-invoice" onSelect={handleInvoice}>
+										<span>Invoice</span>
+									</DsDropdownMenu.Item>
+									<DsDropdownMenu.Item value="template-letter" onSelect={handleLetter}>
+										<span>Letter</span>
+									</DsDropdownMenu.Item>
+								</DsDropdownMenu.Content>
+							</DsDropdownMenu.Root>
+						</DsDropdownMenu.Content>
+					</DsDropdownMenu.Root>
+					<DsDropdownMenu.Item value="open" onSelect={handleOpen}>
+						<DsIcon icon="folder_open" />
+						<span>Open…</span>
 					</DsDropdownMenu.Item>
 				</DsDropdownMenu.Content>
 			</DsDropdownMenu.Root>

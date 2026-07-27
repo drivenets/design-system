@@ -52,6 +52,7 @@ const DsTable = <TData extends { id: string }, TValue>({
 	ref,
 	columns: columnsProp,
 	data: tableData,
+	controls,
 	virtualized = false,
 	virtualizedOptions,
 	className,
@@ -336,41 +337,43 @@ const DsTable = <TData extends { id: string }, TValue>({
 	return (
 		<DsTableContext.Provider value={contextValue}>
 			<div
-				ref={tableContainerRef}
-				className={classnames(
-					styles.container,
-					!virtualized && styles.dataTableContainer,
-					virtualized && styles.virtualizedContainer,
-					isBulkActionsVisible && styles.bulkActionsVisible,
-					className,
-				)}
+				className={classnames(styles.container, isBulkActionsVisible && styles.bulkActionsVisible, className)}
 			>
-				<DragWrapper>
-					<Table className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}>
-						<DsTableHeader table={table} />
-						{virtualized ? (
-							<DsTableBodyVirtualized
-								table={table}
-								emptyState={emptyState}
-								estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
-								overscan={virtualizedOptions?.overscan}
-								onScroll={onScroll}
-								rowSelection={rowSelection}
-								infiniteScroll={infiniteScroll}
-							/>
-						) : (
-							<TableBody>
-								<SortableWrapper>
-									{rows.length
-										? rows.map((row) => (
-												<DsTableRow key={row.id} row={row} isSelected={!!rowSelection[row.id]} />
-											))
-										: renderEmptyState()}
-								</SortableWrapper>
-							</TableBody>
-						)}
-					</Table>
-				</DragWrapper>
+				{controls && <div className={styles.controls}>{controls}</div>}
+				<div
+					ref={tableContainerRef}
+					className={classnames(
+						!virtualized && styles.dataTableContainer,
+						virtualized && styles.virtualizedContainer,
+					)}
+				>
+					<DragWrapper>
+						<Table className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}>
+							<DsTableHeader table={table} />
+							{virtualized ? (
+								<DsTableBodyVirtualized
+									table={table}
+									emptyState={emptyState}
+									estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
+									overscan={virtualizedOptions?.overscan}
+									onScroll={onScroll}
+									rowSelection={rowSelection}
+									infiniteScroll={infiniteScroll}
+								/>
+							) : (
+								<TableBody>
+									<SortableWrapper>
+										{rows.length
+											? rows.map((row) => (
+													<DsTableRow key={row.id} row={row} isSelected={!!rowSelection[row.id]} />
+												))
+											: renderEmptyState()}
+									</SortableWrapper>
+								</TableBody>
+							)}
+						</Table>
+					</DragWrapper>
+				</div>
 				{selectable && actions.length > 0 && (
 					<DsTableBulkActions
 						numSelectedRows={selectedRows.length}

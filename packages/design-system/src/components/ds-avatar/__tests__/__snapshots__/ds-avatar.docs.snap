@@ -1,0 +1,43 @@
+# DsAvatar docs snippets
+
+## Default
+
+### Show code
+<DsAvatar name="John Doe" />
+
+### MCP manifest
+const Default = () => <DsAvatar name="John Doe" />;
+
+## With Image
+
+### Show code
+<DsAvatar
+  alt="Jane Smith"
+  name="Jane Smith"
+  src="https://i.pravatar.cc/150?u=jane"
+/>
+
+### MCP manifest
+const WithImage = () => <DsAvatar name="Jane Smith" src="https://i.pravatar.cc/150?u=jane" alt="Jane Smith" />;
+
+## Image Fallback
+
+### Show code
+<DsAvatar
+  name="Ada Lovelace"
+  src="https://invalid.example/missing.png"
+/>
+
+### MCP manifest
+const ImageFallback = () => <DsAvatar name="Ada Lovelace" src="https://invalid.example/missing.png" />;
+
+## Rounded
+
+### Show code
+<DsAvatar
+  name="Rose Oliver"
+  type="rounded"
+/>
+
+### MCP manifest
+const Rounded = () => <DsAvatar name="Rose Oliver" type="rounded" />;

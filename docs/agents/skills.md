@@ -18,7 +18,7 @@ All project skills live in **`.agents/skills/`**. Convention guidance is skill-o
 
 ## Typical flows
 
-**Feature:** `grill-me` → `to-plan` → `component-scaffold` / `figma-to-component` → `tdd` + `storybook` + `browser-tests` → `pr-prep` + `code-review`
+**Feature:** `grill-me` → `to-plan` → `component-scaffold` / `figma-to-component` → `tdd` + `storybook` + `browser-tests` + `docs-tests` → `pr-prep` + `code-review`
 
 **Bug:** `diagnose` → `tdd` (regression) → checkers in `AGENTS.md`
 

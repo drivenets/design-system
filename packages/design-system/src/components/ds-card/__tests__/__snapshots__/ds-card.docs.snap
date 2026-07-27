@@ -1,0 +1,377 @@
+# DsCard.Root docs snippets
+
+## Default
+
+### Show code
+<DsCard.Root size="medium">
+  <DsCard.Header>
+    Card Title
+  </DsCard.Header>
+  <DsCard.Body>
+    Card content goes here
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const Default = () => <DsCard.Root size="medium">
+    <DsCard.Header>Card Title</DsCard.Header>
+    <DsCard.Body>Card content goes here</DsCard.Body>
+</DsCard.Root>;
+
+## Small
+
+### Show code
+<DsCard.Root size="small">
+  <DsCard.Header>
+    Small Card
+  </DsCard.Header>
+  <DsCard.Body>
+    Compact content area
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const Small = () => <DsCard.Root size="small">
+    <DsCard.Header>Small Card</DsCard.Header>
+    <DsCard.Body>Compact content area</DsCard.Body>
+</DsCard.Root>;
+
+## Large
+
+### Show code
+<DsCard.Root size="large">
+  <DsCard.Header>
+    Large Card
+  </DsCard.Header>
+  <DsCard.Body>
+    Room for richer content and multiple sections
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const Large = () => <DsCard.Root size="large">
+    <DsCard.Header>Large Card</DsCard.Header>
+    <DsCard.Body>Room for richer content and multiple sections</DsCard.Body>
+</DsCard.Root>;
+
+## With Header And Footer
+
+### Show code
+<DsCard.Root size="large">
+  <DsCard.Header className="_headerRow_7ukl4_1">
+    <DsTypography variant="heading3">
+      Card Title
+    </DsTypography>
+    <DsStatusBadge
+      ghost
+      icon="check_circle"
+      status="active"
+    />
+  </DsCard.Header>
+  <DsCard.Body>
+    <DsStack
+      direction="column"
+      gap="var(--3xs)"
+    >
+      <DsTypography variant="body-md-bold">
+        12 of 12 Devices
+      </DsTypography>
+      <DsTypography variant="body-sm-reg">
+        Success 10 | Failed 1 | Skipped 1
+      </DsTypography>
+    </DsStack>
+  </DsCard.Body>
+  <DsCard.Footer className="_footer_7ukl4_18">
+    <DsTypography variant="body-sm-reg">
+      Last updated: 2 min ago
+    </DsTypography>
+  </DsCard.Footer>
+</DsCard.Root>
+
+### MCP manifest
+const WithHeaderAndFooter = () => <DsCard.Root size="large">
+    <DsCard.Header className={styles.headerRow}>
+        <DsTypography variant="heading3">Card Title</DsTypography>
+        <DsStatusBadge icon="check_circle" status="active" ghost />
+    </DsCard.Header>
+    <DsCard.Body>
+        <DsStack direction="column" gap="var(--3xs)">
+            <DsTypography variant="body-md-bold">12 of 12 Devices</DsTypography>
+            <DsTypography variant="body-sm-reg">Success 10 | Failed 1 | Skipped 1</DsTypography>
+        </DsStack>
+    </DsCard.Body>
+    <DsCard.Footer className={styles.footer}>
+        <DsTypography variant="body-sm-reg">Last updated: 2 min ago</DsTypography>
+    </DsCard.Footer>
+</DsCard.Root>;
+
+## Step Card
+
+### Show code
+<DsCard.Root size="large">
+  <DsCard.Header className="_headerRow_7ukl4_1">
+    <DsTypography variant="heading3">
+      Canary
+    </DsTypography>
+    <DsStatusBadge
+      icon="check_circle"
+      label="Complete"
+      status="active"
+    />
+  </DsCard.Header>
+  <DsCard.Body>
+    <DsStack
+      direction="column"
+      gap="var(--3xs)"
+    >
+      <DsTypography variant="body-md-bold">
+        12 of 12 Devices
+      </DsTypography>
+      <DsTypography
+        color="secondary"
+        variant="body-sm-reg"
+      >
+        Success 10 | Failed 1 | Skipped 1
+      </DsTypography>
+    </DsStack>
+  </DsCard.Body>
+  <DsCard.Body className="_dataList_7ukl4_9">
+    <DsTypography variant="body-sm-reg">
+      Config Push
+    </DsTypography>
+    <DsTypography
+      color="success"
+      variant="body-sm-reg"
+    >
+      Complete
+    </DsTypography>
+    <DsTypography variant="body-sm-reg">
+      Dwell Time (60 min.)
+    </DsTypography>
+    <DsTypography
+      color="success"
+      variant="body-sm-reg"
+    >
+      Complete
+    </DsTypography>
+    <DsTypography variant="body-sm-reg">
+      Failed
+    </DsTypography>
+    <DsTypography
+      color="secondary"
+      variant="body-sm-reg"
+    >
+      1 (8%)
+    </DsTypography>
+    <DsTypography variant="body-sm-reg">
+      Failure threshold
+    </DsTypography>
+    <DsTypography
+      color="secondary"
+      variant="body-sm-reg"
+    >
+      5 or 10%
+    </DsTypography>
+    <DsTypography variant="body-sm-reg">
+      Threshold state
+    </DsTypography>
+    <DsTypography
+      color="secondary"
+      variant="body-sm-reg"
+    >
+      Normal
+    </DsTypography>
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const StepCard = () => <DsCard.Root size="large">
+    <DsCard.Header className={styles.headerRow}>
+        <DsTypography variant="heading3">Canary</DsTypography>
+        <DsStatusBadge icon="check_circle" status="active" label="Complete" />
+    </DsCard.Header>
+    <DsCard.Body>
+        <DsStack direction="column" gap="var(--3xs)">
+            <DsTypography variant="body-md-bold">12 of 12 Devices</DsTypography>
+            <DsTypography variant="body-sm-reg" color="secondary">Success 10 | Failed 1 | Skipped 1
+                                    </DsTypography>
+        </DsStack>
+    </DsCard.Body>
+    <DsCard.Body className={styles.dataList}>
+        <DsTypography variant="body-sm-reg">Config Push</DsTypography>
+        <DsTypography variant="body-sm-reg" color="success">Complete
+                            </DsTypography>
+        <DsTypography variant="body-sm-reg">Dwell Time (60 min.)</DsTypography>
+        <DsTypography variant="body-sm-reg" color="success">Complete
+                            </DsTypography>
+        <DsTypography variant="body-sm-reg">Failed</DsTypography>
+        <DsTypography variant="body-sm-reg" color="secondary">1 (8%)
+                            </DsTypography>
+        <DsTypography variant="body-sm-reg">Failure threshold</DsTypography>
+        <DsTypography variant="body-sm-reg" color="secondary">5 or 10%
+                            </DsTypography>
+        <DsTypography variant="body-sm-reg">Threshold state</DsTypography>
+        <DsTypography variant="body-sm-reg" color="secondary">Normal
+                            </DsTypography>
+    </DsCard.Body>
+</DsCard.Root>;
+
+## Selectable
+
+### Show code
+<DsCard.Root
+  selectable
+>
+  <DsCard.Header>
+    Selectable Card
+  </DsCard.Header>
+  <DsCard.Body>
+    Click to select this card
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const Selectable = () => <DsCard.Root selectable selected={false}>
+    <DsCard.Header>Selectable Card</DsCard.Header>
+    <DsCard.Body>Click to select this card</DsCard.Body>
+</DsCard.Root>;
+
+## Highlight Selected
+
+### Show code
+<DsCard.Root
+  highlightSelected
+  selectable
+  selected
+>
+  <DsCard.Header>
+    Highlighted Card
+  </DsCard.Header>
+  <DsCard.Body>
+    This card has a highlighted background when selected
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const HighlightSelected = () => <DsCard.Root selectable selected highlightSelected>
+    <DsCard.Header>Highlighted Card</DsCard.Header>
+    <DsCard.Body>This card has a highlighted background when selected</DsCard.Body>
+</DsCard.Root>;
+
+## Selectable Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const [selected, setSelected] = useState(false);
+    return <DsCard.Root selectable selected={selected} onClick={() => setSelected(!selected)}>
+                <DsCard.Header>Controlled Card</DsCard.Header>
+                <DsCard.Body>{selected ? 'Selected! Click to deselect.' : 'Click to select.'}</DsCard.Body>
+            </DsCard.Root>;
+  }
+}
+
+### MCP manifest
+const SelectableControlled = () => {
+    const [selected, setSelected] = useState(false);
+
+    return (
+        <DsCard.Root selectable selected={selected} onClick={() => setSelected(!selected)}>
+            <DsCard.Header>Controlled Card</DsCard.Header>
+            <DsCard.Body>{selected ? 'Selected! Click to deselect.' : 'Click to select.'}</DsCard.Body>
+        </DsCard.Root>
+    );
+};
+
+## Disabled
+
+### Show code
+<DsCard.Root
+  disabled
+  selectable
+>
+  <DsCard.Header>
+    Unavailable step
+  </DsCard.Header>
+  <DsCard.Body>
+    Cannot select this card.
+  </DsCard.Body>
+</DsCard.Root>
+
+### MCP manifest
+const Disabled = () => <DsCard.Root selectable selected={false} disabled>
+    <DsCard.Header>Unavailable step</DsCard.Header>
+    <DsCard.Body>Cannot select this card.</DsCard.Body>
+</DsCard.Root>;
+
+## Collapsible
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    size: 'large'
+  },
+  render: args => {
+    const [expanded, setExpanded] = useState(true);
+    return <DsCard.Root {...args} className={styles.collapseRoot}>
+                <DsCard.Header className={styles.collapseHeader}>
+                    <button type="button" className={styles.collapsibleButton} onClick={() => setExpanded(!expanded)} aria-expanded={expanded}>
+                        <DsIcon icon="expand_more" className={styles.collapsibleIcon} data-expanded={expanded} />
+                    </button>
+                    <DsTypography variant="heading3">Collapsible Card</DsTypography>
+                </DsCard.Header>
+                <DsCard.Body className={styles.collapsibleContent} data-collapsed={!expanded}>
+                    <div className={styles.collapsibleContentInner}>
+                        <DsTypography variant="body-md-reg">
+                            This content can be collapsed by clicking the header. The height animates smoothly using CSS
+                            Grid.
+                        </DsTypography>
+                    </div>
+                </DsCard.Body>
+            </DsCard.Root>;
+  }
+}
+
+### MCP manifest
+const Collapsible = () => {
+    const [expanded, setExpanded] = useState(true);
+
+    return (
+        <DsCard.Root size="large" className={styles.collapseRoot}>
+            <DsCard.Header className={styles.collapseHeader}>
+                <button
+                    type="button"
+                    className={styles.collapsibleButton}
+                    onClick={() => setExpanded(!expanded)}
+                    aria-expanded={expanded}>
+                    <DsIcon
+                        icon="expand_more"
+                        className={styles.collapsibleIcon}
+                        data-expanded={expanded} />
+                </button>
+                <DsTypography variant="heading3">Collapsible Card</DsTypography>
+            </DsCard.Header>
+            <DsCard.Body className={styles.collapsibleContent} data-collapsed={!expanded}>
+                <div className={styles.collapsibleContentInner}>
+                    <DsTypography variant="body-md-reg">This content can be collapsed by clicking the header. The height animates smoothly using CSS
+                                                    Grid.
+                                                </DsTypography>
+                </div>
+            </DsCard.Body>
+        </DsCard.Root>
+    );
+};

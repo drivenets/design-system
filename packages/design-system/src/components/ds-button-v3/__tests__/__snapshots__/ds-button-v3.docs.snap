@@ -1,0 +1,136 @@
+# DsButtonV3 docs snippets
+
+## Default
+
+### Show code
+<DsButtonV3
+  color="default"
+  icon="check_circle"
+  onClick={() => {}}
+  size="medium"
+  variant="primary"
+>
+  Button
+</DsButtonV3>
+
+### MCP manifest
+const Default = () => <DsButtonV3
+    onClick={fn()}
+    color="default"
+    variant="primary"
+    size="medium"
+    icon="check_circle">Button</DsButtonV3>;
+
+## Loading
+
+### Show code
+<DsButtonV3
+  color="default"
+  icon="check_circle"
+  loading
+  onClick={() => {}}
+  size="medium"
+  variant="primary"
+>
+  Button
+</DsButtonV3>
+
+### MCP manifest
+const Loading = () => <DsButtonV3 onClick={fn()} variant="primary" loading />;
+
+## Disabled
+
+### Show code
+<DsButtonV3
+  color="default"
+  disabled
+  icon="check_circle"
+  onClick={() => {}}
+  size="medium"
+  variant="primary"
+>
+  Button
+</DsButtonV3>
+
+### MCP manifest
+const Disabled = () => <DsButtonV3 onClick={fn()} variant="primary" disabled />;
+
+## Icon Only
+
+### Show code
+<DsButtonV3
+  aria-label="Confirm"
+  color="default"
+  icon="check_circle"
+  onClick={() => {}}
+  size="medium"
+  variant="primary"
+/>
+
+### MCP manifest
+const IconOnly = () => <DsButtonV3
+    onClick={fn()}
+    color="default"
+    size="medium"
+    variant="primary"
+    icon="check_circle"
+    aria-label="Confirm" />;
+
+## Selected
+
+### Show code
+<DsButtonV3
+  color="default"
+  icon="check_circle"
+  onClick={() => {}}
+  selected
+  size="medium"
+  variant="secondary"
+>
+  Button
+</DsButtonV3>
+
+### MCP manifest
+const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected />;
+
+## On Dark
+
+### Show code
+<DsButtonV3
+  color="light"
+  icon="check_circle"
+  onClick={() => {}}
+  size="medium"
+  variant="primary"
+>
+  Button
+</DsButtonV3>
+
+### MCP manifest
+const OnDark = () => <DsButtonV3 onClick={fn()} color="light" variant="primary" />;
+
+## Responsive Size
+
+### Show code
+{
+  render: () => <DsStack direction="row" alignItems="center" gap="var(--sm)">
+            <DsButtonV3 size={{
+      lg: 'large',
+      md: 'small'
+    }}>lg: large / md: small</DsButtonV3>
+            <DsButtonV3 size={{
+      lg: 'medium',
+      md: 'tiny'
+    }}>lg: medium / md: tiny</DsButtonV3>
+            <DsButtonV3 size="medium">static: medium</DsButtonV3>
+        </DsStack>
+}
+
+### MCP manifest
+const ResponsiveSize = () => (
+    <DsStack direction="row" alignItems="center" gap="var(--sm)">
+        <DsButtonV3 size={{ lg: 'large', md: 'small' }}>lg: large / md: small</DsButtonV3>
+        <DsButtonV3 size={{ lg: 'medium', md: 'tiny' }}>lg: medium / md: tiny</DsButtonV3>
+        <DsButtonV3 size="medium">static: medium</DsButtonV3>
+    </DsStack>
+);
