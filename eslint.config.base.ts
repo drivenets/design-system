@@ -121,6 +121,7 @@ export default defineConfig(
 				'error',
 				{
 					case: 'kebabCase',
+					ignore: ['__tests__'],
 				},
 			],
 
