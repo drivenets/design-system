@@ -13,6 +13,7 @@ Stories document UI and controls. **No `play` functions** — behavior lives in 
 - Controlled story (`useState` in `render`) when component supports it
 - Localized story when component has `locale` prop
 - Combined states (e.g. checked + disabled)
+- **Docs tests (mandatory)** — coverage lives in the global runner [`tests/storybook/docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts); opt a component in by adding its kebab folder suffix (without the `ds-` prefix) to the `COMPONENTS` allowlist. Every non-`!manifest` / non-`sourceState: 'none'` story is snapshotted automatically. Run `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` before marking story work done — see [docs-tests](../docs-tests/SKILL.md)
 - Args flow to a component — don't hardcode in `render` what belongs in `args`
 - Prefer args-driven one-concept stories over `render` — args-only stories produce clean, copy-paste snippets via dynamic source. Exception: **compound components** with multiple sub-components (`DsX.Title`, `DsX.Body`, …) — put sub-components in `render`, not `args.children` with a Fragment;
 - Keep `args` self-contained — inline object/array literals per story rather than referencing shared module-level consts; consts appear unexpanded in MCP/Docs snippets and break copy-paste. Duplication across stories is the accepted tradeoff.
@@ -98,6 +99,21 @@ Storybook's default `source.type` is `auto`. Args-only stories (no `render`) alw
 - **`render` that goes straight to `return`** (compound sub-components, no hooks/handlers): rely on `auto`/`dynamic`; do **not** add `type: 'code'`.
 - **Showcase matrices**: hide the panel with `docs.canvas.sourceState: 'none'` (see below).
 
+## Snippet verification (mandatory)
+
+**Every story refactor or new story set must ship docs snippet coverage** — not optional. Ensure the component is in the `COMPONENTS` allowlist of the global [`docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts) and refresh its colocated `<folder>.docs.snap` golden. Docs tests are the regression gate for Autodocs Show code and MCP manifest snippets; browser tests alone are not enough.
+
+Show code (Autodocs panel) and MCP manifest snippets are **different outputs** — verify both for each covered story (both always, not only when `type: 'code'` is set).
+
+| Output            | What it shows                                                                                      |
+| ----------------- | -------------------------------------------------------------------------------------------------- |
+| **Show code**     | Serialized story (`parameters`, `decorators`, `render`) when `type: 'code'`; clean JSX when `auto` |
+| **MCP `snippet`** | Evaluated `render` body only                                                                       |
+
+Workflow — see [docs-tests](../docs-tests/SKILL.md):
+
+Add the component's kebab folder suffix (without the `ds-` prefix) to the `COMPONENTS` allowlist (if not already there) and regenerate its golden snapshot when changing stories that expose Show code — see [docs-tests](../docs-tests/SKILL.md).
+
 ## Showcase / matrix stories
 
 For visual-only grids (size/variant matrices) that aren't real usage examples:
@@ -114,11 +130,12 @@ Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI be
 - **Story JSDoc** — plain prose explaining _why_ to use the variant, not only what it renders. Do NOT add `@summary` to a story: Autodocs renders a story's leading JSDoc verbatim under the title, so the tag shows as literal text. The manifest falls back to the description.
 - **MDX guidelines** — put token values and rules in the file body, not only in runtime `{map}` loops agents cannot see.
 - **Exclude noise** — `tags: ['!manifest']` on anti-pattern or human-only stories/docs.
-- **Exclude performance panel** — opt a component out of the ⚡ performance panel with `parameters: { performancePanel: { disable: true } }`.
-- **Verify locally** — with Storybook running (`pnpm start`), the dev server exposes a built-in MCP at `http://localhost:6006/mcp`. Use whichever configured MCP server points at that URL (the alias is per-developer) to check your changes: `list-all-documentation` (confirm `!manifest` stories are absent) and `get-documentation` / `get-documentation-for-story` (confirm snippets render `<DsX>` not the HOC name, descriptions have no `@summary`, props look right). This is not `packages/mcp`, which serves published docs to DS _consumers_.
+- **Verify manifest snippets** — with Storybook running (`pnpm start`), use local MCP (`http://localhost:6006/mcp` or `--manifests-url http://localhost:6006`): `list-all-documentation`, `get-documentation` / `get-documentation-for-story`. Confirm manifest render snippets use `<DsX>` not HOC names, descriptions have no `@summary`, `!manifest` stories are absent. This checks **agent-facing** snippets only — not the Autodocs Show code panel. Not `packages/mcp`, which serves published docs to DS _consumers_.
+- **Verify Show code** — run the global docs snippet test per [docs-tests](../docs-tests/SKILL.md). Published `@drivenets/design-system-mcp` serves DS consumers and may lag local edits.
 
 ## Related
 
 - New component: [component-scaffold](../component-scaffold/SKILL.md)
 - Behavioral tests: [browser-tests](../browser-tests/SKILL.md)
+- Show code / MCP snippet tests: [docs-tests](../docs-tests/SKILL.md)
 - React in stories: [react-patterns](../react-patterns/SKILL.md)

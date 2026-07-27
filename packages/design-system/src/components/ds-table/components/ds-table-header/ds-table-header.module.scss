@@ -1,8 +1,8 @@
 @use '../../../../styles/typography';
 @use '../../styles/variables' as vars;
 
-.stickyHeader {
-	background-color: var(--background);
+.header {
+	background-color: var(--background-secondary);
 }
 
 .virtualizedHeader {

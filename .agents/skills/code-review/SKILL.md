@@ -35,13 +35,14 @@ Refactor card to use CSS modules and fix hover state selector specificity
 1. Get diff: `git diff origin/main`
 2. Review every changed file — read the matching skill(s) **fully** for paths in the diff:
 
-| Changed paths                  | Skills                                                                               |
-| ------------------------------ | ------------------------------------------------------------------------------------ |
-| `ds-*.types.ts`                | [component-api](../component-api/SKILL.md), [ts-standards](../ts-standards/SKILL.md) |
-| `ds-*.tsx` (not stories/tests) | [react-patterns](../react-patterns/SKILL.md); [ark-ui](../ark-ui/SKILL.md) if Ark    |
-| `*.stories.tsx`                | [storybook](../storybook/SKILL.md), [react-patterns](../react-patterns/SKILL.md)     |
-| `*.browser.test.tsx`           | [browser-tests](../browser-tests/SKILL.md)                                           |
-| `*.module.scss`                | [scss](../scss/SKILL.md)                                                             |
+| Changed paths                    | Skills                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------ |
+| `ds-*.types.ts`                  | [component-api](../component-api/SKILL.md), [ts-standards](../ts-standards/SKILL.md) |
+| `ds-*.tsx` (not stories/tests)   | [react-patterns](../react-patterns/SKILL.md); [ark-ui](../ark-ui/SKILL.md) if Ark    |
+| `*.stories.tsx`                  | [storybook](../storybook/SKILL.md), [react-patterns](../react-patterns/SKILL.md)     |
+| `*.browser.test.tsx`             | [browser-tests](../browser-tests/SKILL.md)                                           |
+| `*.docs.test.ts` / `*.docs.snap` | [docs-tests](../docs-tests/SKILL.md)                                                 |
+| `*.module.scss`                  | [scss](../scss/SKILL.md)                                                             |
 
 3. Flag only clear, high-severity issues (max 10 inline comments)
 

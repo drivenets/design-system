@@ -28,18 +28,20 @@ pnpm --filter @drivenets/vite-plugin-design-system test --run -t "snapshot"
 
 ## When to Run What
 
-| Changed                    | Run                                     |
-| -------------------------- | --------------------------------------- |
-| `*.test.ts` file           | `pnpm --filter <pkg> test <path> --run` |
-| Source file with tests     | Lint the file + run related tests       |
-| Source file, no tests      | Lint the file + typecheck the package   |
-| SCSS file in design-system | Lint the file                           |
+| Changed                    | Run                                                                                                                                     |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `*.test.ts` file           | `pnpm --filter <pkg> test <path> --run`                                                                                                 |
+| Docs snippet coverage      | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
+| Source file with tests     | Lint the file + run related tests                                                                                                       |
+| Source file, no tests      | Lint the file + typecheck the package                                                                                                   |
+| SCSS file in design-system | Lint the file                                                                                                                           |
 
 ## Notes
 
 - `--run` flag prevents vitest watch mode
 - design-system typecheck auto-generates SCSS type defs
 - Prefer file-level lint, package-level typecheck, file-level test
+- Docs snippet tests use the `storybook-docs` vitest project (excluded from default `pnpm test`, like `requires-build`); one global runner covers all opted-in components — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) for workflow.
 
 ---
 
@@ -80,6 +82,7 @@ ds-{name}/
 - `*.module.scss` — [`scss`](.agents/skills/scss/SKILL.md)
 - `*.stories.tsx` — [`storybook`](.agents/skills/storybook/SKILL.md)
 - `*.browser.test.tsx` — [`browser-tests`](.agents/skills/browser-tests/SKILL.md)
+- `docs-snippets.docs.test.ts` — [`docs-tests`](.agents/skills/docs-tests/SKILL.md)
 - Storybook `play` → tests — [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md)
 - PR / review — [`code-review`](.agents/skills/code-review/SKILL.md), [`pr-prep`](.agents/skills/pr-prep/SKILL.md)
 - Plan / debug / TDD — [`grill-me`](.agents/skills/grill-me/SKILL.md), [`to-plan`](.agents/skills/to-plan/SKILL.md), [`diagnose`](.agents/skills/diagnose/SKILL.md), [`tdd`](.agents/skills/tdd/SKILL.md)
@@ -115,7 +118,7 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 ## Additional rules
 
 - **Domain glossary:** [CONTEXT.md](CONTEXT.md) · **ADRs:** [docs/adr/](docs/adr/)
-- **DS MCP:** [packages/mcp/README.md](packages/mcp/README.md) — Storybook docs for agents (`list-all-documentation`, `get-documentation`); local dev uses `pnpm start` + `--manifests-url http://localhost:6006`
+- **DS MCP:** [packages/mcp/README.md](packages/mcp/README.md) — Storybook docs for agents (`list-all-documentation`, `get-documentation`); local dev uses `pnpm start` + `--manifests-url http://localhost:6006`. Story edits: verify snippets via [`docs-tests`](.agents/skills/docs-tests/SKILL.md) and [storybook Snippet verification](.agents/skills/storybook/SKILL.md#snippet-verification).
 - **Flows:** [docs/agents/skills.md](docs/agents/skills.md)
 - **Subagents:** [docs/agents/subagents.md](docs/agents/subagents.md)
 
@@ -142,6 +145,7 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 - [`scss`](.agents/skills/scss/SKILL.md) — edit `*.scss`; tokens, focus/disabled, CSS modules
 - [`ts-standards`](.agents/skills/ts-standards/SKILL.md) — edit `.ts` / `.tsx`; JSDoc, exports, Object.freeze
 - [`browser-tests`](.agents/skills/browser-tests/SKILL.md) — add/edit `*.browser.test.tsx`; Vitest browser patterns, a11y queries, Ark locators
+- [`docs-tests`](.agents/skills/docs-tests/SKILL.md) — opt a component into the global `docs-snippets.docs.test.ts`; Show code + MCP manifest snippet verification
 - [`storybook`](.agents/skills/storybook/SKILL.md) — edit `*.stories.tsx`; story variants, args, MCP-friendly docs, no play functions
 - [`component-scaffold`](.agents/skills/component-scaffold/SKILL.md) — "scaffold a new component"; orchestrator for files, exports, skill read order
 - [`figma-to-component`](.agents/skills/figma-to-component/SKILL.md) — Figma URL; trust boundary, Figma/DS MCP orchestration, then component-scaffold

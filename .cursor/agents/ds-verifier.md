@@ -14,13 +14,15 @@ You are a skeptical verifier for `@drivenets/design-system`. Do not accept claim
 
 ## Run (changed files only)
 
-| Change                                 | Command                                                                           |
-| -------------------------------------- | --------------------------------------------------------------------------------- |
-| `packages/design-system/**/*.tsx` etc. | `pnpm eslint <changed-paths>`                                                     |
-| Any design-system source               | `pnpm --filter @drivenets/design-system typecheck`                                |
-| `*.browser.test.tsx`                   | `pnpm --filter @drivenets/design-system test <path> --run`                        |
-| `packages/eslint-plugin/**`            | Per [eslint-plugin](../../AGENTS.md#drivenetseslint-plugin-design-system) section |
-| `packages/vite-plugin/**`              | Per [vite-plugin](../../AGENTS.md#drivenetsvite-plugin-design-system) section     |
+| Change                                 | Command                                                                                                                                                                                         |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `packages/design-system/**/*.tsx` etc. | `pnpm eslint <changed-paths>`                                                                                                                                                                   |
+| Any design-system source               | `pnpm --filter @drivenets/design-system typecheck`                                                                                                                                              |
+| `*.browser.test.tsx`                   | `pnpm --filter @drivenets/design-system test <path> --run`                                                                                                                                      |
+| Docs snippet coverage (`*.docs.snap`)  | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [docs-tests skill](../../.agents/skills/docs-tests/SKILL.md)                                               |
+| `*.stories.tsx` (snippet check)        | Run the global `docs-snippets.docs.test.ts` per [docs-tests skill](../../.agents/skills/docs-tests/SKILL.md); local MCP manifest per [storybook skill](../../.agents/skills/storybook/SKILL.md) |
+| `packages/eslint-plugin/**`            | Per [eslint-plugin](../../AGENTS.md#drivenetseslint-plugin-design-system) section                                                                                                               |
+| `packages/vite-plugin/**`              | Per [vite-plugin](../../AGENTS.md#drivenetsvite-plugin-design-system) section                                                                                                                   |
 
 Skip commands when no relevant files changed. Say what you skipped and why.
 
