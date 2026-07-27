@@ -60,13 +60,43 @@ pnpm install
 
 ### Development Workflow
 
-1. Create a new branch for your feature or bugfix.
-2. Make your changes, running the relevant scripts locally (lint, test, typecheck).
-3. Commit using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (e.g., `feat(design-system): add new button component [TICKET-ID]`).
-4. Add a changelog entry with `pnpm changelog`.
+We follow a fork-and-pull-request workflow.
+
+1. **Fork the repository** to your own GitHub account via the **Fork** button on [drivenets/design-system](https://github.com/drivenets/design-system).
+2. **Clone your fork** and add the upstream remote so you can keep it in sync:
+
+   ```bash
+   git clone https://github.com/<your-username>/design-system
+   cd design-system
+   git remote add upstream https://github.com/drivenets/design-system
+   pnpm install
+   ```
+
+3. **Sync with upstream** before starting new work:
+
+   ```bash
+   git checkout main
+   git pull upstream main
+   ```
+
+4. **Create a new branch** for your feature or bugfix. Name it as `<type>/<TICKET-ID>-<short-description>`, using a kebab-case description and a [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/) type:
+
+   | Type       | Use for                                                 | Example                          |
+   | ---------- | ------------------------------------------------------- | -------------------------------- |
+   | `feat`     | New feature                                             | `feat/DS-123-add-button`         |
+   | `fix`      | Bug fix                                                 | `fix/DS-456-tooltip-overflow`    |
+   | `docs`     | Documentation only                                      | `docs/DS-789-update-readme`      |
+   | `refactor` | Code change that neither fixes a bug nor adds a feature | `refactor/DS-321-simplify-hooks` |
+   | `chore`    | Tooling, deps, or maintenance                           | `chore/DS-654-bump-vitest`       |
+
+   Omit the `TICKET-ID` segment if the change isn't tracked by a ticket (e.g., `docs/update-readme`).
+
+5. **Make your changes**, running the relevant scripts locally (lint, test, typecheck).
+6. **Commit** using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) (e.g., `feat(design-system): add new button component [TICKET-ID]`).
+7. **Add a changelog entry** with `pnpm changelog`.
    See [Intro to Using Changesets](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md) and [Adding a Changeset](https://github.com/changesets/changesets/blob/main/docs/adding-a-changeset.md) for details.
    If your change doesn't require a release, add the `skip changelog` label to the PR instead.
-5. Push your branch and open a pull request.
+8. **Push your branch** to your fork and **open a pull request** against `drivenets/design-system` `main`.
 
 > [!NOTE]
 > Since we squash-merge, only the PR title is validated as a Conventional Commit message -- don't worry about individual commit messages.

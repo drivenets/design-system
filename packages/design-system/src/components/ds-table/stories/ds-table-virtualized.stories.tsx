@@ -10,6 +10,8 @@ import {
 	DsTableEditCellText,
 } from '../components/edit/cell-editors';
 import { DsSpinner } from '../../ds-spinner';
+import { DsStack } from '../../ds-stack';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
 import editableStyles from './ds-table-editable.stories.module.scss';
@@ -442,5 +444,43 @@ export const VirtualizedEditable: Story = {
 				</div>
 			</div>
 		);
+	},
+};
+
+export const VirtualizedWithControls: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'The pinned controls bar stays fixed above the header while the virtualized body scrolls through a large dataset.',
+			},
+		},
+	},
+	render: function Render(args) {
+		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+		return (
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable {...args} data={data} virtualized />
+			</div>
+		);
+	},
+	args: {
+		controls: (
+			<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+				<DsButtonV3 variant="secondary" size="small">
+					RED version V2
+				</DsButtonV3>
+				<DsStack direction="row" gap={8} alignItems="center">
+					<DsButtonV3 variant="secondary" size="small">
+						Import RED
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small">
+						Export RED
+					</DsButtonV3>
+					<DsButtonV3 size="small">Actions</DsButtonV3>
+				</DsStack>
+			</DsStack>
+		),
 	},
 };
