@@ -30,6 +30,15 @@ Use [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers) 
 
 For new components or substantial interaction/behavior changes, confirm an updated `*.browser.test.tsx` exists under the component's `__tests__/` when appropriate.
 
+### Step 2b: Verify story snippets (when `*.stories.tsx` changed)
+
+Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../docs-tests/SKILL.md):
+
+1. **Show code + manifest (primary)** — `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run`.
+2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
+
+Add the component's kebab folder suffix (without the `ds-` prefix, e.g. `button-v3`) to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
+
 ### Step 3: Review changed files against project rules
 
 Read the matching skill(s) from the [code-review file → skill table](../code-review/SKILL.md#code-review-process) for paths in the diff. Flag violations found in the diff.
@@ -76,6 +85,8 @@ PR Preparation Report
 [PASS/FAIL] Lint .................. {details}
 [PASS/FAIL] Typecheck ............. {details}
 [PASS/FAIL] Tests ................. {details}
+[PASS/FAIL] Show code (docs tests) . {details}
+[PASS/FAIL] MCP manifest snippets . {details}
 [PASS/FAIL] Rule violations ....... {details}
 [PASS/FAIL] No !important ........ {details}
 [PASS/FAIL] No hardcoded colors .. {details}
@@ -88,7 +99,7 @@ PR Preparation Report
 [PASS/FAIL] No AI test slop .... {details}
 [PASS/FAIL] Changeset ............ {details}
 
-{N}/14 checks passed.
+{N}/16 checks passed.
 ```
 
 If all pass, the PR is ready for submission. If any fail, list the specific files and lines that need fixing.

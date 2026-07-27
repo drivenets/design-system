@@ -1,0 +1,139 @@
+# DsAvatarGroup docs snippets
+
+## Default
+
+### Show code
+<DsAvatarGroup
+ avatars={[
+   {
+     name: 'Alice Freeman'
+   },
+   {
+     name: 'Bob Smith'
+   },
+   {
+     name: 'Charlie Davis'
+   }
+ ]}
+/>
+
+### MCP manifest
+const Default = () => <DsAvatarGroup
+    avatars={[{ name: 'Alice Freeman' }, { name: 'Bob Smith' }, { name: 'Charlie Davis' }]} />;
+
+## Overflow
+
+### Show code
+<DsAvatarGroup
+  avatars={[
+    {
+      name: 'Alice Freeman',
+      src: 'https://i.pravatar.cc/150?u=alice'
+    },
+    {
+      name: 'Bob Smith',
+      src: 'https://i.pravatar.cc/150?u=bob'
+    },
+    {
+      name: 'Charlie Davis',
+      src: 'https://i.pravatar.cc/150?u=charlie'
+    },
+    {
+      name: 'Diana Prince',
+      src: 'https://i.pravatar.cc/150?u=diana'
+    },
+    {
+      name: 'Edward Norton',
+      src: 'https://i.pravatar.cc/150?u=edward'
+    },
+    {
+      name: 'Fiona Gallagher',
+      src: 'https://i.pravatar.cc/150?u=fiona'
+    }
+  ]}
+  max={3}
+/>
+
+### MCP manifest
+const Overflow = () => <DsAvatarGroup
+    max={3}
+    avatars={[
+        { name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+        { name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+        { name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+        { name: 'Diana Prince', src: 'https://i.pravatar.cc/150?u=diana' },
+        { name: 'Edward Norton', src: 'https://i.pravatar.cc/150?u=edward' },
+        { name: 'Fiona Gallagher', src: 'https://i.pravatar.cc/150?u=fiona' },
+    ]} />;
+
+## Small
+
+### Show code
+<DsAvatarGroup
+  avatars={[
+    {
+      name: 'Alice Freeman',
+      src: 'https://i.pravatar.cc/150?u=alice'
+    },
+    {
+      name: 'Bob Smith',
+      src: 'https://i.pravatar.cc/150?u=bob'
+    },
+    {
+      name: 'Charlie Davis',
+      src: 'https://i.pravatar.cc/150?u=charlie'
+    }
+  ]}
+  size="sm"
+/>
+
+### MCP manifest
+const Small = () => <DsAvatarGroup
+    size="sm"
+    avatars={[
+        { name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+        { name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+        { name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+    ]} />;
+
+## Rounded
+
+### Show code
+<DsAvatarGroup
+  avatars={[
+    {
+      name: 'Alice Freeman',
+      src: 'https://i.pravatar.cc/150?u=alice'
+    },
+    {
+      name: 'Bob Smith',
+      src: 'https://i.pravatar.cc/150?u=bob'
+    },
+    {
+      name: 'Charlie Davis',
+      src: 'https://i.pravatar.cc/150?u=charlie'
+    },
+    {
+      name: 'Diana Prince',
+      src: 'https://i.pravatar.cc/150?u=diana'
+    },
+    {
+      name: 'Edward Norton',
+      src: 'https://i.pravatar.cc/150?u=edward'
+    }
+  ]}
+  max={3}
+  type="rounded"
+/>
+
+### MCP manifest
+const Rounded = () => <DsAvatarGroup
+    type="rounded"
+    max={3}
+    avatars={[
+        { name: 'Alice Freeman', src: 'https://i.pravatar.cc/150?u=alice' },
+        { name: 'Bob Smith', src: 'https://i.pravatar.cc/150?u=bob' },
+        { name: 'Charlie Davis', src: 'https://i.pravatar.cc/150?u=charlie' },
+        { name: 'Diana Prince', src: 'https://i.pravatar.cc/150?u=diana' },
+        { name: 'Edward Norton', src: 'https://i.pravatar.cc/150?u=edward' },
+    ]} />;

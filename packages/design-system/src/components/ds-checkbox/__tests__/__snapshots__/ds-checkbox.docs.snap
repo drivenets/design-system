@@ -1,0 +1,276 @@
+# DsCheckbox docs snippets
+
+## Default
+
+### Show code
+<DsCheckbox
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+/>
+
+### MCP manifest
+const Default = () => <DsCheckbox label="Enable notifications" labelInfo="Receive email updates" />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [checked, setChecked] = useState(false);
+    return <DsCheckbox label="Enable notifications" labelInfo="Receive email updates" checked={checked} onCheckedChange={newState => {
+      if (typeof newState === 'boolean') {
+        setChecked(newState);
+      }
+    }} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [checked, setChecked] = useState(false);
+
+    return (
+        <DsCheckbox
+            label="Enable notifications"
+            labelInfo="Receive email updates"
+            checked={checked}
+            onCheckedChange={(newState) => {
+                if (typeof newState === 'boolean') {
+                    setChecked(newState);
+                }
+            }}
+        />
+    );
+};
+
+## Indeterminate
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
+    return <DsCheckbox label="Enable notifications" labelInfo="Receive email updates" checked={checked} onCheckedChange={newState => setChecked(newState)} />;
+  }
+}
+
+### MCP manifest
+const Indeterminate = function Render() {
+    const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
+
+    return (
+        <DsCheckbox
+            label="Enable notifications"
+            labelInfo="Receive email updates"
+            checked={checked}
+            onCheckedChange={(newState) => setChecked(newState)}
+        />
+    );
+};
+
+## Disabled
+
+### Show code
+<DsCheckbox
+  checked
+  disabled
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+/>
+
+### MCP manifest
+const Disabled = () => <DsCheckbox
+    label="Enable notifications"
+    labelInfo="Receive email updates"
+    disabled
+    checked />;
+
+## Read Only
+
+### Show code
+<DsCheckbox
+  checked
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+  readOnly
+/>
+
+### MCP manifest
+const ReadOnly = () => <DsCheckbox
+    label="Enable notifications"
+    labelInfo="Receive email updates"
+    readOnly
+    checked />;
+
+## Warning
+
+### Show code
+<DsCheckbox
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+  variant="warning"
+/>
+
+### MCP manifest
+const Warning = () => <DsCheckbox
+    variant="warning"
+    label="Enable notifications"
+    labelInfo="Receive email updates" />;
+
+## Warning Indeterminate
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
+    return <DsCheckbox variant="warning" label="Enable notifications" labelInfo="Receive email updates" checked={checked} onCheckedChange={newState => setChecked(newState)} />;
+  }
+}
+
+### MCP manifest
+const WarningIndeterminate = function Render() {
+    const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
+
+    return (
+        <DsCheckbox
+            variant="warning"
+            label="Enable notifications"
+            labelInfo="Receive email updates"
+            checked={checked}
+            onCheckedChange={(newState) => setChecked(newState)}
+        />
+    );
+};
+
+## Group
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<string[]>(['react']);
+    const frameworkItems = [{
+      label: 'React',
+      value: 'react'
+    }, {
+      label: 'Solid',
+      value: 'solid'
+    }, {
+      label: 'Vue',
+      value: 'vue'
+    }];
+    return <DsCheckboxGroup orientation="vertical" value={value} onValueChange={setValue} name="framework">
+                {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} />)}
+            </DsCheckboxGroup>;
+  }
+}
+
+### MCP manifest
+const Group = function Render() {
+    const [value, setValue] = useState<string[]>(['react']);
+    const frameworkItems = [
+        { label: 'React', value: 'react' },
+        { label: 'Solid', value: 'solid' },
+        { label: 'Vue', value: 'vue' },
+    ];
+
+    return (
+        <DsCheckboxGroup orientation="vertical" value={value} onValueChange={setValue} name="framework">
+            {frameworkItems.map((item) => (
+                <DsCheckbox key={item.value} label={item.label} value={item.value} />
+            ))}
+        </DsCheckboxGroup>
+    );
+};
+
+## Select All
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<string[]>([]);
+    const frameworkItems = [{
+      label: 'React',
+      value: 'react'
+    }, {
+      label: 'Solid',
+      value: 'solid'
+    }, {
+      label: 'Vue',
+      value: 'vue'
+    }];
+    const {
+      selectAllState,
+      onSelectAllChange
+    } = useCheckboxSelectAll({
+      value,
+      allValues: frameworkItems.map(item => item.value),
+      onValueChange: setValue
+    });
+    return <DsStack gap="var(--3xs)">
+                <DsCheckbox label="Select all" checked={selectAllState} onCheckedChange={onSelectAllChange} />
+                <DsCheckboxGroup value={value} onValueChange={setValue} name="framework">
+                    {frameworkItems.map(item => <DsCheckbox key={item.value} label={item.label} value={item.value} />)}
+                </DsCheckboxGroup>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const SelectAll = function Render() {
+    const [value, setValue] = useState<string[]>([]);
+    const frameworkItems = [
+        { label: 'React', value: 'react' },
+        { label: 'Solid', value: 'solid' },
+        { label: 'Vue', value: 'vue' },
+    ];
+    const { selectAllState, onSelectAllChange } = useCheckboxSelectAll({
+        value,
+        allValues: frameworkItems.map((item) => item.value),
+        onValueChange: setValue,
+    });
+
+    return (
+        <DsStack gap="var(--3xs)">
+            <DsCheckbox label="Select all" checked={selectAllState} onCheckedChange={onSelectAllChange} />
+            <DsCheckboxGroup value={value} onValueChange={setValue} name="framework">
+                {frameworkItems.map((item) => (
+                    <DsCheckbox key={item.value} label={item.label} value={item.value} />
+                ))}
+            </DsCheckboxGroup>
+        </DsStack>
+    );
+};

@@ -5,6 +5,12 @@ import { lightTheme } from './themes';
 const preview: Preview = {
 	tags: ['autodocs'],
 	parameters: {
+		// Render function props (e.g. onClick spies) as a stable placeholder in
+		// Autodocs "Show code". Avoids leaking minified names/spy internals that
+		// vary per production build.
+		jsx: {
+			functionValue: () => '() => {}',
+		},
 		docs: {
 			theme: lightTheme,
 		},

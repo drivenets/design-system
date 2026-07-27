@@ -3,10 +3,12 @@ aroba
 artipacked
 autoboot
 autodocs
+buttonv3
 borderless
 clickability
 controlify
 cooldown
+domcontentloaded
 deslop
 drivenets
 evenodd
@@ -17,6 +19,7 @@ gnmi
 matchall
 netgen
 netural
+networkidle
 noninteractive
 ondark
 onwarn

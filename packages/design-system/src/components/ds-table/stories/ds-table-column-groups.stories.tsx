@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
+import { DsStack } from '../../ds-stack';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { TableEmptyState } from './components';
@@ -95,5 +97,31 @@ export const Controlled: Story = {
 		return (
 			<DsTable {...args} collapsedColumnGroups={collapsed} onCollapsedColumnGroupsChange={setCollapsed} />
 		);
+	},
+};
+
+/**
+ * The pinned `controls` slot renders above grouped, collapsible headers, confirming
+ * the controls bar coexists with column groups and row selection.
+ */
+export const WithControls: Story = {
+	args: {
+		columns: buildColumns(),
+		controls: (
+			<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+				<DsButtonV3 variant="secondary" size="small">
+					RED version V2
+				</DsButtonV3>
+				<DsStack direction="row" gap={8} alignItems="center">
+					<DsButtonV3 variant="secondary" size="small">
+						Import RED
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small">
+						Export RED
+					</DsButtonV3>
+					<DsButtonV3 size="small">Actions</DsButtonV3>
+				</DsStack>
+			</DsStack>
+		),
 	},
 };

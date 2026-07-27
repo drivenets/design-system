@@ -11,8 +11,8 @@ catalog:
   '@typescript/native': 'npm:typescript@^7.0.2'
   '@vitest/coverage-v8': ^4.1.10
   eslint: ^10.0.1
-  publint: ^0.3.21
-  tsdown: ^0.22.12
+  publint: ^0.3.22
+  tsdown: ^0.22.14
   typescript: 'npm:@typescript/typescript6'
   vitest: ^4.1.10
 

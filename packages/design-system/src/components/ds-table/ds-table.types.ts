@@ -229,6 +229,12 @@ export interface DsDataTableProps<TData, TValue> {
 	data: TData[];
 
 	/**
+	 * Optional content rendered in a pinned controls bar above the table header
+	 * (e.g. filters, action buttons). Layout is owned by the consumer.
+	 */
+	controls?: React.ReactNode;
+
+	/**
 	 * Whether the table is virtualized
 	 * @default false
 	 */

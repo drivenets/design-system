@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import DsCheckbox from './ds-checkbox';
+import { DsCheckbox } from './index';
 import { DsCheckboxGroup, useCheckboxSelectAll } from '../ds-checkbox-group';
 import { DsStack } from '../ds-stack';
 import { checkboxVariants } from './ds-checkbox.types';
-import styles from './ds-checkbox.stories.module.scss';
 
 const meta: Meta<typeof DsCheckbox> = {
 	title: 'Components/Checkbox',
@@ -14,8 +13,8 @@ const meta: Meta<typeof DsCheckbox> = {
 	},
 	argTypes: {
 		variant: {
+			control: 'select',
 			options: checkboxVariants,
-			control: 'radio',
 		},
 		checked: {
 			control: 'radio',
@@ -38,8 +37,12 @@ const meta: Meta<typeof DsCheckbox> = {
 			description: 'Disables the checkbox, preventing user interaction',
 		},
 		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
+			table: { disable: true },
+			control: false,
+		},
+		style: {
+			table: { disable: true },
+			control: false,
 		},
 	},
 };
@@ -47,32 +50,65 @@ const meta: Meta<typeof DsCheckbox> = {
 export default meta;
 type Story = StoryObj<typeof DsCheckbox>;
 
-const label = 'Text for label';
-const labelInfo = 'Text for info';
-const frameworkItems = [
-	{ label: 'React', value: 'react' },
-	{ label: 'Solid', value: 'solid' },
-	{ label: 'Vue', value: 'vue' },
-];
-
-const frameworkValues = frameworkItems.map((item) => item.value);
-
+/**
+ * Standalone checkbox with a primary label and supporting info text. Omit
+ * `checked` for uncontrolled usage; pair with `onCheckedChange` when the
+ * parent owns state.
+ */
 export const Default: Story = {
 	args: {
-		label,
-		labelInfo,
-		className: 'custom-checkbox',
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
 	},
 };
 
+/**
+ * Controlled checkbox where the parent holds `checked` and updates it via
+ * `onCheckedChange`. Use this pattern for forms and settings that sync with
+ * external state.
+ */
+export const Controlled: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const [checked, setChecked] = useState(false);
+
+		return (
+			<DsCheckbox
+				label="Enable notifications"
+				labelInfo="Receive email updates"
+				checked={checked}
+				onCheckedChange={(newState) => {
+					if (typeof newState === 'boolean') {
+						setChecked(newState);
+					}
+				}}
+			/>
+		);
+	},
+};
+
+/**
+ * Controlled checkbox in indeterminate state. Use when a parent represents a
+ * partial selection, such as a "select all" row with only some children
+ * checked.
+ */
 export const Indeterminate: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
 
 		return (
 			<DsCheckbox
-				label={label}
-				labelInfo={labelInfo}
+				label="Enable notifications"
+				labelInfo="Receive email updates"
 				checked={checked}
 				onCheckedChange={(newState) => setChecked(newState)}
 			/>
@@ -80,48 +116,83 @@ export const Indeterminate: Story = {
 	},
 };
 
+/**
+ * Disabled checkbox that cannot be interacted with. Combine with `checked` or
+ * `checked="indeterminate"` to show how each visual state appears when inactive.
+ */
 export const Disabled: Story = {
+	args: {
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
+		disabled: true,
+		checked: true,
+	},
+};
+
+export const DisabledStates: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: {
+			canvas: { sourceState: 'none' },
+		},
+	},
 	render: () => (
 		<DsStack gap="var(--3xs)">
-			<DsCheckbox label={label} labelInfo={labelInfo} disabled />
-			<DsCheckbox label={label} labelInfo={labelInfo} disabled checked />
-			<DsCheckbox label={label} labelInfo={labelInfo} disabled checked="indeterminate" />
+			<DsCheckbox label="Enable notifications" labelInfo="Receive email updates" disabled />
+			<DsCheckbox label="Enable notifications" labelInfo="Receive email updates" disabled checked />
+			<DsCheckbox
+				label="Enable notifications"
+				labelInfo="Receive email updates"
+				disabled
+				checked="indeterminate"
+			/>
 		</DsStack>
 	),
 };
 
+/**
+ * Read-only checkbox displays its state without allowing user changes. Use when
+ * the value is informational and must not be toggled inline.
+ */
 export const ReadOnly: Story = {
 	args: {
-		label,
-		labelInfo,
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
 		readOnly: true,
 		checked: true,
 	},
 };
 
+/**
+ * Warning variant for checkboxes that need elevated visual attention, such as
+ * destructive or high-impact opt-ins.
+ */
 export const Warning: Story = {
 	args: {
 		variant: 'warning',
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
 	},
 };
 
-export const WarningWithLabel: Story = {
-	args: {
-		variant: 'warning',
-		label,
-		labelInfo,
-	},
-};
-
+/**
+ * Warning variant in a controlled indeterminate state for partial selections
+ * that also need elevated visual attention.
+ */
 export const WarningIndeterminate: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [checked, setChecked] = useState<boolean | 'indeterminate'>('indeterminate');
 
 		return (
 			<DsCheckbox
 				variant="warning"
-				label={label}
-				labelInfo={labelInfo}
+				label="Enable notifications"
+				labelInfo="Receive email updates"
 				checked={checked}
 				onCheckedChange={(newState) => setChecked(newState)}
 			/>
@@ -129,77 +200,64 @@ export const WarningIndeterminate: Story = {
 	},
 };
 
+/**
+ * Multi-select checkbox group. Compose `DsCheckbox` children inside
+ * `DsCheckboxGroup`, pass each item a `value`, and control selection with
+ * `value` / `onValueChange` on the group.
+ */
 export const Group: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
-		const [vertical, setVertical] = useState<string[]>(['react']);
-		const [horizontal, setHorizontal] = useState<string[]>(['react']);
+		const [value, setValue] = useState<string[]>(['react']);
+		const frameworkItems = [
+			{ label: 'React', value: 'react' },
+			{ label: 'Solid', value: 'solid' },
+			{ label: 'Vue', value: 'vue' },
+		];
 
 		return (
-			<DsStack gap="var(--3xs)">
-				<DsStack gap="var(--3xs)">
-					<strong>Vertical</strong>
-					<output className={styles.output}>Selected: {vertical.join(', ')}</output>
-					<DsCheckboxGroup
-						orientation="vertical"
-						value={vertical}
-						onValueChange={setVertical}
-						name="framework-vertical"
-					>
-						{frameworkItems.map((item) => (
-							<DsCheckbox
-								key={item.value}
-								label={item.label}
-								value={item.value}
-								className={styles.groupItem}
-							/>
-						))}
-					</DsCheckboxGroup>
-				</DsStack>
-
-				<DsStack gap="var(--3xs)">
-					<strong>Horizontal</strong>
-					<output className={styles.output}>Selected: {horizontal.join(', ')}</output>
-					<DsCheckboxGroup
-						orientation="horizontal"
-						value={horizontal}
-						onValueChange={setHorizontal}
-						name="framework-horizontal"
-					>
-						{frameworkItems.map((item) => (
-							<DsCheckbox
-								key={item.value}
-								label={item.label}
-								value={item.value}
-								className={styles.groupItem}
-							/>
-						))}
-					</DsCheckboxGroup>
-				</DsStack>
-			</DsStack>
+			<DsCheckboxGroup orientation="vertical" value={value} onValueChange={setValue} name="framework">
+				{frameworkItems.map((item) => (
+					<DsCheckbox key={item.value} label={item.label} value={item.value} />
+				))}
+			</DsCheckboxGroup>
 		);
 	},
 };
 
+/**
+ * Select-all pattern for a checkbox group. Use `useCheckboxSelectAll` from
+ * `ds-checkbox-group` to derive the parent checkbox state and toggle every item.
+ */
 export const SelectAll: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [value, setValue] = useState<string[]>([]);
+		const frameworkItems = [
+			{ label: 'React', value: 'react' },
+			{ label: 'Solid', value: 'solid' },
+			{ label: 'Vue', value: 'vue' },
+		];
 		const { selectAllState, onSelectAllChange } = useCheckboxSelectAll({
 			value,
-			allValues: frameworkValues,
+			allValues: frameworkItems.map((item) => item.value),
 			onValueChange: setValue,
 		});
 
 		return (
 			<DsStack gap="var(--3xs)">
 				<DsCheckbox label="Select all" checked={selectAllState} onCheckedChange={onSelectAllChange} />
-				<DsCheckboxGroup
-					className={styles.groupIndented}
-					value={value}
-					onValueChange={setValue}
-					name="framework"
-				>
+				<DsCheckboxGroup value={value} onValueChange={setValue} name="framework">
 					{frameworkItems.map((item) => (
-						<DsCheckbox key={item.value} label={item.label} value={item.value} className={styles.groupItem} />
+						<DsCheckbox key={item.value} label={item.label} value={item.value} />
 					))}
 				</DsCheckboxGroup>
 			</DsStack>

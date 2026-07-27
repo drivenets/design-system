@@ -1,5 +1,24 @@
 # @drivenets/design-system
 
+## 0.16.0
+
+### Minor Changes
+
+- 3f14f7f: Add `DsSiteNode` component
+- 2348729: add code connect for `DsDrawer`, `DsDropdownMenu`, `DsPanel`, `DsPopover`, `DsToast`, `DsTooltip`
+- c6f9521: Remove deprecated tokens
+- c8cba46: Add text ellipsis props (`truncate`, `tooltip`, `tooltipContent`) to `DsTypography`
+- 702c564: Migrate `DsTooltip` from Radix to Ark UI and add `placement`, `disabled`, and `getAnchorRect` props (with `TooltipPlacement` / `TooltipAnchorRect` types) for virtual anchor positioning
+
+### Patch Changes
+
+- a2f02db: fix `anchorRef` prop type in `DsDialog` component
+- 44e9a51: Add Code Connect to `DsDivider`, `DsAvatarGroup`, `DsAvatar`, `DsBreadcrumb`, `DsKeyValuePair`, `DsStepper`
+- 0aaa7db: Add `DsUserCard` — an avatar + name/subtitle identity header.
+  Add an `align` prop (`'end' | 'stretch'`) to `DsDropdownMenu.Actions` so one slot covers both the right-aligned button row and full-width footer actions like logout.
+- 5a0f7a5: re-export `createColumnHelper` and the `ColumnDef` type from `@tanstack/react-table`
+- d6c114b: sync tokens with Figma variables
+
 ## 0.15.0
 
 ### Minor Changes

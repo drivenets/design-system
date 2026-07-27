@@ -7,7 +7,11 @@ import { DsTooltip } from '../ds-tooltip';
 import { DsTypography } from '../ds-typography';
 
 /**
- * DsAvatarGroup component for displaying a list of avatars with overlap
+ * @summary Overlapping avatars with overflow collapse and tooltip.
+ *
+ * Renders a row of {@link DsAvatar} members that share `size` and `type`. When
+ * `avatars.length` exceeds `max`, the remainder collapse behind a `+N`
+ * indicator; hovering it lists the hidden names in a tooltip.
  */
 export const DsAvatarGroup: FC<DsAvatarGroupProps> = ({
 	avatars,

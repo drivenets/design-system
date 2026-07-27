@@ -2,7 +2,9 @@ import type { DsAvatarProps, DsAvatarSize, DsAvatarType } from '../ds-avatar';
 
 export interface DsAvatarGroupProps {
 	/**
-	 * Array of avatar items
+	 * Avatar items to display. Each item accepts `DsAvatar` props except `size`
+	 * and `type`, which are set on the group. `name` is required; `src` and `alt`
+	 * are optional — without `src`, initials are shown per `DsAvatar`.
 	 */
 	avatars: Omit<DsAvatarProps, 'size' | 'type'>[];
 	/**

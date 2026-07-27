@@ -216,6 +216,8 @@
 	/* Mode 1 */
 	/* color */
 	--at-t-brand: #00a8e0;
+	--blue-light-1: #e9eefc;
+	--blue-light2: #d6e2ff;
 	--net-gen-1: #2f34c6;
 	--net-gen-2: #292b7f;
 	--net-gen-hover-1: #25299b;
@@ -225,6 +227,10 @@
 	--net-gen-logo-light-grey: var(--color-dap-gray-500);
 	--net-gen-logo-ultramarine-blue: var(--color-dap-blue-700);
 	--nokia-brand: #005aff;
+	--violet-bg1: #001b48;
+	--violet-bg2: #312e81;
+	--violet-tr1: #1e59d766;
+	--violet-tr2: #001b4829;
 	--background: var(--color-dap-gray-050);
 	--background-action: var(--color-dap-brand-500);
 	--background-action-hover: var(--color-dap-brand-600);
@@ -241,9 +247,14 @@
 	--background-disable: var(--color-dap-gray-300);
 	--background-error: var(--color-dap-red-400);
 	--background-error-hover: var(--color-dap-red-500);
+	--background-error-secondary-active: var(--color-dap-red-100);
 	--background-error-secondary-hover: var(--color-dap-red-050);
 	--background-error-secondary-selected: var(--color-dap-red-100);
 	--background-error-selected: var(--color-dap-red-600);
+	--background-error-subtle: var(--color-dap-gray-050);
+	--background-error-subtle-active: var(--color-dap-red-100);
+	--background-error-subtle-disabled: var(--color-dap-gray-100);
+	--background-error-subtle-hover: var(--color-dap-red-050);
 	--background-execution: #daf4f5;
 	--background-info: var(--color-dap-blue-050);
 	--background-info-strong: var(--color-dap-blue-800);
@@ -253,6 +264,9 @@
 	--background-light-primary-hover: var(--color-dap-dark-blue-200);
 	--background-light-primary-selected: var(--color-dap-dark-blue-150);
 	--background-light-secondary-selected: var(--color-dap-dark-blue-400);
+	--background-light-subtle: var(--color-dap-blue-600);
+	--background-light-subtle-active: var(--color-dap-blue-400);
+	--background-light-subtle-hover: var(--color-dap-blue-500);
 	--background-neutral: var(--color-dap-gray-600);
 	--background-overlay: #001a4733;
 	--background-page: var(--color-dap-gray-100);
@@ -260,9 +274,15 @@
 	--background-primary: var(--color-dap-blue-700);
 	--background-primary-hover: var(--color-dap-blue-800);
 	--background-primary-selected: var(--color-dap-blue-900);
+	--background-primary-subtle: var(--color-dap-gray-050);
+	--background-primary-subtle-active: var(--color-dap-blue-100);
+	--background-primary-subtle-disabled: var(--color-dap-gray-100);
+	--background-primary-subtle-hover: var(--color-dap-blue-050);
 	--background-secondary: var(--color-dap-gray-100);
 	--background-secondary-hover: var(--color-dap-blue-050);
 	--background-secondary-selected-weak: var(--color-dap-gray-100);
+	--background-secondary-subtle-light-active: var(--color-dap-blue-400);
+	--background-secondary-subtle-light-hover: var(--color-dap-blue-500);
 	--background-success: var(--color-dap-green-075);
 	--background-success-medium: var(--color-dap-green-500);
 	--background-success-strong: var(--color-dap-green-600);
@@ -282,11 +302,13 @@
 	--border-disabled: var(--color-dap-gray-300);
 	--border-error: var(--color-dap-red-400);
 	--border-error-hover: var(--color-dap-red-500);
+	--border-error-medium: var(--color-dap-red-200);
 	--border-error-weak: var(--color-dap-red-100);
 	--border-field: var(--color-dap-gray-200);
 	--border-field-focus: var(--color-dap-blue-700);
 	--border-field-hover: var(--color-dap-brand-600);
 	--border-inverse: var(--color-dap-gray-050);
+	--border-light: var(--color-dap-blue-400);
 	--border-light-disabled: #415b9a;
 	--border-light-secondary: var(--color-dap-dark-blue-100);
 	--border-secondary: var(--color-dap-gray-200);
@@ -357,6 +379,9 @@
 	--outline-strong: var(--color-dap-brand-500);
 	--outline-weak: var(--color-dap-blue-300);
 	--primary-green: #93c020;
+	--radial-1-1: #014bfd;
+	--radial-1-2: #0a3cc2;
+	--radial-1-3: #152a7e;
 	--schema-amber: var(--color-dap-data-amber);
 	--schema-blue: var(--color-dap-data-blue);
 	--schema-deep-fuchsia: var(--color-dap-data-deep-fuchsia);
@@ -448,4 +473,5 @@
 	/* string */
 	--font-family-base: Roboto;
 	--font-family-code: Fira Mono;
+	--font-family-heading: Roboto;
 }
