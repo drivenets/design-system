@@ -193,7 +193,7 @@ export const FullMessage: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button');
+		const card = canvas.getByRole('button', { name: /Comment #/i });
 		const commentText = canvas.getByText(/resource allocation/);
 
 		await expect(card).toBeInTheDocument();
@@ -222,7 +222,7 @@ export const SingleMessage: Story = {
 	},
 	play: async ({ canvasElement }) => {
 		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button');
+		const card = canvas.getByRole('button', { name: /Comment #/i });
 		const commentText = canvas.getByText(/This is a short single message comment/);
 
 		await expect(card).toBeInTheDocument();
