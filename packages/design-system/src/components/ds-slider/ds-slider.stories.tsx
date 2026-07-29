@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import DsSlider from './ds-slider';
+import { DsSlider } from './index';
 import { sliderSizes, sliderTypes, type DsSliderValue } from './ds-slider.types';
 
 const meta: Meta<typeof DsSlider> = {

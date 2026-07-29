@@ -3,15 +3,8 @@ import classNames from 'classnames';
 import { useControlled } from '../../utils/use-controlled';
 import { DsTypography } from '../ds-typography';
 import type { DsSliderProps, DsSliderValue } from './ds-slider.types';
+import { toArray } from './ds-slider.utils';
 import styles from './ds-slider.module.scss';
-
-const toArray = (value: DsSliderValue | undefined): number[] | undefined => {
-	if (value === undefined) {
-		return undefined;
-	}
-
-	return Array.isArray(value) ? value : [value];
-};
 
 /**
  * @summary Selects a numeric value or a numeric interval by dragging thumbs along a track.

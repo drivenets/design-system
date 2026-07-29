@@ -37,6 +37,7 @@ export type DsSliderProps = {
 
 	/**
 	 * Drives thumb and track sizing together (S/M/L → 16/20/24px thumb, 2/4/8px track).
+	 * Accepts a responsive value (e.g. `{ md: 'small', lg: 'medium' }`).
 	 * @default 'medium'
 	 */
 	size?: DsSliderSize;
@@ -55,6 +56,7 @@ export type DsSliderProps = {
 
 	/**
 	 * Granularity that the value snaps to. Must be greater than 0.
+	 * Accepts a responsive value (e.g. `{ md: 5, lg: 1 }`).
 	 * @default 1
 	 */
 	step?: number;
@@ -78,6 +80,7 @@ export type DsSliderProps = {
 
 	/**
 	 * Accessible name per thumb. Required for `type="range"` (e.g. `['Minimum', 'Maximum']`).
+	 * Accepts a responsive value (e.g. `{ md: ['Min', 'Max'], lg: ['Minimum', 'Maximum'] }`).
 	 */
 	thumbLabels?: string[];
 

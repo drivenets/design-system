@@ -5,6 +5,8 @@
 	--ds-slider-thumb-border-active: 4px;
 	--ds-slider-track-height: 4px;
 	--ds-slider-focus-ring: 3px;
+	--ds-slider-radius: 9999px;
+	--ds-slider-transition: 0.2s;
 
 	display: flex;
 	flex-direction: column;
@@ -63,13 +65,13 @@
 	flex: 1;
 	height: var(--ds-slider-track-height);
 	background: var(--background-secondary-hover);
-	border-radius: 9999px;
+	border-radius: var(--ds-slider-radius);
 }
 
 .range {
 	height: 100%;
 	background: var(--background-primary);
-	border-radius: 9999px;
+	border-radius: var(--ds-slider-radius);
 }
 
 .thumb {
@@ -78,15 +80,15 @@
 	height: var(--ds-slider-thumb-size);
 	background: var(--background);
 	border: var(--ds-slider-thumb-border) solid var(--background-primary);
-	border-radius: 9999px;
+	border-radius: var(--ds-slider-radius);
 	outline: none;
 	cursor: pointer;
 	transition:
-		width 0.2s,
-		height 0.2s,
-		border-width 0.2s,
-		border-color 0.2s,
-		box-shadow 0.2s;
+		width var(--ds-slider-transition),
+		height var(--ds-slider-transition),
+		border-width var(--ds-slider-transition),
+		border-color var(--ds-slider-transition),
+		box-shadow var(--ds-slider-transition);
 
 	&:not([data-disabled]):hover,
 	&:focus-visible {
