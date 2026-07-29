@@ -19,7 +19,7 @@ export const DsTableEditCellText = <TData extends RowData>({
 	placeholder,
 	maxLength,
 }: DsTableEditCellTextProps<TData>) => {
-	const { value, setValue, error } = useCellEditor<TData, string>({
+	const { value, setValue, error, isPending } = useCellEditor<TData, string>({
 		cellContext,
 	});
 
@@ -42,6 +42,7 @@ export const DsTableEditCellText = <TData extends RowData>({
 				value={value}
 				placeholder={placeholder}
 				maxLength={maxLength}
+				disabled={isPending}
 				onValueChange={setValue}
 				slots={error ? { endAdornment: <DsIcon icon="error" size="tiny" /> } : undefined}
 			/>

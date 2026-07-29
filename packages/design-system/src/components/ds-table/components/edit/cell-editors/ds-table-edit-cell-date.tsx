@@ -22,7 +22,7 @@ export const DsTableEditCellDate = <TData extends RowData>({
 	max,
 	placeholder,
 }: DsTableEditCellDateProps<TData>) => {
-	const { value, setValue, error } = useCellEditor<TData, DsTableEditCellDateValue>({
+	const { value, setValue, error, isPending } = useCellEditor<TData, DsTableEditCellDateValue>({
 		cellContext,
 	});
 
@@ -34,6 +34,7 @@ export const DsTableEditCellDate = <TData extends RowData>({
 				min={min}
 				max={max}
 				placeholder={placeholder}
+				disabled={isPending}
 				onChange={setValue}
 				slotProps={
 					error

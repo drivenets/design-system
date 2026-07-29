@@ -54,28 +54,6 @@ export const Editable: Story = {
 			complicated: 'Complicated',
 		};
 
-		const personSchema = z
-			.object({
-				firstName: z.string().trim().min(1, 'First name is required').max(50, 'Max 50 characters'),
-				lastName: z.string().trim().min(1, 'Last name is required').max(50, 'Max 50 characters'),
-				age: z.number().int('Whole number only').min(18, 'Must be ≥ 18').max(120, 'Must be ≤ 120'),
-				visits: z.number().int('Whole number only').min(0, 'Must be ≥ 0').max(10_000, 'Must be ≤ 10000'),
-				status: z.enum(['single', 'relationship', 'complicated']),
-				progress: z.number().int('Whole number only').min(0, 'Must be ≥ 0').max(100, 'Must be ≤ 100'),
-			})
-			.refine((row) => !(row.status === 'complicated' && row.progress === 100), {
-				path: ['progress'],
-				message: 'A complicated profile can’t be 100% complete',
-			});
-
-		const validateField = (columnId: keyof Person, value: unknown, row: Person): string | null => {
-			const result = personSchema.safeParse({ ...row, [columnId]: value });
-			if (result.success) {
-				return null;
-			}
-			return result.error.issues.find((issue) => issue.path[0] === columnId)?.message ?? null;
-		};
-
 		const progressPresets = [25, 50, 75, 100];
 
 		const ProgressEditor = ({ cellContext }: { cellContext: CellContext<Person, number> }) => {
@@ -179,8 +157,151 @@ export const Editable: Story = {
 				onRowClick={fn()}
 				primaryRowActions={[{ icon: 'delete_outline', label: 'Delete', onClick: fn() }]}
 				secondaryRowActions={[{ icon: 'info', label: 'Details', onClick: fn() }]}
-				onCellValidate={(row, columnId, value) => validateField(columnId as keyof Person, value, row)}
 				onCellEdit={(row, columnId, value) => {
+					setData((rows) =>
+						rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
+					);
+				}}
+			/>
+		);
+	},
+};
+
+/**
+ * `onCellValidate` runs synchronously on every keystroke. It shows an inline error
+ * and disables the Confirm button until the value is valid.
+ *
+ * Try clearing the first name to see the error appear as you type.
+ */
+export const LiveValidation: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const [data, setData] = useState(defaultData);
+
+		const personSchema = z.object({
+			firstName: z.string().trim().min(1, 'First name is required').max(50, 'Max 50 characters'),
+			lastName: z.string().trim().min(1, 'Last name is required').max(50, 'Max 50 characters'),
+		});
+
+		const validateField = (columnId: string, value: unknown): string | null => {
+			const shape: Record<string, z.ZodTypeAny | undefined> = personSchema.shape;
+			const fieldSchema = shape[columnId];
+			if (!fieldSchema) {
+				return null;
+			}
+			const result = fieldSchema.safeParse(value);
+			return result.success ? null : (result.error.issues[0]?.message ?? null);
+		};
+
+		const columns: ColumnDef<Person>[] = [
+			{
+				accessorKey: 'id',
+				header: 'ID',
+				size: 60,
+				cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,
+			},
+			{
+				accessorKey: 'firstName',
+				header: 'First Name',
+				cell: (info) => info.getValue(),
+				editCell: (info: CellContext<Person, string>) => (
+					<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+				),
+			},
+			{
+				accessorKey: 'lastName',
+				header: 'Last Name',
+				cell: (info) => info.getValue(),
+				editCell: (info: CellContext<Person, string>) => (
+					<DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+				),
+			},
+		];
+
+		return (
+			<DsTable
+				{...args}
+				data={data}
+				columns={columns}
+				onCellValidate={(_row, columnId, value) => validateField(columnId, value)}
+				onCellEdit={(row, columnId, value) => {
+					setData((rows) =>
+						rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
+					);
+				}}
+			/>
+		);
+	},
+};
+
+/**
+ * `onCellEdit` may be async: save inside it, resolve to an error `string` to keep
+ * the cell open or `void`/`null` to commit. The editor locks while saving, and
+ * `signal` aborts if you Cancel/Escape. Try `taken` to see a server-side rejection.
+ */
+export const ValidateOnAsyncSave: Story = {
+	name: 'Validate on Async Save',
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const [data, setData] = useState(defaultData);
+
+		const saveFirstName = (value: string, signal: AbortSignal): Promise<string | null> =>
+			new Promise((resolve, reject) => {
+				const timeout = setTimeout(() => {
+					const trimmed = value.trim();
+					if (trimmed.length === 0) {
+						resolve('First name is required');
+						return;
+					}
+					if (trimmed.toLowerCase() === 'taken') {
+						resolve('This name is already taken');
+						return;
+					}
+					resolve(null);
+				}, 900);
+
+				signal.addEventListener('abort', () => {
+					clearTimeout(timeout);
+					reject(new DOMException('Aborted', 'AbortError'));
+				});
+			});
+
+		const columns: ColumnDef<Person>[] = [
+			{
+				accessorKey: 'id',
+				header: 'ID',
+				size: 60,
+				cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,
+			},
+			{
+				accessorKey: 'firstName',
+				header: 'First Name',
+				cell: (info) => info.getValue(),
+				editCell: (info: CellContext<Person, string>) => (
+					<DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+				),
+			},
+			{
+				accessorKey: 'lastName',
+				header: 'Last Name',
+				cell: (info) => info.getValue(),
+			},
+		];
+
+		return (
+			<DsTable
+				{...args}
+				data={data}
+				columns={columns}
+				onCellEdit={async (row, columnId, value, signal) => {
+					const error = await saveFirstName(value as string, signal);
+					if (error !== null) {
+						return error;
+					}
 					setData((rows) =>
 						rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
 					);

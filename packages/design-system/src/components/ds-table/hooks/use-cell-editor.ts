@@ -19,8 +19,10 @@ export interface UseCellEditorContainerProps {
 export interface UseCellEditorResult<TValue> {
 	/** The in-progress draft value for the active editor. */
 	value: TValue;
-	/** Validation error from the most recent commit attempt, if any. */
+	/** Current validation error — from live `onCellValidate` or the most recent commit attempt, if any. */
 	error: string | null;
+	/** True while an async `onCellEdit` commit Promise is pending for this cell. */
+	isPending: boolean;
 	/** Update the in-progress draft value. */
 	setValue: (value: TValue) => void;
 	/** Validate and commit the draft. */
@@ -48,6 +50,7 @@ export const useCellEditor = <TData extends RowData, TValue>({
 		ctx.editing !== null && ctx.editing.cell.row.id === row.id && ctx.editing.cell.column.id === column.id;
 	const value = isActiveCell && ctx.editing ? ctx.editing.draftValue : getValue();
 	const error = isActiveCell && ctx.editing ? ctx.editing.error : null;
+	const isPending = isActiveCell && ctx.editing ? ctx.editing.pending : false;
 
 	const setValue = (next: TValue) => {
 		ctx.setDraft(next);
@@ -68,6 +71,7 @@ export const useCellEditor = <TData extends RowData, TValue>({
 	return {
 		value,
 		error,
+		isPending,
 		setValue,
 		commit,
 		cancel,
