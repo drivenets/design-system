@@ -13,7 +13,7 @@ import { DsTypography } from '../ds-typography';
  * Supports custom header, footer, and body content with grid-based sizing.
  * Use columns prop to control modal width (1-12 grid columns).
  */
-const DsModal = ({
+const DsModalRoot = ({
 	open,
 	columns = 6,
 	dividers = false,
@@ -145,13 +145,14 @@ Body.displayName = 'DsModal.Body';
 Footer.displayName = 'DsModal.Footer';
 Actions.displayName = 'DsModal.Actions';
 
-DsModal.Header = Header;
-DsModal.Title = Title;
-DsModal.CloseTrigger = CloseTrigger;
-DsModal.Body = Body;
-DsModal.Footer = Footer;
-DsModal.Actions = Actions;
-
-DsModal.displayName = 'DsModal';
+const DsModal = Object.assign(DsModalRoot, {
+	displayName: 'DsModal',
+	Header,
+	Title,
+	CloseTrigger,
+	Body,
+	Footer,
+	Actions,
+});
 
 export default DsModal;

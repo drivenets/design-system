@@ -9,7 +9,7 @@ import { DsTypography } from '../ds-typography';
 import { useArkDialogBodyLockCleanup } from '../../utils/use-ark-dialog-body-lock-cleanup';
 import { useResponsiveValue } from '../../utils/responsive';
 
-const DsDrawer = ({
+const DsDrawerRoot = ({
 	open,
 	onOpenChange,
 	onOpenAutoFocus,
@@ -178,14 +178,15 @@ Body.displayName = 'DsDrawer.Body';
 Footer.displayName = 'DsDrawer.Footer';
 Actions.displayName = 'DsDrawer.Actions';
 
-DsDrawer.Header = Header;
-DsDrawer.Title = Title;
-DsDrawer.CloseTrigger = CloseTrigger;
-DsDrawer.Toolbar = Toolbar;
-DsDrawer.Body = Body;
-DsDrawer.Footer = Footer;
-DsDrawer.Actions = Actions;
-
-DsDrawer.displayName = 'DsDrawer';
+const DsDrawer = Object.assign(DsDrawerRoot, {
+	displayName: 'DsDrawer',
+	Header,
+	Title,
+	CloseTrigger,
+	Toolbar,
+	Body,
+	Footer,
+	Actions,
+});
 
 export default DsDrawer;

@@ -12,7 +12,7 @@ import { DsTypography } from '../ds-typography';
  * severity variants, an optional icon, and an optional close button. Compose the
  * content with `DsAlertBanner.Title`, `DsAlertBanner.Body`, and `DsAlertBanner.Actions`.
  */
-const DsAlertBanner = ({
+const DsAlertBannerRoot = ({
 	open,
 	onOpenChange,
 	inline = false,
@@ -115,10 +115,11 @@ Title.displayName = 'DsAlertBanner.Title';
 Body.displayName = 'DsAlertBanner.Body';
 Actions.displayName = 'DsAlertBanner.Actions';
 
-DsAlertBanner.Title = Title;
-DsAlertBanner.Body = Body;
-DsAlertBanner.Actions = Actions;
-
-DsAlertBanner.displayName = 'DsAlertBanner';
+const DsAlertBanner = Object.assign(DsAlertBannerRoot, {
+	displayName: 'DsAlertBanner',
+	Title,
+	Body,
+	Actions,
+});
 
 export default DsAlertBanner;

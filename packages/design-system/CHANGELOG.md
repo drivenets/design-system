@@ -1,5 +1,18 @@
 # @drivenets/design-system
 
+## 0.17.0
+
+### Minor Changes
+
+- 8b835ec: `DsTree.Root`: expose `focusedValue`, `defaultFocusedValue`, and `onFocusChange` so consumers can control which node holds keyboard focus.
+
+### Patch Changes
+
+- 2aa3a9a: Add optional `controls` prop and make header background grey in `DsTable`.
+- 70aebb1: Update dependencies
+- f0e35ba: Fix `.d.ts` issues due to TS 7 changes in https://github.com/microsoft/typescript-go/issues/3970
+- 81252b2: Fix `DsFormControl.NumberInput` not forwarding `id` to the underlying input.
+
 ## 0.16.0
 
 ### Minor Changes

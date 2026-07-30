@@ -19,7 +19,7 @@ const DEFAULT_LOCALE = Object.freeze({
 	unpinButtonLabel: 'Unpin side menu',
 });
 
-const DsWorkspaceLayout = ({ className, fillParent = false, ...rest }: DsWorkspaceLayoutProps) => {
+const DsWorkspaceLayoutRoot = ({ className, fillParent = false, ...rest }: DsWorkspaceLayoutProps) => {
 	const [hasLeftSidePanel, setHasLeftSidePanel] = useState(false);
 
 	const registerLeftSidePanel = useCallback(() => setHasLeftSidePanel(true), []);
@@ -132,14 +132,15 @@ Body.displayName = 'DsWorkspaceLayout.Body';
 SideMenu.displayName = 'DsWorkspaceLayout.SideMenu';
 LeftPanel.displayName = 'DsWorkspaceLayout.LeftPanel';
 
-DsWorkspaceLayout.Header = Header;
-DsWorkspaceLayout.SubHeader = SubHeader;
-DsWorkspaceLayout.Content = Content;
-DsWorkspaceLayout.Footer = Footer;
-DsWorkspaceLayout.Body = Body;
-DsWorkspaceLayout.SideMenu = SideMenu;
-DsWorkspaceLayout.LeftPanel = LeftPanel;
-
-DsWorkspaceLayout.displayName = 'DsWorkspaceLayout';
+const DsWorkspaceLayout = Object.assign(DsWorkspaceLayoutRoot, {
+	displayName: 'DsWorkspaceLayout',
+	Header,
+	SubHeader,
+	Content,
+	Footer,
+	Body,
+	SideMenu,
+	LeftPanel,
+});
 
 export default DsWorkspaceLayout;

@@ -41,7 +41,7 @@ const DsFormControlDescription: React.FC<DsFormControlDescriptionProps> = ({ chi
 	return <div className={classNames(styles.description, className)}>{children}</div>;
 };
 
-const DsFormControl = ({
+const DsFormControlRoot = ({
 	id,
 	status,
 	label,
@@ -96,18 +96,20 @@ const DsFormControl = ({
 	);
 };
 
-DsFormControl.TextInput = controlify(DsTextInput);
-DsFormControl.NumberInput = controlify(DsNumberInput);
-DsFormControl.PasswordInput = controlify(DsPasswordInput);
-/** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */
-DsFormControl.DateInput = controlify(DsDateInput);
-DsFormControl.DatePicker = controlify(DsDatePicker);
-DsFormControl.TimePicker = controlify(DsTimePicker);
-DsFormControl.Textarea = controlify(DsTextarea);
-DsFormControl.Select = controlify(DsSelect);
-DsFormControl.Description = DsFormControlDescription;
+DsFormControlDescription.displayName = 'DsFormControl.Description';
 
-DsFormControl.displayName = 'DsFormControl';
-DsFormControl.Description.displayName = 'DsFormControl.Description';
+const DsFormControl = Object.assign(DsFormControlRoot, {
+	displayName: 'DsFormControl',
+	TextInput: controlify(DsTextInput),
+	NumberInput: controlify(DsNumberInput),
+	PasswordInput: controlify(DsPasswordInput),
+	/** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */
+	DateInput: controlify(DsDateInput),
+	DatePicker: controlify(DsDatePicker),
+	TimePicker: controlify(DsTimePicker),
+	Textarea: controlify(DsTextarea),
+	Select: controlify(DsSelect),
+	Description: DsFormControlDescription,
+});
 
 export default DsFormControl;
