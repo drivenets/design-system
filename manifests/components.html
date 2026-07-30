@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">577 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">579 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.2s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -19480,53 +19480,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -19991,53 +19966,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -20508,53 +20458,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -20996,53 +20921,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -21494,53 +21394,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -21831,7 +21706,7 @@ zebra?: boolean</code></pre>
       <div class="badges">
         <label for="c-68-components-table-editable-props" class="badge ok as-toggle">40 prop types</label>
         
-        <label for="c-68-components-table-editable-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-68-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -22005,53 +21880,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -22254,28 +22104,6 @@ zebra?: boolean</code></pre>
         complicated: &#39;Complicated&#39;,
     };
 
-    const personSchema = z
-        .object({
-            firstName: z.string().trim().min(1, &#39;First name is required&#39;).max(50, &#39;Max 50 characters&#39;),
-            lastName: z.string().trim().min(1, &#39;Last name is required&#39;).max(50, &#39;Max 50 characters&#39;),
-            age: z.number().int(&#39;Whole number only&#39;).min(18, &#39;Must be ≥ 18&#39;).max(120, &#39;Must be ≤ 120&#39;),
-            visits: z.number().int(&#39;Whole number only&#39;).min(0, &#39;Must be ≥ 0&#39;).max(10_000, &#39;Must be ≤ 10000&#39;),
-            status: z.enum([&#39;single&#39;, &#39;relationship&#39;, &#39;complicated&#39;]),
-            progress: z.number().int(&#39;Whole number only&#39;).min(0, &#39;Must be ≥ 0&#39;).max(100, &#39;Must be ≤ 100&#39;),
-        })
-        .refine((row) =&gt; !(row.status === &#39;complicated&#39; &amp;&amp; row.progress === 100), {
-            path: [&#39;progress&#39;],
-            message: &#39;A complicated profile can’t be 100% complete&#39;,
-        });
-
-    const validateField = (columnId: keyof Person, value: unknown, row: Person): string | null =&gt; {
-        const result = personSchema.safeParse({ ...row, [columnId]: value });
-        if (result.success) {
-            return null;
-        }
-        return result.error.issues.find((issue) =&gt; issue.path[0] === columnId)?.message ?? null;
-    };
-
     const progressPresets = [25, 50, 75, 100];
 
     const ProgressEditor = ({ cellContext }: { cellContext: CellContext&lt;Person, number&gt; }) =&gt; {
@@ -22382,8 +22210,147 @@ zebra?: boolean</code></pre>
             onRowClick={fn()}
             primaryRowActions={[{ icon: &#39;delete_outline&#39;, label: &#39;Delete&#39;, onClick: fn() }]}
             secondaryRowActions={[{ icon: &#39;info&#39;, label: &#39;Details&#39;, onClick: fn() }]}
-            onCellValidate={(row, columnId, value) =&gt; validateField(columnId as keyof Person, value, row)}
             onCellEdit={(row, columnId, value) =&gt; {
+                setData((rows) =&gt;
+                    rows.map((person) =&gt; (person.id === row.id ? { ...person, [columnId]: value } : person)),
+                );
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Live Validation</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`onCellValidate` runs synchronously on every keystroke. It shows an inline error and disables the Confirm button until the value is valid. Try clearing the first name to see the error appear as you type.</div>
+              <pre><code>const LiveValidation = () =&gt; {
+    const [data, setData] = useState(defaultData);
+
+    const personSchema = z.object({
+        firstName: z.string().trim().min(1, &#39;First name is required&#39;).max(50, &#39;Max 50 characters&#39;),
+        lastName: z.string().trim().min(1, &#39;Last name is required&#39;).max(50, &#39;Max 50 characters&#39;),
+    });
+
+    const validateField = (columnId: string, value: unknown): string | null =&gt; {
+        const shape: Record&lt;string, z.ZodTypeAny | undefined&gt; = personSchema.shape;
+        const fieldSchema = shape[columnId];
+        if (!fieldSchema) {
+            return null;
+        }
+        const result = fieldSchema.safeParse(value);
+        return result.success ? null : (result.error.issues[0]?.message ?? null);
+    };
+
+    const columns: ColumnDef&lt;Person&gt;[] = [
+        {
+            accessorKey: &#39;id&#39;,
+            header: &#39;ID&#39;,
+            size: 60,
+            cell: (info) =&gt; &lt;span className={editableStyles.readOnlyCell}&gt;{info.getValue() as string}&lt;/span&gt;,
+        },
+        {
+            accessorKey: &#39;firstName&#39;,
+            header: &#39;First Name&#39;,
+            cell: (info) =&gt; info.getValue(),
+            editCell: (info: CellContext&lt;Person, string&gt;) =&gt; (
+                &lt;DsTableEditCellText cellContext={info} placeholder=&quot;Enter first name&quot; /&gt;
+            ),
+        },
+        {
+            accessorKey: &#39;lastName&#39;,
+            header: &#39;Last Name&#39;,
+            cell: (info) =&gt; info.getValue(),
+            editCell: (info: CellContext&lt;Person, string&gt;) =&gt; (
+                &lt;DsTableEditCellText cellContext={info} placeholder=&quot;Enter last name&quot; /&gt;
+            ),
+        },
+    ];
+
+    return (
+        &lt;DsTable
+            stickyHeader
+            bordered
+            fullWidth
+            emptyState={&lt;TableEmptyState /&gt;}
+            data={data}
+            columns={columns}
+            onCellValidate={(_row, columnId, value) =&gt; validateField(columnId, value)}
+            onCellEdit={(row, columnId, value) =&gt; {
+                setData((rows) =&gt;
+                    rows.map((person) =&gt; (person.id === row.id ? { ...person, [columnId]: value } : person)),
+                );
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Validate on Async Save</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`onCellEdit` may be async: save inside it, resolve to an error `string` to keep the cell open or `void`/`null` to commit. The editor locks while saving, and `signal` aborts if you Cancel/Escape. Try `taken` to see a server-side rejection.</div>
+              <pre><code>const ValidateOnAsyncSave = () =&gt; {
+    const [data, setData] = useState(defaultData);
+
+    const saveFirstName = (value: string, signal: AbortSignal): Promise&lt;string | null&gt; =&gt;
+        new Promise((resolve, reject) =&gt; {
+            const timeout = setTimeout(() =&gt; {
+                const trimmed = value.trim();
+                if (trimmed.length === 0) {
+                    resolve(&#39;First name is required&#39;);
+                    return;
+                }
+                if (trimmed.toLowerCase() === &#39;taken&#39;) {
+                    resolve(&#39;This name is already taken&#39;);
+                    return;
+                }
+                resolve(null);
+            }, 900);
+
+            signal.addEventListener(&#39;abort&#39;, () =&gt; {
+                clearTimeout(timeout);
+                reject(new DOMException(&#39;Aborted&#39;, &#39;AbortError&#39;));
+            });
+        });
+
+    const columns: ColumnDef&lt;Person&gt;[] = [
+        {
+            accessorKey: &#39;id&#39;,
+            header: &#39;ID&#39;,
+            size: 60,
+            cell: (info) =&gt; &lt;span className={editableStyles.readOnlyCell}&gt;{info.getValue() as string}&lt;/span&gt;,
+        },
+        {
+            accessorKey: &#39;firstName&#39;,
+            header: &#39;First Name&#39;,
+            cell: (info) =&gt; info.getValue(),
+            editCell: (info: CellContext&lt;Person, string&gt;) =&gt; (
+                &lt;DsTableEditCellText cellContext={info} placeholder=&quot;Enter first name&quot; /&gt;
+            ),
+        },
+        {
+            accessorKey: &#39;lastName&#39;,
+            header: &#39;Last Name&#39;,
+            cell: (info) =&gt; info.getValue(),
+        },
+    ];
+
+    return (
+        &lt;DsTable
+            stickyHeader
+            bordered
+            fullWidth
+            emptyState={&lt;TableEmptyState /&gt;}
+            data={data}
+            columns={columns}
+            onCellEdit={async (row, columnId, value, signal) =&gt; {
+                const error = await saveFirstName(value as string, signal);
+                if (error !== null) {
+                    return error;
+                }
                 setData((rows) =&gt;
                     rows.map((person) =&gt; (person.id === row.id ? { ...person, [columnId]: value } : person)),
                 );
@@ -22584,53 +22551,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -23134,53 +23076,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -23562,53 +23479,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -24187,53 +24079,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
@@ -24744,53 +24611,28 @@ loading?: boolean = false
 locale?: Partial&lt;DsTableLocale&gt;
 
 /**
- * Callback fired when an editable cell commits a new value via one of the
- * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
- * expected to update the row data in response.
- * 
- * Commits occur on confirm (check button or Enter). Opening another cell
- * discards the previous draft without calling this callback.
- * 
- * @param row - The row data of the cell that was edited
- * @param columnId - The id of the column whose cell was edited
- * @param value - The new committed value
- * 
- * @example
- * ```tsx
- * const [people, setPeople] = useState(initialPeople);
- * 
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellEdit={(row, columnId, value) =&gt; {
- *     setPeople((rows) =&gt;
- *       rows.map((r) =&gt; (r.id === row.id ? { ...r, [columnId]: value } : r)),
- *     );
- *   }}
- * /&gt;
- * ```
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
  */
-onCellEdit?: (row: TData, columnId: string, value: TValue) =&gt; void
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
 
 /**
- * Validates a cell value before it is committed. Return `null` to allow the
- * commit (which fires `onCellEdit`), or an error message string to reject it
- * and keep the cell in edit mode. Synchronous only.
- * 
- * 
- * @param row - The row data of the cell being edited
- * @param columnId - The id of the column whose cell is being edited
- * @param value - The candidate value to validate
- * 
- * @example
- * ```tsx
- * &lt;DsTable
- *   data={people}
- *   columns={columns}
- *   onCellValidate={(row, columnId, value) =&gt; validateField(columnId)(value, row)}
- *   onCellEdit={...}
- * /&gt;
- * ```
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
  */
 onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
 
