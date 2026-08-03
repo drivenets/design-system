@@ -20,6 +20,7 @@ $bulk-actions-reserved-space: 80px;
 	background: var(--background);
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 	max-height: 100%;
 	overflow: hidden;
 }
@@ -122,11 +123,11 @@ $bulk-actions-reserved-space: 80px;
 
 .virtualizedContainer {
 	position: relative;
-	height: vars.$virtualized-height;
 	overflow-x: auto;
 	overflow-y: hidden;
 	display: flex;
 	flex-direction: column;
+	flex: 1;
 
 	@include scrollbars.scrollbar-on-hover;
 
