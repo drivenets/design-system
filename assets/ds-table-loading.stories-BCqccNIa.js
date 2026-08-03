@@ -1,5 +1,0 @@
-import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{t}from"./jsx-runtime-cM__dR4X.js";import{n,t as r}from"./ds-table-dAmA_m8N.js";import{n as i,t as a}from"./ds-skeleton-DShj7twn.js";import{c as o,l as s,n as c,t as l,u}from"./components-B31jbPMJ.js";import{n as d,t as f}from"./story-decorators-BtxI4Q4K.js";var p,m,h,g;e((()=>{n(),a(),u(),d(),l(),p=t(),m={title:`Components/Table/Loading`,component:r,parameters:{layout:`fullscreen`},args:{columns:o.map((e,t)=>t===0?Object.assign({},e,{loadingCell:()=>(0,p.jsx)(i.Circle,{size:`sm`})}):e),data:s,stickyHeader:!0,bordered:!0,fullWidth:!0,emptyState:(0,p.jsx)(c,{})},decorators:[f]},h={args:{loading:!0}},h.parameters={...h.parameters,docs:{...h.parameters?.docs,source:{originalSource:`{
-  args: {
-    loading: true
-  }
-}`,...h.parameters?.docs?.source}}},g=[`Loading`]}))();export{h as Loading,g as __namedExportsOrder,m as default};

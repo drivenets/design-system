@@ -1,3 +1,0 @@
-import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{t}from"./jsx-runtime-cM__dR4X.js";import{n,t as r}from"./ds-table.stories.module-7sA5r1ho.js";var i,a,o=e((()=>{n(),i=t(),a=e=>(0,i.jsxs)(`div`,{className:r.storyPadding,children:[(0,i.jsx)(`style`,{children:`
-            #storybook-root, html, body { height: 100%; }
-          `}),(0,i.jsx)(e,{})]}),a.__docgenInfo={description:``,methods:[],displayName:`fullHeightDecorator`}}));export{o as n,a as t};
