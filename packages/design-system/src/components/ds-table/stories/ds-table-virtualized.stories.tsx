@@ -459,11 +459,7 @@ export const VirtualizedWithControls: Story = {
 	render: function Render(args) {
 		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
-		return (
-			<div className={styles.virtualizedTableWrapper}>
-				<DsTable {...args} data={data} virtualized />
-			</div>
-		);
+		return <DsTable {...args} data={data} virtualized />;
 	},
 	args: {
 		controls: (
