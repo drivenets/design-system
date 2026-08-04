@@ -1,6 +1,7 @@
 ---
 name: ark-ui
 description: Check Ark UI primitives via MCP and integrate them in ds-* components without duplicating internal state. Use before building a custom component, wrapping Ark primitives, or when the user mentions Ark UI MCP.
+user-invocable: false
 ---
 
 # Ark UI Skill

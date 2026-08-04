@@ -18,11 +18,18 @@ All project skills live in **`.agents/skills/`**. Convention guidance is skill-o
 
 ## Typical flows
 
-**Feature:** `grill-me` → `to-plan` → `component-scaffold` / `figma-to-component` → `tdd` + `storybook` + `browser-tests` + `docs-tests` → `pr-prep` + `code-review`
+Two user-invoked orchestrators are the entry points — reach for these first; each expands into the chains below.
 
-**Bug:** `diagnose` → `tdd` (regression) → checkers in `AGENTS.md`
+- **`/implement <ticket.md>`** — ticket → plan → build → test → verify. Assumes the ticket is already grilled/clear (it does **not** grill).
+- **`/fix`** — small bug or adjustment on existing code; regression test → minimal fix → verify. No ticket, no plan gate.
 
-**Domain / architecture (optional):** `grill-with-docs` when updating `CONTEXT.md` or ADRs; `improve-codebase-architecture` on demand
+**Feature (what `implement` runs):** `to-plan` (skip if trivial) → `component-scaffold` / `figma-to-component` → `tdd` + `storybook` + `browser-tests` + `docs-tests` → `ds-verifier` + `ds-review` → `pr-prep` + `code-review`
+
+**Bug (what `fix` runs):** reproduce (escalate to `diagnose` only if the cause is unclear) → `tdd` regression → `ds-verifier` → patch changeset
+
+**Planning (deliberate — not model-auto-invoked):** run `grill-me` → `to-plan` yourself to turn a loose idea into a clear ticket, _then_ hand it to `implement`. `grill-with-docs` when the decision touches `CONTEXT.md` or ADRs.
+
+**Architecture (on demand):** `improve-codebase-architecture`
 
 ## Avoid
 

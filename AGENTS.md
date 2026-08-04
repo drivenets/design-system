@@ -63,6 +63,7 @@ packages/
 ├── design-system/              # @drivenets/design-system
 ├── eslint-plugin/              # @drivenets/eslint-plugin-design-system
 ├── vite-plugin/                # @drivenets/vite-plugin-design-system
+├── mcp/                        # @drivenets/design-system-mcp
 ├── eslint-plugin-internal/     # @drivenets/eslint-plugin-internal
 ├── commitlint-plugin-internal/ # @drivenets/commitlint-plugin-internal
 ```
@@ -96,6 +97,7 @@ ds-{name}/
 - `docs-snippets.docs.test.ts` — [`docs-tests`](.agents/skills/docs-tests/SKILL.md)
 - Storybook `play` → tests — [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md)
 - PR / review — [`code-review`](.agents/skills/code-review/SKILL.md), [`pr-prep`](.agents/skills/pr-prep/SKILL.md)
+- Ticket / bug workflow — [`implement`](.agents/skills/implement/SKILL.md) (`.md` ticket → tested), [`fix`](.agents/skills/fix/SKILL.md) (small bug / adjustment)
 - Plan / debug / TDD — [`grill-me`](.agents/skills/grill-me/SKILL.md), [`to-plan`](.agents/skills/to-plan/SKILL.md), [`diagnose`](.agents/skills/diagnose/SKILL.md), [`tdd`](.agents/skills/tdd/SKILL.md)
 - Subagents — `ds-component-builder`, `ds-browser-test-writer`, `ds-review`, `ds-verifier` (see [Cursor subagents](#cursor-subagents-cursoragents))
 
@@ -168,6 +170,8 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 
 ### Engineering
 
+- [`implement`](.agents/skills/implement/SKILL.md) — "implement this ticket"; orchestrate a markdown ticket → plan → build → test → verify (assumes ticket is already grilled/clear)
+- [`fix`](.agents/skills/fix/SKILL.md) — "fix this bug" / small adjustment; fast path (regression test → minimal fix → verify), no ticket or plan gate
 - [`diagnose`](.agents/skills/diagnose/SKILL.md) — hard bugs or perf regressions; reproduce → minimize → hypothesize → instrument → fix
 - [`tdd`](.agents/skills/tdd/SKILL.md) — test-first implementation; red-green-refactor
 - [`grill-me`](.agents/skills/grill-me/SKILL.md) — stress-test a plan; one question at a time until decisions locked (default before implementation)
