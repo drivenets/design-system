@@ -105,7 +105,7 @@ We follow a fork-and-pull-request workflow.
 
 ### AI development
 
-LLM skills and subagents live in this repo.
+LLM skills and subagents live in this repo. Two user-invoked entry points orchestrate the rest: **`/implement <ticket.md>`** (ticket → plan → build → test → verify) and **`/fix`** (small bug or adjustment, fast path). See [flows](docs/agents/skills.md#typical-flows).
 
 - [docs/agents/README.md](docs/agents/README.md) — agent doc index
 - [AGENTS.md](AGENTS.md) — checkers and skill catalog

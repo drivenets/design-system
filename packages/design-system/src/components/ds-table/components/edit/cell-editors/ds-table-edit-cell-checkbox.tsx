@@ -13,14 +13,14 @@ export const DsTableEditCellCheckbox = <TData extends RowData>({
 	cellContext,
 	disabled,
 }: DsTableEditCellCheckboxProps<TData>) => {
-	const { value, setValue } = useCellEditor<TData, boolean>({
+	const { value, setValue, isPending } = useCellEditor<TData, boolean>({
 		cellContext,
 	});
 
 	return (
 		<DsCheckbox
 			checked={value}
-			disabled={disabled}
+			disabled={disabled || isPending}
 			onCheckedChange={(checked) => setValue(checked === true)}
 		/>
 	);

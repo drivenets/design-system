@@ -1,6 +1,7 @@
 ---
 name: browser-tests
 description: Write and extend Vitest browser tests for design-system components. Use when adding or editing `*.browser.test.tsx`, writing behavioral coverage, or moving assertions out of Storybook.
+user-invocable: false
 ---
 
 # Browser Tests Skill

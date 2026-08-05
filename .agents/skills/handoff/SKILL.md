@@ -2,6 +2,7 @@
 name: handoff
 description: Compact the current conversation into a handoff document for another agent to pick up.
 argument-hint: 'What will the next session be used for?'
+disable-model-invocation: true
 ---
 
 Write a handoff document summarizing the current conversation so a fresh agent can continue the work. Save it to a path from the shell temp-file command `mktemp -t handoff-XXXXXX.md` (read that path before you write to it).

@@ -1,4 +1,4 @@
-import { useEffect, useRef, type FormEvent } from 'react';
+import { useEffect, useRef, type SubmitEvent } from 'react';
 import { flexRender } from '@tanstack/react-table';
 import { DsButtonV3 } from '../../../../ds-button-v3';
 import { DsStack } from '../../../../ds-stack';
@@ -7,13 +7,20 @@ import styles from './ds-table-editing-cell.module.scss';
 import type { DsTableEditingCellProps } from './ds-table-editing-cell.types';
 
 export const DsTableEditingCell = <TData, TValue>({ cell }: DsTableEditingCellProps<TData, TValue>) => {
-	const { commit, cancel } = useDsTableContext<TData, TValue>();
+	const { commit, cancel, editing } = useDsTableContext<TData, TValue>();
 	const columnDef = cell.column.columnDef;
 	const editAnchorRef = useRef<HTMLDivElement>(null);
 
-	const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+	const isActiveCell = editing?.cell.id === cell.id;
+	const isPending = isActiveCell && editing.pending;
+	const hasError = isActiveCell && editing.error !== null;
+
+	const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		event.stopPropagation();
+		if (isPending || hasError) {
+			return;
+		}
 		commit();
 	};
 
@@ -62,6 +69,8 @@ export const DsTableEditingCell = <TData, TValue>({ cell }: DsTableEditingCellPr
 							variant="tertiary"
 							size="small"
 							icon="check"
+							loading={isPending}
+							disabled={hasError}
 							aria-label="Confirm edit"
 							onClick={(event) => {
 								event.stopPropagation();

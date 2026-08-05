@@ -511,53 +511,28 @@ export interface DsDataTableProps<TData, TValue> {
 	locale?: Partial<DsTableLocale>;
 
 	/**
-	 * Callback fired when an editable cell commits a new value via one of the
-	 * `DsTableEditCell*` wrappers or the `useCellEditor` hook. The parent is
-	 * expected to update the row data in response.
-	 *
-	 * Commits occur on confirm (check button or Enter). Opening another cell
-	 * discards the previous draft without calling this callback.
-	 *
-	 * @param row - The row data of the cell that was edited
-	 * @param columnId - The id of the column whose cell was edited
-	 * @param value - The new committed value
-	 *
-	 * @example
-	 * ```tsx
-	 * const [people, setPeople] = useState(initialPeople);
-	 *
-	 * <DsTable
-	 *   data={people}
-	 *   columns={columns}
-	 *   onCellEdit={(row, columnId, value) => {
-	 *     setPeople((rows) =>
-	 *       rows.map((r) => (r.id === row.id ? { ...r, [columnId]: value } : r)),
-	 *     );
-	 *   }}
-	 * />
-	 * ```
+	 * Commits an edited cell value. Runs when the user confirms (check button or
+	 * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+	 * for server-side validation and persistence. Return `void`/`null` to accept
+	 * (closes the editor) or an error `string` to reject (keeps the cell open with
+	 * the message); may be async. While a returned Promise is pending the editor is
+	 * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+	 * superseded by opening another cell, so in-flight requests can be cancelled.
 	 */
-	onCellEdit?: (row: TData, columnId: string, value: TValue) => void;
+	onCellEdit?: (
+		row: TData,
+		columnId: string,
+		value: TValue,
+		signal: AbortSignal,
+	) => string | null | undefined | Promise<string | null | undefined>;
 
 	/**
-	 * Validates a cell value before it is committed. Return `null` to allow the
-	 * commit (which fires `onCellEdit`), or an error message string to reject it
-	 * and keep the cell in edit mode. Synchronous only.
-	 *
-	 *
-	 * @param row - The row data of the cell being edited
-	 * @param columnId - The id of the column whose cell is being edited
-	 * @param value - The candidate value to validate
-	 *
-	 * @example
-	 * ```tsx
-	 * <DsTable
-	 *   data={people}
-	 *   columns={columns}
-	 *   onCellValidate={(row, columnId, value) => validateField(columnId)(value, row)}
-	 *   onCellEdit={...}
-	 * />
-	 * ```
+	 * Synchronous, per-keystroke validation for the active editor. Runs live on
+	 * every draft change and once more as a pre-commit gate before `onCellEdit`.
+	 * Return `null` to allow or an error `string` to reject. A live error is shown
+	 * inline and disables the Confirm button; `onCellEdit` never runs while the
+	 * value is invalid. Keep it pure and cheap — for async or server-side checks,
+	 * use `onCellEdit` instead.
 	 */
 	onCellValidate?: (row: TData, columnId: string, value: TValue) => string | null;
 }
