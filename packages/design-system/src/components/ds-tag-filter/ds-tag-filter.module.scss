@@ -1,61 +1,33 @@
 .container {
 	display: flex;
-	flex-direction: column;
+	align-items: flex-start;
 	gap: var(--xs);
 	padding: var(--xs) var(--standard);
 	background: var(--background-secondary-hover);
 	border: 1px solid var(--outline-weak);
 	border-radius: var(--3xs);
 	overflow: hidden;
-
-	&.expanded {
-		max-height: none;
-	}
-}
-
-.header {
-	display: flex;
-	align-items: center;
-	width: 100%;
-	gap: var(--xs);
-	flex-shrink: 0;
-}
-
-.headerActions {
-	display: flex;
-	align-items: center;
-	gap: var(--xs);
-	flex-shrink: 0;
-	margin-left: auto;
 }
 
 .tagsArea {
 	display: flex;
 	align-items: center;
-	width: 100%;
+	flex: 1;
+	min-width: 0;
 	gap: var(--xs);
 	flex-wrap: wrap;
 }
 
-.label {
-	color: var(--font-secondary);
-	white-space: nowrap;
-	flex-shrink: 0;
-}
-
-.itemCheckbox {
+.actions {
 	display: flex;
 	align-items: center;
-}
-
-.ghostButtonContent {
-	// TODO: remove once migrated 1.2 button to the ghost with transparent bg
-	background: transparent !important;
+	gap: var(--xs);
+	flex-shrink: 0;
 }
 
 .actionButton {
-	padding: 0;
 	flex-shrink: 0;
+	white-space: nowrap;
 }
 
 .measurementContainer {
