@@ -118,10 +118,13 @@ export const ResponsiveSize: Story = {
 	),
 };
 
-const matrixRows = [
-	...buttonV3Variants.map((v) => ({ label: v, loading: false })),
-	{ label: 'loading', loading: true },
-];
+// `color="light"` has no `primary-subtle`; its `primary` is styled as the subtle outline.
+const getMatrixRows = (color?: ButtonV3Color) => {
+	const variants =
+		color === 'light' ? buttonV3Variants.filter((v) => v !== 'primary-subtle') : buttonV3Variants;
+
+	return [...variants.map((v) => ({ label: v, loading: false })), { label: 'loading', loading: true }];
+};
 
 const defaultIconMatrixRows = [
 	{ label: 'check circle', icon: 'check_circle', variant: 'primary', color: 'default', loading: false },
@@ -145,6 +148,7 @@ const onDarkIconMatrixRows = [
 
 const MatrixGrid = ({ color }: { color?: ButtonV3Color }) => {
 	const isOnDark = color === 'light';
+	const matrixRows = getMatrixRows(color);
 
 	return (
 		<DsStack gap="var(--sm)">

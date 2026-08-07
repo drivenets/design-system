@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes, Ref } from 'react';
 import type { IconType } from '../ds-icon';
 import type { ResponsiveValue } from '../../utils/responsive';
 
-export const buttonV3Variants = ['primary', 'secondary', 'tertiary'] as const;
+export const buttonV3Variants = ['primary', 'primary-subtle', 'secondary', 'tertiary'] as const;
 export type ButtonV3Variant = (typeof buttonV3Variants)[number];
 
 export const buttonV3Colors = ['default', 'error', 'light'] as const;
@@ -24,7 +24,8 @@ export interface DsButtonV3BaseProps extends ButtonHTMLAttributes<HTMLButtonElem
 
 	/**
 	 * Visual variant of the button:
-	 * - `primary` — filled, highest-emphasis action
+	 * - `primary` — highest-emphasis action; filled for `default`/`error`, subtle outline for `color="light"`
+	 * - `primary-subtle` — subtle-filled, colored border and text (emphasis outline); `default`/`error` only
 	 * - `secondary` — outlined, medium-emphasis action
 	 * - `tertiary` — borderless, low-emphasis action (text-like)
 	 * @default 'primary'

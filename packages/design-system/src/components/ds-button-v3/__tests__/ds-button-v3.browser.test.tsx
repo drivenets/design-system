@@ -113,7 +113,7 @@ describe('DsButtonV3', () => {
 	});
 
 	it('sets data-variant for each variant', async () => {
-		for (const variant of ['primary', 'secondary', 'tertiary'] as const) {
+		for (const variant of ['primary', 'primary-subtle', 'secondary', 'tertiary'] as const) {
 			await page.render(
 				<DsButtonV3 variant={variant} aria-label={variant}>
 					Label
@@ -217,7 +217,7 @@ describe('DsButtonV3', () => {
 			expect(getComputedStyle(el).backgroundColor).not.toBe(transparent);
 		});
 
-		it('primary disabled has a non-transparent background', async () => {
+		it('primary disabled keeps a visible border', async () => {
 			await page.render(
 				<DsButtonV3 color="light" variant="primary" disabled>
 					Light
@@ -226,7 +226,7 @@ describe('DsButtonV3', () => {
 
 			const el = page.getByRole('button', { name: 'Light' }).element();
 
-			expect(getComputedStyle(el).backgroundColor).not.toBe(transparent);
+			expect(getComputedStyle(el).borderColor).not.toBe(transparent);
 		});
 
 		it('secondary selected has a non-transparent background', async () => {

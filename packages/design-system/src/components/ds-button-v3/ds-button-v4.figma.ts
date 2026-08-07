@@ -1,36 +1,51 @@
-// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=31065-2352
+// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=39666-40247
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-button-v3
 // component=DsButtonV3
 import figma from 'figma';
 
+// Figma ships several button generations; the `DsButtonV4` component set maps onto the
+// same code component as `DsButtonV3` (see ds-button-v3.figma.ts for the older set).
 const instance = figma.selectedInstance;
 
-const variant = instance.getEnum('buttonType', {
+const variant = instance.getEnum('variant', {
 	primary: 'primary',
 	'primary-subtle': 'primary-subtle',
 	secondary: 'secondary',
 	tertiary: 'tertiary',
 });
-const size = instance.getEnum('Size', {
-	tiny: 'tiny',
-	small: 'small',
-	medium: 'medium',
-	large: 'large',
+const color = instance.getEnum('color', {
+	default: 'default',
+	error: 'error',
+	light: 'light',
 });
-const colorVariant = instance.getEnum('Color', { default: 'default', error: 'error' });
-const isLight = instance.getEnum('light', { true: true, false: false });
-const color = isLight ? 'light' : colorVariant;
-const disabled = instance.getEnum('State', {
-	default: false,
-	hover: false,
-	focus: false,
-	active: false,
-	disabled: true,
+const state = instance.getEnum('state', {
+	default: 'default',
+	hover: 'hover',
+	focus: 'focus',
+	active: 'active',
+	disabled: 'disabled',
+	isLoading: 'isLoading',
 });
-const iconOnly = instance.getEnum('Icon', { 'icon-only': true, text: false });
 
-const structure = instance.findInstance('.button-structure', { traverseInstances: true });
-const showIcon = structure.type === 'INSTANCE' ? structure.getBoolean('Show icon') : false;
+const disabled = state === 'disabled';
+const loading = state === 'isLoading';
+
+const structure = instance.findInstance('Part_ButtonStructureV2', { traverseInstances: true });
+
+const size =
+	structure.type === 'INSTANCE'
+		? (structure.getEnum('size', {
+				large: 'large',
+				medium: 'medium',
+				small: 'small',
+				tiny: 'tiny',
+			}) ?? 'medium')
+		: 'medium';
+
+const iconOnly =
+	structure.type === 'INSTANCE' ? structure.getEnum('icon-only', { True: true, False: false }) : false;
+
+const showIcon = structure.type === 'INSTANCE' ? structure.getBoolean('isIconBefore') : false;
 
 // `DsButtonV3.icon` is an icon-name string. Swapped icons keep the placeholder layer
 // name (e.g. `DAP_GM_O_check_circle`), so resolve via Code Connect ID or metadata.
@@ -71,7 +86,7 @@ const resolveIcon = (iconInstance: figma.InstanceHandle): string | undefined => 
 	return toIconName(iconInstance.name);
 };
 
-const leadingIcon = structure.type === 'INSTANCE' ? structure.getInstanceSwap('Leading icon') : undefined;
+const leadingIcon = structure.type === 'INSTANCE' ? structure.getInstanceSwap('iconBefore') : undefined;
 const iconFromSwap = leadingIcon?.type === 'INSTANCE' ? resolveIcon(leadingIcon) : undefined;
 const iconFromChild =
 	structure.type === 'INSTANCE'
@@ -88,14 +103,15 @@ const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Button';
 
 const iconProp = icon ? figma.code` icon="${icon}"` : '';
 const disabledProp = disabled ? ' disabled' : '';
+const loadingProp = loading ? ' loading' : '';
 
 export default {
 	example: iconOnly
-		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${iconProp} aria-label="${label}" />`
+		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}${iconProp} aria-label="${label}" />`
 		: showIcon && icon
-			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp} icon="${icon}">${label}</DsButtonV3>`
-			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}>${label}</DsButtonV3>`,
+			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp} icon="${icon}">${label}</DsButtonV3>`
+			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}>${label}</DsButtonV3>`,
 	imports: ["import { DsButtonV3 } from '@drivenets/design-system';"],
-	id: 'ds-button-v3',
+	id: 'ds-button-v4',
 	metadata: { nestable: true },
 } satisfies figma.Template;
