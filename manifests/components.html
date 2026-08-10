@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -2228,7 +2228,8 @@ type?: any = &#39;button&#39;
 
 /**
  * Visual variant of the button:
- * - `primary` — filled, highest-emphasis action
+ * - `primary` — highest-emphasis action; filled for `default`/`error`, subtle outline for `color=&quot;light&quot;`
+ * - `primary-subtle` — subtle-filled, colored border and text (emphasis outline); `default`/`error` only
  * - `secondary` — outlined, medium-emphasis action
  * - `tertiary` — borderless, low-emphasis action (text-like)
  * @default &#39;primary&#39;
