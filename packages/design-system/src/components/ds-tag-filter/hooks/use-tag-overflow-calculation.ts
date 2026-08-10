@@ -71,5 +71,10 @@ export const useTagOverflowCalculation = ({
 		};
 	}, [tagsAreaRef, measurementRef, totalItems, expanded, calculateLayout]);
 
+	// While expanded, keep hasOverflow true so a width edge case can't hide the collapse control.
+	if (expanded) {
+		return { ...state, hasOverflow: true };
+	}
+
 	return state;
 };
