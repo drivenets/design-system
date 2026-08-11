@@ -1,6 +1,7 @@
 ---
 name: grill-with-docs
 description: Like grill-me, but challenges against CONTEXT.md and ADRs and updates glossary/ADR files inline as decisions land. Use for cross-cutting domain language or irreversible architecture — not the default for design-system feature work (use grill-me → to-plan instead).
+disable-model-invocation: true
 ---
 
 <what-to-do>

@@ -1,6 +1,8 @@
 ---
 name: component-scaffold
 description: Scaffold a new ds-* component (files, barrel export, validation). Use when the user asks to create, scaffold, or add a new component.
+user-invocable: false
+disable-model-invocation: true
 ---
 
 # Component Scaffold Skill
@@ -66,23 +68,3 @@ export type { Ds{Name}Props } from './ds-{name}.types';
 ```
 
 Set `displayName` on the component in `ds-{name}.tsx` (or `index.ts` if wrapped). Stories must import from `./index` when a barrel/HOC is the public API.
-
-Use `.ts` extension on barrel file, not `.tsx`.
-
-## Validate
-
-```bash
-pnpm eslint packages/design-system/src/components/ds-{name}/
-pnpm --filter @drivenets/design-system typecheck
-```
-
-With browser tests:
-
-```bash
-pnpm --filter @drivenets/design-system test packages/design-system/src/components/ds-{name}/__tests__/ds-{name}.browser.test.tsx --run
-```
-
-## Related
-
-- Figma URL: [figma-to-component](../figma-to-component/SKILL.md) then this flow
-- PR checks: [pr-prep](../pr-prep/SKILL.md)

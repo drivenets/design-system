@@ -1,6 +1,7 @@
 ---
 name: ts-standards
 description: TypeScript conventions across the monorepo. Use when editing .ts or .tsx in any package, prop JSDoc in *.types.ts, as const variant arrays, Object.freeze config exports, or shared utils.
+user-invocable: false
 ---
 
 # TypeScript Standards Skill

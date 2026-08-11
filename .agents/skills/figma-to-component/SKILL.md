@@ -1,6 +1,7 @@
 ---
 name: figma-to-component
 description: Orchestrate a Figma URL to a ds-* component. Trust-boundary pre-step, Figma MCP for design context, DS MCP for guidelines and inventory, then component-scaffold. Use when the user provides a Figma link and asks to implement it.
+user-invocable: false
 ---
 
 # Figma-to-Component Skill

@@ -1,6 +1,7 @@
 ---
 name: scss
 description: SCSS and CSS modules for design-system components. Use when editing *.scss, *.module.scss, design tokens, data-focus-visible, data-disabled, or component styles under packages/design-system.
+user-invocable: false
 ---
 
 # SCSS Skill

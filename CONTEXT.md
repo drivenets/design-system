@@ -12,6 +12,10 @@ _Avoid_: widget, element (unless HTML element), control (unless form field)
 A named visual or behavioral axis on a **Component**, backed by an `as const` array and union type in `*.types.ts`.
 _Avoid_: mode, type (when meaning visual style), theme
 
+**High-emphasis**:
+A boolean shape axis on `DsButtonV3` that raises corner radius for prominent surfaces (Sign in, Landing, NetGen). Purely rounding — not a priority/emphasis level (do not conflate with the `primary` **Variant**, which is the "highest-emphasis" action).
+_Avoid_: rounded, pill
+
 **Locale**:
 Optional prop bag of user-facing strings for a **Component**; keys name the UI role (e.g. `loading`, `noMatches`). Use a dedicated `Ds{Name}Locale` interface when there are many keys.
 _Avoid_: i18n, translations (this repo does not ship a global i18n framework)

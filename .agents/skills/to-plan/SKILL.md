@@ -1,6 +1,6 @@
 ---
 name: to-plan
-description: After grill-me (or equivalent resolved decisions), produce a concise execution plan for the next agent session. No interviews, no issue tracker, no requirement expansion.
+description: After grill-me (or equivalent resolved decisions), write a concise execution plan to a tasks/*.md ticket file that /implement can consume. No interviews, no issue tracker, no requirement expansion.
 ---
 
 Package locked decisions from the conversation into a short execution plan. **Do not plan for the user** — only record what was already decided.
@@ -20,13 +20,17 @@ Grill-me (or equivalent) is finished: every branch resolved. If open questions r
 
 1. Read the conversation for **locked decisions only**
 2. Minimal codebase lookup — name real paths/packages to touch (not exploratory architecture)
-3. Emit one markdown artifact using the template below (in chat, or a file if the user asks)
+3. **Write the plan to a file** — `tasks/<TICKET-or-kebab-slug>.md` (create `tasks/` if missing). This file is the ticket [`implement`](../implement/SKILL.md) consumes; chat-only output breaks that handoff. Use the template below.
 
 <plan-template>
 
 ## Goal
 
 One or two sentences.
+
+## Acceptance criteria
+
+Checkable behaviors, one per line — the contract `implement` maps each to a test. Phrase as observable outcomes ("clicking the trigger opens the panel"), not implementation steps.
 
 ## Decisions
 
@@ -35,6 +39,10 @@ Bullet list from grill-me — locked, no debate.
 ## Out of scope
 
 What was explicitly excluded.
+
+## Design source
+
+Figma URL(s) if any, else omit.
 
 ## Touch
 
@@ -54,4 +62,4 @@ Checkers from [AGENTS.md#code-quality-checkers](../../AGENTS.md#code-quality-che
 
 </plan-template>
 
-When done, the user or next agent can start implementation (typically `tdd` + design-system skills).
+When done, hand off with **`/implement tasks/<file>.md`** — it parses Goal + Acceptance criteria + Design source + Touch directly from this file.
