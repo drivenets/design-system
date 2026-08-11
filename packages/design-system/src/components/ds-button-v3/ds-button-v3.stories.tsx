@@ -24,6 +24,7 @@ const meta: Meta<typeof DsButtonV3> = {
 		size: { control: 'select', options: buttonV3Sizes },
 		loading: { control: 'boolean' },
 		disabled: { control: 'boolean' },
+		highEmphasis: { control: 'boolean' },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
 		ref: { table: { disable: true } },
@@ -86,6 +87,15 @@ export const IconOnly: Story = {
  */
 export const Selected: Story = {
 	args: { ...baseArgs, variant: 'secondary', selected: true },
+};
+
+/**
+ * Raised corner radius (12px instead of 4px) for high-emphasis surfaces such as
+ * Sign in, Landing, and NetGen. Only affects rounding — color and priority are
+ * unchanged.
+ */
+export const HighEmphasis: Story = {
+	args: { ...baseArgs, variant: 'primary', highEmphasis: true },
 };
 
 /**
