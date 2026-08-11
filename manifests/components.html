@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">579 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/91 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">56/91 infos</a><span class="filter-pill ok" aria-disabled="true">580 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -2157,9 +2157,9 @@ variant?: (typeof buttonVariants)[number] = &#39;filled&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsButtonV3</h2>
       <div class="badges">
-        <label for="c-7-components-buttonv3-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-7-components-buttonv3-props" class="badge ok as-toggle">9 prop types</label>
         
-        <label for="c-7-components-buttonv3-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-7-components-buttonv3-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -2186,7 +2186,7 @@ variant?: (typeof buttonVariants)[number] = &#39;filled&#39;</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">8 prop types</span>
+              <span class="badge ok">9 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-button-v3/ds-button-v3.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -2197,6 +2197,14 @@ variant?: (typeof buttonVariants)[number] = &#39;filled&#39;</code></pre>
  * @default &#39;default&#39;
  */
 color?: (typeof buttonV3Colors)[number] = &#39;default&#39;
+
+/**
+ * Raises the corner radius for high-emphasis surfaces such as
+ * Sign in, Landing, and NetGen. Purely a rounding change — does not affect
+ * color or priority.
+ * @default false
+ */
+highEmphasis?: boolean = false
 
 /**
  * Leading icon. When set without children, renders as icon-only (square) layout.
@@ -2305,6 +2313,15 @@ variant?: (typeof buttonV3Variants)[number] = &#39;primary&#39;</code></pre>
               
               <div class="hint">Pressed / active state for toggle buttons and segmented controls. Reflected via `aria-pressed` for assistive technology.</div>
               <pre><code>const Selected = () =&gt; &lt;DsButtonV3 onClick={fn()} variant=&quot;secondary&quot; selected /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">High Emphasis</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Raised corner radius (12px instead of 4px) for high-emphasis surfaces such as Sign in, Landing, and NetGen. Only affects rounding — color and priority are unchanged.</div>
+              <pre><code>const HighEmphasis = () =&gt; &lt;DsButtonV3 onClick={fn()} variant=&quot;primary&quot; highEmphasis /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
