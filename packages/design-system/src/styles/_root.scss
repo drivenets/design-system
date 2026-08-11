@@ -18,18 +18,18 @@
 :root {
 	/* Mode 1 */
 	/* color */
-	--color-dap-blue-050: #edf7ff;
-	--color-dap-blue-075: #e1efff;
-	--color-dap-blue-100: #d6eaff;
-	--color-dap-blue-200: #b5ddff;
-	--color-dap-blue-300: #83c8ff;
-	--color-dap-blue-400: #48aaff;
-	--color-dap-blue-500: #1e83ff;
-	--color-dap-blue-600: #0661ff;
-	--color-dap-blue-700: #004cff;
-	--color-dap-blue-800: #083bc5;
-	--color-dap-blue-900: #0d379b;
-	--color-dap-blue-950: #0e235d;
+	--color-dap-blue-050: #e3f2ff;
+	--color-dap-blue-075: #d4ecff;
+	--color-dap-blue-100: #c4e4ff;
+	--color-dap-blue-200: #a7d3ff;
+	--color-dap-blue-300: #85c2ff;
+	--color-dap-blue-400: #5eacff;
+	--color-dap-blue-500: #3593ff;
+	--color-dap-blue-600: #1c79ff;
+	--color-dap-blue-700: #0066fa;
+	--color-dap-blue-800: #0057d4;
+	--color-dap-blue-900: #0047ad;
+	--color-dap-blue-950: #00337e;
 	--color-dap-brand-050: #e5e8ed;
 	--color-dap-brand-100: #bfc6d1;
 	--color-dap-brand-200: #99a3b6;
@@ -259,14 +259,17 @@
 	--background-info: var(--color-dap-blue-050);
 	--background-info-strong: var(--color-dap-blue-800);
 	--background-light: var(--color-dap-dark-blue-500);
+	--background-light-active: var(--color-dap-blue-400);
 	--background-light-disabled: #415b9a;
+	--background-light-hover: var(--color-dap-blue-500);
 	--background-light-primary: var(--color-dap-dark-blue-300);
 	--background-light-primary-hover: var(--color-dap-dark-blue-200);
 	--background-light-primary-selected: var(--color-dap-dark-blue-150);
 	--background-light-secondary-selected: var(--color-dap-dark-blue-400);
 	--background-light-subtle: var(--color-dap-blue-600);
-	--background-light-subtle-active: var(--color-dap-blue-400);
-	--background-light-subtle-hover: var(--color-dap-blue-500);
+	/* Compat aliases — Figma renamed *-subtle-hover/active → *-hover/active */
+	--background-light-subtle-active: var(--background-light-active);
+	--background-light-subtle-hover: var(--background-light-hover);
 	--background-neutral: var(--color-dap-gray-600);
 	--background-overlay: #001a4733;
 	--background-page: var(--color-dap-gray-100);
@@ -293,6 +296,13 @@
 	--background-transparent-hover: #ffffff26;
 	--background-warning: var(--color-dap-orange-100);
 	--background-warning-strong: var(--color-dap-orange-600);
+	--blue-grad-1: var(--color-dap-blue-700);
+	--blue-grad-2: #2ab2ff;
+	--blue-radial-grad: radial-gradient(
+		58.25% 72.07% at 94.38% 95.2%,
+		var(--blue-grad-2) 0%,
+		var(--blue-grad-1) 100%
+	);
 	--border: var(--color-dap-gray-300);
 	--border-action-primary: var(--color-dap-blue-700);
 	--border-action-primary-hover: var(--color-dap-blue-800);
@@ -316,6 +326,14 @@
 	--border-success: var(--color-dap-green-600);
 	--border-tertiary: var(--color-dap-gray-100);
 	--border-warning-strong: var(--color-dap-orange-600);
+	--device-green: #39cea0;
+	--device-green-20: #39cea033;
+	--device-light-blue: #74b8f4;
+	--device-light-blue-20: #74b8f433;
+	--device-orange: #ea8078;
+	--device-orange-20: #ea807833;
+	--device-purple: #9747ff;
+	--device-purple-20: #9747ff33;
 	--error: var(--color-dap-red-050);
 	--font-action: var(--color-dap-blue-700);
 	--font-action-hover: var(--color-dap-blue-800);
@@ -420,6 +438,20 @@
 	--status-bg-success: var(--color-dap-green-075);
 	--status-bg-warning: var(--color-dap-orange-200);
 	--text-on-button: #000000;
+	--dap-icons-0: var(--color-dap-gray-050);
+	--dap-icons-100: var(--color-dap-blue-100);
+	--dap-icons-200: var(--color-dap-blue-200);
+	--dap-icons-300: var(--color-dap-blue-300);
+	--dap-icons-400: var(--color-dap-blue-400);
+	--dap-icons-50: var(--color-dap-blue-050);
+	--dap-icons-500: var(--color-dap-blue-500);
+	--dap-icons-600: var(--color-dap-blue-600);
+	--dap-icons-700: var(--color-dap-blue-700);
+	--dap-icons-75: var(--color-dap-blue-075);
+	--dap-icons-800: var(--color-dap-blue-800);
+	--dap-icons-900: var(--color-dap-blue-900);
+	--dap-icons-950: var(--color-dap-blue-950);
+	--dap-icons-grey: var(--color-dap-gray-600);
 }
 /* Spacing */
 :root {

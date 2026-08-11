@@ -33,6 +33,7 @@
 	align-items: center;
 	justify-content: flex-end;
 	padding: 0;
+	overflow: hidden;
 	border: 1px solid var(--border);
 	border-radius: 10px;
 	cursor: pointer;
@@ -47,6 +48,50 @@
 		outline: 2px solid var(--outline-moderate);
 		outline-offset: 2px;
 	}
+}
+
+.gradientCard {
+	display: flex;
+	gap: var(--standard);
+	align-items: flex-start;
+	margin-bottom: var(--xl);
+}
+
+.gradientPreview {
+	position: relative;
+	flex-shrink: 0;
+	width: 120px;
+	height: 80px;
+	padding: 0;
+	overflow: hidden;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	cursor: pointer;
+	transition: box-shadow 0.2s;
+
+	&:hover {
+		box-shadow: 0 4px 16px var(--shadow-weak);
+		border-color: var(--border-contrast);
+	}
+
+	&[data-focus-visible] {
+		outline: 2px solid var(--outline-moderate);
+		outline-offset: 2px;
+	}
+}
+
+.gradientMeta {
+	display: flex;
+	flex-direction: column;
+	gap: var(--2xs);
+	min-width: 0;
+}
+
+.gradientCode {
+	color: var(--font-secondary);
+	font-family: var(--font-family-code);
+	font-size: var(--body-font-size-sm);
+	word-break: break-all;
 }
 
 .toneCode {
