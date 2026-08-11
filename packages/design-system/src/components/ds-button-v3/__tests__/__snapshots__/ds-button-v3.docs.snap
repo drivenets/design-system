@@ -93,6 +93,23 @@ const IconOnly = () => <DsButtonV3
 ### MCP manifest
 const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected />;
 
+## High Emphasis
+
+### Show code
+<DsButtonV3
+  color="default"
+  highEmphasis
+  icon="check_circle"
+  onClick={() => {}}
+  size="medium"
+  variant="primary"
+>
+  Button
+</DsButtonV3>
+
+### MCP manifest
+const HighEmphasis = () => <DsButtonV3 onClick={fn()} variant="primary" highEmphasis />;
+
 ## On Dark
 
 ### Show code
