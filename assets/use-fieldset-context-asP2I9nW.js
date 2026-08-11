@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{v as t,y as n}from"./runtime-zmVWNNs9.js";var r,i,a=e((()=>{n(),[r,i]=t({name:`FieldsetContext`,hookName:`useFieldsetContext`,providerName:`<FieldsetProvider />`,strict:!1})}));export{i as n,a as t};
