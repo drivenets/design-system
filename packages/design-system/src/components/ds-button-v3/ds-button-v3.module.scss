@@ -365,21 +365,21 @@ $focus-ring-width: 2px;
 	border-color: var(--border-inverse);
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
-		background-color: var(--background-light-subtle-hover);
+		background-color: var(--background-light-hover);
 	}
 
 	&:active:not(:disabled) {
-		background-color: var(--background-light-subtle-active);
+		background-color: var(--background-light-active);
 	}
 
 	&:focus-visible {
 		@include focus-ring(var(--border-action-primary));
 
-		background-color: var(--background-light-subtle-hover);
+		background-color: var(--background-light-hover);
 	}
 
 	&[data-selected='true'] {
-		background-color: var(--background-light-subtle-active);
+		background-color: var(--background-light-active);
 	}
 
 	&:disabled:not([data-loading]) {
