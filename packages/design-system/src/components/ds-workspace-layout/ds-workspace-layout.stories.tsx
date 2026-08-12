@@ -5,6 +5,7 @@ import { DsButtonV3 } from '../ds-button-v3';
 import { DsTypography } from '../ds-typography';
 import { DsIcon } from '../ds-icon';
 import { DsStatusBadge } from '../ds-status-badge';
+import { DsStatusBadgeV2 } from '../ds-status-badge-v2';
 import { DsDrawer } from '../ds-drawer';
 import { DsStepper, DsStep, DsStepContent, DsNextStepButton } from '../ds-stepper';
 import styles from './ds-workspace-layout.stories.module.scss';
@@ -22,7 +23,7 @@ A compound layout component for composing full-screen workspace views.
 ### Simple shell (default)
 
 - **WorkspaceLayout** — full-screen flex-column surface
-- **WorkspaceLayout.Header** — top bar with blue gradient (above drawers)
+- **WorkspaceLayout.Header** — top bar using Brand Refresh \`--blue-grad-workspace-header\` (above drawers). App-specific header washes belong in the consuming app — see Guidelines/Colors → Gradients.
 - **WorkspaceLayout.SubHeader** — optional top stepper band
 - **WorkspaceLayout.Content** — content area: column layout, 24px vertical margins, 16px vertical gap, 40px horizontal margins (24px when \`LeftPanel\` is mounted). Title line and content items are consumer markup inside.
 - **WorkspaceLayout.Footer** — optional bottom stepper band
@@ -66,6 +67,76 @@ export default meta;
 
 type Story = StoryObj<typeof DsWorkspaceLayout>;
 
+type WorkspaceHeaderExampleType = 'draft' | 'pending' | 'running';
+
+const headerBadgeByType = {
+	draft: { phase: 'temporary', label: 'Draft' },
+	pending: { phase: 'pending', label: 'Pending' },
+	running: { phase: 'execution', label: 'Running' },
+} as const;
+
+type WorkspaceStoryHeaderProps = {
+	type?: WorkspaceHeaderExampleType;
+	onSaveClick?: () => void;
+};
+
+/** Story-only Brand Refresh workspace header chrome. */
+function WorkspaceStoryHeader({ type = 'draft', onSaveClick }: WorkspaceStoryHeaderProps) {
+	const badge = headerBadgeByType[type];
+	const isRunning = type === 'running';
+
+	return (
+		<div className={styles.headerLayout}>
+			<div className={styles.headerLeft}>
+				<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+					Close
+				</DsButtonV3>
+				{isRunning ? (
+					<>
+						<DsButtonV3 variant="secondary" color="light" size="small" icon="keyboard_double_arrow_left">
+							Previous
+						</DsButtonV3>
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Next
+						</DsButtonV3>
+					</>
+				) : null}
+			</div>
+			<div className={styles.headerCenter}>
+				<DsTypography variant="body-sm-reg" className={styles.projectName}>
+					Untitled Project -23-May-2024 04:47 PM
+				</DsTypography>
+				<DsIcon icon="info" size="tiny" />
+				<DsStatusBadgeV2 phase={badge.phase} label={badge.label} size="small" />
+			</div>
+			<div className={styles.headerRight}>
+				{isRunning ? (
+					<div className={styles.lastUpdate}>
+						<DsIcon icon="history_2" size="small" />
+						<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
+					</div>
+				) : (
+					<>
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small" onClick={onSaveClick}>
+							Save project
+						</DsButtonV3>
+					</>
+				)}
+				<DsButtonV3
+					variant="tertiary"
+					color="light"
+					size="small"
+					icon="more_vert"
+					aria-label="More actions"
+				/>
+			</div>
+		</div>
+	);
+}
+
 const workspaceSteps = [
 	{ label: 'Project details', description: 'Enter project name and basic configuration' },
 	{ label: 'Select market', description: 'Choose the target market for deployment' },
@@ -76,33 +147,7 @@ export const Default: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<div className={styles.headerLayout}>
-					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-							Close
-						</DsButtonV3>
-					</div>
-					<div className={styles.headerCenter}>
-						<DsTypography variant="body-sm-reg" className={styles.projectName}>
-							Untitled Project -23-May-2024 04:47 PM
-						</DsTypography>
-						<DsIcon icon="info" size="tiny" />
-						<DsStatusBadge status="draft" size="small" />
-					</div>
-					<div className={styles.headerRight}>
-						<div className={styles.lastUpdate}>
-							<DsIcon icon="history" size="small" />
-							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
-							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-					</div>
-				</div>
+				<WorkspaceStoryHeader />
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.SubHeader>
@@ -140,6 +185,66 @@ export const Default: Story = {
 	),
 };
 
+/** Figma Type=draft workspace header composition. */
+export const HeaderDraft: Story = {
+	render: () => (
+		<DsWorkspaceLayout>
+			<DsWorkspaceLayout.Header>
+				<WorkspaceStoryHeader type="draft" />
+			</DsWorkspaceLayout.Header>
+
+			<DsWorkspaceLayout.Content>
+				<div className={styles.card}>
+					<DsTypography variant="heading3">Draft header</DsTypography>
+					<DsTypography variant="body-md-reg">
+						Brand Refresh draft chrome with Discard and Save project actions.
+					</DsTypography>
+				</div>
+			</DsWorkspaceLayout.Content>
+		</DsWorkspaceLayout>
+	),
+};
+
+/** Figma Type=pending workspace header composition. */
+export const HeaderPending: Story = {
+	render: () => (
+		<DsWorkspaceLayout>
+			<DsWorkspaceLayout.Header>
+				<WorkspaceStoryHeader type="pending" />
+			</DsWorkspaceLayout.Header>
+
+			<DsWorkspaceLayout.Content>
+				<div className={styles.card}>
+					<DsTypography variant="heading3">Pending header</DsTypography>
+					<DsTypography variant="body-md-reg">
+						Brand Refresh pending chrome with Discard and Save project actions.
+					</DsTypography>
+				</div>
+			</DsWorkspaceLayout.Content>
+		</DsWorkspaceLayout>
+	),
+};
+
+/** Figma Type=running workspace header composition. */
+export const HeaderRunning: Story = {
+	render: () => (
+		<DsWorkspaceLayout>
+			<DsWorkspaceLayout.Header>
+				<WorkspaceStoryHeader type="running" />
+			</DsWorkspaceLayout.Header>
+
+			<DsWorkspaceLayout.Content>
+				<div className={styles.card}>
+					<DsTypography variant="heading3">Running header</DsTypography>
+					<DsTypography variant="body-md-reg">
+						Brand Refresh running chrome with Previous/Next navigation and last-update meta.
+					</DsTypography>
+				</div>
+			</DsWorkspaceLayout.Content>
+		</DsWorkspaceLayout>
+	),
+};
+
 export const WithDrawer: Story = {
 	render: () => {
 		const [drawerOpen, setDrawerOpen] = useState(false);
@@ -147,33 +252,7 @@ export const WithDrawer: Story = {
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<div className={styles.headerLayout}>
-						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-								Close
-							</DsButtonV3>
-						</div>
-						<div className={styles.headerCenter}>
-							<DsTypography variant="body-sm-reg" className={styles.projectName}>
-								Untitled Project -23-May-2024 04:47 PM
-							</DsTypography>
-							<DsIcon icon="info" size="tiny" />
-							<DsStatusBadge status="draft" size="small" />
-						</div>
-						<div className={styles.headerRight}>
-							<div className={styles.lastUpdate}>
-								<DsIcon icon="history" size="small" />
-								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
-								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
-								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-						</div>
-					</div>
+					<WorkspaceStoryHeader onSaveClick={() => setDrawerOpen(true)} />
 				</DsWorkspaceLayout.Header>
 
 				<DsWorkspaceLayout.SubHeader>
@@ -231,33 +310,7 @@ export const WithDrawerAndBackdrop: Story = {
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<div className={styles.headerLayout}>
-						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-								Close
-							</DsButtonV3>
-						</div>
-						<div className={styles.headerCenter}>
-							<DsTypography variant="body-sm-reg" className={styles.projectName}>
-								Untitled Project -23-May-2024 04:47 PM
-							</DsTypography>
-							<DsIcon icon="info" size="tiny" />
-							<DsStatusBadge status="draft" size="small" />
-						</div>
-						<div className={styles.headerRight}>
-							<div className={styles.lastUpdate}>
-								<DsIcon icon="history" size="small" />
-								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
-								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
-								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-						</div>
-					</div>
+					<WorkspaceStoryHeader onSaveClick={() => setDrawerOpen(true)} />
 				</DsWorkspaceLayout.Header>
 
 				<DsWorkspaceLayout.SubHeader>
@@ -301,33 +354,7 @@ export const FillParent: Story = {
 		<div className={styles.fillParentHost}>
 			<DsWorkspaceLayout fillParent>
 				<DsWorkspaceLayout.Header>
-					<div className={styles.headerLayout}>
-						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-								Close
-							</DsButtonV3>
-						</div>
-						<div className={styles.headerCenter}>
-							<DsTypography variant="body-sm-reg" className={styles.projectName}>
-								Untitled Project -23-May-2024 04:47 PM
-							</DsTypography>
-							<DsIcon icon="info" size="tiny" />
-							<DsStatusBadge status="draft" size="small" />
-						</div>
-						<div className={styles.headerRight}>
-							<div className={styles.lastUpdate}>
-								<DsIcon icon="history" size="small" />
-								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
-								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small">
-								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-						</div>
-					</div>
+					<WorkspaceStoryHeader />
 				</DsWorkspaceLayout.Header>
 
 				<DsWorkspaceLayout.Content>
@@ -350,33 +377,7 @@ export const HeaderOnly: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<div className={styles.headerLayout}>
-					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-							Close
-						</DsButtonV3>
-					</div>
-					<div className={styles.headerCenter}>
-						<DsTypography variant="body-sm-reg" className={styles.projectName}>
-							Untitled Project -23-May-2024 04:47 PM
-						</DsTypography>
-						<DsIcon icon="info" size="tiny" />
-						<DsStatusBadge status="draft" size="small" />
-					</div>
-					<div className={styles.headerRight}>
-						<div className={styles.lastUpdate}>
-							<DsIcon icon="history" size="small" />
-							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
-							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-					</div>
-				</div>
+				<WorkspaceStoryHeader />
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.Content>
@@ -396,33 +397,7 @@ export const ExtendedStepperBelow: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<div className={styles.headerLayout}>
-					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-							Close
-						</DsButtonV3>
-					</div>
-					<div className={styles.headerCenter}>
-						<DsTypography variant="body-sm-reg" className={styles.projectName}>
-							Untitled Project -23-May-2024 04:47 PM
-						</DsTypography>
-						<DsIcon icon="info" size="tiny" />
-						<DsStatusBadge status="draft" size="small" />
-					</div>
-					<div className={styles.headerRight}>
-						<div className={styles.lastUpdate}>
-							<DsIcon icon="history" size="small" />
-							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
-							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-					</div>
-				</div>
+				<WorkspaceStoryHeader />
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Content>
@@ -466,33 +441,7 @@ export const ExtendedStepperAside: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<div className={styles.headerLayout}>
-					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-							Close
-						</DsButtonV3>
-					</div>
-					<div className={styles.headerCenter}>
-						<DsTypography variant="body-sm-reg" className={styles.projectName}>
-							Untitled Project -23-May-2024 04:47 PM
-						</DsTypography>
-						<DsIcon icon="info" size="tiny" />
-						<DsStatusBadge status="draft" size="small" />
-					</div>
-					<div className={styles.headerRight}>
-						<div className={styles.lastUpdate}>
-							<DsIcon icon="history" size="small" />
-							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
-							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-					</div>
-				</div>
+				<WorkspaceStoryHeader />
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.LeftPanel>
@@ -549,33 +498,7 @@ export const ExtendedSideMenuAndLeftPanel: Story = {
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<div className={styles.headerLayout}>
-						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-								Close
-							</DsButtonV3>
-						</div>
-						<div className={styles.headerCenter}>
-							<DsTypography variant="body-sm-reg" className={styles.projectName}>
-								Untitled Project -23-May-2024 04:47 PM
-							</DsTypography>
-							<DsIcon icon="info" size="tiny" />
-							<DsStatusBadge status="draft" size="small" />
-						</div>
-						<div className={styles.headerRight}>
-							<div className={styles.lastUpdate}>
-								<DsIcon icon="history" size="small" />
-								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
-								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small">
-								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-						</div>
-					</div>
+					<WorkspaceStoryHeader />
 				</DsWorkspaceLayout.Header>
 				<DsWorkspaceLayout.Body>
 					<DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
@@ -649,33 +572,7 @@ export const ExtendedWithCanvas: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<div className={styles.headerLayout}>
-					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-							Close
-						</DsButtonV3>
-					</div>
-					<div className={styles.headerCenter}>
-						<DsTypography variant="body-sm-reg" className={styles.projectName}>
-							Untitled Project -23-May-2024 04:47 PM
-						</DsTypography>
-						<DsIcon icon="info" size="tiny" />
-						<DsStatusBadge status="draft" size="small" />
-					</div>
-					<div className={styles.headerRight}>
-						<div className={styles.lastUpdate}>
-							<DsIcon icon="history" size="small" />
-							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
-							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-					</div>
-				</div>
+				<WorkspaceStoryHeader />
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Content>
@@ -704,33 +601,7 @@ export const ExtendedSideMenuLeftPanel: Story = {
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<div className={styles.headerLayout}>
-						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-								Close
-							</DsButtonV3>
-						</div>
-						<div className={styles.headerCenter}>
-							<DsTypography variant="body-sm-reg" className={styles.projectName}>
-								Untitled Project -23-May-2024 04:47 PM
-							</DsTypography>
-							<DsIcon icon="info" size="tiny" />
-							<DsStatusBadge status="draft" size="small" />
-						</div>
-						<div className={styles.headerRight}>
-							<div className={styles.lastUpdate}>
-								<DsIcon icon="history" size="small" />
-								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
-								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small">
-								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-						</div>
-					</div>
+					<WorkspaceStoryHeader />
 				</DsWorkspaceLayout.Header>
 				<DsWorkspaceLayout.Body>
 					<DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
@@ -821,33 +692,7 @@ export const ExtendedCombined: Story = {
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<div className={styles.headerLayout}>
-						<div className={styles.headerLeft}>
-							<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-								Close
-							</DsButtonV3>
-						</div>
-						<div className={styles.headerCenter}>
-							<DsTypography variant="body-sm-reg" className={styles.projectName}>
-								Untitled Project -23-May-2024 04:47 PM
-							</DsTypography>
-							<DsIcon icon="info" size="tiny" />
-							<DsStatusBadge status="draft" size="small" />
-						</div>
-						<div className={styles.headerRight}>
-							<div className={styles.lastUpdate}>
-								<DsIcon icon="history" size="small" />
-								<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-							</div>
-							<DsButtonV3 variant="secondary" color="light" size="small">
-								Discard
-							</DsButtonV3>
-							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
-								Save project
-							</DsButtonV3>
-							<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-						</div>
-					</div>
+					<WorkspaceStoryHeader onSaveClick={() => setDrawerOpen(true)} />
 				</DsWorkspaceLayout.Header>
 				<DsWorkspaceLayout.Body>
 					<DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
@@ -948,33 +793,7 @@ export const ExtendedWorkflowInfoPanel: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<div className={styles.headerLayout}>
-					<div className={styles.headerLeft}>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-							Close
-						</DsButtonV3>
-					</div>
-					<div className={styles.headerCenter}>
-						<DsTypography variant="body-sm-reg" className={styles.projectName}>
-							Untitled Project -23-May-2024 04:47 PM
-						</DsTypography>
-						<DsIcon icon="info" size="tiny" />
-						<DsStatusBadge status="draft" size="small" />
-					</div>
-					<div className={styles.headerRight}>
-						<div className={styles.lastUpdate}>
-							<DsIcon icon="history" size="small" />
-							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-						</div>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small">
-							Save project
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" color="light" size="small" icon="more_vert" />
-					</div>
-				</div>
+				<WorkspaceStoryHeader />
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Content>

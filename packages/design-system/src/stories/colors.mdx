@@ -701,9 +701,33 @@ Role-based tokens bound to a UI purpose (background, border, font, icon, outline
 
 ## 4. Gradients
 
+Hand-authored in `_gradients.scss`. The design system ships **only**
+shared Brand gradient recipes used by DS. Prefer these tokens when the
+surface matches their Figma source, do not rebuild the same recipe from stop tokens.
+
+| Token                          | Use                               |
+| ------------------------------ | --------------------------------- |
+| `--blue-radial-grad`           | General Brand Refresh blue radial |
+| `--blue-grad-workspace-header` | `DsWorkspaceLayout.Header` only   |
+
+Stop tokens `--blue-grad-1`, `--blue-grad-2`, etc. exist for composing related gradients.
+
+### App-owned gradients (consumers)
+
+Product apps **define their own gradients in the consuming application** (app CSS / theme),
+not in `@drivenets/design-system`.
+
+1. Add a CSS custom property in the app (e.g. `--my-feature-header-grad`).
+2. Prefer stop / semantic color tokens (`--blue-grad-*`, `--primary-*`, `--color-dap-*`)
+   for the color stops so Brand Refresh hues stay consistent.
+3. Keep geometry (ellipse size, position, alpha) local to the app — that is product chrome,
+   not a design-system API.
+
 <div className={styles.layer}>
 
 <GradientCard variable="blue-radial-grad" title="Blue-grad" />
+
+<GradientCard variable="blue-grad-workspace-header" title="Blue-grad workspace header" />
 
 <SwatchGroup
 	label="Stops"

@@ -1,11 +1,19 @@
 /*
- * Hand-authored gradient styles. Source in Figma.
+ * Hand-authored shared Brand Refresh gradient styles. Source in Figma.
+ * App-/product-specific gradients stay in the consuming application — see Guidelines/Colors.
  */
 :root {
 	// https://www.figma.com/design/DDe8yyHzVoBDePbLfmJYce/DAP-Brand-Refresh-1.0?node-id=181-13762
 	--blue-radial-grad: radial-gradient(
 		58.25% 72.07% at 94.38% 95.2%,
 		var(--blue-grad-2) 0%,
+		var(--blue-grad-1) 100%
+	);
+
+	// https://www.figma.com/design/DDe8yyHzVoBDePbLfmJYce/DAP-Brand-Refresh-1.0?node-id=4-10764
+	--blue-grad-workspace-header: radial-gradient(
+		24.05% 380.93% at 24.05% 0%,
+		rgb(0 160 250 / 80%) 0%,
 		var(--blue-grad-1) 100%
 	);
 }
