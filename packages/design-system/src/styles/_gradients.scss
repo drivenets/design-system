@@ -1,0 +1,11 @@
+/*
+ * Hand-authored gradient styles. Source in Figma.
+ */
+:root {
+	// https://www.figma.com/design/DDe8yyHzVoBDePbLfmJYce/DAP-Brand-Refresh-1.0?node-id=181-13762
+	--blue-radial-grad: radial-gradient(
+		58.25% 72.07% at 94.38% 95.2%,
+		var(--blue-grad-2) 0%,
+		var(--blue-grad-1) 100%
+	);
+}
