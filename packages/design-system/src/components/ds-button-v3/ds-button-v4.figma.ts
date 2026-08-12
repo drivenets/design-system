@@ -45,6 +45,9 @@ const size =
 const iconOnly =
 	structure.type === 'INSTANCE' ? structure.getEnum('icon-only', { True: true, False: false }) : false;
 
+const highEmphasis =
+	structure.type === 'INSTANCE' ? structure.getEnum('high-emphasis', { true: true, false: false }) : false;
+
 const showIcon = structure.type === 'INSTANCE' ? structure.getBoolean('isIconBefore') : false;
 
 // `DsButtonV3.icon` is an icon-name string. Swapped icons keep the placeholder layer
@@ -104,13 +107,14 @@ const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Button';
 const iconProp = icon ? figma.code` icon="${icon}"` : '';
 const disabledProp = disabled ? ' disabled' : '';
 const loadingProp = loading ? ' loading' : '';
+const highEmphasisProp = highEmphasis ? ' highEmphasis' : '';
 
 export default {
 	example: iconOnly
-		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}${iconProp} aria-label="${label}" />`
+		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}${highEmphasisProp}${iconProp} aria-label="${label}" />`
 		: showIcon && icon
-			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp} icon="${icon}">${label}</DsButtonV3>`
-			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}>${label}</DsButtonV3>`,
+			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}${highEmphasisProp} icon="${icon}">${label}</DsButtonV3>`
+			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${loadingProp}${highEmphasisProp}>${label}</DsButtonV3>`,
 	imports: ["import { DsButtonV3 } from '@drivenets/design-system';"],
 	id: 'ds-button-v4',
 	metadata: { nestable: true },

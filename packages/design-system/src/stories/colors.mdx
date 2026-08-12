@@ -7,21 +7,26 @@ import styles from './colors.module.scss';
 
 export const getCssVariable = (name) => {
 	if (typeof window === 'undefined') return '';
-	const value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	let value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	const varRef = value.match(/^var\(--([a-z0-9-]+)\)$/i);
+	if (varRef) {
+		value = getComputedStyle(document.documentElement).getPropertyValue(`--${varRef[1]}`).trim() || value;
+	}
 	return /^#([0-9a-f]{3,8})$/i.test(value) ? value.toUpperCase() : value;
 };
+
+export const isHexTone = (value) => /^#([0-9a-f]{3,8})$/i.test(value);
 
 export const Swatch = ({ variable, label }) => {
 	const [copied, setCopied] = useState(false);
 	const handleCopy = async () => {
-		const value = getCssVariable(variable);
-		if (!value) return;
 		await navigator.clipboard.writeText(`var(--${variable})`);
 		setCopied(true);
 		setTimeout(() => setCopied(false), 1200);
 	};
 
     const value = getCssVariable(variable);
+    const showToneCode = isHexTone(value);
 
     return (
     	<div className={styles.swatchCol}>
@@ -33,11 +38,40 @@ export const Swatch = ({ variable, label }) => {
     			title={`Click to copy var(--${variable})`}
     			aria-label={`${label} ${value}`}
     		>
-    			<span className={styles.toneCode}>{value}</span>
+    			{showToneCode && <span className={styles.toneCode}>{value}</span>}
     			{copied && <span className={styles.copiedTooltip}>Copied</span>}
     		</button>
     		<span className={styles.toneLabel}>{label}</span>
     		<span className={styles.toneVariable}>--{variable}</span>
+    	</div>
+    );
+
+};
+
+export const GradientCard = ({ variable, title }) => {
+	const [copied, setCopied] = useState(false);
+	const handleCopy = async () => {
+		await navigator.clipboard.writeText(`var(--${variable})`);
+		setCopied(true);
+		setTimeout(() => setCopied(false), 1200);
+	};
+
+    return (
+    	<div className={`${styles.gradientCard} sb-unstyled`}>
+    		<button
+    			type="button"
+    			className={styles.gradientPreview}
+    			style={{ background: `var(--${variable})` }}
+    			onClick={handleCopy}
+    			title={`Click to copy var(--${variable})`}
+    			aria-label={`${title} var(--${variable})`}
+    		>
+    			{copied && <span className={styles.copiedTooltip}>Copied</span>}
+    		</button>
+    		<div className={styles.gradientMeta}>
+    			<DsTypography variant="heading4">{title}</DsTypography>
+    			<code className={styles.gradientCode}>background: var(--{variable});</code>
+    		</div>
     	</div>
     );
 
@@ -420,11 +454,14 @@ Role-based tokens bound to a UI purpose (background, border, font, icon, outline
 		{ label: 'info', variable: 'background-info' },
 		{ label: 'info-strong', variable: 'background-info-strong' },
 		{ label: 'light', variable: 'background-light' },
+		{ label: 'light-active', variable: 'background-light-active' },
 		{ label: 'light-disabled', variable: 'background-light-disabled' },
+		{ label: 'light-hover', variable: 'background-light-hover' },
 		{ label: 'light-primary', variable: 'background-light-primary' },
 		{ label: 'light-primary-hover', variable: 'background-light-primary-hover' },
 		{ label: 'light-primary-selected', variable: 'background-light-primary-selected' },
 		{ label: 'light-secondary-selected', variable: 'background-light-secondary-selected' },
+		{ label: 'light-subtle', variable: 'background-light-subtle' },
 		{ label: 'neutral', variable: 'background-neutral' },
 		{ label: 'overlay', variable: 'background-overlay' },
 		{ label: 'page', variable: 'background-page' },
@@ -623,6 +660,59 @@ Role-based tokens bound to a UI purpose (background, border, font, icon, outline
 		{ label: 'Primary green', variable: 'primary-green' },
 		{ label: 'Error', variable: 'error' },
 		{ label: 'Text on button', variable: 'text-on-button' },
+	]}
+/>
+
+<SwatchGroup
+	label="Device"
+	tones={[
+		{ label: 'green', variable: 'device-green' },
+		{ label: 'green-20', variable: 'device-green-20' },
+		{ label: 'light-blue', variable: 'device-light-blue' },
+		{ label: 'light-blue-20', variable: 'device-light-blue-20' },
+		{ label: 'orange', variable: 'device-orange' },
+		{ label: 'orange-20', variable: 'device-orange-20' },
+		{ label: 'purple', variable: 'device-purple' },
+		{ label: 'purple-20', variable: 'device-purple-20' },
+	]}
+/>
+
+<SwatchGroup
+	label="DAP icons"
+	tones={[
+		{ label: '0', variable: 'dap-icons-0' },
+		{ label: '50', variable: 'dap-icons-50' },
+		{ label: '75', variable: 'dap-icons-75' },
+		{ label: '100', variable: 'dap-icons-100' },
+		{ label: '200', variable: 'dap-icons-200' },
+		{ label: '300', variable: 'dap-icons-300' },
+		{ label: '400', variable: 'dap-icons-400' },
+		{ label: '500', variable: 'dap-icons-500' },
+		{ label: '600', variable: 'dap-icons-600' },
+		{ label: '700', variable: 'dap-icons-700' },
+		{ label: '800', variable: 'dap-icons-800' },
+		{ label: '900', variable: 'dap-icons-900' },
+		{ label: '950', variable: 'dap-icons-950' },
+		{ label: 'grey', variable: 'dap-icons-grey' },
+	]}
+/>
+
+</div>
+
+## 4. Gradients
+
+Composed gradient styles (Figma Styles → Gradients). Prefer `--blue-radial-grad` for
+`background` rather than rebuilding the recipe from stop tokens.
+
+<div className={styles.layer}>
+
+<GradientCard variable="blue-radial-grad" title="Blue-grad" />
+
+<SwatchGroup
+	label="Stops"
+	tones={[
+		{ label: 'grad-1', variable: 'blue-grad-1' },
+		{ label: 'grad-2', variable: 'blue-grad-2' },
 	]}
 />
 

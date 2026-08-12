@@ -39,6 +39,22 @@ describe('DsButtonV3', () => {
 		await expect.element(button).toHaveAttribute('data-selected', 'true');
 	});
 
+	it('applies data-high-emphasis when highEmphasis is set', async () => {
+		await page.render(<DsButtonV3 highEmphasis>Label</DsButtonV3>);
+
+		const button = page.getByRole('button', { name: 'Label' });
+
+		await expect.element(button).toHaveAttribute('data-high-emphasis', 'true');
+	});
+
+	it('omits data-high-emphasis by default', async () => {
+		await page.render(<DsButtonV3>Label</DsButtonV3>);
+
+		const button = page.getByRole('button', { name: 'Label' });
+
+		await expect.element(button).not.toHaveAttribute('data-high-emphasis');
+	});
+
 	it('sets data-color for error palette', async () => {
 		await page.render(<DsButtonV3 color="error">Delete</DsButtonV3>);
 

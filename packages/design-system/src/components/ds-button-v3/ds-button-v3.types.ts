@@ -46,6 +46,14 @@ export interface DsButtonV3BaseProps extends ButtonHTMLAttributes<HTMLButtonElem
 	selected?: boolean;
 
 	/**
+	 * Raises the corner radius for high-emphasis surfaces such as
+	 * Sign in, Landing, and NetGen. Purely a rounding change — does not affect
+	 * color or priority.
+	 * @default false
+	 */
+	highEmphasis?: boolean;
+
+	/**
 	 * Leading icon. When set without children, renders as icon-only (square) layout.
 	 */
 	icon?: IconType;
