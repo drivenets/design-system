@@ -33844,21 +33844,26 @@ import styles from &#39;./colors.module.scss&#39;;
 
 export const getCssVariable = (name) =&gt; {
 	if (typeof window === &#39;undefined&#39;) return &#39;&#39;;
-	const value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	let value = getComputedStyle(document.documentElement).getPropertyValue(`--${name}`).trim();
+	const varRef = value.match(/^var\(--([a-z0-9-]+)\)$/i);
+	if (varRef) {
+		value = getComputedStyle(document.documentElement).getPropertyValue(`--${varRef[1]}`).trim() || value;
+	}
 	return /^#([0-9a-f]{3,8})$/i.test(value) ? value.toUpperCase() : value;
 };
+
+export const isHexTone = (value) =&gt; /^#([0-9a-f]{3,8})$/i.test(value);
 
 export const Swatch = ({ variable, label }) =&gt; {
 	const [copied, setCopied] = useState(false);
 	const handleCopy = async () =&gt; {
-		const value = getCssVariable(variable);
-		if (!value) return;
 		await navigator.clipboard.writeText(`var(--${variable})`);
 		setCopied(true);
 		setTimeout(() =&gt; setCopied(false), 1200);
 	};
 
     const value = getCssVariable(variable);
+    const showToneCode = isHexTone(value);
 
     return (
     	&lt;div className={styles.swatchCol}&gt;
@@ -33870,11 +33875,40 @@ export const Swatch = ({ variable, label }) =&gt; {
     			title={`Click to copy var(--${variable})`}
     			aria-label={`${label} ${value}`}
     		&gt;
-    			&lt;span className={styles.toneCode}&gt;{value}&lt;/span&gt;
+    			{showToneCode &amp;&amp; &lt;span className={styles.toneCode}&gt;{value}&lt;/span&gt;}
     			{copied &amp;&amp; &lt;span className={styles.copiedTooltip}&gt;Copied&lt;/span&gt;}
     		&lt;/button&gt;
     		&lt;span className={styles.toneLabel}&gt;{label}&lt;/span&gt;
     		&lt;span className={styles.toneVariable}&gt;--{variable}&lt;/span&gt;
+    	&lt;/div&gt;
+    );
+
+};
+
+export const GradientCard = ({ variable, title }) =&gt; {
+	const [copied, setCopied] = useState(false);
+	const handleCopy = async () =&gt; {
+		await navigator.clipboard.writeText(`var(--${variable})`);
+		setCopied(true);
+		setTimeout(() =&gt; setCopied(false), 1200);
+	};
+
+    return (
+    	&lt;div className={`${styles.gradientCard} sb-unstyled`}&gt;
+    		&lt;button
+    			type=&quot;button&quot;
+    			className={styles.gradientPreview}
+    			style={{ background: `var(--${variable})` }}
+    			onClick={handleCopy}
+    			title={`Click to copy var(--${variable})`}
+    			aria-label={`${title} var(--${variable})`}
+    		&gt;
+    			{copied &amp;&amp; &lt;span className={styles.copiedTooltip}&gt;Copied&lt;/span&gt;}
+    		&lt;/button&gt;
+    		&lt;div className={styles.gradientMeta}&gt;
+    			&lt;DsTypography variant=&quot;heading4&quot;&gt;{title}&lt;/DsTypography&gt;
+    			&lt;code className={styles.gradientCode}&gt;background: var(--{variable});&lt;/code&gt;
+    		&lt;/div&gt;
     	&lt;/div&gt;
     );
 
@@ -34257,11 +34291,14 @@ Role-based tokens bound to a UI purpose (background, border, font, icon, outline
 		{ label: &#39;info&#39;, variable: &#39;background-info&#39; },
 		{ label: &#39;info-strong&#39;, variable: &#39;background-info-strong&#39; },
 		{ label: &#39;light&#39;, variable: &#39;background-light&#39; },
+		{ label: &#39;light-active&#39;, variable: &#39;background-light-active&#39; },
 		{ label: &#39;light-disabled&#39;, variable: &#39;background-light-disabled&#39; },
+		{ label: &#39;light-hover&#39;, variable: &#39;background-light-hover&#39; },
 		{ label: &#39;light-primary&#39;, variable: &#39;background-light-primary&#39; },
 		{ label: &#39;light-primary-hover&#39;, variable: &#39;background-light-primary-hover&#39; },
 		{ label: &#39;light-primary-selected&#39;, variable: &#39;background-light-primary-selected&#39; },
 		{ label: &#39;light-secondary-selected&#39;, variable: &#39;background-light-secondary-selected&#39; },
+		{ label: &#39;light-subtle&#39;, variable: &#39;background-light-subtle&#39; },
 		{ label: &#39;neutral&#39;, variable: &#39;background-neutral&#39; },
 		{ label: &#39;overlay&#39;, variable: &#39;background-overlay&#39; },
 		{ label: &#39;page&#39;, variable: &#39;background-page&#39; },
@@ -34460,6 +34497,59 @@ Role-based tokens bound to a UI purpose (background, border, font, icon, outline
 		{ label: &#39;Primary green&#39;, variable: &#39;primary-green&#39; },
 		{ label: &#39;Error&#39;, variable: &#39;error&#39; },
 		{ label: &#39;Text on button&#39;, variable: &#39;text-on-button&#39; },
+	]}
+/&gt;
+
+&lt;SwatchGroup
+	label=&quot;Device&quot;
+	tones={[
+		{ label: &#39;green&#39;, variable: &#39;device-green&#39; },
+		{ label: &#39;green-20&#39;, variable: &#39;device-green-20&#39; },
+		{ label: &#39;light-blue&#39;, variable: &#39;device-light-blue&#39; },
+		{ label: &#39;light-blue-20&#39;, variable: &#39;device-light-blue-20&#39; },
+		{ label: &#39;orange&#39;, variable: &#39;device-orange&#39; },
+		{ label: &#39;orange-20&#39;, variable: &#39;device-orange-20&#39; },
+		{ label: &#39;purple&#39;, variable: &#39;device-purple&#39; },
+		{ label: &#39;purple-20&#39;, variable: &#39;device-purple-20&#39; },
+	]}
+/&gt;
+
+&lt;SwatchGroup
+	label=&quot;DAP icons&quot;
+	tones={[
+		{ label: &#39;0&#39;, variable: &#39;dap-icons-0&#39; },
+		{ label: &#39;50&#39;, variable: &#39;dap-icons-50&#39; },
+		{ label: &#39;75&#39;, variable: &#39;dap-icons-75&#39; },
+		{ label: &#39;100&#39;, variable: &#39;dap-icons-100&#39; },
+		{ label: &#39;200&#39;, variable: &#39;dap-icons-200&#39; },
+		{ label: &#39;300&#39;, variable: &#39;dap-icons-300&#39; },
+		{ label: &#39;400&#39;, variable: &#39;dap-icons-400&#39; },
+		{ label: &#39;500&#39;, variable: &#39;dap-icons-500&#39; },
+		{ label: &#39;600&#39;, variable: &#39;dap-icons-600&#39; },
+		{ label: &#39;700&#39;, variable: &#39;dap-icons-700&#39; },
+		{ label: &#39;800&#39;, variable: &#39;dap-icons-800&#39; },
+		{ label: &#39;900&#39;, variable: &#39;dap-icons-900&#39; },
+		{ label: &#39;950&#39;, variable: &#39;dap-icons-950&#39; },
+		{ label: &#39;grey&#39;, variable: &#39;dap-icons-grey&#39; },
+	]}
+/&gt;
+
+&lt;/div&gt;
+
+## 4. Gradients
+
+Composed gradient styles (Figma Styles → Gradients). Prefer `--blue-radial-grad` for
+`background` rather than rebuilding the recipe from stop tokens.
+
+&lt;div className={styles.layer}&gt;
+
+&lt;GradientCard variable=&quot;blue-radial-grad&quot; title=&quot;Blue-grad&quot; /&gt;
+
+&lt;SwatchGroup
+	label=&quot;Stops&quot;
+	tones={[
+		{ label: &#39;grad-1&#39;, variable: &#39;blue-grad-1&#39; },
+		{ label: &#39;grad-2&#39;, variable: &#39;blue-grad-2&#39; },
 	]}
 /&gt;
 
