@@ -3,6 +3,7 @@
 // Variables
 $input-text-height-small: 28px;
 $input-text-height-default: 36px;
+$input-text-height-large: 40px;
 $textarea-height-default: 120px;
 
 // Mixins
@@ -171,6 +172,11 @@ $textarea-height-default: 120px;
 		height: $input-text-height-default;
 	}
 
+	&.large {
+		height: $input-text-height-large;
+		max-height: $input-text-height-large;
+	}
+
 	&:has(input[type='number']) {
 		.input {
 			text-align: center;
@@ -238,6 +244,10 @@ $textarea-height-default: 120px;
 
 	&.small {
 		height: $input-text-height-small;
+	}
+
+	&.large {
+		height: $input-text-height-large;
 	}
 
 	.clearIcon {

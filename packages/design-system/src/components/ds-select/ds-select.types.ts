@@ -2,7 +2,8 @@ import type React from 'react';
 import type { ReactNode } from 'react';
 import type { IconName } from '../ds-icon';
 
-export type SelectSize = 'default' | 'small';
+export const selectSizes = ['small', 'default', 'large'] as const;
+export type SelectSize = (typeof selectSizes)[number];
 
 export interface DsSelectOption {
 	/**
