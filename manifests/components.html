@@ -588,7 +588,7 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/92 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/92 infos</a><span class="filter-pill ok" aria-disabled="true">586 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/92 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/92 infos</a><span class="filter-pill ok" aria-disabled="true">587 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
@@ -887,7 +887,7 @@ variant?: (typeof alertBannerVariants)[number] = &#39;info-blue&#39;</code></pre
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsAutocomplete</h2>
       <div class="badges">
-        <label for="c-1-components-autocomplete-props" class="badge ok as-toggle">15 prop types</label>
+        <label for="c-1-components-autocomplete-props" class="badge ok as-toggle">16 prop types</label>
         <label for="c-1-components-autocomplete-info" class="badge info as-toggle">1 info</label>
         <label for="c-1-components-autocomplete-stories" class="badge ok as-toggle">11 stories</label>
         
@@ -923,7 +923,7 @@ variant?: (typeof alertBannerVariants)[number] = &#39;info-blue&#39;</code></pre
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">15 prop types</span>
+              <span class="badge ok">16 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-autocomplete/ds-autocomplete.tsx::DsAutocomplete</code></pre>
             <pre><code>Props:</code></pre>
@@ -1008,6 +1008,12 @@ placeholder?: string = &#39;Start typing to search...&#39;
  * @default true
  */
 showTrigger?: boolean = true
+
+/**
+ * The size of the autocomplete control
+ * @default &#39;default&#39;
+ */
+size?: (typeof autocompleteSizes)[number] = &#39;default&#39;
 
 /**
  * Content to display at the start of the input (e.g., a search icon).
@@ -16509,7 +16515,7 @@ renderOption?: (option: DsSelectOption) =&gt; ReactNode
  * The size of the select component
  * @default &#39;default&#39;
  */
-size?: &#39;default&#39; | &#39;small&#39;
+size?: (typeof selectSizes)[number]
 
 /**
  * Additional styles to apply to the icon
@@ -16569,6 +16575,16 @@ style?: React.CSSProperties</code></pre>
               
               
               <pre><code>const Sizes = () =&gt; &lt;div className={styles.sizesContainer}&gt;
+    &lt;div className={styles.sizeItem}&gt;
+        &lt;div className={styles.sizeLabel}&gt;Large&lt;/div&gt;
+        &lt;ControlledSelectWrapper
+            options={mockOptions.slice(0, 5)}
+            clearable
+            style={{
+                width: &#39;200px&#39;,
+            }}
+            size=&quot;large&quot; /&gt;
+    &lt;/div&gt;
     &lt;div className={styles.sizeItem}&gt;
         &lt;div className={styles.sizeLabel}&gt;Default&lt;/div&gt;
         &lt;ControlledSelectWrapper
@@ -26923,7 +26939,7 @@ value?: string</code></pre>
       <div class="badges">
         <label for="c-79-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
         <label for="c-79-components-textinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-79-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-79-components-textinput-stories" class="badge ok as-toggle">12 stories</label>
         
         
       </div>
@@ -27126,6 +27142,15 @@ value?: string</code></pre>
               
               
               <pre><code>const Small = () =&gt; &lt;DsTextInput size=&quot;small&quot; placeholder=&quot;Small input...&quot; style={{ width: &#39;150px&#39; }} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Large = () =&gt; &lt;DsTextInput size=&quot;large&quot; placeholder=&quot;Large input...&quot; style={{ width: &#39;250px&#39; }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
