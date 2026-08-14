@@ -35,6 +35,7 @@ $bulk-actions-reserved-space: 80px;
 }
 
 .dataTableContainer {
+	position: relative;
 	flex: 1;
 	min-height: 0;
 	max-height: 100%;

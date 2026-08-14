@@ -35,7 +35,14 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
-	decorators: [fullHeightDecorator],
+	decorators: [
+		(Story) =>
+			fullHeightDecorator(() => (
+				<div style={{ height: '700px', minHeight: '100%' }}>
+					<Story />
+				</div>
+			)),
+	],
 };
 
 export default meta;

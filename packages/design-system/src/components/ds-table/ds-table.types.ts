@@ -31,6 +31,11 @@ export interface DsTableLocale {
 	 * Accessible label for the toggle that expands a column group.
 	 */
 	expandColumnGroup: string;
+
+	/**
+	 * Accessible label for the column resize handle.
+	 */
+	resizeColumn: string;
 }
 
 /**
@@ -39,6 +44,7 @@ export interface DsTableLocale {
 export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	collapseColumnGroup: 'Collapse column group',
 	expandColumnGroup: 'Expand column group',
+	resizeColumn: 'Resize column',
 });
 
 /**
@@ -319,6 +325,22 @@ export interface DsDataTableProps<TData, TValue> {
 	 * @default 'medium'
 	 */
 	rowSize?: DsTableRowSize;
+
+	/**
+	 * Enables resizing columns by dragging the right edge of a header cell.
+	 * Double-click a handle to restore the column's original width. Opt out per
+	 * column with `columnDef.enableResizing: false`. Leaf columns may set
+	 * `minSize` (defaults to 52px) and `maxSize` (unlimited unless set). Those
+	 * bounds on a column group are ignored.
+	 * @default false
+	 */
+	resizableColumns?: boolean;
+
+	/**
+	 * Called with the next column id → width (px) map when a resize finishes
+	 * (drag end or double-click restore). Use this to persist widths across sessions.
+	 */
+	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
 
 	/**
 	 * When `true`, renders placeholder skeleton rows instead of the data. Column

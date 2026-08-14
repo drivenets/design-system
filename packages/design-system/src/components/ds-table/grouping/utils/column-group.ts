@@ -1,28 +1,25 @@
 import type { CSSProperties } from 'react';
-import {
-	type Column,
-	type ColumnDef,
-	type VisibilityState,
-	defaultColumnSizing,
-} from '@tanstack/react-table';
+import { type Column, type ColumnDef, type ColumnSizingState, type VisibilityState } from '@tanstack/react-table';
+import { isExplicitColumnWidth } from '../../utils/column-size';
 
 /**
  * Builds the flex style for a group header cell so it lines up with the combined
  * width of its visible leaf columns.
  *
- * Fixed-width leaves contribute to `flexBasis`; default-sized leaves each add one
- * unit of `flexGrow`, mirroring how {@link getColumnSizeStyle} sizes leaf cells so
- * both header rows distribute free space identically.
+ * Fixed-width leaves contribute to `flexBasis`; fill leaves each add one unit of
+ * `flexGrow`, mirroring how {@link getColumnSizeStyle} sizes leaf cells so both
+ * header rows distribute free space identically.
  */
 export const getGroupColumnSizeStyle = <TData, TValue>(
 	leafColumns: Column<TData, TValue>[],
+	columnSizing: ColumnSizingState,
 ): CSSProperties => {
 	let fixedWidth = 0;
 	let flexCount = 0;
 
 	for (const leaf of leafColumns) {
 		const size = leaf.getSize();
-		if (size !== defaultColumnSizing.size) {
+		if (isExplicitColumnWidth(leaf, columnSizing)) {
 			fixedWidth += size;
 		} else {
 			flexCount += 1;

@@ -35,6 +35,22 @@ export const REORDER_COLUMN_ID = 'reorder';
 export const REORDER_COLUMN_WIDTH = 60;
 
 /**
+ * Injected utility leaf ids (`select`, `expander`, `reorder`). Present in internal
+ * sizing for layout; omitted from the public `onColumnSizingChange` payload.
+ */
+export const BUILTIN_COLUMN_IDS: ReadonlySet<string> = Object.freeze(
+	new Set([SELECT_COLUMN_ID, EXPANDER_COLUMN_ID, REORDER_COLUMN_ID]),
+);
+
+/**
  * Number of placeholder skeleton rows rendered while the table is `loading`.
  */
 export const SKELETON_ROW_COUNT = 5;
+
+/**
+ * Default minimum width (in px) a column can be dragged to when
+ * `resizableColumns` is enabled. Overridable per column via `columnDef.minSize`
+ * (including values below this default). There is no default max; set
+ * `columnDef.maxSize` on a leaf to cap it.
+ */
+export const RESIZE_MIN_COLUMN_WIDTH = 52;

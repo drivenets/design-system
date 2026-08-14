@@ -1,0 +1,319 @@
+import { useCallback, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
+import type {
+	ColumnSizingInfoState,
+	ColumnSizingState,
+	OnChangeFn,
+	Table,
+	VisibilityState,
+} from '@tanstack/react-table';
+import {
+	clampColumnSizing,
+	collectMissingLeafSizing,
+	getColumnSizeCssVars,
+	getResizeOriginSize,
+	measureLeafHeaderWidths,
+	omitBuiltinColumnSizing,
+	type ColumnSizeBoundsSource,
+} from '../utils/column-size';
+import { RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
+import type { DsTableResizePhase } from '../context/ds-table-context';
+
+const INITIAL_COLUMN_SIZING_INFO: ColumnSizingInfoState = {
+	startOffset: null,
+	startSize: null,
+	deltaOffset: null,
+	deltaPercentage: null,
+	isResizingColumn: false,
+	columnSizingStart: [],
+};
+
+export interface UseColumnResizeOptions {
+	enabled: boolean;
+	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
+	/**
+	 * Invalidates the leaf-width seed measurement (same role as in the former
+	 * `DsTable` layout effect). Read as a dependency only.
+	 */
+	columns: unknown;
+	columnVisibility: VisibilityState;
+}
+
+export interface DsTableResizeContextSlice {
+	resizableColumns: boolean;
+	resizeSizingReady: boolean;
+	resizeContainerRef: RefObject<HTMLDivElement | null>;
+	onResizeHover: (columnId: string | null, offset: number | null) => void;
+	onResizeDragStart: (offset: number) => void;
+	onResizeReset: (columnIds: string[]) => void;
+}
+
+export interface UseColumnResizeActiveResize {
+	offset: number;
+	phase: DsTableResizePhase;
+}
+
+export interface UseColumnResizeBindResult {
+	columnSizeVars: CSSProperties | undefined;
+	activeResize: UseColumnResizeActiveResize | null;
+	context: DsTableResizeContextSlice;
+}
+
+export interface UseColumnResizeTableOptions {
+	enableColumnResizing: boolean;
+	columnResizeMode: 'onChange';
+	defaultColumn: { minSize: number };
+	onColumnSizingChange: OnChangeFn<ColumnSizingState>;
+	onColumnSizingInfoChange: OnChangeFn<ColumnSizingInfoState>;
+}
+
+export interface UseColumnResizeResult {
+	tableOptions: UseColumnResizeTableOptions;
+	state: {
+		columnSizing: ColumnSizingState;
+		columnSizingInfo: ColumnSizingInfoState;
+	};
+	bind: <TData>(table: Table<TData>) => UseColumnResizeBindResult;
+}
+
+/**
+ * Owns column-resize state, TanStack sizing handlers, origin snapshots, seed
+ * measurement, hover/drag overlay model, and the context slice consumed by
+ * resize handles.
+ *
+ * Call before `useReactTable`, spread `tableOptions` / `state` into it, then
+ * `bind(table)` during render for CSS vars, overlay, and context.
+ */
+export const useColumnResize = ({
+	enabled,
+	onColumnSizingChange,
+	columns,
+	columnVisibility,
+}: UseColumnResizeOptions): UseColumnResizeResult => {
+	const [columnResizeState, setColumnResizeState] = useState<{
+		columnSizing: ColumnSizingState;
+		columnSizingInfo: ColumnSizingInfoState;
+	}>({
+		columnSizing: {},
+		columnSizingInfo: INITIAL_COLUMN_SIZING_INFO,
+	});
+	// One useState so TanStack's mousemove updaters (info then sizing) run in
+	// call order against the same queue. Split hooks apply sizing first, while
+	// the next-width map is still empty.
+	const { columnSizing, columnSizingInfo } = columnResizeState;
+	const [resizeHover, setResizeHover] = useState<{
+		columnId: string;
+		offset: number;
+	} | null>(null);
+	const dragStartOffsetRef = useRef<number | null>(null);
+	const resizeOriginSizingRef = useRef<ColumnSizingState>({});
+	const containerRef = useRef<HTMLDivElement>(null);
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- bind is generic; the ref only calls sizing APIs
+	const tableRef = useRef<Table<any> | null>(null);
+
+	const columnSizingRef = useRef(columnSizing);
+	columnSizingRef.current = columnSizing;
+	const columnSizingInfoRef = useRef(columnSizingInfo);
+	columnSizingInfoRef.current = columnSizingInfo;
+	const onColumnSizingChangeRef = useRef(onColumnSizingChange);
+	onColumnSizingChangeRef.current = onColumnSizingChange;
+	const leafSizeBoundsRef = useRef<ColumnSizeBoundsSource[]>([]);
+
+	const handleColumnSizingChange: OnChangeFn<ColumnSizingState> = useCallback((updaterOrValue) => {
+		setColumnResizeState((prev) => {
+			const next =
+				typeof updaterOrValue === 'function' ? updaterOrValue(prev.columnSizing) : updaterOrValue;
+
+			return {
+				...prev,
+				columnSizing: clampColumnSizing(next, leafSizeBoundsRef.current),
+			};
+		});
+	}, []);
+
+	const handleColumnSizingInfoChange: OnChangeFn<ColumnSizingInfoState> = useCallback((updaterOrValue) => {
+		const prevInfo = columnSizingInfoRef.current;
+		const nextInfo = typeof updaterOrValue === 'function' ? updaterOrValue(prevInfo) : updaterOrValue;
+		const ended = Boolean(prevInfo.isResizingColumn) && nextInfo.isResizingColumn === false;
+
+		columnSizingInfoRef.current = nextInfo;
+		setColumnResizeState((prev) => ({
+			...prev,
+			columnSizingInfo: nextInfo,
+		}));
+
+		if (ended) {
+			onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(columnSizingRef.current));
+		}
+	}, []);
+
+	const handleResizeHover = useCallback((columnId: string | null, offset: number | null) => {
+		setResizeHover(columnId === null || offset === null ? null : { columnId, offset });
+	}, []);
+
+	const handleResizeDragStart = useCallback((offset: number) => {
+		dragStartOffsetRef.current = offset;
+	}, []);
+
+	const handleResizeReset = useCallback(
+		(columnIds: string[]) => {
+			const next = { ...columnSizingRef.current };
+
+			for (const id of columnIds) {
+				const origin = resizeOriginSizingRef.current[id];
+				if (origin !== undefined) {
+					next[id] = origin;
+				}
+			}
+
+			const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
+			handleColumnSizingChange(clamped);
+			onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(clamped));
+		},
+		[handleColumnSizingChange],
+	);
+
+	useLayoutEffect(() => {
+		if (!enabled) {
+			return;
+		}
+
+		const container = containerRef.current;
+		const table = tableRef.current;
+		if (!container || !table) {
+			return;
+		}
+
+		const seedMissingLeaves = (): boolean => {
+			if (container.getBoundingClientRect().width === 0) {
+				return false;
+			}
+
+			const tableEl = container.querySelector('table');
+			if (!(tableEl instanceof HTMLElement)) {
+				return false;
+			}
+
+			const leaves = table.getVisibleLeafColumns();
+			const leafIds = leaves.map((column) => column.id);
+			const measured = measureLeafHeaderWidths(tableEl, leafIds);
+
+			for (const column of leaves) {
+				const measuredWidth = measured[column.id];
+				if (measuredWidth === undefined || resizeOriginSizingRef.current[column.id] !== undefined) {
+					continue;
+				}
+
+				resizeOriginSizingRef.current[column.id] = getResizeOriginSize(column, Math.round(measuredWidth));
+			}
+
+			const missing = collectMissingLeafSizing(measured, columnSizingRef.current);
+			if (Object.keys(missing).length > 0) {
+				handleColumnSizingChange((prev) => ({
+					...clampColumnSizing(missing, leafSizeBoundsRef.current),
+					...prev,
+				}));
+			}
+
+			return true;
+		};
+
+		if (seedMissingLeaves()) {
+			return;
+		}
+
+		const observer = new ResizeObserver(() => {
+			if (seedMissingLeaves()) {
+				observer.disconnect();
+			}
+		});
+		observer.observe(container);
+
+		return () => observer.disconnect();
+	}, [enabled, columns, columnVisibility, handleColumnSizingChange]);
+
+	const tableOptions = useMemo<UseColumnResizeTableOptions>(
+		() => ({
+			enableColumnResizing: enabled,
+			columnResizeMode: 'onChange',
+			defaultColumn: {
+				minSize: RESIZE_MIN_COLUMN_WIDTH,
+			},
+			onColumnSizingChange: handleColumnSizingChange,
+			onColumnSizingInfoChange: handleColumnSizingInfoChange,
+		}),
+		[enabled, handleColumnSizingChange, handleColumnSizingInfoChange],
+	);
+
+	const bind = <TData,>(table: Table<TData>): UseColumnResizeBindResult => {
+		tableRef.current = table;
+		leafSizeBoundsRef.current = table.getAllLeafColumns();
+
+		const visibleLeafIds = table.getVisibleLeafColumns().map((column) => column.id);
+		const resizeSizingReady =
+			enabled && visibleLeafIds.length > 0 && visibleLeafIds.every((id) => columnSizing[id] !== undefined);
+
+		const columnSizeVars: CSSProperties | undefined = resizeSizingReady
+			? {
+					...getColumnSizeCssVars(table.getFlatHeaders()),
+					width: table.getTotalSize(),
+				}
+			: undefined;
+
+		if (!enabled) {
+			return {
+				columnSizeVars: undefined,
+				activeResize: null,
+				context: {
+					resizableColumns: false,
+					resizeSizingReady: false,
+					resizeContainerRef: containerRef,
+					onResizeHover: handleResizeHover,
+					onResizeDragStart: handleResizeDragStart,
+					onResizeReset: handleResizeReset,
+				},
+			};
+		}
+
+		const isResizingColumn = columnSizingInfo.isResizingColumn;
+		const resizingHeader =
+			typeof isResizingColumn === 'string'
+				? table.getFlatHeaders().find((header) => header.column.id === isResizingColumn)
+				: undefined;
+		const startSize = columnSizingInfo.startSize;
+		const clampedResizeDelta =
+			resizingHeader && startSize !== null
+				? resizingHeader.getSize() - startSize
+				: (columnSizingInfo.deltaOffset ?? 0);
+		const activeResize: UseColumnResizeActiveResize | null =
+			isResizingColumn && dragStartOffsetRef.current !== null
+				? {
+						offset: dragStartOffsetRef.current + clampedResizeDelta,
+						phase: 'dragging',
+					}
+				: resizeHover
+					? { offset: resizeHover.offset, phase: 'hover' }
+					: null;
+
+		return {
+			columnSizeVars,
+			activeResize,
+			context: {
+				resizableColumns: enabled,
+				resizeSizingReady,
+				resizeContainerRef: containerRef,
+				onResizeHover: handleResizeHover,
+				onResizeDragStart: handleResizeDragStart,
+				onResizeReset: handleResizeReset,
+			},
+		};
+	};
+
+	return {
+		tableOptions,
+		state: {
+			columnSizing,
+			columnSizingInfo,
+		},
+		bind,
+	};
+};
