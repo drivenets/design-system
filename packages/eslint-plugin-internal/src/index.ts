@@ -6,6 +6,7 @@ import { consistentStoryTitles } from './rules/consistent-story-titles';
 import { noAutodocsTag } from './rules/no-autodocs-tag';
 import { noCrossComponentInternalImport } from './rules/no-cross-component-internal-import';
 import { noEmptyStory } from './rules/no-empty-story';
+import { noTestId } from './rules/no-test-id';
 import { noUselessStoryAnnotations } from './rules/no-useless-story-annotations';
 import { noUselessTsxExtension } from './rules/no-useless-tsx-extension';
 import { noVitestBrowserReact } from './rules/no-vitest-browser-react';
@@ -26,6 +27,7 @@ const plugin = {
 		'no-autodocs-tag': noAutodocsTag,
 		'no-cross-component-internal-import': noCrossComponentInternalImport,
 		'no-empty-story': noEmptyStory,
+		'no-test-id': noTestId,
 		'no-useless-story-annotations': noUselessStoryAnnotations,
 		'no-useless-tsx-extension': noUselessTsxExtension,
 		'no-vitest-browser-react': noVitestBrowserReact,
@@ -51,6 +53,18 @@ Object.assign(plugin.configs, {
 			rules: {
 				'@drivenets/ds-internal/no-cross-component-internal-import': 'error',
 				'@drivenets/ds-internal/no-useless-tsx-extension': 'error',
+			},
+		},
+
+		{
+			name: 'ds-internal/recommended/source',
+			plugins: {
+				'@drivenets/ds-internal': plugin,
+			},
+			files: ['**/src/**/*.[tj]s?(x)'],
+			ignores: ['**/*.test.[tj]s?(x)', '**/*.stories?(.*).[tj]s?(x)', '**/stories/**'],
+			rules: {
+				'@drivenets/ds-internal/no-test-id': 'error',
 			},
 		},
 
