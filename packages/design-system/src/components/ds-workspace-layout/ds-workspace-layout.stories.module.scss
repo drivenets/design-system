@@ -8,6 +8,7 @@
 .headerLeft {
 	display: flex;
 	align-items: center;
+	gap: var(--xs);
 	flex-shrink: 0;
 }
 
