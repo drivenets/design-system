@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/92 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/92 infos</a><span class="filter-pill ok" aria-disabled="true">587 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/92 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/92 infos</a><span class="filter-pill ok" aria-disabled="true">590 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -29998,7 +29998,7 @@ value?: string</code></pre>
       <div class="badges">
         <label for="c-89-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
         <label for="c-89-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
-        <label for="c-89-components-workspacelayout-stories" class="badge ok as-toggle">12 stories</label>
+        <label for="c-89-components-workspacelayout-stories" class="badge ok as-toggle">15 stories</label>
         
         
       </div>
@@ -30058,6 +30058,7 @@ fillParent?: boolean = false</code></pre>
     DsIcon,
     DsNextStepButton,
     DsStatusBadge,
+    DsStatusBadgeV2,
     DsStep,
     DsStepContent,
     DsStepper,
@@ -30077,33 +30078,7 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const Default = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;div className={styles.headerLayout}&gt;
-                &lt;div className={styles.headerLeft}&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                        Close
-                    &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerCenter}&gt;
-                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                        Untitled Project -23-May-2024 04:47 PM
-                    &lt;/DsTypography&gt;
-                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerRight}&gt;
-                    &lt;div className={styles.lastUpdate}&gt;
-                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                    &lt;/div&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Discard
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Save project
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;WorkspaceStoryHeader /&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.SubHeader&gt;
@@ -30142,6 +30117,78 @@ fillParent?: boolean = false</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
+                <span class="ex-name">Header Draft</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Figma Type=draft workspace header composition.</div>
+              <pre><code>const HeaderDraft = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;WorkspaceStoryHeader type=&quot;draft&quot; /&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+
+        &lt;DsWorkspaceLayout.Content&gt;
+            &lt;div className={styles.card}&gt;
+                &lt;DsTypography variant=&quot;heading3&quot;&gt;Draft header&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                    Brand Refresh draft chrome with Discard and Save project actions.
+                &lt;/DsTypography&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Content&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Header Pending</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Figma Type=pending workspace header composition.</div>
+              <pre><code>const HeaderPending = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;WorkspaceStoryHeader type=&quot;pending&quot; /&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+
+        &lt;DsWorkspaceLayout.Content&gt;
+            &lt;div className={styles.card}&gt;
+                &lt;DsTypography variant=&quot;heading3&quot;&gt;Pending header&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                    Brand Refresh pending chrome with Discard and Save project actions.
+                &lt;/DsTypography&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Content&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Header Running</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Figma Type=running workspace header composition.</div>
+              <pre><code>const HeaderRunning = () =&gt; (
+    &lt;DsWorkspaceLayout&gt;
+        &lt;DsWorkspaceLayout.Header&gt;
+            &lt;WorkspaceStoryHeader type=&quot;running&quot; /&gt;
+        &lt;/DsWorkspaceLayout.Header&gt;
+
+        &lt;DsWorkspaceLayout.Content&gt;
+            &lt;div className={styles.card}&gt;
+                &lt;DsTypography variant=&quot;heading3&quot;&gt;Running header&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                    Brand Refresh running chrome with Previous/Next navigation and last-update meta.
+                &lt;/DsTypography&gt;
+            &lt;/div&gt;
+        &lt;/DsWorkspaceLayout.Content&gt;
+    &lt;/DsWorkspaceLayout&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
                 <span class="ex-name">With Drawer</span>
                 <span class="badge ok">story ok</span>
               </div>
@@ -30153,33 +30200,7 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;div className={styles.headerLayout}&gt;
-                    &lt;div className={styles.headerLeft}&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                            Close
-                        &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerCenter}&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                            Untitled Project -23-May-2024 04:47 PM
-                        &lt;/DsTypography&gt;
-                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerRight}&gt;
-                        &lt;div className={styles.lastUpdate}&gt;
-                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                        &lt;/div&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Discard
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
-                            Save project
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                &lt;WorkspaceStoryHeader onSaveClick={() =&gt; setDrawerOpen(true)} /&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
 
             &lt;DsWorkspaceLayout.SubHeader&gt;
@@ -30242,33 +30263,7 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;div className={styles.headerLayout}&gt;
-                    &lt;div className={styles.headerLeft}&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                            Close
-                        &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerCenter}&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                            Untitled Project -23-May-2024 04:47 PM
-                        &lt;/DsTypography&gt;
-                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerRight}&gt;
-                        &lt;div className={styles.lastUpdate}&gt;
-                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                        &lt;/div&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Discard
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
-                            Save project
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                &lt;WorkspaceStoryHeader onSaveClick={() =&gt; setDrawerOpen(true)} /&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
 
             &lt;DsWorkspaceLayout.SubHeader&gt;
@@ -30317,33 +30312,7 @@ fillParent?: boolean = false</code></pre>
     &lt;div className={styles.fillParentHost}&gt;
         &lt;DsWorkspaceLayout fillParent&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;div className={styles.headerLayout}&gt;
-                    &lt;div className={styles.headerLeft}&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                            Close
-                        &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerCenter}&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                            Untitled Project -23-May-2024 04:47 PM
-                        &lt;/DsTypography&gt;
-                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerRight}&gt;
-                        &lt;div className={styles.lastUpdate}&gt;
-                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                        &lt;/div&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Discard
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Save project
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                &lt;WorkspaceStoryHeader /&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
 
             &lt;DsWorkspaceLayout.Content&gt;
@@ -30371,33 +30340,7 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const HeaderOnly = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;div className={styles.headerLayout}&gt;
-                &lt;div className={styles.headerLeft}&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                        Close
-                    &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerCenter}&gt;
-                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                        Untitled Project -23-May-2024 04:47 PM
-                    &lt;/DsTypography&gt;
-                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerRight}&gt;
-                    &lt;div className={styles.lastUpdate}&gt;
-                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                    &lt;/div&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Discard
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Save project
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;WorkspaceStoryHeader /&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.Content&gt;
@@ -30421,33 +30364,7 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedStepperBelow = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;div className={styles.headerLayout}&gt;
-                &lt;div className={styles.headerLeft}&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                        Close
-                    &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerCenter}&gt;
-                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                        Untitled Project -23-May-2024 04:47 PM
-                    &lt;/DsTypography&gt;
-                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerRight}&gt;
-                    &lt;div className={styles.lastUpdate}&gt;
-                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                    &lt;/div&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Discard
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Save project
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;WorkspaceStoryHeader /&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Content&gt;
@@ -30495,33 +30412,7 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedStepperAside = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;div className={styles.headerLayout}&gt;
-                &lt;div className={styles.headerLeft}&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                        Close
-                    &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerCenter}&gt;
-                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                        Untitled Project -23-May-2024 04:47 PM
-                    &lt;/DsTypography&gt;
-                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerRight}&gt;
-                    &lt;div className={styles.lastUpdate}&gt;
-                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                    &lt;/div&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Discard
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Save project
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;WorkspaceStoryHeader /&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.LeftPanel&gt;
@@ -30582,33 +30473,7 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;div className={styles.headerLayout}&gt;
-                    &lt;div className={styles.headerLeft}&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                            Close
-                        &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerCenter}&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                            Untitled Project -23-May-2024 04:47 PM
-                        &lt;/DsTypography&gt;
-                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerRight}&gt;
-                        &lt;div className={styles.lastUpdate}&gt;
-                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                        &lt;/div&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Discard
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Save project
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                &lt;WorkspaceStoryHeader /&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
             &lt;DsWorkspaceLayout.Body&gt;
                 &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
@@ -30686,33 +30551,7 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedWithCanvas = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;div className={styles.headerLayout}&gt;
-                &lt;div className={styles.headerLeft}&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                        Close
-                    &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerCenter}&gt;
-                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                        Untitled Project -23-May-2024 04:47 PM
-                    &lt;/DsTypography&gt;
-                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerRight}&gt;
-                    &lt;div className={styles.lastUpdate}&gt;
-                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                    &lt;/div&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Discard
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Save project
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;WorkspaceStoryHeader /&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Content&gt;
@@ -30745,33 +30584,7 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;div className={styles.headerLayout}&gt;
-                    &lt;div className={styles.headerLeft}&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                            Close
-                        &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerCenter}&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                            Untitled Project -23-May-2024 04:47 PM
-                        &lt;/DsTypography&gt;
-                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerRight}&gt;
-                        &lt;div className={styles.lastUpdate}&gt;
-                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                        &lt;/div&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Discard
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Save project
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                &lt;WorkspaceStoryHeader /&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
             &lt;DsWorkspaceLayout.Body&gt;
                 &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
@@ -30866,33 +30679,7 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;div className={styles.headerLayout}&gt;
-                    &lt;div className={styles.headerLeft}&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                            Close
-                        &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerCenter}&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                            Untitled Project -23-May-2024 04:47 PM
-                        &lt;/DsTypography&gt;
-                        &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                        &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                    &lt;/div&gt;
-                    &lt;div className={styles.headerRight}&gt;
-                        &lt;div className={styles.lastUpdate}&gt;
-                            &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                        &lt;/div&gt;
-                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                            Discard
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
-                            Save project
-                        &lt;/DsButtonV3&gt;
-                        &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                    &lt;/div&gt;
-                &lt;/div&gt;
+                &lt;WorkspaceStoryHeader onSaveClick={() =&gt; setDrawerOpen(true)} /&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
             &lt;DsWorkspaceLayout.Body&gt;
                 &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
@@ -30997,33 +30784,7 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedWorkflowInfoPanel = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;div className={styles.headerLayout}&gt;
-                &lt;div className={styles.headerLeft}&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
-                        Close
-                    &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerCenter}&gt;
-                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
-                        Untitled Project -23-May-2024 04:47 PM
-                    &lt;/DsTypography&gt;
-                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
-                    &lt;DsStatusBadge status=&quot;draft&quot; size=&quot;small&quot; /&gt;
-                &lt;/div&gt;
-                &lt;div className={styles.headerRight}&gt;
-                    &lt;div className={styles.lastUpdate}&gt;
-                        &lt;DsIcon icon=&quot;history&quot; size=&quot;small&quot; /&gt;
-                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
-                    &lt;/div&gt;
-                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Discard
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
-                        Save project
-                    &lt;/DsButtonV3&gt;
-                    &lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;more_vert&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+            &lt;WorkspaceStoryHeader /&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Content&gt;
@@ -34563,9 +34324,33 @@ Role-based tokens bound to a UI purpose (background, border, font, icon, outline
 
 ## 4. Gradients
 
+Hand-authored in `_gradients.scss`. The design system ships **only**
+shared Brand gradient recipes used by DS. Prefer these tokens when the
+surface matches their Figma source, do not rebuild the same recipe from stop tokens.
+
+| Token                          | Use                               |
+| ------------------------------ | --------------------------------- |
+| `--blue-radial-grad`           | General Brand Refresh blue radial |
+| `--blue-grad-workspace-header` | `DsWorkspaceLayout.Header` only   |
+
+Stop tokens `--blue-grad-1`, `--blue-grad-2`, etc. exist for composing related gradients.
+
+### App-owned gradients (consumers)
+
+Product apps **define their own gradients in the consuming application** (app CSS / theme),
+not in `@drivenets/design-system`.
+
+1. Add a CSS custom property in the app (e.g. `--my-feature-header-grad`).
+2. Prefer stop / semantic color tokens (`--blue-grad-*`, `--primary-*`, `--color-dap-*`)
+   for the color stops so Brand Refresh hues stay consistent.
+3. Keep geometry (ellipse size, position, alpha) local to the app — that is product chrome,
+   not a design-system API.
+
 &lt;div className={styles.layer}&gt;
 
 &lt;GradientCard variable=&quot;blue-radial-grad&quot; title=&quot;Blue-grad&quot; /&gt;
+
+&lt;GradientCard variable=&quot;blue-grad-workspace-header&quot; title=&quot;Blue-grad workspace header&quot; /&gt;
 
 &lt;SwatchGroup
 	label=&quot;Stops&quot;
