@@ -28,13 +28,7 @@ export type GetAugmentedColumnsOptions = {
  */
 export const getAugmentedColumns = <TData, TValue>(
 	columns: ColumnDef<TData, TValue>[],
-	{
-		selectable,
-		expandable,
-		reorderable,
-		virtualized,
-		showSelectAllCheckbox,
-	}: GetAugmentedColumnsOptions,
+	{ selectable, expandable, reorderable, virtualized, showSelectAllCheckbox }: GetAugmentedColumnsOptions,
 ): ColumnDef<TData, TValue>[] => {
 	const augmentedColumns: ColumnDef<TData, TValue>[] = [...columns];
 
