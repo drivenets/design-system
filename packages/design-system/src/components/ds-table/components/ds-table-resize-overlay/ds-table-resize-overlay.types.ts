@@ -1,5 +1,4 @@
-const dsTableResizeOverlayPhases = ['hover', 'dragging'] as const;
-export type DsTableResizeOverlayPhase = (typeof dsTableResizeOverlayPhases)[number];
+export type DsTableResizeOverlayPhase = 'hover' | 'dragging';
 
 /**
  * Props for the full-height column resize divider overlay.
