@@ -1,4 +1,4 @@
-export const dsTableResizeOverlayPhases = ['hover', 'dragging'] as const;
+const dsTableResizeOverlayPhases = ['hover', 'dragging'] as const;
 export type DsTableResizeOverlayPhase = (typeof dsTableResizeOverlayPhases)[number];
 
 /**
