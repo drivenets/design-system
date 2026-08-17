@@ -208,8 +208,8 @@ export const PersistedWidths: Story = {
 				<DsStack direction="column" gap={8}>
 					<DsTypography variant="heading4">Persisted widths</DsTypography>
 					<DsTypography variant="body-sm-reg" color="secondary">
-						Resize a column, then refresh. Widths are written to localStorage on drag end and
-						restored through columnDef.size on the next mount.
+						Resize a column, then refresh. Widths are written to localStorage on drag end and restored through
+						columnDef.size on the next mount.
 					</DsTypography>
 				</DsStack>
 

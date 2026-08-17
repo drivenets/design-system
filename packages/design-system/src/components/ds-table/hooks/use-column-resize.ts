@@ -1,4 +1,12 @@
-import { useCallback, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react';
+import {
+	useCallback,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+	type CSSProperties,
+	type RefObject,
+} from 'react';
 import type {
 	ColumnSizingInfoState,
 	ColumnSizingState,
@@ -120,8 +128,7 @@ export const useColumnResize = ({
 
 	const handleColumnSizingChange: OnChangeFn<ColumnSizingState> = useCallback((updaterOrValue) => {
 		setColumnResizeState((prev) => {
-			const next =
-				typeof updaterOrValue === 'function' ? updaterOrValue(prev.columnSizing) : updaterOrValue;
+			const next = typeof updaterOrValue === 'function' ? updaterOrValue(prev.columnSizing) : updaterOrValue;
 
 			return {
 				...prev,
@@ -244,7 +251,7 @@ export const useColumnResize = ({
 		[enabled, handleColumnSizingChange, handleColumnSizingInfoChange],
 	);
 
-	const bind = <TData,>(table: Table<TData>): UseColumnResizeBindResult => {
+	const bind = <TData>(table: Table<TData>): UseColumnResizeBindResult => {
 		tableRef.current = table;
 		leafSizeBoundsRef.current = table.getAllLeafColumns();
 

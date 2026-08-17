@@ -16,7 +16,12 @@ import {
 	isExplicitColumnWidth,
 	omitBuiltinColumnSizing,
 } from './column-size';
-import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, RESIZE_MIN_COLUMN_WIDTH, SELECT_COLUMN_ID } from './constants';
+import {
+	EXPANDER_COLUMN_ID,
+	REORDER_COLUMN_ID,
+	RESIZE_MIN_COLUMN_WIDTH,
+	SELECT_COLUMN_ID,
+} from './constants';
 
 describe('isExplicitColumnWidth', () => {
 	it('returns false for an unset size with no sizing entry (fill column)', () => {
@@ -24,9 +29,7 @@ describe('isExplicitColumnWidth', () => {
 	});
 
 	it('returns false when columnDef.size is TanStack’s default', () => {
-		expect(
-			isExplicitColumnWidth({ id: 'a', columnDef: { size: defaultColumnSizing.size } }, {}),
-		).toBe(false);
+		expect(isExplicitColumnWidth({ id: 'a', columnDef: { size: defaultColumnSizing.size } }, {})).toBe(false);
 	});
 
 	it('returns true when columnDef.size is a custom value', () => {
@@ -34,9 +37,7 @@ describe('isExplicitColumnWidth', () => {
 	});
 
 	it('returns true when columnSizing has an entry, including the default size value', () => {
-		expect(isExplicitColumnWidth({ id: 'a', columnDef: {} }, { a: defaultColumnSizing.size })).toBe(
-			true,
-		);
+		expect(isExplicitColumnWidth({ id: 'a', columnDef: {} }, { a: defaultColumnSizing.size })).toBe(true);
 	});
 });
 

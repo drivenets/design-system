@@ -208,8 +208,7 @@ describe('DsTable - resizable columns', () => {
 					return Number.POSITIVE_INFINITY;
 				}
 				const cellRightRelative =
-					getHeaderCell('firstName').getBoundingClientRect().right -
-					container.getBoundingClientRect().left;
+					getHeaderCell('firstName').getBoundingClientRect().right - container.getBoundingClientRect().left;
 				return Math.abs(parseFloat(overlay.style.left) - cellRightRelative);
 			})
 			.toBeLessThan(2);
@@ -282,8 +281,7 @@ describe('DsTable - resizable columns', () => {
 					return Number.POSITIVE_INFINITY;
 				}
 				const cellRightRelative =
-					getHeaderCell('firstName').getBoundingClientRect().right -
-					container.getBoundingClientRect().left;
+					getHeaderCell('firstName').getBoundingClientRect().right - container.getBoundingClientRect().left;
 				return Math.abs(parseFloat(overlay.style.left) - cellRightRelative);
 			})
 			.toBeLessThan(2);
@@ -304,12 +302,7 @@ describe('DsTable - resizable columns', () => {
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
 		];
 		await page.render(
-			<DsTable
-				columns={columns}
-				data={rows}
-				resizableColumns
-				onColumnSizingChange={onColumnSizingChange}
-			/>,
+			<DsTable columns={columns} data={rows} resizableColumns onColumnSizingChange={onColumnSizingChange} />,
 		);
 
 		await dragHandleBy(getHandle('firstName'), 80);
@@ -479,8 +472,7 @@ describe('DsTable - resizable columns', () => {
 					return Number.POSITIVE_INFINITY;
 				}
 				const cellRightRelative =
-					getHeaderCell('firstName').getBoundingClientRect().right -
-					container.getBoundingClientRect().left;
+					getHeaderCell('firstName').getBoundingClientRect().right - container.getBoundingClientRect().left;
 				const overlayLeft = parseFloat(overlay.style.left);
 				return Math.abs(overlayLeft - cellRightRelative);
 			})
@@ -508,8 +500,7 @@ describe('DsTable - resizable columns', () => {
 					return Number.POSITIVE_INFINITY;
 				}
 				const cellRightRelative =
-					getHeaderCell('identity').getBoundingClientRect().right -
-					container.getBoundingClientRect().left;
+					getHeaderCell('identity').getBoundingClientRect().right - container.getBoundingClientRect().left;
 				return Math.abs(parseFloat(overlay.style.left) - cellRightRelative);
 			})
 			.toBeLessThan(2);
@@ -598,8 +589,7 @@ describe('DsTable - resizable columns', () => {
 					return Number.POSITIVE_INFINITY;
 				}
 				const cellRightRelative =
-					getHeaderCell('firstName').getBoundingClientRect().right -
-					container.getBoundingClientRect().left;
+					getHeaderCell('firstName').getBoundingClientRect().right - container.getBoundingClientRect().left;
 				return Math.abs(parseFloat(overlay.style.left) - cellRightRelative);
 			})
 			.toBeLessThan(2);
