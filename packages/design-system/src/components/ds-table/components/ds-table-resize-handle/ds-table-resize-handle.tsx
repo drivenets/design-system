@@ -24,8 +24,10 @@ const clientPointFromEvent = (event: Event): { x: number; y: number } | null => 
  * overlay; double-click restores snapshot origin widths for this header's leaves.
  */
 export const DsTableResizeHandle = <TData, TValue>({ header }: DsTableResizeHandleProps<TData, TValue>) => {
-	const { resizeContainerRef, onResizeHover, onResizeDragStart, onResizeReset, locale } =
-		useDsTableContext<TData, TValue>();
+	const { resizeContainerRef, onResizeHover, onResizeDragStart, onResizeReset, locale } = useDsTableContext<
+		TData,
+		TValue
+	>();
 	const handleRef = useRef<HTMLDivElement>(null);
 	const isPointerOverRef = useRef(false);
 	const detachDragEndRef = useRef<(() => void) | null>(null);

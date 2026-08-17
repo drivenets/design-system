@@ -36,9 +36,10 @@ describe('getAugmentedColumns', () => {
 	});
 
 	it('omits select and expander when those flags are falsy', () => {
-		expect(
-			columnIds(getAugmentedColumns([nameColumn], { ...noFeatures, reorderable: true })),
-		).toEqual([REORDER_COLUMN_ID, 'name']);
+		expect(columnIds(getAugmentedColumns([nameColumn], { ...noFeatures, reorderable: true }))).toEqual([
+			REORDER_COLUMN_ID,
+			'name',
+		]);
 	});
 
 	it('omits reorder when the table is virtualized', () => {

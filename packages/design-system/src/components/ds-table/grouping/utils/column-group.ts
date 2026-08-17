@@ -1,5 +1,10 @@
 import type { CSSProperties } from 'react';
-import { type Column, type ColumnDef, type ColumnSizingState, type VisibilityState } from '@tanstack/react-table';
+import {
+	type Column,
+	type ColumnDef,
+	type ColumnSizingState,
+	type VisibilityState,
+} from '@tanstack/react-table';
 import { isExplicitColumnWidth } from '../../utils/column-size';
 
 /**
