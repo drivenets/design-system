@@ -3,7 +3,6 @@ import { DsSkeletonText } from '../../ds-skeleton';
 import { DsTableHeaderSelectableCell } from '../components/ds-table-header-selectable-cell';
 import { DsTableRowExpandableCell } from '../components/ds-table-row-expandable-cell';
 import { DsTableRowSelectableCell } from '../components/ds-table-row-selectable-cell';
-import type { DsDataTableProps } from '../ds-table.types';
 import {
 	EXPANDER_COLUMN_ID,
 	EXPANDER_COLUMN_WIDTH,
@@ -14,10 +13,13 @@ import {
 	SKELETON_ROW_COUNT,
 } from './constants';
 
-export type GetAugmentedColumnsOptions<TData> = Pick<
-	DsDataTableProps<TData, unknown>,
-	'selectable' | 'expandable' | 'reorderable' | 'virtualized' | 'showSelectAllCheckbox'
->;
+export type GetAugmentedColumnsOptions = {
+	selectable: boolean;
+	expandable: boolean;
+	reorderable: boolean;
+	virtualized: boolean;
+	showSelectAllCheckbox: boolean;
+};
 
 /**
  * Prepends the builtin select / expander / reorder columns when those features
@@ -32,7 +34,7 @@ export const getAugmentedColumns = <TData, TValue>(
 		reorderable,
 		virtualized,
 		showSelectAllCheckbox,
-	}: GetAugmentedColumnsOptions<TData>,
+	}: GetAugmentedColumnsOptions,
 ): ColumnDef<TData, TValue>[] => {
 	const augmentedColumns: ColumnDef<TData, TValue>[] = [...columns];
 

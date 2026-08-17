@@ -141,16 +141,20 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onSelectionChange?.(newRowSelection);
 	};
 
+	// Boolean flags only — an inline `selectable` / `expandable` callback must
+	// not rebuild column defs (and remount cells) on every parent render.
+	const hasSelectColumn = Boolean(selectable);
+	const hasExpanderColumn = Boolean(expandable);
 	const columns = useMemo(
 		() =>
 			getAugmentedColumns(columnsProp, {
-				selectable,
-				expandable,
+				selectable: hasSelectColumn,
+				expandable: hasExpanderColumn,
 				reorderable,
 				virtualized,
 				showSelectAllCheckbox,
 			}),
-		[columnsProp, selectable, expandable, reorderable, virtualized, showSelectAllCheckbox],
+		[columnsProp, hasSelectColumn, hasExpanderColumn, reorderable, virtualized, showSelectAllCheckbox],
 	);
 
 	const skeletonColumns = useMemo(() => toSkeletonColumns(columns), [columns]);
