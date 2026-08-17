@@ -1,7 +1,7 @@
 import type { ComponentType } from 'react';
 import type React from 'react';
 
-export const textInputSizes = ['small', 'default'] as const;
+export const textInputSizes = ['small', 'default', 'large'] as const;
 export type TextInputSize = (typeof textInputSizes)[number];
 
 export interface DsTextInputProps {
