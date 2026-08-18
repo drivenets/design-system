@@ -15,7 +15,7 @@
 
 ### MCP manifest
 const Default = () => <DsButtonV3
-    onClick={fn()}
+    onClick={() => {}}
     color="default"
     variant="primary"
     size="medium"
@@ -36,7 +36,7 @@ const Default = () => <DsButtonV3
 </DsButtonV3>
 
 ### MCP manifest
-const Loading = () => <DsButtonV3 onClick={fn()} variant="primary" loading />;
+const Loading = () => <DsButtonV3 onClick={() => {}} variant="primary" loading />;
 
 ## Disabled
 
@@ -53,7 +53,7 @@ const Loading = () => <DsButtonV3 onClick={fn()} variant="primary" loading />;
 </DsButtonV3>
 
 ### MCP manifest
-const Disabled = () => <DsButtonV3 onClick={fn()} variant="primary" disabled />;
+const Disabled = () => <DsButtonV3 onClick={() => {}} variant="primary" disabled />;
 
 ## Icon Only
 
@@ -69,7 +69,7 @@ const Disabled = () => <DsButtonV3 onClick={fn()} variant="primary" disabled />;
 
 ### MCP manifest
 const IconOnly = () => <DsButtonV3
-    onClick={fn()}
+    onClick={() => {}}
     color="default"
     size="medium"
     variant="primary"
@@ -91,7 +91,7 @@ const IconOnly = () => <DsButtonV3
 </DsButtonV3>
 
 ### MCP manifest
-const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected />;
+const Selected = () => <DsButtonV3 onClick={() => {}} variant="secondary" selected />;
 
 ## High Emphasis
 
@@ -108,7 +108,7 @@ const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected /
 </DsButtonV3>
 
 ### MCP manifest
-const HighEmphasis = () => <DsButtonV3 onClick={fn()} variant="primary" highEmphasis />;
+const HighEmphasis = () => <DsButtonV3 onClick={() => {}} variant="primary" highEmphasis />;
 
 ## On Dark
 
@@ -124,7 +124,7 @@ const HighEmphasis = () => <DsButtonV3 onClick={fn()} variant="primary" highEmph
 </DsButtonV3>
 
 ### MCP manifest
-const OnDark = () => <DsButtonV3 onClick={fn()} color="light" variant="primary" />;
+const OnDark = () => <DsButtonV3 onClick={() => {}} color="light" variant="primary" />;
 
 ## Responsive Size
 
