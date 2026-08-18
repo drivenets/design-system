@@ -37,6 +37,11 @@ const INITIAL_COLUMN_SIZING_INFO: ColumnSizingInfoState = {
 
 export interface UseColumnResizeOptions {
 	enabled: boolean;
+	/**
+	 * Persisted widths to restore. Merged under live internal state so seed
+	 * measurement fills leaves absent from the map and drags still take effect.
+	 */
+	columnSizing?: Record<string, number>;
 	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
 	/**
 	 * Invalidates the leaf-width seed measurement (same role as in the former
@@ -53,6 +58,12 @@ export interface DsTableResizeContextSlice {
 	onResizeHover: (columnId: string | null, offset: number | null) => void;
 	onResizeDragStart: (offset: number) => void;
 	onResizeReset: (columnIds: string[]) => void;
+	/**
+	 * Keyboard resize for a focused handle. `columnId` is the boundary header's
+	 * column (leaf or group); `delta` is the signed px change. Clamps and fires
+	 * the persist callback, mirroring drag end.
+	 */
+	onResizeKeyboardNudge: (columnId: string, delta: number) => void;
 }
 
 export interface UseColumnResizeActiveResize {
@@ -69,7 +80,7 @@ export interface UseColumnResizeBindResult {
 export interface UseColumnResizeTableOptions {
 	enableColumnResizing: boolean;
 	columnResizeMode: 'onChange';
-	defaultColumn: { minSize: number };
+	defaultColumn?: { minSize: number };
 	onColumnSizingChange: OnChangeFn<ColumnSizingState>;
 	onColumnSizingInfoChange: OnChangeFn<ColumnSizingInfoState>;
 }
@@ -93,6 +104,7 @@ export interface UseColumnResizeResult {
  */
 export const useColumnResize = ({
 	enabled,
+	columnSizing: columnSizingProp,
 	onColumnSizingChange,
 	columns,
 	columnVisibility,
@@ -107,7 +119,16 @@ export const useColumnResize = ({
 	// One useState so TanStack's mousemove updaters (info then sizing) run in
 	// call order against the same queue. Split hooks apply sizing first, while
 	// the next-width map is still empty.
-	const { columnSizing, columnSizingInfo } = columnResizeState;
+	const { columnSizing: internalColumnSizing, columnSizingInfo } = columnResizeState;
+
+	// Persisted widths seed the effective map, but internal state wins so a live
+	// drag (or seed measurement) of a persisted column still takes effect. Passed
+	// to TanStack and read for CSS vars / persist so restore, drag, and persist
+	// all see the same widths.
+	const columnSizing = useMemo<ColumnSizingState>(
+		() => (columnSizingProp ? { ...columnSizingProp, ...internalColumnSizing } : internalColumnSizing),
+		[columnSizingProp, internalColumnSizing],
+	);
 	const [resizeHover, setResizeHover] = useState<{
 		columnId: string;
 		offset: number;
@@ -127,14 +148,18 @@ export const useColumnResize = ({
 	const leafSizeBoundsRef = useRef<ColumnSizeBoundsSource[]>([]);
 
 	const handleColumnSizingChange: OnChangeFn<ColumnSizingState> = useCallback((updaterOrValue) => {
-		setColumnResizeState((prev) => {
-			const next = typeof updaterOrValue === 'function' ? updaterOrValue(prev.columnSizing) : updaterOrValue;
-
-			return {
-				...prev,
-				columnSizing: clampColumnSizing(next, leafSizeBoundsRef.current),
-			};
-		});
+		// Resolve against the ref and write it synchronously (same pattern as
+		// columnSizingInfoRef), before queuing the React state update. TanStack's
+		// mouseup applies the final sizing and then fires the persist callback in
+		// the same tick, so the ref must already hold the final widths — the state
+		// updater runs later (at render), which would leave persist reading a stale
+		// last-move value. Resolving against the effective map also keeps persisted
+		// (prop-provided) leaves in the reported map.
+		const next =
+			typeof updaterOrValue === 'function' ? updaterOrValue(columnSizingRef.current) : updaterOrValue;
+		const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
+		columnSizingRef.current = clamped;
+		setColumnResizeState((prev) => ({ ...prev, columnSizing: clamped }));
 	}, []);
 
 	const handleColumnSizingInfoChange: OnChangeFn<ColumnSizingInfoState> = useCallback((updaterOrValue) => {
@@ -170,6 +195,36 @@ export const useColumnResize = ({
 				if (origin !== undefined) {
 					next[id] = origin;
 				}
+			}
+
+			const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
+			handleColumnSizingChange(clamped);
+			onColumnSizingChangeRef.current?.(omitBuiltinColumnSizing(clamped));
+		},
+		[handleColumnSizingChange],
+	);
+
+	const handleResizeKeyboardNudge = useCallback(
+		(columnId: string, delta: number) => {
+			const table = tableRef.current;
+			const column = table?.getColumn(columnId);
+			if (!table || !column) {
+				return;
+			}
+
+			const leaves = column.getLeafColumns().filter((leaf) => leaf.getIsVisible() && leaf.getCanResize());
+			const totalSize = leaves.reduce((sum, leaf) => sum + leaf.getSize(), 0);
+			if (leaves.length === 0 || totalSize <= 0) {
+				return;
+			}
+
+			// Distribute the delta across the boundary's leaves by their current
+			// share. This mirrors TanStack's group-drag scaling and, for a single
+			// leaf, applies the whole delta to it.
+			const next = { ...columnSizingRef.current };
+			for (const leaf of leaves) {
+				const size = leaf.getSize();
+				next[leaf.id] = Math.round(size + delta * (size / totalSize));
 			}
 
 			const clamped = clampColumnSizing(next, leafSizeBoundsRef.current);
@@ -242,9 +297,11 @@ export const useColumnResize = ({
 		() => ({
 			enableColumnResizing: enabled,
 			columnResizeMode: 'onChange',
-			defaultColumn: {
-				minSize: RESIZE_MIN_COLUMN_WIDTH,
-			},
+			// Only constrain the minimum width while resizing is on. TanStack merges
+			// `defaultColumn` onto every column, so spreading this when resizing is
+			// off would clamp unrelated columns (e.g. 36px utility columns) up to the
+			// resize minimum and break existing layouts.
+			...(enabled ? { defaultColumn: { minSize: RESIZE_MIN_COLUMN_WIDTH } } : {}),
 			onColumnSizingChange: handleColumnSizingChange,
 			onColumnSizingInfoChange: handleColumnSizingInfoChange,
 		}),
@@ -277,6 +334,7 @@ export const useColumnResize = ({
 					onResizeHover: handleResizeHover,
 					onResizeDragStart: handleResizeDragStart,
 					onResizeReset: handleResizeReset,
+					onResizeKeyboardNudge: handleResizeKeyboardNudge,
 				},
 			};
 		}
@@ -311,6 +369,7 @@ export const useColumnResize = ({
 				onResizeHover: handleResizeHover,
 				onResizeDragStart: handleResizeDragStart,
 				onResizeReset: handleResizeReset,
+				onResizeKeyboardNudge: handleResizeKeyboardNudge,
 			},
 		};
 	};

@@ -51,6 +51,11 @@ export interface DsTableContextType<TData, TValue>
 	 * Restores snapshotted (or `columnDef.size`) widths for the given leaf ids.
 	 */
 	onResizeReset?: (columnIds: string[]) => void;
+	/**
+	 * Keyboard resize for a focused handle: signed px `delta` applied to the
+	 * boundary header's column (leaf or group). Clamps and fires persist.
+	 */
+	onResizeKeyboardNudge?: (columnId: string, delta: number) => void;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,6 +123,7 @@ export const DsTableContextProvider = <TData, TValue>({
 		onResizeHover,
 		onResizeDragStart,
 		onResizeReset,
+		onResizeKeyboardNudge,
 	} = derived.resize;
 
 	const { editing, beginEdit, setDraft, commit, cancel } = useEditingState<TData, TValue>(
@@ -153,6 +159,7 @@ export const DsTableContextProvider = <TData, TValue>({
 			onResizeHover,
 			onResizeDragStart,
 			onResizeReset,
+			onResizeKeyboardNudge,
 			editing,
 			beginEdit,
 			setDraft,
@@ -186,6 +193,7 @@ export const DsTableContextProvider = <TData, TValue>({
 			onResizeHover,
 			onResizeDragStart,
 			onResizeReset,
+			onResizeKeyboardNudge,
 			editing,
 			beginEdit,
 			setDraft,

@@ -67,6 +67,7 @@ $bulk-actions-reserved-space: 80px;
 	tbody {
 		display: block;
 		overflow-y: auto;
+		overflow-x: hidden;
 		flex: 1;
 		min-height: 0;
 		scrollbar-gutter: stable;

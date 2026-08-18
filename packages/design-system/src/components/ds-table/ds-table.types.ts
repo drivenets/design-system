@@ -330,15 +330,24 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Enables resizing columns by dragging the right edge of a header cell.
 	 * Double-click a handle to restore the column's original width. Opt out per
 	 * column with `columnDef.enableResizing: false`. Leaf columns may set
-	 * `minSize` (defaults to 52px) and `maxSize` (unlimited unless set). Those
-	 * bounds on a column group are ignored.
+	 * `minSize` and `maxSize`. Those bounds on a column group are ignored.
 	 * @default false
 	 */
 	resizableColumns?: boolean;
 
 	/**
+	 * Persisted column widths as a column id → width (px) map, e.g. a map saved
+	 * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
+	 * restore widths; columns absent from the map are measured and sized
+	 * automatically. This seeds widths — live resizing still updates them
+	 * internally — so it is not a fully controlled value.
+	 */
+	columnSizing?: Record<string, number>;
+
+	/**
 	 * Called with the next column id → width (px) map when a resize finishes
-	 * (drag end or double-click restore). Use this to persist widths across sessions.
+	 * (drag end, double-click restore, or keyboard nudge). Use this to persist
+	 * widths across sessions.
 	 */
 	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
 

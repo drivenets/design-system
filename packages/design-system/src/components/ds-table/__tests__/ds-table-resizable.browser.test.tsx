@@ -2,7 +2,12 @@ import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
-import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, SELECT_COLUMN_ID } from '../utils/constants';
+import {
+	EXPANDER_COLUMN_ID,
+	REORDER_COLUMN_ID,
+	SELECT_COLUMN_ID,
+	SELECT_COLUMN_WIDTH,
+} from '../utils/constants';
 
 type Row = {
 	id: string;
@@ -88,6 +93,10 @@ const dispatchMouse = (type: string, target: EventTarget, clientX: number, clien
 	);
 };
 
+const dispatchKey = (target: HTMLElement, key: string, init: KeyboardEventInit = {}): void => {
+	target.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, cancelable: true, key, ...init }));
+};
+
 const waitUntilDragging = async (): Promise<void> => {
 	await expect.poll(() => getOverlay().getAttribute('data-resize-phase')).toBe('dragging');
 };
@@ -133,6 +142,14 @@ const getOverlay = (): HTMLElement => {
 	return overlay;
 };
 
+const getScrollContainer = (): HTMLElement => {
+	const container = document.querySelector('table')?.parentElement;
+	if (!(container instanceof HTMLElement)) {
+		throw new Error('Expected the table scroll container');
+	}
+	return container;
+};
+
 describe('DsTable - resizable columns', () => {
 	it('renders a resize handle per resizable column when enabled', async () => {
 		await page.render(<DsTable columns={sizedColumns} data={rows} resizableColumns />);
@@ -146,6 +163,18 @@ describe('DsTable - resizable columns', () => {
 
 		const handles = document.querySelectorAll('thead [aria-label="Resize column"]');
 		expect(handles).toHaveLength(0);
+	});
+
+	it('keeps the fixed-width selection column at its size when resizing is disabled', async () => {
+		await page.render(<DsTable columns={sizedColumns} data={rows} selectable />);
+
+		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(SELECT_COLUMN_WIDTH);
+	});
+
+	it('keeps the fixed-width selection column at its size when resizing is enabled', async () => {
+		await page.render(<DsTable columns={sizedColumns} data={rows} selectable resizableColumns />);
+
+		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(SELECT_COLUMN_WIDTH);
 	});
 
 	it('omits the handle for a column with enableResizing: false', async () => {
@@ -330,6 +359,34 @@ describe('DsTable - resizable columns', () => {
 		expect(lastCall.firstName).toBeGreaterThan(200);
 	});
 
+	it('persists the mouseup width, not the last mousemove width', async () => {
+		const onColumnSizingChange = vi.fn();
+		await page.render(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				resizableColumns
+				onColumnSizingChange={onColumnSizingChange}
+			/>,
+		);
+
+		const handle = getHandle('firstName');
+		const startX = handle.getBoundingClientRect().right;
+		const start = Math.round(widthOf('firstName'));
+
+		dispatchPointer('pointerdown', handle, startX);
+		await waitUntilDragging();
+		dispatchMouse('mousemove', handle.ownerDocument, startX + 40);
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(start + 40);
+		// Release at a different x than the last move: the ended branch must report
+		// the mouseup width, so the ref has to be current before persist runs.
+		dispatchMouse('mouseup', handle.ownerDocument, startX + 55);
+
+		await expect.poll(() => onColumnSizingChange.mock.calls.length).toBeGreaterThan(0);
+		const lastCall = onColumnSizingChange.mock.lastCall?.[0] as Record<string, number>;
+		expect(lastCall.firstName).toBe(start + 55);
+	});
+
 	it('omits injected utility columns from onColumnSizingChange on drag end', async () => {
 		const onColumnSizingChange = vi.fn();
 		await page.render(
@@ -480,6 +537,42 @@ describe('DsTable - resizable columns', () => {
 		expect(getOverlay().getAttribute('data-resize-phase')).toBe('dragging');
 
 		dispatchMouse('mouseup', handle.ownerDocument, startX + 60);
+	});
+
+	it('keeps the drag overlay on the cell right edge after horizontal scroll', async () => {
+		const wideColumns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 400 },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 400 },
+			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 400 },
+		];
+		await page.render(
+			<div style={{ width: 320, height: 300 }}>
+				<DsTable columns={wideColumns} data={rows} resizableColumns />
+			</div>,
+		);
+
+		const scrollContainer = getScrollContainer();
+		scrollContainer.scrollLeft = 120;
+		await expect.poll(() => scrollContainer.scrollLeft).toBeGreaterThan(0);
+
+		const handle = getHandle('firstName');
+		const startX = handle.getBoundingClientRect().right;
+		dispatchPointer('pointerdown', handle, startX);
+		await waitUntilDragging();
+		dispatchMouse('mousemove', handle.ownerDocument, startX + 40);
+
+		// Assert visual alignment (viewport coords), which stays correct regardless
+		// of scroll — the 2px overlay's transform nets to zero, so its left edge
+		// sits on the cell's right edge.
+		await expect
+			.poll(() => {
+				const overlayLeft = getOverlay().getBoundingClientRect().left;
+				const cellRight = getHeaderCell('firstName').getBoundingClientRect().right;
+				return Math.abs(overlayLeft - cellRight);
+			})
+			.toBeLessThan(2);
+
+		dispatchMouse('mouseup', handle.ownerDocument, startX + 40);
 	});
 
 	it('keeps the drag overlay aligned with a group boundary', async () => {
@@ -666,5 +759,93 @@ describe('DsTable - resizable columns', () => {
 
 		await expect.poll(() => getHeaderCell('lastName').style.flex.startsWith('1')).toBe(true);
 		expect(getHeaderCell('firstName').style.width).toBe('200px');
+	});
+
+	it('restores a persisted 150px width instead of falling back to a fill column', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+		await page.render(
+			<DsTable columns={columns} data={rows} resizableColumns columnSizing={{ firstName: 150 }} />,
+		);
+
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(150);
+		expect(getHeaderCell('firstName').style.flex.startsWith('1')).toBe(false);
+	});
+
+	it('restores a persisted non-default width on mount', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+		await page.render(
+			<DsTable columns={columns} data={rows} resizableColumns columnSizing={{ firstName: 240 }} />,
+		);
+
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(240);
+	});
+
+	it('exposes a focusable separator with the current width', async () => {
+		await page.render(<DsTable columns={sizedColumns} data={rows} resizableColumns />);
+
+		const handle = getHandle('firstName');
+		expect(handle.getAttribute('role')).toBe('separator');
+		expect(handle.tabIndex).toBe(0);
+
+		handle.focus();
+		expect(document.activeElement).toBe(handle);
+		await expect.poll(() => handle.getAttribute('aria-valuenow')).toBe('200');
+	});
+
+	it('resizes a column with the arrow keys and fires persist', async () => {
+		const onColumnSizingChange = vi.fn();
+		await page.render(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				resizableColumns
+				onColumnSizingChange={onColumnSizingChange}
+			/>,
+		);
+
+		const handle = getHandle('firstName');
+		const start = Math.round(widthOf('firstName'));
+		handle.focus();
+
+		dispatchKey(handle, 'ArrowRight');
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(start + 10);
+
+		expect(onColumnSizingChange).toHaveBeenCalled();
+		const lastCall = onColumnSizingChange.mock.lastCall?.[0] as Record<string, number>;
+		expect(lastCall.firstName).toBe(start + 10);
+
+		dispatchKey(handle, 'ArrowLeft');
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(start);
+	});
+
+	it('uses a larger keyboard step when Shift is held', async () => {
+		await page.render(<DsTable columns={sizedColumns} data={rows} resizableColumns />);
+
+		const handle = getHandle('firstName');
+		const start = Math.round(widthOf('firstName'));
+		handle.focus();
+
+		dispatchKey(handle, 'ArrowRight', { shiftKey: true });
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(start + 40);
+	});
+
+	it('clamps keyboard resizing at the minimum width', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 64 },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
+		];
+		await page.render(<DsTable columns={columns} data={rows} resizableColumns />);
+
+		const handle = getHandle('firstName');
+		handle.focus();
+		dispatchKey(handle, 'ArrowLeft', { shiftKey: true });
+
+		await expect.poll(() => Math.round(widthOf('firstName'))).toBe(52);
 	});
 });

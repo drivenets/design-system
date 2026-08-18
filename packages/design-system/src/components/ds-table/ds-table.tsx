@@ -29,6 +29,7 @@ import { useColumnGroups } from './grouping';
 import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
 import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './utils/table-columns';
 import { createTableApi } from './utils/table-api';
+import { areBodiesFrozen } from './utils/frozen-body';
 
 // Row size to pixel height mapping (matches CSS variables)
 const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
@@ -72,6 +73,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onCollapsedColumnGroupsChange,
 		infiniteScroll,
 		resizableColumns,
+		columnSizing,
 		onColumnSizingChange,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
@@ -162,6 +164,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 
 	const resize = useColumnResize({
 		enabled: resizableColumns,
+		columnSizing,
 		onColumnSizingChange,
 		columns,
 		columnVisibility,
@@ -303,11 +306,6 @@ const DsTableRowsBody = <TData extends { id: string }>({
 		</TableBody>
 	);
 };
-
-// table is a stable mutable object; return false when not resizing so row updates are not skipped.
-const areBodiesFrozen = <T,>(prev: { table: TanstackTable<T> }, next: { table: TanstackTable<T> }): boolean =>
-	Boolean(next.table.getState().columnSizingInfo.isResizingColumn) &&
-	prev.table.options.data === next.table.options.data;
 
 const MemoizedDsTableRowsBody = React.memo(DsTableRowsBody, areBodiesFrozen) as typeof DsTableRowsBody;
 

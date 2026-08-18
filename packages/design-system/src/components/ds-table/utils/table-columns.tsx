@@ -21,6 +21,26 @@ export type GetAugmentedColumnsOptions = {
 	showSelectAllCheckbox: boolean;
 };
 
+const EXPLICIT_SIZE_META = { hasExplicitSize: true } as const;
+
+/**
+ * Clones leaf defs that authored `size` so `meta.hasExplicitSize` survives
+ * TanStack’s default-size merge. Group defs are cloned only to recurse;
+ * unsized leaves are returned as-is.
+ */
+const stampExplicitSize = <TData, TValue>(columns: ColumnDef<TData, TValue>[]): ColumnDef<TData, TValue>[] =>
+	columns.map((column) => {
+		if ('columns' in column && column.columns) {
+			return { ...column, columns: stampExplicitSize(column.columns) };
+		}
+
+		if (column.size === undefined) {
+			return column;
+		}
+
+		return { ...column, meta: { ...column.meta, ...EXPLICIT_SIZE_META } };
+	});
+
 /**
  * Prepends the builtin select / expander / reorder columns when those features
  * are on. Reorder is omitted for virtualized tables. Unshift order yields
@@ -30,14 +50,20 @@ export const getAugmentedColumns = <TData, TValue>(
 	columns: ColumnDef<TData, TValue>[],
 	{ selectable, expandable, reorderable, virtualized, showSelectAllCheckbox }: GetAugmentedColumnsOptions,
 ): ColumnDef<TData, TValue>[] => {
-	const augmentedColumns: ColumnDef<TData, TValue>[] = [...columns];
+	const augmentedColumns: ColumnDef<TData, TValue>[] = stampExplicitSize(columns);
 
 	if (selectable) {
 		augmentedColumns.unshift({
 			id: SELECT_COLUMN_ID,
 			size: SELECT_COLUMN_WIDTH,
+			// Pin min/max to the fixed width: `enableResizing: false` blocks the
+			// handle but not the table-wide resize `minSize`, which would otherwise
+			// stretch this column.
+			minSize: SELECT_COLUMN_WIDTH,
+			maxSize: SELECT_COLUMN_WIDTH,
 			enableSorting: false,
 			enableResizing: false,
+			meta: EXPLICIT_SIZE_META,
 			header: ({ table }) => (showSelectAllCheckbox ? <DsTableHeaderSelectableCell table={table} /> : null),
 			cell: ({ row }) => <DsTableRowSelectableCell row={row} />,
 		});
@@ -47,8 +73,11 @@ export const getAugmentedColumns = <TData, TValue>(
 		augmentedColumns.unshift({
 			id: EXPANDER_COLUMN_ID,
 			size: EXPANDER_COLUMN_WIDTH,
+			minSize: EXPANDER_COLUMN_WIDTH,
+			maxSize: EXPANDER_COLUMN_WIDTH,
 			enableSorting: false,
 			enableResizing: false,
+			meta: EXPLICIT_SIZE_META,
 			header: () => null,
 			cell: ({ row }) => (row.getCanExpand() ? <DsTableRowExpandableCell row={row} /> : null),
 		});
@@ -60,8 +89,11 @@ export const getAugmentedColumns = <TData, TValue>(
 		augmentedColumns.unshift({
 			id: REORDER_COLUMN_ID,
 			size: REORDER_COLUMN_WIDTH,
+			minSize: REORDER_COLUMN_WIDTH,
+			maxSize: REORDER_COLUMN_WIDTH,
 			enableSorting: false,
 			enableResizing: false,
+			meta: EXPLICIT_SIZE_META,
 			header: 'Order',
 			cell: () => null,
 		});

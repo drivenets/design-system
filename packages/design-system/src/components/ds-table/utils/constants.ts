@@ -54,3 +54,15 @@ export const SKELETON_ROW_COUNT = 5;
  * `columnDef.maxSize` on a leaf to cap it.
  */
 export const RESIZE_MIN_COLUMN_WIDTH = 52;
+
+/**
+ * Width change (in px) applied per Arrow key press when a resize handle is
+ * focused.
+ */
+export const RESIZE_KEYBOARD_STEP = 10;
+
+/**
+ * Larger width change (in px) applied when Shift is held with an Arrow key on a
+ * focused resize handle.
+ */
+export const RESIZE_KEYBOARD_STEP_LARGE = 40;

@@ -24,16 +24,17 @@ import {
 } from './constants';
 
 describe('isExplicitColumnWidth', () => {
-	it('returns false for an unset size with no sizing entry (fill column)', () => {
+	it('returns false for an unsized column with no sizing entry (fill column)', () => {
 		expect(isExplicitColumnWidth({ id: 'a', columnDef: {} }, {})).toBe(false);
 	});
 
-	it('returns false when columnDef.size is TanStack’s default', () => {
-		expect(isExplicitColumnWidth({ id: 'a', columnDef: { size: defaultColumnSizing.size } }, {})).toBe(false);
-	});
-
-	it('returns true when columnDef.size is a custom value', () => {
-		expect(isExplicitColumnWidth({ id: 'a', columnDef: { size: 200 } }, {})).toBe(true);
+	it('returns true when size was authored, including TanStack’s default size', () => {
+		expect(
+			isExplicitColumnWidth(
+				{ id: 'a', columnDef: { size: defaultColumnSizing.size, meta: { hasExplicitSize: true } } },
+				{},
+			),
+		).toBe(true);
 	});
 
 	it('returns true when columnSizing has an entry, including the default size value', () => {
@@ -150,8 +151,19 @@ describe('clampColumnSizing', () => {
 });
 
 describe('getResizeOriginSize', () => {
-	it('uses columnDef.size when it is an explicit non-default width', () => {
-		expect(getResizeOriginSize({ id: 'a', columnDef: { size: 200 } }, 198)).toBe(200);
+	it('uses columnDef.size when size was authored', () => {
+		expect(
+			getResizeOriginSize({ id: 'a', columnDef: { size: 200, meta: { hasExplicitSize: true } } }, 198),
+		).toBe(200);
+	});
+
+	it('uses columnDef.size when the authored size is TanStack’s default', () => {
+		expect(
+			getResizeOriginSize(
+				{ id: 'a', columnDef: { size: defaultColumnSizing.size, meta: { hasExplicitSize: true } } },
+				198,
+			),
+		).toBe(defaultColumnSizing.size);
 	});
 
 	it('uses the measured width for fill columns', () => {

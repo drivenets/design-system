@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ColumnDef } from '@tanstack/react-table';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { DsStack } from '../../ds-stack';
 import { DsTypography } from '../../ds-typography';
@@ -147,11 +146,7 @@ export const MinAndMaxSize: Story = {
 };
 
 /**
- * Sizing is owned by the table while it is mounted — there is no controlled
- * `columnSizing` prop. Persist the map from `onColumnSizingChange`, then stamp
- * those pixels onto each leaf `columnDef.size` on the next mount so widths
- * survive a reload. Resize a column, refresh the story, and the widths come
- * back. Reset stored widths remounts from the default layout.
+ * Restore column widths across remounts via `columnSizing`.
  */
 export const PersistedWidths: Story = {
 	name: 'Persisted widths',
@@ -162,54 +157,22 @@ export const PersistedWidths: Story = {
 		const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';
 		const [tableKey, setTableKey] = useState(0);
 
-		let columnSizes: Record<string, number>;
+		let persistedWidths: Record<string, number>;
 		try {
-			columnSizes = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;
+			persistedWidths = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;
 		} catch {
-			columnSizes = {};
+			persistedWidths = {};
 		}
-
-		const persistedColumns: ColumnDef<Person>[] = [
-			{
-				accessorKey: 'firstName',
-				header: 'First Name',
-				cell: (info) => info.getValue(),
-				size: columnSizes['firstName'],
-			},
-			{
-				accessorKey: 'lastName',
-				header: 'Last Name',
-				cell: (info) => info.getValue(),
-				size: columnSizes['lastName'],
-			},
-			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: columnSizes['age'] },
-			{
-				accessorKey: 'visits',
-				header: 'Visits',
-				cell: (info) => info.getValue(),
-				size: columnSizes['visits'],
-			},
-			{
-				accessorKey: 'status',
-				header: 'Status',
-				cell: (info) => info.getValue(),
-				size: columnSizes['status'],
-			},
-			{
-				accessorKey: 'progress',
-				header: 'Profile Progress',
-				cell: (info) => `${String(info.getValue())}%`,
-				size: columnSizes['progress'],
-			},
-		];
 
 		return (
 			<DsStack direction="column" gap={16} width="100%">
 				<DsStack direction="column" gap={8}>
 					<DsTypography variant="heading4">Persisted widths</DsTypography>
 					<DsTypography variant="body-sm-reg" color="secondary">
-						Resize a column, then refresh. Widths are written to localStorage on drag end and restored through
-						columnDef.size on the next mount.
+						Persist the map from onColumnSizingChange, then pass it back as the columnSizing prop on the next
+						mount to restore widths — no need to stamp columnDef.size. Columns absent from the map are
+						measured automatically. Resize a column, refresh the story, and the widths come back. Reset stored
+						widths remounts from the default layout.
 					</DsTypography>
 				</DsStack>
 
@@ -229,7 +192,7 @@ export const PersistedWidths: Story = {
 				<DsTable
 					{...args}
 					key={tableKey}
-					columns={persistedColumns}
+					columnSizing={persistedWidths}
 					onColumnSizingChange={(columnSizing) => {
 						localStorage.setItem(STORAGE_KEY, JSON.stringify(columnSizing));
 					}}

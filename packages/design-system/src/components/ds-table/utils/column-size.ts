@@ -1,12 +1,12 @@
 import type { CSSProperties } from 'react';
-import { defaultColumnSizing, type ColumnSizingState } from '@tanstack/react-table';
+import { type ColumnSizingState } from '@tanstack/react-table';
 import { BUILTIN_COLUMN_IDS, RESIZE_MIN_COLUMN_WIDTH } from './constants';
 
 const DEFAULT_MAX_COLUMN_SIZE = Number.MAX_SAFE_INTEGER;
 
 type ColumnWidthSource = {
 	id: string;
-	columnDef: { size?: number; minSize?: number; maxSize?: number };
+	columnDef: { size?: number; minSize?: number; maxSize?: number; meta?: { hasExplicitSize?: boolean } };
 };
 
 /**
@@ -26,9 +26,10 @@ type SizeHeader = {
 /**
  * Whether a column should use a fixed width rather than fill (`flex: 1`).
  *
- * True when the user has resized it (`columnSizing` entry), or when `columnDef.size`
- * was set to a non-default value. Numeric equality with TanStack's default size
- * (150) alone is not enough — a resized column can legitimately be 150px wide.
+ * True when the user has resized it (`columnSizing` entry), or when the raw
+ * column def authored `size` (`meta.hasExplicitSize`). TanStack merges a
+ * default size of 150 onto every column, so `columnDef.size` alone cannot
+ * tell authored 150px from an unsized fill column.
  */
 export const isExplicitColumnWidth = (
 	column: ColumnWidthSource,
@@ -38,8 +39,7 @@ export const isExplicitColumnWidth = (
 		return true;
 	}
 
-	const definedSize = column.columnDef.size;
-	return definedSize !== undefined && definedSize !== defaultColumnSizing.size;
+	return column.columnDef.meta?.hasExplicitSize === true;
 };
 
 /**

@@ -13,4 +13,11 @@
 	cursor: col-resize;
 	touch-action: none;
 	z-index: 1;
+
+	// Focusable for keyboard resize (WCAG 2.1.1). Negative offset keeps the ring
+	// clear of the scroll container's overflow clip on the last column.
+	&:focus-visible {
+		outline: vars.$resize-divider-width solid var(--border-action-primary);
+		outline-offset: -1px;
+	}
 }
