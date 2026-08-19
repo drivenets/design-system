@@ -1,5 +1,23 @@
 # @drivenets/design-system
 
+## 0.18.0
+
+### Minor Changes
+
+- 2a9b357: Add Blue-grad tokens (`--blue-grad-1`, `--blue-grad-2`, `--blue-radial-grad`).
+- 33b48af: Add `DsSlider` component
+- a836822: Align `DsAutocomplete`, `DsSelect`, and `DsTextInput` to a shared set of field heights (large 40px, default 36px, small 28px).
+- 9a06e07: Add "Column Resizing" to "DsTable"
+- a767a43: Add `highEmphasis` prop to `DsButtonV3`.
+- bad768f: Add rebranding to the `DsWorkspaceHeader` (stories, colors).
+
+### Patch Changes
+
+- ef0175b: Add support for live and async validation in `DsTable`
+- 0241a35: Fix virtual table height by filling parent element height
+- aaa55a3: Switch heading typography to the Poppins font across the type scale and load Poppins via the Google Fonts loader
+- 599a230: Change `DsButtonV3` to match new designs (Figma DsButtonV4)
+
 ## 0.17.0
 
 ### Minor Changes
