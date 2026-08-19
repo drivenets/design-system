@@ -1,12 +1,22 @@
 import { useState } from 'react';
-import type { VisibilityState } from '@tanstack/react-table';
+import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsCheckbox } from '../../ds-checkbox';
 import DsTable from '../ds-table';
 import { columns, defaultData } from '../stories/common/story-data';
 
+type SizedRow = { id: string; firstName: string; lastName: string };
+
 const getDataRows = () => page.getByRole('row').all().slice(1);
+
+const getHeaderCell = (columnId: string): HTMLElement => {
+	const cell = document.querySelector(`thead th[data-column-id="${columnId}"]`);
+	if (!(cell instanceof HTMLElement)) {
+		throw new Error(`Expected header cell for column "${columnId}"`);
+	}
+	return cell;
+};
 
 describe('DsTable - Columns', () => {
 	it('should render custom cell content', async () => {
@@ -81,5 +91,26 @@ describe('DsTable - Columns', () => {
 		await page.getByRole('checkbox', { name: /^age$/i }).click();
 
 		await expect.element(headerRow.getByText('Age')).toBeVisible();
+	});
+
+	it('keeps an authored 150px column fixed while an unsized sibling fills', async () => {
+		const sizedColumns: ColumnDef<SizedRow>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', size: 150 },
+			{ accessorKey: 'lastName', header: 'Last Name' },
+		];
+
+		await page.render(
+			<div style={{ width: 600 }}>
+				<DsTable columns={sizedColumns} data={[{ id: '1', firstName: 'Ada', lastName: 'Lovelace' }]} />
+			</div>,
+		);
+
+		const firstName = getHeaderCell('firstName');
+		const lastName = getHeaderCell('lastName');
+
+		expect(firstName.style.flex.startsWith('1')).toBe(false);
+		expect(Math.round(firstName.getBoundingClientRect().width)).toBe(150);
+		expect(lastName.style.flex.startsWith('1')).toBe(true);
+		expect(lastName.getBoundingClientRect().width).toBeGreaterThan(150);
 	});
 });

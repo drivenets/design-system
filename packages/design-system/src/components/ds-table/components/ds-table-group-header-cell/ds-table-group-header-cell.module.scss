@@ -3,11 +3,15 @@
 
 .groupHeaderCell {
 	@include typography.body-sm-md;
+	position: relative;
 	color: var(--font-main);
 	height: var(--ds-table-header-height);
 	padding: 0;
 	border-bottom: vars.$border-width solid var(--color-dap-gray-400);
-	border-left: vars.$group-border-width solid var(--border);
+
+	&:not(:first-child) {
+		border-left: vars.$group-border-width solid var(--border);
+	}
 }
 
 .groupHeaderContent {

@@ -1,0 +1,18 @@
+@use '../../styles/variables' as vars;
+
+.resizeOverlay {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: vars.$resize-divider-width;
+	background: var(--border-light);
+	// `left` is the cell's right edge; nudge the divider right by 1px so its 2px
+	// band aligns flush with the 2px group border drawn from that edge rightward.
+	transform: translateX(calc(-50% + #{vars.$border-width}));
+	pointer-events: none;
+	z-index: 2;
+
+	&[data-resize-phase='dragging'] {
+		background: var(--border-action-primary);
+	}
+}

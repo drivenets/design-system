@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useImperativeHandle, useMemo } from 'react';
 import {
-	type ColumnDef,
 	type RowSelectionState,
 	type ColumnFiltersState,
 	getCoreRowModel,
@@ -9,6 +8,7 @@ import {
 	getFilteredRowModel,
 	getSortedRowModel,
 	type SortingState,
+	type Table as TanstackTable,
 	useReactTable,
 	type VisibilityState,
 } from '@tanstack/react-table';
@@ -16,27 +16,20 @@ import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
 import { DsTableBulkActions } from './components/ds-table-bulk-actions';
 import { DsTableHeader } from './components/ds-table-header';
+import { DsTableResizeOverlay } from './components/ds-table-resize-overlay';
 import styles from './ds-table.module.scss';
 import type { DsDataTableProps, DsTableRowSize } from './ds-table.types';
+import { applyDsTableDefaults } from './ds-table-defaults';
 import { DsTableRow } from './components/ds-table-row';
-import { DsTableRowExpandableCell } from './components/ds-table-row-expandable-cell';
-import { DsTableRowSelectableCell } from './components/ds-table-row-selectable-cell';
-import { DsTableHeaderSelectableCell } from './components/ds-table-header-selectable-cell';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
-import { type DsTableContextType, DsTableContext, useEditingState } from './context/ds-table-context';
+import { useColumnResize } from './hooks/use-column-resize';
+import { DsTableContextProvider } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
-import { DsSkeletonText } from '../ds-skeleton';
-import {
-	EMPTY_TABLE_STATE_TEXT,
-	EXPANDER_COLUMN_ID,
-	EXPANDER_COLUMN_WIDTH,
-	REORDER_COLUMN_ID,
-	REORDER_COLUMN_WIDTH,
-	SELECT_COLUMN_ID,
-	SELECT_COLUMN_WIDTH,
-	SKELETON_ROW_COUNT,
-} from './utils/constants';
+import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
+import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './utils/table-columns';
+import { createTableApi } from './utils/table-api';
+import { areBodiesFrozen } from './utils/frozen-body';
 
 // Row size to pixel height mapping (matches CSS variables)
 const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
@@ -48,46 +41,41 @@ const ROW_SIZE_HEIGHT_MAP: Record<DsTableRowSize, number> = {
 /**
  * Design system Table component
  */
-const DsTable = <TData extends { id: string }, TValue>({
-	ref,
-	columns: columnsProp,
-	data: tableData,
-	controls,
-	virtualized = false,
-	virtualizedOptions,
-	className,
-	onRowClick,
-	emptyState,
-	stickyHeader = true,
-	bordered = true,
-	fullWidth = true,
-	rowSize = 'medium',
-	loading = false,
-	expandable = false,
-	renderExpandedRow,
-	selectable = false,
-	showSelectAllCheckbox = true,
-	onSelectionChange,
-	onSortingChange,
-	onScroll,
-	actions = [],
-	onRowDoubleClick,
-	primaryRowActions = [],
-	secondaryRowActions,
-	reorderable = false,
-	onOrderChange,
-	columnFilters: externalColumnFilters,
-	onColumnFiltersChange,
-	columnVisibility: externalColumnVisibility,
-	onColumnVisibilityChange,
-	collapsedColumnGroups: externalCollapsedColumnGroups,
-	onCollapsedColumnGroupsChange,
-	locale,
-	activeRowId,
-	infiniteScroll,
-	onCellEdit,
-	onCellValidate,
-}: DsDataTableProps<TData, TValue>) => {
+const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<TData, TValue>) => {
+	const tableProps = applyDsTableDefaults(props);
+	const {
+		ref,
+		columns: columnsProp,
+		data: tableData,
+		controls,
+		virtualized,
+		virtualizedOptions,
+		className,
+		emptyState,
+		bordered,
+		fullWidth,
+		rowSize,
+		loading,
+		expandable,
+		selectable,
+		showSelectAllCheckbox,
+		onSelectionChange,
+		onSortingChange,
+		onScroll,
+		actions,
+		reorderable,
+		onOrderChange,
+		columnFilters: externalColumnFilters,
+		onColumnFiltersChange,
+		columnVisibility: externalColumnVisibility,
+		onColumnVisibilityChange,
+		collapsedColumnGroups: externalCollapsedColumnGroups,
+		onCollapsedColumnGroupsChange,
+		infiniteScroll,
+		resizableColumns,
+		columnSizing,
+		onColumnSizingChange,
+	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -102,8 +90,6 @@ const DsTable = <TData extends { id: string }, TValue>({
 		},
 		items: data,
 	});
-
-	const tableContainerRef = React.useRef<HTMLDivElement>(null);
 
 	const columnFilters = externalColumnFilters ?? internalColumnFilters;
 	const handleColumnFiltersChange = (
@@ -157,73 +143,32 @@ const DsTable = <TData extends { id: string }, TValue>({
 		onSelectionChange?.(newRowSelection);
 	};
 
-	const hasExpanderColumn = !!expandable;
-	const hasSelectColumn = !!selectable;
-	const hasReorderColumn = reorderable && !virtualized;
-
-	const columns = useMemo<ColumnDef<TData, TValue>[]>(() => {
-		const augmentedColumns: ColumnDef<TData, TValue>[] = [...columnsProp];
-
-		if (hasSelectColumn) {
-			const selectColumn: ColumnDef<TData, TValue> = {
-				id: SELECT_COLUMN_ID,
-				size: SELECT_COLUMN_WIDTH,
-				enableSorting: false,
-				enableResizing: false,
-				header: ({ table }) => (showSelectAllCheckbox ? <DsTableHeaderSelectableCell table={table} /> : null),
-				cell: ({ row }) => <DsTableRowSelectableCell row={row} />,
-			};
-			augmentedColumns.unshift(selectColumn);
-		}
-
-		if (hasExpanderColumn) {
-			const expanderColumn: ColumnDef<TData, TValue> = {
-				id: EXPANDER_COLUMN_ID,
-				size: EXPANDER_COLUMN_WIDTH,
-				enableSorting: false,
-				enableResizing: false,
-				header: () => null,
-				cell: ({ row }) => (row.getCanExpand() ? <DsTableRowExpandableCell row={row} /> : null),
-			};
-			augmentedColumns.unshift(expanderColumn);
-		}
-
-		if (hasReorderColumn) {
-			// Cell is rendered inline by DsTableRow when it encounters REORDER_COLUMN_ID,
-			// since the drag handle needs row-level useSortable state.
-			const reorderColumn: ColumnDef<TData, TValue> = {
-				id: REORDER_COLUMN_ID,
-				size: REORDER_COLUMN_WIDTH,
-				enableSorting: false,
-				enableResizing: false,
-				header: 'Order',
-				cell: () => null,
-			};
-			augmentedColumns.unshift(reorderColumn);
-		}
-
-		return augmentedColumns;
-	}, [columnsProp, hasExpanderColumn, hasReorderColumn, hasSelectColumn, showSelectAllCheckbox]);
-
-	const skeletonColumns = useMemo<ColumnDef<TData, TValue>[]>(() => {
-		const toSkeleton = (cols: ColumnDef<TData, TValue>[]): ColumnDef<TData, TValue>[] =>
-			cols.map((column) =>
-				'columns' in column && column.columns
-					? { ...column, columns: toSkeleton(column.columns) }
-					: { ...column, cell: column.loadingCell ?? (() => <DsSkeletonText width="60%" />) },
-			);
-
-		return toSkeleton(columns);
-	}, [columns]);
-
-	const skeletonData = useMemo<TData[]>(
+	// Boolean flags only — an inline `selectable` / `expandable` callback must
+	// not rebuild column defs (and remount cells) on every parent render.
+	const hasSelectColumn = Boolean(selectable);
+	const hasExpanderColumn = Boolean(expandable);
+	const columns = useMemo(
 		() =>
-			Array.from(
-				{ length: SKELETON_ROW_COUNT },
-				(_, i) => ({ id: `ds-table-skeleton-${String(i)}` }) as TData,
-			),
-		[],
+			getAugmentedColumns(columnsProp, {
+				selectable: hasSelectColumn,
+				expandable: hasExpanderColumn,
+				reorderable,
+				virtualized,
+				showSelectAllCheckbox,
+			}),
+		[columnsProp, hasSelectColumn, hasExpanderColumn, reorderable, virtualized, showSelectAllCheckbox],
 	);
+
+	const skeletonColumns = useMemo(() => toSkeletonColumns(columns), [columns]);
+	const skeletonData = useMemo(() => createSkeletonRows<TData>(), []);
+
+	const resize = useColumnResize({
+		enabled: resizableColumns,
+		columnSizing,
+		onColumnSizingChange,
+		columns,
+		columnVisibility,
+	});
 
 	const table = useReactTable({
 		data: loading ? skeletonData : reorderable ? data : tableData,
@@ -238,68 +183,22 @@ const DsTable = <TData extends { id: string }, TValue>({
 		getRowId: (row) => row.id,
 		getExpandedRowModel: getExpandedRowModel(),
 		getRowCanExpand: typeof expandable === 'function' ? (row) => expandable(row.original) : () => expandable,
+		...resize.tableOptions,
 		state: {
 			sorting,
 			columnFilters,
 			columnVisibility,
 			rowSelection,
+			...resize.state,
 		},
 		enableRowSelection: typeof selectable === 'function' ? (row) => selectable(row.original) : selectable,
 	});
 
-	useImperativeHandle(
-		ref,
-		() => ({
-			selectRow: (rowId: string) => {
-				table.getRow(rowId).toggleSelected(true);
-			},
-			deselectRow: (rowId: string) => {
-				table.getRow(rowId).toggleSelected(false);
-			},
-			selectAllRows: () => {
-				table.toggleAllRowsSelected(true);
-			},
-			deselectAllRows: () => {
-				table.toggleAllRowsSelected(false);
-			},
-			selectRows: (rowIds: string[]) => {
-				const selection: Record<string, boolean> = {};
-				rowIds.forEach((id) => (selection[id] = true));
-				table.setRowSelection(selection);
-			},
-			getSelectedRows: () => {
-				return table.getFilteredSelectedRowModel().rows.map((r) => r.original);
-			},
-			expandRow: (rowId: string) => {
-				table.getRow(rowId).toggleExpanded(true);
-			},
-			collapseRow: (rowId: string) => {
-				table.getRow(rowId).toggleExpanded(false);
-			},
-			expandAllRows: () => {
-				table.toggleAllRowsExpanded(true);
-			},
-			collapseAllRows: () => {
-				table.toggleAllRowsExpanded(false);
-			},
-			expandRows: (rowIds: string[]) => {
-				const expansion: Record<string, boolean> = {};
-				rowIds.forEach((id) => (expansion[id] = true));
-				table.setExpanded(expansion);
-			},
-		}),
-		[table],
-	);
+	const { columnSizeVars, activeResize, context: resizeContext } = resize.bind(table);
 
-	const { rows, rowsById } = table.getRowModel();
+	useImperativeHandle(ref, () => createTableApi(table), [table]);
 
-	const renderEmptyState = () => (
-		<TableRow>
-			<TableCell colSpan={columns.length} className={styles.emptyState}>
-				{emptyState || EMPTY_TABLE_STATE_TEXT}
-			</TableCell>
-		</TableRow>
-	);
+	const { rowsById } = table.getRowModel();
 
 	const selectedRows = Object.entries(rowSelection)
 		.filter(([, selected]) => selected)
@@ -308,50 +207,36 @@ const DsTable = <TData extends { id: string }, TValue>({
 
 	const isBulkActionsVisible = selectable && actions.length > 0 && selectedRows.length > 0;
 
-	const editingState = useEditingState<TData, TValue>(onCellEdit, onCellValidate);
-
-	const contextValue: DsTableContextType<TData, TValue> = {
-		stickyHeader,
-		bordered,
-		fullWidth,
-		rowSize,
-		expandable,
-		selectable,
-		reorderable,
-		showSelectAllCheckbox,
-		loading,
-		onRowClick: loading ? undefined : onRowClick,
-		onRowDoubleClick: loading ? undefined : onRowDoubleClick,
-		primaryRowActions,
-		secondaryRowActions,
-		renderExpandedRow,
-		virtualized,
-		activeRowId,
-		collapsedColumnGroups,
-		onToggleColumnGroup: toggleColumnGroup,
-		locale,
-		onCellEdit,
-		...editingState,
-	};
-
 	return (
-		<DsTableContext.Provider value={contextValue}>
+		<DsTableContextProvider
+			tableProps={tableProps}
+			derived={{
+				grouping: {
+					collapsedColumnGroups,
+					onToggleColumnGroup: toggleColumnGroup,
+				},
+				resize: resizeContext,
+			}}
+		>
 			<div
 				className={classnames(styles.container, isBulkActionsVisible && styles.bulkActionsVisible, className)}
 			>
 				{controls && <div className={styles.controls}>{controls}</div>}
 				<div
-					ref={tableContainerRef}
+					ref={resizeContext.resizeContainerRef}
 					className={classnames(
 						!virtualized && styles.dataTableContainer,
 						virtualized && styles.virtualizedContainer,
 					)}
 				>
 					<DragWrapper>
-						<Table className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}>
+						<Table
+							className={classnames(fullWidth && styles.fullWidth, !bordered && styles.tableNoBorder)}
+							style={columnSizeVars}
+						>
 							<DsTableHeader table={table} />
 							{virtualized ? (
-								<DsTableBodyVirtualized
+								<MemoizedDsTableBodyVirtualized
 									table={table}
 									emptyState={emptyState}
 									estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
@@ -361,18 +246,18 @@ const DsTable = <TData extends { id: string }, TValue>({
 									infiniteScroll={infiniteScroll}
 								/>
 							) : (
-								<TableBody>
-									<SortableWrapper>
-										{rows.length
-											? rows.map((row) => (
-													<DsTableRow key={row.id} row={row} isSelected={!!rowSelection[row.id]} />
-												))
-											: renderEmptyState()}
-									</SortableWrapper>
-								</TableBody>
+								<MemoizedDsTableRowsBody
+									table={table}
+									rowSelection={rowSelection}
+									emptyState={emptyState}
+									SortableWrapper={SortableWrapper}
+								/>
 							)}
 						</Table>
 					</DragWrapper>
+					{activeResize ? (
+						<DsTableResizeOverlay offset={activeResize.offset} phase={activeResize.phase} />
+					) : null}
 				</div>
 				{selectable && actions.length > 0 && (
 					<DsTableBulkActions
@@ -385,9 +270,49 @@ const DsTable = <TData extends { id: string }, TValue>({
 					/>
 				)}
 			</div>
-		</DsTableContext.Provider>
+		</DsTableContextProvider>
 	);
 };
+
+interface DsTableRowsBodyProps<TData extends { id: string }> {
+	table: TanstackTable<TData>;
+	rowSelection: RowSelectionState;
+	emptyState?: React.ReactNode;
+	SortableWrapper: React.ComponentType<React.PropsWithChildren>;
+}
+
+const DsTableRowsBody = <TData extends { id: string }>({
+	table,
+	rowSelection,
+	emptyState,
+	SortableWrapper,
+}: DsTableRowsBodyProps<TData>) => {
+	const { rows } = table.getRowModel();
+	const columnCount = table.getVisibleLeafColumns().length;
+
+	return (
+		<TableBody>
+			<SortableWrapper>
+				{rows.length ? (
+					rows.map((row) => <DsTableRow key={row.id} row={row} isSelected={!!rowSelection[row.id]} />)
+				) : (
+					<TableRow>
+						<TableCell colSpan={columnCount} className={styles.emptyState}>
+							{emptyState || EMPTY_TABLE_STATE_TEXT}
+						</TableCell>
+					</TableRow>
+				)}
+			</SortableWrapper>
+		</TableBody>
+	);
+};
+
+const MemoizedDsTableRowsBody = React.memo(DsTableRowsBody, areBodiesFrozen) as typeof DsTableRowsBody;
+
+const MemoizedDsTableBodyVirtualized = React.memo(
+	DsTableBodyVirtualized,
+	areBodiesFrozen,
+) as typeof DsTableBodyVirtualized;
 
 DsTable.displayName = 'DsTable';
 
