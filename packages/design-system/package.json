@@ -29,7 +29,8 @@
 		"!**/__tests__",
 		"!./src/**/*.d.ts",
 		"!**/stories",
-		"!**/*.stories.*"
+		"!**/*.stories.*",
+		"!**/*.mcp.ts"
 	],
 	"repository": {
 		"url": "https://github.com/drivenets/design-system",
@@ -54,7 +55,7 @@
 		"test:storybook-docs": "vitest --project=storybook-docs",
 		"build": "tsdown",
 		"build:watch": "pnpm build --watch",
-		"build:storybook": "storybook build"
+		"build:storybook": "storybook build && node --experimental-strip-types scripts/enrich-mcp-manifest.ts"
 	},
 	"dependencies": {
 		"@ark-ui/react": "^5.37.2",

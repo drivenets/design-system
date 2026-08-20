@@ -19,7 +19,7 @@
 </DsAlertBanner>
 
 ### MCP manifest
-const Default = () => <DsAlertBanner open onOpenChange={fn()} inline variant="info-blue" icon="info">
+const Default = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="info-blue" icon="info">
     <DsAlertBanner.Title>Information</DsAlertBanner.Title>
     <DsAlertBanner.Body>This is a blue informational alert message.</DsAlertBanner.Body>
 </DsAlertBanner>;
@@ -43,7 +43,7 @@ const Default = () => <DsAlertBanner open onOpenChange={fn()} inline variant="in
 </DsAlertBanner>
 
 ### MCP manifest
-const InfoNeutral = () => <DsAlertBanner open onOpenChange={fn()} inline variant="info-neutral" icon="info">
+const InfoNeutral = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="info-neutral" icon="info">
     <DsAlertBanner.Title>Information</DsAlertBanner.Title>
     <DsAlertBanner.Body>This is an informational alert message.</DsAlertBanner.Body>
 </DsAlertBanner>;
@@ -67,7 +67,7 @@ const InfoNeutral = () => <DsAlertBanner open onOpenChange={fn()} inline variant
 </DsAlertBanner>
 
 ### MCP manifest
-const Warning = () => <DsAlertBanner open onOpenChange={fn()} inline variant="warning" icon="warning">
+const Warning = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="warning" icon="warning">
     <DsAlertBanner.Title>Warning</DsAlertBanner.Title>
     <DsAlertBanner.Body>This is a warning alert message. Please pay attention.</DsAlertBanner.Body>
 </DsAlertBanner>;
@@ -91,7 +91,7 @@ const Warning = () => <DsAlertBanner open onOpenChange={fn()} inline variant="wa
 </DsAlertBanner>
 
 ### MCP manifest
-const Error = () => <DsAlertBanner open onOpenChange={fn()} inline variant="error" icon="error">
+const Error = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="error" icon="error">
     <DsAlertBanner.Title>Error</DsAlertBanner.Title>
     <DsAlertBanner.Body>Something went wrong. Please try again.</DsAlertBanner.Body>
 </DsAlertBanner>;
@@ -115,7 +115,7 @@ const Error = () => <DsAlertBanner open onOpenChange={fn()} inline variant="erro
 </DsAlertBanner>
 
 ### MCP manifest
-const Success = () => <DsAlertBanner open onOpenChange={fn()} inline variant="success" icon="check_circle">
+const Success = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="success" icon="check_circle">
     <DsAlertBanner.Title>Success</DsAlertBanner.Title>
     <DsAlertBanner.Body>Your action was completed successfully!</DsAlertBanner.Body>
 </DsAlertBanner>;
@@ -158,7 +158,7 @@ const Global = () => (
 ### MCP manifest
 const Closable = () => <DsAlertBanner
     open
-    onOpenChange={fn()}
+    onOpenChange={() => {}}
     inline
     variant="info-neutral"
     icon="info"
@@ -201,7 +201,7 @@ const Closable = () => <DsAlertBanner
 </DsAlertBanner>
 
 ### MCP manifest
-const WithActions = () => <DsAlertBanner open onOpenChange={fn()} inline variant="warning" icon="warning">
+const WithActions = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="warning" icon="warning">
     <DsAlertBanner.Title>Attention needed</DsAlertBanner.Title>
     <DsAlertBanner.Body>You successfully read this important alert message. Choose how you want to proceed.
                     </DsAlertBanner.Body>
@@ -230,7 +230,7 @@ const WithActions = () => <DsAlertBanner open onOpenChange={fn()} inline variant
 </DsAlertBanner>
 
 ### MCP manifest
-const WithoutTitle = () => <DsAlertBanner open onOpenChange={fn()} inline variant="error" icon="error" closable>
+const WithoutTitle = () => <DsAlertBanner open onOpenChange={() => {}} inline variant="error" icon="error" closable>
     <DsAlertBanner.Body>Something went wrong. Please try again.</DsAlertBanner.Body>
 </DsAlertBanner>;
 
