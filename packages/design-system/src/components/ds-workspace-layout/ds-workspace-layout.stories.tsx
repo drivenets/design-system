@@ -147,40 +147,11 @@ export const Default: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsTypography variant="body-sm-reg">Header</DsTypography>
 			</DsWorkspaceLayout.Header>
-
-			<DsWorkspaceLayout.SubHeader>
-				<div className={styles.subHeaderContent}>
-					<DsTypography variant="body-sm-semi-bold">Dashboard</DsTypography>
-					<DsTypography variant="body-xs-reg">Last updated 2 min ago</DsTypography>
-				</div>
-			</DsWorkspaceLayout.SubHeader>
-
 			<DsWorkspaceLayout.Content>
-				<div className={styles.card}>
-					<DsTypography variant="heading3">Welcome</DsTypography>
-					<DsTypography variant="body-md-reg">This is the main content area of the workspace.</DsTypography>
-				</div>
-				<div className={styles.card}>
-					<DsTypography variant="heading3">Section 2</DsTypography>
-					<DsTypography variant="body-md-reg">Another content section.</DsTypography>
-				</div>
+				<DsTypography variant="body-md-reg">Content</DsTypography>
 			</DsWorkspaceLayout.Content>
-
-			<DsWorkspaceLayout.Footer>
-				<div className={styles.footerContent}>
-					<span>v1.2.0</span>
-					<div className={styles.footerActions}>
-						<DsButtonV3 variant="tertiary" size="small">
-							Help
-						</DsButtonV3>
-						<DsButtonV3 variant="tertiary" size="small">
-							Feedback
-						</DsButtonV3>
-					</div>
-				</div>
-			</DsWorkspaceLayout.Footer>
 		</DsWorkspaceLayout>
 	),
 };

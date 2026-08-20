@@ -4,6 +4,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { DsToast } from './ds-toast';
 import { DsToastProvider, useToaster } from './ds-toast-context';
 import { DsButton } from '../ds-button';
+import { DsButtonV3 } from '../ds-button-v3';
 import { type DsToastProps, type ToastVariant, toastVariants } from './ds-toast.types';
 import styles from './ds-toast.stories.module.scss';
 
@@ -49,6 +50,38 @@ const meta: Meta<typeof DsToast> = {
 
 export default meta;
 type Story = StoryObj<typeof DsToast>;
+
+export const Default: Story = {
+	decorators: [
+		(Story) => (
+			<DsToastProvider>
+				<Story />
+			</DsToastProvider>
+		),
+	],
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: () => {
+		const { createToast } = useToaster();
+
+		return (
+			<DsButtonV3
+				onClick={() =>
+					createToast({
+						variant: 'success',
+						title: 'Saved',
+						description: 'Changes were stored.',
+					})
+				}
+			>
+				Show toast
+			</DsButtonV3>
+		);
+	},
+};
 
 const ToastDemo = ({
 	variant,

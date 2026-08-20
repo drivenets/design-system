@@ -38,6 +38,12 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
+		docs: {
+			description: {
+				component:
+					'Pass `columns` and `data` — not a TanStack `Table` instance. Every row must include an `id: string`. Use `createColumnHelper` when defining typed columns; `DsTableEditableCell` for inline editing.',
+			},
+		},
 	},
 	args: {
 		columns,
@@ -56,7 +62,31 @@ type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
 export const Default: Story = {
 	args: {
-		data: defaultData,
+		columns: [
+			{ accessorKey: 'firstName', header: 'First Name' },
+			{ accessorKey: 'lastName', header: 'Last Name' },
+			{ accessorKey: 'status', header: 'Status' },
+		],
+		data: [
+			{
+				id: '1',
+				firstName: 'Tanner',
+				lastName: 'Linsley',
+				age: 33,
+				visits: 100,
+				status: 'single',
+				progress: 75,
+			},
+			{
+				id: '2',
+				firstName: 'Kevin',
+				lastName: 'Fine',
+				age: 28,
+				visits: 200,
+				status: 'relationship',
+				progress: 50,
+			},
+		],
 	},
 };
 

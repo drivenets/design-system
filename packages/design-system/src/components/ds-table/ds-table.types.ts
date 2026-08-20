@@ -31,6 +31,11 @@ export interface DsTableLocale {
 	 * Accessible label for the toggle that expands a column group.
 	 */
 	expandColumnGroup: string;
+
+	/**
+	 * Accessible label for the column resize handle.
+	 */
+	resizeColumn: string;
 }
 
 /**
@@ -39,6 +44,7 @@ export interface DsTableLocale {
 export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	collapseColumnGroup: 'Collapse column group',
 	expandColumnGroup: 'Expand column group',
+	resizeColumn: 'Resize column',
 });
 
 /**
@@ -219,12 +225,12 @@ export interface DsDataTableProps<TData, TValue> {
 	ref?: React.RefObject<DsTableApi<TData> | null>;
 
 	/**
-	 * Columns of the table
+	 * Column definitions (`ColumnDef` or `createColumnHelper` output). Pass these with `data`, not a TanStack `Table` instance.
 	 */
 	columns: ColumnDef<TData, TValue>[];
 
 	/**
-	 * Data of the table
+	 * Row data. Every row must include an `id: string`.
 	 */
 	data: TData[];
 
@@ -319,6 +325,31 @@ export interface DsDataTableProps<TData, TValue> {
 	 * @default 'medium'
 	 */
 	rowSize?: DsTableRowSize;
+
+	/**
+	 * Enables resizing columns by dragging the right edge of a header cell.
+	 * Double-click a handle to restore the column's original width. Opt out per
+	 * column with `columnDef.enableResizing: false`. Leaf columns may set
+	 * `minSize` and `maxSize`. Those bounds on a column group are ignored.
+	 * @default false
+	 */
+	resizableColumns?: boolean;
+
+	/**
+	 * Persisted column widths as a column id → width (px) map, e.g. a map saved
+	 * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
+	 * restore widths; columns absent from the map are measured and sized
+	 * automatically. This seeds widths — live resizing still updates them
+	 * internally — so it is not a fully controlled value.
+	 */
+	columnSizing?: Record<string, number>;
+
+	/**
+	 * Called with the next column id → width (px) map when a resize finishes
+	 * (drag end, double-click restore, or keyboard nudge). Use this to persist
+	 * widths across sessions.
+	 */
+	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
 
 	/**
 	 * When `true`, renders placeholder skeleton rows instead of the data. Column

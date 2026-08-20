@@ -45,55 +45,48 @@ export const Default: Story = {
 	args: {
 		orientation: 'horizontal',
 		size: 'medium',
+		defaultValue: 'overview',
 	},
-	render: function Render(args) {
-		const [selected, setSelected] = useState('overview');
+	render: (args) => (
+		<div className={styles.container}>
+			<DsTabs.Root {...args}>
+				<DsTabs.List>
+					<DsTabs.Tab value="overview" label="Overview" icon="dashboard" />
+					<DsTabs.Tab value="analytics" label="Analytics" icon="analytics" badge={12} />
+					<DsTabs.Tab value="reports" label="Reports" icon="description" badge={5} />
+					<DsTabs.Tab value="settings" label="Settings" icon="settings" />
+				</DsTabs.List>
 
-		return (
-			<div className={styles.container}>
-				<DsTabs.Root
-					{...args}
-					value={selected}
-					onValueChange={(val: string | null) => setSelected(val ?? 'overview')}
-				>
-					<DsTabs.List>
-						<DsTabs.Tab value="overview" label="Overview" icon="dashboard" />
-						<DsTabs.Tab value="analytics" label="Analytics" icon="analytics" badge={12} />
-						<DsTabs.Tab value="reports" label="Reports" icon="description" badge={5} />
-						<DsTabs.Tab value="settings" label="Settings" icon="settings" />
-					</DsTabs.List>
+				<DsTabs.Content value="overview">
+					<div className={styles.content}>
+						<h3>Overview</h3>
+						<p>View your dashboard overview and key metrics.</p>
+					</div>
+				</DsTabs.Content>
 
-					<DsTabs.Content value="overview">
-						<div className={styles.content}>
-							<h3>Overview</h3>
-							<p>View your dashboard overview and key metrics.</p>
-						</div>
-					</DsTabs.Content>
+				<DsTabs.Content value="analytics">
+					<div className={styles.content}>
+						<h3>Analytics</h3>
+						<p>Detailed analytics and performance data (12 new insights).</p>
+					</div>
+				</DsTabs.Content>
 
-					<DsTabs.Content value="analytics">
-						<div className={styles.content}>
-							<h3>Analytics</h3>
-							<p>Detailed analytics and performance data (12 new insights).</p>
-						</div>
-					</DsTabs.Content>
+				<DsTabs.Content value="reports">
+					<div className={styles.content}>
+						<h3>Reports</h3>
+						<p>Access and manage your reports (5 pending).</p>
+					</div>
+				</DsTabs.Content>
 
-					<DsTabs.Content value="reports">
-						<div className={styles.content}>
-							<h3>Reports</h3>
-							<p>Access and manage your reports (5 pending).</p>
-						</div>
-					</DsTabs.Content>
-
-					<DsTabs.Content value="settings">
-						<div className={styles.content}>
-							<h3>Settings</h3>
-							<p>Configure your application settings.</p>
-						</div>
-					</DsTabs.Content>
-				</DsTabs.Root>
-			</div>
-		);
-	},
+				<DsTabs.Content value="settings">
+					<div className={styles.content}>
+						<h3>Settings</h3>
+						<p>Configure your application settings.</p>
+					</div>
+				</DsTabs.Content>
+			</DsTabs.Root>
+		</div>
+	),
 };
 
 /** `size="small"` horizontal tabs for dense toolbars and compact headers. */

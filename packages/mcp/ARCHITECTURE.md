@@ -30,7 +30,7 @@
 │  Written to storybook-static/manifests/ during build,               │
 │  then components.json is post-processed by                          │
 │  scripts/enrich-mcp-manifest.ts (sanitize snippets, public import,  │
-│  Ds*Props-only prop tables, optional ds-*.mcp.ts overlays).         │
+│  Ds*Props-only prop tables).                                        │
 │  Dev server /manifests/ is the raw Storybook output.                │
 └──────────────────────────┬──────────────────────────────────────────┘
                            │
@@ -162,15 +162,14 @@ If gh-pages is unreachable and the consumer didn't set `--manifests-dir`, tool c
 
 ## What Controls Manifest Quality
 
-| Factor                       | Affects                                                                                  | Where to change                                                                        |
-| ---------------------------- | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| JSDoc on prop interfaces     | `description` field in `components.json`                                                 | `src/components/*/ds-*.types.ts`                                                       |
-| `@default` JSDoc tags        | `defaultValue` in `components.json`                                                      | Same `.types.ts` files                                                                 |
-| MDX files with `<Meta>` tags | Entries in `docs.json`                                                                   | `src/stories/*.mdx`                                                                    |
-| Stories glob in `main.ts`    | Which files Storybook scans                                                              | `.storybook/main.ts` `stories` array                                                   |
-| `@storybook/addon-docs`      | Powers `react-docgen` extraction                                                         | Must be in `addons` array                                                              |
-| `enrich-mcp-manifest.ts`     | Ready-to-paste snippets, public import, `Ds*Props`-only tables, deprecation              | `packages/design-system/scripts/enrich-mcp-manifest.ts` (runs after `storybook build`) |
-| Optional `ds-*.mcp.ts`       | Overlay `import` / `example` / `related` / `avoid` merged into the same component record | `src/components/ds-{name}/ds-{name}.mcp.ts`                                            |
+| Factor                       | Affects                                                                     | Where to change                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| JSDoc on prop interfaces     | `description` field in `components.json`                                    | `src/components/*/ds-*.types.ts`                                                       |
+| `@default` JSDoc tags        | `defaultValue` in `components.json`                                         | Same `.types.ts` files                                                                 |
+| MDX files with `<Meta>` tags | Entries in `docs.json`                                                      | `src/stories/*.mdx`                                                                    |
+| Stories glob in `main.ts`    | Which files Storybook scans                                                 | `.storybook/main.ts` `stories` array                                                   |
+| `@storybook/addon-docs`      | Powers `react-docgen` extraction                                            | Must be in `addons` array                                                              |
+| `enrich-mcp-manifest.ts`     | Ready-to-paste snippets, public import, `Ds*Props`-only tables, deprecation | `packages/design-system/scripts/enrich-mcp-manifest.ts` (runs after `storybook build`) |
 
 The enricher does not change the consumer contract.
 

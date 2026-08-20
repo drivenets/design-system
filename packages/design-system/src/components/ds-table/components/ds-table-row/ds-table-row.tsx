@@ -9,7 +9,7 @@ import type { DsTableRowProps } from './ds-table-row.types';
 import styles from './ds-table-row.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { mergeRefs } from '../../../../utils/merge-refs';
-import { getColumnSizeStyle } from '../../utils/column-size';
+import { getBodyCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
@@ -52,6 +52,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 		secondaryRowActions,
 		activeRowId,
 		loading,
+		resizeSizingReady,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
@@ -98,7 +99,13 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
 				{row.getVisibleCells().map((cell, idx) => {
-					const cellStyle = getColumnSizeStyle(cell.column.getSize());
+					const columnSizing = cell.getContext().table.getState().columnSizing;
+					const cellStyle = getBodyCellSizeStyle(
+						cell.column.id,
+						cell.column.getSize(),
+						isExplicitColumnWidth(cell.column, resizeSizingReady ? columnSizing : {}),
+						!!resizeSizingReady,
+					);
 
 					if (cell.column.id === REORDER_COLUMN_ID) {
 						return (

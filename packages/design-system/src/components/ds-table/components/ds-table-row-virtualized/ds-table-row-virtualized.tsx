@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import styles from './ds-table-row-virtualized.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
-import { getColumnSizeStyle } from '../../utils/column-size';
+import { getBodyCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 import { TableCell, TableRow } from '../core-table';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
@@ -27,6 +27,7 @@ export const DsTableRowVirtualized = <TData,>({
 		onRowClick,
 		onRowDoubleClick,
 		loading,
+		resizeSizingReady,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
@@ -70,7 +71,13 @@ export const DsTableRowVirtualized = <TData,>({
 				<>
 					{row.getVisibleCells().map((cell, idx) => {
 						const isLastColumn = idx === row.getVisibleCells().length - 1;
-						const cellStyle = getColumnSizeStyle(cell.column.getSize());
+						const columnSizing = cell.getContext().table.getState().columnSizing;
+						const cellStyle = getBodyCellSizeStyle(
+							cell.column.id,
+							cell.column.getSize(),
+							isExplicitColumnWidth(cell.column, resizeSizingReady ? columnSizing : {}),
+							!!resizeSizingReady,
+						);
 
 						return (
 							<TableCell

@@ -1,6 +1,6 @@
 {
 	"name": "@drivenets/design-system",
-	"version": "0.17.0",
+	"version": "0.18.0",
 	"license": "Apache-2.0",
 	"type": "module",
 	"types": "./dist/index.d.cts",
@@ -29,8 +29,7 @@
 		"!**/__tests__",
 		"!./src/**/*.d.ts",
 		"!**/stories",
-		"!**/*.stories.*",
-		"!**/*.mcp.ts"
+		"!**/*.stories.*"
 	],
 	"repository": {
 		"url": "https://github.com/drivenets/design-system",

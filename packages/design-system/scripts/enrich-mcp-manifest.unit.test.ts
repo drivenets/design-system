@@ -8,7 +8,6 @@ import {
 	enrichManifestFile,
 	extractDeclaredProps,
 	isNoiseSnippet,
-	loadOverlays,
 	sanitizeSnippet,
 	toPublicImport,
 	type ComponentsManifest,
@@ -344,112 +343,17 @@ describe('enrichManifest', () => {
 		expect(result.components['button']?.stories?.[0]).toEqual({ name: 'Default', snippet: iconOnly });
 	});
 
-	it('merges an optional overlay into the same record keys get-documentation already returns', () => {
-		const result = enrichManifest(
-			manifest({
-				toast: widget({
-					id: 'components-toast',
-					name: 'DsToast',
-					path: './src/components/ds-toast/ds-toast.stories.tsx',
-					description: 'Temporary messages.',
-					stories: [{ name: 'Default', snippet: '<DsToast description="Saved" />' }],
-				}),
-			}),
-			{
-				packageRoot: PACKAGE_ROOT,
-				overlays: new Map([
-					[
-						'ds-toast',
-						{
-							import: "import { DsToastProvider, useToaster } from '@drivenets/design-system';",
-							related: ['DsToastProvider', 'useToaster'],
-							avoid: ['Do not render DsToast in the page tree.'],
-							example: 'const { createToast } = useToaster();\ncreateToast({ description: "Saved" });',
-						},
-					],
-				]),
-			},
-		);
-
-		const toast = result.components['toast'];
-
-		expect(toast?.import).toBe("import { DsToastProvider, useToaster } from '@drivenets/design-system';");
-		expect(toast?.example).toContain('useToaster');
-		expect(toast?.stories?.[0]?.snippet).toContain('createToast');
-		expect(toast?.description).toContain('## Related');
-		expect(toast?.description).toContain("## Don't");
-		expect(toast?.related).toEqual(['DsToastProvider', 'useToaster']);
-		expect(toast?.avoid).toEqual(['Do not render DsToast in the page tree.']);
-	});
-
-	it('does not duplicate overlay sections when enriching twice', () => {
-		const overlays = new Map([
-			[
-				'ds-toast',
-				{
-					related: ['DsToastProvider'],
-					avoid: ['Do not render DsToast in the page tree.'],
-				},
-			],
-		]);
-		const input = manifest({
-			toast: widget({
-				path: './src/components/ds-toast/ds-toast.stories.tsx',
-				description: 'Temporary messages.',
-			}),
-		});
-		const once = enrichManifest(input, { packageRoot: PACKAGE_ROOT, overlays });
-		const twice = enrichManifest(once, { packageRoot: PACKAGE_ROOT, overlays });
-		const description = twice.components['toast']?.description ?? '';
-
-		expect(description.match(/## Related/g)).toHaveLength(1);
-		expect(description.match(/## Don't/g)).toHaveLength(1);
-	});
-
-	it('applies a folder overlay only to the primary stories file', () => {
-		const overlays = new Map([
-			[
-				'ds-table',
-				{
-					example: '<DsTable columns={[]} data={[]} />',
-				},
-			],
-		]);
-		const result = enrichManifest(
-			manifest({
-				table: widget({
-					id: 'components-table',
-					name: 'DsTable',
-					path: './src/components/ds-table/stories/ds-table.stories.tsx',
-					stories: [{ name: 'Default', snippet: '<DsTable data={defaultData} />' }],
-				}),
-				editable: widget({
-					id: 'components-table-editable',
-					name: 'DsTable',
-					path: './src/components/ds-table/stories/ds-table-editable.stories.tsx',
-					stories: [{ name: 'Default', snippet: '<DsTable onCellEdit={fn()} />' }],
-				}),
-			}),
-			{ packageRoot: PACKAGE_ROOT, overlays },
-		);
-
-		expect(result.components['table']?.stories?.[0]?.snippet).toBe('<DsTable columns={[]} data={[]} />');
-		expect(result.components['editable']?.stories?.[0]?.snippet).toBe('<DsTable onCellEdit={() => {}} />');
-		expect(result.components['editable']?.example).toBeUndefined();
-	});
-
-	it('stays sanitizer-only when no overlay file exists for the component', () => {
+	it('adds a public import and rewrites storybook fn() without a second docs source', () => {
 		const result = enrichManifest(
 			manifest({
 				widget: widget({
 					stories: [{ name: 'Default', snippet: '<DsWidget onClick={fn()} />' }],
 				}),
 			}),
-			{ packageRoot: PACKAGE_ROOT, overlays: new Map() },
+			{ packageRoot: PACKAGE_ROOT },
 		);
 
 		expect(result.components['widget']?.import).toBe("import { DsWidget } from '@drivenets/design-system';");
-		expect(result.components['widget']?.related).toBeUndefined();
 		expect(result.components['widget']?.stories?.[0]?.snippet).toBe('<DsWidget onClick={() => {}} />');
 	});
 });
@@ -494,13 +398,5 @@ describe('enrichManifestFile', () => {
 
 		expect(result.components['widget']?.import).toBe("import { DsWidget } from '@drivenets/design-system';");
 		expect(result.components['widget']?.stories?.[0]?.snippet).toBe('<DsWidget onClick={() => {}} />');
-	});
-});
-
-describe('loadOverlays', () => {
-	it('returns an empty map when the components root is missing', async () => {
-		await expect(loadOverlays(join(tmpdir(), 'definitely-missing-ds-components'))).resolves.toEqual(
-			new Map(),
-		);
 	});
 });

@@ -1,14 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { readFile, writeFile } from 'node:fs/promises';
 import { basename, dirname, join, resolve } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-
-export interface DsMcpOverlay {
-	import?: string;
-	related?: readonly string[];
-	avoid?: readonly string[];
-	example?: string;
-}
+import { fileURLToPath } from 'node:url';
 
 export interface ManifestStory {
 	id?: string;
@@ -41,9 +34,6 @@ export interface ManifestComponent {
 		props?: Record<string, ManifestDocgenProp>;
 		composes?: string[];
 	};
-	example?: string;
-	related?: readonly string[];
-	avoid?: readonly string[];
 	error?: { name: string; message: string };
 }
 
@@ -55,7 +45,6 @@ export interface ComponentsManifest {
 
 export interface EnrichOptions {
 	packageRoot: string;
-	overlays?: ReadonlyMap<string, DsMcpOverlay>;
 	readFileSync?: (path: string) => string;
 	fileExists?: (path: string) => boolean;
 }
@@ -117,11 +106,7 @@ export function toPublicImport(componentName: string): string {
 	return `import { ${exported} } from '${PUBLIC_PACKAGE}';`;
 }
 
-function overlayAppliesToRecord(storyPath: string, folder: string): boolean {
-	return basename(storyPath) === `${folder}.stories.tsx`;
-}
-
-export function componentFolderFromPath(storyPath: string): string | undefined {
+function componentFolderFromPath(storyPath: string): string | undefined {
 	return storyPath.split(/[/\\]/).find((part) => part.startsWith('ds-'));
 }
 
@@ -139,45 +124,6 @@ function isErrnoCode(error: unknown, code: string): boolean {
 	return typeof error === 'object' && error !== null && 'code' in error && error.code === code;
 }
 
-export async function loadOverlays(componentsRoot: string): Promise<Map<string, DsMcpOverlay>> {
-	const overlays = new Map<string, DsMcpOverlay>();
-	let entries;
-
-	try {
-		entries = await readdir(componentsRoot, { withFileTypes: true });
-	} catch (error) {
-		if (isErrnoCode(error, 'ENOENT')) {
-			return overlays;
-		}
-
-		throw error;
-	}
-
-	for (const entry of entries) {
-		if (!entry.isDirectory() || !entry.name.startsWith('ds-')) {
-			continue;
-		}
-
-		const overlayPath = join(componentsRoot, entry.name, `${entry.name}.mcp.ts`);
-
-		try {
-			const mod = (await import(pathToFileURL(overlayPath).href)) as { mcp?: DsMcpOverlay };
-
-			if (mod.mcp) {
-				overlays.set(entry.name, mod.mcp);
-			}
-		} catch (error) {
-			if (isErrnoCode(error, 'ERR_MODULE_NOT_FOUND') || isErrnoCode(error, 'ENOENT')) {
-				continue;
-			}
-
-			throw error;
-		}
-	}
-
-	return overlays;
-}
-
 export async function enrichManifestFile(packageRoot: string): Promise<string> {
 	const manifestPath = join(packageRoot, 'storybook-static/manifests/components.json');
 	let raw: string;
@@ -193,8 +139,7 @@ export async function enrichManifestFile(packageRoot: string): Promise<string> {
 	}
 
 	const manifest = JSON.parse(raw) as ComponentsManifest;
-	const overlays = await loadOverlays(join(packageRoot, 'src/components'));
-	const enriched = enrichManifest(manifest, { packageRoot, overlays });
+	const enriched = enrichManifest(manifest, { packageRoot });
 
 	await writeFile(manifestPath, `${JSON.stringify(enriched, null, '\t')}\n`);
 
@@ -214,14 +159,6 @@ function enrichComponent(component: ManifestComponent, options: EnrichOptions): 
 	applyDeclaredProps(next, types);
 	applyDeprecation(next, types?.deprecated);
 	applyCanonicalExample(next);
-
-	const folder = componentFolderFromPath(component.path);
-	const overlay =
-		folder && overlayAppliesToRecord(component.path, folder) ? options.overlays?.get(folder) : undefined;
-
-	if (overlay) {
-		mergeOverlay(next, overlay);
-	}
 
 	return next;
 }
@@ -755,60 +692,6 @@ function applyCanonicalExample(component: ManifestComponent): void {
 	if (defaultStory) {
 		stories.unshift(defaultStory);
 	}
-}
-
-function mergeOverlay(component: ManifestComponent, overlay: DsMcpOverlay): void {
-	if (overlay.import) {
-		component.import = overlay.import;
-	}
-
-	if (overlay.example) {
-		component.example = overlay.example;
-
-		const stories = component.stories ?? [];
-		const target = stories.find((story) => story.name === 'Default') ?? stories[0];
-
-		if (target) {
-			target.snippet = overlay.example;
-		} else {
-			component.stories = [{ name: 'Example', snippet: overlay.example }];
-		}
-	}
-
-	if (overlay.related) {
-		component.related = overlay.related;
-	}
-
-	if (overlay.avoid) {
-		component.avoid = overlay.avoid;
-	}
-
-	const sections: string[] = [];
-
-	if (overlay.related?.length) {
-		sections.push(`## Related\n\n${overlay.related.map((item) => `- ${item}`).join('\n')}`);
-	}
-
-	if (overlay.avoid?.length) {
-		sections.push(`## Don't\n\n${overlay.avoid.map((item) => `- ${item}`).join('\n')}`);
-	}
-
-	if (sections.length === 0) {
-		return;
-	}
-
-	const extra = sections.join('\n\n');
-	const base = stripOverlaySections(component.description);
-
-	component.description = base ? `${base}\n\n${extra}` : extra;
-}
-
-function stripOverlaySections(description: string | undefined): string {
-	if (!description) {
-		return '';
-	}
-
-	return description.replace(/(?:^|\n\n)## (?:Related|Don't)\n[\s\S]*$/u, '').trim();
 }
 
 function jsDocImmediatelyBefore(source: string, index: number): string | undefined {
