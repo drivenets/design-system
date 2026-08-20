@@ -594,7 +594,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -27280,7 +27280,7 @@ variant?: any = &#39;default&#39;</code></pre>
     </div>
     <div class="meta" title="./src/components/ds-tag-filter/ds-tag-filter.stories.tsx">components-tagfilter · ./src/components/ds-tag-filter/ds-tag-filter.stories.tsx</div>
     
-    <div class="hint">Design system TagFilter component A component for displaying active filters as tags with overflow handling. Non-tag elements (label, expand/collapse, clear) sit in a header row. Tags occupy the full width below, wrapping as needed.</div>
+    <div class="hint">Design system TagFilter component</div>
     
   </div>
 
@@ -27319,7 +27319,8 @@ items: TagFilterItem[]
  */
 locale?: {
 	/**
-	 * Heading label shown above the tag list (e.g., &quot;Filters&quot;).
+	 * @deprecated No longer rendered. Retained for backwards compatibility;
+	 * Will be removed in the future.
 	 */
 	label?: string;
 	/**
@@ -27497,19 +27498,18 @@ style?: CSSProperties</code></pre>
             items={filters}
             onClearAll={undefined}
             onItemDelete={undefined}
-            onItemSelect={undefined}
-            locale={{ label: &#39;Applied filters:&#39; }} /&gt;
+            onItemSelect={undefined} /&gt;
     );
 };</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Without Label</span>
+                <span class="ex-name">Deprecated Label Ignored</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story showing TagFilter without a label.</div>
-              <pre><code>const WithoutLabel = () =&gt; {
+              <div class="hint">Story documenting that `locale.label` is deprecated and never rendered. We removed the header label, so any label passed here has no visible effect.</div>
+              <pre><code>const DeprecatedLabelIgnored = () =&gt; {
     const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
 
     const handleClearAll = () =&gt; {
@@ -27523,7 +27523,7 @@ style?: CSSProperties</code></pre>
     return (
         &lt;DsTagFilter
             items={filters}
-            locale={{ label: &#39;&#39; }}
+            locale={{ label: &#39;This heading is ignored&#39; }}
             onClearAll={handleClearAll}
             onItemDelete={handleFilterDelete} /&gt;
     );
@@ -27535,7 +27535,7 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story demonstrating full locale customization with both label and clearButton.</div>
+              <div class="hint">Story demonstrating locale customization of the action buttons (clear, show more, show less). `locale.label` is intentionally omitted — it is deprecated and unused.</div>
               <pre><code>const CustomLocale = () =&gt; {
     const [filters, setFilters] = useState(sampleFilters);
 
@@ -27551,8 +27551,6 @@ style?: CSSProperties</code></pre>
         &lt;DsTagFilter
             items={filters}
             locale={{
-                // cspell:disable-next-line
-                label: &#39;Aktywne filtry:&#39;,
                 // cspell:disable-next-line
                 clearButton: &#39;Zresetuj&#39;,
                 // cspell:disable-next-line
@@ -27571,8 +27569,8 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story testing the expand/collapse functionality and onExpand callback.</div>
-              <pre><code>const ExpandCollapse = () =&gt; &lt;DsTagFilter items={sampleFilters} onExpand={fn()} /&gt;;</code></pre>
+              <div class="hint">Story demonstrating the expand/collapse toggle. The hidden count stays stable between `Show more (N)` and `Show less (N)`.</div>
+              <pre><code>const ExpandCollapse = () =&gt; &lt;DsTagFilter items={sampleFilters} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
