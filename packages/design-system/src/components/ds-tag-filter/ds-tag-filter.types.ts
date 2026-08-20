@@ -40,7 +40,8 @@ export interface DsTagFilterProps {
 	 */
 	locale?: {
 		/**
-		 * Heading label shown above the tag list (e.g., "Filters").
+		 * @deprecated No longer rendered. Retained for backwards compatibility;
+		 * Will be removed in the future.
 		 */
 		label?: string;
 		/**
