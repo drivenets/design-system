@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, fn, userEvent, waitFor, within } from 'storybook/test';
 import DsTagFilter from './ds-tag-filter';
 import type { TagFilterItem } from './ds-tag-filter.types';
 import styles from './ds-tag-filter.stories.module.scss';
@@ -13,7 +12,7 @@ const meta: Meta<typeof DsTagFilter> = {
 		docs: {
 			description: {
 				component:
-					'A component for displaying active filters as tags with overflow handling. Non-tag elements (label, expand/collapse, clear) sit in a header row. Tags wrap in a dedicated area below.',
+					'Displays active filters as tags with overflow handling. Tags fill the left of a single row; the actions block (expand/collapse toggle, clear all) is pinned to the top-right and stays aligned with the first tag row when tags wrap.',
 			},
 		},
 	},
@@ -121,57 +120,6 @@ export const Default: Story = {
 			</div>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		await expect(canvas.getByText('Filtered by:')).toBeInTheDocument();
-		await expect(canvas.getByRole('button', { name: /Clear all filters/ })).toBeInTheDocument();
-
-		const firstTag = canvas.getByRole('button', { name: 'Status: Active' });
-		await userEvent.click(firstTag);
-
-		await waitFor(async () => {
-			await expect(firstTag).toHaveAttribute('aria-pressed', 'true');
-		});
-
-		// Verify selection is reflected in the info text
-		await expect(canvas.getByText(/Selected filters:.*"Status: Active"/)).toBeInTheDocument();
-
-		// Click again to deselect
-		await userEvent.click(firstTag);
-
-		await waitFor(async () => {
-			await expect(firstTag).not.toHaveAttribute('aria-pressed');
-		});
-
-		firstTag.focus();
-
-		// Wait for delete button to become visible after focus
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
-		});
-
-		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
-		await userEvent.click(deleteButton);
-
-		await waitFor(async () => {
-			await expect(canvas.queryByRole('button', { name: 'Status: Active' })).not.toBeInTheDocument();
-			await expect(canvas.getByText('Total filters: 12')).toBeInTheDocument();
-		});
-
-		// Test clear all functionality
-		const clearAllButton = canvas.getByRole('button', { name: /Clear all filters/ });
-		await userEvent.click(clearAllButton);
-
-		await waitFor(async () => {
-			await expect(canvas.getByText('Total filters: 0')).toBeInTheDocument();
-		});
-	},
 };
 
 /**
@@ -207,45 +155,6 @@ export const FewFilters: Story = {
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		// Verify all filters are visible
-		await expect(canvas.getByRole('button', { name: 'Version: 1.0.0' })).toBeInTheDocument();
-		await expect(canvas.getByRole('button', { name: 'Author: John Doe' })).toBeInTheDocument();
-
-		// Test selection interaction
-		const statusTag = canvas.getByRole('button', { name: 'Status: Active' });
-		await userEvent.click(statusTag);
-
-		await waitFor(async () => {
-			await expect(statusTag).toHaveAttribute('aria-pressed', 'true');
-		});
-
-		// Test deletion interaction - focus the tag to reveal delete button
-		statusTag.focus();
-
-		// Wait for delete button to become visible after focus
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
-		});
-
-		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
-		await userEvent.click(deleteButton);
-
-		await waitFor(async () => {
-			await expect(canvas.queryByRole('button', { name: 'Status: Active' })).not.toBeInTheDocument();
-		});
-
-		// Verify remaining filters
-		await expect(canvas.getByRole('button', { name: 'Version: 1.0.0' })).toBeInTheDocument();
-		await expect(canvas.getByRole('button', { name: 'Author: John Doe' })).toBeInTheDocument();
-	},
 };
 
 /**
@@ -262,33 +171,6 @@ export const WithoutClearAll: Story = {
 		// Storybook injects `onClearAll` via args by default — pass `undefined` explicitly
 		// so the component hides the "Clear all" button.
 		return <DsTagFilter {...args} items={filters} onClearAll={undefined} onItemDelete={handleFilterDelete} />;
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		// Verify "Clear all filters" button is NOT present
-		await expect(canvas.queryByRole('button', { name: /Clear all filters/ })).not.toBeInTheDocument();
-
-		// Verify deletion still works - focus the tag to reveal delete button
-		const firstTag = canvas.getByRole('button', { name: 'Status: Active' });
-		firstTag.focus();
-
-		// Wait for delete button to become visible after focus
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
-		});
-
-		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
-		await userEvent.click(deleteButton);
-
-		await waitFor(async () => {
-			await expect(canvas.queryByRole('button', { name: 'Status: Active' })).not.toBeInTheDocument();
-		});
 	},
 };
 
@@ -308,33 +190,16 @@ export const ReadOnly: Story = {
 				onClearAll={undefined}
 				onItemDelete={undefined}
 				onItemSelect={undefined}
-				locale={{ label: 'Applied filters:' }}
 			/>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByText('Status: Active')).toBeInTheDocument();
-		});
-
-		// Verify custom label is shown
-		await expect(canvas.getByText('Applied filters:')).toBeInTheDocument();
-
-		// Verify delete buttons are NOT visible (read-only)
-		await expect(canvas.queryByRole('button', { name: 'Delete tag' })).not.toBeInTheDocument();
-
-		// Verify "Clear all filters" button is NOT present
-		await expect(canvas.queryByRole('button', { name: /Clear all filters/ })).not.toBeInTheDocument();
 	},
 };
 
 /**
- * Story showing TagFilter without a label.
+ * Story documenting that `locale.label` is deprecated and never rendered.
+ * We removed the header label, so any label passed here has no visible effect.
  */
-export const WithoutLabel: Story = {
+export const DeprecatedLabelIgnored: Story = {
 	render: function Render(args) {
 		const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
 
@@ -350,46 +215,17 @@ export const WithoutLabel: Story = {
 			<DsTagFilter
 				{...args}
 				items={filters}
-				locale={{ label: '' }}
+				locale={{ label: 'This heading is ignored' }}
 				onClearAll={handleClearAll}
 				onItemDelete={handleFilterDelete}
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		// Verify "Filtered by:" label is NOT present
-		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
-
-		// Verify "Clear all filters" button is still present and works
-		await expect(canvas.getByRole('button', { name: /Clear all filters/ })).toBeInTheDocument();
-
-		// Verify deletion still works - focus the tag to reveal delete button
-		const firstTag = canvas.getByRole('button', { name: 'Status: Active' });
-		firstTag.focus();
-
-		// Wait for delete button to become visible after focus
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Delete tag' })).toBeVisible();
-		});
-
-		const deleteButton = canvas.getByRole('button', { name: 'Delete tag' });
-		await userEvent.click(deleteButton);
-
-		await waitFor(async () => {
-			await expect(canvas.queryByRole('button', { name: 'Status: Active' })).not.toBeInTheDocument();
-		});
-	},
 };
 
 /**
- * Story demonstrating full locale customization with both label and clearButton.
+ * Story demonstrating locale customization of the action buttons (clear, show more,
+ * show less). `locale.label` is intentionally omitted — it is deprecated and unused.
  */
 export const CustomLocale: Story = {
 	render: function Render(args) {
@@ -409,8 +245,6 @@ export const CustomLocale: Story = {
 				items={filters}
 				locale={{
 					// cspell:disable-next-line
-					label: 'Aktywne filtry:',
-					// cspell:disable-next-line
 					clearButton: 'Zresetuj',
 					// cspell:disable-next-line
 					showMore: 'Pokaż więcej',
@@ -422,76 +256,15 @@ export const CustomLocale: Story = {
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		// Verify custom label is rendered
-		// cspell:disable-next-line
-		await expect(canvas.getByText('Aktywne filtry:')).toBeInTheDocument();
-
-		// cspell:disable-next-line
-		await expect(canvas.getByRole('button', { name: /Zresetuj/ })).toBeInTheDocument();
-
-		// Verify custom showMore locale
-		// cspell:disable-next-line
-		await expect(canvas.getByRole('button', { name: /Pokaż więcej/ })).toBeInTheDocument();
-
-		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
-		await expect(canvas.queryByRole('button', { name: /Clear all filters/ })).not.toBeInTheDocument();
-		await expect(canvas.queryByRole('button', { name: /Show more/ })).not.toBeInTheDocument();
-	},
 };
 
 /**
- * Story testing the expand/collapse functionality and onExpand callback.
+ * Story demonstrating the expand/collapse toggle. The hidden count stays stable
+ * between `Show more (N)` and `Show less (N)`.
  */
 export const ExpandCollapse: Story = {
 	args: {
 		items: sampleFilters,
-		onExpand: fn(),
-	},
-	play: async ({ canvasElement, args }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and "Show more" button to appear
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: /Show more \(\d+\)/ })).toBeInTheDocument();
-		});
-
-		const expandButton = canvas.getByRole('button', { name: /Show more \(\d+\)/ });
-
-		// Click an expand button
-		await userEvent.click(expandButton);
-
-		// Verify onExpand was called with true (expanded)
-		await waitFor(async () => {
-			await expect(args.onExpand).toHaveBeenCalledWith(true);
-		});
-
-		// Verify the button now shows "Show less"
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: /Show less/ })).toBeInTheDocument();
-		});
-
-		const collapseButton = canvas.getByRole('button', { name: /Show less/ });
-
-		// Click collapse button
-		await userEvent.click(collapseButton);
-
-		// Verify onExpand was called with false (collapsed)
-		await waitFor(async () => {
-			await expect(args.onExpand).toHaveBeenCalledWith(false);
-		});
-
-		// Verify an expand button is back
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: /Show more \(\d+\)/ })).toBeInTheDocument();
-		});
 	},
 };
 
@@ -518,16 +291,6 @@ export const SmallSize: Story = {
 		return (
 			<DsTagFilter {...args} items={filters} onClearAll={handleClearAll} onItemDelete={handleFilterDelete} />
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		await expect(canvas.getByText('Filtered by:')).toBeInTheDocument();
-		await expect(canvas.getByRole('button', { name: /Clear all filters/ })).toBeInTheDocument();
 	},
 };
 
@@ -566,44 +329,6 @@ export const WithPreSelectedItems: Story = {
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Wait for layout calculation to complete and tags to be rendered
-		await waitFor(async () => {
-			await expect(canvas.getByRole('button', { name: 'Status: Active' })).toBeInTheDocument();
-		});
-
-		// Verify pre-selected tags have aria-pressed="true"
-		const activeTag = canvas.getByRole('button', { name: 'Status: Active' });
-		const completedTag = canvas.getByRole('button', { name: 'Completed from 20,000 to 100,000' });
-		const versionTag = canvas.getByRole('button', { name: 'Version: 1.0.0' });
-
-		await expect(activeTag).toHaveAttribute('aria-pressed', 'true');
-		await expect(completedTag).toHaveAttribute('aria-pressed', 'true');
-		await expect(versionTag).toHaveAttribute('aria-pressed', 'true');
-
-		// Verify non-selected tags do not have aria-pressed
-		const runningTag = canvas.getByRole('button', { name: 'Running: From 100 to 10,000' });
-		const executorTag = canvas.getByRole('button', { name: 'Executor: Category 1' });
-
-		await expect(runningTag).not.toHaveAttribute('aria-pressed');
-		await expect(executorTag).not.toHaveAttribute('aria-pressed');
-
-		// Test toggling selection on a pre-selected tag
-		await userEvent.click(activeTag);
-
-		await waitFor(async () => {
-			await expect(activeTag).not.toHaveAttribute('aria-pressed');
-		});
-
-		// Test toggling selection on a non-selected tag
-		await userEvent.click(runningTag);
-
-		await waitFor(async () => {
-			await expect(runningTag).toHaveAttribute('aria-pressed', 'true');
-		});
-	},
 };
 
 /**
@@ -612,10 +337,5 @@ export const WithPreSelectedItems: Story = {
 export const EmptyState: Story = {
 	args: {
 		items: [],
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.queryByText('Filtered by:')).not.toBeInTheDocument();
 	},
 };

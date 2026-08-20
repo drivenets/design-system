@@ -1,5 +1,11 @@
 # @drivenets/vite-plugin-design-system
 
+## 0.0.11
+
+### Patch Changes
+
+- aaa55a3: Switch heading typography to the Poppins font across the type scale and load Poppins via the Google Fonts loader
+
 ## 0.0.10
 
 ### Patch Changes

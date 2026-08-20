@@ -3,6 +3,7 @@
 
 .header {
 	background-color: var(--background-secondary);
+	overflow: hidden;
 }
 
 .virtualizedHeader {
@@ -28,6 +29,7 @@
 
 .headerCell {
 	@include typography.body-sm-md;
+	position: relative;
 	color: var(--font-main);
 	text-align: left;
 	padding: 0 var(--standard);
@@ -57,7 +59,7 @@
 	justify-content: center;
 }
 
-.groupStart {
+.groupStart:not(:first-child) {
 	border-left: vars.$group-border-width solid var(--border);
 }
 
@@ -67,6 +69,18 @@
 	justify-content: space-between;
 	gap: vars.$header-sort-gap;
 	height: 100%;
+}
+
+.headerLabelStack {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.headerLabel {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .filterTriggerContainer {
