@@ -7,27 +7,49 @@ interface FieldInfo {
 	component: string;
 	fcMember?: string;
 	size?: boolean;
+	large?: boolean;
 	readOnly?: boolean;
 	invalid?: boolean;
 	data?: string;
 }
 
-const textInfo: FieldInfo = { component: 'DsTextInput', fcMember: 'TextInput', size: true, readOnly: true };
+const textInfo: FieldInfo = {
+	component: 'DsTextInput',
+	fcMember: 'TextInput',
+	size: true,
+	large: true,
+	readOnly: true,
+};
 
 const registry: Record<string, FieldInfo> = {
 	text: textInfo,
 	textArea: { component: 'DsTextarea', fcMember: 'Textarea' },
 	number: { component: 'DsNumberInput', fcMember: 'NumberInput', size: true, readOnly: true },
 	password: { component: 'DsPasswordInput', fcMember: 'PasswordInput', size: true, readOnly: true },
-	select: { component: 'DsSelect', fcMember: 'Select', invalid: true, data: 'options={[]} value=""' },
+	select: {
+		component: 'DsSelect',
+		fcMember: 'Select',
+		size: true,
+		large: true,
+		invalid: true,
+		data: 'options={[]} value=""',
+	},
 	date: { component: 'DsDateInput', fcMember: 'DateInput' },
 	time: { component: 'DsTimePicker', fcMember: 'TimePicker' },
 	autocompleteSearch: {
 		component: 'DsAutocomplete',
+		size: true,
+		large: true,
 		invalid: true,
 		data: 'options={[]} showTrigger={false}',
 	},
-	autocompleteCombobox: { component: 'DsAutocomplete', invalid: true, data: 'options={[]}' },
+	autocompleteCombobox: {
+		component: 'DsAutocomplete',
+		size: true,
+		large: true,
+		invalid: true,
+		data: 'options={[]}',
+	},
 };
 
 const instance = figma.selectedInstance;
@@ -69,8 +91,11 @@ const disabled = state === 'disabled';
 const readOnly = state === 'readOnly';
 const error = state === 'error';
 
+const sizeAttr =
+	info.size && size === 'small' ? 'size="small"' : info.large && size === 'large' ? 'size="large"' : '';
+
 const attrs = [
-	info.size && size === 'small' ? 'size="small"' : '',
+	sizeAttr,
 	info.data ?? '',
 	disabled ? 'disabled' : '',
 	info.readOnly && readOnly ? 'readOnly' : '',
