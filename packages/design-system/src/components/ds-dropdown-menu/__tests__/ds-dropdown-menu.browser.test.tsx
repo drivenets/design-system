@@ -5,6 +5,7 @@ import { DsDropdownMenu } from '../ds-dropdown-menu';
 import { DsIcon } from '../../ds-icon';
 import { DsCheckbox } from '../../ds-checkbox';
 import { DsTypography } from '../../ds-typography';
+import { DsTooltip } from '../../ds-tooltip';
 
 describe('DsDropdownMenu', () => {
 	it('should open menu when trigger is clicked', async () => {
@@ -94,6 +95,25 @@ describe('DsDropdownMenu', () => {
 		await logout.click();
 
 		expect(onSelect).toHaveBeenCalledWith('logout');
+	});
+
+	it('opens a DsTooltip wrapping an item on hover', async () => {
+		await page.render(
+			<DsDropdownMenu.Root open>
+				<DsDropdownMenu.Trigger>
+					<span>Open</span>
+				</DsDropdownMenu.Trigger>
+				<DsDropdownMenu.Content>
+					<DsTooltip content="hello tooltip">
+						<DsDropdownMenu.Item value="item">Item</DsDropdownMenu.Item>
+					</DsTooltip>
+				</DsDropdownMenu.Content>
+			</DsDropdownMenu.Root>,
+		);
+
+		await page.getByRole('menuitem', { name: 'Item' }).hover();
+
+		await expect.element(page.getByRole('tooltip', { name: 'hello tooltip' })).toBeVisible();
 	});
 
 	describe('collapsible groups (uncontrolled)', () => {
