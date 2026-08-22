@@ -128,11 +128,20 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 - Whitespace between logical chunks; early returns; name magic numbers
 - kebab-case files; barrel exports use `index.ts` not `index.tsx`
 
+## Git and branches
+
+- **Branch names:** `drivenets/michal/<JIRA-key>-<short-slug>` (e.g. `drivenets/michal/AR-83529-bulk-actions`).
+- **Reuse existing branches:** if a `drivenets/michal/` branch already exists for that ticket, use it — never invent a second name.
+- **No Cursor worker branches:** never use `cursor/` or any auto-generated Cursor worker branch as the PR head. If a worker created one, move the work onto `drivenets/michal/...` and drop the `cursor/` head.
+- **Author:** Michal Murawski `<michal.murawski@drivenets.com>` — do not commit as Cursor Agent.
+- **PR head:** `drivenets/michal/...` on `drivenets/design-system`, or the `mmurawski-dn/design-system` fork with the same branch name.
+
 ## Additional rules
 
 - **Domain glossary:** [CONTEXT.md](CONTEXT.md) · **ADRs:** [docs/adr/](docs/adr/)
 - **DS MCP:** [packages/mcp/README.md](packages/mcp/README.md) — Storybook docs for agents (`list-all-documentation`, `get-documentation`); local dev uses `pnpm start` + `--manifests-url http://localhost:6006`. Story edits: verify snippets via [`docs-tests`](.agents/skills/docs-tests/SKILL.md) and [storybook Snippet verification](.agents/skills/storybook/SKILL.md#snippet-verification).
 - **Flows:** [docs/agents/skills.md](docs/agents/skills.md)
+- **UI verification (Storybook + Playwright MCP):** [docs/agents/ui-verification.md](docs/agents/ui-verification.md)
 - **Subagents:** [docs/agents/subagents.md](docs/agents/subagents.md)
 
 ## Cursor subagents (`.cursor/agents/`)
