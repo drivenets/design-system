@@ -1,18 +1,24 @@
-@use '../../../../styles/typography';
+@use '../../styles/typography';
+
+$action-label-min-width: 60px;
+$action-label-max-width: 84px;
+$bar-shadow: 0 4px 12px #0445cc66;
 
 .bulkActionsContainer {
+	display: flex;
+	align-items: center;
+	background-color: var(--color-dap-gray-050);
+	border-radius: 8px;
+	box-shadow: $bar-shadow;
+	overflow: hidden;
+}
+
+.floating {
 	position: absolute;
 	bottom: 20px;
 	left: 50%;
 	transform: translateX(-50%);
-	background-color: var(--color-dap-gray-050);
-	border-radius: 8px;
-	box-shadow: 0 4px 12px #0445cc66;
 	z-index: 1;
-	display: flex;
-	align-items: center;
-	border-radius: 8px;
-	overflow: hidden;
 	animation-duration: 0.3s;
 	animation-timing-function: ease-out;
 	animation-fill-mode: forwards;
@@ -57,36 +63,52 @@
 	align-items: center;
 	gap: 8px;
 
-	> .actionButton {
+	> .actionButton,
+	> .actionSlot {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		gap: var(--3xs);
 		border-right: 1px solid var(--color-dap-gray-400);
+		min-width: $action-label-min-width;
+		max-width: $action-label-max-width;
 		width: 68px;
-		height: 48px;
+		min-height: 48px;
 		border-radius: 0;
 	}
 
-	> .actionButton:first-child {
+	> .actionButton {
+		color: var(--color-dap-gray-600);
+		background: transparent;
+		cursor: pointer;
+
+		&:hover:not(:disabled) {
+			color: var(--color-dap-gray-500);
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+	}
+
+	> .actionButton:first-child,
+	> .actionSlot:first-child {
 		border-left: 1px solid var(--color-dap-gray-400);
 	}
 }
 
-.escapeButtonContent {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	color: var(--color-dap-gray-600);
-	gap: 2px !important;
-	width: 36px;
-	padding-left: 4px;
+.actionLabel {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 100%;
+	text-align: center;
+}
 
-	&:hover {
-		color: var(--color-dap-gray-500);
-	}
+.dismissButton {
+	flex-shrink: 0;
 }
 
 @keyframes slideUpFadeIn {

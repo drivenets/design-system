@@ -1,0 +1,247 @@
+# DsBulkActions docs snippets
+
+## Default
+
+### Show code
+<DsBulkActions
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify',
+      onClick: () => {}
+    },
+    {
+      icon: 'folder_open',
+      label: 'Folder',
+      onClick: () => {}
+    },
+    {
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {}
+    }
+  ]}
+  onClearSelection={() => {}}
+  selectedCount={3}
+/>
+
+### MCP manifest
+const Default = () => <DsBulkActions
+    selectedCount={3}
+    onClearSelection={fn()}
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify',
+            onClick: fn(),
+        },
+        {
+            icon: 'folder_open',
+            label: 'Folder',
+            onClick: fn(),
+        },
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            onClick: fn(),
+        },
+    ]} />;
+
+## Floating
+
+### Show code
+<DsBulkActions
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify',
+      onClick: () => {}
+    },
+    {
+      icon: 'folder_open',
+      label: 'Folder',
+      onClick: () => {}
+    },
+    {
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {}
+    }
+  ]}
+  onClearSelection={() => {}}
+  placement="floating"
+  selectedCount={3}
+/>
+
+### MCP manifest
+const Floating = () => <DsBulkActions
+    selectedCount={3}
+    onClearSelection={fn()}
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify',
+            onClick: fn(),
+        },
+        {
+            icon: 'folder_open',
+            label: 'Folder',
+            onClick: fn(),
+        },
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            onClick: fn(),
+        },
+    ]}
+    placement="floating" />;
+
+## Long Action Labels
+
+### Show code
+<DsBulkActions
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify all stakeholders',
+      onClick: () => {}
+    },
+    {
+      icon: 'delete_outline',
+      label: 'Delete permanently',
+      onClick: () => {}
+    }
+  ]}
+  onClearSelection={() => {}}
+  selectedCount={2}
+/>
+
+### MCP manifest
+const LongActionLabels = () => <DsBulkActions
+    selectedCount={2}
+    onClearSelection={fn()}
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify all stakeholders',
+            onClick: fn(),
+        },
+        {
+            icon: 'delete_outline',
+            label: 'Delete permanently',
+            onClick: fn(),
+        },
+    ]} />;
+
+## Disabled Action
+
+### Show code
+<DsBulkActions
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify',
+      onClick: () => {}
+    },
+    {
+      disabled: true,
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {}
+    }
+  ]}
+  onClearSelection={() => {}}
+  selectedCount={1}
+/>
+
+### MCP manifest
+const DisabledAction = () => <DsBulkActions
+    selectedCount={1}
+    onClearSelection={fn()}
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify',
+            onClick: fn(),
+        },
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            disabled: true,
+            onClick: fn(),
+        },
+    ]} />;
+
+## Custom Action
+
+### Show code
+<DsBulkActions
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify',
+      onClick: () => {}
+    },
+    {
+      key: 'assign',
+      render: () => {}
+    }
+  ]}
+  onClearSelection={() => {}}
+  selectedCount={2}
+/>
+
+### MCP manifest
+const CustomAction = () => <DsBulkActions
+    selectedCount={2}
+    onClearSelection={fn()}
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify',
+            onClick: fn(),
+        },
+        {
+            key: 'assign',
+            render: () => (
+                <DsButtonV3 variant="tertiary" size="small" icon="person_add">
+                    Assign
+                </DsButtonV3>
+            ),
+        },
+    ]} />;
+
+## Localized
+
+### Show code
+<DsBulkActions
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify',
+      onClick: () => {}
+    }
+  ]}
+  locale={{
+    clearSelectionLabel: 'Dismiss selection',
+    itemsSelectedLabel: 'Rows picked'
+  }}
+  onClearSelection={() => {}}
+  selectedCount={5}
+/>
+
+### MCP manifest
+const Localized = () => <DsBulkActions
+    selectedCount={5}
+    onClearSelection={fn()}
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify',
+            onClick: fn(),
+        },
+    ]}
+    locale={{
+        itemsSelectedLabel: 'Rows picked',
+        clearSelectionLabel: 'Dismiss selection',
+    }} />;
