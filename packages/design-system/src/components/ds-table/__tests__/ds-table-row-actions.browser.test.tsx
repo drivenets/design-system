@@ -238,7 +238,7 @@ describe('DsTable - Row Actions', () => {
 		await page.getByRole('checkbox').nth(1).click();
 		await page.getByRole('checkbox').nth(2).click();
 
-		await expect.element(page.getByText(/items selected/i)).toBeVisible();
+		await expect.element(page.getByRole('toolbar', { name: /items selected/i })).toBeVisible();
 
 		await page.getByRole('button', { name: /notify/i }).click();
 		expect(notifyHandler).toHaveBeenCalled();
@@ -249,6 +249,6 @@ describe('DsTable - Row Actions', () => {
 		await page.getByRole('checkbox').nth(1).click();
 		await page.getByRole('checkbox').nth(2).click();
 
-		await expect.element(page.getByText(/items selected/i)).not.toBeInTheDocument();
+		await expect.element(page.getByRole('toolbar', { name: /items selected/i })).not.toBeInTheDocument();
 	});
 });
