@@ -17,6 +17,9 @@ Fira
 fromentries
 gnmi
 matchall
+michal
+mmurawski
+Murawski
 netgen
 netural
 networkidle
