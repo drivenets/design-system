@@ -6723,9 +6723,6 @@ packages:
     resolution: {integrity: sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q==}
     engines: {node: '>=14.0.0'}
 
-  tmcp@1.19.4:
-    resolution: {integrity: sha512-fMoUJ3Gef9iA0yKZNeW2SQCCKTluCwghUyOz/qxPS8XxrQk6Jlw4lgql3S+s6L//FteLeSJ7erKxMWl727mZoQ==}
-
   tmcp@1.20.0:
     resolution: {integrity: sha512-dcDximKQBGqLP/aEAVA26HcWRHhKipstg1w0fbDDJ0HcFZ6lolLU1YYmStYEn/73f534i7WrDNcjRfRYdV9CoA==}
 
@@ -9390,11 +9387,11 @@ snapshots:
   '@storybook/addon-mcp@0.6.0(@storybook/addon-vitest@10.4.1(@vitest/browser-playwright@4.1.10)(@vitest/browser@4.1.10)(@vitest/runner@4.1.10)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.4.1(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(vitest@4.1.10))(@typescript/typescript6@6.0.2)(storybook@10.4.1(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))':
     dependencies:
       '@storybook/mcp': 0.7.0(@typescript/typescript6@6.0.2)
-      '@tmcp/adapter-valibot': 0.1.6(tmcp@1.19.4(@typescript/typescript6@6.0.2))(valibot@1.2.0(@typescript/typescript6@6.0.2))
-      '@tmcp/transport-http': 0.8.6(tmcp@1.19.4(@typescript/typescript6@6.0.2))
+      '@tmcp/adapter-valibot': 0.1.6(tmcp@1.20.0(@typescript/typescript6@6.0.2))(valibot@1.2.0(@typescript/typescript6@6.0.2))
+      '@tmcp/transport-http': 0.8.6(tmcp@1.20.0(@typescript/typescript6@6.0.2))
       picoquery: 2.5.0
       storybook: 10.4.1(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      tmcp: 1.19.4(@typescript/typescript6@6.0.2)
+      tmcp: 1.20.0(@typescript/typescript6@6.0.2)
       valibot: 1.2.0(@typescript/typescript6@6.0.2)
     optionalDependencies:
       '@storybook/addon-vitest': 10.4.1(@vitest/browser-playwright@4.1.10)(@vitest/browser@4.1.10)(@vitest/runner@4.1.10)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(storybook@10.4.1(@testing-library/dom@10.4.1)(@types/react@19.2.17)(prettier@2.8.8)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(vitest@4.1.10)
@@ -9592,13 +9589,6 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
-  '@tmcp/adapter-valibot@0.1.6(tmcp@1.19.4(@typescript/typescript6@6.0.2))(valibot@1.2.0(@typescript/typescript6@6.0.2))':
-    dependencies:
-      '@standard-schema/spec': 1.1.0
-      '@valibot/to-json-schema': 1.7.0(valibot@1.2.0(@typescript/typescript6@6.0.2))
-      tmcp: 1.19.4(@typescript/typescript6@6.0.2)
-      valibot: 1.2.0(@typescript/typescript6@6.0.2)
-
   '@tmcp/adapter-valibot@0.1.6(tmcp@1.20.0(@typescript/typescript6@6.0.2))(valibot@1.2.0(@typescript/typescript6@6.0.2))':
     dependencies:
       '@standard-schema/spec': 1.1.0
@@ -9613,10 +9603,6 @@ snapshots:
       tmcp: 1.20.0(@typescript/typescript6@6.0.2)
       valibot: 1.4.2(@typescript/typescript6@6.0.2)
 
-  '@tmcp/session-manager@0.2.2(tmcp@1.19.4(@typescript/typescript6@6.0.2))':
-    dependencies:
-      tmcp: 1.19.4(@typescript/typescript6@6.0.2)
-
   '@tmcp/session-manager@0.2.2(tmcp@1.20.0(@typescript/typescript6@6.0.2))':
     dependencies:
       tmcp: 1.20.0(@typescript/typescript6@6.0.2)
@@ -9625,12 +9611,6 @@ snapshots:
     dependencies:
       json-rpc-2.0: 1.7.1
       tmcp: 1.20.0(@typescript/typescript6@6.0.2)
-
-  '@tmcp/transport-http@0.8.6(tmcp@1.19.4(@typescript/typescript6@6.0.2))':
-    dependencies:
-      '@tmcp/session-manager': 0.2.2(tmcp@1.19.4(@typescript/typescript6@6.0.2))
-      esm-env: 1.2.2
-      tmcp: 1.19.4(@typescript/typescript6@6.0.2)
 
   '@tmcp/transport-http@0.8.6(tmcp@1.20.0(@typescript/typescript6@6.0.2))':
     dependencies:
@@ -13758,16 +13738,6 @@ snapshots:
   tinyrainbow@3.1.0: {}
 
   tinyspy@4.0.4: {}
-
-  tmcp@1.19.4(@typescript/typescript6@6.0.2):
-    dependencies:
-      '@standard-schema/spec': 1.1.0
-      json-rpc-2.0: 1.7.1
-      sqids: 0.3.0
-      uri-template-matcher: 1.1.2
-      valibot: 1.4.2(@typescript/typescript6@6.0.2)
-    transitivePeerDependencies:
-      - typescript
 
   tmcp@1.20.0(@typescript/typescript6@6.0.2):
     dependencies:
