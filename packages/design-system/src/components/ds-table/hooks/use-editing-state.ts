@@ -1,6 +1,6 @@
-import { createContext, useCallback, useContext, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { Cell } from '@tanstack/react-table';
-import type { DsDataTableProps, DsTableRowSize } from '../ds-table.types';
+import type { DsDataTableProps } from '../ds-table.types';
 
 export interface EditingState<TData, TValue> {
 	cell: Cell<TData, TValue>;
@@ -10,25 +10,7 @@ export interface EditingState<TData, TValue> {
 	pending: boolean;
 }
 
-export interface DsTableContextType<TData, TValue> extends Partial<DsDataTableProps<TData, TValue>> {
-	/**
-	 * Whether the table is virtualized
-	 * @default false
-	 */
-	virtualized?: boolean;
-	/**
-	 * Row size variant
-	 * @default 'medium'
-	 */
-	rowSize: DsTableRowSize;
-	/**
-	 * ID of the currently active row
-	 */
-	activeRowId?: string | null;
-	/**
-	 * Toggles the collapsed state of a column group by its id.
-	 */
-	onToggleColumnGroup?: (groupId: string) => void;
+export interface UseEditingStateResult<TData, TValue> {
 	/** The cell currently in edit mode, if any. */
 	editing: EditingState<TData, TValue> | null;
 	beginEdit: (cell: Cell<TData, TValue>) => void;
@@ -36,17 +18,6 @@ export interface DsTableContextType<TData, TValue> extends Partial<DsDataTablePr
 	commit: (overrideValue?: TValue) => void;
 	cancel: () => void;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const DsTableContext = createContext<DsTableContextType<any, any> | null>(null);
-
-export const useDsTableContext = <TData, TValue>(): DsTableContextType<TData, TValue> => {
-	const context = useContext(DsTableContext);
-	if (!context) {
-		throw new Error('useDsTableContext must be used within DsTable');
-	}
-	return context as DsTableContextType<TData, TValue>;
-};
 
 /** Shown when an async `onCellEdit` commit rejects with a non-`Error` reason. */
 const EDIT_FALLBACK_ERROR = 'Save failed';
@@ -60,17 +31,12 @@ const extractErrorMessage = (reason: unknown, fallback: string): string =>
 
 /**
  * Hoisted editing state for single-cell-at-a-time inline editing.
- * Lives on {@link DsTableContext} so cell renderers and editors share one provider.
+ * Surfaced on DsTableContext so cell renderers and editors share one provider.
  */
 export const useEditingState = <TData, TValue>(
-	onCellEdit?: (
-		row: TData,
-		columnId: string,
-		value: TValue,
-		signal: AbortSignal,
-	) => string | null | undefined | Promise<string | null | undefined>,
-	onCellValidate?: (row: TData, columnId: string, value: TValue) => string | null,
-) => {
+	onCellEdit: DsDataTableProps<TData, TValue>['onCellEdit'],
+	onCellValidate: DsDataTableProps<TData, TValue>['onCellValidate'],
+): UseEditingStateResult<TData, TValue> => {
 	const [editing, setEditing] = useState<EditingState<TData, TValue> | null>(null);
 
 	const onCellEditRef = useRef(onCellEdit);

@@ -25,6 +25,7 @@ ondark
 onwarn
 oxfmtrc
 reorderable
+resizer
 retryable
 scrollers
 subcomponents

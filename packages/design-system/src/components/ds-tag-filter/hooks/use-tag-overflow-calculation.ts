@@ -2,7 +2,7 @@ import { type RefObject, useCallback, useLayoutEffect, useState } from 'react';
 import { fitTagsInRow, getContainerAvailableWidth, getElementMeasurements } from '../utils';
 
 interface UseTagOverflowCalculationOptions {
-	containerRef: RefObject<HTMLDivElement | null>;
+	tagsAreaRef: RefObject<HTMLDivElement | null>;
 	measurementRef: RefObject<HTMLDivElement | null>;
 	totalItems: number;
 	expanded: boolean;
@@ -14,13 +14,10 @@ interface UseTagOverflowCalculationResult {
 }
 
 /**
- * Custom hook to calculate how many tags fit in the available container width.
- *
- * Tags occupy the full container width. Non-tag elements (label, clear button,
- * expand control) live in a separate header row and don't affect the calculation.
+ * Custom hook to calculate how many tags fit on the first row of the tags-area.
  */
 export const useTagOverflowCalculation = ({
-	containerRef,
+	tagsAreaRef,
 	measurementRef,
 	totalItems,
 	expanded,
@@ -31,11 +28,11 @@ export const useTagOverflowCalculation = ({
 	});
 
 	const calculateLayout = useCallback(() => {
-		if (!containerRef.current || !measurementRef.current) {
+		if (!tagsAreaRef.current || !measurementRef.current) {
 			return;
 		}
 
-		const container = containerRef.current;
+		const tagsArea = tagsAreaRef.current;
 		const measurementContainer = measurementRef.current;
 
 		const { tagWidths, gap } = getElementMeasurements(measurementContainer);
@@ -45,13 +42,13 @@ export const useTagOverflowCalculation = ({
 			return;
 		}
 
-		const containerWidth = getContainerAvailableWidth(container);
+		const availableWidth = getContainerAvailableWidth(tagsArea);
 
-		const { count } = fitTagsInRow(tagWidths, containerWidth, gap);
+		const { count } = fitTagsInRow(tagWidths, availableWidth, gap);
 		const hasOverflow = count < tagWidths.length;
 
 		setState({ visibleTagCount: count, hasOverflow });
-	}, [containerRef, measurementRef]);
+	}, [tagsAreaRef, measurementRef]);
 
 	useLayoutEffect(() => {
 		const rafId = requestAnimationFrame(() => {
@@ -64,21 +61,19 @@ export const useTagOverflowCalculation = ({
 			});
 		});
 
-		if (containerRef.current) {
-			resizeObserver.observe(containerRef.current);
+		if (tagsAreaRef.current) {
+			resizeObserver.observe(tagsAreaRef.current);
 		}
 
 		return () => {
 			cancelAnimationFrame(rafId);
 			resizeObserver.disconnect();
 		};
-	}, [containerRef, measurementRef, totalItems, expanded, calculateLayout]);
+	}, [tagsAreaRef, measurementRef, totalItems, expanded, calculateLayout]);
 
+	// While expanded, keep hasOverflow true so a width edge case can't hide the collapse control.
 	if (expanded) {
-		return {
-			visibleTagCount: totalItems,
-			hasOverflow: true,
-		};
+		return { ...state, hasOverflow: true };
 	}
 
 	return state;
