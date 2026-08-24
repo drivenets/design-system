@@ -1,0 +1,23 @@
+@use '../../styles/variables' as vars;
+
+.resizeHandle {
+	position: absolute;
+	top: 0;
+	// Overlay paints 2px from the cell right edge; center this hit target on that band.
+	right: vars.$resize-handle-hit-width * -0.5 + vars.$resize-divider-width * -0.5;
+	height: 100%;
+	width: vars.$resize-handle-hit-width;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	cursor: col-resize;
+	touch-action: none;
+	z-index: 1;
+
+	// Focusable for keyboard resize (WCAG 2.1.1). Negative offset keeps the ring
+	// clear of the scroll container's overflow clip on the last column.
+	&:focus-visible {
+		outline: vars.$resize-divider-width solid var(--border-action-primary);
+		outline-offset: -1px;
+	}
+}

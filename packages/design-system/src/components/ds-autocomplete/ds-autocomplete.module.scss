@@ -1,7 +1,6 @@
 @use '../../styles/shared/dropdown';
 @use '../../styles/shared/input';
 
-$autocomplete-input-height: 36px;
 $autocomplete-max-visible-items: 4;
 $autocomplete-item-height: 38px;
 $autocomplete-dropdown-max-height: calc($autocomplete-max-visible-items * $autocomplete-item-height);
@@ -29,9 +28,21 @@ $autocomplete-opacity-visible: 1;
 	display: flex;
 	align-items: center;
 	gap: var(--3xs);
-	height: $autocomplete-input-height;
-	min-height: $autocomplete-input-height;
-	max-height: $autocomplete-input-height;
+	height: input.$input-text-height-default;
+	min-height: input.$input-text-height-default;
+	max-height: input.$input-text-height-default;
+
+	&.small {
+		height: input.$input-text-height-small;
+		min-height: input.$input-text-height-small;
+		max-height: input.$input-text-height-small;
+	}
+
+	&.large {
+		height: input.$input-text-height-large;
+		min-height: input.$input-text-height-large;
+		max-height: input.$input-text-height-large;
+	}
 
 	&[data-focus] {
 		border-color: var(--form-control-border-color, var(--border-action-primary)) !important;

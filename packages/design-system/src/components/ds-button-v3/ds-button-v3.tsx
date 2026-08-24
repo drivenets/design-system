@@ -29,6 +29,7 @@ const DsButtonV3 = ({
 	variant = 'primary',
 	size = 'medium',
 	selected = false,
+	highEmphasis = false,
 	type = 'button',
 	...rest
 }: DsButtonV3BaseProps) => {
@@ -48,6 +49,7 @@ const DsButtonV3 = ({
 			data-variant={variant}
 			data-size={size}
 			data-selected={selected ? 'true' : undefined}
+			data-high-emphasis={highEmphasis ? 'true' : undefined}
 			data-icon-only={isIconOnly || undefined}
 			data-loading={loading && !disabled ? '' : undefined}
 			{...rest}

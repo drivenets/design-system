@@ -114,9 +114,11 @@ const Item: React.FC<DsDropdownMenuItemProps> = ({
 	children,
 	className,
 	style,
+	...rest
 }) => {
 	return (
 		<Menu.Item
+			{...rest}
 			disabled={disabled}
 			className={classNames(
 				styles.item,

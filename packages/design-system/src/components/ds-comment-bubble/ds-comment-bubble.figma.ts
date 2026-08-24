@@ -1,9 +1,9 @@
-// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=27305-30079
+// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=18638-7430
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-comment-bubble
 // component=DsCommentBubble
 //
-// `DAP_comment bubble` is the floating comment bubble. Its Figma `type` axis
-// (`start typing` vs a populated thread) selects between the empty compose state and
+// `DsCommentBubbleV1` is the floating comment bubble. Its Figma `type` axis
+// (`initial` / `start typing` vs `open`) selects between the empty compose state and
 // a thread; in code this is driven by whether the `comment` prop is present, so the
 // snippet emits `comment` / `currentUser` identifier placeholders for the developer to
 // wire to state. The `action required` axis maps to `hideActionRequired` (the
@@ -14,17 +14,16 @@ const instance = figma.selectedInstance;
 
 const bubbleType =
 	instance.getEnum('type', {
+		initial: 'compose',
 		'start typing': 'compose',
-		typing: 'compose',
-		'with comments': 'thread',
-		comment: 'thread',
-		comments: 'thread',
+		open: 'thread',
 	}) ?? 'compose';
 
 const hideActionRequired =
 	instance.getEnum('action required', {
 		'no checkbox': true,
-		checkbox: false,
+		false: false,
+		true: false,
 	}) ?? false;
 
 const hideActionRequiredAttr = hideActionRequired ? '\n\thideActionRequired' : '';

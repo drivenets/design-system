@@ -1,12 +1,5 @@
 .root {
 	--ds-workspace-layout-header-height: 54px;
-	--ds-workspace-layout-header-gradient: radial-gradient(
-		ellipse at left bottom,
-		rgba(1, 75, 253, 1) 0%,
-		rgba(10, 60, 194, 1) 78%,
-		rgba(16, 51, 160, 1) 89%,
-		rgba(21, 42, 126, 1) 100%
-	);
 	--ds-workspace-layout-side-menu-collapsed-width: 60px;
 	--ds-workspace-layout-side-menu-expanded-width: 256px;
 	--ds-workspace-layout-side-menu-padding-top: 28px;
@@ -33,7 +26,7 @@
 	flex-shrink: 0;
 	height: var(--ds-workspace-layout-header-height);
 	padding: 0 var(--sm) 0 var(--lg);
-	background: var(--ds-workspace-layout-header-gradient);
+	background: var(--blue-grad-workspace-header);
 	color: var(--font-on-action);
 	overflow: clip;
 }

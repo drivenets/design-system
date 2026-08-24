@@ -7,6 +7,7 @@ const instance = figma.selectedInstance;
 
 const variant = instance.getEnum('buttonType', {
 	primary: 'primary',
+	'primary-subtle': 'primary-subtle',
 	secondary: 'secondary',
 	tertiary: 'tertiary',
 });
@@ -86,13 +87,14 @@ const labelNode = instance.findText('Button', { traverseInstances: true });
 const label = labelNode.type === 'TEXT' ? labelNode.textContent : 'Button';
 
 const iconProp = icon ? figma.code` icon="${icon}"` : '';
+const disabledProp = disabled ? ' disabled' : '';
 
 export default {
 	example: iconOnly
-		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''}${iconProp} aria-label="${label}" />`
+		? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}${iconProp} aria-label="${label}" />`
 		: showIcon && icon
-			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''} icon="${icon}">${label}</DsButtonV3>`
-			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}" ${disabled ? 'disabled' : ''}>${label}</DsButtonV3>`,
+			? figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp} icon="${icon}">${label}</DsButtonV3>`
+			: figma.code`<DsButtonV3 variant="${variant}" color="${color}" size="${size}"${disabledProp}>${label}</DsButtonV3>`,
 	imports: ["import { DsButtonV3 } from '@drivenets/design-system';"],
 	id: 'ds-button-v3',
 	metadata: { nestable: true },
