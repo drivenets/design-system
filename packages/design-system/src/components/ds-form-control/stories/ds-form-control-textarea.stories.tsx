@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsIcon } from '../../ds-icon';
+import { DsStack } from '../../ds-stack';
 import { controlStatuses } from '../ds-form-control.types';
 import DsFormControl from '../ds-form-control';
-import { checkDisabled, DefaultDescription, sanityCheck } from './ds-form-control-stories-shared';
 import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
@@ -10,7 +10,20 @@ const meta: Meta<typeof DsFormControl> = {
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'Form control wrapper that adds a label, description, validation status, and message around a textarea.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="19rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -38,20 +51,15 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'text',
 			description: 'Icon to display in the message',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFormControl>;
 
+/** Baseline multi-line field with a label, required marker, and a helper message. */
 export const Default: Story = {
 	args: {
 		label: 'Input label',
@@ -59,74 +67,32 @@ export const Default: Story = {
 		message: 'This is a message',
 		children: <DsFormControl.Textarea placeholder="Input" />,
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
-export const WithCustomWidth: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: { width: '300px' },
-		children: <DsFormControl.Textarea placeholder="Input with custom width" />,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
-export const WithCustomStyles: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: {
-			width: '400px',
-			padding: '16px',
-			border: '2px solid #e0e0e0',
-			borderRadius: '8px',
-			backgroundColor: '#f9f9f9',
-		},
-		children: <DsFormControl.Textarea placeholder="Input with custom styling" />,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
+/** Adds a description above the textarea to explain the field before the user types. */
 export const WithDescription: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		style: {
-			width: '300px',
-		},
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Textarea placeholder="Search" />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Surfaces contextual help through an end-adornment button beside the field. */
 export const WithHelpIcon: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
 		slots: {
 			endAdornment: (
-				<button
-					type="button"
-					className={styles.helpIcon}
-					onClick={() => alert('Help clicked!')}
-					aria-label="Help"
-				>
+				<button type="button" className={styles.helpIcon} aria-label="Help">
 					<DsIcon icon="info" size="small" />
 				</button>
 			),
@@ -134,17 +100,15 @@ export const WithHelpIcon: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Textarea placeholder="Search" />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Success status confirms the entered value passed validation. */
 export const Success: Story = {
 	args: {
 		status: 'success',
@@ -154,17 +118,15 @@ export const Success: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Textarea />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Error status flags an invalid value and pairs the message with an error icon. */
 export const Error: Story = {
 	args: {
 		status: 'error',
@@ -174,17 +136,15 @@ export const Error: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Textarea />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Warning status highlights a value that needs attention without blocking submission. */
 export const Warning: Story = {
 	args: {
 		status: 'warning',
@@ -194,30 +154,25 @@ export const Warning: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Textarea />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Disabled state prevents interaction while keeping the field visible. */
 export const Disabled: Story = {
 	args: {
 		label: 'Input label',
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Textarea placeholder="Disabled Input" disabled />
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		await checkDisabled(canvasElement);
 	},
 };

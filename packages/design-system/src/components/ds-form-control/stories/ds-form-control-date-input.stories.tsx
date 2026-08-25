@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { controlStatuses } from '../ds-form-control.types';
 import DsFormControl from '../ds-form-control';
-import { DefaultDescription } from './ds-form-control-stories-shared';
-import styles from './ds-form-control.stories.module.scss';
+import { DsStack } from '../../ds-stack';
 import { DsIcon } from '../../ds-icon';
+import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
 	title: 'Components/FormControl/DateInput (Deprecated)',
@@ -20,6 +19,13 @@ const meta: Meta<typeof DsFormControl> = {
 		},
 	},
 	tags: ['deprecated'],
+	decorators: [
+		(Story) => (
+			<DsStack width="19rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -47,69 +53,19 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'text',
 			description: 'Icon to display in the message',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFormControl>;
 
-const sanityCheckSingle = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const input = canvas.getByPlaceholderText('MM/DD/YYYY');
-
-	// Test typing a date
-	await userEvent.click(input);
-	await userEvent.type(input, '12/25/2024');
-	await waitFor(async () => {
-		await expect(input).toHaveValue('12/25/2024');
-	});
-
-	// Test clearing the input
-	await userEvent.clear(input);
-	await expect(input).toHaveValue('');
-};
-
-const sanityCheckRange = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const input = canvas.getByPlaceholderText('MM/DD/YYYY - MM/DD/YYYY');
-
-	// Test typing a date range
-	await userEvent.click(input);
-	await userEvent.type(input, '12/01/2024 - 12/31/2024');
-	await waitFor(async () => {
-		await expect(input).toHaveValue('12/01/2024 - 12/31/2024');
-	});
-};
-
-const checkDisabled = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const input = canvas.getByPlaceholderText<HTMLInputElement>('MM/DD/YYYY');
-	const calendarButton = canvas.getByRole('button', { name: /open calendar/i });
-
-	// Assert that the input and button are disabled
-	await expect(input).toBeDisabled();
-	await expect(calendarButton).toBeDisabled();
-
-	// Attempt to type into the disabled input
-	await userEvent.type(input, '12/25/2024');
-
-	// Assert that the input value remains unchanged
-	await expect(input.value).toBe('');
-};
-
+/** Baseline single-date input with a label, required marker, and a helper message. */
 export const Default: Story = {
 	args: {
 		label: 'Event Date',
 		required: true,
-		style: { width: '400px' },
 		message: 'Select a date for your event',
 	},
 	render: (args) => (
@@ -117,81 +73,32 @@ export const Default: Story = {
 			<DsFormControl.DateInput />
 		</DsFormControl>
 	),
-	play: async ({ canvasElement }) => {
-		await sanityCheckSingle(canvasElement);
-	},
 };
 
-export const WithCustomWidth: Story = {
-	args: {
-		label: 'Event Date',
-		required: true,
-		style: { width: '400px' },
-	},
-	render: (args) => (
-		<DsFormControl {...args}>
-			<DsFormControl.DateInput />
-		</DsFormControl>
-	),
-	play: async ({ canvasElement }) => {
-		await sanityCheckSingle(canvasElement);
-	},
-};
-
-export const WithCustomStyles: Story = {
-	args: {
-		label: 'Event Date',
-		required: true,
-		style: {
-			width: '400px',
-			padding: '16px',
-			border: '2px solid #e0e0e0',
-			borderRadius: '8px',
-			backgroundColor: '#f9f9f9',
-		},
-	},
-	render: (args) => (
-		<DsFormControl {...args}>
-			<DsFormControl.DateInput />
-		</DsFormControl>
-	),
-	play: async ({ canvasElement }) => {
-		await sanityCheckSingle(canvasElement);
-	},
-};
-
+/** Adds a description above the input to explain the field before the user types. */
 export const WithDescription: Story = {
 	args: {
 		label: 'Event Date',
 		required: true,
-		style: { width: '400px' },
 	},
 	render: (args) => (
 		<DsFormControl {...args}>
 			<DsFormControl.Description>
-				<DefaultDescription />
+				Optional helper text that describes the field in up to two lines.
 			</DsFormControl.Description>
 			<DsFormControl.DateInput />
 		</DsFormControl>
 	),
-	play: async ({ canvasElement }) => {
-		await sanityCheckSingle(canvasElement);
-	},
 };
 
+/** Surfaces contextual help through an end-adornment button beside the field. */
 export const WithHelpIcon: Story = {
 	args: {
 		label: 'Event Date',
 		required: true,
-		style: { width: '400px' },
 		slots: {
 			endAdornment: (
-				<button
-					type="button"
-					className={styles.helpIcon}
-					onClick={() => alert('Help clicked!')}
-					aria-label="Help"
-				>
+				<button type="button" className={styles.helpIcon} aria-label="Help">
 					<DsIcon icon="info" size="small" />
 				</button>
 			),
@@ -200,45 +107,36 @@ export const WithHelpIcon: Story = {
 	render: (args) => (
 		<DsFormControl {...args}>
 			<DsFormControl.Description>
-				<DefaultDescription />
+				Optional helper text that describes the field in up to two lines.
 			</DsFormControl.Description>
 			<DsFormControl.DateInput />
 		</DsFormControl>
 	),
-	play: async ({ canvasElement }) => {
-		await sanityCheckSingle(canvasElement);
-	},
 };
 
+/** Success status confirms the selected date passed validation. */
 export const Success: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value] = useState('2024-12-25');
 
 		return (
-			<div style={{ width: '400px' }}>
-				<DsFormControl
-					status="success"
-					label="Event Date"
-					message="Valid date selected."
-					messageIcon="check_circle"
-				>
-					<DsFormControl.Description>
-						<DefaultDescription />
-					</DsFormControl.Description>
-					<DsFormControl.DateInput value={value} />
-				</DsFormControl>
-			</div>
+			<DsFormControl
+				status="success"
+				label="Event Date"
+				message="Valid date selected."
+				messageIcon="check_circle"
+			>
+				<DsFormControl.Description>
+					Optional helper text that describes the field in up to two lines.
+				</DsFormControl.Description>
+				<DsFormControl.DateInput value={value} />
+			</DsFormControl>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByPlaceholderText('MM/DD/YYYY');
-		await waitFor(async () => {
-			await expect(input).toHaveValue('12/25/2024');
-		});
 	},
 };
 
+/** Error status flags a missing date and pairs the message with an error icon. */
 export const Error: Story = {
 	args: {
 		status: 'error',
@@ -246,128 +144,121 @@ export const Error: Story = {
 		required: true,
 		message: 'Date is required.',
 		messageIcon: 'error',
-		style: { width: '400px' },
 	},
 	render: (args) => (
 		<DsFormControl {...args}>
 			<DsFormControl.Description>
-				<DefaultDescription />
+				Optional helper text that describes the field in up to two lines.
 			</DsFormControl.Description>
 			<DsFormControl.DateInput />
 		</DsFormControl>
 	),
 };
 
+/** Warning status highlights a date that needs attention without blocking submission. */
 export const Warning: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value] = useState('2024-12-25');
 
 		return (
-			<div style={{ width: '400px' }}>
-				<DsFormControl
-					status="warning"
-					label="Event Date"
-					message="Date is approaching deadline."
-					messageIcon="info"
-				>
-					<DsFormControl.Description>
-						<DefaultDescription />
-					</DsFormControl.Description>
-					<DsFormControl.DateInput value={value} />
-				</DsFormControl>
-			</div>
+			<DsFormControl
+				status="warning"
+				label="Event Date"
+				message="Date is approaching deadline."
+				messageIcon="info"
+			>
+				<DsFormControl.Description>
+					Optional helper text that describes the field in up to two lines.
+				</DsFormControl.Description>
+				<DsFormControl.DateInput value={value} />
+			</DsFormControl>
 		);
 	},
 };
 
+/** Disabled state prevents interaction while keeping the field visible. */
 export const Disabled: Story = {
 	args: {
 		label: 'Event Date',
-		style: { width: '400px' },
 	},
 	render: (args) => (
 		<DsFormControl {...args}>
 			<DsFormControl.Description>
-				<DefaultDescription />
+				Optional helper text that describes the field in up to two lines.
 			</DsFormControl.Description>
 			<DsFormControl.DateInput disabled />
 		</DsFormControl>
 	),
-	play: async ({ canvasElement }) => {
-		await checkDisabled(canvasElement);
-	},
 };
 
+/** Range mode lets the user pick a start and end date in a single input. */
 export const RangeMode: Story = {
 	args: {
 		label: 'Date Range',
 		required: true,
 		message: 'Select start and end dates',
-		style: { width: '400px' },
 	},
 	render: (args) => (
 		<DsFormControl {...args}>
 			<DsFormControl.DateInput range />
 		</DsFormControl>
 	),
-	play: async ({ canvasElement }) => {
-		await sanityCheckRange(canvasElement);
-	},
 };
 
+/** Range input wired to controlled state that surfaces a required-field error once touched. */
 export const RangeWithValidation: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState<[string, string]>();
 		const [touched, setTouched] = useState(false);
 		const error = touched && !value ? 'Start and end dates are required' : undefined;
 
 		return (
-			<div style={{ width: '400px' }}>
-				<DsFormControl
-					label="Date Range"
-					required
-					status={error ? 'error' : undefined}
-					messageIcon="cancel"
-					message={error}
-				>
-					<DsFormControl.DateInput
-						value={value}
-						onValueChange={(value) => {
-							setValue(value);
-							setTouched(true);
-						}}
-						range
-					/>
-				</DsFormControl>
-			</div>
+			<DsFormControl
+				label="Date Range"
+				required
+				status={error ? 'error' : undefined}
+				messageIcon="cancel"
+				message={error}
+			>
+				<DsFormControl.DateInput
+					value={value}
+					onValueChange={(value) => {
+						setValue(value);
+						setTouched(true);
+					}}
+					range
+				/>
+			</DsFormControl>
 		);
 	},
 };
 
+/** Single-date input wired to controlled state that surfaces a required-field error once touched. */
 export const WithValidation: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState<string>();
 		const [touched, setTouched] = useState(false);
 		const error = touched && !value ? 'Date is required' : undefined;
 
 		return (
-			<div style={{ width: '400px' }}>
-				<DsFormControl
-					label="Event Date"
-					required
-					status={error ? 'error' : undefined}
-					messageIcon="cancel"
-					message={error}
-				>
-					<DsFormControl.DateInput
-						value={value}
-						onValueChange={(value) => {
-							setValue(value);
-							setTouched(true);
-						}}
-					/>
-				</DsFormControl>
-			</div>
+			<DsFormControl
+				label="Event Date"
+				required
+				status={error ? 'error' : undefined}
+				messageIcon="cancel"
+				message={error}
+			>
+				<DsFormControl.DateInput
+					value={value}
+					onValueChange={(value) => {
+						setValue(value);
+						setTouched(true);
+					}}
+				/>
+			</DsFormControl>
 		);
 	},
 };

@@ -1,59 +1,43 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsSelect from './ds-select';
-import { type DsSelectOption, type DsSelectProps, selectSizes } from './ds-select.types';
+import { type DsSelectOption, selectSizes } from './ds-select.types';
 import { DsTag } from '../ds-tag';
-import { DsIcon } from '../ds-icon';
 import { type DsStatus, DsStatusBadge } from '../ds-status-badge';
-import styles from './ds-select.stories.module.scss';
+import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsSelect> = {
 	title: 'Components/Select',
 	component: DsSelect,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'A dropdown for choosing one or many options from a list. Supports search, icons, custom option/value rendering, and single or multiple selection. Always controlled via `value` and `onValueChange`.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="16rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
-		options: {
-			control: 'object',
-			description: 'Options to display in the select dropdown',
-		},
-		value: {
-			description: 'Controlled internally by each story wrapper',
-			table: {
-				disable: true,
-			},
-		},
-		onValueChange: {
-			action: 'value changed',
-			description: 'Callback when the selected value changes',
-			table: {
-				disable: true,
-			},
-		},
-		onClear: {
-			action: 'clear',
-			description: 'Callback when clear action is triggered',
-			table: {
-				disable: true,
-			},
+		size: {
+			control: 'select',
+			options: selectSizes,
+			description: 'Select size variant',
 		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder text when no option is selected',
 		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the select container',
-		},
 		multiple: {
 			control: 'boolean',
 			description: 'Whether multiple selections are allowed',
-		},
-		size: {
-			control: 'select',
-			options: selectSizes,
-			description: 'Select size variant',
 		},
 		clearable: {
 			control: 'boolean',
@@ -63,417 +47,239 @@ const meta: Meta<typeof DsSelect> = {
 			control: 'boolean',
 			description: 'Whether the select is disabled',
 		},
+		options: { table: { disable: true } },
+		value: { table: { disable: true } },
+		onValueChange: { table: { disable: true } },
+		onClear: { table: { disable: true } },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsSelect>;
 
-type SingleSelectStoryProps = Omit<
-	Extract<DsSelectProps, { multiple?: undefined | false }>,
-	'value' | 'onValueChange'
->;
-type MultiSelectStoryProps = Omit<Extract<DsSelectProps, { multiple: true }>, 'value' | 'onValueChange'>;
-type ControlledSelectWrapperProps = SingleSelectStoryProps | MultiSelectStoryProps;
-
-const ControlledSingleSelectWrapper = (props: SingleSelectStoryProps) => {
-	const { clearable, onClear, ...rest } = props;
-	const [value, setValue] = useState('');
-
-	if (clearable) {
-		return <DsSelect {...rest} clearable onClear={onClear} value={value} onValueChange={setValue} />;
-	}
-
-	return <DsSelect {...rest} value={value} onValueChange={setValue} />;
-};
-
-const ControlledMultiSelectWrapper = (props: MultiSelectStoryProps) => {
-	const { clearable, onClear, ...rest } = props;
-	const [value, setValue] = useState<string[]>([]);
-
-	if (clearable) {
-		return <DsSelect {...rest} multiple clearable onClear={onClear} value={value} onValueChange={setValue} />;
-	}
-
-	return <DsSelect {...rest} multiple value={value} onValueChange={setValue} />;
-};
-
-const ControlledSelectWrapper = (props: ControlledSelectWrapperProps) => {
-	if (props.multiple) {
-		return <ControlledMultiSelectWrapper {...props} />;
-	}
-
-	return <ControlledSingleSelectWrapper {...props} />;
-};
-
-const mockOptions = [
-	{ value: 'apple', label: 'Apple' },
-	{ value: 'banana', label: 'Banana' },
-	{ value: 'cherry', label: 'Cherry' },
-	{ value: 'date', label: 'Date' },
-	{ value: 'elderberry', label: 'Elderberry' },
-	{ value: 'fig', label: 'Fig' },
-	{ value: 'grape', label: 'Grape' },
-	{ value: 'honeydew', label: 'Honeydew' },
-	{ value: 'indian-fig', label: 'Indian fig' },
-	{ value: 'jackfruit', label: 'Jackfruit' },
-	{ value: 'kiwi', label: 'Kiwi' },
-	{ value: 'lemon', label: 'Lemon' },
-	{ value: 'melon', label: 'Melon' },
-] satisfies DsSelectOption[];
-
+/**
+ * The default single-select with a clear affordance. The parent owns the
+ * selected `value`; pass `clearable` with `onClear` to allow resetting it.
+ */
 export const Default: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: mockOptions,
-		clearable: true,
-		style: {
-			width: '200px',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
 		},
+	},
+	render: function Render() {
+		const [value, setValue] = useState('');
+
+		return (
+			<DsSelect
+				options={[
+					{ value: 'apple', label: 'Apple' },
+					{ value: 'banana', label: 'Banana' },
+					{ value: 'cherry', label: 'Cherry' },
+					{ value: 'date', label: 'Date' },
+					{ value: 'elderberry', label: 'Elderberry' },
+				]}
+				value={value}
+				onValueChange={setValue}
+				clearable
+				onClear={() => setValue('')}
+			/>
+		);
 	},
 };
 
+/**
+ * Attach an `icon` to each option to reinforce its meaning in the dropdown.
+ */
 export const WithIcons: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: mockOptions.slice(0, 3).map((item) => ({
-			...item,
-			icon: 'nutrition',
-		})),
-		style: {
-			width: '200px',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
 		},
-		clearable: true,
+	},
+	render: function Render() {
+		const [value, setValue] = useState('');
+
+		return (
+			<DsSelect
+				options={[
+					{ value: 'apple', label: 'Apple', icon: 'nutrition' },
+					{ value: 'banana', label: 'Banana', icon: 'nutrition' },
+					{ value: 'cherry', label: 'Cherry', icon: 'nutrition' },
+				]}
+				value={value}
+				onValueChange={setValue}
+			/>
+		);
 	},
 };
 
-export const Sizes: Story = {
-	render: (args) => (
-		<div className={styles.sizesContainer}>
-			<div className={styles.sizeItem}>
-				<div className={styles.sizeLabel}>Large</div>
-				<ControlledSelectWrapper {...args} size="large" />
-			</div>
-			<div className={styles.sizeItem}>
-				<div className={styles.sizeLabel}>Default</div>
-				<ControlledSelectWrapper {...args} size="default" />
-			</div>
-			<div className={styles.sizeItem}>
-				<div className={styles.sizeLabel}>Small</div>
-				<ControlledSelectWrapper {...args} size="small" />
-			</div>
-		</div>
-	),
-	args: {
-		options: mockOptions.slice(0, 5),
-		clearable: true,
-		style: {
-			width: '200px',
-		},
-	},
-	argTypes: {
-		size: {
-			table: {
-				disable: true,
-			},
-		},
-	},
-};
-
+/**
+ * A searchable single-select. When the option list is long, a filter input
+ * appears automatically so users can narrow the choices by typing.
+ */
 export const WithSearch: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: [
-			...mockOptions,
-			{
-				value: 'nectarine',
-				label: 'Nectarine',
-			},
-		],
-		clearable: true,
-		style: {
-			width: '200px',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
 		},
+	},
+	render: function Render() {
+		const [value, setValue] = useState('');
+
+		return (
+			<DsSelect
+				options={[
+					{ value: 'apple', label: 'Apple' },
+					{ value: 'banana', label: 'Banana' },
+					{ value: 'cherry', label: 'Cherry' },
+					{ value: 'date', label: 'Date' },
+					{ value: 'elderberry', label: 'Elderberry' },
+					{ value: 'fig', label: 'Fig' },
+					{ value: 'grape', label: 'Grape' },
+					{ value: 'honeydew', label: 'Honeydew' },
+				]}
+				value={value}
+				onValueChange={setValue}
+			/>
+		);
 	},
 };
 
+/**
+ * Multi-select mode. Set `multiple` and hold the value as an array; selected
+ * options render as chips inside the trigger.
+ */
 export const MultiSelect: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: mockOptions,
-		style: {
-			width: '250px',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
 		},
-		multiple: true,
-		clearable: true,
+	},
+	render: function Render() {
+		const [value, setValue] = useState<string[]>([]);
+
+		return (
+			<DsSelect
+				multiple
+				options={[
+					{ value: 'apple', label: 'Apple' },
+					{ value: 'banana', label: 'Banana' },
+					{ value: 'cherry', label: 'Cherry' },
+					{ value: 'date', label: 'Date' },
+					{ value: 'elderberry', label: 'Elderberry' },
+				]}
+				value={value}
+				onValueChange={setValue}
+				clearable
+				onClear={() => setValue([])}
+			/>
+		);
 	},
 };
 
-export const MultiSelectWithSearch: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: [
-			...mockOptions,
-			{
-				value: 'nectarine',
-				label: 'Nectarine',
-			},
-		],
-		style: {
-			width: '250px',
-		},
-		multiple: true,
-		clearable: true,
-	},
-};
-
-const countryOptions: DsSelectOption[] = [
-	{ value: 'us', label: 'United States' },
-	{ value: 'gb', label: 'United Kingdom' },
-	{ value: 'de', label: 'Germany' },
-	{ value: 'jp', label: 'Japan' },
-	{ value: 'fr', label: 'France' },
-];
-
-const renderCountryOption = (option: DsSelectOption) => (
-	<span className={styles.customOption}>
-		<DsTag label={option.value.toUpperCase()} size="small" />
-		{option.label}
-	</span>
-);
-
-const versionOptions: DsSelectOption[] = [
-	{ value: 'v0.8', label: 'v0.8' },
-	{ value: 'v1.0', label: 'v1.0' },
-	{ value: 'v1.4', label: 'v1.4' },
-	{ value: 'v2.3', label: 'v2.3' },
-	{ value: 'v3.6', label: 'v3.6' },
-	{ value: 'v4.1', label: 'v4.1' },
-];
-
-const versionStatusMap: Record<string, { status: DsStatus; label: string }> = {
-	'v0.8': { status: 'active', label: 'Live' },
-	'v1.0': { status: 'active', label: 'Live' },
-	'v1.4': { status: 'running', label: 'Running' },
-	'v2.3': { status: 'pending', label: 'Pending' },
-	'v3.6': { status: 'draft', label: 'Draft' },
-	'v4.1': { status: 'failed', label: 'Failed' },
-};
-
+/**
+ * Customize how each dropdown option renders with `renderOption`. The string
+ * `label` is still used for search, chips, and accessibility.
+ */
 export const CustomRenderOption: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: countryOptions,
-		renderOption: renderCountryOption,
-		clearable: true,
-		style: {
-			width: '250px',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
 		},
+	},
+	render: function Render() {
+		const [value, setValue] = useState('');
+
+		return (
+			<DsSelect
+				options={[
+					{ value: 'us', label: 'United States' },
+					{ value: 'gb', label: 'United Kingdom' },
+					{ value: 'de', label: 'Germany' },
+					{ value: 'jp', label: 'Japan' },
+				]}
+				value={value}
+				onValueChange={setValue}
+				renderOption={(option) => (
+					<DsStack gap="var(--2xs)" alignItems="center">
+						<DsTag label={option.value.toUpperCase()} size="small" />
+						{option.label}
+					</DsStack>
+				)}
+			/>
+		);
 	},
 };
 
-export const CustomRenderOptionMultiSelect: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: countryOptions,
-		renderOption: renderCountryOption,
-		multiple: true,
-		clearable: true,
-		style: {
-			width: '300px',
-		},
-	},
-};
-
-export const CustomRenderOptionWithSearch: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: [...mockOptions, ...countryOptions],
-		renderOption: (option) => (
-			<span className={styles.customOption}>
-				<DsIcon icon="public" size="tiny" />
-				{option.label}
-			</span>
-		),
-		clearable: true,
-		style: {
-			width: '300px',
-		},
-	},
-};
-
+/**
+ * Customize the selected value shown in the trigger with `renderValue` — here a
+ * status badge next to the label communicates each version's state.
+ */
 export const CustomRenderValue: Story = {
-	render: () => {
-		const [value, setValue] = useState('');
-
-		const renderValue = (selected: DsSelectOption) => {
-			const info = versionStatusMap[selected.value];
-
-			return (
-				<span className={styles.customOption}>
-					{selected.label}
-					{info && (
-						<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
-					)}
-				</span>
-			);
-		};
-
-		return (
-			<DsSelect
-				options={versionOptions}
-				value={value}
-				onValueChange={setValue}
-				renderValue={renderValue}
-				clearable
-				style={{ width: '250px' }}
-			/>
-		);
-	},
-};
-
-export const CustomRenderValueMultiSelect: Story = {
-	render: () => {
-		const [value, setValue] = useState<string[]>([]);
-
-		const renderOption = (option: DsSelectOption) => (
-			<span className={styles.customOption}>
-				<DsTag label={option.value.toUpperCase()} size="small" />
-				{option.label}
-			</span>
-		);
-
-		const renderValue = (selected: DsSelectOption[]) => (
-			<span className={styles.customOption}>
-				{selected.map((opt) => (
-					<DsTag key={opt.value} label={opt.value.toUpperCase()} size="small" />
-				))}
-			</span>
-		);
-
-		return (
-			<DsSelect
-				options={countryOptions}
-				value={value}
-				onValueChange={setValue}
-				renderOption={renderOption}
-				renderValue={renderValue}
-				multiple
-				clearable
-				style={{ width: '300px' }}
-			/>
-		);
-	},
-};
-
-export const CustomRenderValueAndOption: Story = {
-	render: () => {
-		const [value, setValue] = useState('');
-
-		const renderOption = (option: DsSelectOption) => {
-			const info = versionStatusMap[option.value];
-
-			if (!info) {
-				return option.label;
-			}
-
-			return (
-				<span className={styles.customOption}>
-					{option.label}
-					<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
-				</span>
-			);
-		};
-
-		const renderValue = (selected: DsSelectOption) => {
-			const info = versionStatusMap[selected.value];
-
-			return (
-				<span className={styles.customOption}>
-					{selected.label}
-					{info && (
-						<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
-					)}
-				</span>
-			);
-		};
-
-		return (
-			<DsSelect
-				options={versionOptions}
-				value={value}
-				onValueChange={setValue}
-				renderOption={renderOption}
-				renderValue={renderValue}
-				clearable
-				style={{ width: '250px' }}
-			/>
-		);
-	},
-};
-
-export const CustomRenderValueAndOptionMultiSelect: Story = {
-	render: () => {
-		const [value, setValue] = useState<string[]>([]);
-
-		const renderOption = (option: DsSelectOption) => {
-			const info = versionStatusMap[option.value];
-
-			if (!info) {
-				return option.label;
-			}
-
-			return (
-				<span className={styles.customOption}>
-					{option.label}
-					<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
-				</span>
-			);
-		};
-
-		const renderValue = (selected: DsSelectOption[]) => {
-			const option = selected[0];
-			const info = option ? versionStatusMap[option.value] : undefined;
-
-			return (
-				<span className={styles.customOption}>
-					{option?.label}
-					{info && (
-						<DsStatusBadge status={info.status} label={info.label} size="small" ghost icon="check_circle" />
-					)}
-					{selected.length > 1 && ` +${String(selected.length - 1)}`}
-				</span>
-			);
-		};
-
-		return (
-			<DsSelect
-				options={versionOptions}
-				value={value}
-				onValueChange={setValue}
-				renderOption={renderOption}
-				renderValue={renderValue}
-				multiple
-				clearable
-				style={{ width: '300px' }}
-			/>
-		);
-	},
-};
-
-export const KeyboardInteractions: Story = {
-	render: (args) => <ControlledSelectWrapper {...args} />,
-	args: {
-		options: [
-			...mockOptions,
-			{
-				value: 'nectarine',
-				label: 'Nectarine',
-			},
-		],
-		clearable: true,
-		style: {
-			width: '250px',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
 		},
+	},
+	render: function Render() {
+		const versionStatus: Record<string, { status: DsStatus; label: string }> = {
+			'v1.0': { status: 'active', label: 'Live' },
+			'v2.3': { status: 'pending', label: 'Pending' },
+			'v3.6': { status: 'draft', label: 'Draft' },
+		};
+		const [value, setValue] = useState('');
+
+		return (
+			<DsSelect
+				options={[
+					{ value: 'v1.0', label: 'v1.0' },
+					{ value: 'v2.3', label: 'v2.3' },
+					{ value: 'v3.6', label: 'v3.6' },
+				]}
+				value={value}
+				onValueChange={setValue}
+				renderValue={(selected) => {
+					const info = versionStatus[selected.value];
+
+					return (
+						<DsStack gap="var(--2xs)" alignItems="center">
+							{selected.label}
+							{info && <DsStatusBadge status={info.status} label={info.label} size="small" ghost />}
+						</DsStack>
+					);
+				}}
+			/>
+		);
+	},
+};
+
+/**
+ * Size showcase. Not a usage example — see the individual stories for real code.
+ */
+export const Sizes: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: {
+			canvas: { sourceState: 'none' },
+		},
+	},
+	render: function Render() {
+		const options: DsSelectOption[] = [
+			{ value: 'apple', label: 'Apple' },
+			{ value: 'banana', label: 'Banana' },
+			{ value: 'cherry', label: 'Cherry' },
+		];
+		const [value, setValue] = useState('');
+
+		return (
+			<DsStack gap="var(--standard)" alignItems="center">
+				{selectSizes.map((size) => (
+					<DsSelect key={size} size={size} options={options} value={value} onValueChange={setValue} />
+				))}
+			</DsStack>
+		);
 	},
 };

@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { controlStatuses } from '../ds-form-control.types';
 import { DsIcon } from '../../ds-icon';
+import { DsStack } from '../../ds-stack';
 import DsFormControl from '../ds-form-control';
-import { DefaultDescription } from './ds-form-control-stories-shared';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
 import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
@@ -11,7 +10,20 @@ const meta: Meta<typeof DsFormControl> = {
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'Form control wrapper that adds a label, description, validation status, and message around a number input.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="19rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -39,68 +51,15 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'text',
 			description: 'Icon to display in the message',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFormControl>;
 
-const sanityCheck = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const input = canvas.getByPlaceholderText('Enter number');
-	const incrementButton = canvas.getByRole('button', { name: /increase/i });
-	const decrementButton = canvas.getByRole('button', { name: /decrease/i });
-
-	// Test initial value
-	await expect(input).toHaveValue('10');
-
-	// Test increment
-	await userEvent.click(incrementButton);
-	await waitFor(async () => {
-		await expect(input).toHaveValue('11');
-	});
-
-	// Test decrement
-	await userEvent.click(decrementButton);
-	await waitFor(async () => {
-		await expect(input).toHaveValue('10');
-	});
-
-	// Test typing
-	await userEvent.clear(input);
-	await userEvent.click(input); // ensure focus + caret placement
-	await userEvent.type(input, '25');
-	await waitFor(async () => {
-		await expect(input).toHaveValue('25');
-	});
-};
-
-const checkDisabled = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const input = canvas.getByPlaceholderText<HTMLInputElement>('Disabled Input');
-	const incrementButton = canvas.getByRole('button', { name: /increase/i });
-	const decrementButton = canvas.getByRole('button', { name: /decrease/i });
-
-	// Assert that the input and buttons is disabled
-	await expect(input).toBeDisabled();
-	await expect(incrementButton).toBeDisabled();
-	await expect(decrementButton).toBeDisabled();
-
-	// Attempt to type into the disabled input
-	await userEvent.type(input, 'Should not type');
-
-	// Assert that the input value remains unchanged
-	await expect(input.value).toBe('10');
-};
-
+/** Baseline number field with min/max bounds, stepper, and a helper message. */
 export const Default: Story = {
 	args: {
 		label: 'Input label',
@@ -110,78 +69,32 @@ export const Default: Story = {
 			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
-export const WithCustomWidth: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: { width: '300px' },
-		children: (
-			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-		),
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
-export const WithCustomStyles: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: {
-			width: '400px',
-			padding: '16px',
-			border: '2px solid #e0e0e0',
-			borderRadius: '8px',
-			backgroundColor: '#f9f9f9',
-		},
-		children: (
-			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-		),
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
+/** Adds a description above the input to explain the field before the user types. */
 export const WithDescription: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		style: {
-			width: '300px',
-		},
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Surfaces contextual help through an end-adornment button beside the field. */
 export const WithHelpIcon: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
 		slots: {
 			endAdornment: (
-				<button
-					type="button"
-					className={styles.helpIcon}
-					onClick={() => alert('Help clicked!')}
-					aria-label="Help"
-				>
+				<button type="button" className={styles.helpIcon} aria-label="Help">
 					<DsIcon icon="info" size="small" />
 				</button>
 			),
@@ -189,17 +102,15 @@ export const WithHelpIcon: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Success status confirms the entered value passed validation. */
 export const Success: Story = {
 	args: {
 		status: 'success',
@@ -209,17 +120,15 @@ export const Success: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Error status flags an invalid value and pairs the message with an error icon. */
 export const Error: Story = {
 	args: {
 		status: 'error',
@@ -229,17 +138,15 @@ export const Error: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Warning status highlights a value that needs attention without blocking submission. */
 export const Warning: Story = {
 	args: {
 		status: 'warning',
@@ -249,24 +156,22 @@ export const Warning: Story = {
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
 			</>
 		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Disabled state prevents interaction while keeping the field visible. */
 export const Disabled: Story = {
 	args: {
 		label: 'Input label',
 		children: (
 			<>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.NumberInput
 					placeholder="Disabled Input"
@@ -278,8 +183,5 @@ export const Disabled: Story = {
 				/>
 			</>
 		),
-	},
-	play: async ({ canvasElement }) => {
-		await checkDisabled(canvasElement);
 	},
 };

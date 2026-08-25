@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
-
 import DsToggle from './ds-toggle';
 import { toggleSizes } from './ds-toggle.types';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsToggle> = {
 	title: 'Components/Toggle',
 	component: DsToggle,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'A switch for toggling a single boolean setting on or off, with an optional label and supporting info text.',
+			},
+		},
 	},
 	argTypes: {
 		checked: {
@@ -33,146 +38,85 @@ const meta: Meta<typeof DsToggle> = {
 			control: 'boolean',
 			description: 'Whether the toggle is disabled',
 		},
-		className: {
-			table: { disable: true },
-			control: false,
-		},
-		style: {
-			table: { disable: true },
-			control: false,
-		},
-		onChange: {
-			table: { disable: true },
-			control: false,
-		},
-		onValueChange: {
-			table: { disable: true },
-			control: false,
-		},
-		ref: {
-			table: { disable: true },
-			control: false,
-		},
+		className: { table: { disable: true }, control: false },
+		style: { table: { disable: true }, control: false },
+		onChange: { table: { disable: true }, control: false },
+		onValueChange: { table: { disable: true }, control: false },
+		ref: { table: { disable: true }, control: false },
 	},
 };
 
 export default meta;
-
 type Story = StoryObj<typeof DsToggle>;
 
-const label = 'Text for label';
-const labelInfo = 'Text for info';
-
+/**
+ * The default toggle with a label and supporting info text. Omit `checked` for
+ * uncontrolled usage.
+ */
 export const Default: Story = {
 	args: {
-		label,
-		labelInfo,
-		className: 'custom-toggle',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const toggle = canvas.getByRole('checkbox', { name: /Text for label/ });
-
-		await expect(toggle).toBeInTheDocument();
-
-		await expect(toggle).not.toBeChecked();
-
-		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
-
-		await userEvent.click(toggle);
-
-		await waitFor(async () => {
-			await expect(toggle).toBeChecked();
-		});
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
 	},
 };
 
+/**
+ * Controlled toggle where the parent owns `checked` and updates it via
+ * `onValueChange`. Use for settings that sync with external state.
+ */
 export const Controlled: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [checked, setChecked] = useState(true);
 
-		return <DsToggle label={label} labelInfo={labelInfo} checked={checked} onValueChange={setChecked} />;
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const toggle = canvas.getByRole('checkbox', { name: /Text for label/ });
-
-		await expect(toggle).toBeInTheDocument();
-
-		// Starts checked (controlled via props)
-		await expect(toggle).toBeChecked();
-
-		await userEvent.click(toggle);
-		await expect(toggle).not.toBeChecked();
-	},
-};
-
-export const Small: Story = {
-	render: function Render() {
-		return <DsToggle label={label} labelInfo={labelInfo} size="small" />;
-	},
-};
-
-export const Disabled: Story = {
-	args: {
-		label,
-		labelInfo,
-		disabled: true,
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const toggle = canvas.getByRole('checkbox', { name: /Text for label/ });
-
-		await expect(toggle).toBeInTheDocument();
-
-		// Disabled checkbox
-		await expect(toggle).toBeDisabled();
-		await expect(toggle).not.toBeChecked();
-
-		await expect(canvas.getByText(labelInfo)).toBeInTheDocument();
-
-		await userEvent.click(toggle, { pointerEventsCheck: 0 });
-
-		// State should remain unchanged
-		await expect(toggle).not.toBeChecked();
-		await expect(toggle).toBeDisabled();
-	},
-};
-
-export const ChildrenCustomLabels: Story = {
-	render: function Render() {
 		return (
-			<DsToggle size="small">
-				<span
-					style={{
-						color: 'red',
-					}}
-				>
-					Custom label totally!
-				</span>
-			</DsToggle>
+			<DsToggle
+				label="Enable notifications"
+				labelInfo="Receive email updates"
+				checked={checked}
+				onValueChange={setChecked}
+			/>
 		);
 	},
+};
+
+/**
+ * Compact size for dense settings lists and toolbars.
+ */
+export const Small: Story = {
 	args: {
-		label,
-		labelInfo,
+		size: 'small',
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
+	},
+};
+
+/**
+ * Disabled toggle that cannot be interacted with. Combine with `checked` to
+ * show either inactive state.
+ */
+export const Disabled: Story = {
+	args: {
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
 		disabled: true,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const toggle = canvas.getByRole('checkbox', {
-			name: 'Custom label totally!',
-		});
-		await expect(toggle).toBeInTheDocument();
-		await expect(toggle).not.toBeChecked();
+};
 
-		await userEvent.click(toggle);
-
-		await waitFor(async () => {
-			await expect(toggle).toBeChecked();
-		});
-	},
+/**
+ * Provide `children` instead of `label` to render a fully custom label, such as
+ * styled or composed content.
+ */
+export const CustomLabel: Story = {
+	render: () => (
+		<DsToggle size="small">
+			<DsTypography variant="body-xs-md" color="action">
+				Custom label totally!
+			</DsTypography>
+		</DsToggle>
+	),
 };

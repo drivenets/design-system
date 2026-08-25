@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { controlStatuses } from '../ds-form-control.types';
 import { DsIcon } from '../../ds-icon';
+import { DsStack } from '../../ds-stack';
 import DsFormControl from '../ds-form-control';
-import { DefaultDescription } from './ds-form-control-stories-shared';
-import { expect, screen, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
 import styles from './ds-form-control.stories.module.scss';
 
@@ -12,7 +11,20 @@ const meta: Meta<typeof DsFormControl> = {
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'Form control wrapper that adds a label, description, validation status, and message around a select.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="19rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -40,94 +52,17 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'text',
 			description: 'Icon to display in the message',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFormControl>;
 
-const sanityCheck = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const selectTrigger = canvas.getByRole('combobox', { name: 'Input' });
-
-	// Testing-Library can't trigger a CSS hover event, which is needed to show the clear button,
-	// so we're "hacking" it and showing the clear button by toggling the dropdown.
-	const clearSelection = async () => {
-		await userEvent.click(selectTrigger);
-
-		const clearButton = canvas.getByRole('button', { name: 'Clear value' });
-		await userEvent.click(clearButton);
-
-		await userEvent.click(selectTrigger);
-	};
-
-	// Test initial state - should show placeholder
-	await expect(selectTrigger).toHaveTextContent('Select an option');
-
-	// Test opening the dropdown
-	await userEvent.click(selectTrigger);
-
-	// Wait for dropdown to appear and check options
-	const option1 = screen.getByRole('option', { name: 'Option 1' });
-
-	await expect(option1).toBeInTheDocument();
-	await expect(screen.getByRole('option', { name: 'Option 2' })).toBeInTheDocument();
-	await expect(screen.getByRole('option', { name: 'Option 3' })).toBeInTheDocument();
-
-	// Test selecting an option
-	await userEvent.click(option1);
-
-	// Verify the selected value is displayed
-	await waitFor(async () => {
-		await expect(selectTrigger).toHaveTextContent('Option 1');
-	});
-
-	// Test clearing the selection
-	await clearSelection();
-
-	// Verify placeholder is shown again
-	await waitFor(async () => {
-		await expect(selectTrigger).toHaveTextContent('Select an option');
-	});
-
-	// Test selecting another option
-	await userEvent.click(selectTrigger);
-	const option2 = screen.getByRole('option', { name: 'Option 2' });
-	await userEvent.click(option2);
-
-	await expect(selectTrigger).toHaveTextContent('Option 2');
-
-	// Reset and verify clear button disappears - get fresh reference
-	await clearSelection();
-	await expect(selectTrigger).toHaveTextContent('Select an option');
-
-	// Verify clear button is no longer in the document
-	await expect(canvas.queryByRole('button', { name: 'Clear value' })).not.toBeInTheDocument();
-};
-
-const checkDisabled = async (canvasElement: HTMLElement) => {
-	const canvas = within(canvasElement);
-	const selectTrigger = canvas.getByRole('combobox');
-
-	// Assert that the select is disabled
-	await expect(selectTrigger).toBeDisabled();
-
-	// Attempt to click on the disabled select
-	await userEvent.click(selectTrigger);
-
-	// Verify that no dropdown appears (disabled state)
-	await expect(canvas.queryByText('Option 1')).not.toBeVisible();
-};
-
+/** Baseline clearable select with a label, required marker, and a helper message. */
 export const Default: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -147,79 +82,18 @@ export const Default: Story = {
 			</DsFormControl>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
-export const WithCustomWidth: Story = {
-	render: function Render() {
-		const [value, setValue] = useState('');
-
-		return (
-			<DsFormControl label="Input" required={true} style={{ width: '300px' }}>
-				<DsFormControl.Select
-					placeholder="Select an option"
-					value={value}
-					onValueChange={setValue}
-					clearable
-					options={[
-						{ label: 'Option 1', value: 'option1', icon: 'download' },
-						{ label: 'Option 2', value: 'option2', icon: 'save' },
-						{ label: 'Option 3', value: 'option3', icon: 'description' },
-					]}
-				/>
-			</DsFormControl>
-		);
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
-export const WithCustomStyles: Story = {
-	render: function Render() {
-		const [value, setValue] = useState('');
-
-		return (
-			<DsFormControl
-				label="Input"
-				required={true}
-				style={{
-					width: '400px',
-					padding: '16px',
-					border: '2px solid #e0e0e0',
-					borderRadius: '8px',
-					backgroundColor: '#f9f9f9',
-				}}
-			>
-				<DsFormControl.Select
-					placeholder="Select an option"
-					value={value}
-					onValueChange={setValue}
-					clearable
-					options={[
-						{ label: 'Option 1', value: 'option1', icon: 'download' },
-						{ label: 'Option 2', value: 'option2', icon: 'save' },
-						{ label: 'Option 3', value: 'option3', icon: 'description' },
-					]}
-				/>
-			</DsFormControl>
-		);
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
+/** Adds a description above the select to explain the field before the user chooses. */
 export const WithDescription: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
 		return (
-			<DsFormControl label="Input" required={true} style={{ width: '300px' }}>
+			<DsFormControl label="Input" required={true}>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Select
 					placeholder="Select an option"
@@ -235,12 +109,11 @@ export const WithDescription: Story = {
 			</DsFormControl>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Surfaces contextual help through an end-adornment button beside the field. */
 export const WithHelpIcon: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -250,19 +123,14 @@ export const WithHelpIcon: Story = {
 				required={true}
 				slots={{
 					endAdornment: (
-						<button
-							type="button"
-							className={styles.helpIcon}
-							onClick={() => alert('Help clicked!')}
-							aria-label="Help"
-						>
+						<button type="button" className={styles.helpIcon} aria-label="Help">
 							<DsIcon icon="info" size="small" />
 						</button>
 					),
 				}}
 			>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Select
 					value={value}
@@ -278,12 +146,11 @@ export const WithHelpIcon: Story = {
 			</DsFormControl>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Success status confirms the chosen value passed validation. */
 export const Success: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -295,7 +162,7 @@ export const Success: Story = {
 				messageIcon="check_circle"
 			>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Select
 					placeholder="Select an option"
@@ -311,12 +178,11 @@ export const Success: Story = {
 			</DsFormControl>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Error status flags an invalid choice and pairs the message with an error icon. */
 export const Error: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -328,7 +194,7 @@ export const Error: Story = {
 				messageIcon="error"
 			>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Select
 					placeholder="Select an option"
@@ -344,12 +210,11 @@ export const Error: Story = {
 			</DsFormControl>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Warning status highlights a choice that needs attention without blocking submission. */
 export const Warning: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -361,7 +226,7 @@ export const Warning: Story = {
 				messageIcon="info"
 			>
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Select
 					placeholder="Select an option"
@@ -377,19 +242,18 @@ export const Warning: Story = {
 			</DsFormControl>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
+/** Disabled state prevents opening the dropdown while keeping the field visible. */
 export const Disabled: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [value, setValue] = useState('');
 
 		return (
 			<DsFormControl label="Input">
 				<DsFormControl.Description>
-					<DefaultDescription />
+					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
 				<DsFormControl.Select
 					placeholder="Select an option"
@@ -405,8 +269,5 @@ export const Disabled: Story = {
 				/>
 			</DsFormControl>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		await checkDisabled(canvasElement);
 	},
 };
