@@ -46,14 +46,14 @@
 		"@eslint/js": "^10.0.1",
 		"@types/node": "^26.1.1",
 		"@typescript/native": "catalog:",
-		"@vitest/eslint-plugin": "^1.6.24",
+		"@vitest/eslint-plugin": "^1.6.26",
 		"cspell": "^10.0.1",
 		"eslint": "catalog:",
 		"eslint-config-flat-gitignore": "^2.2.1",
 		"eslint-import-resolver-typescript": "^4.4.5",
 		"eslint-plugin-import-x": "^4.17.1",
-		"eslint-plugin-unicorn": "^71.1.0",
-		"globals": "^17.7.0",
+		"eslint-plugin-unicorn": "^73.0.0",
+		"globals": "^17.9.0",
 		"husky": "^9.1.7",
 		"knip": "^6.29.0",
 		"lint-staged": "^17.2.0",
@@ -61,6 +61,6 @@
 		"syncpack": "^15.3.2",
 		"turbo": "^2.10.6",
 		"typescript": "catalog:",
-		"typescript-eslint": "^8.63.0"
+		"typescript-eslint": "^8.66.0"
 	}
 }
