@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.18.1
+
+### Patch Changes
+
+- bf09024: Change `DsTagFilter` to match new design.
+
 ## 0.18.0
 
 ### Minor Changes
