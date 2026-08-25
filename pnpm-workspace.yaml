@@ -6,12 +6,12 @@ trustPolicy: 'no-downgrade'
 blockExoticSubdeps: true
 
 catalog:
-  '@arethetypeswrong/cli': ^0.18.2
+  '@arethetypeswrong/cli': ^0.18.5
   '@eslint/core': ^1.1.1
   '@typescript/native': 'npm:typescript@^7.0.2'
   '@vitest/coverage-v8': ^4.1.10
   eslint: ^10.0.1
-  publint: ^0.3.22
+  publint: ^0.3.24
   tsdown: ^0.22.14
   typescript: 'npm:@typescript/typescript6'
   vitest: ^4.1.10
