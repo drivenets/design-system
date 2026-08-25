@@ -1,6 +1,9 @@
 import type React from 'react';
 import type { IconName } from '../ds-icon';
 
+export const autocompleteSizes = ['small', 'default', 'large'] as const;
+export type AutocompleteSize = (typeof autocompleteSizes)[number];
+
 export interface DsAutocompleteOption {
 	/**
 	 * Label to display in the autocomplete dropdown
@@ -31,6 +34,11 @@ export interface DsAutocompleteProps {
 	 * When true, a loading message is shown in the dropdown.
 	 */
 	loading?: boolean;
+	/**
+	 * The size of the autocomplete control
+	 * @default 'default'
+	 */
+	size?: AutocompleteSize;
 
 	/**
 	 * Additional styles to apply to the component

@@ -35,6 +35,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 		{
 			[styles.small]: size === 'small',
 			[styles.default]: size === 'default',
+			[styles.large]: size === 'large',
 		},
 		className,
 	);

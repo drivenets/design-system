@@ -164,6 +164,7 @@
 
 @mixin heading($font-weight: var(--heading-font-size-3xl), $line-height: var(--heading-line-height-3xl)) {
 	@include font-base;
+	font-family: var(--font-family-heading);
 	font-size: $font-weight;
 	font-weight: var(--font-weight-semi-bold);
 	line-height: $line-height;

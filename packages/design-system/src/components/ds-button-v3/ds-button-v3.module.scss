@@ -3,7 +3,8 @@
 $height-large: 40px;
 $height-medium: 36px;
 $height-small: 28px;
-$border-radius: 4px;
+$border-radius: var(--3xs);
+$border-radius-high-emphasis: var(--sm);
 $focus-ring-width: 2px;
 
 @mixin focus-ring($outer-color) {
@@ -32,6 +33,10 @@ $focus-ring-width: 2px;
 
 	&:disabled:not([data-loading]) {
 		cursor: not-allowed;
+	}
+
+	&[data-high-emphasis] {
+		border-radius: $border-radius-high-emphasis;
 	}
 
 	&[data-loading] {
@@ -123,6 +128,37 @@ $focus-ring-width: 2px;
 	&:disabled:not([data-loading]) {
 		background-color: var(--background-disable);
 		color: var(--font-on-action);
+	}
+}
+
+.root[data-color='default'][data-variant='primary-subtle'] {
+	background-color: var(--background-primary-subtle);
+	color: var(--font-action);
+	border-color: var(--border-action-primary);
+
+	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+		background-color: var(--background-primary-subtle-hover);
+	}
+
+	&:active:not(:disabled) {
+		background-color: var(--background-primary-subtle-active);
+	}
+
+	&:focus-visible {
+		@include focus-ring(var(--border-action-primary));
+
+		background-color: var(--background-primary-subtle-hover);
+		border-color: var(--border-inverse);
+	}
+
+	&[data-selected='true'] {
+		background-color: var(--background-primary-subtle-active);
+	}
+
+	&:disabled:not([data-loading]) {
+		background-color: var(--background-primary-subtle-disabled);
+		color: var(--font-disabled);
+		border-color: var(--border-disabled);
 	}
 }
 
@@ -228,19 +264,50 @@ $focus-ring-width: 2px;
 	}
 }
 
-.root[data-color='error'][data-variant='secondary'] {
-	background-color: var(--background-action-secondary);
+.root[data-color='error'][data-variant='primary-subtle'] {
+	background-color: var(--background-error-subtle);
 	color: var(--font-error);
 	border-color: var(--border-error);
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
-		background-color: var(--background-error-secondary-hover);
-		border-color: var(--border-error-hover);
+		background-color: var(--background-error-subtle-hover);
 	}
 
 	&:active:not(:disabled) {
-		background-color: var(--background-error-secondary-selected);
-		border-color: var(--border-error-hover);
+		background-color: var(--background-error-subtle-active);
+	}
+
+	&:focus-visible {
+		@include focus-ring(var(--border-error));
+
+		background-color: var(--background-error-subtle-hover);
+		border-color: var(--border-inverse);
+	}
+
+	&[data-selected='true'] {
+		background-color: var(--background-error-subtle-active);
+	}
+
+	&:disabled:not([data-loading]) {
+		background-color: var(--background-error-subtle-disabled);
+		color: var(--font-disabled);
+		border-color: var(--border-disabled);
+	}
+}
+
+.root[data-color='error'][data-variant='secondary'] {
+	background-color: var(--background-action-secondary);
+	color: var(--font-error);
+	border-color: var(--border-error-weak);
+
+	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+		background-color: var(--background-error-secondary-hover);
+		border-color: var(--border-error-medium);
+	}
+
+	&:active:not(:disabled) {
+		background-color: var(--background-error-secondary-active);
+		border-color: var(--border-error-medium);
 	}
 
 	&:focus-visible {
@@ -251,8 +318,8 @@ $focus-ring-width: 2px;
 	}
 
 	&[data-selected='true'] {
-		background-color: var(--background-error-secondary-selected);
-		border-color: var(--border-error-hover);
+		background-color: var(--background-error-secondary-active);
+		border-color: var(--border-error-medium);
 	}
 
 	&:disabled:not([data-loading]) {
@@ -293,32 +360,32 @@ $focus-ring-width: 2px;
 }
 
 .root[data-color='light'][data-variant='primary'] {
-	background-color: var(--background-light-primary);
+	background-color: var(--background-light-subtle);
 	color: var(--font-on-action);
-	border-color: transparent;
+	border-color: var(--border-inverse);
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
-		background-color: var(--background-light-primary-hover);
+		background-color: var(--background-light-hover);
 	}
 
 	&:active:not(:disabled) {
-		background-color: var(--background-light-primary-selected);
+		background-color: var(--background-light-active);
 	}
 
 	&:focus-visible {
-		@include focus-ring(var(--outline-inverse));
+		@include focus-ring(var(--border-action-primary));
 
-		background-color: var(--background-light-primary-hover);
-		border-color: var(--border-action-secondary);
+		background-color: var(--background-light-hover);
 	}
 
 	&[data-selected='true'] {
-		background-color: var(--background-light-primary-selected);
+		background-color: var(--background-light-active);
 	}
 
 	&:disabled:not([data-loading]) {
-		background-color: var(--background-light-disabled);
-		color: var(--font-light-disabled);
+		background-color: transparent;
+		color: var(--font-disabled);
+		border-color: var(--border-disabled);
 	}
 }
 

@@ -12,6 +12,7 @@ export const DsAutocomplete = ({
 	id,
 	options = [],
 	loading = false,
+	size = 'default',
 	style,
 	className,
 	placeholder = 'Start typing to search...',
@@ -74,7 +75,13 @@ export const DsAutocomplete = ({
 			onOpenChange={handleOpenChange}
 			closeOnSelect
 		>
-			<Combobox.Control className={styles.control}>
+			<Combobox.Control
+				className={classNames(
+					styles.control,
+					size === 'small' && styles.small,
+					size === 'large' && styles.large,
+				)}
+			>
 				{startAdornment && <span className={styles.startAdornment}>{startAdornment}</span>}
 
 				<Combobox.Input className={styles.input} placeholder={placeholder} />
@@ -92,13 +99,13 @@ export const DsAutocomplete = ({
 										combobox.setInputValue('');
 									}}
 								>
-									<DsIcon icon="close" size="medium" />
+									<DsIcon icon="close" size={size === 'small' ? 'small' : 'medium'} />
 								</button>
 							)}
 
 							{showTrigger && (
 								<Combobox.Trigger className={styles.trigger} aria-label="Toggle dropdown">
-									<DsIcon icon="keyboard_arrow_down" size="medium" />
+									<DsIcon icon="keyboard_arrow_down" size={size === 'small' ? 'small' : 'medium'} />
 								</Combobox.Trigger>
 							)}
 						</div>

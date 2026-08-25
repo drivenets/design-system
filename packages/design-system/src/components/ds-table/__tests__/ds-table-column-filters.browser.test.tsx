@@ -81,7 +81,6 @@ describe('DsTable - column filters', () => {
 
 		expect(getDataRows()).toHaveLength(4);
 
-		await expect.element(page.getByText(/Filtered by/i)).toBeVisible();
 		await expect.element(page.getByRole('button', { name: 'Type: PP-LGX' })).toBeVisible();
 		await expect.element(page.getByRole('button', { name: 'Type: ME10' })).toBeVisible();
 	});

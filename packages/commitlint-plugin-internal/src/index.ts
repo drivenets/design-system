@@ -4,7 +4,7 @@ import { requireJiraTicket } from './rules/require-jira-ticket';
 
 export default {
 	rules: {
-		'design-system/exclamation-mark': exclamationMark,
-		'design-system/require-jira-ticket': requireJiraTicket,
+		'internal/exclamation-mark': exclamationMark,
+		'internal/require-jira-ticket': requireJiraTicket,
 	},
 } satisfies Plugin;

@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import { findVariable } from '@typescript-eslint/utils/ast-utils';
 import type { RuleContext } from '@typescript-eslint/utils/ts-eslint';
 
 /**
@@ -26,7 +27,7 @@ export function resolveDefaultExport(
 	}
 
 	const scope = context.sourceCode.getScope(declaration);
-	const variable = scope.references.find((ref) => ref.identifier === declaration)?.resolved;
+	const variable = findVariable(scope, declaration);
 	const def = variable?.defs[0]?.node;
 
 	if (def?.type !== AST_NODE_TYPES.VariableDeclarator) {

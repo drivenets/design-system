@@ -70,6 +70,14 @@ export const Small: Story = {
 	},
 };
 
+export const Large: Story = {
+	args: {
+		size: 'large',
+		placeholder: 'Large input...',
+		style: { width: '250px' },
+	},
+};
+
 export const WithValue: Story = {
 	args: {
 		value: 'Hello World',

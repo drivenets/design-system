@@ -4,7 +4,7 @@ import { DsIcon } from '../ds-icon';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 import { DsAutocomplete } from './ds-autocomplete';
-import type { DsAutocompleteOption } from './ds-autocomplete.types';
+import { type DsAutocompleteOption, autocompleteSizes } from './ds-autocomplete.types';
 import styles from './ds-autocomplete.stories.module.scss';
 
 const meta: Meta<typeof DsAutocomplete> = {
@@ -22,6 +22,7 @@ const meta: Meta<typeof DsAutocomplete> = {
 	],
 	argTypes: {
 		options: { control: 'object' },
+		size: { control: 'select', options: autocompleteSizes },
 		placeholder: { control: 'text' },
 		highlightMatch: { control: 'boolean' },
 		showTrigger: { control: 'boolean' },
@@ -253,6 +254,41 @@ export const AsyncOptions: Story = {
 		}, []);
 
 		return <DsAutocomplete {...args} options={options} loading={loading} placeholder="Select a country..." />;
+	},
+};
+
+export const Sizes: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	render: () => {
+		const options: DsAutocompleteOption[] = [
+			{ value: 'apple', label: 'Apple' },
+			{ value: 'banana', label: 'Banana' },
+			{ value: 'cherry', label: 'Cherry' },
+		];
+
+		return (
+			<DsStack direction="column" gap="var(--standard)" width="320px">
+				<DsStack direction="column" gap="var(--2xs)">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						Large
+					</DsTypography>
+					<DsAutocomplete options={options} size="large" placeholder="Large autocomplete" />
+				</DsStack>
+				<DsStack direction="column" gap="var(--2xs)">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						Default
+					</DsTypography>
+					<DsAutocomplete options={options} size="default" placeholder="Default autocomplete" />
+				</DsStack>
+				<DsStack direction="column" gap="var(--2xs)">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						Small
+					</DsTypography>
+					<DsAutocomplete options={options} size="small" placeholder="Small autocomplete" />
+				</DsStack>
+			</DsStack>
+		);
 	},
 };
 

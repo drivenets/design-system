@@ -12,6 +12,10 @@ _Avoid_: widget, element (unless HTML element), control (unless form field)
 A named visual or behavioral axis on a **Component**, backed by an `as const` array and union type in `*.types.ts`.
 _Avoid_: mode, type (when meaning visual style), theme
 
+**High-emphasis**:
+A boolean shape axis on `DsButtonV3` that raises corner radius for prominent surfaces (Sign in, Landing, NetGen). Purely rounding — not a priority/emphasis level (do not conflate with the `primary` **Variant**, which is the "highest-emphasis" action).
+_Avoid_: rounded, pill
+
 **Locale**:
 Optional prop bag of user-facing strings for a **Component**; keys name the UI role (e.g. `loading`, `noMatches`). Use a dedicated `Ds{Name}Locale` interface when there are many keys.
 _Avoid_: i18n, translations (this repo does not ship a global i18n framework)
@@ -92,6 +96,26 @@ _Avoid_: main content, body, canvas (canvas is one kind of content)
 Optional drawer overlay scoped to the **Content area** only — workspace header and body chrome (side menu, left panel) stay visible; composed with `DsDrawer` inside **Content area**, not a push layout region.
 _Avoid_: left side panel, side menu panel, modal, body-wide overlay (unless product explicitly requires it)
 
+**Column group**:
+A header that nests **Leaf columns** via TanStack `columns`. It has no own sizing entry; its width is the sum of its visible leaves.
+_Avoid_: group column (as if it were a sized leaf)
+
+**Leaf column**:
+A table column with no nested children; the unit of column sizing and of a resize.
+_Avoid_: child column, nested column
+
+**Fill column**:
+A **Leaf column** with no explicit width that grows with remaining table space. Only when column resizing is off.
+_Avoid_: auto column, fluid column
+
+**Resize handle**:
+Pointer target straddling the right edge of a header cell (**Leaf column** or **Column group**).
+_Avoid_: resizer (when meaning the overlay)
+
+**Resize overlay**:
+Full-height divider for the active resize boundary (hover or drag).
+_Avoid_: resize handle, drag line
+
 ## Relationships
 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
@@ -105,6 +129,9 @@ _Avoid_: left side panel, side menu panel, modal, body-wide overlay (unless prod
 - **Side menu panel** and **Left side panel** differ: only **Left side panel** toggles **Content area** horizontal margins (24px vs 40px)
 - **Left side panel** pushes layout; **Right side panel** overlays **Content area** via `DsDrawer` (no symmetric right layout slot)
 - **Workspace layout mode** is opt-in: `Body` with `SideMenu` / `LeftPanel` adds horizontal chrome; `Content` always applies content-area spacing
+- A **Column group** contains one or more **Leaf columns**; dragging its **Resize handle** changes those leaves’ widths, not a separate group size
+- A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
+- A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
 
 ## Example dialogue
 
@@ -120,6 +147,10 @@ _Avoid_: left side panel, side menu panel, modal, body-wide overlay (unless prod
 > **Dev:** "Should we add `ContentTitle` and `ContentItems` slots?"
 > **Domain expert:** "No — **Content area** is `Content`. Workspace exposes layout regions; page content (title line, content items) stays in consumer children."
 
+> **Dev:** "When I drag the group header, are we resizing the group as its own column?"
+> **Domain expert:** "No — a **Column group** has no own size. The **Resize handle** on the group scales its **Leaf columns**. The **Resize overlay** follows that boundary."
+
 ## Flagged ambiguities
 
 - "Adapter" in file-upload vs "adapter" in generic architecture docs — resolved: use **Upload adapter** in design-system context; architecture skill uses **Adapter** at a **seam** ([LANGUAGE.md](.agents/skills/improve-codebase-architecture/LANGUAGE.md)).
+- "Group resize" was used to mean a sized group column — resolved: dragging a **Column group** **Resize handle** changes **Leaf column** widths only.
