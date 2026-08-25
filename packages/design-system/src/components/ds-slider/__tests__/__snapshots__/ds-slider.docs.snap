@@ -1,0 +1,109 @@
+# DsSlider docs snippets
+
+## Default
+
+### Show code
+<DsSlider
+  defaultValue={36}
+  label="Input label"
+  max={100}
+  min={0}
+  type="value"
+/>
+
+### MCP manifest
+const Default = () => <DsSlider label="Input label" type="value" defaultValue={36} min={0} max={100} />;
+
+## Range
+
+### Show code
+<DsSlider
+  defaultValue={[
+    36,
+    60
+  ]}
+  label="Input label"
+  max={100}
+  min={0}
+  thumbLabels={[
+    'Minimum',
+    'Maximum'
+  ]}
+  type="range"
+/>
+
+### MCP manifest
+const Range = () => <DsSlider
+    label="Input label"
+    type="range"
+    defaultValue={[36, 60]}
+    min={0}
+    max={100}
+    thumbLabels={['Minimum', 'Maximum']} />;
+
+## Small
+
+### Show code
+<DsSlider
+  defaultValue={36}
+  label="Input label"
+  size="small"
+/>
+
+### MCP manifest
+const Small = () => <DsSlider label="Input label" size="small" defaultValue={36} />;
+
+## Large
+
+### Show code
+<DsSlider
+  defaultValue={36}
+  label="Input label"
+  size="large"
+/>
+
+### MCP manifest
+const Large = () => <DsSlider label="Input label" size="large" defaultValue={36} />;
+
+## Disabled
+
+### Show code
+<DsSlider
+  defaultValue={36}
+  disabled
+  label="Input label"
+/>
+
+### MCP manifest
+const Disabled = () => <DsSlider label="Input label" defaultValue={36} disabled />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<DsSliderValue>(40);
+    return <DsSlider label="Volume" value={value} onValueChange={setValue} formatValue={current => `${String(current)}%`} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState<DsSliderValue>(40);
+
+    return (
+        <DsSlider
+            label="Volume"
+            value={value}
+            onValueChange={setValue}
+            formatValue={(current) => `${String(current)}%`}
+        />
+    );
+};

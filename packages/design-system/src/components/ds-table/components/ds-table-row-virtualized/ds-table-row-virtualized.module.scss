@@ -64,9 +64,10 @@
 .selectableCell {
 	padding: 0;
 	justify-content: center;
+	text-align: center;
 }
 
-.groupStart {
+.groupStart:not(:first-child) {
 	border-left: vars.$group-border-width solid var(--border);
 }
 

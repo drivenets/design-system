@@ -35,7 +35,14 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
-	decorators: [fullHeightDecorator],
+	decorators: [
+		(Story) =>
+			fullHeightDecorator(() => (
+				<div style={{ height: '700px', minHeight: '100%' }}>
+					<Story />
+				</div>
+			)),
+	],
 };
 
 export default meta;
@@ -478,5 +485,47 @@ export const VirtualizedWithControls: Story = {
 				</DsStack>
 			</DsStack>
 		),
+	},
+};
+
+/**
+ * Row virtualization and column resize work together. Scroll a large
+ * dataset and drag a header edge to resize; widths apply to virtualized
+ * rows. Double-click a handle to restore the snapshotted width.
+ */
+export const VirtualizedResizable: Story = {
+	name: 'Virtualized Resizable Columns',
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+			description: {
+				story:
+					'Column resize works with row virtualization. Scroll through a large dataset and drag a header edge to resize; widths apply to virtualized rows. Double-click a handle to restore the snapshotted width.',
+			},
+		},
+	},
+	render: function Render(args) {
+		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+		return (
+			<div className={styles.virtualizedDemoContainer}>
+				<div className={styles.virtualizedDemoHeader}>
+					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Resizable Columns</h4>
+					<p className={styles.virtualizedDemoHeader__description}>
+						Row virtualization with column resize. Scroll through {VIRTUALIZED_ROW_COUNT.toLocaleString()}{' '}
+						rows and drag a header edge to resize.
+					</p>
+					<p className={styles.virtualizedDemoHeader__stats}>({data.length.toLocaleString()} rows loaded)</p>
+				</div>
+
+				<div className={styles.virtualizedTableWrapper}>
+					<DsTable {...args} data={data} />
+				</div>
+			</div>
+		);
+	},
+	args: {
+		virtualized: true,
+		resizableColumns: true,
 	},
 };

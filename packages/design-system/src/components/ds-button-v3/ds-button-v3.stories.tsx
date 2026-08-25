@@ -24,6 +24,7 @@ const meta: Meta<typeof DsButtonV3> = {
 		size: { control: 'select', options: buttonV3Sizes },
 		loading: { control: 'boolean' },
 		disabled: { control: 'boolean' },
+		highEmphasis: { control: 'boolean' },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
 		ref: { table: { disable: true } },
@@ -89,6 +90,15 @@ export const Selected: Story = {
 };
 
 /**
+ * Raised corner radius (12px instead of 4px) for high-emphasis surfaces such as
+ * Sign in, Landing, and NetGen. Only affects rounding — color and priority are
+ * unchanged.
+ */
+export const HighEmphasis: Story = {
+	args: { ...baseArgs, variant: 'primary', highEmphasis: true },
+};
+
+/**
  * Palette tuned for dark-background surfaces. Use when the button sits on a dark
  * container rather than the default light UI.
  */
@@ -118,10 +128,13 @@ export const ResponsiveSize: Story = {
 	),
 };
 
-const matrixRows = [
-	...buttonV3Variants.map((v) => ({ label: v, loading: false })),
-	{ label: 'loading', loading: true },
-];
+// `color="light"` has no `primary-subtle`; its `primary` is styled as the subtle outline.
+const getMatrixRows = (color?: ButtonV3Color) => {
+	const variants =
+		color === 'light' ? buttonV3Variants.filter((v) => v !== 'primary-subtle') : buttonV3Variants;
+
+	return [...variants.map((v) => ({ label: v, loading: false })), { label: 'loading', loading: true }];
+};
 
 const defaultIconMatrixRows = [
 	{ label: 'check circle', icon: 'check_circle', variant: 'primary', color: 'default', loading: false },
@@ -145,6 +158,7 @@ const onDarkIconMatrixRows = [
 
 const MatrixGrid = ({ color }: { color?: ButtonV3Color }) => {
 	const isOnDark = color === 'light';
+	const matrixRows = getMatrixRows(color);
 
 	return (
 		<DsStack gap="var(--sm)">

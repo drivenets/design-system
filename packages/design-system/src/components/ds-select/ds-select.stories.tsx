@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsSelect from './ds-select';
-import type { DsSelectOption, DsSelectProps } from './ds-select.types';
+import { type DsSelectOption, type DsSelectProps, selectSizes } from './ds-select.types';
 import { DsTag } from '../ds-tag';
 import { DsIcon } from '../ds-icon';
 import { type DsStatus, DsStatusBadge } from '../ds-status-badge';
@@ -52,7 +52,7 @@ const meta: Meta<typeof DsSelect> = {
 		},
 		size: {
 			control: 'select',
-			options: ['default', 'small'],
+			options: selectSizes,
 			description: 'Select size variant',
 		},
 		clearable: {
@@ -150,6 +150,10 @@ export const WithIcons: Story = {
 export const Sizes: Story = {
 	render: (args) => (
 		<div className={styles.sizesContainer}>
+			<div className={styles.sizeItem}>
+				<div className={styles.sizeLabel}>Large</div>
+				<ControlledSelectWrapper {...args} size="large" />
+			</div>
 			<div className={styles.sizeItem}>
 				<div className={styles.sizeLabel}>Default</div>
 				<ControlledSelectWrapper {...args} size="default" />

@@ -1,0 +1,104 @@
+.root {
+	--ds-slider-thumb-size: var(--md);
+	--ds-slider-thumb-size-active: var(--lg);
+	--ds-slider-thumb-border: 2px;
+	--ds-slider-thumb-border-active: 4px;
+	--ds-slider-track-height: 4px;
+	--ds-slider-focus-ring: 3px;
+	--ds-slider-radius: 9999px;
+	--ds-slider-transition: 0.2s;
+
+	display: flex;
+	flex-direction: column;
+	gap: var(--sm);
+	width: 100%;
+
+	&.small {
+		--ds-slider-thumb-size: var(--standard);
+		--ds-slider-thumb-size-active: var(--md);
+		--ds-slider-track-height: 2px;
+	}
+
+	&.large {
+		--ds-slider-thumb-size: var(--lg);
+		--ds-slider-thumb-size-active: 28px;
+		--ds-slider-thumb-border: 3px;
+		--ds-slider-thumb-border-active: 5px;
+		--ds-slider-track-height: 8px;
+	}
+
+	&[data-disabled] {
+		cursor: not-allowed;
+
+		.range {
+			background: var(--background-disable);
+		}
+
+		.thumb {
+			cursor: not-allowed;
+			border-color: var(--background-disable);
+		}
+	}
+}
+
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--xs);
+	padding-bottom: var(--4xs);
+}
+
+.valueText {
+	margin-left: auto;
+	text-align: right;
+}
+
+.control {
+	position: relative;
+	display: flex;
+	align-items: center;
+	min-height: var(--ds-slider-thumb-size-active);
+}
+
+.track {
+	flex: 1;
+	height: var(--ds-slider-track-height);
+	background: var(--background-secondary-hover);
+	border-radius: var(--ds-slider-radius);
+}
+
+.range {
+	height: 100%;
+	background: var(--background-primary);
+	border-radius: var(--ds-slider-radius);
+}
+
+.thumb {
+	box-sizing: border-box;
+	width: var(--ds-slider-thumb-size);
+	height: var(--ds-slider-thumb-size);
+	background: var(--background);
+	border: var(--ds-slider-thumb-border) solid var(--background-primary);
+	border-radius: var(--ds-slider-radius);
+	outline: none;
+	cursor: pointer;
+	transition:
+		width var(--ds-slider-transition),
+		height var(--ds-slider-transition),
+		border-width var(--ds-slider-transition),
+		border-color var(--ds-slider-transition),
+		box-shadow var(--ds-slider-transition);
+
+	&:not([data-disabled]):hover,
+	&:focus-visible {
+		width: var(--ds-slider-thumb-size-active);
+		height: var(--ds-slider-thumb-size-active);
+		border-width: var(--ds-slider-thumb-border-active);
+		border-color: var(--background-primary-hover);
+	}
+
+	&:focus-visible {
+		box-shadow: 0 0 0 var(--ds-slider-focus-ring) var(--background-secondary-hover);
+	}
+}

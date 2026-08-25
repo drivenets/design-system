@@ -135,7 +135,12 @@ const DsSelect = ({
 			lazyMount
 		>
 			<Select.Control
-				className={classNames(styles.control, size === 'small' && styles.small, className)}
+				className={classNames(
+					styles.control,
+					size === 'small' && styles.small,
+					size === 'large' && styles.large,
+					className,
+				)}
 				style={style}
 				onBlur={onBlur}
 				onKeyDown={(e) => {

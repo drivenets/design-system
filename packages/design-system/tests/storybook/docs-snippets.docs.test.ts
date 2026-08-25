@@ -21,6 +21,7 @@ const COMPONENTS = [
 	'date-picker',
 	'date-range-picker',
 	'dialog',
+	'slider',
 ];
 
 function getComponentSnapshotPath(name: string): string {
