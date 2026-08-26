@@ -211,10 +211,12 @@ describe('DsTable scrollbar spacer', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		expect(onColumnSizingChange).not.toHaveBeenCalled();
 

@@ -282,15 +282,10 @@ describe('shiftColumnTrack', () => {
 	});
 
 	it('does not shrink a leaf below minSize', () => {
-		const next = shiftColumnTrack(
-			{ a: 200, b: 52 },
-			['a', 'b'],
-			-10,
-			[
-				{ id: 'a', columnDef: {} },
-				{ id: 'b', columnDef: { minSize: 52 } },
-			],
-		);
+		const next = shiftColumnTrack({ a: 200, b: 52 }, ['a', 'b'], -10, [
+			{ id: 'a', columnDef: {} },
+			{ id: 'b', columnDef: { minSize: 52 } },
+		]);
 
 		expect(next.b).toBe(52);
 		expect(next.a).toBe(190);

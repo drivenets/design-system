@@ -379,12 +379,7 @@ export const growFillLeavesToContainer = (
 
 	const next = { ...sizing };
 	const boundsById = new Map(bounds.map((column) => [column.id, column.columnDef]));
-	distributeExtraSpace(
-		next,
-		growable,
-		extra,
-		new Map(growable.map((id) => [id, maxSizeOf(id, boundsById)])),
-	);
+	distributeExtraSpace(next, growable, extra, new Map(growable.map((id) => [id, maxSizeOf(id, boundsById)])));
 
 	return next;
 };
@@ -436,12 +431,7 @@ export const shiftColumnTrack = (
 
 	if (delta > 0) {
 		const boundsById = new Map(bounds.map((column) => [column.id, column.columnDef]));
-		distributeExtraSpace(
-			next,
-			[...ids],
-			delta,
-			new Map(ids.map((id) => [id, maxSizeOf(id, boundsById)])),
-		);
+		distributeExtraSpace(next, [...ids], delta, new Map(ids.map((id) => [id, maxSizeOf(id, boundsById)])));
 	} else {
 		shrinkColumnTrack(next, ids, -delta, bounds);
 	}

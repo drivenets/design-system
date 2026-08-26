@@ -776,10 +776,12 @@ describe('DsTable - resizable columns', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		const container = getScrollContainer();
 		expect(container.scrollWidth).toBe(container.clientWidth);
@@ -796,10 +798,12 @@ describe('DsTable - resizable columns', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		const handle = getHandle('lastName');
 		hoverHandle(handle);
@@ -825,10 +829,12 @@ describe('DsTable - resizable columns', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		const container = getScrollContainer();
 		expect(container.scrollWidth).toBe(container.clientWidth);
@@ -845,10 +851,12 @@ describe('DsTable - resizable columns', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		const container = getScrollContainer();
 		expect(getComputedStyle(getTableBody(container)).overflowX).toBe('hidden');
@@ -867,10 +875,12 @@ describe('DsTable - resizable columns', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		const container = getScrollContainer();
 		expect(getComputedStyle(getTableBody(container)).overflowX).toBe('hidden');
@@ -909,10 +919,12 @@ describe('DsTable - resizable columns', () => {
 			</div>,
 		);
 
-		await expect.poll(() => {
-			const table = document.querySelector('table');
-			return table instanceof HTMLElement ? table.style.width : '';
-		}).not.toBe('');
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
 
 		const container = getScrollContainer();
 		const leafIds = ['firstName', 'lastName', 'visits', 'status', 'age'];
