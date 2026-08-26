@@ -226,25 +226,13 @@ describe('DsTable - resizable columns', () => {
 
 	it('updates a utility column width when the prop changes', async () => {
 		const { rerender } = await page.render(
-			<DsTable
-				columns={sizedColumns}
-				data={rows}
-				selectable
-				resizableColumns
-				selectableColumnWidth={48}
-			/>,
+			<DsTable columns={sizedColumns} data={rows} selectable resizableColumns selectableColumnWidth={48} />,
 		);
 
 		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(48);
 
 		await rerender(
-			<DsTable
-				columns={sizedColumns}
-				data={rows}
-				selectable
-				resizableColumns
-				selectableColumnWidth={64}
-			/>,
+			<DsTable columns={sizedColumns} data={rows} selectable resizableColumns selectableColumnWidth={64} />,
 		);
 
 		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(64);

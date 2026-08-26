@@ -51,7 +51,7 @@ export interface UseColumnResizeOptions {
 	columns: unknown;
 	columnVisibility: VisibilityState;
 	/**
-	 * Authored widths for injected utility leaves. Overlayed last so they win
+	 * Authored widths for injected utility leaves. Overlaid last so they win
 	 * over persist seed and live internal state.
 	 */
 	utilityColumnSizing?: ColumnSizingState;
