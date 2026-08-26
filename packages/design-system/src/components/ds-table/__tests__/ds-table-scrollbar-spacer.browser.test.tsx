@@ -150,6 +150,24 @@ describe('DsTable scrollbar spacer', () => {
 		}
 	});
 
+	it('aligns Fill columns when the vertical scrollbar occupies no layout', async () => {
+		await page.render(
+			<>
+				<style>{'tbody { scrollbar-width: none !important; }'}</style>
+				<div style={{ width: 900, height: 400 }}>
+					<DsTable columns={columns} data={generatePeople(40)} />
+				</div>
+			</>,
+		);
+
+		await expect.poll(() => getSpacer().getBoundingClientRect().width).toBe(SCROLLBAR_SPACER_WIDTH);
+		expect(getBody().offsetWidth - getBody().clientWidth).toBe(0);
+
+		for (const id of fillLeafIds) {
+			expectAligned(id);
+		}
+	});
+
 	it('paints group and leaf header-row borders through the spacer to the table edge', async () => {
 		await page.render(
 			<div style={{ width: 800, height: 240 }}>

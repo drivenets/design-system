@@ -78,6 +78,10 @@ $bulk-actions-reserved-space: 80px;
 		width: 100%;
 	}
 
+	tbody tr {
+		padding-inline-end: var(--ds-table-body-scrollbar-compensation, 0px);
+	}
+
 	thead th,
 	tbody td {
 		display: flex;
@@ -155,6 +159,10 @@ $bulk-actions-reserved-space: 80px;
 	thead tr {
 		display: flex;
 		width: 100%;
+	}
+
+	tbody tr {
+		padding-inline-end: var(--ds-table-body-scrollbar-compensation, 0px);
 	}
 
 	thead th {
