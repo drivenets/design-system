@@ -188,23 +188,265 @@ export const measureLeafHeaderWidths = (
 	return widths;
 };
 
+const CONTAINER_SIZE_SNAP_PX = 1;
+
+const absorbSizingDrift = (sizing: ColumnSizingState, ids: string[], drift: number): void => {
+	for (const id of [...ids].reverse()) {
+		if (drift === 0) {
+			break;
+		}
+
+		const current = sizing[id];
+		if (current === undefined) {
+			continue;
+		}
+
+		const nextSize = Math.max(RESIZE_MIN_COLUMN_WIDTH, current - drift);
+		drift -= current - nextSize;
+		sizing[id] = nextSize;
+	}
+};
+
+const toIdSet = (ids: ReadonlySet<string> | readonly string[]): ReadonlySet<string> =>
+	ids instanceof Set ? ids : new Set(ids);
+
+/**
+ * Grows `ids` so their combined increase equals `extra`. Shares follow each
+ * id's current width; leftover rounding is absorbed on the last id.
+ */
+const distributeExtraSpace = (
+	sizing: ColumnSizingState,
+	ids: string[],
+	extra: number,
+	maxById?: ReadonlyMap<string, number>,
+): void => {
+	if (ids.length === 0 || extra <= 0) {
+		return;
+	}
+
+	let remaining = extra;
+	let open = ids.filter((id) => (sizing[id] ?? 0) < (maxById?.get(id) ?? DEFAULT_MAX_COLUMN_SIZE));
+
+	while (remaining > 0 && open.length > 0) {
+		let weightSum = 0;
+
+		for (const id of open) {
+			weightSum += sizing[id] ?? 0;
+		}
+
+		let assigned = 0;
+		const stillOpen: string[] = [];
+
+		for (const id of open) {
+			const current = sizing[id] ?? 0;
+			const max = maxById?.get(id) ?? DEFAULT_MAX_COLUMN_SIZE;
+			const room = max - current;
+			const rawShare = weightSum <= 0 ? remaining / open.length : remaining * (current / weightSum);
+			const share = Math.min(room, Math.round(rawShare));
+			sizing[id] = current + share;
+			assigned += share;
+
+			if (current + share < max) {
+				stillOpen.push(id);
+			}
+		}
+
+		let leftover = remaining - assigned;
+
+		for (const id of stillOpen) {
+			if (leftover <= 0) {
+				break;
+			}
+
+			const max = maxById?.get(id) ?? DEFAULT_MAX_COLUMN_SIZE;
+			const add = Math.min(leftover, max - (sizing[id] ?? 0));
+			sizing[id] = (sizing[id] ?? 0) + add;
+			leftover -= add;
+		}
+
+		if (assigned === 0 && leftover === remaining) {
+			break;
+		}
+
+		remaining = leftover;
+		open = stillOpen.filter((id) => (sizing[id] ?? 0) < (maxById?.get(id) ?? DEFAULT_MAX_COLUMN_SIZE));
+	}
+};
+
 /**
  * Sizing entries for leaves that are not yet in `existing`. Does not overwrite
- * user-resized (or previously snapshotted) ids.
+ * user-resized (or previously snapshotted) ids. Rounds each measurement, then
+ * shifts leftover pixels onto the last missing leaf so the visible total
+ * matches the measured width (or the container, when they differ by 1px).
+ * When the measured total is short of the container, leftover space is shared
+ * across missing fill leaves in `fillableIds`.
  */
 export const collectMissingLeafSizing = (
 	measured: Record<string, number>,
 	existing: ColumnSizingState,
+	containerWidth?: number,
+	fillableIds?: ReadonlySet<string> | readonly string[],
 ): ColumnSizingState => {
 	const next: ColumnSizingState = {};
+	const missingIds: string[] = [];
 
 	for (const [id, width] of Object.entries(measured)) {
 		if (existing[id] === undefined) {
 			next[id] = Math.round(width);
+			missingIds.push(id);
 		}
 	}
 
+	if (missingIds.length === 0) {
+		return next;
+	}
+
+	let roundedMissingSum = 0;
+	let unroundedMissingSum = 0;
+
+	for (const id of missingIds) {
+		roundedMissingSum += next[id] ?? 0;
+		unroundedMissingSum += measured[id] ?? 0;
+	}
+
+	absorbSizingDrift(next, missingIds, roundedMissingSum - Math.round(unroundedMissingSum));
+
+	if (containerWidth === undefined || !Number.isFinite(containerWidth) || containerWidth <= 0) {
+		return next;
+	}
+
+	let projected = 0;
+
+	for (const id of Object.keys(measured)) {
+		projected += existing[id] ?? next[id] ?? 0;
+	}
+
+	const delta = projected - containerWidth;
+
+	if (Math.abs(delta) <= CONTAINER_SIZE_SNAP_PX) {
+		absorbSizingDrift(next, missingIds, delta);
+		return next;
+	}
+
+	if (delta < 0 && fillableIds) {
+		const fillable = toIdSet(fillableIds);
+		distributeExtraSpace(
+			next,
+			missingIds.filter((id) => fillable.has(id)),
+			-delta,
+		);
+	}
+
 	return next;
+};
+
+const maxSizeOf = (id: string, boundsById: Map<string, ColumnSizeBoundsSource['columnDef']>): number =>
+	boundsById.get(id)?.maxSize ?? DEFAULT_MAX_COLUMN_SIZE;
+
+/**
+ * After clamp, grow fill leaves that still have room so the projected
+ * measured total matches the container. A leaf that hit `maxSize` must not
+ * leave a gap — leftover pixels go to siblings.
+ */
+export const growFillLeavesToContainer = (
+	sizing: ColumnSizingState,
+	existing: ColumnSizingState,
+	measuredIds: readonly string[],
+	containerWidth: number,
+	fillableIds: ReadonlySet<string> | readonly string[],
+	bounds: ReadonlyArray<ColumnSizeBoundsSource>,
+): ColumnSizingState => {
+	if (!Number.isFinite(containerWidth) || containerWidth <= 0 || measuredIds.length === 0) {
+		return sizing;
+	}
+
+	let projected = 0;
+
+	for (const id of measuredIds) {
+		projected += existing[id] ?? sizing[id] ?? 0;
+	}
+
+	const extra = containerWidth - projected;
+	if (extra <= 0) {
+		return sizing;
+	}
+
+	const fillable = toIdSet(fillableIds);
+	const growable = Object.keys(sizing).filter((id) => fillable.has(id));
+	if (growable.length === 0) {
+		return sizing;
+	}
+
+	const next = { ...sizing };
+	const boundsById = new Map(bounds.map((column) => [column.id, column.columnDef]));
+	distributeExtraSpace(
+		next,
+		growable,
+		extra,
+		new Map(growable.map((id) => [id, maxSizeOf(id, boundsById)])),
+	);
+
+	return next;
+};
+
+const minSizeOf = (id: string, boundsById: Map<string, ColumnSizeBoundsSource['columnDef']>): number =>
+	boundsById.get(id)?.minSize ?? RESIZE_MIN_COLUMN_WIDTH;
+
+const shrinkColumnTrack = (
+	sizing: ColumnSizingState,
+	ids: readonly string[],
+	amount: number,
+	bounds: ReadonlyArray<ColumnSizeBoundsSource>,
+): void => {
+	const boundsById = new Map(bounds.map((column) => [column.id, column.columnDef]));
+	let remaining = amount;
+
+	for (const id of [...ids].reverse()) {
+		if (remaining <= 0) {
+			break;
+		}
+
+		const current = sizing[id];
+		if (current === undefined) {
+			continue;
+		}
+
+		const nextSize = Math.max(minSizeOf(id, boundsById), current - remaining);
+		remaining -= current - nextSize;
+		sizing[id] = nextSize;
+	}
+};
+
+/**
+ * Grows or shrinks `ids` so the column track changes by `delta` (positive =
+ * grow). Used when the **Scrollbar spacer** toggles after seed; does not
+ * invent ids missing from `sizing`.
+ */
+export const shiftColumnTrack = (
+	sizing: ColumnSizingState,
+	ids: readonly string[],
+	delta: number,
+	bounds: ReadonlyArray<ColumnSizeBoundsSource>,
+): ColumnSizingState => {
+	if (!Number.isFinite(delta) || delta === 0 || ids.length === 0) {
+		return sizing;
+	}
+
+	const next = { ...sizing };
+
+	if (delta > 0) {
+		const boundsById = new Map(bounds.map((column) => [column.id, column.columnDef]));
+		distributeExtraSpace(
+			next,
+			[...ids],
+			delta,
+			new Map(ids.map((id) => [id, maxSizeOf(id, boundsById)])),
+		);
+	} else {
+		shrinkColumnTrack(next, ids, -delta, bounds);
+	}
+
+	return clampColumnSizing(next, bounds);
 };
 
 /**

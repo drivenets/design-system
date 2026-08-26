@@ -168,6 +168,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnSizingChange,
 		columns,
 		columnVisibility,
+		overflowKey: (reorderable ? data : tableData).length,
 	});
 
 	const table = useReactTable({
