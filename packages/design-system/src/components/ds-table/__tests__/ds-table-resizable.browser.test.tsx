@@ -177,6 +177,79 @@ describe('DsTable - resizable columns', () => {
 		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(SELECT_COLUMN_WIDTH);
 	});
 
+	it('applies custom utility column widths when resizing is off', async () => {
+		await page.render(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				selectable
+				expandable
+				reorderable
+				selectableColumnWidth={48}
+				expandableColumnWidth={40}
+				reorderableColumnWidth={80}
+				renderExpandedRow={(row) => <div>Details for {row.firstName}</div>}
+			/>,
+		);
+
+		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(48);
+		expect(Math.round(widthOf(EXPANDER_COLUMN_ID))).toBe(40);
+		expect(Math.round(widthOf(REORDER_COLUMN_ID))).toBe(80);
+	});
+
+	it('keeps authored utility widths when resizing is on, ignoring inbound utility columnSizing', async () => {
+		await page.render(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				selectable
+				expandable
+				reorderable
+				resizableColumns
+				selectableColumnWidth={48}
+				expandableColumnWidth={40}
+				reorderableColumnWidth={80}
+				columnSizing={{
+					[SELECT_COLUMN_ID]: 80,
+					[EXPANDER_COLUMN_ID]: 80,
+					[REORDER_COLUMN_ID]: 120,
+					firstName: 200,
+				}}
+				renderExpandedRow={(row) => <div>Details for {row.firstName}</div>}
+			/>,
+		);
+
+		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(48);
+		expect(Math.round(widthOf(EXPANDER_COLUMN_ID))).toBe(40);
+		expect(Math.round(widthOf(REORDER_COLUMN_ID))).toBe(80);
+	});
+
+	it('updates a utility column width when the prop changes', async () => {
+		const { rerender } = await page.render(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				selectable
+				resizableColumns
+				selectableColumnWidth={48}
+			/>,
+		);
+
+		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(48);
+
+		await rerender(
+			<DsTable
+				columns={sizedColumns}
+				data={rows}
+				selectable
+				resizableColumns
+				selectableColumnWidth={64}
+			/>,
+		);
+
+		await expect.poll(() => Math.round(widthOf(SELECT_COLUMN_ID))).toBe(64);
+	});
+
 	it('omits the handle for a column with enableResizing: false', async () => {
 		const columns: ColumnDef<Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
