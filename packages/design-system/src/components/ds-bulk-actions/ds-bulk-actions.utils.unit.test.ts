@@ -1,6 +1,21 @@
+import { createElement, Fragment, type FunctionComponent } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import type { DsBulkActionsItemProps } from './ds-bulk-actions.types';
-import { isSubmenuEntry, itemToOverflowEntry, resolveItemWidth } from './ds-bulk-actions.utils';
+import {
+	getBulkActionItems,
+	isItemElement,
+	isSubmenuEntry,
+	itemToOverflowEntry,
+	resolveItemWidth,
+} from './ds-bulk-actions.utils';
+
+const StubItem: FunctionComponent<DsBulkActionsItemProps> = () => null;
+StubItem.displayName = 'DsBulkActions.Item';
+
+const createItem = (props: DsBulkActionsItemProps, key?: string) =>
+	createElement(StubItem, { key, ...props });
+
+const clickItem: DsBulkActionsItemProps = { icon: 'edit', label: 'Edit', onClick: () => {} };
 
 describe('resolveItemWidth', () => {
 	it('uses the fixed column when width is omitted', () => {
@@ -57,6 +72,42 @@ describe('itemToOverflowEntry', () => {
 			disabled: undefined,
 			menu,
 		});
+	});
+});
+
+describe('isItemElement', () => {
+	it('matches an element whose type carries the Item displayName', () => {
+		expect(isItemElement(createItem(clickItem))).toBe(true);
+	});
+
+	it('rejects other elements, strings, and nullish children', () => {
+		expect(isItemElement(createElement('div'))).toBe(false);
+		expect(isItemElement('Notify')).toBe(false);
+		expect(isItemElement(null)).toBe(false);
+		expect(isItemElement(undefined)).toBe(false);
+	});
+});
+
+describe('getBulkActionItems', () => {
+	it('collects only Item elements and drops other children', () => {
+		const first = createItem(clickItem, 'a');
+		const second = createItem({ icon: 'delete_outline', label: 'Delete', onClick: () => {} }, 'b');
+
+		const items = getBulkActionItems([first, 'text', createElement('span'), second, null]);
+
+		expect(items).toEqual([first, second]);
+	});
+
+	it('flattens Item elements nested inside fragments', () => {
+		const first = createItem(clickItem, 'a');
+		const second = createItem({ icon: 'share', label: 'Share', onClick: () => {} }, 'b');
+		const fragment = createElement(Fragment, null, second);
+
+		expect(getBulkActionItems([first, fragment])).toEqual([first, second]);
+	});
+
+	it('returns an empty array when there are no Item children', () => {
+		expect(getBulkActionItems(createElement('div'))).toEqual([]);
 	});
 });
 
