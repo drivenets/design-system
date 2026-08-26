@@ -51,7 +51,9 @@
 		"test:requires-build": "vitest --project=requires-build",
 		"build": "tsdown",
 		"build:watch": "pnpm build --watch",
-		"build:storybook": "storybook build"
+		"build:storybook": "storybook build",
+		"figma:lint": "figma connect parse --exit-on-unreadable-files",
+		"figma:publish": "figma connect publish --exit-on-unreadable-files"
 	},
 	"dependencies": {
 		"@ark-ui/react": "^5.36.1",
@@ -84,6 +86,7 @@
 		"@drivenets/vite-plugin-design-system": "workspace:*",
 		"@eslint/compat": "^2.0.3",
 		"@faker-js/faker": "^10.3.0",
+		"@figma/code-connect": "^1.4.9",
 		"@hookform/resolvers": "^5.2.2",
 		"@rolldown/plugin-babel": "^0.2.2",
 		"@storybook/addon-a11y": "^10.2.19",

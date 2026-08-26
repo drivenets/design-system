@@ -1,0 +1,12 @@
+.popoverContent {
+	width: max-content;
+	max-width: none;
+	padding: 0;
+	gap: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.popoverContent :global(.arrow) {
+	display: none;
+}
