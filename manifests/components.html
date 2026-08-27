@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">607 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">610 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -19873,7 +19873,7 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-65-components-table-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-65-components-table-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-65-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -19902,7 +19902,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -19973,7 +19973,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -20014,6 +20016,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -20097,7 +20107,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -20177,6 +20188,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -20216,6 +20236,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -20384,7 +20412,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-66-components-table-active-row-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-66-components-table-active-row-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-66-components-table-active-row-stories" class="badge ok as-toggle">1 story</label>
         
@@ -20413,7 +20441,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20484,7 +20512,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -20525,6 +20555,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -20608,7 +20646,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -20688,6 +20727,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -20727,6 +20775,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -20901,7 +20957,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-67-components-table-filters-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-67-components-table-filters-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-67-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -20930,7 +20986,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21001,7 +21057,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -21042,6 +21100,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -21125,7 +21191,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -21205,6 +21272,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -21244,6 +21320,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -21389,7 +21473,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-68-components-table-column-groups-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-68-components-table-column-groups-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-68-components-table-column-groups-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -21418,7 +21502,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21489,7 +21573,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -21530,6 +21616,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -21613,7 +21707,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -21693,6 +21788,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -21732,6 +21836,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -21887,7 +21999,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-69-components-table-columns-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-69-components-table-columns-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-69-components-table-columns-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -21916,7 +22028,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21987,7 +22099,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -22028,6 +22142,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -22111,7 +22233,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -22191,6 +22314,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -22230,6 +22362,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -22398,7 +22538,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-70-components-table-editable-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-70-components-table-editable-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-70-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -22427,7 +22567,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22498,7 +22638,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -22539,6 +22681,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -22622,7 +22772,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -22702,6 +22853,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -22741,6 +22901,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -23094,9 +23262,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-71-components-table-expansion-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-71-components-table-expansion-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-71-components-table-expansion-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-71-components-table-expansion-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -23123,7 +23291,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23194,7 +23362,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -23235,6 +23405,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -23318,7 +23496,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -23398,6 +23577,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -23437,6 +23625,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -23535,6 +23731,25 @@ zebra?: boolean</code></pre>
             /&gt;
         &lt;/&gt;
     )} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Expander Column Width</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The expander utility column is 36px by default. Pass a pixel width when the chevron column needs more (or less) room. It is not user-resizable.</div>
+              <pre><code>const CustomExpanderColumnWidth = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable
+    emptyState={&lt;TableEmptyState /&gt;}
+    onRowClick={fn()}
+    expandableColumnWidth={48}
+    renderExpandedRow={(row) =&gt; &lt;div className={styles.expandedRowDetails}&gt;Details for {row.firstName}&lt;/div&gt;} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -23644,7 +23859,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-72-components-table-loading-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-72-components-table-loading-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-72-components-table-loading-stories" class="badge ok as-toggle">1 story</label>
         
@@ -23673,7 +23888,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23744,7 +23959,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -23785,6 +24002,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -23868,7 +24093,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -23948,6 +24174,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -23987,6 +24222,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -24072,7 +24315,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-73-components-table-resizable-columns-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-73-components-table-resizable-columns-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-73-components-table-resizable-columns-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -24101,7 +24344,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24172,7 +24415,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -24213,6 +24458,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -24296,7 +24549,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -24376,6 +24630,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -24415,6 +24678,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -24672,9 +24943,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-74-components-table-row-actions-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-74-components-table-row-actions-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-74-components-table-row-actions-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-74-components-table-row-actions-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -24701,7 +24972,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24772,7 +25043,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -24813,6 +25086,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -24896,7 +25177,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -24976,6 +25258,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -25015,6 +25306,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -25084,6 +25383,26 @@ zebra?: boolean</code></pre>
     emptyState={&lt;TableEmptyState /&gt;}
     onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
     reorderable
+    onOrderChange={fn()} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Reorder Column Width</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The reorder utility column is 60px by default. Pass a pixel width when the drag-handle column needs more (or less) room. It is not user-resizable.</div>
+              <pre><code>const CustomReorderColumnWidth = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={&lt;TableEmptyState /&gt;}
+    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    reorderable
+    reorderableColumnWidth={80}
     onOrderChange={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -25297,9 +25616,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-75-components-table-selection-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-75-components-table-selection-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-75-components-table-selection-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-75-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -25326,7 +25645,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25397,7 +25716,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -25438,6 +25759,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -25521,7 +25850,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -25601,6 +25931,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -25640,6 +25979,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
@@ -25709,6 +26056,26 @@ zebra?: boolean</code></pre>
     emptyState={&lt;TableEmptyState /&gt;}
     onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
     selectable
+    onSelectionChange={fn()} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Select Column Width</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The select utility column is 36px by default. Pass a pixel width when the checkbox column needs more (or less) room. It is not user-resizable.</div>
+              <pre><code>const CustomSelectColumnWidth = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={&lt;TableEmptyState /&gt;}
+    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    selectable
+    selectableColumnWidth={48}
     onSelectionChange={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -25854,7 +26221,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-76-components-table-virtualized-props" class="badge ok as-toggle">43 prop types</label>
+        <label for="c-76-components-table-virtualized-props" class="badge ok as-toggle">46 prop types</label>
         
         <label for="c-76-components-table-virtualized-stories" class="badge ok as-toggle">7 stories</label>
         
@@ -25883,7 +26250,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">43 prop types</span>
+              <span class="badge ok">46 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25954,7 +26321,9 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value.
+ * internally — so it is not a fully controlled value. Ids for the select,
+ * expander, and reorder utility columns are ignored; use the matching
+ * `*ColumnWidth` props instead.
  */
 columnSizing?: Record&lt;string, number&gt;
 
@@ -25995,6 +26364,14 @@ emptyState?: React.ReactNode
  * Whether the table is expandable or if an individual row should be expandable
  */
 expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
 
 /**
  * Whether the table is full width
@@ -26078,7 +26455,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions.
+ * widths across sessions. Select, expander, and reorder utility columns are
+ * omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -26158,6 +26536,15 @@ renderExpandedRow?: (row: TData) =&gt; React.ReactNode
 reorderable?: boolean
 
 /**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
  * Enables resizing columns by dragging the right edge of a header cell.
  * Double-click a handle to restore the column&#39;s original width. Opt out per
  * column with `columnDef.enableResizing: false`. Leaf columns may set
@@ -26197,6 +26584,14 @@ secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
  * ```
  */
 selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
 
 /**
  * Whether to show the select/deselect all checkbox in the header
