@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
-import { DsTableBulkActions } from './components/ds-table-bulk-actions';
+import { DsBulkActions } from '../ds-bulk-actions';
 import { DsTableHeader } from './components/ds-table-header';
 import { DsTableResizeOverlay } from './components/ds-table-resize-overlay';
 import styles from './ds-table.module.scss';
@@ -279,14 +279,20 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 					) : null}
 				</div>
 				{selectable && actions.length > 0 && (
-					<DsTableBulkActions
-						numSelectedRows={selectedRows.length}
-						actions={actions.map((action) => ({
-							...action,
-							onClick: () => action.onClick(selectedRows),
-						}))}
+					<DsBulkActions
+						placement="floating"
+						selectedCount={selectedRows.length}
 						onClearSelection={table.resetRowSelection}
-					/>
+					>
+						{actions.map((action, index) => (
+							<DsBulkActions.Item
+								key={`${action.label}-${String(index)}`}
+								icon={action.icon}
+								label={action.label}
+								onClick={() => action.onClick(selectedRows)}
+							/>
+						))}
+					</DsBulkActions>
 				)}
 			</div>
 		</DsTableContextProvider>
