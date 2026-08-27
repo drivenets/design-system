@@ -13,10 +13,13 @@ import {
 	getResizableColumnStyle,
 	getResizableHeaderStyle,
 	getResizeOriginSize,
+	getUtilityColumnSizing,
 	growFillLeavesToContainer,
 	isExplicitColumnWidth,
 	omitBuiltinColumnSizing,
+	resolveUtilityColumnWidth,
 	shiftColumnTrack,
+	withUtilityColumnSizing,
 } from './column-size';
 import {
 	EXPANDER_COLUMN_ID,
@@ -320,5 +323,48 @@ describe('omitBuiltinColumnSizing', () => {
 
 		expect(next).toEqual({ firstName: 200 });
 		expect(next).not.toBe(sizing);
+	});
+});
+
+describe('resolveUtilityColumnWidth', () => {
+	it('returns the fallback when the width is omitted, non-finite, or not positive', () => {
+		expect(resolveUtilityColumnWidth(undefined, 36)).toBe(36);
+		expect(resolveUtilityColumnWidth(0, 36)).toBe(36);
+		expect(resolveUtilityColumnWidth(-8, 36)).toBe(36);
+		expect(resolveUtilityColumnWidth(Number.NaN, 36)).toBe(36);
+		expect(resolveUtilityColumnWidth(Number.POSITIVE_INFINITY, 36)).toBe(36);
+	});
+
+	it('returns a positive finite width as-is', () => {
+		expect(resolveUtilityColumnWidth(48, 36)).toBe(48);
+		expect(resolveUtilityColumnWidth(1, 36)).toBe(1);
+	});
+});
+
+describe('withUtilityColumnSizing', () => {
+	it('strips inbound utility ids and overlays the authored widths', () => {
+		expect(
+			withUtilityColumnSizing(
+				{ [SELECT_COLUMN_ID]: 80, firstName: 200 },
+				{ [SELECT_COLUMN_ID]: 48, [EXPANDER_COLUMN_ID]: 40 },
+			),
+		).toEqual({ firstName: 200, [SELECT_COLUMN_ID]: 48, [EXPANDER_COLUMN_ID]: 40 });
+	});
+});
+
+describe('getUtilityColumnSizing', () => {
+	it('collects size entries for injected utility leaves only', () => {
+		expect(
+			getUtilityColumnSizing([
+				{ id: REORDER_COLUMN_ID, size: 80 },
+				{ id: EXPANDER_COLUMN_ID, size: 40 },
+				{ id: SELECT_COLUMN_ID, size: 48 },
+				{ id: 'firstName', size: 200 },
+			]),
+		).toEqual({
+			[REORDER_COLUMN_ID]: 80,
+			[EXPANDER_COLUMN_ID]: 40,
+			[SELECT_COLUMN_ID]: 48,
+		});
 	});
 });

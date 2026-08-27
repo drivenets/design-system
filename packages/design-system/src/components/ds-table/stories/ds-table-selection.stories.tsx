@@ -37,6 +37,18 @@ export const Selectable: Story = {
 	},
 };
 
+/**
+ * The select utility column is 36px by default. Pass a pixel width when the
+ * checkbox column needs more (or less) room. It is not user-resizable.
+ */
+export const CustomSelectColumnWidth: Story = {
+	args: {
+		selectable: true,
+		selectableColumnWidth: 48,
+		onSelectionChange: fn(),
+	},
+};
+
 export const ProgrammaticRowSelection: Story = {
 	args: {
 		selectable: true,

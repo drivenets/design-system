@@ -454,3 +454,44 @@ export const omitBuiltinColumnSizing = (columnSizing: ColumnSizingState): Column
 
 	return next;
 };
+
+/**
+ * Authored utility-column width, or `fallback` when the value is omitted,
+ * non-finite, or not positive.
+ */
+export const resolveUtilityColumnWidth = (width: number | undefined, fallback: number): number => {
+	if (width === undefined || !Number.isFinite(width) || width <= 0) {
+		return fallback;
+	}
+
+	return width;
+};
+
+/**
+ * Drops any utility ids from `columnSizing`, then applies `utilityColumnSizing`
+ * so those leaves always take the authored width.
+ */
+export const withUtilityColumnSizing = (
+	columnSizing: ColumnSizingState,
+	utilityColumnSizing: ColumnSizingState,
+): ColumnSizingState => ({
+	...omitBuiltinColumnSizing(columnSizing),
+	...utilityColumnSizing,
+});
+
+/**
+ * Authored sizes for injected utility leaves, keyed by column id.
+ */
+export const getUtilityColumnSizing = (
+	columns: ReadonlyArray<{ id?: string; size?: number }>,
+): ColumnSizingState => {
+	const next: ColumnSizingState = {};
+
+	for (const column of columns) {
+		if (column.id !== undefined && BUILTIN_COLUMN_IDS.has(column.id) && column.size !== undefined) {
+			next[column.id] = column.size;
+		}
+	}
+
+	return next;
+};

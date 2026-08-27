@@ -14,7 +14,7 @@ import {
 } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { Table, TableBody, TableCell, TableRow } from './components/core-table';
-import { DsTableBulkActions } from './components/ds-table-bulk-actions';
+import { DsBulkActions } from '../ds-bulk-actions';
 import { DsTableHeader } from './components/ds-table-header';
 import { DsTableResizeOverlay } from './components/ds-table-resize-overlay';
 import styles from './ds-table.module.scss';
@@ -27,6 +27,7 @@ import { DsTableContextProvider } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
 import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
+import { getUtilityColumnSizing } from './utils/column-size';
 import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './utils/table-columns';
 import { createTableApi } from './utils/table-api';
 import { areBodiesFrozen } from './utils/frozen-body';
@@ -75,6 +76,9 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		resizableColumns,
 		columnSizing,
 		onColumnSizingChange,
+		selectableColumnWidth,
+		expandableColumnWidth,
+		reorderableColumnWidth,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -155,12 +159,26 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 				reorderable,
 				virtualized,
 				showSelectAllCheckbox,
+				selectableColumnWidth,
+				expandableColumnWidth,
+				reorderableColumnWidth,
 			}),
-		[columnsProp, hasSelectColumn, hasExpanderColumn, reorderable, virtualized, showSelectAllCheckbox],
+		[
+			columnsProp,
+			hasSelectColumn,
+			hasExpanderColumn,
+			reorderable,
+			virtualized,
+			showSelectAllCheckbox,
+			selectableColumnWidth,
+			expandableColumnWidth,
+			reorderableColumnWidth,
+		],
 	);
 
 	const skeletonColumns = useMemo(() => toSkeletonColumns(columns), [columns]);
 	const skeletonData = useMemo(() => createSkeletonRows<TData>(), []);
+	const utilityColumnSizing = useMemo(() => getUtilityColumnSizing(columns), [columns]);
 
 	const resize = useColumnResize({
 		enabled: resizableColumns,
@@ -169,6 +187,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		columns,
 		columnVisibility,
 		overflowKey: (reorderable ? data : tableData).length,
+		utilityColumnSizing,
 	});
 
 	const table = useReactTable({
@@ -261,14 +280,20 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 					) : null}
 				</div>
 				{selectable && actions.length > 0 && (
-					<DsTableBulkActions
-						numSelectedRows={selectedRows.length}
-						actions={actions.map((action) => ({
-							...action,
-							onClick: () => action.onClick(selectedRows),
-						}))}
+					<DsBulkActions
+						placement="floating"
+						selectedCount={selectedRows.length}
 						onClearSelection={table.resetRowSelection}
-					/>
+					>
+						{actions.map((action, index) => (
+							<DsBulkActions.Item
+								key={`${action.label}-${String(index)}`}
+								icon={action.icon}
+								label={action.label}
+								onClick={() => action.onClick(selectedRows)}
+							/>
+						))}
+					</DsBulkActions>
 				)}
 			</div>
 		</DsTableContextProvider>

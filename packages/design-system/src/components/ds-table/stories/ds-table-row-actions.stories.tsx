@@ -36,6 +36,19 @@ export const Reorderable: Story = {
 	},
 };
 
+/**
+ * The reorder utility column is 60px by default. Pass a pixel width when the
+ * drag-handle column needs more (or less) room. It is not user-resizable.
+ */
+export const CustomReorderColumnWidth: Story = {
+	args: {
+		data: defaultData.slice(0, 5),
+		reorderable: true,
+		reorderableColumnWidth: 80,
+		onOrderChange: fn(),
+	},
+};
+
 const editClickHandler = fn();
 const openInNewWindowClickHandler = fn();
 

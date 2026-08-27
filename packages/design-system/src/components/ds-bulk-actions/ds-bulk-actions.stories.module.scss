@@ -1,0 +1,40 @@
+$scene-width: 720px;
+$outer-height: 400px;
+$bounds-radius: 4px;
+$bounds-inset: var(--xl);
+
+.outerBounds {
+	position: relative;
+	display: flex;
+	width: $scene-width;
+	height: $outer-height;
+	padding: $bounds-inset;
+	border: 1px solid var(--color-dap-gray-400);
+	border-radius: $bounds-radius;
+	background-color: var(--background-secondary);
+}
+
+.innerBounds {
+	position: relative;
+	flex: 1;
+	overflow: hidden;
+	border: 1px dashed var(--color-dap-blue-400);
+	border-radius: $bounds-radius;
+	background-color: var(--background);
+}
+
+.widthDemo {
+	width: $scene-width;
+}
+
+.widthComparison {
+	min-width: $scene-width;
+}
+
+.parentTrack {
+	width: 480px;
+	padding: var(--md);
+	border: 1px dashed var(--border-secondary);
+	border-radius: $bounds-radius;
+	background-color: var(--background-secondary);
+}

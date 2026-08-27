@@ -24,6 +24,7 @@ import {
 	measureLeafHeaderWidths,
 	omitBuiltinColumnSizing,
 	shiftColumnTrack,
+	withUtilityColumnSizing,
 	type ColumnSizeBoundsSource,
 } from '../utils/column-size';
 import { RESIZE_DIVIDER_WIDTH, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
@@ -67,6 +68,11 @@ export interface UseColumnResizeOptions {
 	 * Invalidates overflow measurement (row count). Read as a dependency only.
 	 */
 	overflowKey: number;
+	/**
+	 * Authored widths for injected utility leaves. Overlaid last so they win
+	 * over persist seed and live internal state.
+	 */
+	utilityColumnSizing?: ColumnSizingState;
 }
 
 export interface DsTableResizeContextSlice {
@@ -132,6 +138,7 @@ export const useColumnResize = ({
 	columns,
 	columnVisibility,
 	overflowKey,
+	utilityColumnSizing,
 }: UseColumnResizeOptions): UseColumnResizeResult => {
 	const [columnResizeState, setColumnResizeState] = useState<{
 		columnSizing: ColumnSizingState;
@@ -149,10 +156,11 @@ export const useColumnResize = ({
 	// drag (or seed measurement) of a persisted column still takes effect. Passed
 	// to TanStack and read for CSS vars / persist so restore, drag, and persist
 	// all see the same widths.
-	const columnSizing = useMemo<ColumnSizingState>(
-		() => (columnSizingProp ? { ...columnSizingProp, ...internalColumnSizing } : internalColumnSizing),
-		[columnSizingProp, internalColumnSizing],
-	);
+	const columnSizing = useMemo<ColumnSizingState>(() => {
+		const merged = columnSizingProp ? { ...columnSizingProp, ...internalColumnSizing } : internalColumnSizing;
+
+		return withUtilityColumnSizing(merged, utilityColumnSizing ?? {});
+	}, [columnSizingProp, internalColumnSizing, utilityColumnSizing]);
 	const [resizeHover, setResizeHover] = useState<{
 		columnId: string;
 		offset: number;
