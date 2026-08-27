@@ -1,0 +1,103 @@
+# DsNumberInput docs snippets
+
+## Default
+
+### Show code
+<DsNumberInput
+  defaultValue={0}
+  placeholder="Enter number"
+/>
+
+### MCP manifest
+const Default = () => <DsNumberInput placeholder="Enter number" defaultValue={0} />;
+
+## With Min Max
+
+### Show code
+<DsNumberInput
+  defaultValue={50}
+  max={100}
+  min={0}
+  placeholder="Enter number"
+  step={1}
+/>
+
+### MCP manifest
+const WithMinMax = () => <DsNumberInput placeholder="Enter number" defaultValue={50} min={0} max={100} step={1} />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState(42);
+    return <DsStack direction="column" gap="var(--sm)" alignItems="center">
+                <DsNumberInput placeholder="Enter number" min={0} max={100} step={1} value={value} onValueChange={setValue} />
+                <DsStack gap="var(--2xs)">
+                    <button type="button" onClick={() => setValue(0)}>
+                        Reset to 0
+                    </button>
+                    <button type="button" onClick={() => setValue(100)}>
+                        Set to 100
+                    </button>
+                </DsStack>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState(42);
+
+    return (
+        <DsStack direction="column" gap="var(--sm)" alignItems="center">
+            <DsNumberInput
+                placeholder="Enter number"
+                min={0}
+                max={100}
+                step={1}
+                value={value}
+                onValueChange={setValue}
+            />
+            <DsStack gap="var(--2xs)">
+                <button type="button" onClick={() => setValue(0)}>
+                    Reset to 0
+                </button>
+                <button type="button" onClick={() => setValue(100)}>
+                    Set to 100
+                </button>
+            </DsStack>
+        </DsStack>
+    );
+};
+
+## Small
+
+### Show code
+<DsNumberInput
+  defaultValue={10}
+  placeholder="Small number input"
+  size="small"
+/>
+
+### MCP manifest
+const Small = () => <DsNumberInput size="small" placeholder="Small number input" defaultValue={10} />;
+
+## Disabled
+
+### Show code
+<DsNumberInput
+  defaultValue={25}
+  disabled
+  placeholder="Disabled input"
+/>
+
+### MCP manifest
+const Disabled = () => <DsNumberInput placeholder="Disabled input" defaultValue={25} disabled />;

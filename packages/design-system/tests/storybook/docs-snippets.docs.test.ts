@@ -2,7 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, it } from 'vitest';
-import { getStorySnippet, resolveComponent, type ManifestComponent } from './components-manifest';
+import { getStorySnippet, resolveComponents, type ManifestComponent } from './components-manifest';
 import { readShowCodeSnippet } from './read-show-code';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,7 +21,17 @@ const COMPONENTS = [
 	'date-picker',
 	'date-range-picker',
 	'dialog',
+	'expandable-text-input',
+	'form-control',
+	'number-input',
+	'password-input',
+	'radio-group',
+	'segment-group',
+	'select',
 	'slider',
+	'text-input',
+	'time-picker',
+	'toggle',
 ];
 
 function getComponentSnapshotPath(name: string): string {
@@ -56,7 +66,7 @@ async function buildComponentDocsSnapshot(page: Page, component: ManifestCompone
 }
 
 const components = await Promise.all(
-	COMPONENTS.map(async (name) => ({ name, component: await resolveComponent(name) })),
+	COMPONENTS.map(async (name) => ({ name, manifestComponents: await resolveComponents(name) })),
 );
 
 describe('docs snippets', () => {
@@ -70,17 +80,28 @@ describe('docs snippets', () => {
 		await browser.close();
 	});
 
-	for (const { name, component } of components) {
-		it.concurrent(`${component.name} docs snippets match staged authoring rules`, async ({ expect }) => {
-			const page = await browser.newPage({ viewport: { width: 1400, height: 900 }, timezoneId: 'UTC' });
+	for (const { name, manifestComponents } of components) {
+		it.concurrent(`ds-${name} docs snippets match staged authoring rules`, async ({ expect }) => {
+			// A folder may resolve to several manifest components (e.g. ds-form-control);
+			// build each on its own page in parallel, then aggregate in resolved order.
+			const sections = await Promise.all(
+				manifestComponents.map(async (component) => {
+					const page = await browser.newPage({
+						viewport: { width: 1400, height: 900 },
+						timezoneId: 'UTC',
+					});
 
-			try {
-				const document = await buildComponentDocsSnapshot(page, component);
+					try {
+						return await buildComponentDocsSnapshot(page, component);
+					} finally {
+						await page.close();
+					}
+				}),
+			);
 
-				await expect(document).toMatchFileSnapshot(getComponentSnapshotPath(name));
-			} finally {
-				await page.close();
-			}
-		});
+			const document = sections.join('\n\n');
+
+			await expect(document).toMatchFileSnapshot(getComponentSnapshotPath(name));
+		}, 180_000);
 	}
 });

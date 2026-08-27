@@ -1,0 +1,1884 @@
+# DsFormControl.DateInput docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  message="Select a date for your event"
+  required
+>
+  <No Display Name />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Event Date" required message="Select a date for your event">
+    <DsFormControl.DateInput />
+</DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  required
+>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <No Display Name />
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Event Date" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.DateInput />
+</DsFormControl>;
+
+## With Help Icon
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  required
+  slots={{
+    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+  }}
+>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <No Display Name />
+</DsFormControl>
+
+### MCP manifest
+const WithHelpIcon = () => <DsFormControl
+    label="Event Date"
+    required
+    slots={{
+        endAdornment: (
+            <button type="button" className={styles.helpIcon} aria-label="Help">
+                <DsIcon icon="info" size="small" />
+            </button>
+        ),
+    }}>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.DateInput />
+</DsFormControl>;
+
+## Success
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value] = useState('2024-12-25');
+    return <DsFormControl status="success" label="Event Date" message="Valid date selected." messageIcon="check_circle">
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.DateInput value={value} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Success = function Render() {
+    const [value] = useState('2024-12-25');
+
+    return (
+        <DsFormControl
+            status="success"
+            label="Event Date"
+            message="Valid date selected."
+            messageIcon="check_circle"
+        >
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.DateInput value={value} />
+        </DsFormControl>
+    );
+};
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  message="Date is required."
+  messageIcon="error"
+  required
+  status="error"
+>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <No Display Name />
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Event Date"
+    required
+    message="Date is required."
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.DateInput />
+</DsFormControl>;
+
+## Warning
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value] = useState('2024-12-25');
+    return <DsFormControl status="warning" label="Event Date" message="Date is approaching deadline." messageIcon="info">
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.DateInput value={value} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Warning = function Render() {
+    const [value] = useState('2024-12-25');
+
+    return (
+        <DsFormControl
+            status="warning"
+            label="Event Date"
+            message="Date is approaching deadline."
+            messageIcon="info"
+        >
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.DateInput value={value} />
+        </DsFormControl>
+    );
+};
+
+## Disabled
+
+### Show code
+<DsFormControl label="Event Date">
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <No Display Name disabled />
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Event Date">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.DateInput disabled />
+</DsFormControl>;
+
+## Range Mode
+
+### Show code
+<DsFormControl
+  label="Date Range"
+  message="Select start and end dates"
+  required
+>
+  <No Display Name range />
+</DsFormControl>
+
+### MCP manifest
+const RangeMode = () => <DsFormControl label="Date Range" required message="Select start and end dates">
+    <DsFormControl.DateInput range />
+</DsFormControl>;
+
+## Range With Validation
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<[string, string]>();
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Start and end dates are required' : undefined;
+    return <DsFormControl label="Date Range" required status={error ? 'error' : undefined} messageIcon="cancel" message={error}>
+                <DsFormControl.DateInput value={value} onValueChange={value => {
+        setValue(value);
+        setTouched(true);
+      }} range />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const RangeWithValidation = function Render() {
+    const [value, setValue] = useState<[string, string]>();
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Start and end dates are required' : undefined;
+
+    return (
+        <DsFormControl
+            label="Date Range"
+            required
+            status={error ? 'error' : undefined}
+            messageIcon="cancel"
+            message={error}
+        >
+            <DsFormControl.DateInput
+                value={value}
+                onValueChange={(value) => {
+                    setValue(value);
+                    setTouched(true);
+                }}
+                range
+            />
+        </DsFormControl>
+    );
+};
+
+## With Validation
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<string>();
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Date is required' : undefined;
+    return <DsFormControl label="Event Date" required status={error ? 'error' : undefined} messageIcon="cancel" message={error}>
+                <DsFormControl.DateInput value={value} onValueChange={value => {
+        setValue(value);
+        setTouched(true);
+      }} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const WithValidation = function Render() {
+    const [value, setValue] = useState<string>();
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Date is required' : undefined;
+
+    return (
+        <DsFormControl
+            label="Event Date"
+            required
+            status={error ? 'error' : undefined}
+            messageIcon="cancel"
+            message={error}
+        >
+            <DsFormControl.DateInput
+                value={value}
+                onValueChange={(value) => {
+                    setValue(value);
+                    setTouched(true);
+                }}
+            />
+        </DsFormControl>
+    );
+};
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  message="Select a date for your event"
+  required
+>
+  <No Display Name />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Event Date" required message="Select a date for your event"><DsFormControl.DatePicker /></DsFormControl>;
+
+## With Time
+
+### Show code
+<DsFormControl
+  label="Appointment"
+  message="Select date and time"
+  required
+>
+  <No Display Name withTime />
+</DsFormControl>
+
+### MCP manifest
+const WithTime = () => <DsFormControl label="Appointment" required message="Select date and time"><DsFormControl.DatePicker withTime /></DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  required
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Event Date" required>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.DatePicker />
+    </>)</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Event Date"
+  message="Date is required."
+  messageIcon="error"
+  required
+  status="error"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Event Date"
+    required
+    message="Date is required."
+    messageIcon="error">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.DatePicker />
+    </>)</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl label="Event Date">
+  <No Display Name disabled />
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Event Date"><DsFormControl.DatePicker disabled /></DsFormControl>;
+
+## With Validation
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(null);
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Date is required' : undefined;
+    return <DsFormControl label="Event Date" required status={error ? 'error' : undefined} messageIcon="cancel" message={error}>
+                <DsFormControl.DatePicker value={value} onChange={v => {
+        setValue(v);
+        setTouched(true);
+      }} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const WithValidation = function Render() {
+    const [value, setValue] = useState<Date | null>(null);
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Date is required' : undefined;
+
+    return (
+        <DsFormControl
+            label="Event Date"
+            required
+            status={error ? 'error' : undefined}
+            messageIcon="cancel"
+            message={error}
+        >
+            <DsFormControl.DatePicker
+                value={value}
+                onChange={(v) => {
+                    setValue(v);
+                    setTouched(true);
+                }}
+            />
+        </DsFormControl>
+    );
+};
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a message"
+  required
+>
+  <No Display Name
+    defaultValue={10}
+    max={100}
+    min={1}
+    placeholder="Enter number"
+    step={1}
+  />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Input label" required message="This is a message">(<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />)</DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      defaultValue={10}
+      max={100}
+      min={1}
+      placeholder="Enter number"
+      step={1}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Input label" required>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+    </>)</DsFormControl>;
+
+## With Help Icon
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+  slots={{
+    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+  }}
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      defaultValue={10}
+      max={100}
+      min={1}
+      placeholder="Enter number"
+      step={1}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithHelpIcon = () => <DsFormControl
+    label="Input label"
+    required
+    slots={{
+        endAdornment: (
+            <button type="button" className={styles.helpIcon} aria-label="Help">
+                <DsIcon icon="info" size="small" />
+            </button>
+        ),
+    }}>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+    </>)</DsFormControl>;
+
+## Success
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a success caption under a number input."
+  messageIcon="check_circle"
+  status="success"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      defaultValue={10}
+      max={100}
+      min={1}
+      placeholder="Enter number"
+      step={1}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Success = () => <DsFormControl
+    status="success"
+    label="Input label"
+    message="This is a success caption under a number input."
+    messageIcon="check_circle">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+    </>)</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is an error caption under a number input."
+  messageIcon="error"
+  status="error"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      defaultValue={10}
+      max={100}
+      min={1}
+      placeholder="Enter number"
+      step={1}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Input label"
+    message="This is an error caption under a number input."
+    messageIcon="error">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+    </>)</DsFormControl>;
+
+## Warning
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a warning caption under a number input."
+  messageIcon="info"
+  status="warning"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      defaultValue={10}
+      max={100}
+      min={1}
+      placeholder="Enter number"
+      step={1}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Warning = () => <DsFormControl
+    status="warning"
+    label="Input label"
+    message="This is a warning caption under a number input."
+    messageIcon="info">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+    </>)</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl label="Input label">
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      defaultValue={10}
+      disabled
+      max={100}
+      min={1}
+      placeholder="Disabled Input"
+      step={1}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Input label">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.NumberInput
+            placeholder="Disabled Input"
+            disabled
+            min={1}
+            max={100}
+            step={1}
+            defaultValue={10}
+        />
+    </>)</DsFormControl>;
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a message"
+  required
+>
+  <No Display Name placeholder="Enter password" />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Input label" required message="This is a message"><DsFormControl.PasswordInput placeholder="Enter password" /></DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name placeholder="Enter password" />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Input label" required>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.PasswordInput placeholder="Enter password" />
+    </>)</DsFormControl>;
+
+## With Help Icon
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+  slots={{
+    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+  }}
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name placeholder="Search" />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithHelpIcon = () => <DsFormControl
+    label="Input label"
+    required
+    slots={{
+        endAdornment: (
+            <button type="button" className={styles.helpIcon} aria-label="Help">
+                <DsIcon icon="info" size="small" />
+            </button>
+        ),
+    }}>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.PasswordInput placeholder="Search" />
+    </>)</DsFormControl>;
+
+## Success
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a success caption under a password input."
+  messageIcon="check_circle"
+  status="success"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Success = () => <DsFormControl
+    status="success"
+    label="Input label"
+    message="This is a success caption under a password input."
+    messageIcon="check_circle">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.PasswordInput />
+    </>)</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is an error caption under a password input."
+  messageIcon="error"
+  status="error"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Input label"
+    message="This is an error caption under a password input."
+    messageIcon="error">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.PasswordInput />
+    </>)</DsFormControl>;
+
+## Warning
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a warning caption under a password input."
+  messageIcon="info"
+  status="warning"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Warning = () => <DsFormControl
+    status="warning"
+    label="Input label"
+    message="This is a warning caption under a password input."
+    messageIcon="info">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.PasswordInput />
+    </>)</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl label="Input label">
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      disabled
+      placeholder="Disabled Input"
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Input label">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.PasswordInput placeholder="Disabled Input" disabled />
+    </>)</DsFormControl>;
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl label="Input" required={true} message="This is a message">
+                <DsFormControl.Select placeholder="Select an option" value={value} onValueChange={setValue} clearable options={[{
+        label: 'Option 1',
+        value: 'option1',
+        icon: 'download'
+      }, {
+        label: 'Option 2',
+        value: 'option2',
+        icon: 'save'
+      }, {
+        label: 'Option 3',
+        value: 'option3',
+        icon: 'description'
+      }]} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl label="Input" required={true} message="This is a message">
+            <DsFormControl.Select
+                placeholder="Select an option"
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { label: 'Option 1', value: 'option1', icon: 'download' },
+                    { label: 'Option 2', value: 'option2', icon: 'save' },
+                    { label: 'Option 3', value: 'option3', icon: 'description' },
+                ]}
+            />
+        </DsFormControl>
+    );
+};
+
+## With Description
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl label="Input" required={true}>
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.Select placeholder="Select an option" value={value} onValueChange={setValue} clearable options={[{
+        label: 'Option 1',
+        value: 'option1',
+        icon: 'download'
+      }, {
+        label: 'Option 2',
+        value: 'option2',
+        icon: 'save'
+      }, {
+        label: 'Option 3',
+        value: 'option3',
+        icon: 'description'
+      }]} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const WithDescription = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl label="Input" required={true}>
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.Select
+                placeholder="Select an option"
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { label: 'Option 1', value: 'option1', icon: 'download' },
+                    { label: 'Option 2', value: 'option2', icon: 'save' },
+                    { label: 'Option 3', value: 'option3', icon: 'description' },
+                ]}
+            />
+        </DsFormControl>
+    );
+};
+
+## With Help Icon
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl label="Input" required={true} slots={{
+      endAdornment: <button type="button" className={styles.helpIcon} aria-label="Help">
+                            <DsIcon icon="info" size="small" />
+                        </button>
+    }}>
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.Select value={value} onValueChange={setValue} clearable options={[{
+        value: 'option1',
+        label: 'Option 1'
+      }, {
+        value: 'option2',
+        label: 'Option 2'
+      }, {
+        value: 'option3',
+        label: 'Option 3'
+      }]} placeholder="Select an option" />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const WithHelpIcon = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl
+            label="Input"
+            required={true}
+            slots={{
+                endAdornment: (
+                    <button type="button" className={styles.helpIcon} aria-label="Help">
+                        <DsIcon icon="info" size="small" />
+                    </button>
+                ),
+            }}
+        >
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.Select
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { value: 'option1', label: 'Option 1' },
+                    { value: 'option2', label: 'Option 2' },
+                    { value: 'option3', label: 'Option 3' },
+                ]}
+                placeholder="Select an option"
+            />
+        </DsFormControl>
+    );
+};
+
+## Success
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl status="success" label="Input" message="This is a success caption under a select input." messageIcon="check_circle">
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.Select placeholder="Select an option" value={value} onValueChange={setValue} clearable options={[{
+        label: 'Option 1',
+        value: 'option1',
+        icon: 'download'
+      }, {
+        label: 'Option 2',
+        value: 'option2',
+        icon: 'save'
+      }, {
+        label: 'Option 3',
+        value: 'option3',
+        icon: 'description'
+      }]} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Success = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl
+            status="success"
+            label="Input"
+            message="This is a success caption under a select input."
+            messageIcon="check_circle"
+        >
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.Select
+                placeholder="Select an option"
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { label: 'Option 1', value: 'option1', icon: 'download' },
+                    { label: 'Option 2', value: 'option2', icon: 'save' },
+                    { label: 'Option 3', value: 'option3', icon: 'description' },
+                ]}
+            />
+        </DsFormControl>
+    );
+};
+
+## Error
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl status="error" label="Input" message="This is an error caption under a select input." messageIcon="error">
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.Select placeholder="Select an option" value={value} onValueChange={setValue} clearable options={[{
+        label: 'Option 1',
+        value: 'option1',
+        icon: 'download'
+      }, {
+        label: 'Option 2',
+        value: 'option2',
+        icon: 'save'
+      }, {
+        label: 'Option 3',
+        value: 'option3',
+        icon: 'description'
+      }]} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Error = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl
+            status="error"
+            label="Input"
+            message="This is an error caption under a select input."
+            messageIcon="error"
+        >
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.Select
+                placeholder="Select an option"
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { label: 'Option 1', value: 'option1', icon: 'download' },
+                    { label: 'Option 2', value: 'option2', icon: 'save' },
+                    { label: 'Option 3', value: 'option3', icon: 'description' },
+                ]}
+            />
+        </DsFormControl>
+    );
+};
+
+## Warning
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl status="warning" label="Input" message="This is a warning caption under a select input." messageIcon="info">
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.Select placeholder="Select an option" value={value} onValueChange={setValue} clearable options={[{
+        label: 'Option 1',
+        value: 'option1',
+        icon: 'download'
+      }, {
+        label: 'Option 2',
+        value: 'option2',
+        icon: 'save'
+      }, {
+        label: 'Option 3',
+        value: 'option3',
+        icon: 'description'
+      }]} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Warning = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl
+            status="warning"
+            label="Input"
+            message="This is a warning caption under a select input."
+            messageIcon="info"
+        >
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.Select
+                placeholder="Select an option"
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { label: 'Option 1', value: 'option1', icon: 'download' },
+                    { label: 'Option 2', value: 'option2', icon: 'save' },
+                    { label: 'Option 3', value: 'option3', icon: 'description' },
+                ]}
+            />
+        </DsFormControl>
+    );
+};
+
+## Disabled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsFormControl label="Input">
+                <DsFormControl.Description>
+                    Optional helper text that describes the field in up to two lines.
+                </DsFormControl.Description>
+                <DsFormControl.Select placeholder="Select an option" value={value} onValueChange={setValue} clearable options={[{
+        label: 'Option 1',
+        value: 'option1',
+        icon: 'download'
+      }, {
+        label: 'Option 2',
+        value: 'option2',
+        icon: 'save'
+      }, {
+        label: 'Option 3',
+        value: 'option3',
+        icon: 'description'
+      }]} disabled />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const Disabled = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsFormControl label="Input">
+            <DsFormControl.Description>
+                Optional helper text that describes the field in up to two lines.
+            </DsFormControl.Description>
+            <DsFormControl.Select
+                placeholder="Select an option"
+                value={value}
+                onValueChange={setValue}
+                clearable
+                options={[
+                    { label: 'Option 1', value: 'option1', icon: 'download' },
+                    { label: 'Option 2', value: 'option2', icon: 'save' },
+                    { label: 'Option 3', value: 'option3', icon: 'description' },
+                ]}
+                disabled
+            />
+        </DsFormControl>
+    );
+};
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a message"
+  required
+>
+  <No Display Name placeholder="Input" />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Input label" required message="This is a message"><DsFormControl.TextInput placeholder="Input" /></DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      placeholder="Search"
+      slots={{
+        startAdornment: <DsIcon icon="search" size="tiny"/>
+      }}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Input label" required>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TextInput
+            placeholder="Search"
+            slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+        />
+    </>)</DsFormControl>;
+
+## With Help Icon
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+  slots={{
+    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+  }}
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      placeholder="Search"
+      slots={{
+        startAdornment: <DsIcon icon="search" size="tiny"/>
+      }}
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithHelpIcon = () => <DsFormControl
+    label="Input label"
+    required
+    slots={{
+        endAdornment: (
+            <button type="button" className={styles.helpIcon} aria-label="Help">
+                <DsIcon icon="info" size="small" />
+            </button>
+        ),
+    }}>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TextInput
+            placeholder="Search"
+            slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+        />
+    </>)</DsFormControl>;
+
+## With Icon
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a message"
+  required
+>
+  <No Display Name
+    placeholder="Input"
+    slots={{
+      startAdornment: <DsIcon icon="call" size="tiny"/>
+    }}
+  />
+</DsFormControl>
+
+### MCP manifest
+const WithIcon = () => <DsFormControl label="Input label" required message="This is a message">(<DsFormControl.TextInput
+        placeholder="Input"
+        slots={{ startAdornment: <DsIcon icon="call" size="tiny" /> }}
+    />)</DsFormControl>;
+
+## Success
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a success caption under a text input."
+  messageIcon="check_circle"
+  status="success"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      slots={{
+        endAdornment: <DsIcon icon="visibility" size="tiny"/>
+      }}
+      type="text"
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Success = () => <DsFormControl
+    status="success"
+    label="Input label"
+    message="This is a success caption under a text input."
+    messageIcon="check_circle">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TextInput
+            type="text"
+            slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
+        />
+    </>)</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is an error caption under a text input."
+  messageIcon="error"
+  status="error"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      slots={{
+        endAdornment: <DsIcon icon="error" size="tiny"/>,
+        startAdornment: <DsIcon icon="search" size="tiny"/>
+      }}
+     />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Input label"
+    message="This is an error caption under a text input."
+    messageIcon="error">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TextInput
+            slots={{
+                startAdornment: <DsIcon icon="search" size="tiny" />,
+                endAdornment: <DsIcon icon="error" size="tiny" />,
+            }}
+        />
+    </>)</DsFormControl>;
+
+## Warning
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a warning caption under a text input."
+  messageIcon="info"
+  status="warning"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Warning = () => <DsFormControl
+    status="warning"
+    label="Input label"
+    message="This is a warning caption under a text input."
+    messageIcon="info">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TextInput />
+    </>)</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+>
+  <No Display Name
+    disabled
+    placeholder="Disabled Input"
+  />
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Input label" required><DsFormControl.TextInput placeholder="Disabled Input" disabled /></DsFormControl>;
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a message"
+  required
+>
+  <No Display Name placeholder="Input" />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Input label" required message="This is a message"><DsFormControl.Textarea placeholder="Input" /></DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name placeholder="Search" />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Input label" required>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.Textarea placeholder="Search" />
+    </>)</DsFormControl>;
+
+## With Help Icon
+
+### Show code
+<DsFormControl
+  label="Input label"
+  required
+  slots={{
+    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+  }}
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name placeholder="Search" />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithHelpIcon = () => <DsFormControl
+    label="Input label"
+    required
+    slots={{
+        endAdornment: (
+            <button type="button" className={styles.helpIcon} aria-label="Help">
+                <DsIcon icon="info" size="small" />
+            </button>
+        ),
+    }}>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.Textarea placeholder="Search" />
+    </>)</DsFormControl>;
+
+## Success
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a success caption under a text input."
+  messageIcon="check_circle"
+  status="success"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Success = () => <DsFormControl
+    status="success"
+    label="Input label"
+    message="This is a success caption under a text input."
+    messageIcon="check_circle">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.Textarea />
+    </>)</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is an error caption under a text input."
+  messageIcon="error"
+  status="error"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Input label"
+    message="This is an error caption under a text input."
+    messageIcon="error">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.Textarea />
+    </>)</DsFormControl>;
+
+## Warning
+
+### Show code
+<DsFormControl
+  label="Input label"
+  message="This is a warning caption under a text input."
+  messageIcon="info"
+  status="warning"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Warning = () => <DsFormControl
+    status="warning"
+    label="Input label"
+    message="This is a warning caption under a text input."
+    messageIcon="info">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.Textarea />
+    </>)</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl label="Input label">
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name
+      disabled
+      placeholder="Disabled Input"
+    />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Input label">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.Textarea placeholder="Disabled Input" disabled />
+    </>)</DsFormControl>;
+
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Start Time"
+  message="Select a time"
+  required
+>
+  <No Display Name />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl label="Start Time" required message="Select a time"><DsFormControl.TimePicker /></DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Start Time"
+  required
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Start Time" required>(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TimePicker />
+    </>)</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Start Time"
+  message="Time is required."
+  messageIcon="error"
+  required
+  status="error"
+>
+  <React.Fragment key=".0">
+    <DsFormControl.Description>
+      Optional helper text that describes the field in up to two lines.
+    </DsFormControl.Description>
+    <No Display Name />
+  </React.Fragment>
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Start Time"
+    required
+    message="Time is required."
+    messageIcon="error">(<>
+        <DsFormControl.Description>
+            Optional helper text that describes the field in up to two lines.
+        </DsFormControl.Description>
+        <DsFormControl.TimePicker />
+    </>)</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl label="Start Time">
+  <No Display Name disabled />
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Start Time"><DsFormControl.TimePicker disabled /></DsFormControl>;
+
+## With Min Max
+
+### Show code
+{
+  args: {
+    label: 'Business Hours',
+    message: 'Select a time between 9:00 AM and 5:00 PM'
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [value, setValue] = useState<Date | null>(null);
+    return <DsFormControl {...args}>
+                <DsFormControl.TimePicker value={value} onChange={setValue} min={new Date('2026-01-15T09:00:00')} max={new Date('2026-01-15T17:00:00')} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const WithMinMax = () => {
+    const [value, setValue] = useState<Date | null>(null);
+
+    return (
+        <DsFormControl
+            label="Business Hours"
+            message="Select a time between 9:00 AM and 5:00 PM">
+            <DsFormControl.TimePicker
+                value={value}
+                onChange={setValue}
+                min={new Date('2026-01-15T09:00:00')}
+                max={new Date('2026-01-15T17:00:00')} />
+        </DsFormControl>
+    );
+};
+
+## With Validation
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(null);
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Time is required' : undefined;
+    return <DsFormControl label="Start Time" required status={error ? 'error' : undefined} messageIcon="cancel" message={error}>
+                <DsFormControl.TimePicker value={value} onChange={v => {
+        setValue(v);
+        setTouched(true);
+      }} />
+            </DsFormControl>;
+  }
+}
+
+### MCP manifest
+const WithValidation = function Render() {
+    const [value, setValue] = useState<Date | null>(null);
+    const [touched, setTouched] = useState(false);
+    const error = touched && !value ? 'Time is required' : undefined;
+
+    return (
+        <DsFormControl
+            label="Start Time"
+            required
+            status={error ? 'error' : undefined}
+            messageIcon="cancel"
+            message={error}
+        >
+            <DsFormControl.TimePicker
+                value={value}
+                onChange={(v) => {
+                    setValue(v);
+                    setTouched(true);
+                }}
+            />
+        </DsFormControl>
+    );
+};

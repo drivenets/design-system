@@ -1,0 +1,354 @@
+# DsSelect docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsSelect options={[{
+      value: 'apple',
+      label: 'Apple'
+    }, {
+      value: 'banana',
+      label: 'Banana'
+    }, {
+      value: 'cherry',
+      label: 'Cherry'
+    }, {
+      value: 'date',
+      label: 'Date'
+    }, {
+      value: 'elderberry',
+      label: 'Elderberry'
+    }]} value={value} onValueChange={setValue} clearable onClear={() => setValue('')} />;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsSelect
+            options={[
+                { value: 'apple', label: 'Apple' },
+                { value: 'banana', label: 'Banana' },
+                { value: 'cherry', label: 'Cherry' },
+                { value: 'date', label: 'Date' },
+                { value: 'elderberry', label: 'Elderberry' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+            clearable
+            onClear={() => setValue('')}
+        />
+    );
+};
+
+## With Icons
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsSelect options={[{
+      value: 'apple',
+      label: 'Apple',
+      icon: 'nutrition'
+    }, {
+      value: 'banana',
+      label: 'Banana',
+      icon: 'nutrition'
+    }, {
+      value: 'cherry',
+      label: 'Cherry',
+      icon: 'nutrition'
+    }]} value={value} onValueChange={setValue} />;
+  }
+}
+
+### MCP manifest
+const WithIcons = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsSelect
+            options={[
+                { value: 'apple', label: 'Apple', icon: 'nutrition' },
+                { value: 'banana', label: 'Banana', icon: 'nutrition' },
+                { value: 'cherry', label: 'Cherry', icon: 'nutrition' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+        />
+    );
+};
+
+## With Search
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsSelect options={[{
+      value: 'apple',
+      label: 'Apple'
+    }, {
+      value: 'banana',
+      label: 'Banana'
+    }, {
+      value: 'cherry',
+      label: 'Cherry'
+    }, {
+      value: 'date',
+      label: 'Date'
+    }, {
+      value: 'elderberry',
+      label: 'Elderberry'
+    }, {
+      value: 'fig',
+      label: 'Fig'
+    }, {
+      value: 'grape',
+      label: 'Grape'
+    }, {
+      value: 'honeydew',
+      label: 'Honeydew'
+    }]} value={value} onValueChange={setValue} />;
+  }
+}
+
+### MCP manifest
+const WithSearch = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsSelect
+            options={[
+                { value: 'apple', label: 'Apple' },
+                { value: 'banana', label: 'Banana' },
+                { value: 'cherry', label: 'Cherry' },
+                { value: 'date', label: 'Date' },
+                { value: 'elderberry', label: 'Elderberry' },
+                { value: 'fig', label: 'Fig' },
+                { value: 'grape', label: 'Grape' },
+                { value: 'honeydew', label: 'Honeydew' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+        />
+    );
+};
+
+## Multi Select
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<string[]>([]);
+    return <DsSelect multiple options={[{
+      value: 'apple',
+      label: 'Apple'
+    }, {
+      value: 'banana',
+      label: 'Banana'
+    }, {
+      value: 'cherry',
+      label: 'Cherry'
+    }, {
+      value: 'date',
+      label: 'Date'
+    }, {
+      value: 'elderberry',
+      label: 'Elderberry'
+    }]} value={value} onValueChange={setValue} clearable onClear={() => setValue([])} />;
+  }
+}
+
+### MCP manifest
+const MultiSelect = function Render() {
+    const [value, setValue] = useState<string[]>([]);
+
+    return (
+        <DsSelect
+            multiple
+            options={[
+                { value: 'apple', label: 'Apple' },
+                { value: 'banana', label: 'Banana' },
+                { value: 'cherry', label: 'Cherry' },
+                { value: 'date', label: 'Date' },
+                { value: 'elderberry', label: 'Elderberry' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+            clearable
+            onClear={() => setValue([])}
+        />
+    );
+};
+
+## Custom Render Option
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsSelect options={[{
+      value: 'us',
+      label: 'United States'
+    }, {
+      value: 'gb',
+      label: 'United Kingdom'
+    }, {
+      value: 'de',
+      label: 'Germany'
+    }, {
+      value: 'jp',
+      label: 'Japan'
+    }]} value={value} onValueChange={setValue} renderOption={option => <DsStack gap="var(--2xs)" alignItems="center">
+                        <DsTag label={option.value.toUpperCase()} size="small" />
+                        {option.label}
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const CustomRenderOption = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsSelect
+            options={[
+                { value: 'us', label: 'United States' },
+                { value: 'gb', label: 'United Kingdom' },
+                { value: 'de', label: 'Germany' },
+                { value: 'jp', label: 'Japan' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+            renderOption={(option) => (
+                <DsStack gap="var(--2xs)" alignItems="center">
+                    <DsTag label={option.value.toUpperCase()} size="small" />
+                    {option.label}
+                </DsStack>
+            )}
+        />
+    );
+};
+
+## Custom Render Value
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const versionStatus: Record<string, {
+      status: DsStatus;
+      label: string;
+    }> = {
+      'v1.0': {
+        status: 'active',
+        label: 'Live'
+      },
+      'v2.3': {
+        status: 'pending',
+        label: 'Pending'
+      },
+      'v3.6': {
+        status: 'draft',
+        label: 'Draft'
+      }
+    };
+    const [value, setValue] = useState('');
+    return <DsSelect options={[{
+      value: 'v1.0',
+      label: 'v1.0'
+    }, {
+      value: 'v2.3',
+      label: 'v2.3'
+    }, {
+      value: 'v3.6',
+      label: 'v3.6'
+    }]} value={value} onValueChange={setValue} renderValue={selected => {
+      const info = versionStatus[selected.value];
+      return <DsStack gap="var(--2xs)" alignItems="center">
+                            {selected.label}
+                            {info && <DsStatusBadge status={info.status} label={info.label} size="small" ghost />}
+                        </DsStack>;
+    }} />;
+  }
+}
+
+### MCP manifest
+const CustomRenderValue = function Render() {
+    const versionStatus: Record<string, { status: DsStatus; label: string }> = {
+        'v1.0': { status: 'active', label: 'Live' },
+        'v2.3': { status: 'pending', label: 'Pending' },
+        'v3.6': { status: 'draft', label: 'Draft' },
+    };
+    const [value, setValue] = useState('');
+
+    return (
+        <DsSelect
+            options={[
+                { value: 'v1.0', label: 'v1.0' },
+                { value: 'v2.3', label: 'v2.3' },
+                { value: 'v3.6', label: 'v3.6' },
+            ]}
+            value={value}
+            onValueChange={setValue}
+            renderValue={(selected) => {
+                const info = versionStatus[selected.value];
+
+                return (
+                    <DsStack gap="var(--2xs)" alignItems="center">
+                        {selected.label}
+                        {info && <DsStatusBadge status={info.status} label={info.label} size="small" ghost />}
+                    </DsStack>
+                );
+            }}
+        />
+    );
+};
