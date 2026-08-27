@@ -67,6 +67,19 @@ export const Expandable: Story = {
 	},
 };
 
+/**
+ * The expander utility column is 36px by default. Pass a pixel width when the
+ * chevron column needs more (or less) room. It is not user-resizable.
+ */
+export const CustomExpanderColumnWidth: Story = {
+	args: {
+		data: defaultData.slice(0, 5),
+		expandable: true,
+		expandableColumnWidth: 48,
+		renderExpandedRow: (row) => <div className={styles.expandedRowDetails}>Details for {row.firstName}</div>,
+	},
+};
+
 export const ProgrammaticExpansion: Story = {
 	args: {
 		data: defaultData.slice(0, 5),

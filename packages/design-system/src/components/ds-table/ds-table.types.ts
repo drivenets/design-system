@@ -340,14 +340,17 @@ export interface DsDataTableProps<TData, TValue> {
 	 * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
 	 * restore widths; columns absent from the map are measured and sized
 	 * automatically. This seeds widths — live resizing still updates them
-	 * internally — so it is not a fully controlled value.
+	 * internally — so it is not a fully controlled value. Ids for the select,
+	 * expander, and reorder utility columns are ignored; use the matching
+	 * `*ColumnWidth` props instead.
 	 */
 	columnSizing?: Record<string, number>;
 
 	/**
 	 * Called with the next column id → width (px) map when a resize finishes
 	 * (drag end, double-click restore, or keyboard nudge). Use this to persist
-	 * widths across sessions.
+	 * widths across sessions. Select, expander, and reorder utility columns are
+	 * omitted from the map.
 	 */
 	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
 
@@ -362,6 +365,14 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Whether the table is expandable or if an individual row should be expandable
 	 */
 	expandable?: boolean | ((row: TData) => boolean);
+
+	/**
+	 * Width in px of the expander utility column. Ignored when `expandable` is
+	 * off. Non-finite or `<= 0` falls back to the default. The column is not
+	 * user-resizable. Wins over a `columnSizing` entry for this column.
+	 * @default 36
+	 */
+	expandableColumnWidth?: number;
 
 	/**
 	 * Function to render the expanded row
@@ -393,6 +404,14 @@ export interface DsDataTableProps<TData, TValue> {
 	 * ```
 	 */
 	selectable?: boolean | ((rowData: TData) => boolean);
+
+	/**
+	 * Width in px of the select utility column. Ignored when `selectable` is
+	 * off. Non-finite or `<= 0` falls back to the default. The column is not
+	 * user-resizable. Wins over a `columnSizing` entry for this column.
+	 * @default 36
+	 */
+	selectableColumnWidth?: number;
 
 	/**
 	 * Whether to show the select/deselect all checkbox in the header
@@ -473,6 +492,15 @@ export interface DsDataTableProps<TData, TValue> {
 	 * @note This feature does not work when virtualization is enabled
 	 */
 	reorderable?: boolean;
+
+	/**
+	 * Width in px of the reorder utility column. Ignored when `reorderable` is
+	 * off or the table is virtualized. Non-finite or `<= 0` falls back to the
+	 * default. The column is not user-resizable. Wins over a `columnSizing`
+	 * entry for this column.
+	 * @default 60
+	 */
+	reorderableColumnWidth?: number;
 
 	/**
 	 * Callback when the order of rows changes via drag & drop
