@@ -32,6 +32,7 @@ export * from './components/ds-grid';
 export * from './components/ds-icon';
 export * from './components/ds-key-value-pair';
 export * from './components/ds-loader';
+export * from './components/ds-main-menu';
 export * from './components/ds-modal';
 export * from './components/ds-number-input';
 export * from './components/ds-panel';

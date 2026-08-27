@@ -29,6 +29,7 @@ const DsPopoverRoot = ({
 	align = 'center',
 	gutter = 8,
 	modal = false,
+	getAnchorElement,
 	children,
 	onOpenChange,
 }: DsPopoverRootProps) => (
@@ -36,7 +37,7 @@ const DsPopoverRoot = ({
 		open={open}
 		defaultOpen={defaultOpen}
 		modal={modal}
-		positioning={{ placement: toPlacement(side, align), gutter }}
+		positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
 		onOpenChange={(details) => onOpenChange?.(details.open)}
 	>
 		{children}
@@ -63,7 +64,7 @@ const DsPopoverPanel = ({
 				ref={ref}
 				aria-label={ariaLabel}
 				className={classNames(styles.panel, className)}
-				style={{ ...style, width }}
+				style={{ width, ...style }}
 			>
 				{children}
 			</Popover.Content>
