@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsTooltip from './ds-tooltip';
 import { tooltipPlacements } from './ds-tooltip.types';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsIcon } from '../ds-icon';
 
 const meta: Meta<typeof DsTooltip> = {
@@ -20,6 +21,15 @@ const meta: Meta<typeof DsTooltip> = {
 		},
 		disabled: {
 			control: 'boolean',
+		},
+		interactive: {
+			control: 'boolean',
+		},
+		openDelay: {
+			control: 'number',
+		},
+		closeDelay: {
+			control: 'number',
 		},
 		children: {
 			control: 'object',
@@ -71,6 +81,24 @@ export const Disabled: Story = {
 	args: {
 		content: 'You should not see this tooltip.',
 		disabled: true,
+		children: <DsIcon icon="info" />,
+	},
+};
+
+/**
+ * Pointer can travel onto the tooltip and use actions inside it. Pair
+ * `interactive` with a non-zero `closeDelay` so the handoff is not a race.
+ * Actions inside the tooltip should use the light/on-dark palette.
+ */
+export const Interactive: Story = {
+	args: {
+		content: (
+			<DsButtonV3 variant="tertiary" color="light" size="tiny">
+				Open in catalog
+			</DsButtonV3>
+		),
+		interactive: true,
+		closeDelay: 150,
 		children: <DsIcon icon="info" />,
 	},
 };
