@@ -89,10 +89,35 @@ export const ReadOnly: Story = {
 
 /**
  * Controlled time picker where the parent owns the value via `value`/`onChange`.
- * Here the value updates from outside every five seconds; while the user is
- * typing, the field waits until blur before showing the external value.
+ * Use this pattern when other UI needs to react to the selected time.
  */
 export const Controlled: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const [value, setValue] = useState<Date | null>(createTime(9, 45));
+
+		return (
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTimePicker value={value} onChange={setValue} />
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Value: {formatTimeLabel(value)}
+				</DsTypography>
+			</DsStack>
+		);
+	},
+};
+
+/**
+ * Demonstrates external value changes: the value updates from outside every five
+ * seconds. While the user is typing, the field waits until blur before showing
+ * the external value. Excluded from the manifest as it is a Storybook-only demo.
+ */
+export const ExternalUpdates: Story = {
+	tags: ['!manifest'],
 	parameters: {
 		docs: {
 			source: { type: 'code' },

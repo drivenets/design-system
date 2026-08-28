@@ -233,9 +233,7 @@ const Email = function Render() {
             value={value}
             onValueChange={setValue}
             slots={{
-                endAdornment: (
-                    <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />
-                ),
+                endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />,
             }}
         />
     );
@@ -258,9 +256,7 @@ const DisabledAdornments = () => <DsTextInput
     value="Disabled value"
     disabled
     slots={{
-        startAdornment: (
-            <DsButtonV3 variant="tertiary" size="small" icon="lock" aria-label="Locked" disabled />
-        ),
+        startAdornment: <DsButtonV3 variant="tertiary" size="small" icon="lock" aria-label="Locked" disabled />,
         endAdornment: (
             <DsButtonV3
                 variant="tertiary"

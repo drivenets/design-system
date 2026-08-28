@@ -31,6 +31,7 @@ const COMPONENTS = [
 	'select',
 	'slider',
 	'text-input',
+	'textarea',
 	'time-picker',
 	'toggle',
 ];

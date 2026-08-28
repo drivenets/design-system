@@ -51,12 +51,6 @@ const ReadOnly = () => <DsTimePicker value={createTime(14, 30)} readOnly />;
   },
   render: function Render() {
     const [value, setValue] = useState<Date | null>(createTime(9, 45));
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setValue(createTime(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60)));
-      }, 5000);
-      return () => clearInterval(interval);
-    }, []);
     return <DsStack direction="column" gap="var(--sm)">
                 <DsTimePicker value={value} onChange={setValue} />
                 <DsTypography variant="body-sm-reg" color="secondary">
@@ -69,14 +63,6 @@ const ReadOnly = () => <DsTimePicker value={createTime(14, 30)} readOnly />;
 ### MCP manifest
 const Controlled = function Render() {
     const [value, setValue] = useState<Date | null>(createTime(9, 45));
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setValue(createTime(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60)));
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, []);
 
     return (
         <DsStack direction="column" gap="var(--sm)">
