@@ -21,6 +21,13 @@ const rows: Row[] = [
 	{ id: '2', firstName: 'Kevin', lastName: 'Fine', age: 28 },
 ];
 
+const virtualizedRows: Row[] = Array.from({ length: 40 }, (_, i) => ({
+	id: String(i + 1),
+	firstName: `First${String(i + 1)}`,
+	lastName: `Last${String(i + 1)}`,
+	age: 20 + (i % 50),
+}));
+
 const sizedColumns: ColumnDef<Row>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
@@ -148,6 +155,14 @@ const getScrollContainer = (): HTMLElement => {
 		throw new Error('Expected the table scroll container');
 	}
 	return container;
+};
+
+const getTableBody = (container: HTMLElement): HTMLElement => {
+	const body = container.querySelector('tbody');
+	if (!(body instanceof HTMLElement)) {
+		throw new Error('Expected the table body');
+	}
+	return body;
 };
 
 describe('DsTable - resizable columns', () => {
@@ -637,7 +652,11 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps the drag overlay aligned with a group boundary', async () => {
-		await page.render(<DsTable columns={groupedColumns} data={rows} resizableColumns />);
+		const columns: ColumnDef<Row>[] = [
+			...groupedColumns,
+			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 120 },
+		];
+		await page.render(<DsTable columns={columns} data={rows} resizableColumns />);
 
 		const handle = getHandle('identity');
 		const startX = handle.getBoundingClientRect().right;
@@ -805,6 +824,175 @@ describe('DsTable - resizable columns', () => {
 
 		unhoverHandle(handle);
 		await expect.poll(() => document.querySelector('[data-resize-overlay]')).toBeNull();
+	});
+
+	it('does not introduce horizontal overflow when seeding two fill columns', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+		await page.render(
+			<div style={{ width: 1001, height: 300 }}>
+				<DsTable columns={columns} data={rows} resizableColumns />
+			</div>,
+		);
+
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
+
+		const container = getScrollContainer();
+		expect(container.scrollWidth).toBe(container.clientWidth);
+	});
+
+	it('does not introduce horizontal overflow when hovering the last fill-column handle', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+		await page.render(
+			<div style={{ width: 1001, height: 300 }}>
+				<DsTable columns={columns} data={rows} resizableColumns />
+			</div>,
+		);
+
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
+
+		const handle = getHandle('lastName');
+		hoverHandle(handle);
+		await expect.poll(() => document.querySelector('[data-resize-overlay]')).not.toBeNull();
+
+		const container = getScrollContainer();
+		expect(container.scrollWidth).toBe(container.clientWidth);
+
+		unhoverHandle(handle);
+		await expect.poll(() => document.querySelector('[data-resize-overlay]')).toBeNull();
+		expect(container.scrollWidth).toBe(container.clientWidth);
+	});
+
+	it('does not introduce horizontal overflow when seeding three fill columns', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue() },
+		];
+		await page.render(
+			<div style={{ width: 1116, height: 300 }}>
+				<DsTable columns={columns} data={rows} resizableColumns />
+			</div>,
+		);
+
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
+
+		const container = getScrollContainer();
+		expect(container.scrollWidth).toBe(container.clientWidth);
+	});
+
+	it('does not introduce horizontal overflow when seeding a virtualized table with a vertical scrollbar', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+		await page.render(
+			<div style={{ width: 1001, height: 400 }}>
+				<DsTable columns={columns} data={virtualizedRows} virtualized resizableColumns />
+			</div>,
+		);
+
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
+
+		const container = getScrollContainer();
+		expect(getComputedStyle(getTableBody(container)).overflowX).toBe('hidden');
+		expect(container.scrollWidth).toBe(container.clientWidth);
+	});
+
+	it('keeps outer horizontal scroll when virtualized authored widths exceed the container', async () => {
+		const wideColumns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 400 },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 400 },
+			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 400 },
+		];
+		await page.render(
+			<div style={{ width: 320, height: 400 }}>
+				<DsTable columns={wideColumns} data={virtualizedRows} virtualized resizableColumns />
+			</div>,
+		);
+
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
+
+		const container = getScrollContainer();
+		expect(getComputedStyle(getTableBody(container)).overflowX).toBe('hidden');
+		expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
+	});
+
+	it('fills the container when seeding grouped fill columns in a wide container', async () => {
+		const columns: ColumnDef<Row>[] = [
+			{
+				id: 'identity',
+				header: 'Identity',
+				columns: [
+					{
+						accessorKey: 'firstName',
+						header: 'First Name',
+						cell: (info) => info.getValue<string>(),
+						minSize: 80,
+						maxSize: 280,
+					},
+					{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue<string>() },
+				],
+			},
+			{
+				id: 'activity',
+				header: 'Activity',
+				columns: [
+					{ accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>() },
+					{ accessorKey: 'status', header: 'Status', cell: (info) => info.getValue<string>() },
+					{ accessorKey: 'age', header: 'Progress', cell: (info) => info.getValue<number>() },
+				],
+			},
+		];
+		await page.render(
+			<div style={{ width: 1800, height: 300 }}>
+				<DsTable columns={columns} data={rows} resizableColumns />
+			</div>,
+		);
+
+		await expect
+			.poll(() => {
+				const table = document.querySelector('table');
+				return table instanceof HTMLElement ? table.style.width : '';
+			})
+			.not.toBe('');
+
+		const container = getScrollContainer();
+		const leafIds = ['firstName', 'lastName', 'visits', 'status', 'age'];
+		const leafTotal = leafIds.reduce((sum, id) => sum + widthOf(id), 0);
+
+		expect(Math.round(widthOf('firstName'))).toBe(280);
+		expect(Math.abs(leafTotal - container.clientWidth)).toBeLessThan(3);
 	});
 
 	it('returns fill columns to flex when resizing is turned off', async () => {

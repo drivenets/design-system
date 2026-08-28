@@ -14,9 +14,11 @@ import {
 	getResizableHeaderStyle,
 	getResizeOriginSize,
 	getUtilityColumnSizing,
+	growFillLeavesToContainer,
 	isExplicitColumnWidth,
 	omitBuiltinColumnSizing,
 	resolveUtilityColumnWidth,
+	shiftColumnTrack,
 	withUtilityColumnSizing,
 } from './column-size';
 import {
@@ -181,6 +183,115 @@ describe('collectMissingLeafSizing', () => {
 
 	it('returns an empty map when every measured id already has a sizing entry', () => {
 		expect(collectMissingLeafSizing({ a: 100 }, { a: 90 })).toEqual({});
+	});
+
+	it('reconciles independent rounding so seeded widths match the measured total', () => {
+		const next = collectMissingLeafSizing({ a: 500.6, b: 500.6 }, {});
+
+		expect(next).toEqual({ a: 501, b: 500 });
+	});
+
+	it('absorbs rounding drift into missing ids and leaves existing widths unchanged', () => {
+		expect(collectMissingLeafSizing({ a: 500.6, b: 500.6 }, { b: 501 }, 1001)).toEqual({ a: 500 });
+	});
+
+	it('does not snap seeded widths to the container when measured columns overflow it', () => {
+		expect(collectMissingLeafSizing({ a: 1000, b: 1000 }, {}, 1116)).toEqual({ a: 1000, b: 1000 });
+	});
+
+	it('snaps a 1px measured overflow to the container width', () => {
+		const next = collectMissingLeafSizing({ a: 558.5, b: 558.5 }, {}, 1116);
+		const total = Object.values(next).reduce((sum, width) => sum + width, 0);
+
+		expect(total).toBe(1116);
+	});
+
+	it('distributes container underflow across fill leaves by their measured share', () => {
+		const next = collectMissingLeafSizing({ a: 200, b: 200 }, {}, 1200, ['a', 'b']);
+
+		expect(next).toEqual({ a: 600, b: 600 });
+	});
+
+	it('grows only fill leaves when the container is wider than the measured total', () => {
+		const next = collectMissingLeafSizing({ a: 200, b: 200, c: 200 }, {}, 1200, ['b', 'c']);
+
+		expect(next).toEqual({ a: 200, b: 500, c: 500 });
+	});
+});
+
+describe('growFillLeavesToContainer', () => {
+	it('moves leftover space onto uncapped fill leaves after a sibling hits maxSize', () => {
+		const next = growFillLeavesToContainer(
+			{ a: 280, b: 360, c: 360 },
+			{},
+			['a', 'b', 'c'],
+			1200,
+			['a', 'b', 'c'],
+			[
+				{ id: 'a', columnDef: { maxSize: 280 } },
+				{ id: 'b', columnDef: {} },
+				{ id: 'c', columnDef: {} },
+			],
+		);
+
+		expect(next.a).toBe(280);
+		expect(next.b).toBeGreaterThan(360);
+		expect(next.c).toBeGreaterThan(360);
+		expect((next.a ?? 0) + (next.b ?? 0) + (next.c ?? 0)).toBe(1200);
+	});
+
+	it('does not grow an explicit leaf when filling leftover space', () => {
+		const next = growFillLeavesToContainer(
+			{ a: 280, b: 360, c: 360 },
+			{},
+			['a', 'b', 'c'],
+			1200,
+			['b', 'c'],
+			[
+				{ id: 'a', columnDef: { maxSize: 280 } },
+				{ id: 'b', columnDef: {} },
+				{ id: 'c', columnDef: {} },
+			],
+		);
+
+		expect(next).toEqual({ a: 280, b: 460, c: 460 });
+	});
+});
+
+describe('shiftColumnTrack', () => {
+	const bounds = [
+		{ id: 'a', columnDef: {} },
+		{ id: 'b', columnDef: {} },
+	];
+
+	it('returns the same map when delta is 0', () => {
+		const sizing = { a: 200, b: 200 };
+
+		expect(shiftColumnTrack(sizing, ['a', 'b'], 0, bounds)).toBe(sizing);
+	});
+
+	it('shrinks from the last leaf when the spacer appears', () => {
+		const next = shiftColumnTrack({ a: 500, b: 500 }, ['a', 'b'], -10, bounds);
+
+		expect(next.a).toBe(500);
+		expect(next.b).toBe(490);
+		expect((next.a ?? 0) + (next.b ?? 0)).toBe(990);
+	});
+
+	it('grows leaves when the spacer disappears', () => {
+		const next = shiftColumnTrack({ a: 500, b: 490 }, ['a', 'b'], 10, bounds);
+
+		expect((next.a ?? 0) + (next.b ?? 0)).toBe(1000);
+	});
+
+	it('does not shrink a leaf below minSize', () => {
+		const next = shiftColumnTrack({ a: 200, b: 52 }, ['a', 'b'], -10, [
+			{ id: 'a', columnDef: {} },
+			{ id: 'b', columnDef: { minSize: 52 } },
+		]);
+
+		expect(next.b).toBe(52);
+		expect(next.a).toBe(190);
 	});
 });
 

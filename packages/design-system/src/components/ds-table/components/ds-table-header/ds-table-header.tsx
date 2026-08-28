@@ -16,7 +16,8 @@ import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
-	const { bordered, virtualized, resizableColumns, resizeSizingReady } = useDsTableContext<TData, unknown>();
+	const { bordered, virtualized, resizableColumns, resizeSizingReady, scrollbarSpacerWidth } =
+		useDsTableContext<TData, unknown>();
 
 	return (
 		<TableHeader className={classnames(styles.header, virtualized && styles.virtualizedHeader)}>
@@ -130,6 +131,19 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 							</TableHead>
 						);
 					})}
+					<TableHead
+						aria-hidden
+						className={classnames(
+							styles.headerCell,
+							styles.scrollbarSpacer,
+							scrollbarSpacerWidth > 0 && styles.scrollbarSpacerOccupied,
+						)}
+						style={{
+							width: scrollbarSpacerWidth,
+							minWidth: scrollbarSpacerWidth,
+							flexShrink: 0,
+						}}
+					/>
 				</TableRow>
 			))}
 		</TableHeader>
