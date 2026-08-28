@@ -14,6 +14,9 @@ const DsTooltip: FC<DsTooltipProps> = ({
 	children,
 	placement = 'top',
 	disabled = false,
+	interactive = false,
+	openDelay = OPEN_DELAY_MS,
+	closeDelay = CLOSE_DELAY_MS,
 	getAnchorRect,
 	slotProps,
 }) => {
@@ -23,8 +26,9 @@ const DsTooltip: FC<DsTooltipProps> = ({
 
 	return (
 		<Tooltip.Root
-			openDelay={OPEN_DELAY_MS}
-			closeDelay={CLOSE_DELAY_MS}
+			interactive={interactive}
+			openDelay={openDelay}
+			closeDelay={closeDelay}
 			disabled={disabled}
 			positioning={{ placement, gutter: TOOLTIP_GUTTER_PX, getAnchorRect: getAnchorRect ?? undefined }}
 			lazyMount
