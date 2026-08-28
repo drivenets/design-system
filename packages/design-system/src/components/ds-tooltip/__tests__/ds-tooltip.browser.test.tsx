@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTooltip from '../ds-tooltip';
 
@@ -98,5 +98,48 @@ describe('DsTooltip', () => {
 
 		await trigger.hover();
 		await expect.element(page.getByRole('tooltip', { name: 'Now visible' })).toBeVisible();
+	});
+
+	it('closes immediately when the pointer leaves a non-interactive tooltip', async () => {
+		await page.render(
+			<DsTooltip content="Tooltip text">
+				<button type="button">Trigger</button>
+			</DsTooltip>,
+		);
+
+		const trigger = page.getByRole('button', { name: 'Trigger' });
+		await trigger.hover();
+		await expect.element(page.getByRole('tooltip')).toBeVisible();
+
+		await trigger.unhover();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+	});
+
+	it('keeps an interactive tooltip open so actions inside it can be clicked', async () => {
+		const onOpen = vi.fn();
+
+		await page.render(
+			<DsTooltip
+				interactive
+				closeDelay={150}
+				content={
+					<button type="button" onClick={onOpen}>
+						Open in catalog
+					</button>
+				}
+			>
+				<button type="button">Trigger</button>
+			</DsTooltip>,
+		);
+
+		await page.getByRole('button', { name: 'Trigger' }).hover();
+		await expect.element(page.getByRole('tooltip')).toBeVisible();
+
+		const action = page.getByRole('button', { name: 'Open in catalog' });
+		await action.hover();
+		await expect.element(page.getByRole('tooltip')).toBeVisible();
+
+		await action.click();
+		expect(onOpen).toHaveBeenCalledOnce();
 	});
 });
