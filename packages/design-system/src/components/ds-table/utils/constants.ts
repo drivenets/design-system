@@ -56,6 +56,19 @@ export const SKELETON_ROW_COUNT = 5;
 export const RESIZE_MIN_COLUMN_WIDTH = 52;
 
 /**
+ * Pixel width of the full-height resize overlay divider. Must match
+ * `$resize-divider-width` in `styles/_variables.scss`.
+ */
+export const RESIZE_DIVIDER_WIDTH = 2;
+
+/**
+ * Rest width of the header **Scrollbar spacer** when the body overflows
+ * vertically. Must match `$scrollbar-default-size` in `styles/_scrollbars.scss`.
+ * Hover (12px) is intentionally not tracked.
+ */
+export const SCROLLBAR_SPACER_WIDTH = 10;
+
+/**
  * Width change (in px) applied per Arrow key press when a resize handle is
  * focused.
  */

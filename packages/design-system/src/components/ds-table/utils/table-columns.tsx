@@ -3,6 +3,7 @@ import { DsSkeletonText } from '../../ds-skeleton';
 import { DsTableHeaderSelectableCell } from '../components/ds-table-header-selectable-cell';
 import { DsTableRowExpandableCell } from '../components/ds-table-row-expandable-cell';
 import { DsTableRowSelectableCell } from '../components/ds-table-row-selectable-cell';
+import { resolveUtilityColumnWidth } from './column-size';
 import {
 	EXPANDER_COLUMN_ID,
 	EXPANDER_COLUMN_WIDTH,
@@ -19,6 +20,9 @@ export type GetAugmentedColumnsOptions = {
 	reorderable: boolean;
 	virtualized: boolean;
 	showSelectAllCheckbox: boolean;
+	selectableColumnWidth?: number;
+	expandableColumnWidth?: number;
+	reorderableColumnWidth?: number;
 };
 
 const EXPLICIT_SIZE_META = { hasExplicitSize: true } as const;
@@ -41,6 +45,13 @@ const stampExplicitSize = <TData, TValue>(columns: ColumnDef<TData, TValue>[]): 
 		return { ...column, meta: { ...column.meta, ...EXPLICIT_SIZE_META } };
 	});
 
+/** Pin min/max so the table-wide resize `minSize` cannot stretch this column. */
+const pinUtilityColumnSize = (width: number) => ({
+	size: width,
+	minSize: width,
+	maxSize: width,
+});
+
 /**
  * Prepends the builtin select / expander / reorder columns when those features
  * are on. Reorder is omitted for virtualized tables. Unshift order yields
@@ -48,19 +59,24 @@ const stampExplicitSize = <TData, TValue>(columns: ColumnDef<TData, TValue>[]): 
  */
 export const getAugmentedColumns = <TData, TValue>(
 	columns: ColumnDef<TData, TValue>[],
-	{ selectable, expandable, reorderable, virtualized, showSelectAllCheckbox }: GetAugmentedColumnsOptions,
+	{
+		selectable,
+		expandable,
+		reorderable,
+		virtualized,
+		showSelectAllCheckbox,
+		selectableColumnWidth,
+		expandableColumnWidth,
+		reorderableColumnWidth,
+	}: GetAugmentedColumnsOptions,
 ): ColumnDef<TData, TValue>[] => {
 	const augmentedColumns: ColumnDef<TData, TValue>[] = stampExplicitSize(columns);
 
 	if (selectable) {
+		const width = resolveUtilityColumnWidth(selectableColumnWidth, SELECT_COLUMN_WIDTH);
 		augmentedColumns.unshift({
 			id: SELECT_COLUMN_ID,
-			size: SELECT_COLUMN_WIDTH,
-			// Pin min/max to the fixed width: `enableResizing: false` blocks the
-			// handle but not the table-wide resize `minSize`, which would otherwise
-			// stretch this column.
-			minSize: SELECT_COLUMN_WIDTH,
-			maxSize: SELECT_COLUMN_WIDTH,
+			...pinUtilityColumnSize(width),
 			enableSorting: false,
 			enableResizing: false,
 			meta: EXPLICIT_SIZE_META,
@@ -70,11 +86,10 @@ export const getAugmentedColumns = <TData, TValue>(
 	}
 
 	if (expandable) {
+		const width = resolveUtilityColumnWidth(expandableColumnWidth, EXPANDER_COLUMN_WIDTH);
 		augmentedColumns.unshift({
 			id: EXPANDER_COLUMN_ID,
-			size: EXPANDER_COLUMN_WIDTH,
-			minSize: EXPANDER_COLUMN_WIDTH,
-			maxSize: EXPANDER_COLUMN_WIDTH,
+			...pinUtilityColumnSize(width),
 			enableSorting: false,
 			enableResizing: false,
 			meta: EXPLICIT_SIZE_META,
@@ -84,13 +99,12 @@ export const getAugmentedColumns = <TData, TValue>(
 	}
 
 	if (reorderable && !virtualized) {
+		const width = resolveUtilityColumnWidth(reorderableColumnWidth, REORDER_COLUMN_WIDTH);
 		// Cell is rendered inline by DsTableRow when it encounters REORDER_COLUMN_ID,
 		// since the drag handle needs row-level useSortable state.
 		augmentedColumns.unshift({
 			id: REORDER_COLUMN_ID,
-			size: REORDER_COLUMN_WIDTH,
-			minSize: REORDER_COLUMN_WIDTH,
-			maxSize: REORDER_COLUMN_WIDTH,
+			...pinUtilityColumnSize(width),
 			enableSorting: false,
 			enableResizing: false,
 			meta: EXPLICIT_SIZE_META,

@@ -1,0 +1,476 @@
+# DsBulkActions docs snippets
+
+## Default
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={3}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="folder_open"
+    label="Folder"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const Default = () => <DsBulkActions selectedCount={3} onClearSelection={fn()}>
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+    <DsBulkActions.Item icon="folder_open" label="Folder" onClick={fn()} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete" onClick={fn()} />
+</DsBulkActions>;
+
+## Floating
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  placement="floating"
+  selectedCount={3}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="folder_open"
+    label="Folder"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const Floating = () => <DsBulkActions selectedCount={3} onClearSelection={fn()} placement="floating">
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+    <DsBulkActions.Item icon="folder_open" label="Folder" onClick={fn()} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete" onClick={fn()} />
+</DsBulkActions>;
+
+## Constrained Width
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={6}
+  style={{
+    width: 420
+  }}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="folder_open"
+    label="Folder"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="share"
+    label="Share"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="edit"
+    label="Edit"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="content_copy"
+    label="Duplicate"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const ConstrainedWidth = () => <DsBulkActions selectedCount={6} onClearSelection={fn()} style={{ width: 420 }}>
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+    <DsBulkActions.Item icon="folder_open" label="Folder" onClick={fn()} />
+    <DsBulkActions.Item icon="share" label="Share" onClick={fn()} />
+    <DsBulkActions.Item icon="edit" label="Edit" onClick={fn()} />
+    <DsBulkActions.Item icon="content_copy" label="Duplicate" onClick={fn()} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete" onClick={fn()} />
+</DsBulkActions>;
+
+## Parent Width
+
+### Show code
+<div className="_parentTrack_162ty_29">
+  <DsBulkActions
+    onClearSelection={() => {}}
+    selectedCount={6}
+    style={{
+      width: '100%'
+    }}
+  >
+    <DsBulkActions.Item
+      icon="alarm"
+      label="Notify"
+      onClick={() => {}}
+    />
+    <DsBulkActions.Item
+      icon="folder_open"
+      label="Folder"
+      onClick={() => {}}
+    />
+    <DsBulkActions.Item
+      icon="share"
+      label="Share"
+      onClick={() => {}}
+    />
+    <DsBulkActions.Item
+      icon="edit"
+      label="Edit"
+      onClick={() => {}}
+    />
+    <DsBulkActions.Item
+      icon="content_copy"
+      label="Duplicate"
+      onClick={() => {}}
+    />
+    <DsBulkActions.Item
+      icon="delete_outline"
+      label="Delete"
+      onClick={() => {}}
+    />
+  </DsBulkActions>
+</div>
+
+### MCP manifest
+const ParentWidth = () => <div className={styles.parentTrack}>
+    <DsBulkActions selectedCount={6} onClearSelection={fn()} style={{ width: '100%' }}>
+        <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+        <DsBulkActions.Item icon="folder_open" label="Folder" onClick={fn()} />
+        <DsBulkActions.Item icon="share" label="Share" onClick={fn()} />
+        <DsBulkActions.Item icon="edit" label="Edit" onClick={fn()} />
+        <DsBulkActions.Item icon="content_copy" label="Duplicate" onClick={fn()} />
+        <DsBulkActions.Item icon="delete_outline" label="Delete" onClick={fn()} />
+    </DsBulkActions>
+</div>;
+
+## Menu Action
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={3}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="share"
+    label="Share"
+    menu={[
+      {
+        icon: 'mail',
+        label: 'Email',
+        onSelect: () => {},
+        value: 'email'
+      },
+      {
+        icon: 'link',
+        label: 'Copy link',
+        onSelect: () => {},
+        value: 'link'
+      },
+      {
+        icon: 'delete_outline',
+        label: 'Remove access',
+        onSelect: () => {},
+        value: 'delete',
+        variant: 'error'
+      }
+    ]}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const MenuAction = () => <DsBulkActions selectedCount={3} onClearSelection={fn()}>
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+    <DsBulkActions.Item
+        icon="share"
+        label="Share"
+        menu={[
+            { value: 'email', label: 'Email', icon: 'mail', onSelect: fn() },
+            { value: 'link', label: 'Copy link', icon: 'link', onSelect: fn() },
+            {
+                value: 'delete',
+                label: 'Remove access',
+                icon: 'delete_outline',
+                variant: 'error',
+                onSelect: fn(),
+            },
+        ]} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete" onClick={fn()} />
+</DsBulkActions>;
+
+## Nested Menu
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  placement="floating"
+  selectedCount={3}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="share"
+    label="Share"
+    menu={[
+      {
+        icon: 'mail',
+        label: 'Email',
+        onSelect: () => {},
+        value: 'email'
+      },
+      {
+        icon: 'link',
+        label: 'More options',
+        menu: [
+          {
+            label: 'Copy link',
+            onSelect: () => {},
+            value: 'copy-link'
+          },
+          {
+            label: 'Social media',
+            onSelect: () => {},
+            value: 'social'
+          }
+        ],
+        value: 'more'
+      }
+    ]}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const NestedMenu = () => <DsBulkActions selectedCount={3} onClearSelection={fn()} placement="floating">
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+    <DsBulkActions.Item
+        icon="share"
+        label="Share"
+        menu={[
+            { value: 'email', label: 'Email', icon: 'mail', onSelect: fn() },
+            {
+                value: 'more',
+                label: 'More options',
+                icon: 'link',
+                menu: [
+                    { value: 'copy-link', label: 'Copy link', onSelect: fn() },
+                    { value: 'social', label: 'Social media', onSelect: fn() },
+                ],
+            },
+        ]} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete" onClick={fn()} />
+</DsBulkActions>;
+
+## Long Action Labels
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={2}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify all stakeholders"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete permanently"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const LongActionLabels = () => <DsBulkActions selectedCount={2} onClearSelection={fn()}>
+    <DsBulkActions.Item icon="alarm" label="Notify all stakeholders" onClick={fn()} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete permanently" onClick={fn()} />
+</DsBulkActions>;
+
+## Width Fit Content
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={3}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify all stakeholders"
+    onClick={() => {}}
+    width="fit-content"
+  />
+  <DsBulkActions.Item
+    icon="share"
+    label="Share with everyone in the workspace"
+    onClick={() => {}}
+    width="fit-content"
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete permanently"
+    onClick={() => {}}
+    width="fit-content"
+  />
+</DsBulkActions>
+
+### MCP manifest
+const WidthFitContent = () => <DsBulkActions selectedCount={3} onClearSelection={fn()}>
+    <DsBulkActions.Item
+        icon="alarm"
+        label="Notify all stakeholders"
+        width="fit-content"
+        onClick={fn()} />
+    <DsBulkActions.Item
+        icon="share"
+        label="Share with everyone in the workspace"
+        width="fit-content"
+        onClick={fn()} />
+    <DsBulkActions.Item
+        icon="delete_outline"
+        label="Delete permanently"
+        width="fit-content"
+        onClick={fn()} />
+</DsBulkActions>;
+
+## Width Custom
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={3}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify all stakeholders"
+    onClick={() => {}}
+    width={120}
+  />
+  <DsBulkActions.Item
+    icon="share"
+    label="Share with everyone in the workspace"
+    onClick={() => {}}
+    width={120}
+  />
+  <DsBulkActions.Item
+    icon="delete_outline"
+    label="Delete permanently"
+    onClick={() => {}}
+    width={160}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const WidthCustom = () => <DsBulkActions selectedCount={3} onClearSelection={fn()}>
+    <DsBulkActions.Item icon="alarm" label="Notify all stakeholders" width={120} onClick={fn()} />
+    <DsBulkActions.Item
+        icon="share"
+        label="Share with everyone in the workspace"
+        width={120}
+        onClick={fn()} />
+    <DsBulkActions.Item
+        icon="delete_outline"
+        label="Delete permanently"
+        width={160}
+        onClick={fn()} />
+</DsBulkActions>;
+
+## Disabled Action
+
+### Show code
+<DsBulkActions
+  onClearSelection={() => {}}
+  selectedCount={1}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+  <DsBulkActions.Item
+    disabled
+    icon="delete_outline"
+    label="Delete"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const DisabledAction = () => <DsBulkActions selectedCount={1} onClearSelection={fn()}>
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+    <DsBulkActions.Item icon="delete_outline" label="Delete" disabled onClick={fn()} />
+</DsBulkActions>;
+
+## Localized
+
+### Show code
+<DsBulkActions
+  locale={{
+    clearSelectionLabel: 'Dismiss selection',
+    itemsSelectedLabel: 'Rows picked',
+    moreActionsLabel: 'More actions'
+  }}
+  onClearSelection={() => {}}
+  selectedCount={5}
+>
+  <DsBulkActions.Item
+    icon="alarm"
+    label="Notify"
+    onClick={() => {}}
+  />
+</DsBulkActions>
+
+### MCP manifest
+const Localized = () => <DsBulkActions
+    selectedCount={5}
+    onClearSelection={fn()}
+    locale={{
+        itemsSelectedLabel: 'Rows picked',
+        clearSelectionLabel: 'Dismiss selection',
+        moreActionsLabel: 'More actions',
+    }}>
+    <DsBulkActions.Item icon="alarm" label="Notify" onClick={fn()} />
+</DsBulkActions>;
