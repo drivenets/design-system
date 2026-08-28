@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsNumberInput from './ds-number-input';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsNumberInput> = {
@@ -112,12 +113,12 @@ export const Controlled: Story = {
 					onValueChange={setValue}
 				/>
 				<DsStack gap="var(--2xs)">
-					<button type="button" onClick={() => setValue(0)}>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue(0)}>
 						Reset to 0
-					</button>
-					<button type="button" onClick={() => setValue(100)}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue(100)}>
 						Set to 100
-					</button>
+					</DsButtonV3>
 				</DsStack>
 			</DsStack>
 		);

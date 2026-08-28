@@ -74,18 +74,18 @@ export const WithDescription: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					placeholder="Search"
-					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				placeholder="Search"
+				slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+			/>
+		</DsFormControl>
+	),
 };
 
 /** Surfaces contextual help through an end-adornment button beside the field. */
@@ -96,18 +96,18 @@ export const WithHelpIcon: Story = {
 		slots: {
 			endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
 		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					placeholder="Search"
-					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				placeholder="Search"
+				slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+			/>
+		</DsFormControl>
+	),
 };
 
 /** Decorates the input with a leading icon to hint at the expected content. */
@@ -132,18 +132,18 @@ export const Success: Story = {
 		label: 'Input label',
 		message: 'This is a success caption under a text input.',
 		messageIcon: 'check_circle',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					type="text"
-					slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				type="text"
+				slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
+			/>
+		</DsFormControl>
+	),
 };
 
 /** Error status flags an invalid value and pairs the message with an error icon. */
@@ -153,20 +153,20 @@ export const Error: Story = {
 		label: 'Input label',
 		message: 'This is an error caption under a text input.',
 		messageIcon: 'error',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					slots={{
-						startAdornment: <DsIcon icon="search" size="tiny" />,
-						endAdornment: <DsIcon icon="error" size="tiny" />,
-					}}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				slots={{
+					startAdornment: <DsIcon icon="search" size="tiny" />,
+					endAdornment: <DsIcon icon="error" size="tiny" />,
+				}}
+			/>
+		</DsFormControl>
+	),
 };
 
 /** Warning status highlights a value that needs attention without blocking submission. */
@@ -176,15 +176,15 @@ export const Warning: Story = {
 		label: 'Input label',
 		message: 'This is a warning caption under a text input.',
 		messageIcon: 'info',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput />
+		</DsFormControl>
+	),
 };
 
 /** Disabled state prevents interaction while keeping the field visible. */

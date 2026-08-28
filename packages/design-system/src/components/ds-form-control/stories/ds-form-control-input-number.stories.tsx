@@ -75,15 +75,15 @@ export const WithDescription: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+		</DsFormControl>
+	),
 };
 
 /** Surfaces contextual help through an end-adornment button beside the field. */
@@ -94,15 +94,15 @@ export const WithHelpIcon: Story = {
 		slots: {
 			endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
 		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+		</DsFormControl>
+	),
 };
 
 /** Success status confirms the entered value passed validation. */
@@ -112,15 +112,15 @@ export const Success: Story = {
 		label: 'Input label',
 		message: 'This is a success caption under a number input.',
 		messageIcon: 'check_circle',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+		</DsFormControl>
+	),
 };
 
 /** Error status flags an invalid value and pairs the message with an error icon. */
@@ -130,15 +130,15 @@ export const Error: Story = {
 		label: 'Input label',
 		message: 'This is an error caption under a number input.',
 		messageIcon: 'error',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+		</DsFormControl>
+	),
 };
 
 /** Warning status highlights a value that needs attention without blocking submission. */
@@ -148,35 +148,35 @@ export const Warning: Story = {
 		label: 'Input label',
 		message: 'This is a warning caption under a number input.',
 		messageIcon: 'info',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+		</DsFormControl>
+	),
 };
 
 /** Disabled state prevents interaction while keeping the field visible. */
 export const Disabled: Story = {
 	args: {
 		label: 'Input label',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.NumberInput
-					placeholder="Disabled Input"
-					disabled
-					min={1}
-					max={100}
-					step={1}
-					defaultValue={10}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.NumberInput
+				placeholder="Disabled Input"
+				disabled
+				min={1}
+				max={100}
+				step={1}
+				defaultValue={10}
+			/>
+		</DsFormControl>
+	),
 };

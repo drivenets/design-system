@@ -96,7 +96,7 @@ const DefaultValue = () => <DsExpandableTextInput icon="search" defaultValue="in
     return <DsStack direction="column" gap="var(--md)" width="31.25rem">
                 <DsStack gap="var(--2xs)" justifyContent="end">
                     <DsExpandableTextInput icon="search" placeholder="Type to search..." value={search} onChange={e => setSearch(e.target.value)} onClear={() => setSearch('')} />
-                    <DsButton size="small">Click</DsButton>
+                    <DsButtonV3 size="small">Click</DsButtonV3>
                 </DsStack>
                 <DsTable columns={columns} data={people} columnFilters={[{
         id: 'firstName',
@@ -120,7 +120,7 @@ const WithTable = function Render() {
                     onChange={(e) => setSearch(e.target.value)}
                     onClear={() => setSearch('')}
                 />
-                <DsButton size="small">Click</DsButton>
+                <DsButtonV3 size="small">Click</DsButtonV3>
             </DsStack>
             <DsTable columns={columns} data={people} columnFilters={[{ id: 'firstName', value: search }]} />
         </DsStack>

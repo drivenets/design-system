@@ -113,7 +113,7 @@ export const WithHelpIcon: Story = {
 export const Success: Story = {
 	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
-		const [value] = useState('2024-12-25');
+		const [value, setValue] = useState<string | undefined>('2024-12-25');
 
 		return (
 			<DsFormControl
@@ -125,7 +125,7 @@ export const Success: Story = {
 				<DsFormControl.Description>
 					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
-				<DsFormControl.DateInput value={value} />
+				<DsFormControl.DateInput value={value} onValueChange={setValue} />
 			</DsFormControl>
 		);
 	},
@@ -154,7 +154,7 @@ export const Error: Story = {
 export const Warning: Story = {
 	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
-		const [value] = useState('2024-12-25');
+		const [value, setValue] = useState<string | undefined>('2024-12-25');
 
 		return (
 			<DsFormControl
@@ -166,7 +166,7 @@ export const Warning: Story = {
 				<DsFormControl.Description>
 					Optional helper text that describes the field in up to two lines.
 				</DsFormControl.Description>
-				<DsFormControl.DateInput value={value} />
+				<DsFormControl.DateInput value={value} onValueChange={setValue} />
 			</DsFormControl>
 		);
 	},

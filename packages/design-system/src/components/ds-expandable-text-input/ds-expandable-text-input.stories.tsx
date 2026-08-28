@@ -4,7 +4,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { DsExpandableTextInput } from './ds-expandable-text-input';
 import { textInputSizes } from '../ds-text-input';
 import { DsTable } from '../ds-table';
-import { DsButton } from '../ds-button';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsExpandableTextInput> = {
@@ -161,7 +161,7 @@ export const WithTable: Story = {
 						onChange={(e) => setSearch(e.target.value)}
 						onClear={() => setSearch('')}
 					/>
-					<DsButton size="small">Click</DsButton>
+					<DsButtonV3 size="small">Click</DsButtonV3>
 				</DsStack>
 				<DsTable columns={columns} data={people} columnFilters={[{ id: 'firstName', value: search }]} />
 			</DsStack>

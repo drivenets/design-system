@@ -76,19 +76,19 @@ const WithHelpIcon = () => <DsFormControl
     }
   },
   render: function Render() {
-    const [value] = useState('2024-12-25');
+    const [value, setValue] = useState<string | undefined>('2024-12-25');
     return <DsFormControl status="success" label="Event Date" message="Valid date selected." messageIcon="check_circle">
                 <DsFormControl.Description>
                     Optional helper text that describes the field in up to two lines.
                 </DsFormControl.Description>
-                <DsFormControl.DateInput value={value} />
+                <DsFormControl.DateInput value={value} onValueChange={setValue} />
             </DsFormControl>;
   }
 }
 
 ### MCP manifest
 const Success = function Render() {
-    const [value] = useState('2024-12-25');
+    const [value, setValue] = useState<string | undefined>('2024-12-25');
 
     return (
         <DsFormControl
@@ -100,7 +100,7 @@ const Success = function Render() {
             <DsFormControl.Description>
                 Optional helper text that describes the field in up to two lines.
             </DsFormControl.Description>
-            <DsFormControl.DateInput value={value} />
+            <DsFormControl.DateInput value={value} onValueChange={setValue} />
         </DsFormControl>
     );
 };
@@ -145,19 +145,19 @@ const Error = () => <DsFormControl
     }
   },
   render: function Render() {
-    const [value] = useState('2024-12-25');
+    const [value, setValue] = useState<string | undefined>('2024-12-25');
     return <DsFormControl status="warning" label="Event Date" message="Date is approaching deadline." messageIcon="info">
                 <DsFormControl.Description>
                     Optional helper text that describes the field in up to two lines.
                 </DsFormControl.Description>
-                <DsFormControl.DateInput value={value} />
+                <DsFormControl.DateInput value={value} onValueChange={setValue} />
             </DsFormControl>;
   }
 }
 
 ### MCP manifest
 const Warning = function Render() {
-    const [value] = useState('2024-12-25');
+    const [value, setValue] = useState<string | undefined>('2024-12-25');
 
     return (
         <DsFormControl
@@ -169,7 +169,7 @@ const Warning = function Render() {
             <DsFormControl.Description>
                 Optional helper text that describes the field in up to two lines.
             </DsFormControl.Description>
-            <DsFormControl.DateInput value={value} />
+            <DsFormControl.DateInput value={value} onValueChange={setValue} />
         </DsFormControl>
     );
 };
@@ -328,13 +328,12 @@ const Default = () => <DsFormControl label="Event Date" required message="Select
 <DsFormControl
   label="Appointment"
   message="Select date and time"
-  required
 >
   <DsFormControl.DatePicker withTime />
 </DsFormControl>
 
 ### MCP manifest
-const WithTime = () => <DsFormControl label="Appointment" required message="Select date and time"><DsFormControl.DatePicker withTime /></DsFormControl>;
+const WithTime = () => <DsFormControl label="Appointment" message="Select date and time"><DsFormControl.DatePicker withTime /></DsFormControl>;
 
 ## With Description
 
@@ -343,21 +342,18 @@ const WithTime = () => <DsFormControl label="Appointment" required message="Sele
   label="Event Date"
   required
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.DatePicker />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.DatePicker />
 </DsFormControl>
 
 ### MCP manifest
-const WithDescription = () => <DsFormControl label="Event Date" required>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.DatePicker />
-    </>)</DsFormControl>;
+const WithDescription = () => <DsFormControl label="Event Date" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.DatePicker />
+</DsFormControl>;
 
 ## Error
 
@@ -369,12 +365,10 @@ const WithDescription = () => <DsFormControl label="Event Date" required>(<>
   required
   status="error"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.DatePicker />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.DatePicker />
 </DsFormControl>
 
 ### MCP manifest
@@ -383,12 +377,11 @@ const Error = () => <DsFormControl
     label="Event Date"
     required
     message="Date is required."
-    messageIcon="error">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.DatePicker />
-    </>)</DsFormControl>;
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.DatePicker />
+</DsFormControl>;
 
 ## Disabled
 
@@ -478,27 +471,24 @@ const Default = () => <DsFormControl label="Input label" required message="This 
   label="Input label"
   required
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.NumberInput
-      defaultValue={10}
-      max={100}
-      min={1}
-      placeholder="Enter number"
-      step={1}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.NumberInput
+    defaultValue={10}
+    max={100}
+    min={1}
+    placeholder="Enter number"
+    step={1}
+  />
 </DsFormControl>
 
 ### MCP manifest
-const WithDescription = () => <DsFormControl label="Input label" required>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-    </>)</DsFormControl>;
+const WithDescription = () => <DsFormControl label="Input label" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+</DsFormControl>;
 
 ## With Help Icon
 
@@ -510,18 +500,16 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
     endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.NumberInput
-      defaultValue={10}
-      max={100}
-      min={1}
-      placeholder="Enter number"
-      step={1}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.NumberInput
+    defaultValue={10}
+    max={100}
+    min={1}
+    placeholder="Enter number"
+    step={1}
+  />
 </DsFormControl>
 
 ### MCP manifest
@@ -530,12 +518,11 @@ const WithHelpIcon = () => <DsFormControl
     required
     slots={{
         endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
-    }}>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-    </>)</DsFormControl>;
+    }}>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+</DsFormControl>;
 
 ## Success
 
@@ -546,18 +533,16 @@ const WithHelpIcon = () => <DsFormControl
   messageIcon="check_circle"
   status="success"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.NumberInput
-      defaultValue={10}
-      max={100}
-      min={1}
-      placeholder="Enter number"
-      step={1}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.NumberInput
+    defaultValue={10}
+    max={100}
+    min={1}
+    placeholder="Enter number"
+    step={1}
+  />
 </DsFormControl>
 
 ### MCP manifest
@@ -565,12 +550,11 @@ const Success = () => <DsFormControl
     status="success"
     label="Input label"
     message="This is a success caption under a number input."
-    messageIcon="check_circle">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-    </>)</DsFormControl>;
+    messageIcon="check_circle">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+</DsFormControl>;
 
 ## Error
 
@@ -581,18 +565,16 @@ const Success = () => <DsFormControl
   messageIcon="error"
   status="error"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.NumberInput
-      defaultValue={10}
-      max={100}
-      min={1}
-      placeholder="Enter number"
-      step={1}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.NumberInput
+    defaultValue={10}
+    max={100}
+    min={1}
+    placeholder="Enter number"
+    step={1}
+  />
 </DsFormControl>
 
 ### MCP manifest
@@ -600,12 +582,11 @@ const Error = () => <DsFormControl
     status="error"
     label="Input label"
     message="This is an error caption under a number input."
-    messageIcon="error">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-    </>)</DsFormControl>;
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+</DsFormControl>;
 
 ## Warning
 
@@ -616,18 +597,16 @@ const Error = () => <DsFormControl
   messageIcon="info"
   status="warning"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.NumberInput
-      defaultValue={10}
-      max={100}
-      min={1}
-      placeholder="Enter number"
-      step={1}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.NumberInput
+    defaultValue={10}
+    max={100}
+    min={1}
+    placeholder="Enter number"
+    step={1}
+  />
 </DsFormControl>
 
 ### MCP manifest
@@ -635,46 +614,41 @@ const Warning = () => <DsFormControl
     status="warning"
     label="Input label"
     message="This is a warning caption under a number input."
-    messageIcon="info">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
-    </>)</DsFormControl>;
+    messageIcon="info">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.NumberInput placeholder="Enter number" min={1} max={100} step={1} defaultValue={10} />
+</DsFormControl>;
 
 ## Disabled
 
 ### Show code
 <DsFormControl label="Input label">
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.NumberInput
-      defaultValue={10}
-      disabled
-      max={100}
-      min={1}
-      placeholder="Disabled Input"
-      step={1}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.NumberInput
+    defaultValue={10}
+    disabled
+    max={100}
+    min={1}
+    placeholder="Disabled Input"
+    step={1}
+  />
 </DsFormControl>
 
 ### MCP manifest
-const Disabled = () => <DsFormControl label="Input label">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.NumberInput
-            placeholder="Disabled Input"
-            disabled
-            min={1}
-            max={100}
-            step={1}
-            defaultValue={10}
-        />
-    </>)</DsFormControl>;
+const Disabled = () => <DsFormControl label="Input label">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.NumberInput
+        placeholder="Disabled Input"
+        disabled
+        min={1}
+        max={100}
+        step={1}
+        defaultValue={10} />
+</DsFormControl>;
 
 # DsFormControl docs snippets
 
@@ -699,21 +673,18 @@ const Default = () => <DsFormControl label="Input label" required message="This 
   label="Input label"
   required
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.PasswordInput placeholder="Enter password" />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.PasswordInput placeholder="Enter password" />
 </DsFormControl>
 
 ### MCP manifest
-const WithDescription = () => <DsFormControl label="Input label" required>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.PasswordInput placeholder="Enter password" />
-    </>)</DsFormControl>;
+const WithDescription = () => <DsFormControl label="Input label" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.PasswordInput placeholder="Enter password" />
+</DsFormControl>;
 
 ## With Help Icon
 
@@ -725,12 +696,10 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
     endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.PasswordInput placeholder="Search" />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.PasswordInput placeholder="Search" />
 </DsFormControl>
 
 ### MCP manifest
@@ -739,12 +708,11 @@ const WithHelpIcon = () => <DsFormControl
     required
     slots={{
         endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
-    }}>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.PasswordInput placeholder="Search" />
-    </>)</DsFormControl>;
+    }}>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.PasswordInput placeholder="Search" />
+</DsFormControl>;
 
 ## Success
 
@@ -755,12 +723,10 @@ const WithHelpIcon = () => <DsFormControl
   messageIcon="check_circle"
   status="success"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.PasswordInput />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.PasswordInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -768,12 +734,11 @@ const Success = () => <DsFormControl
     status="success"
     label="Input label"
     message="This is a success caption under a password input."
-    messageIcon="check_circle">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.PasswordInput />
-    </>)</DsFormControl>;
+    messageIcon="check_circle">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.PasswordInput />
+</DsFormControl>;
 
 ## Error
 
@@ -784,12 +749,10 @@ const Success = () => <DsFormControl
   messageIcon="error"
   status="error"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.PasswordInput />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.PasswordInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -797,12 +760,11 @@ const Error = () => <DsFormControl
     status="error"
     label="Input label"
     message="This is an error caption under a password input."
-    messageIcon="error">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.PasswordInput />
-    </>)</DsFormControl>;
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.PasswordInput />
+</DsFormControl>;
 
 ## Warning
 
@@ -813,12 +775,10 @@ const Error = () => <DsFormControl
   messageIcon="info"
   status="warning"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.PasswordInput />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.PasswordInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -826,35 +786,31 @@ const Warning = () => <DsFormControl
     status="warning"
     label="Input label"
     message="This is a warning caption under a password input."
-    messageIcon="info">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.PasswordInput />
-    </>)</DsFormControl>;
+    messageIcon="info">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.PasswordInput />
+</DsFormControl>;
 
 ## Disabled
 
 ### Show code
 <DsFormControl label="Input label">
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.PasswordInput
-      disabled
-      placeholder="Disabled Input"
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.PasswordInput
+    disabled
+    placeholder="Disabled Input"
+  />
 </DsFormControl>
 
 ### MCP manifest
-const Disabled = () => <DsFormControl label="Input label">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.PasswordInput placeholder="Disabled Input" disabled />
-    </>)</DsFormControl>;
+const Disabled = () => <DsFormControl label="Input label">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.PasswordInput placeholder="Disabled Input" disabled />
+</DsFormControl>;
 
 # DsFormControl docs snippets
 
@@ -1302,29 +1258,25 @@ const Default = () => <DsFormControl label="Input label" required message="This 
   label="Input label"
   required
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TextInput
-      placeholder="Search"
-      slots={{
-        startAdornment: <DsIcon icon="search" size="tiny"/>
-      }}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TextInput
+    placeholder="Search"
+    slots={{
+      startAdornment: <DsIcon icon="search" size="tiny"/>
+    }}
+  />
 </DsFormControl>
 
 ### MCP manifest
-const WithDescription = () => <DsFormControl label="Input label" required>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TextInput
-            placeholder="Search"
-            slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
-        />
-    </>)</DsFormControl>;
+const WithDescription = () => <DsFormControl label="Input label" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TextInput
+        placeholder="Search"
+        slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }} />
+</DsFormControl>;
 
 ## With Help Icon
 
@@ -1336,17 +1288,15 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
     endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TextInput
-      placeholder="Search"
-      slots={{
-        startAdornment: <DsIcon icon="search" size="tiny"/>
-      }}
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TextInput
+    placeholder="Search"
+    slots={{
+      startAdornment: <DsIcon icon="search" size="tiny"/>
+    }}
+  />
 </DsFormControl>
 
 ### MCP manifest
@@ -1355,15 +1305,13 @@ const WithHelpIcon = () => <DsFormControl
     required
     slots={{
         endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
-    }}>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TextInput
-            placeholder="Search"
-            slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
-        />
-    </>)</DsFormControl>;
+    }}>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TextInput
+        placeholder="Search"
+        slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }} />
+</DsFormControl>;
 
 ## With Icon
 
@@ -1396,17 +1344,15 @@ const WithIcon = () => <DsFormControl label="Input label" required message="This
   messageIcon="check_circle"
   status="success"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TextInput
-      slots={{
-        endAdornment: <DsIcon icon="visibility" size="tiny"/>
-      }}
-      type="text"
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TextInput
+    slots={{
+      endAdornment: <DsIcon icon="visibility" size="tiny"/>
+    }}
+    type="text"
+  />
 </DsFormControl>
 
 ### MCP manifest
@@ -1414,15 +1360,13 @@ const Success = () => <DsFormControl
     status="success"
     label="Input label"
     message="This is a success caption under a text input."
-    messageIcon="check_circle">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TextInput
-            type="text"
-            slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
-        />
-    </>)</DsFormControl>;
+    messageIcon="check_circle">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TextInput
+        type="text"
+        slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }} />
+</DsFormControl>;
 
 ## Error
 
@@ -1433,17 +1377,15 @@ const Success = () => <DsFormControl
   messageIcon="error"
   status="error"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TextInput
-      slots={{
-        endAdornment: <DsIcon icon="error" size="tiny"/>,
-        startAdornment: <DsIcon icon="search" size="tiny"/>
-      }}
-     />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TextInput
+    slots={{
+      endAdornment: <DsIcon icon="error" size="tiny"/>,
+      startAdornment: <DsIcon icon="search" size="tiny"/>
+    }}
+   />
 </DsFormControl>
 
 ### MCP manifest
@@ -1451,17 +1393,15 @@ const Error = () => <DsFormControl
     status="error"
     label="Input label"
     message="This is an error caption under a text input."
-    messageIcon="error">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TextInput
-            slots={{
-                startAdornment: <DsIcon icon="search" size="tiny" />,
-                endAdornment: <DsIcon icon="error" size="tiny" />,
-            }}
-        />
-    </>)</DsFormControl>;
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TextInput
+        slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" />,
+            endAdornment: <DsIcon icon="error" size="tiny" />,
+        }} />
+</DsFormControl>;
 
 ## Warning
 
@@ -1472,12 +1412,10 @@ const Error = () => <DsFormControl
   messageIcon="info"
   status="warning"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TextInput />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TextInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -1485,12 +1423,11 @@ const Warning = () => <DsFormControl
     status="warning"
     label="Input label"
     message="This is a warning caption under a text input."
-    messageIcon="info">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TextInput />
-    </>)</DsFormControl>;
+    messageIcon="info">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TextInput />
+</DsFormControl>;
 
 ## Disabled
 
@@ -1531,21 +1468,18 @@ const Default = () => <DsFormControl label="Input label" required message="This 
   label="Input label"
   required
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.Textarea placeholder="Search" />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.Textarea placeholder="Search" />
 </DsFormControl>
 
 ### MCP manifest
-const WithDescription = () => <DsFormControl label="Input label" required>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.Textarea placeholder="Search" />
-    </>)</DsFormControl>;
+const WithDescription = () => <DsFormControl label="Input label" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.Textarea placeholder="Search" />
+</DsFormControl>;
 
 ## With Help Icon
 
@@ -1557,12 +1491,10 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
     endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.Textarea placeholder="Search" />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.Textarea placeholder="Search" />
 </DsFormControl>
 
 ### MCP manifest
@@ -1571,12 +1503,11 @@ const WithHelpIcon = () => <DsFormControl
     required
     slots={{
         endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
-    }}>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.Textarea placeholder="Search" />
-    </>)</DsFormControl>;
+    }}>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.Textarea placeholder="Search" />
+</DsFormControl>;
 
 ## Success
 
@@ -1587,12 +1518,10 @@ const WithHelpIcon = () => <DsFormControl
   messageIcon="check_circle"
   status="success"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.Textarea />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.Textarea />
 </DsFormControl>
 
 ### MCP manifest
@@ -1600,12 +1529,11 @@ const Success = () => <DsFormControl
     status="success"
     label="Input label"
     message="This is a success caption under a text input."
-    messageIcon="check_circle">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.Textarea />
-    </>)</DsFormControl>;
+    messageIcon="check_circle">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.Textarea />
+</DsFormControl>;
 
 ## Error
 
@@ -1616,12 +1544,10 @@ const Success = () => <DsFormControl
   messageIcon="error"
   status="error"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.Textarea />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.Textarea />
 </DsFormControl>
 
 ### MCP manifest
@@ -1629,12 +1555,11 @@ const Error = () => <DsFormControl
     status="error"
     label="Input label"
     message="This is an error caption under a text input."
-    messageIcon="error">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.Textarea />
-    </>)</DsFormControl>;
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.Textarea />
+</DsFormControl>;
 
 ## Warning
 
@@ -1645,12 +1570,10 @@ const Error = () => <DsFormControl
   messageIcon="info"
   status="warning"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.Textarea />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.Textarea />
 </DsFormControl>
 
 ### MCP manifest
@@ -1658,35 +1581,31 @@ const Warning = () => <DsFormControl
     status="warning"
     label="Input label"
     message="This is a warning caption under a text input."
-    messageIcon="info">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.Textarea />
-    </>)</DsFormControl>;
+    messageIcon="info">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.Textarea />
+</DsFormControl>;
 
 ## Disabled
 
 ### Show code
 <DsFormControl label="Input label">
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.Textarea
-      disabled
-      placeholder="Disabled Input"
-    />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.Textarea
+    disabled
+    placeholder="Disabled Input"
+  />
 </DsFormControl>
 
 ### MCP manifest
-const Disabled = () => <DsFormControl label="Input label">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.Textarea placeholder="Disabled Input" disabled />
-    </>)</DsFormControl>;
+const Disabled = () => <DsFormControl label="Input label">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.Textarea placeholder="Disabled Input" disabled />
+</DsFormControl>;
 
 # DsFormControl docs snippets
 

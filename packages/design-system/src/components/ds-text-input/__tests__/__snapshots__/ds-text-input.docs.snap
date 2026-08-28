@@ -68,12 +68,12 @@ const Disabled = () => <DsTextInput placeholder="Disabled input" disabled />;
     return <DsStack direction="column" gap="var(--sm)" alignItems="center">
                 <DsTextInput placeholder="Controlled input" value={value} onValueChange={setValue} />
                 <DsStack gap="var(--2xs)">
-                    <button type="button" onClick={() => setValue('updated value')}>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('updated value')}>
                         Update value
-                    </button>
-                    <button type="button" onClick={() => setValue('')}>
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
                         Clear value
-                    </button>
+                    </DsButtonV3>
                 </DsStack>
             </DsStack>;
   }
@@ -87,12 +87,12 @@ const Controlled = function Render() {
         <DsStack direction="column" gap="var(--sm)" alignItems="center">
             <DsTextInput placeholder="Controlled input" value={value} onValueChange={setValue} />
             <DsStack gap="var(--2xs)">
-                <button type="button" onClick={() => setValue('updated value')}>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('updated value')}>
                     Update value
-                </button>
-                <button type="button" onClick={() => setValue('')}>
+                </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
                     Clear value
-                </button>
+                </DsButtonV3>
             </DsStack>
         </DsStack>
     );
@@ -129,9 +129,7 @@ const WithStartAdornment = () => <DsTextInput
   render: function Render() {
     const [value, setValue] = useState('');
     return <DsTextInput placeholder="Enter text..." value={value} onValueChange={setValue} slots={{
-      endAdornment: <button type="button" aria-label="Clear" onClick={() => setValue('')}>
-                            <DsIcon icon="close" size="tiny" />
-                        </button>
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="close" aria-label="Clear" onClick={() => setValue('')} />
     }} />;
   }
 }
@@ -147,9 +145,13 @@ const WithClearButton = function Render() {
             onValueChange={setValue}
             slots={{
                 endAdornment: (
-                    <button type="button" aria-label="Clear" onClick={() => setValue('')}>
-                        <DsIcon icon="close" size="tiny" />
-                    </button>
+                    <DsButtonV3
+                        variant="tertiary"
+                        size="small"
+                        icon="close"
+                        aria-label="Clear"
+                        onClick={() => setValue('')}
+                    />
                 ),
             }}
         />
@@ -171,9 +173,7 @@ const WithClearButton = function Render() {
     const [value, setValue] = useState('');
     return <DsTextInput placeholder="Search..." value={value} onValueChange={setValue} slots={{
       startAdornment: <DsIcon icon="search" size="tiny" />,
-      endAdornment: <button type="button" aria-label="Clear" onClick={() => setValue('')}>
-                            <DsIcon icon="close" size="tiny" />
-                        </button>
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="close" aria-label="Clear" onClick={() => setValue('')} />
     }} />;
   }
 }
@@ -190,9 +190,13 @@ const WithSearchAndClear = function Render() {
             slots={{
                 startAdornment: <DsIcon icon="search" size="tiny" />,
                 endAdornment: (
-                    <button type="button" aria-label="Clear" onClick={() => setValue('')}>
-                        <DsIcon icon="close" size="tiny" />
-                    </button>
+                    <DsButtonV3
+                        variant="tertiary"
+                        size="small"
+                        icon="close"
+                        aria-label="Clear"
+                        onClick={() => setValue('')}
+                    />
                 ),
             }}
         />
@@ -213,9 +217,7 @@ const WithSearchAndClear = function Render() {
   render: function Render() {
     const [value, setValue] = useState('');
     return <DsTextInput type="email" placeholder="Enter email address..." value={value} onValueChange={setValue} slots={{
-      endAdornment: <button type="button" aria-label="Send">
-                            <DsIcon icon="send" size="tiny" filled={!!value} />
-                        </button>
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />
     }} />;
   }
 }
@@ -232,9 +234,7 @@ const Email = function Render() {
             onValueChange={setValue}
             slots={{
                 endAdornment: (
-                    <button type="button" aria-label="Send">
-                        <DsIcon icon="send" size="tiny" filled={!!value} />
-                    </button>
+                    <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />
                 ),
             }}
         />
@@ -247,8 +247,8 @@ const Email = function Render() {
 <DsTextInput
   disabled
   slots={{
-    endAdornment: <button aria-label="Toggle visibility" disabled type="button"><DsIcon icon="visibility" size="tiny"/></button>,
-    startAdornment: <button aria-label="Locked" disabled type="button"><DsIcon icon="lock" size="tiny"/></button>
+    endAdornment: <DsButtonV3 aria-label="Toggle visibility" disabled icon="visibility" size="small" variant="tertiary"/>,
+    startAdornment: <DsButtonV3 aria-label="Locked" disabled icon="lock" size="small" variant="tertiary"/>
   }}
   value="Disabled value"
 />
@@ -259,13 +259,15 @@ const DisabledAdornments = () => <DsTextInput
     disabled
     slots={{
         startAdornment: (
-            <button type="button" aria-label="Locked" disabled>
-                <DsIcon icon="lock" size="tiny" />
-            </button>
+            <DsButtonV3 variant="tertiary" size="small" icon="lock" aria-label="Locked" disabled />
         ),
         endAdornment: (
-            <button type="button" aria-label="Toggle visibility" disabled>
-                <DsIcon icon="visibility" size="tiny" />
-            </button>
+            <DsButtonV3
+                variant="tertiary"
+                size="small"
+                icon="visibility"
+                aria-label="Toggle visibility"
+                disabled
+            />
         ),
     }} />;

@@ -117,8 +117,9 @@ export const WithIcons: Story = {
 };
 
 /**
- * A searchable single-select. When the option list is long, a filter input
- * appears automatically so users can narrow the choices by typing.
+ * A searchable single-select. The filter input appears automatically once the
+ * option list passes the search threshold (more than 13 options), so users can
+ * narrow a long list by typing.
  */
 export const WithSearch: Story = {
 	parameters: {
@@ -140,6 +141,13 @@ export const WithSearch: Story = {
 					{ value: 'fig', label: 'Fig' },
 					{ value: 'grape', label: 'Grape' },
 					{ value: 'honeydew', label: 'Honeydew' },
+					{ value: 'kiwi', label: 'Kiwi' },
+					{ value: 'lemon', label: 'Lemon' },
+					{ value: 'mango', label: 'Mango' },
+					{ value: 'nectarine', label: 'Nectarine' },
+					{ value: 'orange', label: 'Orange' },
+					{ value: 'papaya', label: 'Papaya' },
+					{ value: 'quince', label: 'Quince' },
 				]}
 				value={value}
 				onValueChange={setValue}

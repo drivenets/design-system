@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsTextInput from './ds-text-input';
 import { textInputSizes } from './ds-text-input.types';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsIcon } from '../ds-icon';
 import { DsStack } from '../ds-stack';
 
@@ -122,12 +123,12 @@ export const Controlled: Story = {
 			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsTextInput placeholder="Controlled input" value={value} onValueChange={setValue} />
 				<DsStack gap="var(--2xs)">
-					<button type="button" onClick={() => setValue('updated value')}>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue('updated value')}>
 						Update value
-					</button>
-					<button type="button" onClick={() => setValue('')}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
 						Clear value
-					</button>
+					</DsButtonV3>
 				</DsStack>
 			</DsStack>
 		);
@@ -167,9 +168,13 @@ export const WithClearButton: Story = {
 				onValueChange={setValue}
 				slots={{
 					endAdornment: (
-						<button type="button" aria-label="Clear" onClick={() => setValue('')}>
-							<DsIcon icon="close" size="tiny" />
-						</button>
+						<DsButtonV3
+							variant="tertiary"
+							size="small"
+							icon="close"
+							aria-label="Clear"
+							onClick={() => setValue('')}
+						/>
 					),
 				}}
 			/>
@@ -198,9 +203,13 @@ export const WithSearchAndClear: Story = {
 				slots={{
 					startAdornment: <DsIcon icon="search" size="tiny" />,
 					endAdornment: (
-						<button type="button" aria-label="Clear" onClick={() => setValue('')}>
-							<DsIcon icon="close" size="tiny" />
-						</button>
+						<DsButtonV3
+							variant="tertiary"
+							size="small"
+							icon="close"
+							aria-label="Clear"
+							onClick={() => setValue('')}
+						/>
 					),
 				}}
 			/>
@@ -228,11 +237,7 @@ export const Email: Story = {
 				value={value}
 				onValueChange={setValue}
 				slots={{
-					endAdornment: (
-						<button type="button" aria-label="Send">
-							<DsIcon icon="send" size="tiny" filled={!!value} />
-						</button>
-					),
+					endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />,
 				}}
 			/>
 		);
@@ -248,15 +253,15 @@ export const DisabledAdornments: Story = {
 		value: 'Disabled value',
 		disabled: true,
 		slots: {
-			startAdornment: (
-				<button type="button" aria-label="Locked" disabled>
-					<DsIcon icon="lock" size="tiny" />
-				</button>
-			),
+			startAdornment: <DsButtonV3 variant="tertiary" size="small" icon="lock" aria-label="Locked" disabled />,
 			endAdornment: (
-				<button type="button" aria-label="Toggle visibility" disabled>
-					<DsIcon icon="visibility" size="tiny" />
-				</button>
+				<DsButtonV3
+					variant="tertiary"
+					size="small"
+					icon="visibility"
+					aria-label="Toggle visibility"
+					disabled
+				/>
 			),
 		},
 	},

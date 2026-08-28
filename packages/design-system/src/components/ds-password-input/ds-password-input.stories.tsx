@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsPasswordInput from './ds-password-input';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsPasswordInput> = {
@@ -74,12 +75,12 @@ export const Controlled: Story = {
 			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsPasswordInput placeholder="Enter password" value={value} onValueChange={setValue} />
 				<DsStack gap="var(--2xs)">
-					<button type="button" onClick={() => setValue('new-password')}>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue('new-password')}>
 						Set new password
-					</button>
-					<button type="button" onClick={() => setValue('')}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
 						Clear password
-					</button>
+					</DsButtonV3>
 				</DsStack>
 			</DsStack>
 		);

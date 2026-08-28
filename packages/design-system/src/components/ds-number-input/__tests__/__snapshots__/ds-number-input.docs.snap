@@ -41,12 +41,12 @@ const WithMinMax = () => <DsNumberInput placeholder="Enter number" defaultValue=
     return <DsStack direction="column" gap="var(--sm)" alignItems="center">
                 <DsNumberInput placeholder="Enter number" min={0} max={100} step={1} value={value} onValueChange={setValue} />
                 <DsStack gap="var(--2xs)">
-                    <button type="button" onClick={() => setValue(0)}>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => setValue(0)}>
                         Reset to 0
-                    </button>
-                    <button type="button" onClick={() => setValue(100)}>
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => setValue(100)}>
                         Set to 100
-                    </button>
+                    </DsButtonV3>
                 </DsStack>
             </DsStack>;
   }
@@ -67,12 +67,12 @@ const Controlled = function Render() {
                 onValueChange={setValue}
             />
             <DsStack gap="var(--2xs)">
-                <button type="button" onClick={() => setValue(0)}>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setValue(0)}>
                     Reset to 0
-                </button>
-                <button type="button" onClick={() => setValue(100)}>
+                </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setValue(100)}>
                     Set to 100
-                </button>
+                </DsButtonV3>
             </DsStack>
         </DsStack>
     );

@@ -54,7 +54,6 @@ export const Default: Story = {
 export const WithTime: Story = {
 	args: {
 		label: 'Appointment',
-		required: true,
 		message: 'Select date and time',
 		children: <DsFormControl.DatePicker withTime />,
 	},
@@ -65,15 +64,15 @@ export const WithDescription: Story = {
 	args: {
 		label: 'Event Date',
 		required: true,
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.DatePicker />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.DatePicker />
+		</DsFormControl>
+	),
 };
 
 /** Error status flags a missing date and pairs the message with an error icon. */
@@ -84,15 +83,15 @@ export const Error: Story = {
 		required: true,
 		message: 'Date is required.',
 		messageIcon: 'error',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.DatePicker />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.DatePicker />
+		</DsFormControl>
+	),
 };
 
 /** Disabled state prevents interaction while keeping the field visible. */
