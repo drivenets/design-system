@@ -55,15 +55,15 @@ export const WithDescription: Story = {
 	args: {
 		label: 'Start Time',
 		required: true,
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TimePicker />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TimePicker />
+		</DsFormControl>
+	),
 };
 
 /** Error status flags a missing time and pairs the message with an error icon. */
@@ -74,15 +74,15 @@ export const Error: Story = {
 		required: true,
 		message: 'Time is required.',
 		messageIcon: 'error',
-		children: (
-			<>
-				<DsFormControl.Description>
-					Optional helper text that describes the field in up to two lines.
-				</DsFormControl.Description>
-				<DsFormControl.TimePicker />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TimePicker />
+		</DsFormControl>
+	),
 };
 
 /** Disabled state prevents interaction while keeping the field visible. */

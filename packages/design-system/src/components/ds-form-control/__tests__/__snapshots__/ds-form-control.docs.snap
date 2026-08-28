@@ -1630,21 +1630,18 @@ const Default = () => <DsFormControl label="Start Time" required message="Select
   label="Start Time"
   required
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TimePicker />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TimePicker />
 </DsFormControl>
 
 ### MCP manifest
-const WithDescription = () => <DsFormControl label="Start Time" required>(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TimePicker />
-    </>)</DsFormControl>;
+const WithDescription = () => <DsFormControl label="Start Time" required>
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TimePicker />
+</DsFormControl>;
 
 ## Error
 
@@ -1656,12 +1653,10 @@ const WithDescription = () => <DsFormControl label="Start Time" required>(<>
   required
   status="error"
 >
-  <React.Fragment key=".0">
-    <DsFormControl.Description>
-      Optional helper text that describes the field in up to two lines.
-    </DsFormControl.Description>
-    <DsFormControl.TimePicker />
-  </React.Fragment>
+  <DsFormControl.Description>
+    Optional helper text that describes the field in up to two lines.
+  </DsFormControl.Description>
+  <DsFormControl.TimePicker />
 </DsFormControl>
 
 ### MCP manifest
@@ -1670,12 +1665,11 @@ const Error = () => <DsFormControl
     label="Start Time"
     required
     message="Time is required."
-    messageIcon="error">(<>
-        <DsFormControl.Description>
-            Optional helper text that describes the field in up to two lines.
-        </DsFormControl.Description>
-        <DsFormControl.TimePicker />
-    </>)</DsFormControl>;
+    messageIcon="error">
+    <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
+                    </DsFormControl.Description>
+    <DsFormControl.TimePicker />
+</DsFormControl>;
 
 ## Disabled
 
