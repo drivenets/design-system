@@ -14,6 +14,7 @@ const COMPONENTS = [
 	'avatar',
 	'avatar-group',
 	'breadcrumb',
+	'bulk-actions',
 	'button-v3',
 	'card',
 	'catalog-layout',

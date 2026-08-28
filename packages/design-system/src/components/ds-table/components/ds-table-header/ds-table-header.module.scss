@@ -15,6 +15,10 @@
 		border-bottom: 1px solid var(--color-dap-gray-400);
 	}
 
+	.scrollbarSpacer:not(.scrollbarSpacerOccupied) {
+		border-bottom: none;
+	}
+
 	&.headerRowNoBorder {
 		.headerCell {
 			border-bottom: none;
@@ -52,6 +56,14 @@
 			transition: transform 0.2s ease-in-out;
 		}
 	}
+}
+
+.scrollbarSpacer {
+	flex-shrink: 0;
+	padding: 0;
+	overflow: hidden;
+	border-left: none;
+	pointer-events: none;
 }
 
 .selectHeaderCell {

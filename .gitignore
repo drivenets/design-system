@@ -12,3 +12,6 @@ actionlint
 
 coverage/
 **/.env*
+**/mcp.json
+
+.playwright-mcp

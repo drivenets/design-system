@@ -100,6 +100,50 @@ describe('getAugmentedColumns', () => {
 		}
 	});
 
+	it('pins custom utility column widths and ignores them when the feature is off', () => {
+		const columns = getAugmentedColumns([nameColumn], {
+			...noFeatures,
+			selectable: true,
+			expandable: true,
+			reorderable: true,
+			selectableColumnWidth: 48,
+			expandableColumnWidth: 40,
+			reorderableColumnWidth: 80,
+		});
+		const boundsById = new Map(columns.map((column) => [column.id, column]));
+
+		expect(boundsById.get(SELECT_COLUMN_ID)?.size).toBe(48);
+		expect(boundsById.get(SELECT_COLUMN_ID)?.minSize).toBe(48);
+		expect(boundsById.get(SELECT_COLUMN_ID)?.maxSize).toBe(48);
+		expect(boundsById.get(EXPANDER_COLUMN_ID)?.size).toBe(40);
+		expect(boundsById.get(EXPANDER_COLUMN_ID)?.minSize).toBe(40);
+		expect(boundsById.get(EXPANDER_COLUMN_ID)?.maxSize).toBe(40);
+		expect(boundsById.get(REORDER_COLUMN_ID)?.size).toBe(80);
+		expect(boundsById.get(REORDER_COLUMN_ID)?.minSize).toBe(80);
+		expect(boundsById.get(REORDER_COLUMN_ID)?.maxSize).toBe(80);
+
+		expect(
+			columnIds(getAugmentedColumns([nameColumn], { ...noFeatures, selectableColumnWidth: 48 })),
+		).toEqual(['name']);
+	});
+
+	it('falls back to the default width when the custom width is invalid', () => {
+		const columns = getAugmentedColumns([nameColumn], {
+			...noFeatures,
+			selectable: true,
+			expandable: true,
+			reorderable: true,
+			selectableColumnWidth: 0,
+			expandableColumnWidth: Number.NaN,
+			reorderableColumnWidth: -10,
+		});
+		const boundsById = new Map(columns.map((column) => [column.id, column]));
+
+		expect(boundsById.get(SELECT_COLUMN_ID)?.size).toBe(SELECT_COLUMN_WIDTH);
+		expect(boundsById.get(EXPANDER_COLUMN_ID)?.size).toBe(EXPANDER_COLUMN_WIDTH);
+		expect(boundsById.get(REORDER_COLUMN_ID)?.size).toBe(REORDER_COLUMN_WIDTH);
+	});
+
 	it('stamps hasExplicitSize on authored leaves and builtins, not on unsized leaves', () => {
 		const columns = getAugmentedColumns(
 			[
