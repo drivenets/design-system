@@ -8,7 +8,7 @@
   message="Select a date for your event"
   required
 >
-  <No Display Name />
+  <DsFormControl.DateInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -26,7 +26,7 @@ const Default = () => <DsFormControl label="Event Date" required message="Select
   <DsFormControl.Description>
     Optional helper text that describes the field in up to two lines.
   </DsFormControl.Description>
-  <No Display Name />
+  <DsFormControl.DateInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -43,13 +43,13 @@ const WithDescription = () => <DsFormControl label="Event Date" required>
   label="Event Date"
   required
   slots={{
-    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+    endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
   <DsFormControl.Description>
     Optional helper text that describes the field in up to two lines.
   </DsFormControl.Description>
-  <No Display Name />
+  <DsFormControl.DateInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -57,11 +57,7 @@ const WithHelpIcon = () => <DsFormControl
     label="Event Date"
     required
     slots={{
-        endAdornment: (
-            <button type="button" className={styles.helpIcon} aria-label="Help">
-                <DsIcon icon="info" size="small" />
-            </button>
-        ),
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
     }}>
     <DsFormControl.Description>Optional helper text that describes the field in up to two lines.
                     </DsFormControl.Description>
@@ -122,7 +118,7 @@ const Success = function Render() {
   <DsFormControl.Description>
     Optional helper text that describes the field in up to two lines.
   </DsFormControl.Description>
-  <No Display Name />
+  <DsFormControl.DateInput />
 </DsFormControl>
 
 ### MCP manifest
@@ -185,7 +181,7 @@ const Warning = function Render() {
   <DsFormControl.Description>
     Optional helper text that describes the field in up to two lines.
   </DsFormControl.Description>
-  <No Display Name disabled />
+  <DsFormControl.DateInput disabled />
 </DsFormControl>
 
 ### MCP manifest
@@ -203,7 +199,7 @@ const Disabled = () => <DsFormControl label="Event Date">
   message="Select start and end dates"
   required
 >
-  <No Display Name range />
+  <DsFormControl.DateInput range />
 </DsFormControl>
 
 ### MCP manifest
@@ -320,7 +316,7 @@ const WithValidation = function Render() {
   message="Select a date for your event"
   required
 >
-  <No Display Name />
+  <DsFormControl.DatePicker />
 </DsFormControl>
 
 ### MCP manifest
@@ -334,7 +330,7 @@ const Default = () => <DsFormControl label="Event Date" required message="Select
   message="Select date and time"
   required
 >
-  <No Display Name withTime />
+  <DsFormControl.DatePicker withTime />
 </DsFormControl>
 
 ### MCP manifest
@@ -351,7 +347,7 @@ const WithTime = () => <DsFormControl label="Appointment" required message="Sele
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.DatePicker />
   </React.Fragment>
 </DsFormControl>
 
@@ -377,7 +373,7 @@ const WithDescription = () => <DsFormControl label="Event Date" required>(<>
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.DatePicker />
   </React.Fragment>
 </DsFormControl>
 
@@ -398,7 +394,7 @@ const Error = () => <DsFormControl
 
 ### Show code
 <DsFormControl label="Event Date">
-  <No Display Name disabled />
+  <DsFormControl.DatePicker disabled />
 </DsFormControl>
 
 ### MCP manifest
@@ -463,7 +459,7 @@ const WithValidation = function Render() {
   message="This is a message"
   required
 >
-  <No Display Name
+  <DsFormControl.NumberInput
     defaultValue={10}
     max={100}
     min={1}
@@ -486,7 +482,7 @@ const Default = () => <DsFormControl label="Input label" required message="This 
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.NumberInput
       defaultValue={10}
       max={100}
       min={1}
@@ -511,14 +507,14 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
   label="Input label"
   required
   slots={{
-    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+    endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
   <React.Fragment key=".0">
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.NumberInput
       defaultValue={10}
       max={100}
       min={1}
@@ -533,11 +529,7 @@ const WithHelpIcon = () => <DsFormControl
     label="Input label"
     required
     slots={{
-        endAdornment: (
-            <button type="button" className={styles.helpIcon} aria-label="Help">
-                <DsIcon icon="info" size="small" />
-            </button>
-        ),
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
     }}>(<>
         <DsFormControl.Description>
             Optional helper text that describes the field in up to two lines.
@@ -558,7 +550,7 @@ const WithHelpIcon = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.NumberInput
       defaultValue={10}
       max={100}
       min={1}
@@ -593,7 +585,7 @@ const Success = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.NumberInput
       defaultValue={10}
       max={100}
       min={1}
@@ -628,7 +620,7 @@ const Error = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.NumberInput
       defaultValue={10}
       max={100}
       min={1}
@@ -658,7 +650,7 @@ const Warning = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.NumberInput
       defaultValue={10}
       disabled
       max={100}
@@ -694,7 +686,7 @@ const Disabled = () => <DsFormControl label="Input label">(<>
   message="This is a message"
   required
 >
-  <No Display Name placeholder="Enter password" />
+  <DsFormControl.PasswordInput placeholder="Enter password" />
 </DsFormControl>
 
 ### MCP manifest
@@ -711,7 +703,7 @@ const Default = () => <DsFormControl label="Input label" required message="This 
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name placeholder="Enter password" />
+    <DsFormControl.PasswordInput placeholder="Enter password" />
   </React.Fragment>
 </DsFormControl>
 
@@ -730,14 +722,14 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
   label="Input label"
   required
   slots={{
-    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+    endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
   <React.Fragment key=".0">
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name placeholder="Search" />
+    <DsFormControl.PasswordInput placeholder="Search" />
   </React.Fragment>
 </DsFormControl>
 
@@ -746,11 +738,7 @@ const WithHelpIcon = () => <DsFormControl
     label="Input label"
     required
     slots={{
-        endAdornment: (
-            <button type="button" className={styles.helpIcon} aria-label="Help">
-                <DsIcon icon="info" size="small" />
-            </button>
-        ),
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
     }}>(<>
         <DsFormControl.Description>
             Optional helper text that describes the field in up to two lines.
@@ -771,7 +759,7 @@ const WithHelpIcon = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.PasswordInput />
   </React.Fragment>
 </DsFormControl>
 
@@ -800,7 +788,7 @@ const Success = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.PasswordInput />
   </React.Fragment>
 </DsFormControl>
 
@@ -829,7 +817,7 @@ const Error = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.PasswordInput />
   </React.Fragment>
 </DsFormControl>
 
@@ -853,7 +841,7 @@ const Warning = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.PasswordInput
       disabled
       placeholder="Disabled Input"
     />
@@ -994,9 +982,7 @@ const WithDescription = function Render() {
   render: function Render() {
     const [value, setValue] = useState('');
     return <DsFormControl label="Input" required={true} slots={{
-      endAdornment: <button type="button" className={styles.helpIcon} aria-label="Help">
-                            <DsIcon icon="info" size="small" />
-                        </button>
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />
     }}>
                 <DsFormControl.Description>
                     Optional helper text that describes the field in up to two lines.
@@ -1024,11 +1010,7 @@ const WithHelpIcon = function Render() {
             label="Input"
             required={true}
             slots={{
-                endAdornment: (
-                    <button type="button" className={styles.helpIcon} aria-label="Help">
-                        <DsIcon icon="info" size="small" />
-                    </button>
-                ),
+                endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
             }}
         >
             <DsFormControl.Description>
@@ -1307,7 +1289,7 @@ const Disabled = function Render() {
   message="This is a message"
   required
 >
-  <No Display Name placeholder="Input" />
+  <DsFormControl.TextInput placeholder="Input" />
 </DsFormControl>
 
 ### MCP manifest
@@ -1324,7 +1306,7 @@ const Default = () => <DsFormControl label="Input label" required message="This 
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.TextInput
       placeholder="Search"
       slots={{
         startAdornment: <DsIcon icon="search" size="tiny"/>
@@ -1351,14 +1333,14 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
   label="Input label"
   required
   slots={{
-    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+    endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
   <React.Fragment key=".0">
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.TextInput
       placeholder="Search"
       slots={{
         startAdornment: <DsIcon icon="search" size="tiny"/>
@@ -1372,11 +1354,7 @@ const WithHelpIcon = () => <DsFormControl
     label="Input label"
     required
     slots={{
-        endAdornment: (
-            <button type="button" className={styles.helpIcon} aria-label="Help">
-                <DsIcon icon="info" size="small" />
-            </button>
-        ),
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
     }}>(<>
         <DsFormControl.Description>
             Optional helper text that describes the field in up to two lines.
@@ -1395,7 +1373,7 @@ const WithHelpIcon = () => <DsFormControl
   message="This is a message"
   required
 >
-  <No Display Name
+  <DsFormControl.TextInput
     placeholder="Input"
     slots={{
       startAdornment: <DsIcon icon="call" size="tiny"/>
@@ -1422,7 +1400,7 @@ const WithIcon = () => <DsFormControl label="Input label" required message="This
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.TextInput
       slots={{
         endAdornment: <DsIcon icon="visibility" size="tiny"/>
       }}
@@ -1459,7 +1437,7 @@ const Success = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.TextInput
       slots={{
         endAdornment: <DsIcon icon="error" size="tiny"/>,
         startAdornment: <DsIcon icon="search" size="tiny"/>
@@ -1498,7 +1476,7 @@ const Error = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.TextInput />
   </React.Fragment>
 </DsFormControl>
 
@@ -1521,7 +1499,7 @@ const Warning = () => <DsFormControl
   label="Input label"
   required
 >
-  <No Display Name
+  <DsFormControl.TextInput
     disabled
     placeholder="Disabled Input"
   />
@@ -1540,7 +1518,7 @@ const Disabled = () => <DsFormControl label="Input label" required><DsFormContro
   message="This is a message"
   required
 >
-  <No Display Name placeholder="Input" />
+  <DsFormControl.Textarea placeholder="Input" />
 </DsFormControl>
 
 ### MCP manifest
@@ -1557,7 +1535,7 @@ const Default = () => <DsFormControl label="Input label" required message="This 
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name placeholder="Search" />
+    <DsFormControl.Textarea placeholder="Search" />
   </React.Fragment>
 </DsFormControl>
 
@@ -1576,14 +1554,14 @@ const WithDescription = () => <DsFormControl label="Input label" required>(<>
   label="Input label"
   required
   slots={{
-    endAdornment: <button aria-label="Help" className="_helpIcon_1cecg_1" type="button"><DsIcon icon="info" size="small"/></button>
+    endAdornment: <DsButtonV3 aria-label="Help" icon="info" size="small" variant="tertiary"/>
   }}
 >
   <React.Fragment key=".0">
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name placeholder="Search" />
+    <DsFormControl.Textarea placeholder="Search" />
   </React.Fragment>
 </DsFormControl>
 
@@ -1592,11 +1570,7 @@ const WithHelpIcon = () => <DsFormControl
     label="Input label"
     required
     slots={{
-        endAdornment: (
-            <button type="button" className={styles.helpIcon} aria-label="Help">
-                <DsIcon icon="info" size="small" />
-            </button>
-        ),
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
     }}>(<>
         <DsFormControl.Description>
             Optional helper text that describes the field in up to two lines.
@@ -1617,7 +1591,7 @@ const WithHelpIcon = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.Textarea />
   </React.Fragment>
 </DsFormControl>
 
@@ -1646,7 +1620,7 @@ const Success = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.Textarea />
   </React.Fragment>
 </DsFormControl>
 
@@ -1675,7 +1649,7 @@ const Error = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.Textarea />
   </React.Fragment>
 </DsFormControl>
 
@@ -1699,7 +1673,7 @@ const Warning = () => <DsFormControl
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name
+    <DsFormControl.Textarea
       disabled
       placeholder="Disabled Input"
     />
@@ -1724,7 +1698,7 @@ const Disabled = () => <DsFormControl label="Input label">(<>
   message="Select a time"
   required
 >
-  <No Display Name />
+  <DsFormControl.TimePicker />
 </DsFormControl>
 
 ### MCP manifest
@@ -1741,7 +1715,7 @@ const Default = () => <DsFormControl label="Start Time" required message="Select
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.TimePicker />
   </React.Fragment>
 </DsFormControl>
 
@@ -1767,7 +1741,7 @@ const WithDescription = () => <DsFormControl label="Start Time" required>(<>
     <DsFormControl.Description>
       Optional helper text that describes the field in up to two lines.
     </DsFormControl.Description>
-    <No Display Name />
+    <DsFormControl.TimePicker />
   </React.Fragment>
 </DsFormControl>
 
@@ -1788,7 +1762,7 @@ const Error = () => <DsFormControl
 
 ### Show code
 <DsFormControl label="Start Time">
-  <No Display Name disabled />
+  <DsFormControl.TimePicker disabled />
 </DsFormControl>
 
 ### MCP manifest

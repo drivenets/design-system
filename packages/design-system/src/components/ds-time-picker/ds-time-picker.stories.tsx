@@ -38,7 +38,7 @@ export default meta;
 type Story = StoryObj<DsTimePickerProps>;
 
 const createTime = (hours: number, minutes: number) => {
-	const date = new Date();
+	const date = new Date(2026, 0, 1);
 	date.setHours(hours, minutes, 0, 0);
 	return date;
 };

@@ -11,7 +11,7 @@ const Default = () => <DsTimePicker placeholder="hh:mm AM/PM" />;
 ## With Default Value
 
 ### Show code
-<DsTimePicker defaultValue={new Date("2026-08-27T14:30:00.000Z")} />
+<DsTimePicker defaultValue={new Date("2026-01-01T14:30:00.000Z")} />
 
 ### MCP manifest
 const WithDefaultValue = () => <DsTimePicker defaultValue={createTime(14, 30)} />;
@@ -21,7 +21,7 @@ const WithDefaultValue = () => <DsTimePicker defaultValue={createTime(14, 30)} /
 ### Show code
 <DsTimePicker
   disabled
-  value={new Date("2026-08-27T14:30:00.000Z")}
+  value={new Date("2026-01-01T14:30:00.000Z")}
 />
 
 ### MCP manifest
@@ -32,7 +32,7 @@ const Disabled = () => <DsTimePicker value={createTime(14, 30)} disabled />;
 ### Show code
 <DsTimePicker
   readOnly
-  value={new Date("2026-08-27T14:30:00.000Z")}
+  value={new Date("2026-01-01T14:30:00.000Z")}
 />
 
 ### MCP manifest

@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DsIcon } from '../../ds-icon';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { DsStack } from '../../ds-stack';
 import { controlStatuses } from '../ds-form-control.types';
 import DsFormControl from '../ds-form-control';
-import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
 	title: 'Components/FormControl/Textarea',
@@ -91,11 +90,7 @@ export const WithHelpIcon: Story = {
 		label: 'Input label',
 		required: true,
 		slots: {
-			endAdornment: (
-				<button type="button" className={styles.helpIcon} aria-label="Help">
-					<DsIcon icon="info" size="small" />
-				</button>
-			),
+			endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
 		},
 		children: (
 			<>
