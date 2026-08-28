@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">610 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">611 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -30169,9 +30169,9 @@ style?: CSSProperties = {}</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
-        <label for="c-86-components-tooltip-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-86-components-tooltip-props" class="badge ok as-toggle">9 prop types</label>
         <label for="c-86-components-tooltip-info" class="badge info as-toggle">1 info</label>
-        <label for="c-86-components-tooltip-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-86-components-tooltip-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -30205,7 +30205,7 @@ style?: CSSProperties = {}</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">6 prop types</span>
+              <span class="badge ok">9 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-tooltip/ds-tooltip.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -30213,6 +30213,12 @@ style?: CSSProperties = {}</code></pre>
  * The content to be rendered inside the tooltip
  */
 children: ReactNode
+
+/**
+ * Milliseconds after pointer leave before the tooltip closes.
+ * @default 0
+ */
+closeDelay?: number = 0
 
 /**
  * Tooltip content
@@ -30229,6 +30235,20 @@ disabled?: boolean = false
  * each reposition. Return `null` to fall back to the trigger.
  */
 getAnchorRect?: () =&gt; TooltipAnchorRect | null
+
+/**
+ * When true, content is pointer-reachable and the tooltip stays open while the
+ * pointer is over it. Pair with a non-zero `closeDelay` (e.g. 150) so the pointer
+ * can travel from the trigger onto the content; `0` can lose that handoff.
+ * @default false
+ */
+interactive?: boolean = false
+
+/**
+ * Milliseconds after pointer enter or focus before the tooltip opens.
+ * @default 200
+ */
+openDelay?: number = 200
 
 /**
  * Placement relative to the trigger; `-start` / `-end` align to that edge.
@@ -30258,7 +30278,7 @@ slotProps?: {
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon, DsTooltip } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsIcon, DsTooltip } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -30312,6 +30332,19 @@ slotProps?: {
               
               
               <pre><code>const Disabled = () =&gt; &lt;DsTooltip content=&quot;You should not see this tooltip.&quot; disabled&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Interactive</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pointer can travel onto the tooltip and use actions inside it. Pair `interactive` with a non-zero `closeDelay` so the handoff is not a race. Actions inside the tooltip should use the light/on-dark palette.</div>
+              <pre><code>const Interactive = () =&gt; &lt;DsTooltip
+    content={(&lt;DsButtonV3 variant=&quot;tertiary&quot; color=&quot;light&quot; size=&quot;tiny&quot;&gt;Open in catalog
+                    &lt;/DsButtonV3&gt;)}
+    interactive
+    closeDelay={150}&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
