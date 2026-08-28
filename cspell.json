@@ -17,6 +17,7 @@
 		".vscode/extensions.json",
 		".cspell",
 		"pnpm-lock.yaml",
-		"**/*.figma.batch.json"
+		"**/*.figma.batch.json",
+		"**/*.docs.snap"
 	]
 }
