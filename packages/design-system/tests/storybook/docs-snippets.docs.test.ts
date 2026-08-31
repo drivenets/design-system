@@ -23,6 +23,7 @@ const COMPONENTS = [
 	'date-range-picker',
 	'dialog',
 	'expandable-text-input',
+	'file-upload',
 	'form-control',
 	'number-input',
 	'password-input',
