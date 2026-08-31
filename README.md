@@ -52,11 +52,12 @@ pnpm install
 
 **CI (run automatically per PR)**
 
-| Script               | Description                         |
-| -------------------- | ----------------------------------- |
-| `pnpm lint:spell`    | Check for spelling errors           |
-| `pnpm lint:versions` | Ensure consistent package versions  |
-| `pnpm lint:unused`   | Detect unused code and dependencies |
+| Script               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm ci:local`      | Run the checks below, in the same order and with the same flags as the [`pr.yml`](.github/workflows/pr.yml) workflow, to reproduce a PR check failure locally before pushing. Named `ci:local` (not `ci`) because `pnpm ci` is pnpm's own built-in clean-install command. Does not cover the `action-lint` job (installs an external binary), the security workflow's CodeQL/Zizmor scans, or the changeset requirement check — those aren't reproducible as a local script. |
+| `pnpm lint:spell`    | Check for spelling errors                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `pnpm lint:versions` | Ensure consistent package versions                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `pnpm lint:unused`   | Detect unused code and dependencies                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### Development Workflow
 

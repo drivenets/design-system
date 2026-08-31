@@ -27,7 +27,8 @@
 		"figma:publish": "pnpm run --filter @drivenets/design-system figma:publish",
 		"changelog": "changeset",
 		"prepare": "husky",
-		"pre-commit": "lint-staged"
+		"pre-commit": "lint-staged",
+		"ci:local": "pnpm lint --affected && pnpm typecheck --affected && pnpm format:check && pnpm test:coverage --affected && pnpm test:storybook-docs --affected && pnpm build --affected && pnpm lint:build --affected && pnpm test:requires-build --affected && pnpm lint:versions && pnpm lint:spell && pnpm lint:unused && pnpm lint:dedupe && pnpm figma:lint"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.31.1",
