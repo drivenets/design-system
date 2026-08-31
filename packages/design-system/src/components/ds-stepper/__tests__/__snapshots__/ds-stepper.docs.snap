@@ -77,11 +77,7 @@ const Default = () => {
 
 ### MCP manifest
 const Compact = () => {
-    const steps = [
-        { label: 'Project details' },
-        { label: 'Select market' },
-        { label: 'Design policy' },
-    ];
+    const steps = [{ label: 'Project details' }, { label: 'Select market' }, { label: 'Design policy' }];
 
     return (
         <div className={styles.stepperDemo}>
@@ -244,7 +240,11 @@ const Horizontal = () => {
     ];
 
     return (
-        <DsStepper count={steps.length} orientation="horizontal" actions={<DsNextStepButton>Next</DsNextStepButton>}>
+        <DsStepper
+            count={steps.length}
+            orientation="horizontal"
+            actions={<DsNextStepButton>Next</DsNextStepButton>}
+        >
             {steps.map((step, index) => (
                 <DsStep index={index} key={index}>
                     <DsStepContent index={index} label={step.label} description={step.description} />
@@ -289,7 +289,11 @@ const HorizontalFewSteps = () => {
     ];
 
     return (
-        <DsStepper count={steps.length} orientation="horizontal" actions={<DsNextStepButton>Next</DsNextStepButton>}>
+        <DsStepper
+            count={steps.length}
+            orientation="horizontal"
+            actions={<DsNextStepButton>Next</DsNextStepButton>}
+        >
             {steps.map((step, index) => (
                 <DsStep index={index} key={index}>
                     <DsStepContent index={index} label={step.label} description={step.description} />
@@ -324,14 +328,14 @@ const HorizontalFewSteps = () => {
 
 ### MCP manifest
 const HorizontalCompactFewSteps = () => {
-    const steps = [
-        { label: 'Project details' },
-        { label: 'Select market' },
-        { label: 'Design policy' },
-    ];
+    const steps = [{ label: 'Project details' }, { label: 'Select market' }, { label: 'Design policy' }];
 
     return (
-        <DsStepper count={steps.length} orientation="horizontal" actions={<DsNextStepButton>Next</DsNextStepButton>}>
+        <DsStepper
+            count={steps.length}
+            orientation="horizontal"
+            actions={<DsNextStepButton>Next</DsNextStepButton>}
+        >
             {steps.map((step, index) => (
                 <DsStep index={index} key={index}>
                     <DsStepContent index={index} label={step.label} />

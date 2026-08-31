@@ -108,7 +108,10 @@ export default defineConfig({
 					name: 'storybook-docs',
 					include: [testPattern('docs')],
 					globalSetup: ['./vitest/setup.storybook-docs.ts'],
-					testTimeout: 60_000,
+					// Each test drives a browser page that reads every story's Autodocs panel; heavy
+					// components (e.g. date-range-picker) can exceed 60s under CI load now that the
+					// suite covers more components.
+					testTimeout: 120_000,
 				},
 			},
 		],

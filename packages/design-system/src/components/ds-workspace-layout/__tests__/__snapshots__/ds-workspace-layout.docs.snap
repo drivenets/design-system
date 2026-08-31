@@ -343,12 +343,7 @@ const HeaderRunning = () => (
                     <DsButtonV3 variant="secondary" color="light" size="small" icon="close">
                         Close
                     </DsButtonV3>
-                    <DsButtonV3
-                        variant="secondary"
-                        color="light"
-                        size="small"
-                        icon="keyboard_double_arrow_left"
-                    >
+                    <DsButtonV3 variant="secondary" color="light" size="small" icon="keyboard_double_arrow_left">
                         Previous
                     </DsButtonV3>
                     <DsButtonV3 variant="secondary" color="light" size="small">
@@ -483,12 +478,7 @@ const WithDrawer = () => {
                         <DsButtonV3 variant="secondary" color="light" size="small">
                             Discard
                         </DsButtonV3>
-                        <DsButtonV3
-                            variant="primary"
-                            color="light"
-                            size="small"
-                            onClick={() => setDrawerOpen(true)}
-                        >
+                        <DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
                             Save project
                         </DsButtonV3>
                     </DsStack>
@@ -626,12 +616,7 @@ const WithDrawerAndBackdrop = () => {
                         <DsButtonV3 variant="secondary" color="light" size="small">
                             Discard
                         </DsButtonV3>
-                        <DsButtonV3
-                            variant="primary"
-                            color="light"
-                            size="small"
-                            onClick={() => setDrawerOpen(true)}
-                        >
+                        <DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
                             Save project
                         </DsButtonV3>
                     </DsStack>
@@ -1619,12 +1604,7 @@ const ExtendedCombined = () => {
                         <DsButtonV3 variant="secondary" color="light" size="small">
                             Discard
                         </DsButtonV3>
-                        <DsButtonV3
-                            variant="primary"
-                            color="light"
-                            size="small"
-                            onClick={() => setDrawerOpen(true)}
-                        >
+                        <DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
                             Save project
                         </DsButtonV3>
                     </DsStack>
