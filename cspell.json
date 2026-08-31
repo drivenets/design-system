@@ -13,10 +13,12 @@
 	],
 	"ignorePaths": [
 		".cursor",
+		".claude",
 		".git",
 		".vscode/extensions.json",
 		".cspell",
 		"pnpm-lock.yaml",
+		"node_modules",
 		"**/*.figma.batch.json"
 	]
 }
