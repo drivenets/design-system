@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import DsKeyValuePair from './ds-key-value-pair';
 import { dsKeyValuePairOrientations } from './ds-key-value-pair.types';
+import { DsStack } from '../ds-stack';
+import { DsSlider } from '../ds-slider';
 import { DsTextInput } from '../ds-text-input';
 import { DsTextarea } from '../ds-textarea';
 import { DsSelect, type DsSelectOption } from '../ds-select';
@@ -10,17 +12,6 @@ import { DsIcon } from '../ds-icon';
 import { DsTag } from '../ds-tag';
 import { DsTooltip } from '../ds-tooltip';
 import storyStyles from './ds-key-value-pair.stories.module.scss';
-
-const MANUFACTURER_OPTIONS: DsSelectOption[] = [
-	{ label: 'Cisco Systems', value: 'cisco' },
-	{ label: 'Juniper Networks', value: 'juniper' },
-	{ label: 'Arista Networks', value: 'arista' },
-	{ label: 'Nokia', value: 'nokia' },
-];
-
-const LONG_TEXT =
-	// cspell:disable-next-line
-	'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.';
 
 const meta: Meta<typeof DsKeyValuePair> = {
 	title: 'Components/KeyValuePair',
@@ -74,6 +65,7 @@ export const CustomLabel: Story = {
 };
 
 export const EditableVertical: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [serial, setSerial] = useState('99887766');
 
@@ -90,6 +82,7 @@ export const EditableVertical: Story = {
 };
 
 export const EditableHorizontal: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [model, setModel] = useState('Cisco RTR-X2000');
 
@@ -106,7 +99,8 @@ export const EditableHorizontal: Story = {
 };
 
 export const WithTrailingIcon: Story = {
-	name: 'Editable with trailing icon + tooltip',
+	name: 'Editable with trailing icon and tooltip',
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [val, setVal] = useState('Editable value');
 
@@ -142,9 +136,17 @@ export const WithTrailingIcon: Story = {
 };
 
 export const Group: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [serial, setSerial] = useState('99887766');
 		const [manufacturer, setManufacturer] = useState('cisco');
+
+		const manufacturerOptions: DsSelectOption[] = [
+			{ label: 'Cisco Systems', value: 'cisco' },
+			{ label: 'Juniper Networks', value: 'juniper' },
+			{ label: 'Arista Networks', value: 'arista' },
+			{ label: 'Nokia', value: 'nokia' },
+		];
 
 		return (
 			<div className={storyStyles.pairsColumn}>
@@ -158,11 +160,11 @@ export const Group: Story = {
 				<DsKeyValuePair keyLabel="Model" value="Cisco RTR-X2000" readOnly orientation="horizontal" />
 				<DsKeyValuePair
 					keyLabel="MFR"
-					value={MANUFACTURER_OPTIONS.find((o) => o.value === manufacturer)?.label ?? manufacturer}
+					value={manufacturerOptions.find((o) => o.value === manufacturer)?.label ?? manufacturer}
 					orientation="horizontal"
 					editInput={
 						<DsSelect
-							options={MANUFACTURER_OPTIONS}
+							options={manufacturerOptions}
 							value={manufacturer}
 							onValueChange={setManufacturer}
 							size="small"
@@ -174,34 +176,35 @@ export const Group: Story = {
 	},
 };
 
-const MIN_WIDTH = 200;
-const MAX_WIDTH = 700;
-const DEFAULT_WIDTH = 400;
-
 export const ResponsiveWidth: Story = {
 	name: 'Responsive container width',
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: function Render() {
-		const [width, setWidth] = useState(DEFAULT_WIDTH);
+		const [width, setWidth] = useState(400);
 		const [serial, setSerial] = useState('99887766');
-		const [description, setDescription] = useState(LONG_TEXT);
+		const [description, setDescription] = useState(
+			// cspell:disable-next-line
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+		);
 
 		return (
-			<div className={storyStyles.responsiveDemo}>
-				<div className={storyStyles.responsiveSlider}>
-					<span>{MIN_WIDTH}px</span>
-					<input
-						type="range"
-						min={MIN_WIDTH}
-						max={MAX_WIDTH}
-						value={width}
-						onChange={(e) => setWidth(Number(e.target.value))}
-						className={storyStyles.responsiveSliderInput}
-					/>
-					<span>{MAX_WIDTH}px</span>
-					<span>({width}px)</span>
-				</div>
+			<DsStack direction="column" gap={16}>
+				<DsSlider
+					label="Container width"
+					value={width}
+					min={200}
+					max={700}
+					onValueChange={(value) => {
+						setWidth(value as number);
+					}}
+					formatValue={(current) => `${String(current)}px`}
+				/>
 
-				<div className={storyStyles.responsivePairs} style={{ width }}>
+				<div
+					className={storyStyles.responsivePairs}
+					style={{ '--responsive-pairs-width': `${String(width)}px` } as CSSProperties}
+				>
 					<DsKeyValuePair keyLabel="MAC" value="00:1A:2B:3C:4D:5E" readOnly orientation="horizontal" />
 					<DsKeyValuePair
 						keyLabel="Serial Number"
@@ -230,18 +233,29 @@ export const ResponsiveWidth: Story = {
 						}
 					/>
 				</div>
-			</div>
+			</DsStack>
 		);
 	},
 };
 
 export const ValueTypes: Story = {
 	name: 'Value types (Figma reference)',
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [editable, setEditable] = useState('Editable value');
 		const [manufacturer, setManufacturer] = useState('cisco');
-		const [description, setDescription] = useState(LONG_TEXT);
+		const [description, setDescription] = useState(
+			// cspell:disable-next-line
+			'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+		);
 		const [empty, setEmpty] = useState('');
+
+		const manufacturerOptions: DsSelectOption[] = [
+			{ label: 'Cisco Systems', value: 'cisco' },
+			{ label: 'Juniper Networks', value: 'juniper' },
+			{ label: 'Arista Networks', value: 'arista' },
+			{ label: 'Nokia', value: 'nokia' },
+		];
 
 		return (
 			<div className={storyStyles.pairsColumn}>
@@ -263,11 +277,11 @@ export const ValueTypes: Story = {
 
 				<DsKeyValuePair
 					keyLabel="MFR"
-					value={MANUFACTURER_OPTIONS.find((o) => o.value === manufacturer)?.label ?? manufacturer}
+					value={manufacturerOptions.find((o) => o.value === manufacturer)?.label ?? manufacturer}
 					orientation="horizontal"
 					editInput={
 						<DsSelect
-							options={MANUFACTURER_OPTIONS}
+							options={manufacturerOptions}
 							value={manufacturer}
 							onValueChange={setManufacturer}
 							size="small"

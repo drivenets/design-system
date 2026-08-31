@@ -22,7 +22,17 @@ const COMPONENTS = [
 	'date-picker',
 	'date-range-picker',
 	'dialog',
+	'divider',
+	'grid',
+	'key-value-pair',
 	'slider',
+	'smart-tabs',
+	'stack',
+	'stepper',
+	'tabs',
+	'tree',
+	'vertical-tabs',
+	'workspace-layout',
 ];
 
 function getComponentSnapshotPath(name: string): string {

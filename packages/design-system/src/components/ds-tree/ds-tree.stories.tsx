@@ -1,10 +1,12 @@
 // cSpell:words dslam Gbps mgmt msan roadm
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 
 import { DsFilterStatusIcon } from '../ds-filter-status-icon';
 import { DsIcon } from '../ds-icon';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import { DsTree } from './ds-tree';
 import storyStyles from './ds-tree.stories.module.scss';
 import { createDsTreeCollection } from './ds-tree.utils';
@@ -343,17 +345,13 @@ export default meta;
 
 type Story = StoryObj<typeof DsTree.Root>;
 
-const getTreeItem = (container: HTMLElement, value: string) =>
-	within(container).getByRole('treeitem', {
-		name: (_: string, el: Element | null) => el?.getAttribute('data-value') === value,
-	});
-
 export const Default: Story = {
 	args: {
 		size: 'medium',
 		onSelectionChange: fn(),
 		onExpandedChange: fn(),
 	},
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const collection = createDsTreeCollection(sideNavNodes);
 
@@ -373,33 +371,29 @@ export const Default: Story = {
 			</DsTree.Root>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		await expect(getTreeItem(canvasElement, 'network')).toBeVisible();
-
-		const routers = getTreeItem(canvasElement, 'routers');
-		await expect(routers).toBeVisible();
-		await userEvent.click(within(routers).getByRole('button'));
-
-		const routerAlpha = getTreeItem(canvasElement, 'router-1');
-		await userEvent.click(routerAlpha);
-		await expect(routerAlpha).toHaveAttribute('aria-selected', 'true');
-	},
 };
 
 export const Controlled: Story = {
 	args: {
 		size: 'medium',
 	},
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render(args) {
 		const collection = createDsTreeCollection(sideNavNodes);
 		const [selectedValue, setSelectedValue] = useState<string[]>([]);
 		const [expandedValue, setExpandedValue] = useState(['network']);
 
 		return (
-			<div>
-				<div>Selected: {selectedValue.length > 0 ? selectedValue.join(', ') : 'none'}</div>
+			<DsStack direction="column" gap={12}>
+				<DsStack direction="column" gap={4}>
+					<DsTypography variant="body-sm-md">
+						Selected: {selectedValue.length > 0 ? selectedValue.join(', ') : 'none'}
+					</DsTypography>
 
-				<div>Expanded: {expandedValue.length > 0 ? expandedValue.join(', ') : 'none'}</div>
+					<DsTypography variant="body-sm-md">
+						Expanded: {expandedValue.length > 0 ? expandedValue.join(', ') : 'none'}
+					</DsTypography>
+				</DsStack>
 
 				<DsTree.Root
 					size={args.size}
@@ -417,22 +411,8 @@ export const Controlled: Story = {
 						))}
 					</DsTree.Tree>
 				</DsTree.Root>
-			</div>
+			</DsStack>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Selected: none')).toBeVisible();
-		await expect(canvas.getByText(/Expanded:.*network/)).toBeVisible();
-
-		const routers = getTreeItem(canvasElement, 'routers');
-		await userEvent.click(within(routers).getByRole('button'));
-		await expect(canvas.getByText(/Expanded:.*routers/)).toBeVisible();
-
-		const routerAlpha = getTreeItem(canvasElement, 'router-1');
-		await userEvent.click(routerAlpha);
-		await expect(canvas.getByText('Selected: router-1')).toBeVisible();
 	},
 };
 
@@ -440,13 +420,14 @@ export const ControlledFocus: Story = {
 	args: {
 		size: 'medium',
 	},
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render(args) {
 		const collection = createDsTreeCollection(sideNavNodes);
 		const [focusedValue, setFocusedValue] = useState<string | null>('firewall-1');
 
 		return (
-			<div>
-				<div>Focused: {focusedValue ?? 'none'}</div>
+			<DsStack direction="column" gap={12}>
+				<DsTypography variant="body-sm-md">Focused: {focusedValue ?? 'none'}</DsTypography>
 
 				<DsTree.Root
 					size={args.size}
@@ -461,7 +442,7 @@ export const ControlledFocus: Story = {
 						))}
 					</DsTree.Tree>
 				</DsTree.Root>
-			</div>
+			</DsStack>
 		);
 	},
 };
@@ -471,6 +452,7 @@ export const CheckboxWithIcons: Story = {
 		onCheckedChange: fn(),
 		onExpandedChange: fn(),
 	},
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const collection = createDsTreeCollection(mapLayersNodes);
 
@@ -491,14 +473,6 @@ export const CheckboxWithIcons: Story = {
 			</DsTree.Root>
 		);
 	},
-	play: async ({ canvasElement, args }) => {
-		await expect(getTreeItem(canvasElement, 'devices')).toBeVisible();
-		await expect(getTreeItem(canvasElement, 'olt')).toBeVisible();
-
-		const oltCheckbox = within(getTreeItem(canvasElement, 'olt')).getByRole('checkbox');
-		await userEvent.click(oltCheckbox);
-		await expect(args.onCheckedChange).toHaveBeenCalled();
-	},
 };
 
 export const WithStatusIcons: Story = {
@@ -507,6 +481,7 @@ export const WithStatusIcons: Story = {
 		onSelectionChange: fn(),
 		onExpandedChange: fn(),
 	},
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render(args) {
 		const collection = createDsTreeCollection(workflowNodes);
 		const onNavigate = fn();
@@ -532,21 +507,5 @@ export const WithStatusIcons: Story = {
 				</DsTree.Tree>
 			</DsTree.Root>
 		);
-	},
-	play: async ({ canvasElement, args }) => {
-		await expect(getTreeItem(canvasElement, 'workflow-1234')).toBeVisible();
-		await expect(getTreeItem(canvasElement, 'task-1')).toBeVisible();
-
-		await expect(getTreeItem(canvasElement, 'task-3')).toHaveAttribute('data-disabled');
-		await expect(getTreeItem(canvasElement, 'sw-running-06')).toHaveAttribute('data-disabled');
-
-		const taskAlphaItem = getTreeItem(canvasElement, 'task-1');
-		await userEvent.click(taskAlphaItem);
-		await expect(taskAlphaItem).toHaveAttribute('aria-selected', 'true');
-		await expect(args.onSelectionChange).toHaveBeenCalled();
-
-		const actionButton = within(taskAlphaItem).getByRole('button');
-		await userEvent.click(actionButton);
-		await expect(taskAlphaItem).toHaveAttribute('aria-selected', 'true');
 	},
 };

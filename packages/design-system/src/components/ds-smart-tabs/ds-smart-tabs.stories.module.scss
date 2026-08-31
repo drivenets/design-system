@@ -1,0 +1,10 @@
+.statusReadout {
+	margin-top: var(--md);
+	padding: var(--sm);
+	background: var(--background-secondary);
+	border-radius: 4px;
+}
+
+.statusValue {
+	color: var(--font-secondary);
+}

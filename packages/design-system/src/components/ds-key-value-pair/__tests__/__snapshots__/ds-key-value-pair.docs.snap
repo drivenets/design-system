@@ -1,0 +1,410 @@
+# DsKeyValuePair docs snippets
+
+## Read Only Vertical
+
+### Show code
+<DsKeyValuePair
+  keyLabel="Start time"
+  orientation="vertical"
+  readOnly
+  value="2024-05-23 16:47"
+/>
+
+### MCP manifest
+const ReadOnlyVertical = () => <DsKeyValuePair
+    keyLabel="Start time"
+    value="2024-05-23 16:47"
+    readOnly
+    orientation="vertical" />;
+
+## Read Only Horizontal
+
+### Show code
+<DsKeyValuePair
+  keyLabel="MAC"
+  orientation="horizontal"
+  readOnly
+  value="00:1A:2B:3C:4D:5E"
+/>
+
+### MCP manifest
+const ReadOnlyHorizontal = () => <DsKeyValuePair
+    keyLabel="MAC"
+    value="00:1A:2B:3C:4D:5E"
+    readOnly
+    orientation="horizontal" />;
+
+## Custom Label
+
+### Show code
+<DsKeyValuePair
+  keyLabel={<span className="_iconLabel_kby19_30"><DsIcon icon="info" size="tiny"/>Serial Number</span>}
+  orientation="horizontal"
+  readOnly
+  value="99887766"
+/>
+
+### MCP manifest
+const CustomLabel = () => <DsKeyValuePair
+    keyLabel={(<span className={storyStyles.iconLabel}>
+        <DsIcon icon="info" size="tiny" />Serial Number
+                    </span>)}
+    value="99887766"
+    readOnly
+    orientation="horizontal" />;
+
+## Editable Vertical
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [serial, setSerial] = useState('99887766');
+    return <DsKeyValuePair keyLabel="Serial Number" value={serial} orientation="vertical" className={storyStyles.editableVerticalDemo} editInput={<DsTextInput value={serial} onValueChange={setSerial} size="small" />} />;
+  }
+}
+
+### MCP manifest
+const EditableVertical = function Render() {
+    const [serial, setSerial] = useState('99887766');
+
+    return (
+        <DsKeyValuePair
+            keyLabel="Serial Number"
+            value={serial}
+            orientation="vertical"
+            className={storyStyles.editableVerticalDemo}
+            editInput={<DsTextInput value={serial} onValueChange={setSerial} size="small" />}
+        />
+    );
+};
+
+## Editable Horizontal
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [model, setModel] = useState('Cisco RTR-X2000');
+    return <DsKeyValuePair keyLabel="Model" value={model} orientation="horizontal" className={storyStyles.editableHorizontalDemo} editInput={<DsTextInput value={model} onValueChange={setModel} size="small" />} />;
+  }
+}
+
+### MCP manifest
+const EditableHorizontal = function Render() {
+    const [model, setModel] = useState('Cisco RTR-X2000');
+
+    return (
+        <DsKeyValuePair
+            keyLabel="Model"
+            value={model}
+            orientation="horizontal"
+            className={storyStyles.editableHorizontalDemo}
+            editInput={<DsTextInput value={model} onValueChange={setModel} size="small" />}
+        />
+    );
+};
+
+## Editable with trailing icon and tooltip
+
+### Show code
+{
+  name: 'Editable with trailing icon and tooltip',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [val, setVal] = useState('Editable value');
+    return <DsKeyValuePair keyLabel="Editable" orientation="horizontal" className={storyStyles.editableHorizontalDemo} value={<span className={storyStyles.valueWithIcon}>
+                        {val}
+                        <DsTooltip content="Additional info about this field">
+                            <DsIcon icon="info" size="tiny" />
+                        </DsTooltip>
+                    </span>} editInput={<span className={storyStyles.valueWithIcon}>
+                        <DsTextInput value={val} onValueChange={setVal} size="small" className={storyStyles.mediumInput} />
+                        <DsTooltip content="Additional info about this field">
+                            <DsIcon icon="info" size="tiny" />
+                        </DsTooltip>
+                    </span>} />;
+  }
+}
+
+### MCP manifest
+const WithTrailingIcon = function Render() {
+    const [val, setVal] = useState('Editable value');
+
+    return (
+        <DsKeyValuePair
+            keyLabel="Editable"
+            orientation="horizontal"
+            className={storyStyles.editableHorizontalDemo}
+            value={
+                <span className={storyStyles.valueWithIcon}>
+                    {val}
+                    <DsTooltip content="Additional info about this field">
+                        <DsIcon icon="info" size="tiny" />
+                    </DsTooltip>
+                </span>
+            }
+            editInput={
+                <span className={storyStyles.valueWithIcon}>
+                    <DsTextInput
+                        value={val}
+                        onValueChange={setVal}
+                        size="small"
+                        className={storyStyles.mediumInput}
+                    />
+                    <DsTooltip content="Additional info about this field">
+                        <DsIcon icon="info" size="tiny" />
+                    </DsTooltip>
+                </span>
+            }
+        />
+    );
+};
+
+## Group
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [serial, setSerial] = useState('99887766');
+    const [manufacturer, setManufacturer] = useState('cisco');
+    const manufacturerOptions: DsSelectOption[] = [{
+      label: 'Cisco Systems',
+      value: 'cisco'
+    }, {
+      label: 'Juniper Networks',
+      value: 'juniper'
+    }, {
+      label: 'Arista Networks',
+      value: 'arista'
+    }, {
+      label: 'Nokia',
+      value: 'nokia'
+    }];
+    return <div className={storyStyles.pairsColumn}>
+                <DsKeyValuePair keyLabel="MAC" value="00:1A:2B:3C:4D:5E" readOnly orientation="horizontal" />
+                <DsKeyValuePair keyLabel="SN" value={serial} orientation="horizontal" editInput={<DsTextInput value={serial} onValueChange={setSerial} size="small" />} />
+                <DsKeyValuePair keyLabel="Model" value="Cisco RTR-X2000" readOnly orientation="horizontal" />
+                <DsKeyValuePair keyLabel="MFR" value={manufacturerOptions.find(o => o.value === manufacturer)?.label ?? manufacturer} orientation="horizontal" editInput={<DsSelect options={manufacturerOptions} value={manufacturer} onValueChange={setManufacturer} size="small" />} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const Group = function Render() {
+    const [serial, setSerial] = useState('99887766');
+    const [manufacturer, setManufacturer] = useState('cisco');
+
+    const manufacturerOptions: DsSelectOption[] = [
+        { label: 'Cisco Systems', value: 'cisco' },
+        { label: 'Juniper Networks', value: 'juniper' },
+        { label: 'Arista Networks', value: 'arista' },
+        { label: 'Nokia', value: 'nokia' },
+    ];
+
+    return (
+        <div className={storyStyles.pairsColumn}>
+            <DsKeyValuePair keyLabel="MAC" value="00:1A:2B:3C:4D:5E" readOnly orientation="horizontal" />
+            <DsKeyValuePair
+                keyLabel="SN"
+                value={serial}
+                orientation="horizontal"
+                editInput={<DsTextInput value={serial} onValueChange={setSerial} size="small" />}
+            />
+            <DsKeyValuePair keyLabel="Model" value="Cisco RTR-X2000" readOnly orientation="horizontal" />
+            <DsKeyValuePair
+                keyLabel="MFR"
+                value={manufacturerOptions.find((o) => o.value === manufacturer)?.label ?? manufacturer}
+                orientation="horizontal"
+                editInput={
+                    <DsSelect
+                        options={manufacturerOptions}
+                        value={manufacturer}
+                        onValueChange={setManufacturer}
+                        size="small"
+                    />
+                }
+            />
+        </div>
+    );
+};
+
+## Value types (Figma reference)
+
+### Show code
+{
+  name: 'Value types (Figma reference)',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [editable, setEditable] = useState('Editable value');
+    const [manufacturer, setManufacturer] = useState('cisco');
+    const [description, setDescription] = useState(
+    // cspell:disable-next-line
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.');
+    const [empty, setEmpty] = useState('');
+    const manufacturerOptions: DsSelectOption[] = [{
+      label: 'Cisco Systems',
+      value: 'cisco'
+    }, {
+      label: 'Juniper Networks',
+      value: 'juniper'
+    }, {
+      label: 'Arista Networks',
+      value: 'arista'
+    }, {
+      label: 'Nokia',
+      value: 'nokia'
+    }];
+    return <div className={storyStyles.pairsColumn}>
+                <DsKeyValuePair keyLabel="Read-only" value="Read only value" readOnly orientation="horizontal" />
+
+                <DsKeyValuePair keyLabel="Editable" value={editable} orientation="horizontal" editInput={<DsTextInput value={editable} onValueChange={setEditable} size="small" className={storyStyles.mediumInput} />} />
+
+                <DsKeyValuePair keyLabel="MFR" value={manufacturerOptions.find(o => o.value === manufacturer)?.label ?? manufacturer} orientation="horizontal" editInput={<DsSelect options={manufacturerOptions} value={manufacturer} onValueChange={setManufacturer} size="small" />} />
+
+                <DsKeyValuePair keyLabel="Status" value={<span className={storyStyles.statusBadge}>
+                            <DsIcon icon="check_circle" size="tiny" />
+                            Active
+                        </span>} readOnly orientation="horizontal" />
+
+                <DsKeyValuePair keyLabel="Tags" value={<span className={storyStyles.tagGroup}>
+                            <DsTag label="Tag-name" size="small" />
+                            <DsTag label="Tag-name" size="small" />
+                            <DsTag label="Tag-name" size="small" />
+                        </span>} readOnly orientation="horizontal" />
+
+                <DsKeyValuePair keyLabel="Description" value={<span className={storyStyles.fullTextValue}>{description}</span>} orientation="horizontal" editInput={<DsTextarea value={description} onValueChange={setDescription} rows={4} className={storyStyles.descriptionTextarea} />} />
+
+                <DsKeyValuePair keyLabel="Empty Value" value={empty || undefined} orientation="horizontal" editInput={<DsTextInput value={empty} onValueChange={setEmpty} size="small" />} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const ValueTypes = function Render() {
+    const [editable, setEditable] = useState('Editable value');
+    const [manufacturer, setManufacturer] = useState('cisco');
+    const [description, setDescription] = useState(
+        // cspell:disable-next-line
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.',
+    );
+    const [empty, setEmpty] = useState('');
+
+    const manufacturerOptions: DsSelectOption[] = [
+        { label: 'Cisco Systems', value: 'cisco' },
+        { label: 'Juniper Networks', value: 'juniper' },
+        { label: 'Arista Networks', value: 'arista' },
+        { label: 'Nokia', value: 'nokia' },
+    ];
+
+    return (
+        <div className={storyStyles.pairsColumn}>
+            <DsKeyValuePair keyLabel="Read-only" value="Read only value" readOnly orientation="horizontal" />
+
+            <DsKeyValuePair
+                keyLabel="Editable"
+                value={editable}
+                orientation="horizontal"
+                editInput={
+                    <DsTextInput
+                        value={editable}
+                        onValueChange={setEditable}
+                        size="small"
+                        className={storyStyles.mediumInput}
+                    />
+                }
+            />
+
+            <DsKeyValuePair
+                keyLabel="MFR"
+                value={manufacturerOptions.find((o) => o.value === manufacturer)?.label ?? manufacturer}
+                orientation="horizontal"
+                editInput={
+                    <DsSelect
+                        options={manufacturerOptions}
+                        value={manufacturer}
+                        onValueChange={setManufacturer}
+                        size="small"
+                    />
+                }
+            />
+
+            <DsKeyValuePair
+                keyLabel="Status"
+                value={
+                    <span className={storyStyles.statusBadge}>
+                        <DsIcon icon="check_circle" size="tiny" />
+                        Active
+                    </span>
+                }
+                readOnly
+                orientation="horizontal"
+            />
+
+            <DsKeyValuePair
+                keyLabel="Tags"
+                value={
+                    <span className={storyStyles.tagGroup}>
+                        <DsTag label="Tag-name" size="small" />
+                        <DsTag label="Tag-name" size="small" />
+                        <DsTag label="Tag-name" size="small" />
+                    </span>
+                }
+                readOnly
+                orientation="horizontal"
+            />
+
+            <DsKeyValuePair
+                keyLabel="Description"
+                value={<span className={storyStyles.fullTextValue}>{description}</span>}
+                orientation="horizontal"
+                editInput={
+                    <DsTextarea
+                        value={description}
+                        onValueChange={setDescription}
+                        rows={4}
+                        className={storyStyles.descriptionTextarea}
+                    />
+                }
+            />
+
+            <DsKeyValuePair
+                keyLabel="Empty Value"
+                value={empty || undefined}
+                orientation="horizontal"
+                editInput={<DsTextInput value={empty} onValueChange={setEmpty} size="small" />}
+            />
+        </div>
+    );
+};

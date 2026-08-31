@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
 import { useState } from 'react';
 import { DsTabs } from './ds-tabs';
 import type { DsTabsMenuActionItem } from './ds-tabs.types';
@@ -42,6 +41,11 @@ type Story = StoryObj<typeof DsTabs.Root>;
 
 /** Baseline horizontal tabs with icon + badge — the default layout for most pages. */
 export const Default: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'horizontal',
 		size: 'medium',
@@ -98,6 +102,11 @@ export const Default: Story = {
 
 /** `size="small"` horizontal tabs for dense toolbars and compact headers. */
 export const HorizontalSmall: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		size: 'small',
 		orientation: 'horizontal',
@@ -149,13 +158,16 @@ export const HorizontalSmall: Story = {
 	},
 };
 
-const handleMenuActionMock = fn();
-
 /**
  * Per-tab dropdown via `menuActionItems` + `onMenuActionSelect`. Use when a tab
  * needs contextual actions (edit, duplicate, delete) without leaving the tab bar.
  */
 export const WithMenuActions: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'horizontal',
 		size: 'medium',
@@ -184,7 +196,7 @@ export const WithMenuActions: Story = {
 							icon="folder"
 							badge={5}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuActionMock}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="tab2"
@@ -192,14 +204,14 @@ export const WithMenuActions: Story = {
 							icon="description"
 							badge={12}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuActionMock}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="tab3"
 							label="Settings"
 							icon="settings"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuActionMock}
+							onMenuActionSelect={() => {}}
 						/>
 					</DsTabs.List>
 
@@ -229,6 +241,11 @@ export const WithMenuActions: Story = {
 
 /** `orientation="vertical"` — side navigation for settings-style layouts. */
 export const Vertical: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'vertical',
 		size: 'medium',
@@ -293,6 +310,11 @@ export const Vertical: Story = {
 
 /** Compact vertical tabs (`size="small"`) for narrow side panels. */
 export const VerticalSmall: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'vertical',
 		size: 'small',
@@ -357,6 +379,11 @@ export const VerticalSmall: Story = {
 
 /** Vertical tabs that also carry per-tab `menuActionItems` dropdowns. */
 export const VerticalWithMenuActions: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'vertical',
 		size: 'medium',
@@ -371,10 +398,6 @@ export const VerticalWithMenuActions: Story = {
 			{ value: 'delete', label: 'Delete' },
 		];
 
-		const handleMenuAction = (action: string) => {
-			console.log('Menu action selected:', action);
-		};
-
 		return (
 			<div className={styles.verticalContainer}>
 				<DsTabs.Root
@@ -388,7 +411,7 @@ export const VerticalWithMenuActions: Story = {
 							label="Profile"
 							icon="person"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="security"
@@ -396,7 +419,7 @@ export const VerticalWithMenuActions: Story = {
 							icon="lock"
 							badge={3}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="notifications"
@@ -404,21 +427,21 @@ export const VerticalWithMenuActions: Story = {
 							icon="notifications"
 							badge={15}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="billing"
 							label="Billing"
 							icon="credit_card"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="team"
 							label="Team"
 							icon="group"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 					</DsTabs.List>
 
@@ -467,6 +490,11 @@ export const VerticalWithMenuActions: Story = {
 
 /** Mixes enabled and `disabled` tabs — disabled tabs are not selectable. */
 export const WithDisabled: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render(args) {
 		const [selected, setSelected] = useState('active1');
 
@@ -504,6 +532,11 @@ export const WithDisabled: Story = {
 
 /** Labels only (no `icon`), optional `badge` — minimal text-driven tab bar. */
 export const TextOnly: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render(args) {
 		const [selected, setSelected] = useState('home');
 
@@ -556,6 +589,11 @@ export const TextOnly: Story = {
 
 /** Adds a `tooltip` per tab — use for icon-light tabs that need extra context on hover. */
 export const WithTooltips: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render(args) {
 		const [selected, setSelected] = useState('dashboard');
 

@@ -2,8 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsStack } from './index';
 import styles from './ds-stack.stories.module.scss';
 
-const Box = ({ children }: { children: React.ReactNode }) => <div className={styles.box}>{children}</div>;
-
 const meta: Meta<typeof DsStack> = {
 	title: 'Components/Stack',
 	component: DsStack,
@@ -38,9 +36,9 @@ export const Default: Story = {
 	},
 	render: (args) => (
 		<DsStack {...args}>
-			<Box>Item 1</Box>
-			<Box>Item 2</Box>
-			<Box>Item 3</Box>
+			<div className={styles.box}>Item 1</div>
+			<div className={styles.box}>Item 2</div>
+			<div className={styles.box}>Item 3</div>
 		</DsStack>
 	),
 };
@@ -53,9 +51,9 @@ export const Row: Story = {
 	},
 	render: (args) => (
 		<DsStack {...args}>
-			<Box>Item 1</Box>
-			<Box>Item 2</Box>
-			<Box>Item 3</Box>
+			<div className={styles.box}>Item 1</div>
+			<div className={styles.box}>Item 2</div>
+			<div className={styles.box}>Item 3</div>
 		</DsStack>
 	),
 };
@@ -68,9 +66,9 @@ export const Responsive: Story = {
 	},
 	render: (args) => (
 		<DsStack {...args} className={styles.container}>
-			<Box>Item 1</Box>
-			<Box>Item 2</Box>
-			<Box>Item 3</Box>
+			<div className={styles.box}>Item 1</div>
+			<div className={styles.box}>Item 2</div>
+			<div className={styles.box}>Item 3</div>
 		</DsStack>
 	),
 };
@@ -84,8 +82,8 @@ export const SpaceBetween: Story = {
 	},
 	render: (args) => (
 		<DsStack {...args} className={styles.container}>
-			<Box>Left</Box>
-			<Box>Right</Box>
+			<div className={styles.box}>Left</div>
+			<div className={styles.box}>Right</div>
 		</DsStack>
 	),
 };
@@ -99,7 +97,9 @@ export const Wrapping: Story = {
 	render: (args) => (
 		<DsStack {...args} className={styles.container}>
 			{Array.from({ length: 10 }, (_, i) => (
-				<Box key={i}>Item {i + 1}</Box>
+				<div className={styles.box} key={i}>
+					Item {i + 1}
+				</div>
 			))}
 		</DsStack>
 	),
@@ -109,14 +109,14 @@ export const Nested: Story = {
 	render: () => (
 		<DsStack gap={24}>
 			<DsStack direction="row" gap={16} alignItems="center">
-				<Box>Row 1 - A</Box>
-				<Box>Row 1 - B</Box>
-				<Box>Row 1 - C</Box>
+				<div className={styles.box}>Row 1 - A</div>
+				<div className={styles.box}>Row 1 - B</div>
+				<div className={styles.box}>Row 1 - C</div>
 			</DsStack>
 
 			<DsStack direction="row" gap={16} alignItems="center">
-				<Box>Row 2 - A</Box>
-				<Box>Row 2 - B</Box>
+				<div className={styles.box}>Row 2 - A</div>
+				<div className={styles.box}>Row 2 - B</div>
 			</DsStack>
 		</DsStack>
 	),

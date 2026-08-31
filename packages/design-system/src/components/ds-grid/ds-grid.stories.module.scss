@@ -1,0 +1,51 @@
+.myGrid {
+	background: var(--color-dap-gray-100);
+}
+
+.card {
+	padding: var(--sm) var(--standard);
+	border: 1px solid var(--color-dap-gray-300);
+	border-radius: var(--3xs);
+	background: var(--color-dap-gray-050);
+	box-shadow: 0 1.25px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+.navigationGrid {
+	background: var(--secondary-100);
+}
+
+.layout {
+	height: 100vh;
+}
+
+.header {
+	height: 50px;
+}
+
+.logo {
+	width: 256px;
+	background: var(--secondary-300);
+}
+
+.title {
+	flex: 1;
+	background: var(--secondary-200);
+}
+
+.main {
+	flex: 1;
+}
+
+.sidebar {
+	width: 256px;
+	background: var(--secondary-400);
+	transition: width 0.3s ease;
+}
+
+.collapsed {
+	width: 50px;
+}
+
+.contentWrapper {
+	flex: 1;
+}
