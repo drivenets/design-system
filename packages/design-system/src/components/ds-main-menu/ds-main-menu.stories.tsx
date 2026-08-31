@@ -175,6 +175,7 @@ export const WithSelection: Story = {
 };
 
 export const ControlledSelection: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const [selectedId, setSelectedId] = useState('planning');
 
@@ -264,6 +265,7 @@ export const WithSvgIcons: Story = {
 
 export const CustomAnchor: Story = {
 	name: 'Custom anchor (sidebar trigger)',
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const anchorRef = useRef<HTMLDivElement>(null);
 
@@ -297,7 +299,7 @@ export const CustomAnchor: Story = {
 
 export const InWorkspaceHeader: Story = {
 	name: 'App switching in workspace header',
-	parameters: { layout: 'fullscreen' },
+	parameters: { layout: 'fullscreen', docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const [selectedAppId, setSelectedAppId] = useState('my-dashboard');
 		const selectedApp = SAMPLE_SVG_ITEMS.find((app) => app.id === selectedAppId);

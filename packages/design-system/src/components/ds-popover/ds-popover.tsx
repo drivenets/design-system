@@ -64,7 +64,7 @@ const DsPopoverPanel = ({
 				ref={ref}
 				aria-label={ariaLabel}
 				className={classNames(styles.panel, className)}
-				style={{ width, ...style }}
+				style={{ ...style, width }}
 			>
 				{children}
 			</Popover.Content>

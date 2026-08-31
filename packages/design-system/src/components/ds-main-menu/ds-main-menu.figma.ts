@@ -4,18 +4,14 @@
 import figma from 'figma';
 
 export default {
-	example: figma.code`<DsPopover.Root>
-  <DsPopover.Trigger>{/* header trigger */}</DsPopover.Trigger>
-  <DsPopover.Panel style={{ width: 'max-content' }}>
-    <DsMainMenu
-      items={items}
-      utilityLinks={utilityLinks}
-      selectedId={selectedId}
-      onItemSelect={onItemSelect}
-    />
-  </DsPopover.Panel>
-</DsPopover.Root>`,
-	imports: ["import { DsMainMenu, DsPopover } from '@drivenets/design-system';"],
+	example: figma.code`<DsMainMenu
+  trigger={/* header trigger */}
+  items={items}
+  utilityLinks={utilityLinks}
+  selectedId={selectedId}
+  onItemSelect={onItemSelect}
+/>`,
+	imports: ["import { DsMainMenu } from '@drivenets/design-system';"],
 	id: 'ds-main-menu',
 	metadata: { nestable: false },
 } satisfies figma.Template;

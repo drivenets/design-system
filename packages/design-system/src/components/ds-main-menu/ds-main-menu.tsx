@@ -338,7 +338,7 @@ const DsMainMenu = ({
 			onOpenChange={handleOpenChange}
 		>
 			<DsPopover.Trigger>{trigger}</DsPopover.Trigger>
-			<DsPopover.Panel className={styles.panel} style={{ width: 'max-content', minWidth: 'max-content' }}>
+			<DsPopover.Panel className={styles.panel}>
 				<nav
 					ref={ref}
 					className={classNames(styles.root, className)}

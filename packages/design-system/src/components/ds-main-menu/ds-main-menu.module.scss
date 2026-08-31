@@ -339,8 +339,11 @@ $icon-size: 42px;
 	min-width: 0;
 }
 
-// Reset the DsPopover.Panel container so the nav's own visual styles (bg, shadow, radius) render.
+// Reset the DsPopover.Panel container so the nav's own visual styles (bg, shadow, radius) render,
+// and size it to the menu content instead of DsPopover's fixed default width.
 .panel {
 	background: transparent !important;
 	box-shadow: none !important;
+	width: max-content !important;
+	min-width: max-content !important;
 }
