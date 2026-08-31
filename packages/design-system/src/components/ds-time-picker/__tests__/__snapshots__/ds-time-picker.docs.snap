@@ -1,0 +1,121 @@
+# DsTimePicker docs snippets
+
+## Default
+
+### Show code
+<DsTimePicker placeholder="hh:mm AM/PM" />
+
+### MCP manifest
+const Default = () => <DsTimePicker placeholder="hh:mm AM/PM" />;
+
+## With Default Value
+
+### Show code
+<DsTimePicker defaultValue={new Date("2026-01-01T14:30:00.000Z")} />
+
+### MCP manifest
+const WithDefaultValue = () => <DsTimePicker defaultValue={createTime(14, 30)} />;
+
+## Disabled
+
+### Show code
+<DsTimePicker
+  disabled
+  value={new Date("2026-01-01T14:30:00.000Z")}
+/>
+
+### MCP manifest
+const Disabled = () => <DsTimePicker value={createTime(14, 30)} disabled />;
+
+## Read Only
+
+### Show code
+<DsTimePicker
+  readOnly
+  value={new Date("2026-01-01T14:30:00.000Z")}
+/>
+
+### MCP manifest
+const ReadOnly = () => <DsTimePicker value={createTime(14, 30)} readOnly />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<Date | null>(createTime(9, 45));
+    return <DsStack direction="column" gap="var(--sm)">
+                <DsTimePicker value={value} onChange={setValue} />
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Value: {formatTimeLabel(value)}
+                </DsTypography>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState<Date | null>(createTime(9, 45));
+
+    return (
+        <DsStack direction="column" gap="var(--sm)">
+            <DsTimePicker value={value} onChange={setValue} />
+            <DsTypography variant="body-sm-reg" color="secondary">
+                Value: {formatTimeLabel(value)}
+            </DsTypography>
+        </DsStack>
+    );
+};
+
+## With Min Max
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const min = createTime(9, 30);
+    const max = createTime(17, 40);
+    const [value, setValue] = useState<Date | null>(createTime(13, 50));
+    return <DsStack direction="column" gap="var(--sm)">
+                <DsTimePicker min={min} max={max} value={value} onChange={setValue} />
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Value: {formatTimeLabel(value)}
+                </DsTypography>
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Range: {formatTimeLabel(min)} – {formatTimeLabel(max)}
+                </DsTypography>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const WithMinMax = function Render() {
+    const min = createTime(9, 30);
+    const max = createTime(17, 40);
+    const [value, setValue] = useState<Date | null>(createTime(13, 50));
+
+    return (
+        <DsStack direction="column" gap="var(--sm)">
+            <DsTimePicker min={min} max={max} value={value} onChange={setValue} />
+            <DsTypography variant="body-sm-reg" color="secondary">
+                Value: {formatTimeLabel(value)}
+            </DsTypography>
+            <DsTypography variant="body-sm-reg" color="secondary">
+                Range: {formatTimeLabel(min)} – {formatTimeLabel(max)}
+            </DsTypography>
+        </DsStack>
+    );
+};

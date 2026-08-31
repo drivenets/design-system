@@ -1,0 +1,128 @@
+# DsExpandableTextInput docs snippets
+
+## Default
+
+### Show code
+<DsExpandableTextInput icon="search" />
+
+### MCP manifest
+const Default = () => <DsExpandableTextInput icon="search" />;
+
+## Small Size
+
+### Show code
+<DsExpandableTextInput
+  icon="search"
+  size="small"
+/>
+
+### MCP manifest
+const SmallSize = () => <DsExpandableTextInput icon="search" size="small" />;
+
+## Custom Icon
+
+### Show code
+<DsExpandableTextInput icon="search_insights" />
+
+### MCP manifest
+const CustomIcon = () => <DsExpandableTextInput icon="search_insights" />;
+
+## Placeholder
+
+### Show code
+<DsExpandableTextInput
+  icon="search"
+  placeholder="Type to search"
+/>
+
+### MCP manifest
+const Placeholder = () => <DsExpandableTextInput icon="search" placeholder="Type to search" />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('query');
+    return <DsExpandableTextInput icon="search" value={value} onChange={e => setValue(e.target.value)} onClear={() => setValue('')} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState('query');
+
+    return (
+        <DsExpandableTextInput
+            icon="search"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onClear={() => setValue('')}
+        />
+    );
+};
+
+## Default Value
+
+### Show code
+<DsExpandableTextInput
+  defaultValue="initial search"
+  icon="search"
+/>
+
+### MCP manifest
+const DefaultValue = () => <DsExpandableTextInput icon="search" defaultValue="initial search" />;
+
+## With Table
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [search, setSearch] = useState('');
+    return <DsStack direction="column" gap="var(--md)" width="31.25rem">
+                <DsStack gap="var(--2xs)" justifyContent="end">
+                    <DsExpandableTextInput icon="search" placeholder="Type to search..." value={search} onChange={e => setSearch(e.target.value)} onClear={() => setSearch('')} />
+                    <DsButtonV3 size="small">Click</DsButtonV3>
+                </DsStack>
+                <DsTable columns={columns} data={people} columnFilters={[{
+        id: 'firstName',
+        value: search
+      }]} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const WithTable = function Render() {
+    const [search, setSearch] = useState('');
+
+    return (
+        <DsStack direction="column" gap="var(--md)" width="31.25rem">
+            <DsStack gap="var(--2xs)" justifyContent="end">
+                <DsExpandableTextInput
+                    icon="search"
+                    placeholder="Type to search..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onClear={() => setSearch('')}
+                />
+                <DsButtonV3 size="small">Click</DsButtonV3>
+            </DsStack>
+            <DsTable columns={columns} data={people} columnFilters={[{ id: 'firstName', value: search }]} />
+        </DsStack>
+    );
+};

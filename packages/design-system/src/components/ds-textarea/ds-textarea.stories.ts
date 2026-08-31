@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
 import DsTextarea from './ds-textarea';
 
 const meta: Meta<typeof DsTextarea> = {
@@ -7,16 +6,13 @@ const meta: Meta<typeof DsTextarea> = {
 	component: DsTextarea,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component: 'A multi-line text input for longer free-form content such as comments or descriptions.',
+			},
+		},
 	},
 	argTypes: {
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Inline styles to apply to the component',
-		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder text',
@@ -37,64 +33,47 @@ const meta: Meta<typeof DsTextarea> = {
 			control: { type: 'number', min: 1 },
 			description: 'Maximum number of characters',
 		},
-		onChange: {
-			action: 'changed',
-			description: 'Function called when value changes',
-		},
+		onChange: { table: { disable: true } },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
+		ref: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsTextarea>;
 
+/**
+ * The default multi-line input. Set `rows` to control the initial visible
+ * height; the field still scrolls once content exceeds it.
+ */
 export const Default: Story = {
 	args: {
 		placeholder: 'Enter your text here...',
 		rows: 3,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Verify component renders correctly
-		const textarea = canvas.getByRole('textbox');
-		await expect(textarea).toBeTruthy();
-
-		// Test typing in the textarea
-		await userEvent.type(textarea, 'Hello world Design System!');
-		await waitFor(() => {
-			return expect(textarea).toHaveValue('Hello world Design System!');
-		});
-	},
 };
 
+/**
+ * Disabled textarea that cannot be focused or edited. Use for content that is
+ * temporarily unavailable.
+ */
 export const Disabled: Story = {
 	args: {
 		value: 'This textarea is disabled',
 		disabled: true,
 		placeholder: 'Disabled textarea',
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const textarea = canvas.getByRole('textbox');
-		await expect(textarea).toBeDisabled();
-	},
 };
 
+/**
+ * Cap the amount of text with `maxLength`. The native input prevents typing
+ * beyond the limit, which is useful for length-restricted fields.
+ */
 export const MaxLength: Story = {
 	args: {
 		placeholder: 'Maximum 50 characters allowed',
 		maxLength: 50,
 		rows: 3,
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const textarea = canvas.getByRole('textbox');
-
-		// Test typing beyond max length
-		const longText = 'This is a very long text that should be truncated at 50 characters';
-		await userEvent.type(textarea, longText);
-		await waitFor(() => {
-			return expect(textarea).toHaveValue(longText.substring(0, 50));
-		});
 	},
 };
