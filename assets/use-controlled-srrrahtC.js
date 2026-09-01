@@ -1,0 +1,1 @@
+import{a as e,n as t}from"./rolldown-runtime-DaJ6WEGw.js";import{t as n}from"./react-BJoyWkjz.js";import{n as r}from"./classnames-Cm4Wq5Eu.js";var i,a,o,s=t((()=>{i=r(),a=e(n(),1),o=(e,t,n)=>{let r=(0,i.c)(3),o=e!==void 0&&t!==void 0,[s,c]=(0,a.useState)(e??n),l=o?e:s,u=o?t:c,d;return r[0]!==u||r[1]!==l?(d=[l,u],r[0]=u,r[1]=l,r[2]=d):d=r[2],d}}));export{o as n,s as t};

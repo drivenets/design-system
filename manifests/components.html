@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/95 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">58/95 infos</a><span class="filter-pill ok" aria-disabled="true">602 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">598 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.2s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -7767,7 +7767,7 @@ title: string</code></pre>
       <div class="badges">
         <label for="c-23-components-divider-props" class="badge ok as-toggle">4 prop types</label>
         <label for="c-23-components-divider-info" class="badge info as-toggle">1 info</label>
-        <label for="c-23-components-divider-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-23-components-divider-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -7836,7 +7836,7 @@ style?: React.CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsDivider } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsDivider, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -7847,87 +7847,20 @@ style?: React.CSSProperties</code></pre>
               </div>
               
               
-              <pre><code>const Default = (args) =&gt; (
-    &lt;div
-        className={classNames(styles.storyContainer, {
-            [styles.storyContainerVertical]: args.orientation === &#39;vertical&#39;,
-        })}
-    &gt;
-        {args.orientation === &#39;vertical&#39; ? (
-            &lt;&gt;
-                &lt;div className={styles.storyContentSide}&gt;Left content&lt;/div&gt;
-                &lt;DsDivider {...args} /&gt;
-                &lt;div className={styles.storyContentSide}&gt;Right content&lt;/div&gt;
-            &lt;/&gt;
-        ) : (
-            &lt;div className={styles.storyContent}&gt;
-                &lt;div className={styles.storyText}&gt;Top content&lt;/div&gt;
-                &lt;DsDivider {...args} /&gt;
-                &lt;div className={styles.storyText}&gt;Bottom content&lt;/div&gt;
-            &lt;/div&gt;
-        )}
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Showcase</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Showcase = () =&gt; (
-    &lt;div className={styles.showcaseContainer}&gt;
-        &lt;table className={styles.showcaseTable}&gt;
-            &lt;thead&gt;
-                &lt;tr&gt;
-                    &lt;th className={styles.showcaseHeader}&gt;Variant&lt;/th&gt;
-                    &lt;th className={styles.showcaseHeader}&gt;Preview&lt;/th&gt;
-                &lt;/tr&gt;
-            &lt;/thead&gt;
-
-            &lt;tbody&gt;
-                &lt;tr&gt;
-                    &lt;td className={styles.showcaseCell}&gt;
-                        &lt;span className={styles.showcaseCellBold}&gt;Horizontal&lt;/span&gt;
-                        &lt;span className={styles.showcaseCellInline}&gt;default&lt;/span&gt;
-                    &lt;/td&gt;
-                    &lt;td className={styles.showcaseCell}&gt;
-                        &lt;div className={styles.horizontalDividerWrapper}&gt;
-                            &lt;DsDivider /&gt;
-                        &lt;/div&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-
-                &lt;tr&gt;
-                    &lt;td className={styles.showcaseCell}&gt;
-                        &lt;span className={styles.showcaseCellBold}&gt;Vertical&lt;/span&gt;
-                        &lt;span className={styles.showcaseCellInline}&gt;default&lt;/span&gt;
-                    &lt;/td&gt;
-                    &lt;td className={styles.showcaseCell}&gt;
-                        &lt;div className={styles.verticalDividerContainer}&gt;
-                            &lt;div className={styles.verticalDividerContent}&gt;Left&lt;/div&gt;
-                            &lt;DsDivider orientation=&quot;vertical&quot; /&gt;
-                            &lt;div className={styles.verticalDividerContent}&gt;Right&lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-
-                &lt;tr&gt;
-                    &lt;td className={styles.showcaseCell}&gt;
-                        &lt;span className={styles.showcaseCellBold}&gt;Custom&lt;/span&gt;
-                        &lt;span className={styles.showcaseCellInline}&gt;component=&amp;quot;span&amp;quot;&lt;/span&gt;
-                    &lt;/td&gt;
-                    &lt;td className={styles.showcaseCell}&gt;
-                        &lt;div className={styles.horizontalDividerWrapper}&gt;
-                            &lt;DsDivider component=&quot;span&quot; /&gt;
-                        &lt;/div&gt;
-                    &lt;/td&gt;
-                &lt;/tr&gt;
-            &lt;/tbody&gt;
-        &lt;/table&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <pre><code>const Default = (args) =&gt;
+    args.orientation === &#39;vertical&#39; ? (
+        &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--sm)&quot; alignItems=&quot;center&quot; className={styles.verticalDemo}&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Left content&lt;/DsTypography&gt;
+            &lt;DsDivider {...args} /&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Right content&lt;/DsTypography&gt;
+        &lt;/DsStack&gt;
+    ) : (
+        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot; alignItems=&quot;center&quot; className={styles.horizontalDemo}&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Top content&lt;/DsTypography&gt;
+            &lt;DsDivider {...args} /&gt;
+            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Bottom content&lt;/DsTypography&gt;
+        &lt;/DsStack&gt;
+    );</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7936,11 +7869,15 @@ style?: React.CSSProperties</code></pre>
               </div>
               
               
-              <pre><code>const Horizontal = () =&gt; &lt;div className={styles.horizontalContainer}&gt;
-    &lt;div className={styles.storyText}&gt;Above&lt;/div&gt;
+              <pre><code>const Horizontal = () =&gt; &lt;DsStack
+    direction=&quot;column&quot;
+    gap=&quot;var(--sm)&quot;
+    alignItems=&quot;center&quot;
+    className={styles.horizontalDemo}&gt;
+    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Above&lt;/DsTypography&gt;
     &lt;DsDivider orientation=&quot;horizontal&quot; /&gt;
-    &lt;div className={styles.storyText}&gt;Below&lt;/div&gt;
-&lt;/div&gt;;</code></pre>
+    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Below&lt;/DsTypography&gt;
+&lt;/DsStack&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7949,12 +7886,15 @@ style?: React.CSSProperties</code></pre>
               </div>
               
               
-              <pre><code>const Vertical = () =&gt; &lt;div
-    className={classNames(styles.storyContainer, styles.storyContainerVertical)}&gt;
-    &lt;div className={styles.storyContentSide}&gt;Left&lt;/div&gt;
+              <pre><code>const Vertical = () =&gt; &lt;DsStack
+    direction=&quot;row&quot;
+    gap=&quot;var(--sm)&quot;
+    alignItems=&quot;center&quot;
+    className={styles.verticalDemo}&gt;
+    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Left&lt;/DsTypography&gt;
     &lt;DsDivider orientation=&quot;vertical&quot; /&gt;
-    &lt;div className={styles.storyContentSide}&gt;Right&lt;/div&gt;
-&lt;/div&gt;;</code></pre>
+    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Right&lt;/DsTypography&gt;
+&lt;/DsStack&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -7963,11 +7903,15 @@ style?: React.CSSProperties</code></pre>
               </div>
               
               
-              <pre><code>const WithCustomComponent = () =&gt; &lt;div className={styles.horizontalContainer}&gt;
-    &lt;div className={styles.storyText}&gt;Above&lt;/div&gt;
+              <pre><code>const WithCustomComponent = () =&gt; &lt;DsStack
+    direction=&quot;column&quot;
+    gap=&quot;var(--sm)&quot;
+    alignItems=&quot;center&quot;
+    className={styles.horizontalDemo}&gt;
+    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Above&lt;/DsTypography&gt;
     &lt;DsDivider orientation=&quot;horizontal&quot; component=&quot;span&quot; /&gt;
-    &lt;div className={styles.storyText}&gt;Below&lt;/div&gt;
-&lt;/div&gt;;</code></pre>
+    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Below&lt;/DsTypography&gt;
+&lt;/DsStack&gt;;</code></pre>
             </div>
         </div>
     
@@ -12087,7 +12031,7 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsGrid, DsGridItem } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsGrid, DsGridItem, DsStack } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -12098,23 +12042,23 @@ style?: CSSProperties</code></pre>
               </div>
               
               
-              <pre><code>const Default = () =&gt; &lt;DsGrid className=&quot;my-grid&quot; rows={6}&gt;(&lt;&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={4}&gt;
-            &lt;div&gt;Element 1&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={4} rowSpan={2}&gt;
-            &lt;div&gt;Element 2&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={4} rowSpan={2}&gt;
-            &lt;div&gt;Element 3&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={4} rowSpan={2}&gt;
-            &lt;div&gt;Element 4&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={4} rowSpan={2} rowStart={5} colStart={2}&gt;
-            &lt;div&gt;Element 4&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-    &lt;/&gt;)&lt;/DsGrid&gt;;</code></pre>
+              <pre><code>const Default = () =&gt; &lt;DsGrid className={styles.myGrid} rows={6}&gt;
+    &lt;DsGridItem className={styles.card} colSpan={4}&gt;
+        &lt;div&gt;Element 1&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={4} rowSpan={2}&gt;
+        &lt;div&gt;Element 2&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={4} rowSpan={2}&gt;
+        &lt;div&gt;Element 3&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={4} rowSpan={2}&gt;
+        &lt;div&gt;Element 4&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={4} rowSpan={2} rowStart={5} colStart={2}&gt;
+        &lt;div&gt;Element 5&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+&lt;/DsGrid&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -12124,26 +12068,29 @@ style?: CSSProperties</code></pre>
               
               
               <pre><code>const Responsive = () =&gt; &lt;DsGrid
-    className=&quot;my-grid&quot;
+    className={styles.myGrid}
     gutter={{ lg: 16, md: 8 }}
     margin={{ lg: &#39;16px 20px&#39;, md: 8 }}
-    rows={4}&gt;(&lt;&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={{ lg: 4, md: 6 }}&gt;
-            &lt;div&gt;Card 1 — lg:4 md:6&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={{ lg: 4, md: 6 }}&gt;
-            &lt;div&gt;Card 2 — lg:4 md:6&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={{ lg: 4, md: 12 }}&gt;
-            &lt;div&gt;Card 3 — lg:4 md:12&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={{ lg: 6, md: 12 }} rowSpan={{ lg: 2, md: 1 }}&gt;
-            &lt;div&gt;Card 4 — lg:6×2 md:12×1&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-        &lt;DsGridItem className=&quot;card&quot; colSpan={{ lg: 6, md: 12 }}&gt;
-            &lt;div&gt;Card 5 — lg:6 md:12&lt;/div&gt;
-        &lt;/DsGridItem&gt;
-    &lt;/&gt;)&lt;/DsGrid&gt;;</code></pre>
+    rows={4}&gt;
+    &lt;DsGridItem className={styles.card} colSpan={{ lg: 4, md: 6 }}&gt;
+        &lt;div&gt;Card 1 — lg:4 md:6&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={{ lg: 4, md: 6 }}&gt;
+        &lt;div&gt;Card 2 — lg:4 md:6&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={{ lg: 4, md: 12 }}&gt;
+        &lt;div&gt;Card 3 — lg:4 md:12&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem
+        className={styles.card}
+        colSpan={{ lg: 6, md: 12 }}
+        rowSpan={{ lg: 2, md: 1 }}&gt;
+        &lt;div&gt;Card 4 — lg:6×2 md:12×1&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+    &lt;DsGridItem className={styles.card} colSpan={{ lg: 6, md: 12 }}&gt;
+        &lt;div&gt;Card 5 — lg:6 md:12&lt;/div&gt;
+    &lt;/DsGridItem&gt;
+&lt;/DsGrid&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -12156,42 +12103,41 @@ style?: CSSProperties</code></pre>
     const [isCollapsed, setIsCollapsed] = useState(false);
 
     return (
-        &lt;div className=&quot;layout&quot;&gt;
-            &lt;div className=&quot;header&quot;&gt;
-                &lt;div className=&quot;logo&quot;&gt;
-                    &lt;DsButton
-                        className=&quot;toggle&quot;
-                        design=&quot;v1.2&quot;
+        &lt;DsStack direction=&quot;column&quot; className={styles.layout}&gt;
+            &lt;DsStack direction=&quot;row&quot; className={styles.header}&gt;
+                &lt;DsStack alignItems=&quot;center&quot; justifyContent=&quot;center&quot; className={styles.logo}&gt;
+                    &lt;DsButtonV3
+                        variant=&quot;secondary&quot;
+                        size=&quot;small&quot;
                         onClick={() =&gt; setIsCollapsed(!isCollapsed)}&gt;Toggle
-                                                &lt;/DsButton&gt;
-                &lt;/div&gt;
-                &lt;div className=&quot;title&quot; /&gt;
-            &lt;/div&gt;
-            &lt;div className=&quot;main&quot;&gt;
-                &lt;div className={`sidebar ${isCollapsed ? &#39;collapsed&#39; : &#39;&#39;}`}&gt;
-                    &lt;div className=&quot;sidebar-content&quot; /&gt;
-                &lt;/div&gt;
-                &lt;main className=&quot;content-wrapper&quot;&gt;
-                    &lt;DsGrid className=&quot;navigation-grid&quot; rows={4}&gt;&lt;&gt;
-                            &lt;DsGridItem className=&quot;card&quot; colSpan={4}&gt;
-                                &lt;div&gt;Dashboard Card 1&lt;/div&gt;
-                            &lt;/DsGridItem&gt;
-                            &lt;DsGridItem className=&quot;card&quot; colSpan={4}&gt;
-                                &lt;div&gt;Dashboard Card 2&lt;/div&gt;
-                            &lt;/DsGridItem&gt;
-                            &lt;DsGridItem className=&quot;card&quot; colSpan={4}&gt;
-                                &lt;div&gt;Dashboard Card 3&lt;/div&gt;
-                            &lt;/DsGridItem&gt;
-                            &lt;DsGridItem className=&quot;card&quot; colSpan={6}&gt;
-                                &lt;div&gt;Dashboard Card 4&lt;/div&gt;
-                            &lt;/DsGridItem&gt;
-                            &lt;DsGridItem className=&quot;card&quot; colSpan={6}&gt;
-                                &lt;div&gt;Dashboard Card 5&lt;/div&gt;
-                            &lt;/DsGridItem&gt;
-                        &lt;/&gt;&lt;/DsGrid&gt;
-                &lt;/main&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
+                                                &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+                &lt;div className={styles.title} /&gt;
+            &lt;/DsStack&gt;
+            &lt;DsStack direction=&quot;row&quot; className={styles.main}&gt;
+                &lt;div
+                    className={classNames(styles.sidebar, { [styles.collapsed]: isCollapsed })} /&gt;
+                &lt;DsStack direction=&quot;column&quot; className={styles.contentWrapper}&gt;
+                    &lt;DsGrid className={styles.navigationGrid} rows={4}&gt;
+                        &lt;DsGridItem className={styles.card} colSpan={4}&gt;
+                            &lt;div&gt;Dashboard Card 1&lt;/div&gt;
+                        &lt;/DsGridItem&gt;
+                        &lt;DsGridItem className={styles.card} colSpan={4}&gt;
+                            &lt;div&gt;Dashboard Card 2&lt;/div&gt;
+                        &lt;/DsGridItem&gt;
+                        &lt;DsGridItem className={styles.card} colSpan={4}&gt;
+                            &lt;div&gt;Dashboard Card 3&lt;/div&gt;
+                        &lt;/DsGridItem&gt;
+                        &lt;DsGridItem className={styles.card} colSpan={6}&gt;
+                            &lt;div&gt;Dashboard Card 4&lt;/div&gt;
+                        &lt;/DsGridItem&gt;
+                        &lt;DsGridItem className={styles.card} colSpan={6}&gt;
+                            &lt;div&gt;Dashboard Card 5&lt;/div&gt;
+                        &lt;/DsGridItem&gt;
+                    &lt;/DsGrid&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -12655,7 +12601,7 @@ variant?: (typeof iconVariants)[number] = &#39;outlined&#39;</code></pre>
       <div class="badges">
         <label for="c-40-components-keyvaluepair-props" class="badge ok as-toggle">8 prop types</label>
         <label for="c-40-components-keyvaluepair-info" class="badge info as-toggle">1 info</label>
-        <label for="c-40-components-keyvaluepair-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-40-components-keyvaluepair-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -12743,6 +12689,8 @@ value?: ReactNode</code></pre>
     DsIcon,
     DsKeyValuePair,
     DsSelect,
+    DsSlider,
+    DsStack,
     DsTag,
     DsTextarea,
     DsTextInput,
@@ -12836,7 +12784,7 @@ value?: ReactNode</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Editable with trailing icon + tooltip</span>
+                <span class="ex-name">Editable with trailing icon and tooltip</span>
                 <span class="badge ok">story ok</span>
               </div>
               
@@ -12885,6 +12833,13 @@ value?: ReactNode</code></pre>
     const [serial, setSerial] = useState(&#39;99887766&#39;);
     const [manufacturer, setManufacturer] = useState(&#39;cisco&#39;);
 
+    const manufacturerOptions: DsSelectOption[] = [
+        { label: &#39;Cisco Systems&#39;, value: &#39;cisco&#39; },
+        { label: &#39;Juniper Networks&#39;, value: &#39;juniper&#39; },
+        { label: &#39;Arista Networks&#39;, value: &#39;arista&#39; },
+        { label: &#39;Nokia&#39;, value: &#39;nokia&#39; },
+    ];
+
     return (
         &lt;div className={storyStyles.pairsColumn}&gt;
             &lt;DsKeyValuePair keyLabel=&quot;MAC&quot; value=&quot;00:1A:2B:3C:4D:5E&quot; readOnly orientation=&quot;horizontal&quot; /&gt;
@@ -12897,78 +12852,17 @@ value?: ReactNode</code></pre>
             &lt;DsKeyValuePair keyLabel=&quot;Model&quot; value=&quot;Cisco RTR-X2000&quot; readOnly orientation=&quot;horizontal&quot; /&gt;
             &lt;DsKeyValuePair
                 keyLabel=&quot;MFR&quot;
-                value={MANUFACTURER_OPTIONS.find((o) =&gt; o.value === manufacturer)?.label ?? manufacturer}
+                value={manufacturerOptions.find((o) =&gt; o.value === manufacturer)?.label ?? manufacturer}
                 orientation=&quot;horizontal&quot;
                 editInput={
                     &lt;DsSelect
-                        options={MANUFACTURER_OPTIONS}
+                        options={manufacturerOptions}
                         value={manufacturer}
                         onValueChange={setManufacturer}
                         size=&quot;small&quot;
                     /&gt;
                 }
             /&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Responsive container width</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ResponsiveWidth = function Render() {
-    const [width, setWidth] = useState(DEFAULT_WIDTH);
-    const [serial, setSerial] = useState(&#39;99887766&#39;);
-    const [description, setDescription] = useState(LONG_TEXT);
-
-    return (
-        &lt;div className={storyStyles.responsiveDemo}&gt;
-            &lt;div className={storyStyles.responsiveSlider}&gt;
-                &lt;span&gt;{MIN_WIDTH}px&lt;/span&gt;
-                &lt;input
-                    type=&quot;range&quot;
-                    min={MIN_WIDTH}
-                    max={MAX_WIDTH}
-                    value={width}
-                    onChange={(e) =&gt; setWidth(Number(e.target.value))}
-                    className={storyStyles.responsiveSliderInput}
-                /&gt;
-                &lt;span&gt;{MAX_WIDTH}px&lt;/span&gt;
-                &lt;span&gt;({width}px)&lt;/span&gt;
-            &lt;/div&gt;
-
-            &lt;div className={storyStyles.responsivePairs} style={{ width }}&gt;
-                &lt;DsKeyValuePair keyLabel=&quot;MAC&quot; value=&quot;00:1A:2B:3C:4D:5E&quot; readOnly orientation=&quot;horizontal&quot; /&gt;
-                &lt;DsKeyValuePair
-                    keyLabel=&quot;Serial Number&quot;
-                    value={serial}
-                    orientation=&quot;horizontal&quot;
-                    editInput={&lt;DsTextInput value={serial} onValueChange={setSerial} size=&quot;small&quot; /&gt;}
-                /&gt;
-                &lt;DsKeyValuePair keyLabel=&quot;Model&quot; value=&quot;Cisco RTR-X2000&quot; readOnly orientation=&quot;horizontal&quot; /&gt;
-                &lt;DsKeyValuePair
-                    keyLabel=&quot;Firmware Version&quot;
-                    value=&quot;v4.2.1-build.2847&quot;
-                    readOnly
-                    orientation=&quot;horizontal&quot;
-                /&gt;
-                &lt;DsKeyValuePair
-                    keyLabel=&quot;Description&quot;
-                    value={description}
-                    orientation=&quot;horizontal&quot;
-                    editInput={
-                        &lt;DsTextarea
-                            value={description}
-                            onValueChange={setDescription}
-                            rows={4}
-                            className={storyStyles.descriptionTextarea}
-                        /&gt;
-                    }
-                /&gt;
-            &lt;/div&gt;
         &lt;/div&gt;
     );
 };</code></pre>
@@ -12983,8 +12877,18 @@ value?: ReactNode</code></pre>
               <pre><code>const ValueTypes = function Render() {
     const [editable, setEditable] = useState(&#39;Editable value&#39;);
     const [manufacturer, setManufacturer] = useState(&#39;cisco&#39;);
-    const [description, setDescription] = useState(LONG_TEXT);
+    const [description, setDescription] = useState(
+        // cspell:disable-next-line
+        &#39;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris.&#39;,
+    );
     const [empty, setEmpty] = useState(&#39;&#39;);
+
+    const manufacturerOptions: DsSelectOption[] = [
+        { label: &#39;Cisco Systems&#39;, value: &#39;cisco&#39; },
+        { label: &#39;Juniper Networks&#39;, value: &#39;juniper&#39; },
+        { label: &#39;Arista Networks&#39;, value: &#39;arista&#39; },
+        { label: &#39;Nokia&#39;, value: &#39;nokia&#39; },
+    ];
 
     return (
         &lt;div className={storyStyles.pairsColumn}&gt;
@@ -13006,11 +12910,11 @@ value?: ReactNode</code></pre>
 
             &lt;DsKeyValuePair
                 keyLabel=&quot;MFR&quot;
-                value={MANUFACTURER_OPTIONS.find((o) =&gt; o.value === manufacturer)?.label ?? manufacturer}
+                value={manufacturerOptions.find((o) =&gt; o.value === manufacturer)?.label ?? manufacturer}
                 orientation=&quot;horizontal&quot;
                 editInput={
                     &lt;DsSelect
-                        options={MANUFACTURER_OPTIONS}
+                        options={manufacturerOptions}
                         value={manufacturer}
                         onValueChange={setManufacturer}
                         size=&quot;small&quot;
@@ -17752,7 +17656,7 @@ value?: number | [number, number]</code></pre>
       <div class="badges">
         <label for="c-58-components-smarttabs-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-58-components-smarttabs-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-58-components-smarttabs-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -17818,22 +17722,40 @@ style?: React.CSSProperties = {}</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsSmartTabs } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsSmartTabs, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Basic</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Minimal filter bar — the simplest SmartTabs usage with a couple of color-coded categories.</div>
+              <pre><code>const Basic = function Render() {
+    const [activeTab, setActiveTab] = useState(&#39;all&#39;);
+
+    return (
+        &lt;DsSmartTabs activeTab={activeTab} onTabClick={setActiveTab}&gt;
+            &lt;DsSmartTabs.Tab label=&quot;All&quot; value=&quot;all&quot; icon=&quot;view_apps&quot; color=&quot;dark-blue&quot; content=&quot;747&quot; /&gt;
+            &lt;DsSmartTabs.Tab label=&quot;Active&quot; value=&quot;active&quot; icon=&quot;check_circle&quot; color=&quot;green&quot; content=&quot;198&quot; /&gt;
+        &lt;/DsSmartTabs&gt;
+    );
+};</code></pre>
+            </div>
             <div class="note ok">
               <div class="row">
                 <span class="ex-name">Default</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Full filter bar with status colors, counts, and a disabled category.</div>
               <pre><code>const Default = function Render() {
     const [activeTab, setActiveTab] = useState(&#39;all&#39;);
 
     return (
-        &lt;div&gt;
+        &lt;DsStack direction=&quot;column&quot;&gt;
             &lt;DsSmartTabs activeTab={activeTab} onTabClick={setActiveTab}&gt;
                 &lt;DsSmartTabs.Tab label=&quot;All&quot; value=&quot;all&quot; icon=&quot;view_apps&quot; color=&quot;dark-blue&quot; content=&quot;747&quot; /&gt;
                 &lt;DsSmartTabs.Tab label=&quot;Active&quot; value=&quot;active&quot; icon=&quot;check_circle&quot; color=&quot;green&quot; content=&quot;198&quot; /&gt;
@@ -17853,16 +17775,13 @@ style?: React.CSSProperties = {}</code></pre>
                     disabled
                 /&gt;
             &lt;/DsSmartTabs&gt;
-            &lt;div
-                role=&quot;status&quot;
-                aria-label=&quot;Active tab&quot;
-                style={{ marginTop: &#39;20px&#39;, padding: &#39;16px&#39;, background: &#39;#f5f5f5&#39;, borderRadius: &#39;4px&#39; }}
-            &gt;
-                &lt;p&gt;
-                    Active tab: &lt;strong&gt;{activeTab}&lt;/strong&gt;
-                &lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
+            &lt;DsStack direction=&quot;row&quot; gap={4} className={styles.statusReadout}&gt;
+                &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Active tab:&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.statusValue}&gt;
+                    {activeTab}
+                &lt;/DsTypography&gt;
+            &lt;/DsStack&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -18349,10 +18268,10 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
               </div>
               
               
-              <pre><code>const Default = () =&gt; &lt;DsStack direction=&quot;column&quot; gap={8}&gt;
-    &lt;Box&gt;Item 1&lt;/Box&gt;
-    &lt;Box&gt;Item 2&lt;/Box&gt;
-    &lt;Box&gt;Item 3&lt;/Box&gt;
+              <pre><code>const Default = () =&gt; &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
+    &lt;div className={styles.box}&gt;Item 1&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Item 2&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Item 3&lt;/div&gt;
 &lt;/DsStack&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -18362,10 +18281,10 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
               </div>
               
               
-              <pre><code>const Row = () =&gt; &lt;DsStack direction=&quot;row&quot; gap={16} alignItems=&quot;center&quot;&gt;
-    &lt;Box&gt;Item 1&lt;/Box&gt;
-    &lt;Box&gt;Item 2&lt;/Box&gt;
-    &lt;Box&gt;Item 3&lt;/Box&gt;
+              <pre><code>const Row = () =&gt; &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
+    &lt;div className={styles.box}&gt;Item 1&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Item 2&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Item 3&lt;/div&gt;
 &lt;/DsStack&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -18377,12 +18296,12 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
               
               <pre><code>const Responsive = () =&gt; &lt;DsStack
     direction={{ md: &#39;column&#39;, lg: &#39;row&#39; }}
-    gap={{ md: 8, lg: 24 }}
+    gap={{ md: &#39;var(--xs)&#39;, lg: &#39;var(--lg)&#39; }}
     alignItems=&quot;center&quot;
     className={styles.container}&gt;
-    &lt;Box&gt;Item 1&lt;/Box&gt;
-    &lt;Box&gt;Item 2&lt;/Box&gt;
-    &lt;Box&gt;Item 3&lt;/Box&gt;
+    &lt;div className={styles.box}&gt;Item 1&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Item 2&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Item 3&lt;/div&gt;
 &lt;/DsStack&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -18398,8 +18317,8 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
     alignItems=&quot;center&quot;
     width=&quot;100%&quot;
     className={styles.container}&gt;
-    &lt;Box&gt;Left&lt;/Box&gt;
-    &lt;Box&gt;Right&lt;/Box&gt;
+    &lt;div className={styles.box}&gt;Left&lt;/div&gt;
+    &lt;div className={styles.box}&gt;Right&lt;/div&gt;
 &lt;/DsStack&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -18409,9 +18328,15 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
               </div>
               
               
-              <pre><code>const Wrapping = () =&gt; &lt;DsStack direction=&quot;row&quot; gap={8} flexWrap=&quot;wrap&quot; className={styles.container}&gt;
+              <pre><code>const Wrapping = () =&gt; &lt;DsStack
+    direction=&quot;row&quot;
+    gap=&quot;var(--xs)&quot;
+    flexWrap=&quot;wrap&quot;
+    className={styles.container}&gt;
     {Array.from({ length: 10 }, (_, i) =&gt; (
-        &lt;Box key={i}&gt;Item {i + 1}&lt;/Box&gt;
+        &lt;div className={styles.box} key={i}&gt;
+            Item {i + 1}
+        &lt;/div&gt;
     ))}
 &lt;/DsStack&gt;;</code></pre>
             </div>
@@ -18423,16 +18348,16 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
               
               
               <pre><code>const Nested = () =&gt; (
-    &lt;DsStack gap={24}&gt;
-        &lt;DsStack direction=&quot;row&quot; gap={16} alignItems=&quot;center&quot;&gt;
-            &lt;Box&gt;Row 1 - A&lt;/Box&gt;
-            &lt;Box&gt;Row 1 - B&lt;/Box&gt;
-            &lt;Box&gt;Row 1 - C&lt;/Box&gt;
+    &lt;DsStack gap=&quot;var(--lg)&quot;&gt;
+        &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
+            &lt;div className={styles.box}&gt;Row 1 - A&lt;/div&gt;
+            &lt;div className={styles.box}&gt;Row 1 - B&lt;/div&gt;
+            &lt;div className={styles.box}&gt;Row 1 - C&lt;/div&gt;
         &lt;/DsStack&gt;
 
-        &lt;DsStack direction=&quot;row&quot; gap={16} alignItems=&quot;center&quot;&gt;
-            &lt;Box&gt;Row 2 - A&lt;/Box&gt;
-            &lt;Box&gt;Row 2 - B&lt;/Box&gt;
+        &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
+            &lt;div className={styles.box}&gt;Row 2 - A&lt;/div&gt;
+            &lt;div className={styles.box}&gt;Row 2 - B&lt;/div&gt;
         &lt;/DsStack&gt;
     &lt;/DsStack&gt;
 );</code></pre>
@@ -19210,10 +19135,16 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = function Render() {
+              <div class="hint">The default vertical stepper reveals a description and a Next action under the current step. Use it for linear flows where each step needs supporting copy.</div>
+              <pre><code>const Default = () =&gt; {
+    const steps = [
+        { label: &#39;Project details&#39;, description: &#39;Enter project name and basic configuration&#39; },
+        { label: &#39;Select market&#39;, description: &#39;Choose the target market for deployment&#39; },
+        { label: &#39;Design policy&#39;, description: &#39;Define the design constraints and rules&#39; },
+    ];
+
     return (
-        &lt;div style={{ width: 300 }}&gt;
+        &lt;div className={styles.stepperDemo}&gt;
             &lt;DsStepper count={steps.length}&gt;
                 {steps.map((step, index) =&gt; (
                     &lt;DsStep index={index} key={index}&gt;
@@ -19238,10 +19169,12 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Compact = function Render() {
+              <div class="hint">The compact variant hides step descriptions, showing only labels. Prefer it in dense layouts where the flow is self-explanatory.</div>
+              <pre><code>const Compact = () =&gt; {
+    const steps = [{ label: &#39;Project details&#39; }, { label: &#39;Select market&#39; }, { label: &#39;Design policy&#39; }];
+
     return (
-        &lt;div style={{ width: 300 }}&gt;
+        &lt;div className={styles.stepperDemo}&gt;
             &lt;DsStepper count={steps.length}&gt;
                 {steps.map((step, index) =&gt; (
                     &lt;DsStep index={index} key={index}&gt;
@@ -19265,10 +19198,16 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Embed the stepper inside a `DsPanel` and switch the panel between docked and floating. The floating panel uses the `single` stepper variant so only the current step stays visible.</div>
               <pre><code>const WithPanel = function Render() {
     const [activeStep, setActiveStep] = useState(0);
     const [panelVariant, setPanelVariant] = useState&lt;DsPanelVariant&gt;(&#39;docked&#39;);
+
+    const steps = [
+        { label: &#39;Project details&#39;, description: &#39;Enter project name and basic configuration&#39; },
+        { label: &#39;Select market&#39;, description: &#39;Choose the target market for deployment&#39; },
+        { label: &#39;Design policy&#39;, description: &#39;Define the design constraints and rules&#39; },
+    ];
 
     const isFloating = panelVariant === &#39;floating&#39;;
 
@@ -19319,15 +19258,23 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Horizontal = function Render() {
+              <div class="hint">The horizontal orientation lays steps out left-to-right with a shared Next action. Use it for wizards at the top of a page where vertical space is scarce.</div>
+              <pre><code>const Horizontal = () =&gt; {
+    const steps = [
+        { label: &#39;Project details&#39;, description: &#39;Set up the project scope and requirements&#39; },
+        { label: &#39;Select market&#39;, description: &#39;Pick a region and target audience&#39; },
+        { label: &#39;Design policy&#39;, description: &#39;Configure branding and layout guidelines&#39; },
+        { label: &#39;Review summary&#39;, description: &#39;Verify all settings before submission&#39; },
+        { label: &#39;Final approval&#39;, description: &#39;Confirm and finalize the deployment plan&#39; },
+    ];
+
     return (
         &lt;DsStepper
-            count={horizontalSteps.length}
+            count={steps.length}
             orientation=&quot;horizontal&quot;
             actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
         &gt;
-            {horizontalSteps.map((step, index) =&gt; (
+            {steps.map((step, index) =&gt; (
                 &lt;DsStep index={index} key={index}&gt;
                     &lt;DsStepContent index={index} label={step.label} description={step.description} /&gt;
                 &lt;/DsStep&gt;
@@ -19342,15 +19289,21 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const HorizontalFewSteps = function Render() {
+              <div class="hint">A horizontal stepper with only a few steps keeps the layout balanced without stretching separators across the full width.</div>
+              <pre><code>const HorizontalFewSteps = () =&gt; {
+    const steps = [
+        { label: &#39;Project details&#39;, description: &#39;Configure the basic project settings&#39; },
+        { label: &#39;Select market&#39;, description: &#39;Choose the target market for deployment&#39; },
+        { label: &#39;Design policy&#39;, description: &#39;Define the design constraints and rules&#39; },
+    ];
+
     return (
         &lt;DsStepper
-            count={fewSteps.length}
+            count={steps.length}
             orientation=&quot;horizontal&quot;
             actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
         &gt;
-            {fewSteps.map((step, index) =&gt; (
+            {steps.map((step, index) =&gt; (
                 &lt;DsStep index={index} key={index}&gt;
                     &lt;DsStepContent index={index} label={step.label} description={step.description} /&gt;
                 &lt;/DsStep&gt;
@@ -19365,15 +19318,17 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const HorizontalCompactFewSteps = function Render() {
+              <div class="hint">Drop the descriptions in a horizontal few-step flow for a minimal, label-only progress indicator.</div>
+              <pre><code>const HorizontalCompactFewSteps = () =&gt; {
+    const steps = [{ label: &#39;Project details&#39; }, { label: &#39;Select market&#39; }, { label: &#39;Design policy&#39; }];
+
     return (
         &lt;DsStepper
-            count={fewCompactSteps.length}
+            count={steps.length}
             orientation=&quot;horizontal&quot;
             actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
         &gt;
-            {fewCompactSteps.map((step, index) =&gt; (
+            {steps.map((step, index) =&gt; (
                 &lt;DsStep index={index} key={index}&gt;
                     &lt;DsStepContent index={index} label={step.label} /&gt;
                 &lt;/DsStep&gt;
@@ -19388,9 +19343,23 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Customize each step with a slot indicator icon and rich description content. Drive the active step with `activeStep` / `onStepChange` for a controlled flow.</div>
               <pre><code>const CustomizedHorizontal = function Render() {
     const [activeStep, setActiveStep] = useState(0);
+
+    const customSteps = [
+        { label: &#39;Upload files&#39;, description: &#39;Drag and drop or browse to upload&#39;, icon: &#39;upload&#39; as const },
+        {
+            label: &#39;Configure settings&#39;,
+            description: (
+                &lt;span&gt;
+                    Adjust &lt;strong&gt;network parameters&lt;/strong&gt; for deployment
+                &lt;/span&gt;
+            ),
+            icon: &#39;settings&#39; as const,
+        },
+        { label: &#39;Deploy&#39;, description: &#39;Review and launch the deployment&#39;, icon: &#39;rocket_launch&#39; as const },
+    ];
 
     return (
         &lt;DsStepper
@@ -19419,12 +19388,12 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Highlight a specific step by combining a slot indicator icon with class-based styling on the step, indicator, label, and action once it becomes active.</div>
               <pre><code>const CustomizedVertical = function Render() {
     const [activeStep, setActiveStep] = useState(0);
 
     return (
-        &lt;div style={{ width: 350 }}&gt;
+        &lt;div className={styles.stepperDemoWide}&gt;
             &lt;DsStepper count={3} activeStep={activeStep} onStepChange={({ step }) =&gt; setActiveStep(step)}&gt;
                 &lt;DsStep index={0}&gt;
                     &lt;DsStepContent
@@ -19480,50 +19449,48 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithDisabledSteps = function Render() {
-    return (
-        &lt;div style={{ width: 350 }}&gt;
-            &lt;DsStepper count={4}&gt;
-                &lt;DsStep index={0}&gt;
-                    &lt;DsStepContent
-                        index={0}
-                        label=&quot;Basic information&quot;
-                        description=&quot;Enter your project details&quot;
-                        actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
+              <div class="hint">Mark steps as `disabled` to lock them out of the flow. Disabled steps carry a `data-disabled` attribute and cannot be navigated to, even once completed.</div>
+              <pre><code>const WithDisabledSteps = () =&gt; (
+    &lt;div className={styles.stepperDemoWide}&gt;
+        &lt;DsStepper count={4}&gt;
+            &lt;DsStep index={0}&gt;
+                &lt;DsStepContent
+                    index={0}
+                    label=&quot;Basic information&quot;
+                    description=&quot;Enter your project details&quot;
+                    actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
 
-                &lt;DsStep index={1} disabled&gt;
-                    &lt;DsStepContent
-                        index={1}
-                        label=&quot;Advanced settings&quot;
-                        description=&quot;Configure advanced options (requires approval)&quot;
-                        actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
+            &lt;DsStep index={1} disabled&gt;
+                &lt;DsStepContent
+                    index={1}
+                    label=&quot;Advanced settings&quot;
+                    description=&quot;Configure advanced options (requires approval)&quot;
+                    actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
 
-                &lt;DsStep index={2}&gt;
-                    &lt;DsStepContent
-                        index={2}
-                        label=&quot;Review&quot;
-                        description=&quot;Review your configuration&quot;
-                        actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
+            &lt;DsStep index={2}&gt;
+                &lt;DsStepContent
+                    index={2}
+                    label=&quot;Review&quot;
+                    description=&quot;Review your configuration&quot;
+                    actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
 
-                &lt;DsStep index={3} disabled&gt;
-                    &lt;DsStepContent
-                        index={3}
-                        label=&quot;Deploy&quot;
-                        description=&quot;Deploy to production (requires elevated permissions)&quot;
-                        actions={&lt;DsNextStepButton&gt;Finish&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
-            &lt;/DsStepper&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+            &lt;DsStep index={3} disabled&gt;
+                &lt;DsStepContent
+                    index={3}
+                    label=&quot;Deploy&quot;
+                    description=&quot;Deploy to production (requires elevated permissions)&quot;
+                    actions={&lt;DsNextStepButton&gt;Finish&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
+        &lt;/DsStepper&gt;
+    &lt;/div&gt;
+);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -19531,50 +19498,48 @@ orientation?: any = &#39;vertical&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithErrorStep = function Render() {
-    return (
-        &lt;div style={{ width: 350 }}&gt;
-            &lt;DsStepper count={4}&gt;
-                &lt;DsStep index={0}&gt;
-                    &lt;DsStepContent
-                        index={0}
-                        label=&quot;Configuration&quot;
-                        description=&quot;Enter deployment configuration&quot;
-                        actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
+              <div class="hint">Set a step&#39;s `variant` to `error` to surface a validation failure. The error step shows a close icon instead of its number and exposes `data-error`.</div>
+              <pre><code>const WithErrorStep = () =&gt; (
+    &lt;div className={styles.stepperDemoWide}&gt;
+        &lt;DsStepper count={4}&gt;
+            &lt;DsStep index={0}&gt;
+                &lt;DsStepContent
+                    index={0}
+                    label=&quot;Configuration&quot;
+                    description=&quot;Enter deployment configuration&quot;
+                    actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
 
-                &lt;DsStep index={1} variant=&quot;error&quot;&gt;
-                    &lt;DsStepContent
-                        index={1}
-                        label=&quot;Validation&quot;
-                        description=&quot;Configuration validation failed&quot;
-                        actions={&lt;DsNextStepButton&gt;Retry&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
+            &lt;DsStep index={1} variant=&quot;error&quot;&gt;
+                &lt;DsStepContent
+                    index={1}
+                    label=&quot;Validation&quot;
+                    description=&quot;Configuration validation failed&quot;
+                    actions={&lt;DsNextStepButton&gt;Retry&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
 
-                &lt;DsStep index={2}&gt;
-                    &lt;DsStepContent
-                        index={2}
-                        label=&quot;Review&quot;
-                        description=&quot;Review and confirm changes&quot;
-                        actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
+            &lt;DsStep index={2}&gt;
+                &lt;DsStepContent
+                    index={2}
+                    label=&quot;Review&quot;
+                    description=&quot;Review and confirm changes&quot;
+                    actions={&lt;DsNextStepButton&gt;Next&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
 
-                &lt;DsStep index={3}&gt;
-                    &lt;DsStepContent
-                        index={3}
-                        label=&quot;Complete&quot;
-                        description=&quot;Finalize deployment&quot;
-                        actions={&lt;DsNextStepButton&gt;Finish&lt;/DsNextStepButton&gt;}
-                    /&gt;
-                &lt;/DsStep&gt;
-            &lt;/DsStepper&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+            &lt;DsStep index={3}&gt;
+                &lt;DsStepContent
+                    index={3}
+                    label=&quot;Complete&quot;
+                    description=&quot;Finalize deployment&quot;
+                    actions={&lt;DsNextStepButton&gt;Finish&lt;/DsNextStepButton&gt;}
+                /&gt;
+            &lt;/DsStep&gt;
+        &lt;/DsStepper&gt;
+    &lt;/div&gt;
+);</code></pre>
             </div>
         </div>
     
@@ -26999,7 +26964,7 @@ export const DsTabs = {
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTabs } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsTabs, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27028,26 +26993,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;overview&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Overview&lt;/h3&gt;
-                        &lt;p&gt;View your dashboard overview and key metrics.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Overview&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View your dashboard overview and key metrics.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;analytics&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Analytics&lt;/h3&gt;
-                        &lt;p&gt;Detailed analytics and performance data (12 new insights).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Analytics&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Detailed analytics and performance data (12 new insights).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;reports&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Reports&lt;/h3&gt;
-                        &lt;p&gt;Access and manage your reports (5 pending).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Reports&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Access and manage your reports (5 pending).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;settings&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your application settings.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your application settings.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27080,26 +27049,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;dashboard&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Dashboard&lt;/h3&gt;
-                        &lt;p&gt;Welcome to your dashboard overview.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Dashboard&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Welcome to your dashboard overview.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;analytics&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Analytics&lt;/h3&gt;
-                        &lt;p&gt;View analytics and performance data. 12 new insights available.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Analytics&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View analytics and performance data. 12 new insights available.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;reports&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Reports&lt;/h3&gt;
-                        &lt;p&gt;View and generate reports. 5 new reports available.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Reports&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View and generate reports. 5 new reports available.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;settings&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your application settings.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your application settings.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27138,37 +27111,40 @@ export const DsTabs = {
                         icon=&quot;folder&quot;
                         badge={5}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuActionMock} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;tab2&quot;
                         label=&quot;Documents&quot;
                         icon=&quot;description&quot;
                         badge={12}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuActionMock} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;tab3&quot;
                         label=&quot;Settings&quot;
                         icon=&quot;settings&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuActionMock} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;tab1&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Projects&lt;/h3&gt;
-                        &lt;p&gt;Click the dropdown icon on tabs to see menu actions&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Projects&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Click the dropdown icon on tabs to see menu actions
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;tab2&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Documents&lt;/h3&gt;
-                        &lt;p&gt;12 documents available&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Documents&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;12 documents available
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;tab3&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your preferences&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your preferences
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27206,32 +27182,37 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;profile&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Profile Settings&lt;/h3&gt;
-                        &lt;p&gt;Manage your profile information and preferences.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Profile Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage your profile information and preferences.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;security&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Security&lt;/h3&gt;
-                        &lt;p&gt;Configure security settings and two-factor authentication (3 recommendations).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Security&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure security settings and two-factor authentication (3 recommendations).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;notifications&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Notifications&lt;/h3&gt;
-                        &lt;p&gt;Manage notification preferences and channels (15 unread).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Notifications&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage notification preferences and channels (15 unread).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;billing&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Billing&lt;/h3&gt;
-                        &lt;p&gt;View invoices and manage payment methods.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Billing&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View invoices and manage payment methods.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;team&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Team Management&lt;/h3&gt;
-                        &lt;p&gt;Invite team members and manage permissions.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Team Management&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Invite team members and manage permissions.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27265,32 +27246,37 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;general&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;General Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure general application settings and preferences.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;General Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure general application settings and preferences.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;account&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Account&lt;/h3&gt;
-                        &lt;p&gt;Manage your account details and information.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Account&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage your account details and information.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;privacy&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Privacy&lt;/h3&gt;
-                        &lt;p&gt;Control your privacy settings and data sharing (2 recommendations).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Privacy&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Control your privacy settings and data sharing (2 recommendations).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;appearance&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Appearance&lt;/h3&gt;
-                        &lt;p&gt;Customize the look and feel of the application.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Appearance&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Customize the look and feel of the application.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;advanced&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Advanced&lt;/h3&gt;
-                        &lt;p&gt;Advanced configuration options for power users.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Advanced&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Advanced configuration options for power users.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27315,10 +27301,6 @@ export const DsTabs = {
         { value: &#39;delete&#39;, label: &#39;Delete&#39; },
     ];
 
-    const handleMenuAction = (action: string) =&gt; {
-        console.log(&#39;Menu action selected:&#39;, action);
-    };
-
     return (
         &lt;div className={styles.verticalContainer}&gt;
             &lt;DsTabs.Root
@@ -27332,64 +27314,68 @@ export const DsTabs = {
                         label=&quot;Profile&quot;
                         icon=&quot;person&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;security&quot;
                         label=&quot;Security&quot;
                         icon=&quot;lock&quot;
                         badge={3}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;notifications&quot;
                         label=&quot;Notifications&quot;
                         icon=&quot;notifications&quot;
                         badge={15}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;billing&quot;
                         label=&quot;Billing&quot;
                         icon=&quot;credit_card&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;team&quot;
                         label=&quot;Team&quot;
                         icon=&quot;group&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;profile&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Profile Settings&lt;/h3&gt;
-                        &lt;p&gt;Manage your profile information and preferences. Click the dropdown icon on tabs to see menu
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Profile Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage your profile information and preferences. Click the dropdown icon on tabs to see menu
                                                             actions.
-                                                        &lt;/p&gt;
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;security&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Security&lt;/h3&gt;
-                        &lt;p&gt;Configure security settings and two-factor authentication (3 recommendations).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Security&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure security settings and two-factor authentication (3 recommendations).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;notifications&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Notifications&lt;/h3&gt;
-                        &lt;p&gt;Manage notification preferences and channels (15 unread).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Notifications&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage notification preferences and channels (15 unread).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;billing&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Billing&lt;/h3&gt;
-                        &lt;p&gt;View invoices and manage payment methods.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Billing&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View invoices and manage payment methods.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;team&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Team Management&lt;/h3&gt;
-                        &lt;p&gt;Invite team members and manage permissions.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Team Management&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Invite team members and manage permissions.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27419,16 +27405,24 @@ export const DsTabs = {
                     &lt;DsTabs.Tab value=&quot;disabled2&quot; label=&quot;Disabled&quot; icon=&quot;block&quot; disabled /&gt;
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;active1&quot;&gt;
-                    &lt;div className={styles.content}&gt;Active tab 1 content&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Active tab 1 content&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;disabled1&quot;&gt;
-                    &lt;div className={styles.content}&gt;This content should not be accessible&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This content should not be accessible&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;active2&quot;&gt;
-                    &lt;div className={styles.content}&gt;Active tab 2 content&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Active tab 2 content&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;disabled2&quot;&gt;
-                    &lt;div className={styles.content}&gt;This content should not be accessible&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This content should not be accessible&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
         &lt;/div&gt;
@@ -27458,26 +27452,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;home&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Home&lt;/h3&gt;
-                        &lt;p&gt;Welcome to the home page.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Home&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Welcome to the home page.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;products&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Products&lt;/h3&gt;
-                        &lt;p&gt;Browse our product catalog (23 items).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Products&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Browse our product catalog (23 items).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;services&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Services&lt;/h3&gt;
-                        &lt;p&gt;Learn about our services.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Services&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Learn about our services.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;contact&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Contact Us&lt;/h3&gt;
-                        &lt;p&gt;Get in touch with our team.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Contact Us&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Get in touch with our team.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -27526,26 +27524,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;dashboard&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Dashboard&lt;/h3&gt;
-                        &lt;p&gt;View your dashboard overview (hover tabs to see tooltips)&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Dashboard&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View your dashboard overview (hover tabs to see tooltips)
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;analytics&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Analytics&lt;/h3&gt;
-                        &lt;p&gt;12 new insights available&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Analytics&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;12 new insights available
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;reports&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Reports&lt;/h3&gt;
-                        &lt;p&gt;5 reports pending review&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Reports&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;5 reports pending review
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;settings&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your application&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your application
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -30345,7 +30347,7 @@ export const DsTree = {
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsFilterStatusIcon, DsIcon, DsTree } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsFilterStatusIcon, DsIcon, DsStack, DsTree, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -30388,9 +30390,13 @@ export const DsTree = {
     const [expandedValue, setExpandedValue] = useState([&#39;network&#39;]);
 
     return (
-        &lt;div&gt;
-            &lt;div&gt;Selected: {selectedValue.length &gt; 0 ? selectedValue.join(&#39;, &#39;) : &#39;none&#39;}&lt;/div&gt;
-            &lt;div&gt;Expanded: {expandedValue.length &gt; 0 ? expandedValue.join(&#39;, &#39;) : &#39;none&#39;}&lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={12}&gt;
+            &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Selected: {selectedValue.length &gt; 0 ? selectedValue.join(&#39;, &#39;) : &#39;none&#39;}
+                &lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Expanded: {expandedValue.length &gt; 0 ? expandedValue.join(&#39;, &#39;) : &#39;none&#39;}
+                &lt;/DsTypography&gt;
+            &lt;/DsStack&gt;
             &lt;DsTree.Root
                 size=&quot;medium&quot;
                 collection={collection}
@@ -30406,7 +30412,7 @@ export const DsTree = {
                     ))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -30422,8 +30428,8 @@ export const DsTree = {
     const [focusedValue, setFocusedValue] = useState&lt;string | null&gt;(&#39;firewall-1&#39;);
 
     return (
-        &lt;div&gt;
-            &lt;div&gt;Focused: {focusedValue ?? &#39;none&#39;}&lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={12}&gt;
+            &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Focused: {focusedValue ?? &#39;none&#39;}&lt;/DsTypography&gt;
             &lt;DsTree.Root
                 size=&quot;medium&quot;
                 collection={collection}
@@ -30436,7 +30442,7 @@ export const DsTree = {
                     ))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -31241,22 +31247,46 @@ value?: string</code></pre>
               </div>
               
               
-              <pre><code>const Default = () =&gt; &lt;div className={styles.storyContainer}&gt;
-    &lt;DsVerticalTabs onValueChange={fn()}&gt;
-        &lt;DsVerticalTabs.List&gt;
-            {sampleItems.map((item) =&gt; (
-                &lt;DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}&gt;
-                    &lt;TabLabel item={item} /&gt;
-                &lt;/DsVerticalTabs.Tab&gt;
-            ))}
-        &lt;/DsVerticalTabs.List&gt;
-        {sampleItems.map((item) =&gt; (
-            &lt;DsVerticalTabs.Content key={item.id} value={item.id}&gt;
-                Selected tab content: {item.id}
-            &lt;/DsVerticalTabs.Content&gt;
-        ))}
-    &lt;/DsVerticalTabs&gt;
-&lt;/div&gt;;</code></pre>
+              <pre><code>const Default = () =&gt; {
+    const items: TabItem[] = [
+        { id: &#39;status&#39;, label: &#39;Status&#39;, count: 2 },
+        { id: &#39;running&#39;, label: &#39;Running/Completed&#39; },
+        { id: &#39;category&#39;, label: &#39;Category&#39; },
+        { id: &#39;version&#39;, label: &#39;Version&#39; },
+        { id: &#39;lastEdited&#39;, label: &#39;Last edited&#39;, count: 5 },
+        { id: &#39;lastRun&#39;, label: &#39;Last run&#39; },
+        { id: &#39;nextRun&#39;, label: &#39;Next run&#39; },
+    ];
+
+    return (
+        &lt;div className={styles.storyContainer}&gt;
+            &lt;DsVerticalTabs onValueChange={fn()}&gt;
+                &lt;DsVerticalTabs.List&gt;
+                    {items.map((item) =&gt; (
+                        &lt;DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.tabItemLabel}&gt;
+                                {item.label}
+                            &lt;/DsTypography&gt;
+                            {!!item.count &amp;&amp; (
+                                &lt;div className={styles.tabItemCount}&gt;
+                                    &lt;span className={styles.tabItemDot} /&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.tabItemCountText}&gt;
+                                        {item.count}
+                                    &lt;/DsTypography&gt;
+                                &lt;/div&gt;
+                            )}
+                        &lt;/DsVerticalTabs.Tab&gt;
+                    ))}
+                &lt;/DsVerticalTabs.List&gt;
+                {items.map((item) =&gt; (
+                    &lt;DsVerticalTabs.Content key={item.id} value={item.id}&gt;
+                        Selected tab content: {item.id}
+                    &lt;/DsVerticalTabs.Content&gt;
+                ))}
+            &lt;/DsVerticalTabs&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -31265,22 +31295,44 @@ value?: string</code></pre>
               </div>
               
               
-              <pre><code>const WithDisabledItems = () =&gt; &lt;div className={styles.storyContainer}&gt;
-    &lt;DsVerticalTabs onValueChange={fn()}&gt;
-        &lt;DsVerticalTabs.List&gt;
-            {sampleItemsWithDisabled.map((item) =&gt; (
-                &lt;DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}&gt;
-                    &lt;TabLabel item={item} /&gt;
-                &lt;/DsVerticalTabs.Tab&gt;
-            ))}
-        &lt;/DsVerticalTabs.List&gt;
-        {sampleItemsWithDisabled.map((item) =&gt; (
-            &lt;DsVerticalTabs.Content key={item.id} value={item.id}&gt;
-                Selected tab content: {item.id}
-            &lt;/DsVerticalTabs.Content&gt;
-        ))}
-    &lt;/DsVerticalTabs&gt;
-&lt;/div&gt;;</code></pre>
+              <pre><code>const WithDisabledItems = () =&gt; {
+    const items: TabItem[] = [
+        { id: &#39;status&#39;, label: &#39;Status&#39;, count: 2, disabled: true },
+        { id: &#39;running&#39;, label: &#39;Running/Completed&#39; },
+        { id: &#39;category&#39;, label: &#39;Category&#39; },
+        { id: &#39;version&#39;, label: &#39;Version&#39; },
+        { id: &#39;lastEdited&#39;, label: &#39;Last edited&#39;, count: 5 },
+    ];
+
+    return (
+        &lt;div className={styles.storyContainer}&gt;
+            &lt;DsVerticalTabs onValueChange={fn()}&gt;
+                &lt;DsVerticalTabs.List&gt;
+                    {items.map((item) =&gt; (
+                        &lt;DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}&gt;
+                            &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.tabItemLabel}&gt;
+                                {item.label}
+                            &lt;/DsTypography&gt;
+                            {!!item.count &amp;&amp; (
+                                &lt;div className={styles.tabItemCount}&gt;
+                                    &lt;span className={styles.tabItemDot} /&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.tabItemCountText}&gt;
+                                        {item.count}
+                                    &lt;/DsTypography&gt;
+                                &lt;/div&gt;
+                            )}
+                        &lt;/DsVerticalTabs.Tab&gt;
+                    ))}
+                &lt;/DsVerticalTabs.List&gt;
+                {items.map((item) =&gt; (
+                    &lt;DsVerticalTabs.Content key={item.id} value={item.id}&gt;
+                        Selected tab content: {item.id}
+                    &lt;/DsVerticalTabs.Content&gt;
+                ))}
+            &lt;/DsVerticalTabs&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -31290,17 +31342,33 @@ value?: string</code></pre>
               
               
               <pre><code>const LongLabels = () =&gt; {
+    const items: TabItem[] = [
+        { id: &#39;1&#39;, label: &#39;Very Long Navigation Item Label That Might Overflow&#39;, count: 99 },
+        { id: &#39;2&#39;, label: &#39;Another Really Long Label For Testing Purposes&#39; },
+        { id: &#39;3&#39;, label: &#39;Short&#39;, count: 1 },
+    ];
+
     return (
         &lt;div className={styles.storyContainerShort}&gt;
             &lt;DsVerticalTabs onValueChange={fn()}&gt;
                 &lt;DsVerticalTabs.List&gt;
-                    {itemsWithLongLabels.map((item) =&gt; (
+                    {items.map((item) =&gt; (
                         &lt;DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}&gt;
-                            &lt;TabLabel item={item} /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.tabItemLabel}&gt;
+                                {item.label}
+                            &lt;/DsTypography&gt;
+                            {!!item.count &amp;&amp; (
+                                &lt;div className={styles.tabItemCount}&gt;
+                                    &lt;span className={styles.tabItemDot} /&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.tabItemCountText}&gt;
+                                        {item.count}
+                                    &lt;/DsTypography&gt;
+                                &lt;/div&gt;
+                            )}
                         &lt;/DsVerticalTabs.Tab&gt;
                     ))}
                 &lt;/DsVerticalTabs.List&gt;
-                {itemsWithLongLabels.map((item) =&gt; (
+                {items.map((item) =&gt; (
                     &lt;DsVerticalTabs.Content key={item.id} value={item.id}&gt;
                         Selected tab content: {item.id}
                     &lt;/DsVerticalTabs.Content&gt;
@@ -31318,17 +31386,33 @@ value?: string</code></pre>
               
               
               <pre><code>const HighCounts = () =&gt; {
+    const items: TabItem[] = [
+        { id: &#39;status&#39;, label: &#39;Status&#39;, count: 999 },
+        { id: &#39;category&#39;, label: &#39;Category&#39;, count: 1000 },
+        { id: &#39;version&#39;, label: &#39;Version&#39;, count: 12345 },
+    ];
+
     return (
         &lt;div className={styles.storyContainerShort}&gt;
             &lt;DsVerticalTabs onValueChange={fn()}&gt;
                 &lt;DsVerticalTabs.List&gt;
-                    {itemsWithHighCounts.map((item) =&gt; (
+                    {items.map((item) =&gt; (
                         &lt;DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}&gt;
-                            &lt;TabLabel item={item} /&gt;
+                            &lt;DsTypography variant=&quot;body-sm-md&quot; className={styles.tabItemLabel}&gt;
+                                {item.label}
+                            &lt;/DsTypography&gt;
+                            {!!item.count &amp;&amp; (
+                                &lt;div className={styles.tabItemCount}&gt;
+                                    &lt;span className={styles.tabItemDot} /&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.tabItemCountText}&gt;
+                                        {item.count}
+                                    &lt;/DsTypography&gt;
+                                &lt;/div&gt;
+                            )}
                         &lt;/DsVerticalTabs.Tab&gt;
                     ))}
                 &lt;/DsVerticalTabs.List&gt;
-                {itemsWithHighCounts.map((item) =&gt; (
+                {items.map((item) =&gt; (
                     &lt;DsVerticalTabs.Content key={item.id} value={item.id}&gt;
                         Selected tab content: {item.id}
                     &lt;/DsVerticalTabs.Content&gt;
@@ -31416,6 +31500,7 @@ fillParent?: boolean = false</code></pre>
     DsDrawer,
     DsIcon,
     DsNextStepButton,
+    DsStack,
     DsStatusBadge,
     DsStatusBadgeV2,
     DsStep,
@@ -31437,14 +31522,26 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const Default = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader /&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                    Untitled Project
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.SubHeader&gt;
-            &lt;div className={styles.subHeaderContent}&gt;
+            &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                 &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Dashboard&lt;/DsTypography&gt;
                 &lt;DsTypography variant=&quot;body-xs-reg&quot;&gt;Last updated 2 min ago&lt;/DsTypography&gt;
-            &lt;/div&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.SubHeader&gt;
 
         &lt;DsWorkspaceLayout.Content&gt;
@@ -31459,17 +31556,19 @@ fillParent?: boolean = false</code></pre>
         &lt;/DsWorkspaceLayout.Content&gt;
 
         &lt;DsWorkspaceLayout.Footer&gt;
-            &lt;div className={styles.footerContent}&gt;
-                &lt;span&gt;v1.2.0&lt;/span&gt;
-                &lt;div className={styles.footerActions}&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-xs-reg&quot; color=&quot;secondary&quot;&gt;
+                    v1.2.0
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
                     &lt;DsButtonV3 variant=&quot;tertiary&quot; size=&quot;small&quot;&gt;
                         Help
                     &lt;/DsButtonV3&gt;
                     &lt;DsButtonV3 variant=&quot;tertiary&quot; size=&quot;small&quot;&gt;
                         Feedback
                     &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Footer&gt;
     &lt;/DsWorkspaceLayout&gt;
 );</code></pre>
@@ -31484,7 +31583,35 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const HeaderDraft = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader type=&quot;draft&quot; /&gt;
+            &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={4} width=&quot;100%&quot;&gt;
+                &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+                &lt;DsStack direction=&quot;row&quot; flex={1} justifyContent=&quot;center&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label=&quot;Draft&quot; size=&quot;small&quot; /&gt;
+                &lt;/DsStack&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;flex-end&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3
+                        variant=&quot;tertiary&quot;
+                        color=&quot;light&quot;
+                        size=&quot;small&quot;
+                        icon=&quot;more_vert&quot;
+                        aria-label=&quot;More actions&quot;
+                    /&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.Content&gt;
@@ -31508,7 +31635,35 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const HeaderPending = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader type=&quot;pending&quot; /&gt;
+            &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={4} width=&quot;100%&quot;&gt;
+                &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+                &lt;DsStack direction=&quot;row&quot; flex={1} justifyContent=&quot;center&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label=&quot;Pending&quot; size=&quot;small&quot; /&gt;
+                &lt;/DsStack&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;flex-end&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3
+                        variant=&quot;tertiary&quot;
+                        color=&quot;light&quot;
+                        size=&quot;small&quot;
+                        icon=&quot;more_vert&quot;
+                        aria-label=&quot;More actions&quot;
+                    /&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.Content&gt;
@@ -31532,7 +31687,39 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const HeaderRunning = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader type=&quot;running&quot; /&gt;
+            &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={4} width=&quot;100%&quot;&gt;
+                &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;close&quot;&gt;
+                        Close
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot; icon=&quot;keyboard_double_arrow_left&quot;&gt;
+                        Previous
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Next
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+                &lt;DsStack direction=&quot;row&quot; flex={1} justifyContent=&quot;center&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project -23-May-2024 04:47 PM
+                    &lt;/DsTypography&gt;
+                    &lt;DsIcon icon=&quot;info&quot; size=&quot;tiny&quot; /&gt;
+                    &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label=&quot;Running&quot; size=&quot;small&quot; /&gt;
+                &lt;/DsStack&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;flex-end&quot; alignItems=&quot;center&quot; gap={8}&gt;
+                    &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={8} className={styles.lastUpdate}&gt;
+                        &lt;DsIcon icon=&quot;history_2&quot; size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Last update: 2d ago&lt;/DsTypography&gt;
+                    &lt;/DsStack&gt;
+                    &lt;DsButtonV3
+                        variant=&quot;tertiary&quot;
+                        color=&quot;light&quot;
+                        size=&quot;small&quot;
+                        icon=&quot;more_vert&quot;
+                        aria-label=&quot;More actions&quot;
+                    /&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.Content&gt;
@@ -31559,13 +31746,25 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;WorkspaceStoryHeader onSaveClick={() =&gt; setDrawerOpen(true)} /&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project
+                    &lt;/DsTypography&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
 
             &lt;DsWorkspaceLayout.SubHeader&gt;
-                &lt;div className={styles.subHeaderContent}&gt;
+                &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                     &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Dashboard&lt;/DsTypography&gt;
-                &lt;/div&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.SubHeader&gt;
 
             &lt;DsWorkspaceLayout.Content&gt;
@@ -31601,9 +31800,11 @@ fillParent?: boolean = false</code></pre>
             &lt;/DsWorkspaceLayout.Content&gt;
 
             &lt;DsWorkspaceLayout.Footer&gt;
-                &lt;div className={styles.footerContent}&gt;
-                    &lt;span&gt;v1.2.0&lt;/span&gt;
-                &lt;/div&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-xs-reg&quot; color=&quot;secondary&quot;&gt;
+                        v1.2.0
+                    &lt;/DsTypography&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Footer&gt;
         &lt;/DsWorkspaceLayout&gt;
     );
@@ -31622,13 +31823,25 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;WorkspaceStoryHeader onSaveClick={() =&gt; setDrawerOpen(true)} /&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project
+                    &lt;/DsTypography&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
 
             &lt;DsWorkspaceLayout.SubHeader&gt;
-                &lt;div className={styles.subHeaderContent}&gt;
+                &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                     &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Dashboard&lt;/DsTypography&gt;
-                &lt;/div&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.SubHeader&gt;
 
             &lt;DsWorkspaceLayout.Content&gt;
@@ -31652,9 +31865,11 @@ fillParent?: boolean = false</code></pre>
             &lt;/DsWorkspaceLayout.Content&gt;
 
             &lt;DsWorkspaceLayout.Footer&gt;
-                &lt;div className={styles.footerContent}&gt;
-                    &lt;span&gt;v1.2.0&lt;/span&gt;
-                &lt;/div&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-xs-reg&quot; color=&quot;secondary&quot;&gt;
+                        v1.2.0
+                    &lt;/DsTypography&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Footer&gt;
         &lt;/DsWorkspaceLayout&gt;
     );
@@ -31671,7 +31886,19 @@ fillParent?: boolean = false</code></pre>
     &lt;div className={styles.fillParentHost}&gt;
         &lt;DsWorkspaceLayout fillParent&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;WorkspaceStoryHeader /&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project
+                    &lt;/DsTypography&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
 
             &lt;DsWorkspaceLayout.Content&gt;
@@ -31681,9 +31908,11 @@ fillParent?: boolean = false</code></pre>
             &lt;/DsWorkspaceLayout.Content&gt;
 
             &lt;DsWorkspaceLayout.Footer&gt;
-                &lt;div className={styles.footerContent}&gt;
-                    &lt;span&gt;v1.2.0&lt;/span&gt;
-                &lt;/div&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-xs-reg&quot; color=&quot;secondary&quot;&gt;
+                        v1.2.0
+                    &lt;/DsTypography&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Footer&gt;
         &lt;/DsWorkspaceLayout&gt;
     &lt;/div&gt;
@@ -31699,7 +31928,19 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const HeaderOnly = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader /&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                    Untitled Project
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
 
         &lt;DsWorkspaceLayout.Content&gt;
@@ -31723,17 +31964,29 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedStepperBelow = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader /&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                    Untitled Project
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Content&gt;
                 &lt;div className={styles.extendedMainContent}&gt;
-                    &lt;div className={styles.extendedTitleRow}&gt;
+                    &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                         &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
                         &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
                             Edit
                         &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
+                    &lt;/DsStack&gt;
                     &lt;div className={styles.card}&gt;
                         &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
                             Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -31771,7 +32024,19 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedStepperAside = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader /&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                    Untitled Project
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.LeftPanel&gt;
@@ -31801,12 +32066,12 @@ fillParent?: boolean = false</code></pre>
             &lt;/DsWorkspaceLayout.LeftPanel&gt;
             &lt;DsWorkspaceLayout.Content&gt;
                 &lt;div className={styles.extendedMainContent}&gt;
-                    &lt;div className={styles.extendedTitleRow}&gt;
+                    &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                         &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
                         &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
                             Edit
                         &lt;/DsButtonV3&gt;
-                    &lt;/div&gt;
+                    &lt;/DsStack&gt;
                     &lt;div className={styles.card}&gt;
                         &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
                             Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -31832,7 +32097,19 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;WorkspaceStoryHeader /&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project
+                    &lt;/DsTypography&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
             &lt;DsWorkspaceLayout.Body&gt;
                 &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
@@ -31881,12 +32158,18 @@ fillParent?: boolean = false</code></pre>
                 &lt;/DsWorkspaceLayout.LeftPanel&gt;
                 &lt;DsWorkspaceLayout.Content&gt;
                     &lt;div className={styles.extendedMainContent}&gt;
-                        &lt;div className={styles.extendedTitleRow}&gt;
+                        &lt;DsStack
+                            direction=&quot;row&quot;
+                            justifyContent=&quot;space-between&quot;
+                            alignItems=&quot;center&quot;
+                            gap={12}
+                            width=&quot;100%&quot;
+                        &gt;
                             &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
                             &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
                                 Edit
                             &lt;/DsButtonV3&gt;
-                        &lt;/div&gt;
+                        &lt;/DsStack&gt;
                         &lt;div className={styles.card}&gt;
                             &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
                                 Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -31910,16 +32193,28 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedWithCanvas = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader /&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                    Untitled Project
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Content&gt;
-                &lt;div className={styles.extendedTitleRow}&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                     &lt;DsTypography variant=&quot;heading3&quot;&gt;Network topology&lt;/DsTypography&gt;
                     &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;fullscreen&quot;&gt;
                         Expand
                     &lt;/DsButtonV3&gt;
-                &lt;/div&gt;
+                &lt;/DsStack&gt;
                 &lt;div className={styles.canvasSurface} aria-label=&quot;Canvas&quot;&gt;
                     &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
                         Map or diagram canvas fills the remaining content area.
@@ -31943,7 +32238,19 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;WorkspaceStoryHeader /&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project
+                    &lt;/DsTypography&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
             &lt;DsWorkspaceLayout.Body&gt;
                 &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
@@ -32005,12 +32312,18 @@ fillParent?: boolean = false</code></pre>
                 &lt;/DsWorkspaceLayout.LeftPanel&gt;
                 &lt;DsWorkspaceLayout.Content&gt;
                     &lt;div className={styles.extendedMainContent}&gt;
-                        &lt;div className={styles.extendedTitleRow}&gt;
+                        &lt;DsStack
+                            direction=&quot;row&quot;
+                            justifyContent=&quot;space-between&quot;
+                            alignItems=&quot;center&quot;
+                            gap={12}
+                            width=&quot;100%&quot;
+                        &gt;
                             &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
                             &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
                                 Edit
                             &lt;/DsButtonV3&gt;
-                        &lt;/div&gt;
+                        &lt;/DsStack&gt;
                         &lt;div className={styles.card}&gt;
                             &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
                                 Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -32038,7 +32351,19 @@ fillParent?: boolean = false</code></pre>
     return (
         &lt;DsWorkspaceLayout&gt;
             &lt;DsWorkspaceLayout.Header&gt;
-                &lt;WorkspaceStoryHeader onSaveClick={() =&gt; setDrawerOpen(true)} /&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                        Untitled Project
+                    &lt;/DsTypography&gt;
+                    &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                            Discard
+                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot; onClick={() =&gt; setDrawerOpen(true)}&gt;
+                            Save project
+                        &lt;/DsButtonV3&gt;
+                    &lt;/DsStack&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Header&gt;
             &lt;DsWorkspaceLayout.Body&gt;
                 &lt;DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}&gt;
@@ -32100,12 +32425,18 @@ fillParent?: boolean = false</code></pre>
                 &lt;/DsWorkspaceLayout.LeftPanel&gt;
                 &lt;DsWorkspaceLayout.Content&gt;
                     &lt;div className={styles.extendedMainContent}&gt;
-                        &lt;div className={styles.extendedTitleRow}&gt;
+                        &lt;DsStack
+                            direction=&quot;row&quot;
+                            justifyContent=&quot;space-between&quot;
+                            alignItems=&quot;center&quot;
+                            gap={12}
+                            width=&quot;100%&quot;
+                        &gt;
                             &lt;DsTypography variant=&quot;heading3&quot;&gt;Project workspace&lt;/DsTypography&gt;
                             &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;edit&quot;&gt;
                                 Edit
                             &lt;/DsButtonV3&gt;
-                        &lt;/div&gt;
+                        &lt;/DsStack&gt;
                         &lt;div className={styles.card}&gt;
                             &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
                                 Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -32125,9 +32456,11 @@ fillParent?: boolean = false</code></pre>
                 &lt;/DsWorkspaceLayout.Content&gt;
             &lt;/DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Footer&gt;
-                &lt;div className={styles.footerContent}&gt;
-                    &lt;span&gt;v1.2.0&lt;/span&gt;
-                &lt;/div&gt;
+                &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-xs-reg&quot; color=&quot;secondary&quot;&gt;
+                        v1.2.0
+                    &lt;/DsTypography&gt;
+                &lt;/DsStack&gt;
             &lt;/DsWorkspaceLayout.Footer&gt;
         &lt;/DsWorkspaceLayout&gt;
     );
@@ -32143,14 +32476,26 @@ fillParent?: boolean = false</code></pre>
               <pre><code>const ExtendedWorkflowInfoPanel = () =&gt; (
     &lt;DsWorkspaceLayout&gt;
         &lt;DsWorkspaceLayout.Header&gt;
-            &lt;WorkspaceStoryHeader /&gt;
+            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot; className={styles.projectName}&gt;
+                    Untitled Project
+                &lt;/DsTypography&gt;
+                &lt;DsStack direction=&quot;row&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Discard
+                    &lt;/DsButtonV3&gt;
+                    &lt;DsButtonV3 variant=&quot;primary&quot; color=&quot;light&quot; size=&quot;small&quot;&gt;
+                        Save project
+                    &lt;/DsButtonV3&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsStack&gt;
         &lt;/DsWorkspaceLayout.Header&gt;
         &lt;DsWorkspaceLayout.Body&gt;
             &lt;DsWorkspaceLayout.Content&gt;
                 &lt;div className={styles.extendedMainContent}&gt;
-                    &lt;div className={styles.extendedTitleRow}&gt;
+                    &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; gap={12} width=&quot;100%&quot;&gt;
                         &lt;DsTypography variant=&quot;heading3&quot;&gt;Approval workflow&lt;/DsTypography&gt;
-                    &lt;/div&gt;
+                    &lt;/DsStack&gt;
                     &lt;div className={styles.workflowInfoPanel}&gt;
                         &lt;div className={styles.workflowInfoItem}&gt;
                             &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;Status&lt;/DsTypography&gt;
@@ -32246,263 +32591,6 @@ fillParent?: boolean = false</code></pre>
               
               
               <pre><code>const Default = () =&gt; &lt;SampleForm /&gt;;</code></pre>
-            </div>
-        </div>
-    
-    
-  </div>
-</article>
-<article
-  class="card 
-  has-error 
-  has-info 
-  no-story-error
-  no-doc-error"
-  role="listitem"
-  aria-label="Scrollbars">
-  <div class="head">
-    <div class="title">
-      <h2><span class="status-dot dot-err"></span> Scrollbars</h2>
-      <div class="badges">
-        <label for="c-94-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-94-components-scrollbars-info" class="badge info as-toggle">1 info</label>
-        <label for="c-94-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
-        
-        
-      </div>
-    </div>
-    <div class="meta" title="./src/stories/scrollbars/scrollbars.stories.tsx">components-scrollbars · ./src/stories/scrollbars/scrollbars.stories.tsx</div>
-    
-    
-    
-  </div>
-
-  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-94-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-94-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-94-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
-  
-  
-  
-
-  <div class="panels">
-    
-        <div class="panel panel-err">
-          
-    <div class="note err">
-      <div class="note-title">Prop type error</div>
-      <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
-   5 |
-   6 | // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
-&gt;  7 | const meta: Meta = {
-     | ^
-   8 | 	title: &#39;Components/Scrollbars&#39;,
-   9 | 	parameters: {
-  10 | 		layout: &#39;padded&#39;,
-
-./src/stories/scrollbars/scrollbars.stories.tsx:
-import type { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
-import { Fragment } from &#39;react&#39;;
-import classNames from &#39;classnames&#39;;
-import styles from &#39;./scrollbars.stories.module.scss&#39;;
-
-// eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
-const meta: Meta = {
-	title: &#39;Components/Scrollbars&#39;,
-	parameters: {
-		layout: &#39;padded&#39;,
-		docs: {
-			description: {
-				component: `
-All scrollbars are styled automatically by the design system and auto-hide until you hover the scrollable region.
-At rest the thumb is subtle (10px); on hover it widens (12px) and darkens for clearer affordance.
-You can add a \`.scrollbar-thin\` class to the element in order to make its scrollbar thin.
-				`,
-			},
-		},
-	},
-};
-
-export default meta;
-type Story = StoryObj;
-
-// Helper to generate content
-const generateContent = (count: number, direction: &#39;vertical&#39; | &#39;horizontal&#39;) =&gt; {
-	const items = Array.from({ length: count }, (_, i) =&gt; (
-		&lt;div key={i} className={direction === &#39;horizontal&#39; ? styles.contentItemHorizontal : styles.contentItem}&gt;
-			&lt;h3&gt;Item {i + 1}&lt;/h3&gt;
-			&lt;p&gt;Content for item {i + 1}&lt;/p&gt;
-		&lt;/div&gt;
-	));
-
-	return &lt;div className={direction === &#39;horizontal&#39; ? styles.contentContainer : undefined}&gt;{items}&lt;/div&gt;;
-};
-
-export const DefaultScrollbar: Story = {
-	render: () =&gt; (
-		&lt;div className={styles.container}&gt;
-			&lt;div className={styles.section}&gt;
-				&lt;h3&gt;Vertical Scrollbar (Default)&lt;/h3&gt;
-				&lt;div className={styles.scrollableContainer}&gt;{generateContent(20, &#39;vertical&#39;)}&lt;/div&gt;
-			&lt;/div&gt;
-
-			&lt;div className={styles.sectionWide}&gt;
-				&lt;h3&gt;Horizontal Scrollbar (Default)&lt;/h3&gt;
-				&lt;div className={styles.scrollableContainer}&gt;{generateContent(15, &#39;horizontal&#39;)}&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	),
-	parameters: {
-		docs: {
-			description: {
-				story: &#39;Default scrollbars for both vertical and horizontal overflow.&#39;,
-			},
-		},
-	},
-};
-
-export const SmallScrollbar: Story = {
-	render: () =&gt; (
-		&lt;div className={styles.container}&gt;
-			&lt;div className={styles.section}&gt;
-				&lt;h3&gt;Vertical Scrollbar (Thin)&lt;/h3&gt;
-				&lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-					{generateContent(20, &#39;vertical&#39;)}
-				&lt;/div&gt;
-			&lt;/div&gt;
-
-			&lt;div className={styles.sectionWide}&gt;
-				&lt;h3&gt;Horizontal Scrollbar (Thin)&lt;/h3&gt;
-				&lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-					{generateContent(15, &#39;horizontal&#39;)}
-				&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	),
-	parameters: {
-		docs: {
-			description: {
-				story: &#39;Small (thin) scrollbars for both vertical and horizontal overflow.&#39;,
-			},
-		},
-	},
-};
-
-export const CombinedExample: Story = {
-	render: () =&gt; (
-		&lt;div className={styles.sectionExtraWide}&gt;
-			&lt;h3&gt;Combined Example - Both X and Y Overflow&lt;/h3&gt;
-			&lt;div className={styles.scrollableContainerTall}&gt;
-				&lt;div className={styles.wideContent}&gt;
-					&lt;h2&gt;Wide Content&lt;/h2&gt;
-					&lt;p&gt;This container has both vertical and horizontal overflow, showing both scrollbars.&lt;/p&gt;
-					{Array.from({ length: 25 }, (_, i) =&gt; (
-						&lt;Fragment key={i}&gt;{generateContent(25, &#39;horizontal&#39;)}&lt;/Fragment&gt;
-					))}
-				&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	),
-	parameters: {
-		docs: {
-			description: {
-				story: &#39;Example showing both vertical and horizontal scrollbars on the same container.&#39;,
-			},
-		},
-	},
-};
-</code></pre></div>
-    </div>
-        </div>
-    
-        <div class="panel panel-info">
-          
-    <div class="note info">
-      <div class="note-title">Info</div>
-      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
-    </div>
-        </div>
-    
-    
-        <div class="panel panel-stories">
-          
-          
-          
-          <div class="note ok">
-                <div class="row">
-                  <span class="ex-name">Imports</span>
-                </div>
-                <pre><code>import { Fragment } from "react";</code></pre>
-              </div>
-          
-          
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Default Scrollbar</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const DefaultScrollbar = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;div className={styles.section}&gt;
-            &lt;h3&gt;Vertical Scrollbar (Default)&lt;/h3&gt;
-            &lt;div className={styles.scrollableContainer}&gt;{generateContent(20, &#39;vertical&#39;)}&lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.sectionWide}&gt;
-            &lt;h3&gt;Horizontal Scrollbar (Default)&lt;/h3&gt;
-            &lt;div className={styles.scrollableContainer}&gt;{generateContent(15, &#39;horizontal&#39;)}&lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Small Scrollbar</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SmallScrollbar = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;div className={styles.section}&gt;
-            &lt;h3&gt;Vertical Scrollbar (Thin)&lt;/h3&gt;
-            &lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-                {generateContent(20, &#39;vertical&#39;)}
-            &lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.sectionWide}&gt;
-            &lt;h3&gt;Horizontal Scrollbar (Thin)&lt;/h3&gt;
-            &lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-                {generateContent(15, &#39;horizontal&#39;)}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Combined Example</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const CombinedExample = () =&gt; (
-    &lt;div className={styles.sectionExtraWide}&gt;
-        &lt;h3&gt;Combined Example - Both X and Y Overflow&lt;/h3&gt;
-        &lt;div className={styles.scrollableContainerTall}&gt;
-            &lt;div className={styles.wideContent}&gt;
-                &lt;h2&gt;Wide Content&lt;/h2&gt;
-                &lt;p&gt;This container has both vertical and horizontal overflow, showing both scrollbars.&lt;/p&gt;
-                {Array.from({ length: 25 }, (_, i) =&gt; (
-                    &lt;Fragment key={i}&gt;{generateContent(25, &#39;horizontal&#39;)}&lt;/Fragment&gt;
-                ))}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
             </div>
         </div>
     
@@ -33447,7 +33535,7 @@ export const DsTabs = {
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTabs } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsTabs, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -33476,26 +33564,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;overview&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Overview&lt;/h3&gt;
-                        &lt;p&gt;View your dashboard overview and key metrics.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Overview&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View your dashboard overview and key metrics.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;analytics&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Analytics&lt;/h3&gt;
-                        &lt;p&gt;Detailed analytics and performance data (12 new insights).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Analytics&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Detailed analytics and performance data (12 new insights).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;reports&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Reports&lt;/h3&gt;
-                        &lt;p&gt;Access and manage your reports (5 pending).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Reports&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Access and manage your reports (5 pending).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;settings&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your application settings.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your application settings.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33528,26 +33620,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;dashboard&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Dashboard&lt;/h3&gt;
-                        &lt;p&gt;Welcome to your dashboard overview.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Dashboard&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Welcome to your dashboard overview.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;analytics&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Analytics&lt;/h3&gt;
-                        &lt;p&gt;View analytics and performance data. 12 new insights available.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Analytics&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View analytics and performance data. 12 new insights available.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;reports&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Reports&lt;/h3&gt;
-                        &lt;p&gt;View and generate reports. 5 new reports available.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Reports&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View and generate reports. 5 new reports available.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;settings&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your application settings.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your application settings.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33586,37 +33682,40 @@ export const DsTabs = {
                         icon=&quot;folder&quot;
                         badge={5}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuActionMock} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;tab2&quot;
                         label=&quot;Documents&quot;
                         icon=&quot;description&quot;
                         badge={12}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuActionMock} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;tab3&quot;
                         label=&quot;Settings&quot;
                         icon=&quot;settings&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuActionMock} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;tab1&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Projects&lt;/h3&gt;
-                        &lt;p&gt;Click the dropdown icon on tabs to see menu actions&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Projects&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Click the dropdown icon on tabs to see menu actions
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;tab2&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Documents&lt;/h3&gt;
-                        &lt;p&gt;12 documents available&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Documents&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;12 documents available
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;tab3&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your preferences&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your preferences
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33654,32 +33753,37 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;profile&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Profile Settings&lt;/h3&gt;
-                        &lt;p&gt;Manage your profile information and preferences.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Profile Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage your profile information and preferences.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;security&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Security&lt;/h3&gt;
-                        &lt;p&gt;Configure security settings and two-factor authentication (3 recommendations).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Security&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure security settings and two-factor authentication (3 recommendations).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;notifications&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Notifications&lt;/h3&gt;
-                        &lt;p&gt;Manage notification preferences and channels (15 unread).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Notifications&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage notification preferences and channels (15 unread).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;billing&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Billing&lt;/h3&gt;
-                        &lt;p&gt;View invoices and manage payment methods.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Billing&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View invoices and manage payment methods.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;team&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Team Management&lt;/h3&gt;
-                        &lt;p&gt;Invite team members and manage permissions.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Team Management&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Invite team members and manage permissions.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33713,32 +33817,37 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;general&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;General Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure general application settings and preferences.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;General Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure general application settings and preferences.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;account&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Account&lt;/h3&gt;
-                        &lt;p&gt;Manage your account details and information.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Account&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage your account details and information.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;privacy&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Privacy&lt;/h3&gt;
-                        &lt;p&gt;Control your privacy settings and data sharing (2 recommendations).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Privacy&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Control your privacy settings and data sharing (2 recommendations).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;appearance&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Appearance&lt;/h3&gt;
-                        &lt;p&gt;Customize the look and feel of the application.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Appearance&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Customize the look and feel of the application.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;advanced&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Advanced&lt;/h3&gt;
-                        &lt;p&gt;Advanced configuration options for power users.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Advanced&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Advanced configuration options for power users.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33763,10 +33872,6 @@ export const DsTabs = {
         { value: &#39;delete&#39;, label: &#39;Delete&#39; },
     ];
 
-    const handleMenuAction = (action: string) =&gt; {
-        console.log(&#39;Menu action selected:&#39;, action);
-    };
-
     return (
         &lt;div className={styles.verticalContainer}&gt;
             &lt;DsTabs.Root
@@ -33780,64 +33885,68 @@ export const DsTabs = {
                         label=&quot;Profile&quot;
                         icon=&quot;person&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;security&quot;
                         label=&quot;Security&quot;
                         icon=&quot;lock&quot;
                         badge={3}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;notifications&quot;
                         label=&quot;Notifications&quot;
                         icon=&quot;notifications&quot;
                         badge={15}
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;billing&quot;
                         label=&quot;Billing&quot;
                         icon=&quot;credit_card&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                     &lt;DsTabs.Tab
                         value=&quot;team&quot;
                         label=&quot;Team&quot;
                         icon=&quot;group&quot;
                         menuActionItems={menuActions}
-                        onMenuActionSelect={handleMenuAction} /&gt;
+                        onMenuActionSelect={() =&gt; {}} /&gt;
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;profile&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Profile Settings&lt;/h3&gt;
-                        &lt;p&gt;Manage your profile information and preferences. Click the dropdown icon on tabs to see menu
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Profile Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage your profile information and preferences. Click the dropdown icon on tabs to see menu
                                                             actions.
-                                                        &lt;/p&gt;
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;security&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Security&lt;/h3&gt;
-                        &lt;p&gt;Configure security settings and two-factor authentication (3 recommendations).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Security&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure security settings and two-factor authentication (3 recommendations).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;notifications&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Notifications&lt;/h3&gt;
-                        &lt;p&gt;Manage notification preferences and channels (15 unread).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Notifications&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Manage notification preferences and channels (15 unread).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;billing&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Billing&lt;/h3&gt;
-                        &lt;p&gt;View invoices and manage payment methods.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Billing&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View invoices and manage payment methods.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;team&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Team Management&lt;/h3&gt;
-                        &lt;p&gt;Invite team members and manage permissions.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Team Management&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Invite team members and manage permissions.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33867,16 +33976,24 @@ export const DsTabs = {
                     &lt;DsTabs.Tab value=&quot;disabled2&quot; label=&quot;Disabled&quot; icon=&quot;block&quot; disabled /&gt;
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;active1&quot;&gt;
-                    &lt;div className={styles.content}&gt;Active tab 1 content&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Active tab 1 content&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;disabled1&quot;&gt;
-                    &lt;div className={styles.content}&gt;This content should not be accessible&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This content should not be accessible&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;active2&quot;&gt;
-                    &lt;div className={styles.content}&gt;Active tab 2 content&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Active tab 2 content&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;disabled2&quot;&gt;
-                    &lt;div className={styles.content}&gt;This content should not be accessible&lt;/div&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This content should not be accessible&lt;/DsTypography&gt;
+                    &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
         &lt;/div&gt;
@@ -33906,26 +34023,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;home&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Home&lt;/h3&gt;
-                        &lt;p&gt;Welcome to the home page.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Home&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Welcome to the home page.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;products&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Products&lt;/h3&gt;
-                        &lt;p&gt;Browse our product catalog (23 items).&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Products&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Browse our product catalog (23 items).
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;services&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Services&lt;/h3&gt;
-                        &lt;p&gt;Learn about our services.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Services&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Learn about our services.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;contact&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Contact Us&lt;/h3&gt;
-                        &lt;p&gt;Get in touch with our team.&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Contact Us&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Get in touch with our team.
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -33974,26 +34095,30 @@ export const DsTabs = {
                 &lt;/DsTabs.List&gt;
                 &lt;DsTabs.Content value=&quot;dashboard&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Dashboard&lt;/h3&gt;
-                        &lt;p&gt;View your dashboard overview (hover tabs to see tooltips)&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Dashboard&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;View your dashboard overview (hover tabs to see tooltips)
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;analytics&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Analytics&lt;/h3&gt;
-                        &lt;p&gt;12 new insights available&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Analytics&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;12 new insights available
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;reports&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Reports&lt;/h3&gt;
-                        &lt;p&gt;5 reports pending review&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Reports&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;5 reports pending review
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
                 &lt;DsTabs.Content value=&quot;settings&quot;&gt;
                     &lt;div className={styles.content}&gt;
-                        &lt;h3&gt;Settings&lt;/h3&gt;
-                        &lt;p&gt;Configure your application&lt;/p&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Settings&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Configure your application
+                                                        &lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -34265,7 +34390,7 @@ export const DsTree = {
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsFilterStatusIcon, DsIcon, DsTree } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsFilterStatusIcon, DsIcon, DsStack, DsTree, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -34308,9 +34433,13 @@ export const DsTree = {
     const [expandedValue, setExpandedValue] = useState([&#39;network&#39;]);
 
     return (
-        &lt;div&gt;
-            &lt;div&gt;Selected: {selectedValue.length &gt; 0 ? selectedValue.join(&#39;, &#39;) : &#39;none&#39;}&lt;/div&gt;
-            &lt;div&gt;Expanded: {expandedValue.length &gt; 0 ? expandedValue.join(&#39;, &#39;) : &#39;none&#39;}&lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={12}&gt;
+            &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Selected: {selectedValue.length &gt; 0 ? selectedValue.join(&#39;, &#39;) : &#39;none&#39;}
+                &lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Expanded: {expandedValue.length &gt; 0 ? expandedValue.join(&#39;, &#39;) : &#39;none&#39;}
+                &lt;/DsTypography&gt;
+            &lt;/DsStack&gt;
             &lt;DsTree.Root
                 size=&quot;medium&quot;
                 collection={collection}
@@ -34326,7 +34455,7 @@ export const DsTree = {
                     ))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -34342,8 +34471,8 @@ export const DsTree = {
     const [focusedValue, setFocusedValue] = useState&lt;string | null&gt;(&#39;firewall-1&#39;);
 
     return (
-        &lt;div&gt;
-            &lt;div&gt;Focused: {focusedValue ?? &#39;none&#39;}&lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={12}&gt;
+            &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Focused: {focusedValue ?? &#39;none&#39;}&lt;/DsTypography&gt;
             &lt;DsTree.Root
                 size=&quot;medium&quot;
                 collection={collection}
@@ -34356,7 +34485,7 @@ export const DsTree = {
                     ))}
                 &lt;/DsTree.Tree&gt;
             &lt;/DsTree.Root&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -34419,273 +34548,6 @@ export const DsTree = {
         &lt;/DsTree.Root&gt;
     );
 };</code></pre>
-            </div>
-        </div>
-    
-    
-  </div>
-</article></div>
-        </section>
-      
-        <section class="group">
-          <input id="no-component-found-toggle" class="group-tg" type="checkbox" hidden />
-          <label for="no-component-found-toggle" class="group-header">
-            <span class="caret">▸</span>
-            <span class="group-title">No component found</span>
-            <span class="group-count">1</span>
-          </label>
-          <div class="group-cards">
-<article
-  class="card 
-  has-error 
-  has-info 
-  no-story-error
-  no-doc-error"
-  role="listitem"
-  aria-label="Scrollbars">
-  <div class="head">
-    <div class="title">
-      <h2><span class="status-dot dot-err"></span> Scrollbars</h2>
-      <div class="badges">
-        <label for="c-error-0-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-error-0-components-scrollbars-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-0-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
-        
-        
-      </div>
-    </div>
-    <div class="meta" title="./src/stories/scrollbars/scrollbars.stories.tsx">components-scrollbars · ./src/stories/scrollbars/scrollbars.stories.tsx</div>
-    
-    
-    
-  </div>
-
-  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-error-0-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-error-0-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-error-0-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
-  
-  
-  
-
-  <div class="panels">
-    
-        <div class="panel panel-err">
-          
-    <div class="note err">
-      <div class="note-title">Prop type error</div>
-      <div class="note-body"><pre><code>We could not detect the component from your story file. Specify meta.component.
-   5 |
-   6 | // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
-&gt;  7 | const meta: Meta = {
-     | ^
-   8 | 	title: &#39;Components/Scrollbars&#39;,
-   9 | 	parameters: {
-  10 | 		layout: &#39;padded&#39;,
-
-./src/stories/scrollbars/scrollbars.stories.tsx:
-import type { Meta, StoryObj } from &#39;@storybook/react-vite&#39;;
-import { Fragment } from &#39;react&#39;;
-import classNames from &#39;classnames&#39;;
-import styles from &#39;./scrollbars.stories.module.scss&#39;;
-
-// eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
-const meta: Meta = {
-	title: &#39;Components/Scrollbars&#39;,
-	parameters: {
-		layout: &#39;padded&#39;,
-		docs: {
-			description: {
-				component: `
-All scrollbars are styled automatically by the design system and auto-hide until you hover the scrollable region.
-At rest the thumb is subtle (10px); on hover it widens (12px) and darkens for clearer affordance.
-You can add a \`.scrollbar-thin\` class to the element in order to make its scrollbar thin.
-				`,
-			},
-		},
-	},
-};
-
-export default meta;
-type Story = StoryObj;
-
-// Helper to generate content
-const generateContent = (count: number, direction: &#39;vertical&#39; | &#39;horizontal&#39;) =&gt; {
-	const items = Array.from({ length: count }, (_, i) =&gt; (
-		&lt;div key={i} className={direction === &#39;horizontal&#39; ? styles.contentItemHorizontal : styles.contentItem}&gt;
-			&lt;h3&gt;Item {i + 1}&lt;/h3&gt;
-			&lt;p&gt;Content for item {i + 1}&lt;/p&gt;
-		&lt;/div&gt;
-	));
-
-	return &lt;div className={direction === &#39;horizontal&#39; ? styles.contentContainer : undefined}&gt;{items}&lt;/div&gt;;
-};
-
-export const DefaultScrollbar: Story = {
-	render: () =&gt; (
-		&lt;div className={styles.container}&gt;
-			&lt;div className={styles.section}&gt;
-				&lt;h3&gt;Vertical Scrollbar (Default)&lt;/h3&gt;
-				&lt;div className={styles.scrollableContainer}&gt;{generateContent(20, &#39;vertical&#39;)}&lt;/div&gt;
-			&lt;/div&gt;
-
-			&lt;div className={styles.sectionWide}&gt;
-				&lt;h3&gt;Horizontal Scrollbar (Default)&lt;/h3&gt;
-				&lt;div className={styles.scrollableContainer}&gt;{generateContent(15, &#39;horizontal&#39;)}&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	),
-	parameters: {
-		docs: {
-			description: {
-				story: &#39;Default scrollbars for both vertical and horizontal overflow.&#39;,
-			},
-		},
-	},
-};
-
-export const SmallScrollbar: Story = {
-	render: () =&gt; (
-		&lt;div className={styles.container}&gt;
-			&lt;div className={styles.section}&gt;
-				&lt;h3&gt;Vertical Scrollbar (Thin)&lt;/h3&gt;
-				&lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-					{generateContent(20, &#39;vertical&#39;)}
-				&lt;/div&gt;
-			&lt;/div&gt;
-
-			&lt;div className={styles.sectionWide}&gt;
-				&lt;h3&gt;Horizontal Scrollbar (Thin)&lt;/h3&gt;
-				&lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-					{generateContent(15, &#39;horizontal&#39;)}
-				&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	),
-	parameters: {
-		docs: {
-			description: {
-				story: &#39;Small (thin) scrollbars for both vertical and horizontal overflow.&#39;,
-			},
-		},
-	},
-};
-
-export const CombinedExample: Story = {
-	render: () =&gt; (
-		&lt;div className={styles.sectionExtraWide}&gt;
-			&lt;h3&gt;Combined Example - Both X and Y Overflow&lt;/h3&gt;
-			&lt;div className={styles.scrollableContainerTall}&gt;
-				&lt;div className={styles.wideContent}&gt;
-					&lt;h2&gt;Wide Content&lt;/h2&gt;
-					&lt;p&gt;This container has both vertical and horizontal overflow, showing both scrollbars.&lt;/p&gt;
-					{Array.from({ length: 25 }, (_, i) =&gt; (
-						&lt;Fragment key={i}&gt;{generateContent(25, &#39;horizontal&#39;)}&lt;/Fragment&gt;
-					))}
-				&lt;/div&gt;
-			&lt;/div&gt;
-		&lt;/div&gt;
-	),
-	parameters: {
-		docs: {
-			description: {
-				story: &#39;Example showing both vertical and horizontal scrollbars on the same container.&#39;,
-			},
-		},
-	},
-};
-</code></pre></div>
-    </div>
-        </div>
-    
-        <div class="panel panel-info">
-          
-    <div class="note info">
-      <div class="note-title">Info</div>
-      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
-    </div>
-        </div>
-    
-    
-        <div class="panel panel-stories">
-          
-          
-          
-          <div class="note ok">
-                <div class="row">
-                  <span class="ex-name">Imports</span>
-                </div>
-                <pre><code>import { Fragment } from "react";</code></pre>
-              </div>
-          
-          
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Default Scrollbar</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const DefaultScrollbar = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;div className={styles.section}&gt;
-            &lt;h3&gt;Vertical Scrollbar (Default)&lt;/h3&gt;
-            &lt;div className={styles.scrollableContainer}&gt;{generateContent(20, &#39;vertical&#39;)}&lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.sectionWide}&gt;
-            &lt;h3&gt;Horizontal Scrollbar (Default)&lt;/h3&gt;
-            &lt;div className={styles.scrollableContainer}&gt;{generateContent(15, &#39;horizontal&#39;)}&lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Small Scrollbar</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SmallScrollbar = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;div className={styles.section}&gt;
-            &lt;h3&gt;Vertical Scrollbar (Thin)&lt;/h3&gt;
-            &lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-                {generateContent(20, &#39;vertical&#39;)}
-            &lt;/div&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.sectionWide}&gt;
-            &lt;h3&gt;Horizontal Scrollbar (Thin)&lt;/h3&gt;
-            &lt;div className={classNames(&#39;scrollbar-thin&#39;, styles.scrollableContainer)}&gt;
-                {generateContent(15, &#39;horizontal&#39;)}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Combined Example</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const CombinedExample = () =&gt; (
-    &lt;div className={styles.sectionExtraWide}&gt;
-        &lt;h3&gt;Combined Example - Both X and Y Overflow&lt;/h3&gt;
-        &lt;div className={styles.scrollableContainerTall}&gt;
-            &lt;div className={styles.wideContent}&gt;
-                &lt;h2&gt;Wide Content&lt;/h2&gt;
-                &lt;p&gt;This container has both vertical and horizontal overflow, showing both scrollbars.&lt;/p&gt;
-                {Array.from({ length: 25 }, (_, i) =&gt; (
-                    &lt;Fragment key={i}&gt;{generateContent(25, &#39;horizontal&#39;)}&lt;/Fragment&gt;
-                ))}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
             </div>
         </div>
     

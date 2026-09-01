@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{i as t,t as n}from"./ds-tooltip.types-7Q2c6r4V.js";var r=e((()=>{t(),n()}));export{r as t};
