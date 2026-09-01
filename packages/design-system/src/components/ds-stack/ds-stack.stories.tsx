@@ -32,7 +32,7 @@ type Story = StoryObj<typeof DsStack>;
 export const Default: Story = {
 	args: {
 		direction: 'column',
-		gap: 8,
+		gap: 'var(--xs)',
 	},
 	render: (args) => (
 		<DsStack {...args}>
@@ -46,7 +46,7 @@ export const Default: Story = {
 export const Row: Story = {
 	args: {
 		direction: 'row',
-		gap: 16,
+		gap: 'var(--standard)',
 		alignItems: 'center',
 	},
 	render: (args) => (
@@ -61,7 +61,7 @@ export const Row: Story = {
 export const Responsive: Story = {
 	args: {
 		direction: { md: 'column', lg: 'row' },
-		gap: { md: 8, lg: 24 },
+		gap: { md: 'var(--xs)', lg: 'var(--lg)' },
 		alignItems: 'center',
 	},
 	render: (args) => (
@@ -91,7 +91,7 @@ export const SpaceBetween: Story = {
 export const Wrapping: Story = {
 	args: {
 		direction: 'row',
-		gap: 8,
+		gap: 'var(--xs)',
 		flexWrap: 'wrap',
 	},
 	render: (args) => (
@@ -107,14 +107,14 @@ export const Wrapping: Story = {
 
 export const Nested: Story = {
 	render: () => (
-		<DsStack gap={24}>
-			<DsStack direction="row" gap={16} alignItems="center">
+		<DsStack gap="var(--lg)">
+			<DsStack direction="row" gap="var(--standard)" alignItems="center">
 				<div className={styles.box}>Row 1 - A</div>
 				<div className={styles.box}>Row 1 - B</div>
 				<div className={styles.box}>Row 1 - C</div>
 			</DsStack>
 
-			<DsStack direction="row" gap={16} alignItems="center">
+			<DsStack direction="row" gap="var(--standard)" alignItems="center">
 				<div className={styles.box}>Row 2 - A</div>
 				<div className={styles.box}>Row 2 - B</div>
 			</DsStack>
