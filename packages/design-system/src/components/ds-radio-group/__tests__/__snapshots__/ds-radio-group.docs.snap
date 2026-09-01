@@ -1,0 +1,126 @@
+# DsRadioGroup.Root docs snippets
+
+## Default
+
+### Show code
+{
+  render: () => <DsRadioGroup.Root defaultValue="option2">
+            <DsRadioGroup.Item value="option1" label="Option 1" />
+            <DsRadioGroup.Item value="option2" label="Option 2" />
+            <DsRadioGroup.Item value="option3" label="Option 3" />
+        </DsRadioGroup.Root>
+}
+
+### MCP manifest
+const Default = () => (
+    <DsRadioGroup.Root defaultValue="option2">
+        <DsRadioGroup.Item value="option1" label="Option 1" />
+        <DsRadioGroup.Item value="option2" label="Option 2" />
+        <DsRadioGroup.Item value="option3" label="Option 3" />
+    </DsRadioGroup.Root>
+);
+
+## With Disabled Items
+
+### Show code
+{
+  render: () => <DsRadioGroup.Root defaultValue="option2">
+            <DsRadioGroup.Item value="option1" label="Disabled Option" labelInfo="This option is disabled" disabled />
+            <DsRadioGroup.Item value="option2" label="Option 2" labelInfo="Available option" />
+            <DsRadioGroup.Item value="option3" label="Option 3" />
+        </DsRadioGroup.Root>
+}
+
+### MCP manifest
+const WithDisabledItems = () => (
+    <DsRadioGroup.Root defaultValue="option2">
+        <DsRadioGroup.Item
+            value="option1"
+            label="Disabled Option"
+            labelInfo="This option is disabled"
+            disabled
+        />
+        <DsRadioGroup.Item value="option2" label="Option 2" labelInfo="Available option" />
+        <DsRadioGroup.Item value="option3" label="Option 3" />
+    </DsRadioGroup.Root>
+);
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<string | null>('option2');
+    return <DsRadioGroup.Root value={value} onValueChange={setValue}>
+                <DsRadioGroup.Item value="option1" label="Option 1" />
+                <DsRadioGroup.Item value="option2" label="Option 2" />
+                <DsRadioGroup.Item value="option3" label="Option 3" />
+            </DsRadioGroup.Root>;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState<string | null>('option2');
+
+    return (
+        <DsRadioGroup.Root value={value} onValueChange={setValue}>
+            <DsRadioGroup.Item value="option1" label="Option 1" />
+            <DsRadioGroup.Item value="option2" label="Option 2" />
+            <DsRadioGroup.Item value="option3" label="Option 3" />
+        </DsRadioGroup.Root>
+    );
+};
+
+## Custom Composition
+
+### Show code
+{
+  render: () => <DsRadioGroup.Root defaultValue="custom2">
+            <DsRadioGroup.Item value="custom1">
+                <DsStack direction="column">
+                    <DsTypography variant="body-sm-semi-bold">Custom Layout 1</DsTypography>
+                    <DsTypography variant="body-xs-reg" color="secondary">
+                        With custom composed content
+                    </DsTypography>
+                </DsStack>
+            </DsRadioGroup.Item>
+            <DsRadioGroup.Item value="custom2">
+                <DsStack direction="column">
+                    <DsTypography variant="body-sm-semi-bold">Custom Layout 2</DsTypography>
+                    <DsTypography variant="body-xs-reg" color="secondary">
+                        Complete control over rendering
+                    </DsTypography>
+                </DsStack>
+            </DsRadioGroup.Item>
+        </DsRadioGroup.Root>
+}
+
+### MCP manifest
+const CustomComposition = () => (
+    <DsRadioGroup.Root defaultValue="custom2">
+        <DsRadioGroup.Item value="custom1">
+            <DsStack direction="column">
+                <DsTypography variant="body-sm-semi-bold">Custom Layout 1</DsTypography>
+                <DsTypography variant="body-xs-reg" color="secondary">
+                    With custom composed content
+                </DsTypography>
+            </DsStack>
+        </DsRadioGroup.Item>
+        <DsRadioGroup.Item value="custom2">
+            <DsStack direction="column">
+                <DsTypography variant="body-sm-semi-bold">Custom Layout 2</DsTypography>
+                <DsTypography variant="body-xs-reg" color="secondary">
+                    Complete control over rendering
+                </DsTypography>
+            </DsStack>
+        </DsRadioGroup.Item>
+    </DsRadioGroup.Root>
+);

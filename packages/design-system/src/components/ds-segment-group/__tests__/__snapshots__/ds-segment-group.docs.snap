@@ -1,0 +1,201 @@
+# DsSegmentGroup.Root docs snippets
+
+## Default
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="react">
+            <DsSegmentGroup.Item value="react" label="React" />
+            <DsSegmentGroup.Item value="vue" label="Vue" />
+            <DsSegmentGroup.Item value="angular" label="Angular" />
+            <DsSegmentGroup.Item value="svelte" label="Svelte" />
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const Default = () => (
+    <DsSegmentGroup.Root defaultValue="react">
+        <DsSegmentGroup.Item value="react" label="React" />
+        <DsSegmentGroup.Item value="vue" label="Vue" />
+        <DsSegmentGroup.Item value="angular" label="Angular" />
+        <DsSegmentGroup.Item value="svelte" label="Svelte" />
+    </DsSegmentGroup.Root>
+);
+
+## Small
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="list" size="small">
+            <DsSegmentGroup.Item value="list" label="List" />
+            <DsSegmentGroup.Item value="grid" label="Grid" />
+            <DsSegmentGroup.Item value="table" label="Table" />
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const Small = () => (
+    <DsSegmentGroup.Root defaultValue="list" size="small">
+        <DsSegmentGroup.Item value="list" label="List" />
+        <DsSegmentGroup.Item value="grid" label="Grid" />
+        <DsSegmentGroup.Item value="table" label="Table" />
+    </DsSegmentGroup.Root>
+);
+
+## With Icons
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="day">
+            <DsSegmentGroup.Item value="day">
+                <DsIcon icon="wb_sunny" size="tiny" />
+                <DsSegmentGroup.ItemText>Day</DsSegmentGroup.ItemText>
+            </DsSegmentGroup.Item>
+            <DsSegmentGroup.Item value="week">
+                <DsIcon icon="date_range" size="tiny" />
+                <DsSegmentGroup.ItemText>Week</DsSegmentGroup.ItemText>
+            </DsSegmentGroup.Item>
+            <DsSegmentGroup.Item value="month">
+                <DsIcon icon="calendar_month" size="tiny" />
+                <DsSegmentGroup.ItemText>Month</DsSegmentGroup.ItemText>
+            </DsSegmentGroup.Item>
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const WithIcons = () => (
+    <DsSegmentGroup.Root defaultValue="day">
+        <DsSegmentGroup.Item value="day">
+            <DsIcon icon="wb_sunny" size="tiny" />
+            <DsSegmentGroup.ItemText>Day</DsSegmentGroup.ItemText>
+        </DsSegmentGroup.Item>
+        <DsSegmentGroup.Item value="week">
+            <DsIcon icon="date_range" size="tiny" />
+            <DsSegmentGroup.ItemText>Week</DsSegmentGroup.ItemText>
+        </DsSegmentGroup.Item>
+        <DsSegmentGroup.Item value="month">
+            <DsIcon icon="calendar_month" size="tiny" />
+            <DsSegmentGroup.ItemText>Month</DsSegmentGroup.ItemText>
+        </DsSegmentGroup.Item>
+    </DsSegmentGroup.Root>
+);
+
+## Icon Only
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="list" size="small">
+            <DsSegmentGroup.Item value="list">
+                <DsIcon icon="view_list" size="tiny" />
+            </DsSegmentGroup.Item>
+            <DsSegmentGroup.Item value="grid">
+                <DsIcon icon="grid_view" size="tiny" />
+            </DsSegmentGroup.Item>
+            <DsSegmentGroup.Item value="kanban">
+                <DsIcon icon="view_kanban" size="tiny" />
+            </DsSegmentGroup.Item>
+            <DsSegmentGroup.Item value="timeline">
+                <DsIcon icon="timeline" size="tiny" />
+            </DsSegmentGroup.Item>
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const IconOnly = () => (
+    <DsSegmentGroup.Root defaultValue="list" size="small">
+        <DsSegmentGroup.Item value="list">
+            <DsIcon icon="view_list" size="tiny" />
+        </DsSegmentGroup.Item>
+        <DsSegmentGroup.Item value="grid">
+            <DsIcon icon="grid_view" size="tiny" />
+        </DsSegmentGroup.Item>
+        <DsSegmentGroup.Item value="kanban">
+            <DsIcon icon="view_kanban" size="tiny" />
+        </DsSegmentGroup.Item>
+        <DsSegmentGroup.Item value="timeline">
+            <DsIcon icon="timeline" size="tiny" />
+        </DsSegmentGroup.Item>
+    </DsSegmentGroup.Root>
+);
+
+## With Disabled Items
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="option2">
+            <DsSegmentGroup.Item value="option1" label="Disabled" disabled />
+            <DsSegmentGroup.Item value="option2" label="Available" />
+            <DsSegmentGroup.Item value="option3" label="Also Available" />
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const WithDisabledItems = () => (
+    <DsSegmentGroup.Root defaultValue="option2">
+        <DsSegmentGroup.Item value="option1" label="Disabled" disabled />
+        <DsSegmentGroup.Item value="option2" label="Available" />
+        <DsSegmentGroup.Item value="option3" label="Also Available" />
+    </DsSegmentGroup.Root>
+);
+
+## Two Options
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="on">
+            <DsSegmentGroup.Item value="on" label="On" />
+            <DsSegmentGroup.Item value="off" label="Off" />
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const TwoOptions = () => (
+    <DsSegmentGroup.Root defaultValue="on">
+        <DsSegmentGroup.Item value="on" label="On" />
+        <DsSegmentGroup.Item value="off" label="Off" />
+    </DsSegmentGroup.Root>
+);
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<string | null>('option2');
+    return <DsStack direction="column" gap="var(--sm)" alignItems="center">
+                <DsSegmentGroup.Root value={value} onValueChange={setValue}>
+                    <DsSegmentGroup.Item value="option1" label="Option 1" />
+                    <DsSegmentGroup.Item value="option2" label="Option 2" />
+                    <DsSegmentGroup.Item value="option3" label="Option 3" />
+                </DsSegmentGroup.Root>
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Selected: {value ?? 'None'}
+                </DsTypography>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState<string | null>('option2');
+
+    return (
+        <DsStack direction="column" gap="var(--sm)" alignItems="center">
+            <DsSegmentGroup.Root value={value} onValueChange={setValue}>
+                <DsSegmentGroup.Item value="option1" label="Option 1" />
+                <DsSegmentGroup.Item value="option2" label="Option 2" />
+                <DsSegmentGroup.Item value="option3" label="Option 3" />
+            </DsSegmentGroup.Root>
+            <DsTypography variant="body-sm-reg" color="secondary">
+                Selected: {value ?? 'None'}
+            </DsTypography>
+        </DsStack>
+    );
+};

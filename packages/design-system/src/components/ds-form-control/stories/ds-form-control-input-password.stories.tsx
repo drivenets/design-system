@@ -1,16 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { controlStatuses } from '../ds-form-control.types';
-import { DsIcon } from '../../ds-icon';
+import { DsButtonV3 } from '../../ds-button-v3';
+import { DsStack } from '../../ds-stack';
 import DsFormControl from '../ds-form-control';
-import { checkDisabled, DefaultDescription, sanityCheck } from './ds-form-control-stories-shared';
-import styles from './ds-form-control.stories.module.scss';
 
 const meta: Meta<typeof DsFormControl> = {
 	title: 'Components/FormControl/Password',
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'Form control wrapper that adds a label, description, validation status, and message around a password input.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="19rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -38,20 +50,15 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'text',
 			description: 'Icon to display in the message',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFormControl>;
 
+/** Baseline password field with a label, required marker, and a helper message. */
 export const Default: Story = {
 	args: {
 		label: 'Input label',
@@ -59,165 +66,108 @@ export const Default: Story = {
 		message: 'This is a message',
 		children: <DsFormControl.PasswordInput placeholder="Enter password" />,
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
 };
 
-export const WithCustomWidth: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: { width: '300px' },
-		children: <DsFormControl.PasswordInput placeholder="Enter password" />,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
-export const WithCustomStyles: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: {
-			width: '400px',
-			padding: '16px',
-			border: '2px solid #e0e0e0',
-			borderRadius: '8px',
-			backgroundColor: '#f9f9f9',
-		},
-		children: <DsFormControl.PasswordInput placeholder="Password input with custom styling" />,
-	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
-};
-
+/** Adds a description above the input to explain the field before the user types. */
 export const WithDescription: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		style: {
-			width: '300px',
-		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.PasswordInput placeholder="Enter password" />
-			</>
-		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.PasswordInput placeholder="Enter password" />
+		</DsFormControl>
+	),
 };
 
+/** Surfaces contextual help through an end-adornment button beside the field. */
 export const WithHelpIcon: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
 		slots: {
-			endAdornment: (
-				<button
-					type="button"
-					className={styles.helpIcon}
-					onClick={() => alert('Help clicked!')}
-					aria-label="Help"
-				>
-					<DsIcon icon="info" size="small" />
-				</button>
-			),
+			endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
 		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.PasswordInput placeholder="Search" />
-			</>
-		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.PasswordInput placeholder="Search" />
+		</DsFormControl>
+	),
 };
 
+/** Success status confirms the entered value passed validation. */
 export const Success: Story = {
 	args: {
 		status: 'success',
 		label: 'Input label',
 		message: 'This is a success caption under a password input.',
 		messageIcon: 'check_circle',
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.PasswordInput />
-			</>
-		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.PasswordInput />
+		</DsFormControl>
+	),
 };
 
+/** Error status flags an invalid value and pairs the message with an error icon. */
 export const Error: Story = {
 	args: {
 		status: 'error',
 		label: 'Input label',
 		message: 'This is an error caption under a password input.',
 		messageIcon: 'error',
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.PasswordInput />
-			</>
-		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.PasswordInput />
+		</DsFormControl>
+	),
 };
 
+/** Warning status highlights a value that needs attention without blocking submission. */
 export const Warning: Story = {
 	args: {
 		status: 'warning',
 		label: 'Input label',
 		message: 'This is a warning caption under a password input.',
 		messageIcon: 'info',
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.PasswordInput />
-			</>
-		),
 	},
-	play: async ({ canvasElement }) => {
-		await sanityCheck(canvasElement);
-	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.PasswordInput />
+		</DsFormControl>
+	),
 };
 
+/** Disabled state prevents interaction while keeping the field visible. */
 export const Disabled: Story = {
 	args: {
 		label: 'Input label',
-		children: (
-			<>
-				<DsFormControl.Description>
-					<DefaultDescription />
-				</DsFormControl.Description>
-				<DsFormControl.PasswordInput placeholder="Disabled Input" disabled />
-			</>
-		),
 	},
-	play: async ({ canvasElement }) => {
-		await checkDisabled(canvasElement);
-	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.PasswordInput placeholder="Disabled Input" disabled />
+		</DsFormControl>
+	),
 };

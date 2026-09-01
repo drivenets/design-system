@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
-import { DsButton } from '../ds-button';
+import { useMemo } from 'react';
+import { DsButtonV3 } from '../ds-button-v3';
+import { DsStack } from '../ds-stack';
 import DsFileUpload from './ds-file-upload';
 import { useFileUpload } from './hooks';
 import { MockAdapterPresets } from './stories/adapters/mock-file-upload-adapter';
 import { FileUpload } from './components/file-upload';
-import DocsPage from './stories/adapters/simple-file-upload-adapter.docs.mdx';
+import adapterExampleCode from './stories/adapters/simple-file-upload-adapter.ts?raw';
 
 const meta: Meta<typeof DsFileUpload> = {
 	title: 'Components/FileUpload',
@@ -13,27 +14,41 @@ const meta: Meta<typeof DsFileUpload> = {
 	parameters: {
 		layout: 'centered',
 		docs: {
-			page: DocsPage,
-			source: {
-				code: `
-const adapter = getSimpleFileUploadAdapter('/api/upload');
-
-return (
-	<DsFileUpload
-		adapter={adapter}
-		onFilesAdded={(files) => console.log('Files added:', files.map((f) => f.name))}
-		onFileUploadComplete={(fileId, result) => console.log('File upload complete:', fileId, result.url)}
-		onFileUploadError={(fileId, error) => console.error('File upload failed:', fileId, error)}
-		onFileRemoved={(fileId) => console.log('File removed:', fileId)}
-		onFileDeleted={(fileId) => console.log('File deleted:', fileId)}
-		onFileUploadCanceled={(fileId) => console.log('File upload canceled:', fileId)}
-		onFileUploadRetried={(fileId) => console.log('File upload retried:', fileId)}
-		onAllFileUploadsComplete={() => console.log('All file uploads complete!')}
-	/>
-);`,
+			description: {
+				component: [
+					'Provide an `adapter` that implements the `FileUploadAdapter` interface — a single',
+					'`upload(options): Promise<FileUploadResult>` method — to connect the component to your',
+					'upload backend. Create the adapter once and pass it in:',
+					'',
+					'```tsx',
+					"const adapter = getSimpleFileUploadAdapter('/api/upload');",
+					'',
+					'<DsFileUpload adapter={adapter} />;',
+					'```',
+					'',
+					'`getSimpleFileUploadAdapter` below is a ready-to-copy implementation using the native',
+					'[`XMLHttpRequest`](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest) API',
+					'(fetch, axios, or any other transport works too).',
+					'',
+					'> The stories on this page pass an in-memory mock adapter so uploads run without a real',
+					'> backend. In your app, use a real adapter like the one below.',
+					'',
+					'## Example FileUploadAdapter',
+					'',
+					'```ts',
+					adapterExampleCode.trim(),
+					'```',
+				].join('\n'),
 			},
 		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="31.25rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		errorText: { control: 'text' },
 		dropzoneText: { control: 'text' },
@@ -45,6 +60,7 @@ return (
 		accept: { control: 'object' },
 		disabled: { control: 'boolean' },
 		compact: { control: 'boolean' },
+		style: { table: { disable: true } },
 	},
 };
 
@@ -52,185 +68,128 @@ export default meta;
 type Story = StoryObj<typeof DsFileUpload>;
 
 /**
- * Default auto-upload behavior
- * Files automatically upload when dropped or selected
+ * Default auto-upload behavior: files upload as soon as they are dropped or
+ * selected. Provide an `adapter` to connect the component to your upload
+ * backend; the `onFile*` callbacks report progress and lifecycle events.
  */
 export const Default: Story = {
-	args: {
-		adapter: MockAdapterPresets.normal(),
-		style: { width: '500px' },
-		onFilesAdded: (files) => {
-			console.log(
-				'Files added:',
-				files.map((f) => f.name),
-			);
-		},
-		onFileUploadComplete: (fileId, result) => {
-			console.log('File upload complete:', fileId, result.url);
-		},
-		onFileUploadError: (fileId, error) => {
-			console.error('File upload failed:', fileId, error);
-		},
-		onFileRemoved: (fileId) => {
-			console.log('File removed:', fileId);
-		},
-		onFileDeleted: (fileId) => {
-			console.log('File deleted:', fileId);
-		},
-		onFileUploadCanceled: (fileId) => {
-			console.log('File upload canceled:', fileId);
-		},
-		onFileUploadRetried: (fileId) => {
-			console.log('File upload retried:', fileId);
-		},
-		onAllFileUploadsComplete: () => {
-			console.log('All file uploads complete!');
-		},
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.normal()} />,
 };
 
 /**
- * Manual upload mode - files must be uploaded manually
- * Good for review workflows or batch operations
- * Advance use case which demonstrates use of (base) FileUpload with useFileUpload
+ * Manual upload mode (`autoUpload={false}`): files wait until the user triggers
+ * the upload. This advanced example composes the base `FileUpload` with the
+ * `useFileUpload` hook to drive "Upload all" and "Clear all" actions.
  */
 export const Manual: Story = {
-	args: {
-		adapter: MockAdapterPresets.fast(),
-		autoUpload: false,
-		hideProgress: false,
-		style: { width: '500px' },
-		onFilesAdded: fn(),
-		onFileUploadComplete: fn(),
-		onAllFileUploadsComplete: fn(),
-	},
-	render: function Render(args) {
-		const { getProps, files, uploadAll, clearFiles } = useFileUpload({
-			adapter: args.adapter,
-			autoUpload: args.autoUpload,
-			onFileUploadComplete: args.onFileUploadComplete,
-			onAllFileUploadsComplete: args.onAllFileUploadsComplete,
-		});
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const adapter = useMemo(() => MockAdapterPresets.fast(), []);
+		const { getProps, files, uploadAll, clearFiles } = useFileUpload({ adapter, autoUpload: false });
 
 		const isUploading = files.some((file) => file.status === 'uploading');
 		const hasFiles = files.length > 0;
 
 		return (
-			<div style={{ width: '500px' }}>
-				<FileUpload {...getProps({ onFilesAdded: args.onFilesAdded })} {...args} />
-
+			<DsStack direction="column" gap="var(--sm)">
+				<FileUpload {...getProps()} hideProgress={false} />
 				{hasFiles && (
-					<div style={{ marginTop: '16px', display: 'flex', gap: '8px' }}>
-						<DsButton design="v1.2" size="small" onClick={() => uploadAll()} disabled={isUploading}>
+					<DsStack gap="var(--2xs)">
+						<DsButtonV3 variant="primary" size="small" onClick={() => uploadAll()} disabled={isUploading}>
 							{isUploading ? 'Uploading...' : 'Upload All'}
-						</DsButton>
-						<DsButton
-							design="v1.2"
-							variant="ghost"
-							size="small"
-							onClick={() => clearFiles()}
-							disabled={isUploading}
-						>
+						</DsButtonV3>
+						<DsButtonV3 variant="tertiary" size="small" onClick={() => clearFiles()} disabled={isUploading}>
 							Clear All
-						</DsButton>
-					</div>
+						</DsButtonV3>
+					</DsStack>
 				)}
-			</div>
+			</DsStack>
 		);
 	},
 };
 
+/**
+ * Compact layout for tight spaces, limited to a single file and a restricted set
+ * of document types via `accept`.
+ */
 export const Compact: Story = {
-	args: {
-		adapter: MockAdapterPresets.fast(),
-		compact: true,
-		maxFiles: 1,
-		accept: [
-			'application/pdf',
-			'text/csv',
-			{
-				mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-				extensions: ['.xlsx'],
-			},
-		],
-		dropzoneText: 'Drag and drop your document here or',
-		triggerText: 'Choose document',
-		style: { width: '400px' },
-		onFilesAdded: fn(),
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => (
+		<DsFileUpload
+			adapter={MockAdapterPresets.fast()}
+			compact
+			maxFiles={1}
+			accept={[
+				'application/pdf',
+				'text/csv',
+				{
+					mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+					extensions: ['.xlsx'],
+				},
+			]}
+			dropzoneText="Drag and drop your document here or"
+			triggerText="Choose document"
+		/>
+	),
 };
 
 /**
- * Disabled state
+ * Disabled state — the dropzone and trigger cannot be interacted with.
  */
 export const Disabled: Story = {
-	args: {
-		adapter: MockAdapterPresets.normal(),
-		disabled: true,
-		style: { width: '500px' },
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.normal()} disabled />,
 };
 
 /**
- * Upload error scenario - file fails validation immediately
+ * Upload error scenario where a file fails validation immediately, showing the
+ * error state and message.
  */
 export const UploadError: Story = {
-	args: {
-		adapter: MockAdapterPresets.error('Unsupported file type'),
-		style: { width: '500px' },
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.error('Unsupported file type')} />,
 };
 
 /**
- * Upload interrupted scenario - network fails mid-upload
- * Demonstrates retry functionality
+ * Interrupted upload where the network fails mid-transfer, surfacing the retry
+ * affordance.
  */
 export const UploadInterrupted: Story = {
-	args: {
-		adapter: MockAdapterPresets.interrupted(30),
-		style: { width: '500px' },
-	},
-};
-
-export const MaxFiles: Story = {
-	args: {
-		adapter: MockAdapterPresets.fast(),
-		maxFiles: 1,
-		style: { width: '400px' },
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.interrupted(30)} />,
 };
 
 /**
- * Duplicate files scenario - uploading the same file twice
- * Demonstrates duplicate detection and FILE_EXISTS error
+ * Limit the number of files with `maxFiles`.
+ */
+export const MaxFiles: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} maxFiles={1} />,
+};
+
+/**
+ * Duplicate detection: uploading the same file twice raises a `FILE_EXISTS`
+ * error instead of adding a second entry.
  */
 export const DuplicateFiles: Story = {
-	args: {
-		adapter: MockAdapterPresets.fast(),
-		style: { width: '500px' },
-		onFilesAdded: fn(),
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} />,
 };
 
 /**
- * Hidden info text - hides the file type and size limit information
+ * Hide the file-type and size-limit hint with `hideInfoText`.
  */
 export const HiddenInfoText: Story = {
-	args: {
-		adapter: MockAdapterPresets.fast(),
-		hideInfoText: true,
-		style: { width: '500px' },
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} hideInfoText />,
 };
 
 /**
- * Cancel upload scenario - cancel an ongoing upload
- * Demonstrates upload cancellation functionality
+ * Cancel an in-progress upload, demonstrating the cancellation flow with a slow
+ * adapter.
  */
 export const CancelUpload: Story = {
-	args: {
-		adapter: MockAdapterPresets.slow(),
-		style: { width: '500px' },
-		onFileUploadCanceled: fn(),
-	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: () => <DsFileUpload adapter={MockAdapterPresets.slow()} />,
 };

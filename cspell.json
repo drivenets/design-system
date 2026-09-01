@@ -19,6 +19,7 @@
 		".cspell",
 		"pnpm-lock.yaml",
 		"node_modules",
-		"**/*.figma.batch.json"
+		"**/*.figma.batch.json",
+		"**/*.docs.snap"
 	]
 }
