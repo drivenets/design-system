@@ -22,6 +22,7 @@ const COMPONENTS = [
 	'date-picker',
 	'date-range-picker',
 	'dialog',
+	'main-menu',
 	'expandable-text-input',
 	'file-upload',
 	'form-control',
