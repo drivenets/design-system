@@ -1,0 +1,125 @@
+# DsDivider docs snippets
+
+## Default
+
+### Show code
+<DsStack
+  alignItems="center"
+  className="_horizontalDemo_77ty2_37"
+  direction="column"
+  gap="var(--sm)"
+>
+  <DsTypography variant="body-md-reg">
+    Top content
+  </DsTypography>
+  <DsDivider orientation="horizontal" />
+  <DsTypography variant="body-md-reg">
+    Bottom content
+  </DsTypography>
+</DsStack>
+
+### MCP manifest
+const Default = (args) =>
+    args.orientation === 'vertical' ? (
+        <DsStack direction="row" gap="var(--sm)" alignItems="center" className={styles.verticalDemo}>
+            <DsTypography variant="body-md-reg">Left content</DsTypography>
+            <DsDivider {...args} />
+            <DsTypography variant="body-md-reg">Right content</DsTypography>
+        </DsStack>
+    ) : (
+        <DsStack direction="column" gap="var(--sm)" alignItems="center" className={styles.horizontalDemo}>
+            <DsTypography variant="body-md-reg">Top content</DsTypography>
+            <DsDivider {...args} />
+            <DsTypography variant="body-md-reg">Bottom content</DsTypography>
+        </DsStack>
+    );
+
+## Horizontal
+
+### Show code
+<DsStack
+  alignItems="center"
+  className="_horizontalDemo_77ty2_37"
+  direction="column"
+  gap="var(--sm)"
+>
+  <DsTypography variant="body-md-reg">
+    Above
+  </DsTypography>
+  <DsDivider orientation="horizontal" />
+  <DsTypography variant="body-md-reg">
+    Below
+  </DsTypography>
+</DsStack>
+
+### MCP manifest
+const Horizontal = () => <DsStack
+    direction="column"
+    gap="var(--sm)"
+    alignItems="center"
+    className={styles.horizontalDemo}>
+    <DsTypography variant="body-md-reg">Above</DsTypography>
+    <DsDivider orientation="horizontal" />
+    <DsTypography variant="body-md-reg">Below</DsTypography>
+</DsStack>;
+
+## Vertical
+
+### Show code
+<DsStack
+  alignItems="center"
+  className="_verticalDemo_77ty2_41"
+  direction="row"
+  gap="var(--sm)"
+>
+  <DsTypography variant="body-md-reg">
+    Left
+  </DsTypography>
+  <DsDivider orientation="vertical" />
+  <DsTypography variant="body-md-reg">
+    Right
+  </DsTypography>
+</DsStack>
+
+### MCP manifest
+const Vertical = () => <DsStack
+    direction="row"
+    gap="var(--sm)"
+    alignItems="center"
+    className={styles.verticalDemo}>
+    <DsTypography variant="body-md-reg">Left</DsTypography>
+    <DsDivider orientation="vertical" />
+    <DsTypography variant="body-md-reg">Right</DsTypography>
+</DsStack>;
+
+## With Custom Component
+
+### Show code
+<DsStack
+  alignItems="center"
+  className="_horizontalDemo_77ty2_37"
+  direction="column"
+  gap="var(--sm)"
+>
+  <DsTypography variant="body-md-reg">
+    Above
+  </DsTypography>
+  <DsDivider
+    component="span"
+    orientation="horizontal"
+  />
+  <DsTypography variant="body-md-reg">
+    Below
+  </DsTypography>
+</DsStack>
+
+### MCP manifest
+const WithCustomComponent = () => <DsStack
+    direction="column"
+    gap="var(--sm)"
+    alignItems="center"
+    className={styles.horizontalDemo}>
+    <DsTypography variant="body-md-reg">Above</DsTypography>
+    <DsDivider orientation="horizontal" component="span" />
+    <DsTypography variant="body-md-reg">Below</DsTypography>
+</DsStack>;

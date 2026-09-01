@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { fn } from 'storybook/test';
 import { useState } from 'react';
+import { DsTypography } from '../ds-typography';
 import { DsTabs } from './ds-tabs';
 import type { DsTabsMenuActionItem } from './ds-tabs.types';
 import styles from './ds-tabs.stories.module.scss';
@@ -42,6 +42,11 @@ type Story = StoryObj<typeof DsTabs.Root>;
 
 /** Baseline horizontal tabs with icon + badge — the default layout for most pages. */
 export const Default: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'horizontal',
 		size: 'medium',
@@ -65,29 +70,37 @@ export const Default: Story = {
 
 					<DsTabs.Content value="overview">
 						<div className={styles.content}>
-							<h3>Overview</h3>
-							<p>View your dashboard overview and key metrics.</p>
+							<DsTypography variant="heading3">Overview</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								View your dashboard overview and key metrics.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="analytics">
 						<div className={styles.content}>
-							<h3>Analytics</h3>
-							<p>Detailed analytics and performance data (12 new insights).</p>
+							<DsTypography variant="heading3">Analytics</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Detailed analytics and performance data (12 new insights).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="reports">
 						<div className={styles.content}>
-							<h3>Reports</h3>
-							<p>Access and manage your reports (5 pending).</p>
+							<DsTypography variant="heading3">Reports</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Access and manage your reports (5 pending).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="settings">
 						<div className={styles.content}>
-							<h3>Settings</h3>
-							<p>Configure your application settings.</p>
+							<DsTypography variant="heading3">Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure your application settings.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -98,6 +111,11 @@ export const Default: Story = {
 
 /** `size="small"` horizontal tabs for dense toolbars and compact headers. */
 export const HorizontalSmall: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		size: 'small',
 		orientation: 'horizontal',
@@ -121,26 +139,34 @@ export const HorizontalSmall: Story = {
 
 					<DsTabs.Content value="dashboard">
 						<div className={styles.content}>
-							<h3>Dashboard</h3>
-							<p>Welcome to your dashboard overview.</p>
+							<DsTypography variant="heading3">Dashboard</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Welcome to your dashboard overview.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="analytics">
 						<div className={styles.content}>
-							<h3>Analytics</h3>
-							<p>View analytics and performance data. 12 new insights available.</p>
+							<DsTypography variant="heading3">Analytics</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								View analytics and performance data. 12 new insights available.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="reports">
 						<div className={styles.content}>
-							<h3>Reports</h3>
-							<p>View and generate reports. 5 new reports available.</p>
+							<DsTypography variant="heading3">Reports</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								View and generate reports. 5 new reports available.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="settings">
 						<div className={styles.content}>
-							<h3>Settings</h3>
-							<p>Configure your application settings.</p>
+							<DsTypography variant="heading3">Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure your application settings.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -149,13 +175,16 @@ export const HorizontalSmall: Story = {
 	},
 };
 
-const handleMenuActionMock = fn();
-
 /**
  * Per-tab dropdown via `menuActionItems` + `onMenuActionSelect`. Use when a tab
  * needs contextual actions (edit, duplicate, delete) without leaving the tab bar.
  */
 export const WithMenuActions: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'horizontal',
 		size: 'medium',
@@ -184,7 +213,7 @@ export const WithMenuActions: Story = {
 							icon="folder"
 							badge={5}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuActionMock}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="tab2"
@@ -192,33 +221,39 @@ export const WithMenuActions: Story = {
 							icon="description"
 							badge={12}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuActionMock}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="tab3"
 							label="Settings"
 							icon="settings"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuActionMock}
+							onMenuActionSelect={() => {}}
 						/>
 					</DsTabs.List>
 
 					<DsTabs.Content value="tab1">
 						<div className={styles.content}>
-							<h3>Projects</h3>
-							<p>Click the dropdown icon on tabs to see menu actions</p>
+							<DsTypography variant="heading3">Projects</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Click the dropdown icon on tabs to see menu actions
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="tab2">
 						<div className={styles.content}>
-							<h3>Documents</h3>
-							<p>12 documents available</p>
+							<DsTypography variant="heading3">Documents</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								12 documents available
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="tab3">
 						<div className={styles.content}>
-							<h3>Settings</h3>
-							<p>Configure your preferences</p>
+							<DsTypography variant="heading3">Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure your preferences
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -229,6 +264,11 @@ export const WithMenuActions: Story = {
 
 /** `orientation="vertical"` — side navigation for settings-style layouts. */
 export const Vertical: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'vertical',
 		size: 'medium',
@@ -253,36 +293,46 @@ export const Vertical: Story = {
 
 					<DsTabs.Content value="profile">
 						<div className={styles.content}>
-							<h3>Profile Settings</h3>
-							<p>Manage your profile information and preferences.</p>
+							<DsTypography variant="heading3">Profile Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Manage your profile information and preferences.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="security">
 						<div className={styles.content}>
-							<h3>Security</h3>
-							<p>Configure security settings and two-factor authentication (3 recommendations).</p>
+							<DsTypography variant="heading3">Security</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure security settings and two-factor authentication (3 recommendations).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="notifications">
 						<div className={styles.content}>
-							<h3>Notifications</h3>
-							<p>Manage notification preferences and channels (15 unread).</p>
+							<DsTypography variant="heading3">Notifications</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Manage notification preferences and channels (15 unread).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="billing">
 						<div className={styles.content}>
-							<h3>Billing</h3>
-							<p>View invoices and manage payment methods.</p>
+							<DsTypography variant="heading3">Billing</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								View invoices and manage payment methods.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="team">
 						<div className={styles.content}>
-							<h3>Team Management</h3>
-							<p>Invite team members and manage permissions.</p>
+							<DsTypography variant="heading3">Team Management</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Invite team members and manage permissions.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -293,6 +343,11 @@ export const Vertical: Story = {
 
 /** Compact vertical tabs (`size="small"`) for narrow side panels. */
 export const VerticalSmall: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'vertical',
 		size: 'small',
@@ -317,36 +372,46 @@ export const VerticalSmall: Story = {
 
 					<DsTabs.Content value="general">
 						<div className={styles.content}>
-							<h3>General Settings</h3>
-							<p>Configure general application settings and preferences.</p>
+							<DsTypography variant="heading3">General Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure general application settings and preferences.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="account">
 						<div className={styles.content}>
-							<h3>Account</h3>
-							<p>Manage your account details and information.</p>
+							<DsTypography variant="heading3">Account</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Manage your account details and information.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="privacy">
 						<div className={styles.content}>
-							<h3>Privacy</h3>
-							<p>Control your privacy settings and data sharing (2 recommendations).</p>
+							<DsTypography variant="heading3">Privacy</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Control your privacy settings and data sharing (2 recommendations).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="appearance">
 						<div className={styles.content}>
-							<h3>Appearance</h3>
-							<p>Customize the look and feel of the application.</p>
+							<DsTypography variant="heading3">Appearance</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Customize the look and feel of the application.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="advanced">
 						<div className={styles.content}>
-							<h3>Advanced</h3>
-							<p>Advanced configuration options for power users.</p>
+							<DsTypography variant="heading3">Advanced</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Advanced configuration options for power users.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -357,6 +422,11 @@ export const VerticalSmall: Story = {
 
 /** Vertical tabs that also carry per-tab `menuActionItems` dropdowns. */
 export const VerticalWithMenuActions: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	args: {
 		orientation: 'vertical',
 		size: 'medium',
@@ -371,10 +441,6 @@ export const VerticalWithMenuActions: Story = {
 			{ value: 'delete', label: 'Delete' },
 		];
 
-		const handleMenuAction = (action: string) => {
-			console.log('Menu action selected:', action);
-		};
-
 		return (
 			<div className={styles.verticalContainer}>
 				<DsTabs.Root
@@ -388,7 +454,7 @@ export const VerticalWithMenuActions: Story = {
 							label="Profile"
 							icon="person"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="security"
@@ -396,7 +462,7 @@ export const VerticalWithMenuActions: Story = {
 							icon="lock"
 							badge={3}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="notifications"
@@ -404,59 +470,67 @@ export const VerticalWithMenuActions: Story = {
 							icon="notifications"
 							badge={15}
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="billing"
 							label="Billing"
 							icon="credit_card"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 						<DsTabs.Tab
 							value="team"
 							label="Team"
 							icon="group"
 							menuActionItems={menuActions}
-							onMenuActionSelect={handleMenuAction}
+							onMenuActionSelect={() => {}}
 						/>
 					</DsTabs.List>
 
 					<DsTabs.Content value="profile">
 						<div className={styles.content}>
-							<h3>Profile Settings</h3>
-							<p>
+							<DsTypography variant="heading3">Profile Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
 								Manage your profile information and preferences. Click the dropdown icon on tabs to see menu
 								actions.
-							</p>
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="security">
 						<div className={styles.content}>
-							<h3>Security</h3>
-							<p>Configure security settings and two-factor authentication (3 recommendations).</p>
+							<DsTypography variant="heading3">Security</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure security settings and two-factor authentication (3 recommendations).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="notifications">
 						<div className={styles.content}>
-							<h3>Notifications</h3>
-							<p>Manage notification preferences and channels (15 unread).</p>
+							<DsTypography variant="heading3">Notifications</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Manage notification preferences and channels (15 unread).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="billing">
 						<div className={styles.content}>
-							<h3>Billing</h3>
-							<p>View invoices and manage payment methods.</p>
+							<DsTypography variant="heading3">Billing</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								View invoices and manage payment methods.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="team">
 						<div className={styles.content}>
-							<h3>Team Management</h3>
-							<p>Invite team members and manage permissions.</p>
+							<DsTypography variant="heading3">Team Management</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Invite team members and manage permissions.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -467,6 +541,11 @@ export const VerticalWithMenuActions: Story = {
 
 /** Mixes enabled and `disabled` tabs — disabled tabs are not selectable. */
 export const WithDisabled: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render(args) {
 		const [selected, setSelected] = useState('active1');
 
@@ -485,16 +564,24 @@ export const WithDisabled: Story = {
 					</DsTabs.List>
 
 					<DsTabs.Content value="active1">
-						<div className={styles.content}>Active tab 1 content</div>
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">Active tab 1 content</DsTypography>
+						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="disabled1">
-						<div className={styles.content}>This content should not be accessible</div>
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">This content should not be accessible</DsTypography>
+						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="active2">
-						<div className={styles.content}>Active tab 2 content</div>
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">Active tab 2 content</DsTypography>
+						</div>
 					</DsTabs.Content>
 					<DsTabs.Content value="disabled2">
-						<div className={styles.content}>This content should not be accessible</div>
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">This content should not be accessible</DsTypography>
+						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
 			</div>
@@ -504,6 +591,11 @@ export const WithDisabled: Story = {
 
 /** Labels only (no `icon`), optional `badge` — minimal text-driven tab bar. */
 export const TextOnly: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render(args) {
 		const [selected, setSelected] = useState('home');
 
@@ -523,29 +615,37 @@ export const TextOnly: Story = {
 
 					<DsTabs.Content value="home">
 						<div className={styles.content}>
-							<h3>Home</h3>
-							<p>Welcome to the home page.</p>
+							<DsTypography variant="heading3">Home</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Welcome to the home page.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="products">
 						<div className={styles.content}>
-							<h3>Products</h3>
-							<p>Browse our product catalog (23 items).</p>
+							<DsTypography variant="heading3">Products</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Browse our product catalog (23 items).
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="services">
 						<div className={styles.content}>
-							<h3>Services</h3>
-							<p>Learn about our services.</p>
+							<DsTypography variant="heading3">Services</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Learn about our services.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="contact">
 						<div className={styles.content}>
-							<h3>Contact Us</h3>
-							<p>Get in touch with our team.</p>
+							<DsTypography variant="heading3">Contact Us</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Get in touch with our team.
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>
@@ -556,6 +656,11 @@ export const TextOnly: Story = {
 
 /** Adds a `tooltip` per tab — use for icon-light tabs that need extra context on hover. */
 export const WithTooltips: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render(args) {
 		const [selected, setSelected] = useState('dashboard');
 
@@ -597,29 +702,37 @@ export const WithTooltips: Story = {
 
 					<DsTabs.Content value="dashboard">
 						<div className={styles.content}>
-							<h3>Dashboard</h3>
-							<p>View your dashboard overview (hover tabs to see tooltips)</p>
+							<DsTypography variant="heading3">Dashboard</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								View your dashboard overview (hover tabs to see tooltips)
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="analytics">
 						<div className={styles.content}>
-							<h3>Analytics</h3>
-							<p>12 new insights available</p>
+							<DsTypography variant="heading3">Analytics</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								12 new insights available
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="reports">
 						<div className={styles.content}>
-							<h3>Reports</h3>
-							<p>5 reports pending review</p>
+							<DsTypography variant="heading3">Reports</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								5 reports pending review
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 
 					<DsTabs.Content value="settings">
 						<div className={styles.content}>
-							<h3>Settings</h3>
-							<p>Configure your application</p>
+							<DsTypography variant="heading3">Settings</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								Configure your application
+							</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>

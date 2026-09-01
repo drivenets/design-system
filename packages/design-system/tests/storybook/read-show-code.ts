@@ -35,6 +35,8 @@ export async function readShowCodeSnippet(
 	});
 
 	const frame = await getDocsIframe(page);
+	// Story names can contain regex metacharacters (e.g. "Value types (Figma reference)"), so escape
+	// before building the exact-match heading matcher.
 	const escapedStoryName = storyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 	const section = frame.locator('h3', { hasText: new RegExp(`^${escapedStoryName}$`) }).locator('..');
 	const showCodeButton = section.locator('button', { hasText: 'Show code' }).first();

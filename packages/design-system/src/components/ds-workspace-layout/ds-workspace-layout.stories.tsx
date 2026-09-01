@@ -4,6 +4,7 @@ import DsWorkspaceLayout from './ds-workspace-layout';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsTypography } from '../ds-typography';
 import { DsIcon } from '../ds-icon';
+import { DsStack } from '../ds-stack';
 import { DsStatusBadge } from '../ds-status-badge';
 import { DsStatusBadgeV2 } from '../ds-status-badge-v2';
 import { DsDrawer } from '../ds-drawer';
@@ -67,76 +68,6 @@ export default meta;
 
 type Story = StoryObj<typeof DsWorkspaceLayout>;
 
-type WorkspaceHeaderExampleType = 'draft' | 'pending' | 'running';
-
-const headerBadgeByType = {
-	draft: { phase: 'temporary', label: 'Draft' },
-	pending: { phase: 'pending', label: 'Pending' },
-	running: { phase: 'execution', label: 'Running' },
-} as const;
-
-type WorkspaceStoryHeaderProps = {
-	type?: WorkspaceHeaderExampleType;
-	onSaveClick?: () => void;
-};
-
-/** Story-only Brand Refresh workspace header chrome. */
-function WorkspaceStoryHeader({ type = 'draft', onSaveClick }: WorkspaceStoryHeaderProps) {
-	const badge = headerBadgeByType[type];
-	const isRunning = type === 'running';
-
-	return (
-		<div className={styles.headerLayout}>
-			<div className={styles.headerLeft}>
-				<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
-					Close
-				</DsButtonV3>
-				{isRunning ? (
-					<>
-						<DsButtonV3 variant="secondary" color="light" size="small" icon="keyboard_double_arrow_left">
-							Previous
-						</DsButtonV3>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Next
-						</DsButtonV3>
-					</>
-				) : null}
-			</div>
-			<div className={styles.headerCenter}>
-				<DsTypography variant="body-sm-reg" className={styles.projectName}>
-					Untitled Project -23-May-2024 04:47 PM
-				</DsTypography>
-				<DsIcon icon="info" size="tiny" />
-				<DsStatusBadgeV2 phase={badge.phase} label={badge.label} size="small" />
-			</div>
-			<div className={styles.headerRight}>
-				{isRunning ? (
-					<div className={styles.lastUpdate}>
-						<DsIcon icon="history_2" size="small" />
-						<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
-					</div>
-				) : (
-					<>
-						<DsButtonV3 variant="secondary" color="light" size="small">
-							Discard
-						</DsButtonV3>
-						<DsButtonV3 variant="primary" color="light" size="small" onClick={onSaveClick}>
-							Save project
-						</DsButtonV3>
-					</>
-				)}
-				<DsButtonV3
-					variant="tertiary"
-					color="light"
-					size="small"
-					icon="more_vert"
-					aria-label="More actions"
-				/>
-			</div>
-		</div>
-	);
-}
-
 const workspaceSteps = [
 	{ label: 'Project details', description: 'Enter project name and basic configuration' },
 	{ label: 'Select market', description: 'Choose the target market for deployment' },
@@ -147,14 +78,26 @@ export const Default: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-sm-reg" className={styles.projectName}>
+						Untitled Project
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.SubHeader>
-				<div className={styles.subHeaderContent}>
+				<DsStack direction="row" alignItems="center" gap={12} width="100%">
 					<DsTypography variant="body-sm-semi-bold">Dashboard</DsTypography>
 					<DsTypography variant="body-xs-reg">Last updated 2 min ago</DsTypography>
-				</div>
+				</DsStack>
 			</DsWorkspaceLayout.SubHeader>
 
 			<DsWorkspaceLayout.Content>
@@ -169,17 +112,19 @@ export const Default: Story = {
 			</DsWorkspaceLayout.Content>
 
 			<DsWorkspaceLayout.Footer>
-				<div className={styles.footerContent}>
-					<span>v1.2.0</span>
-					<div className={styles.footerActions}>
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-xs-reg" color="secondary">
+						v1.2.0
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
 						<DsButtonV3 variant="tertiary" size="small">
 							Help
 						</DsButtonV3>
 						<DsButtonV3 variant="tertiary" size="small">
 							Feedback
 						</DsButtonV3>
-					</div>
-				</div>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Footer>
 		</DsWorkspaceLayout>
 	),
@@ -190,7 +135,35 @@ export const HeaderDraft: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader type="draft" />
+				<DsStack direction="row" alignItems="center" gap={4} width="100%">
+					<DsStack direction="row" alignItems="center" gap={8}>
+						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							Close
+						</DsButtonV3>
+					</DsStack>
+					<DsStack direction="row" flex={1} justifyContent="center" alignItems="center" gap={8}>
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project -23-May-2024 04:47 PM
+						</DsTypography>
+						<DsIcon icon="info" size="tiny" />
+						<DsStatusBadgeV2 phase="temporary" label="Draft" size="small" />
+					</DsStack>
+					<DsStack direction="row" justifyContent="flex-end" alignItems="center" gap={8}>
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+						<DsButtonV3
+							variant="tertiary"
+							color="light"
+							size="small"
+							icon="more_vert"
+							aria-label="More actions"
+						/>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.Content>
@@ -210,7 +183,35 @@ export const HeaderPending: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader type="pending" />
+				<DsStack direction="row" alignItems="center" gap={4} width="100%">
+					<DsStack direction="row" alignItems="center" gap={8}>
+						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							Close
+						</DsButtonV3>
+					</DsStack>
+					<DsStack direction="row" flex={1} justifyContent="center" alignItems="center" gap={8}>
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project -23-May-2024 04:47 PM
+						</DsTypography>
+						<DsIcon icon="info" size="tiny" />
+						<DsStatusBadgeV2 phase="pending" label="Pending" size="small" />
+					</DsStack>
+					<DsStack direction="row" justifyContent="flex-end" alignItems="center" gap={8}>
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+						<DsButtonV3
+							variant="tertiary"
+							color="light"
+							size="small"
+							icon="more_vert"
+							aria-label="More actions"
+						/>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.Content>
@@ -230,7 +231,39 @@ export const HeaderRunning: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader type="running" />
+				<DsStack direction="row" alignItems="center" gap={4} width="100%">
+					<DsStack direction="row" alignItems="center" gap={8}>
+						<DsButtonV3 variant="secondary" color="light" size="small" icon="close">
+							Close
+						</DsButtonV3>
+						<DsButtonV3 variant="secondary" color="light" size="small" icon="keyboard_double_arrow_left">
+							Previous
+						</DsButtonV3>
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Next
+						</DsButtonV3>
+					</DsStack>
+					<DsStack direction="row" flex={1} justifyContent="center" alignItems="center" gap={8}>
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project -23-May-2024 04:47 PM
+						</DsTypography>
+						<DsIcon icon="info" size="tiny" />
+						<DsStatusBadgeV2 phase="execution" label="Running" size="small" />
+					</DsStack>
+					<DsStack direction="row" justifyContent="flex-end" alignItems="center" gap={8}>
+						<DsStack direction="row" alignItems="center" gap={8} className={styles.lastUpdate}>
+							<DsIcon icon="history_2" size="small" />
+							<DsTypography variant="body-sm-reg">Last update: 2d ago</DsTypography>
+						</DsStack>
+						<DsButtonV3
+							variant="tertiary"
+							color="light"
+							size="small"
+							icon="more_vert"
+							aria-label="More actions"
+						/>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.Content>
@@ -246,19 +279,32 @@ export const HeaderRunning: Story = {
 };
 
 export const WithDrawer: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: () => {
 		const [drawerOpen, setDrawerOpen] = useState(false);
 
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<WorkspaceStoryHeader onSaveClick={() => setDrawerOpen(true)} />
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project
+						</DsTypography>
+						<DsStack direction="row" gap={8} alignItems="center">
+							<DsButtonV3 variant="secondary" color="light" size="small">
+								Discard
+							</DsButtonV3>
+							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
+								Save project
+							</DsButtonV3>
+						</DsStack>
+					</DsStack>
 				</DsWorkspaceLayout.Header>
 
 				<DsWorkspaceLayout.SubHeader>
-					<div className={styles.subHeaderContent}>
+					<DsStack direction="row" alignItems="center" gap={12} width="100%">
 						<DsTypography variant="body-sm-semi-bold">Dashboard</DsTypography>
-					</div>
+					</DsStack>
 				</DsWorkspaceLayout.SubHeader>
 
 				<DsWorkspaceLayout.Content>
@@ -294,9 +340,11 @@ export const WithDrawer: Story = {
 				</DsWorkspaceLayout.Content>
 
 				<DsWorkspaceLayout.Footer>
-					<div className={styles.footerContent}>
-						<span>v1.2.0</span>
-					</div>
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-xs-reg" color="secondary">
+							v1.2.0
+						</DsTypography>
+					</DsStack>
 				</DsWorkspaceLayout.Footer>
 			</DsWorkspaceLayout>
 		);
@@ -304,19 +352,32 @@ export const WithDrawer: Story = {
 };
 
 export const WithDrawerAndBackdrop: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: () => {
 		const [drawerOpen, setDrawerOpen] = useState(false);
 
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<WorkspaceStoryHeader onSaveClick={() => setDrawerOpen(true)} />
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project
+						</DsTypography>
+						<DsStack direction="row" gap={8} alignItems="center">
+							<DsButtonV3 variant="secondary" color="light" size="small">
+								Discard
+							</DsButtonV3>
+							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
+								Save project
+							</DsButtonV3>
+						</DsStack>
+					</DsStack>
 				</DsWorkspaceLayout.Header>
 
 				<DsWorkspaceLayout.SubHeader>
-					<div className={styles.subHeaderContent}>
+					<DsStack direction="row" alignItems="center" gap={12} width="100%">
 						<DsTypography variant="body-sm-semi-bold">Dashboard</DsTypography>
-					</div>
+					</DsStack>
 				</DsWorkspaceLayout.SubHeader>
 
 				<DsWorkspaceLayout.Content>
@@ -340,9 +401,11 @@ export const WithDrawerAndBackdrop: Story = {
 				</DsWorkspaceLayout.Content>
 
 				<DsWorkspaceLayout.Footer>
-					<div className={styles.footerContent}>
-						<span>v1.2.0</span>
-					</div>
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-xs-reg" color="secondary">
+							v1.2.0
+						</DsTypography>
+					</DsStack>
 				</DsWorkspaceLayout.Footer>
 			</DsWorkspaceLayout>
 		);
@@ -354,7 +417,19 @@ export const FillParent: Story = {
 		<div className={styles.fillParentHost}>
 			<DsWorkspaceLayout fillParent>
 				<DsWorkspaceLayout.Header>
-					<WorkspaceStoryHeader />
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project
+						</DsTypography>
+						<DsStack direction="row" gap={8} alignItems="center">
+							<DsButtonV3 variant="secondary" color="light" size="small">
+								Discard
+							</DsButtonV3>
+							<DsButtonV3 variant="primary" color="light" size="small">
+								Save project
+							</DsButtonV3>
+						</DsStack>
+					</DsStack>
 				</DsWorkspaceLayout.Header>
 
 				<DsWorkspaceLayout.Content>
@@ -364,9 +439,11 @@ export const FillParent: Story = {
 				</DsWorkspaceLayout.Content>
 
 				<DsWorkspaceLayout.Footer>
-					<div className={styles.footerContent}>
-						<span>v1.2.0</span>
-					</div>
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-xs-reg" color="secondary">
+							v1.2.0
+						</DsTypography>
+					</DsStack>
 				</DsWorkspaceLayout.Footer>
 			</DsWorkspaceLayout>
 		</div>
@@ -377,7 +454,19 @@ export const HeaderOnly: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-sm-reg" className={styles.projectName}>
+						Untitled Project
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 
 			<DsWorkspaceLayout.Content>
@@ -397,17 +486,29 @@ export const ExtendedStepperBelow: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-sm-reg" className={styles.projectName}>
+						Untitled Project
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Content>
 					<div className={styles.extendedMainContent}>
-						<div className={styles.extendedTitleRow}>
+						<DsStack direction="row" justifyContent="space-between" alignItems="center" gap={12} width="100%">
 							<DsTypography variant="heading3">Project workspace</DsTypography>
 							<DsButtonV3 variant="secondary" size="small" icon="edit">
 								Edit
 							</DsButtonV3>
-						</div>
+						</DsStack>
 						<div className={styles.card}>
 							<DsTypography variant="body-md-reg">
 								Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -441,7 +542,19 @@ export const ExtendedStepperAside: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-sm-reg" className={styles.projectName}>
+						Untitled Project
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.LeftPanel>
@@ -471,12 +584,12 @@ export const ExtendedStepperAside: Story = {
 				</DsWorkspaceLayout.LeftPanel>
 				<DsWorkspaceLayout.Content>
 					<div className={styles.extendedMainContent}>
-						<div className={styles.extendedTitleRow}>
+						<DsStack direction="row" justifyContent="space-between" alignItems="center" gap={12} width="100%">
 							<DsTypography variant="heading3">Project workspace</DsTypography>
 							<DsButtonV3 variant="secondary" size="small" icon="edit">
 								Edit
 							</DsButtonV3>
-						</div>
+						</DsStack>
 						<div className={styles.card}>
 							<DsTypography variant="body-md-reg">
 								Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -492,13 +605,26 @@ export const ExtendedStepperAside: Story = {
 
 /** Side menu rail and docked left panel together. */
 export const ExtendedSideMenuAndLeftPanel: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: () => {
 		const [pinned, setPinned] = useState(false);
 
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<WorkspaceStoryHeader />
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project
+						</DsTypography>
+						<DsStack direction="row" gap={8} alignItems="center">
+							<DsButtonV3 variant="secondary" color="light" size="small">
+								Discard
+							</DsButtonV3>
+							<DsButtonV3 variant="primary" color="light" size="small">
+								Save project
+							</DsButtonV3>
+						</DsStack>
+					</DsStack>
 				</DsWorkspaceLayout.Header>
 				<DsWorkspaceLayout.Body>
 					<DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
@@ -547,12 +673,18 @@ export const ExtendedSideMenuAndLeftPanel: Story = {
 					</DsWorkspaceLayout.LeftPanel>
 					<DsWorkspaceLayout.Content>
 						<div className={styles.extendedMainContent}>
-							<div className={styles.extendedTitleRow}>
+							<DsStack
+								direction="row"
+								justifyContent="space-between"
+								alignItems="center"
+								gap={12}
+								width="100%"
+							>
 								<DsTypography variant="heading3">Project workspace</DsTypography>
 								<DsButtonV3 variant="secondary" size="small" icon="edit">
 									Edit
 								</DsButtonV3>
-							</div>
+							</DsStack>
 							<div className={styles.card}>
 								<DsTypography variant="body-md-reg">
 									Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -572,16 +704,28 @@ export const ExtendedWithCanvas: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-sm-reg" className={styles.projectName}>
+						Untitled Project
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Content>
-					<div className={styles.extendedTitleRow}>
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" gap={12} width="100%">
 						<DsTypography variant="heading3">Network topology</DsTypography>
 						<DsButtonV3 variant="secondary" size="small" icon="fullscreen">
 							Expand
 						</DsButtonV3>
-					</div>
+					</DsStack>
 					<div className={styles.canvasSurface} aria-label="Canvas">
 						<DsTypography variant="body-md-reg">
 							Map or diagram canvas fills the remaining content area.
@@ -595,13 +739,26 @@ export const ExtendedWithCanvas: Story = {
 
 /** Side menu with left panel — navigation rail plus push panel. */
 export const ExtendedSideMenuLeftPanel: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: () => {
 		const [pinned, setPinned] = useState(false);
 
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<WorkspaceStoryHeader />
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project
+						</DsTypography>
+						<DsStack direction="row" gap={8} alignItems="center">
+							<DsButtonV3 variant="secondary" color="light" size="small">
+								Discard
+							</DsButtonV3>
+							<DsButtonV3 variant="primary" color="light" size="small">
+								Save project
+							</DsButtonV3>
+						</DsStack>
+					</DsStack>
 				</DsWorkspaceLayout.Header>
 				<DsWorkspaceLayout.Body>
 					<DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
@@ -663,12 +820,18 @@ export const ExtendedSideMenuLeftPanel: Story = {
 					</DsWorkspaceLayout.LeftPanel>
 					<DsWorkspaceLayout.Content>
 						<div className={styles.extendedMainContent}>
-							<div className={styles.extendedTitleRow}>
+							<DsStack
+								direction="row"
+								justifyContent="space-between"
+								alignItems="center"
+								gap={12}
+								width="100%"
+							>
 								<DsTypography variant="heading3">Project workspace</DsTypography>
 								<DsButtonV3 variant="secondary" size="small" icon="edit">
 									Edit
 								</DsButtonV3>
-							</div>
+							</DsStack>
 							<div className={styles.card}>
 								<DsTypography variant="body-md-reg">
 									Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -685,6 +848,7 @@ export const ExtendedSideMenuLeftPanel: Story = {
 
 /** Side menu, left panel, and right drawer combined. */
 export const ExtendedCombined: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: () => {
 		const [pinned, setPinned] = useState(false);
 		const [drawerOpen, setDrawerOpen] = useState(false);
@@ -692,7 +856,19 @@ export const ExtendedCombined: Story = {
 		return (
 			<DsWorkspaceLayout>
 				<DsWorkspaceLayout.Header>
-					<WorkspaceStoryHeader onSaveClick={() => setDrawerOpen(true)} />
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-sm-reg" className={styles.projectName}>
+							Untitled Project
+						</DsTypography>
+						<DsStack direction="row" gap={8} alignItems="center">
+							<DsButtonV3 variant="secondary" color="light" size="small">
+								Discard
+							</DsButtonV3>
+							<DsButtonV3 variant="primary" color="light" size="small" onClick={() => setDrawerOpen(true)}>
+								Save project
+							</DsButtonV3>
+						</DsStack>
+					</DsStack>
 				</DsWorkspaceLayout.Header>
 				<DsWorkspaceLayout.Body>
 					<DsWorkspaceLayout.SideMenu pinned={pinned} onPinnedChange={setPinned} className={styles.sideMenu}>
@@ -754,12 +930,18 @@ export const ExtendedCombined: Story = {
 					</DsWorkspaceLayout.LeftPanel>
 					<DsWorkspaceLayout.Content>
 						<div className={styles.extendedMainContent}>
-							<div className={styles.extendedTitleRow}>
+							<DsStack
+								direction="row"
+								justifyContent="space-between"
+								alignItems="center"
+								gap={12}
+								width="100%"
+							>
 								<DsTypography variant="heading3">Project workspace</DsTypography>
 								<DsButtonV3 variant="secondary" size="small" icon="edit">
 									Edit
 								</DsButtonV3>
-							</div>
+							</DsStack>
 							<div className={styles.card}>
 								<DsTypography variant="body-md-reg">
 									Extended shell content area with layout margins applied by WorkspaceLayout.Content inside
@@ -779,9 +961,11 @@ export const ExtendedCombined: Story = {
 					</DsWorkspaceLayout.Content>
 				</DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Footer>
-					<div className={styles.footerContent}>
-						<span>v1.2.0</span>
-					</div>
+					<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+						<DsTypography variant="body-xs-reg" color="secondary">
+							v1.2.0
+						</DsTypography>
+					</DsStack>
 				</DsWorkspaceLayout.Footer>
 			</DsWorkspaceLayout>
 		);
@@ -793,14 +977,26 @@ export const ExtendedWorkflowInfoPanel: Story = {
 	render: () => (
 		<DsWorkspaceLayout>
 			<DsWorkspaceLayout.Header>
-				<WorkspaceStoryHeader />
+				<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+					<DsTypography variant="body-sm-reg" className={styles.projectName}>
+						Untitled Project
+					</DsTypography>
+					<DsStack direction="row" gap={8} alignItems="center">
+						<DsButtonV3 variant="secondary" color="light" size="small">
+							Discard
+						</DsButtonV3>
+						<DsButtonV3 variant="primary" color="light" size="small">
+							Save project
+						</DsButtonV3>
+					</DsStack>
+				</DsStack>
 			</DsWorkspaceLayout.Header>
 			<DsWorkspaceLayout.Body>
 				<DsWorkspaceLayout.Content>
 					<div className={styles.extendedMainContent}>
-						<div className={styles.extendedTitleRow}>
+						<DsStack direction="row" justifyContent="space-between" alignItems="center" gap={12} width="100%">
 							<DsTypography variant="heading3">Approval workflow</DsTypography>
-						</div>
+						</DsStack>
 						<div className={styles.workflowInfoPanel}>
 							<div className={styles.workflowInfoItem}>
 								<DsTypography variant="body-sm-semi-bold">Status</DsTypography>

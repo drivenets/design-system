@@ -34,46 +34,18 @@
 	color: var(--secondary-050);
 }
 
-// Story container styles
-.storyContainer {
+.horizontalDemo {
 	width: 420px;
-	height: auto;
-	display: flex;
-	align-items: stretch;
-	justify-content: center;
-	padding: 16px;
-	border: 1px solid rgba(0, 0, 0, 0.08);
-	border-radius: 12px;
-	box-sizing: border-box;
 }
 
-.storyContainerVertical {
-	height: 220px;
-}
-
-.storyContent {
-	width: 100%;
-}
-
-.storyContentSide {
-	width: 140px;
-	font-size: 12px;
-}
-
-.storyText {
-	font-size: 12px;
-}
-
-// Horizontal divider container
-.horizontalContainer {
-	width: 420px;
+.verticalDemo {
+	height: 140px;
 }
 
 .horizontalDividerWrapper {
 	width: 520px;
 }
 
-// Vertical divider container
 .verticalDividerContainer {
 	height: 140px;
 	display: flex;
