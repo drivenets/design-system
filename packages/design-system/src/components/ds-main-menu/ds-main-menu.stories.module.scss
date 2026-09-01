@@ -1,0 +1,92 @@
+.popoverContent {
+	width: max-content;
+	min-width: max-content;
+	padding: 0;
+	gap: 0;
+	background: transparent;
+	box-shadow: none;
+}
+
+.popoverContent :global(.arrow) {
+	display: none;
+}
+
+.statesHint {
+	max-width: 220px;
+	margin: 0;
+	color: var(--font-secondary);
+	font-size: var(--body-font-size-xs);
+}
+
+.sidebarDemo {
+	display: flex;
+	height: 400px;
+	border: 1px solid var(--border-primary);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.sidebar {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: var(--md) var(--sm);
+	gap: var(--sm);
+	background: var(--surface-secondary);
+	border-right: 1px solid var(--border-primary);
+}
+
+.anchorPoint {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	padding: var(--md);
+	gap: var(--xs);
+	background: var(--surface-primary);
+}
+
+.anchorLabel {
+	margin: 0;
+	color: var(--font-secondary);
+	font-size: var(--body-font-size-xs);
+}
+
+.appHeader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--sm);
+	width: 100%;
+}
+
+.appHeaderLeft {
+	display: flex;
+	align-items: center;
+	gap: var(--sm);
+	min-width: 0;
+}
+
+.appHeaderBrand {
+	color: var(--font-on-action);
+	white-space: nowrap;
+}
+
+.appHeaderSeparator {
+	width: 1px;
+	height: 20px;
+	background: var(--font-on-action);
+	opacity: 0.4;
+}
+
+.appHeaderApp {
+	color: var(--font-on-action);
+	white-space: nowrap;
+}
+
+.appStage {
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+	max-width: 640px;
+}

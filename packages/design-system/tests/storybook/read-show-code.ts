@@ -35,7 +35,8 @@ export async function readShowCodeSnippet(
 	});
 
 	const frame = await getDocsIframe(page);
-	const section = frame.locator('h3', { hasText: new RegExp(`^${storyName}$`) }).locator('..');
+	const escapedStoryName = storyName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	const section = frame.locator('h3', { hasText: new RegExp(`^${escapedStoryName}$`) }).locator('..');
 	const showCodeButton = section.locator('button', { hasText: 'Show code' }).first();
 
 	// Autodocs renders each story section asynchronously after the iframe's domcontentloaded, so

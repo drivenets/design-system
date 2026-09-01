@@ -1,0 +1,349 @@
+$z-index: 1000;
+$tile-size: 92px;
+$badge-size: 24px;
+$utility-min-height: 28px;
+$utility-icon-size: 20px;
+$transition-duration: 0.2s;
+$focus-outline-width: 2px;
+$disabled-icon-opacity: 0.55;
+$shadow: 0 6px 18px rgb(4 69 204 / 30%);
+$expanded-card-width: 290px;
+$icon-size: 42px;
+
+@mixin interactive-surface {
+	background: var(--background-action-secondary-hover);
+	color: var(--font-action);
+}
+
+@mixin expanded-surface {
+	background: var(--background-action-secondary-hover);
+}
+
+.root {
+	--ds-main-menu-z-index: #{$z-index};
+
+	position: relative;
+	z-index: var(--ds-main-menu-z-index);
+	display: flex;
+	flex-direction: column;
+	width: max-content;
+	padding: var(--sm) var(--lg);
+	border-radius: var(--4xs);
+	background: var(--background);
+	box-shadow: $shadow;
+}
+
+.grid {
+	display: grid;
+	gap: var(--sm);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+
+	&[data-variant='compact'] {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	&[data-variant='expanded'] {
+		grid-template-columns: repeat(2, $expanded-card-width);
+	}
+}
+
+.tile {
+	position: relative;
+}
+
+.tileLink {
+	position: relative;
+	box-sizing: content-box;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--xs);
+	width: $tile-size;
+	height: $tile-size;
+	padding: var(--standard);
+	border: none;
+	border-radius: var(--3xs);
+	background: var(--background);
+	color: var(--font-secondary);
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color $transition-duration ease,
+		color $transition-duration ease,
+		box-shadow $transition-duration ease;
+
+	&:hover:not(:disabled):not([aria-disabled='true']) {
+		@include interactive-surface;
+	}
+
+	&:active:not(:disabled):not([aria-disabled='true']) {
+		@include interactive-surface;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		@include interactive-surface;
+
+		outline: $focus-outline-width solid var(--border-action-primary);
+		outline-offset: -$focus-outline-width;
+	}
+}
+
+.tileLinkSelected {
+	@include interactive-surface;
+
+	box-shadow: inset 0 0 0 1px var(--border-action-primary);
+}
+
+.tileLinkDisabled {
+	background: var(--background);
+	box-shadow: none;
+	color: var(--font-disabled);
+	cursor: not-allowed;
+
+	.tileIcon {
+		opacity: $disabled-icon-opacity;
+	}
+}
+
+.tileLinkComingSoon {
+	cursor: not-allowed;
+}
+
+.tileIcon {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $icon-size;
+	height: $icon-size;
+}
+
+.graphic {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.tileLabel {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	text-align: center;
+	padding: 0 var(--3xs);
+}
+
+.badge {
+	position: absolute;
+	z-index: 1;
+	top: var(--xs);
+	right: var(--xs);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $badge-size;
+	height: $badge-size;
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+	background: var(--background);
+	color: var(--font-main);
+}
+
+.expandedItem {
+	position: relative;
+}
+
+.expandedLink {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--standard);
+	width: 100%;
+	padding: var(--md) var(--xl);
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+	background: var(--background);
+	color: var(--font-main);
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color $transition-duration ease,
+		box-shadow $transition-duration ease;
+
+	&:hover:not([aria-disabled='true']) {
+		@include expanded-surface;
+	}
+
+	&:active:not([aria-disabled='true']) {
+		@include expanded-surface;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		@include expanded-surface;
+
+		outline: $focus-outline-width solid var(--border-action-primary);
+		outline-offset: -$focus-outline-width;
+	}
+}
+
+.expandedLinkSelected {
+	@include expanded-surface;
+
+	box-shadow: inset 0 0 0 1px var(--border-action-primary);
+}
+
+.expandedLinkDisabled {
+	background: var(--background);
+	box-shadow: none;
+	color: var(--font-disabled);
+	cursor: not-allowed;
+
+	.expandedIcon {
+		opacity: $disabled-icon-opacity;
+	}
+}
+
+.expandedLinkComingSoon {
+	cursor: not-allowed;
+}
+
+.expandedIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $icon-size;
+	height: $icon-size;
+	color: inherit;
+}
+
+.expandedText {
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+	width: 100%;
+	word-break: break-word;
+}
+
+.expandedDescription {
+	color: var(--font-secondary);
+}
+
+.expandedAction {
+	position: absolute;
+	z-index: 1;
+	top: var(--md);
+	right: var(--xl);
+	display: flex;
+	align-items: center;
+	height: $icon-size;
+}
+
+.expandedActionBadge {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $badge-size;
+	height: $badge-size;
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+	background: var(--background);
+	color: var(--font-main);
+}
+
+.footer {
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+	margin-top: var(--xs);
+}
+
+.utilityList {
+	display: flex;
+	gap: var(--xs);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.utilityItem {
+	flex: 1 1 0;
+	min-width: 0;
+}
+
+.utilityLink {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	width: 100%;
+	min-height: $utility-min-height;
+	padding: var(--3xs) var(--xs);
+	border: $focus-outline-width solid transparent;
+	border-radius: var(--3xs);
+	background: transparent;
+	color: var(--font-secondary);
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+	transition:
+		background-color $transition-duration ease,
+		color $transition-duration ease,
+		border-color $transition-duration ease;
+
+	&:hover {
+		@include interactive-surface;
+	}
+
+	&:active {
+		@include interactive-surface;
+
+		border-color: var(--border-action-primary);
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		@include interactive-surface;
+
+		border-color: var(--border-action-primary);
+	}
+}
+
+.utilityIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: $utility-icon-size;
+	height: $utility-icon-size;
+	flex-shrink: 0;
+	color: inherit;
+}
+
+.utilityLabel {
+	min-width: 0;
+}
+
+// Reset the DsPopover.Panel container so the nav's own visual styles (bg, shadow, radius) render,
+// and size it to the menu content instead of DsPopover's fixed default width.
+.panel {
+	background: transparent !important;
+	box-shadow: none !important;
+	width: max-content !important;
+	min-width: max-content !important;
+}
