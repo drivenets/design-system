@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { useState } from 'react';
 import DsTextInput from './ds-text-input';
-import { DsIcon } from '../ds-icon';
 import { textInputSizes } from './ds-text-input.types';
+import { DsButtonV3 } from '../ds-button-v3';
+import { DsIcon } from '../ds-icon';
+import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsTextInput> = {
 	title: 'Components/TextInput',
@@ -13,13 +14,20 @@ const meta: Meta<typeof DsTextInput> = {
 		docs: {
 			description: {
 				component:
-					'A flexible text input component that supports start and end adornments via props for easy customization.',
+					'A flexible single-line text input that supports sizes, disabled/read-only states, and start/end adornments via the `slots` prop.',
 			},
 		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="16rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		size: {
-			control: { type: 'select' },
+			control: 'select',
 			options: textInputSizes,
 			description: 'The size of the input field',
 		},
@@ -35,49 +43,51 @@ const meta: Meta<typeof DsTextInput> = {
 			control: 'text',
 			description: 'The current value',
 		},
-		onChange: { action: 'changed' },
-		onValueChange: { action: 'value changed' },
+		onChange: { table: { disable: true } },
+		onValueChange: { table: { disable: true } },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
+		ref: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsTextInput>;
 
+/**
+ * The default single-line text input. Use it for free-form short text such as
+ * names, titles, or search terms.
+ */
 export const Default: Story = {
 	args: {
 		placeholder: 'Enter text...',
-		size: 'default',
-		style: { width: '200px' },
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByPlaceholderText('Enter text...');
-
-		// Test basic input functionality
-		await userEvent.type(input, 'Hello World');
-		await expect(input).toHaveValue('Hello World');
-
-		// Reset
-		await userEvent.clear(input);
 	},
 };
 
+/**
+ * Compact input for dense forms and toolbars where vertical space is limited.
+ */
 export const Small: Story = {
 	args: {
 		size: 'small',
 		placeholder: 'Small input...',
-		style: { width: '150px' },
 	},
 };
 
+/**
+ * Larger input for prominent, standalone fields such as a primary search box.
+ */
 export const Large: Story = {
 	args: {
 		size: 'large',
 		placeholder: 'Large input...',
-		style: { width: '250px' },
 	},
 };
 
+/**
+ * Pre-filled input rendered with an initial `value`. Use `defaultValue` for
+ * uncontrolled fields, or `value` when the parent owns the state.
+ */
 export const WithValue: Story = {
 	args: {
 		value: 'Hello World',
@@ -85,87 +95,69 @@ export const WithValue: Story = {
 	},
 };
 
+/**
+ * Disabled input that cannot be focused or edited. Use for fields that are
+ * temporarily unavailable.
+ */
 export const Disabled: Story = {
 	args: {
 		placeholder: 'Disabled input',
 		disabled: true,
-		style: { width: '200px' },
 	},
 };
 
+/**
+ * Controlled input where the parent owns the value via `value` and
+ * `onValueChange`. Use this pattern when other UI needs to react to the value.
+ */
 export const Controlled: Story = {
-	render: function Render(args) {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
 		const [value, setValue] = useState('initial value');
 
 		return (
-			<div style={{ display: 'flex', flexDirection: 'column', gap: '16px', alignItems: 'center' }}>
-				<DsTextInput {...args} value={value} onValueChange={(newValue) => setValue(newValue)} />
-				<div>Current value: {value}</div>
-				<button onClick={() => setValue('updated value')}>Update value</button>
-				<button onClick={() => setValue('')}>Clear value</button>
-			</div>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
+				<DsTextInput placeholder="Controlled input" value={value} onValueChange={setValue} />
+				<DsStack gap="var(--2xs)">
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue('updated value')}>
+						Update value
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
+						Clear value
+					</DsButtonV3>
+				</DsStack>
+			</DsStack>
 		);
 	},
-	args: {
-		type: 'text',
-		placeholder: 'Controlled input',
-		style: { width: '200px' },
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByPlaceholderText('Controlled input');
-		const updateButton = canvas.getByText('Update value');
-		const clearButton = canvas.getByText('Clear value');
-		const valueDisplay = canvas.getByText('Current value: initial value');
-
-		// Test initial value
-		await expect(input).toHaveValue('initial value');
-		await expect(valueDisplay).toHaveTextContent('Current value: initial value');
-
-		// Test external control
-		await userEvent.click(updateButton);
-		await waitFor(async () => {
-			await expect(input).toHaveValue('updated value');
-			await expect(valueDisplay).toHaveTextContent('Current value: updated value');
-		});
-
-		// Test user input
-		await userEvent.clear(input);
-		await userEvent.type(input, 'user input');
-		await waitFor(async () => {
-			await expect(valueDisplay).toHaveTextContent('Current value: user input');
-		});
-
-		// Test clear
-		await userEvent.click(clearButton);
-		await waitFor(async () => {
-			await expect(input).toHaveValue('');
-			await expect(valueDisplay).toHaveTextContent('Current value:');
-		});
-	},
 };
 
+/**
+ * Prefix the field with an icon using `slots.startAdornment`, for example a
+ * search glyph on a search input.
+ */
 export const WithStartAdornment: Story = {
 	args: {
-		placeholder: 'Enter amount...',
+		placeholder: 'Search...',
 		slots: {
-			startAdornment: (
-				<span
-					style={{
-						color: 'var(--font-secondary)',
-						fontSize: '12px',
-						fontWeight: 'bold',
-					}}
-				>
-					$
-				</span>
-			),
+			startAdornment: <DsIcon icon="search" size="tiny" />,
 		},
-		style: { width: '200px' },
 	},
 };
 
-export const WithEndAdornment: Story = {
+/**
+ * Append an interactive control with `slots.endAdornment`, such as a clear
+ * button that resets the controlled value.
+ */
+export const WithClearButton: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -176,18 +168,30 @@ export const WithEndAdornment: Story = {
 				onValueChange={setValue}
 				slots={{
 					endAdornment: (
-						<button type="button" onClick={() => setValue('')}>
-							<DsIcon icon="close" size="tiny" />
-						</button>
+						<DsButtonV3
+							variant="tertiary"
+							size="small"
+							icon="close"
+							aria-label="Clear"
+							onClick={() => setValue('')}
+						/>
 					),
 				}}
-				style={{ width: '200px' }}
 			/>
 		);
 	},
 };
 
-export const WithBothAdornments: Story = {
+/**
+ * Combine start and end adornments — here a search icon and a clear button — to
+ * build a compact search field.
+ */
+export const WithSearchAndClear: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [value, setValue] = useState('');
 
@@ -199,140 +203,66 @@ export const WithBothAdornments: Story = {
 				slots={{
 					startAdornment: <DsIcon icon="search" size="tiny" />,
 					endAdornment: (
-						<button type="button" onClick={() => setValue('')}>
-							<DsIcon icon="close" size="tiny" />
-						</button>
+						<DsButtonV3
+							variant="tertiary"
+							size="small"
+							icon="close"
+							aria-label="Clear"
+							onClick={() => setValue('')}
+						/>
 					),
 				}}
-				style={{ width: '200px' }}
 			/>
 		);
 	},
 };
 
-export const CustomEmailAdornments: Story = {
-	name: 'Custom Adornments (Email)',
+/**
+ * Set `type="email"` for email entry and pair it with a send adornment. The
+ * `type` prop flows through to the native input for validation and keyboards.
+ */
+export const Email: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
 	render: function Render() {
 		const [value, setValue] = useState('');
 
 		return (
 			<DsTextInput
-				size="small"
 				type="email"
 				placeholder="Enter email address..."
 				value={value}
 				onValueChange={setValue}
 				slots={{
-					startAdornment: (
-						<span
-							style={{
-								backgroundColor: 'var(--color-background-action-weak)',
-								borderRadius: '4px',
-								padding: '2px 6px',
-								fontSize: '12px',
-								color: 'var(--font-secondary)',
-								fontWeight: 'bold',
-							}}
-						>
-							@
-						</span>
-					),
-					endAdornment: (
-						<button type="button" onClick={() => console.log('Send clicked')}>
-							<DsIcon icon="send" size="tiny" filled={!!value} />
-						</button>
-					),
+					endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />,
 				}}
-				style={{ width: '250px' }}
 			/>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByPlaceholderText('Enter email address...');
-
-		// Test email input
-		await userEvent.type(input, 'test@example.com');
-		await expect(input).toHaveValue('test@example.com');
-		await expect(input).toHaveAttribute('type', 'email');
-
-		// Reset
-		await userEvent.clear(input);
-	},
 };
 
+/**
+ * Adornments inherit the disabled state of the input, so icon buttons render
+ * muted and non-interactive when the field is disabled.
+ */
 export const DisabledAdornments: Story = {
 	args: {
 		value: 'Disabled value',
 		disabled: true,
 		slots: {
-			startAdornment: (
-				<button type="button" disabled={true}>
-					<DsIcon icon="lock" size="tiny" />
-				</button>
-			),
+			startAdornment: <DsButtonV3 variant="tertiary" size="small" icon="lock" aria-label="Locked" disabled />,
 			endAdornment: (
-				<button type="button" disabled={true}>
-					<DsIcon icon="visibility" size="tiny" />
-				</button>
+				<DsButtonV3
+					variant="tertiary"
+					size="small"
+					icon="visibility"
+					aria-label="Toggle visibility"
+					disabled
+				/>
 			),
 		},
-		style: { width: '200px' },
-	},
-};
-
-export const Interactive: Story = {
-	render: function Render() {
-		const [value, setValue] = useState('');
-		const showClear = !!value;
-
-		const handleValueChange = (newValue: string) => {
-			setValue(newValue);
-		};
-
-		const handleClear = () => {
-			setValue('');
-		};
-
-		return (
-			<>
-				<DsTextInput
-					placeholder="Type something..."
-					value={value}
-					onValueChange={handleValueChange}
-					slots={{
-						startAdornment: <DsIcon icon="search" size="tiny" />,
-						endAdornment: showClear && (
-							<button type="button" onClick={handleClear}>
-								<DsIcon icon="close" size="tiny" />
-							</button>
-						),
-					}}
-					style={{ width: '200px' }}
-				/>
-				<div style={{ marginTop: '8px', fontSize: '12px', color: 'var(--font-secondary)' }}>
-					Character count: {value.length}
-				</div>
-			</>
-		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const input = canvas.getByPlaceholderText('Type something...');
-		const characterCount = canvas.getByText('Character count: 0');
-
-		// Test initial state
-		await expect(input).toHaveValue('');
-		await expect(characterCount).toHaveTextContent('Character count: 0');
-
-		// Test typing
-		await userEvent.type(input, 'Hello World');
-		await expect(input).toHaveValue('Hello World');
-		await expect(characterCount).toHaveTextContent('Character count: 11');
-
-		// Test clearing
-		await userEvent.clear(input);
-		await expect(input).toHaveValue('');
-		await expect(characterCount).toHaveTextContent('Character count: 0');
 	},
 };

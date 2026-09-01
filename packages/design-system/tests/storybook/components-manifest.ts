@@ -38,20 +38,25 @@ async function getManifest(): Promise<ComponentsManifest> {
 }
 
 /**
- * Resolves a manifest component from a kebab folder suffix (e.g. `button-v3` → `ds-button-v3`).
- * Matches by `path` because the manifest id is derived from the story title via Storybook's
- * `toId` (`Components/ButtonV3` → `components-buttonv3`), which is not recoverable from the folder.
+ * Resolves every manifest component authored under a kebab folder suffix
+ * (e.g. `button-v3` → `ds-button-v3`). A folder may hold several manifest
+ * components when it groups multiple story titles (e.g. `ds-form-control`).
+ * Matches by `path` because the manifest id is derived from the story title via
+ * Storybook's `toId` (`Components/ButtonV3` → `components-buttonv3`), which is
+ * not recoverable from the folder. Sorted by id so aggregation is deterministic.
  */
-export async function resolveComponent(name: string): Promise<ManifestComponent> {
+export async function resolveComponents(name: string): Promise<ManifestComponent[]> {
 	const manifest = await getManifest();
 	const folder = `ds-${name}`;
-	const component = Object.values(manifest.components).find((entry) => entry.path.includes(`/${folder}/`));
+	const components = Object.values(manifest.components)
+		.filter((entry) => entry.path.includes(`/${folder}/`))
+		.sort((a, b) => a.id.localeCompare(b.id));
 
-	if (!component) {
+	if (components.length === 0) {
 		throw new Error(`No manifest component found for folder "${folder}"`);
 	}
 
-	return component;
+	return components;
 }
 
 export async function getStorySnippet(componentId: string, storyName: string): Promise<string> {

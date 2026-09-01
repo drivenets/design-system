@@ -4,7 +4,10 @@ import { FileUpload } from './components/file-upload';
 import { useFileUpload } from './hooks';
 
 /**
- * Design system File Upload component (with state management)
+ * File upload with built-in state management (progress, retries, cancellation).
+ *
+ * Pass an `adapter` implementing `FileUploadAdapter` to connect it to your backend:
+ * `const adapter = getSimpleFileUploadAdapter('/api/upload')`.
  */
 const DsFileUpload: React.FC<DsFileUploadProps> = ({
 	adapter,

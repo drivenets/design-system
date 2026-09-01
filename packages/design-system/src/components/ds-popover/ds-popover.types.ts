@@ -31,6 +31,13 @@ export interface DsPopoverRootProps {
 	 * @default false
 	 */
 	modal?: boolean;
+	/**
+	 * Returns the element the panel should position against.
+	 * When provided, the panel anchors to this element instead of the trigger —
+	 * useful when the trigger lives in one place (e.g. a sidebar) and the panel
+	 * should appear relative to a different reference point.
+	 */
+	getAnchorElement?: () => HTMLElement | null;
 	children: ReactNode;
 	/** Fires when the popover opens or closes. */
 	onOpenChange?: (open: boolean) => void;

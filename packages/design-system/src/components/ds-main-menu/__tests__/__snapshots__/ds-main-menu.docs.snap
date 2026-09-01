@@ -1,0 +1,924 @@
+# DsMainMenu docs snippets
+
+## Default
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      description: 'Monitor live topology, health, and traffic across the fabric.',
+      icon: 'visibility',
+      id: 'network-visibility',
+      label: 'Network visibility'
+    },
+    {
+      description: 'Model capacity and design topology changes before rollout.',
+      icon: 'account_tree',
+      id: 'planning',
+      label: 'Planning'
+    },
+    {
+      description: 'Manage device settings, templates, and intended state.',
+      icon: 'tune',
+      id: 'configurations',
+      label: 'Configurations'
+    },
+    {
+      description: 'Roll out software images and track deployment progress.',
+      icon: 'rocket_launch',
+      id: 'deployments',
+      label: 'Deployments'
+    },
+    {
+      description: 'Automate multi-step operational tasks end to end.',
+      icon: 'route',
+      id: 'workflows',
+      label: 'Workflows'
+    },
+    {
+      description: 'Browse and install optional platform capabilities.',
+      icon: 'special-packages',
+      id: 'packages',
+      label: 'Packages'
+    }
+  ]}
+  selectedId="network-visibility"
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[
+    {
+      icon: 'contact_support',
+      id: 'help-support',
+      label: 'Help & Support'
+    },
+    {
+      icon: 'local_library',
+      id: 'knowledge-center',
+      label: 'Knowledge Center'
+    }
+  ]}
+  variant="compact"
+/>
+
+### MCP manifest
+const Default = () => <DsMainMenu
+    variant="compact"
+    items={[
+        {
+            id: 'network-visibility',
+            label: 'Network visibility',
+            icon: 'visibility',
+            description: 'Monitor live topology, health, and traffic across the fabric.',
+        },
+        {
+            id: 'planning',
+            label: 'Planning',
+            icon: 'account_tree',
+            description: 'Model capacity and design topology changes before rollout.',
+        },
+        {
+            id: 'configurations',
+            label: 'Configurations',
+            icon: 'tune',
+            description: 'Manage device settings, templates, and intended state.',
+        },
+        {
+            id: 'deployments',
+            label: 'Deployments',
+            icon: 'rocket_launch',
+            description: 'Roll out software images and track deployment progress.',
+        },
+        {
+            id: 'workflows',
+            label: 'Workflows',
+            icon: 'route',
+            description: 'Automate multi-step operational tasks end to end.',
+        },
+        {
+            id: 'packages',
+            label: 'Packages',
+            icon: 'special-packages',
+            description: 'Browse and install optional platform capabilities.',
+        },
+    ]}
+    utilityLinks={[
+        { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+        { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+    ]}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    selectedId="network-visibility"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## With Selection
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      icon: 'visibility',
+      id: 'network-visibility',
+      label: 'Network visibility'
+    },
+    {
+      icon: 'account_tree',
+      id: 'planning',
+      label: 'Planning'
+    },
+    {
+      icon: 'tune',
+      id: 'configurations',
+      label: 'Configurations'
+    },
+    {
+      icon: 'rocket_launch',
+      id: 'deployments',
+      label: 'Deployments'
+    },
+    {
+      icon: 'route',
+      id: 'workflows',
+      label: 'Workflows'
+    },
+    {
+      icon: 'special-packages',
+      id: 'packages',
+      label: 'Packages'
+    },
+    {
+      icon: 'psychology',
+      id: 'operations-ai',
+      label: 'AI Ops'
+    },
+    {
+      icon: 'dashboard_customize',
+      id: 'resource-allocation',
+      label: 'Resource allocation'
+    },
+    {
+      icon: 'bolt',
+      id: 'triggers',
+      label: 'Triggers'
+    },
+    {
+      icon: 'table_rows',
+      id: 'referential-data',
+      label: 'Referential data'
+    }
+  ]}
+  selectedId="packages"
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[
+    {
+      icon: 'contact_support',
+      id: 'help-support',
+      label: 'Help & Support'
+    },
+    {
+      icon: 'local_library',
+      id: 'knowledge-center',
+      label: 'Knowledge Center'
+    }
+  ]}
+  variant="compact"
+/>
+
+### MCP manifest
+const WithSelection = () => <DsMainMenu
+    variant="compact"
+    items={SAMPLE_ITEMS}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    selectedId="packages"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## Controlled Selection
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const [selectedId, setSelectedId] = useState('planning');
+    return <DsMainMenu {...args} trigger={args.trigger ?? <DsButton schema="secondary">
+                            <DsIcon icon="apps" /> Open main menu
+                        </DsButton>} items={SAMPLE_ITEMS} utilityLinks={SAMPLE_UTILITY_LINKS} selectedId={selectedId} onItemSelect={id => {
+      const item = SAMPLE_ITEMS.find(entry => entry.id === id);
+      if (item?.state === 'disabled' || item?.state === 'comingSoon') {
+        return;
+      }
+      setSelectedId(id);
+    }} />;
+  }
+}
+
+### MCP manifest
+const ControlledSelection = () => {
+    const [selectedId, setSelectedId] = useState('planning');
+
+    return (
+        <DsMainMenu
+            variant="compact"
+            side="bottom"
+            align="start"
+            gutter={8}
+            aria-label="Main menu"
+            trigger={
+                args.trigger ?? (
+                    <DsButton schema="secondary">
+                        <DsIcon icon="apps" /> Open main menu
+                    </DsButton>
+                )
+            }
+            items={SAMPLE_ITEMS}
+            utilityLinks={SAMPLE_UTILITY_LINKS}
+            selectedId={selectedId}
+            onItemSelect={(id) => {
+                const item = SAMPLE_ITEMS.find((entry) => entry.id === id);
+
+                if (item?.state === 'disabled' || item?.state === 'comingSoon') {
+                    return;
+                }
+
+                setSelectedId(id);
+            }} />
+    );
+};
+
+## Item States
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      icon: 'speed',
+      id: 'available',
+      label: 'My Dashboard'
+    },
+    {
+      icon: 'speed',
+      id: 'disabled',
+      label: 'My Dashboard',
+      state: 'disabled'
+    },
+    {
+      icon: 'speed',
+      id: 'coming-soon',
+      label: 'My Dashboard',
+      state: 'comingSoon'
+    }
+  ]}
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[]}
+  variant="compact"
+/>
+
+### MCP manifest
+const ItemStates = () => <DsMainMenu
+    variant="compact"
+    items={[
+        { id: 'available', label: 'My Dashboard', icon: 'speed' },
+        { id: 'disabled', label: 'My Dashboard', icon: 'speed', state: 'disabled' },
+        { id: 'coming-soon', label: 'My Dashboard', icon: 'speed', state: 'comingSoon' },
+    ]}
+    utilityLinks={[]}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## Tile Interaction States
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      icon: 'speed',
+      id: 'regular',
+      label: 'My Dashboard'
+    },
+    {
+      icon: 'speed',
+      id: 'selected',
+      label: 'My Dashboard'
+    }
+  ]}
+  selectedId="selected"
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[]}
+  variant="compact"
+/>
+
+### MCP manifest
+const TileInteractionStates = () => <DsMainMenu
+    variant="compact"
+    items={[
+        { id: 'regular', label: 'My Dashboard', icon: 'speed' },
+        { id: 'selected', label: 'My Dashboard', icon: 'speed' },
+    ]}
+    utilityLinks={[]}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    selectedId="selected"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## With Href Links
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      href: '/dashboard',
+      icon: 'speed',
+      id: 'dashboard',
+      label: 'My dashboard'
+    },
+    {
+      href: '/inventory',
+      icon: 'inventory_2',
+      id: 'inventory',
+      label: 'Inventory'
+    },
+    {
+      href: '/planning',
+      icon: 'account_tree',
+      id: 'planning',
+      label: 'Network planning'
+    }
+  ]}
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[
+    {
+      href: '/help',
+      icon: 'contact_support',
+      id: 'help',
+      label: 'Help & Support'
+    },
+    {
+      href: '/docs',
+      icon: 'local_library',
+      id: 'docs',
+      label: 'Knowledge Center'
+    }
+  ]}
+  variant="compact"
+/>
+
+### MCP manifest
+const WithHrefLinks = () => <DsMainMenu
+    variant="compact"
+    items={[
+        { id: 'dashboard', label: 'My dashboard', icon: 'speed', href: '/dashboard' },
+        { id: 'inventory', label: 'Inventory', icon: 'inventory_2', href: '/inventory' },
+        { id: 'planning', label: 'Network planning', icon: 'account_tree', href: '/planning' },
+    ]}
+    utilityLinks={[
+        { id: 'help', label: 'Help & Support', icon: 'contact_support', href: '/help' },
+        { id: 'docs', label: 'Knowledge Center', icon: 'local_library', href: '/docs' },
+    ]}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## Trigger Icon
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      icon: 'visibility',
+      id: 'network-visibility',
+      label: 'Network visibility'
+    },
+    {
+      icon: 'account_tree',
+      id: 'planning',
+      label: 'Planning'
+    },
+    {
+      icon: 'tune',
+      id: 'configurations',
+      label: 'Configurations'
+    },
+    {
+      icon: 'rocket_launch',
+      id: 'deployments',
+      label: 'Deployments'
+    },
+    {
+      icon: 'route',
+      id: 'workflows',
+      label: 'Workflows'
+    },
+    {
+      icon: 'special-packages',
+      id: 'packages',
+      label: 'Packages'
+    },
+    {
+      icon: 'psychology',
+      id: 'operations-ai',
+      label: 'AI Ops'
+    },
+    {
+      icon: 'dashboard_customize',
+      id: 'resource-allocation',
+      label: 'Resource allocation'
+    },
+    {
+      icon: 'bolt',
+      id: 'triggers',
+      label: 'Triggers'
+    },
+    {
+      icon: 'table_rows',
+      id: 'referential-data',
+      label: 'Referential data'
+    }
+  ]}
+  selectedId="network-visibility"
+  side="bottom"
+  trigger={<DsButton aria-label="Open applications" variant="borderless"><DsIcon icon="apps" /></DsButton>}
+  utilityLinks={[
+    {
+      icon: 'contact_support',
+      id: 'help-support',
+      label: 'Help & Support'
+    },
+    {
+      icon: 'local_library',
+      id: 'knowledge-center',
+      label: 'Knowledge Center'
+    }
+  ]}
+  variant="compact"
+/>
+
+### MCP manifest
+const TriggerIcon = () => <DsMainMenu
+    variant="compact"
+    items={SAMPLE_ITEMS}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    selectedId="network-visibility"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## With Svg Icons
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      icon: () => {},
+      id: 'my-dashboard',
+      label: 'My dashboard'
+    },
+    {
+      icon: () => {},
+      id: 'network-view',
+      label: 'Network view'
+    },
+    {
+      icon: () => {},
+      id: 'inventory',
+      label: 'Inventory'
+    },
+    {
+      icon: () => {},
+      id: 'network-planning',
+      label: 'Network planning'
+    },
+    {
+      icon: () => {},
+      id: 'configurations',
+      label: 'Configurations'
+    },
+    {
+      icon: () => {},
+      id: 'workflow-automation',
+      label: 'Workflow automation'
+    },
+    {
+      icon: () => {},
+      id: 'software-images',
+      label: 'Software images'
+    },
+    {
+      icon: () => {},
+      id: 'tasks',
+      label: 'Tasks'
+    },
+    {
+      icon: () => {},
+      id: 'backup-files',
+      label: 'Backup files'
+    },
+    {
+      icon: () => {},
+      id: 'ai-ops',
+      label: 'AI-Ops'
+    },
+    {
+      icon: () => {},
+      id: 'break-glass',
+      label: 'Break glass'
+    },
+    {
+      icon: () => {},
+      id: 'administration',
+      label: 'Administration'
+    },
+    {
+      icon: () => {},
+      id: 'observability',
+      label: 'Observability'
+    },
+    {
+      icon: () => {},
+      id: 'technician',
+      label: 'Technician'
+    }
+  ]}
+  selectedId="my-dashboard"
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[
+    {
+      icon: 'contact_support',
+      id: 'help-support',
+      label: 'Help & Support'
+    },
+    {
+      icon: 'local_library',
+      id: 'knowledge-center',
+      label: 'Knowledge Center'
+    }
+  ]}
+  variant="compact"
+/>
+
+### MCP manifest
+const WithSvgIcons = () => <DsMainMenu
+    variant="compact"
+    items={SAMPLE_SVG_ITEMS}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    selectedId="my-dashboard"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
+## Custom anchor (sidebar trigger)
+
+### Show code
+{
+  name: 'Custom anchor (sidebar trigger)',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const anchorRef = useRef<HTMLDivElement>(null);
+    return <div className={styles.sidebarDemo}>
+                <div className={styles.sidebar}>
+                    <DsMainMenu {...args} trigger={args.trigger ?? <DsButton variant="borderless" aria-label="Open applications">
+                                    <DsIcon icon="apps" />
+                                </DsButton>} items={SAMPLE_ITEMS} utilityLinks={SAMPLE_UTILITY_LINKS} selectedId="network-visibility" side="right" align="start" getAnchorElement={() => anchorRef.current} />
+                </div>
+                <div className={styles.anchorPoint} ref={anchorRef}>
+                    <p className={styles.anchorLabel}>Panel anchors here, not to the sidebar trigger.</p>
+                </div>
+            </div>;
+  }
+}
+
+### MCP manifest
+const CustomAnchor = () => {
+    const anchorRef = useRef<HTMLDivElement>(null);
+
+    return (
+        <div className={styles.sidebarDemo}>
+            <div className={styles.sidebar}>
+                <DsMainMenu
+                    variant="compact"
+                    gutter={8}
+                    aria-label="Main menu"
+                    trigger={
+                        args.trigger ?? (
+                            <DsButton variant="borderless" aria-label="Open applications">
+                                <DsIcon icon="apps" />
+                            </DsButton>
+                        )
+                    }
+                    items={SAMPLE_ITEMS}
+                    utilityLinks={SAMPLE_UTILITY_LINKS}
+                    selectedId="network-visibility"
+                    side="right"
+                    align="start"
+                    getAnchorElement={() => anchorRef.current} />
+            </div>
+            <div className={styles.anchorPoint} ref={anchorRef}>
+                <p className={styles.anchorLabel}>Panel anchors here, not to the sidebar trigger.</p>
+            </div>
+        </div>
+    );
+};
+
+## App switching in workspace header
+
+### Show code
+{
+  name: 'App switching in workspace header',
+  parameters: {
+    layout: 'fullscreen',
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const [selectedAppId, setSelectedAppId] = useState('my-dashboard');
+    const selectedApp = SAMPLE_SVG_ITEMS.find(app => app.id === selectedAppId);
+    return <DsWorkspaceLayout>
+                <DsWorkspaceLayout.Header>
+                    <div className={styles.appHeader}>
+                        <div className={styles.appHeaderLeft}>
+                            <DsMainMenu {...args} trigger={args.trigger ?? <DsButtonV3 color="light" variant="tertiary" icon="apps" aria-label="Switch application" />} items={SAMPLE_SVG_ITEMS} utilityLinks={SAMPLE_UTILITY_LINKS} selectedId={selectedAppId} onItemSelect={id => setSelectedAppId(id)} />
+                            <DsTypography variant="body-md-semi-bold" className={styles.appHeaderBrand}>
+                                DriveNets Cloud
+                            </DsTypography>
+                            <span className={styles.appHeaderSeparator} aria-hidden="true" />
+                            <DsTypography variant="body-md-reg" className={styles.appHeaderApp}>
+                                {selectedApp?.label}
+                            </DsTypography>
+                        </div>
+                        <DsAvatar name="Ada Lovelace" size="sm" />
+                    </div>
+                </DsWorkspaceLayout.Header>
+
+                <DsWorkspaceLayout.Content>
+                    <div className={styles.appStage}>
+                        <DsTypography variant="heading2">{selectedApp?.label}</DsTypography>
+                        <DsTypography variant="body-md-reg" color="secondary">
+                            Open the app switcher in the header to move between applications. The selected app is tracked
+                            with local component state — no router involved.
+                        </DsTypography>
+                    </div>
+                </DsWorkspaceLayout.Content>
+            </DsWorkspaceLayout>;
+  }
+}
+
+### MCP manifest
+const InWorkspaceHeader = () => {
+    const [selectedAppId, setSelectedAppId] = useState('my-dashboard');
+    const selectedApp = SAMPLE_SVG_ITEMS.find((app) => app.id === selectedAppId);
+
+    return (
+        <DsWorkspaceLayout>
+            <DsWorkspaceLayout.Header>
+                <div className={styles.appHeader}>
+                    <div className={styles.appHeaderLeft}>
+                        <DsMainMenu
+                            variant="compact"
+                            side="bottom"
+                            align="start"
+                            gutter={8}
+                            aria-label="Main menu"
+                            trigger={
+                                args.trigger ?? (
+                                    <DsButtonV3
+                                        color="light"
+                                        variant="tertiary"
+                                        icon="apps"
+                                        aria-label="Switch application"
+                                    />
+                                )
+                            }
+                            items={SAMPLE_SVG_ITEMS}
+                            utilityLinks={SAMPLE_UTILITY_LINKS}
+                            selectedId={selectedAppId}
+                            onItemSelect={(id) => setSelectedAppId(id)} />
+                        <DsTypography variant="body-md-semi-bold" className={styles.appHeaderBrand}>DriveNets Cloud
+                                                        </DsTypography>
+                        <span className={styles.appHeaderSeparator} aria-hidden="true" />
+                        <DsTypography variant="body-md-reg" className={styles.appHeaderApp}>
+                            {selectedApp?.label}
+                        </DsTypography>
+                    </div>
+                    <DsAvatar name="Ada Lovelace" size="sm" />
+                </div>
+            </DsWorkspaceLayout.Header>
+            <DsWorkspaceLayout.Content>
+                <div className={styles.appStage}>
+                    <DsTypography variant="heading2">{selectedApp?.label}</DsTypography>
+                    <DsTypography variant="body-md-reg" color="secondary">Open the app switcher in the header to move between applications. The selected app is tracked
+                                                    with local component state — no router involved.
+                                                </DsTypography>
+                </div>
+            </DsWorkspaceLayout.Content>
+        </DsWorkspaceLayout>
+    );
+};
+
+## Expanded variant
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      description: 'Track and complete your personal or assigned network tasks.',
+      icon: 'speed',
+      id: 'my-dashboard',
+      label: 'My dashboard'
+    },
+    {
+      description: 'Browse every managed device, port, and license in one place.',
+      icon: 'inventory_2',
+      id: 'inventory',
+      label: 'Inventory'
+    },
+    {
+      description: 'Model capacity and design topology changes before rollout.',
+      icon: 'account_tree',
+      id: 'planning',
+      label: 'Network planning',
+      state: 'extend'
+    },
+    {
+      description: 'Automated anomaly detection and remediation across the fabric.',
+      icon: 'psychology',
+      id: 'ai-ops',
+      label: 'AI Ops',
+      state: 'comingSoon'
+    },
+    {
+      description: 'Emergency privileged access — restricted to authorized operators.',
+      icon: 'lock',
+      id: 'break-glass',
+      label: 'Break glass',
+      state: 'disabled'
+    }
+  ]}
+  selectedId="my-dashboard"
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[
+    {
+      icon: 'contact_support',
+      id: 'help-support',
+      label: 'Help & Support'
+    },
+    {
+      icon: 'local_library',
+      id: 'knowledge-center',
+      label: 'Knowledge Center'
+    }
+  ]}
+  variant="expanded"
+/>
+
+### MCP manifest
+const Expanded = () => <DsMainMenu
+    variant="expanded"
+    items={[
+        {
+            id: 'my-dashboard',
+            label: 'My dashboard',
+            icon: 'speed',
+            description: 'Track and complete your personal or assigned network tasks.',
+        },
+        {
+            id: 'inventory',
+            label: 'Inventory',
+            icon: 'inventory_2',
+            description: 'Browse every managed device, port, and license in one place.',
+        },
+        {
+            id: 'planning',
+            label: 'Network planning',
+            icon: 'account_tree',
+            description: 'Model capacity and design topology changes before rollout.',
+            state: 'extend',
+        },
+        {
+            id: 'ai-ops',
+            label: 'AI Ops',
+            icon: 'psychology',
+            description: 'Automated anomaly detection and remediation across the fabric.',
+            state: 'comingSoon',
+        },
+        {
+            id: 'break-glass',
+            label: 'Break glass',
+            icon: 'lock',
+            description: 'Emergency privileged access — restricted to authorized operators.',
+            state: 'disabled',
+        },
+    ]}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    selectedId="my-dashboard"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
