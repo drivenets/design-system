@@ -1,0 +1,236 @@
+# DsFileUpload docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.normal()} />
+}
+
+### MCP manifest
+const Default = () => <DsFileUpload adapter={MockAdapterPresets.normal()} />;
+
+## Manual
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const adapter = useMemo(() => MockAdapterPresets.fast(), []);
+    const {
+      getProps,
+      files,
+      uploadAll,
+      clearFiles
+    } = useFileUpload({
+      adapter,
+      autoUpload: false
+    });
+    const isUploading = files.some(file => file.status === 'uploading');
+    const hasFiles = files.length > 0;
+    return <DsStack direction="column" gap="var(--sm)">
+                <FileUpload {...getProps()} hideProgress={false} />
+                {hasFiles && <DsStack gap="var(--2xs)">
+                        <DsButtonV3 variant="primary" size="small" onClick={() => uploadAll()} disabled={isUploading}>
+                            {isUploading ? 'Uploading...' : 'Upload All'}
+                        </DsButtonV3>
+                        <DsButtonV3 variant="tertiary" size="small" onClick={() => clearFiles()} disabled={isUploading}>
+                            Clear All
+                        </DsButtonV3>
+                    </DsStack>}
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Manual = function Render() {
+    const adapter = useMemo(() => MockAdapterPresets.fast(), []);
+    const { getProps, files, uploadAll, clearFiles } = useFileUpload({ adapter, autoUpload: false });
+
+    const isUploading = files.some((file) => file.status === 'uploading');
+    const hasFiles = files.length > 0;
+
+    return (
+        <DsStack direction="column" gap="var(--sm)">
+            <FileUpload {...getProps()} hideProgress={false} />
+            {hasFiles && (
+                <DsStack gap="var(--2xs)">
+                    <DsButtonV3 variant="primary" size="small" onClick={() => uploadAll()} disabled={isUploading}>
+                        {isUploading ? 'Uploading...' : 'Upload All'}
+                    </DsButtonV3>
+                    <DsButtonV3 variant="tertiary" size="small" onClick={() => clearFiles()} disabled={isUploading}>
+                        Clear All
+                    </DsButtonV3>
+                </DsStack>
+            )}
+        </DsStack>
+    );
+};
+
+## Compact
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} compact maxFiles={1} accept={['application/pdf', 'text/csv', {
+    mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    extensions: ['.xlsx']
+  }]} dropzoneText="Drag and drop your document here or" triggerText="Choose document" />
+}
+
+### MCP manifest
+const Compact = () => (
+    <DsFileUpload
+        adapter={MockAdapterPresets.fast()}
+        compact
+        maxFiles={1}
+        accept={[
+            'application/pdf',
+            'text/csv',
+            {
+                mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                extensions: ['.xlsx'],
+            },
+        ]}
+        dropzoneText="Drag and drop your document here or"
+        triggerText="Choose document"
+    />
+);
+
+## Disabled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.normal()} disabled />
+}
+
+### MCP manifest
+const Disabled = () => <DsFileUpload adapter={MockAdapterPresets.normal()} disabled />;
+
+## Upload Error
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.error('Unsupported file type')} />
+}
+
+### MCP manifest
+const UploadError = () => <DsFileUpload adapter={MockAdapterPresets.error('Unsupported file type')} />;
+
+## Upload Interrupted
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.interrupted(30)} />
+}
+
+### MCP manifest
+const UploadInterrupted = () => <DsFileUpload adapter={MockAdapterPresets.interrupted(30)} />;
+
+## Max Files
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} maxFiles={1} />
+}
+
+### MCP manifest
+const MaxFiles = () => <DsFileUpload adapter={MockAdapterPresets.fast()} maxFiles={1} />;
+
+## Duplicate Files
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} />
+}
+
+### MCP manifest
+const DuplicateFiles = () => <DsFileUpload adapter={MockAdapterPresets.fast()} />;
+
+## Hidden Info Text
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.fast()} hideInfoText />
+}
+
+### MCP manifest
+const HiddenInfoText = () => <DsFileUpload adapter={MockAdapterPresets.fast()} hideInfoText />;
+
+## Cancel Upload
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFileUpload adapter={MockAdapterPresets.slow()} />
+}
+
+### MCP manifest
+const CancelUpload = () => <DsFileUpload adapter={MockAdapterPresets.slow()} />;

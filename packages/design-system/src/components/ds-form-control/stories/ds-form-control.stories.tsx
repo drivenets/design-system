@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { DsIcon } from '../../ds-icon';
+import { DsStack } from '../../ds-stack';
 import DsFormControl from '../ds-form-control';
 import { controlStatuses } from '../ds-form-control.types';
 
@@ -8,7 +10,20 @@ const meta: Meta<typeof DsFormControl> = {
 	component: DsFormControl,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'Form control wrapper that adds a label, description, validation status, and message around a text input.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="19rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
 		status: {
 			control: { type: 'select' },
@@ -36,20 +51,15 @@ const meta: Meta<typeof DsFormControl> = {
 			control: 'text',
 			description: 'Icon to display in the message',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Additional styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFormControl>;
 
+/** Baseline text field with a label, required marker, and a helper message. */
 export const Default: Story = {
 	args: {
 		label: 'Input label',
@@ -59,129 +69,48 @@ export const Default: Story = {
 	},
 };
 
-export const WithCustomWidth: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: { width: '300px' },
-		children: <DsFormControl.TextInput placeholder="Input with custom width" />,
-	},
-};
-
-export const WithCustomStyles: Story = {
-	args: {
-		label: 'Input label',
-		required: true,
-		style: {
-			width: '400px',
-			padding: '16px',
-			border: '2px solid #e0e0e0',
-			borderRadius: '8px',
-			backgroundColor: '#f9f9f9',
-		},
-		children: <DsFormControl.TextInput placeholder="Input with custom styling" />,
-	},
-};
-
+/** Adds a description above the input to explain the field before the user types. */
 export const WithDescription: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
-		style: {
-			width: '300px',
-		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					This is a description text. It&apos;s an optional and will not exceeds more than 2 rows. A{' '}
-					<button
-						type="button"
-						style={{
-							background: 'none',
-							border: 'none',
-							padding: 0,
-							margin: 0,
-							cursor: 'pointer',
-							color: 'var(--color-dap-blue-600)',
-							textDecoration: 'underline',
-							fontSize: 'inherit',
-							fontFamily: 'inherit',
-						}}
-						onClick={() => alert('Learn more clicked!')}
-					>
-						Learn more
-					</button>{' '}
-					can be added.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					placeholder="Search"
-					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				placeholder="Search"
+				slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+			/>
+		</DsFormControl>
+	),
 };
 
+/** Surfaces contextual help through an end-adornment button beside the field. */
 export const WithHelpIcon: Story = {
 	args: {
 		label: 'Input label',
 		required: true,
 		slots: {
-			endAdornment: (
-				<button
-					type="button"
-					onClick={() => alert('Help clicked!')}
-					aria-label="Help"
-					style={{
-						background: 'none',
-						border: 'none',
-						padding: '4px',
-						cursor: 'pointer',
-						color: 'var(--color-dap-gray-500)',
-						display: 'flex',
-						alignItems: 'center',
-						justifyContent: 'center',
-						width: '16px',
-						height: '16px',
-						borderRadius: '50%',
-					}}
-				>
-					<DsIcon icon="info" size="small" />
-				</button>
-			),
+			endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Help" />,
 		},
-		children: (
-			<>
-				<DsFormControl.Description>
-					This is a description text. It&apos;s an optional and will not exceeds more than 2 rows. A{' '}
-					<button
-						type="button"
-						style={{
-							background: 'none',
-							border: 'none',
-							padding: 0,
-							margin: 0,
-							cursor: 'pointer',
-							color: 'var(--color-dap-blue-600)',
-							textDecoration: 'underline',
-							fontSize: 'inherit',
-							fontFamily: 'inherit',
-						}}
-						onClick={() => alert('Learn more clicked!')}
-					>
-						Learn more
-					</button>{' '}
-					can be added.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					placeholder="Search"
-					slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				placeholder="Search"
+				slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+			/>
+		</DsFormControl>
+	),
 };
 
+/** Decorates the input with a leading icon to hint at the expected content. */
 export const WithIcon: Story = {
 	args: {
 		label: 'Input label',
@@ -196,119 +125,69 @@ export const WithIcon: Story = {
 	},
 };
 
+/** Success status confirms the entered value passed validation. */
 export const Success: Story = {
 	args: {
 		status: 'success',
 		label: 'Input label',
 		message: 'This is a success caption under a text input.',
 		messageIcon: 'check_circle',
-		children: (
-			<>
-				<DsFormControl.Description>
-					This is a description text. It&apos;s an optional and will not exceeds more than 2 rows. A{' '}
-					<button
-						type="button"
-						style={{
-							background: 'none',
-							border: 'none',
-							padding: 0,
-							margin: 0,
-							cursor: 'pointer',
-							color: 'var(--color-dap-blue-600)',
-							textDecoration: 'underline',
-							fontSize: 'inherit',
-							fontFamily: 'inherit',
-						}}
-						onClick={() => alert('Learn more clicked!')}
-					>
-						Learn more
-					</button>{' '}
-					can be added.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					type="text"
-					slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				type="text"
+				slots={{ endAdornment: <DsIcon icon="visibility" size="tiny" /> }}
+			/>
+		</DsFormControl>
+	),
 };
 
+/** Error status flags an invalid value and pairs the message with an error icon. */
 export const Error: Story = {
 	args: {
 		status: 'error',
 		label: 'Input label',
 		message: 'This is an error caption under a text input.',
 		messageIcon: 'error',
-		children: (
-			<>
-				<DsFormControl.Description>
-					This is a description text. It&apos;s an optional and will not exceeds more than 2 rows. A{' '}
-					<button
-						type="button"
-						style={{
-							background: 'none',
-							border: 'none',
-							padding: 0,
-							margin: 0,
-							cursor: 'pointer',
-							color: 'var(--color-dap-blue-600)',
-							textDecoration: 'underline',
-							fontSize: 'inherit',
-							fontFamily: 'inherit',
-						}}
-						onClick={() => alert('Learn more clicked!')}
-					>
-						Learn more
-					</button>{' '}
-					can be added.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput
-					slots={{
-						startAdornment: <DsIcon icon="search" size="tiny" />,
-						endAdornment: <DsIcon icon="error" size="tiny" />,
-					}}
-				/>
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput
+				slots={{
+					startAdornment: <DsIcon icon="search" size="tiny" />,
+					endAdornment: <DsIcon icon="error" size="tiny" />,
+				}}
+			/>
+		</DsFormControl>
+	),
 };
 
+/** Warning status highlights a value that needs attention without blocking submission. */
 export const Warning: Story = {
 	args: {
 		status: 'warning',
 		label: 'Input label',
 		message: 'This is a warning caption under a text input.',
 		messageIcon: 'info',
-		children: (
-			<>
-				<DsFormControl.Description>
-					This is a description text. It&apos;s an optional and will not exceeds more than 2 rows. A{' '}
-					<button
-						type="button"
-						style={{
-							background: 'none',
-							border: 'none',
-							padding: 0,
-							margin: 0,
-							cursor: 'pointer',
-							color: 'var(--color-dap-blue-600)',
-							textDecoration: 'underline',
-							fontSize: 'inherit',
-							fontFamily: 'inherit',
-						}}
-						onClick={() => alert('Learn more clicked!')}
-					>
-						Learn more
-					</button>{' '}
-					can be added.
-				</DsFormControl.Description>
-				<DsFormControl.TextInput />
-			</>
-		),
 	},
+	render: (args) => (
+		<DsFormControl {...args}>
+			<DsFormControl.Description>
+				Optional helper text that describes the field in up to two lines.
+			</DsFormControl.Description>
+			<DsFormControl.TextInput />
+		</DsFormControl>
+	),
 };
 
+/** Disabled state prevents interaction while keeping the field visible. */
 export const Disabled: Story = {
 	args: {
 		label: 'Input label',

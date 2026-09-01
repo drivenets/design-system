@@ -28,13 +28,21 @@ const useFormControlContext = () => {
  * into any component that expects an 'id' prop.
  *
  * @param Component - The component to wrap with form control context
+ * @param displayName - Compound display name so Storybook Show code renders the member name
  * @returns A new component that automatically receives the controlId
  */
-const controlify = <TProps extends { id?: string }>(Component: ComponentType<TProps>) => {
-	return function WrappedFormControl(props: TProps) {
+const controlify = <TProps extends { id?: string }>(
+	Component: ComponentType<TProps>,
+	displayName: string,
+) => {
+	const WrappedFormControl = (props: TProps) => {
 		const { controlId } = useFormControlContext();
 		return <Component id={controlId} {...props} />;
 	};
+
+	WrappedFormControl.displayName = displayName;
+
+	return WrappedFormControl;
 };
 
 const DsFormControlDescription: React.FC<DsFormControlDescriptionProps> = ({ children, className }) => {
@@ -100,15 +108,15 @@ DsFormControlDescription.displayName = 'DsFormControl.Description';
 
 const DsFormControl = Object.assign(DsFormControlRoot, {
 	displayName: 'DsFormControl',
-	TextInput: controlify(DsTextInput),
-	NumberInput: controlify(DsNumberInput),
-	PasswordInput: controlify(DsPasswordInput),
+	TextInput: controlify(DsTextInput, 'DsFormControl.TextInput'),
+	NumberInput: controlify(DsNumberInput, 'DsFormControl.NumberInput'),
+	PasswordInput: controlify(DsPasswordInput, 'DsFormControl.PasswordInput'),
 	/** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */
-	DateInput: controlify(DsDateInput),
-	DatePicker: controlify(DsDatePicker),
-	TimePicker: controlify(DsTimePicker),
-	Textarea: controlify(DsTextarea),
-	Select: controlify(DsSelect),
+	DateInput: controlify(DsDateInput, 'DsFormControl.DateInput'),
+	DatePicker: controlify(DsDatePicker, 'DsFormControl.DatePicker'),
+	TimePicker: controlify(DsTimePicker, 'DsFormControl.TimePicker'),
+	Textarea: controlify(DsTextarea, 'DsFormControl.Textarea'),
+	Select: controlify(DsSelect, 'DsFormControl.Select'),
 	Description: DsFormControlDescription,
 });
 

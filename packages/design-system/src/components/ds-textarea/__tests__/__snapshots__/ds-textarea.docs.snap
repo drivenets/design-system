@@ -1,0 +1,39 @@
+# DsTextarea docs snippets
+
+## Default
+
+### Show code
+<DsTextarea
+  placeholder="Enter your text here..."
+  rows={3}
+/>
+
+### MCP manifest
+const Default = () => <DsTextarea placeholder="Enter your text here..." rows={3} />;
+
+## Disabled
+
+### Show code
+<DsTextarea
+  disabled
+  placeholder="Disabled textarea"
+  value="This textarea is disabled"
+/>
+
+### MCP manifest
+const Disabled = () => <DsTextarea
+    value="This textarea is disabled"
+    disabled
+    placeholder="Disabled textarea" />;
+
+## Max Length
+
+### Show code
+<DsTextarea
+  maxLength={50}
+  placeholder="Maximum 50 characters allowed"
+  rows={3}
+/>
+
+### MCP manifest
+const MaxLength = () => <DsTextarea placeholder="Maximum 50 characters allowed" maxLength={50} rows={3} />;

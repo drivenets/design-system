@@ -58,19 +58,21 @@ const DsToggle = ({
 				<DsIcon icon="close" size={iconSize} className={closeIconClass} />
 			</Switch.Control>
 
-			{label ? (
-				<Switch.Label>
-					<DsTypography variant={isSmall ? 'body-xs-md' : 'body-sm-md'}>{label}</DsTypography>
-					{!!labelInfo && (
-						<DsTypography variant="body-xs-reg" className={styles.labelInfo}>
-							{labelInfo}
-						</DsTypography>
-					)}
-				</Switch.Label>
-			) : (
-				children
-			)}
-			<Switch.HiddenInput />
+			<Switch.Label>
+				{label ? (
+					<>
+						<DsTypography variant={isSmall ? 'body-xs-md' : 'body-sm-md'}>{label}</DsTypography>
+						{!!labelInfo && (
+							<DsTypography variant="body-xs-reg" className={styles.labelInfo}>
+								{labelInfo}
+							</DsTypography>
+						)}
+					</>
+				) : (
+					children
+				)}
+			</Switch.Label>
+			<Switch.HiddenInput className={styles.hiddenInput} />
 		</Switch.Root>
 	);
 };
