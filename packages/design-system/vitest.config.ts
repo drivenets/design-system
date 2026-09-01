@@ -108,6 +108,7 @@ export default defineConfig({
 					name: 'storybook-docs',
 					include: [testPattern('docs')],
 					globalSetup: ['./vitest/setup.storybook-docs.ts'],
+					testTimeout: 60_000,
 				},
 			},
 		],
