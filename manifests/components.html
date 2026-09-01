@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">591 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/95 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">58/95 infos</a><span class="filter-pill ok" aria-disabled="true">602 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -13254,6 +13254,567 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
 <article
   class="card 
   no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="DsMainMenu">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DsMainMenu</h2>
+      <div class="badges">
+        <label for="c-42-components-mainmenu-props" class="badge ok as-toggle">16 prop types</label>
+        <label for="c-42-components-mainmenu-info" class="badge info as-toggle">1 info</label>
+        <label for="c-42-components-mainmenu-stories" class="badge ok as-toggle">11 stories</label>
+        
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/ds-main-menu/ds-main-menu.stories.tsx">components-mainmenu · ./src/components/ds-main-menu/ds-main-menu.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-42-components-mainmenu-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-42-components-mainmenu-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+  <input id="c-42-components-mainmenu-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">16 prop types</span>
+            </div>
+            <pre><code>Component: src/components/ds-main-menu/ds-main-menu.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Alignment of the panel along the trigger edge.
+ * @default &#39;start&#39;
+ */
+align?: (typeof popoverAligns)[number] = &#39;start&#39;
+
+/**
+ * Accessible name for the navigation landmark.
+ */
+aria-label?: string = &#39;Main menu&#39;
+
+className?: string
+
+/**
+ * Returns the element the panel should position against instead of the trigger.
+ * Useful when the trigger lives in a sidebar and the panel should open beside the content area.
+ */
+getAnchorElement?: () =&gt; HTMLElement | null
+
+/**
+ * Gap in pixels between the trigger and the panel.
+ * @default 8
+ */
+gutter?: number = 8
+
+items: DsMainMenuItem[]
+
+onItemSelect?: (id: string) =&gt; void
+
+/**
+ * Fires when the popover opens or closes.
+ */
+onOpenChange?: (open: boolean) =&gt; void
+
+/**
+ * Controlled open state. Pair with `onOpenChange`.
+ */
+open?: boolean
+
+ref?: Ref&lt;HTMLElement&gt;
+
+/**
+ * Currently selected app tile. Matched against `items[].id`.
+ */
+selectedId?: string
+
+/**
+ * Preferred side of the trigger to render the panel against.
+ * @default &#39;bottom&#39;
+ */
+side?: (typeof popoverSides)[number] = &#39;bottom&#39;
+
+style?: CSSProperties
+
+/**
+ * Single focusable element that toggles the menu panel.
+ */
+trigger: ReactNode
+
+utilityLinks: DsMainMenuUtilityLink[]
+
+/**
+ * Layout of the menu items. `&#39;compact&#39;` renders square icon tiles in a grid;
+ * `&#39;expanded&#39;` renders wide cards with an icon, heading, and `description`.
+ * Chosen once per menu — the two layouts are never mixed.
+ * @default &#39;compact&#39;
+ */
+variant?: (typeof mainMenuVariants)[number] = &#39;compact&#39;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import {
+    DsAvatar,
+    DsButton,
+    DsButtonV3,
+    DsIcon,
+    DsMainMenu,
+    DsTypography,
+    DsWorkspaceLayout,
+} from "@drivenets/design-system";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The default app switcher. Open the menu, then use the Controls panel to change the item size live via `variant` (`compact` square tiles vs `expanded` cards), along with `side`, `align`, `gutter`, and `selectedId`. Items carry `description`s so the `expanded` size renders fully.</div>
+              <pre><code>const Default = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={[
+        {
+            id: &#39;network-visibility&#39;,
+            label: &#39;Network visibility&#39;,
+            icon: &#39;visibility&#39;,
+            description: &#39;Monitor live topology, health, and traffic across the fabric.&#39;,
+        },
+        {
+            id: &#39;planning&#39;,
+            label: &#39;Planning&#39;,
+            icon: &#39;account_tree&#39;,
+            description: &#39;Model capacity and design topology changes before rollout.&#39;,
+        },
+        {
+            id: &#39;configurations&#39;,
+            label: &#39;Configurations&#39;,
+            icon: &#39;tune&#39;,
+            description: &#39;Manage device settings, templates, and intended state.&#39;,
+        },
+        {
+            id: &#39;deployments&#39;,
+            label: &#39;Deployments&#39;,
+            icon: &#39;rocket_launch&#39;,
+            description: &#39;Roll out software images and track deployment progress.&#39;,
+        },
+        {
+            id: &#39;workflows&#39;,
+            label: &#39;Workflows&#39;,
+            icon: &#39;route&#39;,
+            description: &#39;Automate multi-step operational tasks end to end.&#39;,
+        },
+        {
+            id: &#39;packages&#39;,
+            label: &#39;Packages&#39;,
+            icon: &#39;special-packages&#39;,
+            description: &#39;Browse and install optional platform capabilities.&#39;,
+        },
+    ]}
+    utilityLinks={[
+        { id: &#39;help-support&#39;, label: &#39;Help &amp; Support&#39;, icon: &#39;contact_support&#39; },
+        { id: &#39;knowledge-center&#39;, label: &#39;Knowledge Center&#39;, icon: &#39;local_library&#39; },
+    ]}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    selectedId=&quot;network-visibility&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Selection</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithSelection = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={SAMPLE_ITEMS}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    selectedId=&quot;packages&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled Selection</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ControlledSelection = () =&gt; {
+    const [selectedId, setSelectedId] = useState(&#39;planning&#39;);
+
+    return (
+        &lt;DsMainMenu
+            variant=&quot;compact&quot;
+            side=&quot;bottom&quot;
+            align=&quot;start&quot;
+            gutter={8}
+            aria-label=&quot;Main menu&quot;
+            trigger={
+                args.trigger ?? (
+                    &lt;DsButton schema=&quot;secondary&quot;&gt;
+                        &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+                    &lt;/DsButton&gt;
+                )
+            }
+            items={SAMPLE_ITEMS}
+            utilityLinks={SAMPLE_UTILITY_LINKS}
+            selectedId={selectedId}
+            onItemSelect={(id) =&gt; {
+                const item = SAMPLE_ITEMS.find((entry) =&gt; entry.id === id);
+
+                if (item?.state === &#39;disabled&#39; || item?.state === &#39;comingSoon&#39;) {
+                    return;
+                }
+
+                setSelectedId(id);
+            }} /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Item States</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ItemStates = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={[
+        { id: &#39;available&#39;, label: &#39;My Dashboard&#39;, icon: &#39;speed&#39; },
+        { id: &#39;disabled&#39;, label: &#39;My Dashboard&#39;, icon: &#39;speed&#39;, state: &#39;disabled&#39; },
+        { id: &#39;coming-soon&#39;, label: &#39;My Dashboard&#39;, icon: &#39;speed&#39;, state: &#39;comingSoon&#39; },
+    ]}
+    utilityLinks={[]}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Tile Interaction States</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TileInteractionStates = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={[
+        { id: &#39;regular&#39;, label: &#39;My Dashboard&#39;, icon: &#39;speed&#39; },
+        { id: &#39;selected&#39;, label: &#39;My Dashboard&#39;, icon: &#39;speed&#39; },
+    ]}
+    utilityLinks={[]}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    selectedId=&quot;selected&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Href Links</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithHrefLinks = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={[
+        { id: &#39;dashboard&#39;, label: &#39;My dashboard&#39;, icon: &#39;speed&#39;, href: &#39;/dashboard&#39; },
+        { id: &#39;inventory&#39;, label: &#39;Inventory&#39;, icon: &#39;inventory_2&#39;, href: &#39;/inventory&#39; },
+        { id: &#39;planning&#39;, label: &#39;Network planning&#39;, icon: &#39;account_tree&#39;, href: &#39;/planning&#39; },
+    ]}
+    utilityLinks={[
+        { id: &#39;help&#39;, label: &#39;Help &amp; Support&#39;, icon: &#39;contact_support&#39;, href: &#39;/help&#39; },
+        { id: &#39;docs&#39;, label: &#39;Knowledge Center&#39;, icon: &#39;local_library&#39;, href: &#39;/docs&#39; },
+    ]}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Trigger Icon</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TriggerIcon = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={SAMPLE_ITEMS}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    selectedId=&quot;network-visibility&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Svg Icons</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithSvgIcons = () =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={SAMPLE_SVG_ITEMS}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    selectedId=&quot;my-dashboard&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom anchor (sidebar trigger)</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomAnchor = () =&gt; {
+    const anchorRef = useRef&lt;HTMLDivElement&gt;(null);
+
+    return (
+        &lt;div className={styles.sidebarDemo}&gt;
+            &lt;div className={styles.sidebar}&gt;
+                &lt;DsMainMenu
+                    variant=&quot;compact&quot;
+                    gutter={8}
+                    aria-label=&quot;Main menu&quot;
+                    trigger={
+                        args.trigger ?? (
+                            &lt;DsButton variant=&quot;borderless&quot; aria-label=&quot;Open applications&quot;&gt;
+                                &lt;DsIcon icon=&quot;apps&quot; /&gt;
+                            &lt;/DsButton&gt;
+                        )
+                    }
+                    items={SAMPLE_ITEMS}
+                    utilityLinks={SAMPLE_UTILITY_LINKS}
+                    selectedId=&quot;network-visibility&quot;
+                    side=&quot;right&quot;
+                    align=&quot;start&quot;
+                    getAnchorElement={() =&gt; anchorRef.current} /&gt;
+            &lt;/div&gt;
+            &lt;div className={styles.anchorPoint} ref={anchorRef}&gt;
+                &lt;p className={styles.anchorLabel}&gt;Panel anchors here, not to the sidebar trigger.&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">App switching in workspace header</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const InWorkspaceHeader = () =&gt; {
+    const [selectedAppId, setSelectedAppId] = useState(&#39;my-dashboard&#39;);
+    const selectedApp = SAMPLE_SVG_ITEMS.find((app) =&gt; app.id === selectedAppId);
+
+    return (
+        &lt;DsWorkspaceLayout&gt;
+            &lt;DsWorkspaceLayout.Header&gt;
+                &lt;div className={styles.appHeader}&gt;
+                    &lt;div className={styles.appHeaderLeft}&gt;
+                        &lt;DsMainMenu
+                            variant=&quot;compact&quot;
+                            side=&quot;bottom&quot;
+                            align=&quot;start&quot;
+                            gutter={8}
+                            aria-label=&quot;Main menu&quot;
+                            trigger={
+                                args.trigger ?? (
+                                    &lt;DsButtonV3
+                                        color=&quot;light&quot;
+                                        variant=&quot;tertiary&quot;
+                                        icon=&quot;apps&quot;
+                                        aria-label=&quot;Switch application&quot;
+                                    /&gt;
+                                )
+                            }
+                            items={SAMPLE_SVG_ITEMS}
+                            utilityLinks={SAMPLE_UTILITY_LINKS}
+                            selectedId={selectedAppId}
+                            onItemSelect={(id) =&gt; setSelectedAppId(id)} /&gt;
+                        &lt;DsTypography variant=&quot;body-md-semi-bold&quot; className={styles.appHeaderBrand}&gt;DriveNets Cloud
+                                                        &lt;/DsTypography&gt;
+                        &lt;span className={styles.appHeaderSeparator} aria-hidden=&quot;true&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; className={styles.appHeaderApp}&gt;
+                            {selectedApp?.label}
+                        &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                    &lt;DsAvatar name=&quot;Ada Lovelace&quot; size=&quot;sm&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Header&gt;
+            &lt;DsWorkspaceLayout.Content&gt;
+                &lt;div className={styles.appStage}&gt;
+                    &lt;DsTypography variant=&quot;heading2&quot;&gt;{selectedApp?.label}&lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Open the app switcher in the header to move between applications. The selected app is tracked
+                                                    with local component state — no router involved.
+                                                &lt;/DsTypography&gt;
+                &lt;/div&gt;
+            &lt;/DsWorkspaceLayout.Content&gt;
+        &lt;/DsWorkspaceLayout&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Expanded variant</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Expanded = () =&gt; &lt;DsMainMenu
+    variant=&quot;expanded&quot;
+    items={[
+        {
+            id: &#39;my-dashboard&#39;,
+            label: &#39;My dashboard&#39;,
+            icon: &#39;speed&#39;,
+            description: &#39;Track and complete your personal or assigned network tasks.&#39;,
+        },
+        {
+            id: &#39;inventory&#39;,
+            label: &#39;Inventory&#39;,
+            icon: &#39;inventory_2&#39;,
+            description: &#39;Browse every managed device, port, and license in one place.&#39;,
+        },
+        {
+            id: &#39;planning&#39;,
+            label: &#39;Network planning&#39;,
+            icon: &#39;account_tree&#39;,
+            description: &#39;Model capacity and design topology changes before rollout.&#39;,
+            state: &#39;extend&#39;,
+        },
+        {
+            id: &#39;ai-ops&#39;,
+            label: &#39;AI Ops&#39;,
+            icon: &#39;psychology&#39;,
+            description: &#39;Automated anomaly detection and remediation across the fabric.&#39;,
+            state: &#39;comingSoon&#39;,
+        },
+        {
+            id: &#39;break-glass&#39;,
+            label: &#39;Break glass&#39;,
+            icon: &#39;lock&#39;,
+            description: &#39;Emergency privileged access — restricted to authorized operators.&#39;,
+            state: &#39;disabled&#39;,
+        },
+    ]}
+    utilityLinks={SAMPLE_UTILITY_LINKS}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    selectedId=&quot;my-dashboard&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+            </div>
+        </div>
+    
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
   no-info 
   no-story-error
   no-doc-error"
@@ -13263,9 +13824,9 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsModal</h2>
       <div class="badges">
-        <label for="c-42-components-modal-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-43-components-modal-props" class="badge ok as-toggle">10 prop types</label>
         
-        <label for="c-42-components-modal-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-43-components-modal-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -13279,10 +13840,10 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-42-components-modal-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-43-components-modal-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-42-components-modal-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-43-components-modal-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -13931,9 +14492,9 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsNumberInput</h2>
       <div class="badges">
-        <label for="c-43-components-numberinput-props" class="badge ok as-toggle">16 prop types</label>
-        <label for="c-43-components-numberinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-43-components-numberinput-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-44-components-numberinput-props" class="badge ok as-toggle">16 prop types</label>
+        <label for="c-44-components-numberinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-44-components-numberinput-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -13946,11 +14507,11 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-43-components-numberinput-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-43-components-numberinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-44-components-numberinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-44-components-numberinput-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-43-components-numberinput-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-44-components-numberinput-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -14158,9 +14719,9 @@ value?: number | undefined</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsPanel</h2>
       <div class="badges">
-        <label for="c-44-components-panel-props" class="badge ok as-toggle">6 prop types</label>
-        <label for="c-44-components-panel-info" class="badge info as-toggle">1 info</label>
-        <label for="c-44-components-panel-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-45-components-panel-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-45-components-panel-info" class="badge info as-toggle">1 info</label>
+        <label for="c-45-components-panel-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -14173,11 +14734,11 @@ value?: number | undefined</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-44-components-panel-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-44-components-panel-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-45-components-panel-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-45-components-panel-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-44-components-panel-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-45-components-panel-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -14383,9 +14944,9 @@ width?: number</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsPasswordInput</h2>
       <div class="badges">
-        <label for="c-45-components-passwordinput-props" class="badge ok as-toggle">13 prop types</label>
-        <label for="c-45-components-passwordinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-45-components-passwordinput-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-46-components-passwordinput-props" class="badge ok as-toggle">13 prop types</label>
+        <label for="c-46-components-passwordinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-46-components-passwordinput-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -14398,11 +14959,11 @@ width?: number</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-45-components-passwordinput-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-45-components-passwordinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-46-components-passwordinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-46-components-passwordinput-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-45-components-passwordinput-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-46-components-passwordinput-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -14568,9 +15129,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsPopover.Root</h2>
       <div class="badges">
-        <label for="c-46-components-popover-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-47-components-popover-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-46-components-popover-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-47-components-popover-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -14584,10 +15145,10 @@ value?: string</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-46-components-popover-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-47-components-popover-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-46-components-popover-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-47-components-popover-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -14768,9 +15329,9 @@ trigger: ReactNode</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsProgressArc</h2>
       <div class="badges">
-        <label for="c-47-components-progressarc-props" class="badge ok as-toggle">5 prop types</label>
-        <label for="c-47-components-progressarc-info" class="badge info as-toggle">1 info</label>
-        <label for="c-47-components-progressarc-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-48-components-progressarc-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-48-components-progressarc-info" class="badge info as-toggle">1 info</label>
+        <label for="c-48-components-progressarc-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -14783,11 +15344,11 @@ trigger: ReactNode</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-47-components-progressarc-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-47-components-progressarc-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-48-components-progressarc-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-48-components-progressarc-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-47-components-progressarc-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-48-components-progressarc-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -14975,9 +15536,9 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsProgressDonut</h2>
       <div class="badges">
-        <label for="c-48-components-progressdonut-props" class="badge ok as-toggle">7 prop types</label>
-        <label for="c-48-components-progressdonut-info" class="badge info as-toggle">1 info</label>
-        <label for="c-48-components-progressdonut-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-49-components-progressdonut-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-49-components-progressdonut-info" class="badge info as-toggle">1 info</label>
+        <label for="c-49-components-progressdonut-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -14990,11 +15551,11 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-48-components-progressdonut-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-48-components-progressdonut-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-49-components-progressdonut-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-49-components-progressdonut-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-48-components-progressdonut-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-49-components-progressdonut-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -15186,9 +15747,9 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsProgressLinear</h2>
       <div class="badges">
-        <label for="c-49-components-progresslinear-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-50-components-progresslinear-props" class="badge ok as-toggle">11 prop types</label>
         
-        <label for="c-49-components-progresslinear-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-50-components-progresslinear-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -15202,10 +15763,10 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-49-components-progresslinear-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-50-components-progresslinear-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-49-components-progresslinear-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-50-components-progresslinear-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -15523,9 +16084,9 @@ variant?: (typeof progressLinearVariants)[number] = &#39;progress&#39;</code></p
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsProgressTaskBar</h2>
       <div class="badges">
-        <label for="c-50-components-progresstaskbar-props" class="badge ok as-toggle">8 prop types</label>
-        <label for="c-50-components-progresstaskbar-info" class="badge info as-toggle">1 info</label>
-        <label for="c-50-components-progresstaskbar-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-51-components-progresstaskbar-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-51-components-progresstaskbar-info" class="badge info as-toggle">1 info</label>
+        <label for="c-51-components-progresstaskbar-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -15538,11 +16099,11 @@ variant?: (typeof progressLinearVariants)[number] = &#39;progress&#39;</code></p
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-50-components-progresstaskbar-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-50-components-progresstaskbar-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-51-components-progresstaskbar-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-51-components-progresstaskbar-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-50-components-progresstaskbar-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-51-components-progresstaskbar-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -15733,9 +16294,9 @@ total?: number</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsRadioGroup.Root</h2>
       <div class="badges">
-        <label for="c-51-components-radiogroup-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-52-components-radiogroup-props" class="badge ok as-toggle">7 prop types</label>
         
-        <label for="c-51-components-radiogroup-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-52-components-radiogroup-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -15749,10 +16310,10 @@ total?: number</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-51-components-radiogroup-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-52-components-radiogroup-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-51-components-radiogroup-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-52-components-radiogroup-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -15914,9 +16475,9 @@ value?: TOption[&#39;value&#39;]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsSegmentGroup.Root</h2>
       <div class="badges">
-        <label for="c-52-components-segmentgroup-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-52-components-segmentgroup-info" class="badge info as-toggle">1 info</label>
-        <label for="c-52-components-segmentgroup-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-53-components-segmentgroup-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-53-components-segmentgroup-info" class="badge info as-toggle">1 info</label>
+        <label for="c-53-components-segmentgroup-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -15928,9 +16489,9 @@ value?: TOption[&#39;value&#39;]</code></pre>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-52-components-segmentgroup-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-52-components-segmentgroup-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-52-components-segmentgroup-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-53-components-segmentgroup-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-53-components-segmentgroup-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-53-components-segmentgroup-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -16199,9 +16760,9 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSelect</h2>
       <div class="badges">
-        <label for="c-53-components-select-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-53-components-select-info" class="badge info as-toggle">1 info</label>
-        <label for="c-53-components-select-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-54-components-select-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-54-components-select-info" class="badge info as-toggle">1 info</label>
+        <label for="c-54-components-select-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -16214,11 +16775,11 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-53-components-select-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-53-components-select-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-54-components-select-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-54-components-select-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-53-components-select-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-54-components-select-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -16501,9 +17062,9 @@ style?: React.CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSiteNode</h2>
       <div class="badges">
-        <label for="c-54-components-sitenode-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-54-components-sitenode-info" class="badge info as-toggle">1 info</label>
-        <label for="c-54-components-sitenode-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-55-components-sitenode-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-55-components-sitenode-info" class="badge info as-toggle">1 info</label>
+        <label for="c-55-components-sitenode-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -16516,11 +17077,11 @@ style?: React.CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-54-components-sitenode-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-54-components-sitenode-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-55-components-sitenode-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-55-components-sitenode-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-54-components-sitenode-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-55-components-sitenode-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -16655,9 +17216,9 @@ tier?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSkeleton.Rect</h2>
       <div class="badges">
-        <label for="c-55-components-skeleton-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-56-components-skeleton-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-55-components-skeleton-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-56-components-skeleton-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -16671,10 +17232,10 @@ tier?: string</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-55-components-skeleton-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-56-components-skeleton-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-55-components-skeleton-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-56-components-skeleton-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -16962,9 +17523,9 @@ width?: string | number</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSlider</h2>
       <div class="badges">
-        <label for="c-56-components-slider-props" class="badge ok as-toggle">17 prop types</label>
-        <label for="c-56-components-slider-info" class="badge info as-toggle">1 info</label>
-        <label for="c-56-components-slider-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-57-components-slider-props" class="badge ok as-toggle">17 prop types</label>
+        <label for="c-57-components-slider-info" class="badge info as-toggle">1 info</label>
+        <label for="c-57-components-slider-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -16977,11 +17538,11 @@ width?: string | number</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-56-components-slider-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-56-components-slider-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-57-components-slider-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-57-components-slider-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-56-components-slider-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-57-components-slider-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -17189,9 +17750,9 @@ value?: number | [number, number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSmartTabs</h2>
       <div class="badges">
-        <label for="c-57-components-smarttabs-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-58-components-smarttabs-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-57-components-smarttabs-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-58-components-smarttabs-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -17205,10 +17766,10 @@ value?: number | [number, number]</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-57-components-smarttabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-58-components-smarttabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-57-components-smarttabs-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-58-components-smarttabs-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -17322,9 +17883,9 @@ style?: React.CSSProperties = {}</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSpinner</h2>
       <div class="badges">
-        <label for="c-58-components-spinner-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-59-components-spinner-props" class="badge ok as-toggle">3 prop types</label>
         
-        <label for="c-58-components-spinner-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-59-components-spinner-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -17338,10 +17899,10 @@ style?: React.CSSProperties = {}</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-58-components-spinner-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-59-components-spinner-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-58-components-spinner-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-59-components-spinner-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -17454,9 +18015,9 @@ style?: React.CSSProperties = {}</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSplitButton</h2>
       <div class="badges">
-        <label for="c-59-components-splitbutton-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-60-components-splitbutton-props" class="badge ok as-toggle">6 prop types</label>
         
-        <label for="c-59-components-splitbutton-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-60-components-splitbutton-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -17470,10 +18031,10 @@ style?: React.CSSProperties = {}</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-59-components-splitbutton-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-60-components-splitbutton-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-59-components-splitbutton-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-60-components-splitbutton-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -17682,9 +18243,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsStack</h2>
       <div class="badges">
-        <label for="c-60-components-stack-props" class="badge ok as-toggle">11 prop types</label>
-        <label for="c-60-components-stack-info" class="badge info as-toggle">1 info</label>
-        <label for="c-60-components-stack-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-61-components-stack-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-61-components-stack-info" class="badge info as-toggle">1 info</label>
+        <label for="c-61-components-stack-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -17697,11 +18258,11 @@ style?: CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-60-components-stack-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-60-components-stack-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-61-components-stack-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-61-components-stack-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-60-components-stack-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-61-components-stack-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -17893,9 +18454,9 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsStatusBadge</h2>
       <div class="badges">
-        <label for="c-61-components-statusbadge-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-62-components-statusbadge-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-61-components-statusbadge-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-62-components-statusbadge-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -17909,10 +18470,10 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-61-components-statusbadge-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-62-components-statusbadge-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-61-components-statusbadge-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-62-components-statusbadge-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -18091,9 +18652,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsStatusBadgeV2</h2>
       <div class="badges">
-        <label for="c-62-components-statusbadgev2-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-62-components-statusbadgev2-info" class="badge info as-toggle">1 info</label>
-        <label for="c-62-components-statusbadgev2-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-63-components-statusbadgev2-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-63-components-statusbadgev2-info" class="badge info as-toggle">1 info</label>
+        <label for="c-63-components-statusbadgev2-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -18106,11 +18667,11 @@ style?: CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-62-components-statusbadgev2-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-62-components-statusbadgev2-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-63-components-statusbadgev2-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-63-components-statusbadgev2-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-62-components-statusbadgev2-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-63-components-statusbadgev2-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -18585,9 +19146,9 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsStepper</h2>
       <div class="badges">
-        <label for="c-63-components-stepper-props" class="badge ok as-toggle">2 prop types</label>
-        <label for="c-63-components-stepper-info" class="badge info as-toggle">1 info</label>
-        <label for="c-63-components-stepper-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-64-components-stepper-props" class="badge ok as-toggle">2 prop types</label>
+        <label for="c-64-components-stepper-info" class="badge info as-toggle">1 info</label>
+        <label for="c-64-components-stepper-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -18600,11 +19161,11 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-63-components-stepper-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-63-components-stepper-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-64-components-stepper-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-64-components-stepper-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-63-components-stepper-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-64-components-stepper-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -19032,9 +19593,9 @@ orientation?: any = &#39;vertical&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsSystemStatus</h2>
       <div class="badges">
-        <label for="c-64-components-systemstatus-deprecated-props" class="badge ok as-toggle">3 prop types</label>
-        <label for="c-64-components-systemstatus-deprecated-info" class="badge info as-toggle">1 info</label>
-        <label for="c-64-components-systemstatus-deprecated-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-65-components-systemstatus-deprecated-props" class="badge ok as-toggle">3 prop types</label>
+        <label for="c-65-components-systemstatus-deprecated-info" class="badge info as-toggle">1 info</label>
+        <label for="c-65-components-systemstatus-deprecated-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -19047,11 +19608,11 @@ orientation?: any = &#39;vertical&#39;</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-64-components-systemstatus-deprecated-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-64-components-systemstatus-deprecated-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-65-components-systemstatus-deprecated-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-65-components-systemstatus-deprecated-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-64-components-systemstatus-deprecated-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-65-components-systemstatus-deprecated-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -19136,9 +19697,9 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-65-components-table-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-66-components-table-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-65-components-table-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-66-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -19152,10 +19713,10 @@ status: (typeof systemStatuses)[number]</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-65-components-table-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-66-components-table-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-65-components-table-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-66-components-table-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -19675,9 +20236,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-66-components-table-active-row-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-67-components-table-active-row-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-66-components-table-active-row-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-67-components-table-active-row-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -19691,10 +20252,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-66-components-table-active-row-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-67-components-table-active-row-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-66-components-table-active-row-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-67-components-table-active-row-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -20220,9 +20781,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-67-components-table-filters-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-68-components-table-filters-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-67-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-68-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -20236,10 +20797,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-67-components-table-filters-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-68-components-table-filters-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-67-components-table-filters-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-68-components-table-filters-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -20736,9 +21297,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-68-components-table-column-groups-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-69-components-table-column-groups-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-68-components-table-column-groups-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-69-components-table-column-groups-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -20752,10 +21313,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-68-components-table-column-groups-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-69-components-table-column-groups-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-68-components-table-column-groups-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-69-components-table-column-groups-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -21262,9 +21823,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-69-components-table-columns-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-70-components-table-columns-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-69-components-table-columns-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-70-components-table-columns-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -21278,10 +21839,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-69-components-table-columns-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-70-components-table-columns-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-69-components-table-columns-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-70-components-table-columns-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -21801,9 +22362,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-70-components-table-editable-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-71-components-table-editable-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-70-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-71-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -21817,10 +22378,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-70-components-table-editable-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-71-components-table-editable-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-70-components-table-editable-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-71-components-table-editable-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -22525,9 +23086,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-71-components-table-expansion-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-72-components-table-expansion-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-71-components-table-expansion-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-72-components-table-expansion-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -22541,10 +23102,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-71-components-table-expansion-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-72-components-table-expansion-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-71-components-table-expansion-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-72-components-table-expansion-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -23122,9 +23683,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-72-components-table-loading-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-73-components-table-loading-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-72-components-table-loading-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-73-components-table-loading-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -23138,10 +23699,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-72-components-table-loading-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-73-components-table-loading-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-72-components-table-loading-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-73-components-table-loading-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -23578,9 +24139,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-73-components-table-resizable-columns-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-74-components-table-resizable-columns-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-73-components-table-resizable-columns-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-74-components-table-resizable-columns-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -23594,10 +24155,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-73-components-table-resizable-columns-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-74-components-table-resizable-columns-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-73-components-table-resizable-columns-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-74-components-table-resizable-columns-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -24206,9 +24767,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-74-components-table-row-actions-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-75-components-table-row-actions-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-74-components-table-row-actions-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-75-components-table-row-actions-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -24222,10 +24783,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-74-components-table-row-actions-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-75-components-table-row-actions-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-74-components-table-row-actions-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-75-components-table-row-actions-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -24879,9 +25440,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-75-components-table-selection-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-76-components-table-selection-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-75-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-76-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -24895,10 +25456,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-75-components-table-selection-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-76-components-table-selection-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-75-components-table-selection-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-76-components-table-selection-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -25484,9 +26045,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-76-components-table-virtualized-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-77-components-table-virtualized-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-76-components-table-virtualized-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-77-components-table-virtualized-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -25500,10 +26061,10 @@ zebra?: boolean</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-76-components-table-virtualized-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-77-components-table-virtualized-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-76-components-table-virtualized-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-77-components-table-virtualized-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -26337,9 +26898,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsTabs.Root</h2>
       <div class="badges">
-        <label for="c-77-components-tabs-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-77-components-tabs-info" class="badge info as-toggle">1 info</label>
-        <label for="c-77-components-tabs-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-78-components-tabs-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-78-components-tabs-info" class="badge info as-toggle">1 info</label>
+        <label for="c-78-components-tabs-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -26351,9 +26912,9 @@ zebra?: boolean</code></pre>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-77-components-tabs-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-77-components-tabs-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-77-components-tabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-78-components-tabs-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-78-components-tabs-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-78-components-tabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -27009,9 +27570,9 @@ export const DsTabs = {
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTag</h2>
       <div class="badges">
-        <label for="c-78-components-tag-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-79-components-tag-props" class="badge ok as-toggle">6 prop types</label>
         
-        <label for="c-78-components-tag-stories" class="badge ok as-toggle">14 stories</label>
+        <label for="c-79-components-tag-stories" class="badge ok as-toggle">14 stories</label>
         
         
       </div>
@@ -27025,10 +27586,10 @@ export const DsTabs = {
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-78-components-tag-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-79-components-tag-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-78-components-tag-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-79-components-tag-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27237,9 +27798,9 @@ variant?: any = &#39;default&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTagFilter</h2>
       <div class="badges">
-        <label for="c-79-components-tagfilter-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-80-components-tagfilter-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-79-components-tagfilter-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-80-components-tagfilter-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -27253,10 +27814,10 @@ variant?: any = &#39;default&#39;</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-79-components-tagfilter-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-80-components-tagfilter-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-79-components-tagfilter-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-80-components-tagfilter-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27632,9 +28193,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextarea</h2>
       <div class="badges">
-        <label for="c-80-components-textarea-props" class="badge ok as-toggle">15 prop types</label>
-        <label for="c-80-components-textarea-info" class="badge info as-toggle">1 info</label>
-        <label for="c-80-components-textarea-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-81-components-textarea-props" class="badge ok as-toggle">15 prop types</label>
+        <label for="c-81-components-textarea-info" class="badge info as-toggle">1 info</label>
+        <label for="c-81-components-textarea-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -27647,11 +28208,11 @@ style?: CSSProperties</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-80-components-textarea-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-80-components-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-81-components-textarea-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-81-components-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-80-components-textarea-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-81-components-textarea-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27811,9 +28372,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextInput</h2>
       <div class="badges">
-        <label for="c-81-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
-        <label for="c-81-components-textinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-81-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-82-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
+        <label for="c-82-components-textinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-82-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -27826,11 +28387,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-81-components-textinput-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-81-components-textinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-82-components-textinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-82-components-textinput-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-81-components-textinput-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-82-components-textinput-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -28206,9 +28767,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsThreadItem</h2>
       <div class="badges">
-        <label for="c-82-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
-        <label for="c-82-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
-        <label for="c-82-components-comments-threaditem-stories" class="badge ok as-toggle">17 stories</label>
+        <label for="c-83-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-83-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
+        <label for="c-83-components-comments-threaditem-stories" class="badge ok as-toggle">17 stories</label>
         
         
       </div>
@@ -28221,11 +28782,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-82-components-comments-threaditem-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-82-components-comments-threaditem-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-83-components-comments-threaditem-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-83-components-comments-threaditem-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-82-components-comments-threaditem-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-83-components-comments-threaditem-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -28581,9 +29142,9 @@ Line 3: Final line with conclusion`} /&gt;;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTimePicker</h2>
       <div class="badges">
-        <label for="c-83-components-timepicker-props" class="badge ok as-toggle">19 prop types</label>
-        <label for="c-83-components-timepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-83-components-timepicker-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-84-components-timepicker-props" class="badge ok as-toggle">19 prop types</label>
+        <label for="c-84-components-timepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-84-components-timepicker-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -28596,11 +29157,11 @@ Line 3: Final line with conclusion`} /&gt;;</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-83-components-timepicker-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-83-components-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-84-components-timepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-84-components-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-83-components-timepicker-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-84-components-timepicker-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -28836,9 +29397,9 @@ value?: Date | null</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToast</h2>
       <div class="badges">
-        <label for="c-84-components-toast-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-85-components-toast-props" class="badge ok as-toggle">7 prop types</label>
         
-        <label for="c-84-components-toast-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-85-components-toast-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -28852,10 +29413,10 @@ value?: Date | null</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-84-components-toast-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-85-components-toast-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-84-components-toast-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-85-components-toast-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -29148,9 +29709,9 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToggle</h2>
       <div class="badges">
-        <label for="c-85-components-toggle-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-86-components-toggle-props" class="badge ok as-toggle">9 prop types</label>
         
-        <label for="c-85-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-86-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -29164,10 +29725,10 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-85-components-toggle-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-86-components-toggle-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-85-components-toggle-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-86-components-toggle-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -29323,9 +29884,9 @@ style?: CSSProperties = {}</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
-        <label for="c-86-components-tooltip-props" class="badge ok as-toggle">9 prop types</label>
-        <label for="c-86-components-tooltip-info" class="badge info as-toggle">1 info</label>
-        <label for="c-86-components-tooltip-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-87-components-tooltip-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-87-components-tooltip-info" class="badge info as-toggle">1 info</label>
+        <label for="c-87-components-tooltip-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -29338,11 +29899,11 @@ style?: CSSProperties = {}</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-86-components-tooltip-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-86-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-87-components-tooltip-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-87-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-86-components-tooltip-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-87-components-tooltip-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -29537,9 +30098,9 @@ slotProps?: {
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsTree.Root</h2>
       <div class="badges">
-        <label for="c-87-components-tree-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-87-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-87-components-tree-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-88-components-tree-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-88-components-tree-info" class="badge info as-toggle">1 info</label>
+        <label for="c-88-components-tree-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -29551,9 +30112,9 @@ slotProps?: {
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-87-components-tree-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-87-components-tree-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-87-components-tree-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-88-components-tree-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-88-components-tree-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-88-components-tree-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -29956,9 +30517,9 @@ export const DsTree = {
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTypography</h2>
       <div class="badges">
-        <label for="c-88-components-typography-props" class="badge ok as-toggle">10 prop types</label>
-        <label for="c-88-components-typography-info" class="badge info as-toggle">1 info</label>
-        <label for="c-88-components-typography-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-89-components-typography-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-89-components-typography-info" class="badge info as-toggle">1 info</label>
+        <label for="c-89-components-typography-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -29971,11 +30532,11 @@ export const DsTree = {
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-88-components-typography-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-88-components-typography-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-89-components-typography-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-89-components-typography-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-88-components-typography-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-89-components-typography-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30471,9 +31032,9 @@ variant: keyof typeof typographyVariantConfig</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsUserCard</h2>
       <div class="badges">
-        <label for="c-89-components-usercard-props" class="badge ok as-toggle">5 prop types</label>
-        <label for="c-89-components-usercard-info" class="badge info as-toggle">1 info</label>
-        <label for="c-89-components-usercard-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-90-components-usercard-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-90-components-usercard-info" class="badge info as-toggle">1 info</label>
+        <label for="c-90-components-usercard-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -30486,11 +31047,11 @@ variant: keyof typeof typographyVariantConfig</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-89-components-usercard-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-89-components-usercard-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-90-components-usercard-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-90-components-usercard-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-89-components-usercard-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-90-components-usercard-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30601,9 +31162,9 @@ subtitle?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsVerticalTabs</h2>
       <div class="badges">
-        <label for="c-90-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-91-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-90-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-91-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -30617,10 +31178,10 @@ subtitle?: string</code></pre>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-90-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-91-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-90-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-91-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30794,9 +31355,9 @@ value?: string</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsWorkspaceLayout</h2>
       <div class="badges">
-        <label for="c-91-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
-        <label for="c-91-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
-        <label for="c-91-components-workspacelayout-stories" class="badge ok as-toggle">15 stories</label>
+        <label for="c-92-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-92-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
+        <label for="c-92-components-workspacelayout-stories" class="badge ok as-toggle">15 stories</label>
         
         
       </div>
@@ -30809,11 +31370,11 @@ value?: string</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-91-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-91-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-92-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-92-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-91-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-92-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -31633,8 +32194,8 @@ fillParent?: boolean = false</code></pre>
       <h2><span class="status-dot dot-ok"></span> SampleForm</h2>
       <div class="badges">
         
-        <label for="c-92-examples-sampleform-info" class="badge info as-toggle">1 info</label>
-        <label for="c-92-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-93-examples-sampleform-info" class="badge info as-toggle">1 info</label>
+        <label for="c-93-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -31647,8 +32208,8 @@ fillParent?: boolean = false</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-92-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-92-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-93-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-93-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -31703,9 +32264,9 @@ fillParent?: boolean = false</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> Scrollbars</h2>
       <div class="badges">
-        <label for="c-93-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
-        <label for="c-93-components-scrollbars-info" class="badge info as-toggle">1 info</label>
-        <label for="c-93-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-94-components-scrollbars-err" class="badge err as-toggle">prop type error</label>
+        <label for="c-94-components-scrollbars-info" class="badge info as-toggle">1 info</label>
+        <label for="c-94-components-scrollbars-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -31717,9 +32278,9 @@ fillParent?: boolean = false</code></pre>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-93-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-93-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-93-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-94-components-scrollbars-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-94-components-scrollbars-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-94-components-scrollbars-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
