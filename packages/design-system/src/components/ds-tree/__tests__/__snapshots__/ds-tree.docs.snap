@@ -1,0 +1,346 @@
+# DsTree.Root docs snippets
+
+## Default
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const Default = () => {
+    const collection = createDsTreeCollection(sideNavNodes);
+
+    return (
+        <DsTree.Root
+            collection={collection}
+            defaultExpandedValue={['network']}
+            size="medium"
+            onSelectionChange={fn()}
+            onExpandedChange={fn()}>
+            <DsTree.Tree>
+                {collection.rootNode.children?.map((node, index) => (
+                    <SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />
+                ))}
+            </DsTree.Tree>
+        </DsTree.Root>
+    );
+};
+
+## Controlled
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const Controlled = () => {
+    const collection = createDsTreeCollection(sideNavNodes);
+    const [selectedValue, setSelectedValue] = useState<string[]>([]);
+    const [expandedValue, setExpandedValue] = useState(['network']);
+
+    return (
+        <DsStack direction="column" gap={12}>
+            <DsStack direction="column" gap={4}>
+                <DsTypography variant="body-sm-md">Selected: {selectedValue.length > 0 ? selectedValue.join(', ') : 'none'}
+                </DsTypography>
+                <DsTypography variant="body-sm-md">Expanded: {expandedValue.length > 0 ? expandedValue.join(', ') : 'none'}
+                </DsTypography>
+            </DsStack>
+            <DsTree.Root
+                size="medium"
+                collection={collection}
+                selectedValue={selectedValue}
+                onSelectionChange={(details: { selectedValue: string[] }) =>
+                    setSelectedValue(details.selectedValue)
+                }
+                expandedValue={expandedValue}
+                onExpandedChange={(details: { expandedValue: string[] }) => setExpandedValue(details.expandedValue)}>
+                <DsTree.Tree>
+                    {collection.rootNode.children?.map((node, index) => (
+                        <SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />
+                    ))}
+                </DsTree.Tree>
+            </DsTree.Root>
+        </DsStack>
+    );
+};
+
+## Controlled Focus
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const ControlledFocus = () => {
+    const collection = createDsTreeCollection(sideNavNodes);
+    const [focusedValue, setFocusedValue] = useState<string | null>('firewall-1');
+
+    return (
+        <DsStack direction="column" gap={12}>
+            <DsTypography variant="body-sm-md">Focused: {focusedValue ?? 'none'}</DsTypography>
+            <DsTree.Root
+                size="medium"
+                collection={collection}
+                defaultExpandedValue={['network']}
+                focusedValue={focusedValue}
+                onFocusChange={(details: { focusedValue: string | null }) => setFocusedValue(details.focusedValue)}>
+                <DsTree.Tree>
+                    {collection.rootNode.children?.map((node, index) => (
+                        <SideNavDsTreeNode key={node.id} node={node} indexPath={[index]} />
+                    ))}
+                </DsTree.Tree>
+            </DsTree.Root>
+        </DsStack>
+    );
+};
+
+## Checkbox With Icons
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const CheckboxWithIcons = () => {
+    const collection = createDsTreeCollection(mapLayersNodes);
+
+    return (
+        <DsTree.Root
+            size={args.size}
+            collection={collection}
+            defaultCheckedValue={['data-centers', 'dc-east', 'dc-west', 'oms']}
+            defaultExpandedValue={['devices', 'optical']}
+            onCheckedChange={fn()}
+            onExpandedChange={fn()}>
+            <DsTree.Tree>
+                {collection.rootNode.children?.map((node, index) => (
+                    <CheckboxWithIconsNode key={node.id} node={node} indexPath={[index]} />
+                ))}
+            </DsTree.Tree>
+        </DsTree.Root>
+    );
+};
+
+## With Status Icons
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const WithStatusIcons = () => {
+    const collection = createDsTreeCollection(workflowNodes);
+    const onNavigate = fn();
+
+    return (
+        <DsTree.Root
+            size="medium"
+            collection={collection}
+            defaultExpandedValue={['workflow-1234', 'sw-running-02', 'sw-running-06']}
+            onSelectionChange={fn()}
+            onExpandedChange={fn()}>
+            <DsTree.Tree>
+                {collection.rootNode.children?.map((node, index) => (
+                    <WorkflowDsTreeNode
+                        key={node.id}
+                        node={node}
+                        indexPath={[index]}
+                        onNavigate={onNavigate}
+                        size={args.size}
+                    />
+                ))}
+            </DsTree.Tree>
+        </DsTree.Root>
+    );
+};

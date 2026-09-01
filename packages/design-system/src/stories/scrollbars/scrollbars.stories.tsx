@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Fragment } from 'react';
 import classNames from 'classnames';
+import { DsTypography } from '../../components/ds-typography';
 import styles from './scrollbars.stories.module.scss';
 
 // eslint-disable-next-line @drivenets/ds-internal/require-story-meta-annotations -- component prop is not required here.
@@ -23,34 +23,42 @@ You can add a \`.scrollbar-thin\` class to the element in order to make its scro
 export default meta;
 type Story = StoryObj;
 
-// Helper to generate content
-const generateContent = (count: number, direction: 'vertical' | 'horizontal') => {
-	const items = Array.from({ length: count }, (_, i) => (
-		<div key={i} className={direction === 'horizontal' ? styles.contentItemHorizontal : styles.contentItem}>
-			<h3>Item {i + 1}</h3>
-			<p>Content for item {i + 1}</p>
-		</div>
-	));
-
-	return <div className={direction === 'horizontal' ? styles.contentContainer : undefined}>{items}</div>;
-};
-
 export const DefaultScrollbar: Story = {
+	tags: ['!manifest'],
 	render: () => (
 		<div className={styles.container}>
 			<div className={styles.section}>
-				<h3>Vertical Scrollbar (Default)</h3>
-				<div className={styles.scrollableContainer}>{generateContent(20, 'vertical')}</div>
+				<DsTypography variant="heading3">Vertical Scrollbar (Default)</DsTypography>
+				<div className={styles.scrollableContainer}>
+					<div>
+						{Array.from({ length: 20 }, (_, i) => (
+							<div key={i} className={styles.contentItem}>
+								<DsTypography variant="heading3">Item {i + 1}</DsTypography>
+								<DsTypography variant="body-md-reg">Content for item {i + 1}</DsTypography>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 
 			<div className={styles.sectionWide}>
-				<h3>Horizontal Scrollbar (Default)</h3>
-				<div className={styles.scrollableContainer}>{generateContent(15, 'horizontal')}</div>
+				<DsTypography variant="heading3">Horizontal Scrollbar (Default)</DsTypography>
+				<div className={styles.scrollableContainer}>
+					<div className={styles.contentContainer}>
+						{Array.from({ length: 15 }, (_, i) => (
+							<div key={i} className={styles.contentItemHorizontal}>
+								<DsTypography variant="heading3">Item {i + 1}</DsTypography>
+								<DsTypography variant="body-md-reg">Content for item {i + 1}</DsTypography>
+							</div>
+						))}
+					</div>
+				</div>
 			</div>
 		</div>
 	),
 	parameters: {
 		docs: {
+			canvas: { sourceState: 'none' },
 			description: {
 				story: 'Default scrollbars for both vertical and horizontal overflow.',
 			},
@@ -59,25 +67,41 @@ export const DefaultScrollbar: Story = {
 };
 
 export const SmallScrollbar: Story = {
+	tags: ['!manifest'],
 	render: () => (
 		<div className={styles.container}>
 			<div className={styles.section}>
-				<h3>Vertical Scrollbar (Thin)</h3>
+				<DsTypography variant="heading3">Vertical Scrollbar (Thin)</DsTypography>
 				<div className={classNames('scrollbar-thin', styles.scrollableContainer)}>
-					{generateContent(20, 'vertical')}
+					<div>
+						{Array.from({ length: 20 }, (_, i) => (
+							<div key={i} className={styles.contentItem}>
+								<DsTypography variant="heading3">Item {i + 1}</DsTypography>
+								<DsTypography variant="body-md-reg">Content for item {i + 1}</DsTypography>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 
 			<div className={styles.sectionWide}>
-				<h3>Horizontal Scrollbar (Thin)</h3>
+				<DsTypography variant="heading3">Horizontal Scrollbar (Thin)</DsTypography>
 				<div className={classNames('scrollbar-thin', styles.scrollableContainer)}>
-					{generateContent(15, 'horizontal')}
+					<div className={styles.contentContainer}>
+						{Array.from({ length: 15 }, (_, i) => (
+							<div key={i} className={styles.contentItemHorizontal}>
+								<DsTypography variant="heading3">Item {i + 1}</DsTypography>
+								<DsTypography variant="body-md-reg">Content for item {i + 1}</DsTypography>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
 		</div>
 	),
 	parameters: {
 		docs: {
+			canvas: { sourceState: 'none' },
 			description: {
 				story: 'Small (thin) scrollbars for both vertical and horizontal overflow.',
 			},
@@ -86,15 +110,25 @@ export const SmallScrollbar: Story = {
 };
 
 export const CombinedExample: Story = {
+	tags: ['!manifest'],
 	render: () => (
 		<div className={styles.sectionExtraWide}>
-			<h3>Combined Example - Both X and Y Overflow</h3>
+			<DsTypography variant="heading3">Combined Example - Both X and Y Overflow</DsTypography>
 			<div className={styles.scrollableContainerTall}>
 				<div className={styles.wideContent}>
-					<h2>Wide Content</h2>
-					<p>This container has both vertical and horizontal overflow, showing both scrollbars.</p>
+					<DsTypography variant="heading2">Wide Content</DsTypography>
+					<DsTypography variant="body-md-reg">
+						This container has both vertical and horizontal overflow, showing both scrollbars.
+					</DsTypography>
 					{Array.from({ length: 25 }, (_, i) => (
-						<Fragment key={i}>{generateContent(25, 'horizontal')}</Fragment>
+						<div key={i} className={styles.contentContainer}>
+							{Array.from({ length: 25 }, (_, j) => (
+								<div key={j} className={styles.contentItemHorizontal}>
+									<DsTypography variant="heading3">Item {j + 1}</DsTypography>
+									<DsTypography variant="body-md-reg">Content for item {j + 1}</DsTypography>
+								</div>
+							))}
+						</div>
 					))}
 				</div>
 			</div>
@@ -102,6 +136,7 @@ export const CombinedExample: Story = {
 	),
 	parameters: {
 		docs: {
+			canvas: { sourceState: 'none' },
 			description: {
 				story: 'Example showing both vertical and horizontal scrollbars on the same container.',
 			},
