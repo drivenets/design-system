@@ -62,7 +62,7 @@ function reloadTopWindow(): void {
 	topWindow.location.reload();
 }
 
-export function showStaleDocsReloadNotice(doc: Document = document): void {
+function showStaleDocsReloadNotice(doc: Document = document): void {
 	if (doc.getElementById(RELOAD_NOTICE_ID)) {
 		return;
 	}
