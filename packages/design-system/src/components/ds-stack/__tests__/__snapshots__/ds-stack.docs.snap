@@ -5,7 +5,7 @@
 ### Show code
 <DsStack
   direction="column"
-  gap={8}
+  gap="var(--xs)"
 >
   <div className="_box_1q6tz_1">
     Item 1
@@ -19,7 +19,7 @@
 </DsStack>
 
 ### MCP manifest
-const Default = () => <DsStack direction="column" gap={8}>
+const Default = () => <DsStack direction="column" gap="var(--xs)">
     <div className={styles.box}>Item 1</div>
     <div className={styles.box}>Item 2</div>
     <div className={styles.box}>Item 3</div>
@@ -31,7 +31,7 @@ const Default = () => <DsStack direction="column" gap={8}>
 <DsStack
   alignItems="center"
   direction="row"
-  gap={16}
+  gap="var(--standard)"
 >
   <div className="_box_1q6tz_1">
     Item 1
@@ -45,7 +45,7 @@ const Default = () => <DsStack direction="column" gap={8}>
 </DsStack>
 
 ### MCP manifest
-const Row = () => <DsStack direction="row" gap={16} alignItems="center">
+const Row = () => <DsStack direction="row" gap="var(--standard)" alignItems="center">
     <div className={styles.box}>Item 1</div>
     <div className={styles.box}>Item 2</div>
     <div className={styles.box}>Item 3</div>
@@ -62,8 +62,8 @@ const Row = () => <DsStack direction="row" gap={16} alignItems="center">
     md: 'column'
   }}
   gap={{
-    lg: 24,
-    md: 8
+    lg: 'var(--lg)',
+    md: 'var(--xs)'
   }}
 >
   <div className="_box_1q6tz_1">
@@ -80,7 +80,7 @@ const Row = () => <DsStack direction="row" gap={16} alignItems="center">
 ### MCP manifest
 const Responsive = () => <DsStack
     direction={{ md: 'column', lg: 'row' }}
-    gap={{ md: 8, lg: 24 }}
+    gap={{ md: 'var(--xs)', lg: 'var(--lg)' }}
     alignItems="center"
     className={styles.container}>
     <div className={styles.box}>Item 1</div>
@@ -124,7 +124,7 @@ const SpaceBetween = () => <DsStack
   className="_container_1q6tz_13"
   direction="row"
   flexWrap="wrap"
-  gap={8}
+  gap="var(--xs)"
 >
   <div className="_box_1q6tz_1">
     Item 1
@@ -159,7 +159,11 @@ const SpaceBetween = () => <DsStack
 </DsStack>
 
 ### MCP manifest
-const Wrapping = () => <DsStack direction="row" gap={8} flexWrap="wrap" className={styles.container}>
+const Wrapping = () => <DsStack
+    direction="row"
+    gap="var(--xs)"
+    flexWrap="wrap"
+    className={styles.container}>
     {Array.from({ length: 10 }, (_, i) => (
         <div className={styles.box} key={i}>
             Item {i + 1}
@@ -171,14 +175,14 @@ const Wrapping = () => <DsStack direction="row" gap={8} flexWrap="wrap" classNam
 
 ### Show code
 {
-  render: () => <DsStack gap={24}>
-            <DsStack direction="row" gap={16} alignItems="center">
+  render: () => <DsStack gap="var(--lg)">
+            <DsStack direction="row" gap="var(--standard)" alignItems="center">
                 <div className={styles.box}>Row 1 - A</div>
                 <div className={styles.box}>Row 1 - B</div>
                 <div className={styles.box}>Row 1 - C</div>
             </DsStack>
 
-            <DsStack direction="row" gap={16} alignItems="center">
+            <DsStack direction="row" gap="var(--standard)" alignItems="center">
                 <div className={styles.box}>Row 2 - A</div>
                 <div className={styles.box}>Row 2 - B</div>
             </DsStack>
@@ -187,14 +191,14 @@ const Wrapping = () => <DsStack direction="row" gap={8} flexWrap="wrap" classNam
 
 ### MCP manifest
 const Nested = () => (
-    <DsStack gap={24}>
-        <DsStack direction="row" gap={16} alignItems="center">
+    <DsStack gap="var(--lg)">
+        <DsStack direction="row" gap="var(--standard)" alignItems="center">
             <div className={styles.box}>Row 1 - A</div>
             <div className={styles.box}>Row 1 - B</div>
             <div className={styles.box}>Row 1 - C</div>
         </DsStack>
 
-        <DsStack direction="row" gap={16} alignItems="center">
+        <DsStack direction="row" gap="var(--standard)" alignItems="center">
             <div className={styles.box}>Row 2 - A</div>
             <div className={styles.box}>Row 2 - B</div>
         </DsStack>
