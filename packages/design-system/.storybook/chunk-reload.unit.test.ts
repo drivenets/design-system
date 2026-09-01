@@ -1,8 +1,9 @@
 import { DOCS_RENDERED, STORY_MISSING, STORY_RENDERED } from 'storybook/internal/core-events';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	isStaleStoryChunkError,
 	RELOAD_COOLDOWN_MS,
+	RELOAD_NOTICE_MS,
 	registerStoryChunkReload,
 	rememberChunkReload,
 	shouldReloadNow,
@@ -86,17 +87,27 @@ describe('shouldReloadNow', () => {
 });
 
 describe('registerStoryChunkReload', () => {
+	beforeEach(() => {
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
+	});
+
 	it('should not reload on vite:preloadError alone', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		const event = new Event('vite:preloadError', { cancelable: true });
 		target.dispatchEvent(event);
 
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
 		expect(event.defaultPrevented).toBe(true);
 	});
@@ -104,30 +115,38 @@ describe('registerStoryChunkReload', () => {
 	it('should not reload on a stale unhandledrejection alone', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		const event = Object.assign(new Event('unhandledrejection', { cancelable: true }), {
 			reason: new TypeError('Failed to fetch dynamically imported module: ./ds-form-control.stories-old.js'),
 		});
 		target.dispatchEvent(event);
 
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
 		expect(event.defaultPrevented).toBe(true);
 	});
 
-	it('should reload when a stale preload is followed by STORY_MISSING', () => {
+	it('should show a notice then reload when a stale preload is followed by STORY_MISSING', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
 		channel.emit(STORY_MISSING);
+
+		expect(showNotice).toHaveBeenCalledOnce();
+		expect(reload).not.toHaveBeenCalled();
+
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
 		expect(reload).toHaveBeenCalledOnce();
 	});
@@ -135,30 +154,36 @@ describe('registerStoryChunkReload', () => {
 	it('should not reload on STORY_MISSING without a prior stale signal', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		channel.emit(STORY_MISSING);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
 	});
 
 	it('should not reload on an unhandled component exception', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		const event = Object.assign(new Event('unhandledrejection', { cancelable: true }), {
 			reason: new Error('Boom'),
 		});
 		target.dispatchEvent(event);
 		channel.emit(STORY_MISSING);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
 		expect(event.defaultPrevented).toBe(false);
 	});
@@ -166,14 +191,20 @@ describe('registerStoryChunkReload', () => {
 	it('should not reload again within the cooldown', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
 		channel.emit(STORY_MISSING);
 		channel.emit(STORY_MISSING);
+
+		expect(showNotice).toHaveBeenCalledOnce();
+		expect(reload).not.toHaveBeenCalled();
+
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
 		expect(reload).toHaveBeenCalledOnce();
 	});
@@ -181,30 +212,36 @@ describe('registerStoryChunkReload', () => {
 	it('should forget a stale preload after a successful story render', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
 		channel.emit(STORY_RENDERED);
 		channel.emit(STORY_MISSING);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
 	});
 
 	it('should forget a stale preload after a successful docs render', () => {
 		const storage = createMemoryStorage();
 		const reload = vi.fn();
+		const showNotice = vi.fn();
 		const target = new EventTarget();
 		const channel = createMemoryChannel();
 
-		registerStoryChunkReload({ storage, reload, target, channel });
+		registerStoryChunkReload({ storage, reload, showNotice, target, channel });
 
 		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
 		channel.emit(DOCS_RENDERED);
 		channel.emit(STORY_MISSING);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
 	});
 });

@@ -1,9 +1,14 @@
 import { DOCS_RENDERED, STORY_MISSING, STORY_RENDERED } from 'storybook/internal/core-events';
+import noticeHtml from './chunk-reload-notice.html?raw';
+import './chunk-reload-notice.css';
 
 const STALE_CHUNK_MESSAGE = 'Failed to fetch dynamically imported module';
 
 export const RELOAD_COOLDOWN_MS = 10_000;
+export const RELOAD_NOTICE_MS = 1_500;
+
 const RELOAD_STORAGE_KEY = 'ds-storybook-chunk-reload-at';
+const RELOAD_NOTICE_ID = 'ds-storybook-chunk-reload-notice';
 
 type ReloadStorage = Pick<Storage, 'getItem' | 'setItem'>;
 
@@ -14,6 +19,7 @@ export type StorybookChannel = {
 export type RegisterStoryChunkReloadOptions = {
 	storage?: ReloadStorage;
 	reload?: () => void;
+	showNotice?: () => void;
 	target?: EventTarget;
 	channel?: StorybookChannel;
 };
@@ -56,9 +62,18 @@ function reloadTopWindow(): void {
 	topWindow.location.reload();
 }
 
+export function showStaleDocsReloadNotice(doc: Document = document): void {
+	if (doc.getElementById(RELOAD_NOTICE_ID)) {
+		return;
+	}
+
+	doc.body.insertAdjacentHTML('beforeend', noticeHtml);
+}
+
 export function registerStoryChunkReload({
 	storage = sessionStorage,
 	reload = reloadTopWindow,
+	showNotice = showStaleDocsReloadNotice,
 	target = window,
 	channel,
 }: RegisterStoryChunkReloadOptions = {}): void {
@@ -79,7 +94,8 @@ export function registerStoryChunkReload({
 		}
 
 		rememberChunkReload(Date.now(), storage);
-		reload();
+		showNotice();
+		setTimeout(reload, RELOAD_NOTICE_MS);
 	};
 
 	target.addEventListener('vite:preloadError', markStale);
