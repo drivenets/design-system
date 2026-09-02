@@ -20,14 +20,9 @@
 	justify-content: space-between;
 	gap: vars.$header-sort-gap;
 	width: 100%;
+	min-width: 0;
 	height: 100%;
 	padding: 0 var(--standard);
-}
-
-.groupLabel {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 
 .collapseToggle {
