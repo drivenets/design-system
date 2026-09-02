@@ -1,0 +1,57 @@
+# DsProgressDonut docs snippets
+
+## Default
+
+### Show code
+<DsProgressDonut value={50} />
+
+### MCP manifest
+const Default = () => <DsProgressDonut value={50} />;
+
+## Success
+
+### Show code
+<DsProgressDonut variant="success" />
+
+### MCP manifest
+const Success = () => <DsProgressDonut variant="success" />;
+
+## Error
+
+### Show code
+<DsProgressDonut
+  value={50}
+  variant="error"
+/>
+
+### MCP manifest
+const Error = () => <DsProgressDonut variant="error" value={50} />;
+
+## Custom Icon
+
+### Show code
+<DsProgressDonut value={80}>
+  <DsIcon
+    icon="warning"
+    size="small"
+  />
+</DsProgressDonut>
+
+### MCP manifest
+const CustomIcon = () => <DsProgressDonut value={80}><DsIcon icon="warning" size="small" /></DsProgressDonut>;
+
+## Zero Progress
+
+### Show code
+<DsProgressDonut value={0} />
+
+### MCP manifest
+const ZeroProgress = () => <DsProgressDonut value={0} />;
+
+## Full Progress
+
+### Show code
+<DsProgressDonut value={100} />
+
+### MCP manifest
+const FullProgress = () => <DsProgressDonut value={100} />;

@@ -1,0 +1,12 @@
+# DsFilterStatusIcon docs snippets
+
+## Default
+
+### Show code
+<DsFilterStatusIcon
+  active
+  status="running"
+/>
+
+### MCP manifest
+const Default = () => <DsFilterStatusIcon status="running" active />;
