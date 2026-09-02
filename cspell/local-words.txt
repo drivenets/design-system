@@ -11,6 +11,7 @@ cooldown
 domcontentloaded
 deslop
 drivenets
+ellipsizes
 evenodd
 findlast
 Fira

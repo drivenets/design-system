@@ -28,7 +28,9 @@ const getHeaderCell = (columnId: string): HTMLElement => {
 
 const getHeaderLabel = (columnId: string): HTMLElement => {
 	const label = [...getHeaderCell(columnId).querySelectorAll('span')].find((span) =>
-		[...span.childNodes].some((node) => node.nodeType === Node.TEXT_NODE && Boolean(node.textContent?.trim())),
+		[...span.childNodes].some(
+			(node) => node.nodeType === Node.TEXT_NODE && Boolean(node.textContent?.trim()),
+		),
 	);
 	if (!(label instanceof HTMLElement)) {
 		throw new Error(`Expected header label in column "${columnId}"`);
