@@ -20,7 +20,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		fullWidth: true,
 		expandable: false,
 		emptyState: <TableEmptyState />,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],
 };

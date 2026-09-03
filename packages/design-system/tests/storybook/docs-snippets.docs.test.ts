@@ -38,6 +38,7 @@ const COMPONENTS = [
 	'smart-tabs',
 	'stack',
 	'stepper',
+	'table',
 	'tabs',
 	'text-input',
 	'textarea',

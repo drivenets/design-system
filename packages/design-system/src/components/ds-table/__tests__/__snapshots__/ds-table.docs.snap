@@ -1,0 +1,7248 @@
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    data={defaultData} />;
+
+## With Controls
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  controls={<DsStack alignItems="center" direction="row" justifyContent="space-between" width="100%"><DsButtonV3 size="small" variant="secondary">RED version V2</DsButtonV3><DsStack alignItems="center" direction="row" gap={8}><DsButtonV3 size="small" variant="secondary">Import RED</DsButtonV3><DsButtonV3 size="small" variant="secondary">Export RED</DsButtonV3><DsButtonV3 size="small">Actions</DsButtonV3></DsStack></DsStack>}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const WithControls = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    data={defaultData}
+    controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+        <DsButtonV3 variant="secondary" size="small">
+            RED version V2
+        </DsButtonV3>
+        <DsStack direction="row" gap={8} alignItems="center">
+            <DsButtonV3 variant="secondary" size="small">
+                Import RED
+            </DsButtonV3>
+            <DsButtonV3 variant="secondary" size="small">
+                Export RED
+            </DsButtonV3>
+            <DsButtonV3 size="small">Actions</DsButtonV3>
+        </DsStack>
+    </DsStack>)} />;
+
+## Empty State
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const EmptyState = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    data={[]} />;
+
+## No Border
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const NoBorder = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered={false}
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    data={defaultData} />;
+
+## Horizontal Scroll
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 250
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 250
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age (years)',
+      size: 200
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Number of Visits',
+      size: 250
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Relationship Status',
+      size: 250
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 250
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const HorizontalScroll = () => <DsTable
+    columns={horizontalScrollColumns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    data={defaultData} />;
+
+# DsTable docs snippets
+
+## Active Row
+
+### Show code
+<DsTable
+  activeRowId="3"
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const ActiveRow = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 10)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    activeRowId="3" />;
+
+## Active Row with Drawer
+
+### Show code
+{
+  name: 'Active Row with Drawer',
+  args: {
+    data: defaultData.slice(0, 10)
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+    const activeRowId = selectedPerson?.id;
+    const isDrawerOpen = !!activeRowId;
+    const handleRowClick = (person: Person) => {
+      const isSameRow = activeRowId === person.id;
+      setSelectedPerson(isSameRow ? null : person);
+    };
+    return <>
+                <DsTable {...args} activeRowId={activeRowId} onRowClick={handleRowClick} />
+
+                <DsDrawer open={isDrawerOpen} onOpenChange={open => {
+        if (!open) {
+          setSelectedPerson(null);
+        }
+      }} columns={4} position="end">
+                    {selectedPerson && <div className={styles.drawerContent}>
+                            <DsStack direction="column" gap={24}>
+                                <DsStack direction="row" justifyContent="space-between" alignItems="center">
+                                    <DsTypography variant="heading2">Person Details</DsTypography>
+                                    <DsButtonV3 variant="tertiary" size="small" icon="close" aria-label="Close drawer" onClick={() => setSelectedPerson(null)} />
+                                </DsStack>
+
+                                <DsStack direction="column" gap={16}>
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Full Name
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">
+                                            {selectedPerson.firstName} {selectedPerson.lastName}
+                                        </DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Age
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">{selectedPerson.age} years old</DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Visits
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">{selectedPerson.visits} visits</DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Status
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">
+                                            {selectedPerson.status.charAt(0).toUpperCase() + selectedPerson.status.slice(1)}
+                                        </DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Profile Progress
+                                        </DsTypography>
+                                        <ProgressInfographic value={selectedPerson.progress} />
+                                    </DsStack>
+                                </DsStack>
+                            </DsStack>
+                        </div>}
+                </DsDrawer>
+            </>;
+  }
+}
+
+### MCP manifest
+const WithDrawerAndActiveRow = () => {
+    const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+
+    const activeRowId = selectedPerson?.id;
+    const isDrawerOpen = !!activeRowId;
+
+    const handleRowClick = (person: Person) => {
+        const isSameRow = activeRowId === person.id;
+
+        setSelectedPerson(isSameRow ? null : person);
+    };
+
+    return (
+        <>
+            <DsTable
+                columns={columns}
+                data={defaultData.slice(0, 10)}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                activeRowId={activeRowId}
+                onRowClick={handleRowClick} />
+            <DsDrawer
+                open={isDrawerOpen}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setSelectedPerson(null);
+                    }
+                }}
+                columns={4}
+                position="end">
+                {selectedPerson && (
+                    <div className={styles.drawerContent}>
+                        <DsStack direction="column" gap={24}>
+                            <DsStack direction="row" justifyContent="space-between" alignItems="center">
+                                <DsTypography variant="heading2">Person Details</DsTypography>
+                                <DsButtonV3
+                                    variant="tertiary"
+                                    size="small"
+                                    icon="close"
+                                    aria-label="Close drawer"
+                                    onClick={() => setSelectedPerson(null)}
+                                />
+                            </DsStack>
+
+                            <DsStack direction="column" gap={16}>
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Full Name
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">
+                                        {selectedPerson.firstName} {selectedPerson.lastName}
+                                    </DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Age
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">{selectedPerson.age} years old</DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Visits
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">{selectedPerson.visits} visits</DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Status
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">
+                                        {selectedPerson.status.charAt(0).toUpperCase() + selectedPerson.status.slice(1)}
+                                    </DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Profile Progress
+                                    </DsTypography>
+                                    <ProgressInfographic value={selectedPerson.progress} />
+                                </DsStack>
+                            </DsStack>
+                        </DsStack>
+                    </div>
+                )}
+            </DsDrawer>
+        </>
+    );
+};
+
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name'
+        },
+        {
+          accessorKey: 'age',
+          cell: () => {},
+          header: 'Age'
+        }
+      ],
+      header: 'Identity',
+      id: 'identity',
+      meta: {
+        group: {
+          collapsible: true,
+          defaultCollapsed: false
+        }
+      }
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'status',
+          cell: () => {},
+          header: 'Status'
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Profile Progress'
+        }
+      ],
+      header: 'Activity',
+      id: 'activity',
+      meta: {
+        group: {
+          collapsible: true
+        }
+      }
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  selectable
+  stickyHeader
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    columns={buildColumns()}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    emptyState={<TableEmptyState />} />;
+
+## Initially Collapsed
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name'
+        },
+        {
+          accessorKey: 'age',
+          cell: () => {},
+          header: 'Age'
+        }
+      ],
+      header: 'Identity',
+      id: 'identity',
+      meta: {
+        group: {
+          collapsible: true,
+          defaultCollapsed: true
+        }
+      }
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'status',
+          cell: () => {},
+          header: 'Status'
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Profile Progress'
+        }
+      ],
+      header: 'Activity',
+      id: 'activity',
+      meta: {
+        group: {
+          collapsible: true
+        }
+      }
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  selectable
+  stickyHeader
+/>
+
+### MCP manifest
+const InitiallyCollapsed = () => <DsTable
+    columns={buildColumns(true)}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    emptyState={<TableEmptyState />} />;
+
+## Controlled
+
+### Show code
+<DsTable
+  bordered
+  collapsedColumnGroups={[
+    'activity'
+  ]}
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name'
+        },
+        {
+          accessorKey: 'age',
+          cell: () => {},
+          header: 'Age'
+        }
+      ],
+      header: 'Identity',
+      id: 'identity',
+      meta: {
+        group: {
+          collapsible: true,
+          defaultCollapsed: false
+        }
+      }
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'status',
+          cell: () => {},
+          header: 'Status'
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Profile Progress'
+        }
+      ],
+      header: 'Activity',
+      id: 'activity',
+      meta: {
+        group: {
+          collapsible: true
+        }
+      }
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onCollapsedColumnGroupsChange={() => {}}
+  selectable
+  stickyHeader
+/>
+
+### MCP manifest
+const Controlled = () => {
+    const [collapsed, setCollapsed] = useState<string[]>(['activity']);
+
+    return (
+        <DsTable
+            columns={buildColumns()}
+            data={defaultData}
+            stickyHeader
+            bordered
+            fullWidth
+            selectable
+            emptyState={<TableEmptyState />}
+            collapsedColumnGroups={collapsed}
+            onCollapsedColumnGroupsChange={setCollapsed} />
+    );
+};
+
+## With Controls
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name'
+        },
+        {
+          accessorKey: 'age',
+          cell: () => {},
+          header: 'Age'
+        }
+      ],
+      header: 'Identity',
+      id: 'identity',
+      meta: {
+        group: {
+          collapsible: true,
+          defaultCollapsed: false
+        }
+      }
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits',
+          meta: {
+            keepVisibleWhenCollapsed: true
+          }
+        },
+        {
+          accessorKey: 'status',
+          cell: () => {},
+          header: 'Status'
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Profile Progress'
+        }
+      ],
+      header: 'Activity',
+      id: 'activity',
+      meta: {
+        group: {
+          collapsible: true
+        }
+      }
+    }
+  ]}
+  controls={<DsStack alignItems="center" direction="row" justifyContent="space-between" width="100%"><DsButtonV3 size="small" variant="secondary">RED version V2</DsButtonV3><DsStack alignItems="center" direction="row" gap={8}><DsButtonV3 size="small" variant="secondary">Import RED</DsButtonV3><DsButtonV3 size="small" variant="secondary">Export RED</DsButtonV3><DsButtonV3 size="small">Actions</DsButtonV3></DsStack></DsStack>}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  selectable
+  stickyHeader
+/>
+
+### MCP manifest
+const WithControls = () => <DsTable
+    columns={buildColumns()}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    emptyState={<TableEmptyState />}
+    controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+        <DsButtonV3 variant="secondary" size="small">
+            RED version V2
+        </DsButtonV3>
+        <DsStack direction="row" gap={8} alignItems="center">
+            <DsButtonV3 variant="secondary" size="small">
+                Import RED
+            </DsButtonV3>
+            <DsButtonV3 variant="secondary" size="small">
+                Export RED
+            </DsButtonV3>
+            <DsButtonV3 size="small">Actions</DsButtonV3>
+        </DsStack>
+    </DsStack>)} />;
+
+# DsTable docs snippets
+
+## Progress as Infographic
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const WithProgressInfographic = () => <DsTable
+    columns={columns.map((col) => {
+        if ('accessorKey' in col && col.accessorKey === 'progress') {
+            return {
+                ...col,
+                header: 'Profile Progress',
+                cell: (info) => <ProgressInfographic value={info.getValue() as number} />,
+            };
+        } else if ('accessorKey' in col && col.accessorKey === 'status') {
+            return {
+                ...col,
+                header: 'Status',
+                cell: (info) => (
+                    <span
+                        className={classnames(styles.statusCell, styles[`statusCell--${info.getValue() as Status}`])}
+                    >
+                        {info.getValue() as string}
+                    </span>
+                ),
+            };
+        }
+        return col;
+    })}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()} />;
+
+## Column Hiding
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const columnsToToggle = [{
+      id: 'age',
+      label: 'Age'
+    }, {
+      id: 'visits',
+      label: 'Visits'
+    }, {
+      id: 'status',
+      label: 'Status'
+    }, {
+      id: 'progress',
+      label: 'Profile Progress'
+    }];
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      age: true,
+      visits: true,
+      status: true,
+      progress: true
+    });
+    const toggleColumn = (columnId: string) => {
+      setColumnVisibility(prev => ({
+        ...prev,
+        [columnId]: !prev[columnId]
+      }));
+    };
+    return <DsStack direction="column" gap={16}>
+                <DsStack direction="row" gap={16} flexWrap="wrap">
+                    {columnsToToggle.map(column => <DsCheckbox key={column.id} label={column.label} checked={columnVisibility[column.id]} onCheckedChange={() => toggleColumn(column.id)} />)}
+                </DsStack>
+
+                <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const ColumnHiding = () => {
+    const columnsToToggle = [
+        { id: 'age', label: 'Age' },
+        { id: 'visits', label: 'Visits' },
+        { id: 'status', label: 'Status' },
+        { id: 'progress', label: 'Profile Progress' },
+    ];
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+        age: true,
+        visits: true,
+        status: true,
+        progress: true,
+    });
+
+    const toggleColumn = (columnId: string) => {
+        setColumnVisibility((prev) => ({
+            ...prev,
+            [columnId]: !prev[columnId],
+        }));
+    };
+
+    return (
+        <DsStack direction="column" gap={16}>
+            <DsStack direction="row" gap={16} flexWrap="wrap">
+                {columnsToToggle.map((column) => (
+                    <DsCheckbox
+                        key={column.id}
+                        label={column.label}
+                        checked={columnVisibility[column.id]}
+                        onCheckedChange={() => toggleColumn(column.id)}
+                    />
+                ))}
+            </DsStack>
+            <DsTable
+                columns={columns}
+                data={defaultData}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                columnVisibility={columnVisibility}
+                onColumnVisibilityChange={setColumnVisibility} />
+        </DsStack>
+    );
+};
+
+# DsTable docs snippets
+
+## Editable
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data, setData] = useState(defaultData);
+    const statusOptions = [{
+      label: 'Single',
+      value: 'single'
+    }, {
+      label: 'Relationship',
+      value: 'relationship'
+    }, {
+      label: 'Complicated',
+      value: 'complicated'
+    }];
+    const statusLabels: Record<Status, string> = {
+      single: 'Single',
+      relationship: 'Relationship',
+      complicated: 'Complicated'
+    };
+    const progressPresets = [25, 50, 75, 100];
+    const ProgressEditor = ({
+      cellContext
+    }: {
+      cellContext: CellContext<Person, number>;
+    }) => {
+      const {
+        value,
+        setValue,
+        error
+      } = useCellEditor<Person, number>({
+        cellContext
+      });
+      return <DsFormControl hideLabel label="Profile Progress" className={editableStyles.progressEditor} status={error ? 'error' : undefined} message={error ?? undefined} messageIcon="cancel">
+                    <div className={editableStyles.presetList}>
+                        {progressPresets.map(preset => <DsTag key={preset} size="small" label={`${String(preset)}%`} onClick={() => setValue(preset)} />)}
+                    </div>
+                    <DsFormControl.NumberInput value={value} min={0} max={100} onValueChange={setValue} />
+                </DsFormControl>;
+    };
+    const columns: ColumnDef<Person>[] = [{
+      accessorKey: 'id',
+      header: 'ID',
+      size: 60,
+      cell: info => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>
+    }, {
+      accessorKey: 'firstName',
+      header: 'First Name',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+    }, {
+      accessorKey: 'lastName',
+      header: 'Last Name',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+    }, {
+      accessorKey: 'age',
+      header: 'Age',
+      size: 100,
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} max={120} />
+    }, {
+      accessorKey: 'visits',
+      header: 'Visits',
+      size: 100,
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
+      editDisabled: (info: CellContext<Person, number>) => {
+        if (info.row.original.status === 'complicated') {
+          return {
+            reason: 'Visits are locked while the status is “Complicated”.'
+          };
+        }
+        if (info.row.original.age >= 40) {
+          return true;
+        }
+        return false;
+      }
+    }, {
+      accessorKey: 'status',
+      header: 'Status',
+      size: 160,
+      cell: info => statusLabels[info.getValue() as Status],
+      editCell: (info: CellContext<Person, string>) => <DsTableEditCellSelect cellContext={info} options={statusOptions} />
+    }, {
+      accessorKey: 'progress',
+      header: 'Profile Progress',
+      cell: info => <span className={editableStyles.tagDisplay}>{`${String(info.getValue())}%`}</span>,
+      editCell: (info: CellContext<Person, number>) => <ProgressEditor cellContext={info} />
+    }];
+    return <DsTable {...args} data={data} columns={columns} selectable onRowClick={fn()} primaryRowActions={[{
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: fn()
+    }]} secondaryRowActions={[{
+      icon: 'info',
+      label: 'Details',
+      onClick: fn()
+    }]} onCellEdit={(row, columnId, value) => {
+      setData(rows => rows.map(person => person.id === row.id ? {
+        ...person,
+        [columnId]: value
+      } : person));
+    }} />;
+  }
+}
+
+### MCP manifest
+const Editable = () => {
+    const [data, setData] = useState(defaultData);
+
+    const statusOptions = [
+        { label: 'Single', value: 'single' },
+        { label: 'Relationship', value: 'relationship' },
+        { label: 'Complicated', value: 'complicated' },
+    ];
+
+    const statusLabels: Record<Status, string> = {
+        single: 'Single',
+        relationship: 'Relationship',
+        complicated: 'Complicated',
+    };
+
+    const progressPresets = [25, 50, 75, 100];
+
+    const ProgressEditor = ({ cellContext }: { cellContext: CellContext<Person, number> }) => {
+        const { value, setValue, error } = useCellEditor<Person, number>({ cellContext });
+
+        return (
+            <DsFormControl
+                hideLabel
+                label="Profile Progress"
+                className={editableStyles.progressEditor}
+                status={error ? 'error' : undefined}
+                message={error ?? undefined}
+                messageIcon="cancel"
+            >
+                <div className={editableStyles.presetList}>
+                    {progressPresets.map((preset) => (
+                        <DsTag
+                            key={preset}
+                            size="small"
+                            label={`${String(preset)}%`}
+                            onClick={() => setValue(preset)}
+                        />
+                    ))}
+                </div>
+                <DsFormControl.NumberInput value={value} min={0} max={100} onValueChange={setValue} />
+            </DsFormControl>
+        );
+    };
+
+    const columns: ColumnDef<Person>[] = [
+        {
+            accessorKey: 'id',
+            header: 'ID',
+            size: 60,
+            cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,
+        },
+        {
+            accessorKey: 'firstName',
+            header: 'First Name',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, string>) => (
+                <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+            ),
+        },
+        {
+            accessorKey: 'lastName',
+            header: 'Last Name',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, string>) => (
+                <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+            ),
+        },
+        {
+            accessorKey: 'age',
+            header: 'Age',
+            size: 100,
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, number>) => (
+                <DsTableEditCellNumber cellContext={info} min={0} max={120} />
+            ),
+        },
+        {
+            accessorKey: 'visits',
+            header: 'Visits',
+            size: 100,
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
+            editDisabled: (info: CellContext<Person, number>) => {
+                if (info.row.original.status === 'complicated') {
+                    return { reason: 'Visits are locked while the status is “Complicated”.' };
+                }
+                if (info.row.original.age >= 40) {
+                    return true;
+                }
+                return false;
+            },
+        },
+        {
+            accessorKey: 'status',
+            header: 'Status',
+            size: 160,
+            cell: (info) => statusLabels[info.getValue() as Status],
+            editCell: (info: CellContext<Person, string>) => (
+                <DsTableEditCellSelect cellContext={info} options={statusOptions} />
+            ),
+        },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => <span className={editableStyles.tagDisplay}>{`${String(info.getValue())}%`}</span>,
+            editCell: (info: CellContext<Person, number>) => <ProgressEditor cellContext={info} />,
+        },
+    ];
+
+    return (
+        <DsTable
+            stickyHeader
+            bordered
+            fullWidth
+            emptyState={<TableEmptyState />}
+            data={data}
+            columns={columns}
+            selectable
+            onRowClick={fn()}
+            primaryRowActions={[{ icon: 'delete_outline', label: 'Delete', onClick: fn() }]}
+            secondaryRowActions={[{ icon: 'info', label: 'Details', onClick: fn() }]}
+            onCellEdit={(row, columnId, value) => {
+                setData((rows) =>
+                    rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
+                );
+            }} />
+    );
+};
+
+## Live Validation
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data, setData] = useState(defaultData);
+    const personSchema = z.object({
+      firstName: z.string().trim().min(1, 'First name is required').max(50, 'Max 50 characters'),
+      lastName: z.string().trim().min(1, 'Last name is required').max(50, 'Max 50 characters')
+    });
+    const validateField = (columnId: string, value: unknown): string | null => {
+      const shape: Record<string, z.ZodTypeAny | undefined> = personSchema.shape;
+      const fieldSchema = shape[columnId];
+      if (!fieldSchema) {
+        return null;
+      }
+      const result = fieldSchema.safeParse(value);
+      return result.success ? null : result.error.issues[0]?.message ?? null;
+    };
+    const columns: ColumnDef<Person>[] = [{
+      accessorKey: 'id',
+      header: 'ID',
+      size: 60,
+      cell: info => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>
+    }, {
+      accessorKey: 'firstName',
+      header: 'First Name',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+    }, {
+      accessorKey: 'lastName',
+      header: 'Last Name',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+    }];
+    return <DsTable {...args} data={data} columns={columns} onCellValidate={(_row, columnId, value) => validateField(columnId, value)} onCellEdit={(row, columnId, value) => {
+      setData(rows => rows.map(person => person.id === row.id ? {
+        ...person,
+        [columnId]: value
+      } : person));
+    }} />;
+  }
+}
+
+### MCP manifest
+const LiveValidation = () => {
+    const [data, setData] = useState(defaultData);
+
+    const personSchema = z.object({
+        firstName: z.string().trim().min(1, 'First name is required').max(50, 'Max 50 characters'),
+        lastName: z.string().trim().min(1, 'Last name is required').max(50, 'Max 50 characters'),
+    });
+
+    const validateField = (columnId: string, value: unknown): string | null => {
+        const shape: Record<string, z.ZodTypeAny | undefined> = personSchema.shape;
+        const fieldSchema = shape[columnId];
+        if (!fieldSchema) {
+            return null;
+        }
+        const result = fieldSchema.safeParse(value);
+        return result.success ? null : (result.error.issues[0]?.message ?? null);
+    };
+
+    const columns: ColumnDef<Person>[] = [
+        {
+            accessorKey: 'id',
+            header: 'ID',
+            size: 60,
+            cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,
+        },
+        {
+            accessorKey: 'firstName',
+            header: 'First Name',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, string>) => (
+                <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+            ),
+        },
+        {
+            accessorKey: 'lastName',
+            header: 'Last Name',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, string>) => (
+                <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+            ),
+        },
+    ];
+
+    return (
+        <DsTable
+            stickyHeader
+            bordered
+            fullWidth
+            emptyState={<TableEmptyState />}
+            data={data}
+            columns={columns}
+            onCellValidate={(_row, columnId, value) => validateField(columnId, value)}
+            onCellEdit={(row, columnId, value) => {
+                setData((rows) =>
+                    rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
+                );
+            }} />
+    );
+};
+
+## Validate on Async Save
+
+### Show code
+{
+  name: 'Validate on Async Save',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data, setData] = useState(defaultData);
+    const saveFirstName = (value: string, signal: AbortSignal): Promise<string | null> => new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        const trimmed = value.trim();
+        if (trimmed.length === 0) {
+          resolve('First name is required');
+          return;
+        }
+        if (trimmed.toLowerCase() === 'taken') {
+          resolve('This name is already taken');
+          return;
+        }
+        resolve(null);
+      }, 900);
+      signal.addEventListener('abort', () => {
+        clearTimeout(timeout);
+        reject(new DOMException('Aborted', 'AbortError'));
+      });
+    });
+    const columns: ColumnDef<Person>[] = [{
+      accessorKey: 'id',
+      header: 'ID',
+      size: 60,
+      cell: info => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>
+    }, {
+      accessorKey: 'firstName',
+      header: 'First Name',
+      cell: info => info.getValue(),
+      editCell: (info: CellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+    }, {
+      accessorKey: 'lastName',
+      header: 'Last Name',
+      cell: info => info.getValue()
+    }];
+    return <DsTable {...args} data={data} columns={columns} onCellEdit={async (row, columnId, value, signal) => {
+      const error = await saveFirstName(value as string, signal);
+      if (error !== null) {
+        return error;
+      }
+      setData(rows => rows.map(person => person.id === row.id ? {
+        ...person,
+        [columnId]: value
+      } : person));
+    }} />;
+  }
+}
+
+### MCP manifest
+const ValidateOnAsyncSave = () => {
+    const [data, setData] = useState(defaultData);
+
+    const saveFirstName = (value: string, signal: AbortSignal): Promise<string | null> =>
+        new Promise((resolve, reject) => {
+            const timeout = setTimeout(() => {
+                const trimmed = value.trim();
+                if (trimmed.length === 0) {
+                    resolve('First name is required');
+                    return;
+                }
+                if (trimmed.toLowerCase() === 'taken') {
+                    resolve('This name is already taken');
+                    return;
+                }
+                resolve(null);
+            }, 900);
+
+            signal.addEventListener('abort', () => {
+                clearTimeout(timeout);
+                reject(new DOMException('Aborted', 'AbortError'));
+            });
+        });
+
+    const columns: ColumnDef<Person>[] = [
+        {
+            accessorKey: 'id',
+            header: 'ID',
+            size: 60,
+            cell: (info) => <span className={editableStyles.readOnlyCell}>{info.getValue() as string}</span>,
+        },
+        {
+            accessorKey: 'firstName',
+            header: 'First Name',
+            cell: (info) => info.getValue(),
+            editCell: (info: CellContext<Person, string>) => (
+                <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+            ),
+        },
+        {
+            accessorKey: 'lastName',
+            header: 'Last Name',
+            cell: (info) => info.getValue(),
+        },
+    ];
+
+    return (
+        <DsTable
+            stickyHeader
+            bordered
+            fullWidth
+            emptyState={<TableEmptyState />}
+            data={data}
+            columns={columns}
+            onCellEdit={async (row, columnId, value, signal) => {
+                const error = await saveFirstName(value as string, signal);
+                if (error !== null) {
+                    return error;
+                }
+                setData((rows) =>
+                    rows.map((person) => (person.id === row.id ? { ...person, [columnId]: value } : person)),
+                );
+            }} />
+    );
+};
+
+# DsTable docs snippets
+
+## Expandable
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  expandable={() => {}}
+  fullWidth
+  onRowClick={() => {}}
+  renderExpandedRow={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const Expandable = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={(row) => row.firstName !== 'Tanner'}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    renderExpandedRow={(row) => (
+        <DsStack direction="column" gap={8}>
+            <DsStack direction="column" gap={4}>
+                <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                <DsTypography variant="body-sm-reg">
+                    Full Name: {row.firstName} {row.lastName}
+                </DsTypography>
+                <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+            </DsStack>
+
+            <DsTable
+                columns={[
+                    {
+                        accessorKey: 'id',
+                        header: 'ID',
+                    },
+                    {
+                        accessorKey: 'firstName',
+                        header: 'First Name',
+                    },
+                    {
+                        accessorKey: 'lastName',
+                        header: 'Last Name',
+                    },
+                ]}
+                data={defaultData.slice(0, 3)}
+            />
+        </DsStack>
+    )} />;
+
+## Custom Expander Column Width
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  expandable
+  expandableColumnWidth={48}
+  fullWidth
+  onRowClick={() => {}}
+  renderExpandedRow={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const CustomExpanderColumnWidth = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    expandableColumnWidth={48}
+    renderExpandedRow={(row) => (
+        <DsStack direction="column" gap={4}>
+            <DsTypography variant="body-sm-reg">Details for {row.firstName}</DsTypography>
+        </DsStack>
+    )} />;
+
+## Programmatic Expansion
+
+### Show code
+{
+  args: {
+    data: defaultData.slice(0, 5),
+    expandable: row => row.firstName !== 'Tanner',
+    renderExpandedRow: row => <DsStack direction="column" gap={4}>
+                <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                <DsTypography variant="body-sm-reg">
+                    Full Name: {row.firstName} {row.lastName}
+                </DsTypography>
+                <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+            </DsStack>
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    const [expandedRows, setExpandedRows] = useState<string[]>([]);
+    const expandRow = (rowId: string) => {
+      tableRef.current?.expandRow(rowId);
+      setExpandedRows(prev => prev.includes(rowId) ? prev : [...prev, rowId]);
+    };
+    const expandAllRows = () => {
+      tableRef.current?.expandAllRows();
+      const expandableRowIds = defaultData.slice(0, 5).filter(row => row.firstName !== 'Tanner').map(row => row.id);
+      setExpandedRows(expandableRowIds);
+    };
+    const collapseAllRows = () => {
+      tableRef.current?.collapseAllRows();
+      setExpandedRows([]);
+    };
+    const expandFirstThreeRows = () => {
+      const firstThreeIds = ['2', '3', '4'];
+      tableRef.current?.expandRows(firstThreeIds);
+      setExpandedRows(firstThreeIds);
+    };
+    return <DsStack direction="column" gap={16}>
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
+                </DsTypography>
+
+                <DsStack direction="row" gap={8} flexWrap="wrap">
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('2')}>
+                        Expand Kevin
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('3')}>
+                        Expand John
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('4')}>
+                        Expand Jane
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={expandAllRows}>
+                        Expand All
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={collapseAllRows}>
+                        Collapse All
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={expandFirstThreeRows}>
+                        Expand First 3 Expandable
+                    </DsButtonV3>
+                </DsStack>
+
+                <DsTable {...args} ref={tableRef} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const ProgrammaticExpansion = () => {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    const [expandedRows, setExpandedRows] = useState<string[]>([]);
+
+    const expandRow = (rowId: string) => {
+        tableRef.current?.expandRow(rowId);
+        setExpandedRows((prev) => (prev.includes(rowId) ? prev : [...prev, rowId]));
+    };
+
+    const expandAllRows = () => {
+        tableRef.current?.expandAllRows();
+        const expandableRowIds = defaultData
+            .slice(0, 5)
+            .filter((row) => row.firstName !== 'Tanner')
+            .map((row) => row.id);
+        setExpandedRows(expandableRowIds);
+    };
+
+    const collapseAllRows = () => {
+        tableRef.current?.collapseAllRows();
+        setExpandedRows([]);
+    };
+
+    const expandFirstThreeRows = () => {
+        const firstThreeIds = ['2', '3', '4'];
+        tableRef.current?.expandRows(firstThreeIds);
+        setExpandedRows(firstThreeIds);
+    };
+
+    return (
+        <DsStack direction="column" gap={16}>
+            <DsTypography variant="body-sm-reg" color="secondary">Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
+            </DsTypography>
+            <DsStack direction="row" gap={8} flexWrap="wrap">
+                <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('2')}>Expand Kevin
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('3')}>Expand John
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('4')}>Expand Jane
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={expandAllRows}>Expand All
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={collapseAllRows}>Collapse All
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={expandFirstThreeRows}>Expand First 3 Expandable
+                                        </DsButtonV3>
+            </DsStack>
+            <DsTable
+                columns={columns}
+                data={defaultData.slice(0, 5)}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={(row) => row.firstName !== 'Tanner'}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                renderExpandedRow={(row) => (
+                    <DsStack direction="column" gap={4}>
+                        <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                        <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                        <DsTypography variant="body-sm-reg">
+                            Full Name: {row.firstName} {row.lastName}
+                        </DsTypography>
+                        <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+                    </DsStack>
+                )}
+                ref={tableRef} />
+        </DsStack>
+    );
+};
+
+# DsTable docs snippets
+
+## Per-Column — Popover
+
+### Show code
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+    DsTable,
+    DsTagFilter,
+    createCheckboxFilterAdapter,
+    useTableFilters,
+} from '@drivenets/design-system';
+
+type DeviceRow = {
+    id: string;
+    name: string;
+    type: 'PP-LGX' | 'ME10' | 'OLT';
+    site: string;
+    status: 'active' | 'warning' | 'failed';
+};
+
+const typeOptions = [
+    { value: 'PP-LGX' as const, label: 'PP-LGX' },
+    { value: 'ME10' as const, label: 'ME10' },
+    { value: 'OLT' as const, label: 'OLT' },
+];
+
+const siteOptions = [
+    { value: 'NYC-DC1', label: 'NYC-DC1' },
+    { value: 'LON-DC2', label: 'LON-DC2' },
+    { value: 'SFO-DC3', label: 'SFO-DC3' },
+];
+
+const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
+    id: 'type',
+    label: 'Type',
+    items: typeOptions,
+    searchable: true,
+    selectAll: true,
+});
+
+const siteFilter = createCheckboxFilterAdapter<DeviceRow>({
+    id: 'site',
+    label: 'Site',
+    items: siteOptions,
+    searchable: true,
+    selectAll: true,
+});
+
+const columns: ColumnDef<DeviceRow>[] = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
+    { id: 'site', accessorKey: 'site', header: 'Site', meta: { filter: { adapterId: 'site' } } },
+    { id: 'status', accessorKey: 'status', header: 'Status' },
+];
+
+function DevicesTable({ rows }: { rows: DeviceRow[] }) {
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: [typeFilter, siteFilter],
+        baseColumns: columns,
+    });
+
+    return (
+        <>
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </>
+    );
+}
+
+### MCP manifest
+const ColumnFilters = function Render() {
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: adapters,
+        baseColumns,
+    });
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </DsStack>
+    );
+};
+
+## Per-Column — Controlled
+
+### Show code
+import { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+    DsTable,
+    DsTagFilter,
+    type CheckboxFilterItem,
+    type FilterState,
+    createCheckboxFilterAdapter,
+    useTableFilters,
+} from '@drivenets/design-system';
+
+type DeviceRow = {
+    id: string;
+    name: string;
+    type: 'PP-LGX' | 'ME10' | 'OLT';
+    site: string;
+};
+
+const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
+    id: 'type',
+    label: 'Type',
+    items: [
+        { value: 'PP-LGX', label: 'PP-LGX' },
+        { value: 'ME10', label: 'ME10' },
+        { value: 'OLT', label: 'OLT' },
+    ],
+    searchable: true,
+    selectAll: true,
+});
+
+const columns: ColumnDef<DeviceRow>[] = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
+    { id: 'site', accessorKey: 'site', header: 'Site' },
+];
+
+function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
+    // Source of truth lives outside the hook (URL, server, parent store, etc.).
+    const [appliedFilters, setAppliedFilters] = useState<FilterState<CheckboxFilterItem[]>>({
+        type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
+    });
+
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: [typeFilter],
+        baseColumns: columns,
+        appliedFilters,
+        onFiltersChange: setAppliedFilters,
+    });
+
+    return (
+        <>
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </>
+    );
+}
+
+### MCP manifest
+const ControlledColumnFilters = function Render() {
+    const [appliedFilters, setAppliedFilters] = useState<FilterState<CheckboxFilterItem[]>>({
+        type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
+    });
+
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: adapters,
+        baseColumns,
+        appliedFilters,
+        onFiltersChange: setAppliedFilters,
+    });
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </DsStack>
+    );
+};
+
+# DsTable docs snippets
+
+## Loading
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  loading
+  stickyHeader
+/>
+
+### MCP manifest
+const Loading = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />}
+    loading />;
+
+## Custom Loading Cell
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      loadingCell: () => {}
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  loading
+  stickyHeader
+/>
+
+### MCP manifest
+const CustomLoadingCell = () => <DsTable
+    columns={loadingColumns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />}
+    loading />;
+
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    data={defaultData}
+    columns={columns}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Fixed And Fill
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 200
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 200
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 120
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      enableResizing: false,
+      header: 'Visits',
+      size: 120
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const FixedAndFill = () => <DsTable
+    data={defaultData}
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 120 },
+        {
+            accessorKey: 'visits',
+            header: 'Visits',
+            cell: (info) => info.getValue(),
+            enableResizing: false,
+            size: 120,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },
+    ]}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Grouped Columns
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          maxSize: 280,
+          minSize: 80
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name'
+        }
+      ],
+      header: 'Identity',
+      id: 'identity'
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits'
+        },
+        {
+          accessorKey: 'status',
+          cell: () => {},
+          header: 'Status'
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Progress'
+        }
+      ],
+      header: 'Activity',
+      id: 'activity'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const GroupedColumns = () => <DsTable
+    data={defaultData}
+    columns={[
+        {
+            id: 'identity',
+            header: 'Identity',
+            columns: [
+                {
+                    accessorKey: 'firstName',
+                    header: 'First Name',
+                    cell: (info) => info.getValue<string>(),
+                    minSize: 80,
+                    maxSize: 280,
+                },
+                {
+                    accessorKey: 'lastName',
+                    header: 'Last Name',
+                    cell: (info) => info.getValue<string>(),
+                },
+            ],
+        },
+        {
+            id: 'activity',
+            header: 'Activity',
+            columns: [
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>() },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue<string>() },
+                {
+                    accessorKey: 'progress',
+                    header: 'Progress',
+                    cell: (info) => `${String(info.getValue<number>())}%`,
+                },
+            ],
+        },
+    ]}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Min And Max Size
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      maxSize: 280,
+      minSize: 80,
+      size: 200
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      minSize: 120,
+      size: 200
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      maxSize: 180,
+      size: 120
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 120
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const MinAndMaxSize = () => <DsTable
+    data={defaultData}
+    columns={[
+        {
+            accessorKey: 'firstName',
+            header: 'First Name',
+            cell: (info) => info.getValue(),
+            size: 200,
+            minSize: 80,
+            maxSize: 280,
+        },
+        {
+            accessorKey: 'lastName',
+            header: 'Last Name',
+            cell: (info) => info.getValue(),
+            size: 200,
+            minSize: 120,
+        },
+        {
+            accessorKey: 'age',
+            header: 'Age',
+            cell: (info) => info.getValue(),
+            size: 120,
+            maxSize: 180,
+        },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 120 },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },
+    ]}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Persisted widths
+
+### Show code
+{
+  name: 'Persisted widths',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';
+    const [tableKey, setTableKey] = useState(0);
+    let persistedWidths: Record<string, number>;
+    try {
+      persistedWidths = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;
+    } catch {
+      persistedWidths = {};
+    }
+    return <DsStack direction="column" gap={16} width="100%">
+                <DsStack direction="column" gap={8}>
+                    <DsTypography variant="heading4">Persisted widths</DsTypography>
+                    <DsTypography variant="body-sm-reg" color="secondary">
+                        Persist the map from onColumnSizingChange, then pass it back as the columnSizing prop on the next
+                        mount to restore widths — no need to stamp columnDef.size. Columns absent from the map are
+                        measured automatically. Resize a column, refresh the story, and the widths come back. Reset stored
+                        widths remounts from the default layout.
+                    </DsTypography>
+                </DsStack>
+
+                <DsStack direction="row">
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => {
+          localStorage.removeItem(STORAGE_KEY);
+          setTableKey(key => key + 1);
+        }}>
+                        Reset stored widths
+                    </DsButtonV3>
+                </DsStack>
+
+                <DsTable {...args} key={tableKey} columnSizing={persistedWidths} onColumnSizingChange={columnSizing => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(columnSizing));
+      }} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const PersistedWidths = () => {
+    const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';
+    const [tableKey, setTableKey] = useState(0);
+
+    let persistedWidths: Record<string, number>;
+    try {
+        persistedWidths = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;
+    } catch {
+        persistedWidths = {};
+    }
+
+    return (
+        <DsStack direction="column" gap={16} width="100%">
+            <DsStack direction="column" gap={8}>
+                <DsTypography variant="heading4">Persisted widths</DsTypography>
+                <DsTypography variant="body-sm-reg" color="secondary">Persist the map from onColumnSizingChange, then pass it back as the columnSizing prop on the next
+                                            mount to restore widths — no need to stamp columnDef.size. Columns absent from the map are
+                                            measured automatically. Resize a column, refresh the story, and the widths come back. Reset stored
+                                            widths remounts from the default layout.
+                                        </DsTypography>
+            </DsStack>
+            <DsStack direction="row">
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => {
+                        localStorage.removeItem(STORAGE_KEY);
+                        setTableKey((key) => key + 1);
+                    }}>Reset stored widths
+                                        </DsButtonV3>
+            </DsStack>
+            <DsTable
+                data={defaultData}
+                columns={columns}
+                resizableColumns
+                stickyHeader
+                bordered
+                fullWidth
+                emptyState={<TableEmptyState />}
+                key={tableKey}
+                columnSizing={persistedWidths}
+                onColumnSizingChange={(columnSizing) => {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(columnSizing));
+                }} />
+        </DsStack>
+    );
+};
+
+# DsTable docs snippets
+
+## Reorderable
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onOrderChange={() => {}}
+  onRowClick={() => {}}
+  reorderable
+  stickyHeader
+/>
+
+### MCP manifest
+const Reorderable = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    reorderable
+    onOrderChange={fn()} />;
+
+## Custom Reorder Column Width
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onOrderChange={() => {}}
+  onRowClick={() => {}}
+  reorderable
+  reorderableColumnWidth={80}
+  stickyHeader
+/>
+
+### MCP manifest
+const CustomReorderColumnWidth = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    reorderable
+    reorderableColumnWidth={80}
+    onOrderChange={fn()} />;
+
+## With Row Actions
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  primaryRowActions={[
+    {
+      icon: 'edit',
+      label: 'Edit',
+      onClick: () => {}
+    },
+    {
+      disabled: () => {},
+      icon: 'open_in_new',
+      label: 'Open in New Window',
+      onClick: () => {}
+    }
+  ]}
+  secondaryRowActions={[
+    {
+      className: '_destructiveAction_12uvr_138',
+      disabled: () => {},
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {},
+      tooltip: 'Delete this row'
+    },
+    {
+      icon: 'info',
+      label: 'Details',
+      onClick: () => {},
+      tooltip: 'Show details'
+    },
+    {
+      icon: 'call',
+      label: () => {},
+      onClick: () => {}
+    }
+  ]}
+  stickyHeader
+/>
+
+### MCP manifest
+const WithRowActions = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    primaryRowActions={[
+        {
+            icon: 'edit',
+            label: 'Edit',
+            onClick: editClickHandler,
+        },
+        {
+            icon: 'open_in_new',
+            label: 'Open in New Window',
+            disabled: (data) => data.firstName === 'Tanner',
+            onClick: openInNewWindowClickHandler,
+        },
+    ]}
+    secondaryRowActions={[
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            tooltip: 'Delete this row',
+            disabled: (data) => data.status === 'single',
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: 'info',
+            label: 'Details',
+            tooltip: 'Show details',
+            onClick: fn(),
+        },
+        {
+            icon: 'call',
+            label: (row) => `Call ${row.firstName}`,
+            onClick: fn(),
+        },
+    ]} />;
+
+## With Conditionally Hidden Actions
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  primaryRowActions={[
+    {
+      icon: 'edit',
+      label: 'Edit',
+      onClick: () => {}
+    },
+    {
+      hidden: () => {},
+      icon: 'open_in_new',
+      label: 'Open in New Window',
+      onClick: () => {}
+    }
+  ]}
+  secondaryRowActions={[
+    {
+      hidden: () => {},
+      icon: 'check_circle',
+      label: 'Approve',
+      onClick: () => {}
+    },
+    {
+      hidden: () => {},
+      icon: 'inventory_2',
+      label: 'Archive',
+      onClick: () => {}
+    },
+    {
+      className: '_destructiveAction_12uvr_138',
+      hidden: () => {},
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {}
+    },
+    {
+      icon: 'info',
+      label: 'Details',
+      onClick: () => {}
+    }
+  ]}
+  stickyHeader
+/>
+
+### MCP manifest
+const WithConditionallyHiddenActions = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    primaryRowActions={[
+        {
+            icon: 'edit',
+            label: 'Edit',
+            onClick: fn(),
+        },
+        {
+            icon: 'open_in_new',
+            label: 'Open in New Window',
+            // hidden on 'complicated' rows (e.g. cannot open a record in a bad state)
+            hidden: (data) => data.status === 'complicated',
+            onClick: fn(),
+        },
+    ]}
+    secondaryRowActions={[
+        {
+            icon: 'check_circle',
+            label: 'Approve',
+            // only shown on 'single' rows (pending approval)
+            hidden: (data) => data.status !== 'single',
+            onClick: fn(),
+        },
+        {
+            icon: 'inventory_2',
+            label: 'Archive',
+            // only shown on 'relationship' rows (live records)
+            hidden: (data) => data.status !== 'relationship',
+            onClick: fn(),
+        },
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            // hidden on 'relationship' rows (cannot delete live records)
+            hidden: (data) => data.status === 'relationship',
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: 'info',
+            label: 'Details',
+            onClick: fn(),
+        },
+    ]} />;
+
+## With Conditionally Disabled Actions
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  primaryRowActions={[
+    {
+      icon: 'edit',
+      label: 'Edit',
+      onClick: () => {}
+    },
+    {
+      disabled: () => {},
+      icon: 'open_in_new',
+      label: 'Open in New Window',
+      onClick: () => {}
+    }
+  ]}
+  secondaryRowActions={[
+    {
+      className: '_destructiveAction_12uvr_138',
+      disabled: () => {},
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {},
+      tooltip: 'Delete this row'
+    },
+    {
+      icon: 'info',
+      label: 'Details',
+      onClick: () => {},
+      tooltip: 'Show details'
+    }
+  ]}
+  stickyHeader
+/>
+
+### MCP manifest
+const WithConditionallyDisabledActions = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    primaryRowActions={[
+        {
+            icon: 'edit',
+            label: 'Edit',
+            onClick: fn(),
+        },
+        {
+            icon: 'open_in_new',
+            label: 'Open in New Window',
+            // disabled on Tanner's row (item stays visible but greyed out)
+            disabled: (data) => data.firstName === 'Tanner',
+            onClick: fn(),
+        },
+    ]}
+    secondaryRowActions={[
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            tooltip: 'Delete this row',
+            // disabled on 'single' rows (destructive action guarded)
+            disabled: (data) => data.status === 'single',
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: 'info',
+            label: 'Details',
+            tooltip: 'Show details',
+            onClick: fn(),
+        },
+    ]} />;
+
+## With Bulk Actions
+
+### Show code
+<DsTable
+  actions={[
+    {
+      icon: 'alarm',
+      label: 'Notify',
+      onClick: () => {}
+    },
+    {
+      icon: 'folder_open',
+      label: 'Folder',
+      onClick: () => {}
+    },
+    {
+      icon: 'delete_outline',
+      label: 'Delete',
+      onClick: () => {}
+    }
+  ]}
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  selectable
+  stickyHeader
+/>
+
+### MCP manifest
+const WithBulkActions = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    selectable
+    actions={[
+        {
+            icon: 'alarm',
+            label: 'Notify',
+            onClick: fn(),
+        },
+        {
+            icon: 'folder_open',
+            label: 'Folder',
+            onClick: fn(),
+        },
+        {
+            icon: 'delete_outline',
+            label: 'Delete',
+            onClick: fn(),
+        },
+    ]} />;
+
+# DsTable docs snippets
+
+## Selectable
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  onSelectionChange={() => {}}
+  selectable
+  stickyHeader
+/>
+
+### MCP manifest
+const Selectable = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    selectable
+    onSelectionChange={fn()} />;
+
+## Custom Select Column Width
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  onSelectionChange={() => {}}
+  selectable
+  selectableColumnWidth={48}
+  stickyHeader
+/>
+
+### MCP manifest
+const CustomSelectColumnWidth = () => <DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    selectable
+    selectableColumnWidth={48}
+    onSelectionChange={fn()} />;
+
+## Programmatic Row Selection
+
+### Show code
+{
+  args: {
+    selectable: true,
+    showSelectAllCheckbox: false,
+    stickyHeader: true,
+    onSelectionChange: fn()
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+    const handleSelectionChange = (selection: Record<string, boolean>) => {
+      setSelectedRows(Object.keys(selection));
+    };
+    return <DsStack direction="column" gap={16}>
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Selected rows: {selectedRows.length > 0 ? selectedRows.join(', ') : 'None'}
+                </DsTypography>
+
+                <DsStack direction="row" gap={8} flexWrap="wrap">
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRow('1')}>
+                        Select Row 1
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRow('2')}>
+                        Select Row 2
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRow('3')}>
+                        Select Row 3
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectAllRows()}>
+                        Select All
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.deselectAllRows()}>
+                        Deselect All
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRows(['1', '2', '3'])}>
+                        Select First 3 Rows
+                    </DsButtonV3>
+                </DsStack>
+
+                <DsTable {...args} ref={tableRef} onSelectionChange={handleSelectionChange} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const ProgrammaticRowSelection = () => {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+    const handleSelectionChange = (selection: Record<string, boolean>) => {
+        setSelectedRows(Object.keys(selection));
+    };
+
+    return (
+        <DsStack direction="column" gap={16}>
+            <DsTypography variant="body-sm-reg" color="secondary">Selected rows: {selectedRows.length > 0 ? selectedRows.join(', ') : 'None'}
+            </DsTypography>
+            <DsStack direction="row" gap={8} flexWrap="wrap">
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => tableRef.current?.selectRow('1')}>Select Row 1
+                                        </DsButtonV3>
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => tableRef.current?.selectRow('2')}>Select Row 2
+                                        </DsButtonV3>
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => tableRef.current?.selectRow('3')}>Select Row 3
+                                        </DsButtonV3>
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => tableRef.current?.selectAllRows()}>Select All
+                                        </DsButtonV3>
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => tableRef.current?.deselectAllRows()}>Deselect All
+                                        </DsButtonV3>
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => tableRef.current?.selectRows(['1', '2', '3'])}>Select First 3 Rows
+                                        </DsButtonV3>
+            </DsStack>
+            <DsTable
+                columns={columns}
+                data={defaultData}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                selectable
+                showSelectAllCheckbox={false}
+                ref={tableRef}
+                onSelectionChange={handleSelectionChange} />
+        </DsStack>
+    );
+};
+
+## Max N Selections
+
+### Show code
+{
+  name: 'Max N Selections',
+  args: {
+    showSelectAllCheckbox: false,
+    onSelectionChange: fn()
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+    const maxSelections = 2;
+    const selectedCount = Object.keys(rowSelection).filter(id => rowSelection[id]).length;
+    const handleSelectionChange = (selection: Record<string, boolean>) => {
+      setRowSelection(selection);
+      args.onSelectionChange?.(selection);
+    };
+    return <DsStack direction="column" gap={16}>
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Selected: {selectedCount} / {maxSelections}
+                </DsTypography>
+
+                <DsTable {...args} onSelectionChange={handleSelectionChange} selectable={rowData => rowSelection[rowData.id] || selectedCount < maxSelections} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const MaxSelectionLimit = () => {
+    const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+    const maxSelections = 2;
+
+    const selectedCount = Object.keys(rowSelection).filter((id) => rowSelection[id]).length;
+
+    const handleSelectionChange = (selection: Record<string, boolean>) => {
+        setRowSelection(selection);
+        args.onSelectionChange?.(selection);
+    };
+
+    return (
+        <DsStack direction="column" gap={16}>
+            <DsTypography variant="body-sm-reg" color="secondary">Selected: {selectedCount}/ {maxSelections}
+            </DsTypography>
+            <DsTable
+                columns={columns}
+                data={defaultData}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                showSelectAllCheckbox={false}
+                onSelectionChange={handleSelectionChange}
+                selectable={(rowData) => rowSelection[rowData.id] || selectedCount < maxSelections} />
+        </DsStack>
+    );
+};
+
+# DsTable docs snippets
+
+## Empty State
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+  virtualized
+/>
+
+### MCP manifest
+const EmptyState = () => <DsTable
+    columns={columns}
+    data={[]}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    virtualized />;
+
+## Virtualized Selectable Table
+
+### Show code
+{
+  name: 'Virtualized Selectable Table',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const {
+      data: infiniteQueryData,
+      fetchNextPage,
+      isFetching,
+      isLoading
+    } = useInfiniteQuery({
+      queryKey: ['people', sorting],
+      queryFn: async ({
+        pageParam
+      }) => {
+        const start = pageParam * pageSize;
+        return await fetchData(start, pageSize, sorting);
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      placeholderData: keepPreviousData
+    }, queryClient);
+    const flatData = useMemo(() => infiniteQueryData?.pages.flatMap(page => page.data) ?? [], [infiniteQueryData]);
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={flatData} onSortingChange={setSorting} virtualized={true} infiniteScroll={{
+        hasMore,
+        isLoadingMore: isFetching,
+        onLoadMore: fetchNextPage
+      }} />
+                {isLoading && <div className={styles.loadingOverlay}>
+                        <DsStack direction="column" gap={8} alignItems="center">
+                            <DsSpinner size="small" />
+                            <DsTypography variant="body-sm-reg" color="secondary">
+                                Loading data...
+                            </DsTypography>
+                        </DsStack>
+                    </div>}
+            </div>;
+  },
+  args: {
+    selectable: true,
+    columns: columns.map(col => {
+      if ('accessorKey' in col && col.accessorKey === 'age') {
+        return {
+          ...col,
+          size: 100
+        };
+      }
+      return col;
+    }),
+    onScroll: fn()
+  }
+}
+
+### MCP manifest
+const VirtualizedSelectable = () => {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+
+    const {
+        data: infiniteQueryData,
+        fetchNextPage,
+        isFetching,
+        isLoading,
+    } = useInfiniteQuery(
+        {
+            queryKey: ['people', sorting],
+            queryFn: async ({ pageParam }) => {
+                const start = pageParam * pageSize;
+                return await fetchData(start, pageSize, sorting);
+            },
+            initialPageParam: 0,
+            getNextPageParam: (_lastGroup, groups) => groups.length,
+            placeholderData: keepPreviousData,
+        },
+        queryClient,
+    );
+
+    const flatData = useMemo(
+        () => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+        [infiniteQueryData],
+    );
+
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns.map((col) => {
+                    if ('accessorKey' in col && col.accessorKey === 'age') {
+                        return {
+                            ...col,
+                            size: 100,
+                        };
+                    }
+                    return col;
+                })}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                selectable
+                onScroll={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }} />
+            {isLoading && (
+                <div className={styles.loadingOverlay}>
+                    <DsStack direction="column" gap={8} alignItems="center">
+                        <DsSpinner size="small" />
+                        <DsTypography variant="body-sm-reg" color="secondary">
+                            Loading data...
+                        </DsTypography>
+                    </DsStack>
+                </div>
+            )}
+        </div>
+    );
+};
+
+## Virtualized Expandable Table
+
+### Show code
+{
+  name: 'Virtualized Expandable Table',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const {
+      data: infiniteQueryData,
+      fetchNextPage,
+      isFetching,
+      isLoading
+    } = useInfiniteQuery({
+      queryKey: ['people-expandable', sorting],
+      queryFn: async ({
+        pageParam
+      }) => {
+        const start = pageParam * pageSize;
+        return await fetchData(start, pageSize, sorting);
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      placeholderData: keepPreviousData
+    }, queryClient);
+    const flatData = useMemo(() => infiniteQueryData?.pages.flatMap(page => page.data) ?? [], [infiniteQueryData]);
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={flatData} onSortingChange={setSorting} virtualized={true} expandable={true} infiniteScroll={{
+        hasMore,
+        isLoadingMore: isFetching,
+        onLoadMore: fetchNextPage
+      }} renderExpandedRow={row => <DsStack direction="column" gap={8}>
+                            <DsStack direction="column" gap={4}>
+                                <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                                <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                                <DsTypography variant="body-sm-reg">
+                                    Full Name: {row.firstName} {row.lastName}
+                                </DsTypography>
+                                <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+                            </DsStack>
+
+                            <DsTable columns={[{
+          accessorKey: 'id',
+          header: 'ID'
+        }, {
+          accessorKey: 'firstName',
+          header: 'First Name'
+        }, {
+          accessorKey: 'lastName',
+          header: 'Last Name'
+        }]} data={defaultData.slice(0, 3)} />
+                        </DsStack>} />
+                {isLoading && <div className={styles.loadingOverlay}>
+                        <DsStack direction="column" gap={8} alignItems="center">
+                            <DsSpinner size="small" />
+                            <DsTypography variant="body-sm-reg" color="secondary">
+                                Loading data...
+                            </DsTypography>
+                        </DsStack>
+                    </div>}
+            </div>;
+  },
+  args: {
+    columns: columns.map(col => {
+      if ('accessorKey' in col && col.accessorKey === 'age') {
+        return {
+          ...col,
+          size: 100
+        };
+      }
+      return col;
+    }),
+    onScroll: fn()
+  }
+}
+
+### MCP manifest
+const VirtualizedExpandable = () => {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+
+    const {
+        data: infiniteQueryData,
+        fetchNextPage,
+        isFetching,
+        isLoading,
+    } = useInfiniteQuery(
+        {
+            queryKey: ['people-expandable', sorting],
+            queryFn: async ({ pageParam }) => {
+                const start = pageParam * pageSize;
+                return await fetchData(start, pageSize, sorting);
+            },
+            initialPageParam: 0,
+            getNextPageParam: (_lastGroup, groups) => groups.length,
+            placeholderData: keepPreviousData,
+        },
+        queryClient,
+    );
+
+    const flatData = useMemo(
+        () => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+        [infiniteQueryData],
+    );
+
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns.map((col) => {
+                    if ('accessorKey' in col && col.accessorKey === 'age') {
+                        return {
+                            ...col,
+                            size: 100,
+                        };
+                    }
+                    return col;
+                })}
+                stickyHeader
+                bordered
+                fullWidth
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                onScroll={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                expandable={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }}
+                renderExpandedRow={(row) => (
+                    <DsStack direction="column" gap={8}>
+                        <DsStack direction="column" gap={4}>
+                            <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                            <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                            <DsTypography variant="body-sm-reg">
+                                Full Name: {row.firstName} {row.lastName}
+                            </DsTypography>
+                            <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+                        </DsStack>
+
+                        <DsTable
+                            columns={[
+                                {
+                                    accessorKey: 'id',
+                                    header: 'ID',
+                                },
+                                {
+                                    accessorKey: 'firstName',
+                                    header: 'First Name',
+                                },
+                                {
+                                    accessorKey: 'lastName',
+                                    header: 'Last Name',
+                                },
+                            ]}
+                            data={defaultData.slice(0, 3)}
+                        />
+                    </DsStack>
+                )} />
+            {isLoading && (
+                <div className={styles.loadingOverlay}>
+                    <DsStack direction="column" gap={8} alignItems="center">
+                        <DsSpinner size="small" />
+                        <DsTypography variant="body-sm-reg" color="secondary">
+                            Loading data...
+                        </DsTypography>
+                    </DsStack>
+                </div>
+            )}
+        </div>
+    );
+};
+
+## Virtualized Infinite Scroll
+
+### Show code
+{
+  name: 'Virtualized Infinite Scroll',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const pageSize = 5;
+    const totalRows = 60;
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const {
+      data: infiniteQueryData,
+      fetchNextPage,
+      isFetching
+    } = useInfiniteQuery({
+      queryKey: ['people-autofill', sorting],
+      queryFn: async ({
+        pageParam
+      }) => {
+        const start = pageParam * pageSize;
+        return await fetchData(start, pageSize, sorting, totalRows);
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      placeholderData: keepPreviousData
+    }, queryClient);
+    const flatData = useMemo(() => infiniteQueryData?.pages.flatMap(page => page.data) ?? [], [infiniteQueryData]);
+    const fetchedTotal = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? totalRows;
+    const hasMore = flatData.length < fetchedTotal;
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={flatData} onSortingChange={setSorting} virtualized={true} infiniteScroll={{
+        hasMore,
+        isLoadingMore: isFetching,
+        onLoadMore: fetchNextPage
+      }} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const InfiniteScroll = () => {
+    const pageSize = 5;
+    const totalRows = 60;
+    const [sorting, setSorting] = useState<SortingState>([]);
+
+    const {
+        data: infiniteQueryData,
+        fetchNextPage,
+        isFetching,
+    } = useInfiniteQuery(
+        {
+            queryKey: ['people-autofill', sorting],
+            queryFn: async ({ pageParam }) => {
+                const start = pageParam * pageSize;
+                return await fetchData(start, pageSize, sorting, totalRows);
+            },
+            initialPageParam: 0,
+            getNextPageParam: (_lastGroup, groups) => groups.length,
+            placeholderData: keepPreviousData,
+        },
+        queryClient,
+    );
+
+    const flatData = useMemo(
+        () => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+        [infiniteQueryData],
+    );
+
+    const fetchedTotal = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? totalRows;
+    const hasMore = flatData.length < fetchedTotal;
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }} />
+        </div>
+    );
+};
+
+## Virtualized Editable Table
+
+### Show code
+{
+  name: 'Virtualized Editable Table',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={data} columns={editableColumns} virtualized onCellEdit={(row: Person, columnId, value) => {
+        setData(rows => updateRow(rows, row.id, columnId as keyof Person, value as never));
+      }} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const VirtualizedEditable = () => {
+    const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                data={data}
+                columns={editableColumns}
+                virtualized
+                onCellEdit={(row: Person, columnId, value) => {
+                    setData((rows) => updateRow(rows, row.id, columnId as keyof Person, value as never));
+                }} />
+        </div>
+    );
+};
+
+## Virtualized With Controls
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <DsTable {...args} data={data} virtualized />;
+  },
+  args: {
+    controls: <DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+                <DsButtonV3 variant="secondary" size="small">
+                    RED version V2
+                </DsButtonV3>
+                <DsStack direction="row" gap={8} alignItems="center">
+                    <DsButtonV3 variant="secondary" size="small">
+                        Import RED
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small">
+                        Export RED
+                    </DsButtonV3>
+                    <DsButtonV3 size="small">Actions</DsButtonV3>
+                </DsStack>
+            </DsStack>
+  }
+}
+
+### MCP manifest
+const VirtualizedWithControls = () => {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <DsTable
+            columns={columns}
+            stickyHeader
+            bordered
+            fullWidth
+            expandable={false}
+            emptyState={<TableEmptyState />}
+            onRowClick={fn()}
+            controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+                <DsButtonV3 variant="secondary" size="small">
+					RED version V2
+				</DsButtonV3>
+                <DsStack direction="row" gap={8} alignItems="center">
+					<DsButtonV3 variant="secondary" size="small">
+						Import RED
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small">
+						Export RED
+					</DsButtonV3>
+					<DsButtonV3 size="small">Actions</DsButtonV3>
+				</DsStack>
+            </DsStack>)}
+            data={data}
+            virtualized />
+    );
+};
+
+## Virtualized Resizable Columns
+
+### Show code
+{
+  name: 'Virtualized Resizable Columns',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={data} />
+            </div>;
+  },
+  args: {
+    virtualized: true,
+    resizableColumns: true
+  }
+}
+
+### MCP manifest
+const VirtualizedResizable = () => {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                virtualized
+                resizableColumns
+                data={data} />
+        </div>
+    );
+};

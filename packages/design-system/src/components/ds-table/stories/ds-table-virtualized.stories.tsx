@@ -12,6 +12,7 @@ import {
 import { DsSpinner } from '../../ds-spinner';
 import { DsStack } from '../../ds-stack';
 import { DsButtonV3 } from '../../ds-button-v3';
+import { DsTypography } from '../../ds-typography';
 import { generatePersonData, simulateApiCall } from './common/story-data-generator';
 import styles from './ds-table.stories.module.scss';
 import editableStyles from './ds-table-editable.stories.module.scss';
@@ -33,12 +34,12 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		fullWidth: true,
 		expandable: false,
 		emptyState: <TableEmptyState />,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		onRowClick: fn(),
 	},
 	decorators: [
 		(Story) =>
 			fullHeightDecorator(() => (
-				<div style={{ height: '700px', minHeight: '100%' }}>
+				<div className={styles.virtualizedStoryHeight}>
 					<Story />
 				</div>
 			)),
@@ -69,8 +70,17 @@ export const EmptyState: Story = {
 	},
 };
 
+/**
+ * Row virtualization with selection, backed by TanStack Query infinite scroll.
+ * Keep the flattened pages in `data`, wire `infiniteScroll` to the query's
+ * `fetchNextPage` / loading flags, and the table renders only visible rows —
+ * performant even for very large datasets.
+ */
 export const VirtualizedSelectable: Story = {
 	name: 'Virtualized Selectable Table',
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
 	render: function Render(args) {
 		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
@@ -103,39 +113,28 @@ export const VirtualizedSelectable: Story = {
 		const hasMore = flatData.length < totalRows;
 
 		return (
-			<div className={styles.virtualizedDemoContainer}>
-				<div className={styles.virtualizedDemoHeader}>
-					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Table Demo</h4>
-					<p className={styles.virtualizedDemoHeader__description}>
-						This table uses infinite query to fetch data as you scroll, making it performant even with large
-						datasets. Try scrolling to see the data loading!
-					</p>
-					<p className={styles.virtualizedDemoHeader__stats}>
-						({flatData.length} of {totalRows} rows fetched)
-					</p>
-				</div>
-
-				<div className={styles.virtualizedTableWrapper}>
-					<DsTable
-						{...args}
-						data={flatData}
-						onSortingChange={setSorting}
-						virtualized={true}
-						infiniteScroll={{
-							hasMore,
-							isLoadingMore: isFetching,
-							onLoadMore: fetchNextPage,
-						}}
-					/>
-					{isLoading && (
-						<div className={styles.loadingOverlay}>
-							<div className={styles.loadingContent}>
-								<DsSpinner size="small" />
-								<span className={styles.loadingText}>Loading data...</span>
-							</div>
-						</div>
-					)}
-				</div>
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable
+					{...args}
+					data={flatData}
+					onSortingChange={setSorting}
+					virtualized={true}
+					infiniteScroll={{
+						hasMore,
+						isLoadingMore: isFetching,
+						onLoadMore: fetchNextPage,
+					}}
+				/>
+				{isLoading && (
+					<div className={styles.loadingOverlay}>
+						<DsStack direction="column" gap={8} alignItems="center">
+							<DsSpinner size="small" />
+							<DsTypography variant="body-sm-reg" color="secondary">
+								Loading data...
+							</DsTypography>
+						</DsStack>
+					</div>
+				)}
 			</div>
 		);
 	},
@@ -154,8 +153,15 @@ export const VirtualizedSelectable: Story = {
 	},
 };
 
+/**
+ * Combine row virtualization with expandable rows. `renderExpandedRow` supplies
+ * the detail content for each expanded row while the body stays virtualized.
+ */
 export const VirtualizedExpandable: Story = {
 	name: 'Virtualized Expandable Table',
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
 	render: function Render(args) {
 		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
@@ -188,70 +194,59 @@ export const VirtualizedExpandable: Story = {
 		const hasMore = flatData.length < totalRows;
 
 		return (
-			<div className={styles.virtualizedDemoContainer}>
-				<div className={styles.virtualizedDemoHeader}>
-					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Table with Expandable Rows</h4>
-					<p className={styles.virtualizedDemoHeader__description}>
-						This table combines virtualization for large datasets with expandable rows. Click the chevron to
-						expand rows and see additional details.
-					</p>
-					<p className={styles.virtualizedDemoHeader__stats}>
-						({flatData.length} of {totalRows} rows fetched)
-					</p>
-				</div>
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable
+					{...args}
+					data={flatData}
+					onSortingChange={setSorting}
+					virtualized={true}
+					expandable={true}
+					infiniteScroll={{
+						hasMore,
+						isLoadingMore: isFetching,
+						onLoadMore: fetchNextPage,
+					}}
+					renderExpandedRow={(row) => (
+						<DsStack direction="column" gap={8}>
+							<DsStack direction="column" gap={4}>
+								<DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+								<DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+								<DsTypography variant="body-sm-reg">
+									Full Name: {row.firstName} {row.lastName}
+								</DsTypography>
+								<DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+							</DsStack>
 
-				<div className={styles.virtualizedTableWrapper}>
-					<DsTable
-						{...args}
-						data={flatData}
-						onSortingChange={setSorting}
-						virtualized={true}
-						expandable={true}
-						infiniteScroll={{
-							hasMore,
-							isLoadingMore: isFetching,
-							onLoadMore: fetchNextPage,
-						}}
-						renderExpandedRow={(row) => (
-							<>
-								<div className={styles.expandedRowDetails}>
-									<h4>Expanded Details for {row.firstName}</h4>
-									<p>ID: {row.id}</p>
-									<p>
-										Full Name: {row.firstName} {row.lastName}
-									</p>
-									<p>Status: {row.status}</p>
-								</div>
-
-								<DsTable
-									columns={[
-										{
-											accessorKey: 'id',
-											header: 'ID',
-										},
-										{
-											accessorKey: 'firstName',
-											header: 'First Name',
-										},
-										{
-											accessorKey: 'lastName',
-											header: 'Last Name',
-										},
-									]}
-									data={defaultData.slice(0, 3)}
-								/>
-							</>
-						)}
-					/>
-					{isLoading && (
-						<div className={styles.loadingOverlay}>
-							<div className={styles.loadingContent}>
-								<DsSpinner size="small" />
-								<span className={styles.loadingText}>Loading data...</span>
-							</div>
-						</div>
+							<DsTable
+								columns={[
+									{
+										accessorKey: 'id',
+										header: 'ID',
+									},
+									{
+										accessorKey: 'firstName',
+										header: 'First Name',
+									},
+									{
+										accessorKey: 'lastName',
+										header: 'Last Name',
+									},
+								]}
+								data={defaultData.slice(0, 3)}
+							/>
+						</DsStack>
 					)}
-				</div>
+				/>
+				{isLoading && (
+					<div className={styles.loadingOverlay}>
+						<DsStack direction="column" gap={8} alignItems="center">
+							<DsSpinner size="small" />
+							<DsTypography variant="body-sm-reg" color="secondary">
+								Loading data...
+							</DsTypography>
+						</DsStack>
+					</div>
+				)}
 			</div>
 		);
 	},
@@ -269,8 +264,17 @@ export const VirtualizedExpandable: Story = {
 	},
 };
 
+/**
+ * When the first page returns too few rows to fill the viewport, `autoFill`
+ * (on by default) keeps requesting pages until the content becomes scrollable,
+ * so infinite scroll can take over. Wire `infiniteScroll` to your query's
+ * `fetchNextPage` and loading flags.
+ */
 export const InfiniteScroll: Story = {
 	name: 'Virtualized Infinite Scroll',
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
 	render: function Render(args) {
 		const pageSize = 5;
 		const totalRows = 60;
@@ -303,32 +307,18 @@ export const InfiniteScroll: Story = {
 		const hasMore = flatData.length < fetchedTotal;
 
 		return (
-			<div className={styles.virtualizedDemoContainer}>
-				<div className={styles.virtualizedDemoHeader}>
-					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Infinite Scroll</h4>
-					<p className={styles.virtualizedDemoHeader__description}>
-						The first page only returns {pageSize} rows - too few to fill the viewport. With{' '}
-						<code>autoFill: true</code> (the default), the Table keeps requesting pages until the content
-						becomes scrollable.
-					</p>
-					<p className={styles.virtualizedDemoHeader__stats}>
-						({flatData.length} of {fetchedTotal} rows fetched)
-					</p>
-				</div>
-
-				<div className={styles.virtualizedTableWrapper}>
-					<DsTable
-						{...args}
-						data={flatData}
-						onSortingChange={setSorting}
-						virtualized={true}
-						infiniteScroll={{
-							hasMore,
-							isLoadingMore: isFetching,
-							onLoadMore: fetchNextPage,
-						}}
-					/>
-				</div>
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable
+					{...args}
+					data={flatData}
+					onSortingChange={setSorting}
+					virtualized={true}
+					infiniteScroll={{
+						hasMore,
+						isLoadingMore: isFetching,
+						onLoadMore: fetchNextPage,
+					}}
+				/>
 			</div>
 		);
 	},
@@ -414,54 +404,42 @@ const editableColumns: ColumnDef<Person>[] = [
 	},
 ];
 
+/**
+ * Inline editing works with row virtualization for large datasets. Scroll
+ * through thousands of rows and double-click any editable cell to edit in place;
+ * `onCellEdit` reports the row, column, and new value to persist.
+ */
 export const VirtualizedEditable: Story = {
 	name: 'Virtualized Editable Table',
 	parameters: {
-		docs: {
-			description: {
-				story:
-					'Editable cells work with row virtualization for large datasets. Scroll through thousands of rows and double-click any editable cell to edit in place.',
-			},
-		},
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
 		return (
-			<div className={styles.virtualizedDemoContainer}>
-				<div className={styles.virtualizedDemoHeader}>
-					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Editable Table</h4>
-					<p className={styles.virtualizedDemoHeader__description}>
-						Inline editing with row virtualization. Scroll through {VIRTUALIZED_ROW_COUNT.toLocaleString()}{' '}
-						rows and double-click a cell to edit in place.
-					</p>
-					<p className={styles.virtualizedDemoHeader__stats}>({data.length.toLocaleString()} rows loaded)</p>
-				</div>
-
-				<div className={styles.virtualizedTableWrapper}>
-					<DsTable
-						{...args}
-						data={data}
-						columns={editableColumns}
-						virtualized
-						onCellEdit={(row: Person, columnId, value) => {
-							setData((rows) => updateRow(rows, row.id, columnId as keyof Person, value as never));
-						}}
-					/>
-				</div>
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable
+					{...args}
+					data={data}
+					columns={editableColumns}
+					virtualized
+					onCellEdit={(row: Person, columnId, value) => {
+						setData((rows) => updateRow(rows, row.id, columnId as keyof Person, value as never));
+					}}
+				/>
 			</div>
 		);
 	},
 };
 
+/**
+ * The pinned `controls` bar stays fixed above the header while the virtualized
+ * body scrolls through a large dataset.
+ */
 export const VirtualizedWithControls: Story = {
 	parameters: {
-		docs: {
-			description: {
-				story:
-					'The pinned controls bar stays fixed above the header while the virtualized body scrolls through a large dataset.',
-			},
-		},
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
@@ -496,31 +474,14 @@ export const VirtualizedWithControls: Story = {
 export const VirtualizedResizable: Story = {
 	name: 'Virtualized Resizable Columns',
 	parameters: {
-		docs: {
-			source: { type: 'code' },
-			description: {
-				story:
-					'Column resize works with row virtualization. Scroll through a large dataset and drag a header edge to resize; widths apply to virtualized rows. Double-click a handle to restore the snapshotted width.',
-			},
-		},
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
 		return (
-			<div className={styles.virtualizedDemoContainer}>
-				<div className={styles.virtualizedDemoHeader}>
-					<h4 className={styles.virtualizedDemoHeader__title}>Virtualized Resizable Columns</h4>
-					<p className={styles.virtualizedDemoHeader__description}>
-						Row virtualization with column resize. Scroll through {VIRTUALIZED_ROW_COUNT.toLocaleString()}{' '}
-						rows and drag a header edge to resize.
-					</p>
-					<p className={styles.virtualizedDemoHeader__stats}>({data.length.toLocaleString()} rows loaded)</p>
-				</div>
-
-				<div className={styles.virtualizedTableWrapper}>
-					<DsTable {...args} data={data} />
-				</div>
+			<div className={styles.virtualizedTableWrapper}>
+				<DsTable {...args} data={data} />
 			</div>
 		);
 	},
