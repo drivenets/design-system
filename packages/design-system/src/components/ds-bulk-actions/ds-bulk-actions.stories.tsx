@@ -23,6 +23,7 @@ const meta: Meta<typeof DsBulkActions> = {
 	component: DsBulkActions,
 	parameters: {
 		layout: 'centered',
+		docs: { source: { type: 'dynamic' } },
 	},
 	args: {
 		selectedCount: 3,
@@ -65,10 +66,6 @@ export const Default: Story = {
 export const Floating: Story = {
 	parameters: {
 		layout: 'padded',
-		// A decorator adds a render layer that makes the async dynamic Show-code
-		// snippet racy in the production build, so `auto` can fall back to the raw
-		// CSF object. Pin to dynamic for a stable, clean JSX snippet.
-		docs: { source: { type: 'dynamic' } },
 	},
 	args: {
 		placement: 'floating',
@@ -215,9 +212,6 @@ export const MenuAction: Story = {
 export const NestedMenu: Story = {
 	parameters: {
 		layout: 'padded',
-		// Decorator-wrapped story: pin dynamic Show code so `auto` can't fall back
-		// to the raw CSF object under CI load (see Floating).
-		docs: { source: { type: 'dynamic' } },
 	},
 	args: {
 		placement: 'floating',
