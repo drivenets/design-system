@@ -104,6 +104,10 @@ _Avoid_: group column (as if it were a sized leaf)
 A table column with no nested children; the unit of column sizing and of a resize.
 _Avoid_: child column, nested column
 
+**Header label**:
+The text in a **Leaf column** or **Column group** header cell.
+_Avoid_: column title, header caption
+
 **Utility column**:
 A table-injected **Leaf column** (`select`, `expander`, or `reorder`) that is not in the consumer `columns` array.
 _Avoid_: builtin column, synthetic column, feature column
@@ -138,6 +142,7 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 - **Left side panel** pushes layout; **Right side panel** overlays **Content area** via `DsDrawer` (no symmetric right layout slot)
 - **Workspace layout mode** is opt-in: `Body` with `SideMenu` / `LeftPanel` adds horizontal chrome; `Content` always applies content-area spacing
 - A **Column group** contains one or more **Leaf columns**; dragging its **Resize handle** changes those leaves’ widths, not a separate group size
+- A **Header label** that does not fit its cell is shown as a single-line ellipsis; the full string is available while truncated
 - A **Utility column** is a **Leaf column**; the table injects it when select, expand, or reorder is on
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
@@ -166,6 +171,9 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 
 > **Dev:** "When I make the expander column wider, does that also size the nested details columns?"
 > **Domain expert:** "No — that width belongs to the expander **Utility column**. Nested details are consumer **Leaf columns**."
+
+> **Dev:** "Should a long column title wrap onto two lines in the header?"
+> **Domain expert:** "No — that's a **Header label**. It stays one line with an ellipsis; don't call it a column title."
 
 ## Flagged ambiguities
 
