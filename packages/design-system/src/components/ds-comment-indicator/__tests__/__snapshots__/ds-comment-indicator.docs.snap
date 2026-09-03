@@ -1,0 +1,39 @@
+# DsCommentIndicator docs snippets
+
+## Default
+
+### Show code
+<DsCommentIndicator
+  avatarSrc="https://i.pravatar.cc/40?img=1"
+  onClick={() => {}}
+  type="default"
+/>
+
+### MCP manifest
+const Default = () => <DsCommentIndicator onClick={fn()} type="default" avatarSrc="https://i.pravatar.cc/40?img=1" />;
+
+## Placeholder
+
+### Show code
+<DsCommentIndicator
+  onClick={() => {}}
+  type="placeholder"
+/>
+
+### MCP manifest
+const Placeholder = () => <DsCommentIndicator onClick={fn()} type="placeholder" />;
+
+## Action Required
+
+### Show code
+<DsCommentIndicator
+  avatarSrc="https://i.pravatar.cc/40?img=2"
+  onClick={() => {}}
+  type="action-required"
+/>
+
+### MCP manifest
+const ActionRequired = () => <DsCommentIndicator
+    onClick={fn()}
+    type="action-required"
+    avatarSrc="https://i.pravatar.cc/40?img=2" />;
