@@ -5,6 +5,7 @@ import { useDsTableContext } from '../../context/ds-table-context';
 import { getGroupColumnSizeStyle } from '../../grouping';
 import { getResizableHeaderStyle } from '../../utils/column-size';
 import { defaultDsTableLocale } from '../../ds-table.types';
+import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import type { DsTableGroupHeaderCellProps } from './ds-table-group-header-cell.types';
 import styles from './ds-table-group-header-cell.module.scss';
@@ -29,6 +30,8 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 	const toggleLabel = isCollapsed ? mergedLocale.expandColumnGroup : mergedLocale.collapseColumnGroup;
 
 	const handleToggle = () => onToggleColumnGroup?.(groupId);
+	const headerDef = header.column.columnDef.header;
+	const tooltipText = typeof headerDef === 'string' ? headerDef : undefined;
 
 	return (
 		<TableHead
@@ -38,9 +41,9 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 			colSpan={header.colSpan}
 		>
 			<div className={styles.groupHeaderContent}>
-				<span className={styles.groupLabel}>
-					{flexRender(header.column.columnDef.header, header.getContext())}
-				</span>
+				<DsTableHeaderLabel tooltipText={tooltipText}>
+					{flexRender(headerDef, header.getContext())}
+				</DsTableHeaderLabel>
 				{isCollapsible && (
 					<DsButtonV3
 						variant="secondary"

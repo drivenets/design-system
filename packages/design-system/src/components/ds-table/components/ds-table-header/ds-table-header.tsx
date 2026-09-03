@@ -12,6 +12,7 @@ import { DsStack } from '../../../ds-stack';
 import { DsTableColumnFilterPopover } from '../../filters/components/column-filter-popover';
 import type { ResolvedColumnFilter } from '../../filters/types/filter-adapter.types';
 import { DsTableGroupHeaderCell } from '../ds-table-group-header-cell';
+import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 
@@ -59,6 +60,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 							!!resizeSizingReady,
 						);
 						const canSort = header.column.getCanSort();
+						const sortDirection = header.column.getIsSorted();
 						const canResize = resizableColumns && header.column.getCanResize();
 						const isSelectColumn = header.column.id === SELECT_COLUMN_ID;
 						const isGroupStart = isFirstLeafColumnOfGroup(header.column);
@@ -67,6 +69,8 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 						const resolvedFilter: ResolvedColumnFilter | undefined =
 							metaFilter && 'render' in metaFilter ? metaFilter : undefined;
 						const hasActiveColumnFilter = resolvedFilter?.hasActiveFilter ?? false;
+						const headerDef = header.column.columnDef.header;
+						const tooltipText = typeof headerDef === 'string' ? headerDef : undefined;
 
 						return (
 							<TableHead
@@ -90,28 +94,16 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 										width="100%"
 										className={styles.headerLabelStack}
 									>
-										<span className={styles.headerLabel}>
-											{flexRender(header.column.columnDef.header, header.getContext())}
-										</span>
+										<DsTableHeaderLabel tooltipText={tooltipText}>
+											{flexRender(headerDef, header.getContext())}
+										</DsTableHeaderLabel>
 									</DsStack>
-									{canSort && (
+									{canSort && sortDirection && (
 										<div className={styles.pageButtonIconContainer}>
-											{{
-												asc: (
-													<DsIcon
-														icon="arrow_drop_up"
-														className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
-													/>
-												),
-												desc: (
-													<DsIcon
-														icon="arrow_drop_down"
-														className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
-													/>
-												),
-											}[header.column.getIsSorted() as string] ?? (
-												<div className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)} />
-											)}
+											<DsIcon
+												icon={sortDirection === 'asc' ? 'arrow_drop_up' : 'arrow_drop_down'}
+												className={classnames(styles.pageButtonIcon, stylesShared.pageButtonIcon)}
+											/>
 										</div>
 									)}
 									{resolvedFilter && (
