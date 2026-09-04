@@ -1,0 +1,39 @@
+# DsSkeleton.Rect docs snippets
+
+## Card Skeleton
+
+### Show code
+{
+  render: () => <DsStack direction="column" gap="var(--standard)" width="400px">
+            <DsStack gap="var(--standard)" alignItems="flex-start">
+                <DsSkeleton.Circle size="lg" />
+                <DsStack direction="column" gap="var(--sm)" flex="1">
+                    <DsSkeleton.Text typographyVariant="heading4" width="60%" />
+                    <DsSkeleton.Text typographyVariant="body-sm-reg" width="80%" />
+                </DsStack>
+            </DsStack>
+            <DsSkeleton.Text typographyVariant="body-md-reg" lines={3} />
+            <DsStack gap="var(--sm)">
+                <DsSkeleton.Rect width={100} height={36} radius={4} />
+                <DsSkeleton.Rect width={100} height={36} radius={4} />
+            </DsStack>
+        </DsStack>
+}
+
+### MCP manifest
+const CardSkeleton = () => (
+    <DsStack direction="column" gap="var(--standard)" width="400px">
+        <DsStack gap="var(--standard)" alignItems="flex-start">
+            <DsSkeleton.Circle size="lg" />
+            <DsStack direction="column" gap="var(--sm)" flex="1">
+                <DsSkeleton.Text typographyVariant="heading4" width="60%" />
+                <DsSkeleton.Text typographyVariant="body-sm-reg" width="80%" />
+            </DsStack>
+        </DsStack>
+        <DsSkeleton.Text typographyVariant="body-md-reg" lines={3} />
+        <DsStack gap="var(--sm)">
+            <DsSkeleton.Rect width={100} height={36} radius={4} />
+            <DsSkeleton.Rect width={100} height={36} radius={4} />
+        </DsStack>
+    </DsStack>
+);

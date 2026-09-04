@@ -1,0 +1,57 @@
+# DsProgressArc docs snippets
+
+## Default
+
+### Show code
+<DsProgressArc value={50} />
+
+### MCP manifest
+const Default = () => <DsProgressArc value={50} />;
+
+## Success
+
+### Show code
+<DsProgressArc variant="success" />
+
+### MCP manifest
+const Success = () => <DsProgressArc variant="success" />;
+
+## Error
+
+### Show code
+<DsProgressArc
+  value={50}
+  variant="error"
+/>
+
+### MCP manifest
+const Error = () => <DsProgressArc variant="error" value={50} />;
+
+## Custom Icon
+
+### Show code
+<DsProgressArc value={80}>
+  <DsIcon
+    icon="warning"
+    size="small"
+  />
+</DsProgressArc>
+
+### MCP manifest
+const CustomIcon = () => <DsProgressArc value={80}><DsIcon icon="warning" size="small" /></DsProgressArc>;
+
+## Zero Progress
+
+### Show code
+<DsProgressArc value={0} />
+
+### MCP manifest
+const ZeroProgress = () => <DsProgressArc value={0} />;
+
+## Full Progress
+
+### Show code
+<DsProgressArc value={100} />
+
+### MCP manifest
+const FullProgress = () => <DsProgressArc value={100} />;

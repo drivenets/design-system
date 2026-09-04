@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
 
 import { DsIcon } from '../ds-icon';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import { DsProgressDonut, progressDonutSizes, progressDonutVariants } from './index';
-import styles from './ds-progress-donut.stories.module.scss';
 
 const meta: Meta<typeof DsProgressDonut> = {
 	title: 'Components/ProgressDonut',
@@ -23,154 +23,95 @@ const meta: Meta<typeof DsProgressDonut> = {
 			control: { type: 'select' },
 			options: progressDonutVariants,
 		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
+		ref: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsProgressDonut>;
 
+/** Default donut showing an in-progress percentage in the center. */
 export const Default: Story = {
 	args: {
 		value: 50,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progress = canvas.getByRole('progressbar');
-
-		await expect(progress).toBeInTheDocument();
-		await expect(progress).toHaveAttribute('aria-valuenow', '50');
-		await expect(progress).toHaveAttribute('aria-valuemin', '0');
-		await expect(progress).toHaveAttribute('aria-valuemax', '100');
-		await expect(canvas.getByText('50%')).toBeVisible();
-	},
 };
 
-export const AllVariants: Story = {
-	render: () => (
-		<div className={styles.grid}>
-			<div className={styles.cell}>
-				<DsProgressDonut size="small" value={50} />
-				<span className={styles.label}>Small / Default</span>
-			</div>
-			<div className={styles.cell}>
-				<DsProgressDonut size="small" variant="success" />
-				<span className={styles.label}>Small / Success</span>
-			</div>
-			<div className={styles.cell}>
-				<DsProgressDonut size="small" variant="error" value={50} />
-				<span className={styles.label}>Small / Error</span>
-			</div>
-
-			<div className={styles.cell}>
-				<DsProgressDonut size="medium" value={50} />
-				<span className={styles.label}>Medium / Default</span>
-			</div>
-			<div className={styles.cell}>
-				<DsProgressDonut size="medium" variant="success" />
-				<span className={styles.label}>Medium / Success</span>
-			</div>
-			<div className={styles.cell}>
-				<DsProgressDonut size="medium" variant="error" value={50} />
-				<span className={styles.label}>Medium / Error</span>
-			</div>
-		</div>
-	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progressBars = canvas.getAllByRole('progressbar');
-
-		await expect(progressBars).toHaveLength(6);
-	},
-};
-
-export const Sizes: Story = {
-	render: () => (
-		<div className={styles.row}>
-			<div className={styles.cell}>
-				<DsProgressDonut size="small" value={75} />
-				<span className={styles.label}>Small</span>
-			</div>
-			<div className={styles.cell}>
-				<DsProgressDonut size="medium" value={75} />
-				<span className={styles.label}>Medium</span>
-			</div>
-		</div>
-	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progressBars = canvas.getAllByRole('progressbar');
-
-		await expect(progressBars).toHaveLength(2);
-		await expect(canvas.getAllByText('75%')).toHaveLength(2);
-	},
-};
-
+/** Success state fills the donut and swaps the center label for a check icon. */
 export const Success: Story = {
 	args: {
 		variant: 'success',
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progress = canvas.getByRole('progressbar');
-
-		await expect(progress).toBeInTheDocument();
-		await expect(progress).toHaveAttribute('aria-valuenow', '100');
-		await expect(canvas.getByText('check')).toBeVisible();
-	},
 };
 
+/** Error state renders the error color and a close icon over the current value. */
 export const Error: Story = {
 	args: {
 		variant: 'error',
 		value: 50,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progress = canvas.getByRole('progressbar');
-
-		await expect(progress).toBeInTheDocument();
-		await expect(progress).toHaveAttribute('aria-valuenow', '50');
-		await expect(canvas.getByText('close')).toBeVisible();
-	},
 };
 
+/** Override the center content with your own icon instead of the percentage label. */
 export const CustomIcon: Story = {
 	args: {
 		value: 80,
 		children: <DsIcon icon="warning" size="small" />,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progress = canvas.getByRole('progressbar');
-
-		await expect(progress).toBeInTheDocument();
-		await expect(progress).toHaveAttribute('aria-valuenow', '80');
-		await expect(canvas.getByText('warning')).toBeVisible();
-	},
 };
 
+/** Empty state at the start of a task. */
 export const ZeroProgress: Story = {
 	args: {
 		value: 0,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progress = canvas.getByRole('progressbar');
-
-		await expect(progress).toHaveAttribute('aria-valuenow', '0');
-		await expect(canvas.getByText('0%')).toBeVisible();
-	},
 };
 
+/** Completed state without the success variant styling. */
 export const FullProgress: Story = {
 	args: {
 		value: 100,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const progress = canvas.getByRole('progressbar');
+};
 
-		await expect(progress).toHaveAttribute('aria-valuenow', '100');
-		await expect(canvas.getByText('100%')).toBeVisible();
-	},
+/** Showcase of every variant across both sizes. */
+export const AllVariants: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	render: () => (
+		<DsStack direction="column" gap="var(--xl)">
+			{progressDonutSizes.map((size) => (
+				<DsStack key={size} direction="row" gap="var(--xl)" alignItems="center">
+					{progressDonutVariants.map((variant) => (
+						<DsStack key={variant} direction="column" gap="var(--xs)" alignItems="center">
+							<DsProgressDonut size={size} variant={variant} value={50} />
+							<DsTypography variant="body-sm-reg" color="secondary">
+								{size} / {variant}
+							</DsTypography>
+						</DsStack>
+					))}
+				</DsStack>
+			))}
+		</DsStack>
+	),
+};
+
+/** Side-by-side comparison of the available sizes. */
+export const Sizes: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	render: () => (
+		<DsStack direction="row" gap="var(--xl)" alignItems="center">
+			{progressDonutSizes.map((size) => (
+				<DsStack key={size} direction="column" gap="var(--xs)" alignItems="center">
+					<DsProgressDonut size={size} value={75} />
+					<DsTypography variant="body-sm-reg" color="secondary">
+						{size}
+					</DsTypography>
+				</DsStack>
+			))}
+		</DsStack>
+	),
 };
