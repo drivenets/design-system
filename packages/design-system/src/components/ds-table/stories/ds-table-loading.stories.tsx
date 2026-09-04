@@ -17,7 +17,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		layout: 'fullscreen',
 	},
 	args: {
-		columns: loadingColumns,
+		columns,
 		data: defaultData,
 		stickyHeader: true,
 		bordered: true,
@@ -30,8 +30,24 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
+/**
+ * Set `loading` to render skeleton rows. Each cell falls back to a default
+ * skeleton bar sized to its column.
+ */
 export const Loading: Story = {
 	args: {
 		loading: true,
+	},
+};
+
+/**
+ * Provide a per-column `loadingCell` to control the skeleton shown while
+ * `loading` is true — here the first column renders a circular skeleton instead
+ * of the default bar.
+ */
+export const CustomLoadingCell: Story = {
+	args: {
+		loading: true,
+		columns: loadingColumns,
 	},
 };
