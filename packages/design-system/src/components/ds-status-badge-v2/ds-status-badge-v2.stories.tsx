@@ -9,6 +9,7 @@ import {
 import { phaseIconMap } from './phase-config';
 import { DsIcon } from '../ds-icon';
 import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import styles from './ds-status-badge-v2.stories.module.scss';
 
 const phaseLabels: Record<StatusBadgeV2Phase, string> = {
@@ -75,10 +76,12 @@ export const Default: Story = {
 };
 
 export const AllPhases: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<DsStack direction="column" gap="var(--xl)">
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Primary — Medium</div>
+				<DsTypography variant="body-sm-semi-bold">Primary — Medium</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2 phase="not-started" label={phaseLabels['not-started']} />
 					<DsStatusBadgeV2 phase="temporary" label={phaseLabels.temporary} />
@@ -94,7 +97,7 @@ export const AllPhases: Story = {
 			</DsStack>
 
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Primary — Small</div>
+				<DsTypography variant="body-sm-semi-bold">Primary — Small</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2 phase="not-started" label={phaseLabels['not-started']} size="small" />
 					<DsStatusBadgeV2 phase="temporary" label={phaseLabels.temporary} size="small" />
@@ -110,7 +113,7 @@ export const AllPhases: Story = {
 			</DsStack>
 
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Secondary — Medium</div>
+				<DsTypography variant="body-sm-semi-bold">Secondary — Medium</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2 phase="not-started" label={phaseLabels['not-started']} variant="secondary" />
 					<DsStatusBadgeV2 phase="temporary" label={phaseLabels.temporary} variant="secondary" />
@@ -130,7 +133,7 @@ export const AllPhases: Story = {
 			</DsStack>
 
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Secondary — Small</div>
+				<DsTypography variant="body-sm-semi-bold">Secondary — Small</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2
 						phase="not-started"
@@ -179,10 +182,12 @@ export const AllPhases: Story = {
 };
 
 export const IconOnly: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<DsStack direction="column" gap="var(--xl)">
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Icon-only (hover for tooltip)</div>
+				<DsTypography variant="body-sm-semi-bold">Icon-only (hover for tooltip)</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2 phase="not-started" label={phaseLabels['not-started']} iconOnly />
 					<DsStatusBadgeV2 phase="temporary" label={phaseLabels.temporary} iconOnly />
@@ -198,7 +203,7 @@ export const IconOnly: Story = {
 			</DsStack>
 
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Icon-only — Small</div>
+				<DsTypography variant="body-sm-semi-bold">Icon-only — Small</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2 phase="not-started" label={phaseLabels['not-started']} iconOnly size="small" />
 					<DsStatusBadgeV2 phase="temporary" label={phaseLabels.temporary} iconOnly size="small" />
@@ -224,7 +229,7 @@ export const IconOnly: Story = {
 			</DsStack>
 
 			<DsStack direction="column" gap="var(--xs)">
-				<div className={styles.sectionTitle}>Icon-only Secondary</div>
+				<DsTypography variant="body-sm-semi-bold">Icon-only Secondary</DsTypography>
 				<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 					<DsStatusBadgeV2
 						phase="not-started"
@@ -263,9 +268,11 @@ export const IconOnly: Story = {
 };
 
 export const TextOnly: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<DsStack direction="column" gap="var(--xs)">
-			<div className={styles.sectionTitle}>Text-only (icon=null)</div>
+			<DsTypography variant="body-sm-semi-bold">Text-only (icon=null)</DsTypography>
 			<DsStack direction="row" flexWrap="wrap" gap="var(--standard)" alignItems="center">
 				<DsStatusBadgeV2 phase="not-started" label={phaseLabels['not-started']} icon={null} />
 				<DsStatusBadgeV2 phase="temporary" label={phaseLabels.temporary} icon={null} />
@@ -296,15 +303,25 @@ const phaseExamples: Record<StatusBadgeV2Phase, string> = {
 };
 
 export const PhaseReference: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<DsStack direction="column" gap="var(--xs)">
 			<table className={styles.docsTable}>
 				<thead>
 					<tr>
-						<th>Phase</th>
-						<th>Badge</th>
-						<th>Icon</th>
-						<th>Example Domain Statuses</th>
+						<th>
+							<DsTypography variant="body-sm-semi-bold">Phase</DsTypography>
+						</th>
+						<th>
+							<DsTypography variant="body-sm-semi-bold">Badge</DsTypography>
+						</th>
+						<th>
+							<DsTypography variant="body-sm-semi-bold">Icon</DsTypography>
+						</th>
+						<th>
+							<DsTypography variant="body-sm-semi-bold">Example Domain Statuses</DsTypography>
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -435,7 +452,8 @@ export const PhaseReference: Story = {
 };
 
 export const ResponsiveSize: Story = {
-	parameters: { layout: 'centered' },
+	tags: ['!manifest'],
+	parameters: { layout: 'centered', docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<DsStack direction="row" gap="var(--sm)" alignItems="center" flexWrap="wrap">
 			<DsStatusBadgeV2 phase="active" label="lg: medium / md: small" size={{ lg: 'medium', md: 'small' }} />

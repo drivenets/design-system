@@ -45,6 +45,23 @@ export interface DsTooltipProps {
 	 */
 	disabled?: boolean;
 	/**
+	 * When true, content is pointer-reachable and the tooltip stays open while the
+	 * pointer is over it. Pair with a non-zero `closeDelay` (e.g. 150) so the pointer
+	 * can travel from the trigger onto the content; `0` can lose that handoff.
+	 * @default false
+	 */
+	interactive?: boolean;
+	/**
+	 * Milliseconds after pointer enter or focus before the tooltip opens.
+	 * @default 200
+	 */
+	openDelay?: number;
+	/**
+	 * Milliseconds after pointer leave before the tooltip closes.
+	 * @default 0
+	 */
+	closeDelay?: number;
+	/**
 	 * Anchors the tooltip to a virtual rect instead of the trigger, re-evaluated on
 	 * each reposition. Return `null` to fall back to the trigger.
 	 */

@@ -1,6 +1,14 @@
 import type { Preview } from '@storybook/react-vite';
+import { addons } from 'storybook/preview-api';
 import '../src/styles/styles.scss';
+import { registerStoryChunkReload } from './chunk-reload';
 import { lightTheme } from './themes';
+
+if (import.meta.env.PROD) {
+	void addons.ready().then((channel) => {
+		registerStoryChunkReload({ channel });
+	});
+}
 
 const preview: Preview = {
 	tags: ['autodocs'],

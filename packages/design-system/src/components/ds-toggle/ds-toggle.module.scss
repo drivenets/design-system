@@ -144,6 +144,24 @@
 		pointer-events: none;
 	}
 
+	// Overlay the native input over the control so `getByRole('checkbox')` clicks
+	// land on a real interactive surface. Ark applies `visuallyHiddenStyle` inline
+	// (1x1, clipped, off-screen) which Playwright refuses to click; `!important`
+	// is required to beat inline-style specificity.
+	.hiddenInput {
+		position: absolute !important;
+		inset-block-start: 0 !important;
+		inset-inline-start: 0 !important;
+		width: calc(var(--switch-track-width) + var(--thumb-gap) * 2) !important;
+		height: calc(var(--thumb-size) + var(--thumb-gap) * 2) !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		clip: auto !important;
+		overflow: visible !important;
+		opacity: 0 !important;
+		cursor: pointer !important;
+	}
+
 	.iconCheck {
 		left: var(--icon-spacing);
 	}

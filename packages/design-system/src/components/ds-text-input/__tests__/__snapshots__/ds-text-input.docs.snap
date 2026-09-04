@@ -1,0 +1,269 @@
+# DsTextInput docs snippets
+
+## Default
+
+### Show code
+<DsTextInput placeholder="Enter text..." />
+
+### MCP manifest
+const Default = () => <DsTextInput placeholder="Enter text..." />;
+
+## Small
+
+### Show code
+<DsTextInput
+  placeholder="Small input..."
+  size="small"
+/>
+
+### MCP manifest
+const Small = () => <DsTextInput size="small" placeholder="Small input..." />;
+
+## Large
+
+### Show code
+<DsTextInput
+  placeholder="Large input..."
+  size="large"
+/>
+
+### MCP manifest
+const Large = () => <DsTextInput size="large" placeholder="Large input..." />;
+
+## With Value
+
+### Show code
+<DsTextInput
+  placeholder="Enter text..."
+  value="Hello World"
+/>
+
+### MCP manifest
+const WithValue = () => <DsTextInput value="Hello World" placeholder="Enter text..." />;
+
+## Disabled
+
+### Show code
+<DsTextInput
+  disabled
+  placeholder="Disabled input"
+/>
+
+### MCP manifest
+const Disabled = () => <DsTextInput placeholder="Disabled input" disabled />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('initial value');
+    return <DsStack direction="column" gap="var(--sm)" alignItems="center">
+                <DsTextInput placeholder="Controlled input" value={value} onValueChange={setValue} />
+                <DsStack gap="var(--2xs)">
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('updated value')}>
+                        Update value
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
+                        Clear value
+                    </DsButtonV3>
+                </DsStack>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState('initial value');
+
+    return (
+        <DsStack direction="column" gap="var(--sm)" alignItems="center">
+            <DsTextInput placeholder="Controlled input" value={value} onValueChange={setValue} />
+            <DsStack gap="var(--2xs)">
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('updated value')}>
+                    Update value
+                </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setValue('')}>
+                    Clear value
+                </DsButtonV3>
+            </DsStack>
+        </DsStack>
+    );
+};
+
+## With Start Adornment
+
+### Show code
+<DsTextInput
+  placeholder="Search..."
+  slots={{
+    startAdornment: <DsIcon icon="search" size="tiny"/>
+  }}
+/>
+
+### MCP manifest
+const WithStartAdornment = () => <DsTextInput
+    placeholder="Search..."
+    slots={{
+        startAdornment: <DsIcon icon="search" size="tiny" />,
+    }} />;
+
+## With Clear Button
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsTextInput placeholder="Enter text..." value={value} onValueChange={setValue} slots={{
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="close" aria-label="Clear" onClick={() => setValue('')} />
+    }} />;
+  }
+}
+
+### MCP manifest
+const WithClearButton = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsTextInput
+            placeholder="Enter text..."
+            value={value}
+            onValueChange={setValue}
+            slots={{
+                endAdornment: (
+                    <DsButtonV3
+                        variant="tertiary"
+                        size="small"
+                        icon="close"
+                        aria-label="Clear"
+                        onClick={() => setValue('')}
+                    />
+                ),
+            }}
+        />
+    );
+};
+
+## With Search And Clear
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsTextInput placeholder="Search..." value={value} onValueChange={setValue} slots={{
+      startAdornment: <DsIcon icon="search" size="tiny" />,
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="close" aria-label="Clear" onClick={() => setValue('')} />
+    }} />;
+  }
+}
+
+### MCP manifest
+const WithSearchAndClear = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsTextInput
+            placeholder="Search..."
+            value={value}
+            onValueChange={setValue}
+            slots={{
+                startAdornment: <DsIcon icon="search" size="tiny" />,
+                endAdornment: (
+                    <DsButtonV3
+                        variant="tertiary"
+                        size="small"
+                        icon="close"
+                        aria-label="Clear"
+                        onClick={() => setValue('')}
+                    />
+                ),
+            }}
+        />
+    );
+};
+
+## Email
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('');
+    return <DsTextInput type="email" placeholder="Enter email address..." value={value} onValueChange={setValue} slots={{
+      endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />
+    }} />;
+  }
+}
+
+### MCP manifest
+const Email = function Render() {
+    const [value, setValue] = useState('');
+
+    return (
+        <DsTextInput
+            type="email"
+            placeholder="Enter email address..."
+            value={value}
+            onValueChange={setValue}
+            slots={{
+                endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="send" aria-label="Send" />,
+            }}
+        />
+    );
+};
+
+## Disabled Adornments
+
+### Show code
+<DsTextInput
+  disabled
+  slots={{
+    endAdornment: <DsButtonV3 aria-label="Toggle visibility" disabled icon="visibility" size="small" variant="tertiary"/>,
+    startAdornment: <DsButtonV3 aria-label="Locked" disabled icon="lock" size="small" variant="tertiary"/>
+  }}
+  value="Disabled value"
+/>
+
+### MCP manifest
+const DisabledAdornments = () => <DsTextInput
+    value="Disabled value"
+    disabled
+    slots={{
+        startAdornment: <DsButtonV3 variant="tertiary" size="small" icon="lock" aria-label="Locked" disabled />,
+        endAdornment: (
+            <DsButtonV3
+                variant="tertiary"
+                size="small"
+                icon="visibility"
+                aria-label="Toggle visibility"
+                disabled
+            />
+        ),
+    }} />;

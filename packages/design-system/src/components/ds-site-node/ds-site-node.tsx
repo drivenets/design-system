@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import type { DsSiteNodeProps } from './ds-site-node.types';
-import { useIsOverflowing } from './hooks/use-is-overflowing';
+import { useIsHorizontallyOverflowing } from '../../utils/use-is-horizontally-overflowing';
 import { DsStack } from '../ds-stack';
 import { DsTooltip } from '../ds-tooltip';
 import { DsTypography } from '../ds-typography';
@@ -21,7 +21,7 @@ const DsSiteNode = ({
 	const isSelected = state === 'selected';
 	const isMuted = state === 'muted';
 
-	const { ref: siteCodeRef, isOverflowing } = useIsOverflowing<HTMLSpanElement>(siteCode);
+	const { ref: siteCodeRef, isOverflowing } = useIsHorizontallyOverflowing<HTMLSpanElement>(siteCode);
 
 	return (
 		<button

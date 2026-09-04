@@ -2,15 +2,31 @@ import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsTimePicker from './ds-time-picker';
 import type { DsTimePickerProps } from './ds-time-picker.types';
-import styles from './ds-time-picker.stories.module.scss';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsTimePicker> = {
 	title: 'Components/TimePicker',
 	component: DsTimePicker,
 	parameters: {
 		layout: 'centered',
+		docs: {
+			description: {
+				component:
+					'A time input with a keyboard-friendly field and a dropdown scroller for hours and minutes. Supports min/max bounds, disabled and read-only states.',
+			},
+		},
 	},
+	decorators: [
+		(Story) => (
+			<DsStack width="17.5rem">
+				<Story />
+			</DsStack>
+		),
+	],
 	argTypes: {
+		disabled: { control: 'boolean', description: 'Whether the time picker is disabled' },
+		readOnly: { control: 'boolean', description: 'Whether the time picker is read only' },
 		className: { table: { disable: true } },
 		ref: { table: { disable: true } },
 		slotProps: { table: { disable: true } },
@@ -22,123 +38,138 @@ export default meta;
 type Story = StoryObj<DsTimePickerProps>;
 
 const createTime = (hours: number, minutes: number) => {
-	const date = new Date();
+	const date = new Date(2026, 0, 1);
 	date.setHours(hours, minutes, 0, 0);
 	return date;
 };
 
-export const Default: Story = {
-	render: function Render(args) {
-		const [value, setValue] = useState<Date | null>();
+const formatTimeLabel = (value: Date | null) =>
+	value
+		? `${String(value.getHours()).padStart(2, '0')}:${String(value.getMinutes()).padStart(2, '0')}`
+		: 'none';
 
-		return (
-			<DsTimePicker
-				{...args}
-				className={styles.container}
-				value={value}
-				onChange={(v) => {
-					setValue(v);
-					args.onChange?.(v);
-				}}
-			/>
-		);
+/**
+ * The default, uncontrolled time picker. Users can type a time or pick one from
+ * the dropdown scroller.
+ */
+export const Default: Story = {
+	args: {
+		placeholder: 'hh:mm AM/PM',
 	},
 };
 
+/**
+ * Seed an uncontrolled picker with `defaultValue` to show a pre-selected time.
+ */
 export const WithDefaultValue: Story = {
 	args: {
-		className: styles.container,
 		defaultValue: createTime(14, 30),
 	},
 };
 
-export const Controlled: Story = {
-	render: function Render(args) {
-		const defaultDate = createTime(9, 45);
+/**
+ * Disabled time picker that cannot be focused, typed into, or opened.
+ */
+export const Disabled: Story = {
+	args: {
+		value: createTime(14, 30),
+		disabled: true,
+	},
+};
 
-		const [value, setValue] = useState<Date | null>(defaultDate);
+/**
+ * Read-only time picker that displays a value but blocks edits and the dropdown.
+ */
+export const ReadOnly: Story = {
+	args: {
+		value: createTime(14, 30),
+		readOnly: true,
+	},
+};
+
+/**
+ * Controlled time picker where the parent owns the value via `value`/`onChange`.
+ * Use this pattern when other UI needs to react to the selected time.
+ */
+export const Controlled: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const [value, setValue] = useState<Date | null>(createTime(9, 45));
+
+		return (
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTimePicker value={value} onChange={setValue} />
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Value: {formatTimeLabel(value)}
+				</DsTypography>
+			</DsStack>
+		);
+	},
+};
+
+/**
+ * Demonstrates external value changes: the value updates from outside every five
+ * seconds. While the user is typing, the field waits until blur before showing
+ * the external value. Excluded from the manifest as it is a Storybook-only demo.
+ */
+export const ExternalUpdates: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const [value, setValue] = useState<Date | null>(createTime(9, 45));
 
 		useEffect(() => {
 			const interval = setInterval(() => {
-				const date = createTime(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
-				setValue(date);
+				setValue(createTime(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60)));
 			}, 5000);
 
 			return () => clearInterval(interval);
 		}, []);
 
 		return (
-			<div>
-				<DsTimePicker
-					{...args}
-					className={styles.container}
-					value={value}
-					onChange={(v) => {
-						setValue(v);
-						args.onChange?.(v);
-					}}
-				/>
-				<p className={styles.infoContainer}>In this example:</p>
-				<p className={styles.infoContainer}>
-					Value is randomly changing every 5 seconds. As user is typing the input do not show the new value
-					until input loses focus.
-				</p>
-				<p className={styles.infoContainer}>
-					Value:{' '}
-					{value
-						? `${String(value.getHours()).padStart(2, '0')}:${String(value.getMinutes()).padStart(2, '0')}`
-						: 'undefined'}
-				</p>
-			</div>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTimePicker value={value} onChange={setValue} />
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Value: {formatTimeLabel(value)}
+				</DsTypography>
+			</DsStack>
 		);
 	},
 };
 
-export const Disabled: Story = {
-	args: {
-		className: styles.container,
-		value: createTime(14, 30),
-		disabled: true,
-	},
-};
-
-export const ReadOnly: Story = {
-	args: {
-		className: styles.container,
-		value: createTime(14, 30),
-		readOnly: true,
-	},
-};
-
+/**
+ * Constrain selectable times with `min` and `max`. Values outside the range are
+ * clamped, and the scroller only offers times within bounds.
+ */
 export const WithMinMax: Story = {
-	args: {
-		min: createTime(9, 30),
-		max: createTime(17, 40),
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
 	},
-	render: function Render(args) {
+	render: function Render() {
+		const min = createTime(9, 30);
+		const max = createTime(17, 40);
 		const [value, setValue] = useState<Date | null>(createTime(13, 50));
 
 		return (
-			<div>
-				<DsTimePicker
-					{...args}
-					className={styles.container}
-					value={value}
-					onChange={(v) => {
-						setValue(v);
-						args.onChange?.(v);
-					}}
-				/>
-				<p className={styles.infoContainer}>
-					Value:{' '}
-					{value
-						? `${String(value.getHours()).padStart(2, '0')}:${String(value.getMinutes()).padStart(2, '0')}`
-						: 'none'}
-				</p>
-				<p className={styles.infoContainer}>
-					Range: {args.min?.toLocaleTimeString()} – {args.max?.toLocaleTimeString()}
-				</p>
-			</div>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTimePicker min={min} max={max} value={value} onChange={setValue} />
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Value: {formatTimeLabel(value)}
+				</DsTypography>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Range: {formatTimeLabel(min)} – {formatTimeLabel(max)}
+				</DsTypography>
+			</DsStack>
 		);
 	},
 };

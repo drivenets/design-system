@@ -12,6 +12,8 @@ actionlint
 
 coverage/
 **/.env*
-**/mcp.json
 
+# AI
+**/mcp.json
 .playwright-mcp
+.claude/launch.json

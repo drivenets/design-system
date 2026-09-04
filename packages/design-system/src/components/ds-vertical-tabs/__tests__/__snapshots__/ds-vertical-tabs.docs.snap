@@ -1,0 +1,379 @@
+# DsVerticalTabs docs snippets
+
+## Default
+
+### Show code
+{
+  args: {
+    onValueChange: fn()
+  },
+  render: args => {
+    const items: TabItem[] = [{
+      id: 'status',
+      label: 'Status',
+      count: 2
+    }, {
+      id: 'running',
+      label: 'Running/Completed'
+    }, {
+      id: 'category',
+      label: 'Category'
+    }, {
+      id: 'version',
+      label: 'Version'
+    }, {
+      id: 'lastEdited',
+      label: 'Last edited',
+      count: 5
+    }, {
+      id: 'lastRun',
+      label: 'Last run'
+    }, {
+      id: 'nextRun',
+      label: 'Next run'
+    }];
+    return <div className={styles.storyContainer}>
+                <DsVerticalTabs onValueChange={args.onValueChange}>
+                    <DsVerticalTabs.List>
+                        {items.map(item => <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                                <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                    {item.label}
+                                </DsTypography>
+                                {!!item.count && <div className={styles.tabItemCount}>
+                                        <span className={styles.tabItemDot} />
+                                        <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                            {item.count}
+                                        </DsTypography>
+                                    </div>}
+                            </DsVerticalTabs.Tab>)}
+                    </DsVerticalTabs.List>
+                    {items.map(item => <DsVerticalTabs.Content key={item.id} value={item.id}>
+                            Selected tab content: {item.id}
+                        </DsVerticalTabs.Content>)}
+                </DsVerticalTabs>
+            </div>;
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  }
+}
+
+### MCP manifest
+const Default = () => {
+    const items: TabItem[] = [
+        { id: 'status', label: 'Status', count: 2 },
+        { id: 'running', label: 'Running/Completed' },
+        { id: 'category', label: 'Category' },
+        { id: 'version', label: 'Version' },
+        { id: 'lastEdited', label: 'Last edited', count: 5 },
+        { id: 'lastRun', label: 'Last run' },
+        { id: 'nextRun', label: 'Next run' },
+    ];
+
+    return (
+        <div className={styles.storyContainer}>
+            <DsVerticalTabs onValueChange={fn()}>
+                <DsVerticalTabs.List>
+                    {items.map((item) => (
+                        <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                            <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                {item.label}
+                            </DsTypography>
+                            {!!item.count && (
+                                <div className={styles.tabItemCount}>
+                                    <span className={styles.tabItemDot} />
+                                    <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                        {item.count}
+                                    </DsTypography>
+                                </div>
+                            )}
+                        </DsVerticalTabs.Tab>
+                    ))}
+                </DsVerticalTabs.List>
+                {items.map((item) => (
+                    <DsVerticalTabs.Content key={item.id} value={item.id}>
+                        Selected tab content: {item.id}
+                    </DsVerticalTabs.Content>
+                ))}
+            </DsVerticalTabs>
+        </div>
+    );
+};
+
+## With Disabled Items
+
+### Show code
+{
+  args: {
+    onValueChange: fn()
+  },
+  render: args => {
+    const items: TabItem[] = [{
+      id: 'status',
+      label: 'Status',
+      count: 2,
+      disabled: true
+    }, {
+      id: 'running',
+      label: 'Running/Completed'
+    }, {
+      id: 'category',
+      label: 'Category'
+    }, {
+      id: 'version',
+      label: 'Version'
+    }, {
+      id: 'lastEdited',
+      label: 'Last edited',
+      count: 5
+    }];
+    return <div className={styles.storyContainer}>
+                <DsVerticalTabs onValueChange={args.onValueChange}>
+                    <DsVerticalTabs.List>
+                        {items.map(item => <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                                <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                    {item.label}
+                                </DsTypography>
+                                {!!item.count && <div className={styles.tabItemCount}>
+                                        <span className={styles.tabItemDot} />
+                                        <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                            {item.count}
+                                        </DsTypography>
+                                    </div>}
+                            </DsVerticalTabs.Tab>)}
+                    </DsVerticalTabs.List>
+                    {items.map(item => <DsVerticalTabs.Content key={item.id} value={item.id}>
+                            Selected tab content: {item.id}
+                        </DsVerticalTabs.Content>)}
+                </DsVerticalTabs>
+            </div>;
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  }
+}
+
+### MCP manifest
+const WithDisabledItems = () => {
+    const items: TabItem[] = [
+        { id: 'status', label: 'Status', count: 2, disabled: true },
+        { id: 'running', label: 'Running/Completed' },
+        { id: 'category', label: 'Category' },
+        { id: 'version', label: 'Version' },
+        { id: 'lastEdited', label: 'Last edited', count: 5 },
+    ];
+
+    return (
+        <div className={styles.storyContainer}>
+            <DsVerticalTabs onValueChange={fn()}>
+                <DsVerticalTabs.List>
+                    {items.map((item) => (
+                        <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                            <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                {item.label}
+                            </DsTypography>
+                            {!!item.count && (
+                                <div className={styles.tabItemCount}>
+                                    <span className={styles.tabItemDot} />
+                                    <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                        {item.count}
+                                    </DsTypography>
+                                </div>
+                            )}
+                        </DsVerticalTabs.Tab>
+                    ))}
+                </DsVerticalTabs.List>
+                {items.map((item) => (
+                    <DsVerticalTabs.Content key={item.id} value={item.id}>
+                        Selected tab content: {item.id}
+                    </DsVerticalTabs.Content>
+                ))}
+            </DsVerticalTabs>
+        </div>
+    );
+};
+
+## Long Labels
+
+### Show code
+{
+  args: {
+    onValueChange: fn()
+  },
+  render: args => {
+    const items: TabItem[] = [{
+      id: '1',
+      label: 'Very Long Navigation Item Label That Might Overflow',
+      count: 99
+    }, {
+      id: '2',
+      label: 'Another Really Long Label For Testing Purposes'
+    }, {
+      id: '3',
+      label: 'Short',
+      count: 1
+    }];
+    return <div className={styles.storyContainerShort}>
+                <DsVerticalTabs onValueChange={args.onValueChange}>
+                    <DsVerticalTabs.List>
+                        {items.map(item => <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                                <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                    {item.label}
+                                </DsTypography>
+                                {!!item.count && <div className={styles.tabItemCount}>
+                                        <span className={styles.tabItemDot} />
+                                        <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                            {item.count}
+                                        </DsTypography>
+                                    </div>}
+                            </DsVerticalTabs.Tab>)}
+                    </DsVerticalTabs.List>
+                    {items.map(item => <DsVerticalTabs.Content key={item.id} value={item.id}>
+                            Selected tab content: {item.id}
+                        </DsVerticalTabs.Content>)}
+                </DsVerticalTabs>
+            </div>;
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  }
+}
+
+### MCP manifest
+const LongLabels = () => {
+    const items: TabItem[] = [
+        { id: '1', label: 'Very Long Navigation Item Label That Might Overflow', count: 99 },
+        { id: '2', label: 'Another Really Long Label For Testing Purposes' },
+        { id: '3', label: 'Short', count: 1 },
+    ];
+
+    return (
+        <div className={styles.storyContainerShort}>
+            <DsVerticalTabs onValueChange={fn()}>
+                <DsVerticalTabs.List>
+                    {items.map((item) => (
+                        <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                            <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                {item.label}
+                            </DsTypography>
+                            {!!item.count && (
+                                <div className={styles.tabItemCount}>
+                                    <span className={styles.tabItemDot} />
+                                    <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                        {item.count}
+                                    </DsTypography>
+                                </div>
+                            )}
+                        </DsVerticalTabs.Tab>
+                    ))}
+                </DsVerticalTabs.List>
+                {items.map((item) => (
+                    <DsVerticalTabs.Content key={item.id} value={item.id}>
+                        Selected tab content: {item.id}
+                    </DsVerticalTabs.Content>
+                ))}
+            </DsVerticalTabs>
+        </div>
+    );
+};
+
+## High Counts
+
+### Show code
+{
+  args: {
+    onValueChange: fn()
+  },
+  render: args => {
+    const items: TabItem[] = [{
+      id: 'status',
+      label: 'Status',
+      count: 999
+    }, {
+      id: 'category',
+      label: 'Category',
+      count: 1000
+    }, {
+      id: 'version',
+      label: 'Version',
+      count: 12345
+    }];
+    return <div className={styles.storyContainerShort}>
+                <DsVerticalTabs onValueChange={args.onValueChange}>
+                    <DsVerticalTabs.List>
+                        {items.map(item => <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                                <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                    {item.label}
+                                </DsTypography>
+                                {!!item.count && <div className={styles.tabItemCount}>
+                                        <span className={styles.tabItemDot} />
+                                        <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                            {item.count}
+                                        </DsTypography>
+                                    </div>}
+                            </DsVerticalTabs.Tab>)}
+                    </DsVerticalTabs.List>
+                    {items.map(item => <DsVerticalTabs.Content key={item.id} value={item.id}>
+                            Selected tab content: {item.id}
+                        </DsVerticalTabs.Content>)}
+                </DsVerticalTabs>
+            </div>;
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  }
+}
+
+### MCP manifest
+const HighCounts = () => {
+    const items: TabItem[] = [
+        { id: 'status', label: 'Status', count: 999 },
+        { id: 'category', label: 'Category', count: 1000 },
+        { id: 'version', label: 'Version', count: 12345 },
+    ];
+
+    return (
+        <div className={styles.storyContainerShort}>
+            <DsVerticalTabs onValueChange={fn()}>
+                <DsVerticalTabs.List>
+                    {items.map((item) => (
+                        <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
+                            <DsTypography variant="body-sm-md" className={styles.tabItemLabel}>
+                                {item.label}
+                            </DsTypography>
+                            {!!item.count && (
+                                <div className={styles.tabItemCount}>
+                                    <span className={styles.tabItemDot} />
+                                    <DsTypography variant="body-sm-reg" className={styles.tabItemCountText}>
+                                        {item.count}
+                                    </DsTypography>
+                                </div>
+                            )}
+                        </DsVerticalTabs.Tab>
+                    ))}
+                </DsVerticalTabs.List>
+                {items.map((item) => (
+                    <DsVerticalTabs.Content key={item.id} value={item.id}>
+                        Selected tab content: {item.id}
+                    </DsVerticalTabs.Content>
+                ))}
+            </DsVerticalTabs>
+        </div>
+    );
+};

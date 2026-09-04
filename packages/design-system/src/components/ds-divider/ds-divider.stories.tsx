@@ -1,7 +1,8 @@
 import type React from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import classNames from 'classnames';
 import DsDivider from './ds-divider';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import styles from './ds-divider.stories.module.scss';
 
 const meta: Meta<typeof DsDivider> = {
@@ -39,30 +40,29 @@ export default meta;
 type Story = StoryObj<typeof DsDivider>;
 
 export const Default: Story = {
-	render: (args) => (
-		<div
-			className={classNames(styles.storyContainer, {
-				[styles.storyContainerVertical]: args.orientation === 'vertical',
-			})}
-		>
-			{args.orientation === 'vertical' ? (
-				<>
-					<div className={styles.storyContentSide}>Left content</div>
-					<DsDivider {...args} />
-					<div className={styles.storyContentSide}>Right content</div>
-				</>
-			) : (
-				<div className={styles.storyContent}>
-					<div className={styles.storyText}>Top content</div>
-					<DsDivider {...args} />
-					<div className={styles.storyText}>Bottom content</div>
-				</div>
-			)}
-		</div>
-	),
+	render: (args) =>
+		args.orientation === 'vertical' ? (
+			<DsStack direction="row" gap="var(--sm)" alignItems="center" className={styles.verticalDemo}>
+				<DsTypography variant="body-md-reg">Left content</DsTypography>
+				<DsDivider {...args} />
+				<DsTypography variant="body-md-reg">Right content</DsTypography>
+			</DsStack>
+		) : (
+			<DsStack direction="column" gap="var(--sm)" alignItems="center" className={styles.horizontalDemo}>
+				<DsTypography variant="body-md-reg">Top content</DsTypography>
+				<DsDivider {...args} />
+				<DsTypography variant="body-md-reg">Bottom content</DsTypography>
+			</DsStack>
+		),
 };
 
 export const Showcase: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: {
+			canvas: { sourceState: 'none' },
+		},
+	},
 	render: () => (
 		<div className={styles.showcaseContainer}>
 			<table className={styles.showcaseTable}>
@@ -122,11 +122,11 @@ export const Horizontal: Story = {
 		orientation: 'horizontal',
 	},
 	render: (args) => (
-		<div className={styles.horizontalContainer}>
-			<div className={styles.storyText}>Above</div>
+		<DsStack direction="column" gap="var(--sm)" alignItems="center" className={styles.horizontalDemo}>
+			<DsTypography variant="body-md-reg">Above</DsTypography>
 			<DsDivider {...args} />
-			<div className={styles.storyText}>Below</div>
-		</div>
+			<DsTypography variant="body-md-reg">Below</DsTypography>
+		</DsStack>
 	),
 };
 
@@ -135,11 +135,11 @@ export const Vertical: Story = {
 		orientation: 'vertical',
 	},
 	render: (args) => (
-		<div className={classNames(styles.storyContainer, styles.storyContainerVertical)}>
-			<div className={styles.storyContentSide}>Left</div>
+		<DsStack direction="row" gap="var(--sm)" alignItems="center" className={styles.verticalDemo}>
+			<DsTypography variant="body-md-reg">Left</DsTypography>
 			<DsDivider {...args} />
-			<div className={styles.storyContentSide}>Right</div>
-		</div>
+			<DsTypography variant="body-md-reg">Right</DsTypography>
+		</DsStack>
 	),
 };
 
@@ -149,10 +149,10 @@ export const WithCustomComponent: Story = {
 		component: 'span',
 	},
 	render: (args) => (
-		<div className={styles.horizontalContainer}>
-			<div className={styles.storyText}>Above</div>
+		<DsStack direction="column" gap="var(--sm)" alignItems="center" className={styles.horizontalDemo}>
+			<DsTypography variant="body-md-reg">Above</DsTypography>
 			<DsDivider {...args} />
-			<div className={styles.storyText}>Below</div>
-		</div>
+			<DsTypography variant="body-md-reg">Below</DsTypography>
+		</DsStack>
 	),
 };

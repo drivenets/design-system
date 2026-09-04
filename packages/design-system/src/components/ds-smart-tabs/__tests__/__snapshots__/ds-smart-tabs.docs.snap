@@ -1,0 +1,98 @@
+# DsSmartTabs docs snippets
+
+## Basic
+
+### Show code
+{
+  render: function Render() {
+    const [activeTab, setActiveTab] = useState('all');
+    return <DsSmartTabs activeTab={activeTab} onTabClick={setActiveTab}>
+                <DsSmartTabs.Tab label="All" value="all" icon="view_apps" color="dark-blue" content="747" />
+                <DsSmartTabs.Tab label="Active" value="active" icon="check_circle" color="green" content="198" />
+            </DsSmartTabs>;
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  }
+}
+
+### MCP manifest
+const Basic = function Render() {
+    const [activeTab, setActiveTab] = useState('all');
+
+    return (
+        <DsSmartTabs activeTab={activeTab} onTabClick={setActiveTab}>
+            <DsSmartTabs.Tab label="All" value="all" icon="view_apps" color="dark-blue" content="747" />
+            <DsSmartTabs.Tab label="Active" value="active" icon="check_circle" color="green" content="198" />
+        </DsSmartTabs>
+    );
+};
+
+## Default
+
+### Show code
+{
+  render: function Render() {
+    const [activeTab, setActiveTab] = useState('all');
+    return <DsStack direction="column">
+                <DsSmartTabs activeTab={activeTab} onTabClick={setActiveTab}>
+                    <DsSmartTabs.Tab label="All" value="all" icon="view_apps" color="dark-blue" content="747" />
+                    <DsSmartTabs.Tab label="Active" value="active" icon="check_circle" color="green" content="198" />
+                    <DsSmartTabs.Tab label="Deprecated" value="deprecated" icon="notifications" color="red" content="202" />
+                    <DsSmartTabs.Tab label="Inactive" value="inactive" icon="stop_circle" color="gray" content="347" disabled />
+                </DsSmartTabs>
+                <DsStack direction="row" gap={4} className={styles.statusReadout}>
+                    <DsTypography variant="body-sm-md">Active tab:</DsTypography>
+                    <DsTypography variant="body-sm-md" className={styles.statusValue}>
+                        {activeTab}
+                    </DsTypography>
+                </DsStack>
+            </DsStack>;
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [activeTab, setActiveTab] = useState('all');
+
+    return (
+        <DsStack direction="column">
+            <DsSmartTabs activeTab={activeTab} onTabClick={setActiveTab}>
+                <DsSmartTabs.Tab label="All" value="all" icon="view_apps" color="dark-blue" content="747" />
+                <DsSmartTabs.Tab label="Active" value="active" icon="check_circle" color="green" content="198" />
+                <DsSmartTabs.Tab
+                    label="Deprecated"
+                    value="deprecated"
+                    icon="notifications"
+                    color="red"
+                    content="202"
+                />
+                <DsSmartTabs.Tab
+                    label="Inactive"
+                    value="inactive"
+                    icon="stop_circle"
+                    color="gray"
+                    content="347"
+                    disabled
+                />
+            </DsSmartTabs>
+            <DsStack direction="row" gap={4} className={styles.statusReadout}>
+                <DsTypography variant="body-sm-md">Active tab:</DsTypography>
+                <DsTypography variant="body-sm-md" className={styles.statusValue}>
+                    {activeTab}
+                </DsTypography>
+            </DsStack>
+        </DsStack>
+    );
+};

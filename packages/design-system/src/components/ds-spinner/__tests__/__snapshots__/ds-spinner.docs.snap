@@ -1,0 +1,25 @@
+# DsSpinner docs snippets
+
+## Default
+
+### Show code
+<DsSpinner size="medium" />
+
+### MCP manifest
+const Default = () => <DsSpinner size="medium" />;
+
+## Small
+
+### Show code
+<DsSpinner size="small" />
+
+### MCP manifest
+const Small = () => <DsSpinner size="small" />;
+
+## Large
+
+### Show code
+<DsSpinner size="large" />
+
+### MCP manifest
+const Large = () => <DsSpinner size="large" />;

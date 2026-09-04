@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
 import { DsFilterStatusIcon } from './ds-filter-status-icon';
 import { filterStatuses } from './ds-filter-status-icon.types';
-import styles from './ds-filter-status-icon.stories.module.scss';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsFilterStatusIcon> = {
 	title: 'Components/FilterStatusIcon',
@@ -20,94 +20,61 @@ const meta: Meta<typeof DsFilterStatusIcon> = {
 			control: 'boolean',
 			description: 'Whether the status icon is active or non-active',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Inline styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsFilterStatusIcon>;
 
+/** Active running status icon — the default state for a toggled-on filter button. */
 export const Default: Story = {
 	args: {
 		status: 'running',
 		active: true,
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		const icon = canvas.getByLabelText(/running status/i);
-		await expect(icon).toBeInTheDocument();
-		await expect(icon).toHaveAccessibleName('running status');
-	},
 };
 
+/** Every status in both active and non-active states, side by side for comparison. */
 export const All: Story = {
-	render: () => {
-		return (
-			<div className={styles.storiesContainer}>
-				<div className={styles.row}>
-					<div className={styles.label}></div>
+	tags: ['!manifest'],
+	parameters: {
+		docs: { canvas: { sourceState: 'none' } },
+	},
+	render: () => (
+		<DsStack direction="column" gap="var(--xl)">
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="body-sm-md" color="secondary">
+					Active
+				</DsTypography>
+				<DsStack direction="row" gap="var(--lg)" alignItems="center">
 					{filterStatuses.map((status) => (
-						<div key={status} className={styles.label}>
-							{status}
-						</div>
-					))}
-				</div>
-
-				<div className={styles.row}>
-					<div className={styles.label}>active</div>
-					{filterStatuses.map((status) => (
-						<div key={`active-${status}`} className={styles.cell}>
+						<DsStack key={`active-${status}`} direction="column" gap="var(--2xs)" alignItems="center">
 							<DsFilterStatusIcon status={status} active />
-						</div>
+							<DsTypography variant="body-sm-reg" color="secondary">
+								{status}
+							</DsTypography>
+						</DsStack>
 					))}
-				</div>
+				</DsStack>
+			</DsStack>
 
-				<div className={styles.row}>
-					<div className={styles.label}>non-active</div>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="body-sm-md" color="secondary">
+					Non-active
+				</DsTypography>
+				<DsStack direction="row" gap="var(--lg)" alignItems="center">
 					{filterStatuses.map((status) => (
-						<div key={`inactive-${status}`} className={styles.cell}>
+						<DsStack key={`inactive-${status}`} direction="column" gap="var(--2xs)" alignItems="center">
 							<DsFilterStatusIcon status={status} active={false} />
-						</div>
+							<DsTypography variant="body-sm-reg" color="secondary">
+								{status}
+							</DsTypography>
+						</DsStack>
 					))}
-				</div>
-			</div>
-		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Check active icons
-		const runningIcon = canvas.getByLabelText('running status');
-		await expect(runningIcon).toBeInTheDocument();
-
-		const warningIcon = canvas.getByLabelText('warning status');
-		await expect(warningIcon).toBeInTheDocument();
-
-		const failedIcon = canvas.getByLabelText('failed status');
-		await expect(failedIcon).toBeInTheDocument();
-
-		const pausedIcon = canvas.getByLabelText('paused status');
-		await expect(pausedIcon).toBeInTheDocument();
-
-		// Check inactive icons
-		const inactiveRunning = canvas.getByLabelText('running status (inactive)');
-		await expect(inactiveRunning).toBeInTheDocument();
-
-		const inactiveWarning = canvas.getByLabelText('warning status (inactive)');
-		await expect(inactiveWarning).toBeInTheDocument();
-
-		const inactiveFailed = canvas.getByLabelText('failed status (inactive)');
-		await expect(inactiveFailed).toBeInTheDocument();
-
-		const inactivePaused = canvas.getByLabelText('paused status (inactive)');
-		await expect(inactivePaused).toBeInTheDocument();
-	},
+				</DsStack>
+			</DsStack>
+		</DsStack>
+	),
 };

@@ -46,31 +46,13 @@
 	display: contents;
 }
 
-.responsiveDemo {
-	display: flex;
-	flex-direction: column;
-	gap: var(--sm);
-}
-
-.responsiveSlider {
-	display: flex;
-	align-items: center;
-	gap: var(--xs);
-	font-size: 13px;
-	font-family: monospace;
-	color: var(--font-secondary);
-}
-
-.responsiveSliderInput {
-	flex: 1;
-}
-
 .responsivePairs {
 	display: grid;
 	grid-template-columns: auto 1fr;
 	column-gap: var(--xs);
 	row-gap: var(--xs);
 	align-items: start;
+	width: var(--responsive-pairs-width);
 	border: 1px dashed var(--border);
 	border-radius: 4px;
 	padding: var(--sm);

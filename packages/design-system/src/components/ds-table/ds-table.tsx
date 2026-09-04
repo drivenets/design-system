@@ -27,6 +27,7 @@ import { DsTableContextProvider } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
 import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
+import { getUtilityColumnSizing } from './utils/column-size';
 import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './utils/table-columns';
 import { createTableApi } from './utils/table-api';
 import { areBodiesFrozen } from './utils/frozen-body';
@@ -75,6 +76,9 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		resizableColumns,
 		columnSizing,
 		onColumnSizingChange,
+		selectableColumnWidth,
+		expandableColumnWidth,
+		reorderableColumnWidth,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -155,12 +159,26 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 				reorderable,
 				virtualized,
 				showSelectAllCheckbox,
+				selectableColumnWidth,
+				expandableColumnWidth,
+				reorderableColumnWidth,
 			}),
-		[columnsProp, hasSelectColumn, hasExpanderColumn, reorderable, virtualized, showSelectAllCheckbox],
+		[
+			columnsProp,
+			hasSelectColumn,
+			hasExpanderColumn,
+			reorderable,
+			virtualized,
+			showSelectAllCheckbox,
+			selectableColumnWidth,
+			expandableColumnWidth,
+			reorderableColumnWidth,
+		],
 	);
 
 	const skeletonColumns = useMemo(() => toSkeletonColumns(columns), [columns]);
 	const skeletonData = useMemo(() => createSkeletonRows<TData>(), []);
+	const utilityColumnSizing = useMemo(() => getUtilityColumnSizing(columns), [columns]);
 
 	const resize = useColumnResize({
 		enabled: resizableColumns,
@@ -168,6 +186,8 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		onColumnSizingChange,
 		columns,
 		columnVisibility,
+		overflowKey: (reorderable ? data : tableData).length,
+		utilityColumnSizing,
 	});
 
 	const table = useReactTable({

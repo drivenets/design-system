@@ -1,0 +1,206 @@
+# DsStack docs snippets
+
+## Default
+
+### Show code
+<DsStack
+  direction="column"
+  gap="var(--xs)"
+>
+  <div className="_box_1q6tz_1">
+    Item 1
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 2
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 3
+  </div>
+</DsStack>
+
+### MCP manifest
+const Default = () => <DsStack direction="column" gap="var(--xs)">
+    <div className={styles.box}>Item 1</div>
+    <div className={styles.box}>Item 2</div>
+    <div className={styles.box}>Item 3</div>
+</DsStack>;
+
+## Row
+
+### Show code
+<DsStack
+  alignItems="center"
+  direction="row"
+  gap="var(--standard)"
+>
+  <div className="_box_1q6tz_1">
+    Item 1
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 2
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 3
+  </div>
+</DsStack>
+
+### MCP manifest
+const Row = () => <DsStack direction="row" gap="var(--standard)" alignItems="center">
+    <div className={styles.box}>Item 1</div>
+    <div className={styles.box}>Item 2</div>
+    <div className={styles.box}>Item 3</div>
+</DsStack>;
+
+## Responsive
+
+### Show code
+<DsStack
+  alignItems="center"
+  className="_container_1q6tz_13"
+  direction={{
+    lg: 'row',
+    md: 'column'
+  }}
+  gap={{
+    lg: 'var(--lg)',
+    md: 'var(--xs)'
+  }}
+>
+  <div className="_box_1q6tz_1">
+    Item 1
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 2
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 3
+  </div>
+</DsStack>
+
+### MCP manifest
+const Responsive = () => <DsStack
+    direction={{ md: 'column', lg: 'row' }}
+    gap={{ md: 'var(--xs)', lg: 'var(--lg)' }}
+    alignItems="center"
+    className={styles.container}>
+    <div className={styles.box}>Item 1</div>
+    <div className={styles.box}>Item 2</div>
+    <div className={styles.box}>Item 3</div>
+</DsStack>;
+
+## Space Between
+
+### Show code
+<DsStack
+  alignItems="center"
+  className="_container_1q6tz_13"
+  direction="row"
+  justifyContent="space-between"
+  width="100%"
+>
+  <div className="_box_1q6tz_1">
+    Left
+  </div>
+  <div className="_box_1q6tz_1">
+    Right
+  </div>
+</DsStack>
+
+### MCP manifest
+const SpaceBetween = () => <DsStack
+    direction="row"
+    justifyContent="space-between"
+    alignItems="center"
+    width="100%"
+    className={styles.container}>
+    <div className={styles.box}>Left</div>
+    <div className={styles.box}>Right</div>
+</DsStack>;
+
+## Wrapping
+
+### Show code
+<DsStack
+  className="_container_1q6tz_13"
+  direction="row"
+  flexWrap="wrap"
+  gap="var(--xs)"
+>
+  <div className="_box_1q6tz_1">
+    Item 1
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 2
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 3
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 4
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 5
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 6
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 7
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 8
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 9
+  </div>
+  <div className="_box_1q6tz_1">
+    Item 10
+  </div>
+</DsStack>
+
+### MCP manifest
+const Wrapping = () => <DsStack
+    direction="row"
+    gap="var(--xs)"
+    flexWrap="wrap"
+    className={styles.container}>
+    {Array.from({ length: 10 }, (_, i) => (
+        <div className={styles.box} key={i}>
+            Item {i + 1}
+        </div>
+    ))}
+</DsStack>;
+
+## Nested
+
+### Show code
+{
+  render: () => <DsStack gap="var(--lg)">
+            <DsStack direction="row" gap="var(--standard)" alignItems="center">
+                <div className={styles.box}>Row 1 - A</div>
+                <div className={styles.box}>Row 1 - B</div>
+                <div className={styles.box}>Row 1 - C</div>
+            </DsStack>
+
+            <DsStack direction="row" gap="var(--standard)" alignItems="center">
+                <div className={styles.box}>Row 2 - A</div>
+                <div className={styles.box}>Row 2 - B</div>
+            </DsStack>
+        </DsStack>
+}
+
+### MCP manifest
+const Nested = () => (
+    <DsStack gap="var(--lg)">
+        <DsStack direction="row" gap="var(--standard)" alignItems="center">
+            <div className={styles.box}>Row 1 - A</div>
+            <div className={styles.box}>Row 1 - B</div>
+            <div className={styles.box}>Row 1 - C</div>
+        </DsStack>
+
+        <DsStack direction="row" gap="var(--standard)" alignItems="center">
+            <div className={styles.box}>Row 2 - A</div>
+            <div className={styles.box}>Row 2 - B</div>
+        </DsStack>
+    </DsStack>
+);

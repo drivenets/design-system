@@ -104,6 +104,14 @@ _Avoid_: group column (as if it were a sized leaf)
 A table column with no nested children; the unit of column sizing and of a resize.
 _Avoid_: child column, nested column
 
+**Header label**:
+The text in a **Leaf column** or **Column group** header cell.
+_Avoid_: column title, header caption
+
+**Utility column**:
+A table-injected **Leaf column** (`select`, `expander`, or `reorder`) that is not in the consumer `columns` array.
+_Avoid_: builtin column, synthetic column, feature column
+
 **Fill column**:
 A **Leaf column** with no explicit width that grows with remaining table space. Only when column resizing is off.
 _Avoid_: auto column, fluid column
@@ -115,6 +123,10 @@ _Avoid_: resizer (when meaning the overlay)
 **Resize overlay**:
 Full-height divider for the active resize boundary (hover or drag).
 _Avoid_: resize handle, drag line
+
+**Scrollbar spacer**:
+A header-only cell at the end of every header row that occupies the body’s vertical scrollbar width when that scrollbar is present.
+_Avoid_: Scrollbar gutter, placeholder, gutter cell
 
 ## Relationships
 
@@ -130,8 +142,12 @@ _Avoid_: resize handle, drag line
 - **Left side panel** pushes layout; **Right side panel** overlays **Content area** via `DsDrawer` (no symmetric right layout slot)
 - **Workspace layout mode** is opt-in: `Body` with `SideMenu` / `LeftPanel` adds horizontal chrome; `Content` always applies content-area spacing
 - A **Column group** contains one or more **Leaf columns**; dragging its **Resize handle** changes those leaves’ widths, not a separate group size
+- A **Header label** that does not fit its cell is shown as a single-line ellipsis; the full string is available while truncated
+- A **Utility column** is a **Leaf column**; the table injects it when select, expand, or reorder is on
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
+- A **Scrollbar spacer** is not a **Leaf column** and has no **Resize handle**
+- Every header row of a **Column group** includes a **Scrollbar spacer**, not only the last row
 
 ## Example dialogue
 
@@ -150,7 +166,19 @@ _Avoid_: resize handle, drag line
 > **Dev:** "When I drag the group header, are we resizing the group as its own column?"
 > **Domain expert:** "No — a **Column group** has no own size. The **Resize handle** on the group scales its **Leaf columns**. The **Resize overlay** follows that boundary."
 
+> **Dev:** "Should I restore `overflow-y: scroll` on thead so Fill columns line up?"
+> **Domain expert:** "No — that's a CSS scrollbar gutter. Put a **Scrollbar spacer** on every header row so borders reach the table edge, including between **Column group** rows."
+
+> **Dev:** "When I make the expander column wider, does that also size the nested details columns?"
+> **Domain expert:** "No — that width belongs to the expander **Utility column**. Nested details are consumer **Leaf columns**."
+
+> **Dev:** "Should a long column title wrap onto two lines in the header?"
+> **Domain expert:** "No — that's a **Header label**. It stays one line with an ellipsis; don't call it a column title."
+
 ## Flagged ambiguities
 
 - "Adapter" in file-upload vs "adapter" in generic architecture docs — resolved: use **Upload adapter** in design-system context; architecture skill uses **Adapter** at a **seam** ([LANGUAGE.md](.agents/skills/improve-codebase-architecture/LANGUAGE.md)).
 - "Group resize" was used to mean a sized group column — resolved: dragging a **Column group** **Resize handle** changes **Leaf column** widths only.
+- "placeholder" in header layout meant **Scrollbar spacer**, not TanStack `header.isPlaceholder` (spanning-cell hole) and not **Empty state**.
+- "Scrollbar gutter" meant CSS reservation on `thead`; the structure is a **Scrollbar spacer**.
+- "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.

@@ -1,0 +1,77 @@
+# DsProgressLinear docs snippets
+
+## Default
+
+### Show code
+<DsProgressLinear
+  caption="Uploading..."
+  label="File Upload"
+  value={35}
+/>
+
+### MCP manifest
+const Default = () => <DsProgressLinear value={35} label="File Upload" caption="Uploading..." />;
+
+## Bar Only
+
+### Show code
+<DsProgressLinear
+  value={70}
+/>
+
+### MCP manifest
+const BarOnly = () => <DsProgressLinear value={70} showValue={false} />;
+
+## With Custom Caption
+
+### Show code
+<DsProgressLinear
+  caption={<DsTypography color="secondary" variant="body-sm-reg">Step 3 of 5</DsTypography>}
+  label="Processing"
+  value={60}
+/>
+
+### MCP manifest
+const WithCustomCaption = () => <DsProgressLinear
+    value={60}
+    label="Processing"
+    caption={(<DsTypography variant="body-sm-reg" color="secondary">Step 3 of 5
+                    </DsTypography>)} />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const [value, setValue] = useState(35);
+    return <DsStack direction="column" gap="var(--sm)" width="600px">
+                <input type="range" min={0} max={100} value={value} onChange={event => setValue(Number(event.target.value))} />
+                <DsProgressLinear value={value} label="File Upload" caption="Uploading..." />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Controlled = () => {
+    const [value, setValue] = useState(35);
+
+    return (
+        <DsStack direction="column" gap="var(--sm)" width="600px">
+            <input
+                type="range"
+                min={0}
+                max={100}
+                value={value}
+                onChange={(event) => setValue(Number(event.target.value))}
+            />
+            <DsProgressLinear value={value} label="File Upload" caption="Uploading..." />
+        </DsStack>
+    );
+};

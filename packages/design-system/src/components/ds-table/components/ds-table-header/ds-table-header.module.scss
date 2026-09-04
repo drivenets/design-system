@@ -15,6 +15,10 @@
 		border-bottom: 1px solid var(--color-dap-gray-400);
 	}
 
+	.scrollbarSpacer:not(.scrollbarSpacerOccupied) {
+		border-bottom: none;
+	}
+
 	&.headerRowNoBorder {
 		.headerCell {
 			border-bottom: none;
@@ -42,6 +46,7 @@
 
 	.pageButtonIconContainer {
 		display: flex;
+		flex-shrink: 0;
 		align-items: center;
 		justify-content: center;
 		width: 24px;
@@ -52,6 +57,14 @@
 			transition: transform 0.2s ease-in-out;
 		}
 	}
+}
+
+.scrollbarSpacer {
+	flex-shrink: 0;
+	padding: 0;
+	overflow: hidden;
+	border-left: none;
+	pointer-events: none;
 }
 
 .selectHeaderCell {
@@ -68,7 +81,10 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: vars.$header-sort-gap;
+	width: 100%;
+	min-width: 0;
 	height: 100%;
+	overflow: hidden;
 }
 
 .headerLabelStack {
@@ -76,15 +92,9 @@
 	overflow: hidden;
 }
 
-.headerLabel {
-	display: block;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-}
-
 .filterTriggerContainer {
 	display: inline-flex;
+	flex-shrink: 0;
 	align-items: center;
 	margin-left: vars.$header-sort-gap;
 }

@@ -1,0 +1,90 @@
+# DsToggle docs snippets
+
+## Default
+
+### Show code
+<DsToggle
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+/>
+
+### MCP manifest
+const Default = () => <DsToggle label="Enable notifications" labelInfo="Receive email updates" />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [checked, setChecked] = useState(true);
+    return <DsToggle label="Enable notifications" labelInfo="Receive email updates" checked={checked} onValueChange={setChecked} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [checked, setChecked] = useState(true);
+
+    return (
+        <DsToggle
+            label="Enable notifications"
+            labelInfo="Receive email updates"
+            checked={checked}
+            onValueChange={setChecked}
+        />
+    );
+};
+
+## Small
+
+### Show code
+<DsToggle
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+  size="small"
+/>
+
+### MCP manifest
+const Small = () => <DsToggle
+    size="small"
+    label="Enable notifications"
+    labelInfo="Receive email updates" />;
+
+## Disabled
+
+### Show code
+<DsToggle
+  disabled
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+/>
+
+### MCP manifest
+const Disabled = () => <DsToggle label="Enable notifications" labelInfo="Receive email updates" disabled />;
+
+## Custom Label
+
+### Show code
+{
+  render: () => <DsToggle size="small">
+            <DsTypography variant="body-xs-md" color="action">
+                Custom label totally!
+            </DsTypography>
+        </DsToggle>
+}
+
+### MCP manifest
+const CustomLabel = () => (
+    <DsToggle size="small">
+        <DsTypography variant="body-xs-md" color="action">
+            Custom label totally!
+        </DsTypography>
+    </DsToggle>
+);

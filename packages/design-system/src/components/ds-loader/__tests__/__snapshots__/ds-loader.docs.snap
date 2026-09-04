@@ -1,0 +1,35 @@
+# DsLoader docs snippets
+
+## Default
+
+### Show code
+<DsLoader variant="spinner" />
+
+### MCP manifest
+const Default = () => <DsLoader variant="spinner" />;
+
+## Pulsing
+
+### Show code
+<DsLoader variant="pulsing" />
+
+### MCP manifest
+const Pulsing = () => <DsLoader variant="pulsing" />;
+
+## Inline With Text
+
+### Show code
+{
+  render: () => <DsStack alignItems="center" gap="var(--sm)">
+            <DsLoader />
+            <DsTypography variant="body-md-reg">Loading...</DsTypography>
+        </DsStack>
+}
+
+### MCP manifest
+const InlineWithText = () => (
+    <DsStack alignItems="center" gap="var(--sm)">
+        <DsLoader />
+        <DsTypography variant="body-md-reg">Loading...</DsTypography>
+    </DsStack>
+);

@@ -1,0 +1,12 @@
+@use '../../../styles/typography';
+
+.headerLabel {
+	display: block;
+	min-width: 0;
+}
+
+.headerLabelInner {
+	display: block;
+	min-width: 0;
+	@include typography.ellipsis;
+}
