@@ -1,0 +1,36 @@
+# DsStatusBadge docs snippets
+
+## Default
+
+### Show code
+<DsStatusBadge
+  icon="check_circle"
+  status="active"
+/>
+
+### MCP manifest
+const Default = () => <DsStatusBadge icon="check_circle" status="active" />;
+
+## Ghost
+
+### Show code
+<DsStatusBadge
+  ghost
+  icon="check_circle"
+  status="active"
+/>
+
+### MCP manifest
+const Ghost = () => <DsStatusBadge icon="check_circle" status="active" ghost />;
+
+## Small
+
+### Show code
+<DsStatusBadge
+  icon="check_circle"
+  size="small"
+  status="active"
+/>
+
+### MCP manifest
+const Small = () => <DsStatusBadge icon="check_circle" status="active" size="small" />;

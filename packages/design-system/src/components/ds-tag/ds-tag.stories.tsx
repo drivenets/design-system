@@ -4,6 +4,7 @@ import { fn } from 'storybook/test';
 import DsTag from './ds-tag';
 import { tagSizes, tagVariants } from './ds-tag.types';
 import { DsIcon } from '../ds-icon';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsTag> = {
 	title: 'Components/Tag',
@@ -64,7 +65,6 @@ type Story = StoryObj<typeof DsTag>;
 export const Default: Story = {
 	args: {
 		label: 'Default Tag',
-		onClick: undefined,
 	},
 };
 
@@ -76,12 +76,13 @@ export const Clickable: Story = {
 };
 
 export const Controlled: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [deleted, setDeleted] = useState(false);
 		const [selected, setSelected] = useState(true);
 
 		if (deleted) {
-			return <span>Poof! Deleted!</span>;
+			return <DsTypography variant="body-md-reg">Poof! Deleted!</DsTypography>;
 		}
 
 		return (
@@ -186,13 +187,5 @@ export const CustomIcon: Story = {
 		slots: {
 			icon: <DsIcon icon="star" size="tiny" />,
 		},
-	},
-};
-
-export const KeyboardInteraction: Story = {
-	args: {
-		label: 'Keyboard Tag',
-		onClick: fn(),
-		onDelete: fn(),
 	},
 };

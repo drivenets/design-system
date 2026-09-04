@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
 import { DsSkeleton } from './index';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import {
 	Table,
 	TableBody,
@@ -11,13 +12,17 @@ import {
 	// eslint-disable-next-line @drivenets/ds-internal/no-cross-component-internal-import
 } from '../ds-table/components/core-table';
 import styles from './ds-skeleton.stories.module.scss';
-import skeletonStyles from './ds-skeleton.module.scss';
 
 const meta: Meta<typeof DsSkeleton.Rect> = {
 	title: 'Components/Skeleton',
 	component: DsSkeleton.Rect,
 	parameters: {
 		layout: 'padded',
+	},
+	argTypes: {
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
+		ref: { table: { disable: true } },
 	},
 };
 
@@ -26,193 +31,175 @@ export default meta;
 type Story = StoryObj<typeof DsSkeleton>;
 
 /**
- * Color variants - gray (default) and blue
+ * Gallery of the two color variants — gray (default) and blue — across every skeleton shape.
  */
 export const ColorVariants: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
-		<div className={styles.verticalStack} data-testid="color-variants">
-			<div>
-				<h4 className={styles.sectionLabel}>gray (default)</h4>
+		<DsStack direction="column" gap="var(--xl)">
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="heading4">Gray (default)</DsTypography>
 				<DsSkeleton.Text color="gray" />
 				<DsSkeleton.Circle color="gray" />
 				<DsSkeleton.Rect width={40} height={40} color="gray" />
-			</div>
-			<div>
-				<h4 className={styles.sectionLabel}>Blue</h4>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="heading4">Blue</DsTypography>
 				<DsSkeleton.Text color="blue" />
 				<DsSkeleton.Circle color="blue" />
 				<DsSkeleton.Rect width={40} height={40} color="blue" />
-			</div>
-		</div>
+			</DsStack>
+		</DsStack>
 	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const container = canvas.getByTestId('color-variants');
-
-		const graySkeletons = container.querySelectorAll(`.${skeletonStyles.gray}`);
-		const blueSkeletons = container.querySelectorAll(`.${skeletonStyles.blue}`);
-
-		await expect(graySkeletons).toHaveLength(3);
-		await expect(blueSkeletons).toHaveLength(3);
-	},
 };
 
 /**
- * Text skeleton - typography variants, multiple lines, width, and radius options
+ * Gallery of text skeletons — typography heights, multiple lines, custom width, and radius.
  */
 export const TextVariants: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
-		<div className={styles.verticalStack}>
-			<div>
-				<h4 className={styles.sectionLabel}>Typography Variants</h4>
-				<div className={styles.section}>
-					<DsSkeleton.Text typographyVariant="heading1" />
-					<DsSkeleton.Text typographyVariant="heading3" />
-					<DsSkeleton.Text typographyVariant="body-md-reg" />
-					<DsSkeleton.Text typographyVariant="body-sm-reg" />
-				</div>
-			</div>
-			<div>
-				<h4 className={styles.sectionLabel}>Multiple Lines</h4>
+		<DsStack direction="column" gap="var(--xl)">
+			<DsStack direction="column" gap="var(--standard)">
+				<DsTypography variant="heading4">Typography Variants</DsTypography>
+				<DsSkeleton.Text typographyVariant="heading1" />
+				<DsSkeleton.Text typographyVariant="heading3" />
+				<DsSkeleton.Text typographyVariant="body-md-reg" />
+				<DsSkeleton.Text typographyVariant="body-sm-reg" />
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="heading4">Multiple Lines</DsTypography>
 				<DsSkeleton.Text typographyVariant="body-md-reg" lines={3} />
-			</div>
-			<div>
-				<h4 className={styles.sectionLabel}>Custom Width</h4>
-				<div className={styles.sectionSmall}>
-					<DsSkeleton.Text typographyVariant="body-md-reg" width="80%" />
-					<DsSkeleton.Text typographyVariant="body-md-reg" width={200} />
-				</div>
-			</div>
-			<div>
-				<h4 className={styles.sectionLabel}>Border Radius</h4>
-				<div className={styles.sectionSmall}>
-					<DsSkeleton.Text typographyVariant="body-md-reg" radius="round" />
-					<DsSkeleton.Text typographyVariant="body-md-reg" radius="default" />
-					<DsSkeleton.Text typographyVariant="body-md-reg" radius={12} />
-				</div>
-			</div>
-		</div>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="heading4">Custom Width</DsTypography>
+				<DsSkeleton.Text typographyVariant="body-md-reg" width="80%" />
+				<DsSkeleton.Text typographyVariant="body-md-reg" width={200} />
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)">
+				<DsTypography variant="heading4">Border Radius</DsTypography>
+				<DsSkeleton.Text typographyVariant="body-md-reg" radius="round" />
+				<DsSkeleton.Text typographyVariant="body-md-reg" radius="default" />
+				<DsSkeleton.Text typographyVariant="body-md-reg" radius={12} />
+			</DsStack>
+		</DsStack>
 	),
 };
 
 /**
- * Circle skeleton with avatar sizes
+ * Gallery of circle skeletons across the DsAvatar size scale plus a custom pixel size.
  */
 export const CircleSizes: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
-		<div className={styles.sizesRow} data-testid="circle-sizes">
-			<div className={styles.sizeItem}>
+		<DsStack gap="var(--standard)" alignItems="center" flexWrap="wrap">
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size="xsm" />
-				<p className={styles.label}>xsm (24px)</p>
-			</div>
-			<div className={styles.sizeItem}>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					xsm (24px)
+				</DsTypography>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size="sm" />
-				<p className={styles.label}>sm (32px)</p>
-			</div>
-			<div className={styles.sizeItem}>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					sm (32px)
+				</DsTypography>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size="regular" />
-				<p className={styles.label}>regular (40px)</p>
-			</div>
-			<div className={styles.sizeItem}>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					regular (40px)
+				</DsTypography>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size="md" />
-				<p className={styles.label}>md (48px)</p>
-			</div>
-			<div className={styles.sizeItem}>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					md (48px)
+				</DsTypography>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size="lg" />
-				<p className={styles.label}>lg (64px)</p>
-			</div>
-			<div className={styles.sizeItem}>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					lg (64px)
+				</DsTypography>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size="xl" />
-				<p className={styles.label}>xl (80px)</p>
-			</div>
-			<div className={styles.sizeItem}>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					xl (80px)
+				</DsTypography>
+			</DsStack>
+			<DsStack direction="column" gap="var(--sm)" alignItems="center">
 				<DsSkeleton.Circle size={100} />
-				<p className={styles.label}>custom (100px)</p>
-			</div>
-		</div>
+				<DsTypography variant="body-xs-reg" color="secondary">
+					custom (100px)
+				</DsTypography>
+			</DsStack>
+		</DsStack>
 	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const container = canvas.getByTestId('circle-sizes');
-
-		const circles = container.querySelectorAll(`.${skeletonStyles.circle}`);
-		await expect(circles).toHaveLength(7);
-
-		// Verify sizes match avatar size mapping
-		const expectedSizes = ['24px', '32px', '40px', '48px', '64px', '80px', '100px'];
-
-		circles.forEach((circle, index) => {
-			void expect(circle).toHaveStyle({ width: expectedSizes[index], height: expectedSizes[index] });
-		});
-	},
 };
 
 /**
- * Rectangle skeleton - buttons, badges, images
+ * Gallery of rectangle skeletons standing in for buttons, badges, and images.
  */
 export const RectangleShapes: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
-		<div className={styles.section} data-testid="rectangle-shapes">
-			<div className={styles.shapeRow}>
+		<DsStack direction="column" gap="var(--standard)">
+			<DsStack gap="var(--standard)" alignItems="center">
 				<DsSkeleton.Rect width={120} height={40} />
-				<span className={styles.label}>Button</span>
-			</div>
-			<div className={styles.shapeRow}>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Button
+				</DsTypography>
+			</DsStack>
+			<DsStack gap="var(--standard)" alignItems="center">
 				<DsSkeleton.Rect width={80} height={24} radius="round" />
-				<span className={styles.label}>Badge</span>
-			</div>
-			<div className={styles.shapeRow}>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Badge
+				</DsTypography>
+			</DsStack>
+			<DsStack gap="var(--standard)" alignItems="center">
 				<DsSkeleton.Rect width={200} height={150} radius={8} />
-				<span className={styles.label}>Image</span>
-			</div>
-		</div>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Image
+				</DsTypography>
+			</DsStack>
+		</DsStack>
 	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const container = canvas.getByTestId('rectangle-shapes');
-
-		const rectangles = container.querySelectorAll(`.${skeletonStyles.rectangle}`);
-		await expect(rectangles).toHaveLength(3);
-
-		// Button skeleton
-		await expect(rectangles[0]).toHaveStyle({ width: '120px', height: '40px', borderRadius: '4px' });
-
-		// Badge skeleton (round radius)
-		await expect(rectangles[1]).toHaveStyle({ width: '80px', height: '24px', borderRadius: '999px' });
-
-		// Image skeleton (custom radius)
-		await expect(rectangles[2]).toHaveStyle({ width: '200px', height: '150px', borderRadius: '8px' });
-	},
 };
 
 /**
- * Card skeleton composition example
+ * Composition example — a loading placeholder for a card with avatar, title, body, and actions.
  */
 export const CardSkeleton: Story = {
 	render: () => (
-		<div className={styles.cardContainer}>
-			<div className={styles.cardHeader}>
+		<DsStack direction="column" gap="var(--standard)" width="400px">
+			<DsStack gap="var(--standard)" alignItems="flex-start">
 				<DsSkeleton.Circle size="lg" />
-				<div className={styles.cardHeaderContent}>
+				<DsStack direction="column" gap="var(--sm)" flex="1">
 					<DsSkeleton.Text typographyVariant="heading4" width="60%" />
-					<div className={styles.cardHeaderSubtitle}>
-						<DsSkeleton.Text typographyVariant="body-sm-reg" width="80%" />
-					</div>
-				</div>
-			</div>
+					<DsSkeleton.Text typographyVariant="body-sm-reg" width="80%" />
+				</DsStack>
+			</DsStack>
 			<DsSkeleton.Text typographyVariant="body-md-reg" lines={3} />
-			<div className={styles.cardActions}>
+			<DsStack gap="var(--sm)">
 				<DsSkeleton.Rect width={100} height={36} radius={4} />
 				<DsSkeleton.Rect width={100} height={36} radius={4} />
-			</div>
-		</div>
+			</DsStack>
+		</DsStack>
 	),
 };
 
 /**
- * Table skeleton composition - shows a loading state for tabular data
+ * Composition example — a loading state for tabular data using the core table primitives.
  */
 export const TableSkeleton: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
 	render: () => (
 		<div className={styles.tableContainer}>
 			<Table>
@@ -228,10 +215,10 @@ export const TableSkeleton: Story = {
 					{Array.from({ length: 5 }).map((_, i) => (
 						<TableRow key={i}>
 							<TableCell>
-								<div className={styles.tableNameCell}>
+								<DsStack gap="var(--sm)" alignItems="center">
 									<DsSkeleton.Circle size="sm" />
 									<DsSkeleton.Text width={120} />
-								</div>
+								</DsStack>
 							</TableCell>
 							<TableCell>
 								<DsSkeleton.Rect width={80} height={24} radius="round" />

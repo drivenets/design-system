@@ -1,0 +1,64 @@
+# DsIcon docs snippets
+
+## Default
+
+### Show code
+<DsIcon
+  icon="home"
+  onClick={() => {}}
+  size="medium"
+/>
+
+### MCP manifest
+const Default = () => <DsIcon icon="home" size="medium" />;
+
+## Filled
+
+### Show code
+<DsIcon
+  filled
+  icon="favorite"
+  onClick={() => {}}
+  size="medium"
+/>
+
+### MCP manifest
+const Filled = () => <DsIcon icon="favorite" size="medium" filled />;
+
+## Rounded
+
+### Show code
+<DsIcon
+  icon="settings"
+  onClick={() => {}}
+  size="medium"
+  variant="rounded"
+/>
+
+### MCP manifest
+const Rounded = () => <DsIcon icon="settings" size="medium" variant="rounded" />;
+
+## Colored
+
+### Show code
+<DsIcon
+  color="success"
+  icon="check_circle"
+  onClick={() => {}}
+  size="medium"
+/>
+
+### MCP manifest
+const Colored = () => <DsIcon icon="check_circle" size="medium" color="success" />;
+
+## Custom Icon
+
+### Show code
+<DsIcon
+  icon="special-market"
+  onClick={() => {}}
+  size="medium"
+/>
+
+### MCP manifest
+const CustomIcon = () => <DsIcon icon="special-market" size="medium" />;

@@ -1,0 +1,12 @@
+# DsStatusBadgeV2 docs snippets
+
+## Default
+
+### Show code
+<DsStatusBadgeV2
+  label="Active"
+  phase="active"
+/>
+
+### MCP manifest
+const Default = () => <DsStatusBadgeV2 phase="active" label="Active" />;

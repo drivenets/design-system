@@ -1,0 +1,209 @@
+# DsTag docs snippets
+
+## Default
+
+### Show code
+<DsTag
+  label="Default Tag"
+  onClick={() => {}}
+/>
+
+### MCP manifest
+const Default = () => <DsTag label="Default Tag" />;
+
+## Clickable
+
+### Show code
+<DsTag
+  label="Clickable Tag"
+  onClick={() => {}}
+/>
+
+### MCP manifest
+const Clickable = () => <DsTag label="Clickable Tag" onClick={fn()} />;
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [deleted, setDeleted] = useState(false);
+    const [selected, setSelected] = useState(true);
+    if (deleted) {
+      return <DsTypography variant="body-md-reg">Poof! Deleted!</DsTypography>;
+    }
+    return <DsTag selected={selected} label="Controlled" onDelete={() => setDeleted(true)} onClick={() => setSelected(!selected)} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [deleted, setDeleted] = useState(false);
+    const [selected, setSelected] = useState(true);
+
+    if (deleted) {
+        return <DsTypography variant="body-md-reg">Poof! Deleted!</DsTypography>;
+    }
+
+    return (
+        <DsTag
+            selected={selected}
+            label="Controlled"
+            onDelete={() => setDeleted(true)}
+            onClick={() => setSelected(!selected)}
+        />
+    );
+};
+
+## Include
+
+### Show code
+<DsTag
+  label="Include Tag"
+  onClick={() => {}}
+  onDelete={() => {}}
+  variant="include"
+/>
+
+### MCP manifest
+const Include = () => <DsTag label="Include Tag" variant="include" onDelete={fn()} />;
+
+## Exclude
+
+### Show code
+<DsTag
+  label="Exclude Tag"
+  onClick={() => {}}
+  onDelete={() => {}}
+  variant="exclude"
+/>
+
+### MCP manifest
+const Exclude = () => <DsTag label="Exclude Tag" variant="exclude" onDelete={fn()} />;
+
+## Small
+
+### Show code
+<DsTag
+  label="Small Tag"
+  onClick={() => {}}
+  size="small"
+/>
+
+### MCP manifest
+const Small = () => <DsTag label="Small Tag" size="small" />;
+
+## Key Value
+
+### Show code
+<DsTag
+  label="Category"
+  onClick={() => {}}
+  value="Networking"
+  variant="key-value"
+/>
+
+### MCP manifest
+const KeyValue = () => <DsTag variant="key-value" label="Category" value="Networking" />;
+
+## Key Value Selected
+
+### Show code
+<DsTag
+  label="Category"
+  onClick={() => {}}
+  selected
+  value="Networking"
+  variant="key-value"
+/>
+
+### MCP manifest
+const KeyValueSelected = () => <DsTag
+    variant="key-value"
+    label="Category"
+    value="Networking"
+    selected
+    onClick={fn()} />;
+
+## Key Value Disabled
+
+### Show code
+<DsTag
+  disabled
+  label="Category"
+  onClick={() => {}}
+  value="Networking"
+  variant="key-value"
+/>
+
+### MCP manifest
+const KeyValueDisabled = () => <DsTag variant="key-value" label="Category" value="Networking" disabled />;
+
+## Key Value With Delete
+
+### Show code
+<DsTag
+  label="Category"
+  onClick={() => {}}
+  onDelete={() => {}}
+  value="Networking"
+  variant="key-value"
+/>
+
+### MCP manifest
+const KeyValueWithDelete = () => <DsTag variant="key-value" label="Category" value="Networking" onDelete={fn()} />;
+
+## Key Value Small
+
+### Show code
+<DsTag
+  label="Category"
+  onClick={() => {}}
+  size="small"
+  value="Networking"
+  variant="key-value"
+/>
+
+### MCP manifest
+const KeyValueSmall = () => <DsTag variant="key-value" label="Category" value="Networking" size="small" />;
+
+## Disabled
+
+### Show code
+<DsTag
+  disabled
+  label="Disabled Tag"
+  onClick={() => {}}
+  onDelete={() => {}}
+  selected
+/>
+
+### MCP manifest
+const Disabled = () => <DsTag label="Disabled Tag" selected disabled onClick={fn()} onDelete={fn()} />;
+
+## Custom Icon
+
+### Show code
+<DsTag
+  label="Custom Icon Tag"
+  onClick={() => {}}
+  slots={{
+    icon: <DsIcon icon="star" size="tiny"/>
+  }}
+  variant="include"
+/>
+
+### MCP manifest
+const CustomIcon = () => <DsTag
+    label="Custom Icon Tag"
+    variant="include"
+    slots={{
+        icon: <DsIcon icon="star" size="tiny" />,
+    }} />;
