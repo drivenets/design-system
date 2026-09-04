@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">598 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/94 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">57/94 infos</a><span class="filter-pill ok" aria-disabled="true">575 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -9747,7 +9747,7 @@ onFileUploadRetried?: (fileId: string) =&gt; void</code></pre>
       <div class="badges">
         <label for="c-29-components-filterstatusicon-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-29-components-filterstatusicon-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-29-components-filterstatusicon-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -9815,7 +9815,7 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsFilterStatusIcon } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsFilterStatusIcon, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -9825,48 +9825,8 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Active running status icon — the default state for a toggled-on filter button.</div>
               <pre><code>const Default = () =&gt; &lt;DsFilterStatusIcon status=&quot;running&quot; active /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">All</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const All = () =&gt; {
-    return (
-        &lt;div className={styles.storiesContainer}&gt;
-            &lt;div className={styles.row}&gt;
-                &lt;div className={styles.label}&gt;&lt;/div&gt;
-                {filterStatuses.map((status) =&gt; (
-                    &lt;div key={status} className={styles.label}&gt;
-                        {status}
-                    &lt;/div&gt;
-                ))}
-            &lt;/div&gt;
-
-            &lt;div className={styles.row}&gt;
-                &lt;div className={styles.label}&gt;active&lt;/div&gt;
-                {filterStatuses.map((status) =&gt; (
-                    &lt;div key={`active-${status}`} className={styles.cell}&gt;
-                        &lt;DsFilterStatusIcon status={status} active /&gt;
-                    &lt;/div&gt;
-                ))}
-            &lt;/div&gt;
-
-            &lt;div className={styles.row}&gt;
-                &lt;div className={styles.label}&gt;non-active&lt;/div&gt;
-                {filterStatuses.map((status) =&gt; (
-                    &lt;div key={`inactive-${status}`} className={styles.cell}&gt;
-                        &lt;DsFilterStatusIcon status={status} active={false} /&gt;
-                    &lt;/div&gt;
-                ))}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
             </div>
         </div>
     
@@ -12209,7 +12169,7 @@ style?: CSSProperties</code></pre>
       <div class="badges">
         <label for="c-39-components-icon-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-39-components-icon-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-39-components-icon-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -12295,7 +12255,7 @@ variant?: (typeof iconVariants)[number] = &#39;outlined&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsIcon, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -12305,8 +12265,26 @@ variant?: (typeof iconVariants)[number] = &#39;outlined&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Default outlined Material icon referenced by name.</div>
               <pre><code>const Default = () =&gt; &lt;DsIcon icon=&quot;home&quot; size=&quot;medium&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Filled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Use `filled` for a solid glyph, e.g. to signal an active or selected state.</div>
+              <pre><code>const Filled = () =&gt; &lt;DsIcon icon=&quot;favorite&quot; size=&quot;medium&quot; filled /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Rounded</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The `rounded` variant renders softer, rounded Material glyphs.</div>
+              <pre><code>const Rounded = () =&gt; &lt;DsIcon icon=&quot;settings&quot; size=&quot;medium&quot; variant=&quot;rounded&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -12314,273 +12292,17 @@ variant?: (typeof iconVariants)[number] = &#39;outlined&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Colored = () =&gt; {
-    return (
-        &lt;div style={{ display: &#39;flex&#39;, gap: 16 }}&gt;
-            &lt;DsIcon size=&quot;medium&quot; filled icon=&quot;check_circle&quot; color=&quot;success&quot; /&gt;
-            &lt;DsIcon size=&quot;medium&quot; filled icon=&quot;error&quot; color=&quot;error&quot; /&gt;
-            &lt;DsIcon size=&quot;medium&quot; filled icon=&quot;warning&quot; color=&quot;warning&quot; /&gt;
-            &lt;DsIcon size=&quot;medium&quot; filled icon=&quot;info&quot; color=&quot;information-main&quot; /&gt;
-            &lt;DsIcon size=&quot;medium&quot; filled icon=&quot;special-market&quot; color=&quot;action&quot; /&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+              <div class="hint">Pass a semantic color token to tint the icon with a `--icon-*` value.</div>
+              <pre><code>const Colored = () =&gt; &lt;DsIcon icon=&quot;check_circle&quot; size=&quot;medium&quot; color=&quot;success&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Showcase</span>
+                <span class="ex-name">Custom Icon</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Showcase = function Render(args) {
-    const { size, variant, filled } = args;
-    const [searchTerm, setSearchTerm] = useState(&#39;&#39;);
-    const [iconsByCategory, setIconsByCategory] = useState&lt;IconsByCategory&gt;({});
-    const [isLoading, setIsLoading] = useState(true);
-    const [usedFallback, setUsedFallback] = useState(false);
-
-    // Process icon data into categories
-    const processIconData = (data: Record&lt;string, number&gt;) =&gt; {
-        const categorizedIcons: IconsByCategory = {};
-
-        Object.keys(data).forEach((key) =&gt; {
-            // Skip any entries starting with &quot;symbols::&quot;
-            if (key.startsWith(&#39;symbols::&#39;)) {
-                return;
-            }
-
-            // Key format is &quot;category::iconName&quot;
-            const [category, iconName] = key.split(&#39;::&#39;);
-
-            if (!category || !iconName) {
-                return;
-            }
-
-            if (!categorizedIcons[category]) {
-                categorizedIcons[category] = [];
-            }
-
-            if (iconName) {
-                categorizedIcons[category].push(iconName as IconName);
-            }
-        });
-
-        // Sort icon names within each category
-        Object.values(categorizedIcons).forEach((icons) =&gt; {
-            icons.sort();
-        });
-
-        return categorizedIcons;
-    };
-
-    useEffect(() =&gt; {
-        const fetchIcons = async () =&gt; {
-            try {
-                setIsLoading(true);
-
-                // Try to fetch from GitHub first
-                const response = await fetch(ICONS_URL);
-
-                if (response.ok) {
-                    const data = (await response.json()) as Record&lt;string, number&gt;;
-                    setIconsByCategory(processIconData(data));
-                } else {
-                    throw new Error(&#39;Failed to fetch icons from GitHub&#39;);
-                }
-            } catch (err) {
-                console.error(&#39;Error fetching icons:&#39;, err);
-
-                // Use fallback data if fetch fails (CORS or other issues)
-                setIconsByCategory(processIconData(materialIcons));
-                setUsedFallback(true);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-
-        void fetchIcons();
-    }, []);
-
-    const filteredCategories = useMemo(() =&gt; {
-        const result: IconsByCategory = {};
-
-        Object.entries(iconsByCategory).forEach(([category, icons]) =&gt; {
-            const filteredIcons = icons.filter(
-                (icon) =&gt;
-                    icon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    category.toLowerCase().includes(searchTerm.toLowerCase()),
-            );
-
-            if (filteredIcons.length &gt; 0) {
-                result[category] = filteredIcons;
-            }
-        });
-
-        return result;
-    }, [iconsByCategory, searchTerm]);
-
-    const handleIconClick = async (iconName: string) =&gt; {
-        // Copy icon name to clipboard
-        await navigator.clipboard.writeText(iconName);
-
-        // Create a temporary element for notification
-        const notification = document.createElement(&#39;div&#39;);
-        notification.className = &#39;copy-notification&#39;;
-        notification.textContent = `Copied: ${iconName}`;
-        document.body.appendChild(notification);
-
-        // Remove after animation
-        setTimeout(() =&gt; {
-            document.body.removeChild(notification);
-        }, 2000);
-    };
-
-    if (isLoading) {
-        return &lt;div className=&quot;loading&quot;&gt;Loading material icons...&lt;/div&gt;;
-    }
-
-    return (
-        &lt;div className=&quot;container&quot;&gt;
-            &lt;div className=&quot;search-container&quot;&gt;
-                &lt;input
-                    type=&quot;text&quot;
-                    placeholder=&quot;Search icons by name or category...&quot;
-                    className=&quot;search&quot;
-                    value={searchTerm}
-                    onChange={(e) =&gt; setSearchTerm(e.target.value)}
-                /&gt;
-                &lt;div className=&quot;icon-count&quot;&gt;
-                    {Object.values(filteredCategories).reduce((total, icons) =&gt; total + icons.length, 0)} icons found
-                &lt;/div&gt;
-            &lt;/div&gt;
-
-            {usedFallback &amp;&amp; (
-                &lt;div className=&quot;fallback-notice&quot;&gt;
-                    Using limited icon set due to CORS restrictions. For production use, consider creating a proxy API
-                    endpoint or copying the icon data to your project.
-                &lt;/div&gt;
-            )}
-
-            {Object.keys(filteredCategories).length === 0 ? (
-                &lt;div className=&quot;no-results&quot;&gt;No icons found matching &amp;quot;{searchTerm}&amp;quot;&lt;/div&gt;
-            ) : (
-                Object.entries(filteredCategories)
-                    .sort(([a], [b]) =&gt; a.localeCompare(b))
-                    .map(([category, icons]) =&gt; (
-                        &lt;div key={category} className=&quot;category-section&quot;&gt;
-                            &lt;h2 className=&quot;category-title&quot;&gt;{category}&lt;/h2&gt;
-                            &lt;div className=&quot;results&quot;&gt;
-                                {icons.map((iconName) =&gt; (
-                                    &lt;button
-                                        key={`${category}-${iconName}`}
-                                        className=&quot;icon-wrapper&quot;
-                                        onClick={() =&gt; handleIconClick(iconName)}
-                                        title={`Click to copy: ${iconName}`}
-                                    &gt;
-                                        &lt;DsIcon icon={iconName} size={size} variant={variant} filled={filled} /&gt;
-                                        &lt;span className=&quot;icon-name&quot;&gt;{iconName}&lt;/span&gt;
-                                    &lt;/button&gt;
-                                ))}
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    ))
-            )}
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Custom Icons</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const CustomIcons = function Render(args) {
-    const { size } = args;
-    const [searchTerm, setSearchTerm] = useState(&#39;&#39;);
-
-    const filteredCategories = useMemo(() =&gt; {
-        const result: Record&lt;string, CustomIconName[]&gt; = {};
-
-        Object.entries(customIconCategories).forEach(([category, icons]) =&gt; {
-            const filteredIcons = icons.filter(
-                (icon) =&gt;
-                    icon.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    category.toLowerCase().includes(searchTerm.toLowerCase()),
-            );
-
-            if (filteredIcons.length &gt; 0) {
-                result[category] = filteredIcons;
-            }
-        });
-
-        return result;
-    }, [searchTerm]);
-
-    const handleIconClick = async (iconName: string) =&gt; {
-        await navigator.clipboard.writeText(iconName);
-
-        const notification = document.createElement(&#39;div&#39;);
-        notification.className = &#39;copy-notification&#39;;
-        notification.textContent = `Copied: ${iconName}`;
-        document.body.appendChild(notification);
-
-        setTimeout(() =&gt; {
-            document.body.removeChild(notification);
-        }, 2000);
-    };
-
-    const totalIcons = Object.keys(customIcons).length;
-
-    return (
-        &lt;div className=&quot;container&quot;&gt;
-            &lt;div className=&quot;search-container&quot;&gt;
-                &lt;input
-                    type=&quot;text&quot;
-                    placeholder=&quot;Search custom icons...&quot;
-                    className=&quot;search&quot;
-                    value={searchTerm}
-                    onChange={(e) =&gt; setSearchTerm(e.target.value)}
-                /&gt;
-                &lt;div className=&quot;icon-count&quot;&gt;
-                    {Object.values(filteredCategories).reduce((total, icons) =&gt; total + icons.length, 0)} of{&#39; &#39;}
-                    {totalIcons} custom icons
-                &lt;/div&gt;
-            &lt;/div&gt;
-
-            &lt;div className=&quot;fallback-notice&quot;&gt;
-                These are custom DriveNets-specific icons. Use the &amp;quot;special-&amp;quot; prefix to distinguish them
-                from Material Icons.
-            &lt;/div&gt;
-
-            {Object.keys(filteredCategories).length === 0 ? (
-                &lt;div className=&quot;no-results&quot;&gt;No icons found matching &amp;quot;{searchTerm}&amp;quot;&lt;/div&gt;
-            ) : (
-                Object.entries(filteredCategories).map(([category, icons]) =&gt; (
-                    &lt;div key={category} className=&quot;category-section&quot;&gt;
-                        &lt;h2 className=&quot;category-title&quot;&gt;{category}&lt;/h2&gt;
-                        &lt;div className=&quot;results&quot;&gt;
-                            {icons.map((iconName) =&gt; (
-                                &lt;button
-                                    key={iconName}
-                                    className=&quot;icon-wrapper&quot;
-                                    onClick={() =&gt; handleIconClick(iconName)}
-                                    title={`Click to copy: ${iconName}`}
-                                &gt;
-                                    &lt;DsIcon icon={iconName} size={size} /&gt;
-                                    &lt;span className=&quot;icon-name&quot;&gt;{iconName}&lt;/span&gt;
-                                &lt;/button&gt;
-                            ))}
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                ))
-            )}
-        &lt;/div&gt;
-    );
-};</code></pre>
+              <div class="hint">DriveNets-specific SVG icons are referenced by their `special-*` name.</div>
+              <pre><code>const CustomIcon = () =&gt; &lt;DsIcon icon=&quot;special-market&quot; size=&quot;medium&quot; /&gt;;</code></pre>
             </div>
         </div>
     
@@ -12990,7 +12712,7 @@ value?: ReactNode</code></pre>
       <div class="badges">
         <label for="c-41-components-loader-props" class="badge ok as-toggle">4 prop types</label>
         
-        <label for="c-41-components-loader-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-41-components-loader-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -13052,7 +12774,7 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsLoader } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsLoader, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -13062,8 +12784,8 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Default loader - rotating spinner arc</div>
-              <pre><code>const Default = () =&gt; &lt;DsLoader /&gt;;</code></pre>
+              <div class="hint">Default loader — a rotating spinner arc for general-purpose loading states.</div>
+              <pre><code>const Default = () =&gt; &lt;DsLoader variant=&quot;spinner&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -13071,7 +12793,7 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Pulsing loader - inner circle stays static, outer circle pulsates</div>
+              <div class="hint">Pulsing variant — the outer ring pulsates while the inner circle stays static. Use it for softer, ambient loading affordances.</div>
               <pre><code>const Pulsing = () =&gt; &lt;DsLoader variant=&quot;pulsing&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -13080,75 +12802,13 @@ variant?: (typeof loaderVariants)[number] = &#39;spinner&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Loader displayed inline with text</div>
+              <div class="hint">Pair the loader with a text label to clarify what is loading.</div>
               <pre><code>const InlineWithText = () =&gt; (
-    &lt;div className={styles.inlineContainer}&gt;
+    &lt;DsStack alignItems=&quot;center&quot; gap=&quot;var(--sm)&quot;&gt;
         &lt;DsLoader /&gt;
-        &lt;span&gt;Loading...&lt;/span&gt;
-    &lt;/div&gt;
+        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Loading...&lt;/DsTypography&gt;
+    &lt;/DsStack&gt;
 );</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Variant Comparison</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Comparison of both loader variants</div>
-              <pre><code>const VariantComparison = () =&gt; (
-    &lt;div className={styles.variantComparisonContainer}&gt;
-        &lt;div className={styles.variantItem}&gt;
-            &lt;DsLoader variant=&quot;spinner&quot; /&gt;
-            &lt;span className={styles.variantLabel}&gt;Spinner&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.variantItem}&gt;
-            &lt;DsLoader variant=&quot;pulsing&quot; /&gt;
-            &lt;span className={styles.variantLabel}&gt;Pulsing&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Usage Examples</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Multiple loaders in different contexts</div>
-              <pre><code>const UsageExamples = () =&gt; (
-    &lt;div className={styles.usageExamplesContainer}&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.usageSection}&gt;Inline with text&lt;/h4&gt;
-            &lt;div className={styles.inlineContainer}&gt;
-                &lt;DsLoader /&gt;
-                &lt;span&gt;Processing request...&lt;/span&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.usageSection}&gt;Centered in container&lt;/h4&gt;
-            &lt;div className={styles.centeredContainer}&gt;
-                &lt;DsLoader /&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.usageSection}&gt;Multiple loaders&lt;/h4&gt;
-            &lt;div className={styles.multipleLoadersContainer}&gt;
-                &lt;DsLoader /&gt;
-                &lt;DsLoader /&gt;
-                &lt;DsLoader /&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Custom Props</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Test that custom props (className, style) are forwarded to the container</div>
-              <pre><code>const CustomProps = () =&gt; &lt;DsLoader className={styles.customPropsLoader} /&gt;;</code></pre>
             </div>
         </div>
     
@@ -15235,7 +14895,7 @@ trigger: ReactNode</code></pre>
       <div class="badges">
         <label for="c-48-components-progressarc-props" class="badge ok as-toggle">5 prop types</label>
         <label for="c-48-components-progressarc-info" class="badge info as-toggle">1 info</label>
-        <label for="c-48-components-progressarc-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-48-components-progressarc-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -15308,7 +14968,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon, DsProgressArc } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsIcon, DsProgressArc, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -15318,65 +14978,8 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Default arc showing an in-progress percentage in the center.</div>
               <pre><code>const Default = () =&gt; &lt;DsProgressArc value={50} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">All Variants</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const AllVariants = () =&gt; (
-    &lt;div className={styles.grid}&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;small&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Small / Default&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;small&quot; variant=&quot;success&quot; /&gt;
-            &lt;span className={styles.label}&gt;Small / Success&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;small&quot; variant=&quot;error&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Small / Error&lt;/span&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;medium&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Medium / Default&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;medium&quot; variant=&quot;success&quot; /&gt;
-            &lt;span className={styles.label}&gt;Medium / Success&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;medium&quot; variant=&quot;error&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Medium / Error&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Sizes</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Sizes = () =&gt; (
-    &lt;div className={styles.row}&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;small&quot; value={75} /&gt;
-            &lt;span className={styles.label}&gt;Small&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressArc size=&quot;medium&quot; value={75} /&gt;
-            &lt;span className={styles.label}&gt;Medium&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -15384,7 +14987,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Success state fills the arc and swaps the center label for a check icon.</div>
               <pre><code>const Success = () =&gt; &lt;DsProgressArc variant=&quot;success&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15393,7 +14996,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Error state renders the error color and a close icon over the current value.</div>
               <pre><code>const Error = () =&gt; &lt;DsProgressArc variant=&quot;error&quot; value={50} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15402,7 +15005,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Override the center content with your own icon instead of the percentage label.</div>
               <pre><code>const CustomIcon = () =&gt; &lt;DsProgressArc value={80}&gt;&lt;DsIcon icon=&quot;warning&quot; size=&quot;small&quot; /&gt;&lt;/DsProgressArc&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15411,7 +15014,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Empty state at the start of a task.</div>
               <pre><code>const ZeroProgress = () =&gt; &lt;DsProgressArc value={0} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15420,7 +15023,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Completed state without the success variant styling.</div>
               <pre><code>const FullProgress = () =&gt; &lt;DsProgressArc value={100} /&gt;;</code></pre>
             </div>
         </div>
@@ -15442,7 +15045,7 @@ variant?: (typeof progressArcVariants)[number] = &#39;default&#39;</code></pre>
       <div class="badges">
         <label for="c-49-components-progressdonut-props" class="badge ok as-toggle">7 prop types</label>
         <label for="c-49-components-progressdonut-info" class="badge info as-toggle">1 info</label>
-        <label for="c-49-components-progressdonut-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-49-components-progressdonut-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -15519,7 +15122,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon, DsProgressDonut } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsIcon, DsProgressDonut, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -15529,65 +15132,8 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Default donut showing an in-progress percentage in the center.</div>
               <pre><code>const Default = () =&gt; &lt;DsProgressDonut value={50} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">All Variants</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const AllVariants = () =&gt; (
-    &lt;div className={styles.grid}&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;small&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Small / Default&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;small&quot; variant=&quot;success&quot; /&gt;
-            &lt;span className={styles.label}&gt;Small / Success&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;small&quot; variant=&quot;error&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Small / Error&lt;/span&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;medium&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Medium / Default&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;medium&quot; variant=&quot;success&quot; /&gt;
-            &lt;span className={styles.label}&gt;Medium / Success&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;medium&quot; variant=&quot;error&quot; value={50} /&gt;
-            &lt;span className={styles.label}&gt;Medium / Error&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Sizes</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Sizes = () =&gt; (
-    &lt;div className={styles.row}&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;small&quot; value={75} /&gt;
-            &lt;span className={styles.label}&gt;Small&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.cell}&gt;
-            &lt;DsProgressDonut size=&quot;medium&quot; value={75} /&gt;
-            &lt;span className={styles.label}&gt;Medium&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -15595,7 +15141,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Success state fills the donut and swaps the center label for a check icon.</div>
               <pre><code>const Success = () =&gt; &lt;DsProgressDonut variant=&quot;success&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15604,7 +15150,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Error state renders the error color and a close icon over the current value.</div>
               <pre><code>const Error = () =&gt; &lt;DsProgressDonut variant=&quot;error&quot; value={50} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15613,7 +15159,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Override the center content with your own icon instead of the percentage label.</div>
               <pre><code>const CustomIcon = () =&gt; &lt;DsProgressDonut value={80}&gt;&lt;DsIcon icon=&quot;warning&quot; size=&quot;small&quot; /&gt;&lt;/DsProgressDonut&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15622,7 +15168,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Empty state at the start of a task.</div>
               <pre><code>const ZeroProgress = () =&gt; &lt;DsProgressDonut value={0} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -15631,7 +15177,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Completed state without the success variant styling.</div>
               <pre><code>const FullProgress = () =&gt; &lt;DsProgressDonut value={100} /&gt;;</code></pre>
             </div>
         </div>
@@ -15653,7 +15199,7 @@ variant?: (typeof progressDonutVariants)[number] = &#39;default&#39;</code></pre
       <div class="badges">
         <label for="c-50-components-progresslinear-props" class="badge ok as-toggle">11 prop types</label>
         
-        <label for="c-50-components-progresslinear-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-50-components-progresslinear-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -15757,7 +15303,7 @@ variant?: (typeof progressLinearVariants)[number] = &#39;progress&#39;</code></p
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsProgressLinear } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsProgressLinear, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -15767,58 +15313,8 @@ variant?: (typeof progressLinearVariants)[number] = &#39;progress&#39;</code></p
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Standard progress bar with a label, percentage value, and helper caption.</div>
               <pre><code>const Default = () =&gt; &lt;DsProgressLinear value={35} label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">All Variants</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const AllVariants = () =&gt; (
-    &lt;&gt;
-        &lt;DsProgressLinear variant=&quot;initial&quot; value={0} label=&quot;File Upload&quot; caption=&quot;Waiting to start...&quot; /&gt;
-        &lt;DsProgressLinear variant=&quot;progress&quot; value={35} label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; /&gt;
-        &lt;DsProgressLinear variant=&quot;interrupted&quot; value={35} label=&quot;File Upload&quot; caption=&quot;Upload interrupted.&quot; /&gt;
-        &lt;DsProgressLinear variant=&quot;success&quot; value={100} label=&quot;File Upload&quot; caption=&quot;Upload complete.&quot; /&gt;
-        &lt;DsProgressLinear
-            variant=&quot;error&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Error: File exceeds size limit.&quot;
-        /&gt;
-    &lt;/&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Sizes</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Sizes = () =&gt; (
-    &lt;&gt;
-        &lt;DsProgressLinear size=&quot;small&quot; value={50} label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; /&gt;
-        &lt;DsProgressLinear size=&quot;medium&quot; value={50} label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; /&gt;
-        &lt;DsProgressLinear size=&quot;large&quot; value={50} label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; /&gt;
-    &lt;/&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Custom Caption</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithCustomCaption = () =&gt; &lt;DsProgressLinear
-    value={60}
-    label=&quot;Processing&quot;
-    caption={(&lt;span&gt;Step &lt;strong&gt;3&lt;/strong&gt;of &lt;strong&gt;5&lt;/strong&gt;
-    &lt;/span&gt;)} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -15826,8 +15322,21 @@ variant?: (typeof progressLinearVariants)[number] = &#39;progress&#39;</code></p
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Bare progress track without the percentage value — use in compact or inline layouts.</div>
               <pre><code>const BarOnly = () =&gt; &lt;DsProgressLinear value={70} showValue={false} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Custom Caption</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Caption accepts a ReactNode when you need richer helper text than a plain string.</div>
+              <pre><code>const WithCustomCaption = () =&gt; &lt;DsProgressLinear
+    value={60}
+    label=&quot;Processing&quot;
+    caption={(&lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Step 3 of 5
+                    &lt;/DsTypography&gt;)} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -15835,141 +15344,23 @@ variant?: (typeof progressLinearVariants)[number] = &#39;progress&#39;</code></p
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Drive `value` from state to reflect live progress, e.g. an upload or long-running task.</div>
               <pre><code>const Controlled = () =&gt; {
-    const [value, setValue] = useState(args.value ?? 0);
+    const [value, setValue] = useState(35);
 
     return (
-        &lt;&gt;
+        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot; width=&quot;600px&quot;&gt;
             &lt;input
                 type=&quot;range&quot;
                 min={0}
                 max={100}
                 value={value}
-                onChange={(e) =&gt; setValue(Number(e.target.value))} /&gt;
-            &lt;DsProgressLinear label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; value={value} /&gt;
-        &lt;/&gt;
+                onChange={(event) =&gt; setValue(Number(event.target.value))}
+            /&gt;
+            &lt;DsProgressLinear value={value} label=&quot;File Upload&quot; caption=&quot;Uploading...&quot; /&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Full Matrix</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const FullMatrix = () =&gt; (
-    &lt;&gt;
-        &lt;DsProgressLinear
-            size=&quot;small&quot;
-            variant=&quot;initial&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Waiting to start...&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;small&quot;
-            variant=&quot;progress&quot;
-            value={35}
-            label=&quot;File Upload&quot;
-            caption=&quot;Uploading...&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;small&quot;
-            variant=&quot;interrupted&quot;
-            value={35}
-            label=&quot;File Upload&quot;
-            caption=&quot;Upload interrupted.&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;small&quot;
-            variant=&quot;success&quot;
-            value={100}
-            label=&quot;File Upload&quot;
-            caption=&quot;Upload complete.&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;small&quot;
-            variant=&quot;error&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Error: File exceeds size limit.&quot;
-        /&gt;
-
-        &lt;DsProgressLinear
-            size=&quot;medium&quot;
-            variant=&quot;initial&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Waiting to start...&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;medium&quot;
-            variant=&quot;progress&quot;
-            value={35}
-            label=&quot;File Upload&quot;
-            caption=&quot;Uploading...&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;medium&quot;
-            variant=&quot;interrupted&quot;
-            value={35}
-            label=&quot;File Upload&quot;
-            caption=&quot;Upload interrupted.&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;medium&quot;
-            variant=&quot;success&quot;
-            value={100}
-            label=&quot;File Upload&quot;
-            caption=&quot;Upload complete.&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;medium&quot;
-            variant=&quot;error&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Error: File exceeds size limit.&quot;
-        /&gt;
-
-        &lt;DsProgressLinear
-            size=&quot;large&quot;
-            variant=&quot;initial&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Waiting to start...&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;large&quot;
-            variant=&quot;progress&quot;
-            value={35}
-            label=&quot;File Upload&quot;
-            caption=&quot;Uploading...&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;large&quot;
-            variant=&quot;interrupted&quot;
-            value={35}
-            label=&quot;File Upload&quot;
-            caption=&quot;Upload interrupted.&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;large&quot;
-            variant=&quot;success&quot;
-            value={100}
-            label=&quot;File Upload&quot;
-            caption=&quot;Upload complete.&quot;
-        /&gt;
-        &lt;DsProgressLinear
-            size=&quot;large&quot;
-            variant=&quot;error&quot;
-            value={0}
-            label=&quot;File Upload&quot;
-            caption=&quot;Error: File exceeds size limit.&quot;
-        /&gt;
-    &lt;/&gt;
-);</code></pre>
             </div>
         </div>
     
@@ -17122,7 +16513,7 @@ tier?: string</code></pre>
       <div class="badges">
         <label for="c-56-components-skeleton-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-56-components-skeleton-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-56-components-skeleton-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -17209,205 +16600,42 @@ width?: string | number</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsSkeleton, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@drivenets/design-system";</code></pre>
+                <pre><code>import {
+    DsSkeleton,
+    DsStack,
+    DsTypography,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@drivenets/design-system";</code></pre>
               </div>
           
           
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Color Variants</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Color variants - gray (default) and blue</div>
-              <pre><code>const ColorVariants = () =&gt; (
-    &lt;div className={styles.verticalStack} data-testid=&quot;color-variants&quot;&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.sectionLabel}&gt;gray (default)&lt;/h4&gt;
-            &lt;DsSkeleton.Text color=&quot;gray&quot; /&gt;
-            &lt;DsSkeleton.Circle color=&quot;gray&quot; /&gt;
-            &lt;DsSkeleton.Rect width={40} height={40} color=&quot;gray&quot; /&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.sectionLabel}&gt;Blue&lt;/h4&gt;
-            &lt;DsSkeleton.Text color=&quot;blue&quot; /&gt;
-            &lt;DsSkeleton.Circle color=&quot;blue&quot; /&gt;
-            &lt;DsSkeleton.Rect width={40} height={40} color=&quot;blue&quot; /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Text Variants</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Text skeleton - typography variants, multiple lines, width, and radius options</div>
-              <pre><code>const TextVariants = () =&gt; (
-    &lt;div className={styles.verticalStack}&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.sectionLabel}&gt;Typography Variants&lt;/h4&gt;
-            &lt;div className={styles.section}&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;heading1&quot; /&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;heading3&quot; /&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; /&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-sm-reg&quot; /&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.sectionLabel}&gt;Multiple Lines&lt;/h4&gt;
-            &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; lines={3} /&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.sectionLabel}&gt;Custom Width&lt;/h4&gt;
-            &lt;div className={styles.sectionSmall}&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; width=&quot;80%&quot; /&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; width={200} /&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div&gt;
-            &lt;h4 className={styles.sectionLabel}&gt;Border Radius&lt;/h4&gt;
-            &lt;div className={styles.sectionSmall}&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; radius=&quot;round&quot; /&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; radius=&quot;default&quot; /&gt;
-                &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; radius={12} /&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Circle Sizes</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Circle skeleton with avatar sizes</div>
-              <pre><code>const CircleSizes = () =&gt; (
-    &lt;div className={styles.sizesRow} data-testid=&quot;circle-sizes&quot;&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size=&quot;xsm&quot; /&gt;
-            &lt;p className={styles.label}&gt;xsm (24px)&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size=&quot;sm&quot; /&gt;
-            &lt;p className={styles.label}&gt;sm (32px)&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size=&quot;regular&quot; /&gt;
-            &lt;p className={styles.label}&gt;regular (40px)&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size=&quot;md&quot; /&gt;
-            &lt;p className={styles.label}&gt;md (48px)&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size=&quot;lg&quot; /&gt;
-            &lt;p className={styles.label}&gt;lg (64px)&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size=&quot;xl&quot; /&gt;
-            &lt;p className={styles.label}&gt;xl (80px)&lt;/p&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.sizeItem}&gt;
-            &lt;DsSkeleton.Circle size={100} /&gt;
-            &lt;p className={styles.label}&gt;custom (100px)&lt;/p&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Rectangle Shapes</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Rectangle skeleton - buttons, badges, images</div>
-              <pre><code>const RectangleShapes = () =&gt; (
-    &lt;div className={styles.section} data-testid=&quot;rectangle-shapes&quot;&gt;
-        &lt;div className={styles.shapeRow}&gt;
-            &lt;DsSkeleton.Rect width={120} height={40} /&gt;
-            &lt;span className={styles.label}&gt;Button&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.shapeRow}&gt;
-            &lt;DsSkeleton.Rect width={80} height={24} radius=&quot;round&quot; /&gt;
-            &lt;span className={styles.label}&gt;Badge&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.shapeRow}&gt;
-            &lt;DsSkeleton.Rect width={200} height={150} radius={8} /&gt;
-            &lt;span className={styles.label}&gt;Image&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
             <div class="note ok">
               <div class="row">
                 <span class="ex-name">Card Skeleton</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Card skeleton composition example</div>
+              <div class="hint">Composition example — a loading placeholder for a card with avatar, title, body, and actions.</div>
               <pre><code>const CardSkeleton = () =&gt; (
-    &lt;div className={styles.cardContainer}&gt;
-        &lt;div className={styles.cardHeader}&gt;
+    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--standard)&quot; width=&quot;400px&quot;&gt;
+        &lt;DsStack gap=&quot;var(--standard)&quot; alignItems=&quot;flex-start&quot;&gt;
             &lt;DsSkeleton.Circle size=&quot;lg&quot; /&gt;
-            &lt;div className={styles.cardHeaderContent}&gt;
+            &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot; flex=&quot;1&quot;&gt;
                 &lt;DsSkeleton.Text typographyVariant=&quot;heading4&quot; width=&quot;60%&quot; /&gt;
-                &lt;div className={styles.cardHeaderSubtitle}&gt;
-                    &lt;DsSkeleton.Text typographyVariant=&quot;body-sm-reg&quot; width=&quot;80%&quot; /&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
+                &lt;DsSkeleton.Text typographyVariant=&quot;body-sm-reg&quot; width=&quot;80%&quot; /&gt;
+            &lt;/DsStack&gt;
+        &lt;/DsStack&gt;
         &lt;DsSkeleton.Text typographyVariant=&quot;body-md-reg&quot; lines={3} /&gt;
-        &lt;div className={styles.cardActions}&gt;
+        &lt;DsStack gap=&quot;var(--sm)&quot;&gt;
             &lt;DsSkeleton.Rect width={100} height={36} radius={4} /&gt;
             &lt;DsSkeleton.Rect width={100} height={36} radius={4} /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Table Skeleton</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Table skeleton composition - shows a loading state for tabular data</div>
-              <pre><code>const TableSkeleton = () =&gt; (
-    &lt;div className={styles.tableContainer}&gt;
-        &lt;Table&gt;
-            &lt;TableHeader&gt;
-                &lt;TableRow&gt;
-                    &lt;TableHead&gt;Name&lt;/TableHead&gt;
-                    &lt;TableHead&gt;Status&lt;/TableHead&gt;
-                    &lt;TableHead&gt;Progress&lt;/TableHead&gt;
-                    &lt;TableHead&gt;Actions&lt;/TableHead&gt;
-                &lt;/TableRow&gt;
-            &lt;/TableHeader&gt;
-            &lt;TableBody&gt;
-                {Array.from({ length: 5 }).map((_, i) =&gt; (
-                    &lt;TableRow key={i}&gt;
-                        &lt;TableCell&gt;
-                            &lt;div className={styles.tableNameCell}&gt;
-                                &lt;DsSkeleton.Circle size=&quot;sm&quot; /&gt;
-                                &lt;DsSkeleton.Text width={120} /&gt;
-                            &lt;/div&gt;
-                        &lt;/TableCell&gt;
-                        &lt;TableCell&gt;
-                            &lt;DsSkeleton.Rect width={80} height={24} radius=&quot;round&quot; /&gt;
-                        &lt;/TableCell&gt;
-                        &lt;TableCell&gt;
-                            &lt;DsSkeleton.Rect width={100} height={8} radius={4} /&gt;
-                        &lt;/TableCell&gt;
-                        &lt;TableCell&gt;
-                            &lt;DsSkeleton.Rect width={32} height={32} radius={4} /&gt;
-                        &lt;/TableCell&gt;
-                    &lt;/TableRow&gt;
-                ))}
-            &lt;/TableBody&gt;
-        &lt;/Table&gt;
-    &lt;/div&gt;
+        &lt;/DsStack&gt;
+    &lt;/DsStack&gt;
 );</code></pre>
             </div>
         </div>
@@ -17861,7 +17089,7 @@ style?: React.CSSProperties = {}</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsSpinner } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsSpinner, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -17871,51 +17099,26 @@ style?: React.CSSProperties = {}</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = () =&gt; &lt;DsSpinner /&gt;;</code></pre>
+              <div class="hint">Default medium spinner for general-purpose loading states.</div>
+              <pre><code>const Default = () =&gt; &lt;DsSpinner size=&quot;medium&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">All Sizes</span>
+                <span class="ex-name">Small</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const AllSizes = () =&gt; (
-    &lt;div style={{ display: &#39;flex&#39;, gap: &#39;24px&#39;, alignItems: &#39;center&#39; }}&gt;
-        &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, alignItems: &#39;center&#39;, gap: &#39;8px&#39; }}&gt;
-            &lt;DsSpinner size=&quot;small&quot; /&gt;
-            &lt;span&gt;Small&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, alignItems: &#39;center&#39;, gap: &#39;8px&#39; }}&gt;
-            &lt;DsSpinner size=&quot;medium&quot; /&gt;
-            &lt;span&gt;Default&lt;/span&gt;
-        &lt;/div&gt;
-        &lt;div style={{ display: &#39;flex&#39;, flexDirection: &#39;column&#39;, alignItems: &#39;center&#39;, gap: &#39;8px&#39; }}&gt;
-            &lt;DsSpinner size=&quot;large&quot; /&gt;
-            &lt;span&gt;Large&lt;/span&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Compact spinner for dense layouts, inline placement, or small containers.</div>
+              <pre><code>const Small = () =&gt; &lt;DsSpinner size=&quot;small&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Modal Loading</span>
+                <span class="ex-name">Large</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const ModalLoading = () =&gt; (
-    &lt;div className={styles.modalOverlay}&gt;
-        &lt;div className={styles.modalContent}&gt;
-            &lt;DsSpinner /&gt;
-            &lt;div className={styles.modalText}&gt;
-                &lt;p className={styles.modalTextPrimary}&gt;Explanation text will describe the process.&lt;/p&gt;
-                &lt;p className={styles.modalTextSecondary}&gt;Two lines will be aimed for this.&lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Prominent spinner for full-page or large-surface loading states.</div>
+              <pre><code>const Large = () =&gt; &lt;DsSpinner size=&quot;large&quot; /&gt;;</code></pre>
             </div>
         </div>
     
@@ -18381,7 +17584,7 @@ width?: CSSProps[&#39;width&#39;]</code></pre>
       <div class="badges">
         <label for="c-62-components-statusbadge-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-62-components-statusbadge-stories" class="badge ok as-toggle">2 stories</label>
+        <label for="c-62-components-statusbadge-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -18464,7 +17667,7 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsStatusBadge } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsStack, DsStatusBadge, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -18474,91 +17677,26 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Standard filled badge — pair a status with a matching icon.</div>
               <pre><code>const Default = () =&gt; &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">All</span>
+                <span class="ex-name">Ghost</span>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Ghost style uses a light background for lower-emphasis contexts like dense tables.</div>
+              <pre><code>const Ghost = () =&gt; &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; ghost /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const All = () =&gt; {
-    const statuses: Record&lt;DsStatus, IconType&gt; = {
-        active: &#39;check_circle&#39;,
-        running: &#39;change_circle&#39;,
-        pending: &#39;pause_circle&#39;,
-        draft: &#39;stylus_note&#39;,
-        inactive: &#39;stop_circle&#39;,
-        warning: &#39;warning&#39;,
-        failed: &#39;cancel&#39;,
-    };
-
-    return (
-        &lt;div className={styles.storiesContainer}&gt;
-            &lt;div className={styles.storiesRow}&gt;
-                {/* Filled variants - Default */}
-                &lt;div&gt;
-                    &lt;div className={styles.sectionTitle}&gt;Filled&lt;/div&gt;
-                    &lt;div className={styles.storiesList}&gt;
-                        {dsStatuses.map((status) =&gt; (
-                            &lt;DsStatusBadge key={`filled-24-${status}`} icon={statuses[status]} status={status} /&gt;
-                        ))}
-                    &lt;/div&gt;
-                &lt;/div&gt;
-
-                {/* Ghost variants - Default */}
-                &lt;div&gt;
-                    &lt;div className={styles.sectionTitle}&gt;Ghost&lt;/div&gt;
-                    &lt;div className={styles.storiesList}&gt;
-                        {dsStatuses.map((status) =&gt; (
-                            &lt;DsStatusBadge
-                                key={`ghost-24-${status}`}
-                                icon={statuses[status]}
-                                status={status}
-                                ghost={true}
-                            /&gt;
-                        ))}
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-
-            &lt;div className={styles.storiesRow}&gt;
-                {/* Filled variants - Small */}
-                &lt;div&gt;
-                    &lt;div className={styles.sectionTitle}&gt;Filled - Small&lt;/div&gt;
-                    &lt;div className={styles.storiesList}&gt;
-                        {dsStatuses.map((status) =&gt; (
-                            &lt;DsStatusBadge
-                                key={`filled-20-${status}`}
-                                icon={statuses[status]}
-                                status={status}
-                                size=&quot;small&quot;
-                            /&gt;
-                        ))}
-                    &lt;/div&gt;
-                &lt;/div&gt;
-
-                {/* Ghost variants - Small */}
-                &lt;div&gt;
-                    &lt;div className={styles.sectionTitle}&gt;Ghost - Small&lt;/div&gt;
-                    &lt;div className={styles.storiesList}&gt;
-                        {dsStatuses.map((status) =&gt; (
-                            &lt;DsStatusBadge
-                                key={`ghost-20-${status}`}
-                                icon={statuses[status]}
-                                status={status}
-                                ghost={true}
-                                size=&quot;small&quot;
-                            /&gt;
-                        ))}
-                    &lt;/div&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+              <div class="hint">Small size for compact rows and tight layouts.</div>
+              <pre><code>const Small = () =&gt; &lt;DsStatusBadge icon=&quot;check_circle&quot; status=&quot;active&quot; size=&quot;small&quot; /&gt;;</code></pre>
             </div>
         </div>
     
@@ -18579,7 +17717,7 @@ style?: CSSProperties</code></pre>
       <div class="badges">
         <label for="c-63-components-statusbadgev2-props" class="badge ok as-toggle">9 prop types</label>
         <label for="c-63-components-statusbadgev2-info" class="badge info as-toggle">1 info</label>
-        <label for="c-63-components-statusbadgev2-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-63-components-statusbadgev2-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -18659,7 +17797,7 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon, DsStack, DsStatusBadgeV2 } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsIcon, DsStack, DsStatusBadgeV2, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -18671,388 +17809,6 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
               
               
               <pre><code>const Default = () =&gt; &lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;Active&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">All Phases</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const AllPhases = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xl)&quot;&gt;
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Primary — Medium&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-succeeded&quot; label={phaseLabels[&#39;result-succeeded&#39;]} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-warning&quot; label={phaseLabels[&#39;result-warning&#39;]} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Primary — Small&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-succeeded&quot; label={phaseLabels[&#39;result-succeeded&#39;]} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-warning&quot; label={phaseLabels[&#39;result-warning&#39;]} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} size=&quot;small&quot; /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Secondary — Medium&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-succeeded&quot;
-                    label={phaseLabels[&#39;result-succeeded&#39;]}
-                    variant=&quot;secondary&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-warning&quot; label={phaseLabels[&#39;result-warning&#39;]} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} variant=&quot;secondary&quot; /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Secondary — Small&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;not-started&quot;
-                    label={phaseLabels[&#39;not-started&#39;]}
-                    variant=&quot;secondary&quot;
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} variant=&quot;secondary&quot; size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;in-review&quot;
-                    label={phaseLabels[&#39;in-review&#39;]}
-                    variant=&quot;secondary&quot;
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} variant=&quot;secondary&quot; size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} variant=&quot;secondary&quot; size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} variant=&quot;secondary&quot; size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-succeeded&quot;
-                    label={phaseLabels[&#39;result-succeeded&#39;]}
-                    variant=&quot;secondary&quot;
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-warning&quot;
-                    label={phaseLabels[&#39;result-warning&#39;]}
-                    variant=&quot;secondary&quot;
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-failed&quot;
-                    label={phaseLabels[&#39;result-failed&#39;]}
-                    variant=&quot;secondary&quot;
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;deprecated&quot;
-                    label={phaseLabels.deprecated}
-                    variant=&quot;secondary&quot;
-                    size=&quot;small&quot;
-                /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Icon Only</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const IconOnly = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xl)&quot;&gt;
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Icon-only (hover for tooltip)&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-succeeded&quot; label={phaseLabels[&#39;result-succeeded&#39;]} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-warning&quot; label={phaseLabels[&#39;result-warning&#39;]} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} iconOnly /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} iconOnly /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Icon-only — Small&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-succeeded&quot;
-                    label={phaseLabels[&#39;result-succeeded&#39;]}
-                    iconOnly
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-warning&quot;
-                    label={phaseLabels[&#39;result-warning&#39;]}
-                    iconOnly
-                    size=&quot;small&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} iconOnly size=&quot;small&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} iconOnly size=&quot;small&quot; /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-
-        &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-            &lt;div className={styles.sectionTitle}&gt;Icon-only Secondary&lt;/div&gt;
-            &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;not-started&quot;
-                    label={phaseLabels[&#39;not-started&#39;]}
-                    iconOnly
-                    variant=&quot;secondary&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} iconOnly variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} iconOnly variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} iconOnly variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} iconOnly variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} iconOnly variant=&quot;secondary&quot; /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-succeeded&quot;
-                    label={phaseLabels[&#39;result-succeeded&#39;]}
-                    iconOnly
-                    variant=&quot;secondary&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-warning&quot;
-                    label={phaseLabels[&#39;result-warning&#39;]}
-                    iconOnly
-                    variant=&quot;secondary&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2
-                    phase=&quot;result-failed&quot;
-                    label={phaseLabels[&#39;result-failed&#39;]}
-                    iconOnly
-                    variant=&quot;secondary&quot;
-                /&gt;
-                &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} iconOnly variant=&quot;secondary&quot; /&gt;
-            &lt;/DsStack&gt;
-        &lt;/DsStack&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Text Only</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const TextOnly = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-        &lt;div className={styles.sectionTitle}&gt;Text-only (icon=null)&lt;/div&gt;
-        &lt;DsStack direction=&quot;row&quot; flexWrap=&quot;wrap&quot; gap=&quot;var(--standard)&quot; alignItems=&quot;center&quot;&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;result-succeeded&quot; label={phaseLabels[&#39;result-succeeded&#39;]} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;result-warning&quot; label={phaseLabels[&#39;result-warning&#39;]} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} icon={null} /&gt;
-            &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} icon={null} /&gt;
-        &lt;/DsStack&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Phase Reference</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const PhaseReference = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
-        &lt;table className={styles.docsTable}&gt;
-            &lt;thead&gt;
-                &lt;tr&gt;
-                    &lt;th&gt;Phase&lt;/th&gt;
-                    &lt;th&gt;Badge&lt;/th&gt;
-                    &lt;th&gt;Icon&lt;/th&gt;
-                    &lt;th&gt;Example Domain Statuses&lt;/th&gt;
-                &lt;/tr&gt;
-            &lt;/thead&gt;
-            &lt;tbody&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;not-started&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;not-started&quot; label={phaseLabels[&#39;not-started&#39;]} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap[&#39;not-started&#39;]} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples[&#39;not-started&#39;]}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;temporary&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;temporary&quot; label={phaseLabels.temporary} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap.temporary} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples.temporary}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;in-review&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;in-review&quot; label={phaseLabels[&#39;in-review&#39;]} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap[&#39;in-review&#39;]} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples[&#39;in-review&#39;]}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;pending&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label={phaseLabels.pending} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap.pending} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples.pending}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;active&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;active&quot; label={phaseLabels.active} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap.active} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples.active}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;execution&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label={phaseLabels.execution} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap.execution} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples.execution}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;result-succeeded&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;result-succeeded&quot; label={phaseLabels[&#39;result-succeeded&#39;]} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap[&#39;result-succeeded&#39;]} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples[&#39;result-succeeded&#39;]}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;result-warning&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;result-warning&quot; label={phaseLabels[&#39;result-warning&#39;]} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap[&#39;result-warning&#39;]} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples[&#39;result-warning&#39;]}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;result-failed&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;result-failed&quot; label={phaseLabels[&#39;result-failed&#39;]} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap[&#39;result-failed&#39;]} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples[&#39;result-failed&#39;]}&lt;/td&gt;
-                &lt;/tr&gt;
-                &lt;tr&gt;
-                    &lt;td&gt;
-                        &lt;code&gt;deprecated&lt;/code&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsStatusBadgeV2 phase=&quot;deprecated&quot; label={phaseLabels.deprecated} /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;
-                        &lt;DsIcon icon={phaseIconMap.deprecated} size=&quot;tiny&quot; filled /&gt;
-                    &lt;/td&gt;
-                    &lt;td&gt;{phaseExamples.deprecated}&lt;/td&gt;
-                &lt;/tr&gt;
-            &lt;/tbody&gt;
-        &lt;/table&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Responsive Size</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ResponsiveSize = () =&gt; (
-    &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--sm)&quot; alignItems=&quot;center&quot; flexWrap=&quot;wrap&quot;&gt;
-        &lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;lg: medium / md: small&quot; size={{ lg: &#39;medium&#39;, md: &#39;small&#39; }} /&gt;
-        &lt;DsStatusBadgeV2 phase=&quot;pending&quot; label=&quot;lg: small / md: medium&quot; size={{ lg: &#39;small&#39;, md: &#39;medium&#39; }} /&gt;
-        &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label=&quot;static: medium&quot; size=&quot;medium&quot; /&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
             </div>
         </div>
     
@@ -27574,7 +26330,7 @@ export const DsTabs = {
       <div class="badges">
         <label for="c-79-components-tag-props" class="badge ok as-toggle">6 prop types</label>
         
-        <label for="c-79-components-tag-stories" class="badge ok as-toggle">14 stories</label>
+        <label for="c-79-components-tag-stories" class="badge ok as-toggle">13 stories</label>
         
         
       </div>
@@ -27627,7 +26383,7 @@ variant?: any = &#39;default&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon, DsTag } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsIcon, DsTag, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27638,7 +26394,7 @@ variant?: any = &#39;default&#39;</code></pre>
               </div>
               
               
-              <pre><code>const Default = () =&gt; &lt;DsTag label=&quot;Default Tag&quot; onClick={undefined} /&gt;;</code></pre>
+              <pre><code>const Default = () =&gt; &lt;DsTag label=&quot;Default Tag&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27661,7 +26417,7 @@ variant?: any = &#39;default&#39;</code></pre>
     const [selected, setSelected] = useState(true);
 
     if (deleted) {
-        return &lt;span&gt;Poof! Deleted!&lt;/span&gt;;
+        return &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Poof! Deleted!&lt;/DsTypography&gt;;
     }
 
     return (
@@ -27773,15 +26529,6 @@ variant?: any = &#39;default&#39;</code></pre>
     slots={{
         icon: &lt;DsIcon icon=&quot;star&quot; size=&quot;tiny&quot; /&gt;,
     }} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Keyboard Interaction</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const KeyboardInteraction = () =&gt; &lt;DsTag label=&quot;Keyboard Tag&quot; onClick={fn()} onDelete={fn()} /&gt;;</code></pre>
             </div>
         </div>
     
@@ -27901,7 +26648,7 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTagFilter } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsStack, DsTagFilter, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27911,52 +26658,26 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Default story demonstrating the TagFilter component with interactive controls. Try adding, removing, and selecting filters to see the component in action.</div>
-              <pre><code>const Default = () =&gt; {
-    const [filters, setFilters] = useState(sampleFilters);
-
-    const handleClearAll = () =&gt; {
-        setFilters([]);
-    };
-
-    const handleAddFilter = () =&gt; {
-        const newId = `new-${String(Date.now())}`;
-        setFilters((prev) =&gt; [
-            ...prev,
-            {
-                id: newId,
-                label: `New Filter ${String(prev.length + 1)}`,
-            },
-        ]);
-    };
-
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
-
-    const handleFilterSelect = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.map((f) =&gt; (f.id === filter.id ? { ...f, selected: !f.selected } : f)));
-    };
+              <div class="hint">Active filters render as tags that users can select or remove, with a &quot;Clear all&quot; action. Wire `onItemSelect`, `onItemDelete`, and `onClearAll` to your filter state.</div>
+              <pre><code>const Default = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
+        { id: &#39;status&#39;, label: &#39;Status: Active&#39; },
+        { id: &#39;running&#39;, label: &#39;Running: 100 to 10,000&#39; },
+        { id: &#39;completed&#39;, label: &#39;Completed: 20,000 to 100,000&#39; },
+        { id: &#39;executor&#39;, label: &#39;Executor: Category 1, Layer 1&#39; },
+        { id: &#39;version&#39;, label: &#39;Version: 000.0001-3&#39; },
+        { id: &#39;editor&#39;, label: &#39;Last editor: Kevin Levin&#39; },
+    ]);
 
     return (
-        &lt;div className={styles.container}&gt;
-            &lt;DsTagFilter
-                items={filters}
-                onClearAll={handleClearAll}
-                onItemDelete={handleFilterDelete}
-                onItemSelect={handleFilterSelect} /&gt;
-            &lt;div className={styles.controlsContainer}&gt;
-                &lt;button type=&quot;button&quot; onClick={handleAddFilter} className={styles.addButton}&gt;Add Filter
-                                        &lt;/button&gt;
-                &lt;p className={styles.infoText}&gt;Total filters: {filters.length}&lt;/p&gt;
-                &lt;p className={styles.infoText}&gt;Selected filters: [
-                                            {filters
-                        .filter((filter) =&gt; filter.selected)
-                        .map((filter) =&gt; `&quot;${filter.label}&quot;`)
-                        .join(&#39;, &#39;)}]
-                                        &lt;/p&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
+        &lt;DsTagFilter
+            items={items}
+            onClearAll={() =&gt; setItems([])}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+            onItemSelect={(item) =&gt;
+                setItems((prev) =&gt; prev.map((f) =&gt; (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+            }
+        /&gt;
     );
 };</code></pre>
             </div>
@@ -27966,32 +26687,23 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story showing fewer filters that fit within the visible area without overflow.</div>
-              <pre><code>const FewFilters = () =&gt; {
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;([
+              <div class="hint">A short list that fits on one row without overflow — no &quot;Show more&quot; toggle appears.</div>
+              <pre><code>const FewFilters = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
         { id: &#39;1&#39;, label: &#39;Status: Active&#39; },
         { id: &#39;2&#39;, label: &#39;Version: 1.0.0&#39; },
         { id: &#39;3&#39;, label: &#39;Author: John Doe&#39; },
     ]);
 
-    const handleClearAll = () =&gt; {
-        setFilters([]);
-    };
-
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
-
-    const handleFilterSelect = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.map((f) =&gt; (f.id === filter.id ? { ...f, selected: !f.selected } : f)));
-    };
-
     return (
         &lt;DsTagFilter
-            items={filters}
-            onClearAll={handleClearAll}
-            onItemDelete={handleFilterDelete}
-            onItemSelect={handleFilterSelect} /&gt;
+            items={items}
+            onClearAll={() =&gt; setItems([])}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+            onItemSelect={(item) =&gt;
+                setItems((prev) =&gt; prev.map((f) =&gt; (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+            }
+        /&gt;
     );
 };</code></pre>
             </div>
@@ -28001,15 +26713,22 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story showing TagFilter without the &quot;Clear all&quot; button.</div>
-              <pre><code>const WithoutClearAll = () =&gt; {
-    const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
+              <div class="hint">Omit `onClearAll` to hide the &quot;Clear all&quot; button — useful when clearing is handled elsewhere.</div>
+              <pre><code>const WithoutClearAll = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
+        { id: &#39;1&#39;, label: &#39;Status: Active&#39; },
+        { id: &#39;2&#39;, label: &#39;Running: 100 to 10,000&#39; },
+        { id: &#39;3&#39;, label: &#39;Completed: 20,000 to 100,000&#39; },
+        { id: &#39;4&#39;, label: &#39;Executor: Category 1, Layer 1&#39; },
+        { id: &#39;5&#39;, label: &#39;Version: 000.0001-3&#39; },
+    ]);
 
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
-
-    return &lt;DsTagFilter items={filters} onClearAll={undefined} onItemDelete={handleFilterDelete} /&gt;;
+    return (
+        &lt;DsTagFilter
+            items={items}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+        /&gt;
+    );
 };</code></pre>
             </div>
             <div class="note ok">
@@ -28018,45 +26737,18 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story showing TagFilter without delete functionality (read-only tags).</div>
-              <pre><code>const ReadOnly = () =&gt; {
-    const filters: TagFilterItem[] = sampleFilters.slice(0, 5);
-
-    return (
-        &lt;DsTagFilter
-            items={filters}
-            onClearAll={undefined}
-            onItemDelete={undefined}
-            onItemSelect={undefined} /&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Deprecated Label Ignored</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Story documenting that `locale.label` is deprecated and never rendered. We removed the header label, so any label passed here has no visible effect.</div>
-              <pre><code>const DeprecatedLabelIgnored = () =&gt; {
-    const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
-
-    const handleClearAll = () =&gt; {
-        setFilters([]);
-    };
-
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
-
-    return (
-        &lt;DsTagFilter
-            items={filters}
-            locale={{ label: &#39;This heading is ignored&#39; }}
-            onClearAll={handleClearAll}
-            onItemDelete={handleFilterDelete} /&gt;
-    );
-};</code></pre>
+              <div class="hint">Omit all callbacks to render non-interactive, read-only tags.</div>
+              <pre><code>const ReadOnly = () =&gt; (
+    &lt;DsTagFilter
+        items={[
+            { id: &#39;1&#39;, label: &#39;Status: Active&#39; },
+            { id: &#39;2&#39;, label: &#39;Running: 100 to 10,000&#39; },
+            { id: &#39;3&#39;, label: &#39;Completed: 20,000 to 100,000&#39; },
+            { id: &#39;4&#39;, label: &#39;Executor: Category 1, Layer 1&#39; },
+            { id: &#39;5&#39;, label: &#39;Version: 000.0001-3&#39; },
+        ]}
+    /&gt;
+);</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -28064,21 +26756,19 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story demonstrating locale customization of the action buttons (clear, show more, show less). `locale.label` is intentionally omitted — it is deprecated and unused.</div>
-              <pre><code>const CustomLocale = () =&gt; {
-    const [filters, setFilters] = useState(sampleFilters);
-
-    const handleClearAll = () =&gt; {
-        setFilters([]);
-    };
-
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
+              <div class="hint">Pass `locale` to translate the action buttons (clear, show more, show less).</div>
+              <pre><code>const CustomLocale = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
+        { id: &#39;1&#39;, label: &#39;Status: Active&#39; },
+        { id: &#39;2&#39;, label: &#39;Running: 100 to 10,000&#39; },
+        { id: &#39;3&#39;, label: &#39;Completed: 20,000 to 100,000&#39; },
+        { id: &#39;4&#39;, label: &#39;Executor: Category 1, Layer 1&#39; },
+        { id: &#39;5&#39;, label: &#39;Version: 000.0001-3&#39; },
+    ]);
 
     return (
         &lt;DsTagFilter
-            items={filters}
+            items={items}
             locale={{
                 // cspell:disable-next-line
                 clearButton: &#39;Zresetuj&#39;,
@@ -28087,8 +26777,9 @@ style?: CSSProperties</code></pre>
                 // cspell:disable-next-line
                 showLess: &#39;Pokaż mniej&#39;,
             }}
-            onClearAll={handleClearAll}
-            onItemDelete={handleFilterDelete} /&gt;
+            onClearAll={() =&gt; setItems([])}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+        /&gt;
     );
 };</code></pre>
             </div>
@@ -28098,8 +26789,22 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story demonstrating the expand/collapse toggle. The hidden count stays stable between `Show more (N)` and `Show less (N)`.</div>
-              <pre><code>const ExpandCollapse = () =&gt; &lt;DsTagFilter items={sampleFilters} /&gt;;</code></pre>
+              <div class="hint">When tags overflow the first row, a &quot;Show more (N)&quot; toggle reveals the rest; the hidden count stays stable between &quot;Show more (N)&quot; and &quot;Show less (N)&quot;.</div>
+              <pre><code>const ExpandCollapse = () =&gt; &lt;DsTagFilter
+    items={[
+        { id: &#39;1&#39;, label: &#39;Status: Active&#39; },
+        { id: &#39;2&#39;, label: &#39;Running: From 100 to 10,000&#39; },
+        { id: &#39;3&#39;, label: &#39;Completed from 20,000 to 100,000&#39; },
+        { id: &#39;4&#39;, label: &#39;Executor: Category 1, Layer 1 transporter&#39; },
+        { id: &#39;5&#39;, label: &#39;Executor: Category 2, Layer 11 transporter&#39; },
+        { id: &#39;6&#39;, label: &#39;Executor: Category 2, Layer 12 transporter&#39; },
+        { id: &#39;7&#39;, label: &#39;Executor: Category 2, Layer 13 transporter&#39; },
+        { id: &#39;8&#39;, label: &#39;Version: 000.0001-3&#39; },
+        { id: &#39;9&#39;, label: &#39;Version: 000.0001-4&#39; },
+        { id: &#39;10&#39;, label: &#39;Version: 000.0001-5&#39; },
+        { id: &#39;11&#39;, label: &#39;Last editor: Kevin Levin&#39; },
+        { id: &#39;12&#39;, label: &#39;Last editor: Emery Dance&#39; },
+    ]} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -28107,28 +26812,23 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story showing TagFilter with small tags via slotProps.tag on each item.</div>
-              <pre><code>const SmallSize = () =&gt; {
-    const smallFilters: TagFilterItem[] = sampleFilters.slice(0, 6).map((item) =&gt; ({
-        ...item,
-        slotProps: { tag: { size: &#39;small&#39; } },
-    }));
-
-    const [filters, setFilters] = useState(smallFilters);
-
-    const handleClearAll = () =&gt; {
-        setFilters([]);
-    };
-
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
+              <div class="hint">Set `slotProps.tag.size` per item to render compact tags.</div>
+              <pre><code>const SmallSize = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
+        { id: &#39;1&#39;, label: &#39;Status: Active&#39;, slotProps: { tag: { size: &#39;small&#39; } } },
+        { id: &#39;2&#39;, label: &#39;Running: 100 to 10,000&#39;, slotProps: { tag: { size: &#39;small&#39; } } },
+        { id: &#39;3&#39;, label: &#39;Completed: 20,000 to 100,000&#39;, slotProps: { tag: { size: &#39;small&#39; } } },
+        { id: &#39;4&#39;, label: &#39;Executor: Category 1, Layer 1&#39;, slotProps: { tag: { size: &#39;small&#39; } } },
+        { id: &#39;5&#39;, label: &#39;Version: 000.0001-3&#39;, slotProps: { tag: { size: &#39;small&#39; } } },
+        { id: &#39;6&#39;, label: &#39;Last editor: Kevin Levin&#39;, slotProps: { tag: { size: &#39;small&#39; } } },
+    ]);
 
     return (
         &lt;DsTagFilter
-            items={filters}
-            onClearAll={handleClearAll}
-            onItemDelete={handleFilterDelete} /&gt;
+            items={items}
+            onClearAll={() =&gt; setItems([])}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+        /&gt;
     );
 };</code></pre>
             </div>
@@ -28138,34 +26838,51 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story showing TagFilter with pre-selected items.</div>
-              <pre><code>const WithPreSelectedItems = () =&gt; {
-    const [filters, setFilters] = useState&lt;TagFilterItem[]&gt;([
+              <div class="hint">Mark items `selected` to render them in a pressed state on first paint.</div>
+              <pre><code>const WithPreSelectedItems = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
         { id: &#39;1&#39;, label: &#39;Status: Active&#39;, selected: true },
-        { id: &#39;2&#39;, label: &#39;Running: From 100 to 10,000&#39;, selected: false },
-        { id: &#39;3&#39;, label: &#39;Completed from 20,000 to 100,000&#39;, selected: true },
+        { id: &#39;2&#39;, label: &#39;Running: 100 to 10,000&#39;, selected: false },
+        { id: &#39;3&#39;, label: &#39;Completed: 20,000 to 100,000&#39;, selected: true },
         { id: &#39;4&#39;, label: &#39;Executor: Category 1&#39;, selected: false },
         { id: &#39;5&#39;, label: &#39;Version: 1.0.0&#39;, selected: true },
     ]);
 
-    const handleClearAll = () =&gt; {
-        setFilters([]);
-    };
-
-    const handleFilterDelete = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.filter((f) =&gt; f.id !== filter.id));
-    };
-
-    const handleFilterSelect = (filter: TagFilterItem) =&gt; {
-        setFilters((prev) =&gt; prev.map((f) =&gt; (f.id === filter.id ? { ...f, selected: !f.selected } : f)));
-    };
+    return (
+        &lt;DsTagFilter
+            items={items}
+            onClearAll={() =&gt; setItems([])}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+            onItemSelect={(item) =&gt;
+                setItems((prev) =&gt; prev.map((f) =&gt; (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+            }
+        /&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Deprecated Label Ignored</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`locale.label` is deprecated and never rendered — passing it has no visible effect.</div>
+              <pre><code>const DeprecatedLabelIgnored = function Render() {
+    const [items, setItems] = useState&lt;TagFilterItem[]&gt;([
+        { id: &#39;1&#39;, label: &#39;Status: Active&#39; },
+        { id: &#39;2&#39;, label: &#39;Running: 100 to 10,000&#39; },
+        { id: &#39;3&#39;, label: &#39;Completed: 20,000 to 100,000&#39; },
+        { id: &#39;4&#39;, label: &#39;Executor: Category 1, Layer 1&#39; },
+        { id: &#39;5&#39;, label: &#39;Version: 000.0001-3&#39; },
+    ]);
 
     return (
         &lt;DsTagFilter
-            items={filters}
-            onClearAll={handleClearAll}
-            onItemDelete={handleFilterDelete}
-            onItemSelect={handleFilterSelect} /&gt;
+            items={items}
+            locale={{ label: &#39;This heading is ignored&#39; }}
+            onClearAll={() =&gt; setItems([])}
+            onItemDelete={(item) =&gt; setItems((prev) =&gt; prev.filter((f) =&gt; f.id !== item.id))}
+        /&gt;
     );
 };</code></pre>
             </div>
@@ -28175,7 +26892,7 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Story verifying the component renders nothing when items is empty.</div>
+              <div class="hint">The component renders nothing when `items` is empty.</div>
               <pre><code>const EmptyState = () =&gt; &lt;DsTagFilter items={[]} /&gt;;</code></pre>
             </div>
         </div>
@@ -30525,7 +29242,7 @@ export const DsTree = {
       <div class="badges">
         <label for="c-89-components-typography-props" class="badge ok as-toggle">10 prop types</label>
         <label for="c-89-components-typography-info" class="badge info as-toggle">1 info</label>
-        <label for="c-89-components-typography-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-89-components-typography-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -30636,268 +29353,35 @@ variant: keyof typeof typographyVariantConfig</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;main&quot;&gt;{sample}&lt;/DsTypography&gt;;</code></pre>
+              <div class="hint">Default body text on the main foreground color.</div>
+              <pre><code>const Default = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;main&quot;&gt;The quick brown fox jumps over the lazy dog.&lt;/DsTypography&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Variants</span>
+                <span class="ex-name">Heading</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Variants = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;heading1&lt;/code&gt;
-            &lt;DsTypography variant=&quot;heading1&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;heading2&lt;/code&gt;
-            &lt;DsTypography variant=&quot;heading2&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;heading3&lt;/code&gt;
-            &lt;DsTypography variant=&quot;heading3&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;heading4&lt;/code&gt;
-            &lt;DsTypography variant=&quot;heading4&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-md-reg&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-md-md&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-md-semi-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-semi-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-md-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-md-link&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-link&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-sm-reg&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-sm-md&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-sm-semi-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-sm-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-sm-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-sm-link&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-sm-link&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-xs-reg&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-xs-reg&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-xs-md&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-xs-md&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-xs-semi-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-xs-semi-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-xs-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-xs-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;body-xs-link&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-xs-link&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;code-sm-reg&lt;/code&gt;
-            &lt;DsTypography variant=&quot;code-sm-reg&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;code-sm-semi-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;code-sm-semi-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;code-xs-reg&lt;/code&gt;
-            &lt;DsTypography variant=&quot;code-xs-reg&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;code-xs-semi-bold&lt;/code&gt;
-            &lt;DsTypography variant=&quot;code-xs-semi-bold&quot;&gt;{sample}&lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
+              <div class="hint">Use heading variants for page and section titles.</div>
+              <pre><code>const Heading = () =&gt; &lt;DsTypography variant=&quot;heading3&quot;&gt;The quick brown fox jumps over the lazy dog.&lt;/DsTypography&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Colors</span>
+                <span class="ex-name">Color</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Colors = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;main&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;main&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;secondary&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;secondary&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;action&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;action&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;action-hover&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;action-hover&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;action-secondary&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;action-secondary&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;action-secondary-hover&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;action-secondary-hover&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;disabled&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;disabled&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;placeholder&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;placeholder&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;highlight&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;highlight&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;success&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;success&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;warning&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;warning&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;error&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;error&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;code&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;code&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
+              <div class="hint">Apply a semantic `color` to convey emphasis or state.</div>
+              <pre><code>const Color = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;The quick brown fox jumps over the lazy dog.&lt;/DsTypography&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Colors On Dark</span>
+                <span class="ex-name">Custom Color</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const ColorsOnDark = () =&gt; (
-    &lt;div className={storyStyles.onDark}&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={classNames(storyStyles.label, storyStyles.onDarkLabel)}&gt;on-action&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;on-action&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={classNames(storyStyles.label, storyStyles.onDarkLabel)}&gt;on-disabled&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;on-disabled&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={classNames(storyStyles.label, storyStyles.onDarkLabel)}&gt;light-disabled&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;light-disabled&quot;&gt;
-                {sample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Escape Hatch</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const EscapeHatch = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;{&#39;color=&quot;success&quot;&#39;}&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;success&quot;&gt;
-                Semantic token.
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;{&#39;color=&quot;var(--color-dap-purple-600)&quot;&#39;}&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;var(--color-dap-purple-600)&quot;&gt;
-                Custom primitive token via color prop.
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;{&#39;color=&quot;#ff8800&quot;&#39;}&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;#ff8800&quot;&gt;
-                Inline hex color via color prop.
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.row}&gt;
-            &lt;code className={storyStyles.label}&gt;style overrides color prop&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;success&quot; style={{ color: &#39;#d70a00&#39; }}&gt;
-                Inline style still wins when both are set.
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
+              <div class="hint">The `color` prop also accepts raw CSS values (tokens, hex, rgb) as an escape hatch.</div>
+              <pre><code>const CustomColor = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;var(--color-dap-purple-600)&quot;&gt;The quick brown fox jumps over the lazy dog.&lt;/DsTypography&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -30905,56 +29389,30 @@ variant: keyof typeof typographyVariantConfig</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Render as a different element while keeping typography styles via `asChild`.</div>
               <pre><code>const AsChild = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
-        &lt;DsTypography variant=&quot;heading3&quot; asChild&gt;
-            &lt;a href=&quot;#anchor&quot;&gt;Heading rendered as anchor via asChild&lt;/a&gt;
-        &lt;/DsTypography&gt;
-        &lt;DsTypography variant=&quot;body-md-md&quot; color=&quot;action&quot; asChild&gt;
-            &lt;button type=&quot;button&quot;&gt;Button styled like body-md-md / action&lt;/button&gt;
-        &lt;/DsTypography&gt;
-    &lt;/DsStack&gt;
+    &lt;DsTypography variant=&quot;body-md-link&quot; asChild&gt;
+        &lt;a href=&quot;https://example.com&quot;&gt;Link rendered via asChild&lt;/a&gt;
+    &lt;/DsTypography&gt;
 );</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Truncate Single Line</span>
+                <span class="ex-name">Truncate</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const TruncateSingleLine = () =&gt; (
-    &lt;div className={storyStyles.truncateBox}&gt;
-        &lt;DsTypography variant=&quot;body-md-reg&quot; truncate&gt;
-            {longSample}
-        &lt;/DsTypography&gt;
-    &lt;/div&gt;
-);</code></pre>
+              <div class="hint">Clamp overflowing text to a single line with an ellipsis. Needs a width-constrained parent.</div>
+              <pre><code>const Truncate = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; truncate&gt;The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.&lt;/DsTypography&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Truncate Multiple Lines</span>
+                <span class="ex-name">Truncate Multiline</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const TruncateMultipleLines = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
-        &lt;div className={storyStyles.truncateBox}&gt;
-            &lt;code className={storyStyles.label}&gt;truncate={&#39;{2}&#39;}&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={2}&gt;
-                {longSample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.truncateBox}&gt;
-            &lt;code className={storyStyles.label}&gt;truncate={&#39;{3}&#39;}&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={3}&gt;
-                {longSample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
+              <div class="hint">Pass a number to clamp to that many lines.</div>
+              <pre><code>const TruncateMultiline = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={2}&gt;The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.&lt;/DsTypography&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -30962,64 +29420,8 @@ variant: keyof typeof typographyVariantConfig</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const TruncateWithTooltip = () =&gt; (
-    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--md)&quot;&gt;
-        &lt;div className={storyStyles.truncateBox}&gt;
-            &lt;code className={storyStyles.label}&gt;overflowing — tooltip on hover&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
-                {longSample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.truncateBox}&gt;
-            &lt;code className={storyStyles.label}&gt;fits — no tooltip&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
-                Short text
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={storyStyles.truncateBox}&gt;
-            &lt;code className={storyStyles.label}&gt;2 lines + tooltip&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate={2} tooltip&gt;
-                {longSample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/DsStack&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Truncate Tooltip Placement</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const TruncateTooltipPlacement = () =&gt; (
-    &lt;div className={storyStyles.placementViewport}&gt;
-        &lt;div className={storyStyles.truncateBox}&gt;
-            &lt;code className={storyStyles.label}&gt;near top — tooltip flips to bottom, arrow at ellipsis&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
-                {longSample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-        &lt;div className={classNames(storyStyles.truncateBox, storyStyles.pushToBottom)}&gt;
-            &lt;code className={storyStyles.label}&gt;near bottom — tooltip on top, arrow at ellipsis&lt;/code&gt;
-            &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;
-                {longSample}
-            &lt;/DsTypography&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Playground</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Playground = () =&gt; &lt;div className={storyStyles.truncateBox}&gt;
-    &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;{longSample}&lt;/DsTypography&gt;
-&lt;/div&gt;;</code></pre>
+              <div class="hint">Enable `tooltip` to reveal the full text on hover while it stays truncated.</div>
+              <pre><code>const TruncateWithTooltip = () =&gt; &lt;DsTypography variant=&quot;body-md-reg&quot; truncate tooltip&gt;The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.&lt;/DsTypography&gt;;</code></pre>
             </div>
         </div>
     
