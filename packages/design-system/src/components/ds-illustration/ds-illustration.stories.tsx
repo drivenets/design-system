@@ -1,0 +1,55 @@
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { DsTypography } from '../ds-typography';
+import { DsIllustration } from './index';
+import { dsIllustrationVariants } from './ds-illustration.types';
+import styles from './ds-illustration.stories.module.scss';
+
+const meta: Meta<typeof DsIllustration> = {
+	title: 'Components/Illustration',
+	component: DsIllustration,
+	parameters: { layout: 'centered' },
+	argTypes: {
+		variant: { control: 'select', options: dsIllustrationVariants },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
+		ref: { table: { disable: true } },
+		'aria-hidden': { table: { disable: true } },
+		'aria-label': { table: { disable: true } },
+	},
+};
+
+export default meta;
+type Story = StoryObj<typeof DsIllustration>;
+
+/**
+ * Default empty-screen tile (`no-tasks`). Swap `variant` for the other
+ * 250×200 scenes. Not an Icon — do not pass these names to `DsIcon`.
+ */
+export const Default: Story = {
+	args: {
+		variant: 'no-tasks',
+	},
+};
+
+/**
+ * Every published tile. Visual catalog only — pick a `variant` in product code.
+ */
+export const Showcase: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		layout: 'fullscreen',
+		docs: { canvas: { sourceState: 'none' } },
+	},
+	render: () => (
+		<div className={styles.showcase}>
+			{dsIllustrationVariants.map((variant) => (
+				<div key={variant} className={styles.tile}>
+					<DsIllustration variant={variant} />
+					<DsTypography className={styles.label} variant="body-sm-reg">
+						{variant}
+					</DsTypography>
+				</div>
+			))}
+		</div>
+	),
+};

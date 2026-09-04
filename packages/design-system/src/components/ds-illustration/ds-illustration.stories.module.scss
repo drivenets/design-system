@@ -1,0 +1,17 @@
+.showcase {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: var(--standard);
+	padding: var(--standard);
+}
+
+.tile {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--xs);
+}
+
+.label {
+	color: var(--font-secondary);
+}

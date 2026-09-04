@@ -48,6 +48,14 @@ _Avoid_: sub props, child props
 Content a **Component** renders when it has genuinely zero data items. Distinct from a loading/skeleton state and from a transient frame where a virtualized body has not yet produced rows. Gate it on data count, never on rendered/virtual row count.
 _Avoid_: no-data view, blank state, placeholder
 
+**Icon**:
+A monochrome glyph rendered by `DsIcon` — Material Symbols or a `special-*` custom SVG — at 16–32px, tinted with `currentColor`.
+_Avoid_: rich icon, state icon (those tiles are **Illustrations**)
+
+**Illustration**:
+A 250×200 colorful empty-screen tile rendered by `DsIllustration` (clouds plus a scene). Not an **Icon**.
+_Avoid_: rich icon, DAP_State Icon (as a code name), Cluster NE (for the Device tile)
+
 **Successor component**:
 A new **Component** folder that supersedes an older one while the old export remains (often `ds-{name}-v2` or `ds-{name}-v3`). Mark the old API `@deprecated` in types and stories; prefer the successor in new code.
 _Avoid_: replacement, v2 component (as a synonym for the pattern name)
@@ -136,6 +144,7 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 - A **Successor component** supersedes a **Deprecated component**; both may ship until consumers migrate
 - **Tokens** flow from design into SCSS; **Components** consume tokens, not raw hex from Figma in new work
 - A **Component** shows its **Empty state** only when it has zero data items; a virtualized body gates **Empty state** on data count, never on the count of currently rendered (virtual) rows
+- An **Icon** is not an **Illustration**; `DsIcon` never renders empty-screen tiles
 - **Changesets** attach to package releases; a new **Component** or breaking API change typically needs one
 - A **Workspace page** has one header and one **Workspace body**; the body may combine **Side menu panel**, **Left side panel**, **Content area**, and **Right side panel**
 - **Side menu panel** and **Left side panel** differ: only **Left side panel** toggles **Content area** horizontal margins (24px vs 40px)
@@ -172,6 +181,9 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 > **Dev:** "When I make the expander column wider, does that also size the nested details columns?"
 > **Domain expert:** "No — that width belongs to the expander **Utility column**. Nested details are consumer **Leaf columns**."
 
+> **Dev:** "Should Cluster NE from the empty-screen tile go on `DsIcon` as `rich-cluster-ne`?"
+> **Domain expert:** "No — that's an **Illustration**, variant `device`. `special-cluster-ne` is the **Icon**."
+
 > **Dev:** "Should a long column title wrap onto two lines in the header?"
 > **Domain expert:** "No — that's a **Header label**. It stays one line with an ellipsis; don't call it a column title."
 
@@ -182,3 +194,5 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 - "placeholder" in header layout meant **Scrollbar spacer**, not TanStack `header.isPlaceholder` (spanning-cell hole) and not **Empty state**.
 - "Scrollbar gutter" meant CSS reservation on `thead`; the structure is a **Scrollbar spacer**.
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
+- "rich icon" / "state icon" / Figma DAP_State Icon — resolved: **Illustration**.
+- "Cluster NE" on the linked empty-screen instance — resolved: **Illustration** variant `device`; `special-cluster-ne` remains the **Icon**.
