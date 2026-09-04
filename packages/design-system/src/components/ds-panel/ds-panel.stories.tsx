@@ -31,14 +31,9 @@ export const Default: Story = {
 				{!open && <DsButton onClick={() => setOpen(true)}>Open Panel</DsButton>}
 
 				<DsPanel open={open} onOpenChange={setOpen} variant={variant}>
-					<DsTypography variant="body-md-reg">
-						This is a panel. It can contain any content you like, such as text, images, or other components.
-					</DsTypography>
+					<DsTypography variant="body-md-reg">Panels hold any content you like.</DsTypography>
 
-					<DsTypography variant="body-md-reg">
-						It is collapsible — hover over the panel to reveal the trigger button that expands or collapses
-						the content.
-					</DsTypography>
+					<DsTypography variant="body-md-reg">Hover to reveal the collapse trigger.</DsTypography>
 
 					<DsButton size="small">Primary Action</DsButton>
 				</DsPanel>
