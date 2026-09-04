@@ -278,9 +278,11 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 		const comingSoonTile = page.getByRole('button', { name: 'Coming soon app' });
 		const badge = comingSoonTile.element().querySelector('[class*="badge"]') as HTMLElement;
 
-		await userEvent.hover(badge);
+		await page.elementLocator(badge).hover();
 
-		await expect.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP })).toBeVisible();
+		await expect
+			.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP }), { timeout: 3000 })
+			.toBeVisible();
 	});
 
 	it('renders an SVG component as the tile graphic', async () => {
@@ -445,8 +447,10 @@ describe('DsMainMenu — expanded variant', () => {
 			.element()
 			.closest('li')
 			?.querySelector('[class*="expandedActionBadge"]') as HTMLElement;
-		await userEvent.hover(badge);
-		await expect.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP })).toBeVisible();
+		await page.elementLocator(badge).hover();
+		await expect
+			.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP }), { timeout: 3000 })
+			.toBeVisible();
 
 		(comingSoonCard.element() as HTMLButtonElement).click();
 

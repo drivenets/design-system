@@ -1,0 +1,163 @@
+# DsCommentsDrawer docs snippets
+
+## Default
+
+### Show code
+<DsCommentsDrawer
+  comments={[
+    {
+      author: {
+        avatarSrc: 'https://i.pravatar.cc/40?img=1',
+        id: 'user-1',
+        name: 'Karen J.'
+      },
+      createdAt: new Date('2026-02-08T10:00:00.000Z'),
+      id: 'comment-1',
+      isResolved: false,
+      labels: [
+        'Bug',
+        'High Priority'
+      ],
+      messages: [
+        {
+          author: {
+            avatarSrc: 'https://i.pravatar.cc/40?img=1',
+            id: 'user-1',
+            name: 'Karen J.'
+          },
+          content: 'We need to review the resource allocation for this project before the next sprint.',
+          createdAt: new Date('2026-02-08T10:00:00.000Z'),
+          id: 'msg-1',
+          isInitialMessage: true
+        }
+      ],
+      numericId: 63
+    },
+    {
+      author: {
+        avatarSrc: 'https://i.pravatar.cc/40?img=2',
+        id: 'user-2',
+        name: 'John D.'
+      },
+      createdAt: new Date('2026-02-07T10:00:00.000Z'),
+      id: 'comment-2',
+      isResolved: false,
+      labels: [
+        'Feature Request'
+      ],
+      messages: [
+        {
+          author: {
+            avatarSrc: 'https://i.pravatar.cc/40?img=2',
+            id: 'user-2',
+            name: 'John D.'
+          },
+          content: 'Could we add a dark mode feature to improve usability in low-light environments?',
+          createdAt: new Date('2026-02-07T10:00:00.000Z'),
+          id: 'msg-2',
+          isInitialMessage: true
+        }
+      ],
+      numericId: 64
+    }
+  ]}
+  onCommentClick={() => {}}
+  onOpenChange={() => {}}
+  onResolveComment={() => {}}
+  onSearchChange={() => {}}
+  onShowResolvedChange={() => {}}
+  open
+/>
+
+### MCP manifest
+const Default = () => <DsCommentsDrawer
+    onOpenChange={fn()}
+    onSearchChange={fn()}
+    onShowResolvedChange={fn()}
+    onCommentClick={fn()}
+    onResolveComment={fn()}
+    open
+    comments={[
+        {
+            id: 'comment-1',
+            numericId: 63,
+            author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+            createdAt: new Date('2026-02-08T10:00:00Z'),
+            isResolved: false,
+            labels: ['Bug', 'High Priority'],
+            messages: [
+                {
+                    id: 'msg-1',
+                    author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                    content: 'We need to review the resource allocation for this project before the next sprint.',
+                    createdAt: new Date('2026-02-08T10:00:00Z'),
+                    isInitialMessage: true,
+                },
+            ],
+        },
+        {
+            id: 'comment-2',
+            numericId: 64,
+            author: { id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
+            createdAt: new Date('2026-02-07T10:00:00Z'),
+            isResolved: false,
+            labels: ['Feature Request'],
+            messages: [
+                {
+                    id: 'msg-2',
+                    author: { id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
+                    content: 'Could we add a dark mode feature to improve usability in low-light environments?',
+                    createdAt: new Date('2026-02-07T10:00:00Z'),
+                    isInitialMessage: true,
+                },
+            ],
+        },
+    ]} />;
+
+## Empty
+
+### Show code
+<DsCommentsDrawer
+  comments={[]}
+  onCommentClick={() => {}}
+  onOpenChange={() => {}}
+  onResolveComment={() => {}}
+  onSearchChange={() => {}}
+  onShowResolvedChange={() => {}}
+  open
+/>
+
+### MCP manifest
+const Empty = () => <DsCommentsDrawer
+    onOpenChange={fn()}
+    onSearchChange={fn()}
+    onShowResolvedChange={fn()}
+    onCommentClick={fn()}
+    onResolveComment={fn()}
+    open
+    comments={[]} />;
+
+## Custom Empty Message
+
+### Show code
+<DsCommentsDrawer
+  comments={[]}
+  noCommentsMessage="Nothing to see here!"
+  onCommentClick={() => {}}
+  onOpenChange={() => {}}
+  onResolveComment={() => {}}
+  onSearchChange={() => {}}
+  onShowResolvedChange={() => {}}
+  open
+/>
+
+### MCP manifest
+const CustomEmptyMessage = () => <DsCommentsDrawer
+    onOpenChange={fn()}
+    onSearchChange={fn()}
+    onShowResolvedChange={fn()}
+    onCommentClick={fn()}
+    onResolveComment={fn()}
+    open
+    comments={[]}
+    noCommentsMessage="Nothing to see here!" />;
