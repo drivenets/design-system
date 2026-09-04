@@ -22,10 +22,6 @@ const meta: Meta<typeof DsIllustration> = {
 export default meta;
 type Story = StoryObj<typeof DsIllustration>;
 
-/**
- * Default empty-screen tile (`no-tasks`). Swap `variant` for the other
- * 250×200 scenes. Not an Icon — do not pass these names to `DsIcon`.
- */
 export const Default: Story = {
 	args: {
 		variant: 'no-tasks',
