@@ -36,7 +36,8 @@ export const Default: Story = {
 					</DsTypography>
 
 					<DsTypography variant="body-md-reg">
-						It is collapsible. Hover it to see the trigger button.
+						It is collapsible — hover over the panel to reveal the trigger button that expands or collapses
+						the content.
 					</DsTypography>
 
 					<DsButton size="small">Primary Action</DsButton>
