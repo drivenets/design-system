@@ -23,6 +23,9 @@ const meta: Meta<typeof DsBulkActions> = {
 	component: DsBulkActions,
 	parameters: {
 		layout: 'centered',
+		// Every story renders through a `render` function, so Show code is extracted
+		// asynchronously. Under CI load `auto` can race and fall back to the raw CSF
+		// object, so pin dynamic at the meta level for stable, clean JSX snippets.
 		docs: { source: { type: 'dynamic' } },
 	},
 	args: {

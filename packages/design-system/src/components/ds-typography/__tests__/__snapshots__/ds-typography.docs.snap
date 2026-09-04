@@ -1,0 +1,111 @@
+# DsTypography docs snippets
+
+## Default
+
+### Show code
+<DsTypography
+  color="main"
+  variant="body-md-reg"
+>
+  The quick brown fox jumps over the lazy dog.
+</DsTypography>
+
+### MCP manifest
+const Default = () => <DsTypography variant="body-md-reg" color="main">The quick brown fox jumps over the lazy dog.</DsTypography>;
+
+## Heading
+
+### Show code
+<DsTypography variant="heading3">
+  The quick brown fox jumps over the lazy dog.
+</DsTypography>
+
+### MCP manifest
+const Heading = () => <DsTypography variant="heading3">The quick brown fox jumps over the lazy dog.</DsTypography>;
+
+## Color
+
+### Show code
+<DsTypography
+  color="secondary"
+  variant="body-md-reg"
+>
+  The quick brown fox jumps over the lazy dog.
+</DsTypography>
+
+### MCP manifest
+const Color = () => <DsTypography variant="body-md-reg" color="secondary">The quick brown fox jumps over the lazy dog.</DsTypography>;
+
+## Custom Color
+
+### Show code
+<DsTypography
+  color="var(--color-dap-purple-600)"
+  variant="body-md-reg"
+>
+  The quick brown fox jumps over the lazy dog.
+</DsTypography>
+
+### MCP manifest
+const CustomColor = () => <DsTypography variant="body-md-reg" color="var(--color-dap-purple-600)">The quick brown fox jumps over the lazy dog.</DsTypography>;
+
+## As Child
+
+### Show code
+{
+  parameters: {
+    controls: {
+      disable: true
+    }
+  },
+  render: () => <DsTypography variant="body-md-link" asChild>
+            <a href="https://example.com">Link rendered via asChild</a>
+        </DsTypography>
+}
+
+### MCP manifest
+const AsChild = () => (
+    <DsTypography variant="body-md-link" asChild>
+        <a href="https://example.com">Link rendered via asChild</a>
+    </DsTypography>
+);
+
+## Truncate
+
+### Show code
+<DsTypography
+  truncate
+  variant="body-md-reg"
+>
+  The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.
+</DsTypography>
+
+### MCP manifest
+const Truncate = () => <DsTypography variant="body-md-reg" truncate>The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.</DsTypography>;
+
+## Truncate Multiline
+
+### Show code
+<DsTypography
+  truncate={2}
+  variant="body-md-reg"
+>
+  The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.
+</DsTypography>
+
+### MCP manifest
+const TruncateMultiline = () => <DsTypography variant="body-md-reg" truncate={2}>The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.</DsTypography>;
+
+## Truncate With Tooltip
+
+### Show code
+<DsTypography
+  tooltip
+  truncate
+  variant="body-md-reg"
+>
+  The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.
+</DsTypography>
+
+### MCP manifest
+const TruncateWithTooltip = () => <DsTypography variant="body-md-reg" truncate tooltip>The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.</DsTypography>;
