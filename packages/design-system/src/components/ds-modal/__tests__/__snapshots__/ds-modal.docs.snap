@@ -1,0 +1,369 @@
+# DsModal docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 4
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+                <DsModal {...args} open={open} onOpenChange={setOpen}>
+                    <DsModal.Header>
+                        <DsModal.Title>Modal title</DsModal.Title>
+                        <DsModal.CloseTrigger />
+                    </DsModal.Header>
+                    <DsModal.Body>
+                        <DsTypography variant="body-md-reg">
+                            This is the default modal variant with simple content.
+                        </DsTypography>
+                    </DsModal.Body>
+                    <DsModal.Footer>
+                        <DsModal.Actions>
+                            <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>
+                                Cancel
+                            </DsButtonV3>
+                            <DsButtonV3 onClick={() => setOpen(false)}>Confirm</DsButtonV3>
+                        </DsModal.Actions>
+                    </DsModal.Footer>
+                </DsModal>
+            </>;
+  }
+}
+
+### MCP manifest
+const Default = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+            <DsModal columns={4} open={open} onOpenChange={setOpen}>
+                <DsModal.Header>
+                    <DsModal.Title>Modal title</DsModal.Title>
+                    <DsModal.CloseTrigger />
+                </DsModal.Header>
+                <DsModal.Body>
+                    <DsTypography variant="body-md-reg">This is the default modal variant with simple content.
+                                                </DsTypography>
+                </DsModal.Body>
+                <DsModal.Footer>
+                    <DsModal.Actions>
+                        <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>Cancel
+                                                        </DsButtonV3>
+                        <DsButtonV3 onClick={() => setOpen(false)}>Confirm</DsButtonV3>
+                    </DsModal.Actions>
+                </DsModal.Footer>
+            </DsModal>
+        </>
+    );
+};
+
+## Divided
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 6,
+    dividers: true
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+                <DsModal {...args} open={open} onOpenChange={setOpen}>
+                    <DsModal.Header>
+                        <DsModal.Title>User profile</DsModal.Title>
+                        <DsModal.CloseTrigger />
+                    </DsModal.Header>
+                    <DsModal.Body>
+                        <DsStack direction="column" gap="var(--sm)">
+                            <DsFormControl label="Full name" required>
+                                <DsFormControl.TextInput placeholder="Enter full name" />
+                            </DsFormControl>
+                            <DsFormControl label="Email address" required>
+                                <DsFormControl.TextInput type="email" placeholder="Enter email address" />
+                            </DsFormControl>
+                        </DsStack>
+                    </DsModal.Body>
+                    <DsModal.Footer>
+                        <DsModal.Actions>
+                            <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>
+                                Cancel
+                            </DsButtonV3>
+                            <DsButtonV3 onClick={() => setOpen(false)}>Save changes</DsButtonV3>
+                        </DsModal.Actions>
+                    </DsModal.Footer>
+                </DsModal>
+            </>;
+  }
+}
+
+### MCP manifest
+const Divided = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+            <DsModal columns={6} dividers open={open} onOpenChange={setOpen}>
+                <DsModal.Header>
+                    <DsModal.Title>User profile</DsModal.Title>
+                    <DsModal.CloseTrigger />
+                </DsModal.Header>
+                <DsModal.Body>
+                    <DsStack direction="column" gap="var(--sm)">
+                        <DsFormControl label="Full name" required>
+                            <DsFormControl.TextInput placeholder="Enter full name" />
+                        </DsFormControl>
+                        <DsFormControl label="Email address" required>
+                            <DsFormControl.TextInput type="email" placeholder="Enter email address" />
+                        </DsFormControl>
+                    </DsStack>
+                </DsModal.Body>
+                <DsModal.Footer>
+                    <DsModal.Actions>
+                        <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>Cancel
+                                                        </DsButtonV3>
+                        <DsButtonV3 onClick={() => setOpen(false)}>Save changes</DsButtonV3>
+                    </DsModal.Actions>
+                </DsModal.Footer>
+            </DsModal>
+        </>
+    );
+};
+
+## Custom
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 4,
+    dividers: true
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+                <DsModal {...args} open={open} onOpenChange={setOpen}>
+                    <DsModal.Header>
+                        <DsStack direction="column" gap="var(--3xs)" flex="1">
+                            <DsTypography variant="heading3">Project details</DsTypography>
+                            <DsTypography variant="body-sm-reg" color="secondary">
+                                Add the core information for your new project.
+                            </DsTypography>
+                        </DsStack>
+                        <DsModal.CloseTrigger />
+                    </DsModal.Header>
+                    <DsModal.Body>
+                        <DsStack direction="column" gap="var(--sm)">
+                            <DsFormControl label="Project name">
+                                <DsFormControl.TextInput placeholder="Enter project name" />
+                            </DsFormControl>
+                            <DsFormControl label="Category">
+                                <DsFormControl.TextInput placeholder="Select category" />
+                            </DsFormControl>
+                        </DsStack>
+                    </DsModal.Body>
+                    <DsModal.Footer>
+                        <DsStack direction="row" alignItems="center" gap="var(--sm)" flex="1">
+                            <DsTypography variant="body-sm-reg" color="success">
+                                All changes saved
+                            </DsTypography>
+                            <DsModal.Actions>
+                                <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>
+                                    Discard
+                                </DsButtonV3>
+                                <DsButtonV3 onClick={() => setOpen(false)}>Save changes</DsButtonV3>
+                            </DsModal.Actions>
+                        </DsStack>
+                    </DsModal.Footer>
+                </DsModal>
+            </>;
+  }
+}
+
+### MCP manifest
+const Custom = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+            <DsModal columns={4} dividers open={open} onOpenChange={setOpen}>
+                <DsModal.Header>
+                    <DsStack direction="column" gap="var(--3xs)" flex="1">
+                        <DsTypography variant="heading3">Project details</DsTypography>
+                        <DsTypography variant="body-sm-reg" color="secondary">Add the core information for your new project.
+                                                        </DsTypography>
+                    </DsStack>
+                    <DsModal.CloseTrigger />
+                </DsModal.Header>
+                <DsModal.Body>
+                    <DsStack direction="column" gap="var(--sm)">
+                        <DsFormControl label="Project name">
+                            <DsFormControl.TextInput placeholder="Enter project name" />
+                        </DsFormControl>
+                        <DsFormControl label="Category">
+                            <DsFormControl.TextInput placeholder="Select category" />
+                        </DsFormControl>
+                    </DsStack>
+                </DsModal.Body>
+                <DsModal.Footer>
+                    <DsStack direction="row" alignItems="center" gap="var(--sm)" flex="1">
+                        <DsTypography variant="body-sm-reg" color="success">All changes saved
+                                                        </DsTypography>
+                        <DsModal.Actions>
+                            <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>Discard
+                                                                </DsButtonV3>
+                            <DsButtonV3 onClick={() => setOpen(false)}>Save changes</DsButtonV3>
+                        </DsModal.Actions>
+                    </DsStack>
+                </DsModal.Footer>
+            </DsModal>
+        </>
+    );
+};
+
+## With Icon
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 4
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+                <DsModal {...args} open={open} onOpenChange={setOpen}>
+                    <DsModal.Header>
+                        <DsIcon icon="info" size="small" />
+                        <DsModal.Title>Session timeout</DsModal.Title>
+                        <DsModal.CloseTrigger />
+                    </DsModal.Header>
+                    <DsModal.Body>
+                        <DsTypography variant="body-md-reg">
+                            Your session will expire in 5 minutes due to inactivity.
+                        </DsTypography>
+                    </DsModal.Body>
+                </DsModal>
+            </>;
+  }
+}
+
+### MCP manifest
+const WithIcon = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+            <DsModal columns={4} open={open} onOpenChange={setOpen}>
+                <DsModal.Header>
+                    <DsIcon icon="info" size="small" />
+                    <DsModal.Title>Session timeout</DsModal.Title>
+                    <DsModal.CloseTrigger />
+                </DsModal.Header>
+                <DsModal.Body>
+                    <DsTypography variant="body-md-reg">Your session will expire in 5 minutes due to inactivity.
+                                                </DsTypography>
+                </DsModal.Body>
+            </DsModal>
+        </>
+    );
+};
+
+## Without Header
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 4
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+                <DsModal {...args} open={open} onOpenChange={setOpen}>
+                    <DsModal.Body>
+                        <DsTypography variant="body-md-reg">
+                            This modal has no header section. Use this pattern when you want a cleaner look without the
+                            header underline.
+                        </DsTypography>
+                    </DsModal.Body>
+                    <DsModal.Footer>
+                        <DsModal.Actions>
+                            <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>
+                                Close
+                            </DsButtonV3>
+                            <DsButtonV3 onClick={() => setOpen(false)}>Continue</DsButtonV3>
+                        </DsModal.Actions>
+                    </DsModal.Footer>
+                </DsModal>
+            </>;
+  }
+}
+
+### MCP manifest
+const WithoutHeader = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+            <DsModal columns={4} open={open} onOpenChange={setOpen}>
+                <DsModal.Body>
+                    <DsTypography variant="body-md-reg">This modal has no header section. Use this pattern when you want a cleaner look without the
+                                                    header underline.
+                                                </DsTypography>
+                </DsModal.Body>
+                <DsModal.Footer>
+                    <DsModal.Actions>
+                        <DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>Close
+                                                        </DsButtonV3>
+                        <DsButtonV3 onClick={() => setOpen(false)}>Continue</DsButtonV3>
+                    </DsModal.Actions>
+                </DsModal.Footer>
+            </DsModal>
+        </>
+    );
+};

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, userEvent, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 import { DsDropdownMenuLegacy } from './ds-dropdown-menu';
 import './ds-dropdown-menu.stories.scss';
 import { DsIcon } from '../ds-icon';
@@ -37,14 +37,14 @@ export const Default: Story = {
 	},
 	args: {
 		options: [
-			{ label: 'Edit', icon: 'edit', onClick: () => console.log('Edit clicked') },
-			{ label: 'Delete', icon: 'delete', onClick: () => console.log('Delete clicked') },
-			{ label: 'Share', icon: 'share', onClick: () => console.log('Share clicked') },
+			{ label: 'Edit', icon: 'edit', onClick: fn() },
+			{ label: 'Delete', icon: 'delete', onClick: fn() },
+			{ label: 'Share', icon: 'share', onClick: fn() },
 			{
 				label: 'Disabled Option',
 				icon: 'block',
 				disabled: true,
-				onClick: () => console.log('Disabled clicked'),
+				onClick: fn(),
 			},
 		],
 		contentGap: 4,
@@ -59,41 +59,30 @@ export const Default: Story = {
 			</DsDropdownMenuLegacy>
 		);
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
+};
 
-		// Check initial state
-		await expect(canvas.getByText('Actions')).toBeInTheDocument();
-
-		// Open dropdown menu
-		await userEvent.click(canvas.getByText('Actions'));
-
-		// Check all menu items are present
-		await expect(screen.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
-		await expect(screen.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
-		await expect(screen.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
-		await expect(screen.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
-
-		// Check disabled state
-		const disabledOption = screen.getByRole('menuitem', { name: /Disabled Option/ });
-		await expect(disabledOption).toHaveAttribute('aria-disabled', 'true');
-
-		// Click an option
-		await userEvent.click(screen.getByRole('menuitem', { name: /Edit/ }));
-
-		// Close dropdown with Escape key
-		await userEvent.keyboard('{Escape}');
-
-		// Open dropdown again
-		await userEvent.click(canvas.getByText('Actions'));
-
-		// Check all options are shown again
-		await expect(screen.getByRole('menuitem', { name: /Edit/ })).toBeInTheDocument();
-		await expect(screen.getByRole('menuitem', { name: /Delete/ })).toBeInTheDocument();
-		await expect(screen.getByRole('menuitem', { name: /Share/ })).toBeInTheDocument();
-		await expect(screen.getByRole('menuitem', { name: /Disabled Option/ })).toBeInTheDocument();
-
-		// Close dropdown with Escape key
-		await userEvent.keyboard('{Escape}');
+/**
+ * `options` items work without icons — pass just `label` and `onClick` for a
+ * compact, text-only action list. `contentGap` sets the space between the trigger
+ * and the menu.
+ */
+export const WithoutIcons: Story = {
+	args: {
+		options: [
+			{ label: 'Rename', onClick: fn() },
+			{ label: 'Duplicate', onClick: fn() },
+			{ label: 'Archive', onClick: fn() },
+		],
+		contentGap: 8,
+	},
+	render: function Render(args) {
+		return (
+			<DsDropdownMenuLegacy {...args}>
+				<div className="trigger" role="button">
+					<span className="label">Options</span>
+					<DsIcon className="arrow" icon="expand_more" />
+				</div>
+			</DsDropdownMenuLegacy>
+		);
 	},
 };

@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { DsPanel } from './';
 import { DsButton } from '../ds-button/';
 import { DsStepper, DsStep, DsStepContent, DsNextStepButton } from '../ds-stepper';
-import { useState } from 'react';
+import { DsTypography } from '../ds-typography';
 import type { DsPanelVariant } from './ds-panel.types';
+import styles from './ds-panel.stories.module.scss';
 
 export default {
 	title: 'Components/Panel',
@@ -15,7 +17,12 @@ export default {
 
 type Story = StoryObj<typeof DsPanel>;
 
+/**
+ * A collapsible panel that holds arbitrary content. Hover it to reveal the
+ * collapse trigger; collapsing hides the body behind an "Open Panel" button.
+ */
 export const Default: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render({ variant }) {
 		const [open, setOpen] = useState(true);
 
@@ -24,11 +31,13 @@ export const Default: Story = {
 				{!open && <DsButton onClick={() => setOpen(true)}>Open Panel</DsButton>}
 
 				<DsPanel open={open} onOpenChange={setOpen} variant={variant}>
-					<p>
+					<DsTypography variant="body-md-reg">
 						This is a panel. It can contain any content you like, such as text, images, or other components.
-					</p>
+					</DsTypography>
 
-					<p>It is collapsible. Hover it to see the trigger button.</p>
+					<DsTypography variant="body-md-reg">
+						It is collapsible. Hover it to see the trigger button.
+					</DsTypography>
 
 					<DsButton size="small">Primary Action</DsButton>
 				</DsPanel>
@@ -37,7 +46,12 @@ export const Default: Story = {
 	},
 };
 
+/**
+ * The `width` prop accepts a `ResponsiveValue` so the panel can widen on large
+ * screens and narrow on medium ones without extra layout code.
+ */
 export const Responsive: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [open, setOpen] = useState(true);
 
@@ -46,8 +60,8 @@ export const Responsive: Story = {
 				{!open && <DsButton onClick={() => setOpen(true)}>Open Panel</DsButton>}
 
 				<DsPanel open={open} onOpenChange={setOpen} width={{ lg: 480, md: 240 }}>
-					<p>This panel uses a responsive width.</p>
-					<p>Large screens: 480px. Medium screens: 240px.</p>
+					<DsTypography variant="body-md-reg">This panel uses a responsive width.</DsTypography>
+					<DsTypography variant="body-md-reg">Large screens: 480px. Medium screens: 240px.</DsTypography>
 
 					<DsButton size="small">Primary Action</DsButton>
 				</DsPanel>
@@ -56,7 +70,13 @@ export const Responsive: Story = {
 	},
 };
 
+/**
+ * Toggling the collapse button switches the panel between `docked` and
+ * `floating`. The floating variant is draggable and drops its inner padding so a
+ * `DsStepper` can bleed to the edges.
+ */
 export const Draggable: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
 	render: function Render() {
 		const [panelVariant, setPanelVariant] = useState<DsPanelVariant>('docked');
 		const [activeStep, setActiveStep] = useState(0);
@@ -74,7 +94,7 @@ export const Draggable: Story = {
 		];
 
 		return (
-			<div style={{ position: 'relative', width: 600, height: 500 }}>
+			<div className={styles.draggableCanvas}>
 				<DsPanel
 					open
 					variant={panelVariant}
