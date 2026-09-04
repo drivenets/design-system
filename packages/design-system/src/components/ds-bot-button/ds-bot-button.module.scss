@@ -1,0 +1,41 @@
+// Overrides have to match `DsButtonV3`'s own `[data-color][data-variant]` selectors to outweigh them.
+
+.root {
+	--ds-bot-button-mark-size: 16px;
+}
+
+// Figma binds the border to the `--blue-grad-2` gradient stop; no semantic border token carries
+// that hue. Focus-visible and disabled keep `DsButtonV3`'s borders.
+.root[data-variant='primary-subtle']:not(:focus-visible):not(:disabled),
+.root[data-variant='primary-subtle']:not(:focus-visible)[data-loading] {
+	border-color: var(--blue-grad-2);
+}
+
+// `DsSpinner` sizes itself to `1em`, so the root font size is what keeps the loading spinner the
+// same size as the mark it replaces.
+.root[data-variant='primary-subtle'][data-size='small'] {
+	font-size: var(--ds-bot-button-mark-size);
+}
+
+.mark {
+	display: flex;
+	flex-shrink: 0;
+	width: var(--ds-bot-button-mark-size);
+	height: var(--ds-bot-button-mark-size);
+}
+
+.label {
+	font-family: var(--font-family-heading);
+	font-size: var(--body-font-size-xs);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--body-line-height-xs);
+	white-space: nowrap;
+
+	// `DsButtonV3` tints `primary-subtle` text with `--font-action`; the bot's name is body text.
+	color: var(--font-main);
+}
+
+// Mirrors `DsButtonV3`'s own `:disabled:not([data-loading])` condition.
+.root:disabled:not([data-loading]) .label {
+	color: var(--font-disabled);
+}

@@ -24,7 +24,7 @@ import {
 	TasksIcon,
 	TechnicianIcon,
 	WorkflowAutomationIcon,
-} from './stories/sample-menu-icons';
+} from '../../stories/sample-menu-icons';
 import styles from './ds-main-menu.stories.module.scss';
 
 const SAMPLE_ITEMS: DsMainMenuItem[] = [
