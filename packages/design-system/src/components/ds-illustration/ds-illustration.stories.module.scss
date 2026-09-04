@@ -4,14 +4,3 @@
 	gap: var(--standard);
 	padding: var(--standard);
 }
-
-.tile {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--xs);
-}
-
-.label {
-	color: var(--font-secondary);
-}

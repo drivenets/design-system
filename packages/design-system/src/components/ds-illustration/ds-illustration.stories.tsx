@@ -3,6 +3,7 @@ import { DsTypography } from '../ds-typography';
 import { DsIllustration } from './index';
 import { dsIllustrationVariants } from './ds-illustration.types';
 import styles from './ds-illustration.stories.module.scss';
+import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsIllustration> = {
 	title: 'Components/Illustration',
@@ -43,12 +44,12 @@ export const Showcase: Story = {
 	render: () => (
 		<div className={styles.showcase}>
 			{dsIllustrationVariants.map((variant) => (
-				<div key={variant} className={styles.tile}>
+				<DsStack key={variant} direction="column" alignItems="center" gap="var(--xs)">
 					<DsIllustration variant={variant} />
-					<DsTypography className={styles.label} variant="body-sm-reg">
+					<DsTypography color="secondary" variant="body-sm-reg">
 						{variant}
 					</DsTypography>
-				</div>
+				</DsStack>
 			))}
 		</div>
 	),
