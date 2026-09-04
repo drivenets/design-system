@@ -1,5 +1,20 @@
 # @drivenets/design-system
 
+## 0.19.0
+
+### Minor Changes
+
+- 921a215: Add `DsBulkActions` component.
+- 2e837cf: Add `DsMainMenu` component
+
+### Patch Changes
+
+- b70812a: Fix redundant space in the right side of DsTable's header
+- dbd7d20: Fix `DsDropdownMenu.Item` dropping injected props so a wrapping `DsTooltip` (via `asChild`) now opens on hover.
+- 813242e: Add text ellipsis for column headers in "DsTable"
+- a64fea0: Add `interactive`, `openDelay`, and `closeDelay` props to `DsTooltip`.
+- 2938451: Configurable width for select, expand, reorder `DsTable` columns
+
 ## 0.18.1
 
 ### Patch Changes
