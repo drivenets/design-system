@@ -2,7 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import DsTagFilter from './ds-tag-filter';
 import type { TagFilterItem } from './ds-tag-filter.types';
-import styles from './ds-tag-filter.stories.module.scss';
+import { DsButtonV3 } from '../ds-button-v3';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsTagFilter> = {
 	title: 'Components/TagFilter',
@@ -41,208 +43,183 @@ const meta: Meta<typeof DsTagFilter> = {
 			action: 'expand',
 			description: 'Callback when expand/collapse is clicked',
 		},
+		className: {
+			table: { disable: true },
+			control: false,
+		},
+		style: {
+			table: { disable: true },
+			control: false,
+		},
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsTagFilter>;
 
-const sampleFilters: TagFilterItem[] = [
-	{ id: '1', label: 'Status: Active' },
-	{ id: '2', label: 'Running: From 100 to 10,000' },
-	{ id: '3', label: 'Completed from 20,000 to 100,000' },
-	{ id: '4', label: 'Executor: Category 1, Layer 1 transporter' },
-	{ id: '5', label: 'Executor: Category 2, Layer 11 transporter' },
-	{ id: '6', label: 'Executor: Category 2, Layer 12 transporter' },
-	{ id: '7', label: 'Executor: Category 2, Layer 13 transporter' },
-	{ id: '8', label: 'Version: 000.0001-3' },
-	{ id: '9', label: 'Version: 000.0001-4' },
-	{ id: '10', label: 'Version: 000.0001-5' },
-	{ id: '11', label: 'Version: 000.0001-6' },
-	{ id: '12', label: 'Last editor: Kevin Levin' },
-	{ id: '13', label: 'Last editor: Emery Dance' },
-];
-
 /**
- * Default story demonstrating the TagFilter component with interactive controls.
- * Try adding, removing, and selecting filters to see the component in action.
+ * Active filters render as tags that users can select or remove, with a "Clear all" action.
+ * Wire `onItemSelect`, `onItemDelete`, and `onClearAll` to your filter state.
  */
 export const Default: Story = {
-	render: function Render(args) {
-		const [filters, setFilters] = useState(sampleFilters);
-
-		const handleClearAll = () => {
-			setFilters([]);
-		};
-
-		const handleAddFilter = () => {
-			const newId = `new-${String(Date.now())}`;
-			setFilters((prev) => [
-				...prev,
-				{
-					id: newId,
-					label: `New Filter ${String(prev.length + 1)}`,
-				},
-			]);
-		};
-
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
-
-		const handleFilterSelect = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.map((f) => (f.id === filter.id ? { ...f, selected: !f.selected } : f)));
-		};
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
+			{ id: 'status', label: 'Status: Active' },
+			{ id: 'running', label: 'Running: 100 to 10,000' },
+			{ id: 'completed', label: 'Completed: 20,000 to 100,000' },
+			{ id: 'executor', label: 'Executor: Category 1, Layer 1' },
+			{ id: 'version', label: 'Version: 000.0001-3' },
+			{ id: 'editor', label: 'Last editor: Kevin Levin' },
+		]);
 
 		return (
-			<div className={styles.container}>
-				<DsTagFilter
-					{...args}
-					items={filters}
-					onClearAll={handleClearAll}
-					onItemDelete={handleFilterDelete}
-					onItemSelect={handleFilterSelect}
-				/>
-				<div className={styles.controlsContainer}>
-					<button type="button" onClick={handleAddFilter} className={styles.addButton}>
-						Add Filter
-					</button>
-					<p className={styles.infoText}>Total filters: {filters.length}</p>
-					<p className={styles.infoText}>
-						Selected filters: [
-						{filters
-							.filter((filter) => filter.selected)
-							.map((filter) => `"${filter.label}"`)
-							.join(', ')}
-						]
-					</p>
-				</div>
-			</div>
+			<DsTagFilter
+				items={items}
+				onClearAll={() => setItems([])}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+				onItemSelect={(item) =>
+					setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+				}
+			/>
 		);
 	},
 };
 
 /**
- * Story showing fewer filters that fit within the visible area without overflow.
+ * Interactive demo wiring add / remove / select handlers to local state, with live counters.
+ * Human-facing playground — excluded from the manifest.
+ */
+export const Interactive: Story = {
+	tags: ['!manifest'],
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
+			{ id: '1', label: 'Status: Active' },
+			{ id: '2', label: 'Running: 100 to 10,000' },
+			{ id: '3', label: 'Completed: 20,000 to 100,000' },
+			{ id: '4', label: 'Executor: Category 1, Layer 1' },
+			{ id: '5', label: 'Version: 000.0001-3' },
+			{ id: '6', label: 'Last editor: Kevin Levin' },
+		]);
+
+		const selectedCount = items.filter((item) => item.selected).length;
+
+		return (
+			<DsStack direction="column" gap="var(--standard)">
+				<DsTagFilter
+					items={items}
+					onClearAll={() => setItems([])}
+					onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+					onItemSelect={(item) =>
+						setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+					}
+				/>
+				<DsStack direction="row" gap="var(--xs)" alignItems="center">
+					<DsButtonV3
+						variant="secondary"
+						size="small"
+						icon="add"
+						onClick={() =>
+							setItems((prev) => [
+								...prev,
+								{ id: `new-${String(Date.now())}`, label: `New Filter ${String(prev.length + 1)}` },
+							])
+						}
+					>
+						Add Filter
+					</DsButtonV3>
+					<DsTypography variant="body-sm-reg" color="secondary">
+						Total: {items.length} · Selected: {selectedCount}
+					</DsTypography>
+				</DsStack>
+			</DsStack>
+		);
+	},
+};
+
+/**
+ * A short list that fits on one row without overflow — no "Show more" toggle appears.
  */
 export const FewFilters: Story = {
-	render: function Render(args) {
-		const [filters, setFilters] = useState<TagFilterItem[]>([
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
 			{ id: '1', label: 'Status: Active' },
 			{ id: '2', label: 'Version: 1.0.0' },
 			{ id: '3', label: 'Author: John Doe' },
 		]);
 
-		const handleClearAll = () => {
-			setFilters([]);
-		};
-
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
-
-		const handleFilterSelect = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.map((f) => (f.id === filter.id ? { ...f, selected: !f.selected } : f)));
-		};
-
 		return (
 			<DsTagFilter
-				{...args}
-				items={filters}
-				onClearAll={handleClearAll}
-				onItemDelete={handleFilterDelete}
-				onItemSelect={handleFilterSelect}
+				items={items}
+				onClearAll={() => setItems([])}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+				onItemSelect={(item) =>
+					setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+				}
 			/>
 		);
 	},
 };
 
 /**
- * Story showing TagFilter without the "Clear all" button.
+ * Omit `onClearAll` to hide the "Clear all" button — useful when clearing is handled elsewhere.
  */
 export const WithoutClearAll: Story = {
-	render: function Render(args) {
-		const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
+			{ id: '1', label: 'Status: Active' },
+			{ id: '2', label: 'Running: 100 to 10,000' },
+			{ id: '3', label: 'Completed: 20,000 to 100,000' },
+			{ id: '4', label: 'Executor: Category 1, Layer 1' },
+			{ id: '5', label: 'Version: 000.0001-3' },
+		]);
 
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
-
-		// Storybook injects `onClearAll` via args by default — pass `undefined` explicitly
-		// so the component hides the "Clear all" button.
-		return <DsTagFilter {...args} items={filters} onClearAll={undefined} onItemDelete={handleFilterDelete} />;
+		return (
+			<DsTagFilter
+				items={items}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+			/>
+		);
 	},
 };
 
 /**
- * Story showing TagFilter without delete functionality (read-only tags).
+ * Omit all callbacks to render non-interactive, read-only tags.
  */
 export const ReadOnly: Story = {
-	render: function Render(args) {
-		const filters: TagFilterItem[] = sampleFilters.slice(0, 5);
-
-		// Storybook injects callbacks via args by default — pass `undefined` explicitly
-		// so the component renders in read-only mode (no clear, delete, or select).
-		return (
-			<DsTagFilter
-				{...args}
-				items={filters}
-				onClearAll={undefined}
-				onItemDelete={undefined}
-				onItemSelect={undefined}
-			/>
-		);
-	},
+	render: () => (
+		<DsTagFilter
+			items={[
+				{ id: '1', label: 'Status: Active' },
+				{ id: '2', label: 'Running: 100 to 10,000' },
+				{ id: '3', label: 'Completed: 20,000 to 100,000' },
+				{ id: '4', label: 'Executor: Category 1, Layer 1' },
+				{ id: '5', label: 'Version: 000.0001-3' },
+			]}
+		/>
+	),
 };
 
 /**
- * Story documenting that `locale.label` is deprecated and never rendered.
- * We removed the header label, so any label passed here has no visible effect.
- */
-export const DeprecatedLabelIgnored: Story = {
-	render: function Render(args) {
-		const [filters, setFilters] = useState(sampleFilters.slice(0, 5));
-
-		const handleClearAll = () => {
-			setFilters([]);
-		};
-
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
-
-		return (
-			<DsTagFilter
-				{...args}
-				items={filters}
-				locale={{ label: 'This heading is ignored' }}
-				onClearAll={handleClearAll}
-				onItemDelete={handleFilterDelete}
-			/>
-		);
-	},
-};
-
-/**
- * Story demonstrating locale customization of the action buttons (clear, show more,
- * show less). `locale.label` is intentionally omitted — it is deprecated and unused.
+ * Pass `locale` to translate the action buttons (clear, show more, show less).
  */
 export const CustomLocale: Story = {
-	render: function Render(args) {
-		const [filters, setFilters] = useState(sampleFilters);
-
-		const handleClearAll = () => {
-			setFilters([]);
-		};
-
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
+			{ id: '1', label: 'Status: Active' },
+			{ id: '2', label: 'Running: 100 to 10,000' },
+			{ id: '3', label: 'Completed: 20,000 to 100,000' },
+			{ id: '4', label: 'Executor: Category 1, Layer 1' },
+			{ id: '5', label: 'Version: 000.0001-3' },
+		]);
 
 		return (
 			<DsTagFilter
-				{...args}
-				items={filters}
+				items={items}
 				locale={{
 					// cspell:disable-next-line
 					clearButton: 'Zresetuj',
@@ -251,88 +228,115 @@ export const CustomLocale: Story = {
 					// cspell:disable-next-line
 					showLess: 'Pokaż mniej',
 				}}
-				onClearAll={handleClearAll}
-				onItemDelete={handleFilterDelete}
+				onClearAll={() => setItems([])}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
 			/>
 		);
 	},
 };
 
 /**
- * Story demonstrating the expand/collapse toggle. The hidden count stays stable
- * between `Show more (N)` and `Show less (N)`.
+ * When tags overflow the first row, a "Show more (N)" toggle reveals the rest; the hidden
+ * count stays stable between "Show more (N)" and "Show less (N)".
  */
 export const ExpandCollapse: Story = {
 	args: {
-		items: sampleFilters,
+		items: [
+			{ id: '1', label: 'Status: Active' },
+			{ id: '2', label: 'Running: From 100 to 10,000' },
+			{ id: '3', label: 'Completed from 20,000 to 100,000' },
+			{ id: '4', label: 'Executor: Category 1, Layer 1 transporter' },
+			{ id: '5', label: 'Executor: Category 2, Layer 11 transporter' },
+			{ id: '6', label: 'Executor: Category 2, Layer 12 transporter' },
+			{ id: '7', label: 'Executor: Category 2, Layer 13 transporter' },
+			{ id: '8', label: 'Version: 000.0001-3' },
+			{ id: '9', label: 'Version: 000.0001-4' },
+			{ id: '10', label: 'Version: 000.0001-5' },
+			{ id: '11', label: 'Last editor: Kevin Levin' },
+			{ id: '12', label: 'Last editor: Emery Dance' },
+		],
 	},
 };
 
 /**
- * Story showing TagFilter with small tags via slotProps.tag on each item.
+ * Set `slotProps.tag.size` per item to render compact tags.
  */
 export const SmallSize: Story = {
-	render: function Render(args) {
-		const smallFilters: TagFilterItem[] = sampleFilters.slice(0, 6).map((item) => ({
-			...item,
-			slotProps: { tag: { size: 'small' } },
-		}));
-
-		const [filters, setFilters] = useState(smallFilters);
-
-		const handleClearAll = () => {
-			setFilters([]);
-		};
-
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
+			{ id: '1', label: 'Status: Active', slotProps: { tag: { size: 'small' } } },
+			{ id: '2', label: 'Running: 100 to 10,000', slotProps: { tag: { size: 'small' } } },
+			{ id: '3', label: 'Completed: 20,000 to 100,000', slotProps: { tag: { size: 'small' } } },
+			{ id: '4', label: 'Executor: Category 1, Layer 1', slotProps: { tag: { size: 'small' } } },
+			{ id: '5', label: 'Version: 000.0001-3', slotProps: { tag: { size: 'small' } } },
+			{ id: '6', label: 'Last editor: Kevin Levin', slotProps: { tag: { size: 'small' } } },
+		]);
 
 		return (
-			<DsTagFilter {...args} items={filters} onClearAll={handleClearAll} onItemDelete={handleFilterDelete} />
+			<DsTagFilter
+				items={items}
+				onClearAll={() => setItems([])}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+			/>
 		);
 	},
 };
 
 /**
- * Story showing TagFilter with pre-selected items.
+ * Mark items `selected` to render them in a pressed state on first paint.
  */
 export const WithPreSelectedItems: Story = {
-	render: function Render(args) {
-		const [filters, setFilters] = useState<TagFilterItem[]>([
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
 			{ id: '1', label: 'Status: Active', selected: true },
-			{ id: '2', label: 'Running: From 100 to 10,000', selected: false },
-			{ id: '3', label: 'Completed from 20,000 to 100,000', selected: true },
+			{ id: '2', label: 'Running: 100 to 10,000', selected: false },
+			{ id: '3', label: 'Completed: 20,000 to 100,000', selected: true },
 			{ id: '4', label: 'Executor: Category 1', selected: false },
 			{ id: '5', label: 'Version: 1.0.0', selected: true },
 		]);
 
-		const handleClearAll = () => {
-			setFilters([]);
-		};
-
-		const handleFilterDelete = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.filter((f) => f.id !== filter.id));
-		};
-
-		const handleFilterSelect = (filter: TagFilterItem) => {
-			setFilters((prev) => prev.map((f) => (f.id === filter.id ? { ...f, selected: !f.selected } : f)));
-		};
-
 		return (
 			<DsTagFilter
-				{...args}
-				items={filters}
-				onClearAll={handleClearAll}
-				onItemDelete={handleFilterDelete}
-				onItemSelect={handleFilterSelect}
+				items={items}
+				onClearAll={() => setItems([])}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+				onItemSelect={(item) =>
+					setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+				}
 			/>
 		);
 	},
 };
 
 /**
- * Story verifying the component renders nothing when items is empty.
+ * `locale.label` is deprecated and never rendered — passing it has no visible effect.
+ */
+export const DeprecatedLabelIgnored: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [items, setItems] = useState<TagFilterItem[]>([
+			{ id: '1', label: 'Status: Active' },
+			{ id: '2', label: 'Running: 100 to 10,000' },
+			{ id: '3', label: 'Completed: 20,000 to 100,000' },
+			{ id: '4', label: 'Executor: Category 1, Layer 1' },
+			{ id: '5', label: 'Version: 000.0001-3' },
+		]);
+
+		return (
+			<DsTagFilter
+				items={items}
+				locale={{ label: 'This heading is ignored' }}
+				onClearAll={() => setItems([])}
+				onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+			/>
+		);
+	},
+};
+
+/**
+ * The component renders nothing when `items` is empty.
  */
 export const EmptyState: Story = {
 	args: {

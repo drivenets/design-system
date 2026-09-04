@@ -1,14 +1,19 @@
-import type { Meta, StoryObj } from '@storybook/react-vite';
-import classNames from 'classnames';
+import type { Decorator, Meta, StoryObj } from '@storybook/react-vite';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from './index';
 import { typographyColors, typographyVariantConfig } from './ds-typography.config';
+import type { SemanticVariant } from './ds-typography.types';
 import storyStyles from './ds-typography.stories.module.scss';
 
-const variantOptions = Object.keys(typographyVariantConfig);
+const variantOptions = Object.keys(typographyVariantConfig) as SemanticVariant[];
 const sample = 'The quick brown fox jumps over the lazy dog.';
-const longSample =
-	'The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.';
+const onDarkColors: readonly string[] = ['on-action', 'on-disabled', 'light-disabled'];
+
+const withTruncateBox: Decorator = (Story) => (
+	<div className={storyStyles.truncateBox}>
+		<Story />
+	</div>
+);
 
 const meta: Meta<typeof DsTypography> = {
 	title: 'Components/Typography',
@@ -31,366 +36,152 @@ const meta: Meta<typeof DsTypography> = {
 	},
 	args: {
 		variant: 'body-md-reg',
-		children: sample,
+		children: 'The quick brown fox jumps over the lazy dog.',
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsTypography>;
 
+/** Default body text on the main foreground color. */
 export const Default: Story = {
 	args: {
 		variant: 'body-md-reg',
 		color: 'main',
-		children: sample,
+		children: 'The quick brown fox jumps over the lazy dog.',
 	},
 };
 
-export const Variants: Story = {
-	parameters: { controls: { disable: true } },
-	render: () => (
-		<DsStack direction="column" gap="var(--sm)">
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>heading1</code>
-				<DsTypography variant="heading1">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>heading2</code>
-				<DsTypography variant="heading2">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>heading3</code>
-				<DsTypography variant="heading3">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>heading4</code>
-				<DsTypography variant="heading4">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-md-reg</code>
-				<DsTypography variant="body-md-reg">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-md-md</code>
-				<DsTypography variant="body-md-md">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-md-semi-bold</code>
-				<DsTypography variant="body-md-semi-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-md-bold</code>
-				<DsTypography variant="body-md-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-md-link</code>
-				<DsTypography variant="body-md-link">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-sm-reg</code>
-				<DsTypography variant="body-sm-reg">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-sm-md</code>
-				<DsTypography variant="body-sm-md">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-sm-semi-bold</code>
-				<DsTypography variant="body-sm-semi-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-sm-bold</code>
-				<DsTypography variant="body-sm-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-sm-link</code>
-				<DsTypography variant="body-sm-link">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-xs-reg</code>
-				<DsTypography variant="body-xs-reg">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-xs-md</code>
-				<DsTypography variant="body-xs-md">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-xs-semi-bold</code>
-				<DsTypography variant="body-xs-semi-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-xs-bold</code>
-				<DsTypography variant="body-xs-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>body-xs-link</code>
-				<DsTypography variant="body-xs-link">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>code-sm-reg</code>
-				<DsTypography variant="code-sm-reg">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>code-sm-semi-bold</code>
-				<DsTypography variant="code-sm-semi-bold">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>code-xs-reg</code>
-				<DsTypography variant="code-xs-reg">{sample}</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>code-xs-semi-bold</code>
-				<DsTypography variant="code-xs-semi-bold">{sample}</DsTypography>
-			</div>
-		</DsStack>
-	),
+/** Use heading variants for page and section titles. */
+export const Heading: Story = {
+	args: {
+		variant: 'heading3',
+		children: 'The quick brown fox jumps over the lazy dog.',
+	},
 };
 
-export const Colors: Story = {
-	parameters: { controls: { disable: true } },
-	render: () => (
-		<DsStack direction="column" gap="var(--sm)">
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>main</code>
-				<DsTypography variant="body-md-md" color="main">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>secondary</code>
-				<DsTypography variant="body-md-md" color="secondary">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>action</code>
-				<DsTypography variant="body-md-md" color="action">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>action-hover</code>
-				<DsTypography variant="body-md-md" color="action-hover">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>action-secondary</code>
-				<DsTypography variant="body-md-md" color="action-secondary">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>action-secondary-hover</code>
-				<DsTypography variant="body-md-md" color="action-secondary-hover">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>disabled</code>
-				<DsTypography variant="body-md-md" color="disabled">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>placeholder</code>
-				<DsTypography variant="body-md-md" color="placeholder">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>highlight</code>
-				<DsTypography variant="body-md-md" color="highlight">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>success</code>
-				<DsTypography variant="body-md-md" color="success">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>warning</code>
-				<DsTypography variant="body-md-md" color="warning">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>error</code>
-				<DsTypography variant="body-md-md" color="error">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>code</code>
-				<DsTypography variant="body-md-md" color="code">
-					{sample}
-				</DsTypography>
-			</div>
-		</DsStack>
-	),
+/** Apply a semantic `color` to convey emphasis or state. */
+export const Color: Story = {
+	args: {
+		variant: 'body-md-reg',
+		color: 'secondary',
+		children: 'The quick brown fox jumps over the lazy dog.',
+	},
 };
 
-export const ColorsOnDark: Story = {
-	parameters: { controls: { disable: true }, layout: 'fullscreen' },
-	render: () => (
-		<div className={storyStyles.onDark}>
-			<div className={storyStyles.row}>
-				<code className={classNames(storyStyles.label, storyStyles.onDarkLabel)}>on-action</code>
-				<DsTypography variant="body-md-md" color="on-action">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={classNames(storyStyles.label, storyStyles.onDarkLabel)}>on-disabled</code>
-				<DsTypography variant="body-md-md" color="on-disabled">
-					{sample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={classNames(storyStyles.label, storyStyles.onDarkLabel)}>light-disabled</code>
-				<DsTypography variant="body-md-md" color="light-disabled">
-					{sample}
-				</DsTypography>
-			</div>
-		</div>
-	),
+/** The `color` prop also accepts raw CSS values (tokens, hex, rgb) as an escape hatch. */
+export const CustomColor: Story = {
+	args: {
+		variant: 'body-md-reg',
+		color: 'var(--color-dap-purple-600)',
+		children: 'The quick brown fox jumps over the lazy dog.',
+	},
 };
 
-export const EscapeHatch: Story = {
-	parameters: { controls: { disable: true } },
-	render: () => (
-		<DsStack direction="column" gap="var(--sm)">
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>{'color="success"'}</code>
-				<DsTypography variant="body-md-md" color="success">
-					Semantic token.
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>{'color="var(--color-dap-purple-600)"'}</code>
-				<DsTypography variant="body-md-md" color="var(--color-dap-purple-600)">
-					Custom primitive token via color prop.
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>{'color="#ff8800"'}</code>
-				<DsTypography variant="body-md-md" color="#ff8800">
-					Inline hex color via color prop.
-				</DsTypography>
-			</div>
-			<div className={storyStyles.row}>
-				<code className={storyStyles.label}>style overrides color prop</code>
-				<DsTypography variant="body-md-md" color="success" style={{ color: '#d70a00' }}>
-					Inline style still wins when both are set.
-				</DsTypography>
-			</div>
-		</DsStack>
-	),
-};
-
+/** Render as a different element while keeping typography styles via `asChild`. */
 export const AsChild: Story = {
 	parameters: { controls: { disable: true } },
 	render: () => (
-		<DsStack direction="column" gap="var(--sm)">
-			<DsTypography variant="heading3" asChild>
-				<a href="#anchor">Heading rendered as anchor via asChild</a>
-			</DsTypography>
-			<DsTypography variant="body-md-md" color="action" asChild>
-				<button type="button">Button styled like body-md-md / action</button>
-			</DsTypography>
-		</DsStack>
+		<DsTypography variant="body-md-link" asChild>
+			<a href="https://example.com">Link rendered via asChild</a>
+		</DsTypography>
 	),
 };
 
-export const TruncateSingleLine: Story = {
-	parameters: { controls: { disable: true } },
-	render: () => (
-		<div className={storyStyles.truncateBox}>
-			<DsTypography variant="body-md-reg" truncate>
-				{longSample}
-			</DsTypography>
-		</div>
-	),
+/** Clamp overflowing text to a single line with an ellipsis. Needs a width-constrained parent. */
+export const Truncate: Story = {
+	args: {
+		variant: 'body-md-reg',
+		truncate: true,
+		children:
+			'The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.',
+	},
+	decorators: [withTruncateBox],
 };
 
-export const TruncateMultipleLines: Story = {
-	parameters: { controls: { disable: true } },
-	render: () => (
-		<DsStack direction="column" gap="var(--sm)">
-			<div className={storyStyles.truncateBox}>
-				<code className={storyStyles.label}>truncate={'{2}'}</code>
-				<DsTypography variant="body-md-reg" truncate={2}>
-					{longSample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.truncateBox}>
-				<code className={storyStyles.label}>truncate={'{3}'}</code>
-				<DsTypography variant="body-md-reg" truncate={3}>
-					{longSample}
-				</DsTypography>
-			</div>
-		</DsStack>
-	),
+/** Pass a number to clamp to that many lines. */
+export const TruncateMultiline: Story = {
+	args: {
+		variant: 'body-md-reg',
+		truncate: 2,
+		children:
+			'The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.',
+	},
+	decorators: [withTruncateBox],
 };
 
+/** Enable `tooltip` to reveal the full text on hover while it stays truncated. */
 export const TruncateWithTooltip: Story = {
-	parameters: { controls: { disable: true } },
-	render: () => (
-		<DsStack direction="column" gap="var(--md)">
-			<div className={storyStyles.truncateBox}>
-				<code className={storyStyles.label}>overflowing — tooltip on hover</code>
-				<DsTypography variant="body-md-reg" truncate tooltip>
-					{longSample}
-				</DsTypography>
-			</div>
-			<div className={storyStyles.truncateBox}>
-				<code className={storyStyles.label}>fits — no tooltip</code>
-				<DsTypography variant="body-md-reg" truncate tooltip>
-					Short text
-				</DsTypography>
-			</div>
-			<div className={storyStyles.truncateBox}>
-				<code className={storyStyles.label}>2 lines + tooltip</code>
-				<DsTypography variant="body-md-reg" truncate={2} tooltip>
-					{longSample}
-				</DsTypography>
-			</div>
-		</DsStack>
-	),
-};
-
-export const TruncateTooltipPlacement: Story = {
-	parameters: { controls: { disable: true }, layout: 'fullscreen' },
-	render: () => (
-		<div className={storyStyles.placementViewport}>
-			<div className={storyStyles.truncateBox}>
-				<code className={storyStyles.label}>near top — tooltip flips to bottom, arrow at ellipsis</code>
-				<DsTypography variant="body-md-reg" truncate tooltip>
-					{longSample}
-				</DsTypography>
-			</div>
-			<div className={classNames(storyStyles.truncateBox, storyStyles.pushToBottom)}>
-				<code className={storyStyles.label}>near bottom — tooltip on top, arrow at ellipsis</code>
-				<DsTypography variant="body-md-reg" truncate tooltip>
-					{longSample}
-				</DsTypography>
-			</div>
-		</div>
-	),
-};
-
-export const Playground: Story = {
 	args: {
 		variant: 'body-md-reg',
 		truncate: true,
 		tooltip: true,
-		children: longSample,
+		children:
+			'The quick brown fox jumps over the lazy dog while the sleepy cat watches from the warm windowsill nearby.',
 	},
-	render: (args) => (
-		<div className={storyStyles.truncateBox}>
-			<DsTypography {...args} />
-		</div>
+	decorators: [withTruncateBox],
+};
+
+/** Full type scale for visual reference. */
+export const Variants: Story = {
+	tags: ['!manifest'],
+	parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+	render: () => (
+		<DsStack direction="column" gap="var(--md)">
+			{variantOptions.map((variant) => (
+				<DsStack key={variant} direction="column" gap="var(--3xs)">
+					<DsTypography variant="code-xs-reg" color="secondary">
+						{variant}
+					</DsTypography>
+					<DsTypography variant={variant}>{sample}</DsTypography>
+				</DsStack>
+			))}
+		</DsStack>
+	),
+};
+
+/** Semantic text colors on the default background. */
+export const Colors: Story = {
+	tags: ['!manifest'],
+	parameters: { controls: { disable: true }, docs: { canvas: { sourceState: 'none' } } },
+	render: () => (
+		<DsStack direction="column" gap="var(--sm)">
+			{typographyColors
+				.filter((color) => !onDarkColors.includes(color))
+				.map((color) => (
+					<DsStack key={color} direction="column" gap="var(--3xs)">
+						<DsTypography variant="code-xs-reg" color="secondary">
+							{color}
+						</DsTypography>
+						<DsTypography variant="body-md-md" color={color}>
+							{sample}
+						</DsTypography>
+					</DsStack>
+				))}
+		</DsStack>
+	),
+};
+
+/** Colors intended for dark or accent backgrounds. */
+export const ColorsOnDark: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		controls: { disable: true },
+		layout: 'fullscreen',
+		docs: { canvas: { sourceState: 'none' } },
+	},
+	render: () => (
+		<DsStack className={storyStyles.onDark} direction="column" gap="var(--sm)">
+			{onDarkColors.map((color) => (
+				<DsStack key={color} direction="column" gap="var(--3xs)">
+					<DsTypography variant="code-xs-reg" color="var(--secondary-300)">
+						{color}
+					</DsTypography>
+					<DsTypography variant="body-md-md" color={color}>
+						{sample}
+					</DsTypography>
+				</DsStack>
+			))}
+		</DsStack>
 	),
 };

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, within } from 'storybook/test';
-import DsStatusBadge from './ds-status-badge';
+import { DsStatusBadge } from './index';
 import { type DsStatus, dsStatuses, statusBadgeSizes } from './ds-status-badge.types';
 import type { IconType } from '../ds-icon';
-import styles from './ds-status-badge.stories.module.scss';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsStatusBadge> = {
 	title: 'Components/StatusBadge',
@@ -34,37 +34,48 @@ const meta: Meta<typeof DsStatusBadge> = {
 			options: statusBadgeSizes,
 			description: 'Size of the status badge',
 		},
-		className: {
-			control: 'text',
-			description: 'Additional CSS class names',
-		},
-		style: {
-			control: 'object',
-			description: 'Inline styles to apply to the component',
-		},
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
 type Story = StoryObj<typeof DsStatusBadge>;
 
+/** Standard filled badge — pair a status with a matching icon. */
 export const Default: Story = {
 	args: {
 		icon: 'check_circle',
 		status: 'active',
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
+};
 
-		// Verify component renders correctly
-		const component = canvas.getByText('active');
-		await expect(component).toBeTruthy();
+/** Ghost style uses a light background for lower-emphasis contexts like dense tables. */
+export const Ghost: Story = {
+	args: {
+		icon: 'check_circle',
+		status: 'active',
+		ghost: true,
 	},
 };
 
+/** Small size for compact rows and tight layouts. */
+export const Small: Story = {
+	args: {
+		icon: 'check_circle',
+		status: 'active',
+		size: 'small',
+	},
+};
+
+/** Every status across filled/ghost styles and both sizes, for visual comparison. */
 export const All: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: { canvas: { sourceState: 'none' } },
+	},
 	render: () => {
-		const statuses: Record<DsStatus, IconType> = {
+		const iconForStatus: Record<DsStatus, IconType> = {
 			active: 'check_circle',
 			running: 'change_circle',
 			pending: 'pause_circle',
@@ -75,67 +86,66 @@ export const All: Story = {
 		};
 
 		return (
-			<div className={styles.storiesContainer}>
-				<div className={styles.storiesRow}>
-					{/* Filled variants - Default */}
-					<div>
-						<div className={styles.sectionTitle}>Filled</div>
-						<div className={styles.storiesList}>
+			<DsStack direction="column" gap="var(--xl)">
+				<DsStack direction="row" gap="var(--3xl)">
+					<DsStack direction="column" gap="var(--sm)">
+						<DsTypography variant="body-sm-md" color="secondary">
+							Filled
+						</DsTypography>
+						<DsStack direction="column" gap="var(--xs)" alignItems="flex-start">
 							{dsStatuses.map((status) => (
-								<DsStatusBadge key={`filled-24-${status}`} icon={statuses[status]} status={status} />
+								<DsStatusBadge key={`filled-${status}`} icon={iconForStatus[status]} status={status} />
 							))}
-						</div>
-					</div>
+						</DsStack>
+					</DsStack>
 
-					{/* Ghost variants - Default */}
-					<div>
-						<div className={styles.sectionTitle}>Ghost</div>
-						<div className={styles.storiesList}>
+					<DsStack direction="column" gap="var(--sm)">
+						<DsTypography variant="body-sm-md" color="secondary">
+							Ghost
+						</DsTypography>
+						<DsStack direction="column" gap="var(--xs)" alignItems="flex-start">
+							{dsStatuses.map((status) => (
+								<DsStatusBadge key={`ghost-${status}`} icon={iconForStatus[status]} status={status} ghost />
+							))}
+						</DsStack>
+					</DsStack>
+				</DsStack>
+
+				<DsStack direction="row" gap="var(--3xl)">
+					<DsStack direction="column" gap="var(--sm)">
+						<DsTypography variant="body-sm-md" color="secondary">
+							Filled — Small
+						</DsTypography>
+						<DsStack direction="column" gap="var(--xs)" alignItems="flex-start">
 							{dsStatuses.map((status) => (
 								<DsStatusBadge
-									key={`ghost-24-${status}`}
-									icon={statuses[status]}
-									status={status}
-									ghost={true}
-								/>
-							))}
-						</div>
-					</div>
-				</div>
-
-				<div className={styles.storiesRow}>
-					{/* Filled variants - Small */}
-					<div>
-						<div className={styles.sectionTitle}>Filled - Small</div>
-						<div className={styles.storiesList}>
-							{dsStatuses.map((status) => (
-								<DsStatusBadge
-									key={`filled-20-${status}`}
-									icon={statuses[status]}
+									key={`filled-small-${status}`}
+									icon={iconForStatus[status]}
 									status={status}
 									size="small"
 								/>
 							))}
-						</div>
-					</div>
+						</DsStack>
+					</DsStack>
 
-					{/* Ghost variants - Small */}
-					<div>
-						<div className={styles.sectionTitle}>Ghost - Small</div>
-						<div className={styles.storiesList}>
+					<DsStack direction="column" gap="var(--sm)">
+						<DsTypography variant="body-sm-md" color="secondary">
+							Ghost — Small
+						</DsTypography>
+						<DsStack direction="column" gap="var(--xs)" alignItems="flex-start">
 							{dsStatuses.map((status) => (
 								<DsStatusBadge
-									key={`ghost-20-${status}`}
-									icon={statuses[status]}
+									key={`ghost-small-${status}`}
+									icon={iconForStatus[status]}
 									status={status}
-									ghost={true}
+									ghost
 									size="small"
 								/>
 							))}
-						</div>
-					</div>
-				</div>
-			</div>
+						</DsStack>
+					</DsStack>
+				</DsStack>
+			</DsStack>
 		);
 	},
 };

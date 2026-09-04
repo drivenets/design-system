@@ -1,0 +1,554 @@
+# DsTagFilter docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: 'status',
+      label: 'Status: Active'
+    }, {
+      id: 'running',
+      label: 'Running: 100 to 10,000'
+    }, {
+      id: 'completed',
+      label: 'Completed: 20,000 to 100,000'
+    }, {
+      id: 'executor',
+      label: 'Executor: Category 1, Layer 1'
+    }, {
+      id: 'version',
+      label: 'Version: 000.0001-3'
+    }, {
+      id: 'editor',
+      label: 'Last editor: Kevin Levin'
+    }]);
+    return <DsTagFilter items={items} onClearAll={() => setItems([])} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} onItemSelect={item => setItems(prev => prev.map(f => f.id === item.id ? {
+      ...f,
+      selected: !f.selected
+    } : f))} />;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: 'status', label: 'Status: Active' },
+        { id: 'running', label: 'Running: 100 to 10,000' },
+        { id: 'completed', label: 'Completed: 20,000 to 100,000' },
+        { id: 'executor', label: 'Executor: Category 1, Layer 1' },
+        { id: 'version', label: 'Version: 000.0001-3' },
+        { id: 'editor', label: 'Last editor: Kevin Levin' },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            onClearAll={() => setItems([])}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+            onItemSelect={(item) =>
+                setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+            }
+        />
+    );
+};
+
+## Few Filters
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: '1',
+      label: 'Status: Active'
+    }, {
+      id: '2',
+      label: 'Version: 1.0.0'
+    }, {
+      id: '3',
+      label: 'Author: John Doe'
+    }]);
+    return <DsTagFilter items={items} onClearAll={() => setItems([])} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} onItemSelect={item => setItems(prev => prev.map(f => f.id === item.id ? {
+      ...f,
+      selected: !f.selected
+    } : f))} />;
+  }
+}
+
+### MCP manifest
+const FewFilters = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: '1', label: 'Status: Active' },
+        { id: '2', label: 'Version: 1.0.0' },
+        { id: '3', label: 'Author: John Doe' },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            onClearAll={() => setItems([])}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+            onItemSelect={(item) =>
+                setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+            }
+        />
+    );
+};
+
+## Without Clear All
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: '1',
+      label: 'Status: Active'
+    }, {
+      id: '2',
+      label: 'Running: 100 to 10,000'
+    }, {
+      id: '3',
+      label: 'Completed: 20,000 to 100,000'
+    }, {
+      id: '4',
+      label: 'Executor: Category 1, Layer 1'
+    }, {
+      id: '5',
+      label: 'Version: 000.0001-3'
+    }]);
+    return <DsTagFilter items={items} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} />;
+  }
+}
+
+### MCP manifest
+const WithoutClearAll = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: '1', label: 'Status: Active' },
+        { id: '2', label: 'Running: 100 to 10,000' },
+        { id: '3', label: 'Completed: 20,000 to 100,000' },
+        { id: '4', label: 'Executor: Category 1, Layer 1' },
+        { id: '5', label: 'Version: 000.0001-3' },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+        />
+    );
+};
+
+## Read Only
+
+### Show code
+{
+  render: () => <DsTagFilter items={[{
+    id: '1',
+    label: 'Status: Active'
+  }, {
+    id: '2',
+    label: 'Running: 100 to 10,000'
+  }, {
+    id: '3',
+    label: 'Completed: 20,000 to 100,000'
+  }, {
+    id: '4',
+    label: 'Executor: Category 1, Layer 1'
+  }, {
+    id: '5',
+    label: 'Version: 000.0001-3'
+  }]} />
+}
+
+### MCP manifest
+const ReadOnly = () => (
+    <DsTagFilter
+        items={[
+            { id: '1', label: 'Status: Active' },
+            { id: '2', label: 'Running: 100 to 10,000' },
+            { id: '3', label: 'Completed: 20,000 to 100,000' },
+            { id: '4', label: 'Executor: Category 1, Layer 1' },
+            { id: '5', label: 'Version: 000.0001-3' },
+        ]}
+    />
+);
+
+## Custom Locale
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: '1',
+      label: 'Status: Active'
+    }, {
+      id: '2',
+      label: 'Running: 100 to 10,000'
+    }, {
+      id: '3',
+      label: 'Completed: 20,000 to 100,000'
+    }, {
+      id: '4',
+      label: 'Executor: Category 1, Layer 1'
+    }, {
+      id: '5',
+      label: 'Version: 000.0001-3'
+    }]);
+    return <DsTagFilter items={items} locale={{
+      // cspell:disable-next-line
+      clearButton: 'Zresetuj',
+      // cspell:disable-next-line
+      showMore: 'Pokaż więcej',
+      // cspell:disable-next-line
+      showLess: 'Pokaż mniej'
+    }} onClearAll={() => setItems([])} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} />;
+  }
+}
+
+### MCP manifest
+const CustomLocale = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: '1', label: 'Status: Active' },
+        { id: '2', label: 'Running: 100 to 10,000' },
+        { id: '3', label: 'Completed: 20,000 to 100,000' },
+        { id: '4', label: 'Executor: Category 1, Layer 1' },
+        { id: '5', label: 'Version: 000.0001-3' },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            locale={{
+                // cspell:disable-next-line
+                clearButton: 'Zresetuj',
+                // cspell:disable-next-line
+                showMore: 'Pokaż więcej',
+                // cspell:disable-next-line
+                showLess: 'Pokaż mniej',
+            }}
+            onClearAll={() => setItems([])}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+        />
+    );
+};
+
+## Expand Collapse
+
+### Show code
+<DsTagFilter
+  items={[
+    {
+      id: '1',
+      label: 'Status: Active'
+    },
+    {
+      id: '2',
+      label: 'Running: From 100 to 10,000'
+    },
+    {
+      id: '3',
+      label: 'Completed from 20,000 to 100,000'
+    },
+    {
+      id: '4',
+      label: 'Executor: Category 1, Layer 1 transporter'
+    },
+    {
+      id: '5',
+      label: 'Executor: Category 2, Layer 11 transporter'
+    },
+    {
+      id: '6',
+      label: 'Executor: Category 2, Layer 12 transporter'
+    },
+    {
+      id: '7',
+      label: 'Executor: Category 2, Layer 13 transporter'
+    },
+    {
+      id: '8',
+      label: 'Version: 000.0001-3'
+    },
+    {
+      id: '9',
+      label: 'Version: 000.0001-4'
+    },
+    {
+      id: '10',
+      label: 'Version: 000.0001-5'
+    },
+    {
+      id: '11',
+      label: 'Last editor: Kevin Levin'
+    },
+    {
+      id: '12',
+      label: 'Last editor: Emery Dance'
+    }
+  ]}
+  onClearAll={() => {}}
+  onExpand={() => {}}
+  onItemDelete={() => {}}
+  onItemSelect={() => {}}
+/>
+
+### MCP manifest
+const ExpandCollapse = () => <DsTagFilter
+    items={[
+        { id: '1', label: 'Status: Active' },
+        { id: '2', label: 'Running: From 100 to 10,000' },
+        { id: '3', label: 'Completed from 20,000 to 100,000' },
+        { id: '4', label: 'Executor: Category 1, Layer 1 transporter' },
+        { id: '5', label: 'Executor: Category 2, Layer 11 transporter' },
+        { id: '6', label: 'Executor: Category 2, Layer 12 transporter' },
+        { id: '7', label: 'Executor: Category 2, Layer 13 transporter' },
+        { id: '8', label: 'Version: 000.0001-3' },
+        { id: '9', label: 'Version: 000.0001-4' },
+        { id: '10', label: 'Version: 000.0001-5' },
+        { id: '11', label: 'Last editor: Kevin Levin' },
+        { id: '12', label: 'Last editor: Emery Dance' },
+    ]} />;
+
+## Small Size
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: '1',
+      label: 'Status: Active',
+      slotProps: {
+        tag: {
+          size: 'small'
+        }
+      }
+    }, {
+      id: '2',
+      label: 'Running: 100 to 10,000',
+      slotProps: {
+        tag: {
+          size: 'small'
+        }
+      }
+    }, {
+      id: '3',
+      label: 'Completed: 20,000 to 100,000',
+      slotProps: {
+        tag: {
+          size: 'small'
+        }
+      }
+    }, {
+      id: '4',
+      label: 'Executor: Category 1, Layer 1',
+      slotProps: {
+        tag: {
+          size: 'small'
+        }
+      }
+    }, {
+      id: '5',
+      label: 'Version: 000.0001-3',
+      slotProps: {
+        tag: {
+          size: 'small'
+        }
+      }
+    }, {
+      id: '6',
+      label: 'Last editor: Kevin Levin',
+      slotProps: {
+        tag: {
+          size: 'small'
+        }
+      }
+    }]);
+    return <DsTagFilter items={items} onClearAll={() => setItems([])} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} />;
+  }
+}
+
+### MCP manifest
+const SmallSize = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: '1', label: 'Status: Active', slotProps: { tag: { size: 'small' } } },
+        { id: '2', label: 'Running: 100 to 10,000', slotProps: { tag: { size: 'small' } } },
+        { id: '3', label: 'Completed: 20,000 to 100,000', slotProps: { tag: { size: 'small' } } },
+        { id: '4', label: 'Executor: Category 1, Layer 1', slotProps: { tag: { size: 'small' } } },
+        { id: '5', label: 'Version: 000.0001-3', slotProps: { tag: { size: 'small' } } },
+        { id: '6', label: 'Last editor: Kevin Levin', slotProps: { tag: { size: 'small' } } },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            onClearAll={() => setItems([])}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+        />
+    );
+};
+
+## With Pre Selected Items
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: '1',
+      label: 'Status: Active',
+      selected: true
+    }, {
+      id: '2',
+      label: 'Running: 100 to 10,000',
+      selected: false
+    }, {
+      id: '3',
+      label: 'Completed: 20,000 to 100,000',
+      selected: true
+    }, {
+      id: '4',
+      label: 'Executor: Category 1',
+      selected: false
+    }, {
+      id: '5',
+      label: 'Version: 1.0.0',
+      selected: true
+    }]);
+    return <DsTagFilter items={items} onClearAll={() => setItems([])} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} onItemSelect={item => setItems(prev => prev.map(f => f.id === item.id ? {
+      ...f,
+      selected: !f.selected
+    } : f))} />;
+  }
+}
+
+### MCP manifest
+const WithPreSelectedItems = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: '1', label: 'Status: Active', selected: true },
+        { id: '2', label: 'Running: 100 to 10,000', selected: false },
+        { id: '3', label: 'Completed: 20,000 to 100,000', selected: true },
+        { id: '4', label: 'Executor: Category 1', selected: false },
+        { id: '5', label: 'Version: 1.0.0', selected: true },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            onClearAll={() => setItems([])}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+            onItemSelect={(item) =>
+                setItems((prev) => prev.map((f) => (f.id === item.id ? { ...f, selected: !f.selected } : f)))
+            }
+        />
+    );
+};
+
+## Deprecated Label Ignored
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([{
+      id: '1',
+      label: 'Status: Active'
+    }, {
+      id: '2',
+      label: 'Running: 100 to 10,000'
+    }, {
+      id: '3',
+      label: 'Completed: 20,000 to 100,000'
+    }, {
+      id: '4',
+      label: 'Executor: Category 1, Layer 1'
+    }, {
+      id: '5',
+      label: 'Version: 000.0001-3'
+    }]);
+    return <DsTagFilter items={items} locale={{
+      label: 'This heading is ignored'
+    }} onClearAll={() => setItems([])} onItemDelete={item => setItems(prev => prev.filter(f => f.id !== item.id))} />;
+  }
+}
+
+### MCP manifest
+const DeprecatedLabelIgnored = function Render() {
+    const [items, setItems] = useState<TagFilterItem[]>([
+        { id: '1', label: 'Status: Active' },
+        { id: '2', label: 'Running: 100 to 10,000' },
+        { id: '3', label: 'Completed: 20,000 to 100,000' },
+        { id: '4', label: 'Executor: Category 1, Layer 1' },
+        { id: '5', label: 'Version: 000.0001-3' },
+    ]);
+
+    return (
+        <DsTagFilter
+            items={items}
+            locale={{ label: 'This heading is ignored' }}
+            onClearAll={() => setItems([])}
+            onItemDelete={(item) => setItems((prev) => prev.filter((f) => f.id !== item.id))}
+        />
+    );
+};
+
+## Empty State
+
+### Show code
+<DsTagFilter
+  items={[]}
+  onClearAll={() => {}}
+  onExpand={() => {}}
+  onItemDelete={() => {}}
+  onItemSelect={() => {}}
+/>
+
+### MCP manifest
+const EmptyState = () => <DsTagFilter items={[]} />;
