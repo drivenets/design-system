@@ -1,0 +1,796 @@
+# DsDrawer docs snippets
+
+## Default
+
+### Show code
+{
+  render: DrawerTemplate,
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    children: <>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>
+                        Default Drawer <DsSystemStatus status="healthy" label="Active" />
+                    </DsDrawer.Title>
+                    <DsStack alignItems="center" gap="var(--xs)">
+                        <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                        <DsDivider orientation="vertical" />
+                        <DsDrawer.CloseTrigger />
+                    </DsStack>
+                    <DsTypography className={styles.description} variant="body-xs-reg">
+                        This is a description caption under a title.
+                    </DsTypography>
+                </DsDrawer.Header>
+                <DsDrawer.Toolbar>
+                    <DsTextInput placeholder="Search..." className={styles.searchInput} slots={{
+          startAdornment: <DsIcon icon="search" size="tiny" />
+        }} />
+                    <DsIcon icon="filter_list" size="tiny" />
+                </DsDrawer.Toolbar>
+                <DsDrawer.Body className={styles.body}>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                </DsDrawer.Body>
+                <DsDrawer.Footer>
+                    <DsDrawer.Actions>
+                        <DsButton design="v1.2" buttonType="tertiary" size="large">
+                            Cancel
+                        </DsButton>
+                        <DsButton design="v1.2" size="large">
+                            Save
+                        </DsButton>
+                    </DsDrawer.Actions>
+                </DsDrawer.Footer>
+            </>
+  }
+}
+
+### MCP manifest
+const Default = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+            <DsDrawer open={isOpen} onOpenChange={setIsOpen}>
+                (<>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>
+                            Default Drawer <DsSystemStatus status="healthy" label="Active" />
+                        </DsDrawer.Title>
+                        <DsStack alignItems="center" gap="var(--xs)">
+                            <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                            <DsDivider orientation="vertical" />
+                            <DsDrawer.CloseTrigger />
+                        </DsStack>
+                        <DsTypography className={styles.description} variant="body-xs-reg">
+                            This is a description caption under a title.
+                        </DsTypography>
+                    </DsDrawer.Header>
+                    <DsDrawer.Toolbar>
+                        <DsTextInput
+                            placeholder="Search..."
+                            className={styles.searchInput}
+                            slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }}
+                        />
+                        <DsIcon icon="filter_list" size="tiny" />
+                    </DsDrawer.Toolbar>
+                    <DsDrawer.Body className={styles.body}>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                    <DsDrawer.Footer>
+                        <DsDrawer.Actions>
+                            <DsButton design="v1.2" buttonType="tertiary" size="large">
+                                Cancel
+                            </DsButton>
+                            <DsButton design="v1.2" size="large">
+                                Save
+                            </DsButton>
+                        </DsDrawer.Actions>
+                    </DsDrawer.Footer>
+                </>)
+            </DsDrawer>
+        </div>
+    );
+};
+
+## With Tabs
+
+### Show code
+{
+  render: DrawerTemplate,
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 8,
+    children: <>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>
+                        Drawer with Tabs <DsSystemStatus status="healthy" label="Active" />
+                    </DsDrawer.Title>
+                    <DsStack alignItems="center" gap="var(--xs)">
+                        <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                        <DsDivider orientation="vertical" />
+                        <DsDrawer.CloseTrigger />
+                    </DsStack>
+                    <DsTypography className={styles.description} variant="body-xs-reg">
+                        This is a description caption under a title.
+                    </DsTypography>
+                </DsDrawer.Header>
+                <DsDrawer.Body className={styles.body}>
+                    <div className={classNames(styles.section, styles.tabsSection)}>
+                        <Tabs />
+                    </div>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                </DsDrawer.Body>
+                <DsDrawer.Footer>
+                    <DsDrawer.Actions>
+                        <DsButton design="v1.2" buttonType="tertiary" size="large">
+                            Cancel
+                        </DsButton>
+                        <DsButton design="v1.2" size="large">
+                            Save
+                        </DsButton>
+                    </DsDrawer.Actions>
+                </DsDrawer.Footer>
+            </>
+  }
+}
+
+### MCP manifest
+const WithTabs = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+            <DsDrawer columns={8} open={isOpen} onOpenChange={setIsOpen}>
+                (<>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>
+                            Drawer with Tabs <DsSystemStatus status="healthy" label="Active" />
+                        </DsDrawer.Title>
+                        <DsStack alignItems="center" gap="var(--xs)">
+                            <DsButtonV3 variant="tertiary" icon="open_in_full" size="tiny" aria-label="Expand" />
+                            <DsDivider orientation="vertical" />
+                            <DsDrawer.CloseTrigger />
+                        </DsStack>
+                        <DsTypography className={styles.description} variant="body-xs-reg">
+                            This is a description caption under a title.
+                        </DsTypography>
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.body}>
+                        <div className={classNames(styles.section, styles.tabsSection)}>
+                            <Tabs />
+                        </div>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                    <DsDrawer.Footer>
+                        <DsDrawer.Actions>
+                            <DsButton design="v1.2" buttonType="tertiary" size="large">
+                                Cancel
+                            </DsButton>
+                            <DsButton design="v1.2" size="large">
+                                Save
+                            </DsButton>
+                        </DsDrawer.Actions>
+                    </DsDrawer.Footer>
+                </>)
+            </DsDrawer>
+        </div>
+    );
+};
+
+## With Backdrop And Scroll
+
+### Show code
+{
+  render: DrawerTemplate,
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    backdrop: true,
+    children: <>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>Basic Drawer</DsDrawer.Title>
+                    <DsDrawer.CloseTrigger />
+                </DsDrawer.Header>
+                <DsDrawer.Body className={styles.body}>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={classNames(styles.sectionContent, styles.taller)}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={classNames(styles.sectionContent, styles.tall)}>
+                            Out of scope section
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={classNames(styles.sectionContent, styles.tallest)}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                </DsDrawer.Body>
+            </>
+  }
+}
+
+### MCP manifest
+const WithBackdropAndScroll = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+            <DsDrawer backdrop open={isOpen} onOpenChange={setIsOpen}>
+                (<>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>Basic Drawer</DsDrawer.Title>
+                        <DsDrawer.CloseTrigger />
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.body}>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={classNames(styles.sectionContent, styles.taller)}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={classNames(styles.sectionContent, styles.tall)}>
+                                Out of scope section
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={classNames(styles.sectionContent, styles.tallest)}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                </>)
+            </DsDrawer>
+        </div>
+    );
+};
+
+## Dock To Start
+
+### Show code
+{
+  render: DrawerTemplate,
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    position: 'start',
+    children: <>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>Basic Drawer</DsDrawer.Title>
+                    <DsDrawer.CloseTrigger />
+                </DsDrawer.Header>
+                <DsDrawer.Body className={styles.body}>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                </DsDrawer.Body>
+            </>
+  }
+}
+
+### MCP manifest
+const DockToStart = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+            <DsDrawer position="start" open={isOpen} onOpenChange={setIsOpen}>
+                (<>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>Basic Drawer</DsDrawer.Title>
+                        <DsDrawer.CloseTrigger />
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.body}>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                </>)
+            </DsDrawer>
+        </div>
+    );
+};
+
+## With Grid Content
+
+### Show code
+{
+  render: DrawerTemplate,
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  args: {
+    columns: 10,
+    children: <>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>Basic Drawer</DsDrawer.Title>
+                    <DsDrawer.CloseTrigger />
+                </DsDrawer.Header>
+                <DsDrawer.Body className={styles.bodyGrid}>
+                    <div className={classNames(styles.section, styles.spanTwoRows)}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                            Drawer content header
+                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>
+                            Out of scope section
+                        </DsTypography>
+                    </div>
+                </DsDrawer.Body>
+            </>
+  }
+}
+
+### MCP manifest
+const WithGridContent = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+            <DsDrawer columns={10} open={isOpen} onOpenChange={setIsOpen}>
+                (<>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>Basic Drawer</DsDrawer.Title>
+                        <DsDrawer.CloseTrigger />
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.bodyGrid}>
+                        <div className={classNames(styles.section, styles.spanTwoRows)}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                </>)
+            </DsDrawer>
+        </div>
+    );
+};
+
+## Responsive
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [openDrawer, setOpenDrawer] = useState<string | null>(null);
+    const close = () => setOpenDrawer(null);
+    const variants = [{
+      label: '3 cols → 4 on md',
+      columns: {
+        lg: 3,
+        md: 4
+      }
+    }, {
+      label: '4 cols → 6 on md',
+      columns: {
+        lg: 4,
+        md: 6
+      }
+    }, {
+      label: '5 cols → 6 on md',
+      columns: {
+        lg: 5,
+        md: 6
+      }
+    }, {
+      label: '6 cols → 10 on md',
+      columns: {
+        lg: 6,
+        md: 10
+      }
+    }, {
+      label: '8 cols → 10 on md',
+      columns: {
+        lg: 8,
+        md: 10
+      }
+    }] satisfies Array<{
+      label: string;
+      columns: ResponsiveValue<DsDrawerColumns>;
+    }>;
+    return <div className={styles.storyWrapper}>
+                <DsTypography variant="body-md-semi-bold">
+                    Resize the window below 1440 px to see the responsive column change.
+                </DsTypography>
+
+                <div className={styles.responsiveButtons}>
+                    {variants.map(({
+          label
+        }) => <DsButton key={label} onClick={() => setOpenDrawer(label)}>
+                            {label}
+                        </DsButton>)}
+                </div>
+
+                {variants.map(({
+        label,
+        columns
+      }) => <DsDrawer key={label} open={openDrawer === label} onOpenChange={open => !open && close()} columns={columns}>
+                        <DsDrawer.Header>
+                            <DsDrawer.Title>{label}</DsDrawer.Title>
+                            <DsDrawer.CloseTrigger />
+                        </DsDrawer.Header>
+                        <DsDrawer.Body className={styles.body}>
+                            <div className={styles.section}>
+                                <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                    lg: {columns.lg} columns · md: {columns.md} columns
+                                </DsTypography>
+                                <DsTypography variant="heading2" className={styles.sectionContent}>
+                                    Drawer content
+                                </DsTypography>
+                            </div>
+                        </DsDrawer.Body>
+                    </DsDrawer>)}
+            </div>;
+  }
+}
+
+### MCP manifest
+const Responsive = function Render() {
+    const [openDrawer, setOpenDrawer] = useState<string | null>(null);
+
+    const close = () => setOpenDrawer(null);
+
+    const variants = [
+        { label: '3 cols → 4 on md', columns: { lg: 3, md: 4 } },
+        { label: '4 cols → 6 on md', columns: { lg: 4, md: 6 } },
+        { label: '5 cols → 6 on md', columns: { lg: 5, md: 6 } },
+        { label: '6 cols → 10 on md', columns: { lg: 6, md: 10 } },
+        { label: '8 cols → 10 on md', columns: { lg: 8, md: 10 } },
+    ] satisfies Array<{ label: string; columns: ResponsiveValue<DsDrawerColumns> }>;
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsTypography variant="body-md-semi-bold">
+                Resize the window below 1440 px to see the responsive column change.
+            </DsTypography>
+
+            <div className={styles.responsiveButtons}>
+                {variants.map(({ label }) => (
+                    <DsButton key={label} onClick={() => setOpenDrawer(label)}>
+                        {label}
+                    </DsButton>
+                ))}
+            </div>
+
+            {variants.map(({ label, columns }) => (
+                <DsDrawer
+                    key={label}
+                    open={openDrawer === label}
+                    onOpenChange={(open) => !open && close()}
+                    columns={columns}
+                >
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>{label}</DsDrawer.Title>
+                        <DsDrawer.CloseTrigger />
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.body}>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                lg: {columns.lg} columns · md: {columns.md} columns
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Drawer content
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                </DsDrawer>
+            ))}
+        </div>
+    );
+};
+
+## Toggle Full Size
+
+### Show code
+{
+  args: {
+    columns: 4
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args: DsDrawerProps) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const toggleFullScreen = () => {
+      setIsFullScreen(!isFullScreen);
+    };
+    return <div className={styles.storyWrapper}>
+                <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
+                <DsDrawer {...args} open={isOpen} onOpenChange={setIsOpen} columns={isFullScreen ? 12 : args.columns || 4}>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>Expandable Drawer</DsDrawer.Title>
+                        <DsStack alignItems="center" gap="var(--xs)">
+                            <DsButtonV3 variant="tertiary" icon={isFullScreen ? 'close_fullscreen' : 'open_in_full'} size="tiny" aria-label={isFullScreen ? 'Collapse' : 'Expand'} onClick={toggleFullScreen} />
+                            <DsDivider orientation="vertical" />
+                            <DsDrawer.CloseTrigger />
+                        </DsStack>
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.body}>
+                        <div className={styles.section}>
+                            <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">
+                                Drawer content header
+                            </DsTypography>
+                            <DsTypography variant="heading2" className={styles.sectionContent}>
+                                Out of scope section
+                            </DsTypography>
+                        </div>
+                    </DsDrawer.Body>
+                </DsDrawer>
+            </div>;
+  }
+}
+
+### MCP manifest
+const ToggleFullSize = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [isFullScreen, setIsFullScreen] = useState(false);
+
+    const toggleFullScreen = () => {
+        setIsFullScreen(!isFullScreen);
+    };
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+            <DsDrawer
+                open={isOpen}
+                onOpenChange={setIsOpen}
+                columns={isFullScreen ? 12 : args.columns || 4}>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>Expandable Drawer</DsDrawer.Title>
+                    <DsStack alignItems="center" gap="var(--xs)">
+                        <DsButtonV3
+                            variant="tertiary"
+                            icon={isFullScreen ? 'close_fullscreen' : 'open_in_full'}
+                            size="tiny"
+                            aria-label={isFullScreen ? 'Collapse' : 'Expand'}
+                            onClick={toggleFullScreen} />
+                        <DsDivider orientation="vertical" />
+                        <DsDrawer.CloseTrigger />
+                    </DsStack>
+                </DsDrawer.Header>
+                <DsDrawer.Body className={styles.body}>
+                    <div className={styles.section}>
+                        <DsTypography className={styles.sectionHeader} variant="body-md-semi-bold">Drawer content header
+                                                        </DsTypography>
+                        <DsTypography variant="heading2" className={styles.sectionContent}>Out of scope section
+                                                        </DsTypography>
+                    </div>
+                </DsDrawer.Body>
+            </DsDrawer>
+        </div>
+    );
+};
+
+## Prevent Open Auto Focus
+
+### Show code
+{
+  args: {
+    onOpenAutoFocus: fn((event: Event) => event.preventDefault())
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args: DsDrawerProps) {
+    const [query, setQuery] = useState('');
+    return <div className={styles.storyWrapper}>
+                <DsTextInput placeholder="Start typing to open the drawer" value={query} onValueChange={setQuery} slots={{
+        startAdornment: <DsIcon icon="search" size="tiny" />
+      }} />
+
+                <DsDrawer {...args} open={query.length > 0} onOpenChange={open => !open && setQuery('')}>
+                    <DsDrawer.Header>
+                        <DsDrawer.Title>Suggestions</DsDrawer.Title>
+                        <DsDrawer.CloseTrigger />
+                    </DsDrawer.Header>
+                    <DsDrawer.Body className={styles.body}>
+                        <DsTypography variant="body-md-reg">
+                            Focus stayed in the input — keep typing without losing your place.
+                        </DsTypography>
+                    </DsDrawer.Body>
+                </DsDrawer>
+            </div>;
+  }
+}
+
+### MCP manifest
+const PreventOpenAutoFocus = () => {
+    const [query, setQuery] = useState('');
+
+    return (
+        <div className={styles.storyWrapper}>
+            <DsTextInput
+                placeholder="Start typing to open the drawer"
+                value={query}
+                onValueChange={setQuery}
+                slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }} />
+            <DsDrawer
+                onOpenAutoFocus={fn((event: Event) => event.preventDefault())}
+                open={query.length > 0}
+                onOpenChange={(open) => !open && setQuery('')}>
+                <DsDrawer.Header>
+                    <DsDrawer.Title>Suggestions</DsDrawer.Title>
+                    <DsDrawer.CloseTrigger />
+                </DsDrawer.Header>
+                <DsDrawer.Body className={styles.body}>
+                    <DsTypography variant="body-md-reg">Focus stayed in the input — keep typing without losing your place.
+                                                </DsTypography>
+                </DsDrawer.Body>
+            </DsDrawer>
+        </div>
+    );
+};
