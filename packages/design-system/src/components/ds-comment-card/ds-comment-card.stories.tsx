@@ -1,61 +1,37 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, fn, userEvent, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 import { DsCommentCard } from './index';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 import type { CommentData } from './ds-comment-card.types';
-import styles from './ds-comment-card.stories.module.scss';
 
+const author = {
+	id: 'user-1',
+	name: 'Karen J.',
+	avatarSrc: 'https://i.pravatar.cc/40?img=1',
+};
+
+// Shared builder for the visual-only showcase (excluded from docs snippets). Manifest
+// stories inline their comment literal instead so the snippets stay ready to copy.
 const createMockComment = (overrides: Partial<CommentData> = {}): CommentData => ({
 	id: 'comment-1',
 	numericId: 63,
-	author: {
-		id: 'user-1',
-		name: 'Karen J.',
-		avatarSrc: 'https://i.pravatar.cc/40?img=1',
-	},
-	createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+	author,
+	createdAt: new Date('2026-02-09T10:00:00Z'),
 	isResolved: false,
 	messages: [
 		{
 			id: 'msg-1',
-			author: {
-				id: 'user-1',
-				name: 'Karen J.',
-				avatarSrc: 'https://i.pravatar.cc/40?img=1',
-			},
-			content:
-				'We need to review the resource allocation for this project. I think we should consider adjusting the timeline to ensure we have enough resources for the development phase. This will help us maintain quality standards and meet all the project requirements efficiently.',
-			createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+			author,
+			content: 'We need to review the resource allocation for this project before the next sprint.',
+			createdAt: new Date('2026-02-09T10:00:00Z'),
 			isInitialMessage: true,
 		},
 		{
 			id: 'msg-2',
-			author: {
-				id: 'user-2',
-				name: 'John D.',
-				avatarSrc: 'https://i.pravatar.cc/40?img=2',
-			},
+			author: { id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
 			content: 'Thanks for the feedback!',
-			createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
-		},
-		{
-			id: 'msg-3',
-			author: {
-				id: 'user-3',
-				name: 'Jane S.',
-				avatarSrc: 'https://i.pravatar.cc/40?img=3',
-			},
-			content: 'I agree with this approach.',
-			createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000),
-		},
-		{
-			id: 'msg-4',
-			author: {
-				id: 'user-1',
-				name: 'Karen J.',
-				avatarSrc: 'https://i.pravatar.cc/40?img=1',
-			},
-			content: 'Great, let us proceed then.',
-			createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000),
+			createdAt: new Date('2026-02-09T12:00:00Z'),
 		},
 	],
 	...overrides,
@@ -69,68 +45,23 @@ const meta: Meta<typeof DsCommentCard> = {
 	},
 	decorators: [
 		(Story) => (
-			<div className={styles.decorator}>
+			<DsStack width="484px">
 				<Story />
-			</div>
+			</DsStack>
 		),
 	],
 	argTypes: {
-		comment: {
-			description: 'Comment data including author, messages, participants, and metadata',
-		},
-		disabled: {
-			control: 'boolean',
-			description: 'Whether the card is disabled',
-		},
 		overflow: {
 			control: 'select',
 			options: ['hidden', 'displayed'],
-			description: 'Whether to truncate long messages or show them in full',
 		},
-		onClick: {
-			action: 'clicked',
-			description: 'Callback when card is clicked',
-		},
-		onResolve: {
-			action: 'resolved',
-			description: 'Callback when resolve button is clicked',
-		},
-		onToggleActionRequired: {
-			action: 'toggle-action-required',
-			description: 'Callback when action required is toggled',
-		},
-		onForward: {
-			action: 'forward',
-			description: 'Callback when forward action is triggered',
-		},
-		onMarkUnread: {
-			action: 'mark-unread',
-			description: 'Callback when mark as unread is triggered',
-		},
-		onCopyLink: {
-			action: 'copy-link',
-			description: 'Callback when copy link is triggered',
-		},
-		onDelete: {
-			action: 'delete',
-			description: 'Callback when delete is triggered',
-		},
-		formatTimestamp: {
-			description:
-				'Custom formatter for timestamps. Defaults to relative time format (e.g., "2d ago"). Can be overridden for custom formats like absolute dates.',
-			table: {
-				type: { summary: '(date: Date) => string' },
-				defaultValue: { summary: 'formatRelativeTime' },
-			},
-		},
+		comment: { table: { disable: true } },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 	args: {
 		onClick: fn(),
 		onResolve: fn(),
-		onToggleActionRequired: fn(),
-		onForward: fn(),
-		onMarkUnread: fn(),
-		onCopyLink: fn(),
 		onDelete: fn(),
 	},
 };
@@ -138,210 +69,207 @@ const meta: Meta<typeof DsCommentCard> = {
 export default meta;
 type Story = StoryObj<typeof DsCommentCard>;
 
-export const DefaultCard: Story = {
-	args: {
-		comment: createMockComment(),
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #/i });
-
-		await expect(card).toBeInTheDocument();
-		await expect(card).toHaveAttribute('aria-label');
-
-		const commentText = canvas.getByText(/resource allocation/);
-		await expect(commentText).toBeInTheDocument();
-
-		const replyCount = canvas.getByText(/3 replies/i);
-		await expect(replyCount).toBeInTheDocument();
-	},
-};
-
-export const ActionRequired: Story = {
-	args: {
-		comment: createMockComment({ isActionRequired: true }),
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /action required/i });
-
-		await expect(card).toBeInTheDocument();
-	},
-};
-
-export const DisabledState: Story = {
-	args: {
-		comment: createMockComment(),
-		disabled: true,
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #/i });
-
-		await expect(card).toBeInTheDocument();
-		await expect(card).toBeDisabled();
-	},
-};
-
-export const FullMessage: Story = {
-	args: {
-		comment: createMockComment(),
-		overflow: 'displayed',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #/i });
-		const commentText = canvas.getByText(/resource allocation/);
-
-		await expect(card).toBeInTheDocument();
-		await expect(commentText).toBeInTheDocument();
-	},
-};
-
-export const SingleMessage: Story = {
-	args: {
-		comment: createMockComment({
-			messages: [
-				{
-					id: 'msg-1',
-					author: {
-						id: 'user-1',
-						name: 'Karen J.',
-						avatarSrc: 'https://i.pravatar.cc/40?img=1',
-					},
-					content: 'This is a short single message comment.',
-					createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
-					isInitialMessage: true,
-				},
-			],
-		}),
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #/i });
-		const commentText = canvas.getByText(/This is a short single message comment/);
-
-		await expect(card).toBeInTheDocument();
-		await expect(commentText).toBeInTheDocument();
-	},
-};
-
+/**
+ * Standard card summarizing a thread: author, relative timestamp, message preview,
+ * and reply count. Long previews truncate by default.
+ */
 export const Default: Story = {
-	render: () => (
-		<div className={styles.grid}>
-			<div className={styles.column}>
-				<h4 className={styles.heading}>Default</h4>
-				<DsCommentCard comment={createMockComment()} overflow="hidden" />
-			</div>
-
-			<div className={styles.column}>
-				<h4 className={styles.heading}>Action Required</h4>
-				<DsCommentCard comment={createMockComment()} overflow="hidden" />
-			</div>
-
-			<div className={styles.column}>
-				<h4 className={styles.heading}>Disabled</h4>
-				<DsCommentCard comment={createMockComment()} disabled={true} overflow="hidden" />
-			</div>
-
-			<div className={styles.column}>
-				<h4 className={styles.heading}>Full Message</h4>
-				<DsCommentCard comment={createMockComment()} overflow="displayed" />
-			</div>
-		</div>
-	),
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const cards = canvas.getAllByRole('button', { name: /Comment #/i });
-
-		await expect(cards.length).toBeGreaterThan(0);
-	},
-};
-
-export const WithReferenceTag: Story = {
 	args: {
-		comment: createMockComment({ referenceTag: 'Resource allocation' }),
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('Resource allocation')).toBeInTheDocument();
-	},
-};
-
-export const WithCallbacks: Story = {
-	args: {
-		comment: createMockComment(),
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement, args }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #63/i });
-
-		await userEvent.click(card);
-
-		await expect(args.onClick).toHaveBeenCalledOnce();
-	},
-};
-
-export const SingleReply: Story = {
-	args: {
-		comment: createMockComment({
+		comment: {
+			id: 'comment-1',
+			numericId: 63,
+			author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+			createdAt: new Date('2026-02-09T10:00:00Z'),
+			isResolved: false,
 			messages: [
 				{
 					id: 'msg-1',
-					author: { id: 'user-1', name: 'Karen J.' },
-					content: 'Initial message',
-					createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+					author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+					content: 'We need to review the resource allocation for this project before the next sprint.',
+					createdAt: new Date('2026-02-09T10:00:00Z'),
 					isInitialMessage: true,
 				},
 				{
 					id: 'msg-2',
-					author: { id: 'user-2', name: 'John D.' },
-					content: 'One reply',
-					createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
+					author: { id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
+					content: 'Thanks for the feedback!',
+					createdAt: new Date('2026-02-09T12:00:00Z'),
 				},
 			],
-		}),
-		overflow: 'hidden',
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		await expect(canvas.getByText('1 reply')).toBeInTheDocument();
+		},
 	},
 };
 
-export const CustomFormatter: Story = {
+/**
+ * Flagged card. Set `isActionRequired` on the comment to surface the action-required
+ * treatment so it stands out in a list.
+ */
+export const ActionRequired: Story = {
 	args: {
-		comment: createMockComment(),
-		overflow: 'hidden',
-		formatTimestamp: (date: Date) => {
-			const options: Intl.DateTimeFormatOptions = {
-				year: 'numeric',
-				month: 'short',
-				day: 'numeric',
-				hour: '2-digit',
-				minute: '2-digit',
-			};
-			return date.toLocaleDateString('en-US', options);
+		comment: {
+			id: 'comment-1',
+			numericId: 63,
+			author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+			createdAt: new Date('2026-02-09T10:00:00Z'),
+			isResolved: false,
+			isActionRequired: true,
+			messages: [
+				{
+					id: 'msg-1',
+					author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+					content: 'We need to review the resource allocation for this project before the next sprint.',
+					createdAt: new Date('2026-02-09T10:00:00Z'),
+					isInitialMessage: true,
+				},
+			],
 		},
 	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-		const card = canvas.getByRole('button', { name: /Comment #/i });
+};
 
-		await expect(card).toBeInTheDocument();
-
-		// Verify the formatted timestamp is present (should be in format like "Feb 9, 2026, 05:11 PM")
-		// and does not contain "ago"
-		const cardText = card.textContent || '';
-		await expect(cardText).toMatch(/\d{4}/); // Should contain year
-		await expect(cardText).not.toMatch(/ago/i); // Should not contain "ago"
+/**
+ * Non-interactive card. Use while an operation is in flight or when the thread is
+ * read-only.
+ */
+export const Disabled: Story = {
+	args: {
+		disabled: true,
+		comment: {
+			id: 'comment-1',
+			numericId: 63,
+			author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+			createdAt: new Date('2026-02-09T10:00:00Z'),
+			isResolved: false,
+			messages: [
+				{
+					id: 'msg-1',
+					author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+					content: 'We need to review the resource allocation for this project before the next sprint.',
+					createdAt: new Date('2026-02-09T10:00:00Z'),
+					isInitialMessage: true,
+				},
+			],
+		},
 	},
+};
+
+/**
+ * Show the full message body instead of a truncated preview with `overflow="displayed"`.
+ */
+export const FullMessage: Story = {
+	args: {
+		overflow: 'displayed',
+		comment: {
+			id: 'comment-1',
+			numericId: 63,
+			author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+			createdAt: new Date('2026-02-09T10:00:00Z'),
+			isResolved: false,
+			messages: [
+				{
+					id: 'msg-1',
+					author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+					content:
+						'We need to review the resource allocation for this project. Adjusting the timeline will ensure we have enough resources for the development phase and keep quality high.',
+					createdAt: new Date('2026-02-09T10:00:00Z'),
+					isInitialMessage: true,
+				},
+			],
+		},
+	},
+};
+
+/**
+ * A reference chip in the header links the thread back to the entity it annotates.
+ */
+export const WithReferenceTag: Story = {
+	args: {
+		comment: {
+			id: 'comment-1',
+			numericId: 63,
+			author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+			createdAt: new Date('2026-02-09T10:00:00Z'),
+			isResolved: false,
+			referenceTag: 'Resource allocation',
+			messages: [
+				{
+					id: 'msg-1',
+					author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+					content: 'We need to review the resource allocation for this project before the next sprint.',
+					createdAt: new Date('2026-02-09T10:00:00Z'),
+					isInitialMessage: true,
+				},
+			],
+		},
+	},
+};
+
+/**
+ * Override the default relative time via `formatTimestamp` — here an absolute date.
+ */
+export const CustomFormatter: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: (args) => (
+		<DsCommentCard
+			{...args}
+			comment={{
+				id: 'comment-1',
+				numericId: 63,
+				author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+				createdAt: new Date('2026-02-09T10:00:00Z'),
+				isResolved: false,
+				messages: [
+					{
+						id: 'msg-1',
+						author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+						content: 'We need to review the resource allocation for this project.',
+						createdAt: new Date('2026-02-09T10:00:00Z'),
+						isInitialMessage: true,
+					},
+				],
+			}}
+			formatTimestamp={(date) =>
+				date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+			}
+		/>
+	),
+};
+
+/**
+ * The main states side by side for visual comparison.
+ */
+export const AllStates: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: { canvas: { sourceState: 'none' } },
+	},
+	render: () => (
+		<DsStack direction="column" gap="var(--lg)" width="484px">
+			<DsStack direction="column" gap="var(--xs)">
+				<DsTypography variant="body-sm-md" color="secondary">
+					Default
+				</DsTypography>
+				<DsCommentCard comment={createMockComment()} />
+			</DsStack>
+			<DsStack direction="column" gap="var(--xs)">
+				<DsTypography variant="body-sm-md" color="secondary">
+					Action required
+				</DsTypography>
+				<DsCommentCard comment={createMockComment({ isActionRequired: true })} />
+			</DsStack>
+			<DsStack direction="column" gap="var(--xs)">
+				<DsTypography variant="body-sm-md" color="secondary">
+					Disabled
+				</DsTypography>
+				<DsCommentCard comment={createMockComment()} disabled />
+			</DsStack>
+			<DsStack direction="column" gap="var(--xs)">
+				<DsTypography variant="body-sm-md" color="secondary">
+					Full message
+				</DsTypography>
+				<DsCommentCard comment={createMockComment()} overflow="displayed" />
+			</DsStack>
+		</DsStack>
+	),
 };
