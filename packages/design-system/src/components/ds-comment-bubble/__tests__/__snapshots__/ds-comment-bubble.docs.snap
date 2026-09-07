@@ -1,0 +1,426 @@
+# DsCommentBubble docs snippets
+
+## Initial
+
+### Show code
+<DsCommentBubble
+  onActionRequiredChange={() => {}}
+  onClose={() => {}}
+  onSend={() => {}}
+  onValueChange={() => {}}
+  referenceTag="Resource allocation"
+  value=""
+/>
+
+### MCP manifest
+const Initial = () => <DsCommentBubble
+    referenceTag="Resource allocation"
+    onSend={fn()}
+    onClose={fn()}
+    onValueChange={fn()}
+    onActionRequiredChange={fn()}
+    value="" />;
+
+## Typing
+
+### Show code
+<DsCommentBubble
+  onActionRequiredChange={() => {}}
+  onClose={() => {}}
+  onSend={() => {}}
+  onValueChange={() => {}}
+  referenceTag="Resource allocation"
+  value="This is a new comment..."
+/>
+
+### MCP manifest
+const Typing = () => <DsCommentBubble
+    referenceTag="Resource allocation"
+    onSend={fn()}
+    onClose={fn()}
+    onValueChange={fn()}
+    onActionRequiredChange={fn()}
+    value="This is a new comment..." />;
+
+## Typing With Action Required
+
+### Show code
+<DsCommentBubble
+  actionRequired
+  onActionRequiredChange={() => {}}
+  onClose={() => {}}
+  onSend={() => {}}
+  onValueChange={() => {}}
+  referenceTag="Resource allocation"
+  value="This needs attention!"
+/>
+
+### MCP manifest
+const TypingWithActionRequired = () => <DsCommentBubble
+    referenceTag="Resource allocation"
+    onSend={fn()}
+    onClose={fn()}
+    onValueChange={fn()}
+    onActionRequiredChange={fn()}
+    value="This needs attention!"
+    actionRequired />;
+
+## Hidden Action Required
+
+### Show code
+<DsCommentBubble
+  hideActionRequired
+  onActionRequiredChange={() => {}}
+  onClose={() => {}}
+  onSend={() => {}}
+  onValueChange={() => {}}
+  referenceTag="Resource allocation"
+  value="This is a new comment..."
+/>
+
+### MCP manifest
+const HiddenActionRequired = () => <DsCommentBubble
+    referenceTag="Resource allocation"
+    onSend={fn()}
+    onClose={fn()}
+    onValueChange={fn()}
+    onActionRequiredChange={fn()}
+    value="This is a new comment..."
+    hideActionRequired />;
+
+## Thread
+
+### Show code
+<DsCommentBubble
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T09:00:00.000Z'),
+    id: 'comment-1',
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project.',
+        createdAt: new Date('2026-02-09T09:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      },
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=2',
+          id: 'user-2',
+          name: 'John D.'
+        },
+        content: 'That makes sense. I can help coordinate with the team to identify blockers.',
+        createdAt: new Date('2026-02-09T11:00:00.000Z'),
+        id: 'msg-2'
+      }
+    ],
+    numericId: 63
+  }}
+  currentUser={{
+    avatarSrc: 'https://i.pravatar.cc/40?img=1',
+    id: 'user-1',
+    name: 'Karen J.'
+  }}
+  onActionRequiredChange={() => {}}
+  onClose={() => {}}
+  onSend={() => {}}
+  onValueChange={() => {}}
+  referenceTag="Resource allocation"
+/>
+
+### MCP manifest
+const Thread = () => <DsCommentBubble
+    referenceTag="Resource allocation"
+    onSend={fn()}
+    onClose={fn()}
+    onValueChange={fn()}
+    onActionRequiredChange={fn()}
+    currentUser={{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' }}
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T09:00:00Z'),
+        isResolved: false,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project.',
+                createdAt: new Date('2026-02-09T09:00:00Z'),
+                isInitialMessage: true,
+            },
+            {
+                id: 'msg-2',
+                author: { id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
+                content: 'That makes sense. I can help coordinate with the team to identify blockers.',
+                createdAt: new Date('2026-02-09T11:00:00Z'),
+            },
+        ],
+    }} />;
+
+## Thread With Action Required
+
+### Show code
+<DsCommentBubble
+  actionRequired
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T09:00:00.000Z'),
+    id: 'comment-1',
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project.',
+        createdAt: new Date('2026-02-09T09:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      }
+    ],
+    numericId: 63
+  }}
+  currentUser={{
+    avatarSrc: 'https://i.pravatar.cc/40?img=1',
+    id: 'user-1',
+    name: 'Karen J.'
+  }}
+  onActionRequiredChange={() => {}}
+  onClose={() => {}}
+  onSend={() => {}}
+  onValueChange={() => {}}
+  referenceTag="Resource allocation"
+/>
+
+### MCP manifest
+const ThreadWithActionRequired = () => <DsCommentBubble
+    referenceTag="Resource allocation"
+    onSend={fn()}
+    onClose={fn()}
+    onValueChange={fn()}
+    onActionRequiredChange={fn()}
+    actionRequired
+    currentUser={{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' }}
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T09:00:00Z'),
+        isResolved: false,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project.',
+                createdAt: new Date('2026-02-09T09:00:00Z'),
+                isInitialMessage: true,
+            },
+        ],
+    }} />;
+
+# DsThreadItem docs snippets
+
+## Default
+
+### Show code
+<DsThreadItem
+  author={{
+    avatarSrc: 'https://i.pravatar.cc/150?img=1',
+    id: 'user-1',
+    name: 'Karen J.'
+  }}
+  canModify
+  content="This is a sample message in the comment thread."
+  createdAt={new Date("2026-02-09T09:00:00.000Z")}
+  id="msg-1"
+  isCommentAuthorMessage
+  onDelete={() => {}}
+  onEdit={() => {}}
+  onMarkUnread={() => {}}
+  onResolved={() => {}}
+/>
+
+### MCP manifest
+const Default = () => <DsThreadItem
+    id="msg-1"
+    author={{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/150?img=1' }}
+    content="This is a sample message in the comment thread."
+    createdAt={new Date('2026-02-09T09:00:00Z')}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} />;
+
+## Current User Message
+
+### Show code
+<DsThreadItem
+  author={{
+    avatarSrc: 'https://i.pravatar.cc/150?img=1',
+    id: 'user-1',
+    name: 'Karen J.'
+  }}
+  canModify
+  content="This is my reply, so it appears aligned to the right."
+  createdAt={new Date("2026-02-09T09:00:00.000Z")}
+  id="msg-2"
+  onDelete={() => {}}
+  onEdit={() => {}}
+  onMarkUnread={() => {}}
+  onResolved={() => {}}
+/>
+
+### MCP manifest
+const CurrentUserMessage = () => <DsThreadItem
+    id="msg-2"
+    author={{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/150?img=1' }}
+    content="This is my reply, so it appears aligned to the right."
+    createdAt={new Date('2026-02-09T09:00:00Z')}
+    isCommentAuthorMessage={false}
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} />;
+
+## Long Message
+
+### Show code
+<DsThreadItem
+  author={{
+    avatarSrc: 'https://i.pravatar.cc/150?img=1',
+    id: 'user-1',
+    name: 'Karen J.'
+  }}
+  canModify
+  content="I think we should consider adjusting the timeline to ensure we have enough resources for the development phase. This will help us maintain quality standards and meet all the project requirements."
+  createdAt={new Date("2026-02-09T09:00:00.000Z")}
+  id="msg-3"
+  isCommentAuthorMessage
+  onDelete={() => {}}
+  onEdit={() => {}}
+  onMarkUnread={() => {}}
+  onResolved={() => {}}
+/>
+
+### MCP manifest
+const LongMessage = () => <DsThreadItem
+    id="msg-3"
+    author={{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/150?img=1' }}
+    content="I think we should consider adjusting the timeline to ensure we have enough resources for the development phase. This will help us maintain quality standards and meet all the project requirements."
+    createdAt={new Date('2026-02-09T09:00:00Z')}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} />;
+
+## Multiline Message
+
+### Show code
+<DsThreadItem
+  author={{
+    avatarSrc: 'https://i.pravatar.cc/150?img=1',
+    id: 'user-1',
+    name: 'Karen J.'
+  }}
+  canModify
+  content="Line 1: First line of the message
+Line 2: Second line with more details
+Line 3: Final line"
+  createdAt={new Date("2026-02-09T09:00:00.000Z")}
+  id="msg-4"
+  isCommentAuthorMessage
+  onDelete={() => {}}
+  onEdit={() => {}}
+  onMarkUnread={() => {}}
+  onResolved={() => {}}
+/>
+
+### MCP manifest
+const MultilineMessage = () => <DsThreadItem
+    id="msg-4"
+    author={{ id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/150?img=1' }}
+    content="Line 1: First line of the message\nLine 2: Second line with more details\nLine 3: Final line"
+    createdAt={new Date('2026-02-09T09:00:00Z')}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} />;
+
+## No Avatar
+
+### Show code
+<DsThreadItem
+  author={{
+    id: 'user-2',
+    name: 'John Doe'
+  }}
+  canModify
+  content="Message from a user without an avatar."
+  createdAt={new Date("2026-02-09T09:00:00.000Z")}
+  id="msg-5"
+  isCommentAuthorMessage
+  onDelete={() => {}}
+  onEdit={() => {}}
+  onMarkUnread={() => {}}
+  onResolved={() => {}}
+/>
+
+### MCP manifest
+const NoAvatar = () => <DsThreadItem
+    id="msg-5"
+    author={{ id: 'user-2', name: 'John Doe' }}
+    content="Message from a user without an avatar."
+    createdAt={new Date('2026-02-09T09:00:00Z')}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} />;
+
+## Read Only
+
+### Show code
+{
+  render: () => <DsThreadItem id="msg-6" author={{
+    id: 'user-2',
+    name: 'John D.',
+    avatarSrc: 'https://i.pravatar.cc/150?img=2'
+  }} content="A reply the current viewer cannot modify." createdAt={new Date('2026-02-09T09:00:00Z')} isCommentAuthorMessage={false} />
+}
+
+### MCP manifest
+const ReadOnly = () => (
+    <DsThreadItem
+        id="msg-6"
+        author={{ id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/150?img=2' }}
+        content="A reply the current viewer cannot modify."
+        createdAt={new Date('2026-02-09T09:00:00Z')}
+        isCommentAuthorMessage={false}
+    />
+);

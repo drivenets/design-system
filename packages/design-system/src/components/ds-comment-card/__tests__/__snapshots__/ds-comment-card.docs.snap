@@ -1,0 +1,365 @@
+# DsCommentCard docs snippets
+
+## Default
+
+### Show code
+<DsCommentCard
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T10:00:00.000Z'),
+    id: 'comment-1',
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project before the next sprint.',
+        createdAt: new Date('2026-02-09T10:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      },
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=2',
+          id: 'user-2',
+          name: 'John D.'
+        },
+        content: 'Thanks for the feedback!',
+        createdAt: new Date('2026-02-09T12:00:00.000Z'),
+        id: 'msg-2'
+      }
+    ],
+    numericId: 63
+  }}
+  onClick={() => {}}
+  onDelete={() => {}}
+  onResolve={() => {}}
+/>
+
+### MCP manifest
+const Default = () => <DsCommentCard
+    onClick={fn()}
+    onResolve={fn()}
+    onDelete={fn()}
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T10:00:00Z'),
+        isResolved: false,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project before the next sprint.',
+                createdAt: new Date('2026-02-09T10:00:00Z'),
+                isInitialMessage: true,
+            },
+            {
+                id: 'msg-2',
+                author: { id: 'user-2', name: 'John D.', avatarSrc: 'https://i.pravatar.cc/40?img=2' },
+                content: 'Thanks for the feedback!',
+                createdAt: new Date('2026-02-09T12:00:00Z'),
+            },
+        ],
+    }} />;
+
+## Action Required
+
+### Show code
+<DsCommentCard
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T10:00:00.000Z'),
+    id: 'comment-1',
+    isActionRequired: true,
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project before the next sprint.',
+        createdAt: new Date('2026-02-09T10:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      }
+    ],
+    numericId: 63
+  }}
+  onClick={() => {}}
+  onDelete={() => {}}
+  onResolve={() => {}}
+/>
+
+### MCP manifest
+const ActionRequired = () => <DsCommentCard
+    onClick={fn()}
+    onResolve={fn()}
+    onDelete={fn()}
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T10:00:00Z'),
+        isResolved: false,
+        isActionRequired: true,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project before the next sprint.',
+                createdAt: new Date('2026-02-09T10:00:00Z'),
+                isInitialMessage: true,
+            },
+        ],
+    }} />;
+
+## Disabled
+
+### Show code
+<DsCommentCard
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T10:00:00.000Z'),
+    id: 'comment-1',
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project before the next sprint.',
+        createdAt: new Date('2026-02-09T10:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      }
+    ],
+    numericId: 63
+  }}
+  disabled
+  onClick={() => {}}
+  onDelete={() => {}}
+  onResolve={() => {}}
+/>
+
+### MCP manifest
+const Disabled = () => <DsCommentCard
+    onClick={fn()}
+    onResolve={fn()}
+    onDelete={fn()}
+    disabled
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T10:00:00Z'),
+        isResolved: false,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project before the next sprint.',
+                createdAt: new Date('2026-02-09T10:00:00Z'),
+                isInitialMessage: true,
+            },
+        ],
+    }} />;
+
+## Full Message
+
+### Show code
+<DsCommentCard
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T10:00:00.000Z'),
+    id: 'comment-1',
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project. Adjusting the timeline will ensure we have enough resources for the development phase and keep quality high.',
+        createdAt: new Date('2026-02-09T10:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      }
+    ],
+    numericId: 63
+  }}
+  onClick={() => {}}
+  onDelete={() => {}}
+  onResolve={() => {}}
+  overflow="displayed"
+/>
+
+### MCP manifest
+const FullMessage = () => <DsCommentCard
+    onClick={fn()}
+    onResolve={fn()}
+    onDelete={fn()}
+    overflow="displayed"
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T10:00:00Z'),
+        isResolved: false,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content:
+                    'We need to review the resource allocation for this project. Adjusting the timeline will ensure we have enough resources for the development phase and keep quality high.',
+                createdAt: new Date('2026-02-09T10:00:00Z'),
+                isInitialMessage: true,
+            },
+        ],
+    }} />;
+
+## With Reference Tag
+
+### Show code
+<DsCommentCard
+  comment={{
+    author: {
+      avatarSrc: 'https://i.pravatar.cc/40?img=1',
+      id: 'user-1',
+      name: 'Karen J.'
+    },
+    createdAt: new Date('2026-02-09T10:00:00.000Z'),
+    id: 'comment-1',
+    isResolved: false,
+    messages: [
+      {
+        author: {
+          avatarSrc: 'https://i.pravatar.cc/40?img=1',
+          id: 'user-1',
+          name: 'Karen J.'
+        },
+        content: 'We need to review the resource allocation for this project before the next sprint.',
+        createdAt: new Date('2026-02-09T10:00:00.000Z'),
+        id: 'msg-1',
+        isInitialMessage: true
+      }
+    ],
+    numericId: 63,
+    referenceTag: 'Resource allocation'
+  }}
+  onClick={() => {}}
+  onDelete={() => {}}
+  onResolve={() => {}}
+/>
+
+### MCP manifest
+const WithReferenceTag = () => <DsCommentCard
+    onClick={fn()}
+    onResolve={fn()}
+    onDelete={fn()}
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T10:00:00Z'),
+        isResolved: false,
+        referenceTag: 'Resource allocation',
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project before the next sprint.',
+                createdAt: new Date('2026-02-09T10:00:00Z'),
+                isInitialMessage: true,
+            },
+        ],
+    }} />;
+
+## Custom Formatter
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => <DsCommentCard {...args} comment={{
+    id: 'comment-1',
+    numericId: 63,
+    author: {
+      id: 'user-1',
+      name: 'Karen J.',
+      avatarSrc: 'https://i.pravatar.cc/40?img=1'
+    },
+    createdAt: new Date('2026-02-09T10:00:00Z'),
+    isResolved: false,
+    messages: [{
+      id: 'msg-1',
+      author: {
+        id: 'user-1',
+        name: 'Karen J.',
+        avatarSrc: 'https://i.pravatar.cc/40?img=1'
+      },
+      content: 'We need to review the resource allocation for this project.',
+      createdAt: new Date('2026-02-09T10:00:00Z'),
+      isInitialMessage: true
+    }]
+  }} formatTimestamp={date => date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })} />
+}
+
+### MCP manifest
+const CustomFormatter = () => <DsCommentCard
+    onClick={fn()}
+    onResolve={fn()}
+    onDelete={fn()}
+    comment={{
+        id: 'comment-1',
+        numericId: 63,
+        author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+        createdAt: new Date('2026-02-09T10:00:00Z'),
+        isResolved: false,
+        messages: [
+            {
+                id: 'msg-1',
+                author: { id: 'user-1', name: 'Karen J.', avatarSrc: 'https://i.pravatar.cc/40?img=1' },
+                content: 'We need to review the resource allocation for this project.',
+                createdAt: new Date('2026-02-09T10:00:00Z'),
+                isInitialMessage: true,
+            },
+        ],
+    }}
+    formatTimestamp={(date) =>
+        date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    } />;

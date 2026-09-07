@@ -1,0 +1,783 @@
+# DsTopBarNavigation docs snippets
+
+## Default
+
+### Show code
+{
+  decorators: [Story => withTanStackRouter(Story, '/automation/workflows/deploy-vienna-metro')],
+  render: () => <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" onAppsClick={() => {}} />
+            <DsTopBarNavigation.Breadcrumb>
+                <DsBreadcrumb items={[{
+        type: 'link',
+        label: 'Home',
+        href: '/',
+        icon: 'home'
+      }, {
+        type: 'link',
+        label: 'Automation',
+        href: '/automation',
+        icon: 'precision_manufacturing'
+      }, {
+        type: 'link',
+        label: 'Workflows',
+        href: '/automation/workflows',
+        icon: 'account_tree'
+      }, {
+        type: 'link',
+        label: 'Deploy Vienna Metro',
+        href: '/automation/workflows/deploy-vienna-metro'
+      }]} />
+            </DsTopBarNavigation.Breadcrumb>
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                <DsBotButton />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Separator />
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+}
+
+### MCP manifest
+const Default = () => (
+    <DsTopBarNavigation>
+        <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" onAppsClick={() => {}} />
+        <DsTopBarNavigation.Breadcrumb>
+            <DsBreadcrumb
+                items={[
+                    { type: 'link', label: 'Home', href: '/', icon: 'home' },
+                    { type: 'link', label: 'Automation', href: '/automation', icon: 'precision_manufacturing' },
+                    { type: 'link', label: 'Workflows', href: '/automation/workflows', icon: 'account_tree' },
+                    {
+                        type: 'link',
+                        label: 'Deploy Vienna Metro',
+                        href: '/automation/workflows/deploy-vienna-metro',
+                    },
+                ]}
+            />
+        </DsTopBarNavigation.Breadcrumb>
+        <DsTopBarNavigation.Center />
+        <DsTopBarNavigation.Actions>
+            <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+            <DsBotButton />
+            <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                <DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+                <DsDropdownMenu.Separator />
+                <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+            </DsTopBarNavigation.UserMenu>
+        </DsTopBarNavigation.Actions>
+    </DsTopBarNavigation>
+);
+
+## Without Apps Button
+
+### Show code
+{
+  decorators: [Story => withTanStackRouter(Story, '/automation/workflows')],
+  render: () => <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" />
+            <DsTopBarNavigation.Breadcrumb>
+                <DsBreadcrumb items={[{
+        type: 'link',
+        label: 'Home',
+        href: '/',
+        icon: 'home'
+      }, {
+        type: 'link',
+        label: 'Automation',
+        href: '/automation',
+        icon: 'precision_manufacturing'
+      }, {
+        type: 'link',
+        label: 'Workflows',
+        href: '/automation/workflows',
+        icon: 'account_tree'
+      }]} />
+            </DsTopBarNavigation.Breadcrumb>
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={3} onClick={() => {}} />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+}
+
+### MCP manifest
+const WithoutAppsButton = () => (
+    <DsTopBarNavigation>
+        <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" />
+        <DsTopBarNavigation.Breadcrumb>
+            <DsBreadcrumb
+                items={[
+                    { type: 'link', label: 'Home', href: '/', icon: 'home' },
+                    { type: 'link', label: 'Automation', href: '/automation', icon: 'precision_manufacturing' },
+                    { type: 'link', label: 'Workflows', href: '/automation/workflows', icon: 'account_tree' },
+                ]}
+            />
+        </DsTopBarNavigation.Breadcrumb>
+        <DsTopBarNavigation.Center />
+        <DsTopBarNavigation.Actions>
+            <DsTopBarNavigation.Notifications count={3} onClick={() => {}} />
+            <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+            </DsTopBarNavigation.UserMenu>
+        </DsTopBarNavigation.Actions>
+    </DsTopBarNavigation>
+);
+
+## Notification Counts
+
+### Show code
+{
+  render: () => <>
+            <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" />
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsTopBarNavigation.Notifications count={0} onClick={() => {}} />
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>
+            <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" />
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>
+            <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" />
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsTopBarNavigation.Notifications count={128} onClick={() => {}} />
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>
+        </>
+}
+
+### MCP manifest
+const NotificationCounts = () => (
+    <>
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" />
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={0} onClick={() => {}} />
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" />
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" />
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={128} onClick={() => {}} />
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+    </>
+);
+
+## With Notifications Menu
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [unread, setUnread] = useState<{
+      id: string;
+      icon: IconType;
+      label: string;
+      time: string;
+    }[]>([{
+      id: 'cluster-07',
+      icon: 'error',
+      label: 'Cluster 07 aggregation link down',
+      time: '2 min ago'
+    }, {
+      id: 'deploy-vienna',
+      icon: 'account_tree',
+      label: 'Deploy Vienna Metro completed',
+      time: '18 min ago'
+    }, {
+      id: 'image-4-2-1',
+      icon: 'download',
+      label: 'Software image 4.2.1 available',
+      time: '1 hour ago'
+    }]);
+    return <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" onAppsClick={() => {}} />
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsDropdownMenu.Root positioning={{
+          placement: 'bottom-end'
+        }} onSelect={value => setUnread(current => current.filter(item => item.id !== value))}>
+                        <DsDropdownMenu.Trigger asChild>
+                            <DsTopBarNavigation.Notifications count={unread.length} />
+                        </DsDropdownMenu.Trigger>
+                        <DsDropdownMenu.Content>
+                            <DsDropdownMenu.Header>
+                                <DsTypography variant="body-sm-md">Notifications</DsTypography>
+                            </DsDropdownMenu.Header>
+                            {unread.length > 0 ? unread.map(item => <DsDropdownMenu.Item key={item.id} value={item.id}>
+                                        <DsIcon icon={item.icon} />
+                                        <span>{item.label}</span>
+                                        <DsTypography variant="body-xs-reg">{item.time}</DsTypography>
+                                    </DsDropdownMenu.Item>) : <DsDropdownMenu.Item value="caught-up" disabled>
+                                    No unread notifications
+                                </DsDropdownMenu.Item>}
+                            <DsDropdownMenu.Actions>
+                                <DsButtonV3 variant="tertiary" size="small" onClick={() => setUnread([])}>
+                                    Mark all as read
+                                </DsButtonV3>
+                            </DsDropdownMenu.Actions>
+                        </DsDropdownMenu.Content>
+                    </DsDropdownMenu.Root>
+                    <DsBotButton />
+                    <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                        <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                        <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                    </DsTopBarNavigation.UserMenu>
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>;
+  }
+}
+
+### MCP manifest
+const WithNotificationsMenu = function Render() {
+    const [unread, setUnread] = useState<{ id: string; icon: IconType; label: string; time: string }[]>([
+        { id: 'cluster-07', icon: 'error', label: 'Cluster 07 aggregation link down', time: '2 min ago' },
+        {
+            id: 'deploy-vienna',
+            icon: 'account_tree',
+            label: 'Deploy Vienna Metro completed',
+            time: '18 min ago',
+        },
+        { id: 'image-4-2-1', icon: 'download', label: 'Software image 4.2.1 available', time: '1 hour ago' },
+    ]);
+
+    return (
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" onAppsClick={() => {}} />
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsDropdownMenu.Root
+                    positioning={{ placement: 'bottom-end' }}
+                    onSelect={(value) => setUnread((current) => current.filter((item) => item.id !== value))}
+                >
+                    <DsDropdownMenu.Trigger asChild>
+                        <DsTopBarNavigation.Notifications count={unread.length} />
+                    </DsDropdownMenu.Trigger>
+                    <DsDropdownMenu.Content>
+                        <DsDropdownMenu.Header>
+                            <DsTypography variant="body-sm-md">Notifications</DsTypography>
+                        </DsDropdownMenu.Header>
+                        {unread.length > 0 ? (
+                            unread.map((item) => (
+                                <DsDropdownMenu.Item key={item.id} value={item.id}>
+                                    <DsIcon icon={item.icon} />
+                                    <span>{item.label}</span>
+                                    <DsTypography variant="body-xs-reg">{item.time}</DsTypography>
+                                </DsDropdownMenu.Item>
+                            ))
+                        ) : (
+                            <DsDropdownMenu.Item value="caught-up" disabled>
+                                No unread notifications
+                            </DsDropdownMenu.Item>
+                        )}
+                        <DsDropdownMenu.Actions>
+                            <DsButtonV3 variant="tertiary" size="small" onClick={() => setUnread([])}>
+                                Mark all as read
+                            </DsButtonV3>
+                        </DsDropdownMenu.Actions>
+                    </DsDropdownMenu.Content>
+                </DsDropdownMenu.Root>
+                <DsBotButton />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+    );
+};
+
+## Long Breadcrumb
+
+### Show code
+{
+  decorators: [Story => withTanStackRouter(Story, '/network/europe/vienna-metro-aggregation/cluster-07/router-a-edge-01')],
+  render: () => <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" onAppsClick={() => {}} />
+            <DsTopBarNavigation.Breadcrumb>
+                <DsBreadcrumb items={[{
+        type: 'link',
+        label: 'Home',
+        href: '/',
+        icon: 'home'
+      }, {
+        type: 'link',
+        label: 'Network Visibility',
+        href: '/network',
+        icon: 'lan'
+      }, {
+        type: 'link',
+        label: 'Europe Region',
+        href: '/network/europe',
+        icon: 'location_on'
+      }, {
+        type: 'link',
+        label: 'Vienna Metro Aggregation Site',
+        href: '/network/europe/vienna-metro-aggregation'
+      }, {
+        type: 'link',
+        label: 'Cluster 07 — Aggregation Fabric',
+        href: '/network/europe/vienna-metro-aggregation/cluster-07'
+      }, {
+        type: 'link',
+        label: 'Router A Edge 01',
+        href: '/network/europe/vienna-metro-aggregation/cluster-07/router-a-edge-01',
+        icon: 'device_hub'
+      }]} />
+            </DsTopBarNavigation.Breadcrumb>
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                <DsBotButton />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Separator />
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+}
+
+### MCP manifest
+const LongBreadcrumb = () => (
+    <DsTopBarNavigation>
+        <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" onAppsClick={() => {}} />
+        <DsTopBarNavigation.Breadcrumb>
+            <DsBreadcrumb
+                items={[
+                    { type: 'link', label: 'Home', href: '/', icon: 'home' },
+                    { type: 'link', label: 'Network Visibility', href: '/network', icon: 'lan' },
+                    { type: 'link', label: 'Europe Region', href: '/network/europe', icon: 'location_on' },
+                    {
+                        type: 'link',
+                        label: 'Vienna Metro Aggregation Site',
+                        href: '/network/europe/vienna-metro-aggregation',
+                    },
+                    {
+                        type: 'link',
+                        label: 'Cluster 07 — Aggregation Fabric',
+                        href: '/network/europe/vienna-metro-aggregation/cluster-07',
+                    },
+                    {
+                        type: 'link',
+                        label: 'Router A Edge 01',
+                        href: '/network/europe/vienna-metro-aggregation/cluster-07/router-a-edge-01',
+                        icon: 'device_hub',
+                    },
+                ]}
+            />
+        </DsTopBarNavigation.Breadcrumb>
+        <DsTopBarNavigation.Center />
+        <DsTopBarNavigation.Actions>
+            <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+            <DsBotButton />
+            <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                <DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+                <DsDropdownMenu.Separator />
+                <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+            </DsTopBarNavigation.UserMenu>
+        </DsTopBarNavigation.Actions>
+    </DsTopBarNavigation>
+);
+
+## User Menu Open
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [open, setOpen] = useState(true);
+    return <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" onAppsClick={() => {}} />
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                    <DsTopBarNavigation.UserMenu name="Dana Brooks" open={open} onOpenChange={setOpen}>
+                        <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                        <DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+                        <DsDropdownMenu.Separator />
+                        <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                    </DsTopBarNavigation.UserMenu>
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>;
+  }
+}
+
+### MCP manifest
+const UserMenuOpen = function Render() {
+    const [open, setOpen] = useState(true);
+
+    return (
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" onAppsClick={() => {}} />
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks" open={open} onOpenChange={setOpen}>
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="settings">Settings</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Separator />
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+    );
+};
+
+## With Main Menu
+
+### Show code
+{
+  decorators: [Story => withTanStackRouter(Story, '/')],
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [selectedAppId, setSelectedAppId] = useState('network-view');
+    const apps = [{
+      id: 'my-dashboard',
+      label: 'My dashboard',
+      icon: MyDashboardIcon
+    }, {
+      id: 'network-view',
+      label: 'Network view',
+      icon: NetworkViewIcon
+    }, {
+      id: 'inventory',
+      label: 'Inventory',
+      icon: InventoryIcon
+    }, {
+      id: 'network-planning',
+      label: 'Network planning',
+      icon: NetworkPlanningIcon
+    }, {
+      id: 'configurations',
+      label: 'Configurations',
+      icon: ConfigurationsIcon
+    }, {
+      id: 'workflow-automation',
+      label: 'Workflow automation',
+      icon: WorkflowAutomationIcon
+    }, {
+      id: 'software-images',
+      label: 'Software images',
+      icon: SoftwareImagesIcon
+    }, {
+      id: 'tasks',
+      label: 'Tasks',
+      icon: TasksIcon
+    }, {
+      id: 'backup-files',
+      label: 'Backup files',
+      icon: BackupFilesIcon
+    }, {
+      id: 'ai-ops',
+      label: 'AI-Ops',
+      icon: AiOpsIcon
+    }, {
+      id: 'break-glass',
+      label: 'Break glass',
+      icon: BreakGlassIcon
+    }, {
+      id: 'administration',
+      label: 'Administration',
+      icon: AdministrationIcon
+    }, {
+      id: 'observability',
+      label: 'Observability',
+      icon: ObservabilityIcon
+    }, {
+      id: 'technician',
+      label: 'Technician',
+      icon: TechnicianIcon
+    }];
+    return <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" href="/" appsMenu={<DsMainMenu trigger={<DsButtonV3 variant="tertiary" color="light" size="small" icon="apps" aria-label="Switch application" />} items={apps} utilityLinks={[{
+        id: 'help-support',
+        label: 'Help & Support',
+        icon: 'contact_support'
+      }, {
+        id: 'knowledge-center',
+        label: 'Knowledge Center',
+        icon: 'local_library'
+      }]} selectedId={selectedAppId} onItemSelect={setSelectedAppId} />} />
+                <DsTopBarNavigation.Breadcrumb>
+                    <DsBreadcrumb items={[{
+          type: 'link',
+          label: 'Home',
+          href: '/',
+          icon: 'home'
+        }, {
+          type: 'link',
+          label: apps.find(app => app.id === selectedAppId)?.label ?? '',
+          href: '/'
+        }]} />
+                </DsTopBarNavigation.Breadcrumb>
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                    <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                        <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                        <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                    </DsTopBarNavigation.UserMenu>
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>;
+  }
+}
+
+### MCP manifest
+const WithMainMenu = function Render() {
+    const [selectedAppId, setSelectedAppId] = useState('network-view');
+
+    const apps = [
+        { id: 'my-dashboard', label: 'My dashboard', icon: MyDashboardIcon },
+        { id: 'network-view', label: 'Network view', icon: NetworkViewIcon },
+        { id: 'inventory', label: 'Inventory', icon: InventoryIcon },
+        { id: 'network-planning', label: 'Network planning', icon: NetworkPlanningIcon },
+        { id: 'configurations', label: 'Configurations', icon: ConfigurationsIcon },
+        { id: 'workflow-automation', label: 'Workflow automation', icon: WorkflowAutomationIcon },
+        { id: 'software-images', label: 'Software images', icon: SoftwareImagesIcon },
+        { id: 'tasks', label: 'Tasks', icon: TasksIcon },
+        { id: 'backup-files', label: 'Backup files', icon: BackupFilesIcon },
+        { id: 'ai-ops', label: 'AI-Ops', icon: AiOpsIcon },
+        { id: 'break-glass', label: 'Break glass', icon: BreakGlassIcon },
+        { id: 'administration', label: 'Administration', icon: AdministrationIcon },
+        { id: 'observability', label: 'Observability', icon: ObservabilityIcon },
+        { id: 'technician', label: 'Technician', icon: TechnicianIcon },
+    ];
+
+    return (
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo
+                logo={<DapLogoMark />}
+                wordmark="DAP"
+                href="/"
+                appsMenu={
+                    <DsMainMenu
+                        trigger={
+                            <DsButtonV3
+                                variant="tertiary"
+                                color="light"
+                                size="small"
+                                icon="apps"
+                                aria-label="Switch application"
+                            />
+                        }
+                        items={apps}
+                        utilityLinks={[
+                            { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+                            { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+                        ]}
+                        selectedId={selectedAppId}
+                        onItemSelect={setSelectedAppId}
+                    />
+                }
+            />
+            <DsTopBarNavigation.Breadcrumb>
+                <DsBreadcrumb
+                    items={[
+                        { type: 'link', label: 'Home', href: '/', icon: 'home' },
+                        {
+                            type: 'link',
+                            label: apps.find((app) => app.id === selectedAppId)?.label ?? '',
+                            href: '/',
+                        },
+                    ]}
+                />
+            </DsTopBarNavigation.Breadcrumb>
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+    );
+};
+
+## With Main Menu Expanded
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [open, setOpen] = useState(true);
+    return <DsTopBarNavigation>
+                <DsTopBarNavigation.Logo logo={<DapLogoMark />} wordmark="DAP" appsMenu={<DsMainMenu variant="expanded" open={open} onOpenChange={setOpen} trigger={<DsButtonV3 variant="tertiary" color="light" size="small" icon="apps" aria-label="Switch application" />} items={[{
+        id: 'my-dashboard',
+        label: 'My dashboard',
+        icon: MyDashboardIcon,
+        description: 'Track and complete your personal or assigned network tasks.'
+      }, {
+        id: 'network-view',
+        label: 'Network view',
+        icon: NetworkViewIcon,
+        description: 'Monitor live topology, health, and traffic across the fabric.'
+      }, {
+        id: 'inventory',
+        label: 'Inventory',
+        icon: InventoryIcon,
+        description: 'Browse every managed device, port, and license in one place.'
+      }, {
+        id: 'ai-ops',
+        label: 'AI-Ops',
+        icon: AiOpsIcon,
+        description: 'Automated anomaly detection and remediation across the fabric.',
+        state: 'comingSoon'
+      }, {
+        id: 'break-glass',
+        label: 'Break glass',
+        icon: BreakGlassIcon,
+        description: 'Emergency privileged access — restricted to authorized operators.',
+        state: 'disabled'
+      }]} utilityLinks={[{
+        id: 'help-support',
+        label: 'Help & Support',
+        icon: 'contact_support'
+      }, {
+        id: 'knowledge-center',
+        label: 'Knowledge Center',
+        icon: 'local_library'
+      }]} selectedId="my-dashboard" />} />
+                <DsTopBarNavigation.Center />
+                <DsTopBarNavigation.Actions>
+                    <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                    <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                        <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                        <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                    </DsTopBarNavigation.UserMenu>
+                </DsTopBarNavigation.Actions>
+            </DsTopBarNavigation>;
+  }
+}
+
+### MCP manifest
+const WithMainMenuExpanded = function Render() {
+    const [open, setOpen] = useState(true);
+
+    return (
+        <DsTopBarNavigation>
+            <DsTopBarNavigation.Logo
+                logo={<DapLogoMark />}
+                wordmark="DAP"
+                appsMenu={
+                    <DsMainMenu
+                        variant="expanded"
+                        open={open}
+                        onOpenChange={setOpen}
+                        trigger={
+                            <DsButtonV3
+                                variant="tertiary"
+                                color="light"
+                                size="small"
+                                icon="apps"
+                                aria-label="Switch application"
+                            />
+                        }
+                        items={[
+                            {
+                                id: 'my-dashboard',
+                                label: 'My dashboard',
+                                icon: MyDashboardIcon,
+                                description: 'Track and complete your personal or assigned network tasks.',
+                            },
+                            {
+                                id: 'network-view',
+                                label: 'Network view',
+                                icon: NetworkViewIcon,
+                                description: 'Monitor live topology, health, and traffic across the fabric.',
+                            },
+                            {
+                                id: 'inventory',
+                                label: 'Inventory',
+                                icon: InventoryIcon,
+                                description: 'Browse every managed device, port, and license in one place.',
+                            },
+                            {
+                                id: 'ai-ops',
+                                label: 'AI-Ops',
+                                icon: AiOpsIcon,
+                                description: 'Automated anomaly detection and remediation across the fabric.',
+                                state: 'comingSoon',
+                            },
+                            {
+                                id: 'break-glass',
+                                label: 'Break glass',
+                                icon: BreakGlassIcon,
+                                description: 'Emergency privileged access — restricted to authorized operators.',
+                                state: 'disabled',
+                            },
+                        ]}
+                        utilityLinks={[
+                            { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+                            { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+                        ]}
+                        selectedId="my-dashboard"
+                    />
+                }
+            />
+            <DsTopBarNavigation.Center />
+            <DsTopBarNavigation.Actions>
+                <DsTopBarNavigation.Notifications count={13} onClick={() => {}} />
+                <DsTopBarNavigation.UserMenu name="Dana Brooks">
+                    <DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+                    <DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
+                </DsTopBarNavigation.UserMenu>
+            </DsTopBarNavigation.Actions>
+        </DsTopBarNavigation>
+    );
+};
