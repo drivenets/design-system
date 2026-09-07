@@ -1,0 +1,81 @@
+# DsBotButton docs snippets
+
+## Default
+
+### Show code
+<DsBotButton
+/>
+
+### MCP manifest
+const Default = () => <DsBotButton selected={false} loading={false} disabled={false} />;
+
+## Selected
+
+### Show code
+<DsBotButton selected />
+
+### MCP manifest
+const Selected = () => <DsBotButton selected />;
+
+## Loading
+
+### Show code
+<DsBotButton loading />
+
+### MCP manifest
+const Loading = () => <DsBotButton loading />;
+
+## Selected Loading
+
+### Show code
+<DsBotButton
+  loading
+  selected
+/>
+
+### MCP manifest
+const SelectedLoading = () => <DsBotButton selected loading />;
+
+## Disabled
+
+### Show code
+<DsBotButton disabled />
+
+### MCP manifest
+const Disabled = () => <DsBotButton disabled />;
+
+## Localized
+
+### Show code
+<DsBotButton
+ locale={{
+   label: 'NetGen (DE)'
+ }}
+/>
+
+### MCP manifest
+const Localized = () => <DsBotButton locale={{ label: 'NetGen (DE)' }} />;
+
+## Toggle
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [open, setOpen] = useState(false);
+    return <DsBotButton selected={open} onClick={() => setOpen(wasOpen => !wasOpen)} />;
+  }
+}
+
+### MCP manifest
+const Toggle = function Render() {
+    const [open, setOpen] = useState(false);
+
+    return <DsBotButton selected={open} onClick={() => setOpen((wasOpen) => !wasOpen)} />;
+};
