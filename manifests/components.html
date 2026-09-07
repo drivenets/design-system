@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/96 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">58/96 infos</a><span class="filter-pill ok" aria-disabled="true">590 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/96 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">58/96 infos</a><span class="filter-pill ok" aria-disabled="true">548 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -4229,7 +4229,7 @@ style?: CSSProperties</code></pre>
       <div class="badges">
         <label for="c-15-components-comments-commentbubble-props" class="badge ok as-toggle">23 prop types</label>
         <label for="c-15-components-comments-commentbubble-info" class="badge info as-toggle">1 info</label>
-        <label for="c-15-components-comments-commentbubble-stories" class="badge ok as-toggle">20 stories</label>
+        <label for="c-15-components-comments-commentbubble-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -4401,7 +4401,7 @@ value?: string = &#39;&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCommentBubble } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsCommentBubble, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -4411,23 +4411,13 @@ value?: string = &#39;&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Empty bubble for composing a new comment. The send button stays disabled until the viewer types.</div>
               <pre><code>const Initial = () =&gt; &lt;DsCommentBubble
     referenceTag=&quot;Resource allocation&quot;
     onSend={fn()}
     onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
     onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
+    onActionRequiredChange={fn()}
     value=&quot;&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -4436,23 +4426,13 @@ value?: string = &#39;&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">As the viewer types, the bubble expands and reveals the action-required checkbox and an enabled send button.</div>
               <pre><code>const Typing = () =&gt; &lt;DsCommentBubble
     referenceTag=&quot;Resource allocation&quot;
     onSend={fn()}
     onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
     onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
+    onActionRequiredChange={fn()}
     value=&quot;This is a new comment...&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -4461,49 +4441,29 @@ value?: string = &#39;&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">The composer with the action-required flag checked.</div>
               <pre><code>const TypingWithActionRequired = () =&gt; &lt;DsCommentBubble
     referenceTag=&quot;Resource allocation&quot;
     onSend={fn()}
     onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
     onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
+    onActionRequiredChange={fn()}
     value=&quot;This needs attention!&quot;
     actionRequired /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Typing Without Action Required</span>
+                <span class="ex-name">Hidden Action Required</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const TypingWithoutActionRequired = () =&gt; &lt;DsCommentBubble
+              <div class="hint">Hide the action-required affordance entirely with `hideActionRequired` when the flow does not use it.</div>
+              <pre><code>const HiddenActionRequired = () =&gt; &lt;DsCommentBubble
     referenceTag=&quot;Resource allocation&quot;
     onSend={fn()}
     onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
     onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
+    onActionRequiredChange={fn()}
     value=&quot;This is a new comment...&quot;
     hideActionRequired /&gt;;</code></pre>
             </div>
@@ -4513,25 +4473,36 @@ value?: string = &#39;&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Existing thread view. Pass a `comment` and the `currentUser` to render messages with a reply composer.</div>
               <pre><code>const Thread = () =&gt; &lt;DsCommentBubble
     referenceTag=&quot;Resource allocation&quot;
     onSend={fn()}
     onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
     onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser} /&gt;;</code></pre>
+    onActionRequiredChange={fn()}
+    currentUser={{ id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; }}
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T09:00:00Z&#39;),
+        isResolved: false,
+        messages: [
+            {
+                id: &#39;msg-1&#39;,
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project.&#39;,
+                createdAt: new Date(&#39;2026-02-09T09:00:00Z&#39;),
+                isInitialMessage: true,
+            },
+            {
+                id: &#39;msg-2&#39;,
+                author: { id: &#39;user-2&#39;, name: &#39;John D.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=2&#39; },
+                content: &#39;That makes sense. I can help coordinate with the team to identify blockers.&#39;,
+                createdAt: new Date(&#39;2026-02-09T11:00:00Z&#39;),
+            },
+        ],
+    }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -4539,543 +4510,31 @@ value?: string = &#39;&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">A thread flagged as requiring action shows the action-required treatment in the header.</div>
               <pre><code>const ThreadWithActionRequired = () =&gt; &lt;DsCommentBubble
     referenceTag=&quot;Resource allocation&quot;
     onSend={fn()}
     onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
     onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
+    onActionRequiredChange={fn()}
     actionRequired
-    currentUser={currentUser} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Thread Without Action Required</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ThreadWithoutActionRequired = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser}
-    hideActionRequired
-    actionRequired /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Send Button Click</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SendButtonClick = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    value=&quot;Test message to send&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Send With Enter Key</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SendWithEnterKey = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    value=&quot;Enter key message&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Send Disabled When Empty</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SendDisabledWhenEmpty = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    value=&quot;&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Thread Send Disabled When Empty</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ThreadSendDisabledWhenEmpty = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser}
-    value=&quot;&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Thread Send Enabled</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ThreadSendEnabled = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser}
-    value=&quot;A reply&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Thread Close Button</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ThreadCloseButton = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Thread Resolve Button</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ThreadResolveButton = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Textarea Value Change</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const TextareaValueChange = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser}
-    value=&quot;&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Initial With Reference Tag</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const InitialWithReferenceTag = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;My tag&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Thread With Reference Tag</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ThreadWithReferenceTag = () =&gt; &lt;DsCommentBubble
-    referenceTag=&quot;Resource allocation&quot;
-    onSend={fn()}
-    onClose={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    onActionRequiredChange={fn()}
-    onValueChange={fn()}
-    onEditMessage={fn()}
-    onDeleteMessage={fn()}
-    onMessageMarkUnread={fn()}
-    onMessageResolved={fn()}
-    comment={createMockComment()}
-    currentUser={currentUser} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Full Interactive Flow</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const FullInteractiveFlow = function FullFlowStory() {
-    const [value, setValue] = useState(&#39;&#39;);
-    const [actionRequired, setActionRequired] = useState(false);
-    const [comment, setComment] = useState&lt;CommentData | undefined&gt;(undefined);
-
-    const handleSend = (content: string, isActionRequired: boolean) =&gt; {
-        if (!comment) {
-            const newComment: CommentData = {
-                id: &#39;comment-1&#39;,
-                numericId: 63,
-                author: currentUser,
-                createdAt: new Date(),
-                isResolved: false,
-                messages: [
-                    {
-                        id: &#39;msg-1&#39;,
-                        author: currentUser,
-                        content,
-                        createdAt: new Date(),
-                        isInitialMessage: true,
-                    },
-                ],
-            };
-            setComment(newComment);
-            setActionRequired(isActionRequired);
-        } else {
-            const newMessage = {
-                id: `msg-${String(Date.now())}`,
-                author: currentUser,
-                content,
-                createdAt: new Date(),
-            };
-
-            setComment((prev) =&gt; {
-                if (!prev) {
-                    return prev;
-                }
-                return {
-                    ...prev,
-                    messages: [...prev.messages, newMessage],
-                };
-            });
-        }
-        setValue(&#39;&#39;);
-    };
-
-    const handleEditMessage = (messageId: string, newContent: string) =&gt; {
-        if (!comment) {
-            return;
-        }
-        setComment((prev) =&gt; {
-            if (!prev) {
-                return prev;
-            }
-            return {
-                ...prev,
-                messages: prev.messages.map((msg) =&gt;
-                    msg.id === messageId ? { ...msg, content: newContent } : msg,
-                ),
-            };
-        });
-    };
-
-    const handleDeleteMessage = (messageId: string) =&gt; {
-        if (!comment) {
-            return;
-        }
-        setComment((prev) =&gt; {
-            if (!prev) {
-                return prev;
-            }
-            return {
-                ...prev,
-                messages: prev.messages.filter((msg) =&gt; msg.id !== messageId),
-            };
-        });
-    };
-
-    const handleClose = () =&gt; {
-        setComment(undefined);
-        setValue(&#39;&#39;);
-        setActionRequired(false);
-    };
-
-    return (
-        &lt;div className={styles.interactiveContainer}&gt;
-            &lt;p className={styles.instructions}&gt;
-                &lt;strong&gt;Full Flow Test:&lt;/strong&gt;
-                &lt;br /&gt;
-                1. Start by typing in the bubble - it will expand and show the footer
-                &lt;br /&gt;
-                2. Send your first comment to create a thread
-                &lt;br /&gt;
-                3. Add more replies to see the thread grow
-                &lt;br /&gt;
-                4. Close to reset and start over
-            &lt;/p&gt;
-            &lt;DsCommentBubble
-                comment={comment}
-                currentUser={currentUser}
-                referenceTag=&quot;Resource allocation&quot;
-                value={value}
-                onValueChange={setValue}
-                actionRequired={actionRequired}
-                onActionRequiredChange={setActionRequired}
-                onSend={handleSend}
-                onEditMessage={handleEditMessage}
-                onDeleteMessage={handleDeleteMessage}
-                onMessageMarkUnread={(id) =&gt; console.log(&#39;Mark unread message:&#39;, id)}
-                onMessageResolved={(id) =&gt; console.log(&#39;Resolved message:&#39;, id)}
-                onClose={handleClose}
-                onResolve={() =&gt; console.log(&#39;Resolve clicked&#39;)}
-                onToggleActionRequired={() =&gt; console.log(&#39;Toggle action required&#39;)}
-                onForward={() =&gt; console.log(&#39;Forward&#39;)}
-                onMarkUnread={() =&gt; console.log(&#39;Mark unread&#39;)}
-                onCopyLink={() =&gt; console.log(&#39;Copy link&#39;)}
-                onDelete={() =&gt; console.log(&#39;Delete&#39;)}
-            /&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Interactive Thread</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const InteractiveThread = function InteractiveThreadStory() {
-    const [value, setValue] = useState(&#39;&#39;);
-    const [actionRequired, setActionRequired] = useState(false);
-    const [comment, setComment] = useState(createMockComment());
-
-    const handleSend = (content: string) =&gt; {
-        const newMessage = {
-            id: `msg-${String(Date.now())}`,
-            author: currentUser,
-            content,
-            createdAt: new Date(),
-        };
-
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: [...prev.messages, newMessage],
-        }));
-        setValue(&#39;&#39;);
-    };
-
-    const handleEditMessage = (messageId: string, newContent: string) =&gt; {
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: prev.messages.map((msg) =&gt; (msg.id === messageId ? { ...msg, content: newContent } : msg)),
-        }));
-    };
-
-    const handleDeleteMessage = (messageId: string) =&gt; {
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: prev.messages.filter((msg) =&gt; msg.id !== messageId),
-        }));
-    };
-
-    return (
-        &lt;DsCommentBubble
-            comment={comment}
-            currentUser={currentUser}
-            referenceTag=&quot;Resource allocation&quot;
-            value={value}
-            onValueChange={setValue}
-            actionRequired={actionRequired}
-            onActionRequiredChange={setActionRequired}
-            onSend={handleSend}
-            onEditMessage={handleEditMessage}
-            onDeleteMessage={handleDeleteMessage}
-            onMessageMarkUnread={(id) =&gt; console.log(&#39;Mark unread message:&#39;, id)}
-            onMessageResolved={(id) =&gt; console.log(&#39;Resolved message:&#39;, id)}
-            onClose={() =&gt; console.log(&#39;Close clicked&#39;)}
-            onResolve={() =&gt; console.log(&#39;Resolve clicked&#39;)}
-            onToggleActionRequired={() =&gt; console.log(&#39;Toggle action required&#39;)}
-            onForward={() =&gt; console.log(&#39;Forward&#39;)}
-            onMarkUnread={() =&gt; console.log(&#39;Mark unread&#39;)}
-            onCopyLink={() =&gt; console.log(&#39;Copy link&#39;)}
-            onDelete={() =&gt; console.log(&#39;Delete&#39;)}
-        /&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">All Types</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const AllTypes = () =&gt; (
-    &lt;div className={styles.grid}&gt;
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Initial&lt;/h4&gt;
-            &lt;DsCommentBubble /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Typing&lt;/h4&gt;
-            &lt;DsCommentBubble value=&quot;This is a comment...&quot; /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Typing (Action Required)&lt;/h4&gt;
-            &lt;DsCommentBubble value=&quot;This needs attention!&quot; actionRequired /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Thread&lt;/h4&gt;
-            &lt;DsCommentBubble comment={createMockComment()} currentUser={currentUser} /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Thread (Action Required)&lt;/h4&gt;
-            &lt;DsCommentBubble comment={createMockComment()} currentUser={currentUser} actionRequired /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
+    currentUser={{ id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; }}
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T09:00:00Z&#39;),
+        isResolved: false,
+        messages: [
+            {
+                id: &#39;msg-1&#39;,
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project.&#39;,
+                createdAt: new Date(&#39;2026-02-09T09:00:00Z&#39;),
+                isInitialMessage: true,
+            },
+        ],
+    }} /&gt;;</code></pre>
             </div>
         </div>
     
@@ -5096,7 +4555,7 @@ value?: string = &#39;&#39;</code></pre>
       <div class="badges">
         <label for="c-16-components-comments-commentcard-props" class="badge ok as-toggle">14 prop types</label>
         <label for="c-16-components-comments-commentcard-info" class="badge info as-toggle">1 info</label>
-        <label for="c-16-components-comments-commentcard-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-16-components-comments-commentcard-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -5260,27 +4719,43 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCommentCard } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsCommentCard, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Default Card</span>
+                <span class="ex-name">Default</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const DefaultCard = () =&gt; &lt;DsCommentCard
+              <div class="hint">Standard card summarizing a thread: author, relative timestamp, message preview, and reply count. Long previews truncate by default.</div>
+              <pre><code>const Default = () =&gt; &lt;DsCommentCard
     onClick={fn()}
     onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
     onDelete={fn()}
-    comment={createMockComment()}
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+        isResolved: false,
+        messages: [
+            {
+                id: &#39;msg-1&#39;,
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project before the next sprint.&#39;,
+                createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+                isInitialMessage: true,
+            },
+            {
+                id: &#39;msg-2&#39;,
+                author: { id: &#39;user-2&#39;, name: &#39;John D.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=2&#39; },
+                content: &#39;Thanks for the feedback!&#39;,
+                createdAt: new Date(&#39;2026-02-09T12:00:00Z&#39;),
+            },
+        ],
+    }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -5288,36 +4763,57 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Flagged card. Set `isActionRequired` on the comment to surface the action-required treatment so it stands out in a list.</div>
               <pre><code>const ActionRequired = () =&gt; &lt;DsCommentCard
     onClick={fn()}
     onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
     onDelete={fn()}
-    comment={createMockComment({ isActionRequired: true })}
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+        isResolved: false,
+        isActionRequired: true,
+        messages: [
+            {
+                id: &#39;msg-1&#39;,
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project before the next sprint.&#39;,
+                createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+                isInitialMessage: true,
+            },
+        ],
+    }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Disabled State</span>
+                <span class="ex-name">Disabled</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const DisabledState = () =&gt; &lt;DsCommentCard
+              <div class="hint">Non-interactive card. Use while an operation is in flight or when the thread is read-only.</div>
+              <pre><code>const Disabled = () =&gt; &lt;DsCommentCard
     onClick={fn()}
     onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
     onDelete={fn()}
-    comment={createMockComment()}
     disabled
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+        isResolved: false,
+        messages: [
+            {
+                id: &#39;msg-1&#39;,
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project before the next sprint.&#39;,
+                createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+                isInitialMessage: true,
+            },
+        ],
+    }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -5325,80 +4821,29 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Show the full message body instead of a truncated preview with `overflow=&quot;displayed&quot;`.</div>
               <pre><code>const FullMessage = () =&gt; &lt;DsCommentCard
     onClick={fn()}
     onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
     onDelete={fn()}
-    comment={createMockComment()}
-    overflow=&quot;displayed&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Single Message</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SingleMessage = () =&gt; &lt;DsCommentCard
-    onClick={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    comment={createMockComment({
+    overflow=&quot;displayed&quot;
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+        isResolved: false,
         messages: [
             {
                 id: &#39;msg-1&#39;,
-                author: {
-                    id: &#39;user-1&#39;,
-                    name: &#39;Karen J.&#39;,
-                    avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39;,
-                },
-                content: &#39;This is a short single message comment.&#39;,
-                createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content:
+                    &#39;We need to review the resource allocation for this project. Adjusting the timeline will ensure we have enough resources for the development phase and keep quality high.&#39;,
+                createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
                 isInitialMessage: true,
             },
         ],
-    })}
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Default</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Default = () =&gt; (
-    &lt;div className={styles.grid}&gt;
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Default&lt;/h4&gt;
-            &lt;DsCommentCard comment={createMockComment()} overflow=&quot;hidden&quot; /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Action Required&lt;/h4&gt;
-            &lt;DsCommentCard comment={createMockComment()} overflow=&quot;hidden&quot; /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Disabled&lt;/h4&gt;
-            &lt;DsCommentCard comment={createMockComment()} disabled={true} overflow=&quot;hidden&quot; /&gt;
-        &lt;/div&gt;
-
-        &lt;div className={styles.column}&gt;
-            &lt;h4 className={styles.heading}&gt;Full Message&lt;/h4&gt;
-            &lt;DsCommentCard comment={createMockComment()} overflow=&quot;displayed&quot; /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
+    }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -5406,69 +4851,28 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">A reference chip in the header links the thread back to the entity it annotates.</div>
               <pre><code>const WithReferenceTag = () =&gt; &lt;DsCommentCard
     onClick={fn()}
     onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
     onDelete={fn()}
-    comment={createMockComment({ referenceTag: &#39;Resource allocation&#39; })}
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Callbacks</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithCallbacks = () =&gt; &lt;DsCommentCard
-    onClick={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    comment={createMockComment()}
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Single Reply</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SingleReply = () =&gt; &lt;DsCommentCard
-    onClick={fn()}
-    onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    comment={createMockComment({
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+        isResolved: false,
+        referenceTag: &#39;Resource allocation&#39;,
         messages: [
             {
                 id: &#39;msg-1&#39;,
-                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39; },
-                content: &#39;Initial message&#39;,
-                createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project before the next sprint.&#39;,
+                createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
                 isInitialMessage: true,
             },
-            {
-                id: &#39;msg-2&#39;,
-                author: { id: &#39;user-2&#39;, name: &#39;John D.&#39; },
-                content: &#39;One reply&#39;,
-                createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000),
-            },
         ],
-    })}
-    overflow=&quot;hidden&quot; /&gt;;</code></pre>
+    }} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -5476,27 +4880,30 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Override the default relative time via `formatTimestamp` — here an absolute date.</div>
               <pre><code>const CustomFormatter = () =&gt; &lt;DsCommentCard
     onClick={fn()}
     onResolve={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
     onDelete={fn()}
-    comment={createMockComment()}
-    overflow=&quot;hidden&quot;
-    formatTimestamp={(date: Date) =&gt; {
-        const options: Intl.DateTimeFormatOptions = {
-            year: &#39;numeric&#39;,
-            month: &#39;short&#39;,
-            day: &#39;numeric&#39;,
-            hour: &#39;2-digit&#39;,
-            minute: &#39;2-digit&#39;,
-        };
-        return date.toLocaleDateString(&#39;en-US&#39;, options);
-    }} /&gt;;</code></pre>
+    comment={{
+        id: &#39;comment-1&#39;,
+        numericId: 63,
+        author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+        createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+        isResolved: false,
+        messages: [
+            {
+                id: &#39;msg-1&#39;,
+                author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                content: &#39;We need to review the resource allocation for this project.&#39;,
+                createdAt: new Date(&#39;2026-02-09T10:00:00Z&#39;),
+                isInitialMessage: true,
+            },
+        ],
+    }}
+    formatTimestamp={(date) =&gt;
+        date.toLocaleDateString(&#39;en-US&#39;, { year: &#39;numeric&#39;, month: &#39;short&#39;, day: &#39;numeric&#39; })
+    } /&gt;;</code></pre>
             </div>
         </div>
     
@@ -5517,7 +4924,7 @@ style?: CSSProperties</code></pre>
       <div class="badges">
         <label for="c-17-components-comments-commentindicator-props" class="badge ok as-toggle">7 prop types</label>
         <label for="c-17-components-comments-commentindicator-info" class="badge info as-toggle">1 info</label>
-        <label for="c-17-components-comments-commentindicator-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-17-components-comments-commentindicator-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -5605,27 +5012,27 @@ type?: &#39;placeholder&#39; | &#39;default&#39; | &#39;action-required&#39; = &
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCommentBubble, DsCommentIndicator } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsCommentBubble, DsCommentIndicator, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Filled pin showing the avatar of an existing comment&#39;s author. Use when an entity already has a comment thread and no action is pending.</div>
+              <pre><code>const Default = () =&gt; &lt;DsCommentIndicator onClick={fn()} type=&quot;default&quot; avatarSrc=&quot;https://i.pravatar.cc/40?img=1&quot; /&gt;;</code></pre>
+            </div>
             <div class="note ok">
               <div class="row">
                 <span class="ex-name">Placeholder</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Placeholder indicator shows a &quot;+&quot; icon for adding new comments. This appears when hovering over entities that can have comments.</div>
-              <pre><code>const Placeholder = () =&gt; &lt;DsCommentIndicator type=&quot;placeholder&quot; onClick={fn()} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Default Indicator</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Default indicator shows the avatar of the comment initiator. Used when there are comments but no action is required.</div>
-              <pre><code>const DefaultIndicator = () =&gt; &lt;DsCommentIndicator type=&quot;default&quot; avatarSrc=&quot;https://i.pravatar.cc/40?img=1&quot; onClick={fn()} /&gt;;</code></pre>
+              <div class="hint">Dashed &quot;+&quot; affordance inviting the user to start a new comment. Typically revealed on hover over an entity that supports comments.</div>
+              <pre><code>const Placeholder = () =&gt; &lt;DsCommentIndicator onClick={fn()} type=&quot;placeholder&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -5633,326 +5040,11 @@ type?: &#39;placeholder&#39; | &#39;default&#39; | &#39;action-required&#39; = &
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Action required indicator shows the avatar with an orange/red background. Used when a comment requires user action or response.</div>
+              <div class="hint">Emphasized pin for comments flagged as requiring action, so they stand out from regular threads.</div>
               <pre><code>const ActionRequired = () =&gt; &lt;DsCommentIndicator
+    onClick={fn()}
     type=&quot;action-required&quot;
-    avatarSrc=&quot;https://i.pravatar.cc/40?img=2&quot;
-    onClick={fn()} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Default</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Default = () =&gt; (
-    &lt;div className={styles.container}&gt;
-        &lt;div className={styles.header}&gt;
-            &lt;div className={styles.headerCell}&gt;Placeholder&lt;/div&gt;
-            &lt;div className={styles.headerCell}&gt;No action required&lt;/div&gt;
-            &lt;div className={styles.headerCell}&gt;Action Required&lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div className={styles.row}&gt;
-            &lt;DsCommentIndicator type=&quot;placeholder&quot; onClick={fn()} /&gt;
-            &lt;DsCommentIndicator type=&quot;default&quot; avatarSrc=&quot;https://i.pravatar.cc/40?img=1&quot; onClick={fn()} /&gt;
-            &lt;DsCommentIndicator
-                type=&quot;action-required&quot;
-                avatarSrc=&quot;https://i.pravatar.cc/40?img=2&quot;
-                onClick={fn()}
-            /&gt;
-        &lt;/div&gt;
-    &lt;/div&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Empty Bubble</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Interactive story showing a placeholder indicator that opens an empty comment bubble when clicked. Demonstrates the complete flow from empty bubble to thread with multiple messages. Click the &quot;+&quot; icon to add a new comment, then add replies to see the full thread.</div>
-              <pre><code>const WithEmptyBubble = function WithEmptyBubbleStory() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [value, setValue] = useState(&#39;&#39;);
-    const [actionRequired, setActionRequired] = useState(false);
-    const [comment, setComment] = useState&lt;CommentData | undefined&gt;(undefined);
-
-    const handleSend = (content: string, isActionRequired: boolean) =&gt; {
-        if (!comment) {
-            const newComment: CommentData = {
-                id: &#39;comment-1&#39;,
-                numericId: 42,
-                author: currentUser,
-                createdAt: new Date(),
-                isResolved: false,
-                messages: [
-                    {
-                        id: &#39;msg-1&#39;,
-                        author: currentUser,
-                        content,
-                        createdAt: new Date(),
-                        isInitialMessage: true,
-                    },
-                ],
-            };
-            setComment(newComment);
-            setActionRequired(isActionRequired);
-        } else {
-            const newMessage = {
-                id: `msg-${String(Date.now())}`,
-                author: currentUser,
-                content,
-                createdAt: new Date(),
-            };
-
-            setComment((prev) =&gt; {
-                if (!prev) {
-                    return prev;
-                }
-                return {
-                    ...prev,
-                    messages: [...prev.messages, newMessage],
-                };
-            });
-        }
-        setValue(&#39;&#39;);
-    };
-
-    const handleEditMessage = (messageId: string, newContent: string) =&gt; {
-        if (!comment) {
-            return;
-        }
-        setComment((prev) =&gt; {
-            if (!prev) {
-                return prev;
-            }
-            return {
-                ...prev,
-                messages: prev.messages.map((msg) =&gt;
-                    msg.id === messageId ? { ...msg, content: newContent } : msg,
-                ),
-            };
-        });
-    };
-
-    const handleDeleteMessage = (messageId: string) =&gt; {
-        if (!comment) {
-            return;
-        }
-        setComment((prev) =&gt; {
-            if (!prev) {
-                return prev;
-            }
-            return {
-                ...prev,
-                messages: prev.messages.filter((msg) =&gt; msg.id !== messageId),
-            };
-        });
-    };
-
-    const handleClose = () =&gt; {
-        setComment(undefined);
-        setValue(&#39;&#39;);
-        setActionRequired(false);
-    };
-
-    return (
-        &lt;div className={styles.interactiveContainer}&gt;
-            &lt;p className={styles.instructions}&gt;
-                Click the &lt;strong&gt;+&lt;/strong&gt; icon to open an empty comment bubble, then follow the complete flow:
-                &lt;br /&gt;
-                1. Type a message → Typing mode appears
-                &lt;br /&gt;
-                2. Send → Creates thread with your first comment
-                &lt;br /&gt;
-                3. Add replies → Thread grows with multiple messages
-            &lt;/p&gt;
-
-            &lt;div className={styles.indicatorWrapper}&gt;
-                &lt;DsCommentIndicator type=&quot;placeholder&quot; onClick={() =&gt; setIsOpen(!isOpen)} /&gt;
-
-                {isOpen &amp;&amp; (
-                    &lt;div className={styles.bubbleWrapper}&gt;
-                        &lt;DsCommentBubble
-                            comment={comment}
-                            currentUser={currentUser}
-                            referenceTag=&quot;Resource allocation&quot;
-                            value={value}
-                            onValueChange={setValue}
-                            actionRequired={actionRequired}
-                            onActionRequiredChange={setActionRequired}
-                            onSend={handleSend}
-                            onEditMessage={handleEditMessage}
-                            onDeleteMessage={handleDeleteMessage}
-                            onMessageMarkUnread={(id) =&gt; console.log(&#39;Mark unread:&#39;, id)}
-                            onMessageResolved={(id) =&gt; console.log(&#39;Resolved:&#39;, id)}
-                            onClose={comment ? handleClose : () =&gt; setIsOpen(false)}
-                            onResolve={() =&gt; console.log(&#39;Resolve clicked&#39;)}
-                            onToggleActionRequired={() =&gt; console.log(&#39;Toggle action required&#39;)}
-                            onForward={() =&gt; console.log(&#39;Forward&#39;)}
-                            onMarkUnread={() =&gt; console.log(&#39;Mark unread&#39;)}
-                            onCopyLink={() =&gt; console.log(&#39;Copy link&#39;)}
-                            onDelete={() =&gt; console.log(&#39;Delete&#39;)}
-                        /&gt;
-                    &lt;/div&gt;
-                )}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Existing Comments</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Interactive story showing an indicator with an avatar that opens a comment bubble with existing comments when clicked. The bubble displays a full comment thread.</div>
-              <pre><code>const WithExistingComments = function WithExistingCommentsStory() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [value, setValue] = useState(&#39;&#39;);
-    const [actionRequired, setActionRequired] = useState(false);
-    const [comment, setComment] = useState(createMockComment());
-
-    const handleSend = (content: string) =&gt; {
-        const newMessage = {
-            id: `msg-${String(Date.now())}`,
-            author: currentUser,
-            content,
-            createdAt: new Date(),
-        };
-
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: [...prev.messages, newMessage],
-        }));
-        setValue(&#39;&#39;);
-    };
-
-    const handleEditMessage = (messageId: string, newContent: string) =&gt; {
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: prev.messages.map((msg) =&gt; (msg.id === messageId ? { ...msg, content: newContent } : msg)),
-        }));
-    };
-
-    const handleDeleteMessage = (messageId: string) =&gt; {
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: prev.messages.filter((msg) =&gt; msg.id !== messageId),
-        }));
-    };
-
-    return (
-        &lt;div className={styles.interactiveContainer}&gt;
-            &lt;p className={styles.instructions}&gt;
-                Click the &lt;strong&gt;avatar&lt;/strong&gt; to view existing comments and add replies
-            &lt;/p&gt;
-
-            &lt;div className={styles.indicatorWrapper}&gt;
-                &lt;DsCommentIndicator
-                    type=&quot;default&quot;
-                    avatarSrc={comment.author.avatarSrc}
-                    onClick={() =&gt; setIsOpen(!isOpen)}
-                /&gt;
-
-                {isOpen &amp;&amp; (
-                    &lt;div className={styles.bubbleWrapper}&gt;
-                        &lt;DsCommentBubble
-                            comment={comment}
-                            currentUser={currentUser}
-                            referenceTag=&quot;Resource allocation&quot;
-                            value={value}
-                            onValueChange={setValue}
-                            actionRequired={actionRequired}
-                            onActionRequiredChange={setActionRequired}
-                            onSend={handleSend}
-                            onEditMessage={handleEditMessage}
-                            onDeleteMessage={handleDeleteMessage}
-                            onMessageMarkUnread={(id) =&gt; console.log(&#39;Mark unread:&#39;, id)}
-                            onMessageResolved={(id) =&gt; console.log(&#39;Resolved:&#39;, id)}
-                            onClose={() =&gt; setIsOpen(false)}
-                            onResolve={() =&gt; console.log(&#39;Resolve clicked&#39;)}
-                            onToggleActionRequired={() =&gt; console.log(&#39;Toggle action required&#39;)}
-                            onForward={() =&gt; console.log(&#39;Forward&#39;)}
-                            onMarkUnread={() =&gt; console.log(&#39;Mark unread&#39;)}
-                            onCopyLink={() =&gt; console.log(&#39;Copy link&#39;)}
-                            onDelete={() =&gt; console.log(&#39;Delete&#39;)}
-                        /&gt;
-                    &lt;/div&gt;
-                )}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Action Required</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              <div class="hint">Interactive story showing an action-required indicator that opens a comment bubble with existing comments marked as requiring action.</div>
-              <pre><code>const WithActionRequired = function WithActionRequiredStory() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [value, setValue] = useState(&#39;&#39;);
-    const [actionRequired, setActionRequired] = useState(true);
-    const [comment, setComment] = useState(createMockComment());
-
-    const handleSend = (content: string) =&gt; {
-        const newMessage = {
-            id: `msg-${String(Date.now())}`,
-            author: currentUser,
-            content,
-            createdAt: new Date(),
-        };
-
-        setComment((prev) =&gt; ({
-            ...prev,
-            messages: [...prev.messages, newMessage],
-        }));
-        setValue(&#39;&#39;);
-    };
-
-    return (
-        &lt;div className={styles.interactiveContainer}&gt;
-            &lt;p className={styles.instructions}&gt;
-                Click the &lt;strong&gt;action required avatar&lt;/strong&gt; to view urgent comments
-            &lt;/p&gt;
-
-            &lt;div className={styles.indicatorWrapper}&gt;
-                &lt;DsCommentIndicator
-                    type=&quot;action-required&quot;
-                    avatarSrc={comment.author.avatarSrc}
-                    onClick={() =&gt; setIsOpen(!isOpen)}
-                /&gt;
-
-                {isOpen &amp;&amp; (
-                    &lt;div className={styles.bubbleWrapper}&gt;
-                        &lt;DsCommentBubble
-                            comment={comment}
-                            currentUser={currentUser}
-                            referenceTag=&quot;Resource allocation&quot;
-                            value={value}
-                            onValueChange={setValue}
-                            actionRequired={actionRequired}
-                            onActionRequiredChange={setActionRequired}
-                            onSend={handleSend}
-                            onClose={() =&gt; setIsOpen(false)}
-                            onResolve={() =&gt; console.log(&#39;Resolve clicked&#39;)}
-                            onToggleActionRequired={() =&gt; console.log(&#39;Toggle action required&#39;)}
-                            onForward={() =&gt; console.log(&#39;Forward&#39;)}
-                            onMarkUnread={() =&gt; console.log(&#39;Mark unread&#39;)}
-                            onCopyLink={() =&gt; console.log(&#39;Copy link&#39;)}
-                            onDelete={() =&gt; console.log(&#39;Delete&#39;)}
-                        /&gt;
-                    &lt;/div&gt;
-                )}
-            &lt;/div&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
+    avatarSrc=&quot;https://i.pravatar.cc/40?img=2&quot; /&gt;;</code></pre>
             </div>
         </div>
     
@@ -5973,7 +5065,7 @@ type?: &#39;placeholder&#39; | &#39;default&#39; | &#39;action-required&#39; = &
       <div class="badges">
         <label for="c-18-components-comments-commentsdrawer-props" class="badge ok as-toggle">18 prop types</label>
         <label for="c-18-components-comments-commentsdrawer-info" class="badge info as-toggle">1 info</label>
-        <label for="c-18-components-comments-commentsdrawer-stories" class="badge ok as-toggle">12 stories</label>
+        <label for="c-18-components-comments-commentsdrawer-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -6121,7 +5213,7 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsCommentsDrawer } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsCommentsDrawer } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -6131,42 +5223,50 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Open drawer listing comment cards. The header shows the count of currently visible (unresolved) comments. Drive `searchQuery` and `showResolved` as controlled props.</div>
               <pre><code>const Default = () =&gt; &lt;DsCommentsDrawer
     onOpenChange={fn()}
-    onShowResolvedChange={fn()}
     onSearchChange={fn()}
+    onShowResolvedChange={fn()}
     onCommentClick={fn()}
     onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
     open
-    comments={createMockComments()} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Search</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithSearch = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments()}
-    searchQuery=&quot;Karen&quot; /&gt;;</code></pre>
+    comments={[
+        {
+            id: &#39;comment-1&#39;,
+            numericId: 63,
+            author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+            createdAt: new Date(&#39;2026-02-08T10:00:00Z&#39;),
+            isResolved: false,
+            labels: [&#39;Bug&#39;, &#39;High Priority&#39;],
+            messages: [
+                {
+                    id: &#39;msg-1&#39;,
+                    author: { id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=1&#39; },
+                    content: &#39;We need to review the resource allocation for this project before the next sprint.&#39;,
+                    createdAt: new Date(&#39;2026-02-08T10:00:00Z&#39;),
+                    isInitialMessage: true,
+                },
+            ],
+        },
+        {
+            id: &#39;comment-2&#39;,
+            numericId: 64,
+            author: { id: &#39;user-2&#39;, name: &#39;John D.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=2&#39; },
+            createdAt: new Date(&#39;2026-02-07T10:00:00Z&#39;),
+            isResolved: false,
+            labels: [&#39;Feature Request&#39;],
+            messages: [
+                {
+                    id: &#39;msg-2&#39;,
+                    author: { id: &#39;user-2&#39;, name: &#39;John D.&#39;, avatarSrc: &#39;https://i.pravatar.cc/40?img=2&#39; },
+                    content: &#39;Could we add a dark mode feature to improve usability in low-light environments?&#39;,
+                    createdAt: new Date(&#39;2026-02-07T10:00:00Z&#39;),
+                    isInitialMessage: true,
+                },
+            ],
+        },
+    ]} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6174,129 +5274,15 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Empty state shown when there are no comments to display.</div>
               <pre><code>const Empty = () =&gt; &lt;DsCommentsDrawer
     onOpenChange={fn()}
-    onShowResolvedChange={fn()}
     onSearchChange={fn()}
+    onShowResolvedChange={fn()}
     onCommentClick={fn()}
     onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
     open
     comments={[]} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Show Resolved Toggle</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ShowResolvedToggle = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments()}
-    showResolved={false} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Hide Resolved Toggle</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const HideResolvedToggle = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments()}
-    showResolved /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Comment Card Click</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const CommentCardClick = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments()} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Search Filtering</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SearchFiltering = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments()}
-    searchQuery=&quot;dark mode&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Search By Id</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const SearchById = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments()}
-    searchQuery=&quot;#65&quot; /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -6304,134 +5290,16 @@ style?: CSSProperties</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Replace the built-in empty state with your own copy via `noCommentsMessage`.</div>
               <pre><code>const CustomEmptyMessage = () =&gt; &lt;DsCommentsDrawer
     onOpenChange={fn()}
-    onShowResolvedChange={fn()}
     onSearchChange={fn()}
+    onShowResolvedChange={fn()}
     onCommentClick={fn()}
     onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
     open
     comments={[]}
     noCommentsMessage=&quot;Nothing to see here!&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">No Resolved Comments</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const NoResolvedComments = () =&gt; &lt;DsCommentsDrawer
-    onOpenChange={fn()}
-    onShowResolvedChange={fn()}
-    onSearchChange={fn()}
-    onCommentClick={fn()}
-    onResolveComment={fn()}
-    onToggleActionRequired={fn()}
-    onForward={fn()}
-    onMarkUnread={fn()}
-    onCopyLink={fn()}
-    onDelete={fn()}
-    open
-    comments={createMockComments().filter((c) =&gt; !c.isResolved)} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Interactive</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const Interactive = function InteractiveStory() {
-    const [open, setOpen] = useState(false);
-    const [searchQuery, setSearchQuery] = useState(&#39;&#39;);
-    const [showResolved, setShowResolved] = useState(false);
-    const [comments, setComments] = useState(createMockComments());
-
-    const handleResolve = (commentId: string) =&gt; {
-        setComments((prev) =&gt; prev.map((c) =&gt; (c.id === commentId ? { ...c, isResolved: true } : c)));
-    };
-
-    return (
-        &lt;div className={styles.storyWrapper}&gt;
-            &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open Comments Drawer&lt;/DsButton&gt;
-
-            &lt;DsCommentsDrawer
-                open={open}
-                onOpenChange={setOpen}
-                comments={comments}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                showResolved={showResolved}
-                onShowResolvedChange={setShowResolved}
-                onCommentClick={(comment) =&gt; console.log(&#39;Comment clicked:&#39;, comment.id)}
-                onResolveComment={handleResolve}
-                onToggleActionRequired={(commentId) =&gt; console.log(&#39;Toggle action required:&#39;, commentId)}
-                onForward={(commentId) =&gt; console.log(&#39;Forward:&#39;, commentId)}
-                onMarkUnread={(commentId) =&gt; console.log(&#39;Mark unread:&#39;, commentId)}
-                onCopyLink={(commentId) =&gt; console.log(&#39;Copy link:&#39;, commentId)}
-                onDelete={(commentId) =&gt; console.log(&#39;Delete:&#39;, commentId)}
-            /&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">With Filters (Interactive)</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WithFilters = function WithFiltersStory() {
-    const [open, setOpen] = useState(true);
-    const [searchQuery, setSearchQuery] = useState(&#39;&#39;);
-    const [showResolved, setShowResolved] = useState(false);
-    const [comments] = useState(createMockComments());
-
-    return (
-        &lt;div className={styles.storyWrapper}&gt;
-            &lt;div className={styles.filterDemo}&gt;
-                &lt;h3 className={styles.filterDemoTitle}&gt;Filter Demonstration&lt;/h3&gt;
-                &lt;p className={styles.filterDemoText}&gt;
-                    The drawer is open by default. Click the filter icon to explore filtering options.
-                &lt;/p&gt;
-                &lt;p className={styles.filterDemoText}&gt;
-                    &lt;strong&gt;Try filtering by:&lt;/strong&gt;
-                &lt;/p&gt;
-                &lt;ul className={styles.filterDemoList}&gt;
-                    &lt;li&gt;Author: &amp;quot;Karen J.&amp;quot; to see 2 comments&lt;/li&gt;
-                    &lt;li&gt;Label: &amp;quot;Bug&amp;quot; to see 2 comments&lt;/li&gt;
-                    &lt;li&gt;Status: &amp;quot;Action required&amp;quot; to see 1 comment&lt;/li&gt;
-                    &lt;li&gt;Multiple filters at once (e.g., Author + Label)&lt;/li&gt;
-                &lt;/ul&gt;
-            &lt;/div&gt;
-
-            &lt;DsCommentsDrawer
-                open={open}
-                onOpenChange={setOpen}
-                comments={comments}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                showResolved={showResolved}
-                onShowResolvedChange={setShowResolved}
-                onCommentClick={(comment) =&gt; console.log(&#39;Comment clicked:&#39;, comment.id)}
-                onResolveComment={(commentId) =&gt; console.log(&#39;Resolve:&#39;, commentId)}
-                onToggleActionRequired={(commentId) =&gt; console.log(&#39;Toggle action required:&#39;, commentId)}
-                onForward={(commentId) =&gt; console.log(&#39;Forward:&#39;, commentId)}
-                onMarkUnread={(commentId) =&gt; console.log(&#39;Mark unread:&#39;, commentId)}
-                onCopyLink={(commentId) =&gt; console.log(&#39;Copy link:&#39;, commentId)}
-                onDelete={(commentId) =&gt; console.log(&#39;Delete:&#39;, commentId)}
-            /&gt;
-        &lt;/div&gt;
-    );
-};</code></pre>
             </div>
         </div>
     
@@ -27647,7 +26515,7 @@ value?: string</code></pre>
       <div class="badges">
         <label for="c-84-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
         <label for="c-84-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
-        <label for="c-84-components-comments-threaditem-stories" class="badge ok as-toggle">17 stories</label>
+        <label for="c-84-components-comments-threaditem-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -27755,7 +26623,7 @@ onResolved?: (messageId: string) =&gt; void</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsThreadItem } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsThreadItem } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27765,8 +26633,18 @@ onResolved?: (messageId: string) =&gt; void</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
+              <div class="hint">A message from the thread&#39;s comment author, left-aligned. With `canModify` the viewer sees the more-actions menu and resolve control.</div>
+              <pre><code>const Default = () =&gt; &lt;DsThreadItem
+    id=&quot;msg-1&quot;
+    author={{ id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/150?img=1&#39; }}
+    content=&quot;This is a sample message in the comment thread.&quot;
+    createdAt={new Date(&#39;2026-02-09T09:00:00Z&#39;)}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27774,12 +26652,18 @@ onResolved?: (messageId: string) =&gt; void</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">A message from the current viewer is right-aligned. Set `isCommentAuthorMessage` to `false` for replies that are not from the top-level comment author.</div>
               <pre><code>const CurrentUserMessage = () =&gt; &lt;DsThreadItem
     id=&quot;msg-2&quot;
+    author={{ id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/150?img=1&#39; }}
+    content=&quot;This is my reply, so it appears aligned to the right.&quot;
+    createdAt={new Date(&#39;2026-02-09T09:00:00Z&#39;)}
     isCommentAuthorMessage={false}
-    canModify={false}
-    content=&quot;This is my message, so it appears aligned to the right.&quot; /&gt;;</code></pre>
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27787,50 +26671,18 @@ onResolved?: (messageId: string) =&gt; void</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Long content wraps within the item&#39;s width.</div>
               <pre><code>const LongMessage = () =&gt; &lt;DsThreadItem
     id=&quot;msg-3&quot;
-    content=&quot;I think we should consider adjusting the timeline to ensure we have enough resources for the development phase. This will help us maintain quality standards and meet all the project requirements.&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">No Avatar</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const NoAvatar = () =&gt; &lt;DsThreadItem
-    id=&quot;msg-4&quot;
-    author={{
-        id: &#39;user-2&#39;,
-        name: &#39;John Doe&#39;,
-        avatarSrc: undefined,
-    }}
-    content=&quot;Message from a user without an avatar.&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Recent Message</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const RecentMessage = () =&gt; &lt;DsThreadItem
-    id=&quot;msg-5&quot;
-    createdAt={new Date(Date.now() - 30000)}
-    content=&quot;Just posted this message.&quot; /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Old Message</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const OldMessage = () =&gt; &lt;DsThreadItem
-    id=&quot;msg-6&quot;
-    createdAt={new Date(Date.now() - 86400000 * 3)}
-    content=&quot;This message was posted a few days ago.&quot; /&gt;;</code></pre>
+    author={{ id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/150?img=1&#39; }}
+    content=&quot;I think we should consider adjusting the timeline to ensure we have enough resources for the development phase. This will help us maintain quality standards and meet all the project requirements.&quot;
+    createdAt={new Date(&#39;2026-02-09T09:00:00Z&#39;)}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27838,170 +26690,54 @@ onResolved?: (messageId: string) =&gt; void</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Multi-line content preserves its line breaks.</div>
               <pre><code>const MultilineMessage = () =&gt; &lt;DsThreadItem
-    id=&quot;msg-7&quot;
-    content={`Line 1: First line of the message
-Line 2: Second line with more details
-Line 3: Final line with conclusion`} /&gt;;</code></pre>
+    id=&quot;msg-4&quot;
+    author={{ id: &#39;user-1&#39;, name: &#39;Karen J.&#39;, avatarSrc: &#39;https://i.pravatar.cc/150?img=1&#39; }}
+    content=&quot;Line 1: First line of the message\nLine 2: Second line with more details\nLine 3: Final line&quot;
+    createdAt={new Date(&#39;2026-02-09T09:00:00Z&#39;)}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Edit And Save</span>
+                <span class="ex-name">No Avatar</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const EditAndSave = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
+              <div class="hint">When the author has no `avatarSrc`, the avatar falls back to initials derived from the name.</div>
+              <pre><code>const NoAvatar = () =&gt; &lt;DsThreadItem
+    id=&quot;msg-5&quot;
+    author={{ id: &#39;user-2&#39;, name: &#39;John Doe&#39; }}
+    content=&quot;Message from a user without an avatar.&quot;
+    createdAt={new Date(&#39;2026-02-09T09:00:00Z&#39;)}
+    isCommentAuthorMessage
+    canModify
+    onEdit={fn()}
+    onDelete={fn()}
+    onMarkUnread={fn()}
+    onResolved={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
-                <span class="ex-name">Edit Save Disabled When Empty</span>
+                <span class="ex-name">Read Only</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const EditSaveDisabledWhenEmpty = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Edit Save Disabled When Unchanged</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const EditSaveDisabledWhenUnchanged = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Delete Action</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const DeleteAction = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Mark Unread Action</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const MarkUnreadAction = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Resolved Action</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ResolvedAction = () =&gt; &lt;DsThreadItem /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">No Actions When Cannot Modify</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const NoActionsWhenCannotModify = () =&gt; &lt;DsThreadItem
-    canModify={false}
-    onEdit={undefined}
-    onDelete={undefined}
-    onMarkUnread={undefined}
-    onResolved={undefined} /&gt;;</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Content Change While Not Editing</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ContentChangeWhileNotEditing = function Render() {
-    const [content, setContent] = useState(INITIAL_CONTENT);
-
-    return (
-        &lt;&gt;
-            &lt;DsThreadItem
-                id=&quot;msg-ext-1&quot;
-                author={mockAuthor}
-                content={content}
-                createdAt={new Date(Date.now() - 3600000)}
-                isCommentAuthorMessage
-                canModify
-                onEdit={fn()}
-                onDelete={fn()}
-            /&gt;
-
-            &lt;DsButton design=&quot;v1.2&quot; size=&quot;small&quot; onClick={() =&gt; setContent(UPDATED_CONTENT)}&gt;
-                Simulate external update
-            &lt;/DsButton&gt;
-        &lt;/&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Content Change While Editing</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ContentChangeWhileEditing = function Render() {
-    const [content, setContent] = useState(INITIAL_CONTENT);
-
-    return (
-        &lt;&gt;
-            &lt;DsThreadItem
-                id=&quot;msg-ext-2&quot;
-                author={mockAuthor}
-                content={content}
-                createdAt={new Date(Date.now() - 3600000)}
-                isCommentAuthorMessage
-                canModify
-                onEdit={fn()}
-                onDelete={fn()}
-            /&gt;
-
-            &lt;DsButton design=&quot;v1.2&quot; size=&quot;small&quot; onClick={() =&gt; setContent(UPDATED_CONTENT)}&gt;
-                Simulate external update
-            &lt;/DsButton&gt;
-        &lt;/&gt;
-    );
-};</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Content Change While Editing Then Cancel</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const ContentChangeWhileEditingThenCancel = function Render() {
-    const [content, setContent] = useState(INITIAL_CONTENT);
-
-    return (
-        &lt;&gt;
-            &lt;DsThreadItem
-                id=&quot;msg-ext-3&quot;
-                author={mockAuthor}
-                content={content}
-                createdAt={new Date(Date.now() - 3600000)}
-                isCommentAuthorMessage
-                canModify
-                onEdit={fn()}
-                onDelete={fn()}
-            /&gt;
-
-            &lt;DsButton design=&quot;v1.2&quot; size=&quot;small&quot; onClick={() =&gt; setContent(UPDATED_CONTENT)}&gt;
-                Simulate external update
-            &lt;/DsButton&gt;
-        &lt;/&gt;
-    );
-};</code></pre>
+              <div class="hint">A read-only message: without `canModify` and action callbacks, neither the more-actions menu nor the resolve control is rendered.</div>
+              <pre><code>const ReadOnly = () =&gt; (
+    &lt;DsThreadItem
+        id=&quot;msg-6&quot;
+        author={{ id: &#39;user-2&#39;, name: &#39;John D.&#39;, avatarSrc: &#39;https://i.pravatar.cc/150?img=2&#39; }}
+        content=&quot;A reply the current viewer cannot modify.&quot;
+        createdAt={new Date(&#39;2026-02-09T09:00:00Z&#39;)}
+        isCommentAuthorMessage={false}
+    /&gt;
+);</code></pre>
             </div>
         </div>
     
