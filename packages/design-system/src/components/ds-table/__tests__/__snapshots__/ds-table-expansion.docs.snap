@@ -1,0 +1,391 @@
+# DsTable docs snippets
+
+## Expandable
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  expandable={() => {}}
+  fullWidth
+  onRowClick={() => {}}
+  renderExpandedRow={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const Expandable = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={(row) => row.firstName !== 'Tanner'}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    renderExpandedRow={(row) => (
+        <DsStack direction="column" gap={8}>
+            <DsStack direction="column" gap={4}>
+                <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                <DsTypography variant="body-sm-reg">
+                    Full Name: {row.firstName} {row.lastName}
+                </DsTypography>
+                <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+            </DsStack>
+
+            <DsTable
+                columns={[
+                    {
+                        accessorKey: 'id',
+                        header: 'ID',
+                    },
+                    {
+                        accessorKey: 'firstName',
+                        header: 'First Name',
+                    },
+                    {
+                        accessorKey: 'lastName',
+                        header: 'Last Name',
+                    },
+                ]}
+                data={defaultData.slice(0, 3)}
+            />
+        </DsStack>
+    )} />;
+
+## Custom Expander Column Width
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  expandable
+  expandableColumnWidth={48}
+  fullWidth
+  onRowClick={() => {}}
+  renderExpandedRow={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const CustomExpanderColumnWidth = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 5)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    expandableColumnWidth={48}
+    renderExpandedRow={(row) => (
+        <DsStack direction="column" gap={4}>
+            <DsTypography variant="body-sm-reg">Details for {row.firstName}</DsTypography>
+        </DsStack>
+    )} />;
+
+## Programmatic Expansion
+
+### Show code
+{
+  args: {
+    data: defaultData.slice(0, 5),
+    expandable: row => row.firstName !== 'Tanner',
+    renderExpandedRow: row => <DsStack direction="column" gap={4}>
+                <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                <DsTypography variant="body-sm-reg">
+                    Full Name: {row.firstName} {row.lastName}
+                </DsTypography>
+                <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+            </DsStack>
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    const [expandedRows, setExpandedRows] = useState<string[]>([]);
+    const expandRow = (rowId: string) => {
+      tableRef.current?.expandRow(rowId);
+      setExpandedRows(prev => prev.includes(rowId) ? prev : [...prev, rowId]);
+    };
+    const expandAllRows = () => {
+      tableRef.current?.expandAllRows();
+      const expandableRowIds = defaultData.slice(0, 5).filter(row => row.firstName !== 'Tanner').map(row => row.id);
+      setExpandedRows(expandableRowIds);
+    };
+    const collapseAllRows = () => {
+      tableRef.current?.collapseAllRows();
+      setExpandedRows([]);
+    };
+    const expandFirstThreeRows = () => {
+      const firstThreeIds = ['2', '3', '4'];
+      tableRef.current?.expandRows(firstThreeIds);
+      setExpandedRows(firstThreeIds);
+    };
+    return <DsStack direction="column" gap={16}>
+                <DsTypography variant="body-sm-reg" color="secondary">
+                    Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
+                </DsTypography>
+
+                <DsStack direction="row" gap={8} flexWrap="wrap">
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('2')}>
+                        Expand Kevin
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('3')}>
+                        Expand John
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('4')}>
+                        Expand Jane
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={expandAllRows}>
+                        Expand All
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={collapseAllRows}>
+                        Collapse All
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small" onClick={expandFirstThreeRows}>
+                        Expand First 3 Expandable
+                    </DsButtonV3>
+                </DsStack>
+
+                <DsTable {...args} ref={tableRef} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const ProgrammaticExpansion = () => {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    const [expandedRows, setExpandedRows] = useState<string[]>([]);
+
+    const expandRow = (rowId: string) => {
+        tableRef.current?.expandRow(rowId);
+        setExpandedRows((prev) => (prev.includes(rowId) ? prev : [...prev, rowId]));
+    };
+
+    const expandAllRows = () => {
+        tableRef.current?.expandAllRows();
+        const expandableRowIds = defaultData
+            .slice(0, 5)
+            .filter((row) => row.firstName !== 'Tanner')
+            .map((row) => row.id);
+        setExpandedRows(expandableRowIds);
+    };
+
+    const collapseAllRows = () => {
+        tableRef.current?.collapseAllRows();
+        setExpandedRows([]);
+    };
+
+    const expandFirstThreeRows = () => {
+        const firstThreeIds = ['2', '3', '4'];
+        tableRef.current?.expandRows(firstThreeIds);
+        setExpandedRows(firstThreeIds);
+    };
+
+    return (
+        <DsStack direction="column" gap={16}>
+            <DsTypography variant="body-sm-reg" color="secondary">Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
+            </DsTypography>
+            <DsStack direction="row" gap={8} flexWrap="wrap">
+                <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('2')}>Expand Kevin
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('3')}>Expand John
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('4')}>Expand Jane
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={expandAllRows}>Expand All
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={collapseAllRows}>Collapse All
+                                        </DsButtonV3>
+                <DsButtonV3 variant="secondary" size="small" onClick={expandFirstThreeRows}>Expand First 3 Expandable
+                                        </DsButtonV3>
+            </DsStack>
+            <DsTable
+                columns={columns}
+                data={defaultData.slice(0, 5)}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={(row) => row.firstName !== 'Tanner'}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                renderExpandedRow={(row) => (
+                    <DsStack direction="column" gap={4}>
+                        <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                        <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                        <DsTypography variant="body-sm-reg">
+                            Full Name: {row.firstName} {row.lastName}
+                        </DsTypography>
+                        <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+                    </DsStack>
+                )}
+                ref={tableRef} />
+        </DsStack>
+    );
+};
