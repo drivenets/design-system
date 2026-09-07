@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium, type Browser, type Page } from 'playwright';
 import { afterAll, beforeAll, describe, it } from 'vitest';
 import { getStorySnippet, resolveComponents, type ManifestComponent } from './components-manifest';
-import { readShowCodeSnippet } from './read-show-code';
+import { readShowCodeSnippet, trackRenderedSnippets } from './read-show-code';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(dirname, '../../');
@@ -123,6 +123,7 @@ describe('docs snippets', () => {
 						viewport: { width: 1400, height: 900 },
 						timezoneId: 'UTC',
 					});
+					await trackRenderedSnippets(page);
 
 					try {
 						return await buildComponentDocsSnapshot(page, component);
