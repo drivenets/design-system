@@ -1,0 +1,150 @@
+$focus-outline-width: 2px;
+$disabled-avatar-opacity: 0.55;
+
+.root {
+	--ds-top-bar-navigation-height: 54px;
+	--ds-top-bar-navigation-logo-min-width: 174px;
+	--ds-top-bar-navigation-logo-glyph-size: 32px;
+	--ds-top-bar-navigation-wordmark-font-size: 24px;
+	--ds-top-bar-navigation-breadcrumb-offset: var(--lg);
+	--ds-top-bar-navigation-zone-gap: var(--lg);
+	--ds-top-bar-navigation-badge-size: 16px;
+	--ds-top-bar-navigation-caret-size: 20px;
+
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	height: var(--ds-top-bar-navigation-height);
+	padding-right: var(--md);
+	border-bottom: 1px solid var(--border);
+	background: var(--background);
+}
+
+.logo {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	gap: var(--sm);
+	align-self: stretch;
+	min-width: var(--ds-top-bar-navigation-logo-min-width);
+	padding: 0 var(--lg);
+	background: var(--background-primary);
+	color: var(--font-on-action);
+}
+
+.logoLockup {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	color: inherit;
+	text-decoration: none;
+}
+
+.logoGlyph {
+	display: flex;
+	flex-shrink: 0;
+	width: var(--ds-top-bar-navigation-logo-glyph-size);
+	height: var(--ds-top-bar-navigation-logo-glyph-size);
+}
+
+.logoWordmark {
+	font-family: var(--font-family-heading);
+	font-size: var(--ds-top-bar-navigation-wordmark-font-size);
+	font-weight: var(--font-weight-bold);
+	white-space: nowrap;
+}
+
+.breadcrumb {
+	display: flex;
+	align-items: center;
+	min-width: 0;
+	margin-left: var(--ds-top-bar-navigation-breadcrumb-offset);
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.center {
+	display: flex;
+	align-items: center;
+	flex: 1;
+	min-width: 0;
+}
+
+.actions {
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+	gap: var(--standard);
+	margin-inline-start: auto;
+	padding-inline-start: var(--ds-top-bar-navigation-zone-gap);
+}
+
+.notificationsBadge {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: var(--ds-top-bar-navigation-badge-size);
+	height: var(--ds-top-bar-navigation-badge-size);
+	padding: 0 var(--3xs);
+	border-radius: 9999px;
+	background: var(--background-error);
+	color: var(--font-on-action);
+	font-size: var(--body-font-size-xs);
+	font-weight: var(--font-weight-medium);
+	line-height: var(--body-line-height-xs);
+
+	&[data-empty] {
+		display: none;
+	}
+}
+
+.userMenuTrigger {
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+	padding: 0;
+	border: none;
+	border-radius: var(--3xs);
+	background: transparent;
+	color: var(--font-main);
+	cursor: pointer;
+
+	// Nested for the extra class of specificity: `DsAvatar` paints its own `background-color`
+	// and `color` from a single-class rule, so a standalone `.userMenuAvatar` ties with it and
+	// bundle order picks the winner.
+	.userMenuAvatar {
+		background-color: var(--light-buttons-tertiary);
+		color: var(--font-main);
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+	&:focus-visible {
+		outline: $focus-outline-width solid var(--border-action-primary);
+		outline-offset: $focus-outline-width;
+	}
+
+	&:disabled {
+		color: var(--font-disabled);
+		cursor: not-allowed;
+
+		// The caret follows `color`; the avatar sets its own fill and text color above, so
+		// neither inherits the disabled tone — dim the whole lockup instead.
+		.userMenuAvatar {
+			opacity: $disabled-avatar-opacity;
+		}
+	}
+}
+
+.userMenuCaret {
+	display: flex;
+	flex-shrink: 0;
+	width: var(--ds-top-bar-navigation-caret-size);
+	height: var(--ds-top-bar-navigation-caret-size);
+}
