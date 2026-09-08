@@ -203,7 +203,6 @@
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   selectable
   stickyHeader
@@ -216,8 +215,7 @@ const Default = () => <DsTable
     stickyHeader
     bordered
     fullWidth
-    selectable
-    emptyState={<TableEmptyState />} />;
+    selectable />;
 
 ## Initially Collapsed
 
@@ -422,7 +420,6 @@ const Default = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   selectable
   stickyHeader
@@ -435,8 +432,7 @@ const InitiallyCollapsed = () => <DsTable
     stickyHeader
     bordered
     fullWidth
-    selectable
-    emptyState={<TableEmptyState />} />;
+    selectable />;
 
 ## Controlled
 
@@ -644,7 +640,6 @@ const InitiallyCollapsed = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onCollapsedColumnGroupsChange={() => {}}
   selectable
@@ -663,7 +658,6 @@ const Controlled = () => {
             bordered
             fullWidth
             selectable
-            emptyState={<TableEmptyState />}
             collapsedColumnGroups={collapsed}
             onCollapsedColumnGroupsChange={setCollapsed} />
     );
@@ -873,7 +867,6 @@ const Controlled = () => {
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   selectable
   stickyHeader
@@ -887,7 +880,6 @@ const WithControls = () => <DsTable
     bordered
     fullWidth
     selectable
-    emptyState={<TableEmptyState />}
     controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
         <DsButtonV3 variant="secondary" size="small">
             RED version V2

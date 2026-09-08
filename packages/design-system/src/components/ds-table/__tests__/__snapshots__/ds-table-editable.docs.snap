@@ -230,7 +230,6 @@ const Editable = () => {
             stickyHeader
             bordered
             fullWidth
-            emptyState={<TableEmptyState />}
             data={data}
             columns={columns}
             selectable
@@ -345,7 +344,6 @@ const LiveValidation = () => {
             stickyHeader
             bordered
             fullWidth
-            emptyState={<TableEmptyState />}
             data={data}
             columns={columns}
             onCellValidate={(_row, columnId, value) => validateField(columnId, value)}
@@ -469,7 +467,6 @@ const ValidateOnAsyncSave = () => {
             stickyHeader
             bordered
             fullWidth
-            emptyState={<TableEmptyState />}
             data={data}
             columns={columns}
             onCellEdit={async (row, columnId, value, signal) => {

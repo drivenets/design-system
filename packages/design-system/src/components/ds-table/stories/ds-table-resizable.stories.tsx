@@ -6,7 +6,6 @@ import { DsTypography } from '../../ds-typography';
 import DsTable from '../ds-table';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Resizable Columns',
@@ -21,7 +20,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
-		emptyState: <TableEmptyState />,
 	},
 	decorators: [fullHeightDecorator],
 };

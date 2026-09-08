@@ -84,7 +84,6 @@
       visits: 250
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onOrderChange={() => {}}
   onRowClick={() => {}}
@@ -100,7 +99,6 @@ const Reorderable = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     reorderable
     onOrderChange={fn()} />;
@@ -189,7 +187,6 @@ const Reorderable = () => <DsTable
       visits: 250
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onOrderChange={() => {}}
   onRowClick={() => {}}
@@ -206,7 +203,6 @@ const CustomReorderColumnWidth = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     reorderable
     reorderableColumnWidth={80}
@@ -386,7 +382,6 @@ const CustomReorderColumnWidth = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   primaryRowActions={[
@@ -434,7 +429,6 @@ const WithRowActions = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     primaryRowActions={[
         {
@@ -645,7 +639,6 @@ const WithRowActions = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   primaryRowActions={[
@@ -698,7 +691,6 @@ const WithConditionallyHiddenActions = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     primaryRowActions={[
         {
@@ -918,7 +910,6 @@ const WithConditionallyHiddenActions = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   primaryRowActions={[
@@ -961,7 +952,6 @@ const WithConditionallyDisabledActions = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     primaryRowActions={[
         {
@@ -1186,7 +1176,6 @@ const WithConditionallyDisabledActions = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   selectable
@@ -1201,7 +1190,6 @@ const WithBulkActions = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     selectable
     actions={[

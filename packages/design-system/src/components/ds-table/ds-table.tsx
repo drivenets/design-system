@@ -26,7 +26,7 @@ import { useColumnResize } from './hooks/use-column-resize';
 import { DsTableContextProvider } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
-import { EMPTY_TABLE_STATE_TEXT } from './utils/constants';
+import { DsEmptyState } from '../ds-empty-state';
 import { getUtilityColumnSizing } from './utils/column-size';
 import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './utils/table-columns';
 import { createTableApi } from './utils/table-api';
@@ -179,6 +179,12 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	const skeletonColumns = useMemo(() => toSkeletonColumns(columns), [columns]);
 	const skeletonData = useMemo(() => createSkeletonRows<TData>(), []);
 	const utilityColumnSizing = useMemo(() => getUtilityColumnSizing(columns), [columns]);
+	const sourceDataLength = (reorderable ? data : tableData).length;
+	const inferredEmptyState = useMemo(
+		() => <DsEmptyState variant={sourceDataLength === 0 ? 'noData' : 'noMatches'} />,
+		[sourceDataLength],
+	);
+	const resolvedEmptyState = emptyState ?? inferredEmptyState;
 
 	const resize = useColumnResize({
 		enabled: resizableColumns,
@@ -258,7 +264,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 							{virtualized ? (
 								<MemoizedDsTableBodyVirtualized
 									table={table}
-									emptyState={emptyState}
+									emptyState={resolvedEmptyState}
 									estimateSize={virtualizedOptions?.estimateSize || ROW_SIZE_HEIGHT_MAP[rowSize]}
 									overscan={virtualizedOptions?.overscan}
 									onScroll={onScroll}
@@ -269,7 +275,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 								<MemoizedDsTableRowsBody
 									table={table}
 									rowSelection={rowSelection}
-									emptyState={emptyState}
+									emptyState={resolvedEmptyState}
 									SortableWrapper={SortableWrapper}
 								/>
 							)}
@@ -322,9 +328,9 @@ const DsTableRowsBody = <TData extends { id: string }>({
 				{rows.length ? (
 					rows.map((row) => <DsTableRow key={row.id} row={row} isSelected={!!rowSelection[row.id]} />)
 				) : (
-					<TableRow>
+					<TableRow className={styles.emptyStateRow}>
 						<TableCell colSpan={columnCount} className={styles.emptyState}>
-							{emptyState || EMPTY_TABLE_STATE_TEXT}
+							{emptyState}
 						</TableCell>
 					</TableRow>
 				)}

@@ -8,7 +8,6 @@ import { DsButtonV3 } from '../../ds-button-v3';
 import { DsTypography } from '../../ds-typography';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Expansion',
@@ -23,7 +22,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <TableEmptyState />,
 		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],

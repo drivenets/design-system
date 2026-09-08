@@ -130,7 +130,6 @@
       visits: 110
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -144,7 +143,6 @@ const ActiveRow = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     activeRowId="3" />;
 
@@ -255,7 +253,6 @@ const WithDrawerAndActiveRow = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 activeRowId={activeRowId}
                 onRowClick={handleRowClick} />
             <DsDrawer

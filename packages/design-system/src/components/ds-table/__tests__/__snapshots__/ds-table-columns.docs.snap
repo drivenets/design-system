@@ -174,7 +174,6 @@
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -209,7 +208,6 @@ const WithProgressInfographic = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()} />;
 
 ## Column Hiding
@@ -300,7 +298,6 @@ const ColumnHiding = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 columnVisibility={columnVisibility}
                 onColumnVisibilityChange={setColumnVisibility} />
