@@ -34,6 +34,7 @@ const COMPONENTS = [
 	'form-control',
 	'grid',
 	'icon',
+	'illustration',
 	'key-value-pair',
 	'loader',
 	'main-menu',
