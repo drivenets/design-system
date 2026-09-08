@@ -1,0 +1,830 @@
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    data={defaultData} />;
+
+## With Controls
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  controls={<DsStack alignItems="center" direction="row" justifyContent="space-between" width="100%"><DsButtonV3 size="small" variant="secondary">RED version V2</DsButtonV3><DsStack alignItems="center" direction="row" gap={8}><DsButtonV3 size="small" variant="secondary">Import RED</DsButtonV3><DsButtonV3 size="small" variant="secondary">Export RED</DsButtonV3><DsButtonV3 size="small">Actions</DsButtonV3></DsStack></DsStack>}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const WithControls = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    data={defaultData}
+    controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+        <DsButtonV3 variant="secondary" size="small">
+            RED version V2
+        </DsButtonV3>
+        <DsStack direction="row" gap={8} alignItems="center">
+            <DsButtonV3 variant="secondary" size="small">
+                Import RED
+            </DsButtonV3>
+            <DsButtonV3 variant="secondary" size="small">
+                Export RED
+            </DsButtonV3>
+            <DsButtonV3 size="small">Actions</DsButtonV3>
+        </DsStack>
+    </DsStack>)} />;
+
+## Empty State
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[]}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const EmptyState = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    data={[]} />;
+
+## No Border
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const NoBorder = () => <DsTable
+    columns={columns}
+    stickyHeader
+    bordered={false}
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    data={defaultData} />;
+
+## Horizontal Scroll
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 250
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 250
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age (years)',
+      size: 200
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Number of Visits',
+      size: 250
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Relationship Status',
+      size: 250
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 250
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const HorizontalScroll = () => <DsTable
+    columns={horizontalScrollColumns}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    data={defaultData} />;

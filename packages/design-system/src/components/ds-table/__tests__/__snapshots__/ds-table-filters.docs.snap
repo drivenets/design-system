@@ -1,0 +1,219 @@
+# DsTable docs snippets
+
+## Per-Column — Popover
+
+### Show code
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+    DsTable,
+    DsTagFilter,
+    createCheckboxFilterAdapter,
+    useTableFilters,
+} from '@drivenets/design-system';
+
+type DeviceRow = {
+    id: string;
+    name: string;
+    type: 'PP-LGX' | 'ME10' | 'OLT';
+    site: string;
+    status: 'active' | 'warning' | 'failed';
+};
+
+const typeOptions = [
+    { value: 'PP-LGX' as const, label: 'PP-LGX' },
+    { value: 'ME10' as const, label: 'ME10' },
+    { value: 'OLT' as const, label: 'OLT' },
+];
+
+const siteOptions = [
+    { value: 'NYC-DC1', label: 'NYC-DC1' },
+    { value: 'LON-DC2', label: 'LON-DC2' },
+    { value: 'SFO-DC3', label: 'SFO-DC3' },
+];
+
+const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
+    id: 'type',
+    label: 'Type',
+    items: typeOptions,
+    searchable: true,
+    selectAll: true,
+});
+
+const siteFilter = createCheckboxFilterAdapter<DeviceRow>({
+    id: 'site',
+    label: 'Site',
+    items: siteOptions,
+    searchable: true,
+    selectAll: true,
+});
+
+const columns: ColumnDef<DeviceRow>[] = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
+    { id: 'site', accessorKey: 'site', header: 'Site', meta: { filter: { adapterId: 'site' } } },
+    { id: 'status', accessorKey: 'status', header: 'Status' },
+];
+
+function DevicesTable({ rows }: { rows: DeviceRow[] }) {
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: [typeFilter, siteFilter],
+        baseColumns: columns,
+    });
+
+    return (
+        <>
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </>
+    );
+}
+
+### MCP manifest
+const ColumnFilters = function Render() {
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: adapters,
+        baseColumns,
+    });
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </DsStack>
+    );
+};
+
+## Per-Column — Controlled
+
+### Show code
+import { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+    DsTable,
+    DsTagFilter,
+    type CheckboxFilterItem,
+    type FilterState,
+    createCheckboxFilterAdapter,
+    useTableFilters,
+} from '@drivenets/design-system';
+
+type DeviceRow = {
+    id: string;
+    name: string;
+    type: 'PP-LGX' | 'ME10' | 'OLT';
+    site: string;
+};
+
+const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
+    id: 'type',
+    label: 'Type',
+    items: [
+        { value: 'PP-LGX', label: 'PP-LGX' },
+        { value: 'ME10', label: 'ME10' },
+        { value: 'OLT', label: 'OLT' },
+    ],
+    searchable: true,
+    selectAll: true,
+});
+
+const columns: ColumnDef<DeviceRow>[] = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
+    { id: 'site', accessorKey: 'site', header: 'Site' },
+];
+
+function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
+    // Source of truth lives outside the hook (URL, server, parent store, etc.).
+    const [appliedFilters, setAppliedFilters] = useState<FilterState<CheckboxFilterItem[]>>({
+        type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
+    });
+
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: [typeFilter],
+        baseColumns: columns,
+        appliedFilters,
+        onFiltersChange: setAppliedFilters,
+    });
+
+    return (
+        <>
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </>
+    );
+}
+
+### MCP manifest
+const ControlledColumnFilters = function Render() {
+    const [appliedFilters, setAppliedFilters] = useState<FilterState<CheckboxFilterItem[]>>({
+        type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
+    });
+
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: adapters,
+        baseColumns,
+        appliedFilters,
+        onFiltersChange: setAppliedFilters,
+    });
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+
+            <DsTable
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
+        </DsStack>
+    );
+};

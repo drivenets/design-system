@@ -1,0 +1,327 @@
+# DsTable docs snippets
+
+## Active Row
+
+### Show code
+<DsTable
+  activeRowId="3"
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    }
+  ]}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+/>
+
+### MCP manifest
+const ActiveRow = () => <DsTable
+    columns={columns}
+    data={defaultData.slice(0, 10)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    activeRowId="3" />;
+
+## Active Row with Drawer
+
+### Show code
+{
+  name: 'Active Row with Drawer',
+  args: {
+    data: defaultData.slice(0, 10)
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+    const activeRowId = selectedPerson?.id;
+    const isDrawerOpen = !!activeRowId;
+    const handleRowClick = (person: Person) => {
+      const isSameRow = activeRowId === person.id;
+      setSelectedPerson(isSameRow ? null : person);
+    };
+    return <>
+                <DsTable {...args} activeRowId={activeRowId} onRowClick={handleRowClick} />
+
+                <DsDrawer open={isDrawerOpen} onOpenChange={open => {
+        if (!open) {
+          setSelectedPerson(null);
+        }
+      }} columns={4} position="end">
+                    {selectedPerson && <div className={styles.drawerContent}>
+                            <DsStack direction="column" gap={24}>
+                                <DsStack direction="row" justifyContent="space-between" alignItems="center">
+                                    <DsTypography variant="heading2">Person Details</DsTypography>
+                                    <DsButtonV3 variant="tertiary" size="small" icon="close" aria-label="Close drawer" onClick={() => setSelectedPerson(null)} />
+                                </DsStack>
+
+                                <DsStack direction="column" gap={16}>
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Full Name
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">
+                                            {selectedPerson.firstName} {selectedPerson.lastName}
+                                        </DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Age
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">{selectedPerson.age} years old</DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Visits
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">{selectedPerson.visits} visits</DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Status
+                                        </DsTypography>
+                                        <DsTypography variant="body-md-reg">
+                                            {selectedPerson.status.charAt(0).toUpperCase() + selectedPerson.status.slice(1)}
+                                        </DsTypography>
+                                    </DsStack>
+
+                                    <DsStack direction="column" gap={4}>
+                                        <DsTypography variant="body-sm-md" color="secondary">
+                                            Profile Progress
+                                        </DsTypography>
+                                        <ProgressInfographic value={selectedPerson.progress} />
+                                    </DsStack>
+                                </DsStack>
+                            </DsStack>
+                        </div>}
+                </DsDrawer>
+            </>;
+  }
+}
+
+### MCP manifest
+const WithDrawerAndActiveRow = () => {
+    const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
+
+    const activeRowId = selectedPerson?.id;
+    const isDrawerOpen = !!activeRowId;
+
+    const handleRowClick = (person: Person) => {
+        const isSameRow = activeRowId === person.id;
+
+        setSelectedPerson(isSameRow ? null : person);
+    };
+
+    return (
+        <>
+            <DsTable
+                columns={columns}
+                data={defaultData.slice(0, 10)}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                activeRowId={activeRowId}
+                onRowClick={handleRowClick} />
+            <DsDrawer
+                open={isDrawerOpen}
+                onOpenChange={(open) => {
+                    if (!open) {
+                        setSelectedPerson(null);
+                    }
+                }}
+                columns={4}
+                position="end">
+                {selectedPerson && (
+                    <div className={styles.drawerContent}>
+                        <DsStack direction="column" gap={24}>
+                            <DsStack direction="row" justifyContent="space-between" alignItems="center">
+                                <DsTypography variant="heading2">Person Details</DsTypography>
+                                <DsButtonV3
+                                    variant="tertiary"
+                                    size="small"
+                                    icon="close"
+                                    aria-label="Close drawer"
+                                    onClick={() => setSelectedPerson(null)}
+                                />
+                            </DsStack>
+
+                            <DsStack direction="column" gap={16}>
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Full Name
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">
+                                        {selectedPerson.firstName} {selectedPerson.lastName}
+                                    </DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Age
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">{selectedPerson.age} years old</DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Visits
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">{selectedPerson.visits} visits</DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Status
+                                    </DsTypography>
+                                    <DsTypography variant="body-md-reg">
+                                        {selectedPerson.status.charAt(0).toUpperCase() + selectedPerson.status.slice(1)}
+                                    </DsTypography>
+                                </DsStack>
+
+                                <DsStack direction="column" gap={4}>
+                                    <DsTypography variant="body-sm-md" color="secondary">
+                                        Profile Progress
+                                    </DsTypography>
+                                    <ProgressInfographic value={selectedPerson.progress} />
+                                </DsStack>
+                            </DsStack>
+                        </DsStack>
+                    </div>
+                )}
+            </DsDrawer>
+        </>
+    );
+};
