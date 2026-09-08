@@ -17,6 +17,7 @@ findlast
 Fira
 fromentries
 gnmi
+greyscale
 matchall
 netgen
 netural
@@ -29,12 +30,14 @@ reorderable
 resizer
 retryable
 scrollers
+subcomponent
 subcomponents
 timelapse
 tosorted
 TSESTree
 unhover
 unitless
+wordmark
 unrs
 Versionable
 zizmor

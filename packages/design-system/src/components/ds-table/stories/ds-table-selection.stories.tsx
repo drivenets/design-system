@@ -3,7 +3,9 @@ import { fn } from 'storybook/test';
 import { useRef, useState } from 'react';
 import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
-import styles from './ds-table.stories.module.scss';
+import { DsStack } from '../../ds-stack';
+import { DsButtonV3 } from '../../ds-button-v3';
+import { DsTypography } from '../../ds-typography';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { TableEmptyState } from './components';
@@ -22,7 +24,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		fullWidth: true,
 		expandable: false,
 		emptyState: <TableEmptyState />,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],
 };
@@ -49,82 +51,80 @@ export const CustomSelectColumnWidth: Story = {
 	},
 };
 
+/**
+ * Drive selection imperatively through the table ref. `selectRow`, `selectRows`,
+ * `selectAllRows`, and `deselectAllRows` on `DsTableApi` let a parent control
+ * selection from outside the table (toolbars, keyboard shortcuts, bulk flows).
+ */
 export const ProgrammaticRowSelection: Story = {
 	args: {
 		selectable: true,
 		showSelectAllCheckbox: false,
 		stickyHeader: true,
-		onSelectionChange: (selectedRows) => console.log('Selected rows:', selectedRows),
+		onSelectionChange: fn(),
+	},
+	parameters: {
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const tableRef = useRef<DsTableApi<Person>>(null);
 		const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
-		const selectRow = (rowId: string) => {
-			tableRef.current?.selectRow(rowId);
-		};
-
-		const selectAllRows = () => {
-			tableRef.current?.selectAllRows();
-		};
-
-		const deselectAllRows = () => {
-			tableRef.current?.deselectAllRows();
-		};
-
-		const selectSpecificRows = () => {
-			tableRef.current?.selectRows(['1', '2', '3']);
-		};
-
 		const handleSelectionChange = (selection: Record<string, boolean>) => {
-			const selectedIds = Object.keys(selection);
-			setSelectedRows(selectedIds);
+			setSelectedRows(Object.keys(selection));
 		};
 
 		return (
-			<div>
-				<div className={styles.programmaticSelectionDemo}>
-					<h4 className={styles.programmaticSelectionDemo__title}>Programmatic Row Selection Demo</h4>
-					<p className={styles.programmaticSelectionDemo__description}>
-						Use the buttons below to programmatically control row selection using TanStack Table v8 APIs.
-					</p>
-					<p className={styles.programmaticSelectionDemo__selectedRows}>
-						Selected rows: {selectedRows.length > 0 ? selectedRows.join(', ') : 'None'}
-					</p>
-				</div>
+			<DsStack direction="column" gap={16}>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Selected rows: {selectedRows.length > 0 ? selectedRows.join(', ') : 'None'}
+				</DsTypography>
 
-				<div className={styles.programmaticSelectionControls}>
-					<button onClick={() => selectRow('1')} className={styles.programmaticSelectionButton}>
+				<DsStack direction="row" gap={8} flexWrap="wrap">
+					<DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRow('1')}>
 						Select Row 1
-					</button>
-					<button onClick={() => selectRow('2')} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRow('2')}>
 						Select Row 2
-					</button>
-					<button onClick={() => selectRow('3')} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectRow('3')}>
 						Select Row 3
-					</button>
-					<button onClick={selectAllRows} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.selectAllRows()}>
 						Select All
-					</button>
-					<button onClick={deselectAllRows} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => tableRef.current?.deselectAllRows()}>
 						Deselect All
-					</button>
-					<button onClick={selectSpecificRows} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3
+						variant="secondary"
+						size="small"
+						onClick={() => tableRef.current?.selectRows(['1', '2', '3'])}
+					>
 						Select First 3 Rows
-					</button>
-				</div>
+					</DsButtonV3>
+				</DsStack>
 
 				<DsTable {...args} ref={tableRef} onSelectionChange={handleSelectionChange} />
-			</div>
+			</DsStack>
 		);
 	},
 };
 
+/**
+ * Cap how many rows can be selected at once. Track selection in state and make
+ * `selectable` a predicate: a row stays selectable only if it is already
+ * selected or the count is under the limit, so the remaining checkboxes disable
+ * once the cap is reached.
+ */
 export const MaxSelectionLimit: Story = {
 	name: 'Max N Selections',
 	args: {
 		showSelectAllCheckbox: false,
 		onSelectionChange: fn(),
+	},
+	parameters: {
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
@@ -138,26 +138,17 @@ export const MaxSelectionLimit: Story = {
 		};
 
 		return (
-			<div>
-				<div className={styles.programmaticSelectionDemo}>
-					<h4 className={styles.programmaticSelectionDemo__title}>Max Selection Limit Demo</h4>
-					<p className={styles.programmaticSelectionDemo__description}>
-						You can select at most {maxSelections} rows. Once the limit is reached, checkboxes for other rows
-						are disabled.
-					</p>
-					<p className={styles.programmaticSelectionDemo__selectedRows}>
-						Selected: {selectedCount} / {maxSelections}
-					</p>
-				</div>
+			<DsStack direction="column" gap={16}>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Selected: {selectedCount} / {maxSelections}
+				</DsTypography>
 
 				<DsTable
 					{...args}
 					onSelectionChange={handleSelectionChange}
-					selectable={(rowData) => {
-						return rowSelection[rowData.id] || selectedCount < maxSelections;
-					}}
+					selectable={(rowData) => rowSelection[rowData.id] || selectedCount < maxSelections}
 				/>
-			</div>
+			</DsStack>
 		);
 	},
 };

@@ -13,12 +13,17 @@ const COMPONENTS = [
 	'autocomplete',
 	'avatar',
 	'avatar-group',
+	'bot-button',
 	'breadcrumb',
 	'bulk-actions',
 	'button-v3',
 	'card',
 	'catalog-layout',
 	'checkbox',
+	'comment-bubble',
+	'comment-card',
+	'comment-indicator',
+	'comments-drawer',
 	'date-picker',
 	'date-range-picker',
 	'dialog',
@@ -31,6 +36,7 @@ const COMPONENTS = [
 	'form-control',
 	'grid',
 	'icon',
+	'illustration',
 	'key-value-pair',
 	'loader',
 	'main-menu',
@@ -53,6 +59,7 @@ const COMPONENTS = [
 	'status-badge',
 	'status-badge-v2',
 	'stepper',
+	'table',
 	'tabs',
 	'tag',
 	'tag-filter',
@@ -62,16 +69,32 @@ const COMPONENTS = [
 	'toast',
 	'toggle',
 	'tooltip',
+	'top-bar-navigation',
 	'tree',
 	'typography',
 	'vertical-tabs',
 	'workspace-layout',
 ];
 
+// Folders whose stories fan out into many story titles (each a separate manifest
+// component) produce a single aggregated golden that runs to thousands of lines
+// where every section shares the same `# DsTable` header — unnavigable for humans
+// and agents alike. Split those into one golden per manifest component instead.
+const SPLIT_PER_MANIFEST = new Set(['table']);
+
 function getComponentSnapshotPath(name: string): string {
 	const folder = `ds-${name}`;
 
 	return path.join(packageRoot, 'src/components', folder, '__tests__/__snapshots__', `${folder}.docs.snap`);
+}
+
+// Names the per-manifest golden from the title-derived id so the file mirrors the
+// story hierarchy (`components-table-selection` → `ds-table-selection.docs.snap`).
+function getManifestSnapshotPath(name: string, component: ManifestComponent): string {
+	const folder = `ds-${name}`;
+	const fileName = component.id.replace(/^components-/, 'ds-');
+
+	return path.join(packageRoot, 'src/components', folder, '__tests__/__snapshots__', `${fileName}.docs.snap`);
 }
 
 async function buildComponentDocsSnapshot(page: Page, component: ManifestComponent): Promise<string> {
@@ -118,7 +141,7 @@ describe('docs snippets', () => {
 		it.concurrent(`ds-${name} docs snippets match staged authoring rules`, async ({ expect }) => {
 			// A folder may resolve to several manifest components (e.g. ds-form-control);
 			// build each on its own page in parallel, then aggregate in resolved order.
-			const sections = await Promise.all(
+			const built = await Promise.all(
 				manifestComponents.map(async (component) => {
 					const page = await browser.newPage({
 						viewport: { width: 1400, height: 900 },
@@ -126,16 +149,32 @@ describe('docs snippets', () => {
 					});
 
 					try {
-						return await buildComponentDocsSnapshot(page, component);
+						return { component, document: await buildComponentDocsSnapshot(page, component) };
 					} finally {
 						await page.close();
 					}
 				}),
 			);
 
-			const document = sections.join('\n\n');
+			// Split folders write one golden per manifest component; the rest aggregate
+			// every manifest component into a single colocated golden.
+			const snapshots = SPLIT_PER_MANIFEST.has(name)
+				? built.map(({ component, document }) => ({
+						path: getManifestSnapshotPath(name, component),
+						document,
+					}))
+				: [
+						{
+							path: getComponentSnapshotPath(name),
+							document: built.map((entry) => entry.document).join('\n\n'),
+						},
+					];
 
-			await expect(document).toMatchFileSnapshot(getComponentSnapshotPath(name));
+			await Promise.all(
+				snapshots.map(({ path: snapshotPath, document }) =>
+					expect(document).toMatchFileSnapshot(snapshotPath),
+				),
+			);
 		}, 180_000);
 	}
 });

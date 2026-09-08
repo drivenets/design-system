@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import classnames from 'classnames';
-import { DsIcon } from '../../ds-icon';
+import { fn } from 'storybook/test';
 import { DsDrawer } from '../../ds-drawer';
+import { DsStack } from '../../ds-stack';
+import { DsButtonV3 } from '../../ds-button-v3';
+import { DsTypography } from '../../ds-typography';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person } from './common/story-data';
@@ -23,7 +25,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		fullWidth: true,
 		expandable: false,
 		emptyState: <TableEmptyState />,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],
 };
@@ -31,10 +33,31 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
+/**
+ * Pass `activeRowId` to highlight a single row independently of selection. The
+ * highlight persists until you change or clear the id — useful for marking the
+ * record a side panel or detail view is currently showing.
+ */
+export const ActiveRow: Story = {
+	args: {
+		data: defaultData.slice(0, 10),
+		activeRowId: '3',
+	},
+};
+
+/**
+ * Pass `activeRowId` to keep a row highlighted independently of selection —
+ * ideal for a master/detail layout where clicking a row opens a drawer. Track
+ * the clicked record in state, derive `activeRowId` from it, and clear it when
+ * the drawer closes. Clicking the active row again toggles the drawer shut.
+ */
 export const WithDrawerAndActiveRow: Story = {
 	name: 'Active Row with Drawer',
 	args: {
 		data: defaultData.slice(0, 10),
+	},
+	parameters: {
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);
@@ -49,15 +72,7 @@ export const WithDrawerAndActiveRow: Story = {
 		};
 
 		return (
-			<div>
-				<div className={styles.programmaticSelectionDemo}>
-					<h4 className={styles.programmaticSelectionDemo__title}>Active Row with Drawer Demo</h4>
-					<p className={styles.programmaticSelectionDemo__description}>
-						Click on any row to open a drawer with detailed information. The clicked row will remain
-						highlighted to indicate which record the drawer is displaying.
-					</p>
-				</div>
-
+			<>
 				<DsTable {...args} activeRowId={activeRowId} onRowClick={handleRowClick} />
 
 				<DsDrawer
@@ -72,60 +87,63 @@ export const WithDrawerAndActiveRow: Story = {
 				>
 					{selectedPerson && (
 						<div className={styles.drawerContent}>
-							<div className={styles.drawerHeader}>
-								<h2 className={styles.drawerTitle}>Person Details</h2>
-								<button
-									onClick={() => setSelectedPerson(null)}
-									className={styles.drawerCloseButton}
-									aria-label="Close drawer"
-								>
-									<DsIcon icon="close" size="medium" />
-								</button>
-							</div>
+							<DsStack direction="column" gap={24}>
+								<DsStack direction="row" justifyContent="space-between" alignItems="center">
+									<DsTypography variant="heading2">Person Details</DsTypography>
+									<DsButtonV3
+										variant="tertiary"
+										size="small"
+										icon="close"
+										aria-label="Close drawer"
+										onClick={() => setSelectedPerson(null)}
+									/>
+								</DsStack>
 
-							<div className={styles.drawerDetails}>
-								<div className={styles.drawerDetailItem}>
-									<strong className={styles.drawerDetailLabel}>Full Name</strong>
-									<p className={styles.drawerDetailValue}>
-										{selectedPerson.firstName} {selectedPerson.lastName}
-									</p>
-								</div>
+								<DsStack direction="column" gap={16}>
+									<DsStack direction="column" gap={4}>
+										<DsTypography variant="body-sm-md" color="secondary">
+											Full Name
+										</DsTypography>
+										<DsTypography variant="body-md-reg">
+											{selectedPerson.firstName} {selectedPerson.lastName}
+										</DsTypography>
+									</DsStack>
 
-								<div className={styles.drawerDetailItem}>
-									<strong className={styles.drawerDetailLabel}>Age</strong>
-									<p className={styles.drawerDetailValue}>{selectedPerson.age} years old</p>
-								</div>
+									<DsStack direction="column" gap={4}>
+										<DsTypography variant="body-sm-md" color="secondary">
+											Age
+										</DsTypography>
+										<DsTypography variant="body-md-reg">{selectedPerson.age} years old</DsTypography>
+									</DsStack>
 
-								<div className={styles.drawerDetailItem}>
-									<strong className={styles.drawerDetailLabel}>Visits</strong>
-									<p className={styles.drawerDetailValue}>{selectedPerson.visits} visits</p>
-								</div>
+									<DsStack direction="column" gap={4}>
+										<DsTypography variant="body-sm-md" color="secondary">
+											Visits
+										</DsTypography>
+										<DsTypography variant="body-md-reg">{selectedPerson.visits} visits</DsTypography>
+									</DsStack>
 
-								<div className={styles.drawerDetailItem}>
-									<strong className={styles.drawerDetailLabel}>Status</strong>
-									<p className={classnames(styles.drawerDetailValue, styles.drawerDetailValueCapitalized)}>
-										{selectedPerson.status}
-									</p>
-								</div>
+									<DsStack direction="column" gap={4}>
+										<DsTypography variant="body-sm-md" color="secondary">
+											Status
+										</DsTypography>
+										<DsTypography variant="body-md-reg">
+											{selectedPerson.status.charAt(0).toUpperCase() + selectedPerson.status.slice(1)}
+										</DsTypography>
+									</DsStack>
 
-								<div className={styles.drawerDetailItem}>
-									<strong className={styles.drawerDetailLabel}>Profile Progress</strong>
-									<div className={styles.drawerProgressContainer}>
+									<DsStack direction="column" gap={4}>
+										<DsTypography variant="body-sm-md" color="secondary">
+											Profile Progress
+										</DsTypography>
 										<ProgressInfographic value={selectedPerson.progress} />
-									</div>
-								</div>
-
-								<div className={styles.drawerNote}>
-									<p>
-										<strong>Note:</strong> The row in the table remains highlighted while this drawer is open,
-										helping you keep track of which record you&#39;re viewing.
-									</p>
-								</div>
-							</div>
+									</DsStack>
+								</DsStack>
+							</DsStack>
 						</div>
 					)}
 				</DsDrawer>
-			</div>
+			</>
 		);
 	},
 };

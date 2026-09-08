@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { fn } from 'storybook/test';
 import { useMemo, useState } from 'react';
 import type { ColumnDef, ColumnFiltersState } from '@tanstack/react-table';
-import type { IconType } from '../../ds-icon';
+import { DsIcon, type IconType } from '../../ds-icon';
 import { DsSmartTabs } from '../../ds-smart-tabs';
+import { DsStack } from '../../ds-stack';
+import { DsTextInput } from '../../ds-text-input';
 import DsTable from '../ds-table';
-import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { StatusItem, TableEmptyState } from './components';
@@ -23,7 +25,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		fullWidth: true,
 		expandable: false,
 		emptyState: <TableEmptyState />,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],
 };
@@ -31,8 +33,16 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 export default meta;
 type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
+/**
+ * Global search across every column, owned by the consumer. Keep the query in
+ * state, derive the filtered rows, and pass them to `data` — the table stays a
+ * pure presentational view of whatever rows you hand it.
+ */
 export const AdvancedSearch: Story = {
 	name: 'Search — Global Input',
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
 	render: function Render(args) {
 		const [globalFilter, setGlobalFilter] = useState('');
 
@@ -49,24 +59,31 @@ export const AdvancedSearch: Story = {
 		}, [globalFilter, args.data]);
 
 		return (
-			<div>
-				<div style={{ marginBottom: '1rem' }}>
-					<input
-						type="text"
+			<DsStack direction="column" gap={16}>
+				<DsStack width="300px">
+					<DsTextInput
 						value={globalFilter}
-						onChange={(e) => setGlobalFilter(e.target.value)}
+						onValueChange={setGlobalFilter}
 						placeholder="Search all columns..."
-						style={{ padding: '0.5rem', width: '300px' }}
+						slots={{ startAdornment: <DsIcon icon="search" size="small" /> }}
 					/>
-				</div>
+				</DsStack>
 				<DsTable {...args} data={filteredData} />
-			</div>
+			</DsStack>
 		);
 	},
 };
 
+/**
+ * Drive a column filter from a tab bar. `DsSmartTabs` owns the active tab; each
+ * tab maps to a `columnFilters` entry (or clears it for "All"). The table is
+ * controlled via `columnFilters` / `onColumnFiltersChange`.
+ */
 export const TabFilters: Story = {
 	name: 'Tabs — Status Filter',
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
 	render: function Render(args) {
 		const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 		const [activeTab, setActiveTab] = useState<Status | 'all'>('all');
@@ -107,7 +124,7 @@ export const TabFilters: Story = {
 		);
 
 		return (
-			<div className={styles.tableFilterContainer}>
+			<DsStack direction="column" gap={16} flex="1">
 				<DsSmartTabs activeTab={activeTab} onTabClick={handleTabClick}>
 					<DsSmartTabs.Tab
 						label="All People"
@@ -144,7 +161,7 @@ export const TabFilters: Story = {
 					columnFilters={columnFilters}
 					onColumnFiltersChange={setColumnFilters}
 				/>
-			</div>
+			</DsStack>
 		);
 	},
 };

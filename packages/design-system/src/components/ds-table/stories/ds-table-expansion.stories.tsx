@@ -3,7 +3,9 @@ import { fn } from 'storybook/test';
 import { useRef, useState } from 'react';
 import DsTable from '../ds-table';
 import type { DsTableApi } from '../ds-table.types';
-import styles from './ds-table.stories.module.scss';
+import { DsStack } from '../../ds-stack';
+import { DsButtonV3 } from '../../ds-button-v3';
+import { DsTypography } from '../../ds-typography';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { TableEmptyState } from './components';
@@ -35,15 +37,15 @@ export const Expandable: Story = {
 		data: defaultData.slice(0, 5),
 		expandable: (row) => row.firstName !== 'Tanner',
 		renderExpandedRow: (row) => (
-			<>
-				<div className={styles.expandedRowDetails}>
-					<h4>Expanded Details for {row.firstName}</h4>
-					<p>ID: {row.id}</p>
-					<p>
+			<DsStack direction="column" gap={8}>
+				<DsStack direction="column" gap={4}>
+					<DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+					<DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+					<DsTypography variant="body-sm-reg">
 						Full Name: {row.firstName} {row.lastName}
-					</p>
-					<p>Status: {row.status}</p>
-				</div>
+					</DsTypography>
+					<DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+				</DsStack>
 
 				<DsTable
 					columns={[
@@ -62,7 +64,7 @@ export const Expandable: Story = {
 					]}
 					data={defaultData.slice(0, 3)}
 				/>
-			</>
+			</DsStack>
 		),
 	},
 };
@@ -76,24 +78,36 @@ export const CustomExpanderColumnWidth: Story = {
 		data: defaultData.slice(0, 5),
 		expandable: true,
 		expandableColumnWidth: 48,
-		renderExpandedRow: (row) => <div className={styles.expandedRowDetails}>Details for {row.firstName}</div>,
+		renderExpandedRow: (row) => (
+			<DsStack direction="column" gap={4}>
+				<DsTypography variant="body-sm-reg">Details for {row.firstName}</DsTypography>
+			</DsStack>
+		),
 	},
 };
 
+/**
+ * Drive expansion imperatively through the table ref. `expandRow`, `expandRows`,
+ * `expandAllRows`, and `collapseAllRows` on `DsTableApi` let a parent expand or
+ * collapse rows from outside the table.
+ */
 export const ProgrammaticExpansion: Story = {
 	args: {
 		data: defaultData.slice(0, 5),
 		expandable: (row) => row.firstName !== 'Tanner',
 		renderExpandedRow: (row) => (
-			<div className={styles.expandedRowDetails}>
-				<h4>Expanded Details for {row.firstName}</h4>
-				<p>ID: {row.id}</p>
-				<p>
+			<DsStack direction="column" gap={4}>
+				<DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+				<DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+				<DsTypography variant="body-sm-reg">
 					Full Name: {row.firstName} {row.lastName}
-				</p>
-				<p>Status: {row.status}</p>
-			</div>
+				</DsTypography>
+				<DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+			</DsStack>
 		),
+	},
+	parameters: {
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const tableRef = useRef<DsTableApi<Person>>(null);
@@ -125,40 +139,34 @@ export const ProgrammaticExpansion: Story = {
 		};
 
 		return (
-			<div>
-				<div className={styles.programmaticSelectionDemo}>
-					<h4 className={styles.programmaticSelectionDemo__title}>Programmatic Row Expansion Demo</h4>
-					<p className={styles.programmaticSelectionDemo__description}>
-						Use the buttons below to programmatically control row expansion using TanStack Table v8 APIs.
-					</p>
-					<p className={styles.programmaticSelectionDemo__selectedRows}>
-						Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
-					</p>
-				</div>
+			<DsStack direction="column" gap={16}>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
+				</DsTypography>
 
-				<div className={styles.programmaticSelectionControls}>
-					<button onClick={() => expandRow('2')} className={styles.programmaticSelectionButton}>
+				<DsStack direction="row" gap={8} flexWrap="wrap">
+					<DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('2')}>
 						Expand Kevin
-					</button>
-					<button onClick={() => expandRow('3')} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('3')}>
 						Expand John
-					</button>
-					<button onClick={() => expandRow('4')} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('4')}>
 						Expand Jane
-					</button>
-					<button onClick={expandAllRows} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={expandAllRows}>
 						Expand All
-					</button>
-					<button onClick={collapseAllRows} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={collapseAllRows}>
 						Collapse All
-					</button>
-					<button onClick={expandFirstThreeRows} className={styles.programmaticSelectionButton}>
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small" onClick={expandFirstThreeRows}>
 						Expand First 3 Expandable
-					</button>
-				</div>
+					</DsButtonV3>
+				</DsStack>
 
 				<DsTable {...args} ref={tableRef} />
-			</div>
+			</DsStack>
 		);
 	},
 };

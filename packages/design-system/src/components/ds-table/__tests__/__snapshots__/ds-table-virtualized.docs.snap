@@ -1,0 +1,640 @@
+# DsTable docs snippets
+
+## Empty State
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  onRowClick={() => {}}
+  stickyHeader
+  virtualized
+/>
+
+### MCP manifest
+const EmptyState = () => <DsTable
+    columns={columns}
+    data={[]}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={<TableEmptyState />}
+    onRowClick={fn()}
+    virtualized />;
+
+## Virtualized Selectable Table
+
+### Show code
+{
+  name: 'Virtualized Selectable Table',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const {
+      data: infiniteQueryData,
+      fetchNextPage,
+      isFetching,
+      isLoading
+    } = useInfiniteQuery({
+      queryKey: ['people', sorting],
+      queryFn: async ({
+        pageParam
+      }) => {
+        const start = pageParam * pageSize;
+        return await fetchData(start, pageSize, sorting);
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      placeholderData: keepPreviousData
+    }, queryClient);
+    const flatData = useMemo(() => infiniteQueryData?.pages.flatMap(page => page.data) ?? [], [infiniteQueryData]);
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={flatData} onSortingChange={setSorting} virtualized={true} infiniteScroll={{
+        hasMore,
+        isLoadingMore: isFetching,
+        onLoadMore: fetchNextPage
+      }} />
+                {isLoading && <div className={styles.loadingOverlay}>
+                        <DsStack direction="column" gap={8} alignItems="center">
+                            <DsSpinner size="small" />
+                            <DsTypography variant="body-sm-reg" color="secondary">
+                                Loading data...
+                            </DsTypography>
+                        </DsStack>
+                    </div>}
+            </div>;
+  },
+  args: {
+    selectable: true,
+    columns: columns.map(col => {
+      if ('accessorKey' in col && col.accessorKey === 'age') {
+        return {
+          ...col,
+          size: 100
+        };
+      }
+      return col;
+    }),
+    onScroll: fn()
+  }
+}
+
+### MCP manifest
+const VirtualizedSelectable = () => {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+
+    const {
+        data: infiniteQueryData,
+        fetchNextPage,
+        isFetching,
+        isLoading,
+    } = useInfiniteQuery(
+        {
+            queryKey: ['people', sorting],
+            queryFn: async ({ pageParam }) => {
+                const start = pageParam * pageSize;
+                return await fetchData(start, pageSize, sorting);
+            },
+            initialPageParam: 0,
+            getNextPageParam: (_lastGroup, groups) => groups.length,
+            placeholderData: keepPreviousData,
+        },
+        queryClient,
+    );
+
+    const flatData = useMemo(
+        () => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+        [infiniteQueryData],
+    );
+
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns.map((col) => {
+                    if ('accessorKey' in col && col.accessorKey === 'age') {
+                        return {
+                            ...col,
+                            size: 100,
+                        };
+                    }
+                    return col;
+                })}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                selectable
+                onScroll={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }} />
+            {isLoading && (
+                <div className={styles.loadingOverlay}>
+                    <DsStack direction="column" gap={8} alignItems="center">
+                        <DsSpinner size="small" />
+                        <DsTypography variant="body-sm-reg" color="secondary">
+                            Loading data...
+                        </DsTypography>
+                    </DsStack>
+                </div>
+            )}
+        </div>
+    );
+};
+
+## Virtualized Expandable Table
+
+### Show code
+{
+  name: 'Virtualized Expandable Table',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const {
+      data: infiniteQueryData,
+      fetchNextPage,
+      isFetching,
+      isLoading
+    } = useInfiniteQuery({
+      queryKey: ['people-expandable', sorting],
+      queryFn: async ({
+        pageParam
+      }) => {
+        const start = pageParam * pageSize;
+        return await fetchData(start, pageSize, sorting);
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      placeholderData: keepPreviousData
+    }, queryClient);
+    const flatData = useMemo(() => infiniteQueryData?.pages.flatMap(page => page.data) ?? [], [infiniteQueryData]);
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={flatData} onSortingChange={setSorting} virtualized={true} expandable={true} infiniteScroll={{
+        hasMore,
+        isLoadingMore: isFetching,
+        onLoadMore: fetchNextPage
+      }} renderExpandedRow={row => <DsStack direction="column" gap={8}>
+                            <DsStack direction="column" gap={4}>
+                                <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                                <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                                <DsTypography variant="body-sm-reg">
+                                    Full Name: {row.firstName} {row.lastName}
+                                </DsTypography>
+                                <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+                            </DsStack>
+
+                            <DsTable columns={[{
+          accessorKey: 'id',
+          header: 'ID'
+        }, {
+          accessorKey: 'firstName',
+          header: 'First Name'
+        }, {
+          accessorKey: 'lastName',
+          header: 'Last Name'
+        }]} data={defaultData.slice(0, 3)} />
+                        </DsStack>} />
+                {isLoading && <div className={styles.loadingOverlay}>
+                        <DsStack direction="column" gap={8} alignItems="center">
+                            <DsSpinner size="small" />
+                            <DsTypography variant="body-sm-reg" color="secondary">
+                                Loading data...
+                            </DsTypography>
+                        </DsStack>
+                    </div>}
+            </div>;
+  },
+  args: {
+    columns: columns.map(col => {
+      if ('accessorKey' in col && col.accessorKey === 'age') {
+        return {
+          ...col,
+          size: 100
+        };
+      }
+      return col;
+    }),
+    onScroll: fn()
+  }
+}
+
+### MCP manifest
+const VirtualizedExpandable = () => {
+    const pageSize = 10;
+    const [sorting, setSorting] = useState<SortingState>([]);
+
+    const {
+        data: infiniteQueryData,
+        fetchNextPage,
+        isFetching,
+        isLoading,
+    } = useInfiniteQuery(
+        {
+            queryKey: ['people-expandable', sorting],
+            queryFn: async ({ pageParam }) => {
+                const start = pageParam * pageSize;
+                return await fetchData(start, pageSize, sorting);
+            },
+            initialPageParam: 0,
+            getNextPageParam: (_lastGroup, groups) => groups.length,
+            placeholderData: keepPreviousData,
+        },
+        queryClient,
+    );
+
+    const flatData = useMemo(
+        () => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+        [infiniteQueryData],
+    );
+
+    const totalRows = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? 0;
+    const hasMore = flatData.length < totalRows;
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns.map((col) => {
+                    if ('accessorKey' in col && col.accessorKey === 'age') {
+                        return {
+                            ...col,
+                            size: 100,
+                        };
+                    }
+                    return col;
+                })}
+                stickyHeader
+                bordered
+                fullWidth
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                onScroll={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                expandable={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }}
+                renderExpandedRow={(row) => (
+                    <DsStack direction="column" gap={8}>
+                        <DsStack direction="column" gap={4}>
+                            <DsTypography variant="heading4">Expanded Details for {row.firstName}</DsTypography>
+                            <DsTypography variant="body-sm-reg">ID: {row.id}</DsTypography>
+                            <DsTypography variant="body-sm-reg">
+                                Full Name: {row.firstName} {row.lastName}
+                            </DsTypography>
+                            <DsTypography variant="body-sm-reg">Status: {row.status}</DsTypography>
+                        </DsStack>
+
+                        <DsTable
+                            columns={[
+                                {
+                                    accessorKey: 'id',
+                                    header: 'ID',
+                                },
+                                {
+                                    accessorKey: 'firstName',
+                                    header: 'First Name',
+                                },
+                                {
+                                    accessorKey: 'lastName',
+                                    header: 'Last Name',
+                                },
+                            ]}
+                            data={defaultData.slice(0, 3)}
+                        />
+                    </DsStack>
+                )} />
+            {isLoading && (
+                <div className={styles.loadingOverlay}>
+                    <DsStack direction="column" gap={8} alignItems="center">
+                        <DsSpinner size="small" />
+                        <DsTypography variant="body-sm-reg" color="secondary">
+                            Loading data...
+                        </DsTypography>
+                    </DsStack>
+                </div>
+            )}
+        </div>
+    );
+};
+
+## Virtualized Infinite Scroll
+
+### Show code
+{
+  name: 'Virtualized Infinite Scroll',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const pageSize = 5;
+    const totalRows = 60;
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const {
+      data: infiniteQueryData,
+      fetchNextPage,
+      isFetching
+    } = useInfiniteQuery({
+      queryKey: ['people-autofill', sorting],
+      queryFn: async ({
+        pageParam
+      }) => {
+        const start = pageParam * pageSize;
+        return await fetchData(start, pageSize, sorting, totalRows);
+      },
+      initialPageParam: 0,
+      getNextPageParam: (_lastGroup, groups) => groups.length,
+      placeholderData: keepPreviousData
+    }, queryClient);
+    const flatData = useMemo(() => infiniteQueryData?.pages.flatMap(page => page.data) ?? [], [infiniteQueryData]);
+    const fetchedTotal = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? totalRows;
+    const hasMore = flatData.length < fetchedTotal;
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={flatData} onSortingChange={setSorting} virtualized={true} infiniteScroll={{
+        hasMore,
+        isLoadingMore: isFetching,
+        onLoadMore: fetchNextPage
+      }} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const InfiniteScroll = () => {
+    const pageSize = 5;
+    const totalRows = 60;
+    const [sorting, setSorting] = useState<SortingState>([]);
+
+    const {
+        data: infiniteQueryData,
+        fetchNextPage,
+        isFetching,
+    } = useInfiniteQuery(
+        {
+            queryKey: ['people-autofill', sorting],
+            queryFn: async ({ pageParam }) => {
+                const start = pageParam * pageSize;
+                return await fetchData(start, pageSize, sorting, totalRows);
+            },
+            initialPageParam: 0,
+            getNextPageParam: (_lastGroup, groups) => groups.length,
+            placeholderData: keepPreviousData,
+        },
+        queryClient,
+    );
+
+    const flatData = useMemo(
+        () => infiniteQueryData?.pages.flatMap((page) => page.data) ?? [],
+        [infiniteQueryData],
+    );
+
+    const fetchedTotal = infiniteQueryData?.pages[0]?.meta.totalRowCount ?? totalRows;
+    const hasMore = flatData.length < fetchedTotal;
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }} />
+        </div>
+    );
+};
+
+## Virtualized Editable Table
+
+### Show code
+{
+  name: 'Virtualized Editable Table',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={data} columns={editableColumns} virtualized onCellEdit={(row: Person, columnId, value) => {
+        setData(rows => updateRow(rows, row.id, columnId as keyof Person, value as never));
+      }} />
+            </div>;
+  }
+}
+
+### MCP manifest
+const VirtualizedEditable = () => {
+    const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                data={data}
+                columns={editableColumns}
+                virtualized
+                onCellEdit={(row: Person, columnId, value) => {
+                    setData((rows) => updateRow(rows, row.id, columnId as keyof Person, value as never));
+                }} />
+        </div>
+    );
+};
+
+## Virtualized With Controls
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <DsTable {...args} data={data} virtualized />;
+  },
+  args: {
+    controls: <DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+                <DsButtonV3 variant="secondary" size="small">
+                    RED version V2
+                </DsButtonV3>
+                <DsStack direction="row" gap={8} alignItems="center">
+                    <DsButtonV3 variant="secondary" size="small">
+                        Import RED
+                    </DsButtonV3>
+                    <DsButtonV3 variant="secondary" size="small">
+                        Export RED
+                    </DsButtonV3>
+                    <DsButtonV3 size="small">Actions</DsButtonV3>
+                </DsStack>
+            </DsStack>
+  }
+}
+
+### MCP manifest
+const VirtualizedWithControls = () => {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <DsTable
+            columns={columns}
+            stickyHeader
+            bordered
+            fullWidth
+            expandable={false}
+            emptyState={<TableEmptyState />}
+            onRowClick={fn()}
+            controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
+                <DsButtonV3 variant="secondary" size="small">
+					RED version V2
+				</DsButtonV3>
+                <DsStack direction="row" gap={8} alignItems="center">
+					<DsButtonV3 variant="secondary" size="small">
+						Import RED
+					</DsButtonV3>
+					<DsButtonV3 variant="secondary" size="small">
+						Export RED
+					</DsButtonV3>
+					<DsButtonV3 size="small">Actions</DsButtonV3>
+				</DsStack>
+            </DsStack>)}
+            data={data}
+            virtualized />
+    );
+};
+
+## Virtualized Resizable Columns
+
+### Show code
+{
+  name: 'Virtualized Resizable Columns',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <div className={styles.virtualizedTableWrapper}>
+                <DsTable {...args} data={data} />
+            </div>;
+  },
+  args: {
+    virtualized: true,
+    resizableColumns: true
+  }
+}
+
+### MCP manifest
+const VirtualizedResizable = () => {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <div className={styles.virtualizedTableWrapper}>
+            <DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={<TableEmptyState />}
+                onRowClick={fn()}
+                virtualized
+                resizableColumns
+                data={data} />
+        </div>
+    );
+};

@@ -48,6 +48,14 @@ _Avoid_: sub props, child props
 Content a **Component** renders when it has genuinely zero data items. Distinct from a loading/skeleton state and from a transient frame where a virtualized body has not yet produced rows. Gate it on data count, never on rendered/virtual row count.
 _Avoid_: no-data view, blank state, placeholder
 
+**Icon**:
+A monochrome glyph rendered by `DsIcon` — Material Symbols or a `special-*` custom SVG — at 16–32px, tinted with `currentColor`.
+_Avoid_: rich icon, state icon (those tiles are **Illustrations**)
+
+**Illustration**:
+A 250×200 colorful empty-screen tile rendered by `DsIllustration` (clouds plus a scene). Not an **Icon**.
+_Avoid_: rich icon, DAP_State Icon (as a code name), Cluster NE (for the Device tile)
+
 **Successor component**:
 A new **Component** folder that supersedes an older one while the old export remains (often `ds-{name}-v2` or `ds-{name}-v3`). Mark the old API `@deprecated` in types and stories; prefer the successor in new code.
 _Avoid_: replacement, v2 component (as a synonym for the pattern name)

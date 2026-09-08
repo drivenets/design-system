@@ -1,0 +1,9 @@
+# DsIllustration docs snippets
+
+## Default
+
+### Show code
+<DsIllustration variant="no-tasks" />
+
+### MCP manifest
+const Default = () => <DsIllustration variant="no-tasks" />;
