@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/97 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/97 infos</a><span class="filter-pill ok" aria-disabled="true">549 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/97 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/97 infos</a><span class="filter-pill ok" aria-disabled="true">551 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -18086,7 +18086,7 @@ zebra?: boolean</code></pre>
       <div class="badges">
         <label for="c-69-components-table-active-row-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-69-components-table-active-row-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-69-components-table-active-row-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -18503,17 +18503,43 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsDrawer, DsIcon, DsTable, ProgressInfographic, TableEmptyState } from "@drivenets/design-system";</code></pre>
+                <pre><code>import {
+    DsButtonV3,
+    DsDrawer,
+    DsStack,
+    DsTable,
+    DsTypography,
+    ProgressInfographic,
+    TableEmptyState,
+} from "@drivenets/design-system";</code></pre>
               </div>
           
           
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Active Row</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pass `activeRowId` to highlight a single row independently of selection. The highlight persists until you change or clear the id — useful for marking the record a side panel or detail view is currently showing.</div>
+              <pre><code>const ActiveRow = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData.slice(0, 10)}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    emptyState={&lt;TableEmptyState /&gt;}
+    onRowClick={fn()}
+    activeRowId=&quot;3&quot; /&gt;;</code></pre>
+            </div>
             <div class="note ok">
               <div class="row">
                 <span class="ex-name">Active Row with Drawer</span>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Pass `activeRowId` to keep a row highlighted independently of selection — ideal for a master/detail layout where clicking a row opens a drawer. Track the clicked record in state, derive `activeRowId` from it, and clear it when the drawer closes. Clicking the active row again toggles the drawer shut.</div>
               <pre><code>const WithDrawerAndActiveRow = () =&gt; {
     const [selectedPerson, setSelectedPerson] = useState&lt;Person | null&gt;(null);
 
@@ -18527,13 +18553,7 @@ zebra?: boolean</code></pre>
     };
 
     return (
-        &lt;div&gt;
-            &lt;div className={styles.programmaticSelectionDemo}&gt;
-                &lt;h4 className={styles.programmaticSelectionDemo__title}&gt;Active Row with Drawer Demo&lt;/h4&gt;
-                &lt;p className={styles.programmaticSelectionDemo__description}&gt;Click on any row to open a drawer with detailed information. The clicked row will remain
-                                            highlighted to indicate which record the drawer is displaying.
-                                        &lt;/p&gt;
-            &lt;/div&gt;
+        &lt;&gt;
             &lt;DsTable
                 columns={columns}
                 data={defaultData.slice(0, 10)}
@@ -18555,60 +18575,63 @@ zebra?: boolean</code></pre>
                 position=&quot;end&quot;&gt;
                 {selectedPerson &amp;&amp; (
                     &lt;div className={styles.drawerContent}&gt;
-                        &lt;div className={styles.drawerHeader}&gt;
-                            &lt;h2 className={styles.drawerTitle}&gt;Person Details&lt;/h2&gt;
-                            &lt;button
-                                onClick={() =&gt; setSelectedPerson(null)}
-                                className={styles.drawerCloseButton}
-                                aria-label=&quot;Close drawer&quot;
-                            &gt;
-                                &lt;DsIcon icon=&quot;close&quot; size=&quot;medium&quot; /&gt;
-                            &lt;/button&gt;
-                        &lt;/div&gt;
+                        &lt;DsStack direction=&quot;column&quot; gap={24}&gt;
+                            &lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot;&gt;
+                                &lt;DsTypography variant=&quot;heading2&quot;&gt;Person Details&lt;/DsTypography&gt;
+                                &lt;DsButtonV3
+                                    variant=&quot;tertiary&quot;
+                                    size=&quot;small&quot;
+                                    icon=&quot;close&quot;
+                                    aria-label=&quot;Close drawer&quot;
+                                    onClick={() =&gt; setSelectedPerson(null)}
+                                /&gt;
+                            &lt;/DsStack&gt;
 
-                        &lt;div className={styles.drawerDetails}&gt;
-                            &lt;div className={styles.drawerDetailItem}&gt;
-                                &lt;strong className={styles.drawerDetailLabel}&gt;Full Name&lt;/strong&gt;
-                                &lt;p className={styles.drawerDetailValue}&gt;
-                                    {selectedPerson.firstName} {selectedPerson.lastName}
-                                &lt;/p&gt;
-                            &lt;/div&gt;
+                            &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+                                &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-md&quot; color=&quot;secondary&quot;&gt;
+                                        Full Name
+                                    &lt;/DsTypography&gt;
+                                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                                        {selectedPerson.firstName} {selectedPerson.lastName}
+                                    &lt;/DsTypography&gt;
+                                &lt;/DsStack&gt;
 
-                            &lt;div className={styles.drawerDetailItem}&gt;
-                                &lt;strong className={styles.drawerDetailLabel}&gt;Age&lt;/strong&gt;
-                                &lt;p className={styles.drawerDetailValue}&gt;{selectedPerson.age} years old&lt;/p&gt;
-                            &lt;/div&gt;
+                                &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-md&quot; color=&quot;secondary&quot;&gt;
+                                        Age
+                                    &lt;/DsTypography&gt;
+                                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;{selectedPerson.age} years old&lt;/DsTypography&gt;
+                                &lt;/DsStack&gt;
 
-                            &lt;div className={styles.drawerDetailItem}&gt;
-                                &lt;strong className={styles.drawerDetailLabel}&gt;Visits&lt;/strong&gt;
-                                &lt;p className={styles.drawerDetailValue}&gt;{selectedPerson.visits} visits&lt;/p&gt;
-                            &lt;/div&gt;
+                                &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-md&quot; color=&quot;secondary&quot;&gt;
+                                        Visits
+                                    &lt;/DsTypography&gt;
+                                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;{selectedPerson.visits} visits&lt;/DsTypography&gt;
+                                &lt;/DsStack&gt;
 
-                            &lt;div className={styles.drawerDetailItem}&gt;
-                                &lt;strong className={styles.drawerDetailLabel}&gt;Status&lt;/strong&gt;
-                                &lt;p className={classnames(styles.drawerDetailValue, styles.drawerDetailValueCapitalized)}&gt;
-                                    {selectedPerson.status}
-                                &lt;/p&gt;
-                            &lt;/div&gt;
+                                &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-md&quot; color=&quot;secondary&quot;&gt;
+                                        Status
+                                    &lt;/DsTypography&gt;
+                                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;
+                                        {selectedPerson.status.charAt(0).toUpperCase() + selectedPerson.status.slice(1)}
+                                    &lt;/DsTypography&gt;
+                                &lt;/DsStack&gt;
 
-                            &lt;div className={styles.drawerDetailItem}&gt;
-                                &lt;strong className={styles.drawerDetailLabel}&gt;Profile Progress&lt;/strong&gt;
-                                &lt;div className={styles.drawerProgressContainer}&gt;
+                                &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                                    &lt;DsTypography variant=&quot;body-sm-md&quot; color=&quot;secondary&quot;&gt;
+                                        Profile Progress
+                                    &lt;/DsTypography&gt;
                                     &lt;ProgressInfographic value={selectedPerson.progress} /&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-
-                            &lt;div className={styles.drawerNote}&gt;
-                                &lt;p&gt;
-                                    &lt;strong&gt;Note:&lt;/strong&gt; The row in the table remains highlighted while this drawer is open,
-                                    helping you keep track of which record you&amp;#39;re viewing.
-                                &lt;/p&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
+                                &lt;/DsStack&gt;
+                            &lt;/DsStack&gt;
+                        &lt;/DsStack&gt;
                     &lt;/div&gt;
                 )}
             &lt;/DsDrawer&gt;
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -19048,7 +19071,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTable, DsTagFilter } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsStack, DsTable, DsTagFilter } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -19066,7 +19089,7 @@ zebra?: boolean</code></pre>
     });
 
     return (
-        &lt;div className={styles.tableFilterContainer}&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={16} flex=&quot;1&quot;&gt;
             {filterChips.length &gt; 0 &amp;&amp; (
                 &lt;DsTagFilter
                     items={filterChips}
@@ -19083,7 +19106,7 @@ zebra?: boolean</code></pre>
                 bordered
                 fullWidth
             /&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -19107,7 +19130,7 @@ zebra?: boolean</code></pre>
     });
 
     return (
-        &lt;div className={styles.tableFilterContainer}&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={16} flex=&quot;1&quot;&gt;
             {filterChips.length &gt; 0 &amp;&amp; (
                 &lt;DsTagFilter
                     items={filterChips}
@@ -19124,7 +19147,7 @@ zebra?: boolean</code></pre>
                 bordered
                 fullWidth
             /&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -20090,7 +20113,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCheckbox, DsTable, ProgressInfographic, TableEmptyState } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsCheckbox, DsStack, DsTable, ProgressInfographic, TableEmptyState } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -20130,7 +20153,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)} /&gt;;</code></pre>
+    onRowClick={fn()} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -20138,7 +20161,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Show or hide columns dynamically via the controlled `columnVisibility` / `onColumnVisibilityChange` props — useful for customizable table views or responsive layouts. Toggle a checkbox to add or remove the matching column.</div>
               <pre><code>const ColumnHiding = () =&gt; {
     const columnsToToggle = [
         { id: &#39;age&#39;, label: &#39;Age&#39; },
@@ -20161,14 +20184,8 @@ zebra?: boolean</code></pre>
     };
 
     return (
-        &lt;div&gt;
-            &lt;div className={styles.programmaticSelectionDemo}&gt;
-                &lt;h4 className={styles.programmaticSelectionDemo__title}&gt;Column Hiding Demo&lt;/h4&gt;
-                &lt;p className={styles.programmaticSelectionDemo__description}&gt;Use the checkboxes below to show or hide specific columns dynamically. This is useful for
-                                            customizable table views or responsive layouts.
-                                        &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.programmaticSelectionControls}&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsStack direction=&quot;row&quot; gap={16} flexWrap=&quot;wrap&quot;&gt;
                 {columnsToToggle.map((column) =&gt; (
                     &lt;DsCheckbox
                         key={column.id}
@@ -20177,7 +20194,7 @@ zebra?: boolean</code></pre>
                         onCheckedChange={() =&gt; toggleColumn(column.id)}
                     /&gt;
                 ))}
-            &lt;/div&gt;
+            &lt;/DsStack&gt;
             &lt;DsTable
                 columns={columns}
                 data={defaultData}
@@ -20186,10 +20203,10 @@ zebra?: boolean</code></pre>
                 fullWidth
                 expandable={false}
                 emptyState={&lt;TableEmptyState /&gt;}
-                onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+                onRowClick={fn()}
                 columnVisibility={columnVisibility}
                 onColumnVisibilityChange={setColumnVisibility} /&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -21353,7 +21370,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsStack, DsTable, DsTypography, TableEmptyState } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -21374,15 +21391,15 @@ zebra?: boolean</code></pre>
     emptyState={&lt;TableEmptyState /&gt;}
     onRowClick={fn()}
     renderExpandedRow={(row) =&gt; (
-        &lt;&gt;
-            &lt;div className={styles.expandedRowDetails}&gt;
-                &lt;h4&gt;Expanded Details for {row.firstName}&lt;/h4&gt;
-                &lt;p&gt;ID: {row.id}&lt;/p&gt;
-                &lt;p&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={8}&gt;
+            &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                &lt;DsTypography variant=&quot;heading4&quot;&gt;Expanded Details for {row.firstName}&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;ID: {row.id}&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;
                     Full Name: {row.firstName} {row.lastName}
-                &lt;/p&gt;
-                &lt;p&gt;Status: {row.status}&lt;/p&gt;
-            &lt;/div&gt;
+                &lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Status: {row.status}&lt;/DsTypography&gt;
+            &lt;/DsStack&gt;
 
             &lt;DsTable
                 columns={[
@@ -21401,7 +21418,7 @@ zebra?: boolean</code></pre>
                 ]}
                 data={defaultData.slice(0, 3)}
             /&gt;
-        &lt;/&gt;
+        &lt;/DsStack&gt;
     )} /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -21421,7 +21438,11 @@ zebra?: boolean</code></pre>
     emptyState={&lt;TableEmptyState /&gt;}
     onRowClick={fn()}
     expandableColumnWidth={48}
-    renderExpandedRow={(row) =&gt; &lt;div className={styles.expandedRowDetails}&gt;Details for {row.firstName}&lt;/div&gt;} /&gt;;</code></pre>
+    renderExpandedRow={(row) =&gt; (
+        &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Details for {row.firstName}&lt;/DsTypography&gt;
+        &lt;/DsStack&gt;
+    )} /&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -21429,7 +21450,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Drive expansion imperatively through the table ref. `expandRow`, `expandRows`, `expandAllRows`, and `collapseAllRows` on `DsTableApi` let a parent expand or collapse rows from outside the table.</div>
               <pre><code>const ProgrammaticExpansion = () =&gt; {
     const tableRef = useRef&lt;DsTableApi&lt;Person&gt;&gt;(null);
     const [expandedRows, setExpandedRows] = useState&lt;string[]&gt;([]);
@@ -21460,36 +21481,23 @@ zebra?: boolean</code></pre>
     };
 
     return (
-        &lt;div&gt;
-            &lt;div className={styles.programmaticSelectionDemo}&gt;
-                &lt;h4 className={styles.programmaticSelectionDemo__title}&gt;Programmatic Row Expansion Demo&lt;/h4&gt;
-                &lt;p className={styles.programmaticSelectionDemo__description}&gt;Use the buttons below to programmatically control row expansion using TanStack Table v8 APIs.
-                                        &lt;/p&gt;
-                &lt;p className={styles.programmaticSelectionDemo__selectedRows}&gt;Expanded rows: {expandedRows.length &gt; 0 ? expandedRows.join(&#39;, &#39;) : &#39;None&#39;}
-                &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.programmaticSelectionControls}&gt;
-                &lt;button
-                    onClick={() =&gt; expandRow(&#39;2&#39;)}
-                    className={styles.programmaticSelectionButton}&gt;Expand Kevin
-                                        &lt;/button&gt;
-                &lt;button
-                    onClick={() =&gt; expandRow(&#39;3&#39;)}
-                    className={styles.programmaticSelectionButton}&gt;Expand John
-                                        &lt;/button&gt;
-                &lt;button
-                    onClick={() =&gt; expandRow(&#39;4&#39;)}
-                    className={styles.programmaticSelectionButton}&gt;Expand Jane
-                                        &lt;/button&gt;
-                &lt;button onClick={expandAllRows} className={styles.programmaticSelectionButton}&gt;Expand All
-                                        &lt;/button&gt;
-                &lt;button onClick={collapseAllRows} className={styles.programmaticSelectionButton}&gt;Collapse All
-                                        &lt;/button&gt;
-                &lt;button
-                    onClick={expandFirstThreeRows}
-                    className={styles.programmaticSelectionButton}&gt;Expand First 3 Expandable
-                                        &lt;/button&gt;
-            &lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Expanded rows: {expandedRows.length &gt; 0 ? expandedRows.join(&#39;, &#39;) : &#39;None&#39;}
+            &lt;/DsTypography&gt;
+            &lt;DsStack direction=&quot;row&quot; gap={8} flexWrap=&quot;wrap&quot;&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={() =&gt; expandRow(&#39;2&#39;)}&gt;Expand Kevin
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={() =&gt; expandRow(&#39;3&#39;)}&gt;Expand John
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={() =&gt; expandRow(&#39;4&#39;)}&gt;Expand Jane
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={expandAllRows}&gt;Expand All
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={collapseAllRows}&gt;Collapse All
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={expandFirstThreeRows}&gt;Expand First 3 Expandable
+                                        &lt;/DsButtonV3&gt;
+            &lt;/DsStack&gt;
             &lt;DsTable
                 columns={columns}
                 data={defaultData.slice(0, 5)}
@@ -21500,17 +21508,17 @@ zebra?: boolean</code></pre>
                 emptyState={&lt;TableEmptyState /&gt;}
                 onRowClick={fn()}
                 renderExpandedRow={(row) =&gt; (
-                    &lt;div className={styles.expandedRowDetails}&gt;
-                        &lt;h4&gt;Expanded Details for {row.firstName}&lt;/h4&gt;
-                        &lt;p&gt;ID: {row.id}&lt;/p&gt;
-                        &lt;p&gt;
+                    &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                        &lt;DsTypography variant=&quot;heading4&quot;&gt;Expanded Details for {row.firstName}&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;ID: {row.id}&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;
                             Full Name: {row.firstName} {row.lastName}
-                        &lt;/p&gt;
-                        &lt;p&gt;Status: {row.status}&lt;/p&gt;
-                    &lt;/div&gt;
+                        &lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Status: {row.status}&lt;/DsTypography&gt;
+                    &lt;/DsStack&gt;
                 )}
                 ref={tableRef} /&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -21533,7 +21541,7 @@ zebra?: boolean</code></pre>
       <div class="badges">
         <label for="c-75-components-table-loading-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-75-components-table-loading-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-75-components-table-loading-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -21960,8 +21968,24 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Set `loading` to render skeleton rows. Each cell falls back to a default skeleton bar sized to its column.</div>
               <pre><code>const Loading = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={&lt;TableEmptyState /&gt;}
+    loading /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Loading Cell</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Provide a per-column `loadingCell` to control the skeleton shown while `loading` is true — here the first column renders a circular skeleton instead of the default bar.</div>
+              <pre><code>const CustomLoadingCell = () =&gt; &lt;DsTable
     columns={loadingColumns}
     data={defaultData}
     stickyHeader
@@ -23053,7 +23077,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    onRowClick={fn()}
     reorderable
     onOrderChange={fn()} /&gt;;</code></pre>
             </div>
@@ -23072,7 +23096,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    onRowClick={fn()}
     reorderable
     reorderableColumnWidth={80}
     onOrderChange={fn()} /&gt;;</code></pre>
@@ -23251,7 +23275,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    onRowClick={fn()}
     selectable
     actions={[
         {
@@ -23707,7 +23731,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsTable, TableEmptyState } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsStack, DsTable, DsTypography, TableEmptyState } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -23726,7 +23750,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    onRowClick={fn()}
     selectable
     onSelectionChange={fn()} /&gt;;</code></pre>
             </div>
@@ -23745,7 +23769,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    onRowClick={fn()}
     selectable
     selectableColumnWidth={48}
     onSelectionChange={fn()} /&gt;;</code></pre>
@@ -23756,63 +23780,51 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Drive selection imperatively through the table ref. `selectRow`, `selectRows`, `selectAllRows`, and `deselectAllRows` on `DsTableApi` let a parent control selection from outside the table (toolbars, keyboard shortcuts, bulk flows).</div>
               <pre><code>const ProgrammaticRowSelection = () =&gt; {
     const tableRef = useRef&lt;DsTableApi&lt;Person&gt;&gt;(null);
     const [selectedRows, setSelectedRows] = useState&lt;string[]&gt;([]);
 
-    const selectRow = (rowId: string) =&gt; {
-        tableRef.current?.selectRow(rowId);
-    };
-
-    const selectAllRows = () =&gt; {
-        tableRef.current?.selectAllRows();
-    };
-
-    const deselectAllRows = () =&gt; {
-        tableRef.current?.deselectAllRows();
-    };
-
-    const selectSpecificRows = () =&gt; {
-        tableRef.current?.selectRows([&#39;1&#39;, &#39;2&#39;, &#39;3&#39;]);
-    };
-
     const handleSelectionChange = (selection: Record&lt;string, boolean&gt;) =&gt; {
-        const selectedIds = Object.keys(selection);
-        setSelectedRows(selectedIds);
+        setSelectedRows(Object.keys(selection));
     };
 
     return (
-        &lt;div&gt;
-            &lt;div className={styles.programmaticSelectionDemo}&gt;
-                &lt;h4 className={styles.programmaticSelectionDemo__title}&gt;Programmatic Row Selection Demo&lt;/h4&gt;
-                &lt;p className={styles.programmaticSelectionDemo__description}&gt;Use the buttons below to programmatically control row selection using TanStack Table v8 APIs.
-                                        &lt;/p&gt;
-                &lt;p className={styles.programmaticSelectionDemo__selectedRows}&gt;Selected rows: {selectedRows.length &gt; 0 ? selectedRows.join(&#39;, &#39;) : &#39;None&#39;}
-                &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.programmaticSelectionControls}&gt;
-                &lt;button
-                    onClick={() =&gt; selectRow(&#39;1&#39;)}
-                    className={styles.programmaticSelectionButton}&gt;Select Row 1
-                                        &lt;/button&gt;
-                &lt;button
-                    onClick={() =&gt; selectRow(&#39;2&#39;)}
-                    className={styles.programmaticSelectionButton}&gt;Select Row 2
-                                        &lt;/button&gt;
-                &lt;button
-                    onClick={() =&gt; selectRow(&#39;3&#39;)}
-                    className={styles.programmaticSelectionButton}&gt;Select Row 3
-                                        &lt;/button&gt;
-                &lt;button onClick={selectAllRows} className={styles.programmaticSelectionButton}&gt;Select All
-                                        &lt;/button&gt;
-                &lt;button onClick={deselectAllRows} className={styles.programmaticSelectionButton}&gt;Deselect All
-                                        &lt;/button&gt;
-                &lt;button
-                    onClick={selectSpecificRows}
-                    className={styles.programmaticSelectionButton}&gt;Select First 3 Rows
-                                        &lt;/button&gt;
-            &lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Selected rows: {selectedRows.length &gt; 0 ? selectedRows.join(&#39;, &#39;) : &#39;None&#39;}
+            &lt;/DsTypography&gt;
+            &lt;DsStack direction=&quot;row&quot; gap={8} flexWrap=&quot;wrap&quot;&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.selectRow(&#39;1&#39;)}&gt;Select Row 1
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.selectRow(&#39;2&#39;)}&gt;Select Row 2
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.selectRow(&#39;3&#39;)}&gt;Select Row 3
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.selectAllRows()}&gt;Select All
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.deselectAllRows()}&gt;Deselect All
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.selectRows([&#39;1&#39;, &#39;2&#39;, &#39;3&#39;])}&gt;Select First 3 Rows
+                                        &lt;/DsButtonV3&gt;
+            &lt;/DsStack&gt;
             &lt;DsTable
                 columns={columns}
                 data={defaultData}
@@ -23821,12 +23833,12 @@ zebra?: boolean</code></pre>
                 fullWidth
                 expandable={false}
                 emptyState={&lt;TableEmptyState /&gt;}
-                onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+                onRowClick={fn()}
                 selectable
                 showSelectAllCheckbox={false}
                 ref={tableRef}
                 onSelectionChange={handleSelectionChange} /&gt;
-        &lt;/div&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -23836,7 +23848,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Cap how many rows can be selected at once. Track selection in state and make `selectable` a predicate: a row stays selectable only if it is already selected or the count is under the limit, so the remaining checkboxes disable once the cap is reached.</div>
               <pre><code>const MaxSelectionLimit = () =&gt; {
     const [rowSelection, setRowSelection] = useState&lt;Record&lt;string, boolean&gt;&gt;({});
     const maxSelections = 2;
@@ -23849,15 +23861,9 @@ zebra?: boolean</code></pre>
     };
 
     return (
-        &lt;div&gt;
-            &lt;div className={styles.programmaticSelectionDemo}&gt;
-                &lt;h4 className={styles.programmaticSelectionDemo__title}&gt;Max Selection Limit Demo&lt;/h4&gt;
-                &lt;p className={styles.programmaticSelectionDemo__description}&gt;You can select at most {maxSelections}rows. Once the limit is reached, checkboxes for other rows
-                                            are disabled.
-                                        &lt;/p&gt;
-                &lt;p className={styles.programmaticSelectionDemo__selectedRows}&gt;Selected: {selectedCount}/ {maxSelections}
-                &lt;/p&gt;
-            &lt;/div&gt;
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Selected: {selectedCount}/ {maxSelections}
+            &lt;/DsTypography&gt;
             &lt;DsTable
                 columns={columns}
                 data={defaultData}
@@ -23866,13 +23872,11 @@ zebra?: boolean</code></pre>
                 fullWidth
                 expandable={false}
                 emptyState={&lt;TableEmptyState /&gt;}
-                onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+                onRowClick={fn()}
                 showSelectAllCheckbox={false}
                 onSelectionChange={handleSelectionChange}
-                selectable={(rowData) =&gt; {
-                    return rowSelection[rowData.id] || selectedCount &lt; maxSelections;
-                }} /&gt;
-        &lt;/div&gt;
+                selectable={(rowData) =&gt; rowSelection[rowData.id] || selectedCount &lt; maxSelections} /&gt;
+        &lt;/DsStack&gt;
     );
 };</code></pre>
             </div>
@@ -24320,6 +24324,7 @@ zebra?: boolean</code></pre>
     DsTableEditCellNumber,
     DsTableEditCellSelect,
     DsTableEditCellText,
+    DsTypography,
     TableEmptyState,
 } from "@drivenets/design-system";</code></pre>
               </div>
@@ -24340,7 +24345,7 @@ zebra?: boolean</code></pre>
     fullWidth
     expandable={false}
     emptyState={&lt;TableEmptyState /&gt;}
-    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+    onRowClick={fn()}
     virtualized /&gt;;</code></pre>
             </div>
             <div class="note ok">
@@ -24349,7 +24354,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Row virtualization with selection, backed by TanStack Query infinite scroll. Keep the flattened pages in `data`, wire `infiniteScroll` to the query&#39;s `fetchNextPage` / loading flags, and the table renders only visible rows — performant even for very large datasets.</div>
               <pre><code>const VirtualizedSelectable = () =&gt; {
     const pageSize = 10;
     const [sorting, setSorting] = useState&lt;SortingState&gt;([]);
@@ -24382,51 +24387,43 @@ zebra?: boolean</code></pre>
     const hasMore = flatData.length &lt; totalRows;
 
     return (
-        &lt;div className={styles.virtualizedDemoContainer}&gt;
-            &lt;div className={styles.virtualizedDemoHeader}&gt;
-                &lt;h4 className={styles.virtualizedDemoHeader__title}&gt;Virtualized Table Demo&lt;/h4&gt;
-                &lt;p className={styles.virtualizedDemoHeader__description}&gt;This table uses infinite query to fetch data as you scroll, making it performant even with large
-                                            datasets. Try scrolling to see the data loading!
-                                        &lt;/p&gt;
-                &lt;p className={styles.virtualizedDemoHeader__stats}&gt;({flatData.length}of {totalRows}rows fetched)
-                                        &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.virtualizedTableWrapper}&gt;
-                &lt;DsTable
-                    columns={columns.map((col) =&gt; {
-                        if (&#39;accessorKey&#39; in col &amp;&amp; col.accessorKey === &#39;age&#39;) {
-                            return {
-                                ...col,
-                                size: 100,
-                            };
-                        }
-                        return col;
-                    })}
-                    stickyHeader
-                    bordered
-                    fullWidth
-                    expandable={false}
-                    emptyState={&lt;TableEmptyState /&gt;}
-                    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
-                    selectable
-                    onScroll={fn()}
-                    data={flatData}
-                    onSortingChange={setSorting}
-                    virtualized={true}
-                    infiniteScroll={{
-                        hasMore,
-                        isLoadingMore: isFetching,
-                        onLoadMore: fetchNextPage,
-                    }} /&gt;
-                {isLoading &amp;&amp; (
-                    &lt;div className={styles.loadingOverlay}&gt;
-                        &lt;div className={styles.loadingContent}&gt;
-                            &lt;DsSpinner size=&quot;small&quot; /&gt;
-                            &lt;span className={styles.loadingText}&gt;Loading data...&lt;/span&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                )}
-            &lt;/div&gt;
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                columns={columns.map((col) =&gt; {
+                    if (&#39;accessorKey&#39; in col &amp;&amp; col.accessorKey === &#39;age&#39;) {
+                        return {
+                            ...col,
+                            size: 100,
+                        };
+                    }
+                    return col;
+                })}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={&lt;TableEmptyState /&gt;}
+                onRowClick={fn()}
+                selectable
+                onScroll={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }} /&gt;
+            {isLoading &amp;&amp; (
+                &lt;div className={styles.loadingOverlay}&gt;
+                    &lt;DsStack direction=&quot;column&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsSpinner size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;
+                            Loading data...
+                        &lt;/DsTypography&gt;
+                    &lt;/DsStack&gt;
+                &lt;/div&gt;
+            )}
         &lt;/div&gt;
     );
 };</code></pre>
@@ -24437,7 +24434,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Combine row virtualization with expandable rows. `renderExpandedRow` supplies the detail content for each expanded row while the body stays virtualized.</div>
               <pre><code>const VirtualizedExpandable = () =&gt; {
     const pageSize = 10;
     const [sorting, setSorting] = useState&lt;SortingState&gt;([]);
@@ -24470,80 +24467,72 @@ zebra?: boolean</code></pre>
     const hasMore = flatData.length &lt; totalRows;
 
     return (
-        &lt;div className={styles.virtualizedDemoContainer}&gt;
-            &lt;div className={styles.virtualizedDemoHeader}&gt;
-                &lt;h4 className={styles.virtualizedDemoHeader__title}&gt;Virtualized Table with Expandable Rows&lt;/h4&gt;
-                &lt;p className={styles.virtualizedDemoHeader__description}&gt;This table combines virtualization for large datasets with expandable rows. Click the chevron to
-                                            expand rows and see additional details.
-                                        &lt;/p&gt;
-                &lt;p className={styles.virtualizedDemoHeader__stats}&gt;({flatData.length}of {totalRows}rows fetched)
-                                        &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.virtualizedTableWrapper}&gt;
-                &lt;DsTable
-                    columns={columns.map((col) =&gt; {
-                        if (&#39;accessorKey&#39; in col &amp;&amp; col.accessorKey === &#39;age&#39;) {
-                            return {
-                                ...col,
-                                size: 100,
-                            };
-                        }
-                        return col;
-                    })}
-                    stickyHeader
-                    bordered
-                    fullWidth
-                    emptyState={&lt;TableEmptyState /&gt;}
-                    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
-                    onScroll={fn()}
-                    data={flatData}
-                    onSortingChange={setSorting}
-                    virtualized={true}
-                    expandable={true}
-                    infiniteScroll={{
-                        hasMore,
-                        isLoadingMore: isFetching,
-                        onLoadMore: fetchNextPage,
-                    }}
-                    renderExpandedRow={(row) =&gt; (
-                        &lt;&gt;
-                            &lt;div className={styles.expandedRowDetails}&gt;
-                                &lt;h4&gt;Expanded Details for {row.firstName}&lt;/h4&gt;
-                                &lt;p&gt;ID: {row.id}&lt;/p&gt;
-                                &lt;p&gt;
-                                    Full Name: {row.firstName} {row.lastName}
-                                &lt;/p&gt;
-                                &lt;p&gt;Status: {row.status}&lt;/p&gt;
-                            &lt;/div&gt;
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                columns={columns.map((col) =&gt; {
+                    if (&#39;accessorKey&#39; in col &amp;&amp; col.accessorKey === &#39;age&#39;) {
+                        return {
+                            ...col,
+                            size: 100,
+                        };
+                    }
+                    return col;
+                })}
+                stickyHeader
+                bordered
+                fullWidth
+                emptyState={&lt;TableEmptyState /&gt;}
+                onRowClick={fn()}
+                onScroll={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                expandable={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }}
+                renderExpandedRow={(row) =&gt; (
+                    &lt;DsStack direction=&quot;column&quot; gap={8}&gt;
+                        &lt;DsStack direction=&quot;column&quot; gap={4}&gt;
+                            &lt;DsTypography variant=&quot;heading4&quot;&gt;Expanded Details for {row.firstName}&lt;/DsTypography&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;ID: {row.id}&lt;/DsTypography&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;
+                                Full Name: {row.firstName} {row.lastName}
+                            &lt;/DsTypography&gt;
+                            &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Status: {row.status}&lt;/DsTypography&gt;
+                        &lt;/DsStack&gt;
 
-                            &lt;DsTable
-                                columns={[
-                                    {
-                                        accessorKey: &#39;id&#39;,
-                                        header: &#39;ID&#39;,
-                                    },
-                                    {
-                                        accessorKey: &#39;firstName&#39;,
-                                        header: &#39;First Name&#39;,
-                                    },
-                                    {
-                                        accessorKey: &#39;lastName&#39;,
-                                        header: &#39;Last Name&#39;,
-                                    },
-                                ]}
-                                data={defaultData.slice(0, 3)}
-                            /&gt;
-                        &lt;/&gt;
-                    )} /&gt;
-                {isLoading &amp;&amp; (
-                    &lt;div className={styles.loadingOverlay}&gt;
-                        &lt;div className={styles.loadingContent}&gt;
-                            &lt;DsSpinner size=&quot;small&quot; /&gt;
-                            &lt;span className={styles.loadingText}&gt;Loading data...&lt;/span&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                )}
-            &lt;/div&gt;
+                        &lt;DsTable
+                            columns={[
+                                {
+                                    accessorKey: &#39;id&#39;,
+                                    header: &#39;ID&#39;,
+                                },
+                                {
+                                    accessorKey: &#39;firstName&#39;,
+                                    header: &#39;First Name&#39;,
+                                },
+                                {
+                                    accessorKey: &#39;lastName&#39;,
+                                    header: &#39;Last Name&#39;,
+                                },
+                            ]}
+                            data={defaultData.slice(0, 3)}
+                        /&gt;
+                    &lt;/DsStack&gt;
+                )} /&gt;
+            {isLoading &amp;&amp; (
+                &lt;div className={styles.loadingOverlay}&gt;
+                    &lt;DsStack direction=&quot;column&quot; gap={8} alignItems=&quot;center&quot;&gt;
+                        &lt;DsSpinner size=&quot;small&quot; /&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;
+                            Loading data...
+                        &lt;/DsTypography&gt;
+                    &lt;/DsStack&gt;
+                &lt;/div&gt;
+            )}
         &lt;/div&gt;
     );
 };</code></pre>
@@ -24554,7 +24543,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">When the first page returns too few rows to fill the viewport, `autoFill` (on by default) keeps requesting pages until the content becomes scrollable, so infinite scroll can take over. Wire `infiniteScroll` to your query&#39;s `fetchNextPage` and loading flags.</div>
               <pre><code>const InfiniteScroll = () =&gt; {
     const pageSize = 5;
     const totalRows = 60;
@@ -24587,34 +24576,23 @@ zebra?: boolean</code></pre>
     const hasMore = flatData.length &lt; fetchedTotal;
 
     return (
-        &lt;div className={styles.virtualizedDemoContainer}&gt;
-            &lt;div className={styles.virtualizedDemoHeader}&gt;
-                &lt;h4 className={styles.virtualizedDemoHeader__title}&gt;Virtualized Infinite Scroll&lt;/h4&gt;
-                &lt;p className={styles.virtualizedDemoHeader__description}&gt;The first page only returns {pageSize}rows - too few to fill the viewport. With{&#39; &#39;}
-                    &lt;code&gt;autoFill: true&lt;/code&gt;(the default), the Table keeps requesting pages until the content
-                                            becomes scrollable.
-                                        &lt;/p&gt;
-                &lt;p className={styles.virtualizedDemoHeader__stats}&gt;({flatData.length}of {fetchedTotal}rows fetched)
-                                        &lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.virtualizedTableWrapper}&gt;
-                &lt;DsTable
-                    columns={columns}
-                    stickyHeader
-                    bordered
-                    fullWidth
-                    expandable={false}
-                    emptyState={&lt;TableEmptyState /&gt;}
-                    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
-                    data={flatData}
-                    onSortingChange={setSorting}
-                    virtualized={true}
-                    infiniteScroll={{
-                        hasMore,
-                        isLoadingMore: isFetching,
-                        onLoadMore: fetchNextPage,
-                    }} /&gt;
-            &lt;/div&gt;
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={&lt;TableEmptyState /&gt;}
+                onRowClick={fn()}
+                data={flatData}
+                onSortingChange={setSorting}
+                virtualized={true}
+                infiniteScroll={{
+                    hasMore,
+                    isLoadingMore: isFetching,
+                    onLoadMore: fetchNextPage,
+                }} /&gt;
         &lt;/div&gt;
     );
 };</code></pre>
@@ -24625,33 +24603,25 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Inline editing works with row virtualization for large datasets. Scroll through thousands of rows and double-click any editable cell to edit in place; `onCellEdit` reports the row, column, and new value to persist.</div>
               <pre><code>const VirtualizedEditable = () =&gt; {
     const [data, setData] = useState(() =&gt; generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
     return (
-        &lt;div className={styles.virtualizedDemoContainer}&gt;
-            &lt;div className={styles.virtualizedDemoHeader}&gt;
-                &lt;h4 className={styles.virtualizedDemoHeader__title}&gt;Virtualized Editable Table&lt;/h4&gt;
-                &lt;p className={styles.virtualizedDemoHeader__description}&gt;Inline editing with row virtualization. Scroll through {VIRTUALIZED_ROW_COUNT.toLocaleString()}{&#39; &#39;}rows and double-click a cell to edit in place.
-                                        &lt;/p&gt;
-                &lt;p className={styles.virtualizedDemoHeader__stats}&gt;({data.length.toLocaleString()}rows loaded)&lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.virtualizedTableWrapper}&gt;
-                &lt;DsTable
-                    stickyHeader
-                    bordered
-                    fullWidth
-                    expandable={false}
-                    emptyState={&lt;TableEmptyState /&gt;}
-                    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
-                    data={data}
-                    columns={editableColumns}
-                    virtualized
-                    onCellEdit={(row: Person, columnId, value) =&gt; {
-                        setData((rows) =&gt; updateRow(rows, row.id, columnId as keyof Person, value as never));
-                    }} /&gt;
-            &lt;/div&gt;
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={&lt;TableEmptyState /&gt;}
+                onRowClick={fn()}
+                data={data}
+                columns={editableColumns}
+                virtualized
+                onCellEdit={(row: Person, columnId, value) =&gt; {
+                    setData((rows) =&gt; updateRow(rows, row.id, columnId as keyof Person, value as never));
+                }} /&gt;
         &lt;/div&gt;
     );
 };</code></pre>
@@ -24662,7 +24632,7 @@ zebra?: boolean</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">The pinned `controls` bar stays fixed above the header while the virtualized body scrolls through a large dataset.</div>
               <pre><code>const VirtualizedWithControls = () =&gt; {
     const [data] = useState(() =&gt; generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
@@ -24674,7 +24644,7 @@ zebra?: boolean</code></pre>
             fullWidth
             expandable={false}
             emptyState={&lt;TableEmptyState /&gt;}
-            onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
+            onRowClick={fn()}
             controls={(&lt;DsStack direction=&quot;row&quot; justifyContent=&quot;space-between&quot; alignItems=&quot;center&quot; width=&quot;100%&quot;&gt;
                 &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot;&gt;
 					RED version V2
@@ -24705,26 +24675,18 @@ zebra?: boolean</code></pre>
     const [data] = useState(() =&gt; generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
 
     return (
-        &lt;div className={styles.virtualizedDemoContainer}&gt;
-            &lt;div className={styles.virtualizedDemoHeader}&gt;
-                &lt;h4 className={styles.virtualizedDemoHeader__title}&gt;Virtualized Resizable Columns&lt;/h4&gt;
-                &lt;p className={styles.virtualizedDemoHeader__description}&gt;Row virtualization with column resize. Scroll through {VIRTUALIZED_ROW_COUNT.toLocaleString()}{&#39; &#39;}rows and drag a header edge to resize.
-                                        &lt;/p&gt;
-                &lt;p className={styles.virtualizedDemoHeader__stats}&gt;({data.length.toLocaleString()}rows loaded)&lt;/p&gt;
-            &lt;/div&gt;
-            &lt;div className={styles.virtualizedTableWrapper}&gt;
-                &lt;DsTable
-                    columns={columns}
-                    stickyHeader
-                    bordered
-                    fullWidth
-                    expandable={false}
-                    emptyState={&lt;TableEmptyState /&gt;}
-                    onRowClick={(row) =&gt; console.log(&#39;Row clicked:&#39;, row)}
-                    virtualized
-                    resizableColumns
-                    data={data} /&gt;
-            &lt;/div&gt;
+        &lt;div className={styles.virtualizedTableWrapper}&gt;
+            &lt;DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                emptyState={&lt;TableEmptyState /&gt;}
+                onRowClick={fn()}
+                virtualized
+                resizableColumns
+                data={data} /&gt;
         &lt;/div&gt;
     );
 };</code></pre>
