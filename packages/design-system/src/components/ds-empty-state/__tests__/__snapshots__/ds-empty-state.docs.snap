@@ -42,9 +42,9 @@ const Message = () => <DsEmptyState variant="noMatches" message="No records matc
 
 ### Show code
 <DsEmptyState
-  illustration={<DsIllustration variant="empty-inbox" />}
+  illustration={<DsIllustration variant="no-documents" />}
   variant="noData"
 />
 
 ### MCP manifest
-const CustomIllustration = () => <DsEmptyState variant="noData" illustration={<DsIllustration variant="empty-inbox" />} />;
+const CustomIllustration = () => <DsEmptyState variant="noData" illustration={<DsIllustration variant="no-documents" />} />;
