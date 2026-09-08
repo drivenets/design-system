@@ -1,0 +1,939 @@
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name'
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name'
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age'
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    data={defaultData}
+    columns={columns}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Fixed And Fill
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 200
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 200
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 120
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      enableResizing: false,
+      header: 'Visits',
+      size: 120
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const FixedAndFill = () => <DsTable
+    data={defaultData}
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 120 },
+        {
+            accessorKey: 'visits',
+            header: 'Visits',
+            cell: (info) => info.getValue(),
+            enableResizing: false,
+            size: 120,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },
+    ]}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Grouped Columns
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          maxSize: 280,
+          minSize: 80
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name'
+        }
+      ],
+      header: 'Identity',
+      id: 'identity'
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits'
+        },
+        {
+          accessorKey: 'status',
+          cell: () => {},
+          header: 'Status'
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Progress'
+        }
+      ],
+      header: 'Activity',
+      id: 'activity'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const GroupedColumns = () => <DsTable
+    data={defaultData}
+    columns={[
+        {
+            id: 'identity',
+            header: 'Identity',
+            columns: [
+                {
+                    accessorKey: 'firstName',
+                    header: 'First Name',
+                    cell: (info) => info.getValue<string>(),
+                    minSize: 80,
+                    maxSize: 280,
+                },
+                {
+                    accessorKey: 'lastName',
+                    header: 'Last Name',
+                    cell: (info) => info.getValue<string>(),
+                },
+            ],
+        },
+        {
+            id: 'activity',
+            header: 'Activity',
+            columns: [
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>() },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue<string>() },
+                {
+                    accessorKey: 'progress',
+                    header: 'Progress',
+                    cell: (info) => `${String(info.getValue<number>())}%`,
+                },
+            ],
+        },
+    ]}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Min And Max Size
+
+### Show code
+<DsTable
+  bordered
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      maxSize: 280,
+      minSize: 80,
+      size: 200
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      minSize: 120,
+      size: 200
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      maxSize: 180,
+      size: 120
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 120
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status'
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  emptyState={<TableEmptyState />}
+  fullWidth
+  resizableColumns
+  stickyHeader
+/>
+
+### MCP manifest
+const MinAndMaxSize = () => <DsTable
+    data={defaultData}
+    columns={[
+        {
+            accessorKey: 'firstName',
+            header: 'First Name',
+            cell: (info) => info.getValue(),
+            size: 200,
+            minSize: 80,
+            maxSize: 280,
+        },
+        {
+            accessorKey: 'lastName',
+            header: 'Last Name',
+            cell: (info) => info.getValue(),
+            size: 200,
+            minSize: 120,
+        },
+        {
+            accessorKey: 'age',
+            header: 'Age',
+            cell: (info) => info.getValue(),
+            size: 120,
+            maxSize: 180,
+        },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 120 },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },
+    ]}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    emptyState={<TableEmptyState />} />;
+
+## Persisted widths
+
+### Show code
+{
+  name: 'Persisted widths',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';
+    const [tableKey, setTableKey] = useState(0);
+    let persistedWidths: Record<string, number>;
+    try {
+      persistedWidths = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;
+    } catch {
+      persistedWidths = {};
+    }
+    return <DsStack direction="column" gap={16} width="100%">
+                <DsStack direction="column" gap={8}>
+                    <DsTypography variant="heading4">Persisted widths</DsTypography>
+                    <DsTypography variant="body-sm-reg" color="secondary">
+                        Persist the map from onColumnSizingChange, then pass it back as the columnSizing prop on the next
+                        mount to restore widths — no need to stamp columnDef.size. Columns absent from the map are
+                        measured automatically. Resize a column, refresh the story, and the widths come back. Reset stored
+                        widths remounts from the default layout.
+                    </DsTypography>
+                </DsStack>
+
+                <DsStack direction="row">
+                    <DsButtonV3 variant="secondary" size="small" onClick={() => {
+          localStorage.removeItem(STORAGE_KEY);
+          setTableKey(key => key + 1);
+        }}>
+                        Reset stored widths
+                    </DsButtonV3>
+                </DsStack>
+
+                <DsTable {...args} key={tableKey} columnSizing={persistedWidths} onColumnSizingChange={columnSizing => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(columnSizing));
+      }} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const PersistedWidths = () => {
+    const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';
+    const [tableKey, setTableKey] = useState(0);
+
+    let persistedWidths: Record<string, number>;
+    try {
+        persistedWidths = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '{}') as Record<string, number>;
+    } catch {
+        persistedWidths = {};
+    }
+
+    return (
+        <DsStack direction="column" gap={16} width="100%">
+            <DsStack direction="column" gap={8}>
+                <DsTypography variant="heading4">Persisted widths</DsTypography>
+                <DsTypography variant="body-sm-reg" color="secondary">Persist the map from onColumnSizingChange, then pass it back as the columnSizing prop on the next
+                                            mount to restore widths — no need to stamp columnDef.size. Columns absent from the map are
+                                            measured automatically. Resize a column, refresh the story, and the widths come back. Reset stored
+                                            widths remounts from the default layout.
+                                        </DsTypography>
+            </DsStack>
+            <DsStack direction="row">
+                <DsButtonV3
+                    variant="secondary"
+                    size="small"
+                    onClick={() => {
+                        localStorage.removeItem(STORAGE_KEY);
+                        setTableKey((key) => key + 1);
+                    }}>Reset stored widths
+                                        </DsButtonV3>
+            </DsStack>
+            <DsTable
+                data={defaultData}
+                columns={columns}
+                resizableColumns
+                stickyHeader
+                bordered
+                fullWidth
+                emptyState={<TableEmptyState />}
+                key={tableKey}
+                columnSizing={persistedWidths}
+                onColumnSizingChange={(columnSizing) => {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(columnSizing));
+                }} />
+        </DsStack>
+    );
+};

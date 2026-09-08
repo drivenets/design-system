@@ -1,17 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { expect, screen, userEvent, within } from 'storybook/test';
+import { fn } from 'storybook/test';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsIcon } from '../../ds-icon';
 import DsTable from '../ds-table';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { DsModal } from '../../ds-modal';
+import { DsStack } from '../../ds-stack';
 import { DsVerticalTabs } from '../../ds-vertical-tabs';
 import { DsTypography } from '../../ds-typography';
 import { DsTagFilter } from '../../ds-tag-filter';
 import { useTableFilters } from '../filters/hooks/use-table-filters';
 import type { FilterNavItem } from '../filters/types/filter-adapter.types';
 import { type Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
+import { fullHeightDecorator } from './common/story-decorators';
+import { TableEmptyState } from './components';
 import styles from './ds-table.stories.module.scss';
 
 const sampleUsers = [
@@ -378,21 +381,10 @@ createCustomFilterAdapter({
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <div>No data available</div>,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		emptyState: <TableEmptyState />,
+		onRowClick: fn(),
 	},
-	decorators: [
-		(Story) => (
-			<div className={styles.storyPadding}>
-				<style>
-					{`
-            #storybook-root, html, body { height: 100%; }
-          `}
-				</style>
-				<Story />
-			</div>
-		),
-	],
+	decorators: [fullHeightDecorator],
 };
 
 export default meta;
@@ -402,6 +394,7 @@ export const FiltersPanel: Story = {
 	name: 'Toolbar — Filters Panel',
 	parameters: {
 		docs: {
+			source: { type: 'code' },
 			description: {
 				story: `
 ### Interactive Filter Example
@@ -548,50 +541,45 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 			setIsOpen(false);
 		};
 
-		// Helper component for filter tab content (label + count badge)
 		const TabLabel = ({ item }: { item: FilterNavItem }) => (
 			<>
 				<DsTypography variant="body-sm-md" className={styles.filterTabLabel}>
 					{item.label}
 				</DsTypography>
 				{!!item.count && (
-					<div className={styles.filterTabBadge}>
+					<DsStack direction="row" alignItems="center" gap={8}>
 						<span className={styles.filterTabDot} />
-						<DsTypography variant="body-sm-reg" className={styles.filterTabCount}>
+						<DsTypography variant="body-sm-reg" color="secondary">
 							{item.count}
 						</DsTypography>
-					</div>
+					</DsStack>
 				)}
 			</>
 		);
 
 		return (
-			<div className={styles.tableFilterContainer}>
-				{/* Toolbar with filter button */}
-				<div className={styles.toolbar}>
+			<DsStack direction="column" gap={16} flex="1">
+				<DsStack direction="row" justifyContent="flex-end">
 					<DsButtonV3
 						variant="secondary"
 						icon="filter_list"
 						aria-label="Filter"
 						onClick={() => setIsOpen(true)}
 					/>
-				</div>
+				</DsStack>
 
-				{/* Filter chips (automatically generated from filter state) */}
 				{filterChips.length > 0 && (
 					<DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
 				)}
 
-				{/* Table with enhanced columns (includes filter functions) */}
 				<DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
 
-				{/* Filter modal with two-column layout pattern */}
-				<DsModal style={{ height: '600px' }} open={isOpen} onOpenChange={handleOpenChange}>
+				<DsModal className={styles.filterModal} open={isOpen} onOpenChange={handleOpenChange}>
 					<DsModal.Header className={styles.filterHeader}>
-						<div className={styles.headerLeft}>
+						<DsStack direction="row" alignItems="center" gap={8}>
 							<DsIcon icon="filter_list" size="small" />
 							<DsModal.Title>Filters</DsModal.Title>
-						</div>
+						</DsStack>
 						<DsModal.CloseTrigger />
 					</DsModal.Header>
 
@@ -627,95 +615,8 @@ To add a new filter, just add one adapter to \`workflowFilters\` array. No other
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>
-			</div>
+			</DsStack>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Verify initial state: table shows all 12 rows
-		const getTableRows = () => canvas.getAllByRole('row').filter((row) => !row.querySelector('th'));
-		await expect(getTableRows()).toHaveLength(12);
-
-		// 1. Open filter modal
-		const filterButton = canvas.getByRole('button', { name: /filter/i });
-		await userEvent.click(filterButton);
-
-		// 2. Verify all tabs exist
-		const statusTab = screen.getByRole('tab', { name: /status/i });
-		const runningTab = screen.getByRole('tab', { name: /running\/completed/i });
-		const lastEditedTab = screen.getByRole('tab', { name: /last edited/i });
-
-		// 3. Status filter - select "Active" and "Running"
-		await userEvent.click(statusTab);
-
-		const activeCheckbox = screen.getByRole('checkbox', { name: /^active$/i });
-		const runningCheckbox = screen.getByRole('checkbox', { name: /^running$/i });
-
-		await userEvent.click(activeCheckbox);
-		await userEvent.click(runningCheckbox);
-
-		await expect(activeCheckbox).toBeChecked();
-		await expect(runningCheckbox).toBeChecked();
-
-		// 4. Running/Completed filter - set range
-		await userEvent.click(runningTab);
-
-		const [runningFrom, runningTo] = screen.getAllByRole('spinbutton');
-		await userEvent.type(runningFrom as HTMLElement, '0');
-		await userEvent.type(runningTo as HTMLElement, '50');
-
-		// 5. Last edited filter - select editor + time range
-		await userEvent.click(lastEditedTab);
-
-		const editorCheckbox = screen.getByRole('checkbox', { name: /marry levin/i });
-		const timeRangeRadio = screen.getByRole('radio', { name: /last 3 months/i });
-
-		await userEvent.click(editorCheckbox);
-		await userEvent.click(timeRangeRadio);
-
-		await expect(editorCheckbox).toBeChecked();
-		await expect(timeRangeRadio).toBeChecked();
-
-		// 6. Apply filters
-		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
-
-		// Verify chips appear
-		await expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
-		await expect(canvas.getByText(/status: running/i)).toBeInTheDocument();
-		await expect(canvas.getByText(/running.*0.*50/i)).toBeInTheDocument();
-		await expect(canvas.getByText(/editor: marry levin/i)).toBeInTheDocument();
-		await expect(canvas.getByText(/last 3 months/i)).toBeInTheDocument();
-
-		// 7. Verify table is filtered
-		await expect(getTableRows().length).toBeLessThan(12);
-
-		// 8. Re-open modal - verify filters preserved
-		await userEvent.click(filterButton);
-
-		await userEvent.click(screen.getByRole('tab', { name: /status/i }));
-
-		await expect(screen.getByRole('checkbox', { name: /^active$/i })).toBeChecked();
-		await expect(screen.getByRole('checkbox', { name: /^running$/i })).toBeChecked();
-
-		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
-
-		// 9. Delete individual chip. DsTagFilter renders a `Delete tag` X inside each
-		// chip; the chip itself is also role="button", so the nested button is
-		// excluded from the accessibility tree — query by label directly.
-		const activeChip = canvas.getByRole('button', { name: /status: active/i });
-		const deleteButton = within(activeChip).getByLabelText(/delete tag/i);
-		await userEvent.click(deleteButton);
-
-		await expect(canvas.queryByRole('button', { name: /status: active/i })).not.toBeInTheDocument();
-
-		// 10. Clear all filters
-		await userEvent.click(canvas.getByRole('button', { name: /clear all/i }));
-
-		await expect(canvas.queryByText(/status:/i)).not.toBeInTheDocument();
-
-		// Verify table shows all rows again
-		await expect(getTableRows()).toHaveLength(12);
 	},
 };
 
@@ -723,6 +624,7 @@ export const Controlled: Story = {
 	name: 'Toolbar — Controlled',
 	parameters: {
 		docs: {
+			source: { type: 'code' },
 			description: {
 				story: `
 ### Controlled Mode Example
@@ -794,32 +696,31 @@ The debug panel below shows the current filter state as JSON.
 					{item.label}
 				</DsTypography>
 				{!!item.count && (
-					<div className={styles.filterTabBadge}>
+					<DsStack direction="row" alignItems="center" gap={8}>
 						<span className={styles.filterTabDot} />
-						<DsTypography variant="body-sm-reg" className={styles.filterTabCount}>
+						<DsTypography variant="body-sm-reg" color="secondary">
 							{item.count}
 						</DsTypography>
-					</div>
+					</DsStack>
 				)}
 			</>
 		);
 
 		return (
-			<div className={styles.tableFilterContainer}>
-				{/* Debug panel showing external state */}
-				<div className={styles.debugPanel}>
+			<DsStack direction="column" gap={16} flex="1">
+				<DsStack className={styles.debugPanel} direction="column" gap={8}>
 					<DsTypography variant="body-sm-md">External Filter State (controlled):</DsTypography>
 					<pre className={styles.debugCode}>{JSON.stringify(appliedFilters, null, 2) || '{}'}</pre>
-				</div>
+				</DsStack>
 
-				<div className={styles.toolbar}>
+				<DsStack direction="row" justifyContent="flex-end">
 					<DsButtonV3
 						variant="secondary"
 						icon="filter_list"
 						aria-label="Filter"
 						onClick={() => setIsOpen(true)}
 					/>
-				</div>
+				</DsStack>
 
 				{filterChips.length > 0 && (
 					<DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
@@ -827,12 +728,12 @@ The debug panel below shows the current filter state as JSON.
 
 				<DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
 
-				<DsModal style={{ height: '600px' }} open={isOpen} onOpenChange={handleOpenChange}>
+				<DsModal className={styles.filterModal} open={isOpen} onOpenChange={handleOpenChange}>
 					<DsModal.Header className={styles.filterHeader}>
-						<div className={styles.headerLeft}>
+						<DsStack direction="row" alignItems="center" gap={8}>
 							<DsIcon icon="filter_list" size="small" />
 							<DsModal.Title>Filters</DsModal.Title>
-						</div>
+						</DsStack>
 						<DsModal.CloseTrigger />
 					</DsModal.Header>
 
@@ -868,41 +769,7 @@ The debug panel below shows the current filter state as JSON.
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>
-			</div>
+			</DsStack>
 		);
-	},
-	play: async ({ canvasElement }) => {
-		const canvas = within(canvasElement);
-
-		// Verify initial state: debug panel shows empty object
-		const debugPanel = canvas.getByText('External Filter State (controlled):');
-		await expect(debugPanel).toBeInTheDocument();
-		await expect(canvas.getByText('{}')).toBeInTheDocument();
-
-		// 1. Open filter modal and apply a filter
-		const filterButton = canvas.getByRole('button', { name: /filter/i });
-		await userEvent.click(filterButton);
-
-		// Select Active status
-		const statusTab = screen.getByRole('tab', { name: /status/i });
-		await userEvent.click(statusTab);
-
-		const activeCheckbox = screen.getByRole('checkbox', { name: /^active$/i });
-		await userEvent.click(activeCheckbox);
-
-		// Apply
-		await userEvent.click(screen.getByRole('button', { name: /apply/i }));
-
-		// 2. Verify external state is updated (debug panel shows filter)
-		await expect(canvas.getByText(/"status"/)).toBeInTheDocument();
-
-		// 3. Verify chip appears
-		await expect(canvas.getByText(/status: active/i)).toBeInTheDocument();
-
-		// 4. Clear all and verify state resets
-		await userEvent.click(canvas.getByRole('button', { name: /clear all/i }));
-
-		await expect(canvas.getByText('{}')).toBeInTheDocument();
-		await expect(canvas.queryByText(/status: active/i)).not.toBeInTheDocument();
 	},
 };

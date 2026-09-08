@@ -278,6 +278,7 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 		const comingSoonTile = page.getByRole('button', { name: 'Coming soon app' });
 		const badge = comingSoonTile.element().querySelector('[class*="badge"]') as HTMLElement;
 
+		await comingSoonTile.hover();
 		await page.elementLocator(badge).hover();
 
 		await expect
