@@ -247,7 +247,7 @@ describe('DsCommentsDrawer', () => {
 		const toggleButton = page.getByRole('button', { name: /show resolved/i });
 
 		await expect.element(toggleButton).toBeInTheDocument();
-		await expect.element(toggleButton).toHaveTextContent(/\(2\)/);
+		await expect.element(toggleButton).toMatchTextContent(/\(2\)/);
 
 		await toggleButton.click();
 

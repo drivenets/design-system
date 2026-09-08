@@ -380,6 +380,9 @@ describe('DsTable Editable Cells', () => {
 		const lockIcon = page.elementLocator(ageCell).getByRole('img', { name: 'Editing disabled' });
 		await expect.element(lockIcon).toBeVisible();
 
+		// The icon only becomes interactive once the cell itself is hovered (reveal-on-hover styling),
+		// so hover the cell first to put it in the same state a real pointer path would produce.
+		await page.elementLocator(ageCell).hover();
 		await lockIcon.hover();
 		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 	});

@@ -46,6 +46,6 @@ describe('DsUserCard', () => {
 		const root = document.querySelector('.custom-card');
 
 		expect(root).not.toBeNull();
-		expect(root).toHaveTextContent('Jane Smith');
+		expect(root).toMatchTextContent('Jane Smith');
 	});
 });

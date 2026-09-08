@@ -17,8 +17,8 @@ describe('DsTable - Row Actions', () => {
 		expect(dataRows).toHaveLength(5);
 
 		await expect.element(page.getByText('Order')).toBeVisible();
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Tanner');
-		await expect.element(page.getByRole('row').nth(2)).toHaveTextContent('Kevin');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Tanner');
+		await expect.element(page.getByRole('row').nth(2)).toMatchTextContent('Kevin');
 
 		const handle = page.getByRole('row').nth(1).getByRole('button').element() as HTMLElement;
 		const kevinRow = page.getByRole('row').nth(2).element() as HTMLTableRowElement;
@@ -56,8 +56,8 @@ describe('DsTable - Row Actions', () => {
 		const newOrder = onOrderChange.mock.calls[0]?.[0] as Person[] | undefined;
 		expect(newOrder?.map((p) => p.firstName)).toEqual(['Kevin', 'Tanner', 'John', 'Jane', 'Peter']);
 
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Kevin');
-		await expect.element(page.getByRole('row').nth(2)).toHaveTextContent('Tanner');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Kevin');
+		await expect.element(page.getByRole('row').nth(2)).toMatchTextContent('Tanner');
 	});
 
 	it('should show row action buttons on hover and respect disabled state', async () => {
