@@ -25,6 +25,7 @@ export * from './components/ds-dialog';
 export * from './components/ds-divider';
 export * from './components/ds-drawer';
 export * from './components/ds-dropdown-menu';
+export * from './components/ds-empty-state';
 export * from './components/ds-expandable-text-input';
 export * from './components/ds-file-upload';
 export * from './components/ds-filter-status-icon';

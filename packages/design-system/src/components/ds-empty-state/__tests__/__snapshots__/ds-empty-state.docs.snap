@@ -1,0 +1,50 @@
+# DsEmptyState docs snippets
+
+## Default
+
+### Show code
+<DsEmptyState variant="noData" />
+
+### MCP manifest
+const Default = () => <DsEmptyState variant="noData" />;
+
+## No Matches
+
+### Show code
+<DsEmptyState variant="noMatches" />
+
+### MCP manifest
+const NoMatches = () => <DsEmptyState variant="noMatches" />;
+
+## With Action
+
+### Show code
+<DsEmptyState
+  action={<DsButtonV3 size="small">Add</DsButtonV3>}
+  variant="noData"
+/>
+
+### MCP manifest
+const WithAction = () => <DsEmptyState variant="noData" action={<DsButtonV3 size="small">Add</DsButtonV3>} />;
+
+## Message
+
+### Show code
+<DsEmptyState
+  message="Aucun enregistrement correspondant."
+  variant="noMatches"
+/>
+
+### MCP manifest
+const Message = () => <DsEmptyState variant="noMatches" message="Aucun enregistrement correspondant." />;
+
+## Custom Illustration
+
+### Show code
+<DsEmptyState
+  illustration={<DsIllustration variant="empty-inbox" />}
+  variant="noData"
+/>
+
+### MCP manifest
+const CustomIllustration = () => <DsEmptyState variant="noData" illustration={<DsIllustration variant="empty-inbox" />} />;

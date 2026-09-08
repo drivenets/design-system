@@ -28,6 +28,7 @@ const COMPONENTS = [
 	'date-range-picker',
 	'dialog',
 	'divider',
+	'empty-state',
 	'expandable-text-input',
 	'file-upload',
 	'filter-status-icon',

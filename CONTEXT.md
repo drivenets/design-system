@@ -45,7 +45,7 @@ MUI-style map of props passed to named subparts of a **Component** for customiza
 _Avoid_: sub props, child props
 
 **Empty state**:
-Content a **Component** renders when it has genuinely zero data items. Distinct from a loading/skeleton state and from a transient frame where a virtualized body has not yet produced rows. Gate it on data count, never on rendered/virtual row count.
+Content a **Component** renders when it has genuinely zero data items — **no-data** (the collection has no records) or **no-matches** (a search or filter yielded zero; the collection may be non-empty). Distinct from a loading/skeleton state and from a transient frame where a virtualized body has not yet produced rows; gate it on data count, never on rendered/virtual row count.
 _Avoid_: no-data view, blank state, placeholder
 
 **Icon**:

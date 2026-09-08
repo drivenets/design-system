@@ -23,7 +23,16 @@
 	visibility: hidden;
 }
 
-.emptyState {
+.emptyStateRow {
 	position: absolute;
 	inset: 0;
+}
+
+.emptyState {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	text-align: center;
 }

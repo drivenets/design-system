@@ -10,7 +10,7 @@ import {
 	RouterProvider,
 } from '@tanstack/react-router';
 import DsCatalogLayout from './ds-catalog-layout';
-import { CatalogLayoutEmptyIllustration } from './catalog-layout-empty-illustration';
+import { DsEmptyState } from '../ds-empty-state';
 import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
 import { DsButtonV3 } from '../ds-button-v3';
@@ -241,15 +241,6 @@ const ResultsCard = ({ children }: { children: ReactNode }) => (
 
 ResultsCard.displayName = 'ResultsCard';
 
-const EmptyStateCard = ({ children }: { children: ReactNode }) => (
-	<div className={styles.emptyCard} role="status">
-		<CatalogLayoutEmptyIllustration className={styles.emptyIllustration} aria-hidden="true" />
-		<div className={styles.emptyCardContent}>{children}</div>
-	</div>
-);
-
-EmptyStateCard.displayName = 'EmptyStateCard';
-
 /**
  * Full catalog page with side menu, content header (title, actions, smart tabs), and a results
  * table. Wire `pinned` / `onPinnedChange` on `SideMenu` to let users pin the expanded panel.
@@ -286,8 +277,8 @@ export const Default: Story = {
 };
 
 /**
- * Same shell as the default catalog page, but the results region shows a consumer-owned empty
- * state instead of a table — for example when filters return no rows.
+ * Same shell as the default catalog page, with an empty table. Pass `emptyState` to override
+ * inference (here **no-matches** plus a clear-filters action, as after a server-side search).
  */
 export const Empty: Story = {
 	parameters: { docs: { source: { type: 'code' } } },
@@ -310,12 +301,25 @@ export const Empty: Story = {
 						>
 							<SmartTabsItem />
 						</DsCatalogLayout.ContentHeader>
-						<EmptyStateCard>
-							<DsTypography variant="body-md-reg">No matching records found.</DsTypography>
-							<DsButtonV3 variant="primary" size="small">
-								Clear filters
-							</DsButtonV3>
-						</EmptyStateCard>
+						<ResultsCard>
+							<DsTable
+								columns={catalogColumns}
+								data={[]}
+								stickyHeader
+								bordered
+								fullWidth
+								emptyState={
+									<DsEmptyState
+										variant="noMatches"
+										action={
+											<DsButtonV3 variant="primary" size="small">
+												Clear filters
+											</DsButtonV3>
+										}
+									/>
+								}
+							/>
+						</ResultsCard>
 					</DsCatalogLayout.Content>
 				</DsCatalogLayout.Body>
 			</DsCatalogLayout>

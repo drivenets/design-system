@@ -7,7 +7,7 @@ import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState, ProgressInfographic } from './components';
+import { ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Columns',
@@ -22,7 +22,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <TableEmptyState />,
 		onRowClick: (row) => console.log('Row clicked:', row),
 	},
 	decorators: [fullHeightDecorator],

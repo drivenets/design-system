@@ -32,7 +32,7 @@ const contentHeader =
 
 const contentBody =
 	type === 'empty'
-		? '{/* EmptyStateCard + DsButtonV3 (no data / clear filters) */}'
+		? '{/* DsTable + DsEmptyState (no data / no matches) */}'
 		: '{/* DsTable with data rows */}';
 
 export default {

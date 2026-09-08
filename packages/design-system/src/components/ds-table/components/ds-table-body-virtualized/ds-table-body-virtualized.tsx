@@ -5,7 +5,6 @@ import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
 import type { DsTableBodyVirtualizedProps } from './ds-table-body-virtualized.types';
 import { TableBody, TableRow, TableCell } from '../core-table';
-import { EMPTY_TABLE_STATE_TEXT } from '../../utils/constants';
 import { useInfiniteScroll } from './use-infinite-scroll';
 
 export const DsTableBodyVirtualized = <TData,>({
@@ -150,8 +149,8 @@ export function DsTableBody<TData>({
 					);
 				})
 			) : hasNoData ? (
-				<TableRow>
-					<TableCell className={styles.emptyState}>{emptyState || EMPTY_TABLE_STATE_TEXT}</TableCell>
+				<TableRow className={styles.emptyStateRow}>
+					<TableCell className={styles.emptyState}>{emptyState}</TableCell>
 				</TableRow>
 			) : null}
 

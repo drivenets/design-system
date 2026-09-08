@@ -115,37 +115,6 @@
 	background: var(--background);
 }
 
-.emptyCard {
-	display: flex;
-	flex: 1;
-	flex-direction: column;
-	align-items: center;
-	justify-content: safe center;
-	gap: var(--standard);
-	min-height: 0;
-	width: 100%;
-	padding: var(--xl) var(--lg);
-	overflow: auto;
-	border: 1px solid var(--border);
-	border-radius: var(--3xs);
-	background: var(--background);
-}
-
-.emptyIllustration {
-	flex-shrink: 0;
-	width: 250px;
-	height: 200px;
-	max-width: 100%;
-}
-
-.emptyCardContent {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: var(--xs);
-	text-align: center;
-}
-
 .fillParentWrapper {
 	height: 400px;
 	border: 2px dashed var(--border);
