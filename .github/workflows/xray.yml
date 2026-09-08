@@ -3,7 +3,7 @@ on:
   pull_request:
   workflow_dispatch:
 permissions:
-  id-token: write   # JFrog OIDC (when JF_OIDC_PROVIDER is set)
+  id-token: write # JFrog OIDC (when JF_OIDC_PROVIDER is set)
   contents: read
 jobs:
   xray:
