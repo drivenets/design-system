@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=32014-16402
+// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=43101-8753
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-modal
 // component=DsModal.Footer
 //
