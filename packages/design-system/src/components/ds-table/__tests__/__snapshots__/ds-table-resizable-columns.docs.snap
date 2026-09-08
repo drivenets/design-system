@@ -174,7 +174,6 @@
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   resizableColumns
   stickyHeader
@@ -187,8 +186,7 @@ const Default = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    emptyState={<TableEmptyState />} />;
+    fullWidth />;
 
 ## Fixed And Fill
 
@@ -364,7 +362,6 @@ const Default = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   resizableColumns
   stickyHeader
@@ -389,8 +386,7 @@ const FixedAndFill = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    emptyState={<TableEmptyState />} />;
+    fullWidth />;
 
 ## Grouped Columns
 
@@ -575,7 +571,6 @@ const FixedAndFill = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   resizableColumns
   stickyHeader
@@ -620,8 +615,7 @@ const GroupedColumns = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    emptyState={<TableEmptyState />} />;
+    fullWidth />;
 
 ## Min And Max Size
 
@@ -800,7 +794,6 @@ const GroupedColumns = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   resizableColumns
   stickyHeader
@@ -838,8 +831,7 @@ const MinAndMaxSize = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    emptyState={<TableEmptyState />} />;
+    fullWidth />;
 
 ## Persisted widths
 
@@ -928,7 +920,6 @@ const PersistedWidths = () => {
                 stickyHeader
                 bordered
                 fullWidth
-                emptyState={<TableEmptyState />}
                 key={tableKey}
                 columnSizing={persistedWidths}
                 onColumnSizingChange={(columnSizing) => {

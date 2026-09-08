@@ -4,7 +4,6 @@ import DsTable from '../ds-table';
 import { DsSkeleton } from '../../ds-skeleton';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState } from './components';
 
 const loadingColumns: ColumnDef<Person>[] = columns.map((column, index) =>
 	index === 0 ? Object.assign({}, column, { loadingCell: () => <DsSkeleton.Circle size="sm" /> }) : column,
@@ -22,7 +21,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
-		emptyState: <TableEmptyState />,
 	},
 	decorators: [fullHeightDecorator],
 };

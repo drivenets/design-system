@@ -174,7 +174,6 @@
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   onSelectionChange={() => {}}
@@ -190,7 +189,6 @@ const Selectable = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     selectable
     onSelectionChange={fn()} />;
@@ -369,7 +367,6 @@ const Selectable = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   onSelectionChange={() => {}}
@@ -386,7 +383,6 @@ const CustomSelectColumnWidth = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     selectable
     selectableColumnWidth={48}
@@ -498,7 +494,6 @@ const ProgrammaticRowSelection = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 selectable
                 showSelectAllCheckbox={false}
@@ -565,7 +560,6 @@ const MaxSelectionLimit = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 showSelectAllCheckbox={false}
                 onSelectionChange={handleSelectionChange}

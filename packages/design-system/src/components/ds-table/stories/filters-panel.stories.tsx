@@ -14,7 +14,6 @@ import { useTableFilters } from '../filters/hooks/use-table-filters';
 import type { FilterNavItem } from '../filters/types/filter-adapter.types';
 import { type Workflow, workflowFilters } from './filters-panel/workflow-filters.config';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState } from './components';
 import styles from './ds-table.stories.module.scss';
 
 const sampleUsers = [
@@ -381,7 +380,6 @@ createCustomFilterAdapter({
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <TableEmptyState />,
 		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],

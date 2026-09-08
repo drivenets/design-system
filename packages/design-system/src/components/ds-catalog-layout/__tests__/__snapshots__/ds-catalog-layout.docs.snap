@@ -92,12 +92,11 @@ const Default = () => {
                         <DsCatalogLayout.ContentHeader title={<DsTypography variant="heading3">Planned executions</DsTypography>} headerActions={<ContentHeaderActions />}>
                             <SmartTabsItem />
                         </DsCatalogLayout.ContentHeader>
-                        <EmptyStateCard>
-                            <DsTypography variant="body-md-reg">No matching records found.</DsTypography>
-                            <DsButtonV3 variant="primary" size="small">
-                                Clear filters
-                            </DsButtonV3>
-                        </EmptyStateCard>
+                        <ResultsCard>
+                            <DsTable columns={catalogColumns} data={[]} stickyHeader bordered fullWidth emptyState={<DsEmptyState variant="noMatches" action={<DsButtonV3 variant="primary" size="small">
+                                                Clear filters
+                                            </DsButtonV3>} />} />
+                        </ResultsCard>
                     </DsCatalogLayout.Content>
                 </DsCatalogLayout.Body>
             </DsCatalogLayout>;
@@ -123,11 +122,24 @@ const Empty = () => {
                         headerActions={<ContentHeaderActions />}>
                         <SmartTabsItem />
                     </DsCatalogLayout.ContentHeader>
-                    <EmptyStateCard>
-                        <DsTypography variant="body-md-reg">No matching records found.</DsTypography>
-                        <DsButtonV3 variant="primary" size="small">Clear filters
-                                                        </DsButtonV3>
-                    </EmptyStateCard>
+                    <ResultsCard>
+                        <DsTable
+                            columns={catalogColumns}
+                            data={[]}
+                            stickyHeader
+                            bordered
+                            fullWidth
+                            emptyState={
+                                <DsEmptyState
+                                    variant="noMatches"
+                                    action={
+                                        <DsButtonV3 variant="primary" size="small">
+                                            Clear filters
+                                        </DsButtonV3>
+                                    }
+                                />
+                            } />
+                    </ResultsCard>
                 </DsCatalogLayout.Content>
             </DsCatalogLayout.Body>
         </DsCatalogLayout>

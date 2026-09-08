@@ -174,7 +174,6 @@
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -187,7 +186,6 @@ const Default = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     data={defaultData} />;
 
@@ -366,7 +364,6 @@ const Default = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -379,7 +376,6 @@ const WithControls = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     data={defaultData}
     controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
@@ -435,7 +431,6 @@ const WithControls = () => <DsTable
     }
   ]}
   data={[]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -448,7 +443,6 @@ const EmptyState = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     data={[]} />;
 
@@ -625,7 +619,6 @@ const EmptyState = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -638,7 +631,6 @@ const NoBorder = () => <DsTable
     bordered={false}
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     data={defaultData} />;
 
@@ -822,7 +814,6 @@ const NoBorder = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -835,6 +826,5 @@ const HorizontalScroll = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     data={defaultData} />;

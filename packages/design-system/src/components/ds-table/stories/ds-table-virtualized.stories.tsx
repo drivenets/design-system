@@ -18,7 +18,6 @@ import styles from './ds-table.stories.module.scss';
 import editableStyles from './ds-table-editable.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Virtualized',
@@ -33,7 +32,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <TableEmptyState />,
 		onRowClick: fn(),
 	},
 	decorators: [
@@ -63,6 +61,9 @@ const fetchData = async (start: number, size: number, sorting: SortingState, tot
 	return simulateApiCall(() => generatePersonData(start, size, sorting, totalRows));
 };
 
+/**
+ * Virtualized table with inferred **no-data** empty state. Headers stay visible.
+ */
 export const EmptyState: Story = {
 	args: {
 		virtualized: true,

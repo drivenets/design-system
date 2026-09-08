@@ -14,7 +14,6 @@ import {
 } from '../components/edit/cell-editors';
 import { fullHeightDecorator } from './common/story-decorators';
 import { defaultData, type Person, type Status } from './common/story-data';
-import { TableEmptyState } from './components';
 import editableStyles from './ds-table-editable.stories.module.scss';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
@@ -27,7 +26,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		stickyHeader: true,
 		bordered: true,
 		fullWidth: true,
-		emptyState: <TableEmptyState />,
 	},
 	decorators: [fullHeightDecorator],
 };

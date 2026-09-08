@@ -174,7 +174,6 @@
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   loading
   stickyHeader
@@ -187,7 +186,6 @@ const Loading = () => <DsTable
     stickyHeader
     bordered
     fullWidth
-    emptyState={<TableEmptyState />}
     loading />;
 
 ## Custom Loading Cell
@@ -365,7 +363,6 @@ const Loading = () => <DsTable
       visits: 88
     }
   ]}
-  emptyState={<TableEmptyState />}
   fullWidth
   loading
   stickyHeader
@@ -378,5 +375,4 @@ const CustomLoadingCell = () => <DsTable
     stickyHeader
     bordered
     fullWidth
-    emptyState={<TableEmptyState />}
     loading />;

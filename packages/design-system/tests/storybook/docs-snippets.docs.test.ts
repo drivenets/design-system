@@ -30,6 +30,7 @@ const COMPONENTS = [
 	'divider',
 	'drawer',
 	'dropdown-menu',
+	'empty-state',
 	'expandable-text-input',
 	'file-upload',
 	'filter-status-icon',

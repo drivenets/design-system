@@ -84,7 +84,6 @@
       visits: 250
     }
   ]}
-  emptyState={<TableEmptyState />}
   expandable={() => {}}
   fullWidth
   onRowClick={() => {}}
@@ -100,7 +99,6 @@ const Expandable = () => <DsTable
     bordered
     fullWidth
     expandable={(row) => row.firstName !== 'Tanner'}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     renderExpandedRow={(row) => (
         <DsStack direction="column" gap={8}>
@@ -217,7 +215,6 @@ const Expandable = () => <DsTable
       visits: 250
     }
   ]}
-  emptyState={<TableEmptyState />}
   expandable
   expandableColumnWidth={48}
   fullWidth
@@ -234,7 +231,6 @@ const CustomExpanderColumnWidth = () => <DsTable
     bordered
     fullWidth
     expandable
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     expandableColumnWidth={48}
     renderExpandedRow={(row) => (
@@ -373,7 +369,6 @@ const ProgrammaticExpansion = () => {
                 bordered
                 fullWidth
                 expandable={(row) => row.firstName !== 'Tanner'}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 renderExpandedRow={(row) => (
                     <DsStack direction="column" gap={4}>

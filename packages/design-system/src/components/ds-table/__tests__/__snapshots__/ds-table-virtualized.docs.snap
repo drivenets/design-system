@@ -38,7 +38,6 @@
     }
   ]}
   data={[]}
-  emptyState={<TableEmptyState />}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -53,7 +52,6 @@ const EmptyState = () => <DsTable
     bordered
     fullWidth
     expandable={false}
-    emptyState={<TableEmptyState />}
     onRowClick={fn()}
     virtualized />;
 
@@ -171,7 +169,6 @@ const VirtualizedSelectable = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 selectable
                 onScroll={fn()}
@@ -329,7 +326,6 @@ const VirtualizedExpandable = () => {
                 stickyHeader
                 bordered
                 fullWidth
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 onScroll={fn()}
                 data={flatData}
@@ -470,7 +466,6 @@ const InfiniteScroll = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 data={flatData}
                 onSortingChange={setSorting}
@@ -517,7 +512,6 @@ const VirtualizedEditable = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 data={data}
                 columns={editableColumns}
@@ -573,7 +567,6 @@ const VirtualizedWithControls = () => {
             bordered
             fullWidth
             expandable={false}
-            emptyState={<TableEmptyState />}
             onRowClick={fn()}
             controls={(<DsStack direction="row" justifyContent="space-between" alignItems="center" width="100%">
                 <DsButtonV3 variant="secondary" size="small">
@@ -630,7 +623,6 @@ const VirtualizedResizable = () => {
                 bordered
                 fullWidth
                 expandable={false}
-                emptyState={<TableEmptyState />}
                 onRowClick={fn()}
                 virtualized
                 resizableColumns
