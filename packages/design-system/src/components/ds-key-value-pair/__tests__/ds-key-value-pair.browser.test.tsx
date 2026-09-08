@@ -21,7 +21,10 @@ const MANUFACTURER_OPTIONS: DsSelectOption[] = [
 // vitest browser iframe. Focus the editable container directly to trigger the `:focus-within`
 // reveal deterministically.
 const focusEditableContainerOf = (text: string) => {
-	const container = page.getByText(text).element().closest<HTMLElement>('[data-editable="true"]');
+	const container = page
+		.getByText(text, { exact: false })
+		.element()
+		.closest<HTMLElement>('[data-editable="true"]');
 
 	if (!container) {
 		throw new Error(`No editable value-container ancestor for text "${text}"`);
@@ -88,7 +91,7 @@ describe('DsKeyValuePair', () => {
 			/>,
 		);
 
-		await expect.element(page.getByText('Serial Number')).toBeInTheDocument();
+		await expect.element(page.getByText('Serial Number', { exact: false })).toBeInTheDocument();
 		await expect.element(page.getByText('99887766')).toBeVisible();
 	});
 
@@ -199,7 +202,7 @@ describe('DsKeyValuePair', () => {
 			/>,
 		);
 
-		await expect.element(page.getByText('Editable value')).toBeVisible();
+		await expect.element(page.getByText('Editable value', { exact: false })).toBeVisible();
 		await expect.element(page.getByText('info').first()).toBeVisible();
 
 		focusEditableContainerOf('Editable value');
@@ -363,7 +366,7 @@ describe('DsKeyValuePair', () => {
 		await renderWithParkedMouse(<ValueTypes />);
 
 		await expect.element(page.getByText('Read only value')).toBeVisible();
-		await expect.element(page.getByText('Active')).toBeVisible();
+		await expect.element(page.getByText('Active', { exact: false })).toBeVisible();
 		await expect.element(page.getByText('Tag-name').first()).toBeVisible();
 		await expect.element(page.getByText('Cisco Systems').first()).toBeVisible();
 	});

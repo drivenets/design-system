@@ -101,7 +101,7 @@ describe('DsMainMenu — trigger and open/close', () => {
 		await openMenu();
 		await expect.element(page.getByRole('navigation', { name: 'Main menu' })).toBeVisible();
 
-		await userEvent.click(page.getByRole('button', { name: 'My dashboard' }));
+		await userEvent.click(page.getByRole('button', { name: 'My dashboard', exact: false }));
 
 		await assertClosed();
 	});
@@ -110,7 +110,7 @@ describe('DsMainMenu — trigger and open/close', () => {
 		await page.render(<DsMainMenu trigger={TRIGGER} items={ITEMS} utilityLinks={UTILITY_LINKS} />);
 
 		await openMenu();
-		await userEvent.click(page.getByRole('button', { name: 'Help & Support' }));
+		await userEvent.click(page.getByRole('button', { name: 'Help & Support', exact: false }));
 
 		await expect.element(triggerLocator()).toHaveAttribute('aria-expanded', 'false');
 	});
@@ -119,7 +119,7 @@ describe('DsMainMenu — trigger and open/close', () => {
 		await page.render(<DsMainMenu trigger={TRIGGER} items={ITEMS} utilityLinks={[]} />);
 
 		await openMenu();
-		(page.getByRole('button', { name: 'Disabled app' }).element() as HTMLButtonElement).click();
+		(page.getByRole('button', { name: 'Disabled app', exact: false }).element() as HTMLButtonElement).click();
 
 		await expect.element(page.getByRole('navigation', { name: 'Main menu' })).toBeVisible();
 	});
@@ -128,7 +128,9 @@ describe('DsMainMenu — trigger and open/close', () => {
 		await page.render(<DsMainMenu trigger={TRIGGER} items={ITEMS} utilityLinks={[]} />);
 
 		await openMenu();
-		(page.getByRole('button', { name: 'Coming soon app' }).element() as HTMLButtonElement).click();
+		(
+			page.getByRole('button', { name: 'Coming soon app', exact: false }).element() as HTMLButtonElement
+		).click();
 
 		await expect.element(page.getByRole('navigation', { name: 'Main menu' })).toBeVisible();
 	});
@@ -172,7 +174,7 @@ describe('DsMainMenu — controlled open', () => {
 
 		await expect.element(page.getByRole('navigation', { name: 'Main menu' })).toBeVisible();
 
-		await userEvent.click(page.getByRole('button', { name: 'My dashboard' }));
+		await userEvent.click(page.getByRole('button', { name: 'My dashboard', exact: false }));
 
 		expect(onOpenChange).toHaveBeenCalledWith(false);
 	});
@@ -186,10 +188,10 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		const nav = page.getByRole('navigation', { name: 'Main menu' });
 		await expect.element(nav).toBeVisible();
-		await expect.element(page.getByRole('link', { name: 'Inventory' })).toBeVisible();
-		await expect.element(page.getByRole('button', { name: 'My dashboard' })).toBeVisible();
-		await expect.element(page.getByRole('button', { name: 'Help & Support' })).toBeVisible();
-		await expect.element(page.getByRole('link', { name: 'Knowledge Center' })).toBeVisible();
+		await expect.element(page.getByRole('link', { name: 'Inventory', exact: false })).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'My dashboard', exact: false })).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Help & Support', exact: false })).toBeVisible();
+		await expect.element(page.getByRole('link', { name: 'Knowledge Center', exact: false })).toBeVisible();
 	});
 
 	it('marks the selected tile with aria-current="page"', async () => {
@@ -199,7 +201,7 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		await openMenu();
 
-		const selectedTile = page.getByRole('button', { name: 'My dashboard' });
+		const selectedTile = page.getByRole('button', { name: 'My dashboard', exact: false });
 		expect(selectedTile.element().getAttribute('aria-current')).toBe('page');
 	});
 
@@ -211,11 +213,11 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 		);
 
 		await openMenu();
-		await userEvent.click(page.getByRole('button', { name: 'My dashboard' }));
+		await userEvent.click(page.getByRole('button', { name: 'My dashboard', exact: false }));
 
 		// Reopen after auto-close
 		await openMenu();
-		await userEvent.click(page.getByRole('button', { name: 'Help & Support' }));
+		await userEvent.click(page.getByRole('button', { name: 'Help & Support', exact: false }));
 
 		expect(onItemSelect).toHaveBeenCalledTimes(2);
 		expect(onItemSelect).toHaveBeenNthCalledWith(1, 'dashboard');
@@ -238,7 +240,7 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		await openMenu();
 
-		const inventoryLink = page.getByRole('link', { name: 'Inventory' });
+		const inventoryLink = page.getByRole('link', { name: 'Inventory', exact: false });
 		inventoryLink.element().addEventListener('click', (event) => event.preventDefault());
 		await userEvent.click(inventoryLink);
 
@@ -254,8 +256,10 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		await openMenu();
 
-		(page.getByRole('button', { name: 'Disabled app' }).element() as HTMLButtonElement).click();
-		(page.getByRole('button', { name: 'Coming soon app' }).element() as HTMLButtonElement).click();
+		(page.getByRole('button', { name: 'Disabled app', exact: false }).element() as HTMLButtonElement).click();
+		(
+			page.getByRole('button', { name: 'Coming soon app', exact: false }).element() as HTMLButtonElement
+		).click();
 
 		expect(onItemSelect).not.toHaveBeenCalled();
 	});
@@ -265,7 +269,7 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		await openMenu();
 
-		const disabledTile = page.getByRole('button', { name: 'Disabled app' });
+		const disabledTile = page.getByRole('button', { name: 'Disabled app', exact: false });
 		expect(disabledTile.element().tabIndex).toBe(-1);
 		expect(disabledTile.element().getAttribute('aria-disabled')).toBe('true');
 	});
@@ -275,11 +279,11 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		await openMenu();
 
-		const comingSoonTile = page.getByRole('button', { name: 'Coming soon app' });
+		const comingSoonTile = page.getByRole('button', { name: 'Coming soon app', exact: false });
 		const badge = comingSoonTile.element().querySelector('[class*="badge"]') as HTMLElement;
 
 		await comingSoonTile.hover();
-		await page.elementLocator(badge).hover();
+		await page.elementLocator(badge).hover({ force: true });
 
 		await expect
 			.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP }), { timeout: 3000 })
@@ -297,7 +301,7 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 
 		await openMenu();
 
-		const tile = page.getByRole('button', { name: 'My dashboard' });
+		const tile = page.getByRole('button', { name: 'My dashboard', exact: false });
 		await expect.element(tile).toBeVisible();
 		expect(tile.element().querySelector('svg')).not.toBeNull();
 	});
@@ -326,7 +330,7 @@ describe('DsMainMenu — expanded variant', () => {
 
 		await openMenu();
 
-		await expect.element(page.getByRole('button', { name: 'My dashboard' })).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'My dashboard', exact: false })).toBeVisible();
 		await expect.element(page.getByText('Hidden in compact.')).not.toBeInTheDocument();
 	});
 
