@@ -66,6 +66,28 @@ const openMenu = async () => {
 const triggerLocator = () => page.getByRole('button', { name: 'Open menu' });
 const assertClosed = () => expect.element(triggerLocator()).toHaveAttribute('aria-expanded', 'false');
 
+const comingSoonTooltipVisible = () =>
+	[...document.querySelectorAll('[role="tooltip"]')].some((node) => node.textContent === COMING_SOON_TOOLTIP);
+
+// Hover the 24px coming-soon badge after the panel is laid out. Re-hover if the popover
+// is still positioning — Playwright can miss the trigger, and Ark only opens on pointermove.
+const hoverComingSoonBadge = async (tile: ReturnType<typeof page.getByRole>, badgeSelector: string) => {
+	await expect.element(tile).toBeVisible();
+	await page.getByRole('navigation', { name: 'Main menu' }).hover();
+
+	await expect
+		.poll(async () => {
+			const badge = tile.element().closest('li')?.querySelector(badgeSelector);
+			if (!(badge instanceof HTMLElement)) {
+				return false;
+			}
+
+			await page.elementLocator(badge).hover();
+			return comingSoonTooltipVisible();
+		})
+		.toBe(true);
+};
+
 describe('DsMainMenu — trigger and open/close', () => {
 	it('shows nothing until the trigger is clicked', async () => {
 		await page.render(<DsMainMenu trigger={TRIGGER} items={ITEMS} utilityLinks={UTILITY_LINKS} />);
@@ -276,13 +298,9 @@ describe('DsMainMenu — tile and utility link behavior', () => {
 		await openMenu();
 
 		const comingSoonTile = page.getByRole('button', { name: 'Coming soon app' });
-		const badge = comingSoonTile.element().querySelector('[class*="badge"]') as HTMLElement;
+		await hoverComingSoonBadge(comingSoonTile, '[class*="badge"]');
 
-		await page.elementLocator(badge).hover();
-
-		await expect
-			.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP }), { timeout: 3000 })
-			.toBeVisible();
+		await expect.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP })).toBeVisible();
 	});
 
 	it('renders an SVG component as the tile graphic', async () => {
@@ -443,14 +461,8 @@ describe('DsMainMenu — expanded variant', () => {
 		const comingSoonCard = page.getByRole('button', { name: /^AI Ops/ });
 		expect(comingSoonCard.element().getAttribute('aria-disabled')).toBe('true');
 
-		const badge = comingSoonCard
-			.element()
-			.closest('li')
-			?.querySelector('[class*="expandedActionBadge"]') as HTMLElement;
-		await page.elementLocator(badge).hover();
-		await expect
-			.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP }), { timeout: 3000 })
-			.toBeVisible();
+		await hoverComingSoonBadge(comingSoonCard, '[class*="expandedActionBadge"]');
+		await expect.element(page.getByRole('tooltip', { name: COMING_SOON_TOOLTIP })).toBeVisible();
 
 		(comingSoonCard.element() as HTMLButtonElement).click();
 
