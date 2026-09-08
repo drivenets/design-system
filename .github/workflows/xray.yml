@@ -1,0 +1,28 @@
+name: Xray SCA
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  id-token: write   # JFrog OIDC (when JF_OIDC_PROVIDER is set)
+  contents: read
+jobs:
+  xray:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Xray SCA scan
+        # AICO-3242: pinned because `@main` let a55f4392 ("AICO-3034: scanner three-state
+        # outcome — configured-but-broken now reds") change this job's verdict with no
+        # change in this repo. That repo has no tags, so a SHA is the only stable
+        # reference; 65db639c is its `main` tip as of 2026-08-20 and contains a55f4392.
+        # Never move this pin to a commit older than a55f4392 — that restores the
+        # report-green-while-scanning-nothing behaviour a55f4392 removed.
+        # To bump: confirm the new SHA descends from a55f4392, then read what it changes
+        # under xray/ via `gh api repos/drivenets/ACO-github-actions/commits?path=xray`.
+        uses: drivenets/ACO-github-actions/xray@65db639c92ca22fe02708a74a45dc5f453391c58
+        with:
+          report_prefix: ${{ github.event.repository.name }}
+          jf_url: ${{ vars.JF_URL }}
+          jf_oidc_provider_name: ${{ vars.JF_OIDC_PROVIDER }}
+          jf_access_token: ${{ secrets.JF_ACCESS_TOKEN }}
+          fail_on_severity: high
