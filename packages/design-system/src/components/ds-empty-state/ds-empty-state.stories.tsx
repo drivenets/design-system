@@ -59,7 +59,7 @@ export const WithAction: Story = {
 export const Message: Story = {
 	args: {
 		variant: 'noMatches',
-		message: 'Aucun enregistrement correspondant.',
+		message: 'No records match this search.',
 	},
 };
 

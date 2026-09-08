@@ -31,12 +31,12 @@ const WithAction = () => <DsEmptyState variant="noData" action={<DsButtonV3 size
 
 ### Show code
 <DsEmptyState
-  message="Aucun enregistrement correspondant."
+  message="No records match this search."
   variant="noMatches"
 />
 
 ### MCP manifest
-const Message = () => <DsEmptyState variant="noMatches" message="Aucun enregistrement correspondant." />;
+const Message = () => <DsEmptyState variant="noMatches" message="No records match this search." />;
 
 ## Custom Illustration
 
