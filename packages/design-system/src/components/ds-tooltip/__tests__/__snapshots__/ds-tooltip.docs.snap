@@ -1,0 +1,113 @@
+# DsTooltip docs snippets
+
+## Default
+
+### Show code
+<DsTooltip content="This is the mouse over tooltip message.">
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const Default = () => <DsTooltip content="This is the mouse over tooltip message."><DsIcon icon="info" /></DsTooltip>;
+
+## Long Text
+
+### Show code
+<DsTooltip content="This tooltip contains a long message that spans multiple lines to verify the content is fully visible without truncation. The tooltip should expand vertically to accommodate all text, regardless of length. Users rely on tooltips to reveal information that may be clipped elsewhere in the interface, so cutting off tooltip content defeats the purpose.">
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const LongText = () => <DsTooltip
+    content="This tooltip contains a long message that spans multiple lines to verify the content is fully visible without truncation. The tooltip should expand vertically to accommodate all text, regardless of length. Users rely on tooltips to reveal information that may be clipped elsewhere in the interface, so cutting off tooltip content defeats the purpose."><DsIcon icon="info" /></DsTooltip>;
+
+## Rich Content
+
+### Show code
+<DsTooltip content={<DsStack direction="column" gap="var(--3xs)"><DsTypography variant="body-sm-md">Multi-line tooltip with JSX</DsTypography><DsTypography variant="body-xs-reg">No truncation should occur.</DsTypography></DsStack>}>
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const RichContent = () => <DsTooltip
+    content={(<DsStack direction="column" gap="var(--3xs)">
+        <DsTypography variant="body-sm-md">Multi-line tooltip with JSX</DsTypography>
+        <DsTypography variant="body-xs-reg">No truncation should occur.</DsTypography>
+    </DsStack>)}><DsIcon icon="info" /></DsTooltip>;
+
+## Placement End
+
+### Show code
+<DsTooltip
+  content="Anchored to the end of the trigger."
+  placement="top-end"
+>
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const PlacementEnd = () => <DsTooltip content="Anchored to the end of the trigger." placement="top-end"><DsIcon icon="info" /></DsTooltip>;
+
+## Disabled
+
+### Show code
+<DsTooltip
+  content="You should not see this tooltip."
+  disabled
+>
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const Disabled = () => <DsTooltip content="You should not see this tooltip." disabled><DsIcon icon="info" /></DsTooltip>;
+
+## Interactive
+
+### Show code
+<DsTooltip
+  closeDelay={150}
+  content={<DsButtonV3 color="light" size="tiny" variant="tertiary">Open in catalog</DsButtonV3>}
+  interactive
+>
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const Interactive = () => <DsTooltip
+    content={(<DsButtonV3 variant="tertiary" color="light" size="tiny">Open in catalog
+                    </DsButtonV3>)}
+    interactive
+    closeDelay={150}><DsIcon icon="info" /></DsTooltip>;
+
+## Custom Width With Ellipsis
+
+### Show code
+<DsTooltip
+  content="Narrow tooltip with custom max-width and text overflow ellipsis applied via slotProps."
+  slotProps={{
+    content: {
+      style: {
+        maxWidth: 200,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
+      }
+    }
+  }}
+>
+  <DsIcon icon="info" />
+</DsTooltip>
+
+### MCP manifest
+const CustomWidthWithEllipsis = () => <DsTooltip
+    content="Narrow tooltip with custom max-width and text overflow ellipsis applied via slotProps."
+    slotProps={{
+        content: {
+            style: {
+                maxWidth: 200,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+            },
+        },
+    }}><DsIcon icon="info" /></DsTooltip>;

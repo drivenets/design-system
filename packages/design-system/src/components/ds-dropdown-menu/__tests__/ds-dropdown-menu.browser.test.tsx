@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
-import { DsDropdownMenu } from '../ds-dropdown-menu';
+import { page, userEvent } from 'vitest/browser';
+import { DsDropdownMenu, DsDropdownMenuLegacy } from '../ds-dropdown-menu';
 import { DsIcon } from '../../ds-icon';
 import { DsCheckbox } from '../../ds-checkbox';
 import { DsTypography } from '../../ds-typography';
@@ -282,5 +282,72 @@ describe('DsDropdownMenu', () => {
 			expect(onCollapsedChange).toHaveBeenCalledTimes(2);
 			await expect.element(page.getByRole('menuitem', { name: 'Profile' })).toBeVisible();
 		});
+	});
+});
+
+describe('DsDropdownMenuLegacy', () => {
+	function LegacyDropdown({ onEdit }: { onEdit?: () => void }) {
+		return (
+			<DsDropdownMenuLegacy
+				options={[
+					{ label: 'Edit', icon: 'edit', onClick: onEdit },
+					{ label: 'Delete', icon: 'delete' },
+					{ label: 'Share', icon: 'share' },
+					{ label: 'Disabled Option', icon: 'block', disabled: true },
+				]}
+			>
+				<div role="button">
+					<span>Actions</span>
+				</div>
+			</DsDropdownMenuLegacy>
+		);
+	}
+
+	it('shows all menu items when the trigger is clicked', async () => {
+		await page.render(<LegacyDropdown />);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+
+		await expect.element(page.getByRole('menuitem', { name: /Edit/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /Delete/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /Share/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /Disabled Option/ })).toBeVisible();
+	});
+
+	it('marks disabled options with aria-disabled', async () => {
+		await page.render(<LegacyDropdown />);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+
+		await expect
+			.element(page.getByRole('menuitem', { name: /Disabled Option/ }))
+			.toHaveAttribute('aria-disabled', 'true');
+	});
+
+	it('calls the option onClick handler when an item is selected', async () => {
+		const onEdit = vi.fn();
+
+		await page.render(<LegacyDropdown onEdit={onEdit} />);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await page.getByRole('menuitem', { name: /Edit/ }).click();
+
+		expect(onEdit).toHaveBeenCalledOnce();
+	});
+
+	it('closes on Escape and reopens with items intact', async () => {
+		await page.render(<LegacyDropdown />);
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await expect.element(page.getByRole('menuitem', { name: /Edit/ })).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+		await expect.element(page.getByRole('menuitem', { name: /Edit/ })).not.toBeInTheDocument();
+
+		await page.getByRole('button', { name: 'Actions' }).click();
+		await expect.element(page.getByRole('menuitem', { name: /Edit/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /Delete/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /Share/ })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /Disabled Option/ })).toBeVisible();
 	});
 });

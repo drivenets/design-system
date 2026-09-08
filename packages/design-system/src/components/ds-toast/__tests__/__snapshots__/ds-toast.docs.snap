@@ -1,0 +1,578 @@
+# DsToast docs snippets
+
+## Success
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'success',
+        title: 'Success!',
+        description: 'Your action was completed successfully.'
+      })}>
+                    Show success toast
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const Success = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'success',
+                        title: 'Success!',
+                        description: 'Your action was completed successfully.',
+                    })
+                }
+            >
+                Show success toast
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## Info
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'info',
+        title: 'Information',
+        description: 'Here is some helpful information for you.'
+      })}>
+                    Show info toast
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const Info = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'info',
+                        title: 'Information',
+                        description: 'Here is some helpful information for you.',
+                    })
+                }
+            >
+                Show info toast
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## Warning
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'warning',
+        title: 'Warning',
+        description: 'Please be aware of this important notice.'
+      })}>
+                    Show warning toast
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const Warning = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'warning',
+                        title: 'Warning',
+                        description: 'Please be aware of this important notice.',
+                    })
+                }
+            >
+                Show warning toast
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## Error
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'error',
+        title: 'Error',
+        description: 'Something went wrong. Please try again.',
+        persistent: true
+      })}>
+                    Show error toast
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const Error = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'error',
+                        title: 'Error',
+                        description: 'Something went wrong. Please try again.',
+                        persistent: true,
+                    })
+                }
+            >
+                Show error toast
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## No Title
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'warning',
+        description: 'Something went wrong. Please try again.'
+      })}>
+                    Show toast without title
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const NoTitle = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'warning',
+                        description: 'Something went wrong. Please try again.',
+                    })
+                }
+            >
+                Show toast without title
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## With Actions
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast,
+        dismissToast
+      } = useToaster();
+      const showToast = () => {
+        const id = createToast({
+          variant: 'warning',
+          title: 'File upload failed',
+          description: 'Your file could not be uploaded.',
+          persistent: true,
+          actions: <DsStack direction="row" gap="var(--xs)" justifyContent="flex-end">
+                            <DsButton design="v1.2" variant="ghost" onClick={() => dismissToast(id)}>
+                                Abort
+                            </DsButton>
+                            <DsButton design="v1.2" variant="danger" onClick={() => dismissToast(id)}>
+                                Re-try
+                            </DsButton>
+                        </DsStack>
+        });
+      };
+      return <DsButton design="v1.2" variant="filled" onClick={showToast}>
+                    Show toast with actions
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const WithActions = () => {
+    const ToastTrigger = () => {
+        const { createToast, dismissToast } = useToaster();
+
+        const showToast = () => {
+            const id = createToast({
+                variant: 'warning',
+                title: 'File upload failed',
+                description: 'Your file could not be uploaded.',
+                persistent: true,
+                actions: (
+                    <DsStack direction="row" gap="var(--xs)" justifyContent="flex-end">
+                        <DsButton design="v1.2" variant="ghost" onClick={() => dismissToast(id)}>
+                            Abort
+                        </DsButton>
+                        <DsButton design="v1.2" variant="danger" onClick={() => dismissToast(id)}>
+                            Re-try
+                        </DsButton>
+                    </DsStack>
+                ),
+            });
+        };
+
+        return (
+            <DsButton design="v1.2" variant="filled" onClick={showToast}>
+                Show toast with actions
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## Long Content
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'warning',
+        title: 'Important notice',
+        description: 'This is a longer message that demonstrates how the toast handles extended content. ' + 'The text wraps and stays readable while remaining within the toast boundaries.'
+      })}>
+                    Show long content toast
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const LongContent = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'warning',
+                        title: 'Important notice',
+                        description:
+                            'This is a longer message that demonstrates how the toast handles extended content. ' +
+                            'The text wraps and stays readable while remaining within the toast boundaries.',
+                    })
+                }
+            >
+                Show long content toast
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## Persistent
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast
+      } = useToaster();
+      return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
+        variant: 'info',
+        title: 'Sync in progress',
+        description: 'This toast stays until you close it.',
+        persistent: true
+      })}>
+                    Show persistent toast
+                </DsButton>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const Persistent = () => {
+    const ToastTrigger = () => {
+        const { createToast } = useToaster();
+
+        return (
+            <DsButton
+                design="v1.2"
+                variant="filled"
+                onClick={() =>
+                    createToast({
+                        variant: 'info',
+                        title: 'Sync in progress',
+                        description: 'This toast stays until you close it.',
+                        persistent: true,
+                    })
+                }
+            >
+                Show persistent toast
+            </DsButton>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};
+
+## Multiple Toasts
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => {
+    const ToastTrigger = () => {
+      const {
+        createToast,
+        dismissAllToasts
+      } = useToaster();
+      const showToasts = () => {
+        createToast({
+          variant: 'success',
+          title: 'First toast',
+          description: 'This is the first message.'
+        });
+        createToast({
+          variant: 'info',
+          title: 'Second toast',
+          description: 'This is the second message.'
+        });
+        createToast({
+          variant: 'warning',
+          title: 'Third toast',
+          description: 'This is the third message.'
+        });
+      };
+      return <DsStack direction="row" gap="var(--xs)">
+                    <DsButton design="v1.2" variant="filled" onClick={showToasts}>
+                        Show multiple toasts
+                    </DsButton>
+                    <DsButton design="v1.2" variant="ghost" onClick={() => dismissAllToasts()}>
+                        Dismiss all
+                    </DsButton>
+                </DsStack>;
+    };
+    return <DsToastProvider>
+                <ToastTrigger />
+            </DsToastProvider>;
+  }
+}
+
+### MCP manifest
+const MultipleToasts = () => {
+    const ToastTrigger = () => {
+        const { createToast, dismissAllToasts } = useToaster();
+
+        const showToasts = () => {
+            createToast({ variant: 'success', title: 'First toast', description: 'This is the first message.' });
+            createToast({ variant: 'info', title: 'Second toast', description: 'This is the second message.' });
+            createToast({ variant: 'warning', title: 'Third toast', description: 'This is the third message.' });
+        };
+
+        return (
+            <DsStack direction="row" gap="var(--xs)">
+                <DsButton design="v1.2" variant="filled" onClick={showToasts}>
+                    Show multiple toasts
+                </DsButton>
+                <DsButton design="v1.2" variant="ghost" onClick={() => dismissAllToasts()}>
+                    Dismiss all
+                </DsButton>
+            </DsStack>
+        );
+    };
+
+    return (
+        <DsToastProvider>
+            <ToastTrigger />
+        </DsToastProvider>
+    );
+};

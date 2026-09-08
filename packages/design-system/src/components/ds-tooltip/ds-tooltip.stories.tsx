@@ -3,6 +3,8 @@ import DsTooltip from './ds-tooltip';
 import { tooltipPlacements } from './ds-tooltip.types';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsIcon } from '../ds-icon';
+import { DsStack } from '../ds-stack';
+import { DsTypography } from '../ds-typography';
 
 const meta: Meta<typeof DsTooltip> = {
 	title: 'Components/Tooltip',
@@ -56,14 +58,17 @@ export const LongText: Story = {
 	},
 };
 
+/**
+ * Tooltips accept rich JSX content, not just strings. Compose `DsStack` and
+ * `DsTypography` so the layout and text styles inherit the on-dark tooltip palette.
+ */
 export const RichContent: Story = {
 	args: {
 		content: (
-			<div>
-				<strong>Multi-line</strong> tooltip with <em>JSX</em>
-				<br />
-				<span style={{ color: '#9cdcfe' }}>No truncation should occur.</span>
-			</div>
+			<DsStack direction="column" gap="var(--3xs)">
+				<DsTypography variant="body-sm-md">Multi-line tooltip with JSX</DsTypography>
+				<DsTypography variant="body-xs-reg">No truncation should occur.</DsTypography>
+			</DsStack>
 		),
 		children: <DsIcon icon="info" />,
 	},
