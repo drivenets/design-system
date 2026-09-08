@@ -25,12 +25,14 @@ const DsEmptyState = ({
 
 	return (
 		<div ref={ref} className={classNames(styles.root, className)} style={style} role="status">
-			<DsStack direction="column" alignItems="center" justifyContent="center" gap="var(--standard)">
+			<DsStack direction="column" alignItems="center" justifyContent="center" gap="var(--xs)">
 				<div className={styles.illustration} aria-hidden="true">
 					{illustration}
 				</div>
-				<DsStack direction="column" alignItems="center" gap="var(--xs)">
-					<DsTypography variant="body-md-reg">{resolvedMessage}</DsTypography>
+				<DsStack direction="column" alignItems="center" gap="var(--lg)">
+					<DsTypography variant="body-md-reg" color="var(--color-dap-gray-700)">
+						{resolvedMessage}
+					</DsTypography>
 					{action}
 				</DsStack>
 			</DsStack>
