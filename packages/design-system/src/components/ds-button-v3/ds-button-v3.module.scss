@@ -164,7 +164,7 @@ $focus-ring-width: 2px;
 
 .root[data-color='default'][data-variant='secondary'] {
 	background-color: var(--background-action-secondary);
-	color: var(--font-main);
+	color: var(--font-action);
 	border-color: var(--border);
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
@@ -202,7 +202,7 @@ $focus-ring-width: 2px;
 
 .root[data-color='default'][data-variant='tertiary'] {
 	background-color: transparent;
-	color: var(--font-main);
+	color: var(--font-action);
 	border-color: transparent;
 
 	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
