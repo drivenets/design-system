@@ -39,7 +39,7 @@
 		"build": "tsdown"
 	},
 	"dependencies": {
-		"eslint-no-restricted": "^0.1.1"
+		"eslint-no-restricted": "^0.1.2"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/cli": "catalog:",
