@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/98 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/98 infos</a><span class="filter-pill ok" aria-disabled="true">556 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/98 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/98 infos</a><span class="filter-pill ok" aria-disabled="true">557 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -7082,7 +7082,17 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsDrawer, DsIcon, DsSystemStatus, DsTextInput, DsTypography } from "@drivenets/design-system";</code></pre>
+                <pre><code>import {
+    DsButton,
+    DsButtonV3,
+    DsDivider,
+    DsDrawer,
+    DsIcon,
+    DsStack,
+    DsSystemStatus,
+    DsTextInput,
+    DsTypography,
+} from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -7105,13 +7115,11 @@ style?: CSSProperties</code></pre>
                         &lt;DsDrawer.Title&gt;
                             Default Drawer &lt;DsSystemStatus status=&quot;healthy&quot; label=&quot;Active&quot; /&gt;
                         &lt;/DsDrawer.Title&gt;
-                        &lt;div className={styles.headerActions}&gt;
-                            &lt;button className={styles.expand} aria-label=&quot;Expand&quot;&gt;
-                                &lt;DsIcon icon=&quot;open_in_full&quot; size=&quot;tiny&quot; /&gt;
-                            &lt;/button&gt;
-                            &lt;div className={styles.divider} /&gt;
+                        &lt;DsStack alignItems=&quot;center&quot; gap=&quot;var(--xs)&quot;&gt;
+                            &lt;DsButtonV3 variant=&quot;tertiary&quot; icon=&quot;open_in_full&quot; size=&quot;tiny&quot; aria-label=&quot;Expand&quot; /&gt;
+                            &lt;DsDivider orientation=&quot;vertical&quot; /&gt;
                             &lt;DsDrawer.CloseTrigger /&gt;
-                        &lt;/div&gt;
+                        &lt;/DsStack&gt;
                         &lt;DsTypography className={styles.description} variant=&quot;body-xs-reg&quot;&gt;
                             This is a description caption under a title.
                         &lt;/DsTypography&gt;
@@ -7119,7 +7127,7 @@ style?: CSSProperties</code></pre>
                     &lt;DsDrawer.Toolbar&gt;
                         &lt;DsTextInput
                             placeholder=&quot;Search...&quot;
-                            style={{ flex: 1 }}
+                            className={styles.searchInput}
                             slots={{ startAdornment: &lt;DsIcon icon=&quot;search&quot; size=&quot;tiny&quot; /&gt; }}
                         /&gt;
                         &lt;DsIcon icon=&quot;filter_list&quot; size=&quot;tiny&quot; /&gt;
@@ -7180,19 +7188,17 @@ style?: CSSProperties</code></pre>
                         &lt;DsDrawer.Title&gt;
                             Drawer with Tabs &lt;DsSystemStatus status=&quot;healthy&quot; label=&quot;Active&quot; /&gt;
                         &lt;/DsDrawer.Title&gt;
-                        &lt;div className={styles.headerActions}&gt;
-                            &lt;button className={styles.expand} aria-label=&quot;Expand&quot;&gt;
-                                &lt;DsIcon icon=&quot;open_in_full&quot; size=&quot;tiny&quot; /&gt;
-                            &lt;/button&gt;
-                            &lt;div className={styles.divider} /&gt;
+                        &lt;DsStack alignItems=&quot;center&quot; gap=&quot;var(--xs)&quot;&gt;
+                            &lt;DsButtonV3 variant=&quot;tertiary&quot; icon=&quot;open_in_full&quot; size=&quot;tiny&quot; aria-label=&quot;Expand&quot; /&gt;
+                            &lt;DsDivider orientation=&quot;vertical&quot; /&gt;
                             &lt;DsDrawer.CloseTrigger /&gt;
-                        &lt;/div&gt;
+                        &lt;/DsStack&gt;
                         &lt;DsTypography className={styles.description} variant=&quot;body-xs-reg&quot;&gt;
                             This is a description caption under a title.
                         &lt;/DsTypography&gt;
                     &lt;/DsDrawer.Header&gt;
                     &lt;DsDrawer.Body className={styles.body}&gt;
-                        &lt;div style={{ flex: 0 }} className={styles.section}&gt;
+                        &lt;div className={classNames(styles.section, styles.tabsSection)}&gt;
                             &lt;Tabs /&gt;
                         &lt;/div&gt;
                         &lt;div className={styles.section}&gt;
@@ -7244,7 +7250,7 @@ style?: CSSProperties</code></pre>
                             &lt;DsTypography className={styles.sectionHeader} variant=&quot;body-md-semi-bold&quot;&gt;
                                 Drawer content header
                             &lt;/DsTypography&gt;
-                            &lt;DsTypography style={{ minHeight: &#39;300px&#39; }} variant=&quot;heading2&quot; className={styles.sectionContent}&gt;
+                            &lt;DsTypography variant=&quot;heading2&quot; className={classNames(styles.sectionContent, styles.taller)}&gt;
                                 Out of scope section
                             &lt;/DsTypography&gt;
                         &lt;/div&gt;
@@ -7252,10 +7258,10 @@ style?: CSSProperties</code></pre>
                             &lt;DsTypography className={styles.sectionHeader} variant=&quot;body-md-semi-bold&quot;&gt;
                                 Drawer content header
                             &lt;/DsTypography&gt;
-                            &lt;DsTypography style={{ minHeight: &#39;200px&#39; }} variant=&quot;heading2&quot; className={styles.sectionContent}&gt;
+                            &lt;DsTypography variant=&quot;heading2&quot; className={classNames(styles.sectionContent, styles.tall)}&gt;
                                 Out of scope section
                             &lt;/DsTypography&gt;
-                            &lt;DsTypography style={{ minHeight: &#39;500px&#39; }} variant=&quot;heading2&quot; className={styles.sectionContent}&gt;
+                            &lt;DsTypography variant=&quot;heading2&quot; className={classNames(styles.sectionContent, styles.tallest)}&gt;
                                 Out of scope section
                             &lt;/DsTypography&gt;
                         &lt;/div&gt;
@@ -7332,7 +7338,7 @@ style?: CSSProperties</code></pre>
                         &lt;DsDrawer.CloseTrigger /&gt;
                     &lt;/DsDrawer.Header&gt;
                     &lt;DsDrawer.Body className={styles.bodyGrid}&gt;
-                        &lt;div style={{ gridRow: &#39;span 2&#39; }} className={styles.section}&gt;
+                        &lt;div className={classNames(styles.section, styles.spanTwoRows)}&gt;
                             &lt;DsTypography className={styles.sectionHeader} variant=&quot;body-md-semi-bold&quot;&gt;
                                 Drawer content header
                             &lt;/DsTypography&gt;
@@ -7448,16 +7454,16 @@ style?: CSSProperties</code></pre>
                 columns={isFullScreen ? 12 : args.columns || 4}&gt;
                 &lt;DsDrawer.Header&gt;
                     &lt;DsDrawer.Title&gt;Expandable Drawer&lt;/DsDrawer.Title&gt;
-                    &lt;div className={styles.headerActions}&gt;
-                        &lt;button
-                            className={styles.expand}
+                    &lt;DsStack alignItems=&quot;center&quot; gap=&quot;var(--xs)&quot;&gt;
+                        &lt;DsButtonV3
+                            variant=&quot;tertiary&quot;
+                            icon={isFullScreen ? &#39;close_fullscreen&#39; : &#39;open_in_full&#39;}
+                            size=&quot;tiny&quot;
                             aria-label={isFullScreen ? &#39;Collapse&#39; : &#39;Expand&#39;}
-                            onClick={toggleFullScreen}&gt;
-                            &lt;DsIcon icon={isFullScreen ? &#39;close_fullscreen&#39; : &#39;open_in_full&#39;} size=&quot;tiny&quot; /&gt;
-                        &lt;/button&gt;
-                        &lt;div className={styles.divider} /&gt;
+                            onClick={toggleFullScreen} /&gt;
+                        &lt;DsDivider orientation=&quot;vertical&quot; /&gt;
                         &lt;DsDrawer.CloseTrigger /&gt;
-                    &lt;/div&gt;
+                    &lt;/DsStack&gt;
                 &lt;/DsDrawer.Header&gt;
                 &lt;DsDrawer.Body className={styles.body}&gt;
                     &lt;div className={styles.section}&gt;
@@ -7634,6 +7640,7 @@ style?: CSSProperties</code></pre>
     DsDropdownMenu,
     DsIcon,
     DsRadioGroup,
+    DsStack,
     DsTextInput,
     DsTypography,
     DsUserCard,
@@ -7649,10 +7656,10 @@ style?: CSSProperties</code></pre>
               
               
               <pre><code>const Default = () =&gt; {
-    const handleEdit = () =&gt; console.log(&#39;Edit clicked&#39;);
-    const handleDuplicate = () =&gt; console.log(&#39;Duplicate clicked&#39;);
-    const handleShare = () =&gt; console.log(&#39;Share clicked&#39;);
-    const handleDelete = () =&gt; console.log(&#39;Delete clicked&#39;);
+    const handleEdit = fn();
+    const handleDuplicate = fn();
+    const handleShare = fn();
+    const handleDelete = fn();
 
     return (
         &lt;DsDropdownMenu.Root&gt;
@@ -7783,12 +7790,9 @@ style?: CSSProperties</code></pre>
         setSelected(newSelected);
     };
 
-    const handleApply = () =&gt; {
-        console.log(&#39;Applied selections:&#39;, Array.from(selected));
-    };
+    const handleApply = fn();
 
     const handleCancel = () =&gt; {
-        console.log(&#39;Cancelled&#39;);
         setOpen(false);
         setSearch(&#39;&#39;);
     };
@@ -7819,7 +7823,6 @@ style?: CSSProperties</code></pre>
                 &lt;/DsDropdownMenu.Header&gt;
                 {filteredItems.map((item) =&gt; {
                     const isError = &#39;variant&#39; in item &amp;&amp; item.variant === &#39;error&#39;;
-                    const errorStyle = isError ? { color: &#39;var(--font-error)&#39; } : undefined;
 
                     return (
                         &lt;DsDropdownMenu.Item key={item.id} value={item.id} variant={isError ? &#39;error&#39; : undefined}&gt;
@@ -7832,14 +7835,22 @@ style?: CSSProperties</code></pre>
                                     onCheckedChange={() =&gt; toggleSelection(item.id)}
                                 /&gt;
                             )}
-                            &lt;div className=&quot;item-content&quot;&gt;
-                                &lt;DsTypography className=&quot;item-label&quot; variant=&quot;body-sm-reg&quot; style={errorStyle}&gt;
+                            &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
+                                &lt;DsTypography
+                                    className=&quot;item-label&quot;
+                                    variant=&quot;body-sm-reg&quot;
+                                    color={isError ? &#39;error&#39; : undefined}
+                                &gt;
                                     {item.label}
                                 &lt;/DsTypography&gt;
-                                &lt;DsTypography className=&quot;item-description&quot; variant=&quot;body-xs-reg&quot; style={errorStyle}&gt;
+                                &lt;DsTypography
+                                    className=&quot;item-description&quot;
+                                    variant=&quot;body-xs-reg&quot;
+                                    color={isError ? &#39;error&#39; : undefined}
+                                &gt;
                                     {item.description}
                                 &lt;/DsTypography&gt;
-                            &lt;/div&gt;
+                            &lt;/DsStack&gt;
                         &lt;/DsDropdownMenu.Item&gt;
                     );
                 })}
@@ -7854,14 +7865,14 @@ style?: CSSProperties</code></pre>
                                         checked={selected.has(item.id)}
                                         onCheckedChange={() =&gt; toggleSelection(item.id)}
                                     /&gt;
-                                    &lt;div className=&quot;item-content&quot;&gt;
+                                    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
                                         &lt;DsTypography className=&quot;item-label&quot; variant=&quot;body-sm-reg&quot;&gt;
                                             {item.label}
                                         &lt;/DsTypography&gt;
                                         &lt;DsTypography className=&quot;item-description&quot; variant=&quot;body-xs-reg&quot;&gt;
                                             {item.description}
                                         &lt;/DsTypography&gt;
-                                    &lt;/div&gt;
+                                    &lt;/DsStack&gt;
                                 &lt;/DsDropdownMenu.Item&gt;
                             ))}
                         &lt;/DsDropdownMenu.ItemGroupContent&gt;
@@ -7947,17 +7958,14 @@ style?: CSSProperties</code></pre>
 
     const handleApply = () =&gt; {
         setOpen(false);
-        console.log(`Applied: ${JSON.stringify(tempSelected)}`);
     };
 
     const handleCancel = () =&gt; {
-        console.log(&#39;Cancelled&#39;);
         setOpen(false);
         setSearch(&#39;&#39;);
     };
 
     const handleReset = () =&gt; {
-        console.log(&#39;Reset&#39;);
         setTempSelected(&#39;&#39;);
         setOpen(false);
         setSearch(&#39;&#39;);
@@ -7995,14 +8003,14 @@ style?: CSSProperties</code></pre>
                             className={tempSelected === option.value ? &#39;radio-selected&#39; : &#39;&#39;}
                         &gt;
                             &lt;DsRadioGroup.Item value={option.value} /&gt;
-                            &lt;div className=&quot;item-content&quot;&gt;
+                            &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
                                 &lt;DsTypography className=&quot;item-label&quot; variant=&quot;body-sm-reg&quot;&gt;
                                     {option.label}
                                 &lt;/DsTypography&gt;
                                 &lt;DsTypography className=&quot;item-description&quot; variant=&quot;body-xs-reg&quot;&gt;
                                     {option.description}
                                 &lt;/DsTypography&gt;
-                            &lt;/div&gt;
+                            &lt;/DsStack&gt;
                         &lt;/DsDropdownMenu.Item&gt;
                     ))}
                 &lt;/DsRadioGroup.Root&gt;
@@ -8030,9 +8038,9 @@ style?: CSSProperties</code></pre>
               
               
               <pre><code>const UserMenu = () =&gt; {
-    const handleProfile = () =&gt; console.log(&#39;Profile clicked&#39;);
-    const handleSettings = () =&gt; console.log(&#39;Settings clicked&#39;);
-    const handleLogout = () =&gt; console.log(&#39;Log out clicked&#39;);
+    const handleProfile = fn();
+    const handleSettings = fn();
+    const handleLogout = fn();
 
     return (
         &lt;DsDropdownMenu.Root positioning={{ placement: &#39;bottom-end&#39; }}&gt;
@@ -8070,12 +8078,12 @@ style?: CSSProperties</code></pre>
               
               
               <pre><code>const ActionMenu = () =&gt; {
-    const handleEdit = () =&gt; console.log(&#39;Edit clicked&#39;);
-    const handleDuplicate = () =&gt; console.log(&#39;Duplicate clicked&#39;);
-    const handleShareEmail = () =&gt; console.log(&#39;Share via Email clicked&#39;);
-    const handleShareLink = () =&gt; console.log(&#39;Copy Link clicked&#39;);
-    const handleShareSocial = () =&gt; console.log(&#39;Share to Social Media clicked&#39;);
-    const handleDelete = () =&gt; console.log(&#39;Delete item clicked&#39;);
+    const handleEdit = fn();
+    const handleDuplicate = fn();
+    const handleShareEmail = fn();
+    const handleShareLink = fn();
+    const handleShareSocial = fn();
+    const handleDelete = fn();
 
     return (
         &lt;DsDropdownMenu.Root&gt;
@@ -8131,11 +8139,11 @@ style?: CSSProperties</code></pre>
               
               
               <pre><code>const NestedSubmenus = () =&gt; {
-    const handleBlank = () =&gt; console.log(&#39;Blank document clicked&#39;);
-    const handleResume = () =&gt; console.log(&#39;Resume template clicked&#39;);
-    const handleInvoice = () =&gt; console.log(&#39;Invoice template clicked&#39;);
-    const handleLetter = () =&gt; console.log(&#39;Letter template clicked&#39;);
-    const handleOpen = () =&gt; console.log(&#39;Open clicked&#39;);
+    const handleBlank = fn();
+    const handleResume = fn();
+    const handleInvoice = fn();
+    const handleLetter = fn();
+    const handleOpen = fn();
 
     return (
         &lt;DsDropdownMenu.Root&gt;
@@ -8201,7 +8209,7 @@ style?: CSSProperties</code></pre>
       <div class="badges">
         <label for="c-27-components-dropdownmenulegacy-deprecated-props" class="badge ok as-toggle">11 prop types</label>
         
-        <label for="c-27-components-dropdownmenulegacy-deprecated-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-27-components-dropdownmenulegacy-deprecated-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -8318,20 +8326,44 @@ style?: CSSProperties</code></pre>
     return (
         &lt;DsDropdownMenuLegacy
             options={[
-                { label: &#39;Edit&#39;, icon: &#39;edit&#39;, onClick: () =&gt; console.log(&#39;Edit clicked&#39;) },
-                { label: &#39;Delete&#39;, icon: &#39;delete&#39;, onClick: () =&gt; console.log(&#39;Delete clicked&#39;) },
-                { label: &#39;Share&#39;, icon: &#39;share&#39;, onClick: () =&gt; console.log(&#39;Share clicked&#39;) },
+                { label: &#39;Edit&#39;, icon: &#39;edit&#39;, onClick: fn() },
+                { label: &#39;Delete&#39;, icon: &#39;delete&#39;, onClick: fn() },
+                { label: &#39;Share&#39;, icon: &#39;share&#39;, onClick: fn() },
                 {
                     label: &#39;Disabled Option&#39;,
                     icon: &#39;block&#39;,
                     disabled: true,
-                    onClick: () =&gt; console.log(&#39;Disabled clicked&#39;),
+                    onClick: fn(),
                 },
             ]}
             contentGap={4}&gt;
             &lt;div className=&quot;trigger&quot; role=&quot;button&quot;&gt;
                 &lt;span className=&quot;label&quot;&gt;Actions&lt;/span&gt;
                 &lt;DsIcon className=&quot;arrow&quot; icon=&quot;more_vert&quot; /&gt;
+            &lt;/div&gt;
+        &lt;/DsDropdownMenuLegacy&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Without Icons</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`options` items work without icons — pass just `label` and `onClick` for a compact, text-only action list. `contentGap` sets the space between the trigger and the menu.</div>
+              <pre><code>const WithoutIcons = () =&gt; {
+    return (
+        &lt;DsDropdownMenuLegacy
+            options={[
+                { label: &#39;Rename&#39;, onClick: fn() },
+                { label: &#39;Duplicate&#39;, onClick: fn() },
+                { label: &#39;Archive&#39;, onClick: fn() },
+            ]}
+            contentGap={8}&gt;
+            &lt;div className=&quot;trigger&quot; role=&quot;button&quot;&gt;
+                &lt;span className=&quot;label&quot;&gt;Options&lt;/span&gt;
+                &lt;DsIcon className=&quot;arrow&quot; icon=&quot;expand_more&quot; /&gt;
             &lt;/div&gt;
         &lt;/DsDropdownMenuLegacy&gt;
     );
@@ -12764,8 +12796,7 @@ style?: CSSProperties</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { Controller, FormProvider } from "react-hook-form";
-import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGroup } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsFormControl, DsIcon, DsModal, DsStack, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -12775,40 +12806,31 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Default = function Render() {
-    const [isOpen, setIsOpen] = useState(false);
+              <div class="hint">The default modal has an inset header underline and no footer border. Compose DsModal.Header, DsModal.Body, and DsModal.Footer to build a standard confirmation dialog, and drive the open state from the component that renders it.</div>
+              <pre><code>const Default = () =&gt; {
+    const [open, setOpen] = useState(false);
 
     return (
-        &lt;div className={styles.storyContainer}&gt;
-            &lt;div className={styles.storyHeader}&gt;
-                &lt;h2&gt;Default Modal&lt;/h2&gt;
-                &lt;p&gt;The default variant has an inset header underline and no footer border.&lt;/p&gt;
-                &lt;DsButton design=&quot;v1.2&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(true)}&gt;
-                    Open Modal
-                &lt;/DsButton&gt;
-            &lt;/div&gt;
-
-            &lt;DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}&gt;
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal columns={4} open={open} onOpenChange={setOpen}&gt;
                 &lt;DsModal.Header&gt;
-                    &lt;DsModal.Title&gt;Modal Title&lt;/DsModal.Title&gt;
+                    &lt;DsModal.Title&gt;Modal title&lt;/DsModal.Title&gt;
                     &lt;DsModal.CloseTrigger /&gt;
                 &lt;/DsModal.Header&gt;
                 &lt;DsModal.Body&gt;
-                    &lt;p&gt;This is the default modal variant with simple content.&lt;/p&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This is the default modal variant with simple content.
+                                                &lt;/DsTypography&gt;
                 &lt;/DsModal.Body&gt;
                 &lt;DsModal.Footer&gt;
                     &lt;DsModal.Actions&gt;
-                        &lt;DsButton design=&quot;v1.2&quot; buttonType=&quot;secondary&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(false)}&gt;
-                            Cancel
-                        &lt;/DsButton&gt;
-                        &lt;DsButton design=&quot;v1.2&quot; variant=&quot;filled&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(false)}&gt;
-                            Confirm
-                        &lt;/DsButton&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Cancel
+                                                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Confirm&lt;/DsButtonV3&gt;
                     &lt;/DsModal.Actions&gt;
                 &lt;/DsModal.Footer&gt;
             &lt;/DsModal&gt;
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -12818,284 +12840,37 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Divided = function Render() {
-    const [isOpen, setIsOpen] = useState(false);
-    const [submittedData, setSubmittedData] = useState&lt;ModalFormValues | null&gt;(null);
-
-    const methods = useForm&lt;ModalFormValues&gt;({
-        resolver: zodResolver(modalFormSchema),
-        defaultValues: defaultFormValues,
-        mode: &#39;onChange&#39;,
-    });
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isValid, touchedFields, isDirty },
-        setValue,
-        watch,
-        trigger,
-        reset,
-        control,
-    } = methods;
-
-    const onSubmit: SubmitHandler&lt;ModalFormValues&gt; = (data: ModalFormValues) =&gt; {
-        setSubmittedData(data);
-        setIsOpen(false);
-        reset(defaultFormValues);
-    };
-
-    const handleReset = () =&gt; {
-        reset(defaultFormValues);
-    };
-
-    const handleValueChange = (field: keyof ModalFormValues, value: string | boolean | null) =&gt; {
-        setValue(field, value === &#39;indeterminate&#39; ? false : (value as ModalFormValues[typeof field]), {
-            shouldValidate: true,
-            shouldTouch: true,
-            shouldDirty: true,
-        });
-    };
+              <div class="hint">Set `dividers` to add full-width borders above the footer and below the header, giving clearer visual separation when the body holds a form or scrollable content. Compose DsFormControl fields inside DsModal.Body for standard form layouts.</div>
+              <pre><code>const Divided = () =&gt; {
+    const [open, setOpen] = useState(false);
 
     return (
-        &lt;div className={styles.storyContainer}&gt;
-            &lt;div className={styles.storyHeader}&gt;
-                &lt;h2&gt;Interactive Form Modal Demo&lt;/h2&gt;
-                &lt;p&gt;
-                    Click the button below to open a form modal. Fill out the form and click &amp;#34;Save Changes&amp;#34; to
-                    see the results displayed here.
-                &lt;/p&gt;
-                &lt;DsButton design=&quot;v1.2&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(true)}&gt;
-                    Open Form Modal
-                &lt;/DsButton&gt;
-            &lt;/div&gt;
-
-            {submittedData &amp;&amp; (
-                &lt;div className={styles.formResults}&gt;
-                    &lt;h3 className={styles.formResultsTitle}&gt;Form Results:&lt;/h3&gt;
-                    &lt;div className={styles.formResultsGrid}&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Name:&lt;/strong&gt; {submittedData.name}
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Email:&lt;/strong&gt; {submittedData.email}
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Department:&lt;/strong&gt; {submittedData.department}
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Role:&lt;/strong&gt; {submittedData.role || &#39;Not specified&#39;}
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Description:&lt;/strong&gt; {submittedData.description}
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Subscription:&lt;/strong&gt; {submittedData.subscription}
-                        &lt;/div&gt;
-                        &lt;div&gt;
-                            &lt;strong&gt;Terms Accepted:&lt;/strong&gt; {submittedData.acceptTerms ? &#39;Yes&#39; : &#39;No&#39;}
-                        &lt;/div&gt;
-                    &lt;/div&gt;
-                    &lt;DsButton
-                        design=&quot;v1.2&quot;
-                        buttonType=&quot;secondary&quot;
-                        size=&quot;small&quot;
-                        onClick={() =&gt; setSubmittedData(null)}
-                        className={styles.clearResultsButton}
-                    &gt;
-                        Clear Results
-                    &lt;/DsButton&gt;
-                &lt;/div&gt;
-            )}
-
-            &lt;DsModal open={isOpen} columns={8} dividers onOpenChange={setIsOpen}&gt;
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal columns={6} dividers open={open} onOpenChange={setOpen}&gt;
                 &lt;DsModal.Header&gt;
-                    &lt;DsModal.Title&gt;User Profile Form&lt;/DsModal.Title&gt;
+                    &lt;DsModal.Title&gt;User profile&lt;/DsModal.Title&gt;
                     &lt;DsModal.CloseTrigger /&gt;
                 &lt;/DsModal.Header&gt;
                 &lt;DsModal.Body&gt;
-                    &lt;FormProvider {...methods}&gt;
-                        &lt;div className={styles.formSection}&gt;
-                            {/* Basic Information Section */}
-                            &lt;div&gt;
-                                &lt;h3 className={styles.formSectionTitle}&gt;Basic Information&lt;/h3&gt;
-                                &lt;div className={styles.formGrid}&gt;
-                                    &lt;DsFormControl
-                                        label=&quot;Full Name&quot;
-                                        required
-                                        status=&quot;error&quot;
-                                        messageIcon=&quot;cancel&quot;
-                                        message={touchedFields.name ? errors.name?.message : undefined}
-                                    &gt;
-                                        &lt;Controller
-                                            name=&quot;name&quot;
-                                            control={control}
-                                            render={({ field }) =&gt; (
-                                                &lt;DsFormControl.TextInput
-                                                    value={field.value}
-                                                    placeholder=&quot;Enter full name&quot;
-                                                    onChange={(event) =&gt; handleValueChange(&#39;name&#39;, event.target.value)}
-                                                    onBlur={(event) =&gt; handleValueChange(&#39;name&#39;, event.target.value)}
-                                                /&gt;
-                                            )}
-                                        /&gt;
-                                    &lt;/DsFormControl&gt;
-                                    &lt;DsFormControl
-                                        label=&quot;Email Address&quot;
-                                        required
-                                        status=&quot;error&quot;
-                                        messageIcon=&quot;cancel&quot;
-                                        message={touchedFields.email ? errors.email?.message : undefined}
-                                    &gt;
-                                        &lt;Controller
-                                            name=&quot;email&quot;
-                                            control={control}
-                                            render={({ field }) =&gt; (
-                                                &lt;DsFormControl.TextInput
-                                                    type=&quot;email&quot;
-                                                    value={field.value}
-                                                    placeholder=&quot;Enter email address&quot;
-                                                    onChange={(event) =&gt; handleValueChange(&#39;email&#39;, event.target.value)}
-                                                    onBlur={(event) =&gt; handleValueChange(&#39;email&#39;, event.target.value)}
-                                                /&gt;
-                                            )}
-                                        /&gt;
-                                    &lt;/DsFormControl&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-
-                            {/* Work Information Section */}
-                            &lt;div&gt;
-                                &lt;h3 className={styles.formSectionTitle}&gt;Work Information&lt;/h3&gt;
-                                &lt;div className={styles.formGrid}&gt;
-                                    &lt;DsFormControl
-                                        label=&quot;Department&quot;
-                                        required
-                                        status=&quot;error&quot;
-                                        messageIcon=&quot;cancel&quot;
-                                        message={touchedFields.department ? errors.department?.message : undefined}
-                                    &gt;
-                                        &lt;Controller
-                                            name=&quot;department&quot;
-                                            control={control}
-                                            render={({ field }) =&gt; (
-                                                &lt;DsFormControl.Select
-                                                    value={field.value}
-                                                    placeholder=&quot;Select a department&quot;
-                                                    options={[
-                                                        { label: &#39;Engineering&#39;, value: &#39;engineering&#39; },
-                                                        { label: &#39;Product&#39;, value: &#39;product&#39; },
-                                                        { label: &#39;Design&#39;, value: &#39;design&#39; },
-                                                        { label: &#39;Marketing&#39;, value: &#39;marketing&#39; },
-                                                        { label: &#39;Sales&#39;, value: &#39;sales&#39; },
-                                                        { label: &#39;HR&#39;, value: &#39;hr&#39; },
-                                                    ]}
-                                                    clearable
-                                                    onValueChange={(value) =&gt; handleValueChange(&#39;department&#39;, value)}
-                                                    onBlur={() =&gt; handleValueChange(&#39;department&#39;, field.value)}
-                                                /&gt;
-                                            )}
-                                        /&gt;
-                                    &lt;/DsFormControl&gt;
-                                    &lt;DsFormControl
-                                        label=&quot;Role&quot;
-                                        required
-                                        status=&quot;error&quot;
-                                        messageIcon=&quot;cancel&quot;
-                                        message={touchedFields.role ? errors.role?.message : undefined}
-                                    &gt;
-                                        &lt;Controller
-                                            name=&quot;role&quot;
-                                            control={control}
-                                            render={({ field }) =&gt; (
-                                                &lt;DsFormControl.Select
-                                                    value={field.value}
-                                                    placeholder=&quot;Select a role&quot;
-                                                    options={[
-                                                        { label: &#39;Manager&#39;, value: &#39;manager&#39; },
-                                                        { label: &#39;Senior&#39;, value: &#39;senior&#39; },
-                                                        { label: &#39;Mid-level&#39;, value: &#39;mid&#39; },
-                                                        { label: &#39;Junior&#39;, value: &#39;junior&#39; },
-                                                        { label: &#39;Intern&#39;, value: &#39;intern&#39; },
-                                                    ]}
-                                                    clearable
-                                                    onValueChange={(value) =&gt; handleValueChange(&#39;role&#39;, value)}
-                                                    onBlur={() =&gt; handleValueChange(&#39;role&#39;, field.value)}
-                                                /&gt;
-                                            )}
-                                        /&gt;
-                                    &lt;/DsFormControl&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-
-                            {/* Subscription Section */}
-                            &lt;div&gt;
-                                &lt;h3 className={styles.formSectionTitle}&gt;Subscription Plan&lt;/h3&gt;
-                                &lt;DsRadioGroup.Root
-                                    value={watch(&#39;subscription&#39;)}
-                                    onValueChange={(value) =&gt; handleValueChange(&#39;subscription&#39;, value)}
-                                &gt;
-                                    &lt;DsRadioGroup.Item value=&quot;basic&quot; label=&quot;Basic&quot; /&gt;
-                                    &lt;DsRadioGroup.Item value=&quot;pro&quot; label=&quot;Pro&quot; /&gt;
-                                    &lt;DsRadioGroup.Item value=&quot;enterprise&quot; label=&quot;Enterprise&quot; /&gt;
-                                &lt;/DsRadioGroup.Root&gt;
-                                {errors.subscription &amp;&amp; (
-                                    &lt;span className={styles.errorMessage}&gt;{errors.subscription.message}&lt;/span&gt;
-                                )}
-                            &lt;/div&gt;
-
-                            {/* Additional Information Section */}
-                            &lt;div&gt;
-                                &lt;h3 className={styles.formSectionTitle}&gt;Additional Information&lt;/h3&gt;
-                                &lt;DsFormControl
-                                    label=&quot;Description&quot;
-                                    required
-                                    status=&quot;error&quot;
-                                    messageIcon=&quot;cancel&quot;
-                                    message={touchedFields.description ? errors.description?.message : undefined}
-                                &gt;
-                                    &lt;DsFormControl.Textarea
-                                        placeholder=&quot;Enter a brief description about the user (min. 20 characters)...&quot;
-                                        {...register(&#39;description&#39;, {
-                                            onBlur: () =&gt; trigger(&#39;description&#39;),
-                                            onChange: () =&gt; trigger(&#39;description&#39;),
-                                        })}
-                                    /&gt;
-                                &lt;/DsFormControl&gt;
-                            &lt;/div&gt;
-
-                            {/* Terms and Conditions */}
-                            &lt;div&gt;
-                                &lt;DsCheckbox
-                                    label=&quot;I accept the terms and conditions&quot;
-                                    checked={watch(&#39;acceptTerms&#39;)}
-                                    onCheckedChange={(value) =&gt; handleValueChange(&#39;acceptTerms&#39;, value)}
-                                /&gt;
-                                {errors.acceptTerms &amp;&amp; (
-                                    &lt;span className={styles.errorMessage}&gt;{errors.acceptTerms.message}&lt;/span&gt;
-                                )}
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/FormProvider&gt;
+                    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
+                        &lt;DsFormControl label=&quot;Full name&quot; required&gt;
+                            &lt;DsFormControl.TextInput placeholder=&quot;Enter full name&quot; /&gt;
+                        &lt;/DsFormControl&gt;
+                        &lt;DsFormControl label=&quot;Email address&quot; required&gt;
+                            &lt;DsFormControl.TextInput type=&quot;email&quot; placeholder=&quot;Enter email address&quot; /&gt;
+                        &lt;/DsFormControl&gt;
+                    &lt;/DsStack&gt;
                 &lt;/DsModal.Body&gt;
                 &lt;DsModal.Footer&gt;
                     &lt;DsModal.Actions&gt;
-                        &lt;DsButton design=&quot;v1.2&quot; buttonType=&quot;secondary&quot; size=&quot;large&quot; onClick={handleReset}&gt;
-                            Reset
-                        &lt;/DsButton&gt;
-                        &lt;DsButton
-                            design=&quot;v1.2&quot;
-                            size=&quot;large&quot;
-                            disabled={!isDirty || !isValid}
-                            onClick={handleSubmit(onSubmit)}
-                        &gt;
-                            Save Changes
-                        &lt;/DsButton&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Cancel
+                                                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Save changes&lt;/DsButtonV3&gt;
                     &lt;/DsModal.Actions&gt;
                 &lt;/DsModal.Footer&gt;
             &lt;/DsModal&gt;
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -13105,137 +12880,45 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Custom = function Render() {
-    const [isOpen, setIsOpen] = useState(false);
+              <div class="hint">Both DsModal.Header and DsModal.Footer accept arbitrary content, so you can build a custom header (title plus supporting text) and a footer that mixes status text with actions. Use DsModal.CloseTrigger for the close control and DsModal.Actions to keep buttons right-aligned.</div>
+              <pre><code>const Custom = () =&gt; {
+    const [open, setOpen] = useState(false);
 
     return (
-        &lt;div className={styles.storyContainer}&gt;
-            &lt;div className={styles.storyHeader}&gt;
-                &lt;h2&gt;Custom Modal Demo&lt;/h2&gt;
-                &lt;p&gt;Click the button below to open a custom modal with custom header and footer content.&lt;/p&gt;
-                &lt;DsButton design=&quot;v1.2&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(true)}&gt;
-                    Open Custom Modal
-                &lt;/DsButton&gt;
-            &lt;/div&gt;
-
-            &lt;DsModal open={isOpen} columns={4} dividers onOpenChange={setIsOpen}&gt;
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal columns={4} dividers open={open} onOpenChange={setOpen}&gt;
                 &lt;DsModal.Header&gt;
-                    &lt;div className={styles.customHeader}&gt;
-                        &lt;button className={styles.headerButton}&gt;⋯&lt;/button&gt;
-                        &lt;Dialog.CloseTrigger className={styles.headerButton}&gt;✕&lt;/Dialog.CloseTrigger&gt;
-                    &lt;/div&gt;
+                    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot; flex=&quot;1&quot;&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Project details&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Add the core information for your new project.
+                                                        &lt;/DsTypography&gt;
+                    &lt;/DsStack&gt;
+                    &lt;DsModal.CloseTrigger /&gt;
                 &lt;/DsModal.Header&gt;
                 &lt;DsModal.Body&gt;
-                    &lt;div className={styles.formSection}&gt;
-                        {/* First Section */}
-                        &lt;div&gt;
-                            &lt;h3 className={styles.formSectionTitle}&gt;Project Details&lt;/h3&gt;
-                            &lt;div className={styles.formGrid}&gt;
-                                &lt;div&gt;
-                                    &lt;label htmlFor=&quot;project-name&quot; className={styles.inputLabel}&gt;
-                                        Project Name
-                                    &lt;/label&gt;
-                                    &lt;input
-                                        id=&quot;project-name&quot;
-                                        type=&quot;text&quot;
-                                        placeholder=&quot;Enter project name&quot;
-                                        className={styles.inputField}
-                                    /&gt;
-                                &lt;/div&gt;
-                                &lt;div&gt;
-                                    &lt;label htmlFor=&quot;category&quot; className={styles.inputLabel}&gt;
-                                        Category
-                                    &lt;/label&gt;
-                                    &lt;input
-                                        id=&quot;category&quot;
-                                        type=&quot;text&quot;
-                                        placeholder=&quot;Select category&quot;
-                                        className={styles.inputField}
-                                    /&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-
-                        {/* Second Section */}
-                        &lt;div&gt;
-                            &lt;h3 className={styles.formSectionTitle}&gt;Team Information&lt;/h3&gt;
-                            &lt;div className={styles.formGrid}&gt;
-                                &lt;div&gt;
-                                    &lt;label htmlFor=&quot;team-lead&quot; className={styles.inputLabel}&gt;
-                                        Team Lead
-                                    &lt;/label&gt;
-                                    &lt;input
-                                        id=&quot;team-lead&quot;
-                                        type=&quot;text&quot;
-                                        placeholder=&quot;Enter team lead name&quot;
-                                        className={styles.inputField}
-                                    /&gt;
-                                &lt;/div&gt;
-                                &lt;div&gt;
-                                    &lt;label htmlFor=&quot;team-size&quot; className={styles.inputLabel}&gt;
-                                        Team Size
-                                    &lt;/label&gt;
-                                    &lt;input
-                                        id=&quot;team-size&quot;
-                                        type=&quot;text&quot;
-                                        placeholder=&quot;Number of team members&quot;
-                                        className={styles.inputField}
-                                    /&gt;
-                                &lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-
-                        {/* Third Group */}
-                        &lt;div&gt;
-                            &lt;div className={styles.formGridThree}&gt;
-                                &lt;div&gt;
-                                    &lt;label htmlFor=&quot;budget&quot; className={styles.inputLabel}&gt;
-                                        Budget
-                                    &lt;/label&gt;
-                                    &lt;input
-                                        id=&quot;budget&quot;
-                                        type=&quot;text&quot;
-                                        placeholder=&quot;Enter budget amount&quot;
-                                        className={styles.inputField}
-                                    /&gt;
-                                &lt;/div&gt;
-                                &lt;div&gt;
-                                    &lt;label htmlFor=&quot;timeline&quot; className={styles.inputLabel}&gt;
-                                        Timeline
-                                    &lt;/label&gt;
-                                    &lt;input
-                                        id=&quot;timeline&quot;
-                                        type=&quot;text&quot;
-                                        placeholder=&quot;Project duration&quot;
-                                        className={styles.inputField}
-                                    /&gt;
-                                &lt;/div&gt;
-                                &lt;button className={styles.addButton}&gt;+&lt;/button&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-
-                        {/* File Upload Section */}
-                        &lt;div&gt;
-                            &lt;h3 className={styles.formSectionTitle}&gt;Project Documents&lt;/h3&gt;
-                            &lt;div className={styles.fileUploadArea}&gt;
-                                &lt;button className={styles.uploadButton}&gt;☁️ Upload file&lt;/button&gt;
-                                &lt;div className={styles.uploadText}&gt;or drag and drop to upload&lt;/div&gt;
-                            &lt;/div&gt;
-                        &lt;/div&gt;
-                    &lt;/div&gt;
+                    &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--sm)&quot;&gt;
+                        &lt;DsFormControl label=&quot;Project name&quot;&gt;
+                            &lt;DsFormControl.TextInput placeholder=&quot;Enter project name&quot; /&gt;
+                        &lt;/DsFormControl&gt;
+                        &lt;DsFormControl label=&quot;Category&quot;&gt;
+                            &lt;DsFormControl.TextInput placeholder=&quot;Select category&quot; /&gt;
+                        &lt;/DsFormControl&gt;
+                    &lt;/DsStack&gt;
                 &lt;/DsModal.Body&gt;
                 &lt;DsModal.Footer&gt;
-                    &lt;div className={styles.customFooter}&gt;
-                        &lt;div className={styles.statusBadge}&gt;All done&lt;/div&gt;
-                        &lt;DsModal.Actions className={styles.customActions}&gt;
-                            &lt;button className={styles.footerButton}&gt;Discard&lt;/button&gt;
-                            &lt;button className={styles.footerButtonPrimary}&gt;Save Changes&lt;/button&gt;
+                    &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap=&quot;var(--sm)&quot; flex=&quot;1&quot;&gt;
+                        &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;success&quot;&gt;All changes saved
+                                                        &lt;/DsTypography&gt;
+                        &lt;DsModal.Actions&gt;
+                            &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Discard
+                                                                &lt;/DsButtonV3&gt;
+                            &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Save changes&lt;/DsButtonV3&gt;
                         &lt;/DsModal.Actions&gt;
-                    &lt;/div&gt;
+                    &lt;/DsStack&gt;
                 &lt;/DsModal.Footer&gt;
             &lt;/DsModal&gt;
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -13245,31 +12928,25 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithIcon = function Render() {
-    const [isOpen, setIsOpen] = useState(false);
+              <div class="hint">Compose DsIcon before DsModal.Title inside the header to add a leading icon. Useful for status or informational dialogs where the icon reinforces the message.</div>
+              <pre><code>const WithIcon = () =&gt; {
+    const [open, setOpen] = useState(false);
 
     return (
-        &lt;div className={styles.storyContainer}&gt;
-            &lt;div className={styles.storyHeader}&gt;
-                &lt;h2&gt;Modal with Icon&lt;/h2&gt;
-                &lt;p&gt;Example showing how to add an icon to the modal header.&lt;/p&gt;
-                &lt;DsButton design=&quot;v1.2&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(true)}&gt;
-                    Open Modal
-                &lt;/DsButton&gt;
-            &lt;/div&gt;
-
-            &lt;DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}&gt;
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal columns={4} open={open} onOpenChange={setOpen}&gt;
                 &lt;DsModal.Header&gt;
                     &lt;DsIcon icon=&quot;info&quot; size=&quot;small&quot; /&gt;
-                    &lt;DsModal.Title&gt;Session Timeout&lt;/DsModal.Title&gt;
+                    &lt;DsModal.Title&gt;Session timeout&lt;/DsModal.Title&gt;
                     &lt;DsModal.CloseTrigger /&gt;
                 &lt;/DsModal.Header&gt;
                 &lt;DsModal.Body&gt;
-                    &lt;p&gt;Your session will expire in 5 minutes due to inactivity.&lt;/p&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Your session will expire in 5 minutes due to inactivity.
+                                                &lt;/DsTypography&gt;
                 &lt;/DsModal.Body&gt;
             &lt;/DsModal&gt;
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -13279,39 +12956,28 @@ import { Dialog, DsButton, DsCheckbox, DsFormControl, DsIcon, DsModal, DsRadioGr
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const WithoutHeader = function Render() {
-    const [isOpen, setIsOpen] = useState(false);
+              <div class="hint">Omit DsModal.Header entirely for a cleaner surface without the header underline. Use this pattern instead of a variant when the body content is self-explanatory.</div>
+              <pre><code>const WithoutHeader = () =&gt; {
+    const [open, setOpen] = useState(false);
 
     return (
-        &lt;div className={styles.storyContainer}&gt;
-            &lt;div className={styles.storyHeader}&gt;
-                &lt;h2&gt;Modal Without Header&lt;/h2&gt;
-                &lt;p&gt;Modal with only body and footer content, no header section.&lt;/p&gt;
-                &lt;DsButton design=&quot;v1.2&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(true)}&gt;
-                    Open Modal
-                &lt;/DsButton&gt;
-            &lt;/div&gt;
-
-            &lt;DsModal open={isOpen} columns={4} onOpenChange={setIsOpen}&gt;
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal columns={4} open={open} onOpenChange={setOpen}&gt;
                 &lt;DsModal.Body&gt;
-                    &lt;p&gt;
-                        This modal has no header section. Use this pattern when you want a cleaner look without the
-                        header underline.
-                    &lt;/p&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This modal has no header section. Use this pattern when you want a cleaner look without the
+                                                    header underline.
+                                                &lt;/DsTypography&gt;
                 &lt;/DsModal.Body&gt;
                 &lt;DsModal.Footer&gt;
                     &lt;DsModal.Actions&gt;
-                        &lt;DsButton design=&quot;v1.2&quot; buttonType=&quot;secondary&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(false)}&gt;
-                            Close
-                        &lt;/DsButton&gt;
-                        &lt;DsButton design=&quot;v1.2&quot; variant=&quot;filled&quot; size=&quot;large&quot; onClick={() =&gt; setIsOpen(false)}&gt;
-                            Continue
-                        &lt;/DsButton&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Close
+                                                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Continue&lt;/DsButtonV3&gt;
                     &lt;/DsModal.Actions&gt;
                 &lt;/DsModal.Footer&gt;
             &lt;/DsModal&gt;
-        &lt;/div&gt;
+        &lt;/&gt;
     );
 };</code></pre>
             </div>
@@ -13650,7 +13316,15 @@ width?: number</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsNextStepButton, DsPanel, DsStep, DsStepContent, DsStepper } from "@drivenets/design-system";</code></pre>
+                <pre><code>import {
+    DsButton,
+    DsNextStepButton,
+    DsPanel,
+    DsStep,
+    DsStepContent,
+    DsStepper,
+    DsTypography,
+} from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -13660,7 +13334,7 @@ width?: number</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">A collapsible panel that holds arbitrary content. Hover it to reveal the collapse trigger; collapsing hides the body behind an &quot;Open Panel&quot; button.</div>
               <pre><code>const Default = function Render({ variant }) {
     const [open, setOpen] = useState(true);
 
@@ -13669,11 +13343,9 @@ width?: number</code></pre>
             {!open &amp;&amp; &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open Panel&lt;/DsButton&gt;}
 
             &lt;DsPanel open={open} onOpenChange={setOpen} variant={variant}&gt;
-                &lt;p&gt;
-                    This is a panel. It can contain any content you like, such as text, images, or other components.
-                &lt;/p&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Panels hold any content you like.&lt;/DsTypography&gt;
 
-                &lt;p&gt;It is collapsible. Hover it to see the trigger button.&lt;/p&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Hover to reveal the collapse trigger.&lt;/DsTypography&gt;
 
                 &lt;DsButton size=&quot;small&quot;&gt;Primary Action&lt;/DsButton&gt;
             &lt;/DsPanel&gt;
@@ -13687,7 +13359,7 @@ width?: number</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">The `width` prop accepts a `ResponsiveValue` so the panel can widen on large screens and narrow on medium ones without extra layout code.</div>
               <pre><code>const Responsive = function Render() {
     const [open, setOpen] = useState(true);
 
@@ -13696,8 +13368,8 @@ width?: number</code></pre>
             {!open &amp;&amp; &lt;DsButton onClick={() =&gt; setOpen(true)}&gt;Open Panel&lt;/DsButton&gt;}
 
             &lt;DsPanel open={open} onOpenChange={setOpen} width={{ lg: 480, md: 240 }}&gt;
-                &lt;p&gt;This panel uses a responsive width.&lt;/p&gt;
-                &lt;p&gt;Large screens: 480px. Medium screens: 240px.&lt;/p&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;This panel uses a responsive width.&lt;/DsTypography&gt;
+                &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Large screens: 480px. Medium screens: 240px.&lt;/DsTypography&gt;
 
                 &lt;DsButton size=&quot;small&quot;&gt;Primary Action&lt;/DsButton&gt;
             &lt;/DsPanel&gt;
@@ -13711,7 +13383,7 @@ width?: number</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Toggling the collapse button switches the panel between `docked` and `floating`. The floating variant is draggable and drops its inner padding so a `DsStepper` can bleed to the edges.</div>
               <pre><code>const Draggable = function Render() {
     const [panelVariant, setPanelVariant] = useState&lt;DsPanelVariant&gt;(&#39;docked&#39;);
     const [activeStep, setActiveStep] = useState(0);
@@ -13729,7 +13401,7 @@ width?: number</code></pre>
     ];
 
     return (
-        &lt;div style={{ position: &#39;relative&#39;, width: 600, height: 500 }}&gt;
+        &lt;div className={styles.draggableCanvas}&gt;
             &lt;DsPanel
                 open
                 variant={panelVariant}
@@ -27271,7 +26943,7 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButton, DsToast, DsToastProvider } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButton, DsStack, DsToast, DsToastProvider } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27281,12 +26953,34 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Success = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;ToastDemo variant=&quot;success&quot; title=&quot;Success!&quot; description=&quot;Your action was completed successfully.&quot; /&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
+              <div class="hint">Confirms an action completed. Auto-dismisses after the default duration.</div>
+              <pre><code>const Success = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast } = useToaster();
+
+        return (
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;success&#39;,
+                        title: &#39;Success!&#39;,
+                        description: &#39;Your action was completed successfully.&#39;,
+                    })
+                }
+            &gt;
+                Show success toast
+            &lt;/DsButton&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27294,12 +26988,34 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Info = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;ToastDemo variant=&quot;info&quot; title=&quot;Information&quot; description=&quot;Here is some helpful information for you.&quot; /&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
+              <div class="hint">Neutral, informational message.</div>
+              <pre><code>const Info = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast } = useToaster();
+
+        return (
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;info&#39;,
+                        title: &#39;Information&#39;,
+                        description: &#39;Here is some helpful information for you.&#39;,
+                    })
+                }
+            &gt;
+                Show info toast
+            &lt;/DsButton&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27307,114 +27023,31 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const Warning = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;ToastDemo variant=&quot;warning&quot; title=&quot;Warning&quot; description=&quot;Please be aware of this important notice.&quot; /&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Warning No Title</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WarningNoTitle = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;ToastDemo variant=&quot;warning&quot; description=&quot;Something went wrong. Please try again.&quot; persistent /&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Warning No Title Action</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WarningNoTitleAction = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;ToastDemo
-            variant=&quot;warning&quot;
-            description=&quot;Something went wrong. Please try again.&quot;
-            actions={
-                &lt;DsButton design=&quot;v1.2&quot; variant=&quot;danger&quot;&gt;
-                    Restart
-                &lt;/DsButton&gt;
-            }
-            persistent
-        &gt;&lt;/ToastDemo&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
-            </div>
-            <div class="note ok">
-              <div class="row">
-                <span class="ex-name">Warning With Actions</span>
-                <span class="badge ok">story ok</span>
-              </div>
-              
-              
-              <pre><code>const WarningWithActions = () =&gt; {
-    const WithActionsDemo = () =&gt; {
-        const { createToast, dismissToast } = useToaster();
-        const [action, setAction] = useState&lt;string&gt;();
-
-        const showToastWithAction = () =&gt; {
-            const toastId = createToast({
-                title: &#39;File upload failed&#39;,
-                description: &#39;Your file could not be uploaded.&#39;,
-                variant: &#39;warning&#39;,
-                actions: (
-                    &lt;div className={styles.actionButtonsContainer}&gt;
-                        &lt;DsButton
-                            data-testid=&quot;abort-button&quot;
-                            design=&quot;v1.2&quot;
-                            onClick={() =&gt; {
-                                setAction(&#39;abort&#39;);
-                                dismissToast(toastId);
-                            }}
-                            variant=&quot;ghost&quot;
-                        &gt;
-                            Abort
-                        &lt;/DsButton&gt;
-                        &lt;DsButton
-                            data-testid=&quot;retry-button&quot;
-                            design=&quot;v1.2&quot;
-                            onClick={() =&gt; {
-                                setAction(&#39;retry&#39;);
-                                dismissToast(toastId);
-                            }}
-                            variant=&quot;danger&quot;
-                        &gt;
-                            Re-try
-                        &lt;/DsButton&gt;
-                    &lt;/div&gt;
-                ),
-                persistent: true, // No auto-dismiss
-            });
-        };
+              <div class="hint">Draws attention to something that may need action but is not an error.</div>
+              <pre><code>const Warning = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast } = useToaster();
 
         return (
-            &lt;div className={styles.demoContainer}&gt;
-                &lt;h3&gt;Toast with Action&lt;/h3&gt;
-                &lt;DsButton
-                    data-testid=&quot;show-toast-button&quot;
-                    design=&quot;v1.2&quot;
-                    onClick={showToastWithAction}
-                    variant=&quot;filled&quot;
-                &gt;
-                    Show Toast with Actions
-                &lt;/DsButton&gt;
-                {action &amp;&amp; &lt;p data-testid=&quot;action-result&quot;&gt;{action}&lt;/p&gt;}
-            &lt;/div&gt;
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;warning&#39;,
+                        title: &#39;Warning&#39;,
+                        description: &#39;Please be aware of this important notice.&#39;,
+                    })
+                }
+            &gt;
+                Show warning toast
+            &lt;/DsButton&gt;
         );
     };
 
     return (
         &lt;DsToastProvider&gt;
-            &lt;WithActionsDemo /&gt;
+            &lt;ToastTrigger /&gt;
         &lt;/DsToastProvider&gt;
     );
 };</code></pre>
@@ -27425,17 +27058,113 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
+              <div class="hint">Reports a failure. Errors are usually persistent so the user can read and act on them.</div>
+              <pre><code>const Error = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast } = useToaster();
+
+        return (
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;error&#39;,
+                        title: &#39;Error&#39;,
+                        description: &#39;Something went wrong. Please try again.&#39;,
+                        persistent: true,
+                    })
+                }
+            &gt;
+                Show error toast
+            &lt;/DsButton&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">No Title</span>
+                <span class="badge ok">story ok</span>
+              </div>
               
-              <pre><code>const Error = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;ToastDemo
-            variant=&quot;error&quot;
-            title=&quot;Error&quot;
-            description=&quot;Something went wrong. Please try again.&quot;
-            persistent // No auto-dismiss
-        /&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
+              <div class="hint">Omit `title` for a compact, single-line toast that shows only the description.</div>
+              <pre><code>const NoTitle = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast } = useToaster();
+
+        return (
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;warning&#39;,
+                        description: &#39;Something went wrong. Please try again.&#39;,
+                    })
+                }
+            &gt;
+                Show toast without title
+            &lt;/DsButton&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pass `actions` to render buttons inside the toast. Action handlers typically dismiss the toast with `dismissToast(id)` — pair actions with `persistent` so the toast waits for a choice.</div>
+              <pre><code>const WithActions = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast, dismissToast } = useToaster();
+
+        const showToast = () =&gt; {
+            const id = createToast({
+                variant: &#39;warning&#39;,
+                title: &#39;File upload failed&#39;,
+                description: &#39;Your file could not be uploaded.&#39;,
+                persistent: true,
+                actions: (
+                    &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--xs)&quot; justifyContent=&quot;flex-end&quot;&gt;
+                        &lt;DsButton design=&quot;v1.2&quot; variant=&quot;ghost&quot; onClick={() =&gt; dismissToast(id)}&gt;
+                            Abort
+                        &lt;/DsButton&gt;
+                        &lt;DsButton design=&quot;v1.2&quot; variant=&quot;danger&quot; onClick={() =&gt; dismissToast(id)}&gt;
+                            Re-try
+                        &lt;/DsButton&gt;
+                    &lt;/DsStack&gt;
+                ),
+            });
+        };
+
+        return (
+            &lt;DsButton design=&quot;v1.2&quot; variant=&quot;filled&quot; onClick={showToast}&gt;
+                Show toast with actions
+            &lt;/DsButton&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -27443,34 +27172,69 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Long descriptions wrap and the toast grows to fit while staying within its max width.</div>
               <pre><code>const LongContent = () =&gt; {
-    const LongContentDemo = () =&gt; {
+    const ToastTrigger = () =&gt; {
         const { createToast } = useToaster();
 
-        const showLongToast = () =&gt; {
-            createToast({
-                title: &#39;Important Notice&#39;,
-                description:
-                    &#39;This is a longer message that demonstrates how the toast component handles extended content. The text will wrap appropriately and maintain good readability while staying within the toast boundaries.&#39;,
-                variant: &#39;warning&#39;,
-                duration: 8000,
-            });
-        };
-
         return (
-            &lt;div className={styles.demoContainer}&gt;
-                &lt;h3&gt;Long Content Toast&lt;/h3&gt;
-                &lt;DsButton design=&quot;v1.2&quot; onClick={showLongToast} variant=&quot;filled&quot;&gt;
-                    Show Long Content Toast
-                &lt;/DsButton&gt;
-            &lt;/div&gt;
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;warning&#39;,
+                        title: &#39;Important notice&#39;,
+                        description:
+                            &#39;This is a longer message that demonstrates how the toast handles extended content. &#39; +
+                            &#39;The text wraps and stays readable while remaining within the toast boundaries.&#39;,
+                    })
+                }
+            &gt;
+                Show long content toast
+            &lt;/DsButton&gt;
         );
     };
 
     return (
         &lt;DsToastProvider&gt;
-            &lt;LongContentDemo /&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Persistent</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Set `persistent` to keep a toast open until the user dismisses it. Persistent toasts never auto-dismiss, so they cannot also set `duration`.</div>
+              <pre><code>const Persistent = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast } = useToaster();
+
+        return (
+            &lt;DsButton
+                design=&quot;v1.2&quot;
+                variant=&quot;filled&quot;
+                onClick={() =&gt;
+                    createToast({
+                        variant: &#39;info&#39;,
+                        title: &#39;Sync in progress&#39;,
+                        description: &#39;This toast stays until you close it.&#39;,
+                        persistent: true,
+                    })
+                }
+            &gt;
+                Show persistent toast
+            &lt;/DsButton&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
         &lt;/DsToastProvider&gt;
     );
 };</code></pre>
@@ -27481,12 +27245,35 @@ variant?: (typeof toastVariants)[number] = &#39;info&#39;</code></pre>
                 <span class="badge ok">story ok</span>
               </div>
               
-              
-              <pre><code>const MultipleToasts = () =&gt; (
-    &lt;DsToastProvider&gt;
-        &lt;MultipleToastsDemo /&gt;
-    &lt;/DsToastProvider&gt;
-);</code></pre>
+              <div class="hint">Toasts stack up to the provider&#39;s `max` (default 3). `dismissAllToasts` clears them at once.</div>
+              <pre><code>const MultipleToasts = () =&gt; {
+    const ToastTrigger = () =&gt; {
+        const { createToast, dismissAllToasts } = useToaster();
+
+        const showToasts = () =&gt; {
+            createToast({ variant: &#39;success&#39;, title: &#39;First toast&#39;, description: &#39;This is the first message.&#39; });
+            createToast({ variant: &#39;info&#39;, title: &#39;Second toast&#39;, description: &#39;This is the second message.&#39; });
+            createToast({ variant: &#39;warning&#39;, title: &#39;Third toast&#39;, description: &#39;This is the third message.&#39; });
+        };
+
+        return (
+            &lt;DsStack direction=&quot;row&quot; gap=&quot;var(--xs)&quot;&gt;
+                &lt;DsButton design=&quot;v1.2&quot; variant=&quot;filled&quot; onClick={showToasts}&gt;
+                    Show multiple toasts
+                &lt;/DsButton&gt;
+                &lt;DsButton design=&quot;v1.2&quot; variant=&quot;ghost&quot; onClick={() =&gt; dismissAllToasts()}&gt;
+                    Dismiss all
+                &lt;/DsButton&gt;
+            &lt;/DsStack&gt;
+        );
+    };
+
+    return (
+        &lt;DsToastProvider&gt;
+            &lt;ToastTrigger /&gt;
+        &lt;/DsToastProvider&gt;
+    );
+};</code></pre>
             </div>
         </div>
     
@@ -27789,7 +27576,7 @@ slotProps?: {
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButtonV3, DsIcon, DsTooltip } from "@drivenets/design-system";</code></pre>
+                <pre><code>import { DsButtonV3, DsIcon, DsStack, DsTooltip, DsTypography } from "@drivenets/design-system";</code></pre>
               </div>
           
           
@@ -27818,13 +27605,12 @@ slotProps?: {
                 <span class="badge ok">story ok</span>
               </div>
               
-              
+              <div class="hint">Tooltips accept rich JSX content, not just strings. Compose `DsStack` and `DsTypography` so the layout and text styles inherit the on-dark tooltip palette.</div>
               <pre><code>const RichContent = () =&gt; &lt;DsTooltip
-    content={(&lt;div&gt;
-        &lt;strong&gt;Multi-line&lt;/strong&gt;tooltip with &lt;em&gt;JSX&lt;/em&gt;
-        &lt;br /&gt;
-        &lt;span style={{ color: &#39;#9cdcfe&#39; }}&gt;No truncation should occur.&lt;/span&gt;
-    &lt;/div&gt;)}&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
+    content={(&lt;DsStack direction=&quot;column&quot; gap=&quot;var(--3xs)&quot;&gt;
+        &lt;DsTypography variant=&quot;body-sm-md&quot;&gt;Multi-line tooltip with JSX&lt;/DsTypography&gt;
+        &lt;DsTypography variant=&quot;body-xs-reg&quot;&gt;No truncation should occur.&lt;/DsTypography&gt;
+    &lt;/DsStack&gt;)}&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
