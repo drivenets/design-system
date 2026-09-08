@@ -75,7 +75,7 @@ describe('DsSplitButton', () => {
 		expect(onValueChange).toHaveBeenCalledWith('60');
 
 		const combobox = page.getByRole('combobox');
-		await expect.element(combobox).toHaveTextContent(/1m/);
+		await expect.element(combobox).toMatchTextContent(/1m/);
 	});
 
 	it('disables primary button and select when disabled', async () => {
