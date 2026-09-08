@@ -186,8 +186,7 @@ const Default = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    />;
+    fullWidth />;
 
 ## Fixed And Fill
 
@@ -387,8 +386,7 @@ const FixedAndFill = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    />;
+    fullWidth />;
 
 ## Grouped Columns
 
@@ -617,8 +615,7 @@ const GroupedColumns = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    />;
+    fullWidth />;
 
 ## Min And Max Size
 
@@ -834,8 +831,7 @@ const MinAndMaxSize = () => <DsTable
     resizableColumns
     stickyHeader
     bordered
-    fullWidth
-    />;
+    fullWidth />;
 
 ## Persisted widths
 

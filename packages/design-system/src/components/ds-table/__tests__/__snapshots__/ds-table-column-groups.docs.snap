@@ -215,8 +215,7 @@ const Default = () => <DsTable
     stickyHeader
     bordered
     fullWidth
-    selectable
-    />;
+    selectable />;
 
 ## Initially Collapsed
 
@@ -433,8 +432,7 @@ const InitiallyCollapsed = () => <DsTable
     stickyHeader
     bordered
     fullWidth
-    selectable
-    />;
+    selectable />;
 
 ## Controlled
 
