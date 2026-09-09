@@ -16,7 +16,7 @@ export default defineConfig({
 	entry: ['./src/index.ts'],
 	format: ['cjs', 'esm'],
 	platform: 'browser',
-	dts: { tsgo: { path: 'tsc' } },
+	dts: { generator: 'tsgo', tsgo: { path: 'tsc' } },
 	sourcemap: false,
 	clean: true,
 	outDir: 'dist',
@@ -31,7 +31,7 @@ export default defineConfig({
 		},
 	},
 	deps: {
-		skipNodeModulesBundle: true,
+		neverBundle: true,
 	},
 	plugins: [
 		reactCompilerRolldownPlugin(), // Must be first.
