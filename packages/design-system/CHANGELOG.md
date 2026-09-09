@@ -1,5 +1,25 @@
 # @drivenets/design-system
 
+## 0.19.0
+
+### Minor Changes
+
+- abb60cc: Add `DsTopBarNavigation` and `DsBotButton` components.
+- 921a215: Add `DsBulkActions` component.
+- fc668ce: Add "DsEmptyState" component
+- 2e837cf: Add `DsMainMenu` component
+
+### Patch Changes
+
+- b70812a: Fix redundant space in the right side of DsTable's header
+- dbd7d20: Fix `DsDropdownMenu.Item` dropping injected props so a wrapping `DsTooltip` (via `asChild`) now opens on hover.
+- fc16288: Add `DsIllustration` component
+- 60e42b9: Change default color for `secondary` and `tertiary` variants in `DsButtonV3`
+- 813242e: Add text ellipsis for column headers in "DsTable"
+- 9c2e00d: Update dependencies
+- a64fea0: Add `interactive`, `openDelay`, and `closeDelay` props to `DsTooltip`.
+- 2938451: Configurable width for select, expand, reorder `DsTable` columns
+
 ## 0.18.1
 
 ### Patch Changes
