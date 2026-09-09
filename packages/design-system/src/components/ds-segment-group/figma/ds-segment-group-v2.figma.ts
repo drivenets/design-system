@@ -17,7 +17,7 @@ const sizeAttr = size === 'small' ? ' size="small"' : '';
 
 // `Slot` is homogeneous `Part_SegmentItemV2` instances. Interpolating the slot
 // object itself renders a clickable "Slot" label; execute each child's template
-// so the parent snippet inlines `DsSegmentGroup.Item`.
+// so the parent snippet inline `DsSegmentGroup.Item`.
 const slot = instance.getSlot('Slot');
 const items = (slot?.connectedInstances ?? []).map((item) => item.executeTemplate().example);
 
