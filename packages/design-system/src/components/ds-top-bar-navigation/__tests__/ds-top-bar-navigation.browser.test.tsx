@@ -111,7 +111,7 @@ describe('DsTopBarNavigation', () => {
 			await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
 
 			// A tile with no `href` renders as a button.
-			await userEvent.click(page.getByRole('button', { name: 'Inventory' }));
+			await userEvent.click(page.getByRole('button', { name: 'Inventory', exact: false }));
 
 			expect(onItemSelect).toHaveBeenCalledWith('inventory');
 			expect(onAppsClick).not.toHaveBeenCalled();

@@ -113,7 +113,10 @@ describe('DsPanel', () => {
 		it('should apply default responsive width when no width prop is provided', async () => {
 			await page.render(<DsPanel open>Content</DsPanel>);
 
-			const panel = page.getByText('Content').element().closest('[data-state]') as HTMLElement;
+			const panel = page
+				.getByText('Content', { exact: false })
+				.element()
+				.closest('[data-state]') as HTMLElement;
 			const { width } = panel.getBoundingClientRect();
 
 			const expectedWidth = Math.min(480, Math.max(240, window.innerWidth * 0.2));
@@ -127,7 +130,10 @@ describe('DsPanel', () => {
 				</DsPanel>,
 			);
 
-			const panel = page.getByText('Content').element().closest('[data-state]') as HTMLElement;
+			const panel = page
+				.getByText('Content', { exact: false })
+				.element()
+				.closest('[data-state]') as HTMLElement;
 			const { width } = panel.getBoundingClientRect();
 
 			expect(Math.round(width)).toBe(350);

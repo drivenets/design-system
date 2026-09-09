@@ -32,11 +32,11 @@ describe('DsTable', () => {
 
 		await firstNameHeader.click();
 
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Daniel');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Daniel');
 
 		await firstNameHeader.click();
 
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Tanner');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Tanner');
 	});
 
 	it('should show empty state when no data is provided', async () => {
