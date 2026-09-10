@@ -164,7 +164,7 @@ describe('DsTable header label ellipsis', () => {
 		expect(label.textContent).toContain(LONG_LEAF_HEADER);
 		expect(label.textContent).toContain(hiddenExtra);
 		expectEllipsis(label);
-		await page.getByText(LONG_LEAF_HEADER).hover();
+		await page.getByText(LONG_LEAF_HEADER, { exact: false }).hover();
 		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 		await expect.element(page.getByRole('tooltip', { name: hiddenExtra })).not.toBeInTheDocument();
 	});

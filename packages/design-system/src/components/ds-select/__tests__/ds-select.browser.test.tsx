@@ -122,13 +122,13 @@ describe('DsSelect', () => {
 		await expect.element(option1).not.toHaveAttribute('data-state', 'checked');
 
 		await option1.click();
-		await expect.element(trigger).toHaveTextContent(firstOption.label);
+		await expect.element(trigger).toMatchTextContent(firstOption.label);
 
 		await trigger.click();
 
 		const option2 = page.getByRole('option', { name: secondOption.label });
 		await option2.click();
-		await expect.element(trigger).toHaveTextContent(secondOption.label);
+		await expect.element(trigger).toMatchTextContent(secondOption.label);
 
 		await trigger.click();
 
@@ -143,7 +143,7 @@ describe('DsSelect', () => {
 		const closeButton = page.getByRole('button', { name: 'Clear value' });
 		await closeButton.click();
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 	});
 
 	it('should select options when items have icons (WithIcons story)', async () => {
@@ -168,13 +168,13 @@ describe('DsSelect', () => {
 		await expect.element(option1).not.toHaveAttribute('data-state', 'checked');
 
 		await option1.click();
-		await expect.element(trigger).toHaveTextContent(firstOption.label);
+		await expect.element(trigger).toMatchTextContent(firstOption.label);
 
 		await trigger.click();
 
 		const option2 = page.getByRole('option', { name: secondOption.label });
 		await option2.click();
-		await expect.element(trigger).toHaveTextContent(secondOption.label);
+		await expect.element(trigger).toMatchTextContent(secondOption.label);
 
 		await trigger.click();
 
@@ -188,7 +188,7 @@ describe('DsSelect', () => {
 
 		await page.getByRole('button', { name: 'Clear value' }).click();
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 	});
 
 	it('should select all, expand +N chip, delete chip, and clear all (MultiSelect story)', async () => {
@@ -211,7 +211,7 @@ describe('DsSelect', () => {
 		await trigger.click();
 
 		for (const option of mockOptions) {
-			await expect.element(trigger).toHaveTextContent(option.label);
+			await expect.element(trigger).toMatchTextContent(option.label);
 		}
 
 		await trigger.click();
@@ -227,7 +227,7 @@ describe('DsSelect', () => {
 
 		await trigger.click();
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 	});
 
 	it('should filter via search, select multiple, and clear via Backspace (MultiSelectWithSearch story)', async () => {
@@ -261,17 +261,17 @@ describe('DsSelect', () => {
 		await page.getByRole('option', { name: 'Banana' }).click();
 		await page.getByRole('option', { name: 'Cherry' }).click();
 
-		await expect.element(trigger).toHaveTextContent('Apple');
-		await expect.element(trigger).toHaveTextContent('Banana');
-		await expect.element(trigger).toHaveTextContent('Cherry');
+		await expect.element(trigger).toMatchTextContent('Apple');
+		await expect.element(trigger).toMatchTextContent('Banana');
+		await expect.element(trigger).toMatchTextContent('Cherry');
 
 		await userEvent.keyboard('{Escape}');
 		await userEvent.keyboard('{Backspace}');
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
-		await expect.element(trigger).not.toHaveTextContent('Apple');
-		await expect.element(trigger).not.toHaveTextContent('Banana');
-		await expect.element(trigger).not.toHaveTextContent('Cherry');
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
+		await expect.element(trigger).not.toMatchTextContent('Apple');
+		await expect.element(trigger).not.toMatchTextContent('Banana');
+		await expect.element(trigger).not.toMatchTextContent('Cherry');
 	});
 
 	it('should select options rendered with custom markup (CustomRenderOption story)', async () => {
@@ -291,12 +291,12 @@ describe('DsSelect', () => {
 		await expect.element(usOption).toBeInTheDocument();
 
 		await usOption.click();
-		await expect.element(trigger).toHaveTextContent('United States');
+		await expect.element(trigger).toMatchTextContent('United States');
 
 		await trigger.click();
 
 		await page.getByRole('option', { name: /France/ }).click();
-		await expect.element(trigger).toHaveTextContent('France');
+		await expect.element(trigger).toMatchTextContent('France');
 	});
 
 	it('should render selected items as chips with custom option markup (CustomRenderOptionMultiSelect story)', async () => {
@@ -351,7 +351,7 @@ describe('DsSelect', () => {
 		await searchInput.fill('Japan');
 		await page.getByRole('option', { name: /Japan/ }).click();
 
-		await expect.element(trigger).toHaveTextContent('Japan');
+		await expect.element(trigger).toMatchTextContent('Japan');
 	});
 
 	it('should render selected value with custom markup in trigger (CustomRenderValue story)', async () => {
@@ -387,21 +387,21 @@ describe('DsSelect', () => {
 
 		const trigger = page.getByRole('combobox');
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 
 		await trigger.click();
 
 		await page.getByRole('option', { name: 'v0.8' }).click();
 
-		await expect.element(trigger).toHaveTextContent('v0.8');
-		await expect.element(trigger).toHaveTextContent('Live');
+		await expect.element(trigger).toMatchTextContent('v0.8');
+		await expect.element(trigger).toMatchTextContent('Live');
 
 		await trigger.click();
 
 		await page.getByRole('option', { name: 'v2.3' }).click();
 
-		await expect.element(trigger).toHaveTextContent('v2.3');
-		await expect.element(trigger).toHaveTextContent('Pending');
+		await expect.element(trigger).toMatchTextContent('v2.3');
+		await expect.element(trigger).toMatchTextContent('Pending');
 	});
 
 	it('should render multi selection with custom value markup (CustomRenderValueMultiSelect story)', async () => {
@@ -446,8 +446,8 @@ describe('DsSelect', () => {
 		await page.getByRole('option', { name: /United States/ }).click();
 		await page.getByRole('option', { name: /Germany/ }).click();
 
-		await expect.element(trigger).toHaveTextContent('US');
-		await expect.element(trigger).toHaveTextContent('DE');
+		await expect.element(trigger).toMatchTextContent('US');
+		await expect.element(trigger).toMatchTextContent('DE');
 	});
 
 	it('should render both options and value with custom markup (CustomRenderValueAndOption story)', async () => {
@@ -499,25 +499,25 @@ describe('DsSelect', () => {
 
 		const trigger = page.getByRole('combobox');
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 
 		await trigger.click();
 
 		const v08 = page.getByRole('option', { name: /v0.8/ });
-		await expect.element(v08).toHaveTextContent('Live');
+		await expect.element(v08).toMatchTextContent('Live');
 		await v08.click();
 
-		await expect.element(trigger).toHaveTextContent('v0.8');
-		await expect.element(trigger).toHaveTextContent('Live');
+		await expect.element(trigger).toMatchTextContent('v0.8');
+		await expect.element(trigger).toMatchTextContent('Live');
 
 		await trigger.click();
 
 		const v14 = page.getByRole('option', { name: /v1.4/ });
-		await expect.element(v14).toHaveTextContent('Running');
+		await expect.element(v14).toMatchTextContent('Running');
 		await v14.click();
 
-		await expect.element(trigger).toHaveTextContent('v1.4');
-		await expect.element(trigger).toHaveTextContent('Running');
+		await expect.element(trigger).toMatchTextContent('v1.4');
+		await expect.element(trigger).toMatchTextContent('Running');
 	});
 
 	it('should render multi selection with both custom render fns (CustomRenderValueAndOptionMultiSelect story)', async () => {
@@ -575,18 +575,18 @@ describe('DsSelect', () => {
 		await trigger.click();
 
 		const v08 = page.getByRole('option', { name: /v0.8/ });
-		await expect.element(v08).toHaveTextContent('Live');
+		await expect.element(v08).toMatchTextContent('Live');
 		await v08.click();
 
-		await expect.element(trigger).toHaveTextContent('v0.8');
-		await expect.element(trigger).toHaveTextContent('Live');
+		await expect.element(trigger).toMatchTextContent('v0.8');
+		await expect.element(trigger).toMatchTextContent('Live');
 
 		const v36 = page.getByRole('option', { name: /v3.6/ });
-		await expect.element(v36).toHaveTextContent('Draft');
+		await expect.element(v36).toMatchTextContent('Draft');
 		await v36.click();
 
-		await expect.element(trigger).toHaveTextContent('v0.8');
-		await expect.element(trigger).toHaveTextContent('+1');
+		await expect.element(trigger).toMatchTextContent('v0.8');
+		await expect.element(trigger).toMatchTextContent('+1');
 	});
 
 	it('should clear via Backspace, Delete, and allow Space in search (KeyboardInteractions story)', async () => {
@@ -605,22 +605,22 @@ describe('DsSelect', () => {
 		await trigger.click();
 
 		await page.getByRole('option', { name: 'Apple' }).click();
-		await expect.element(trigger).toHaveTextContent('Apple');
+		await expect.element(trigger).toMatchTextContent('Apple');
 
 		await userEvent.keyboard('{Escape}');
 		await userEvent.keyboard('{Backspace}');
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 
 		await trigger.click();
 
 		await page.getByRole('option', { name: 'Banana' }).click();
-		await expect.element(trigger).toHaveTextContent('Banana');
+		await expect.element(trigger).toMatchTextContent('Banana');
 
 		await userEvent.keyboard('{Escape}');
 		await userEvent.keyboard('{Delete}');
 
-		await expect.element(trigger).toHaveTextContent(PLACEHOLDER);
+		await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
 
 		await trigger.click();
 

@@ -195,7 +195,7 @@ describe('DsDropdownMenu', () => {
 
 			await page.getByRole('button', { name: /Multi Select/i }).click();
 
-			const groupLabel = page.getByRole('button', { name: 'Group Name' });
+			const groupLabel = page.getByRole('button', { name: 'Group Name', exact: false });
 
 			// Collapse.
 			await groupLabel.click();
@@ -257,8 +257,8 @@ describe('DsDropdownMenu', () => {
 
 			await page.getByRole('button', { name: /Controlled Group/i }).click();
 
-			await expect.element(page.getByRole('button', { name: 'Settings' })).toBeVisible();
-			await expect.element(page.getByRole('menuitem', { name: 'Profile' })).toBeVisible();
+			await expect.element(page.getByRole('button', { name: 'Settings', exact: false })).toBeVisible();
+			await expect.element(page.getByRole('menuitem', { name: 'Profile', exact: false })).toBeVisible();
 		});
 
 		it('should call onCollapsedChange when toggling group', async () => {
@@ -268,7 +268,7 @@ describe('DsDropdownMenu', () => {
 
 			await page.getByRole('button', { name: /Controlled Group/i }).click();
 
-			const groupLabel = page.getByRole('button', { name: 'Settings' });
+			const groupLabel = page.getByRole('button', { name: 'Settings', exact: false });
 
 			// Collapse.
 			await groupLabel.click();
@@ -280,7 +280,7 @@ describe('DsDropdownMenu', () => {
 			await groupLabel.click();
 			expect(onCollapsedChange).toHaveBeenCalledWith(false);
 			expect(onCollapsedChange).toHaveBeenCalledTimes(2);
-			await expect.element(page.getByRole('menuitem', { name: 'Profile' })).toBeVisible();
+			await expect.element(page.getByRole('menuitem', { name: 'Profile', exact: false })).toBeVisible();
 		});
 	});
 });

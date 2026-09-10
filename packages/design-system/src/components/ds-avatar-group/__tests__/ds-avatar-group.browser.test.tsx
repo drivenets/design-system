@@ -26,8 +26,8 @@ describe('DsAvatarGroup', () => {
 		await page.getByText('+3').hover();
 
 		const tooltip = page.getByRole('tooltip');
-		await expect.element(tooltip).toHaveTextContent('Fiona Gallagher');
-		await expect.element(tooltip).toHaveTextContent('George Miller');
-		await expect.element(tooltip).toHaveTextContent('Hannah Abbott');
+		await expect.element(tooltip).toMatchTextContent('Fiona Gallagher');
+		await expect.element(tooltip).toMatchTextContent('George Miller');
+		await expect.element(tooltip).toMatchTextContent('Hannah Abbott');
 	});
 });
