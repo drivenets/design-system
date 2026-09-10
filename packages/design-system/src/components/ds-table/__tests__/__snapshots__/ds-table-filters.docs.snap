@@ -1,788 +1,219 @@
 # DsTable docs snippets
 
-## Toolbar — Filters Panel
+## Per-Column — Popover
 
 ### Show code
-{
-  name: 'Toolbar — Filters Panel',
-  parameters: {
-    docs: {
-      source: {
-        type: 'code'
-      },
-      description: {
-        story: `
-### Interactive Filter Example
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+    DsTable,
+    DsTagFilter,
+    createCheckboxFilterAdapter,
+    useTableFilters,
+} from '@drivenets/design-system';
 
-This story demonstrates the complete filter system with:
-
-- **Status Filter**: Checkbox multi-select with custom rendering (status badges)
-- **Running/Completed Filter**: Dual-range numeric filter
-- **Category Filter**: Simple checkbox multi-select
-- **Version Filter**: Checkbox with custom chip labels
-
-#### Key Implementation Details:
-
-1. **Filter Configuration** (see \`workflow-filters.config.tsx\`):
-   - Centralized filter definitions
-   - Custom renderers for status badges
-   - Format functions for numbers
-
-2. **Hook Usage**:
-   \`\`\`typescript
-   const {
-     columnFilters,       // Pass to DsTable
-     filterChips,         // Pass to DsTagFilter
-     filterNavItems,      // Pass to DsVerticalTabs in modal
-     enhancedColumns,     // Pass to DsTable (includes filter functions)
-     handlers,            // { applyFilters, clearAll, deleteChip }
-     renderFilterContent, // Render function for modal content
-   } = useTableFilters({
-     filterAdapters: workflowFilters,
-     baseColumns: columns,
-   });
-   \`\`\`
-
-3. **What's Handled Automatically**:
-   - Filter state management
-   - Chip generation and deletion
-   - Nav item counts (updates in real-time)
-   - Column enhancement with filter functions
-   - Type-safe filter values
-
-#### Filter Modal Layout Pattern:
-
-The modal uses a two-column layout with DsModal + DsVerticalTabs:
-
-\`\`\`tsx
-// State for selected filter tab
-const [selectedFilterId, setSelectedFilterId] = useState<string>(filterNavItems[0]?.id);
-
-const handleValueChange = (value: string | null) => {
-  if (value) setSelectedFilterId(value);
+type DeviceRow = {
+    id: string;
+    name: string;
+    type: 'PP-LGX' | 'ME10' | 'OLT';
+    site: string;
+    status: 'active' | 'warning' | 'failed';
 };
 
-<DsModal open={open} onOpenChange={setOpen}>
-  <DsModal.Header className={styles.filterHeader}>
-    <div className={styles.headerLeft}>
-      <DsIcon icon="filter_list" />
-      <DsModal.Title>Filters</DsModal.Title>
-    </div>
-    <DsModal.CloseTrigger />
-  </DsModal.Header>
+const typeOptions = [
+    { value: 'PP-LGX' as const, label: 'PP-LGX' },
+    { value: 'ME10' as const, label: 'ME10' },
+    { value: 'OLT' as const, label: 'OLT' },
+];
 
-  {/* Two-column body: nav (40%) + content (60%) */}
-  <DsModal.Body className={styles.filterBody}>
-    <DsVerticalTabs value={selectedFilterId} onValueChange={handleValueChange}>
-      <DsVerticalTabs.List className={styles.filterNav}>
-        {filterNavItems.map((item) => (
-          <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-            <DsTypography variant="body-sm-md">{item.label}</DsTypography>
-            {!!item.count && (
-              <div className={styles.filterTabBadge}>
-                <span className={styles.filterTabDot} />
-                <DsTypography variant="body-sm-reg">{item.count}</DsTypography>
-              </div>
-            )}
-          </DsVerticalTabs.Tab>
-        ))}
-      </DsVerticalTabs.List>
-      {filterNavItems.map((item) => (
-        <DsVerticalTabs.Content key={item.id} value={item.id} className={styles.filterContent}>
-          {renderFilterContent({ id: item.id })}
-        </DsVerticalTabs.Content>
-      ))}
-    </DsVerticalTabs>
-  </DsModal.Body>
+const siteOptions = [
+    { value: 'NYC-DC1', label: 'NYC-DC1' },
+    { value: 'LON-DC2', label: 'LON-DC2' },
+    { value: 'SFO-DC3', label: 'SFO-DC3' },
+];
 
-  <DsModal.Footer className={styles.filterFooter}>
-    <DsButtonV3 variant="secondary" onClick={handleClearAll}>Clear all</DsButtonV3>
-    <DsModal.Actions>
-      <DsButtonV3 onClick={handleApply}>Apply</DsButtonV3>
-    </DsModal.Actions>
-  </DsModal.Footer>
-</DsModal>
-\`\`\`
+const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
+    id: 'type',
+    label: 'Type',
+    items: typeOptions,
+    searchable: true,
+    selectAll: true,
+});
 
-**Note**: DsVerticalTabs now uses compound components for maximum flexibility. You can customize tab content with labels, icons, badges, etc.
+const siteFilter = createCheckboxFilterAdapter<DeviceRow>({
+    id: 'site',
+    label: 'Site',
+    items: siteOptions,
+    searchable: true,
+    selectAll: true,
+});
 
-See the story code for complete implementation with styles.
+const columns: ColumnDef<DeviceRow>[] = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
+    { id: 'site', accessorKey: 'site', header: 'Site', meta: { filter: { adapterId: 'site' } } },
+    { id: 'status', accessorKey: 'status', header: 'Status' },
+];
 
-#### Try It:
-1. Click the filter icon to open the modal
-2. Select filters in different categories
-3. Notice the nav item counts update as you make changes
-4. Click "Apply" to see filtered data and chips
-5. Delete individual chips or clear all filters
-
-#### Adding More Filters:
-To add a new filter, just add one adapter to \`workflowFilters\` array. No other changes needed!
-`
-      }
-    }
-  },
-  render: function Render(args) {
-    // useTableFilters hook orchestrates all filter logic
-    const {
-      columnFilters,
-      filterChips,
-      filterNavItems,
-      enhancedColumns,
-      handlers,
-      renderFilterContent
-    } = useTableFilters({
-      filterAdapters: workflowFilters,
-      baseColumns: args.columns
+function DevicesTable({ rows }: { rows: DeviceRow[] }) {
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: [typeFilter, siteFilter],
+        baseColumns: columns,
     });
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || '');
-
-    // Set initial selected filter when modal opens
-    const handleOpenChange = (open: boolean) => {
-      if (open && !selectedFilterId && filterNavItems.length > 0) {
-        setSelectedFilterId(filterNavItems[0]?.id || '');
-      }
-      setIsOpen(open);
-    };
-    const handleValueChange = (value: string | null) => {
-      if (value) {
-        setSelectedFilterId(value);
-      }
-    };
-    const handleApply = () => {
-      handlers.applyFilters();
-      setIsOpen(false);
-    };
-    const handleClearAll = () => {
-      handlers.clearAll();
-      setIsOpen(false);
-    };
-    const TabLabel = ({
-      item
-    }: {
-      item: FilterNavItem;
-    }) => <>
-                <DsTypography variant="body-sm-md" className={styles.filterTabLabel}>
-                    {item.label}
-                </DsTypography>
-                {!!item.count && <DsStack direction="row" alignItems="center" gap={8}>
-                        <span className={styles.filterTabDot} />
-                        <DsTypography variant="body-sm-reg" color="secondary">
-                            {item.count}
-                        </DsTypography>
-                    </DsStack>}
-            </>;
-    return <DsStack direction="column" gap={16} flex="1">
-                <DsStack direction="row" justifyContent="flex-end">
-                    <DsButtonV3 variant="secondary" icon="filter_list" aria-label="Filter" onClick={() => setIsOpen(true)} />
-                </DsStack>
-
-                {filterChips.length > 0 && <DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />}
-
-                <DsTable {...args} columns={enhancedColumns} columnFilters={columnFilters} />
-
-                <DsModal className={styles.filterModal} open={isOpen} onOpenChange={handleOpenChange}>
-                    <DsModal.Header className={styles.filterHeader}>
-                        <DsStack direction="row" alignItems="center" gap={8}>
-                            <DsIcon icon="filter_list" size="small" />
-                            <DsModal.Title>Filters</DsModal.Title>
-                        </DsStack>
-                        <DsModal.CloseTrigger />
-                    </DsModal.Header>
-
-                    <DsModal.Body className={styles.filterBody}>
-                        <DsVerticalTabs className={styles.filterTabs} value={selectedFilterId} onValueChange={handleValueChange}>
-                            <DsVerticalTabs.List className={styles.filterTabList}>
-                                {filterNavItems.map(item => <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-                                        <TabLabel item={item} />
-                                    </DsVerticalTabs.Tab>)}
-                            </DsVerticalTabs.List>
-                            {filterNavItems.map(item => <DsVerticalTabs.Content key={item.id} value={item.id} className={styles.filterContent}>
-                                    {renderFilterContent(item)}
-                                </DsVerticalTabs.Content>)}
-                        </DsVerticalTabs>
-                    </DsModal.Body>
-
-                    <DsModal.Footer className={styles.filterFooter}>
-                        <DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>
-                            Clear all
-                        </DsButtonV3>
-                        <DsModal.Actions>
-                            <DsButtonV3 variant="primary" onClick={handleApply}>
-                                Apply
-                            </DsButtonV3>
-                        </DsModal.Actions>
-                    </DsModal.Footer>
-                </DsModal>
-            </DsStack>;
-  }
-}
-
-### MCP manifest
-const FiltersPanel = args => {
-    // useTableFilters hook orchestrates all filter logic
-    const { columnFilters, filterChips, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
-        useTableFilters({
-            filterAdapters: workflowFilters,
-            baseColumns: args.columns,
-        });
-
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || '');
-
-    // Set initial selected filter when modal opens
-    const handleOpenChange = (open: boolean) => {
-        if (open && !selectedFilterId && filterNavItems.length > 0) {
-            setSelectedFilterId(filterNavItems[0]?.id || '');
-        }
-        setIsOpen(open);
-    };
-
-    const handleValueChange = (value: string | null) => {
-        if (value) {
-            setSelectedFilterId(value);
-        }
-    };
-
-    const handleApply = () => {
-        handlers.applyFilters();
-        setIsOpen(false);
-    };
-
-    const handleClearAll = () => {
-        handlers.clearAll();
-        setIsOpen(false);
-    };
-
-    const TabLabel = ({ item }: { item: FilterNavItem }) => (
-        <>
-            <DsTypography variant="body-sm-md" className={styles.filterTabLabel}>
-                {item.label}
-            </DsTypography>
-            {!!item.count && (
-                <DsStack direction="row" alignItems="center" gap={8}>
-                    <span className={styles.filterTabDot} />
-                    <DsTypography variant="body-sm-reg" color="secondary">
-                        {item.count}
-                    </DsTypography>
-                </DsStack>
-            )}
-        </>
-    );
 
     return (
-        <DsStack direction="column" gap={16} flex="1">
-            <DsStack direction="row" justifyContent="flex-end">
-                <DsButtonV3
-                    variant="secondary"
-                    icon="filter_list"
-                    aria-label="Filter"
-                    onClick={() => setIsOpen(true)} />
-            </DsStack>
-
+        <>
             {filterChips.length > 0 && (
-                <DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
             )}
-
             <DsTable
-                data={[
-                    {
-                        id: '1',
-                        name: 'Scheduled Config Backup',
-                        status: 'active',
-                        runningCompleted: { running: 3, completed: 41 },
-                        category: 'Network Built',
-                        version: '000.0003',
-                        lastEdited: {
-                            editor: sampleUsers[0].name,
-                            timestamp: '2025-11-26T16:47:00',
-                            colorIndex: sampleUsers[0].colorIndex,
-                        },
-                    },
-                    {
-                        id: '2',
-                        name: 'Network Provisioning',
-                        status: 'running',
-                        runningCompleted: { running: 8, completed: 14 },
-                        category: 'Network Built',
-                        version: '000.0002',
-                        lastEdited: {
-                            editor: sampleUsers[1].name,
-                            timestamp: '2025-11-26T15:32:00',
-                            colorIndex: sampleUsers[1].colorIndex,
-                        },
-                    },
-                    {
-                        id: '3',
-                        name: 'Service Provisioning',
-                        status: 'inactive',
-                        runningCompleted: { running: 0, completed: 243 },
-                        category: 'Network Built',
-                        version: '000.0033',
-                        lastEdited: {
-                            editor: sampleUsers[2].name,
-                            timestamp: '2025-11-25T11:15:00',
-                            colorIndex: sampleUsers[2].colorIndex,
-                        },
-                    },
-                    {
-                        id: '4',
-                        name: 'Assign IPv4 Address',
-                        status: 'active',
-                        runningCompleted: { running: 14, completed: 123 },
-                        category: 'Network Built',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[3].name,
-                            timestamp: '2025-11-24T14:20:00',
-                            colorIndex: sampleUsers[3].colorIndex,
-                        },
-                    },
-                    {
-                        id: '5',
-                        name: 'Shutdown Decommissioned Device',
-                        status: 'active',
-                        runningCompleted: { running: 45, completed: 45 },
-                        category: 'Optical Optimization',
-                        version: '000.0022',
-                        lastEdited: {
-                            editor: sampleUsers[4].name,
-                            timestamp: '2025-11-23T13:05:00',
-                            colorIndex: sampleUsers[4].colorIndex,
-                        },
-                    },
-                    {
-                        id: '6',
-                        name: 'Optical Power Level Calibration',
-                        status: 'draft',
-                        runningCompleted: { running: 99, completed: 23 },
-                        category: 'Optical Optimization',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[5].name,
-                            timestamp: '2025-11-20T09:30:00',
-                            colorIndex: sampleUsers[5].colorIndex,
-                        },
-                    },
-                    {
-                        id: '7',
-                        name: 'Deploy Layer 2 VPN Instance',
-                        status: 'pending',
-                        runningCompleted: { running: 49, completed: 100 },
-                        category: 'Optical Optimization',
-                        version: '000.0012',
-                        lastEdited: {
-                            editor: sampleUsers[0].name,
-                            timestamp: '2025-11-18T12:45:00',
-                            colorIndex: sampleUsers[0].colorIndex,
-                        },
-                    },
-                    {
-                        id: '8',
-                        name: 'Initiate Scheduled Firmware Upgrade',
-                        status: 'active',
-                        runningCompleted: { running: 25, completed: 75 },
-                        category: 'Service Provisioning',
-                        version: '000.0010',
-                        lastEdited: {
-                            editor: sampleUsers[1].name,
-                            timestamp: '2025-11-15T17:10:00',
-                            colorIndex: sampleUsers[1].colorIndex,
-                        },
-                    },
-                    {
-                        id: '9',
-                        name: 'Enable High Availability Mode',
-                        status: 'running',
-                        runningCompleted: { running: 77, completed: 88 },
-                        category: 'Service Provisioning',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[2].name,
-                            timestamp: '2025-11-10T10:22:00',
-                            colorIndex: sampleUsers[2].colorIndex,
-                        },
-                    },
-                    {
-                        id: '10',
-                        name: 'Audit Access Control Policies',
-                        status: 'active',
-                        runningCompleted: { running: 65, completed: 200 },
-                        category: 'Service Provisioning',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[3].name,
-                            timestamp: '2025-11-05T15:15:00',
-                            colorIndex: sampleUsers[3].colorIndex,
-                        },
-                    },
-                    {
-                        id: '11',
-                        name: 'Synchronize NTP Across Network Nodes',
-                        status: 'warning',
-                        runningCompleted: { running: 49, completed: 142 },
-                        category: 'Service Provisioning',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[4].name,
-                            timestamp: '2025-10-28T08:40:00',
-                            colorIndex: sampleUsers[4].colorIndex,
-                        },
-                    },
-                    {
-                        id: '12',
-                        name: 'Validate Optical Link Integrity',
-                        status: 'failed',
-                        runningCompleted: { running: 90, completed: 300 },
-                        category: 'Network Built',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[5].name,
-                            timestamp: '2025-10-15T16:47:00',
-                            colorIndex: sampleUsers[5].colorIndex,
-                        },
-                    },
-                ]}
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
                 stickyHeader
                 bordered
                 fullWidth
-                expandable={false}
-                onRowClick={fn()}
+            />
+        </>
+    );
+}
+
+### MCP manifest
+const ColumnFilters = function Render() {
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: adapters,
+        baseColumns,
+    });
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+
+            <DsTable
                 columns={enhancedColumns}
-                columnFilters={columnFilters} />
-
-            <DsModal
-                className={styles.filterModal}
-                open={isOpen}
-                onOpenChange={handleOpenChange}>
-                <DsModal.Header className={styles.filterHeader}>
-                    <DsStack direction="row" alignItems="center" gap={8}>
-                        <DsIcon icon="filter_list" size="small" />
-                        <DsModal.Title>Filters</DsModal.Title>
-                    </DsStack>
-                    <DsModal.CloseTrigger />
-                </DsModal.Header>
-
-                <DsModal.Body className={styles.filterBody}>
-                    <DsVerticalTabs
-                        className={styles.filterTabs}
-                        value={selectedFilterId}
-                        onValueChange={handleValueChange}>
-                        <DsVerticalTabs.List className={styles.filterTabList}>
-                            {filterNavItems.map((item) => (
-                                <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-                                    <TabLabel item={item} />
-                                </DsVerticalTabs.Tab>
-                            ))}
-                        </DsVerticalTabs.List>
-                        {filterNavItems.map((item) => (
-                            <DsVerticalTabs.Content key={item.id} value={item.id} className={styles.filterContent}>
-                                {renderFilterContent(item)}
-                            </DsVerticalTabs.Content>
-                        ))}
-                    </DsVerticalTabs>
-                </DsModal.Body>
-
-                <DsModal.Footer className={styles.filterFooter}>
-                    <DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>Clear all
-                                                </DsButtonV3>
-                    <DsModal.Actions>
-                        <DsButtonV3 variant="primary" onClick={handleApply}>Apply
-                                                        </DsButtonV3>
-                    </DsModal.Actions>
-                </DsModal.Footer>
-            </DsModal>
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
         </DsStack>
     );
 };
 
-## Toolbar — Controlled
+## Per-Column — Controlled
 
 ### Show code
-{}
+import { useState } from 'react';
+import type { ColumnDef } from '@tanstack/react-table';
+import {
+    DsTable,
+    DsTagFilter,
+    type CheckboxFilterItem,
+    type FilterState,
+    createCheckboxFilterAdapter,
+    useTableFilters,
+} from '@drivenets/design-system';
 
-### MCP manifest
-const Controlled = args => {
-    // External filter state (controlled mode)
-    const [appliedFilters, setAppliedFilters] = useState<Record<string, unknown>>({});
+type DeviceRow = {
+    id: string;
+    name: string;
+    type: 'PP-LGX' | 'ME10' | 'OLT';
+    site: string;
+};
 
-    const { columnFilters, filterChips, filterNavItems, enhancedColumns, handlers, renderFilterContent } =
-        useTableFilters({
-            filterAdapters: workflowFilters,
-            baseColumns: args.columns,
-            appliedFilters,
-            onFiltersChange: setAppliedFilters,
-        });
+const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
+    id: 'type',
+    label: 'Type',
+    items: [
+        { value: 'PP-LGX', label: 'PP-LGX' },
+        { value: 'ME10', label: 'ME10' },
+        { value: 'OLT', label: 'OLT' },
+    ],
+    searchable: true,
+    selectAll: true,
+});
 
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedFilterId, setSelectedFilterId] = useState(filterNavItems[0]?.id || '');
+const columns: ColumnDef<DeviceRow>[] = [
+    { id: 'name', accessorKey: 'name', header: 'Name' },
+    { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
+    { id: 'site', accessorKey: 'site', header: 'Site' },
+];
 
-    const handleOpenChange = (open: boolean) => {
-        if (open && !selectedFilterId && filterNavItems.length > 0) {
-            setSelectedFilterId(filterNavItems[0]?.id || '');
-        }
-        setIsOpen(open);
-    };
+function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
+    // Source of truth lives outside the hook (URL, server, parent store, etc.).
+    const [appliedFilters, setAppliedFilters] = useState<FilterState<CheckboxFilterItem[]>>({
+        type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
+    });
 
-    const handleValueChange = (value: string | null) => {
-        if (value) {
-            setSelectedFilterId(value);
-        }
-    };
-
-    const handleApply = () => {
-        handlers.applyFilters();
-        setIsOpen(false);
-    };
-
-    const handleClearAll = () => {
-        handlers.clearAll();
-        setIsOpen(false);
-    };
-
-    const TabLabel = ({ item }: { item: FilterNavItem }) => (
-        <>
-            <DsTypography variant="body-sm-md" className={styles.filterTabLabel}>
-                {item.label}
-            </DsTypography>
-            {!!item.count && (
-                <DsStack direction="row" alignItems="center" gap={8}>
-                    <span className={styles.filterTabDot} />
-                    <DsTypography variant="body-sm-reg" color="secondary">
-                        {item.count}
-                    </DsTypography>
-                </DsStack>
-            )}
-        </>
-    );
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: [typeFilter],
+        baseColumns: columns,
+        appliedFilters,
+        onFiltersChange: setAppliedFilters,
+    });
 
     return (
-        <DsStack direction="column" gap={16} flex="1">
-            <DsStack className={styles.debugPanel} direction="column" gap={8}>
-                <DsTypography variant="body-sm-md">External Filter State (controlled):</DsTypography>
-                <pre className={styles.debugCode}>{JSON.stringify(appliedFilters, null, 2) || '{}'}</pre>
-            </DsStack>
-
-            <DsStack direction="row" justifyContent="flex-end">
-                <DsButtonV3
-                    variant="secondary"
-                    icon="filter_list"
-                    aria-label="Filter"
-                    onClick={() => setIsOpen(true)} />
-            </DsStack>
-
+        <>
             {filterChips.length > 0 && (
-                <DsTagFilter items={filterChips} onClearAll={handleClearAll} onItemDelete={handlers.deleteChip} />
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
             )}
-
             <DsTable
-                data={[
-                    {
-                        id: '1',
-                        name: 'Scheduled Config Backup',
-                        status: 'active',
-                        runningCompleted: { running: 3, completed: 41 },
-                        category: 'Network Built',
-                        version: '000.0003',
-                        lastEdited: {
-                            editor: sampleUsers[0].name,
-                            timestamp: '2025-11-26T16:47:00',
-                            colorIndex: sampleUsers[0].colorIndex,
-                        },
-                    },
-                    {
-                        id: '2',
-                        name: 'Network Provisioning',
-                        status: 'running',
-                        runningCompleted: { running: 8, completed: 14 },
-                        category: 'Network Built',
-                        version: '000.0002',
-                        lastEdited: {
-                            editor: sampleUsers[1].name,
-                            timestamp: '2025-11-26T15:32:00',
-                            colorIndex: sampleUsers[1].colorIndex,
-                        },
-                    },
-                    {
-                        id: '3',
-                        name: 'Service Provisioning',
-                        status: 'inactive',
-                        runningCompleted: { running: 0, completed: 243 },
-                        category: 'Network Built',
-                        version: '000.0033',
-                        lastEdited: {
-                            editor: sampleUsers[2].name,
-                            timestamp: '2025-11-25T11:15:00',
-                            colorIndex: sampleUsers[2].colorIndex,
-                        },
-                    },
-                    {
-                        id: '4',
-                        name: 'Assign IPv4 Address',
-                        status: 'active',
-                        runningCompleted: { running: 14, completed: 123 },
-                        category: 'Network Built',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[3].name,
-                            timestamp: '2025-11-24T14:20:00',
-                            colorIndex: sampleUsers[3].colorIndex,
-                        },
-                    },
-                    {
-                        id: '5',
-                        name: 'Shutdown Decommissioned Device',
-                        status: 'active',
-                        runningCompleted: { running: 45, completed: 45 },
-                        category: 'Optical Optimization',
-                        version: '000.0022',
-                        lastEdited: {
-                            editor: sampleUsers[4].name,
-                            timestamp: '2025-11-23T13:05:00',
-                            colorIndex: sampleUsers[4].colorIndex,
-                        },
-                    },
-                    {
-                        id: '6',
-                        name: 'Optical Power Level Calibration',
-                        status: 'draft',
-                        runningCompleted: { running: 99, completed: 23 },
-                        category: 'Optical Optimization',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[5].name,
-                            timestamp: '2025-11-20T09:30:00',
-                            colorIndex: sampleUsers[5].colorIndex,
-                        },
-                    },
-                    {
-                        id: '7',
-                        name: 'Deploy Layer 2 VPN Instance',
-                        status: 'pending',
-                        runningCompleted: { running: 49, completed: 100 },
-                        category: 'Optical Optimization',
-                        version: '000.0012',
-                        lastEdited: {
-                            editor: sampleUsers[0].name,
-                            timestamp: '2025-11-18T12:45:00',
-                            colorIndex: sampleUsers[0].colorIndex,
-                        },
-                    },
-                    {
-                        id: '8',
-                        name: 'Initiate Scheduled Firmware Upgrade',
-                        status: 'active',
-                        runningCompleted: { running: 25, completed: 75 },
-                        category: 'Service Provisioning',
-                        version: '000.0010',
-                        lastEdited: {
-                            editor: sampleUsers[1].name,
-                            timestamp: '2025-11-15T17:10:00',
-                            colorIndex: sampleUsers[1].colorIndex,
-                        },
-                    },
-                    {
-                        id: '9',
-                        name: 'Enable High Availability Mode',
-                        status: 'running',
-                        runningCompleted: { running: 77, completed: 88 },
-                        category: 'Service Provisioning',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[2].name,
-                            timestamp: '2025-11-10T10:22:00',
-                            colorIndex: sampleUsers[2].colorIndex,
-                        },
-                    },
-                    {
-                        id: '10',
-                        name: 'Audit Access Control Policies',
-                        status: 'active',
-                        runningCompleted: { running: 65, completed: 200 },
-                        category: 'Service Provisioning',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[3].name,
-                            timestamp: '2025-11-05T15:15:00',
-                            colorIndex: sampleUsers[3].colorIndex,
-                        },
-                    },
-                    {
-                        id: '11',
-                        name: 'Synchronize NTP Across Network Nodes',
-                        status: 'warning',
-                        runningCompleted: { running: 49, completed: 142 },
-                        category: 'Service Provisioning',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[4].name,
-                            timestamp: '2025-10-28T08:40:00',
-                            colorIndex: sampleUsers[4].colorIndex,
-                        },
-                    },
-                    {
-                        id: '12',
-                        name: 'Validate Optical Link Integrity',
-                        status: 'failed',
-                        runningCompleted: { running: 90, completed: 300 },
-                        category: 'Network Built',
-                        version: '000.0001',
-                        lastEdited: {
-                            editor: sampleUsers[5].name,
-                            timestamp: '2025-10-15T16:47:00',
-                            colorIndex: sampleUsers[5].colorIndex,
-                        },
-                    },
-                ]}
+                columns={enhancedColumns}
+                columnFilters={columnFilters}
+                data={rows}
                 stickyHeader
                 bordered
                 fullWidth
-                expandable={false}
-                onRowClick={fn()}
+            />
+        </>
+    );
+}
+
+### MCP manifest
+const ControlledColumnFilters = function Render() {
+    const [appliedFilters, setAppliedFilters] = useState<FilterState<CheckboxFilterItem[]>>({
+        type: [{ value: 'PP-LGX', label: 'PP-LGX' }],
+    });
+
+    const { columnFilters, filterChips, enhancedColumns, handlers } = useTableFilters({
+        filterAdapters: adapters,
+        baseColumns,
+        appliedFilters,
+        onFiltersChange: setAppliedFilters,
+    });
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            {filterChips.length > 0 && (
+                <DsTagFilter
+                    items={filterChips}
+                    onClearAll={handlers.clearAll}
+                    onItemDelete={handlers.deleteChip}
+                />
+            )}
+
+            <DsTable
                 columns={enhancedColumns}
-                columnFilters={columnFilters} />
-
-            <DsModal
-                className={styles.filterModal}
-                open={isOpen}
-                onOpenChange={handleOpenChange}>
-                <DsModal.Header className={styles.filterHeader}>
-                    <DsStack direction="row" alignItems="center" gap={8}>
-                        <DsIcon icon="filter_list" size="small" />
-                        <DsModal.Title>Filters</DsModal.Title>
-                    </DsStack>
-                    <DsModal.CloseTrigger />
-                </DsModal.Header>
-
-                <DsModal.Body className={styles.filterBody}>
-                    <DsVerticalTabs
-                        className={styles.filterTabs}
-                        value={selectedFilterId}
-                        onValueChange={handleValueChange}>
-                        <DsVerticalTabs.List className={styles.filterTabList}>
-                            {filterNavItems.map((item) => (
-                                <DsVerticalTabs.Tab key={item.id} value={item.id} disabled={item.disabled}>
-                                    <TabLabel item={item} />
-                                </DsVerticalTabs.Tab>
-                            ))}
-                        </DsVerticalTabs.List>
-                        {filterNavItems.map((item) => (
-                            <DsVerticalTabs.Content key={item.id} value={item.id} className={styles.filterContent}>
-                                {renderFilterContent(item)}
-                            </DsVerticalTabs.Content>
-                        ))}
-                    </DsVerticalTabs>
-                </DsModal.Body>
-
-                <DsModal.Footer className={styles.filterFooter}>
-                    <DsButtonV3 variant="secondary" icon="close" onClick={handleClearAll}>Clear all
-                                                </DsButtonV3>
-                    <DsModal.Actions>
-                        <DsButtonV3 variant="primary" onClick={handleApply}>Apply
-                                                        </DsButtonV3>
-                    </DsModal.Actions>
-                </DsModal.Footer>
-            </DsModal>
+                columnFilters={columnFilters}
+                data={rows}
+                stickyHeader
+                bordered
+                fullWidth
+            />
         </DsStack>
     );
 };
