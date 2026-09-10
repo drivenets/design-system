@@ -1,3 +1,6 @@
+$transition-duration: 0.2s;
+$focus-border-width: 2px;
+
 @mixin item-size($height, $inline-padding) {
 	height: $height;
 	padding: 0 $inline-padding;
@@ -40,10 +43,10 @@
 	color: var(--font-main);
 	cursor: pointer;
 	transition:
-		background-color 0.2s,
-		border-color 0.2s,
-		color 0.2s,
-		border-width 0.2s;
+		background-color $transition-duration,
+		border-color $transition-duration,
+		color $transition-duration,
+		border-width $transition-duration;
 
 	&[data-state='unchecked'] {
 		background: transparent;
@@ -58,7 +61,7 @@
 
 		&[data-focus-visible]:not([data-disabled]) {
 			background: var(--background-action-hover-weak);
-			border-width: 2px;
+			border-width: $focus-border-width;
 			border-color: var(--border-action-secondary);
 		}
 	}
@@ -76,7 +79,7 @@
 
 		&[data-focus-visible]:not([data-disabled]) {
 			background: var(--background-secondary-selected-weak);
-			border-width: 2px;
+			border-width: $focus-border-width;
 			border-color: var(--border-action-secondary);
 		}
 	}
@@ -107,7 +110,7 @@
 	align-items: center;
 	justify-content: center;
 	white-space: nowrap;
-	transition: color 0.2s;
+	transition: color $transition-duration;
 }
 
 .segmentIndicator {
