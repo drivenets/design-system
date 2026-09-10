@@ -348,6 +348,7 @@ const ProgrammaticExpansion = () => {
         <DsStack direction="column" gap={16}>
             <DsTypography variant="body-sm-reg" color="secondary">Expanded rows: {expandedRows.length > 0 ? expandedRows.join(', ') : 'None'}
             </DsTypography>
+
             <DsStack direction="row" gap={8} flexWrap="wrap">
                 <DsButtonV3 variant="secondary" size="small" onClick={() => expandRow('2')}>Expand Kevin
                                         </DsButtonV3>
@@ -362,6 +363,7 @@ const ProgrammaticExpansion = () => {
                 <DsButtonV3 variant="secondary" size="small" onClick={expandFirstThreeRows}>Expand First 3 Expandable
                                         </DsButtonV3>
             </DsStack>
+
             <DsTable
                 columns={columns}
                 data={defaultData.slice(0, 5)}

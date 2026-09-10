@@ -83,6 +83,7 @@ const Default = () => {
                     <DsTabs.Tab value="reports" label="Reports" icon="description" badge={5} />
                     <DsTabs.Tab value="settings" label="Settings" icon="settings" />
                 </DsTabs.List>
+
                 <DsTabs.Content value="overview">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Overview</DsTypography>
@@ -90,6 +91,7 @@ const Default = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="analytics">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Analytics</DsTypography>
@@ -97,6 +99,7 @@ const Default = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="reports">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Reports</DsTypography>
@@ -104,6 +107,7 @@ const Default = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="settings">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Settings</DsTypography>
@@ -196,6 +200,7 @@ const HorizontalSmall = () => {
                     <DsTabs.Tab value="reports" label="Reports" icon="description" badge={5} />
                     <DsTabs.Tab value="settings" label="Settings" icon="settings" />
                 </DsTabs.List>
+
                 <DsTabs.Content value="dashboard">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Dashboard</DsTypography>
@@ -336,6 +341,7 @@ const WithMenuActions = () => {
                         menuActionItems={menuActions}
                         onMenuActionSelect={() => {}} />
                 </DsTabs.List>
+
                 <DsTabs.Content value="tab1">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Projects</DsTypography>
@@ -460,6 +466,7 @@ const Vertical = () => {
                     <DsTabs.Tab value="billing" label="Billing" icon="credit_card" />
                     <DsTabs.Tab value="team" label="Team" icon="group" />
                 </DsTabs.List>
+
                 <DsTabs.Content value="profile">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Profile Settings</DsTypography>
@@ -467,6 +474,7 @@ const Vertical = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="security">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Security</DsTypography>
@@ -474,6 +482,7 @@ const Vertical = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="notifications">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Notifications</DsTypography>
@@ -481,6 +490,7 @@ const Vertical = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="billing">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Billing</DsTypography>
@@ -488,6 +498,7 @@ const Vertical = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="team">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Team Management</DsTypography>
@@ -594,6 +605,7 @@ const VerticalSmall = () => {
                     <DsTabs.Tab value="appearance" label="Appearance" icon="palette" />
                     <DsTabs.Tab value="advanced" label="Advanced" icon="tune" />
                 </DsTabs.List>
+
                 <DsTabs.Content value="general">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">General Settings</DsTypography>
@@ -601,6 +613,7 @@ const VerticalSmall = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="account">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Account</DsTypography>
@@ -608,6 +621,7 @@ const VerticalSmall = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="privacy">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Privacy</DsTypography>
@@ -615,6 +629,7 @@ const VerticalSmall = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="appearance">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Appearance</DsTypography>
@@ -622,6 +637,7 @@ const VerticalSmall = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="advanced">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Advanced</DsTypography>
@@ -776,6 +792,7 @@ const VerticalWithMenuActions = () => {
                         menuActionItems={menuActions}
                         onMenuActionSelect={() => {}} />
                 </DsTabs.List>
+
                 <DsTabs.Content value="profile">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Profile Settings</DsTypography>
@@ -784,6 +801,7 @@ const VerticalWithMenuActions = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="security">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Security</DsTypography>
@@ -791,6 +809,7 @@ const VerticalWithMenuActions = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="notifications">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Notifications</DsTypography>
@@ -798,6 +817,7 @@ const VerticalWithMenuActions = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="billing">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Billing</DsTypography>
@@ -805,6 +825,7 @@ const VerticalWithMenuActions = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="team">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Team Management</DsTypography>
@@ -879,6 +900,7 @@ const WithDisabled = () => {
                     <DsTabs.Tab value="active2" label="Active" icon="check_circle" badge={5} />
                     <DsTabs.Tab value="disabled2" label="Disabled" icon="block" disabled />
                 </DsTabs.List>
+
                 <DsTabs.Content value="active1">
                     <div className={styles.content}>
                         <DsTypography variant="body-md-reg">Active tab 1 content</DsTypography>
@@ -981,6 +1003,7 @@ const TextOnly = () => {
                     <DsTabs.Tab value="services" label="Services" />
                     <DsTabs.Tab value="contact" label="Contact" />
                 </DsTabs.List>
+
                 <DsTabs.Content value="home">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Home</DsTypography>
@@ -988,6 +1011,7 @@ const TextOnly = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="products">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Products</DsTypography>
@@ -995,6 +1019,7 @@ const TextOnly = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="services">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Services</DsTypography>
@@ -1002,6 +1027,7 @@ const TextOnly = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="contact">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Contact Us</DsTypography>
@@ -1109,6 +1135,7 @@ const WithTooltips = () => {
                         icon="settings"
                         tooltip="Configure application settings" />
                 </DsTabs.List>
+
                 <DsTabs.Content value="dashboard">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Dashboard</DsTypography>
@@ -1116,6 +1143,7 @@ const WithTooltips = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="analytics">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Analytics</DsTypography>
@@ -1123,6 +1151,7 @@ const WithTooltips = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="reports">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Reports</DsTypography>
@@ -1130,6 +1159,7 @@ const WithTooltips = () => {
                                                         </DsTypography>
                     </div>
                 </DsTabs.Content>
+
                 <DsTabs.Content value="settings">
                     <div className={styles.content}>
                         <DsTypography variant="heading3">Settings</DsTypography>

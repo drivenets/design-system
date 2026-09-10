@@ -84,6 +84,7 @@ const SearchMode = () => (
     }
   ]}
   placeholder="Search countries..."
+  showTrigger={false}
   startAdornment={<DsIcon aria-label="search icon" icon="search" size="medium"/>}
 />
 

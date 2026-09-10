@@ -130,6 +130,7 @@
       visits: 110
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -255,6 +256,7 @@ const WithDrawerAndActiveRow = () => {
                 expandable={false}
                 activeRowId={activeRowId}
                 onRowClick={handleRowClick} />
+
             <DsDrawer
                 open={isDrawerOpen}
                 onOpenChange={(open) => {
