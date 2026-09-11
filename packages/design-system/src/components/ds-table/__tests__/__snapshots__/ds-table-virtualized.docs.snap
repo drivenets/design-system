@@ -38,6 +38,7 @@
     }
   ]}
   data={[]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader

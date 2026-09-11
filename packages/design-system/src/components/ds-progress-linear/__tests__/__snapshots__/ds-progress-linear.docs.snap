@@ -16,6 +16,7 @@ const Default = () => <DsProgressLinear value={35} label="File Upload" caption="
 
 ### Show code
 <DsProgressLinear
+  showValue={false}
   value={70}
 />
 

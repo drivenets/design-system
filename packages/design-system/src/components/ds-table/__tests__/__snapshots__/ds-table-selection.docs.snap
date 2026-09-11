@@ -174,6 +174,7 @@
       visits: 88
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   onSelectionChange={() => {}}
@@ -367,6 +368,7 @@ const Selectable = () => <DsTable
       visits: 88
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   onSelectionChange={() => {}}
@@ -455,6 +457,7 @@ const ProgrammaticRowSelection = () => {
         <DsStack direction="column" gap={16}>
             <DsTypography variant="body-sm-reg" color="secondary">Selected rows: {selectedRows.length > 0 ? selectedRows.join(', ') : 'None'}
             </DsTypography>
+
             <DsStack direction="row" gap={8} flexWrap="wrap">
                 <DsButtonV3
                     variant="secondary"
@@ -487,6 +490,7 @@ const ProgrammaticRowSelection = () => {
                     onClick={() => tableRef.current?.selectRows(['1', '2', '3'])}>Select First 3 Rows
                                         </DsButtonV3>
             </DsStack>
+
             <DsTable
                 columns={columns}
                 data={defaultData}
@@ -538,7 +542,7 @@ const ProgrammaticRowSelection = () => {
 }
 
 ### MCP manifest
-const MaxSelectionLimit = () => {
+const MaxSelectionLimit = args => {
     const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
     const maxSelections = 2;
 
@@ -553,6 +557,7 @@ const MaxSelectionLimit = () => {
         <DsStack direction="column" gap={16}>
             <DsTypography variant="body-sm-reg" color="secondary">Selected: {selectedCount}/ {maxSelections}
             </DsTypography>
+
             <DsTable
                 columns={columns}
                 data={defaultData}

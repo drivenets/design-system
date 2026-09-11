@@ -221,6 +221,7 @@ const StepCard = () => <DsCard.Root size="large">
 ### Show code
 <DsCard.Root
   selectable
+  selected={false}
 >
   <DsCard.Header>
     Selectable Card
@@ -296,6 +297,7 @@ const SelectableControlled = () => {
 <DsCard.Root
   disabled
   selectable
+  selected={false}
 >
   <DsCard.Header>
     Unavailable step
