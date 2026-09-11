@@ -588,13 +588,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/98 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/98 infos</a><span class="filter-pill ok" aria-disabled="true">557 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">4/98 prop type errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/98 infos</a><span class="filter-pill ok" aria-disabled="true">558 stories ok</span><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -14720,7 +14720,7 @@ value?: TOption[&#39;value&#39;]</code></pre>
       <div class="badges">
         <label for="c-56-components-segmentgroup-err" class="badge err as-toggle">prop type error</label>
         <label for="c-56-components-segmentgroup-info" class="badge info as-toggle">1 info</label>
-        <label for="c-56-components-segmentgroup-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-56-components-segmentgroup-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -14784,7 +14784,15 @@ const Root: React.FC&lt;DsSegmentGroupRootProps&gt; = ({
 /**
  * Item component - renders a single segment button
  */
-const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({ value, label, className, style, children, ...props }) =&gt; {
+const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({
+	value,
+	label,
+	className,
+	style,
+	children,
+	size = &#39;default&#39;,
+	...props
+}) =&gt; {
 	return (
 		&lt;SegmentGroup.Item
 			value={value}
@@ -14792,7 +14800,7 @@ const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({ value, label, className
 			style={style}
 			{...props}
 		&gt;
-			{label ? &lt;ItemText&gt;{label}&lt;/ItemText&gt; : children}
+			{label ? &lt;ItemText size={size}&gt;{label}&lt;/ItemText&gt; : children}
 			&lt;SegmentGroup.ItemControl /&gt;
 			&lt;SegmentGroup.ItemHiddenInput /&gt;
 		&lt;/SegmentGroup.Item&gt;
@@ -14802,9 +14810,14 @@ const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({ value, label, className
 /**
  * ItemText component - renders text content within an item
  */
-const ItemText: React.FC&lt;DsSegmentGroupItemTextProps&gt; = ({ className, children, ...props }) =&gt; (
+const ItemText: React.FC&lt;DsSegmentGroupItemTextProps&gt; = ({
+	className,
+	children,
+	size = &#39;default&#39;,
+	...props
+}) =&gt; (
 	&lt;SegmentGroup.ItemText className={classNames(styles.segmentItemText, className)} {...props} asChild&gt;
-		&lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;{children}&lt;/DsTypography&gt;
+		&lt;DsTypography variant={size === &#39;small&#39; ? &#39;body-xs-md&#39; : &#39;body-sm-md&#39;}&gt;{children}&lt;/DsTypography&gt;
 	&lt;/SegmentGroup.ItemText&gt;
 );
 
@@ -14813,7 +14826,6 @@ const ItemText: React.FC&lt;DsSegmentGroupItemTextProps&gt; = ({ className, chil
  *
  * @example
  * &lt;DsSegmentGroup.Root value={value} onValueChange={setValue} size=&quot;default&quot;&gt;
- *   &lt;DsSegmentGroup.Indicator /&gt;
  *   &lt;DsSegmentGroup.Item value=&quot;option1&quot; label=&quot;Option 1&quot; /&gt;
  *   &lt;DsSegmentGroup.Item value=&quot;option2&quot;&gt;
  *     &lt;DsIcon icon=&quot;settings&quot; /&gt;
@@ -14861,14 +14873,12 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               </div>
               
               <div class="hint">A basic segment group with text labels. Compose `Root` with `Item` children and seed the initial choice with `defaultValue` for uncontrolled usage.</div>
-              <pre><code>const Default = () =&gt; (
-    &lt;DsSegmentGroup.Root defaultValue=&quot;react&quot;&gt;
-        &lt;DsSegmentGroup.Item value=&quot;react&quot; label=&quot;React&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;angular&quot; label=&quot;Angular&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
-    &lt;/DsSegmentGroup.Root&gt;
-);</code></pre>
+              <pre><code>const Default = () =&gt; &lt;DsSegmentGroup.Root defaultValue=&quot;react&quot;&gt;
+    &lt;DsSegmentGroup.Item value=&quot;react&quot; label=&quot;React&quot; /&gt;
+    &lt;DsSegmentGroup.Item value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
+    &lt;DsSegmentGroup.Item value=&quot;angular&quot; label=&quot;Angular&quot; /&gt;
+    &lt;DsSegmentGroup.Item value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
+&lt;/DsSegmentGroup.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -14879,9 +14889,9 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               <div class="hint">Compact size for toolbars and dense layouts where vertical space is limited.</div>
               <pre><code>const Small = () =&gt; (
     &lt;DsSegmentGroup.Root defaultValue=&quot;list&quot; size=&quot;small&quot;&gt;
-        &lt;DsSegmentGroup.Item value=&quot;list&quot; label=&quot;List&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;grid&quot; label=&quot;Grid&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;table&quot; label=&quot;Table&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;list&quot; label=&quot;List&quot; size=&quot;small&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;grid&quot; label=&quot;Grid&quot; size=&quot;small&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;table&quot; label=&quot;Table&quot; size=&quot;small&quot; /&gt;
     &lt;/DsSegmentGroup.Root&gt;
 );</code></pre>
             </div>
@@ -14893,18 +14903,18 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               
               <div class="hint">Pair an icon with a label by composing `DsIcon` and `Item.ItemText` inside an `Item`. Use icons to reinforce the meaning of each option.</div>
               <pre><code>const WithIcons = () =&gt; (
-    &lt;DsSegmentGroup.Root defaultValue=&quot;day&quot;&gt;
+    &lt;DsSegmentGroup.Root defaultValue=&quot;day&quot; size=&quot;small&quot;&gt;
         &lt;DsSegmentGroup.Item value=&quot;day&quot;&gt;
-            &lt;DsIcon icon=&quot;wb_sunny&quot; size=&quot;tiny&quot; /&gt;
-            &lt;DsSegmentGroup.ItemText&gt;Day&lt;/DsSegmentGroup.ItemText&gt;
+            &lt;DsIcon icon=&quot;wb_sunny&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
+            &lt;DsSegmentGroup.ItemText size=&quot;small&quot;&gt;Day&lt;/DsSegmentGroup.ItemText&gt;
         &lt;/DsSegmentGroup.Item&gt;
         &lt;DsSegmentGroup.Item value=&quot;week&quot;&gt;
-            &lt;DsIcon icon=&quot;date_range&quot; size=&quot;tiny&quot; /&gt;
-            &lt;DsSegmentGroup.ItemText&gt;Week&lt;/DsSegmentGroup.ItemText&gt;
+            &lt;DsIcon icon=&quot;date_range&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
+            &lt;DsSegmentGroup.ItemText size=&quot;small&quot;&gt;Week&lt;/DsSegmentGroup.ItemText&gt;
         &lt;/DsSegmentGroup.Item&gt;
         &lt;DsSegmentGroup.Item value=&quot;month&quot;&gt;
-            &lt;DsIcon icon=&quot;calendar_month&quot; size=&quot;tiny&quot; /&gt;
-            &lt;DsSegmentGroup.ItemText&gt;Month&lt;/DsSegmentGroup.ItemText&gt;
+            &lt;DsIcon icon=&quot;calendar_month&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
+            &lt;DsSegmentGroup.ItemText size=&quot;small&quot;&gt;Month&lt;/DsSegmentGroup.ItemText&gt;
         &lt;/DsSegmentGroup.Item&gt;
     &lt;/DsSegmentGroup.Root&gt;
 );</code></pre>
@@ -14918,18 +14928,33 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               <div class="hint">Icon-only segments for a compact switcher where the glyphs are self-explanatory.</div>
               <pre><code>const IconOnly = () =&gt; (
     &lt;DsSegmentGroup.Root defaultValue=&quot;list&quot; size=&quot;small&quot;&gt;
-        &lt;DsSegmentGroup.Item value=&quot;list&quot;&gt;
-            &lt;DsIcon icon=&quot;view_list&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;list&quot; aria-label=&quot;List&quot;&gt;
+            &lt;DsIcon icon=&quot;view_list&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
-        &lt;DsSegmentGroup.Item value=&quot;grid&quot;&gt;
-            &lt;DsIcon icon=&quot;grid_view&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;grid&quot; aria-label=&quot;Grid&quot;&gt;
+            &lt;DsIcon icon=&quot;grid_view&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
-        &lt;DsSegmentGroup.Item value=&quot;kanban&quot;&gt;
-            &lt;DsIcon icon=&quot;view_kanban&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;kanban&quot; aria-label=&quot;Kanban&quot;&gt;
+            &lt;DsIcon icon=&quot;view_kanban&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
-        &lt;DsSegmentGroup.Item value=&quot;timeline&quot;&gt;
-            &lt;DsIcon icon=&quot;timeline&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;timeline&quot; aria-label=&quot;Timeline&quot;&gt;
+            &lt;DsIcon icon=&quot;timeline&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
+    &lt;/DsSegmentGroup.Root&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Disable the entire group when no option can be changed.</div>
+              <pre><code>const Disabled = () =&gt; (
+    &lt;DsSegmentGroup.Root defaultValue=&quot;react&quot; disabled&gt;
+        &lt;DsSegmentGroup.Item value=&quot;react&quot; label=&quot;React&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;angular&quot; label=&quot;Angular&quot; /&gt;
     &lt;/DsSegmentGroup.Root&gt;
 );</code></pre>
             </div>
@@ -30892,7 +30917,7 @@ export type DsCardFooterProps = DsCardSlotProps;
       <div class="badges">
         <label for="c-error-1-components-segmentgroup-err" class="badge err as-toggle">prop type error</label>
         <label for="c-error-1-components-segmentgroup-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-1-components-segmentgroup-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-error-1-components-segmentgroup-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -30956,7 +30981,15 @@ const Root: React.FC&lt;DsSegmentGroupRootProps&gt; = ({
 /**
  * Item component - renders a single segment button
  */
-const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({ value, label, className, style, children, ...props }) =&gt; {
+const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({
+	value,
+	label,
+	className,
+	style,
+	children,
+	size = &#39;default&#39;,
+	...props
+}) =&gt; {
 	return (
 		&lt;SegmentGroup.Item
 			value={value}
@@ -30964,7 +30997,7 @@ const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({ value, label, className
 			style={style}
 			{...props}
 		&gt;
-			{label ? &lt;ItemText&gt;{label}&lt;/ItemText&gt; : children}
+			{label ? &lt;ItemText size={size}&gt;{label}&lt;/ItemText&gt; : children}
 			&lt;SegmentGroup.ItemControl /&gt;
 			&lt;SegmentGroup.ItemHiddenInput /&gt;
 		&lt;/SegmentGroup.Item&gt;
@@ -30974,9 +31007,14 @@ const Item: React.FC&lt;DsSegmentGroupItemProps&gt; = ({ value, label, className
 /**
  * ItemText component - renders text content within an item
  */
-const ItemText: React.FC&lt;DsSegmentGroupItemTextProps&gt; = ({ className, children, ...props }) =&gt; (
+const ItemText: React.FC&lt;DsSegmentGroupItemTextProps&gt; = ({
+	className,
+	children,
+	size = &#39;default&#39;,
+	...props
+}) =&gt; (
 	&lt;SegmentGroup.ItemText className={classNames(styles.segmentItemText, className)} {...props} asChild&gt;
-		&lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;{children}&lt;/DsTypography&gt;
+		&lt;DsTypography variant={size === &#39;small&#39; ? &#39;body-xs-md&#39; : &#39;body-sm-md&#39;}&gt;{children}&lt;/DsTypography&gt;
 	&lt;/SegmentGroup.ItemText&gt;
 );
 
@@ -30985,7 +31023,6 @@ const ItemText: React.FC&lt;DsSegmentGroupItemTextProps&gt; = ({ className, chil
  *
  * @example
  * &lt;DsSegmentGroup.Root value={value} onValueChange={setValue} size=&quot;default&quot;&gt;
- *   &lt;DsSegmentGroup.Indicator /&gt;
  *   &lt;DsSegmentGroup.Item value=&quot;option1&quot; label=&quot;Option 1&quot; /&gt;
  *   &lt;DsSegmentGroup.Item value=&quot;option2&quot;&gt;
  *     &lt;DsIcon icon=&quot;settings&quot; /&gt;
@@ -31033,14 +31070,12 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               </div>
               
               <div class="hint">A basic segment group with text labels. Compose `Root` with `Item` children and seed the initial choice with `defaultValue` for uncontrolled usage.</div>
-              <pre><code>const Default = () =&gt; (
-    &lt;DsSegmentGroup.Root defaultValue=&quot;react&quot;&gt;
-        &lt;DsSegmentGroup.Item value=&quot;react&quot; label=&quot;React&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;angular&quot; label=&quot;Angular&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
-    &lt;/DsSegmentGroup.Root&gt;
-);</code></pre>
+              <pre><code>const Default = () =&gt; &lt;DsSegmentGroup.Root defaultValue=&quot;react&quot;&gt;
+    &lt;DsSegmentGroup.Item value=&quot;react&quot; label=&quot;React&quot; /&gt;
+    &lt;DsSegmentGroup.Item value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
+    &lt;DsSegmentGroup.Item value=&quot;angular&quot; label=&quot;Angular&quot; /&gt;
+    &lt;DsSegmentGroup.Item value=&quot;svelte&quot; label=&quot;Svelte&quot; /&gt;
+&lt;/DsSegmentGroup.Root&gt;;</code></pre>
             </div>
             <div class="note ok">
               <div class="row">
@@ -31051,9 +31086,9 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               <div class="hint">Compact size for toolbars and dense layouts where vertical space is limited.</div>
               <pre><code>const Small = () =&gt; (
     &lt;DsSegmentGroup.Root defaultValue=&quot;list&quot; size=&quot;small&quot;&gt;
-        &lt;DsSegmentGroup.Item value=&quot;list&quot; label=&quot;List&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;grid&quot; label=&quot;Grid&quot; /&gt;
-        &lt;DsSegmentGroup.Item value=&quot;table&quot; label=&quot;Table&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;list&quot; label=&quot;List&quot; size=&quot;small&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;grid&quot; label=&quot;Grid&quot; size=&quot;small&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;table&quot; label=&quot;Table&quot; size=&quot;small&quot; /&gt;
     &lt;/DsSegmentGroup.Root&gt;
 );</code></pre>
             </div>
@@ -31065,18 +31100,18 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               
               <div class="hint">Pair an icon with a label by composing `DsIcon` and `Item.ItemText` inside an `Item`. Use icons to reinforce the meaning of each option.</div>
               <pre><code>const WithIcons = () =&gt; (
-    &lt;DsSegmentGroup.Root defaultValue=&quot;day&quot;&gt;
+    &lt;DsSegmentGroup.Root defaultValue=&quot;day&quot; size=&quot;small&quot;&gt;
         &lt;DsSegmentGroup.Item value=&quot;day&quot;&gt;
-            &lt;DsIcon icon=&quot;wb_sunny&quot; size=&quot;tiny&quot; /&gt;
-            &lt;DsSegmentGroup.ItemText&gt;Day&lt;/DsSegmentGroup.ItemText&gt;
+            &lt;DsIcon icon=&quot;wb_sunny&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
+            &lt;DsSegmentGroup.ItemText size=&quot;small&quot;&gt;Day&lt;/DsSegmentGroup.ItemText&gt;
         &lt;/DsSegmentGroup.Item&gt;
         &lt;DsSegmentGroup.Item value=&quot;week&quot;&gt;
-            &lt;DsIcon icon=&quot;date_range&quot; size=&quot;tiny&quot; /&gt;
-            &lt;DsSegmentGroup.ItemText&gt;Week&lt;/DsSegmentGroup.ItemText&gt;
+            &lt;DsIcon icon=&quot;date_range&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
+            &lt;DsSegmentGroup.ItemText size=&quot;small&quot;&gt;Week&lt;/DsSegmentGroup.ItemText&gt;
         &lt;/DsSegmentGroup.Item&gt;
         &lt;DsSegmentGroup.Item value=&quot;month&quot;&gt;
-            &lt;DsIcon icon=&quot;calendar_month&quot; size=&quot;tiny&quot; /&gt;
-            &lt;DsSegmentGroup.ItemText&gt;Month&lt;/DsSegmentGroup.ItemText&gt;
+            &lt;DsIcon icon=&quot;calendar_month&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
+            &lt;DsSegmentGroup.ItemText size=&quot;small&quot;&gt;Month&lt;/DsSegmentGroup.ItemText&gt;
         &lt;/DsSegmentGroup.Item&gt;
     &lt;/DsSegmentGroup.Root&gt;
 );</code></pre>
@@ -31090,18 +31125,33 @@ DsSegmentGroup.ItemText.displayName = &#39;DsSegmentGroup.ItemText&#39;;
               <div class="hint">Icon-only segments for a compact switcher where the glyphs are self-explanatory.</div>
               <pre><code>const IconOnly = () =&gt; (
     &lt;DsSegmentGroup.Root defaultValue=&quot;list&quot; size=&quot;small&quot;&gt;
-        &lt;DsSegmentGroup.Item value=&quot;list&quot;&gt;
-            &lt;DsIcon icon=&quot;view_list&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;list&quot; aria-label=&quot;List&quot;&gt;
+            &lt;DsIcon icon=&quot;view_list&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
-        &lt;DsSegmentGroup.Item value=&quot;grid&quot;&gt;
-            &lt;DsIcon icon=&quot;grid_view&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;grid&quot; aria-label=&quot;Grid&quot;&gt;
+            &lt;DsIcon icon=&quot;grid_view&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
-        &lt;DsSegmentGroup.Item value=&quot;kanban&quot;&gt;
-            &lt;DsIcon icon=&quot;view_kanban&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;kanban&quot; aria-label=&quot;Kanban&quot;&gt;
+            &lt;DsIcon icon=&quot;view_kanban&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
-        &lt;DsSegmentGroup.Item value=&quot;timeline&quot;&gt;
-            &lt;DsIcon icon=&quot;timeline&quot; size=&quot;tiny&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;timeline&quot; aria-label=&quot;Timeline&quot;&gt;
+            &lt;DsIcon icon=&quot;timeline&quot; size=&quot;tiny&quot; color=&quot;main&quot; /&gt;
         &lt;/DsSegmentGroup.Item&gt;
+    &lt;/DsSegmentGroup.Root&gt;
+);</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Disable the entire group when no option can be changed.</div>
+              <pre><code>const Disabled = () =&gt; (
+    &lt;DsSegmentGroup.Root defaultValue=&quot;react&quot; disabled&gt;
+        &lt;DsSegmentGroup.Item value=&quot;react&quot; label=&quot;React&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;vue&quot; label=&quot;Vue&quot; /&gt;
+        &lt;DsSegmentGroup.Item value=&quot;angular&quot; label=&quot;Angular&quot; /&gt;
     &lt;/DsSegmentGroup.Root&gt;
 );</code></pre>
             </div>
