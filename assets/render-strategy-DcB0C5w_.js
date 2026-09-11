@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{d as t,f as n,m as r,p as i}from"./runtime-CQv8F3XH.js";var a,o,s,c=e((()=>{r(),n(),[a,o]=i({name:`RenderStrategyContext`,hookName:`useRenderStrategyContext`,providerName:`<RenderStrategyPropsProvider />`}),s=e=>t()(e,[`lazyMount`,`unmountOnExit`,`hideMode`])}));export{o as i,c as n,s as r,a as t};
