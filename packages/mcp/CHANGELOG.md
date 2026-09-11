@@ -1,5 +1,12 @@
 # @drivenets/design-system-mcp
 
+## 0.1.6
+
+### Patch Changes
+
+- 225f1c7: Update dependencies
+- 2f6872c: Update dependencies
+
 ## 0.1.5
 
 ### Patch Changes
