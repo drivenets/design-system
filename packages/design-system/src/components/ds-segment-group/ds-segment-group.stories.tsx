@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsSegmentGroup } from './ds-segment-group';
+import { segmentGroupSizes } from './ds-segment-group.types';
 import { DsIcon } from '../ds-icon';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 
-const meta: Meta = {
+const meta: Meta<typeof DsSegmentGroup.Root> = {
 	title: 'Components/SegmentGroup',
 	component: DsSegmentGroup.Root,
 	parameters: {
@@ -13,22 +14,38 @@ const meta: Meta = {
 		docs: {
 			description: {
 				component:
-					'A single-select control that shows every option inline as connected segments. Use it for a small set of mutually exclusive choices, such as a view or range switcher.',
+					'A single-select control that shows every option inline as connected segments. Use it for 2–4 mutually exclusive choices that should stay visible at once (view toggle, unit switch) as a compact alternative to a radio group. Prefer Tabs for more than about five options or long labels, and Select for large or searchable lists. Icon-only items need an aria-label.',
 			},
 		},
+	},
+	argTypes: {
+		size: {
+			control: 'select',
+			options: segmentGroupSizes,
+		},
+		disabled: {
+			control: 'boolean',
+		},
+		defaultValue: { table: { disable: true } },
+		name: { table: { disable: true } },
+		value: { table: { disable: true } },
+		onValueChange: { table: { disable: true } },
+		children: { table: { disable: true } },
+		className: { table: { disable: true } },
+		style: { table: { disable: true } },
 	},
 };
 
 export default meta;
-type Story = StoryObj<typeof DsSegmentGroup>;
+type Story = StoryObj<typeof DsSegmentGroup.Root>;
 
 /**
  * A basic segment group with text labels. Compose `Root` with `Item` children
  * and seed the initial choice with `defaultValue` for uncontrolled usage.
  */
 export const Default: Story = {
-	render: () => (
-		<DsSegmentGroup.Root defaultValue="react">
+	render: (args) => (
+		<DsSegmentGroup.Root {...args} defaultValue="react">
 			<DsSegmentGroup.Item value="react" label="React" />
 			<DsSegmentGroup.Item value="vue" label="Vue" />
 			<DsSegmentGroup.Item value="angular" label="Angular" />
@@ -43,9 +60,9 @@ export const Default: Story = {
 export const Small: Story = {
 	render: () => (
 		<DsSegmentGroup.Root defaultValue="list" size="small">
-			<DsSegmentGroup.Item value="list" label="List" />
-			<DsSegmentGroup.Item value="grid" label="Grid" />
-			<DsSegmentGroup.Item value="table" label="Table" />
+			<DsSegmentGroup.Item value="list" label="List" size="small" />
+			<DsSegmentGroup.Item value="grid" label="Grid" size="small" />
+			<DsSegmentGroup.Item value="table" label="Table" size="small" />
 		</DsSegmentGroup.Root>
 	),
 };
@@ -56,18 +73,18 @@ export const Small: Story = {
  */
 export const WithIcons: Story = {
 	render: () => (
-		<DsSegmentGroup.Root defaultValue="day">
+		<DsSegmentGroup.Root defaultValue="day" size="small">
 			<DsSegmentGroup.Item value="day">
-				<DsIcon icon="wb_sunny" size="tiny" />
-				<DsSegmentGroup.ItemText>Day</DsSegmentGroup.ItemText>
+				<DsIcon icon="wb_sunny" size="tiny" color="main" />
+				<DsSegmentGroup.ItemText size="small">Day</DsSegmentGroup.ItemText>
 			</DsSegmentGroup.Item>
 			<DsSegmentGroup.Item value="week">
-				<DsIcon icon="date_range" size="tiny" />
-				<DsSegmentGroup.ItemText>Week</DsSegmentGroup.ItemText>
+				<DsIcon icon="date_range" size="tiny" color="main" />
+				<DsSegmentGroup.ItemText size="small">Week</DsSegmentGroup.ItemText>
 			</DsSegmentGroup.Item>
 			<DsSegmentGroup.Item value="month">
-				<DsIcon icon="calendar_month" size="tiny" />
-				<DsSegmentGroup.ItemText>Month</DsSegmentGroup.ItemText>
+				<DsIcon icon="calendar_month" size="tiny" color="main" />
+				<DsSegmentGroup.ItemText size="small">Month</DsSegmentGroup.ItemText>
 			</DsSegmentGroup.Item>
 		</DsSegmentGroup.Root>
 	),
@@ -79,18 +96,31 @@ export const WithIcons: Story = {
 export const IconOnly: Story = {
 	render: () => (
 		<DsSegmentGroup.Root defaultValue="list" size="small">
-			<DsSegmentGroup.Item value="list">
-				<DsIcon icon="view_list" size="tiny" />
+			<DsSegmentGroup.Item value="list" aria-label="List">
+				<DsIcon icon="view_list" size="tiny" color="main" />
 			</DsSegmentGroup.Item>
-			<DsSegmentGroup.Item value="grid">
-				<DsIcon icon="grid_view" size="tiny" />
+			<DsSegmentGroup.Item value="grid" aria-label="Grid">
+				<DsIcon icon="grid_view" size="tiny" color="main" />
 			</DsSegmentGroup.Item>
-			<DsSegmentGroup.Item value="kanban">
-				<DsIcon icon="view_kanban" size="tiny" />
+			<DsSegmentGroup.Item value="kanban" aria-label="Kanban">
+				<DsIcon icon="view_kanban" size="tiny" color="main" />
 			</DsSegmentGroup.Item>
-			<DsSegmentGroup.Item value="timeline">
-				<DsIcon icon="timeline" size="tiny" />
+			<DsSegmentGroup.Item value="timeline" aria-label="Timeline">
+				<DsIcon icon="timeline" size="tiny" color="main" />
 			</DsSegmentGroup.Item>
+		</DsSegmentGroup.Root>
+	),
+};
+
+/**
+ * Disable the entire group when no option can be changed.
+ */
+export const Disabled: Story = {
+	render: () => (
+		<DsSegmentGroup.Root defaultValue="react" disabled>
+			<DsSegmentGroup.Item value="react" label="React" />
+			<DsSegmentGroup.Item value="vue" label="Vue" />
+			<DsSegmentGroup.Item value="angular" label="Angular" />
 		</DsSegmentGroup.Root>
 	),
 };
