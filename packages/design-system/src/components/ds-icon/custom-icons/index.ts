@@ -49,6 +49,7 @@ import { SpecialWebhook } from './special-webhook';
 import { SpecialMapView } from './special-map-view';
 
 // Misc icons
+import { SpecialAdvFilters } from './special-adv-filters';
 import { SpecialHome } from './special-home';
 import { SpecialLeadingIcon } from './special-leading-icon';
 import { SpecialLego } from './special-lego';
@@ -120,6 +121,7 @@ export const customIcons = {
 	'special-map-view': SpecialMapView,
 
 	// Misc
+	'special-adv-filters': SpecialAdvFilters,
 	'special-home': SpecialHome,
 	'special-leading-icon': SpecialLeadingIcon,
 	'special-lego': SpecialLego,
