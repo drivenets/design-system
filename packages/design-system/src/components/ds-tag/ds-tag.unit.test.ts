@@ -1,11 +1,17 @@
 /* eslint-disable vitest/expect-expect */
 import type { ReactNode } from 'react';
 import { describe, expectTypeOf, it } from 'vitest';
-import type { DsTagProps, TagVariant } from './ds-tag.types';
+import type { DsTagProps, TagShape, TagVariant } from './ds-tag.types';
 
 describe('DsTagProps discriminated union', () => {
-	it('includes key-value in the variant union', () => {
-		expectTypeOf<TagVariant>().toEqualTypeOf<'default' | 'include' | 'exclude' | 'key-value'>();
+	it('includes key-value and the filter variants in the variant union', () => {
+		expectTypeOf<TagVariant>().toEqualTypeOf<
+			'default' | 'include' | 'exclude' | 'key-value' | 'operator-filter' | 'query-filter'
+		>();
+	});
+
+	it('exposes default and round shapes', () => {
+		expectTypeOf<TagShape>().toEqualTypeOf<'default' | 'round'>();
 	});
 
 	it('allows standard variants without a value', () => {
@@ -20,13 +26,26 @@ describe('DsTagProps discriminated union', () => {
 		expectTypeOf<{ label: string; variant: 'key-value' }>().not.toExtend<DsTagProps>();
 	});
 
+	it('requires a value for the operator-filter variant', () => {
+		expectTypeOf<{ label: string; variant: 'operator-filter'; value: string }>().toExtend<DsTagProps>();
+		expectTypeOf<{ label: string; variant: 'operator-filter' }>().not.toExtend<DsTagProps>();
+	});
+
+	it('requires a value for the query-filter variant', () => {
+		expectTypeOf<{ label: string; variant: 'query-filter'; value: string }>().toExtend<DsTagProps>();
+		expectTypeOf<{ label: string; variant: 'query-filter' }>().not.toExtend<DsTagProps>();
+	});
+
 	it('forbids a value on standard variants', () => {
 		expectTypeOf<{ label: string; value: string }>().not.toExtend<DsTagProps>();
 		expectTypeOf<{ label: string; variant: 'default'; value: string }>().not.toExtend<DsTagProps>();
 		expectTypeOf<{ label: string; variant: 'include'; value: string }>().not.toExtend<DsTagProps>();
+		expectTypeOf<{ label: string; variant: 'exclude'; value: string }>().not.toExtend<DsTagProps>();
 	});
 
-	it('types the key-value value as ReactNode', () => {
+	it('types every value-bearing variant as ReactNode', () => {
 		expectTypeOf<Extract<DsTagProps, { variant: 'key-value' }>['value']>().toEqualTypeOf<ReactNode>();
+		expectTypeOf<Extract<DsTagProps, { variant: 'operator-filter' }>['value']>().toEqualTypeOf<ReactNode>();
+		expectTypeOf<Extract<DsTagProps, { variant: 'query-filter' }>['value']>().toEqualTypeOf<ReactNode>();
 	});
 });

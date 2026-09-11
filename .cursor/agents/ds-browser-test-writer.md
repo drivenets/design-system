@@ -27,7 +27,7 @@ You own behavioral tests only — not Storybook stories, not component implement
 Run checkers from [AGENTS.md#code-quality-checkers](../../AGENTS.md#code-quality-checkers), e.g.:
 
 ```bash
-pnpm --filter @drivenets/design-system test packages/design-system/src/components/ds-{name}/__tests__/ds-{name}.browser.test.tsx --run
+pnpm --filter @drivenets/design-system test src/components/ds-{name}/__tests__/ds-{name}.browser.test.tsx --run
 pnpm eslint packages/design-system/src/components/ds-{name}/
 ```
 

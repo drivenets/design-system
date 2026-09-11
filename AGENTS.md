@@ -20,8 +20,11 @@ pnpm --filter @drivenets/vite-plugin-design-system typecheck
 
 ## Tests (vitest)
 
+Test paths are **package-relative** — `--filter` runs vitest with the package as its cwd, not the workspace root.
+
 ```bash
-pnpm --filter @drivenets/design-system test packages/design-system/tests/exports.test.ts --run
+pnpm --filter @drivenets/design-system test src/components/ds-button/ --run
+pnpm --filter @drivenets/design-system test tests/exports.unit.test.ts --run
 pnpm --filter @drivenets/eslint-plugin-design-system test src/__tests__/ --run
 pnpm --filter @drivenets/vite-plugin-design-system test --run -t "snapshot"
 ```
