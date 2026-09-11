@@ -457,6 +457,7 @@ describe('DsTopBarNavigation', () => {
 					<DsTopBarNavigation.Actions>
 						<DsTopBarNavigation.UserMenu name="Jane Doe" open onOpenChange={onOpenChange}>
 							<DsDropdownMenu.Item value="profile">Profile</DsDropdownMenu.Item>
+							<DsDropdownMenu.Item value="logout">Log out</DsDropdownMenu.Item>
 						</DsTopBarNavigation.UserMenu>
 					</DsTopBarNavigation.Actions>
 				</DsTopBarNavigation>,
@@ -465,7 +466,8 @@ describe('DsTopBarNavigation', () => {
 			// Mounted open — no click needed.
 			await expect.element(page.getByRole('menuitem', { name: 'Profile' })).toBeVisible();
 
-			await page.getByRole('menuitem', { name: 'Profile' }).click();
+			// The avatar name tooltip sits over the first item; pick one below it.
+			await page.getByRole('menuitem', { name: 'Log out' }).click();
 
 			// The close is reported, not applied: `open` still says open, so the menu stays up
 			// until the caller flips it.

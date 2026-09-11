@@ -75,6 +75,7 @@ const Default = () => {
     return (
         <div className={styles.storyWrapper}>
             <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
             <DsDrawer open={isOpen} onOpenChange={setIsOpen}>
                 (<>
                     <DsDrawer.Header>
@@ -197,6 +198,7 @@ const WithTabs = () => {
     return (
         <div className={styles.storyWrapper}>
             <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
             <DsDrawer columns={8} open={isOpen} onOpenChange={setIsOpen}>
                 (<>
                     <DsDrawer.Header>
@@ -292,6 +294,7 @@ const WithBackdropAndScroll = () => {
     return (
         <div className={styles.storyWrapper}>
             <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
             <DsDrawer backdrop open={isOpen} onOpenChange={setIsOpen}>
                 (<>
                     <DsDrawer.Header>
@@ -376,6 +379,7 @@ const DockToStart = () => {
     return (
         <div className={styles.storyWrapper}>
             <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
             <DsDrawer position="start" open={isOpen} onOpenChange={setIsOpen}>
                 (<>
                     <DsDrawer.Header>
@@ -465,6 +469,7 @@ const WithGridContent = () => {
     return (
         <div className={styles.storyWrapper}>
             <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
             <DsDrawer columns={10} open={isOpen} onOpenChange={setIsOpen}>
                 (<>
                     <DsDrawer.Header>
@@ -690,7 +695,7 @@ const Responsive = function Render() {
 }
 
 ### MCP manifest
-const ToggleFullSize = () => {
+const ToggleFullSize = (args: DsDrawerProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isFullScreen, setIsFullScreen] = useState(false);
 
@@ -701,6 +706,7 @@ const ToggleFullSize = () => {
     return (
         <div className={styles.storyWrapper}>
             <DsButton onClick={() => setIsOpen(true)}>Open Drawer</DsButton>
+
             <DsDrawer
                 open={isOpen}
                 onOpenChange={setIsOpen}
@@ -778,6 +784,7 @@ const PreventOpenAutoFocus = () => {
                 value={query}
                 onValueChange={setQuery}
                 slots={{ startAdornment: <DsIcon icon="search" size="tiny" /> }} />
+
             <DsDrawer
                 onOpenAutoFocus={fn((event: Event) => event.preventDefault())}
                 open={query.length > 0}

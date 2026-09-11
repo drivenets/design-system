@@ -12,7 +12,7 @@ import { fullHeightDecorator } from './common/story-decorators';
 import { StatusItem } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
-	title: 'Components/Table/Filters',
+	title: 'Components/Table/Search',
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

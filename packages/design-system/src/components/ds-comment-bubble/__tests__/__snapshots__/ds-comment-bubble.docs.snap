@@ -284,6 +284,7 @@ const Default = () => <DsThreadItem
   content="This is my reply, so it appears aligned to the right."
   createdAt={new Date("2026-02-09T09:00:00.000Z")}
   id="msg-2"
+  isCommentAuthorMessage={false}
   onDelete={() => {}}
   onEdit={() => {}}
   onMarkUnread={() => {}}

@@ -903,6 +903,7 @@ const PersistedWidths = () => {
                                             widths remounts from the default layout.
                                         </DsTypography>
             </DsStack>
+
             <DsStack direction="row">
                 <DsButtonV3
                     variant="secondary"
@@ -913,6 +914,7 @@ const PersistedWidths = () => {
                     }}>Reset stored widths
                                         </DsButtonV3>
             </DsStack>
+
             <DsTable
                 data={defaultData}
                 columns={columns}

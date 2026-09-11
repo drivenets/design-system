@@ -4,6 +4,9 @@
 
 ### Show code
 <DsBotButton
+  disabled={false}
+  loading={false}
+  selected={false}
 />
 
 ### MCP manifest

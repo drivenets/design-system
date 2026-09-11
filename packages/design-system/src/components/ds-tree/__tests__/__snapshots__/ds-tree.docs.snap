@@ -119,9 +119,11 @@ const Controlled = () => {
             <DsStack direction="column" gap={4}>
                 <DsTypography variant="body-sm-md">Selected: {selectedValue.length > 0 ? selectedValue.join(', ') : 'none'}
                 </DsTypography>
+
                 <DsTypography variant="body-sm-md">Expanded: {expandedValue.length > 0 ? expandedValue.join(', ') : 'none'}
                 </DsTypography>
             </DsStack>
+
             <DsTree.Root
                 size="medium"
                 collection={collection}
@@ -193,6 +195,7 @@ const ControlledFocus = () => {
     return (
         <DsStack direction="column" gap={12}>
             <DsTypography variant="body-sm-md">Focused: {focusedValue ?? 'none'}</DsTypography>
+
             <DsTree.Root
                 size="medium"
                 collection={collection}
@@ -254,7 +257,7 @@ const collection = createDsTreeCollection([
 </DsTree.Root>
 
 ### MCP manifest
-const CheckboxWithIcons = () => {
+const CheckboxWithIcons = args => {
     const collection = createDsTreeCollection(mapLayersNodes);
 
     return (
@@ -319,7 +322,7 @@ const collection = createDsTreeCollection([
 </DsTree.Root>
 
 ### MCP manifest
-const WithStatusIcons = () => {
+const WithStatusIcons = args => {
     const collection = createDsTreeCollection(workflowNodes);
     const onNavigate = fn();
 
