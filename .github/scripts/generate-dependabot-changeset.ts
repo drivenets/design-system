@@ -2,8 +2,8 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import * as oxfmt from 'oxfmt';
 import * as git from '@changesets/git';
-import getChangesets from '@changesets/read';
-import writeChangeset from '@changesets/write';
+import { readChangesets } from '@changesets/read';
+import { writeChangeset } from '@changesets/write';
 import { type Changeset } from '@changesets/types';
 import { shouldSkipPackage } from '@changesets/should-skip-package';
 import oxfmtConfig from '../../.oxfmtrc.json' with { type: 'json' };
@@ -47,7 +47,7 @@ await formatChangeset(changesetId);
 console.log('Added new changeset');
 
 async function getExistingChangeset() {
-	return (await getChangesets(ROOT_DIR, BASE_BRANCH)).find(
+	return (await readChangesets(ROOT_DIR, BASE_BRANCH)).find(
 		(changeset) => changeset.summary === newChangeset.summary,
 	);
 }
