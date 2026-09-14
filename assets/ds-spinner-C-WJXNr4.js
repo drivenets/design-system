@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DaJ6WEGw.js";import{i as t,t as n}from"./ds-spinner.types-Cl0w5rwi.js";var r=e((()=>{t(),n()}));export{r as t};
