@@ -12,7 +12,7 @@ describe('DsToggle', () => {
 
 		await page.render(<DsToggle label={label} labelInfo={labelInfo} onValueChange={onValueChange} />);
 
-		const toggle = page.getByRole('checkbox', { name: label });
+		const toggle = page.getByRole('checkbox', { name: label, exact: false });
 
 		await expect.element(toggle).not.toBeChecked();
 		await expect.element(page.getByText(labelInfo)).toBeVisible();
@@ -31,7 +31,7 @@ describe('DsToggle', () => {
 
 		await page.render(<ControlledToggle />);
 
-		const toggle = page.getByRole('checkbox', { name: label });
+		const toggle = page.getByRole('checkbox', { name: label, exact: false });
 
 		await expect.element(toggle).toBeChecked();
 

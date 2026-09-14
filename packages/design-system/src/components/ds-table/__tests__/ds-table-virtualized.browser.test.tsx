@@ -30,6 +30,25 @@ describe('DsTable Virtualized', () => {
 		await expect.element(page.getByText(/no matching records found/i)).toBeVisible();
 	});
 
+	it('infers no-data empty state when data is empty and emptyState is omitted', async () => {
+		await page.render(<DsTable columns={columns} data={[]} virtualized />);
+
+		await expect.element(page.getByRole('status')).toHaveTextContent('No data to display.');
+	});
+
+	it('infers no-matches empty state when filters hide every row', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={largeData}
+				virtualized
+				columnFilters={[{ id: 'firstName', value: '__no-match__' }]}
+			/>,
+		);
+
+		await expect.element(page.getByRole('status')).toHaveTextContent('No matching records found.');
+	});
+
 	it('should persist selection through scroll', async () => {
 		await page.render(
 			<div style={{ height: '400px' }}>

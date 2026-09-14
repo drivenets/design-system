@@ -54,3 +54,6 @@ mktemp
 cachified
 loadingdone
 OKCAOKLU
+sbdocs
+vmax
+Gbps

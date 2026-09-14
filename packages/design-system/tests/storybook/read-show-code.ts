@@ -51,7 +51,9 @@ export async function readShowCodeSnippet(
 
 	await showCodeButton.click();
 
-	const source = section.locator('pre');
+	// Story descriptions can contain fenced code blocks, which render their own `pre` inside the
+	// same section — scope the lookup to the story preview so only the Show code panel matches.
+	const source = section.locator('.sbdocs-preview pre').first();
 	await source.waitFor({ state: 'visible', timeout: 10_000 });
 
 	// The syntax-highlighted source renders after the panel becomes visible, so wait for the

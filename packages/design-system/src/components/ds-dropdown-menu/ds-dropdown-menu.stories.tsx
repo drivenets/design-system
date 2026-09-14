@@ -6,6 +6,7 @@ import { DsIcon } from '../ds-icon';
 import { DsTextInput } from '../ds-text-input';
 import { DsCheckbox } from '../ds-checkbox';
 import { DsTypography } from '../ds-typography';
+import { DsStack } from '../ds-stack';
 import { DsButton } from '../ds-button';
 import { DsRadioGroup } from '../ds-radio-group';
 import { DsUserCard } from '../ds-user-card';
@@ -34,10 +35,10 @@ export const Default: Story = {
 		},
 	},
 	render: () => {
-		const handleEdit = () => console.log('Edit clicked');
-		const handleDuplicate = () => console.log('Duplicate clicked');
-		const handleShare = () => console.log('Share clicked');
-		const handleDelete = () => console.log('Delete clicked');
+		const handleEdit = fn();
+		const handleDuplicate = fn();
+		const handleShare = fn();
+		const handleDelete = fn();
 
 		return (
 			<DsDropdownMenu.Root>
@@ -81,6 +82,7 @@ export const SelectableList: Story = {
 				story:
 					'Dropdown with search functionality and selection tracking. Users can filter items and see which item is selected with a check indicator.',
 			},
+			source: { type: 'code' },
 		},
 	},
 	render: function Render() {
@@ -135,6 +137,7 @@ export const CheckboxList: Story = {
 				story:
 					'Dropdown with checkbox items in collapsible groups. Uses DsCheckbox component for each item. Includes search and action buttons.',
 			},
+			source: { type: 'code' },
 		},
 	},
 	render: function Render() {
@@ -176,12 +179,9 @@ export const CheckboxList: Story = {
 			setSelected(newSelected);
 		};
 
-		const handleApply = () => {
-			console.log('Applied selections:', Array.from(selected));
-		};
+		const handleApply = fn();
 
 		const handleCancel = () => {
-			console.log('Cancelled');
 			setOpen(false);
 			setSearch('');
 		};
@@ -212,7 +212,6 @@ export const CheckboxList: Story = {
 					</DsDropdownMenu.Header>
 					{filteredItems.map((item) => {
 						const isError = 'variant' in item && item.variant === 'error';
-						const errorStyle = isError ? { color: 'var(--font-error)' } : undefined;
 
 						return (
 							<DsDropdownMenu.Item key={item.id} value={item.id} variant={isError ? 'error' : undefined}>
@@ -225,14 +224,22 @@ export const CheckboxList: Story = {
 										onCheckedChange={() => toggleSelection(item.id)}
 									/>
 								)}
-								<div className="item-content">
-									<DsTypography className="item-label" variant="body-sm-reg" style={errorStyle}>
+								<DsStack direction="column" gap="var(--3xs)">
+									<DsTypography
+										className="item-label"
+										variant="body-sm-reg"
+										color={isError ? 'error' : undefined}
+									>
 										{item.label}
 									</DsTypography>
-									<DsTypography className="item-description" variant="body-xs-reg" style={errorStyle}>
+									<DsTypography
+										className="item-description"
+										variant="body-xs-reg"
+										color={isError ? 'error' : undefined}
+									>
 										{item.description}
 									</DsTypography>
-								</div>
+								</DsStack>
 							</DsDropdownMenu.Item>
 						);
 					})}
@@ -247,14 +254,14 @@ export const CheckboxList: Story = {
 											checked={selected.has(item.id)}
 											onCheckedChange={() => toggleSelection(item.id)}
 										/>
-										<div className="item-content">
+										<DsStack direction="column" gap="var(--3xs)">
 											<DsTypography className="item-label" variant="body-sm-reg">
 												{item.label}
 											</DsTypography>
 											<DsTypography className="item-description" variant="body-xs-reg">
 												{item.description}
 											</DsTypography>
-										</div>
+										</DsStack>
 									</DsDropdownMenu.Item>
 								))}
 							</DsDropdownMenu.ItemGroupContent>
@@ -286,6 +293,7 @@ export const CollapsibleGroupControlled: StoryObj<CollapsibleGroupControlledArgs
 				story:
 					'The collapsed state is controlled externally via props, and the onCollapsedChange callback is triggered when the user clicks the group label.',
 			},
+			source: { type: 'code' },
 		},
 	},
 	render: function Render(args) {
@@ -337,6 +345,7 @@ export const RadioList: Story = {
 				story:
 					'Dropdown with radio items using DsRadioGroup. Single selection with search and action buttons. Blue background for selected items.',
 			},
+			source: { type: 'code' },
 		},
 	},
 	render: function Render() {
@@ -355,17 +364,14 @@ export const RadioList: Story = {
 
 		const handleApply = () => {
 			setOpen(false);
-			console.log(`Applied: ${JSON.stringify(tempSelected)}`);
 		};
 
 		const handleCancel = () => {
-			console.log('Cancelled');
 			setOpen(false);
 			setSearch('');
 		};
 
 		const handleReset = () => {
-			console.log('Reset');
 			setTempSelected('');
 			setOpen(false);
 			setSearch('');
@@ -403,14 +409,14 @@ export const RadioList: Story = {
 								className={tempSelected === option.value ? 'radio-selected' : ''}
 							>
 								<DsRadioGroup.Item value={option.value} />
-								<div className="item-content">
+								<DsStack direction="column" gap="var(--3xs)">
 									<DsTypography className="item-label" variant="body-sm-reg">
 										{option.label}
 									</DsTypography>
 									<DsTypography className="item-description" variant="body-xs-reg">
 										{option.description}
 									</DsTypography>
-								</div>
+								</DsStack>
 							</DsDropdownMenu.Item>
 						))}
 					</DsRadioGroup.Root>
@@ -441,9 +447,9 @@ export const UserMenu: Story = {
 		},
 	},
 	render: () => {
-		const handleProfile = () => console.log('Profile clicked');
-		const handleSettings = () => console.log('Settings clicked');
-		const handleLogout = () => console.log('Log out clicked');
+		const handleProfile = fn();
+		const handleSettings = fn();
+		const handleLogout = fn();
 
 		return (
 			<DsDropdownMenu.Root positioning={{ placement: 'bottom-end' }}>
@@ -484,12 +490,12 @@ export const ActionMenu: Story = {
 		},
 	},
 	render: () => {
-		const handleEdit = () => console.log('Edit clicked');
-		const handleDuplicate = () => console.log('Duplicate clicked');
-		const handleShareEmail = () => console.log('Share via Email clicked');
-		const handleShareLink = () => console.log('Copy Link clicked');
-		const handleShareSocial = () => console.log('Share to Social Media clicked');
-		const handleDelete = () => console.log('Delete item clicked');
+		const handleEdit = fn();
+		const handleDuplicate = fn();
+		const handleShareEmail = fn();
+		const handleShareLink = fn();
+		const handleShareSocial = fn();
+		const handleDelete = fn();
 
 		return (
 			<DsDropdownMenu.Root>
@@ -549,11 +555,11 @@ export const NestedSubmenus: Story = {
 		},
 	},
 	render: () => {
-		const handleBlank = () => console.log('Blank document clicked');
-		const handleResume = () => console.log('Resume template clicked');
-		const handleInvoice = () => console.log('Invoice template clicked');
-		const handleLetter = () => console.log('Letter template clicked');
-		const handleOpen = () => console.log('Open clicked');
+		const handleBlank = fn();
+		const handleResume = fn();
+		const handleInvoice = fn();
+		const handleLetter = fn();
+		const handleOpen = fn();
 
 		return (
 			<DsDropdownMenu.Root>

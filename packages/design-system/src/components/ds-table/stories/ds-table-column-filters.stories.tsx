@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import type { ColumnDef } from '@tanstack/react-table';
 import { useState } from 'react';
 import DsTable from '../ds-table';
+import { DsStack } from '../../ds-stack';
 import { DsTagFilter } from '../../ds-tag-filter';
 import {
 	type CheckboxFilterItem,
@@ -10,7 +11,6 @@ import {
 	useTableFilters,
 } from '../filters';
 import { fullHeightDecorator } from './common/story-decorators';
-import styles from './ds-table.stories.module.scss';
 
 type DeviceRow = {
 	id: string;
@@ -308,7 +308,7 @@ draft and closes it (same as pressing Escape).
 		});
 
 		return (
-			<div className={styles.tableFilterContainer}>
+			<DsStack direction="column" gap={16} flex="1">
 				{filterChips.length > 0 && (
 					<DsTagFilter
 						items={filterChips}
@@ -325,7 +325,7 @@ draft and closes it (same as pressing Escape).
 					bordered
 					fullWidth
 				/>
-			</div>
+			</DsStack>
 		);
 	},
 };
@@ -357,7 +357,7 @@ external state, leaving other filters untouched.
 		});
 
 		return (
-			<div className={styles.tableFilterContainer}>
+			<DsStack direction="column" gap={16} flex="1">
 				{filterChips.length > 0 && (
 					<DsTagFilter
 						items={filterChips}
@@ -374,7 +374,7 @@ external state, leaving other filters untouched.
 					bordered
 					fullWidth
 				/>
-			</div>
+			</DsStack>
 		);
 	},
 };

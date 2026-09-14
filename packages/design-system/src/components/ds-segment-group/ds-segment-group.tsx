@@ -32,7 +32,15 @@ const Root: React.FC<DsSegmentGroupRootProps> = ({
 /**
  * Item component - renders a single segment button
  */
-const Item: React.FC<DsSegmentGroupItemProps> = ({ value, label, className, style, children, ...props }) => {
+const Item: React.FC<DsSegmentGroupItemProps> = ({
+	value,
+	label,
+	className,
+	style,
+	children,
+	size = 'default',
+	...props
+}) => {
 	return (
 		<SegmentGroup.Item
 			value={value}
@@ -40,7 +48,7 @@ const Item: React.FC<DsSegmentGroupItemProps> = ({ value, label, className, styl
 			style={style}
 			{...props}
 		>
-			{label ? <ItemText>{label}</ItemText> : children}
+			{label ? <ItemText size={size}>{label}</ItemText> : children}
 			<SegmentGroup.ItemControl />
 			<SegmentGroup.ItemHiddenInput />
 		</SegmentGroup.Item>
@@ -50,9 +58,14 @@ const Item: React.FC<DsSegmentGroupItemProps> = ({ value, label, className, styl
 /**
  * ItemText component - renders text content within an item
  */
-const ItemText: React.FC<DsSegmentGroupItemTextProps> = ({ className, children, ...props }) => (
+const ItemText: React.FC<DsSegmentGroupItemTextProps> = ({
+	className,
+	children,
+	size = 'default',
+	...props
+}) => (
 	<SegmentGroup.ItemText className={classNames(styles.segmentItemText, className)} {...props} asChild>
-		<DsTypography variant="body-sm-reg">{children}</DsTypography>
+		<DsTypography variant={size === 'small' ? 'body-xs-md' : 'body-sm-md'}>{children}</DsTypography>
 	</SegmentGroup.ItemText>
 );
 
@@ -61,7 +74,6 @@ const ItemText: React.FC<DsSegmentGroupItemTextProps> = ({ className, children, 
  *
  * @example
  * <DsSegmentGroup.Root value={value} onValueChange={setValue} size="default">
- *   <DsSegmentGroup.Indicator />
  *   <DsSegmentGroup.Item value="option1" label="Option 1" />
  *   <DsSegmentGroup.Item value="option2">
  *     <DsIcon icon="settings" />

@@ -1,0 +1,215 @@
+# DsTable docs snippets
+
+## Search — Global Input
+
+### Show code
+{
+  name: 'Search — Global Input',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [globalFilter, setGlobalFilter] = useState('');
+    const filteredData = useMemo(() => {
+      if (!globalFilter) {
+        return args.data;
+      }
+      const lowercasedFilter = globalFilter.toLowerCase();
+      return args.data.filter(row => {
+        return Object.values(row).some(value => String(value).toLowerCase().includes(lowercasedFilter));
+      });
+    }, [globalFilter, args.data]);
+    return <DsStack direction="column" gap={16}>
+                <DsStack width="300px">
+                    <DsTextInput value={globalFilter} onValueChange={setGlobalFilter} placeholder="Search all columns..." slots={{
+          startAdornment: <DsIcon icon="search" size="small" />
+        }} />
+                </DsStack>
+                <DsTable {...args} data={filteredData} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const AdvancedSearch = args => {
+    const [globalFilter, setGlobalFilter] = useState('');
+
+    const filteredData = useMemo(() => {
+        if (!globalFilter) {
+            return args.data;
+        }
+
+        const lowercasedFilter = globalFilter.toLowerCase();
+
+        return args.data.filter((row) => {
+            return Object.values(row).some((value) => String(value).toLowerCase().includes(lowercasedFilter));
+        });
+    }, [globalFilter, args.data]);
+
+    return (
+        <DsStack direction="column" gap={16}>
+            <DsStack width="300px">
+                <DsTextInput
+                    value={globalFilter}
+                    onValueChange={setGlobalFilter}
+                    placeholder="Search all columns..."
+                    slots={{ startAdornment: <DsIcon icon="search" size="small" /> }} />
+            </DsStack>
+            <DsTable
+                columns={columns}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                onRowClick={fn()}
+                data={filteredData} />
+        </DsStack>
+    );
+};
+
+## Tabs — Status Filter
+
+### Show code
+{
+  name: 'Tabs — Status Filter',
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [activeTab, setActiveTab] = useState<Status | 'all'>('all');
+    const handleTabClick = (tabValue: string) => {
+      const typedValue = tabValue as Status | 'all';
+      setActiveTab(typedValue);
+      if (typedValue === 'all') {
+        setColumnFilters([]);
+      } else {
+        setColumnFilters([{
+          id: 'status',
+          value: typedValue
+        }]);
+      }
+    };
+    const getStatusIcon = (status: Status): IconType => {
+      switch (status) {
+        case 'relationship':
+          return 'favorite';
+        case 'complicated':
+          return 'psychology';
+        default:
+          return 'person';
+      }
+    };
+    const statusColumnDef: ColumnDef<Person> = {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: info => {
+        const status = info.getValue() as Status;
+        const icon = getStatusIcon(status);
+        return <StatusItem icon={icon} label={status} />;
+      }
+    };
+    const tableColumns = args.columns.map(col => (col as {
+      accessorKey: string;
+    }).accessorKey === 'status' ? statusColumnDef : col);
+    return <DsStack direction="column" gap={16} flex="1">
+                <DsSmartTabs activeTab={activeTab} onTabClick={handleTabClick}>
+                    <DsSmartTabs.Tab label="All People" value="all" icon="groups" color="dark-blue" content={defaultData.length} />
+                    <DsSmartTabs.Tab label="In a Relationship" value={'relationship'} icon="favorite" color="green" content={defaultData.filter(row => row.status === 'relationship').length} />
+                    <DsSmartTabs.Tab label="It's Complicated" value={'complicated'} icon="psychology" color="red" content={defaultData.filter(row => row.status === 'complicated').length} />
+                    <DsSmartTabs.Tab label="Single" value={'single'} icon="person" color="gray" content={defaultData.filter(row => row.status === 'single').length} />
+                </DsSmartTabs>
+                <DsTable {...args} columns={tableColumns} columnFilters={columnFilters} onColumnFiltersChange={setColumnFilters} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const TabFilters = args => {
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [activeTab, setActiveTab] = useState<Status | 'all'>('all');
+
+    const handleTabClick = (tabValue: string) => {
+        const typedValue = tabValue as Status | 'all';
+        setActiveTab(typedValue);
+        if (typedValue === 'all') {
+            setColumnFilters([]);
+        } else {
+            setColumnFilters([{ id: 'status', value: typedValue }]);
+        }
+    };
+
+    const getStatusIcon = (status: Status): IconType => {
+        switch (status) {
+            case 'relationship':
+                return 'favorite';
+            case 'complicated':
+                return 'psychology';
+            default:
+                return 'person';
+        }
+    };
+
+    const statusColumnDef: ColumnDef<Person> = {
+        accessorKey: 'status',
+        header: 'Status',
+        cell: (info) => {
+            const status = info.getValue() as Status;
+            const icon = getStatusIcon(status);
+            return <StatusItem icon={icon} label={status} />;
+        },
+    };
+
+    const tableColumns = args.columns.map((col) =>
+        (col as { accessorKey: string }).accessorKey === 'status' ? statusColumnDef : col,
+    );
+
+    return (
+        <DsStack direction="column" gap={16} flex="1">
+            <DsSmartTabs activeTab={activeTab} onTabClick={handleTabClick}>
+                <DsSmartTabs.Tab
+                    label="All People"
+                    value="all"
+                    icon="groups"
+                    color="dark-blue"
+                    content={defaultData.length} />
+                <DsSmartTabs.Tab
+                    label="In a Relationship"
+                    value={'relationship'}
+                    icon="favorite"
+                    color="green"
+                    content={defaultData.filter((row) => row.status === 'relationship').length} />
+                <DsSmartTabs.Tab
+                    label="It's Complicated"
+                    value={'complicated'}
+                    icon="psychology"
+                    color="red"
+                    content={defaultData.filter((row) => row.status === 'complicated').length} />
+                <DsSmartTabs.Tab
+                    label="Single"
+                    value={'single'}
+                    icon="person"
+                    color="gray"
+                    content={defaultData.filter((row) => row.status === 'single').length} />
+            </DsSmartTabs>
+            <DsTable
+                data={defaultData}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                onRowClick={fn()}
+                columns={tableColumns}
+                columnFilters={columnFilters}
+                onColumnFiltersChange={setColumnFilters} />
+        </DsStack>
+    );
+};

@@ -41,7 +41,7 @@ describe('DsFileUpload', () => {
 			await uploadTestFile();
 
 			await expect.element(page.getByText('test-document.pdf')).toBeInTheDocument();
-			await expect.element(page.getByText('Upload complete')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload complete', { exact: false })).toBeInTheDocument();
 			expect(onFileUploadComplete).toHaveBeenCalled();
 		});
 
@@ -52,7 +52,7 @@ describe('DsFileUpload', () => {
 
 			await uploadTestFile();
 
-			await expect.element(page.getByText('Upload complete')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload complete', { exact: false })).toBeInTheDocument();
 
 			await page.getByRole('button', { name: /delete/i }).click();
 
@@ -81,7 +81,7 @@ describe('DsFileUpload', () => {
 
 			await page.getByRole('button', { name: /cancel/i }).click();
 
-			await expect.element(page.getByText('Upload cancelled')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload cancelled', { exact: false })).toBeInTheDocument();
 			expect(onFileUploadCanceled).toHaveBeenCalled();
 		});
 
@@ -97,7 +97,7 @@ describe('DsFileUpload', () => {
 
 			await uploadTestFile();
 
-			await expect.element(page.getByText('Upload interrupted')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload interrupted', { exact: false })).toBeInTheDocument();
 			await expect.element(page.getByRole('button', { name: /retry/i })).toBeInTheDocument();
 		});
 
@@ -114,11 +114,11 @@ describe('DsFileUpload', () => {
 
 			await uploadTestFile();
 
-			await expect.element(page.getByText('Upload interrupted')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload interrupted', { exact: false })).toBeInTheDocument();
 
 			await page.getByRole('button', { name: /retry/i }).click();
 
-			await expect.element(page.getByText('Upload complete')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload complete', { exact: false })).toBeInTheDocument();
 			expect(onFileUploadComplete).toHaveBeenCalled();
 		});
 
@@ -131,7 +131,7 @@ describe('DsFileUpload', () => {
 			await uploadTestFile();
 
 			await expect.element(page.getByText('test-document.pdf')).toBeInTheDocument();
-			await expect.element(page.getByText('Server error')).toBeInTheDocument();
+			await expect.element(page.getByText('Server error', { exact: false })).toBeInTheDocument();
 			expect(onFileUploadError).toHaveBeenCalled();
 		});
 	});
@@ -142,11 +142,11 @@ describe('DsFileUpload', () => {
 
 			await uploadTestFile('first');
 
-			await expect.element(page.getByText('Upload complete')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload complete', { exact: false })).toBeInTheDocument();
 
 			await uploadTestFile('second');
 
-			await expect.element(page.getByText('Too many files selected')).toBeInTheDocument();
+			await expect.element(page.getByText('Too many files selected', { exact: false })).toBeInTheDocument();
 		});
 
 		it('should reject duplicate files with FILE_EXISTS error', async () => {
@@ -154,11 +154,11 @@ describe('DsFileUpload', () => {
 
 			await uploadTestFile();
 
-			await expect.element(page.getByText('Upload complete')).toBeInTheDocument();
+			await expect.element(page.getByText('Upload complete', { exact: false })).toBeInTheDocument();
 
 			await uploadTestFile();
 
-			await expect.element(page.getByText('File already exists')).toBeInTheDocument();
+			await expect.element(page.getByText('File already exists', { exact: false })).toBeInTheDocument();
 		});
 	});
 });

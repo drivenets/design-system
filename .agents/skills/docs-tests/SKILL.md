@@ -37,6 +37,8 @@ ds-{name}/__tests__/__snapshots__/
 
 Coverage is centralized in the global test runner; each component gets one aggregated golden snapshot file colocated in its `__tests__/__snapshots__/` folder.
 
+**Split folders** (listed in `SPLIT_PER_MANIFEST`): a folder whose stories fan out into many story titles (e.g. `ds-table` → `Components/Table`, `Components/Table/Selection`, …) would produce one unnavigable multi-thousand-line golden. Those write **one golden per manifest component**, named from the title-derived id (`components-table-selection` → `ds-table-selection.docs.snap`), colocated in the same `__tests__/__snapshots__/` folder.
+
 ## Opt in a component
 
 Add one kebab folder suffix (the `ds-` prefix is implied) to the `COMPONENTS` allowlist in [`docs-snippets.docs.test.ts`](../../../packages/design-system/tests/storybook/docs-snippets.docs.test.ts):

@@ -6,7 +6,6 @@ import { DsStack } from '../../ds-stack';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState } from './components';
 import styles from './ds-table.stories.module.scss';
 
 const horizontalScrollColumns: ColumnDef<Person>[] = [
@@ -45,7 +44,6 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <TableEmptyState />,
 		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],

@@ -1,20 +1,30 @@
+$transition-duration: 0.2s;
+$focus-border-width: 2px;
+
+@mixin item-size($height, $inline-padding) {
+	height: $height;
+	padding: 0 $inline-padding;
+
+	&:not(:has(.segmentItemText)) {
+		width: $height;
+		padding: 0;
+	}
+}
+
 .segmentGroupRoot {
 	display: inline-flex;
 	align-items: center;
 	position: relative;
+	box-sizing: border-box;
+	padding: var(--3xs);
+	gap: var(--2xs);
 	background: var(--background-secondary);
 	border: 1px solid var(--border-contrast);
-	border-radius: 4px;
-	gap: var(--2xs);
-	height: 36px;
-	padding: var(--3xs);
+	border-radius: var(--3xs);
 
 	&.small {
-		height: 28px;
-		padding: var(--4xs);
-
 		.segmentItem {
-			padding: var(--4xs) var(--xs);
+			@include item-size(var(--lg), var(--xs));
 		}
 	}
 }
@@ -24,49 +34,68 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: var(--3xs) var(--sm);
-	gap: var(--2xs);
-	flex: 1;
+	box-sizing: border-box;
 	z-index: 1;
+	gap: var(--3xs);
+	@include item-size(var(--xl), var(--sm));
+	border: 1px solid transparent;
+	border-radius: var(--3xs);
+	color: var(--font-main);
 	cursor: pointer;
-	border-radius: 4px;
-
-	&[data-state='checked'] {
-		.segmentItemText {
-			color: var(--font-main);
-			font-weight: var(--font-weight-medium);
-		}
-	}
+	transition:
+		background-color $transition-duration,
+		border-color $transition-duration,
+		color $transition-duration,
+		border-width $transition-duration;
 
 	&[data-state='unchecked'] {
 		background: transparent;
 
-		.segmentItemText {
-			color: var(--background-action);
-		}
-
 		&:hover:not([data-disabled]) {
-			background: var(--background-action-secondary);
+			background: var(--background);
 		}
 
 		&:active:not([data-disabled]) {
-			background: var(--background);
-			border-color: var(--border-contrast);
+			background: var(--background-tertiary);
+		}
+
+		&[data-focus-visible]:not([data-disabled]) {
+			background: var(--background-action-hover-weak);
+			border-width: $focus-border-width;
+			border-color: var(--border-action-secondary);
+		}
+	}
+
+	&[data-state='checked'] {
+		&:hover:not([data-disabled]) {
+			background: var(--background-action-hover-weak);
+			border-color: var(--border);
+		}
+
+		&:active:not([data-disabled]) {
+			background: var(--background-secondary-selected-weak);
+			border-color: var(--border-action-secondary);
+		}
+
+		&[data-focus-visible]:not([data-disabled]) {
+			background: var(--background-secondary-selected-weak);
+			border-width: $focus-border-width;
+			border-color: var(--border-action-secondary);
 		}
 	}
 
 	&[data-disabled] {
 		cursor: not-allowed;
-		background: var(--background-secondary);
+		color: var(--font-disabled);
 
-		.segmentItemText {
-			color: var(--font-disabled);
+		&[data-state='unchecked'] {
+			background: transparent;
 		}
-	}
 
-	&:focus-visible {
-		outline: 2px solid var(--border-action-secondary);
-		outline-offset: 2px;
+		&[data-state='checked'] {
+			background: var(--background);
+			border-color: var(--border-disabled);
+		}
 	}
 }
 
@@ -81,19 +110,18 @@
 	align-items: center;
 	justify-content: center;
 	white-space: nowrap;
-	transition: color 150ms ease-in-out;
+	transition: color $transition-duration;
 }
 
 .segmentIndicator {
 	position: absolute;
-	background: var(--background);
-	border: 1px solid var(--border-contrast);
-	border-radius: 4px;
-	box-shadow: 0 1.25px 4px 0 rgba(0, 0, 0, 0.25);
 	z-index: 0;
-	pointer-events: none;
 	width: var(--width);
 	height: var(--height);
 	left: var(--left);
 	top: var(--top);
+	background: var(--background);
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+	pointer-events: none;
 }

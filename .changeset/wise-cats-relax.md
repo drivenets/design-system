@@ -2,4 +2,4 @@
 '@drivenets/design-system': patch
 ---
 
-Add `DsIllustration` component
+Update dependencies

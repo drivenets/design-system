@@ -1,5 +1,7 @@
 @use '../../styles/typography';
 
+$warning-dot-size: 8px;
+
 .tag {
 	--transition-duration: 200ms;
 
@@ -18,6 +20,10 @@
 		opacity, visibility;
 	transition-timing-function: ease-out;
 	transition-duration: var(--transition-duration);
+
+	&.round {
+		border-radius: 9999px;
+	}
 
 	&.clickable {
 		cursor: pointer;
@@ -40,7 +46,8 @@
 			outline-color: var(--border-action-primary);
 		}
 
-		.deleteButton {
+		.deleteButton,
+		.expandButton {
 			outline-color: var(--border-action-primary);
 		}
 	}
@@ -65,12 +72,19 @@
 
 		.label,
 		.key,
-		.value {
+		.value,
+		.queryLabel,
+		.queryValue {
 			color: var(--font-disabled);
 		}
 
-		.variantIcon {
+		.variantIcon,
+		.querySeparator {
 			color: var(--font-disabled);
+		}
+
+		.warningDot {
+			background: var(--icon-disabled);
 		}
 	}
 
@@ -93,6 +107,22 @@
 		}
 	}
 
+	.expandButton {
+		flex-shrink: 0;
+		display: flex;
+		margin-left: var(--3xs);
+		outline-color: var(--border-action-secondary);
+		user-select: none;
+		transition-property: background, color, outline-color;
+		transition-timing-function: ease-out;
+		transition-duration: var(--transition-duration);
+		color: var(--icon-action);
+
+		&:hover {
+			background: var(--background-action-secondary-hover);
+		}
+	}
+
 	&:hover:not(.disabled) .deleteButton,
 	&:focus-within:not(.disabled) .deleteButton,
 	&.selected:not(.disabled) .deleteButton {
@@ -107,23 +137,57 @@
 	@include typography.ellipsis;
 }
 
-.keyValue {
+.segments {
 	min-width: 0;
 }
 
 .key {
 	flex-shrink: 0;
 	color: var(--font-main);
+}
 
-	&::after {
-		content: ':';
-	}
+// `key-value` renders its colon as generated content rather than text so the tag's text
+// content stays the bare label — `getByText('Category')` keeps working for consumers.
+// Scoped to its own class because `operator-filter` shares `.key` and takes no colon.
+.keyColon::after {
+	content: ':';
 }
 
 .value {
 	@include typography.ellipsis;
 
 	color: var(--font-secondary);
+}
+
+.operatorSlot {
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+}
+
+.queryLabel {
+	flex-shrink: 0;
+	color: var(--font-main);
+}
+
+.querySeparator {
+	flex-shrink: 0;
+	color: var(--icon-tertiary);
+}
+
+.queryValue {
+	@include typography.ellipsis;
+
+	color: var(--font-main);
+}
+
+.warningDot {
+	flex-shrink: 0;
+	width: $warning-dot-size;
+	height: $warning-dot-size;
+	margin-left: var(--3xs);
+	border-radius: 50%;
+	background: var(--icon-warning-light);
 }
 
 .icon {

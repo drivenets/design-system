@@ -32,11 +32,11 @@ describe('DsTable', () => {
 
 		await firstNameHeader.click();
 
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Daniel');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Daniel');
 
 		await firstNameHeader.click();
 
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Tanner');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Tanner');
 	});
 
 	it('should show empty state when no data is provided', async () => {
@@ -45,5 +45,32 @@ describe('DsTable', () => {
 		);
 
 		await expect.element(page.getByText('No matching records found')).toBeVisible();
+	});
+
+	it('infers no-data empty state when data is empty and emptyState is omitted', async () => {
+		await page.render(<DsTable columns={columns} data={[]} />);
+
+		await expect.element(page.getByRole('status')).toHaveTextContent('No data to display.');
+		await expect.element(page.getByText('First Name')).toBeVisible();
+	});
+
+	it('infers no-matches empty state when filters hide every row', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				columnFilters={[{ id: 'firstName', value: '__no-match__' }]}
+			/>,
+		);
+
+		await expect.element(page.getByRole('status')).toHaveTextContent('No matching records found.');
+		await expect.element(page.getByText('Tanner')).not.toBeInTheDocument();
+	});
+
+	it('does not show empty state while loading with empty data', async () => {
+		await page.render(<DsTable columns={columns} data={[]} loading />);
+
+		await expect.element(page.getByRole('status')).not.toBeInTheDocument();
+		await expect.element(page.getByText('First Name')).toBeVisible();
 	});
 });

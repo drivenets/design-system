@@ -1,13 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
+import { fn } from 'storybook/test';
 import type { VisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsCheckbox } from '../../ds-checkbox';
+import { DsStack } from '../../ds-stack';
 import DsTable from '../ds-table';
 import styles from './ds-table.stories.module.scss';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { TableEmptyState, ProgressInfographic } from './components';
+import { ProgressInfographic } from './components';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Columns',
@@ -22,8 +24,7 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 		bordered: true,
 		fullWidth: true,
 		expandable: false,
-		emptyState: <TableEmptyState />,
-		onRowClick: (row) => console.log('Row clicked:', row),
+		onRowClick: fn(),
 	},
 	decorators: [fullHeightDecorator],
 };
@@ -60,7 +61,15 @@ export const WithProgressInfographic: Story = {
 	},
 };
 
+/**
+ * Show or hide columns dynamically via the controlled `columnVisibility` /
+ * `onColumnVisibilityChange` props — useful for customizable table views or
+ * responsive layouts. Toggle a checkbox to add or remove the matching column.
+ */
 export const ColumnHiding: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
 	render: function Render(args) {
 		const columnsToToggle = [
 			{ id: 'age', label: 'Age' },
@@ -83,16 +92,8 @@ export const ColumnHiding: Story = {
 		};
 
 		return (
-			<div>
-				<div className={styles.programmaticSelectionDemo}>
-					<h4 className={styles.programmaticSelectionDemo__title}>Column Hiding Demo</h4>
-					<p className={styles.programmaticSelectionDemo__description}>
-						Use the checkboxes below to show or hide specific columns dynamically. This is useful for
-						customizable table views or responsive layouts.
-					</p>
-				</div>
-
-				<div className={styles.programmaticSelectionControls}>
+			<DsStack direction="column" gap={16}>
+				<DsStack direction="row" gap={16} flexWrap="wrap">
 					{columnsToToggle.map((column) => (
 						<DsCheckbox
 							key={column.id}
@@ -101,14 +102,14 @@ export const ColumnHiding: Story = {
 							onCheckedChange={() => toggleColumn(column.id)}
 						/>
 					))}
-				</div>
+				</DsStack>
 
 				<DsTable
 					{...args}
 					columnVisibility={columnVisibility}
 					onColumnVisibilityChange={setColumnVisibility}
 				/>
-			</div>
+			</DsStack>
 		);
 	},
 };

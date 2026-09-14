@@ -36,7 +36,13 @@ const Default = () => <DsButtonV3
 </DsButtonV3>
 
 ### MCP manifest
-const Loading = () => <DsButtonV3 onClick={fn()} variant="primary" loading />;
+const Loading = () => <DsButtonV3
+    onClick={fn()}
+    color="default"
+    size="medium"
+    icon="check_circle"
+    variant="primary"
+    loading>Button</DsButtonV3>;
 
 ## Disabled
 
@@ -53,7 +59,13 @@ const Loading = () => <DsButtonV3 onClick={fn()} variant="primary" loading />;
 </DsButtonV3>
 
 ### MCP manifest
-const Disabled = () => <DsButtonV3 onClick={fn()} variant="primary" disabled />;
+const Disabled = () => <DsButtonV3
+    onClick={fn()}
+    color="default"
+    size="medium"
+    icon="check_circle"
+    variant="primary"
+    disabled>Button</DsButtonV3>;
 
 ## Icon Only
 
@@ -91,7 +103,13 @@ const IconOnly = () => <DsButtonV3
 </DsButtonV3>
 
 ### MCP manifest
-const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected />;
+const Selected = () => <DsButtonV3
+    onClick={fn()}
+    color="default"
+    size="medium"
+    icon="check_circle"
+    variant="secondary"
+    selected>Button</DsButtonV3>;
 
 ## High Emphasis
 
@@ -108,7 +126,13 @@ const Selected = () => <DsButtonV3 onClick={fn()} variant="secondary" selected /
 </DsButtonV3>
 
 ### MCP manifest
-const HighEmphasis = () => <DsButtonV3 onClick={fn()} variant="primary" highEmphasis />;
+const HighEmphasis = () => <DsButtonV3
+    onClick={fn()}
+    color="default"
+    size="medium"
+    icon="check_circle"
+    variant="primary"
+    highEmphasis>Button</DsButtonV3>;
 
 ## On Dark
 
@@ -124,7 +148,12 @@ const HighEmphasis = () => <DsButtonV3 onClick={fn()} variant="primary" highEmph
 </DsButtonV3>
 
 ### MCP manifest
-const OnDark = () => <DsButtonV3 onClick={fn()} color="light" variant="primary" />;
+const OnDark = () => <DsButtonV3
+    onClick={fn()}
+    color="light"
+    size="medium"
+    icon="check_circle"
+    variant="primary">Button</DsButtonV3>;
 
 ## Responsive Size
 

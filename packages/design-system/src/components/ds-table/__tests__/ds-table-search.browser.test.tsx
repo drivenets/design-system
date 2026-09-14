@@ -46,7 +46,7 @@ describe('DsTable - Search & Filtering', () => {
 		const filteredDataRows = page.getByRole('row').all().slice(1);
 
 		expect(filteredDataRows).toHaveLength(1);
-		await expect.element(page.getByRole('row').nth(1)).toHaveTextContent('Tanner');
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Tanner');
 
 		await page.getByPlaceholder('Search all columns...').clear();
 

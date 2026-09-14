@@ -70,6 +70,11 @@ $bulk-actions-reserved-space: 80px;
 		scrollbar-gutter: auto;
 
 		@include scrollbars.scrollbar-on-hover;
+
+		&:has(.emptyState) {
+			display: flex;
+			flex-direction: column;
+		}
 	}
 
 	thead tr,
@@ -111,18 +116,19 @@ $bulk-actions-reserved-space: 80px;
 	}
 }
 
+.emptyStateRow {
+	flex: 1;
+	align-items: center;
+}
+
 .emptyState {
 	// colSpan in markup isn't honored by flex row layout, so the cell stretches
-	// across the row; stretch the inner content so it occupies full table width
+	// across the row; center the Empty state in the remaining body
 	flex: 1;
 	min-width: 0;
-	height: vars.$empty-state-height;
 	justify-content: center;
+	align-items: center;
 	text-align: center;
-
-	> * {
-		flex: 1;
-	}
 }
 
 .virtualizedContainer {

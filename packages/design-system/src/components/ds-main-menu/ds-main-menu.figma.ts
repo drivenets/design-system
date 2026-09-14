@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=42100-7474
+// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=20895-43484
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-main-menu
 // component=DsMainMenu
 import figma from 'figma';

@@ -296,7 +296,9 @@ export interface DsDataTableProps<TData, TValue> {
 	activeRowId?: string | null;
 
 	/**
-	 * Empty state of the table
+	 * Replaces the inferred **Empty state**. When omitted, the table renders
+	 * `DsEmptyState` as `noData` if `data` is empty, or `noMatches` if `data`
+	 * has rows but filters hide all of them.
 	 */
 	emptyState?: React.ReactNode;
 

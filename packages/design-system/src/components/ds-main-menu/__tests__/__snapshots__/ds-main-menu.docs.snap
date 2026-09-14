@@ -64,7 +64,7 @@
 />
 
 ### MCP manifest
-const Default = () => <DsMainMenu
+const Default = args => <DsMainMenu
     variant="compact"
     items={[
         {
@@ -199,10 +199,24 @@ const Default = () => <DsMainMenu
 />
 
 ### MCP manifest
-const WithSelection = () => <DsMainMenu
+const WithSelection = args => <DsMainMenu
     variant="compact"
-    items={SAMPLE_ITEMS}
-    utilityLinks={SAMPLE_UTILITY_LINKS}
+    items={[
+        { id: 'network-visibility', label: 'Network visibility', icon: 'visibility' },
+        { id: 'planning', label: 'Planning', icon: 'account_tree' },
+        { id: 'configurations', label: 'Configurations', icon: 'tune' },
+        { id: 'deployments', label: 'Deployments', icon: 'rocket_launch' },
+        { id: 'workflows', label: 'Workflows', icon: 'route' },
+        { id: 'packages', label: 'Packages', icon: 'special-packages' },
+        { id: 'operations-ai', label: 'AI Ops', icon: 'psychology' },
+        { id: 'resource-allocation', label: 'Resource allocation', icon: 'dashboard_customize' },
+        { id: 'triggers', label: 'Triggers', icon: 'bolt' },
+        { id: 'referential-data', label: 'Referential data', icon: 'table_rows' },
+    ]}
+    utilityLinks={[
+        { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+        { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+    ]}
     side="bottom"
     align="start"
     gutter={8}
@@ -242,7 +256,7 @@ const WithSelection = () => <DsMainMenu
 }
 
 ### MCP manifest
-const ControlledSelection = () => {
+const ControlledSelection = args => {
     const [selectedId, setSelectedId] = useState('planning');
 
     return (
@@ -307,7 +321,7 @@ const ControlledSelection = () => {
 />
 
 ### MCP manifest
-const ItemStates = () => <DsMainMenu
+const ItemStates = args => <DsMainMenu
     variant="compact"
     items={[
         { id: 'available', label: 'My Dashboard', icon: 'speed' },
@@ -354,7 +368,7 @@ const ItemStates = () => <DsMainMenu
 />
 
 ### MCP manifest
-const TileInteractionStates = () => <DsMainMenu
+const TileInteractionStates = args => <DsMainMenu
     variant="compact"
     items={[
         { id: 'regular', label: 'My Dashboard', icon: 'speed' },
@@ -421,7 +435,7 @@ const TileInteractionStates = () => <DsMainMenu
 />
 
 ### MCP manifest
-const WithHrefLinks = () => <DsMainMenu
+const WithHrefLinks = args => <DsMainMenu
     variant="compact"
     items={[
         { id: 'dashboard', label: 'My dashboard', icon: 'speed', href: '/dashboard' },
@@ -522,10 +536,24 @@ const WithHrefLinks = () => <DsMainMenu
 />
 
 ### MCP manifest
-const TriggerIcon = () => <DsMainMenu
+const TriggerIcon = args => <DsMainMenu
     variant="compact"
-    items={SAMPLE_ITEMS}
-    utilityLinks={SAMPLE_UTILITY_LINKS}
+    items={[
+        { id: 'network-visibility', label: 'Network visibility', icon: 'visibility' },
+        { id: 'planning', label: 'Planning', icon: 'account_tree' },
+        { id: 'configurations', label: 'Configurations', icon: 'tune' },
+        { id: 'deployments', label: 'Deployments', icon: 'rocket_launch' },
+        { id: 'workflows', label: 'Workflows', icon: 'route' },
+        { id: 'packages', label: 'Packages', icon: 'special-packages' },
+        { id: 'operations-ai', label: 'AI Ops', icon: 'psychology' },
+        { id: 'resource-allocation', label: 'Resource allocation', icon: 'dashboard_customize' },
+        { id: 'triggers', label: 'Triggers', icon: 'bolt' },
+        { id: 'referential-data', label: 'Referential data', icon: 'table_rows' },
+    ]}
+    utilityLinks={[
+        { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+        { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+    ]}
     side="bottom"
     align="start"
     gutter={8}
@@ -637,10 +665,28 @@ const TriggerIcon = () => <DsMainMenu
 />
 
 ### MCP manifest
-const WithSvgIcons = () => <DsMainMenu
+const WithSvgIcons = args => <DsMainMenu
     variant="compact"
-    items={SAMPLE_SVG_ITEMS}
-    utilityLinks={SAMPLE_UTILITY_LINKS}
+    items={[
+        { id: 'my-dashboard', label: 'My dashboard', icon: MyDashboardIcon },
+        { id: 'network-view', label: 'Network view', icon: NetworkViewIcon },
+        { id: 'inventory', label: 'Inventory', icon: InventoryIcon },
+        { id: 'network-planning', label: 'Network planning', icon: NetworkPlanningIcon },
+        { id: 'configurations', label: 'Configurations', icon: ConfigurationsIcon },
+        { id: 'workflow-automation', label: 'Workflow automation', icon: WorkflowAutomationIcon },
+        { id: 'software-images', label: 'Software images', icon: SoftwareImagesIcon },
+        { id: 'tasks', label: 'Tasks', icon: TasksIcon },
+        { id: 'backup-files', label: 'Backup files', icon: BackupFilesIcon },
+        { id: 'ai-ops', label: 'AI-Ops', icon: AiOpsIcon },
+        { id: 'break-glass', label: 'Break glass', icon: BreakGlassIcon },
+        { id: 'administration', label: 'Administration', icon: AdministrationIcon },
+        { id: 'observability', label: 'Observability', icon: ObservabilityIcon },
+        { id: 'technician', label: 'Technician', icon: TechnicianIcon },
+    ]}
+    utilityLinks={[
+        { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+        { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+    ]}
     side="bottom"
     align="start"
     gutter={8}
@@ -682,7 +728,7 @@ const WithSvgIcons = () => <DsMainMenu
 }
 
 ### MCP manifest
-const CustomAnchor = () => {
+const CustomAnchor = args => {
     const anchorRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -760,7 +806,7 @@ const CustomAnchor = () => {
 }
 
 ### MCP manifest
-const InWorkspaceHeader = () => {
+const InWorkspaceHeader = args => {
     const [selectedAppId, setSelectedAppId] = useState('my-dashboard');
     const selectedApp = SAMPLE_SVG_ITEMS.find((app) => app.id === selectedAppId);
 
@@ -799,6 +845,7 @@ const InWorkspaceHeader = () => {
                     <DsAvatar name="Ada Lovelace" size="sm" />
                 </div>
             </DsWorkspaceLayout.Header>
+
             <DsWorkspaceLayout.Content>
                 <div className={styles.appStage}>
                     <DsTypography variant="heading2">{selectedApp?.label}</DsTypography>
@@ -872,7 +919,7 @@ const InWorkspaceHeader = () => {
 />
 
 ### MCP manifest
-const Expanded = () => <DsMainMenu
+const Expanded = args => <DsMainMenu
     variant="expanded"
     items={[
         {
@@ -909,7 +956,10 @@ const Expanded = () => <DsMainMenu
             state: 'disabled',
         },
     ]}
-    utilityLinks={SAMPLE_UTILITY_LINKS}
+    utilityLinks={[
+        { id: 'help-support', label: 'Help & Support', icon: 'contact_support' },
+        { id: 'knowledge-center', label: 'Knowledge Center', icon: 'local_library' },
+    ]}
     side="bottom"
     align="start"
     gutter={8}

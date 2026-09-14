@@ -8,7 +8,8 @@ import {
 /**
  * Size variants for the segment group
  */
-export type DsSegmentGroupSize = 'small' | 'default';
+export const segmentGroupSizes = ['small', 'default'] as const;
+export type DsSegmentGroupSize = (typeof segmentGroupSizes)[number];
 
 /**
  * Props for the DsSegmentGroup Root component
@@ -50,9 +51,14 @@ export interface DsSegmentGroupRootProps extends Pick<
  */
 export type DsSegmentGroupItemProps = Pick<
 	SegmentGroupItemProps,
-	'id' | 'value' | 'disabled' | 'className' | 'style'
-> &
-	(
+	'id' | 'value' | 'disabled' | 'className' | 'style' | 'aria-label'
+> & {
+	/**
+	 * Size variant of the segment item. Pass through to `ItemText` when using `label`.
+	 * @default 'default'
+	 */
+	size?: DsSegmentGroupSize;
+} & (
 		| {
 				/**
 				 * The segment group item content
@@ -78,4 +84,13 @@ export type DsSegmentGroupItemProps = Pick<
 /**
  * Props for the DsSegmentGroup ItemText component
  */
-export type DsSegmentGroupItemTextProps = Pick<SegmentGroupItemTextProps, 'className' | 'style' | 'children'>;
+export type DsSegmentGroupItemTextProps = Pick<
+	SegmentGroupItemTextProps,
+	'className' | 'style' | 'children'
+> & {
+	/**
+	 * Size variant of the item text
+	 * @default 'default'
+	 */
+	size?: DsSegmentGroupSize;
+};

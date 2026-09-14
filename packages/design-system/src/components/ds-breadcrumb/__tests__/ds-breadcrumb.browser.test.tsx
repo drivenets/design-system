@@ -140,16 +140,16 @@ describe('DsBreadcrumb', () => {
 	it('marks the last link segment as current page', async () => {
 		await renderWithRouter({ items: defaultItems }, '/inventory/catalog');
 
-		const catalogLink = page.getByText('Catalog');
+		const catalogLink = page.getByText('Catalog', { exact: false });
 		await expect.element(catalogLink).toHaveAttribute('aria-current', 'page');
 	});
 
 	it('truncates trail when navigating to a parent link', async () => {
 		await renderWithRouter({ items: defaultItems }, '/inventory/catalog');
 
-		await page.getByText('Inventory').click();
+		await page.getByText('Inventory', { exact: false }).click();
 
-		const inventoryLink = page.getByText('Inventory');
+		const inventoryLink = page.getByText('Inventory', { exact: false });
 		await expect.element(inventoryLink).toHaveAttribute('aria-current', 'page');
 		await expect.element(page.getByText('Catalog')).not.toBeInTheDocument();
 	});
@@ -194,7 +194,7 @@ describe('DsBreadcrumb', () => {
 		const onSelect = vi.fn();
 		await renderWithRouter({ items: defaultItems, onSelect }, '/inventory/catalog');
 
-		await page.getByText('Inventory').click();
+		await page.getByText('Inventory', { exact: false }).click();
 		expect(onSelect).toHaveBeenCalledWith('/inventory');
 	});
 });

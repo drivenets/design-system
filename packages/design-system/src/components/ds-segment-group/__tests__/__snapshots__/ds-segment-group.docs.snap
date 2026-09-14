@@ -3,42 +3,50 @@
 ## Default
 
 ### Show code
-{
-  render: () => <DsSegmentGroup.Root defaultValue="react">
-            <DsSegmentGroup.Item value="react" label="React" />
-            <DsSegmentGroup.Item value="vue" label="Vue" />
-            <DsSegmentGroup.Item value="angular" label="Angular" />
-            <DsSegmentGroup.Item value="svelte" label="Svelte" />
-        </DsSegmentGroup.Root>
-}
+<DsSegmentGroup.Root defaultValue="react">
+  <DsSegmentGroup.Item
+    label="React"
+    value="react"
+  />
+  <DsSegmentGroup.Item
+    label="Vue"
+    value="vue"
+  />
+  <DsSegmentGroup.Item
+    label="Angular"
+    value="angular"
+  />
+  <DsSegmentGroup.Item
+    label="Svelte"
+    value="svelte"
+  />
+</DsSegmentGroup.Root>
 
 ### MCP manifest
-const Default = () => (
-    <DsSegmentGroup.Root defaultValue="react">
-        <DsSegmentGroup.Item value="react" label="React" />
-        <DsSegmentGroup.Item value="vue" label="Vue" />
-        <DsSegmentGroup.Item value="angular" label="Angular" />
-        <DsSegmentGroup.Item value="svelte" label="Svelte" />
-    </DsSegmentGroup.Root>
-);
+const Default = () => <DsSegmentGroup.Root defaultValue="react">
+    <DsSegmentGroup.Item value="react" label="React" />
+    <DsSegmentGroup.Item value="vue" label="Vue" />
+    <DsSegmentGroup.Item value="angular" label="Angular" />
+    <DsSegmentGroup.Item value="svelte" label="Svelte" />
+</DsSegmentGroup.Root>;
 
 ## Small
 
 ### Show code
 {
   render: () => <DsSegmentGroup.Root defaultValue="list" size="small">
-            <DsSegmentGroup.Item value="list" label="List" />
-            <DsSegmentGroup.Item value="grid" label="Grid" />
-            <DsSegmentGroup.Item value="table" label="Table" />
+            <DsSegmentGroup.Item value="list" label="List" size="small" />
+            <DsSegmentGroup.Item value="grid" label="Grid" size="small" />
+            <DsSegmentGroup.Item value="table" label="Table" size="small" />
         </DsSegmentGroup.Root>
 }
 
 ### MCP manifest
 const Small = () => (
     <DsSegmentGroup.Root defaultValue="list" size="small">
-        <DsSegmentGroup.Item value="list" label="List" />
-        <DsSegmentGroup.Item value="grid" label="Grid" />
-        <DsSegmentGroup.Item value="table" label="Table" />
+        <DsSegmentGroup.Item value="list" label="List" size="small" />
+        <DsSegmentGroup.Item value="grid" label="Grid" size="small" />
+        <DsSegmentGroup.Item value="table" label="Table" size="small" />
     </DsSegmentGroup.Root>
 );
 
@@ -46,36 +54,36 @@ const Small = () => (
 
 ### Show code
 {
-  render: () => <DsSegmentGroup.Root defaultValue="day">
+  render: () => <DsSegmentGroup.Root defaultValue="day" size="small">
             <DsSegmentGroup.Item value="day">
-                <DsIcon icon="wb_sunny" size="tiny" />
-                <DsSegmentGroup.ItemText>Day</DsSegmentGroup.ItemText>
+                <DsIcon icon="wb_sunny" size="tiny" color="main" />
+                <DsSegmentGroup.ItemText size="small">Day</DsSegmentGroup.ItemText>
             </DsSegmentGroup.Item>
             <DsSegmentGroup.Item value="week">
-                <DsIcon icon="date_range" size="tiny" />
-                <DsSegmentGroup.ItemText>Week</DsSegmentGroup.ItemText>
+                <DsIcon icon="date_range" size="tiny" color="main" />
+                <DsSegmentGroup.ItemText size="small">Week</DsSegmentGroup.ItemText>
             </DsSegmentGroup.Item>
             <DsSegmentGroup.Item value="month">
-                <DsIcon icon="calendar_month" size="tiny" />
-                <DsSegmentGroup.ItemText>Month</DsSegmentGroup.ItemText>
+                <DsIcon icon="calendar_month" size="tiny" color="main" />
+                <DsSegmentGroup.ItemText size="small">Month</DsSegmentGroup.ItemText>
             </DsSegmentGroup.Item>
         </DsSegmentGroup.Root>
 }
 
 ### MCP manifest
 const WithIcons = () => (
-    <DsSegmentGroup.Root defaultValue="day">
+    <DsSegmentGroup.Root defaultValue="day" size="small">
         <DsSegmentGroup.Item value="day">
-            <DsIcon icon="wb_sunny" size="tiny" />
-            <DsSegmentGroup.ItemText>Day</DsSegmentGroup.ItemText>
+            <DsIcon icon="wb_sunny" size="tiny" color="main" />
+            <DsSegmentGroup.ItemText size="small">Day</DsSegmentGroup.ItemText>
         </DsSegmentGroup.Item>
         <DsSegmentGroup.Item value="week">
-            <DsIcon icon="date_range" size="tiny" />
-            <DsSegmentGroup.ItemText>Week</DsSegmentGroup.ItemText>
+            <DsIcon icon="date_range" size="tiny" color="main" />
+            <DsSegmentGroup.ItemText size="small">Week</DsSegmentGroup.ItemText>
         </DsSegmentGroup.Item>
         <DsSegmentGroup.Item value="month">
-            <DsIcon icon="calendar_month" size="tiny" />
-            <DsSegmentGroup.ItemText>Month</DsSegmentGroup.ItemText>
+            <DsIcon icon="calendar_month" size="tiny" color="main" />
+            <DsSegmentGroup.ItemText size="small">Month</DsSegmentGroup.ItemText>
         </DsSegmentGroup.Item>
     </DsSegmentGroup.Root>
 );
@@ -85,17 +93,17 @@ const WithIcons = () => (
 ### Show code
 {
   render: () => <DsSegmentGroup.Root defaultValue="list" size="small">
-            <DsSegmentGroup.Item value="list">
-                <DsIcon icon="view_list" size="tiny" />
+            <DsSegmentGroup.Item value="list" aria-label="List">
+                <DsIcon icon="view_list" size="tiny" color="main" />
             </DsSegmentGroup.Item>
-            <DsSegmentGroup.Item value="grid">
-                <DsIcon icon="grid_view" size="tiny" />
+            <DsSegmentGroup.Item value="grid" aria-label="Grid">
+                <DsIcon icon="grid_view" size="tiny" color="main" />
             </DsSegmentGroup.Item>
-            <DsSegmentGroup.Item value="kanban">
-                <DsIcon icon="view_kanban" size="tiny" />
+            <DsSegmentGroup.Item value="kanban" aria-label="Kanban">
+                <DsIcon icon="view_kanban" size="tiny" color="main" />
             </DsSegmentGroup.Item>
-            <DsSegmentGroup.Item value="timeline">
-                <DsIcon icon="timeline" size="tiny" />
+            <DsSegmentGroup.Item value="timeline" aria-label="Timeline">
+                <DsIcon icon="timeline" size="tiny" color="main" />
             </DsSegmentGroup.Item>
         </DsSegmentGroup.Root>
 }
@@ -103,18 +111,38 @@ const WithIcons = () => (
 ### MCP manifest
 const IconOnly = () => (
     <DsSegmentGroup.Root defaultValue="list" size="small">
-        <DsSegmentGroup.Item value="list">
-            <DsIcon icon="view_list" size="tiny" />
+        <DsSegmentGroup.Item value="list" aria-label="List">
+            <DsIcon icon="view_list" size="tiny" color="main" />
         </DsSegmentGroup.Item>
-        <DsSegmentGroup.Item value="grid">
-            <DsIcon icon="grid_view" size="tiny" />
+        <DsSegmentGroup.Item value="grid" aria-label="Grid">
+            <DsIcon icon="grid_view" size="tiny" color="main" />
         </DsSegmentGroup.Item>
-        <DsSegmentGroup.Item value="kanban">
-            <DsIcon icon="view_kanban" size="tiny" />
+        <DsSegmentGroup.Item value="kanban" aria-label="Kanban">
+            <DsIcon icon="view_kanban" size="tiny" color="main" />
         </DsSegmentGroup.Item>
-        <DsSegmentGroup.Item value="timeline">
-            <DsIcon icon="timeline" size="tiny" />
+        <DsSegmentGroup.Item value="timeline" aria-label="Timeline">
+            <DsIcon icon="timeline" size="tiny" color="main" />
         </DsSegmentGroup.Item>
+    </DsSegmentGroup.Root>
+);
+
+## Disabled
+
+### Show code
+{
+  render: () => <DsSegmentGroup.Root defaultValue="react" disabled>
+            <DsSegmentGroup.Item value="react" label="React" />
+            <DsSegmentGroup.Item value="vue" label="Vue" />
+            <DsSegmentGroup.Item value="angular" label="Angular" />
+        </DsSegmentGroup.Root>
+}
+
+### MCP manifest
+const Disabled = () => (
+    <DsSegmentGroup.Root defaultValue="react" disabled>
+        <DsSegmentGroup.Item value="react" label="React" />
+        <DsSegmentGroup.Item value="vue" label="Vue" />
+        <DsSegmentGroup.Item value="angular" label="Angular" />
     </DsSegmentGroup.Root>
 );
 

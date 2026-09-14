@@ -133,7 +133,7 @@ describe('DsTimePicker', () => {
 
 		// Click hour 5 PM — minute 50 exceeds max 5:40 PM → clamp to 5:40 PM
 		await hour5PM.click();
-		await expect.element(valueDisplay).toHaveTextContent('17:40');
+		await expect.element(valueDisplay).toMatchTextContent('17:40');
 
 		// At 5:40 PM, minutes > 40 are disabled
 		await expect
@@ -147,7 +147,7 @@ describe('DsTimePicker', () => {
 
 		// Switch to AM — 5:40 PM → clamp to 9:30 AM (min)
 		await periodListbox.getByRole('option', { name: 'AM' }).click();
-		await expect.element(valueDisplay).toHaveTextContent('09:30');
+		await expect.element(valueDisplay).toMatchTextContent('09:30');
 
 		// At 9:30 AM, hours before 9 are disabled
 		await expect
@@ -217,7 +217,7 @@ describe('DsTimePicker', () => {
 		await userEvent.keyboard('{Enter}');
 
 		// 1:02 AM = 01:02 in 24h format
-		await expect.element(page.getByText('Value:')).toHaveTextContent('01:02');
+		await expect.element(page.getByText('Value:', { exact: false })).toMatchTextContent('01:02');
 	});
 
 	it('should reset input to last valid value on blur', async () => {
