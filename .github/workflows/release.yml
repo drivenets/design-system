@@ -43,10 +43,13 @@ jobs:
 
       - name: Create or update release PR
         id: changesets
-        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          commit: 'chore(release): publish'
-          title: 'chore(release): publish'
+          commit-message: 'chore(release): publish'
+          pr-title: 'chore(release): publish'
+          # v2 pushes via the GitHub API by default; keep using the Git CLI so the
+          # persisted deploy key (see checkout step above) still triggers CI on the release PR.
+          push-with-git-cli: true
 
   build:
     name: Build for publish
@@ -112,8 +115,9 @@ jobs:
           path: packages
 
       - name: Publish
-        uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
+        uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
           publish: pnpm changeset publish
+          push-with-git-cli: true
         env:
           NPM_TOKEN: '' # https://github.com/changesets/action/issues/542#issuecomment-3642334398
