@@ -26370,6 +26370,13 @@
             },
             "required": false
           },
+          "shape": {
+            "defaultValue": {
+              "value": "'default'",
+              "computed": false
+            },
+            "required": false
+          },
           "selected": {
             "defaultValue": {
               "value": "false",
@@ -26380,6 +26387,13 @@
           "variant": {
             "defaultValue": {
               "value": "'default'",
+              "computed": false
+            },
+            "required": false
+          },
+          "warning": {
+            "defaultValue": {
+              "value": "false",
               "computed": false
             },
             "required": false
@@ -26458,6 +26472,69 @@
           "snippet": "const KeyValueSmall = () => <DsTag variant=\"key-value\" label=\"Category\" value=\"Networking\" size=\"small\" />;"
         },
         {
+          "id": "components-tag--operator-filter",
+          "name": "Operator Filter",
+          "snippet": "const OperatorFilter = function Render() {\n    const [operator, setOperator] = useState('ne');\n\n    return (\n        <DsTag\n            variant=\"operator-filter\"\n            label=\"Latency\"\n            value=\"120 ms\"\n            slots={{\n                operator: (\n                    <DsSelect\n                        size=\"small\"\n                        value={operator}\n                        onValueChange={setOperator}\n                        options={[\n                            { label: '=', value: 'eq' },\n                            { label: '≠', value: 'ne' },\n                            { label: '>', value: 'gt' },\n                            { label: '<', value: 'lt' },\n                        ]}\n                    />\n                ),\n            }}\n        />\n    );\n};",
+          "description": "Use the `operator-filter` variant for a `field ≠ value` filter chip. The comparison control is\nyours: pass a fully wired `DsSelect` (or `DsDropdownMenu`) through `slots.operator` so the tag\nstays a layout primitive and the operator set can follow the field's type. Clicks and keystrokes\ninside the slot never reach the tag's own `onClick` / delete shortcuts.\n\nThe tag cannot disable a node it does not own, so `disabled` leaves a slotted control live —\npass `disabled` to the control as well."
+        },
+        {
+          "id": "components-tag--operator-filter-small",
+          "name": "Operator Filter Small",
+          "snippet": "const OperatorFilterSmall = function Render() {\n    const [operator, setOperator] = useState('ne');\n\n    return (\n        <DsTag\n            variant=\"operator-filter\"\n            label=\"Latency\"\n            value=\"120 ms\"\n            size=\"small\"\n            slots={{\n                operator: (\n                    <DsSelect\n                        size=\"small\"\n                        value={operator}\n                        onValueChange={setOperator}\n                        options={[\n                            { label: '=', value: 'eq' },\n                            { label: '≠', value: 'ne' },\n                            { label: '>', value: 'gt' },\n                            { label: '<', value: 'lt' },\n                        ]}\n                    />\n                ),\n            }}\n        />\n    );\n};",
+          "description": "The same variant at `size=\"small\"`. Size the slotted control to match — a `small` `DsSelect`\ninside a `small` tag."
+        },
+        {
+          "id": "components-tag--operator-filter-without-operator",
+          "name": "Operator Filter Without Operator",
+          "snippet": "const OperatorFilterWithoutOperator = () => <DsTag variant=\"operator-filter\" label=\"Latency\" value=\"120 ms\" />;",
+          "description": "`slots.operator` is optional. With no operator the tag renders no wrapper for it, so the layout\nreserves no gap for a control that is not there — useful while the operator is still being\nresolved, or for a filter whose comparison is implicit."
+        },
+        {
+          "id": "components-tag--query-filter",
+          "name": "Query Filter",
+          "snippet": "const QueryFilter = () => <DsTag variant=\"query-filter\" label=\"Region\" value=\"us-east-1\" />;",
+          "description": "Use the `query-filter` variant for a drill-down path, e.g. `Region › Site`. The emphasis is\ninverted compared with `key-value`: the leaf (`value`) is the semi-bold segment the user is\nlooking at, and `label` is the regular-weight context it came from."
+        },
+        {
+          "id": "components-tag--query-filter-small",
+          "name": "Query Filter Small",
+          "snippet": "const QueryFilterSmall = () => <DsTag variant=\"query-filter\" label=\"Region\" value=\"us-east-1\" size=\"small\" />;"
+        },
+        {
+          "id": "components-tag--round",
+          "name": "Round",
+          "snippet": "const Round = () => <DsTag variant=\"key-value\" label=\"Category\" value=\"Networking\" shape=\"round\" />;",
+          "description": "`shape=\"round\"` swaps the 4px radius for a pill on any variant at any size. Reach for it to match\na surface whose other tokens are round, or when migrating a deprecated `DsChip` — it is the same\npill shape that component used."
+        },
+        {
+          "id": "components-tag--round-small",
+          "name": "Round Small",
+          "snippet": "const RoundSmall = () => <DsTag label=\"Round Tag\" shape=\"round\" size=\"small\" />;"
+        },
+        {
+          "id": "components-tag--warning",
+          "name": "Warning",
+          "snippet": "const Warning = () => <DsTag variant=\"query-filter\" label=\"Region\" value=\"us-east-1\" warning />;",
+          "description": "`warning` marks a tag whose value needs attention — an out-of-range threshold, a filter that\nmatches nothing. The dot is presentation plus an accessible name only; wrap the tag in\n`DsTooltip` and own the copy yourself."
+        },
+        {
+          "id": "components-tag--warning-localized",
+          "name": "Warning Localized",
+          "snippet": "const WarningLocalized = () => <DsTag\n    variant=\"key-value\"\n    label=\"Threshold\"\n    value=\"95%\"\n    warning\n    locale={{ warningAriaLabel: 'Threshold is above the configured limit' }} />;",
+          "description": "Override the dot's accessible name through `locale.warningAriaLabel` so screen-reader users hear\nwhat is wrong instead of a bare \"Warning\"."
+        },
+        {
+          "id": "components-tag--expandable",
+          "name": "Expandable",
+          "snippet": "const Expandable = () => <DsTag\n    variant=\"operator-filter\"\n    label=\"Latency\"\n    value=\"120 ms\"\n    onExpandClick={fn()} />;",
+          "description": "Passing `onExpandClick` renders the chevron — the same contract as `onDelete`. The tag keeps no\nexpanded state, so the consumer decides what the chevron reveals; `disabled` suppresses it."
+        },
+        {
+          "id": "components-tag--expandable-small",
+          "name": "Expandable Small",
+          "snippet": "const ExpandableSmall = () => <DsTag label=\"Expandable Tag\" size=\"small\" warning onExpandClick={fn()} />;"
+        },
+        {
           "id": "components-tag--disabled",
           "name": "Disabled",
           "snippet": "const Disabled = () => <DsTag label=\"Disabled Tag\" selected disabled onClick={fn()} onDelete={fn()} />;"
@@ -26468,7 +26545,7 @@
           "snippet": "const CustomIcon = () => <DsTag\n    label=\"Custom Icon Tag\"\n    variant=\"include\"\n    slots={{\n        icon: <DsIcon icon=\"star\" size=\"tiny\" />,\n    }} />;"
         }
       ],
-      "import": "import { DsIcon, DsTag, DsTypography } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';\nimport { DsIcon } from '../ds-icon';"
+      "import": "import { DsIcon, DsSelect, DsTag, DsTypography } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';\nimport { DsIcon } from '../ds-icon';"
     },
     "components-textinput": {
       "id": "components-textinput",
@@ -28580,6 +28657,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5115
+    "durationMs": 5555
   }
 }

@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/99 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/99 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/99 without API description</a><span class="filter-pill ok" aria-disabled="true">560 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/560 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/99 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/99 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/99 without API description</a><span class="filter-pill ok" aria-disabled="true">571 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/571 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -27042,9 +27042,9 @@ needs contextual actions (edit, duplicate, delete) without leaving the tab bar.<
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTag</h2>
       <div class="badges">
-        <label for="c-83-components-tag-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-83-components-tag-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-83-components-tag-stories" class="badge ok as-toggle">13 stories</label>
+        <label for="c-83-components-tag-stories" class="badge ok as-toggle">24 stories</label>
         
         
       </div>
@@ -27071,7 +27071,7 @@ needs contextual actions (edit, duplicate, delete) without leaving the tab bar.<
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">6 prop types</span>
+              <span class="badge ok">8 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-tag/ds-tag.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27081,11 +27081,15 @@ locale?: any = {}
 
 selected?: any = false
 
+shape?: any = &#39;default&#39;
+
 size?: any = &#39;medium&#39;
 
 style?: any = {}
 
-variant?: any = &#39;default&#39;</code></pre>
+variant?: any = &#39;default&#39;
+
+warning?: any = false</code></pre>
           </div>
         </div>
     
@@ -27097,7 +27101,7 @@ variant?: any = &#39;default&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsIcon, DsTag, DsTypography } from '@drivenets/design-system';
+                <pre><code>import { DsIcon, DsSelect, DsTag, DsTypography } from '@drivenets/design-system';
 import { fn } from 'storybook/test';
 import { DsIcon } from '../ds-icon';</code></pre>
               </div>
@@ -27235,6 +27239,193 @@ The `label` is the bold key (`--font-main`); `value` is the secondary-colored va
               
               
               <pre><code>const KeyValueSmall = () =&gt; &lt;DsTag variant=&quot;key-value&quot; label=&quot;Category&quot; value=&quot;Networking&quot; size=&quot;small&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Operator Filter</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Use the `operator-filter` variant for a `field ≠ value` filter chip. The comparison control is
+yours: pass a fully wired `DsSelect` (or `DsDropdownMenu`) through `slots.operator` so the tag
+stays a layout primitive and the operator set can follow the field&#39;s type. Clicks and keystrokes
+inside the slot never reach the tag&#39;s own `onClick` / delete shortcuts.
+
+The tag cannot disable a node it does not own, so `disabled` leaves a slotted control live —
+pass `disabled` to the control as well.</div>
+              <pre><code>const OperatorFilter = function Render() {
+    const [operator, setOperator] = useState(&#39;ne&#39;);
+
+    return (
+        &lt;DsTag
+            variant=&quot;operator-filter&quot;
+            label=&quot;Latency&quot;
+            value=&quot;120 ms&quot;
+            slots={{
+                operator: (
+                    &lt;DsSelect
+                        size=&quot;small&quot;
+                        value={operator}
+                        onValueChange={setOperator}
+                        options={[
+                            { label: &#39;=&#39;, value: &#39;eq&#39; },
+                            { label: &#39;≠&#39;, value: &#39;ne&#39; },
+                            { label: &#39;&gt;&#39;, value: &#39;gt&#39; },
+                            { label: &#39;&lt;&#39;, value: &#39;lt&#39; },
+                        ]}
+                    /&gt;
+                ),
+            }}
+        /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Operator Filter Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The same variant at `size=&quot;small&quot;`. Size the slotted control to match — a `small` `DsSelect`
+inside a `small` tag.</div>
+              <pre><code>const OperatorFilterSmall = function Render() {
+    const [operator, setOperator] = useState(&#39;ne&#39;);
+
+    return (
+        &lt;DsTag
+            variant=&quot;operator-filter&quot;
+            label=&quot;Latency&quot;
+            value=&quot;120 ms&quot;
+            size=&quot;small&quot;
+            slots={{
+                operator: (
+                    &lt;DsSelect
+                        size=&quot;small&quot;
+                        value={operator}
+                        onValueChange={setOperator}
+                        options={[
+                            { label: &#39;=&#39;, value: &#39;eq&#39; },
+                            { label: &#39;≠&#39;, value: &#39;ne&#39; },
+                            { label: &#39;&gt;&#39;, value: &#39;gt&#39; },
+                            { label: &#39;&lt;&#39;, value: &#39;lt&#39; },
+                        ]}
+                    /&gt;
+                ),
+            }}
+        /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Operator Filter Without Operator</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`slots.operator` is optional. With no operator the tag renders no wrapper for it, so the layout
+reserves no gap for a control that is not there — useful while the operator is still being
+resolved, or for a filter whose comparison is implicit.</div>
+              <pre><code>const OperatorFilterWithoutOperator = () =&gt; &lt;DsTag variant=&quot;operator-filter&quot; label=&quot;Latency&quot; value=&quot;120 ms&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Query Filter</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Use the `query-filter` variant for a drill-down path, e.g. `Region › Site`. The emphasis is
+inverted compared with `key-value`: the leaf (`value`) is the semi-bold segment the user is
+looking at, and `label` is the regular-weight context it came from.</div>
+              <pre><code>const QueryFilter = () =&gt; &lt;DsTag variant=&quot;query-filter&quot; label=&quot;Region&quot; value=&quot;us-east-1&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Query Filter Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const QueryFilterSmall = () =&gt; &lt;DsTag variant=&quot;query-filter&quot; label=&quot;Region&quot; value=&quot;us-east-1&quot; size=&quot;small&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Round</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`shape=&quot;round&quot;` swaps the 4px radius for a pill on any variant at any size. Reach for it to match
+a surface whose other tokens are round, or when migrating a deprecated `DsChip` — it is the same
+pill shape that component used.</div>
+              <pre><code>const Round = () =&gt; &lt;DsTag variant=&quot;key-value&quot; label=&quot;Category&quot; value=&quot;Networking&quot; shape=&quot;round&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Round Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const RoundSmall = () =&gt; &lt;DsTag label=&quot;Round Tag&quot; shape=&quot;round&quot; size=&quot;small&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Warning</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`warning` marks a tag whose value needs attention — an out-of-range threshold, a filter that
+matches nothing. The dot is presentation plus an accessible name only; wrap the tag in
+`DsTooltip` and own the copy yourself.</div>
+              <pre><code>const Warning = () =&gt; &lt;DsTag variant=&quot;query-filter&quot; label=&quot;Region&quot; value=&quot;us-east-1&quot; warning /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Warning Localized</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Override the dot&#39;s accessible name through `locale.warningAriaLabel` so screen-reader users hear
+what is wrong instead of a bare &quot;Warning&quot;.</div>
+              <pre><code>const WarningLocalized = () =&gt; &lt;DsTag
+    variant=&quot;key-value&quot;
+    label=&quot;Threshold&quot;
+    value=&quot;95%&quot;
+    warning
+    locale={{ warningAriaLabel: &#39;Threshold is above the configured limit&#39; }} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Expandable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Passing `onExpandClick` renders the chevron — the same contract as `onDelete`. The tag keeps no
+expanded state, so the consumer decides what the chevron reveals; `disabled` suppresses it.</div>
+              <pre><code>const Expandable = () =&gt; &lt;DsTag
+    variant=&quot;operator-filter&quot;
+    label=&quot;Latency&quot;
+    value=&quot;120 ms&quot;
+    onExpandClick={fn()} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Expandable Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const ExpandableSmall = () =&gt; &lt;DsTag label=&quot;Expandable Tag&quot; size=&quot;small&quot; warning onExpandClick={fn()} /&gt;;</code></pre>
               
             </div>
             <div class="note ok">
