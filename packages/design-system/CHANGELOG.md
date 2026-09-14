@@ -1,5 +1,21 @@
 # @drivenets/design-system
 
+## 0.20.0
+
+### Minor Changes
+
+- 46174bf: Add `operator-filter` and `query-filter` variants to `DsTag`, plus `shape`, `warning` and `onExpandClick` props
+
+### Patch Changes
+
+- 1f0f795: Add "special-adv-filters" (Advanced Filters) to `DsIcon`
+- b2ee079: Update `DsSegmentGroup` styles
+- 42f0da6: Update dependencies
+- 225f1c7: Update dependencies
+- 225f1c7: Give the colliding `Components/Table/Filters` story files unique titles (`Filters`, `Search`, `Filters Panel`) so every file reaches the MCP component manifest, and keep the full-toolbar showcase stories out of the manifest
+- 2f6872c: Update dependencies
+- f651ade: Update dependencies
+
 ## 0.19.0
 
 ### Minor Changes
