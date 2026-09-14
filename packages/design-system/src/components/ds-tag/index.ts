@@ -1,3 +1,3 @@
 export { default as DsTag } from './ds-tag';
-export { tagSizes, tagVariants } from './ds-tag.types';
-export type { TagSize, TagVariant, DsTagProps } from './ds-tag.types';
+export { tagShapes, tagSizes, tagVariants } from './ds-tag.types';
+export type { TagShape, TagSize, TagVariant, DsTagProps } from './ds-tag.types';
