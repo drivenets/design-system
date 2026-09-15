@@ -47,3 +47,4 @@ overrides:
   typescript: 'catalog:'
   semver: '^7.7.4'
   chokidar: '^5.0.0'
+  esbuild: '^0.28.2'
