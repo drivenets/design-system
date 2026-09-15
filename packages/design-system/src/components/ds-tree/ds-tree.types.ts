@@ -96,7 +96,7 @@ export interface DsTreeRootProps<T extends DsTreeNode = DsTreeNode> extends DsTr
 	/**
 	 * Whether clicking anywhere on a branch row toggles its expansion in addition
 	 * to clicking the branch indicator.
-	 * @default false
+	 * @default true
 	 */
 	expandOnClick?: boolean;
 
@@ -148,13 +148,18 @@ export interface DsTreeRootProps<T extends DsTreeNode = DsTreeNode> extends DsTr
 
 export type DsTreeTreeProps = DsTreeBasePropsWithChildren;
 
-export type DsTreeBranchProps = DsTreeBasePropsWithChildren;
+/**
+ * Row parts also forward any extra props (handlers, `ref`, `aria-*`, `data-*`) to the
+ * underlying element, so wrapping a row in an `asChild` trigger — `DsPopover.Trigger`,
+ * `DsTooltip` — actually wires up.
+ */
+export type DsTreeBranchProps = DsTreeBasePropsWithChildren & ArkTreeView.BranchProps;
 
-export type DsTreeBranchControlProps = DsTreeBasePropsWithChildren;
+export type DsTreeBranchControlProps = DsTreeBasePropsWithChildren & ArkTreeView.BranchControlProps;
 
 export type DsTreeBranchIndicatorProps = DsTreeBasePropsWithChildren;
 
-export type DsTreeBranchTextProps = DsTreeBasePropsWithChildren;
+export type DsTreeBranchTextProps = DsTreeBasePropsWithChildren & ArkTreeView.BranchTextProps;
 
 export type DsTreeBranchContentProps = DsTreeBasePropsWithChildren;
 

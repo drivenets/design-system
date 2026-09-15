@@ -79,14 +79,14 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (
 	</TreeView.Tree>
 );
 
-const DsTreeBranch = ({ className, style, children }: DsTreeBranchProps) => (
-	<TreeView.Branch className={classNames(styles.branch, className)} style={style}>
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => (
+	<TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}>
 		{children}
 	</TreeView.Branch>
 );
 
-const DsTreeBranchControl = ({ className, style, children }: DsTreeBranchControlProps) => (
-	<TreeView.BranchControl className={classNames(styles.branchControl, className)} style={style}>
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => (
+	<TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}>
 		{children}
 	</TreeView.BranchControl>
 );
@@ -97,8 +97,8 @@ const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndic
 	</TreeView.BranchIndicator>
 );
 
-const DsTreeBranchText = ({ className, style, children }: DsTreeBranchTextProps) => (
-	<TreeView.BranchText className={classNames(styles.branchText, className)} style={style}>
+const DsTreeBranchText = ({ className, style, children, ...rest }: DsTreeBranchTextProps) => (
+	<TreeView.BranchText {...rest} className={classNames(styles.branchText, className)} style={style}>
 		{children}
 	</TreeView.BranchText>
 );
