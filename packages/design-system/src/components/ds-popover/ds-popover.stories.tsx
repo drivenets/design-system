@@ -7,7 +7,7 @@ import { DsStatusBadgeV2 } from '../ds-status-badge-v2';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 import { DsPopover } from './ds-popover';
-import { popoverAligns, popoverSides } from './ds-popover.types';
+import { popoverAligns, popoverOpenTriggers, popoverSides } from './ds-popover.types';
 import styles from './ds-popover.stories.module.scss';
 
 const PLACEHOLDER_IMAGE =
@@ -38,6 +38,9 @@ const meta: Meta<typeof DsPopover.Root> = {
 		align: { control: 'select', options: popoverAligns },
 		gutter: { control: 'number' },
 		modal: { control: 'boolean' },
+		openOn: { control: 'inline-radio', options: popoverOpenTriggers },
+		openDelay: { control: 'number' },
+		closeDelay: { control: 'number' },
 		open: { table: { disable: true } },
 		onOpenChange: { table: { disable: true } },
 		children: { table: { disable: true } },
@@ -127,6 +130,42 @@ export const Legacy: Story = {
 				</DsPopover.ContentItem>
 			</DsPopover.Content>
 		</DsPopover>
+	),
+};
+
+/**
+ * `openOn="hover"` layers pointer intent on top of the click behavior: the panel
+ * opens after `openDelay`, survives the pointer crossing the `gutter` gap onto the
+ * panel itself, and closes `closeDelay` after the pointer leaves both. Click and
+ * keyboard activation still toggle, so touch devices keep working.
+ *
+ * Under `openOn="hover"` the panel deliberately does not take focus on open — tab
+ * from the trigger to reach the links inside.
+ */
+export const HoverTrigger: Story = {
+	args: { openOn: 'hover', side: 'right', align: 'start' },
+	render: (args) => (
+		<DsPopover.Root {...args}>
+			<DsPopover.Trigger>
+				<DsButtonV3 variant="secondary" icon="account_tree">
+					Inventory
+				</DsButtonV3>
+			</DsPopover.Trigger>
+			<DsPopover.Panel width={280}>
+				<DsPopover.Header icon={<DsIcon icon="account_tree" color="action-secondary" />}>
+					Inventory
+				</DsPopover.Header>
+				<DsPopover.Content>
+					<DsPopover.ContentItem>
+						<DsStack direction="column" gap="var(--xs)">
+							<a href="#physical">Physical</a>
+							<a href="#logical">Logical</a>
+							<a href="#topology">Topology</a>
+						</DsStack>
+					</DsPopover.ContentItem>
+				</DsPopover.Content>
+			</DsPopover.Panel>
+		</DsPopover.Root>
 	),
 };
 

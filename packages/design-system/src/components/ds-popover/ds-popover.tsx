@@ -1,4 +1,5 @@
-import { Popover } from '@ark-ui/react/popover';
+import { createContext, useContext, useEffect, useRef, type PointerEvent } from 'react';
+import { Popover, usePopoverContext } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import { DsStack } from '../ds-stack';
@@ -18,6 +19,47 @@ import type {
 } from './ds-popover.types';
 
 const DEFAULT_PANEL_WIDTH = 400;
+const DEFAULT_OPEN_DELAY_MS = 200;
+// Non-zero on purpose: the pointer has to cross the `gutter` gap from the trigger
+// to the portalled panel, and a 0ms close loses that handoff.
+const DEFAULT_CLOSE_DELAY_MS = 150;
+
+interface HoverIntent {
+	openDelay: number;
+	closeDelay: number;
+	/** Owns one shared timer, so moving trigger -> panel cancels the pending close. */
+	schedule: (action: () => void, delay: number) => void;
+}
+
+const HoverIntentContext = createContext<HoverIntent | null>(null);
+
+/**
+ * Pointer handlers for the parts a hovering user can be over — the trigger and the
+ * panel. Ark's popover machine has no hover support, so the intent timers live here;
+ * opening still goes through the machine, so a controlled `open` keeps winning.
+ */
+const useHoverIntentProps = () => {
+	const intent = useContext(HoverIntentContext);
+	const { setOpen } = usePopoverContext();
+
+	if (!intent) {
+		return undefined;
+	}
+
+	const onPointerIntent = (event: PointerEvent, open: boolean, delay: number) => {
+		// Touch fires pointerenter/leave around a tap; let the click toggle own that.
+		if (event.pointerType === 'touch') {
+			return;
+		}
+
+		intent.schedule(() => setOpen(open), delay);
+	};
+
+	return {
+		onPointerEnter: (event: PointerEvent) => onPointerIntent(event, true, intent.openDelay),
+		onPointerLeave: (event: PointerEvent) => onPointerIntent(event, false, intent.closeDelay),
+	};
+};
 
 export const toPlacement = (side: DsPopoverSide, align: DsPopoverAlign) =>
 	align === 'center' ? side : (`${side}-${align}` as const);
@@ -29,26 +71,53 @@ const DsPopoverRoot = ({
 	align = 'center',
 	gutter = 8,
 	modal = false,
+	openOn = 'click',
+	openDelay = DEFAULT_OPEN_DELAY_MS,
+	closeDelay = DEFAULT_CLOSE_DELAY_MS,
 	getAnchorElement,
 	children,
 	onOpenChange,
-}: DsPopoverRootProps) => (
-	<Popover.Root
-		open={open}
-		defaultOpen={defaultOpen}
-		modal={modal}
-		positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
-		onOpenChange={(details) => onOpenChange?.(details.open)}
-	>
-		{children}
-	</Popover.Root>
-);
+}: DsPopoverRootProps) => {
+	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-const DsPopoverTrigger = ({ children, className }: DsPopoverTriggerProps) => (
-	<Popover.Trigger asChild className={className}>
-		{children}
-	</Popover.Trigger>
-);
+	useEffect(() => () => clearTimeout(timer.current), []);
+
+	const schedule = (action: () => void, delay: number) => {
+		clearTimeout(timer.current);
+		timer.current = setTimeout(action, delay);
+	};
+
+	const isHover = openOn === 'hover';
+
+	return (
+		<Popover.Root
+			open={open}
+			defaultOpen={defaultOpen}
+			modal={modal}
+			// Ark machine prop, not the DOM attribute the a11y rule is about. Merely
+			// hovering must not pull focus off whatever the user is actually using; Ark
+			// still proxies tabbing into the portalled panel, so keyboard reach is intact.
+			// eslint-disable-next-line jsx-a11y/no-autofocus
+			autoFocus={!isHover}
+			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
+			onOpenChange={(details) => onOpenChange?.(details.open)}
+		>
+			<HoverIntentContext.Provider value={isHover ? { openDelay, closeDelay, schedule } : null}>
+				{children}
+			</HoverIntentContext.Provider>
+		</Popover.Root>
+	);
+};
+
+const DsPopoverTrigger = ({ children, className }: DsPopoverTriggerProps) => {
+	const hoverProps = useHoverIntentProps();
+
+	return (
+		<Popover.Trigger asChild className={className} {...hoverProps}>
+			{children}
+		</Popover.Trigger>
+	);
+};
 
 const DsPopoverPanel = ({
 	width = DEFAULT_PANEL_WIDTH,
@@ -57,20 +126,25 @@ const DsPopoverPanel = ({
 	children,
 	ref,
 	'aria-label': ariaLabel,
-}: DsPopoverPanelProps) => (
-	<Portal>
-		<Popover.Positioner>
-			<Popover.Content
-				ref={ref}
-				aria-label={ariaLabel}
-				className={classNames(styles.panel, className)}
-				style={{ ...style, width }}
-			>
-				{children}
-			</Popover.Content>
-		</Popover.Positioner>
-	</Portal>
-);
+}: DsPopoverPanelProps) => {
+	const hoverProps = useHoverIntentProps();
+
+	return (
+		<Portal>
+			<Popover.Positioner>
+				<Popover.Content
+					{...hoverProps}
+					ref={ref}
+					aria-label={ariaLabel}
+					className={classNames(styles.panel, className)}
+					style={{ ...style, width }}
+				>
+					{children}
+				</Popover.Content>
+			</Popover.Positioner>
+		</Portal>
+	);
+};
 
 const DsPopoverHeader = ({ icon, className, style, children }: DsPopoverHeaderProps) => (
 	<div className={classNames(styles.header, className)} style={style}>
