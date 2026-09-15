@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsFilterStatusIcon } from '../../ds-filter-status-icon';
 import { DsIcon } from '../../ds-icon';
+import { DsPopover } from '../../ds-popover';
 import { DsTree } from '../ds-tree';
 import { createDsTreeCollection } from '../ds-tree.utils';
 import type { DsTreeNode } from '../ds-tree.types';
@@ -351,5 +352,44 @@ describe('DsTree', () => {
 
 		await expect.element(secondary).toHaveAttribute('data-focus');
 		expect(onFocusChange).toHaveBeenCalledWith('firewall-2');
+	});
+});
+
+describe('DsTree row parts forward injected props', () => {
+	// Regression: the row parts used to destructure only className/style/children, so
+	// an `asChild` trigger wrapping a row injected handlers into a void and the popover
+	// silently never opened.
+	it('opens a wrapping DsPopover.Trigger rendered asChild around a branch row', async () => {
+		const collection = createDsTreeCollection(nodes);
+
+		await page.render(
+			<DsTree.Root collection={collection}>
+				<DsTree.Tree>
+					<DsTree.NodeProvider node={nodes[0]} indexPath={[0]}>
+						<DsTree.Branch>
+							<DsPopover.Root>
+								<DsPopover.Trigger>
+									<DsTree.BranchControl>
+										<DsTree.BranchText>Network</DsTree.BranchText>
+									</DsTree.BranchControl>
+								</DsPopover.Trigger>
+								<DsPopover.Panel>
+									<DsPopover.Header>Network pages</DsPopover.Header>
+									<DsPopover.Content>
+										<DsPopover.ContentItem>Routers and firewalls</DsPopover.ContentItem>
+									</DsPopover.Content>
+								</DsPopover.Panel>
+							</DsPopover.Root>
+						</DsTree.Branch>
+					</DsTree.NodeProvider>
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+
+		await expect.element(page.getByText(/routers and firewalls/i)).not.toBeVisible();
+
+		await page.getByText('Network').click();
+
+		await expect.element(page.getByRole('dialog', { name: /network pages/i })).toBeVisible();
 	});
 });

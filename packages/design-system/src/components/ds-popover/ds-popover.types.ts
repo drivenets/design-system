@@ -6,6 +6,9 @@ export type DsPopoverSide = (typeof popoverSides)[number];
 export const popoverAligns = ['start', 'center', 'end'] as const;
 export type DsPopoverAlign = (typeof popoverAligns)[number];
 
+export const popoverOpenTriggers = ['click', 'hover'] as const;
+export type DsPopoverOpenTrigger = (typeof popoverOpenTriggers)[number];
+
 export interface DsPopoverRootProps {
 	/** Controlled open state. Pair with `onOpenChange`. */
 	open?: boolean;
@@ -31,6 +34,29 @@ export interface DsPopoverRootProps {
 	 * @default false
 	 */
 	modal?: boolean;
+	/**
+	 * Which pointer intent opens the panel. `'hover'` layers pointer-enter/leave
+	 * intent *on top of* the click behavior — click and keyboard activation still
+	 * toggle, Escape still closes, and touch pointers are ignored so a tap stays a
+	 * click. Under `'hover'` the panel does not steal focus on open; keyboard users
+	 * tab into it from the trigger.
+	 * @default 'click'
+	 */
+	openOn?: DsPopoverOpenTrigger;
+	/**
+	 * Milliseconds the pointer must rest on the trigger before the panel opens.
+	 * Ignored unless `openOn` is `'hover'`.
+	 * @default 200
+	 */
+	openDelay?: number;
+	/**
+	 * Milliseconds after the pointer leaves the trigger or the panel before it
+	 * closes. Keep this non-zero: the pointer needs time to cross the `gutter` gap
+	 * between trigger and panel, and `0` loses that handoff.
+	 * Ignored unless `openOn` is `'hover'`.
+	 * @default 150
+	 */
+	closeDelay?: number;
 	/**
 	 * Returns the element the panel should position against.
 	 * When provided, the panel anchors to this element instead of the trigger —
