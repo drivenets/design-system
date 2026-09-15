@@ -68,6 +68,7 @@ export * from './components/ds-textarea';
 export * from './components/ds-time-picker';
 export * from './components/ds-toast';
 export * from './components/ds-toggle';
+export * from './components/ds-toggle-filter-data';
 export * from './components/ds-tooltip';
 export * from './components/ds-top-bar-navigation';
 export * from './components/ds-tree';

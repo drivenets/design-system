@@ -1,0 +1,88 @@
+.pill {
+	box-sizing: border-box;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--4xs);
+	height: var(--lg);
+	padding: var(--4xs) var(--xs);
+	border: 1px solid var(--border);
+	border-radius: 9999px;
+	background: var(--background);
+	color: var(--font-main);
+	cursor: pointer;
+	transition-property: background, border-color, box-shadow, color;
+	transition-timing-function: ease-out;
+	transition-duration: 0.2s;
+
+	&:hover {
+		background: var(--background-action-hover-weak);
+		border-color: var(--border-field-hover);
+	}
+
+	// Figma draws the non-active focus state as a 2px border. Growing `border-width` to 2px would
+	// widen and heighten the box, so the outer pixel stays a real border and the second is painted
+	// inward as an inset ring — same 2px read, identical geometry.
+	&:focus-visible {
+		outline: none;
+		border-color: var(--border-field-hover);
+		background: var(--background-action-hover-weak);
+		box-shadow: inset 0 0 0 1px var(--border-field-hover);
+	}
+
+	&.active {
+		border-color: var(--border-action-primary);
+		background: var(--background-secondary-hover);
+
+		// Figma tints active hover `--background-tertiary-selected-weak` (grey-200), which reads
+		// there as a subtle grey-on-grey darkening because its active rest is the near-neutral
+		// `#001a470d`. The repo's `--background-secondary-hover` is saturated blue-050 — the token
+		// drift logged on AR-88117 — so Figma's literal grey would drain the blue on hover and read as
+		// de-selecting an applied filter. Resolving the same drift consistently keeps hover in the
+		// blue family, one step up from rest.
+		&:hover,
+		&:focus-visible {
+			border-color: var(--border-action-primary-hover);
+			background: var(--background-action-secondary-hover);
+		}
+
+		// Deliberate divergence from Figma, which draws active focus as a 1px
+		// `--border-action-primary-hover` border byte-identical to active hover — leaving a
+		// keyboard user no focus indicator they can perceive (blue-700 -> blue-800 is ~1.2:1,
+		// against WCAG 2.4.11) and no way to tell focus from hover. The non-active inward ring is
+		// kept instead and tinted to the active border, so focus reads as a 2px blue perimeter.
+		// Same treatment as a selected `DsCard` (`ds-card.module.scss:85-92`).
+		&:focus-visible {
+			box-shadow: inset 0 0 0 1px var(--border-action-primary-hover);
+		}
+
+		&:disabled {
+			border-color: var(--border-disabled);
+			background: var(--background-secondary);
+		}
+	}
+
+	&:disabled {
+		border-color: var(--border-disabled);
+		background: var(--background-action-hover-weak);
+		color: var(--font-disabled);
+		box-shadow: none;
+		cursor: not-allowed;
+
+		.value {
+			color: var(--font-disabled);
+		}
+	}
+}
+
+// Both segments hug: the pill is content-sized in Figma, and letting the value collapse first
+// would truncate the number the user is actually filtering on.
+.label,
+.value {
+	flex-shrink: 0;
+}
+
+// Driven from CSS rather than `DsTypography`'s `color` prop on purpose — that prop lands as an
+// inline style, which `.pill:disabled .value` could not then override.
+.value {
+	color: var(--font-secondary);
+}
