@@ -2,6 +2,7 @@ packages:
   - 'packages/*'
 
 minimumReleaseAge: 1440 # 1 day in minutes
+minimumReleaseAgeStrict: true
 trustPolicy: 'no-downgrade'
 blockExoticSubdeps: true
 
