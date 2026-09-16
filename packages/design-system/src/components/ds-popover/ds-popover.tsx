@@ -20,8 +20,6 @@ import type {
 
 const DEFAULT_PANEL_WIDTH = 400;
 const DEFAULT_OPEN_DELAY_MS = 200;
-// Non-zero on purpose: the pointer has to cross the `gutter` gap from the trigger
-// to the portalled panel, and a 0ms close loses that handoff.
 const DEFAULT_CLOSE_DELAY_MS = 150;
 
 interface HoverIntent {

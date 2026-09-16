@@ -35,11 +35,7 @@ export interface DsPopoverRootProps {
 	 */
 	modal?: boolean;
 	/**
-	 * Which pointer intent opens the panel. `'hover'` layers pointer-enter/leave
-	 * intent *on top of* the click behavior — click and keyboard activation still
-	 * toggle, Escape still closes, and touch pointers are ignored so a tap stays a
-	 * click. Under `'hover'` the panel does not steal focus on open; keyboard users
-	 * tab into it from the trigger.
+	 * Trigger open method - click / hover
 	 * @default 'click'
 	 */
 	openOn?: DsPopoverOpenTrigger;
@@ -51,9 +47,7 @@ export interface DsPopoverRootProps {
 	openDelay?: number;
 	/**
 	 * Milliseconds after the pointer leaves the trigger or the panel before it
-	 * closes. Keep this non-zero: the pointer needs time to cross the `gutter` gap
-	 * between trigger and panel, and `0` loses that handoff.
-	 * Ignored unless `openOn` is `'hover'`.
+	 * closes. Ignored unless `openOn` is `'hover'`.
 	 * @default 150
 	 */
 	closeDelay?: number;
