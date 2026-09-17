@@ -20,7 +20,7 @@ import {
 	useHoverIntent,
 	useHoverIntentProps,
 } from './ds-popover.hover-intent';
-import { toPlacement } from './ds-popover.utils';
+import { invokeCloseAutoFocus, toFocusEl, toPlacement } from './ds-popover.utils';
 import styles from './ds-popover.module.scss';
 import type {
 	DsPopoverAnchorProps,
@@ -47,40 +47,6 @@ const PopoverOptionsContext = createContext<PopoverOptionsContextValue>({
 	registerAnchor: () => undefined,
 	registerContentId: () => undefined,
 });
-
-const toFocusEl = (handler: ((event: Event) => void) | undefined, eventName: string) =>
-	handler
-		? () => {
-				const event = new Event(eventName, { cancelable: true });
-				handler(event);
-
-				return event.defaultPrevented ? (document.activeElement as HTMLElement | null) : undefined;
-			}
-		: undefined;
-
-const isRestorableFocusTarget = (el: EventTarget | null): el is HTMLElement =>
-	el instanceof HTMLElement && el.isConnected && el !== document.body && el !== document.documentElement;
-
-const invokeCloseAutoFocus = (handler: (event: Event) => void) => {
-	const event = new Event('closeAutoFocus', { cancelable: true });
-	handler(event);
-
-	if (!event.defaultPrevented) {
-		return;
-	}
-
-	const focused = document.activeElement;
-
-	if (!isRestorableFocusTarget(focused)) {
-		return;
-	}
-
-	requestAnimationFrame(() => {
-		if (focused.isConnected) {
-			focused.focus({ preventScroll: true });
-		}
-	});
-};
 
 const DsPopoverRoot = ({
 	open,
