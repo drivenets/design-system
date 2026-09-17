@@ -1,5 +1,6 @@
-import { createContext, useContext, type FocusEvent, type PointerEvent } from 'react';
+import type { FocusEvent, PointerEvent } from 'react';
 import { usePopoverContext } from '@ark-ui/react/popover';
+import { useDsPopoverContext } from './ds-popover.context';
 import { isHoverPointer } from './ds-popover.utils';
 
 export const DEFAULT_OPEN_DELAY_MS = 200;
@@ -15,8 +16,7 @@ export interface HoverIntent {
 	schedule: (action: () => void, delay: number) => void;
 }
 
-export const HoverIntentContext = createContext<HoverIntent | null>(null);
-export const useHoverIntent = () => useContext(HoverIntentContext);
+export const useHoverIntent = () => useDsPopoverContext().hoverIntent;
 
 export const useHoverIntentProps = () => {
 	const intent = useHoverIntent();

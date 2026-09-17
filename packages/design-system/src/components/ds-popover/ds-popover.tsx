@@ -1,23 +1,14 @@
-import {
-	createContext,
-	useContext,
-	useEffect,
-	useLayoutEffect,
-	useRef,
-	useState,
-	type FocusEvent,
-} from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type FocusEvent } from 'react';
 import { Popover, type PopoverRootProps } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 import { PopoverTrigger } from './components/popover-trigger';
+import { DsPopoverContext, useDsPopoverContext } from './ds-popover.context';
 import {
 	DEFAULT_CLOSE_DELAY_MS,
 	DEFAULT_OPEN_DELAY_MS,
-	HoverIntentContext,
-	useHoverIntent,
 	useHoverIntentProps,
 } from './ds-popover.hover-intent';
 import { invokeCloseAutoFocus, toFocusEl, toPlacement } from './ds-popover.utils';
@@ -35,18 +26,6 @@ import type {
 
 const DEFAULT_PANEL_WIDTH = 400;
 const MATCHED_PANEL_WIDTH = 'var(--reference-width)';
-
-type PopoverOptionsContextValue = {
-	matchAnchorWidth: boolean;
-	registerAnchor: (el: HTMLElement | null) => void;
-	registerContentId: (id: string | undefined) => void;
-};
-
-const PopoverOptionsContext = createContext<PopoverOptionsContextValue>({
-	matchAnchorWidth: false,
-	registerAnchor: () => undefined,
-	registerContentId: () => undefined,
-});
 
 const DsPopoverRoot = ({
 	open,
@@ -101,8 +80,15 @@ const DsPopoverRoot = ({
 	const arkRestoreFocus = ownsCloseFocus ? false : (restoreFocus ?? (!isHover || focusInPanel));
 
 	return (
-		<PopoverOptionsContext.Provider
-			value={{ matchAnchorWidth, registerAnchor, registerContentId: setContentId }}
+		<DsPopoverContext.Provider
+			value={{
+				matchAnchorWidth,
+				registerAnchor,
+				registerContentId: setContentId,
+				hoverIntent: isHover
+					? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore }
+					: null,
+			}}
 		>
 			<Popover.Root
 				open={open}
@@ -146,18 +132,14 @@ const DsPopoverRoot = ({
 					onOpenChange?.(details.open);
 				}}
 			>
-				<HoverIntentContext.Provider
-					value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore } : null}
-				>
-					{children}
-				</HoverIntentContext.Provider>
+				{children}
 			</Popover.Root>
-		</PopoverOptionsContext.Provider>
+		</DsPopoverContext.Provider>
 	);
 };
 
 const DsPopoverAnchor = ({ children, className }: DsPopoverAnchorProps) => {
-	const { registerAnchor } = useContext(PopoverOptionsContext);
+	const { registerAnchor } = useDsPopoverContext();
 
 	return (
 		<Popover.Anchor asChild className={className} ref={registerAnchor}>
@@ -175,9 +157,8 @@ const DsPopoverPanel = ({
 	id,
 	'aria-label': ariaLabel,
 }: DsPopoverPanelProps) => {
-	const { matchAnchorWidth, registerContentId } = useContext(PopoverOptionsContext);
+	const { matchAnchorWidth, registerContentId, hoverIntent } = useDsPopoverContext();
 	const hoverProps = useHoverIntentProps();
-	const intent = useHoverIntent();
 	const resolvedWidth = width ?? (matchAnchorWidth ? MATCHED_PANEL_WIDTH : DEFAULT_PANEL_WIDTH);
 
 	useLayoutEffect(() => {
@@ -186,10 +167,10 @@ const DsPopoverPanel = ({
 		return () => registerContentId(undefined);
 	}, [id, registerContentId]);
 
-	const onFocus = () => intent?.setFocusInPanel(true);
+	const onFocus = () => hoverIntent?.setFocusInPanel(true);
 	const onBlur = (event: FocusEvent<HTMLDivElement>) => {
 		if (!event.currentTarget.contains(event.relatedTarget)) {
-			intent?.setFocusInPanel(false);
+			hoverIntent?.setFocusInPanel(false);
 		}
 	};
 
