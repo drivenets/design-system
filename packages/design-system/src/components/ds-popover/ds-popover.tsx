@@ -51,9 +51,6 @@ const DsPopoverRoot = ({
 
 	const isHover = openOn === 'hover';
 
-	// Ark restores focus to the trigger on every close. Under hover that fires even
-	// when the user never touched the keyboard, yanking focus out of whatever they
-	// were doing. Only restore when focus is genuinely inside the panel.
 	const [focusInPanel, setFocusInPanel] = useState(false);
 	const restoringFocus = useRef(false);
 

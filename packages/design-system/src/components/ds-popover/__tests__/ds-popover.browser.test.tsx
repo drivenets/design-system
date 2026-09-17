@@ -93,7 +93,6 @@ describe('DsPopover', () => {
 });
 
 describe('DsPopover placement and sizing', () => {
-	// toPlacement itself is unit-tested in ds-popover.utils.unit.test.ts.
 	it('applies the default panel width', async () => {
 		await page.render(<Example defaultOpen />);
 
