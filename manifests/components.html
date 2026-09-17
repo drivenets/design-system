@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/99 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/99 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/99 without API description</a><span class="filter-pill ok" aria-disabled="true">571 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/571 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/99 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/99 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/99 without API description</a><span class="filter-pill ok" aria-disabled="true">572 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/572 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -14460,7 +14460,7 @@ toggles visibility so users can verify what they typed.</div>
       <div class="badges">
         <label for="c-50-components-popover-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-50-components-popover-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-50-components-popover-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -14625,6 +14625,52 @@ Prefer the compound API shown above.</div>
         &lt;/DsPopover.Content&gt;
     &lt;/DsPopover&gt;
 );</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Hover Trigger</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`openOn=&quot;hover&quot;` layers pointer intent on top of the click behavior: the panel
+opens after `openDelay`, survives the pointer crossing the `gutter` gap onto the
+panel itself, and closes `closeDelay` after the pointer leaves both. Click and
+keyboard activation still toggle, so touch devices keep working.
+
+Under `openOn=&quot;hover&quot;` the panel deliberately does not take focus on open — tab
+from the trigger to reach the links inside.</div>
+              <pre><code>const HoverTrigger = () =&gt; &lt;DsPopover.Root
+    side=&quot;right&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    modal={false}
+    defaultOpen={false}
+    openOn=&quot;hover&quot;&gt;
+    &lt;DsPopover.Trigger&gt;
+        &lt;DsButtonV3 variant=&quot;secondary&quot; icon=&quot;account_tree&quot;&gt;Inventory
+                            &lt;/DsButtonV3&gt;
+    &lt;/DsPopover.Trigger&gt;
+    &lt;DsPopover.Panel width={280}&gt;
+        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;account_tree&quot; color=&quot;action-secondary&quot; /&gt;}&gt;Inventory
+                            &lt;/DsPopover.Header&gt;
+        &lt;DsPopover.Content&gt;
+            &lt;DsPopover.ContentItem&gt;
+                &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-md-link&quot; asChild&gt;
+                        &lt;a href=&quot;#physical&quot;&gt;Physical&lt;/a&gt;
+                    &lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-link&quot; asChild&gt;
+                        &lt;a href=&quot;#logical&quot;&gt;Logical&lt;/a&gt;
+                    &lt;/DsTypography&gt;
+                    &lt;DsTypography variant=&quot;body-md-link&quot; asChild&gt;
+                        &lt;a href=&quot;#topology&quot;&gt;Topology&lt;/a&gt;
+                    &lt;/DsTypography&gt;
+                &lt;/DsStack&gt;
+            &lt;/DsPopover.ContentItem&gt;
+        &lt;/DsPopover.Content&gt;
+    &lt;/DsPopover.Panel&gt;
+&lt;/DsPopover.Root&gt;;</code></pre>
               
             </div>
             <div class="note ok">

@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";var t,n;function r(){return(r=e((()=>{t=[`top`,`right`,`bottom`,`left`],n=[`start`,`center`,`end`]})))()}export{n,t as r,r as t};

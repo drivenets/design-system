@@ -10021,6 +10021,12 @@
           "description": "Legacy single-element call form (`@deprecated`). The old `trigger` / `side` /\n`align` API still compiles and runs — it now renders the new light panel.\nPrefer the compound API shown above."
         },
         {
+          "id": "components-popover--hover-trigger",
+          "name": "Hover Trigger",
+          "snippet": "const HoverTrigger = () => <DsPopover.Root\n    side=\"right\"\n    align=\"start\"\n    gutter={8}\n    modal={false}\n    defaultOpen={false}\n    openOn=\"hover\">\n    <DsPopover.Trigger>\n        <DsButtonV3 variant=\"secondary\" icon=\"account_tree\">Inventory\n                            </DsButtonV3>\n    </DsPopover.Trigger>\n    <DsPopover.Panel width={280}>\n        <DsPopover.Header icon={<DsIcon icon=\"account_tree\" color=\"action-secondary\" />}>Inventory\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem>\n                <DsStack direction=\"column\" gap=\"var(--xs)\">\n                    <DsTypography variant=\"body-md-link\" asChild>\n                        <a href=\"#physical\">Physical</a>\n                    </DsTypography>\n                    <DsTypography variant=\"body-md-link\" asChild>\n                        <a href=\"#logical\">Logical</a>\n                    </DsTypography>\n                    <DsTypography variant=\"body-md-link\" asChild>\n                        <a href=\"#topology\">Topology</a>\n                    </DsTypography>\n                </DsStack>\n            </DsPopover.ContentItem>\n        </DsPopover.Content>\n    </DsPopover.Panel>\n</DsPopover.Root>;",
+          "description": "`openOn=\"hover\"` layers pointer intent on top of the click behavior: the panel\nopens after `openDelay`, survives the pointer crossing the `gutter` gap onto the\npanel itself, and closes `closeDelay` after the pointer leaves both. Click and\nkeyboard activation still toggle, so touch devices keep working.\n\nUnder `openOn=\"hover\"` the panel deliberately does not take focus on open — tab\nfrom the trigger to reach the links inside."
+        },
+        {
           "id": "components-popover--with-image",
           "name": "With Image",
           "snippet": "const WithImage = () => <DsPopover.Root side=\"bottom\" align=\"center\" gutter={8} modal={false} defaultOpen={false}>\n    <DsPopover.Trigger>\n        <DsButtonV3 variant=\"secondary\">London</DsButtonV3>\n    </DsPopover.Trigger>\n    <DsPopover.Panel>\n        <DsPopover.Header icon={<DsIcon icon=\"location_on\" color=\"action-secondary\" />}>London\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem>\n                <img className={styles.image} src={PLACEHOLDER_IMAGE} alt=\"Map of London\" />\n            </DsPopover.ContentItem>\n        </DsPopover.Content>\n    </DsPopover.Panel>\n</DsPopover.Root>;"
@@ -28657,6 +28663,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5450
+    "durationMs": 4307
   }
 }
