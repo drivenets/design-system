@@ -1,5 +1,13 @@
 @use '../../styles/typography';
 
+.positioner {
+	// Zag marks the *content* pointer-transparent when the tooltip is not
+	// interactive, but leaves this wrapper clickable — so an open tooltip swallows
+	// clicks meant for whatever it overlaps. Interactive content re-enables itself
+	// with `pointer-events: auto`, which still applies under a `none` parent.
+	pointer-events: none;
+}
+
 .tooltip {
 	--arrow-size: 7px;
 	color: var(--font-on-action);

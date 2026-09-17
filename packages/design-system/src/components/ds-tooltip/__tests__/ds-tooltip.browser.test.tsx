@@ -115,6 +115,30 @@ describe('DsTooltip', () => {
 		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 	});
 
+	it('does not block clicks on elements it overlaps when not interactive', async () => {
+		const onClick = vi.fn();
+
+		// Bottom placement with the component's 0px gutter puts the panel directly
+		// over the button below the trigger.
+		await page.render(
+			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+				<DsTooltip content="Covers the button below" placement="bottom">
+					<button type="button">Trigger</button>
+				</DsTooltip>
+				<button type="button" onClick={onClick}>
+					Underneath
+				</button>
+			</div>,
+		);
+
+		await page.getByRole('button', { name: 'Trigger' }).hover();
+		await expect.element(page.getByRole('tooltip')).toBeVisible();
+
+		// A non-interactive tooltip is decoration; it must stay pointer-transparent.
+		await page.getByRole('button', { name: 'Underneath' }).click();
+		expect(onClick).toHaveBeenCalledOnce();
+	});
+
 	it('keeps an interactive tooltip open so actions inside it can be clicked', async () => {
 		const onOpen = vi.fn();
 

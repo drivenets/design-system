@@ -36,7 +36,7 @@ const DsTooltip: FC<DsTooltipProps> = ({
 		>
 			<Tooltip.Trigger asChild>{children}</Tooltip.Trigger>
 			<Portal>
-				<Tooltip.Positioner>
+				<Tooltip.Positioner className={styles.positioner}>
 					<Tooltip.Content
 						className={classNames(styles.tooltip, slotProps?.content?.className)}
 						style={slotProps?.content?.style}
