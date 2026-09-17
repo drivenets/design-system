@@ -16,7 +16,7 @@ export interface HoverIntent {
 	schedule: (action: () => void, delay: number) => void;
 }
 
-export const useHoverIntent = () => useDsPopoverContext().hoverIntent;
+const useHoverIntent = () => useDsPopoverContext().hoverIntent;
 
 export const useHoverIntentProps = () => {
 	const intent = useHoverIntent();

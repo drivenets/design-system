@@ -31,7 +31,7 @@ export const toFocusEl = (handler: ((event: Event) => void) | undefined, eventNa
  * Body and the document element dump keyboard users at the top of the page,
  * so they are not useful restore targets.
  */
-export const isRestorableFocusTarget = (el: EventTarget | null): el is HTMLElement =>
+const isRestorableFocusTarget = (el: EventTarget | null): el is HTMLElement =>
 	el instanceof HTMLElement && el.isConnected && el !== document.body && el !== document.documentElement;
 
 /**
