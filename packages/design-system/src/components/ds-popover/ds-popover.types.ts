@@ -53,9 +53,6 @@ export interface DsPopoverRootProps {
 	closeDelay?: number;
 	/**
 	 * Restore focus to the trigger when the popover closes.
-	 * Set `false` when a popover item opens a `DsModal` (or another dialog),
-	 * so the closing popover doesn't yank focus back to its trigger and fight
-	 * the dialog's focus trap.
 	 * @default true
 	 */
 	restoreFocus?: boolean;

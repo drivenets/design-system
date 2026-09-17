@@ -73,8 +73,6 @@ describe('DsPopover', () => {
 		await expect.poll(() => document.activeElement).toBe(getTrigger().element());
 	});
 
-	// restoreFocus={false} lets a popover item open a DsModal without the closing
-	// popover yanking focus back to its trigger and fighting the dialog focus trap.
 	it('leaves the trigger unfocused on close when restoreFocus is false', async () => {
 		await page.render(<Example restoreFocus={false} />);
 
