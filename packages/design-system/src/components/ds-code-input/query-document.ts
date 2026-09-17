@@ -12,13 +12,11 @@ let measureContext: CanvasRenderingContext2D | null | undefined;
 
 export const canonicalizeLf = (text: string) => text.replace(/\r\n?/g, '\n');
 
-export const getLogicalLines = (text: string) => canonicalizeLf(text).split('\n');
+const getLogicalLines = (text: string) => canonicalizeLf(text).split('\n');
 
 export const getLogicalLineCount = (text: string) => getLogicalLines(text).length;
 
 export const getAdditionalLineCount = (text: string) => Math.max(0, getLogicalLineCount(text) - 1);
-
-export const getFirstLogicalLine = (text: string) => getLogicalLines(text)[0] ?? '';
 
 export const getLineAtIndex = (text: string, lineIndex: number) => getLogicalLines(text)[lineIndex] ?? '';
 
@@ -27,30 +25,6 @@ export const getLineIndexAtOffset = (text: string, offset: number) => {
 	const clamped = Math.min(Math.max(offset, 0), lf.length);
 
 	return lf.slice(0, clamped).split('\n').length - 1;
-};
-
-export const getLineStartOffset = (text: string, lineIndex: number) => {
-	const lf = canonicalizeLf(text);
-
-	if (lineIndex <= 0) {
-		return 0;
-	}
-
-	let remaining = lineIndex;
-
-	for (let index = 0; index < lf.length; index++) {
-		if (lf[index] !== '\n') {
-			continue;
-		}
-
-		remaining -= 1;
-
-		if (remaining === 0) {
-			return index + 1;
-		}
-	}
-
-	return lf.length;
 };
 
 export const getSelectedLineCount = (text: string, start: number, end: number) => {
@@ -78,7 +52,7 @@ export const applyTextSelection = (element: HTMLTextAreaElement, selection: Text
 	element.setSelectionRange(start, end, selection.direction);
 };
 
-export const getLineHeight = (element: HTMLTextAreaElement) => {
+const getLineHeight = (element: HTMLTextAreaElement) => {
 	const parsed = Number.parseFloat(getComputedStyle(element).lineHeight);
 
 	if (Number.isFinite(parsed)) {
