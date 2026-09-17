@@ -1,11 +1,20 @@
+import { useEffect, useRef, useState, type FocusEvent } from 'react';
 import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
+import { PopoverTrigger } from './components/popover-trigger';
+import {
+	DEFAULT_CLOSE_DELAY_MS,
+	DEFAULT_OPEN_DELAY_MS,
+	HoverIntentContext,
+	useHoverIntent,
+	useHoverIntentProps,
+} from './ds-popover.hover-intent';
+import { toPlacement } from './ds-popover.utils';
 import styles from './ds-popover.module.scss';
 import type {
-	DsPopoverAlign,
 	DsPopoverContentItemProps,
 	DsPopoverContentProps,
 	DsPopoverFooterProps,
@@ -13,14 +22,9 @@ import type {
 	DsPopoverPanelProps,
 	DsPopoverProps,
 	DsPopoverRootProps,
-	DsPopoverSide,
-	DsPopoverTriggerProps,
 } from './ds-popover.types';
 
 const DEFAULT_PANEL_WIDTH = 400;
-
-export const toPlacement = (side: DsPopoverSide, align: DsPopoverAlign) =>
-	align === 'center' ? side : (`${side}-${align}` as const);
 
 const DsPopoverRoot = ({
 	open,
@@ -29,26 +33,59 @@ const DsPopoverRoot = ({
 	align = 'center',
 	gutter = 8,
 	modal = false,
+	openOn = 'click',
+	openDelay = DEFAULT_OPEN_DELAY_MS,
+	closeDelay = DEFAULT_CLOSE_DELAY_MS,
 	getAnchorElement,
 	children,
 	onOpenChange,
-}: DsPopoverRootProps) => (
-	<Popover.Root
-		open={open}
-		defaultOpen={defaultOpen}
-		modal={modal}
-		positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
-		onOpenChange={(details) => onOpenChange?.(details.open)}
-	>
-		{children}
-	</Popover.Root>
-);
+}: DsPopoverRootProps) => {
+	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-const DsPopoverTrigger = ({ children, className }: DsPopoverTriggerProps) => (
-	<Popover.Trigger asChild className={className}>
-		{children}
-	</Popover.Trigger>
-);
+	useEffect(() => () => clearTimeout(timer.current), []);
+
+	const schedule = (action: () => void, delay: number) => {
+		clearTimeout(timer.current);
+		timer.current = setTimeout(action, delay);
+	};
+
+	const isHover = openOn === 'hover';
+
+	const [focusInPanel, setFocusInPanel] = useState(false);
+	const restoringFocus = useRef(false);
+
+	const consumeFocusRestore = () => {
+		const restoring = restoringFocus.current;
+		restoringFocus.current = false;
+		return restoring;
+	};
+
+	return (
+		<Popover.Root
+			open={open}
+			defaultOpen={defaultOpen}
+			modal={modal}
+			// Trigger focus is lost when open on hover
+			// eslint-disable-next-line jsx-a11y/no-autofocus
+			autoFocus={!isHover}
+			restoreFocus={!isHover || focusInPanel}
+			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
+			onOpenChange={(details) => {
+				if (!details.open && focusInPanel) {
+					restoringFocus.current = true;
+				}
+
+				onOpenChange?.(details.open);
+			}}
+		>
+			<HoverIntentContext.Provider
+				value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore } : null}
+			>
+				{children}
+			</HoverIntentContext.Provider>
+		</Popover.Root>
+	);
+};
 
 const DsPopoverPanel = ({
 	width = DEFAULT_PANEL_WIDTH,
@@ -57,20 +94,35 @@ const DsPopoverPanel = ({
 	children,
 	ref,
 	'aria-label': ariaLabel,
-}: DsPopoverPanelProps) => (
-	<Portal>
-		<Popover.Positioner>
-			<Popover.Content
-				ref={ref}
-				aria-label={ariaLabel}
-				className={classNames(styles.panel, className)}
-				style={{ ...style, width }}
-			>
-				{children}
-			</Popover.Content>
-		</Popover.Positioner>
-	</Portal>
-);
+}: DsPopoverPanelProps) => {
+	const hoverProps = useHoverIntentProps();
+	const intent = useHoverIntent();
+
+	const onFocus = () => intent?.setFocusInPanel(true);
+	const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+		if (!event.currentTarget.contains(event.relatedTarget)) {
+			intent?.setFocusInPanel(false);
+		}
+	};
+
+	return (
+		<Portal>
+			<Popover.Positioner>
+				<Popover.Content
+					{...hoverProps}
+					onFocus={onFocus}
+					onBlur={onBlur}
+					ref={ref}
+					aria-label={ariaLabel}
+					className={classNames(styles.panel, className)}
+					style={{ ...style, width }}
+				>
+					{children}
+				</Popover.Content>
+			</Popover.Positioner>
+		</Portal>
+	);
+};
 
 const DsPopoverHeader = ({ icon, className, style, children }: DsPopoverHeaderProps) => (
 	<div className={classNames(styles.header, className)} style={style}>
@@ -142,14 +194,13 @@ const DsPopoverLegacy = ({
 	align = 'center',
 }: DsPopoverProps) => (
 	<DsPopoverRoot side={side} align={align}>
-		<DsPopoverTrigger>{trigger}</DsPopoverTrigger>
+		<PopoverTrigger>{trigger}</PopoverTrigger>
 		<DsPopoverPanel className={className}>{children}</DsPopoverPanel>
 	</DsPopoverRoot>
 );
 
 DsPopoverLegacy.displayName = 'DsPopover';
 DsPopoverRoot.displayName = 'DsPopover.Root';
-DsPopoverTrigger.displayName = 'DsPopover.Trigger';
 DsPopoverPanel.displayName = 'DsPopover.Panel';
 DsPopoverHeader.displayName = 'DsPopover.Header';
 DsPopoverContent.displayName = 'DsPopover.Content';
@@ -158,7 +209,7 @@ DsPopoverFooter.displayName = 'DsPopover.Footer';
 
 export const DsPopover = Object.assign(DsPopoverLegacy, {
 	Root: DsPopoverRoot,
-	Trigger: DsPopoverTrigger,
+	Trigger: PopoverTrigger,
 	Panel: DsPopoverPanel,
 	Header: DsPopoverHeader,
 	Content: DsPopoverContent,

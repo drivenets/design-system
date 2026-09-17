@@ -170,6 +170,98 @@ const Legacy = () => (
     </DsPopover>
 );
 
+## Hover Trigger
+
+### Show code
+<DsPopover.Root
+  align="start"
+  defaultOpen={false}
+  gutter={8}
+  modal={false}
+  openOn="hover"
+  side="right"
+>
+  <DsPopover.Trigger>
+    <DsButtonV3
+      icon="account_tree"
+      variant="secondary"
+    >
+      Inventory
+    </DsButtonV3>
+  </DsPopover.Trigger>
+  <DsPopover.Panel width={280}>
+    <DsPopover.Header icon={<DsIcon color="action-secondary" icon="account_tree"/>}>
+      Inventory
+    </DsPopover.Header>
+    <DsPopover.Content>
+      <DsPopover.ContentItem>
+        <DsStack
+          direction="column"
+          gap="var(--xs)"
+        >
+          <DsTypography
+            asChild
+            variant="body-md-link"
+          >
+            <a href="#physical">
+              Physical
+            </a>
+          </DsTypography>
+          <DsTypography
+            asChild
+            variant="body-md-link"
+          >
+            <a href="#logical">
+              Logical
+            </a>
+          </DsTypography>
+          <DsTypography
+            asChild
+            variant="body-md-link"
+          >
+            <a href="#topology">
+              Topology
+            </a>
+          </DsTypography>
+        </DsStack>
+      </DsPopover.ContentItem>
+    </DsPopover.Content>
+  </DsPopover.Panel>
+</DsPopover.Root>
+
+### MCP manifest
+const HoverTrigger = () => <DsPopover.Root
+    side="right"
+    align="start"
+    gutter={8}
+    modal={false}
+    defaultOpen={false}
+    openOn="hover">
+    <DsPopover.Trigger>
+        <DsButtonV3 variant="secondary" icon="account_tree">Inventory
+                            </DsButtonV3>
+    </DsPopover.Trigger>
+    <DsPopover.Panel width={280}>
+        <DsPopover.Header icon={<DsIcon icon="account_tree" color="action-secondary" />}>Inventory
+                            </DsPopover.Header>
+        <DsPopover.Content>
+            <DsPopover.ContentItem>
+                <DsStack direction="column" gap="var(--xs)">
+                    <DsTypography variant="body-md-link" asChild>
+                        <a href="#physical">Physical</a>
+                    </DsTypography>
+                    <DsTypography variant="body-md-link" asChild>
+                        <a href="#logical">Logical</a>
+                    </DsTypography>
+                    <DsTypography variant="body-md-link" asChild>
+                        <a href="#topology">Topology</a>
+                    </DsTypography>
+                </DsStack>
+            </DsPopover.ContentItem>
+        </DsPopover.Content>
+    </DsPopover.Panel>
+</DsPopover.Root>;
+
 ## With Image
 
 ### Show code
