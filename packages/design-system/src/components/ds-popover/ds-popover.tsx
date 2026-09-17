@@ -1,5 +1,13 @@
-import { useEffect, useRef, useState, type FocusEvent } from 'react';
-import { Popover } from '@ark-ui/react/popover';
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useLayoutEffect,
+	useRef,
+	useState,
+	type FocusEvent,
+} from 'react';
+import { Popover, type PopoverRootProps } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import { DsStack } from '../ds-stack';
@@ -15,6 +23,7 @@ import {
 import { toPlacement } from './ds-popover.utils';
 import styles from './ds-popover.module.scss';
 import type {
+	DsPopoverAnchorProps,
 	DsPopoverContentItemProps,
 	DsPopoverContentProps,
 	DsPopoverFooterProps,
@@ -25,6 +34,53 @@ import type {
 } from './ds-popover.types';
 
 const DEFAULT_PANEL_WIDTH = 400;
+const MATCHED_PANEL_WIDTH = 'var(--reference-width)';
+
+type PopoverOptionsContextValue = {
+	matchAnchorWidth: boolean;
+	registerAnchor: (el: HTMLElement | null) => void;
+	registerContentId: (id: string | undefined) => void;
+};
+
+const PopoverOptionsContext = createContext<PopoverOptionsContextValue>({
+	matchAnchorWidth: false,
+	registerAnchor: () => undefined,
+	registerContentId: () => undefined,
+});
+
+const toFocusEl = (handler: ((event: Event) => void) | undefined, eventName: string) =>
+	handler
+		? () => {
+				const event = new Event(eventName, { cancelable: true });
+				handler(event);
+
+				return event.defaultPrevented ? (document.activeElement as HTMLElement | null) : undefined;
+			}
+		: undefined;
+
+const isRestorableFocusTarget = (el: EventTarget | null): el is HTMLElement =>
+	el instanceof HTMLElement && el.isConnected && el !== document.body && el !== document.documentElement;
+
+const invokeCloseAutoFocus = (handler: (event: Event) => void) => {
+	const event = new Event('closeAutoFocus', { cancelable: true });
+	handler(event);
+
+	if (!event.defaultPrevented) {
+		return;
+	}
+
+	const focused = document.activeElement;
+
+	if (!isRestorableFocusTarget(focused)) {
+		return;
+	}
+
+	requestAnimationFrame(() => {
+		if (focused.isConnected) {
+			focused.focus({ preventScroll: true });
+		}
+	});
+};
 
 const DsPopoverRoot = ({
 	open,
@@ -33,14 +89,23 @@ const DsPopoverRoot = ({
 	align = 'center',
 	gutter = 8,
 	modal = false,
+	matchAnchorWidth = false,
+	restoreFocus,
 	openOn = 'click',
 	openDelay = DEFAULT_OPEN_DELAY_MS,
 	closeDelay = DEFAULT_CLOSE_DELAY_MS,
 	getAnchorElement,
 	children,
+	onOpenAutoFocus,
+	onCloseAutoFocus,
+	onInteractOutside,
 	onOpenChange,
 }: DsPopoverRootProps) => {
 	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+	const anchorRef = useRef<HTMLElement | null>(null);
+	const restoringFocus = useRef(false);
+	const [contentId, setContentId] = useState<string>();
+	const [focusInPanel, setFocusInPanel] = useState(false);
 
 	useEffect(() => () => clearTimeout(timer.current), []);
 
@@ -51,52 +116,109 @@ const DsPopoverRoot = ({
 
 	const isHover = openOn === 'hover';
 
-	const [focusInPanel, setFocusInPanel] = useState(false);
-	const restoringFocus = useRef(false);
-
 	const consumeFocusRestore = () => {
 		const restoring = restoringFocus.current;
 		restoringFocus.current = false;
+
 		return restoring;
 	};
 
-	return (
-		<Popover.Root
-			open={open}
-			defaultOpen={defaultOpen}
-			modal={modal}
-			// Trigger focus is lost when open on hover
-			// eslint-disable-next-line jsx-a11y/no-autofocus
-			autoFocus={!isHover}
-			restoreFocus={!isHover || focusInPanel}
-			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
-			onOpenChange={(details) => {
-				if (!details.open && focusInPanel) {
-					restoringFocus.current = true;
-				}
+	const registerAnchor = (el: HTMLElement | null) => {
+		anchorRef.current = el;
+	};
 
-				onOpenChange?.(details.open);
-			}}
+	const ownsCloseFocus = restoreFocus === false && Boolean(onCloseAutoFocus);
+	const initialFocusEl = toFocusEl(onOpenAutoFocus, 'openAutoFocus') as PopoverRootProps['initialFocusEl'];
+	const finalFocusEl = ownsCloseFocus
+		? undefined
+		: (toFocusEl(onCloseAutoFocus, 'closeAutoFocus') as PopoverRootProps['finalFocusEl']);
+	const arkRestoreFocus = ownsCloseFocus ? false : (restoreFocus ?? (!isHover || focusInPanel));
+
+	return (
+		<PopoverOptionsContext.Provider
+			value={{ matchAnchorWidth, registerAnchor, registerContentId: setContentId }}
 		>
-			<HoverIntentContext.Provider
-				value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore } : null}
+			<Popover.Root
+				open={open}
+				defaultOpen={defaultOpen}
+				modal={modal}
+				ids={contentId ? { content: contentId } : undefined}
+				// Trigger focus is lost when open on hover
+				// eslint-disable-next-line jsx-a11y/no-autofocus
+				autoFocus={!isHover}
+				restoreFocus={arkRestoreFocus}
+				positioning={{
+					placement: toPlacement(side, align),
+					gutter,
+					sameWidth: matchAnchorWidth,
+					...(getAnchorElement ? { getAnchorElement } : {}),
+				}}
+				initialFocusEl={initialFocusEl}
+				finalFocusEl={finalFocusEl}
+				persistentElements={[() => anchorRef.current]}
+				onInteractOutside={
+					onInteractOutside
+						? (event) => {
+								const dsEvent = new Event('interactOutside', { cancelable: true });
+								onInteractOutside(dsEvent);
+
+								if (dsEvent.defaultPrevented) {
+									event.preventDefault();
+								}
+							}
+						: undefined
+				}
+				onOpenChange={(details) => {
+					if (!details.open && focusInPanel) {
+						restoringFocus.current = true;
+					}
+
+					if (!details.open && ownsCloseFocus && onCloseAutoFocus) {
+						invokeCloseAutoFocus(onCloseAutoFocus);
+					}
+
+					onOpenChange?.(details.open);
+				}}
 			>
-				{children}
-			</HoverIntentContext.Provider>
-		</Popover.Root>
+				<HoverIntentContext.Provider
+					value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore } : null}
+				>
+					{children}
+				</HoverIntentContext.Provider>
+			</Popover.Root>
+		</PopoverOptionsContext.Provider>
+	);
+};
+
+const DsPopoverAnchor = ({ children, className }: DsPopoverAnchorProps) => {
+	const { registerAnchor } = useContext(PopoverOptionsContext);
+
+	return (
+		<Popover.Anchor asChild className={className} ref={registerAnchor}>
+			{children}
+		</Popover.Anchor>
 	);
 };
 
 const DsPopoverPanel = ({
-	width = DEFAULT_PANEL_WIDTH,
+	width,
 	className,
 	style,
 	children,
 	ref,
+	id,
 	'aria-label': ariaLabel,
 }: DsPopoverPanelProps) => {
+	const { matchAnchorWidth, registerContentId } = useContext(PopoverOptionsContext);
 	const hoverProps = useHoverIntentProps();
 	const intent = useHoverIntent();
+	const resolvedWidth = width ?? (matchAnchorWidth ? MATCHED_PANEL_WIDTH : DEFAULT_PANEL_WIDTH);
+
+	useLayoutEffect(() => {
+		registerContentId(id);
+
+		return () => registerContentId(undefined);
+	}, [id, registerContentId]);
 
 	const onFocus = () => intent?.setFocusInPanel(true);
 	const onBlur = (event: FocusEvent<HTMLDivElement>) => {
@@ -115,7 +237,7 @@ const DsPopoverPanel = ({
 					ref={ref}
 					aria-label={ariaLabel}
 					className={classNames(styles.panel, className)}
-					style={{ ...style, width }}
+					style={{ ...style, width: resolvedWidth }}
 				>
 					{children}
 				</Popover.Content>
@@ -201,6 +323,7 @@ const DsPopoverLegacy = ({
 
 DsPopoverLegacy.displayName = 'DsPopover';
 DsPopoverRoot.displayName = 'DsPopover.Root';
+DsPopoverAnchor.displayName = 'DsPopover.Anchor';
 DsPopoverPanel.displayName = 'DsPopover.Panel';
 DsPopoverHeader.displayName = 'DsPopover.Header';
 DsPopoverContent.displayName = 'DsPopover.Content';
@@ -210,6 +333,7 @@ DsPopoverFooter.displayName = 'DsPopover.Footer';
 export const DsPopover = Object.assign(DsPopoverLegacy, {
 	Root: DsPopoverRoot,
 	Trigger: PopoverTrigger,
+	Anchor: DsPopoverAnchor,
 	Panel: DsPopoverPanel,
 	Header: DsPopoverHeader,
 	Content: DsPopoverContent,

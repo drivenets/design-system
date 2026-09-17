@@ -1,7 +1,9 @@
+import { useRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsPopover } from '../ds-popover';
 import type { DsPopoverRootProps } from '../ds-popover.types';
+import styles from '../ds-popover.stories.module.scss';
 
 const PLACEHOLDER_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 
@@ -477,5 +479,233 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 
 		// Focus was genuinely inside the panel, so it must not be stranded on <body>.
 		expect(document.activeElement?.textContent).toBe('Open details');
+	});
+});
+
+describe('DsPopover.Anchor', () => {
+	it('stays open when clicking non-trigger content inside the anchor, and closes on a true outside click', async () => {
+		await page.render(
+			<div>
+				<button type="button">Outside</button>
+				<DsPopover.Root>
+					<DsPopover.Anchor>
+						<div>
+							<span>Anchor label</span>
+							<DsPopover.Trigger>
+								<button type="button">Open details</button>
+							</DsPopover.Trigger>
+						</div>
+					</DsPopover.Anchor>
+					<DsPopover.Panel>
+						<DsPopover.Header>Device details</DsPopover.Header>
+						<DsPopover.Content>
+							<DsPopover.ContentItem>Edge router is online.</DsPopover.ContentItem>
+						</DsPopover.Content>
+					</DsPopover.Panel>
+				</DsPopover.Root>
+			</div>,
+		);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await page.getByText('Anchor label').click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await page.getByRole('button', { name: 'Outside' }).click();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+});
+
+describe('DsPopover matchAnchorWidth', () => {
+	it('sizes the panel to the anchor instead of the default 400px', async () => {
+		await page.render(
+			<DsPopover.Root matchAnchorWidth align="start">
+				<DsPopover.Anchor>
+					<div className={styles.anchorField}>
+						<DsPopover.Trigger>
+							<button type="button">Open</button>
+						</DsPopover.Trigger>
+					</div>
+				</DsPopover.Anchor>
+				<DsPopover.Panel>
+					<DsPopover.Header>Matched width</DsPopover.Header>
+					<DsPopover.Content>
+						<DsPopover.ContentItem>Body</DsPopover.ContentItem>
+					</DsPopover.Content>
+				</DsPopover.Panel>
+			</DsPopover.Root>,
+		);
+
+		await page.getByRole('button', { name: /^open$/i }).click();
+
+		const panel = page.getByRole('dialog', { name: /matched width/i });
+		await expect.element(panel).toBeVisible();
+
+		await expect
+			.poll(() => {
+				const panelNode = panel.element();
+
+				return panelNode instanceof HTMLElement ? panelNode.offsetWidth : 0;
+			})
+			.toBe(320);
+	});
+});
+
+describe('DsPopover focus', () => {
+	it('focuses the first control in the panel on open by default', async () => {
+		await page.render(
+			<DsPopover.Root>
+				<DsPopover.Trigger>
+					<button type="button">Open</button>
+				</DsPopover.Trigger>
+				<DsPopover.Panel>
+					<DsPopover.Header>Focus demo</DsPopover.Header>
+					<DsPopover.Content>
+						<DsPopover.ContentItem>
+							<button type="button">First action</button>
+						</DsPopover.ContentItem>
+					</DsPopover.Content>
+				</DsPopover.Panel>
+			</DsPopover.Root>,
+		);
+
+		await page.getByRole('button', { name: /^open$/i }).click();
+		await expect.element(page.getByRole('button', { name: /first action/i })).toHaveFocus();
+	});
+
+	it('keeps focus on the trigger when onOpenAutoFocus calls preventDefault', async () => {
+		const onOpenAutoFocus = vi.fn((event: Event) => event.preventDefault());
+
+		await page.render(
+			<DsPopover.Root onOpenAutoFocus={onOpenAutoFocus}>
+				<DsPopover.Trigger>
+					<button type="button">Open details</button>
+				</DsPopover.Trigger>
+				<DsPopover.Panel>
+					<DsPopover.Header>Device details</DsPopover.Header>
+					<DsPopover.Content>
+						<DsPopover.ContentItem>
+							<button type="button">First action</button>
+						</DsPopover.ContentItem>
+					</DsPopover.Content>
+				</DsPopover.Panel>
+			</DsPopover.Root>,
+		);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+		expect(onOpenAutoFocus).toHaveBeenCalled();
+		await expect.element(getTrigger()).toHaveFocus();
+		await expect.element(page.getByRole('button', { name: /first action/i })).not.toHaveFocus();
+	});
+
+	it('moves focus to a consumer node when onCloseAutoFocus calls preventDefault', async () => {
+		const CloseFocusExample = () => {
+			const returnRef = useRef<HTMLButtonElement>(null);
+
+			return (
+				<div>
+					<button ref={returnRef} type="button">
+						Return here
+					</button>
+					<DsPopover.Root
+						defaultOpen
+						onCloseAutoFocus={(event) => {
+							event.preventDefault();
+							returnRef.current?.focus();
+						}}
+					>
+						<DsPopover.Trigger>
+							<button type="button">Open details</button>
+						</DsPopover.Trigger>
+						<DsPopover.Panel>
+							<DsPopover.Header>Device details</DsPopover.Header>
+							<DsPopover.Content>
+								<DsPopover.ContentItem>Edge router is online.</DsPopover.ContentItem>
+							</DsPopover.Content>
+						</DsPopover.Panel>
+					</DsPopover.Root>
+				</div>
+			);
+		};
+
+		await page.render(<CloseFocusExample />);
+		await expect.element(getPanel()).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(page.getByRole('button', { name: /return here/i })).toHaveFocus();
+	});
+
+	it('moves focus to a consumer node when restoreFocus is false and onCloseAutoFocus calls preventDefault', async () => {
+		const onCloseAutoFocus = vi.fn();
+
+		const CloseFocusExample = () => {
+			const returnRef = useRef<HTMLButtonElement>(null);
+
+			return (
+				<div>
+					<button ref={returnRef} type="button">
+						Return here
+					</button>
+					<DsPopover.Root
+						defaultOpen
+						restoreFocus={false}
+						onCloseAutoFocus={(event) => {
+							event.preventDefault();
+							returnRef.current?.focus();
+							onCloseAutoFocus(event);
+						}}
+					>
+						<DsPopover.Trigger>
+							<button type="button">Open details</button>
+						</DsPopover.Trigger>
+						<DsPopover.Panel>
+							<DsPopover.Header>Device details</DsPopover.Header>
+							<DsPopover.Content>
+								<DsPopover.ContentItem>Edge router is online.</DsPopover.ContentItem>
+							</DsPopover.Content>
+						</DsPopover.Panel>
+					</DsPopover.Root>
+				</div>
+			);
+		};
+
+		await page.render(<CloseFocusExample />);
+		await expect.element(getPanel()).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		expect(onCloseAutoFocus).toHaveBeenCalled();
+		await expect.element(page.getByRole('button', { name: /return here/i })).toHaveFocus();
+		await expect.element(getTrigger()).not.toHaveFocus();
+		expect(document.activeElement).not.toBe(document.body);
+	});
+});
+
+describe('DsPopover.Panel id', () => {
+	it('forwards id onto the dialog', async () => {
+		await page.render(
+			<DsPopover.Root defaultOpen>
+				<DsPopover.Trigger>
+					<button type="button" aria-controls="device-panel">
+						Open
+					</button>
+				</DsPopover.Trigger>
+				<DsPopover.Panel id="device-panel">
+					<DsPopover.Header>Sized panel</DsPopover.Header>
+					<DsPopover.Content>
+						<DsPopover.ContentItem>Body</DsPopover.ContentItem>
+					</DsPopover.Content>
+				</DsPopover.Panel>
+			</DsPopover.Root>,
+		);
+
+		await expect
+			.element(page.getByRole('dialog', { name: /sized panel/i }))
+			.toHaveAttribute('id', 'device-panel');
 	});
 });

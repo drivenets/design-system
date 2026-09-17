@@ -41,8 +41,14 @@ const meta: Meta<typeof DsPopover.Root> = {
 		openOn: { control: 'inline-radio', options: popoverOpenTriggers },
 		openDelay: { control: 'number' },
 		closeDelay: { control: 'number' },
+		matchAnchorWidth: { control: 'boolean' },
+		restoreFocus: { control: 'boolean' },
 		open: { table: { disable: true } },
 		onOpenChange: { table: { disable: true } },
+		getAnchorElement: { table: { disable: true } },
+		onOpenAutoFocus: { table: { disable: true } },
+		onCloseAutoFocus: { table: { disable: true } },
+		onInteractOutside: { table: { disable: true } },
 		children: { table: { disable: true } },
 	},
 };
@@ -188,6 +194,43 @@ export const WithImage: Story = {
 				<DsPopover.Content>
 					<DsPopover.ContentItem>
 						<img className={styles.image} src={PLACEHOLDER_IMAGE} alt="Map of London" />
+					</DsPopover.ContentItem>
+				</DsPopover.Content>
+			</DsPopover.Panel>
+		</DsPopover.Root>
+	),
+};
+
+/**
+ * When the trigger is not the positioning reference — for example a field with an
+ * end-adornment button — wrap the field in `DsPopover.Anchor` and set `matchAnchorWidth`
+ * so the panel lines up with the field rather than the button.
+ */
+export const CustomAnchor: Story = {
+	args: {
+		align: 'start',
+		matchAnchorWidth: true,
+	},
+	render: (args) => (
+		<DsPopover.Root {...args}>
+			<DsPopover.Anchor>
+				<div className={styles.anchorField}>
+					<DsTypography variant="body-sm-reg" color="main">
+						Query filter
+					</DsTypography>
+					<DsPopover.Trigger>
+						<DsButtonV3 variant="tertiary" size="small" icon="info" aria-label="Filter details" />
+					</DsPopover.Trigger>
+				</div>
+			</DsPopover.Anchor>
+			<DsPopover.Panel>
+				<DsPopover.Header icon={<DsIcon icon="filter_alt" color="action-secondary" />}>
+					Query filter
+				</DsPopover.Header>
+				<DsPopover.Content>
+					<DsPopover.ContentItem>
+						The panel positions against the field and matches its width. The info button only toggles open
+						state.
 					</DsPopover.ContentItem>
 				</DsPopover.Content>
 			</DsPopover.Panel>
