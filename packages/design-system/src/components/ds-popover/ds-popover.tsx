@@ -147,11 +147,13 @@ const DsPopoverRoot = ({
 			open={open}
 			defaultOpen={defaultOpen}
 			modal={modal}
-			// Ark machine prop, not the DOM attribute the a11y rule is about. Merely
-			// hovering must not pull focus off whatever the user is actually using; Ark
-			// still proxies tabbing into the portalled panel, so keyboard reach is intact.
+			// Hovering must not move focus: the pointer resting on a trigger would
+			// otherwise pull the caret out of whatever the user is typing. Tab still
+			// reaches the panel, which Ark proxies across the portal.
 			// eslint-disable-next-line jsx-a11y/no-autofocus
 			autoFocus={!isHover}
+			// Ark returns focus to the trigger on close. Only wanted if focus was
+			// actually inside the panel — otherwise a hover-away steals it back.
 			restoreFocus={!isHover || focusInPanel}
 			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
 			onOpenChange={(details) => {
