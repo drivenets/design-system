@@ -282,9 +282,15 @@ const HoverExample = (props: HoverExampleProps) => (
 	</DsPopover.Root>
 );
 
+const renderHoverExample = async (props?: HoverExampleProps) => {
+	await page.render(<HoverExample {...props} />);
+	// The physical cursor may still be parked on the trigger from a previous test.
+	await getTrigger().unhover();
+};
+
 describe('DsPopover openOn="hover"', () => {
 	it('opens after the open delay, not immediately', async () => {
-		await page.render(<HoverExample />);
+		await renderHoverExample();
 
 		await getTrigger().hover();
 		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
@@ -293,13 +299,14 @@ describe('DsPopover openOn="hover"', () => {
 	});
 
 	it('keeps the panel open while the pointer travels from the trigger onto it', async () => {
-		await page.render(<HoverExample />);
+		await renderHoverExample();
 
 		await getTrigger().hover();
 		await expect.element(getPanel()).toBeVisible();
 
-		// Leave the trigger (starting the close timer), cross the gutter, land on the panel.
-		await getTrigger().unhover();
+		// Move from the trigger across the gutter onto the panel. `unhover()` after
+		// open parks the pointer on <body>; Playwright's later hover then scrolls
+		// the portaled dialog and loses the race to the close timer.
 		await getPanel().hover();
 
 		// Well past the close delay: entering the panel must have cancelled the pending close.
@@ -309,7 +316,7 @@ describe('DsPopover openOn="hover"', () => {
 	});
 
 	it('closes after the close delay once the pointer leaves the panel', async () => {
-		await page.render(<HoverExample />);
+		await renderHoverExample();
 
 		await getTrigger().hover();
 		await expect.element(getPanel()).toBeVisible();
@@ -321,7 +328,7 @@ describe('DsPopover openOn="hover"', () => {
 	});
 
 	it('still opens and closes on click', async () => {
-		await page.render(<HoverExample />);
+		await renderHoverExample();
 
 		// Click resolves immediately — it must not wait for, or be swallowed by, hover intent.
 		await getTrigger().click();
@@ -332,9 +339,7 @@ describe('DsPopover openOn="hover"', () => {
 	});
 
 	it('ignores touch pointers so a tap stays a plain click', async () => {
-		await page.render(<HoverExample />);
-		// The physical cursor may still be parked on the trigger from a previous test.
-		await getTrigger().unhover();
+		await renderHoverExample();
 
 		pointerEnterTrigger('touch');
 
@@ -348,7 +353,7 @@ describe('DsPopover openOn="hover"', () => {
 	});
 
 	it('still closes on Escape', async () => {
-		await page.render(<HoverExample />);
+		await renderHoverExample();
 
 		await getTrigger().hover();
 		await expect.element(getPanel()).toBeVisible();
@@ -360,7 +365,7 @@ describe('DsPopover openOn="hover"', () => {
 
 	it('lets a controlled open prop win over hover intent', async () => {
 		const onOpenChange = vi.fn();
-		await page.render(<HoverExample open={false} onOpenChange={onOpenChange} />);
+		await renderHoverExample({ open: false, onOpenChange });
 
 		await getTrigger().hover();
 
