@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
-import { DsPopover, toPlacement } from '../ds-popover';
+import { DsPopover } from '../ds-popover';
 import type { DsPopoverRootProps } from '../ds-popover.types';
 
 const PLACEHOLDER_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
@@ -93,14 +93,7 @@ describe('DsPopover', () => {
 });
 
 describe('DsPopover placement and sizing', () => {
-	// Placement is DsPopover's contract; the resulting Ark DOM attribute is not.
-	it('maps side and align to a placement string', () => {
-		expect(toPlacement('right', 'start')).toBe('right-start');
-		expect(toPlacement('top', 'end')).toBe('top-end');
-		// align 'center' drops the suffix.
-		expect(toPlacement('bottom', 'center')).toBe('bottom');
-	});
-
+	// toPlacement itself is unit-tested in ds-popover.utils.unit.test.ts.
 	it('applies the default panel width', async () => {
 		await page.render(<Example defaultOpen />);
 

@@ -1,20 +1,20 @@
-import {
-	createContext,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-	type FocusEvent,
-	type PointerEvent,
-} from 'react';
-import { Popover, usePopoverContext } from '@ark-ui/react/popover';
+import { useEffect, useRef, useState, type FocusEvent } from 'react';
+import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
+import { PopoverTrigger } from './components/popover-trigger';
+import {
+	DEFAULT_CLOSE_DELAY_MS,
+	DEFAULT_OPEN_DELAY_MS,
+	HoverIntentContext,
+	useHoverIntent,
+	useHoverIntentProps,
+} from './ds-popover.hover-intent';
+import { toPlacement } from './ds-popover.utils';
 import styles from './ds-popover.module.scss';
 import type {
-	DsPopoverAlign,
 	DsPopoverContentItemProps,
 	DsPopoverContentProps,
 	DsPopoverFooterProps,
@@ -22,88 +22,9 @@ import type {
 	DsPopoverPanelProps,
 	DsPopoverProps,
 	DsPopoverRootProps,
-	DsPopoverSide,
-	DsPopoverTriggerProps,
 } from './ds-popover.types';
 
 const DEFAULT_PANEL_WIDTH = 400;
-const DEFAULT_OPEN_DELAY_MS = 200;
-const DEFAULT_CLOSE_DELAY_MS = 150;
-
-interface HoverIntent {
-	openDelay: number;
-	closeDelay: number;
-	/** Lets the panel report whether focus is currently inside it. */
-	setFocusInPanel: (inPanel: boolean) => void;
-	/** True once if the trigger is about to be re-focused by Ark's close-time restore. */
-	consumeFocusRestore: () => boolean;
-	/** Owns one shared timer, so moving trigger -> panel cancels the pending close. */
-	schedule: (action: () => void, delay: number) => void;
-}
-
-const HoverIntentContext = createContext<HoverIntent | null>(null);
-
-/**
- * Pointer handlers for the parts a hovering user can be over — the trigger and the
- * panel. Ark's popover machine has no hover support, so the intent timers live here;
- * opening still goes through the machine, so a controlled `open` keeps winning.
- */
-const useHoverIntentProps = () => {
-	const intent = useContext(HoverIntentContext);
-	const { setOpen } = usePopoverContext();
-
-	if (!intent) {
-		return undefined;
-	}
-
-	const onPointerIntent = (event: PointerEvent, open: boolean, delay: number) => {
-		// Touch fires pointerenter/leave around a tap; let the click toggle own that.
-		if (event.pointerType === 'touch') {
-			return;
-		}
-
-		intent.schedule(() => setOpen(open), delay);
-	};
-
-	return {
-		onPointerEnter: (event: PointerEvent) => onPointerIntent(event, true, intent.openDelay),
-		onPointerLeave: (event: PointerEvent) => onPointerIntent(event, false, intent.closeDelay),
-	};
-};
-
-/**
- * Trigger props for hover mode: pointer intent plus keyboard reveal. A tab to the
- * trigger opens the panel, so keyboard users get the same affordance as pointer
- * users. Gated on `:focus-visible` — a mouse click focuses the button without it,
- * so this never races the click toggle.
- */
-const useHoverTriggerProps = () => {
-	const pointerProps = useHoverIntentProps();
-	const intent = useContext(HoverIntentContext);
-	const { setOpen } = usePopoverContext();
-
-	if (!intent) {
-		return undefined;
-	}
-
-	return {
-		...pointerProps,
-		onFocus: (event: FocusEvent<HTMLElement>) => {
-			// Closing with focus inside the panel makes Ark re-focus the trigger; that
-			// is a restore, not the user tabbing in, and must not reopen the panel.
-			if (intent.consumeFocusRestore()) {
-				return;
-			}
-
-			if (event.target.matches(':focus-visible')) {
-				setOpen(true);
-			}
-		},
-	};
-};
-
-export const toPlacement = (side: DsPopoverSide, align: DsPopoverAlign) =>
-	align === 'center' ? side : (`${side}-${align}` as const);
 
 const DsPopoverRoot = ({
 	open,
@@ -169,16 +90,6 @@ const DsPopoverRoot = ({
 	);
 };
 
-const DsPopoverTrigger = ({ children, className }: DsPopoverTriggerProps) => {
-	const hoverProps = useHoverTriggerProps();
-
-	return (
-		<Popover.Trigger asChild className={className} {...hoverProps}>
-			{children}
-		</Popover.Trigger>
-	);
-};
-
 const DsPopoverPanel = ({
 	width = DEFAULT_PANEL_WIDTH,
 	className,
@@ -188,7 +99,7 @@ const DsPopoverPanel = ({
 	'aria-label': ariaLabel,
 }: DsPopoverPanelProps) => {
 	const hoverProps = useHoverIntentProps();
-	const intent = useContext(HoverIntentContext);
+	const intent = useHoverIntent();
 
 	const onFocus = () => intent?.setFocusInPanel(true);
 	const onBlur = (event: FocusEvent<HTMLDivElement>) => {
@@ -286,14 +197,13 @@ const DsPopoverLegacy = ({
 	align = 'center',
 }: DsPopoverProps) => (
 	<DsPopoverRoot side={side} align={align}>
-		<DsPopoverTrigger>{trigger}</DsPopoverTrigger>
+		<PopoverTrigger>{trigger}</PopoverTrigger>
 		<DsPopoverPanel className={className}>{children}</DsPopoverPanel>
 	</DsPopoverRoot>
 );
 
 DsPopoverLegacy.displayName = 'DsPopover';
 DsPopoverRoot.displayName = 'DsPopover.Root';
-DsPopoverTrigger.displayName = 'DsPopover.Trigger';
 DsPopoverPanel.displayName = 'DsPopover.Panel';
 DsPopoverHeader.displayName = 'DsPopover.Header';
 DsPopoverContent.displayName = 'DsPopover.Content';
@@ -302,7 +212,7 @@ DsPopoverFooter.displayName = 'DsPopover.Footer';
 
 export const DsPopover = Object.assign(DsPopoverLegacy, {
 	Root: DsPopoverRoot,
-	Trigger: DsPopoverTrigger,
+	Trigger: PopoverTrigger,
 	Panel: DsPopoverPanel,
 	Header: DsPopoverHeader,
 	Content: DsPopoverContent,
