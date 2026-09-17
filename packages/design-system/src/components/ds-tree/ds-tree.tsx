@@ -79,14 +79,14 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (
 	</TreeView.Tree>
 );
 
-const DsTreeBranch = ({ className, style, children }: DsTreeBranchProps) => (
-	<TreeView.Branch className={classNames(styles.branch, className)} style={style}>
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => (
+	<TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}>
 		{children}
 	</TreeView.Branch>
 );
 
-const DsTreeBranchControl = ({ className, style, children }: DsTreeBranchControlProps) => (
-	<TreeView.BranchControl className={classNames(styles.branchControl, className)} style={style}>
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => (
+	<TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}>
 		{children}
 	</TreeView.BranchControl>
 );
@@ -97,8 +97,8 @@ const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndic
 	</TreeView.BranchIndicator>
 );
 
-const DsTreeBranchText = ({ className, style, children }: DsTreeBranchTextProps) => (
-	<TreeView.BranchText className={classNames(styles.branchText, className)} style={style}>
+const DsTreeBranchText = ({ className, style, children, ...rest }: DsTreeBranchTextProps) => (
+	<TreeView.BranchText {...rest} className={classNames(styles.branchText, className)} style={style}>
 		{children}
 	</TreeView.BranchText>
 );
@@ -113,14 +113,14 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />
 );
 
-const DsTreeItem = ({ className, style, children, onClick }: DsTreeItemProps) => (
-	<TreeView.Item className={classNames(styles.item, className)} style={style} onClick={onClick}>
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => (
+	<TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
 		{children}
 	</TreeView.Item>
 );
 
-const DsTreeItemText = ({ className, style, children }: DsTreeItemTextProps) => (
-	<TreeView.ItemText className={classNames(styles.itemText, className)} style={style}>
+const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (
+	<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>
 		{children}
 	</TreeView.ItemText>
 );

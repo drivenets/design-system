@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsFilterStatusIcon } from '../../ds-filter-status-icon';
 import { DsIcon } from '../../ds-icon';
+import { DsPopover } from '../../ds-popover';
 import { DsTree } from '../ds-tree';
 import { createDsTreeCollection } from '../ds-tree.utils';
 import type { DsTreeNode } from '../ds-tree.types';
@@ -351,5 +352,84 @@ describe('DsTree', () => {
 
 		await expect.element(secondary).toHaveAttribute('data-focus');
 		expect(onFocusChange).toHaveBeenCalledWith('firewall-2');
+	});
+});
+
+describe('DsTree row parts forward injected props', () => {
+	// Regression: the row parts used to destructure only className/style/children, so
+	// an `asChild` trigger wrapping a row injected handlers into a void and the popover
+	// silently never opened.
+	it('opens a wrapping DsPopover.Trigger rendered asChild around a branch row', async () => {
+		const collection = createDsTreeCollection(nodes);
+
+		await page.render(
+			<DsTree.Root collection={collection}>
+				<DsTree.Tree>
+					<DsTree.NodeProvider node={nodes[0]} indexPath={[0]}>
+						<DsTree.Branch>
+							<DsPopover.Root>
+								<DsPopover.Trigger>
+									<DsTree.BranchControl>
+										<DsTree.BranchText>Network</DsTree.BranchText>
+									</DsTree.BranchControl>
+								</DsPopover.Trigger>
+								<DsPopover.Panel>
+									<DsPopover.Header>Network pages</DsPopover.Header>
+									<DsPopover.Content>
+										<DsPopover.ContentItem>Routers and firewalls</DsPopover.ContentItem>
+									</DsPopover.Content>
+								</DsPopover.Panel>
+							</DsPopover.Root>
+						</DsTree.Branch>
+					</DsTree.NodeProvider>
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+
+		await expect.element(page.getByText(/routers and firewalls/i)).not.toBeVisible();
+
+		await page.getByText('Network').click();
+
+		await expect.element(page.getByRole('dialog', { name: /network pages/i })).toBeVisible();
+	});
+
+	it('opens a wrapping DsPopover.Trigger rendered asChild around a leaf item', async () => {
+		const collection = createDsTreeCollection(nodes);
+		const leaf: DsTreeNode = { id: 'firewall-1', name: 'Firewall Primary' };
+
+		await page.render(
+			<DsTree.Root collection={collection}>
+				<DsTree.Tree>
+					<DsTree.NodeProvider node={leaf} indexPath={[0, 1]}>
+						<DsPopover.Root>
+							<DsPopover.Trigger>
+								<DsTree.Item>
+									<DsTree.ItemText>Firewall Primary</DsTree.ItemText>
+								</DsTree.Item>
+							</DsPopover.Trigger>
+							<DsPopover.Panel>
+								<DsPopover.Header>Firewall actions</DsPopover.Header>
+								<DsPopover.Content>
+									<DsPopover.ContentItem>Restart or drain</DsPopover.ContentItem>
+								</DsPopover.Content>
+							</DsPopover.Panel>
+						</DsPopover.Root>
+					</DsTree.NodeProvider>
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+
+		await expect.element(page.getByText(/restart or drain/i)).not.toBeVisible();
+
+		// `onClick` was always forwarded explicitly; the ARIA wiring the trigger
+		// injects is what used to be dropped, leaving the row mute to screen readers.
+		const row = page.getByRole('treeitem', { name: /firewall primary/i });
+		await expect.element(row).toHaveAttribute('aria-haspopup', 'dialog');
+		await expect.element(row).toHaveAttribute('aria-expanded', 'false');
+
+		await page.getByText('Firewall Primary').click();
+
+		await expect.element(page.getByRole('dialog', { name: /firewall actions/i })).toBeVisible();
+		await expect.element(row).toHaveAttribute('aria-expanded', 'true');
 	});
 });
