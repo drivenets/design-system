@@ -36,6 +36,7 @@ const DsPopoverRoot = ({
 	openOn = 'click',
 	openDelay = DEFAULT_OPEN_DELAY_MS,
 	closeDelay = DEFAULT_CLOSE_DELAY_MS,
+	restoreFocus = true,
 	getAnchorElement,
 	children,
 	onOpenChange,
@@ -68,7 +69,7 @@ const DsPopoverRoot = ({
 			// Trigger focus is lost when open on hover
 			// eslint-disable-next-line jsx-a11y/no-autofocus
 			autoFocus={!isHover}
-			restoreFocus={!isHover || focusInPanel}
+			restoreFocus={restoreFocus && (!isHover || focusInPanel)}
 			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
 			onOpenChange={(details) => {
 				if (!details.open && focusInPanel) {

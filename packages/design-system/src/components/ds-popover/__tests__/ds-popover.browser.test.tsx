@@ -7,7 +7,7 @@ const PLACEHOLDER_IMAGE = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAA
 
 type ExampleProps = Pick<
 	DsPopoverRootProps,
-	'open' | 'defaultOpen' | 'onOpenChange' | 'side' | 'align' | 'modal'
+	'open' | 'defaultOpen' | 'onOpenChange' | 'side' | 'align' | 'modal' | 'restoreFocus'
 >;
 
 const Example = (props: ExampleProps) => (
@@ -60,6 +60,31 @@ describe('DsPopover', () => {
 		await userEvent.keyboard('{Escape}');
 
 		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+
+	it('restores focus to the trigger on close by default', async () => {
+		await page.render(<Example />);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+
+		await expect.poll(() => document.activeElement).toBe(getTrigger().element());
+	});
+
+	// restoreFocus={false} lets a popover item open a DsModal without the closing
+	// popover yanking focus back to its trigger and fighting the dialog focus trap.
+	it('leaves the trigger unfocused on close when restoreFocus is false', async () => {
+		await page.render(<Example restoreFocus={false} />);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+
+		expect(document.activeElement).not.toBe(getTrigger().element());
 	});
 
 	it('closes when clicking outside the panel', async () => {

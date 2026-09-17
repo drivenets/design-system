@@ -52,6 +52,14 @@ export interface DsPopoverRootProps {
 	 */
 	closeDelay?: number;
 	/**
+	 * Restore focus to the trigger when the popover closes.
+	 * Set `false` when a popover item opens a `DsModal` (or another dialog),
+	 * so the closing popover doesn't yank focus back to its trigger and fight
+	 * the dialog's focus trap.
+	 * @default true
+	 */
+	restoreFocus?: boolean;
+	/**
 	 * Returns the element the panel should position against.
 	 * When provided, the panel anchors to this element instead of the trigger —
 	 * useful when the trigger lives in one place (e.g. a sidebar) and the panel
