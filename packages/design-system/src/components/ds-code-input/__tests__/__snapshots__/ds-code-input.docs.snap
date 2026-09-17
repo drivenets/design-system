@@ -1,0 +1,98 @@
+# DsCodeInput docs snippets
+
+## Default
+
+### Show code
+<DsCodeInput placeholder="Enter query" />
+
+### MCP manifest
+const Default = () => <DsCodeInput placeholder="Enter query" />;
+
+## With Value
+
+### Show code
+<DsCodeInput
+  defaultValue="Status = Active AND trigger = Scheduled
+AND site IN (&quot;tel-aviv&quot;, &quot;tokyo&quot;, &quot;haifa&quot;)
+AND lastSeen > now() - 24h"
+ />
+
+### MCP manifest
+const WithValue = () => <DsCodeInput
+    defaultValue="Status = Active AND trigger = Scheduled\nAND site IN (\"tel-aviv\", \"tokyo\", \"haifa\")\nAND lastSeen > now() - 24h" />;
+
+## Expanded
+
+### Show code
+<DsCodeInput
+  defaultExpanded
+  defaultValue="Status = Active AND trigger = Scheduled
+AND site IN (&quot;tel-aviv&quot;, &quot;tokyo&quot;, &quot;haifa&quot;)
+AND lastSeen > now() - 24h"
+/>
+
+### MCP manifest
+const Expanded = () => <DsCodeInput
+    defaultExpanded
+    defaultValue="Status = Active AND trigger = Scheduled\nAND site IN (\"tel-aviv\", \"tokyo\", \"haifa\")\nAND lastSeen > now() - 24h" />;
+
+## Small
+
+### Show code
+<DsCodeInput
+  defaultValue="Status = Active AND trigger = Scheduled"
+  size="small"
+/>
+
+### MCP manifest
+const Small = () => <DsCodeInput size="small" defaultValue="Status = Active AND trigger = Scheduled" />;
+
+## Large
+
+### Show code
+<DsCodeInput
+  defaultValue="Status = Active AND trigger = Scheduled"
+  size="large"
+/>
+
+### MCP manifest
+const Large = () => <DsCodeInput size="large" defaultValue="Status = Active AND trigger = Scheduled" />;
+
+## Read Only
+
+### Show code
+<DsCodeInput
+  defaultValue="Status = Active AND trigger = Scheduled"
+  readOnly
+/>
+
+### MCP manifest
+const ReadOnly = () => <DsCodeInput readOnly defaultValue="Status = Active AND trigger = Scheduled" />;
+
+## Disabled
+
+### Show code
+<DsCodeInput
+  defaultValue="Status = Active AND trigger = Scheduled"
+  disabled
+/>
+
+### MCP manifest
+const Disabled = () => <DsCodeInput disabled defaultValue="Status = Active AND trigger = Scheduled" />;
+
+## With Help Adornment
+
+### Show code
+<DsCodeInput
+  defaultValue="Status = Active AND trigger = Scheduled"
+  slots={{
+    endAdornment: <DsButtonV3 aria-label="Query syntax" icon="help" size="small" variant="tertiary"/>
+  }}
+/>
+
+### MCP manifest
+const WithHelpAdornment = () => <DsCodeInput
+    defaultValue="Status = Active AND trigger = Scheduled"
+    slots={{
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="help" aria-label="Query syntax" />,
+    }} />;

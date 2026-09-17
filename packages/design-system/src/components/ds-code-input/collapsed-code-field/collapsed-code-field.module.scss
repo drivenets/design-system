@@ -1,0 +1,165 @@
+@use '../../../styles/typography' as typography;
+@use '../../../styles/shared/input' as input;
+
+.container {
+	@include input.inputContainer;
+	gap: var(--xs);
+
+	&.small {
+		height: input.$input-text-height-small;
+		padding-block: var(--none);
+
+		.input,
+		.echo,
+		.input::placeholder {
+			line-height: calc(#{input.$input-text-height-small} - 2px);
+		}
+	}
+
+	&:hover:not([data-disabled]) {
+		border-color: var(--form-control-border-color, var(--background-action-hover));
+	}
+
+	&:focus-within {
+		border-color: var(--form-control-border-color, var(--border-action-primary));
+	}
+}
+
+.field {
+	position: relative;
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	min-width: 0;
+	cursor: text;
+}
+
+.editorSlot {
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	min-width: 0;
+}
+
+.editorSlotHidden {
+	position: absolute;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}
+
+.editorHost {
+	display: flex;
+	flex: 1;
+	align-self: stretch;
+	min-width: 0;
+	height: 100%;
+}
+
+.echo {
+	@include typography.code-sm-reg;
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	color: var(--font-main);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: none;
+}
+
+.placeholder {
+	color: var(--font-placeholder);
+}
+
+.input {
+	@include input.input;
+	@include typography.code-sm-reg;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	appearance: none;
+	transition: none;
+	white-space: pre;
+	overflow: hidden;
+	resize: none;
+
+	&:focus,
+	&:focus-visible {
+		outline: none;
+		box-shadow: none;
+	}
+
+	&::placeholder {
+		@include typography.code-sm-reg;
+		color: var(--font-placeholder);
+	}
+
+	&:disabled {
+		color: var(--font-disabled);
+	}
+}
+
+.container[data-disabled] .echo {
+	color: var(--font-disabled);
+}
+
+.fadeStart,
+.fadeEnd {
+	position: absolute;
+	inset-block: 0;
+	width: var(--xl);
+	pointer-events: none;
+}
+
+.fadeStart {
+	inset-inline-start: 0;
+	background: linear-gradient(to right, var(--background), transparent);
+}
+
+.fadeEnd {
+	inset-inline-end: 0;
+	background: linear-gradient(to left, var(--background), transparent);
+}
+
+.ellipsis {
+	position: absolute;
+	inset-block: 0;
+	inset-inline-end: 0;
+	display: flex;
+	align-items: center;
+	pointer-events: none;
+	color: var(--font-main);
+	background: var(--background);
+
+	&::after {
+		content: '…';
+		@include typography.code-sm-reg;
+	}
+}
+
+.indicator,
+.indicatorButton {
+	@include typography.code-xs-reg;
+	flex: none;
+	color: var(--font-secondary);
+	white-space: nowrap;
+}
+
+.indicatorButton {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+
+	&:hover {
+		color: var(--font-main);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: 2px;
+	}
+}
