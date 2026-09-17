@@ -113,14 +113,14 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />
 );
 
-const DsTreeItem = ({ className, style, children, onClick }: DsTreeItemProps) => (
-	<TreeView.Item className={classNames(styles.item, className)} style={style} onClick={onClick}>
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => (
+	<TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
 		{children}
 	</TreeView.Item>
 );
 
-const DsTreeItemText = ({ className, style, children }: DsTreeItemTextProps) => (
-	<TreeView.ItemText className={classNames(styles.itemText, className)} style={style}>
+const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (
+	<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>
 		{children}
 	</TreeView.ItemText>
 );

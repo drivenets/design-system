@@ -1,4 +1,14 @@
-import type { CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
+import type {
+	AriaAttributes,
+	CSSProperties,
+	FocusEventHandler,
+	KeyboardEventHandler,
+	MouseEvent,
+	MouseEventHandler,
+	PointerEventHandler,
+	ReactNode,
+	Ref,
+} from 'react';
 import type { TreeView as ArkTreeView } from '@ark-ui/react/tree-view';
 import type { IconType } from '../ds-icon';
 import type { FilterStatus } from '../ds-filter-status-icon';
@@ -149,30 +159,48 @@ export interface DsTreeRootProps<T extends DsTreeNode = DsTreeNode> extends DsTr
 export type DsTreeTreeProps = DsTreeBasePropsWithChildren;
 
 /**
- * Row parts also forward any extra props (handlers, `ref`, `aria-*`, `data-*`) to the
- * underlying element, so wrapping a row in an `asChild` trigger — `DsPopover.Trigger`,
- * `DsTooltip` — actually wires up.
+ * Props a wrapping `asChild` trigger (`DsPopover.Trigger`, `DsTooltip`) injects onto
+ * the element it wraps. Row parts forward these so wrapping a row actually wires up
+ * instead of silently doing nothing.
  */
-export type DsTreeBranchProps = DsTreeBasePropsWithChildren & ArkTreeView.BranchProps;
+export interface DsTreeRowTriggerProps<T extends HTMLElement = HTMLElement> {
+	id?: string;
+	ref?: Ref<T>;
+	tabIndex?: number;
+	'aria-haspopup'?: AriaAttributes['aria-haspopup'];
+	'aria-expanded'?: AriaAttributes['aria-expanded'];
+	'aria-controls'?: string;
+	'data-state'?: string;
+	onClick?: MouseEventHandler<T>;
+	onPointerDown?: PointerEventHandler<T>;
+	onPointerEnter?: PointerEventHandler<T>;
+	onPointerLeave?: PointerEventHandler<T>;
+	onFocus?: FocusEventHandler<T>;
+	onBlur?: FocusEventHandler<T>;
+	onKeyDown?: KeyboardEventHandler<T>;
+}
 
-export type DsTreeBranchControlProps = DsTreeBasePropsWithChildren & ArkTreeView.BranchControlProps;
+export type DsTreeBranchProps = DsTreeBasePropsWithChildren & DsTreeRowTriggerProps<HTMLDivElement>;
+
+export type DsTreeBranchControlProps = DsTreeBasePropsWithChildren & DsTreeRowTriggerProps<HTMLDivElement>;
 
 export type DsTreeBranchIndicatorProps = DsTreeBasePropsWithChildren;
 
-export type DsTreeBranchTextProps = DsTreeBasePropsWithChildren & ArkTreeView.BranchTextProps;
+export type DsTreeBranchTextProps = DsTreeBasePropsWithChildren & DsTreeRowTriggerProps<HTMLSpanElement>;
 
 export type DsTreeBranchContentProps = DsTreeBasePropsWithChildren;
 
 export type DsTreeBranchIndentGuideProps = DsTreeBaseProps;
 
-export interface DsTreeItemProps extends DsTreeBasePropsWithChildren {
+export interface DsTreeItemProps
+	extends DsTreeBasePropsWithChildren, Omit<DsTreeRowTriggerProps<HTMLDivElement>, 'onClick'> {
 	/**
 	 * Called when the leaf item is clicked. Receives the native mouse event.
 	 */
 	onClick?: (event: MouseEvent<HTMLDivElement>) => void;
 }
 
-export type DsTreeItemTextProps = DsTreeBasePropsWithChildren;
+export type DsTreeItemTextProps = DsTreeBasePropsWithChildren & DsTreeRowTriggerProps<HTMLSpanElement>;
 
 export type DsTreeItemIndicatorProps = DsTreeBaseProps;
 
