@@ -6,6 +6,9 @@ export type DsPopoverSide = (typeof popoverSides)[number];
 export const popoverAligns = ['start', 'center', 'end'] as const;
 export type DsPopoverAlign = (typeof popoverAligns)[number];
 
+export const popoverOpenTriggers = ['click', 'hover'] as const;
+export type DsPopoverOpenTrigger = (typeof popoverOpenTriggers)[number];
+
 export interface DsPopoverRootProps {
 	/** Controlled open state. Pair with `onOpenChange`. */
 	open?: boolean;
@@ -31,6 +34,23 @@ export interface DsPopoverRootProps {
 	 * @default false
 	 */
 	modal?: boolean;
+	/**
+	 * Trigger open method - click / hover
+	 * @default 'click'
+	 */
+	openOn?: DsPopoverOpenTrigger;
+	/**
+	 * Milliseconds the pointer must rest on the trigger before the panel opens.
+	 * Ignored unless `openOn` is `'hover'`.
+	 * @default 200
+	 */
+	openDelay?: number;
+	/**
+	 * Milliseconds after the pointer leaves the trigger or the panel before it
+	 * closes. Ignored unless `openOn` is `'hover'`.
+	 * @default 150
+	 */
+	closeDelay?: number;
 	/**
 	 * Returns the element the panel should position against.
 	 * When provided, the panel anchors to this element instead of the trigger —
