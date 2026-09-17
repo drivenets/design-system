@@ -35,6 +35,8 @@ interface HoverIntent {
 	closeDelay: number;
 	/** Lets the panel report whether focus is currently inside it. */
 	setFocusInPanel: (inPanel: boolean) => void;
+	/** True once if the trigger is about to be re-focused by Ark's close-time restore. */
+	consumeFocusRestore: () => boolean;
 	/** Owns one shared timer, so moving trigger -> panel cancels the pending close. */
 	schedule: (action: () => void, delay: number) => void;
 }
@@ -66,6 +68,37 @@ const useHoverIntentProps = () => {
 	return {
 		onPointerEnter: (event: PointerEvent) => onPointerIntent(event, true, intent.openDelay),
 		onPointerLeave: (event: PointerEvent) => onPointerIntent(event, false, intent.closeDelay),
+	};
+};
+
+/**
+ * Trigger props for hover mode: pointer intent plus keyboard reveal. A tab to the
+ * trigger opens the panel, so keyboard users get the same affordance as pointer
+ * users. Gated on `:focus-visible` — a mouse click focuses the button without it,
+ * so this never races the click toggle.
+ */
+const useHoverTriggerProps = () => {
+	const pointerProps = useHoverIntentProps();
+	const intent = useContext(HoverIntentContext);
+	const { setOpen } = usePopoverContext();
+
+	if (!intent) {
+		return undefined;
+	}
+
+	return {
+		...pointerProps,
+		onFocus: (event: FocusEvent<HTMLElement>) => {
+			// Closing with focus inside the panel makes Ark re-focus the trigger; that
+			// is a restore, not the user tabbing in, and must not reopen the panel.
+			if (intent.consumeFocusRestore()) {
+				return;
+			}
+
+			if (event.target.matches(':focus-visible')) {
+				setOpen(true);
+			}
+		},
 	};
 };
 
@@ -101,6 +134,13 @@ const DsPopoverRoot = ({
 	// when the user never touched the keyboard, yanking focus out of whatever they
 	// were doing. Only restore when focus is genuinely inside the panel.
 	const [focusInPanel, setFocusInPanel] = useState(false);
+	const restoringFocus = useRef(false);
+
+	const consumeFocusRestore = () => {
+		const restoring = restoringFocus.current;
+		restoringFocus.current = false;
+		return restoring;
+	};
 
 	return (
 		<Popover.Root
@@ -114,10 +154,16 @@ const DsPopoverRoot = ({
 			autoFocus={!isHover}
 			restoreFocus={!isHover || focusInPanel}
 			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
-			onOpenChange={(details) => onOpenChange?.(details.open)}
+			onOpenChange={(details) => {
+				if (!details.open && focusInPanel) {
+					restoringFocus.current = true;
+				}
+
+				onOpenChange?.(details.open);
+			}}
 		>
 			<HoverIntentContext.Provider
-				value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel } : null}
+				value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore } : null}
 			>
 				{children}
 			</HoverIntentContext.Provider>
@@ -126,7 +172,7 @@ const DsPopoverRoot = ({
 };
 
 const DsPopoverTrigger = ({ children, className }: DsPopoverTriggerProps) => {
-	const hoverProps = useHoverIntentProps();
+	const hoverProps = useHoverTriggerProps();
 
 	return (
 		<Popover.Trigger asChild className={className} {...hoverProps}>

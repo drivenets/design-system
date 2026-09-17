@@ -158,9 +158,15 @@ export const HoverTrigger: Story = {
 				<DsPopover.Content>
 					<DsPopover.ContentItem>
 						<DsStack direction="column" gap="var(--xs)">
-							<a href="#physical">Physical</a>
-							<a href="#logical">Logical</a>
-							<a href="#topology">Topology</a>
+							<DsTypography variant="body-md-link" asChild>
+								<a href="#physical">Physical</a>
+							</DsTypography>
+							<DsTypography variant="body-md-link" asChild>
+								<a href="#logical">Logical</a>
+							</DsTypography>
+							<DsTypography variant="body-md-link" asChild>
+								<a href="#topology">Topology</a>
+							</DsTypography>
 						</DsStack>
 					</DsPopover.ContentItem>
 				</DsPopover.Content>

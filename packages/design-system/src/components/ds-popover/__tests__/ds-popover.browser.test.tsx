@@ -429,12 +429,35 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 		expect(document.activeElement?.getAttribute('aria-label')).toBe('Elsewhere');
 	});
 
-	it('returns focus to the trigger after a keyboard open and Escape', async () => {
+	it('opens when the trigger is reached by keyboard tab', async () => {
 		await page.render(<FocusExample />);
 		await getTrigger().unhover();
 
-		getTrigger().element().focus();
-		await userEvent.keyboard('{Enter}');
+		await getElsewhere().click();
+		await expect.element(panelText()).not.toBeVisible();
+
+		// Tab from the input onto the trigger.
+		await userEvent.keyboard('{Tab}');
+		await expect.element(panelText()).toBeVisible();
+	});
+
+	it('does not open from the focus a mouse click puts on the trigger', async () => {
+		await page.render(<FocusExample />);
+		await getTrigger().unhover();
+
+		// Click opens, second click closes — focus-opening must not re-open it.
+		await getTrigger().click();
+		await expect.element(panelText()).toBeVisible();
+		await getTrigger().click();
+		await expect.element(panelText()).not.toBeVisible();
+	});
+
+	it('leaves focus on the trigger when Escape closes a tab-opened panel', async () => {
+		await page.render(<FocusExample />);
+		await getTrigger().unhover();
+		await getElsewhere().click();
+
+		await userEvent.keyboard('{Tab}');
 		await expect.element(panelText()).toBeVisible();
 
 		await userEvent.keyboard('{Escape}');
@@ -447,11 +470,12 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 	it('returns focus to the trigger when Escape closes a panel the user tabbed into', async () => {
 		await page.render(<FocusExample />);
 		await getTrigger().unhover();
+		await getElsewhere().click();
 
-		getTrigger().element().focus();
-		await userEvent.keyboard('{Enter}');
+		await userEvent.keyboard('{Tab}');
 		await expect.element(panelText()).toBeVisible();
 
+		// Tab again — Ark proxies this into the portalled panel.
 		await userEvent.keyboard('{Tab}');
 		await wait(200);
 
