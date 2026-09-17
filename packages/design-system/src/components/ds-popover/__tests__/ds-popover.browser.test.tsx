@@ -375,3 +375,91 @@ describe('DsPopover openOn="hover"', () => {
 		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
 	});
 });
+
+const FocusExample = () => (
+	<div>
+		<input aria-label="Elsewhere" />
+		<DsPopover.Root openOn="hover" openDelay={100} closeDelay={200} side="right">
+			<DsPopover.Trigger>
+				<button type="button">Open details</button>
+			</DsPopover.Trigger>
+			<DsPopover.Panel width={200}>
+				<DsPopover.Header>Device details</DsPopover.Header>
+				<DsPopover.Content>
+					<DsPopover.ContentItem>
+						<a href="#status">Edge router is online.</a>
+					</DsPopover.ContentItem>
+				</DsPopover.Content>
+			</DsPopover.Panel>
+		</DsPopover.Root>
+	</div>
+);
+
+const getElsewhere = () => page.getByRole('textbox', { name: 'Elsewhere' });
+const panelText = () => page.getByText(/edge router is online/i);
+
+describe('DsPopover openOn="hover" focus behavior', () => {
+	it('does not pull focus into the panel when hover opens it', async () => {
+		await page.render(<FocusExample />);
+		await getTrigger().unhover();
+		await getElsewhere().click();
+
+		await getTrigger().hover();
+		await expect.element(panelText()).toBeVisible();
+		await wait(200);
+
+		expect(document.activeElement?.getAttribute('aria-label')).toBe('Elsewhere');
+	});
+
+	it('does not steal focus back to the trigger when hover closes it', async () => {
+		await page.render(<FocusExample />);
+		await getTrigger().unhover();
+		await getElsewhere().click();
+
+		await getTrigger().hover();
+		await expect.element(panelText()).toBeVisible();
+
+		// "Hover away" — move the pointer off the trigger, as in the reported repro.
+		await getTrigger().unhover();
+		await expect.element(panelText()).not.toBeVisible();
+		await wait(300);
+
+		// Ark restores focus to the trigger on close; under hover the user never
+		// asked for it, so their focus must stay where it was.
+		expect(document.activeElement?.getAttribute('aria-label')).toBe('Elsewhere');
+	});
+
+	it('returns focus to the trigger after a keyboard open and Escape', async () => {
+		await page.render(<FocusExample />);
+		await getTrigger().unhover();
+
+		getTrigger().element().focus();
+		await userEvent.keyboard('{Enter}');
+		await expect.element(panelText()).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+		await expect.element(panelText()).not.toBeVisible();
+		await wait(300);
+
+		expect(document.activeElement?.textContent).toBe('Open details');
+	});
+
+	it('returns focus to the trigger when Escape closes a panel the user tabbed into', async () => {
+		await page.render(<FocusExample />);
+		await getTrigger().unhover();
+
+		getTrigger().element().focus();
+		await userEvent.keyboard('{Enter}');
+		await expect.element(panelText()).toBeVisible();
+
+		await userEvent.keyboard('{Tab}');
+		await wait(200);
+
+		await userEvent.keyboard('{Escape}');
+		await expect.element(panelText()).not.toBeVisible();
+		await wait(300);
+
+		// Focus was genuinely inside the panel, so it must not be stranded on <body>.
+		expect(document.activeElement?.textContent).toBe('Open details');
+	});
+});

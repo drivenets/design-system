@@ -1,4 +1,12 @@
-import { createContext, useContext, useEffect, useRef, type PointerEvent } from 'react';
+import {
+	createContext,
+	useContext,
+	useEffect,
+	useRef,
+	useState,
+	type FocusEvent,
+	type PointerEvent,
+} from 'react';
 import { Popover, usePopoverContext } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
@@ -25,6 +33,8 @@ const DEFAULT_CLOSE_DELAY_MS = 150;
 interface HoverIntent {
 	openDelay: number;
 	closeDelay: number;
+	/** Lets the panel report whether focus is currently inside it. */
+	setFocusInPanel: (inPanel: boolean) => void;
 	/** Owns one shared timer, so moving trigger -> panel cancels the pending close. */
 	schedule: (action: () => void, delay: number) => void;
 }
@@ -87,6 +97,11 @@ const DsPopoverRoot = ({
 
 	const isHover = openOn === 'hover';
 
+	// Ark restores focus to the trigger on every close. Under hover that fires even
+	// when the user never touched the keyboard, yanking focus out of whatever they
+	// were doing. Only restore when focus is genuinely inside the panel.
+	const [focusInPanel, setFocusInPanel] = useState(false);
+
 	return (
 		<Popover.Root
 			open={open}
@@ -97,10 +112,13 @@ const DsPopoverRoot = ({
 			// still proxies tabbing into the portalled panel, so keyboard reach is intact.
 			// eslint-disable-next-line jsx-a11y/no-autofocus
 			autoFocus={!isHover}
+			restoreFocus={!isHover || focusInPanel}
 			positioning={{ placement: toPlacement(side, align), gutter, getAnchorElement }}
 			onOpenChange={(details) => onOpenChange?.(details.open)}
 		>
-			<HoverIntentContext.Provider value={isHover ? { openDelay, closeDelay, schedule } : null}>
+			<HoverIntentContext.Provider
+				value={isHover ? { openDelay, closeDelay, schedule, setFocusInPanel } : null}
+			>
 				{children}
 			</HoverIntentContext.Provider>
 		</Popover.Root>
@@ -126,12 +144,22 @@ const DsPopoverPanel = ({
 	'aria-label': ariaLabel,
 }: DsPopoverPanelProps) => {
 	const hoverProps = useHoverIntentProps();
+	const intent = useContext(HoverIntentContext);
+
+	const onFocus = () => intent?.setFocusInPanel(true);
+	const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+		if (!event.currentTarget.contains(event.relatedTarget)) {
+			intent?.setFocusInPanel(false);
+		}
+	};
 
 	return (
 		<Portal>
 			<Popover.Positioner>
 				<Popover.Content
 					{...hoverProps}
+					onFocus={onFocus}
+					onBlur={onBlur}
 					ref={ref}
 					aria-label={ariaLabel}
 					className={classNames(styles.panel, className)}
