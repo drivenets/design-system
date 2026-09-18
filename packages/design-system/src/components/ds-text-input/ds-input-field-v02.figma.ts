@@ -24,6 +24,7 @@ const textInfo: FieldInfo = {
 const registry: Record<string, FieldInfo> = {
 	text: textInfo,
 	textArea: { component: 'DsTextarea', fcMember: 'Textarea' },
+	code: { component: 'DsCodeInput', fcMember: 'CodeInput', size: true, large: true, readOnly: true },
 	number: { component: 'DsNumberInput', fcMember: 'NumberInput', size: true, readOnly: true },
 	password: { component: 'DsPasswordInput', fcMember: 'PasswordInput', size: true, readOnly: true },
 	select: {
@@ -75,6 +76,7 @@ const inputType =
 		? part.getEnum('inputType', {
 				text: 'text',
 				'text-area': 'textArea',
+				code: 'code',
 				select: 'select',
 				password: 'password',
 				number: 'number',

@@ -1,0 +1,118 @@
+@use '../../../styles/typography' as typography;
+
+$code-surface-max-height: 220px;
+
+// One line of code plus the surface padding, so an empty panel keeps its shape.
+$code-surface-min-height: calc(var(--body-line-height-small) + 2 * var(--standard));
+
+// The backdrop only lines up with the textarea while every metric that influences glyph
+// position and wrap points is identical, so both layers take them from here.
+@mixin code-surface-layer {
+	@include typography.code-sm-reg;
+	box-sizing: border-box;
+	margin: 0;
+	padding: var(--standard);
+	border: 0;
+	text-align: left;
+	direction: ltr;
+	tab-size: 2;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+	word-break: normal;
+}
+
+.body {
+	display: flex;
+	flex-direction: column;
+}
+
+.searchRow {
+	display: block;
+	order: -1;
+	padding: var(--standard);
+	border-bottom: 1px solid var(--border);
+}
+
+// Scrolling both layers as one element is what keeps the marks glued to the glyphs —
+// neither layer scrolls on its own, so there is nothing to keep in sync.
+.codeScroll {
+	max-height: $code-surface-max-height;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.codeStack {
+	position: relative;
+	min-height: $code-surface-min-height;
+
+	// Aliased so swapping in a real search-match token is a one-line change.
+	--ds-code-input-match-background: var(--background-warning);
+}
+
+// In normal flow, so the stack — and with it the absolutely positioned textarea — takes
+// its height from the rendered text.
+.backdrop {
+	@include code-surface-layer;
+	position: relative;
+	pointer-events: none;
+	user-select: none;
+
+	// The visible glyphs belong to the textarea above; this layer exists only to paint
+	// the match backgrounds behind them.
+	color: transparent;
+}
+
+.mark {
+	color: inherit;
+	background: var(--ds-code-input-match-background);
+	border-radius: 2px;
+}
+
+.editorSlot {
+	position: absolute;
+	inset: 0;
+}
+
+.editorHost {
+	position: absolute;
+	inset: 0;
+}
+
+.codeArea {
+	@include code-surface-layer;
+	position: absolute;
+	inset: 0;
+	display: block;
+	width: 100%;
+	overflow: hidden;
+	background: transparent;
+	color: var(--font-main);
+	caret-color: var(--font-main);
+
+	// A user-resized textarea would drift away from the backdrop that sizes it.
+	resize: none;
+	outline: none;
+
+	&::selection {
+		background: var(--form-control-selection-color, var(--background-secondary-hover));
+	}
+
+	&:read-only,
+	&:disabled {
+		color: var(--font-main);
+		opacity: 1;
+		cursor: default;
+	}
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}
