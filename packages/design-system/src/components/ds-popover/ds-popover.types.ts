@@ -35,6 +35,17 @@ export interface DsPopoverRootProps {
 	 */
 	modal?: boolean;
 	/**
+	 * Size the panel to the positioning reference (Anchor, or the trigger).
+	 * An explicit `DsPopover.Panel` `width` wins over this.
+	 * @default false
+	 */
+	matchAnchorWidth?: boolean;
+	/**
+	 * Whether to restore focus to the previously focused element on close.
+	 * @default true
+	 */
+	restoreFocus?: boolean;
+	/**
 	 * Trigger open method - click / hover
 	 * @default 'click'
 	 */
@@ -55,16 +66,42 @@ export interface DsPopoverRootProps {
 	 * Returns the element the panel should position against.
 	 * When provided, the panel anchors to this element instead of the trigger —
 	 * useful when the trigger lives in one place (e.g. a sidebar) and the panel
-	 * should appear relative to a different reference point.
+	 * should appear relative to a different reference point. Prefer `DsPopover.Anchor`
+	 * when the reference is in the tree.
 	 */
 	getAnchorElement?: () => HTMLElement | null;
 	children: ReactNode;
+	/**
+	 * Called when focus is about to move into the panel as it opens.
+	 * Call `event.preventDefault()` to stop the default move to the first focusable
+	 * control; focus another node in the same handler if needed.
+	 */
+	onOpenAutoFocus?: (event: Event) => void;
+	/**
+	 * Called when focus is about to leave the panel as it closes.
+	 * Call `event.preventDefault()` to stop restoring focus to the trigger;
+	 * focus another node in the same handler if needed.
+	 * Still runs when `restoreFocus` is false.
+	 */
+	onCloseAutoFocus?: (event: Event) => void;
+	/**
+	 * Called when the user interacts outside the panel.
+	 * Call `event.preventDefault()` to keep the panel open. Clicks on
+	 * `DsPopover.Anchor` already do not dismiss.
+	 */
+	onInteractOutside?: (event: Event) => void;
 	/** Fires when the popover opens or closes. */
 	onOpenChange?: (open: boolean) => void;
 }
 
 export interface DsPopoverTriggerProps {
 	/** Single focusable element that toggles the popover. */
+	children: ReactNode;
+	className?: string;
+}
+
+export interface DsPopoverAnchorProps {
+	/** Single element the panel positions against. Wraps the trigger when they share a field. */
 	children: ReactNode;
 	className?: string;
 }
@@ -79,6 +116,7 @@ export interface DsPopoverPanelProps {
 	style?: CSSProperties;
 	children: ReactNode;
 	ref?: Ref<HTMLDivElement>;
+	id?: string;
 	'aria-label'?: string;
 }
 
