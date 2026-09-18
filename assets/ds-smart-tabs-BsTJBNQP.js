@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{t}from"./ds-icon-xtF7601f.js";import{n}from"./ds-smart-tabs-MPdo0Mph.js";function r(){return(r=e((()=>{t()})))()}function i(){return(i=e((()=>{n(),r()})))()}export{i as t};
