@@ -47,7 +47,7 @@ jobs:
         run: |
           git checkout gh-pages
           rm -rf ./*
-          cp -a /tmp/storybook-static/. ./
+          cp -r /tmp/storybook-static/* ./
 
           git add .
           git commit -m "build: deploy storybook ($LAST_COMMIT)"
