@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t}from"./ds-drawer-Ba8YykFa.js";function n(){return(n=e((()=>{t()})))()}export{n as t};

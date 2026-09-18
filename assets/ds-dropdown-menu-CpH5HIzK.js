@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{r as t}from"./ds-dropdown-menu-DQtvdQOe.js";function n(){return(n=e((()=>{t()})))()}export{n as t};
