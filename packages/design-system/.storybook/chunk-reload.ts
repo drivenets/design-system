@@ -2,7 +2,13 @@ import { DOCS_RENDERED, STORY_MISSING, STORY_RENDERED } from 'storybook/internal
 import noticeHtml from './chunk-reload-notice.html?raw';
 import './chunk-reload-notice.css';
 
-const STALE_CHUNK_MESSAGE = 'Failed to fetch dynamically imported module';
+const STALE_DYNAMIC_IMPORT_MESSAGES = [
+	'Failed to fetch dynamically imported module',
+	'error loading dynamically imported module',
+	'Importing a module script failed',
+] as const;
+
+const STALE_LAZY_EXPORTS = ['DocsRenderer', 'SyntaxHighlighter'] as const;
 
 export const RELOAD_COOLDOWN_MS = 10_000;
 export const RELOAD_NOTICE_MS = 1_500;
@@ -24,16 +30,38 @@ export type RegisterStoryChunkReloadOptions = {
 	channel?: StorybookChannel;
 };
 
-export function isStaleStoryChunkError(error: unknown): boolean {
+function getErrorMessage(error: unknown): string | undefined {
 	if (error instanceof Error) {
-		return error.message.includes(STALE_CHUNK_MESSAGE);
+		return error.message;
 	}
 
 	if (typeof error === 'string') {
-		return error.includes(STALE_CHUNK_MESSAGE);
+		return error;
 	}
 
-	return false;
+	return undefined;
+}
+
+function isUndefinedLazyExportError(message: string): boolean {
+	if (!message.includes('undefined')) {
+		return false;
+	}
+
+	return STALE_LAZY_EXPORTS.some((name) => message.includes(`'${name}'`) || message.includes(`"${name}"`));
+}
+
+export function isStaleStoryChunkError(error: unknown): boolean {
+	const message = getErrorMessage(error);
+
+	if (message === undefined) {
+		return false;
+	}
+
+	if (STALE_DYNAMIC_IMPORT_MESSAGES.some((fragment) => message.includes(fragment))) {
+		return true;
+	}
+
+	return isUndefinedLazyExportError(message);
 }
 
 export function shouldReloadNow(now = Date.now(), storage: ReloadStorage = sessionStorage): boolean {
@@ -98,7 +126,12 @@ export function registerStoryChunkReload({
 		setTimeout(reload, RELOAD_NOTICE_MS);
 	};
 
-	target.addEventListener('vite:preloadError', markStale);
+	const recoverFromStaleEvent = (event: Event) => {
+		markStale(event);
+		recoverIfStale();
+	};
+
+	target.addEventListener('vite:preloadError', recoverFromStaleEvent);
 
 	target.addEventListener('unhandledrejection', (event) => {
 		const reason = 'reason' in event ? event.reason : undefined;
@@ -107,7 +140,7 @@ export function registerStoryChunkReload({
 			return;
 		}
 
-		markStale(event);
+		recoverFromStaleEvent(event);
 	});
 
 	channel?.on(STORY_MISSING, recoverIfStale);
