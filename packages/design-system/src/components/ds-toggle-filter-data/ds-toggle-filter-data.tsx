@@ -5,12 +5,14 @@ import type { DsToggleFilterDataProps } from './ds-toggle-filter-data.types';
 import { DsTypography } from '../ds-typography';
 
 /**
- * @summary Data pill that toggles on and off, pairing a label with its value, for filter rows above
- * a table or list.
+ * @summary Data pill that toggles on and off, pairing a label with its value, for filter rows
+ * above a table or list.
+ *
+ * Internal to the filters component and not exported from the package.
  *
  * A real `<button type="button">`, so `aria-pressed`, Enter/Space activation, the disabled state
- * and the focus ring are all native. Hover and focus are CSS states with no matching prop.
- * Selection is controlled: the pill reports the next `active` value and never toggles itself.
+ * and the focus ring are all native. Selection is controlled: the pill reports the next `active`
+ * value through `onActiveChange` and never toggles itself.
  */
 const DsToggleFilterData = ({
 	ref,

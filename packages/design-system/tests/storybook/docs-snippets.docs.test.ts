@@ -69,7 +69,6 @@ const COMPONENTS = [
 	'time-picker',
 	'toast',
 	'toggle',
-	'toggle-filter-data',
 	'tooltip',
 	'top-bar-navigation',
 	'tree',

@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsToggleFilterData } from './index';
-import styles from './ds-toggle-filter-data.stories.module.scss';
+import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsToggleFilterData> = {
 	title: 'Components/ToggleFilterData',
 	component: DsToggleFilterData,
+	// Internal part of the filters component, not exported from the package, so it stays out of the
+	// MCP manifest that advertises the public API.
+	tags: ['!manifest'],
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -13,6 +16,10 @@ const meta: Meta<typeof DsToggleFilterData> = {
 				component: `
 A data pill that toggles on and off, pairing a \`label\` with its \`value\`, used in a filter row
 above a table or list.
+
+**Internal component.** Per design, the pill is always part of the filters component and is not
+exported from \`@drivenets/design-system\`. These stories document it for internal review; consumers
+get it through filters, never directly.
 
 **Controlled only.** \`active\` is required and the pill keeps no state of its own: it reports the
 next value through \`onActiveChange\` and re-renders from whatever the parent decides. Selection
@@ -22,7 +29,7 @@ rules — single-select, multi-select, clearing — belong to the row that owns 
 \`aria-pressed\`, Enter/Space activation, the disabled state and the focus ring are all native.
 \`aria-pressed\` stays exposed while \`disabled\`, so a greyed pill still announces whether it is on.
 
-There is no group component: \`DsToggleFiltersGroupV1\` is a plain flex row of pills — see the
+There is no group component: \`DsToggleFiltersGroupV1\` is a plain row of pills — see the
 **Filters Group** story.
 				`,
 			},
@@ -109,16 +116,16 @@ export const Disabled: Story = {
 };
 
 /**
- * An applied filter that is temporarily locked, for example while its results are still loading.
- * The greyed treatment replaces the blue one, but `aria-pressed` stays `true` so screen-reader users
- * still hear that the filter is on.
+ * The minimal wiring: hold `active` in the parent and feed it back through `onActiveChange`.
  */
-export const DisabledActive: Story = {
-	args: {
-		label: 'Toggle',
-		value: '#',
-		active: true,
-		disabled: true,
+export const Controlled: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: () => {
+		const [active, setActive] = useState(false);
+
+		return <DsToggleFilterData label="Errors" value="12" active={active} onActiveChange={setActive} />;
 	},
 };
 
@@ -135,7 +142,7 @@ export const ControlledSingleSelect: Story = {
 		const [activeId, setActiveId] = useState<string | null>('errors');
 
 		return (
-			<div className={styles.row}>
+			<DsStack gap="var(--xs)" alignItems="center" flexWrap="wrap">
 				{[
 					{ id: 'errors', label: 'Errors', value: '12' },
 					{ id: 'warnings', label: 'Warnings', value: '48' },
@@ -149,14 +156,14 @@ export const ControlledSingleSelect: Story = {
 						onActiveChange={(next) => setActiveId(next ? item.id : null)}
 					/>
 				))}
-			</div>
+			</DsStack>
 		);
 	},
 };
 
 /**
- * `DsToggleFiltersGroupV1` with `type=data` is a plain flex row of pills — there is no group
- * component to import. Multi-select is the parent tracking a set of active ids; each pill toggles
+ * `DsToggleFiltersGroupV1` with `type=data` is a plain row of pills — there is no group component
+ * to import. Multi-select is the parent tracking a set of active ids; each pill toggles
  * independently, and a pill whose bucket is empty is passed `disabled`.
  */
 export const FiltersGroup: Story = {
@@ -170,7 +177,7 @@ export const FiltersGroup: Story = {
 			setActiveIds((ids) => (next ? [...ids, id] : ids.filter((current) => current !== id)));
 
 		return (
-			<div className={styles.row}>
+			<DsStack gap="var(--xs)" alignItems="center" flexWrap="wrap">
 				{[
 					{ id: 'region', label: 'Region', value: '3' },
 					{ id: 'tenant', label: 'Tenant', value: '17' },
@@ -186,7 +193,7 @@ export const FiltersGroup: Story = {
 						onActiveChange={(next) => toggle(item.id, next)}
 					/>
 				))}
-			</div>
+			</DsStack>
 		);
 	},
 };

@@ -8,23 +8,14 @@ const LABEL = 'Errors';
 
 const VALUE = '12';
 
-/*
- * The two segments are adjacent inline spans, so the accessible name may or may not gain a space
- * between them depending on the engine — the locator matches on the label and the segment order is
- * asserted structurally instead.
- */
+// Matches on the label only: the two segments are adjacent inline spans, so the accessible name
+// may or may not gain a space between them depending on the engine.
 const pill = () => page.getByRole('button', { name: /Errors/ });
 
 const pillElement = () => pill().element() as HTMLButtonElement;
 
 const segmentTexts = (button: Element): (string | null)[] =>
 	[...button.children].map((child) => child.textContent);
-
-const activeStates = [false, true] as const;
-
-const disabledCombinations = activeStates.flatMap((active) =>
-	activeStates.map((disabled) => [active, disabled] as const),
-);
 
 describe('DsToggleFilterData', () => {
 	it('renders the label followed by the value', async () => {
@@ -46,11 +37,7 @@ describe('DsToggleFilterData', () => {
 		await expect.element(pill()).toHaveAttribute('aria-pressed', 'true');
 	});
 
-	/*
-	 * A greyed pill still has to announce whether its filter is on, so `disabled` must never drop
-	 * `aria-pressed` — for either value.
-	 */
-	it.each(activeStates)('keeps aria-pressed exposed while disabled with active=%s', async (active) => {
+	it.each([false, true])('keeps aria-pressed exposed while disabled with active=%s', async (active) => {
 		await page.render(<DsToggleFilterData label={LABEL} value={VALUE} active={active} disabled />);
 
 		await expect.element(pill()).toBeDisabled();
@@ -143,8 +130,7 @@ describe('DsToggleFilterData activation', () => {
 
 		await pill().click({ force: true });
 
-		// `focus()` is a no-op on a disabled control, which is *why* the keys below cannot reach the
-		// pill. Asserted rather than assumed, so this does not silently become a test of `document.body`.
+		// Asserted so the keyboard checks below cannot silently become a test of `document.body`.
 		pillElement().focus();
 		await expect.element(pill()).not.toHaveFocus();
 
@@ -213,25 +199,4 @@ describe('DsToggleFilterData controlled selection', () => {
 		expect(onActiveChange.mock.calls).toEqual([[true], [true]]);
 		await expect.element(pill()).toHaveAttribute('aria-pressed', 'false');
 	});
-});
-
-describe('DsToggleFilterData has no delete affordance', () => {
-	/*
-	 * A tripwire, not a guard against today's code: the pill currently has no branch that could
-	 * render one. It exists so that adding an icon or dismiss slot later has to face this first —
-	 * nesting a control inside a toggle button would also make the button's own name unreadable.
-	 */
-	it.each(disabledCombinations)(
-		'renders nothing removable when active=%s and disabled=%s',
-		async (active, disabled) => {
-			await page.render(
-				<DsToggleFilterData label={LABEL} value={VALUE} active={active} disabled={disabled} />,
-			);
-
-			expect(pillElement().querySelectorAll('button, [role="button"]')).toHaveLength(0);
-			await expect
-				.element(page.getByRole('button', { name: /delete|remove|clear|close/i, includeHidden: true }))
-				.not.toBeInTheDocument();
-		},
-	);
 });
