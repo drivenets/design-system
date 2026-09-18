@@ -1,5 +1,12 @@
 # @drivenets/vite-plugin-design-system
 
+## 0.0.12
+
+### Patch Changes
+
+- 7677183: Update dependencies
+- 2f6872c: Update dependencies
+
 ## 0.0.11
 
 ### Patch Changes
