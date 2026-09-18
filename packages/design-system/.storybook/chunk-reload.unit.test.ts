@@ -1,4 +1,9 @@
-import { DOCS_RENDERED, STORY_MISSING, STORY_RENDERED } from 'storybook/internal/core-events';
+import {
+	DOCS_RENDERED,
+	SET_CURRENT_STORY,
+	STORY_MISSING,
+	STORY_RENDERED,
+} from 'storybook/internal/core-events';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
 	isStaleStoryChunkError,
@@ -12,6 +17,8 @@ import {
 const DOCS_RENDERER_STALE_MESSAGE =
 	"Cannot destructure property 'DocsRenderer' of '(intermediate value)' as it is undefined.";
 const SYNTAX_HIGHLIGHTER_STALE_MESSAGE = "Cannot read properties of undefined (reading 'SyntaxHighlighter')";
+const CHROME_DYNAMIC_IMPORT_MESSAGE =
+	'Failed to fetch dynamically imported module: ./ds-form-control.stories-old.js';
 const FIREFOX_DYNAMIC_IMPORT_MESSAGE = 'error loading dynamically imported module: ./chunk.js';
 const SAFARI_DYNAMIC_IMPORT_MESSAGE = 'Importing a module script failed.';
 
@@ -147,86 +154,95 @@ describe('registerStoryChunkReload', () => {
 		vi.useRealTimers();
 	});
 
-	it('should show a notice then reload on vite:preloadError', () => {
+	it('should mark vite:preloadError as stale without recovering', () => {
 		const { reload, showNotice, target } = createReloadHarness();
 
 		const event = new Event('vite:preloadError', { cancelable: true });
 		target.dispatchEvent(event);
-
-		expect(event.defaultPrevented).toBe(true);
-		expect(showNotice).toHaveBeenCalledOnce();
-		expect(reload).not.toHaveBeenCalled();
-
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
-		expect(reload).toHaveBeenCalledOnce();
+		expect(event.defaultPrevented).toBe(true);
+		expect(showNotice).not.toHaveBeenCalled();
+		expect(reload).not.toHaveBeenCalled();
 	});
 
-	it('should show a notice then reload on a Chrome stale unhandledrejection', () => {
+	it.each([
+		['Chrome', new TypeError(CHROME_DYNAMIC_IMPORT_MESSAGE)],
+		['Firefox', new TypeError(FIREFOX_DYNAMIC_IMPORT_MESSAGE)],
+		['Safari', new TypeError(SAFARI_DYNAMIC_IMPORT_MESSAGE)],
+	])('should mark a %s failed dynamic import as stale without recovering', (_browser, reason) => {
 		const { reload, showNotice, target } = createReloadHarness();
 
-		const event = dispatchUnhandledRejection(
-			target,
-			new TypeError('Failed to fetch dynamically imported module: ./ds-form-control.stories-old.js'),
-		);
-
-		expect(event.defaultPrevented).toBe(true);
-		expect(showNotice).toHaveBeenCalledOnce();
-		expect(reload).not.toHaveBeenCalled();
-
+		const event = dispatchUnhandledRejection(target, reason);
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
-		expect(reload).toHaveBeenCalledOnce();
-	});
-
-	it('should show a notice then reload on a Firefox stale unhandledrejection', () => {
-		const { reload, showNotice, target } = createReloadHarness();
-
-		const event = dispatchUnhandledRejection(target, new TypeError(FIREFOX_DYNAMIC_IMPORT_MESSAGE));
-
 		expect(event.defaultPrevented).toBe(true);
-		expect(showNotice).toHaveBeenCalledOnce();
+		expect(showNotice).not.toHaveBeenCalled();
 		expect(reload).not.toHaveBeenCalled();
-
-		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
-
-		expect(reload).toHaveBeenCalledOnce();
 	});
 
-	it('should show a notice then reload on a Safari stale unhandledrejection', () => {
-		const { reload, showNotice, target } = createReloadHarness();
+	it.each([
+		['Error', new TypeError(DOCS_RENDERER_STALE_MESSAGE)],
+		['string', DOCS_RENDERER_STALE_MESSAGE],
+	])(
+		'should recover immediately on a DocsRenderer TypeError as %s without STORY_MISSING or SET_CURRENT_STORY',
+		(_kind, reason) => {
+			const { reload, showNotice, target } = createReloadHarness();
 
-		const event = dispatchUnhandledRejection(target, new TypeError(SAFARI_DYNAMIC_IMPORT_MESSAGE));
+			const event = dispatchUnhandledRejection(target, reason);
 
-		expect(event.defaultPrevented).toBe(true);
-		expect(showNotice).toHaveBeenCalledOnce();
-		expect(reload).not.toHaveBeenCalled();
+			expect(event.defaultPrevented).toBe(true);
+			expect(showNotice).toHaveBeenCalledOnce();
+			expect(reload).not.toHaveBeenCalled();
 
-		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
+			vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
-		expect(reload).toHaveBeenCalledOnce();
-	});
+			expect(reload).toHaveBeenCalledOnce();
+		},
+	);
 
-	it('should show a notice then reload on a DocsRenderer TypeError without STORY_MISSING', () => {
-		const { reload, showNotice, target } = createReloadHarness();
+	it.each([
+		['Error', new TypeError(SYNTAX_HIGHLIGHTER_STALE_MESSAGE)],
+		['string', SYNTAX_HIGHLIGHTER_STALE_MESSAGE],
+	])(
+		'should recover immediately on a SyntaxHighlighter TypeError as %s without STORY_MISSING or SET_CURRENT_STORY',
+		(_kind, reason) => {
+			const { reload, showNotice, target } = createReloadHarness();
 
-		const event = dispatchUnhandledRejection(target, new TypeError(DOCS_RENDERER_STALE_MESSAGE));
+			const event = dispatchUnhandledRejection(target, reason);
 
-		expect(event.defaultPrevented).toBe(true);
-		expect(showNotice).toHaveBeenCalledOnce();
-		expect(reload).not.toHaveBeenCalled();
+			expect(event.defaultPrevented).toBe(true);
+			expect(showNotice).toHaveBeenCalledOnce();
+			expect(reload).not.toHaveBeenCalled();
 
-		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
+			vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
-		expect(reload).toHaveBeenCalledOnce();
-	});
+			expect(reload).toHaveBeenCalledOnce();
+		},
+	);
 
-	it('should show a notice then reload on a SyntaxHighlighter TypeError without STORY_MISSING', () => {
-		const { reload, showNotice, target } = createReloadHarness();
+	it.each([
+		[
+			'vite:preloadError',
+			(target: EventTarget) => {
+				target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
+			},
+		],
+		[
+			'Chrome failed import',
+			(target: EventTarget) => {
+				dispatchUnhandledRejection(target, new TypeError(CHROME_DYNAMIC_IMPORT_MESSAGE));
+			},
+		],
+	])('should recover on SET_CURRENT_STORY after %s', (_name, markStale) => {
+		const { reload, showNotice, target, channel } = createReloadHarness();
 
-		const event = dispatchUnhandledRejection(target, new TypeError(SYNTAX_HIGHLIGHTER_STALE_MESSAGE));
+		markStale(target);
 
-		expect(event.defaultPrevented).toBe(true);
+		expect(showNotice).not.toHaveBeenCalled();
+
+		channel.emit(SET_CURRENT_STORY);
+
 		expect(showNotice).toHaveBeenCalledOnce();
 		expect(reload).not.toHaveBeenCalled();
 
@@ -249,10 +265,46 @@ describe('registerStoryChunkReload', () => {
 		expect(reload).toHaveBeenCalledOnce();
 	});
 
+	it('should not reload on SET_CURRENT_STORY without a prior stale signal', () => {
+		const { reload, showNotice, channel } = createReloadHarness();
+
+		channel.emit(SET_CURRENT_STORY);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
+
+		expect(showNotice).not.toHaveBeenCalled();
+		expect(reload).not.toHaveBeenCalled();
+	});
+
 	it('should not reload on STORY_MISSING without a prior stale signal', () => {
 		const { reload, showNotice, channel } = createReloadHarness();
 
 		channel.emit(STORY_MISSING);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
+
+		expect(showNotice).not.toHaveBeenCalled();
+		expect(reload).not.toHaveBeenCalled();
+	});
+
+	it('should forget a stale preload after a successful story render', () => {
+		const { reload, showNotice, target, channel } = createReloadHarness();
+
+		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
+		channel.emit(STORY_RENDERED);
+		channel.emit(STORY_MISSING);
+		channel.emit(SET_CURRENT_STORY);
+		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
+
+		expect(showNotice).not.toHaveBeenCalled();
+		expect(reload).not.toHaveBeenCalled();
+	});
+
+	it('should forget a stale preload after a successful docs render', () => {
+		const { reload, showNotice, target, channel } = createReloadHarness();
+
+		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
+		channel.emit(DOCS_RENDERED);
+		channel.emit(STORY_MISSING);
+		channel.emit(SET_CURRENT_STORY);
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
 		expect(showNotice).not.toHaveBeenCalled();
@@ -264,6 +316,7 @@ describe('registerStoryChunkReload', () => {
 
 		const event = dispatchUnhandledRejection(target, new Error('Boom'));
 		channel.emit(STORY_MISSING);
+		channel.emit(SET_CURRENT_STORY);
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
 		expect(showNotice).not.toHaveBeenCalled();
@@ -274,6 +327,10 @@ describe('registerStoryChunkReload', () => {
 	it('should not reload on a Docs-adjacent TypeError that is not an allowlisted export', () => {
 		const { reload, showNotice, target } = createReloadHarness();
 
+		dispatchUnhandledRejection(
+			target,
+			new TypeError("Cannot destructure property 'foo' of '(intermediate value)' as it is undefined."),
+		);
 		dispatchUnhandledRejection(target, new TypeError("Cannot read properties of undefined (reading 'map')"));
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
@@ -282,44 +339,18 @@ describe('registerStoryChunkReload', () => {
 	});
 
 	it('should not reload again within the cooldown', () => {
-		const { reload, showNotice, target, channel } = createReloadHarness();
+		const { reload, showNotice, target } = createReloadHarness();
 
-		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
-		channel.emit(STORY_MISSING);
-
-		expect(showNotice).toHaveBeenCalledOnce();
-		expect(reload).not.toHaveBeenCalled();
-
+		dispatchUnhandledRejection(target, new TypeError(DOCS_RENDERER_STALE_MESSAGE));
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
+		expect(showNotice).toHaveBeenCalledOnce();
 		expect(reload).toHaveBeenCalledOnce();
-	});
 
-	it('should not recover again from STORY_MISSING after a successful story render', () => {
-		const { reload, showNotice, target, channel } = createReloadHarness();
-
-		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
-		channel.emit(STORY_RENDERED);
-		channel.emit(STORY_MISSING);
-
-		expect(showNotice).toHaveBeenCalledOnce();
-
+		dispatchUnhandledRejection(target, new TypeError(SYNTAX_HIGHLIGHTER_STALE_MESSAGE));
 		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
 
-		expect(reload).toHaveBeenCalledOnce();
-	});
-
-	it('should not recover again from STORY_MISSING after a successful docs render', () => {
-		const { reload, showNotice, target, channel } = createReloadHarness();
-
-		target.dispatchEvent(new Event('vite:preloadError', { cancelable: true }));
-		channel.emit(DOCS_RENDERED);
-		channel.emit(STORY_MISSING);
-
 		expect(showNotice).toHaveBeenCalledOnce();
-
-		vi.advanceTimersByTime(RELOAD_NOTICE_MS);
-
 		expect(reload).toHaveBeenCalledOnce();
 	});
 });

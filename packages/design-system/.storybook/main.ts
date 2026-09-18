@@ -6,6 +6,9 @@ import remarkGfm from 'remark-gfm';
 import { reactCompilerRolldownPlugin } from '../rolldown/react-compiler-rolldown-plugin.ts';
 
 // @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
+import { createChunkReloadNoticeHead } from './create-chunk-reload-notice-head.ts';
+
+// @ts-expect-error - See https://storybook.js.org/docs/faq#extensionless-imports-in-storybook-main-config
 import { createFontLinksHtml } from './create-font-links-html.ts';
 
 const config: StorybookConfig = {
@@ -27,7 +30,8 @@ const config: StorybookConfig = {
 		'@github-ui/storybook-addon-performance-panel',
 	],
 	framework: '@storybook/react-vite',
-	managerHead: (head = '') => `${head}\n${createFontLinksHtml()}`,
+	managerHead: (head = '') => `${head}\n${createFontLinksHtml()}\n${createChunkReloadNoticeHead()}`,
+	previewHead: (head = '') => `${head}\n${createChunkReloadNoticeHead()}`,
 	viteFinal: (viteConfig, { configType }) => {
 		if (!Array.isArray(viteConfig.plugins)) {
 			viteConfig.plugins = [];

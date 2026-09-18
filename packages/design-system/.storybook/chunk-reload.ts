@@ -1,6 +1,10 @@
-import { DOCS_RENDERED, STORY_MISSING, STORY_RENDERED } from 'storybook/internal/core-events';
-import noticeHtml from './chunk-reload-notice.html?raw';
-import './chunk-reload-notice.css';
+import {
+	DOCS_RENDERED,
+	SET_CURRENT_STORY,
+	STORY_MISSING,
+	STORY_RENDERED,
+} from 'storybook/internal/core-events';
+import { RELOAD_NOTICE_ID, RELOAD_NOTICE_TEMPLATE_ID } from './chunk-reload-notice-ids';
 
 const STALE_DYNAMIC_IMPORT_MESSAGES = [
 	'Failed to fetch dynamically imported module',
@@ -14,7 +18,6 @@ export const RELOAD_COOLDOWN_MS = 10_000;
 export const RELOAD_NOTICE_MS = 1_500;
 
 const RELOAD_STORAGE_KEY = 'ds-storybook-chunk-reload-at';
-const RELOAD_NOTICE_ID = 'ds-storybook-chunk-reload-notice';
 
 type ReloadStorage = Pick<Storage, 'getItem' | 'setItem'>;
 
@@ -42,6 +45,10 @@ function getErrorMessage(error: unknown): string | undefined {
 	return undefined;
 }
 
+function isFailedDynamicImportMessage(message: string): boolean {
+	return STALE_DYNAMIC_IMPORT_MESSAGES.some((fragment) => message.includes(fragment));
+}
+
 function isUndefinedLazyExportError(message: string): boolean {
 	if (!message.includes('undefined')) {
 		return false;
@@ -50,18 +57,20 @@ function isUndefinedLazyExportError(message: string): boolean {
 	return STALE_LAZY_EXPORTS.some((name) => message.includes(`'${name}'`) || message.includes(`"${name}"`));
 }
 
-export function isStaleStoryChunkError(error: unknown): boolean {
+function isFailedDynamicImportError(error: unknown): boolean {
 	const message = getErrorMessage(error);
 
-	if (message === undefined) {
-		return false;
-	}
+	return message !== undefined && isFailedDynamicImportMessage(message);
+}
 
-	if (STALE_DYNAMIC_IMPORT_MESSAGES.some((fragment) => message.includes(fragment))) {
-		return true;
-	}
+function isStaleLazyExportError(error: unknown): boolean {
+	const message = getErrorMessage(error);
 
-	return isUndefinedLazyExportError(message);
+	return message !== undefined && isUndefinedLazyExportError(message);
+}
+
+export function isStaleStoryChunkError(error: unknown): boolean {
+	return isFailedDynamicImportError(error) || isStaleLazyExportError(error);
 }
 
 export function shouldReloadNow(now = Date.now(), storage: ReloadStorage = sessionStorage): boolean {
@@ -95,7 +104,13 @@ function showStaleDocsReloadNotice(doc: Document = document): void {
 		return;
 	}
 
-	doc.body.insertAdjacentHTML('beforeend', noticeHtml);
+	const template = doc.getElementById(RELOAD_NOTICE_TEMPLATE_ID);
+
+	if (!(template instanceof HTMLTemplateElement)) {
+		return;
+	}
+
+	doc.body.appendChild(template.content.cloneNode(true));
 }
 
 export function registerStoryChunkReload({
@@ -131,18 +146,22 @@ export function registerStoryChunkReload({
 		recoverIfStale();
 	};
 
-	target.addEventListener('vite:preloadError', recoverFromStaleEvent);
+	target.addEventListener('vite:preloadError', markStale);
 
 	target.addEventListener('unhandledrejection', (event) => {
 		const reason = 'reason' in event ? event.reason : undefined;
 
-		if (!isStaleStoryChunkError(reason)) {
+		if (isStaleLazyExportError(reason)) {
+			recoverFromStaleEvent(event);
 			return;
 		}
 
-		recoverFromStaleEvent(event);
+		if (isFailedDynamicImportError(reason)) {
+			markStale(event);
+		}
 	});
 
+	channel?.on(SET_CURRENT_STORY, recoverIfStale);
 	channel?.on(STORY_MISSING, recoverIfStale);
 
 	channel?.on(STORY_RENDERED, () => {
