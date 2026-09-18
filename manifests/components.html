@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/99 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/99 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/99 without API description</a><span class="filter-pill ok" aria-disabled="true">572 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/572 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/99 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">59/99 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/99 without API description</a><span class="filter-pill ok" aria-disabled="true">573 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/573 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -14460,7 +14460,7 @@ toggles visibility so users can verify what they typed.</div>
       <div class="badges">
         <label for="c-50-components-popover-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-50-components-popover-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-50-components-popover-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -14691,6 +14691,43 @@ from the trigger to reach the links inside.</div>
             &lt;DsPopover.ContentItem&gt;
                 &lt;img className={styles.image} src={PLACEHOLDER_IMAGE} alt=&quot;Map of London&quot; /&gt;
             &lt;/DsPopover.ContentItem&gt;
+        &lt;/DsPopover.Content&gt;
+    &lt;/DsPopover.Panel&gt;
+&lt;/DsPopover.Root&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Anchor</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">When the trigger is not the positioning reference — for example a field with an
+end-adornment button — wrap the field in `DsPopover.Anchor` and set `matchAnchorWidth`
+so the panel lines up with the field rather than the button.</div>
+              <pre><code>const CustomAnchor = () =&gt; &lt;DsPopover.Root
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    modal={false}
+    defaultOpen={false}
+    matchAnchorWidth&gt;
+    &lt;DsPopover.Anchor&gt;
+        &lt;div className={styles.anchorField}&gt;
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;main&quot;&gt;Query filter
+                                    &lt;/DsTypography&gt;
+            &lt;DsPopover.Trigger&gt;
+                &lt;DsButtonV3 variant=&quot;tertiary&quot; size=&quot;small&quot; icon=&quot;info&quot; aria-label=&quot;Filter details&quot; /&gt;
+            &lt;/DsPopover.Trigger&gt;
+        &lt;/div&gt;
+    &lt;/DsPopover.Anchor&gt;
+    &lt;DsPopover.Panel&gt;
+        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;filter_alt&quot; color=&quot;action-secondary&quot; /&gt;}&gt;Query filter
+                            &lt;/DsPopover.Header&gt;
+        &lt;DsPopover.Content&gt;
+            &lt;DsPopover.ContentItem&gt;The panel positions against the field and matches its width. The info button only toggles open
+                                        state.
+                                    &lt;/DsPopover.ContentItem&gt;
         &lt;/DsPopover.Content&gt;
     &lt;/DsPopover.Panel&gt;
 &lt;/DsPopover.Root&gt;;</code></pre>

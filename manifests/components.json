@@ -10030,6 +10030,12 @@
           "id": "components-popover--with-image",
           "name": "With Image",
           "snippet": "const WithImage = () => <DsPopover.Root side=\"bottom\" align=\"center\" gutter={8} modal={false} defaultOpen={false}>\n    <DsPopover.Trigger>\n        <DsButtonV3 variant=\"secondary\">London</DsButtonV3>\n    </DsPopover.Trigger>\n    <DsPopover.Panel>\n        <DsPopover.Header icon={<DsIcon icon=\"location_on\" color=\"action-secondary\" />}>London\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem>\n                <img className={styles.image} src={PLACEHOLDER_IMAGE} alt=\"Map of London\" />\n            </DsPopover.ContentItem>\n        </DsPopover.Content>\n    </DsPopover.Panel>\n</DsPopover.Root>;"
+        },
+        {
+          "id": "components-popover--custom-anchor",
+          "name": "Custom Anchor",
+          "snippet": "const CustomAnchor = () => <DsPopover.Root\n    side=\"bottom\"\n    align=\"start\"\n    gutter={8}\n    modal={false}\n    defaultOpen={false}\n    matchAnchorWidth>\n    <DsPopover.Anchor>\n        <div className={styles.anchorField}>\n            <DsTypography variant=\"body-sm-reg\" color=\"main\">Query filter\n                                    </DsTypography>\n            <DsPopover.Trigger>\n                <DsButtonV3 variant=\"tertiary\" size=\"small\" icon=\"info\" aria-label=\"Filter details\" />\n            </DsPopover.Trigger>\n        </div>\n    </DsPopover.Anchor>\n    <DsPopover.Panel>\n        <DsPopover.Header icon={<DsIcon icon=\"filter_alt\" color=\"action-secondary\" />}>Query filter\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem>The panel positions against the field and matches its width. The info button only toggles open\n                                        state.\n                                    </DsPopover.ContentItem>\n        </DsPopover.Content>\n    </DsPopover.Panel>\n</DsPopover.Root>;",
+          "description": "When the trigger is not the positioning reference — for example a field with an\nend-adornment button — wrap the field in `DsPopover.Anchor` and set `matchAnchorWidth`\nso the panel lines up with the field rather than the button."
         }
       ],
       "import": "import {\n  DsAvatar,\n  DsButtonV3,\n  DsDivider,\n  DsIcon,\n  DsPopover,\n  DsStack,\n  DsStatusBadgeV2,\n  DsTypography,\n} from '@drivenets/design-system';"
@@ -28663,6 +28669,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4289
+    "durationMs": 5534
   }
 }

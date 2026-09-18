@@ -1,1 +1,0 @@
-import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{J as t,q as n}from"./ds-tooltip-DkCKqwpx.js";function r(e){return e.scrollHeight>e.clientHeight||e.scrollWidth>e.clientWidth}function i(e,n){let{rootEl:i,...a}=n||{};e&&i&&t(i)&&r(i)&&e.scrollIntoView(a)}function a(){return(a=e((()=>{n()})))()}export{i as n,a as t};
