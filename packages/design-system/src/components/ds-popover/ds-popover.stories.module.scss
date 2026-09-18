@@ -4,3 +4,15 @@
 	height: auto;
 	border-radius: 4px;
 }
+
+.anchorField {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--xs);
+	width: 320px;
+	padding: var(--sm) var(--standard);
+	background: var(--background);
+	border: 1px solid var(--border);
+	border-radius: var(--3xs);
+}
