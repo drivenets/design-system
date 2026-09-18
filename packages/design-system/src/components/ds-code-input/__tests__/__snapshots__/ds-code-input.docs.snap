@@ -73,26 +73,87 @@ const ReadOnly = () => <DsCodeInput readOnly defaultValue="Status = Active AND t
 
 ### Show code
 <DsCodeInput
-  defaultValue="Status = Active AND trigger = Scheduled"
+  defaultValue="Status = Active
+AND trigger = Scheduled"
   disabled
 />
 
 ### MCP manifest
-const Disabled = () => <DsCodeInput disabled defaultValue="Status = Active AND trigger = Scheduled" />;
+const Disabled = () => <DsCodeInput disabled defaultValue="Status = Active\nAND trigger = Scheduled" />;
 
 ## With Help Adornment
 
 ### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsCodeInput defaultValue="Status = Active AND trigger = Scheduled" slots={{
+    endAdornment: <DsTooltip content="Query syntax">
+                        <DsButtonV3 variant="tertiary" size="small" icon="help" aria-label="Query syntax" />
+                    </DsTooltip>
+  }} />
+}
+
+### MCP manifest
+const WithHelpAdornment = () => (
+    <DsCodeInput
+        defaultValue="Status = Active AND trigger = Scheduled"
+        slots={{
+            endAdornment: (
+                <DsTooltip content="Query syntax">
+                    <DsButtonV3 variant="tertiary" size="small" icon="help" aria-label="Query syntax" />
+                </DsTooltip>
+            ),
+        }}
+    />
+);
+
+## Controlled
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState('Status = Active AND trigger = Scheduled');
+    return <DsCodeInput value={value} onValueChange={setValue} />;
+  }
+}
+
+### MCP manifest
+const Controlled = function Render() {
+    const [value, setValue] = useState('Status = Active AND trigger = Scheduled');
+
+    return <DsCodeInput value={value} onValueChange={setValue} />;
+};
+
+## Localized
+
+### Show code
 <DsCodeInput
-  defaultValue="Status = Active AND trigger = Scheduled"
-  slots={{
-    endAdornment: <DsButtonV3 aria-label="Query syntax" icon="help" size="small" variant="tertiary"/>
+  locale={{
+    collapse: 'Close editor',
+    expand: 'Open editor',
+    searchPlaceholder: 'Find in code'
   }}
+  placeholder="Enter query"
 />
 
 ### MCP manifest
-const WithHelpAdornment = () => <DsCodeInput
-    defaultValue="Status = Active AND trigger = Scheduled"
-    slots={{
-        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="help" aria-label="Query syntax" />,
+const Localized = () => <DsCodeInput
+    placeholder="Enter query"
+    locale={{
+        expand: 'Open editor',
+        collapse: 'Close editor',
+        searchPlaceholder: 'Find in code',
     }} />;

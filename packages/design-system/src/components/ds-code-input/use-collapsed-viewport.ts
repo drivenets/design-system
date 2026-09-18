@@ -1,4 +1,4 @@
-import { type RefObject, useEffect, useRef, useState } from 'react';
+import { type Dispatch, type RefObject, type SetStateAction, useEffect, useState } from 'react';
 import {
 	getAdditionalLineCount,
 	getLineAtIndex,
@@ -8,7 +8,7 @@ import {
 	getVisibleLineIndex,
 	measureTextWidth,
 	scrollToLogicalLine,
-} from './query-document';
+} from './ds-code-input.utils';
 
 const CARET_INLINE_PADDING_PX = 16;
 
@@ -30,7 +30,46 @@ export interface CollapsedViewport {
 	revealCaretLine: () => void;
 }
 
-const readViewport = (textarea: HTMLTextAreaElement) => {
+export interface CollapsedViewportHandlers {
+	onSelect: () => void;
+	onKeyUp: () => void;
+	onClick: () => void;
+	onScroll: () => void;
+	onFocus: () => void;
+	onBlur: () => void;
+	onBeforeInput: () => void;
+}
+
+interface ViewportSnapshot {
+	totalLines: number;
+	caretLine: number;
+	visibleLine: number;
+	selectedLines: number;
+	clipped: boolean;
+	fadeStart: boolean;
+	fadeEnd: boolean;
+}
+
+const initialSnapshot: ViewportSnapshot = {
+	totalLines: 1,
+	caretLine: 1,
+	visibleLine: 1,
+	selectedLines: 0,
+	clipped: false,
+	fadeStart: false,
+	fadeEnd: false,
+};
+
+const snapshotsEqual = (left: ViewportSnapshot, right: ViewportSnapshot) =>
+	left.totalLines === right.totalLines &&
+	left.caretLine === right.caretLine &&
+	left.visibleLine === right.visibleLine &&
+	left.selectedLines === right.selectedLines &&
+	left.clipped === right.clipped &&
+	left.fadeStart === right.fadeStart &&
+	left.fadeEnd === right.fadeEnd;
+
+const readViewport = (textarea: HTMLTextAreaElement): ViewportSnapshot => {
 	const value = textarea.value;
 	const totalLines = getLogicalLineCount(value);
 	const caretLine = getLineIndexAtOffset(value, textarea.selectionStart) + 1;
@@ -52,21 +91,37 @@ const readViewport = (textarea: HTMLTextAreaElement) => {
 	};
 };
 
+const commitViewport = (
+	textarea: HTMLTextAreaElement,
+	setSnapshot: Dispatch<SetStateAction<ViewportSnapshot>>,
+) => {
+	const next = readViewport(textarea);
+
+	setSnapshot((current) => (snapshotsEqual(current, next) ? current : next));
+};
+
+/**
+ * The collapsed field shows one logical line. This hook tracks which line is
+ * visible, where the caret is, overflow fades, and the +N / Ln x/y / selection chip.
+ */
 export const useCollapsedViewport = (
 	textareaRef: RefObject<HTMLTextAreaElement | null>,
 	value: string,
 	ready: boolean,
 	collapsed: boolean,
-): CollapsedViewport => {
+): CollapsedViewport & CollapsedViewportHandlers => {
 	const [focused, setFocused] = useState(false);
-	const [visibleLine, setVisibleLine] = useState(1);
-	const [caretLine, setCaretLine] = useState(1);
-	const [totalLines, setTotalLines] = useState(1);
-	const [selectedLines, setSelectedLines] = useState(0);
-	const [fadeStart, setFadeStart] = useState(false);
-	const [fadeEnd, setFadeEnd] = useState(false);
-	const [clipped, setClipped] = useState(false);
+	const [snapshot, setSnapshot] = useState(initialSnapshot);
 
+	const sync = () => {
+		const textarea = textareaRef.current;
+
+		if (textarea) {
+			commitViewport(textarea, setSnapshot);
+		}
+	};
+
+	// Scroll so the caret line is the one visible row (used after collapse).
 	const revealCaretLine = () => {
 		const textarea = textareaRef.current;
 
@@ -78,13 +133,69 @@ export const useCollapsedViewport = (
 
 		scrollToLogicalLine(textarea, lineIndex);
 		textarea.scrollLeft = Math.max(0, textarea.scrollLeft - CARET_INLINE_PADDING_PX);
-		setVisibleLine(lineIndex + 1);
-		setCaretLine(lineIndex + 1);
+		setSnapshot((current) => ({
+			...current,
+			visibleLine: lineIndex + 1,
+			caretLine: lineIndex + 1,
+		}));
 	};
 
-	const revealCaretLineRef = useRef(revealCaretLine);
+	const onSelect = sync;
+	const onKeyUp = sync;
+	const onClick = sync;
 
-	revealCaretLineRef.current = revealCaretLine;
+	const onScroll = () => {
+		if (collapsed) {
+			sync();
+		}
+	};
+
+	const onFocus = () => {
+		if (!collapsed) {
+			return;
+		}
+
+		setFocused(true);
+		revealCaretLine();
+		sync();
+	};
+
+	const onBlur = () => {
+		if (!collapsed) {
+			return;
+		}
+
+		const textarea = textareaRef.current;
+
+		setFocused(false);
+
+		if (textarea) {
+			// Idle field always shows the start of the document.
+			scrollToLogicalLine(textarea, 0);
+			textarea.scrollLeft = 0;
+		}
+
+		sync();
+	};
+
+	const onBeforeInput = () => {
+		if (!collapsed) {
+			return;
+		}
+
+		const textarea = textareaRef.current;
+
+		if (!textarea) {
+			return;
+		}
+
+		const next = readViewport(textarea);
+
+		// Typing while looking at another line: jump to the caret line first.
+		if (next.caretLine !== next.visibleLine) {
+			revealCaretLine();
+		}
+	};
 
 	useEffect(() => {
 		const textarea = textareaRef.current;
@@ -95,114 +206,84 @@ export const useCollapsedViewport = (
 			return;
 		}
 
-		const sync = () => {
-			const next = readViewport(textarea);
+		const syncFromDom = () => commitViewport(textarea, setSnapshot);
 
-			setTotalLines(next.totalLines);
-			setCaretLine(next.caretLine);
-			setVisibleLine(next.visibleLine);
-			setSelectedLines(next.selectedLines);
-			setClipped(next.clipped);
-			setFadeStart(next.fadeStart);
-			setFadeEnd(next.fadeEnd);
-		};
+		// React's onSelect is backed by selectionchange, so programmatic
+		// `select` events (tests, setSelectionRange) still need a native listener.
+		textarea.addEventListener('select', syncFromDom);
 
-		const handleFocus = () => {
-			setFocused(true);
-			revealCaretLineRef.current();
-			sync();
-		};
-
-		const handleBlur = () => {
-			setFocused(false);
-			scrollToLogicalLine(textarea, 0);
-			textarea.scrollLeft = 0;
-			sync();
-		};
-
+		// Line-by-line, not native pixel scroll — a one-row textarea would
+		// otherwise feel broken. React's onWheel is passive, so this stays native.
 		const handleWheel = (event: WheelEvent) => {
 			if (document.activeElement !== textarea || event.deltaY === 0) {
 				return;
 			}
 
-			const snapshot = readViewport(textarea);
+			const next = readViewport(textarea);
 			const direction = event.deltaY > 0 ? 1 : -1;
-			const nextLine = snapshot.visibleLine + direction;
+			const nextLine = next.visibleLine + direction;
 
-			if (nextLine < 1 || nextLine > snapshot.totalLines) {
+			if (nextLine < 1 || nextLine > next.totalLines) {
 				return;
 			}
 
 			event.preventDefault();
 			scrollToLogicalLine(textarea, nextLine - 1);
-			setVisibleLine(nextLine);
-			sync();
+			syncFromDom();
 		};
 
-		const handleBeforeInput = () => {
-			const snapshot = readViewport(textarea);
-
-			if (snapshot.caretLine !== snapshot.visibleLine) {
-				revealCaretLineRef.current();
-			}
-		};
-
-		textarea.addEventListener('select', sync);
-		textarea.addEventListener('keyup', sync);
-		textarea.addEventListener('click', sync);
+		let observer: ResizeObserver | undefined;
 
 		if (collapsed) {
-			textarea.addEventListener('scroll', sync);
-			textarea.addEventListener('focus', handleFocus);
-			textarea.addEventListener('blur', handleBlur);
 			textarea.addEventListener('wheel', handleWheel, { passive: false });
-			textarea.addEventListener('beforeinput', handleBeforeInput);
 			setFocused(document.activeElement === textarea);
+			observer = new ResizeObserver(syncFromDom);
+			observer.observe(textarea);
 		} else {
 			setFocused(false);
 		}
 
-		const observer = new ResizeObserver(sync);
-
-		observer.observe(textarea);
-		sync();
+		syncFromDom();
 
 		return () => {
-			textarea.removeEventListener('select', sync);
-			textarea.removeEventListener('keyup', sync);
-			textarea.removeEventListener('click', sync);
-			textarea.removeEventListener('scroll', sync);
-			textarea.removeEventListener('focus', handleFocus);
-			textarea.removeEventListener('blur', handleBlur);
+			textarea.removeEventListener('select', syncFromDom);
 			textarea.removeEventListener('wheel', handleWheel);
-			textarea.removeEventListener('beforeinput', handleBeforeInput);
-			observer.disconnect();
+			observer?.disconnect();
 		};
 	}, [ready, collapsed, value, textareaRef]);
 
 	const additional = getAdditionalLineCount(value);
-	const echoText = getLineAtIndex(value, caretLine - 1);
+	// Caret line, painted as a static stand-in while the real textarea lives in the overlay.
+	const echoText = getLineAtIndex(value, snapshot.caretLine - 1);
 
+	// Selection spanning lines > focused line position > idle +N.
 	let indicator: CollapsedIndicator | null = null;
 
-	if (selectedLines > 1) {
-		indicator = { kind: 'selection', selected: selectedLines, total: totalLines };
+	if (snapshot.selectedLines > 1) {
+		indicator = { kind: 'selection', selected: snapshot.selectedLines, total: snapshot.totalLines };
 	} else if (focused && additional > 0) {
-		indicator = { kind: 'line', current: visibleLine, total: totalLines };
+		indicator = { kind: 'line', current: snapshot.visibleLine, total: snapshot.totalLines };
 	} else if (!focused && additional > 0) {
 		indicator = { kind: 'plusN', count: additional };
 	}
 
 	return {
 		focused,
-		visibleLine,
-		caretLine,
-		totalLines: Math.max(totalLines, getLogicalLineCount(value)),
+		visibleLine: snapshot.visibleLine,
+		caretLine: snapshot.caretLine,
+		totalLines: Math.max(snapshot.totalLines, getLogicalLineCount(value)),
 		indicator,
-		fadeStart: focused && fadeStart,
-		fadeEnd: focused && fadeEnd,
-		showEllipsis: (!focused || !collapsed || !ready) && clipped,
+		fadeStart: focused && snapshot.fadeStart,
+		fadeEnd: focused && snapshot.fadeEnd,
+		showEllipsis: (!focused || !collapsed || !ready) && snapshot.clipped,
 		echoText,
 		revealCaretLine,
+		onSelect,
+		onKeyUp,
+		onClick,
+		onScroll,
+		onFocus,
+		onBlur,
+		onBeforeInput,
 	};
 };

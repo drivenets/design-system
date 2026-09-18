@@ -5,7 +5,8 @@ export type CodeInputSize = (typeof codeInputSizes)[number];
 
 export interface DsCodeInputProps {
 	/**
-	 * Unique identifier for the editor
+	 * Associates the editor with a `<label htmlFor>`. When set, the expanded
+	 * textarea keeps that name instead of `locale.codeLabel`.
 	 */
 	id?: string;
 	/**
@@ -96,16 +97,16 @@ export interface DsCodeInputProps {
 export interface DsCodeInputLocale {
 	/**
 	 * Accessible name of the button that opens the overlay
-	 * @default 'Expand query editor'
+	 * @default 'Expand code editor'
 	 */
 	expand?: string;
 	/**
 	 * Accessible name of the button that closes the overlay
-	 * @default 'Collapse query editor'
+	 * @default 'Collapse code editor'
 	 */
 	collapse?: string;
 	/**
-	 * @default 'Search in query'
+	 * @default 'Search in code'
 	 */
 	searchPlaceholder?: string;
 	/**
@@ -120,7 +121,7 @@ export interface DsCodeInputLocale {
 	additionalLines?: (count: number) => string;
 	/**
 	 * Accessible name for hidden logical lines. Receives the additional-line count.
-	 * @default (count) => `${count} additional query lines`
+	 * @default (count) => `${count} additional code lines`
 	 */
 	additionalLinesLabel?: (count: number) => string;
 	/**
@@ -130,12 +131,12 @@ export interface DsCodeInputLocale {
 	linePosition?: (current: number, total: number) => string;
 	/**
 	 * Accessible description while collapsed and multiline.
-	 * @default (total) => `Multiline query, ${total} lines. Only one line is visible. Expand to view the complete query.`
+	 * @default (total) => `Multiline code, ${total} lines. Only one line is visible. Expand to view the complete code.`
 	 */
 	multilineDescription?: (total: number) => string;
 	/**
 	 * Accessible description while focused on a hidden line.
-	 * @default (current, total) => `Line ${current} of ${total}; other query lines are hidden.`
+	 * @default (current, total) => `Line ${current} of ${total}; other code lines are hidden.`
 	 */
 	linePositionDescription?: (current: number, total: number) => string;
 	/**
@@ -145,12 +146,12 @@ export interface DsCodeInputLocale {
 	selectionStatus?: (selected: number, total: number) => string;
 	/**
 	 * Announced once when the overlay opens. Receives the logical line count.
-	 * @default (total) => `Query editor expanded, ${total} lines.`
+	 * @default (total) => `Code editor expanded, ${total} lines.`
 	 */
 	expandedAnnouncement?: (total: number) => string;
 	/**
 	 * Announced once when the overlay closes
-	 * @default 'Query editor collapsed'
+	 * @default 'Code editor collapsed'
 	 */
 	collapsedAnnouncement?: string;
 }

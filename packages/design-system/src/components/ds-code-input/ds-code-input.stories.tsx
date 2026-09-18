@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsTooltip } from '../ds-tooltip';
 import { DsCodeInput } from './index';
@@ -63,6 +64,16 @@ export const Small: Story = {
 };
 
 /**
+ * The largest field chrome. The overlay still matches the field width.
+ */
+export const Large: Story = {
+	args: {
+		size: 'large',
+		defaultValue: 'Status = Active AND trigger = Scheduled',
+	},
+};
+
+/**
  * Read-only still expands, so a long value stays searchable, but neither surface accepts
  * edits.
  */
@@ -102,4 +113,31 @@ export const WithHelpAdornment: Story = {
 			}}
 		/>
 	),
+};
+
+/**
+ * The parent owns the value via `value` and `onValueChange`. Use this when other UI
+ * needs to react to edits.
+ */
+export const Controlled: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render() {
+		const [value, setValue] = useState('Status = Active AND trigger = Scheduled');
+
+		return <DsCodeInput value={value} onValueChange={setValue} />;
+	},
+};
+
+/**
+ * Override built-in strings with `locale`. Omitted keys keep their defaults.
+ */
+export const Localized: Story = {
+	args: {
+		placeholder: 'Enter query',
+		locale: {
+			expand: 'Open editor',
+			collapse: 'Close editor',
+			searchPlaceholder: 'Find in code',
+		},
+	},
 };

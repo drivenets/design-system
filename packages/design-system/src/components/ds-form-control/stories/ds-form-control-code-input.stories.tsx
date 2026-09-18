@@ -115,7 +115,7 @@ export const Error: Story = {
 	),
 };
 
-/** Disabled keeps the field visible but blocks both editing and the panel. */
+/** Disabled still expands so a long value stays searchable, but the editor does not accept edits. */
 export const Disabled: Story = {
 	args: {
 		label: 'Query',

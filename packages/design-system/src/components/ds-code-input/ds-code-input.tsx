@@ -1,12 +1,4 @@
-import {
-	type ChangeEvent,
-	type FocusEvent,
-	useEffect,
-	useId,
-	useLayoutEffect,
-	useRef,
-	useState,
-} from 'react';
+import { type ChangeEvent, type FocusEvent, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { DsButtonV3, type ButtonV3Size } from '../ds-button-v3';
@@ -25,8 +17,9 @@ import {
 	getLogicalLineCount,
 	readTextSelection,
 	type TextSelection,
-} from './query-document';
+} from './ds-code-input.utils';
 import { useCollapsedViewport } from './use-collapsed-viewport';
+import { useEditorHost } from './use-editor-host';
 
 const toggleSizes: Record<CodeInputSize, ButtonV3Size> = Object.freeze({
 	small: 'tiny',
@@ -34,27 +27,30 @@ const toggleSizes: Record<CodeInputSize, ButtonV3Size> = Object.freeze({
 	large: 'small',
 });
 
+const OVERLAY_GUTTER_PX = 4;
+
 const defaultLocale = Object.freeze({
-	expand: 'Expand query editor',
-	collapse: 'Collapse query editor',
-	searchPlaceholder: 'Search in query',
+	expand: 'Expand code editor',
+	collapse: 'Collapse code editor',
+	searchPlaceholder: 'Search in code',
 	codeLabel: 'Code',
 	additionalLines: (count: number) => `↵ +${String(count)}`,
-	additionalLinesLabel: (count: number) => `${String(count)} additional query lines`,
+	additionalLinesLabel: (count: number) => `${String(count)} additional code lines`,
 	linePosition: (current: number, total: number) => `Ln ${String(current)}/${String(total)}`,
 	multilineDescription: (total: number) =>
-		`Multiline query, ${String(total)} lines. Only one line is visible. Expand to view the complete query.`,
+		`Multiline code, ${String(total)} lines. Only one line is visible. Expand to view the complete code.`,
 	linePositionDescription: (current: number, total: number) =>
-		`Line ${String(current)} of ${String(total)}; other query lines are hidden.`,
+		`Line ${String(current)} of ${String(total)}; other code lines are hidden.`,
 	selectionStatus: (selected: number, total: number) =>
 		`${String(selected)} lines selected · ${String(total)} total`,
-	expandedAnnouncement: (total: number) => `Query editor expanded, ${String(total)} lines.`,
-	collapsedAnnouncement: 'Query editor collapsed',
+	expandedAnnouncement: (total: number) => `Code editor expanded, ${String(total)} lines.`,
+	collapsedAnnouncement: 'Code editor collapsed',
 });
 
 /**
  * Multiline editor for code, such as a query expression. The collapsed field is a
  * one-row viewport of the same document; expanding opens a larger overlay with search.
+ * There is one textarea: collapsed and expanded are two homes it moves between.
  *
  * @summary multiline code field that expands into a searchable overlay
  */
@@ -83,22 +79,19 @@ const DsCodeInput = ({
 }: DsCodeInputProps) => {
 	const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? '');
 	const [uncontrolledExpanded, setUncontrolledExpanded] = useState(defaultExpanded);
-	const [hostReady, setHostReady] = useState(false);
+	// True when the user opened the overlay and should keep typing in it.
 	const [focusOnOpen, setFocusOnOpen] = useState(false);
 	const [announcement, setAnnouncement] = useState('');
 
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 	const collapsedSlotRef = useRef<HTMLDivElement>(null);
 	const overlaySlotRef = useRef<HTMLDivElement>(null);
-	const hostRef = useRef<HTMLDivElement | null>(null);
+	// Caret/selection saved before the textarea moves to the other slot.
 	const pendingSelectionRef = useRef<TextSelection | null>(null);
+	// True when the user closed the overlay and should land back in the field.
 	const focusOnCloseRef = useRef(false);
-	const isMovingHostRef = useRef(false);
+	// Skip the first expand/collapse announcement so mount is silent.
 	const skipAnnouncementRef = useRef(true);
-
-	if (hostRef.current === null) {
-		hostRef.current = document.createElement('div');
-	}
 
 	const panelId = useId();
 	const descriptionId = useId();
@@ -116,6 +109,8 @@ const DsCodeInput = ({
 		if (open) {
 			focusOnCloseRef.current = false;
 
+			// User-open already saved the caret. If the overlay opened some other
+			// way, snapshot it now so it still comes back after the move.
 			if (!pendingSelectionRef.current) {
 				const textarea = textareaRef.current;
 
@@ -134,44 +129,19 @@ const DsCodeInput = ({
 		onExpandChange?.(open);
 	};
 
+	const { host, hostReady, isMovingHostRef } = useEditorHost({
+		isExpanded,
+		collapsedSlotRef,
+		overlaySlotRef,
+		hostClassName: isExpanded ? panelStyles.editorHost : collapsedStyles.editorHost,
+		textareaRef,
+		pendingSelectionRef,
+		shouldFocus: isExpanded && focusOnOpen,
+	});
 	const viewport = useCollapsedViewport(textareaRef, currentValue, hostReady, !isExpanded);
 	const revealCaretLineRef = useRef(viewport.revealCaretLine);
 
 	revealCaretLineRef.current = viewport.revealCaretLine;
-
-	useLayoutEffect(() => {
-		const host = hostRef.current;
-		const dest = isExpanded ? overlaySlotRef.current : collapsedSlotRef.current;
-
-		if (!host || !dest) {
-			return;
-		}
-
-		isMovingHostRef.current = true;
-		host.className = isExpanded ? panelStyles.editorHost : collapsedStyles.editorHost;
-
-		if (host.parentElement !== dest) {
-			dest.appendChild(host);
-		}
-
-		const textarea = textareaRef.current;
-		const pending = pendingSelectionRef.current;
-
-		if (textarea && pending) {
-			applyTextSelection(textarea, pending);
-			pendingSelectionRef.current = null;
-		}
-
-		if (textarea && isExpanded && focusOnOpen) {
-			textarea.focus({ preventScroll: true });
-		}
-
-		isMovingHostRef.current = false;
-
-		if (!hostReady) {
-			setHostReady(true);
-		}
-	}, [isExpanded, hostReady, focusOnOpen]);
 
 	useEffect(() => {
 		if (skipAnnouncementRef.current) {
@@ -190,6 +160,8 @@ const DsCodeInput = ({
 	}, [isExpanded]);
 
 	const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+		// Some browsers insert \r\n. Rewrite to \n and put the caret back so
+		// typing does not jump.
 		const newValue = canonicalizeLf(event.target.value);
 
 		if (newValue !== event.target.value) {
@@ -208,6 +180,8 @@ const DsCodeInput = ({
 	};
 
 	const handleFocus = (event: FocusEvent<HTMLTextAreaElement>) => {
+		// Moving the host fires fake focus/blur. Ignore those so callers do not
+		// think the user left the field.
 		if (isMovingHostRef.current) {
 			return;
 		}
@@ -242,64 +216,87 @@ const DsCodeInput = ({
 				: strings.multilineDescription(viewport.totalLines)
 			: undefined;
 
-	const editor = createPortal(
-		<textarea
-			id={id}
-			ref={mergeRefs(ref, textareaRef)}
-			name={name}
-			className={isExpanded ? panelStyles.codeArea : collapsedStyles.input}
-			rows={isExpanded ? undefined : 1}
-			wrap={isExpanded ? 'soft' : 'off'}
-			value={currentValue}
-			placeholder={placeholder}
-			disabled={disabled}
-			readOnly={readOnly}
-			maxLength={maxLength}
-			spellCheck={false}
-			autoComplete="off"
-			aria-multiline="true"
-			aria-label={isExpanded ? strings.codeLabel : undefined}
-			aria-describedby={description ? descriptionId : undefined}
-			onChange={handleChange}
-			onFocus={handleFocus}
-			onBlur={handleBlur}
-			onKeyDown={(event) => {
-				if (event.key === 'Escape' && isExpanded) {
-					event.stopPropagation();
-					focusOnCloseRef.current = true;
-					handleOpenChange(false);
+	// One textarea, rendered once and portaled into the host. rows / wrap /
+	// className flip when it moves between the collapsed slot and the overlay.
+	const editor = host
+		? createPortal(
+				<textarea
+					id={id}
+					ref={mergeRefs(ref, textareaRef)}
+					name={name}
+					className={isExpanded ? panelStyles.codeArea : collapsedStyles.input}
+					rows={isExpanded ? undefined : 1}
+					wrap={isExpanded ? 'soft' : 'off'}
+					value={currentValue}
+					placeholder={placeholder}
+					disabled={disabled}
+					readOnly={readOnly}
+					maxLength={maxLength}
+					spellCheck={false}
+					autoComplete="off"
+					aria-multiline="true"
+					aria-label={isExpanded && !id ? strings.codeLabel : undefined}
+					aria-describedby={description ? descriptionId : undefined}
+					onChange={handleChange}
+					onSelect={viewport.onSelect}
+					onKeyUp={viewport.onKeyUp}
+					onClick={viewport.onClick}
+					onScroll={viewport.onScroll}
+					onBeforeInput={viewport.onBeforeInput}
+					onFocus={(event) => {
+						if (!isMovingHostRef.current) {
+							viewport.onFocus();
+						}
 
-					return;
-				}
+						handleFocus(event);
+					}}
+					onBlur={(event) => {
+						if (!isMovingHostRef.current) {
+							viewport.onBlur();
+						}
 
-				if (!isExpanded && event.altKey && event.key === 'ArrowDown') {
-					event.preventDefault();
-					event.stopPropagation();
-					handleUserOpen();
-				}
-			}}
-		/>,
-		hostRef.current,
-	);
+						handleBlur(event);
+					}}
+					onKeyDown={(event) => {
+						if (event.key === 'Escape' && isExpanded) {
+							event.stopPropagation();
+							focusOnCloseRef.current = true;
+							handleOpenChange(false);
+
+							return;
+						}
+
+						if (!isExpanded && event.altKey && event.key === 'ArrowDown') {
+							event.preventDefault();
+							event.stopPropagation();
+							handleUserOpen();
+						}
+					}}
+				/>,
+				host,
+			)
+		: null;
 
 	return (
 		<DsPopover.Root
 			open={isExpanded}
 			side="bottom"
 			align="start"
-			gutter={4}
+			gutter={OVERLAY_GUTTER_PX}
 			matchAnchorWidth
+			// We own focus so the expand button does not steal it.
 			restoreFocus={false}
 			onOpenAutoFocus={(event) => {
 				event.preventDefault();
 
 				if (focusOnOpen) {
-					textareaRef.current?.focus();
+					textareaRef.current?.focus({ preventScroll: true });
 				}
 			}}
 			onCloseAutoFocus={(event) => {
 				event.preventDefault();
 
+				// Put focus back in the collapsed field and scroll to the caret line.
 				if (focusOnCloseRef.current) {
 					textareaRef.current?.focus({ preventScroll: true });
 					revealCaretLineRef.current();
@@ -343,6 +340,8 @@ const DsCodeInput = ({
 										aria-expanded={isExpanded}
 										aria-controls={panelId}
 										onPointerDown={(event) => {
+											// Snapshot the caret and request focus before the
+											// button would steal it.
 											event.preventDefault();
 
 											if (isExpanded) {

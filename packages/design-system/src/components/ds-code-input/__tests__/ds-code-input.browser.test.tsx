@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
+import { DsFormControl } from '../../ds-form-control';
 import { DsCodeInput } from '../index';
 
 const query = 'Status = Active AND status = Scheduled';
@@ -7,12 +8,12 @@ const multiline = 'SELECT *\nFROM devices';
 const fits = 'abcdefghij';
 
 const getField = () => page.getByPlaceholder('Enter a query');
-const getExpand = () => page.getByRole('button', { name: 'Expand query editor' });
-const getCollapse = () => page.getByRole('button', { name: 'Collapse query editor' });
+const getExpand = () => page.getByRole('button', { name: 'Expand code editor' });
+const getCollapse = () => page.getByRole('button', { name: 'Collapse code editor' });
 const getCodeArea = () => page.getByRole('textbox', { name: 'Code' });
-const getSearch = () => page.getByRole('textbox', { name: 'Search in query' });
+const getSearch = () => page.getByRole('textbox', { name: 'Search in code' });
 const getAdditionalLines = (count: number) =>
-	page.getByRole('button', { name: `${String(count)} additional query lines` });
+	page.getByRole('button', { name: `${String(count)} additional code lines` });
 
 const expectPanelClosed = async () => {
 	await expect.poll(() => getCodeArea().query()).toBeNull();
@@ -20,7 +21,7 @@ const expectPanelClosed = async () => {
 
 const fieldNode = () => document.querySelector<HTMLTextAreaElement>('textarea[placeholder="Enter a query"]');
 const chromeNode = () =>
-	document.querySelector('[aria-label="Expand query editor"], [aria-label="Collapse query editor"]')
+	document.querySelector('[aria-label="Expand code editor"], [aria-label="Collapse code editor"]')
 		?.parentElement?.parentElement;
 const panelNode = () => document.querySelector<HTMLElement>('[role="dialog"]');
 const codeAreaNode = () => document.querySelector<HTMLTextAreaElement>('[role="dialog"] textarea');
@@ -195,6 +196,29 @@ describe('DsCodeInput', () => {
 		await getExpand().click();
 
 		await expect.element(getCodeArea()).toHaveFocus();
+	});
+
+	it('does not scroll the page to the top on the first expand', async () => {
+		const belowFoldPx = 2000;
+		const awayFromTopPx = 100;
+
+		await page.render(
+			<div>
+				<div style={{ height: belowFoldPx }} aria-hidden />
+				<DsCodeInput placeholder="Enter a query" defaultValue={query} />
+			</div>,
+		);
+
+		getExpand().element().scrollIntoView();
+		const scrollBefore = window.scrollY;
+
+		expect(scrollBefore).toBeGreaterThan(awayFromTopPx);
+
+		await getExpand().click();
+
+		await expect.element(getCodeArea()).toBeVisible();
+		await expect.element(getCodeArea()).toHaveFocus();
+		expect(window.scrollY).toBeGreaterThan(awayFromTopPx);
 	});
 
 	it('opens the overlay from the toggle and flips it to collapse', async () => {
@@ -434,6 +458,27 @@ describe('DsCodeInput', () => {
 
 		await expect.element(getCodeArea()).toBeVisible();
 		await expect.element(getCodeArea()).toHaveAttribute('readonly');
+	});
+
+	it('uses locale strings on the expand button', async () => {
+		await page.render(
+			<DsCodeInput placeholder="Enter a query" defaultValue={query} locale={{ expand: 'Open editor' }} />,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Open editor' })).toBeVisible();
+	});
+
+	it('keeps the form label on the expanded textarea instead of Code', async () => {
+		await page.render(
+			<DsFormControl label="Query">
+				<DsFormControl.CodeInput placeholder="Enter a query" defaultValue={query} />
+			</DsFormControl>,
+		);
+
+		await getExpand().click();
+
+		await expect.element(page.getByRole('textbox', { name: 'Query' })).toBeVisible();
+		await expect.element(page.getByRole('dialog', { name: 'Code' })).toBeVisible();
 	});
 
 	it('honours a controlled expanded prop', async () => {

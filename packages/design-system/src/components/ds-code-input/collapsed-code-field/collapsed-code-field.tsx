@@ -49,6 +49,8 @@ const CollapsedCodeField = ({
 		data-disabled={disabled || undefined}
 	>
 		<div className={styles.field}>
+			{/* While expanded, paint a fake line so the overlay can take the real
+			    textarea without the compact row going empty. */}
 			{showEcho && (
 				<div className={classNames(styles.echo, !echoText && styles.placeholder)}>
 					{echoText || placeholder}
