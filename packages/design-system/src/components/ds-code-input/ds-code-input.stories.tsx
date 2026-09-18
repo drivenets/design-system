@@ -8,7 +8,12 @@ import { codeInputSizes } from './ds-code-input.types';
 const meta: Meta<typeof DsCodeInput> = {
 	title: 'Components/CodeInput',
 	component: DsCodeInput,
-	parameters: { layout: 'padded' },
+	parameters: {
+		layout: 'padded',
+		// Args-only stories use dynamic Show code. Under CI load `auto` can race
+		// and fall back to the raw CSF object, so pin dynamic for stable JSX.
+		docs: { source: { type: 'dynamic' } },
+	},
 	argTypes: {
 		size: { control: 'select', options: codeInputSizes },
 		locale: { table: { disable: true } },
