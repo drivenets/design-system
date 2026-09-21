@@ -5,8 +5,6 @@ $code-surface-max-height: 220px;
 // One line of code plus the surface padding, so an empty panel keeps its shape.
 $code-surface-min-height: calc(var(--body-line-height-small) + 2 * var(--standard));
 
-// The backdrop only lines up with the textarea while every metric that influences glyph
-// position and wrap points is identical, so both layers take them from here.
 @mixin code-surface-layer {
 	@include typography.code-sm-reg;
 	box-sizing: border-box;
@@ -45,20 +43,14 @@ $code-surface-min-height: calc(var(--body-line-height-small) + 2 * var(--standar
 	position: relative;
 	min-height: $code-surface-min-height;
 
-	// Aliased so swapping in a real search-match token is a one-line change.
 	--ds-code-input-match-background: var(--background-warning);
 }
 
-// In normal flow, so the stack — and with it the absolutely positioned textarea — takes
-// its height from the rendered text.
 .backdrop {
 	@include code-surface-layer;
 	position: relative;
 	pointer-events: none;
 	user-select: none;
-
-	// The visible glyphs belong to the textarea above; this layer exists only to paint
-	// the match backgrounds behind them.
 	color: transparent;
 }
 
