@@ -2623,6 +2623,369 @@
       ],
       "import": "import { DsChip } from '@drivenets/design-system';"
     },
+    "components-codeinput": {
+      "id": "components-codeinput",
+      "name": "DsCodeInput",
+      "path": "./src/components/ds-code-input/ds-code-input.stories.tsx",
+      "jsDocTags": {
+        "summary": [
+          "multiline code field that expands into a searchable overlay"
+        ]
+      },
+      "description": "Multiline editor for code, such as a query expression. The collapsed field is a\none-row viewport of the same document; expanding opens a larger overlay with search.\nThere is one textarea: collapsed and expanded are two homes it moves between.",
+      "summary": "multiline code field that expands into a searchable overlay",
+      "reactDocgen": {
+        "description": "Multiline editor for code, such as a query expression. The collapsed field is a\none-row viewport of the same document; expanding opens a larger overlay with search.\nThere is one textarea: collapsed and expanded are two homes it moves between.\n\n@summary multiline code field that expands into a searchable overlay",
+        "methods": [],
+        "displayName": "DsCodeInput",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-code-input/ds-code-input.tsx",
+        "actualName": "DsCodeInput",
+        "exportName": "default",
+        "props": {
+          "id": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Associates the editor with a `<label htmlFor>`. When set, the expanded\ntextarea keeps that name instead of `locale.codeLabel`."
+          },
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "ReactRef",
+              "raw": "React.Ref<HTMLTextAreaElement>",
+              "elements": [
+                {
+                  "name": "HTMLTextAreaElement"
+                }
+              ]
+            },
+            "description": "The ref to the editor textarea"
+          },
+          "name": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "The name of the input"
+          },
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof codeInputSizes)[number]"
+            },
+            "description": "@default default",
+            "defaultValue": {
+              "value": "'default'",
+              "computed": false
+            }
+          },
+          "value": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "The current value. Shared by the collapsed viewport and the overlay."
+          },
+          "defaultValue": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "The initial value when rendered.\nUse when you don't need to control the value of the input."
+          },
+          "placeholder": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "The placeholder text"
+          },
+          "disabled": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the input is disabled. The overlay still opens so long values stay searchable.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "readOnly": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the value is read only. The overlay still opens so long values stay searchable.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "expanded": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the overlay is open. Pair with `onExpandChange`."
+          },
+          "defaultExpanded": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Initial overlay state when uncontrolled.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "onExpandChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(expanded: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "expanded"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Fires when the overlay opens or closes"
+          },
+          "onChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: React.ChangeEvent<HTMLTextAreaElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ReactChangeEvent",
+                      "raw": "React.ChangeEvent<HTMLTextAreaElement>",
+                      "elements": [
+                        {
+                          "name": "HTMLTextAreaElement"
+                        }
+                      ]
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Callback when the value changes"
+          },
+          "onValueChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: string) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "string"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Value change event handler (provides just the value)"
+          },
+          "onFocus": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: React.FocusEvent<HTMLTextAreaElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ReactFocusEvent",
+                      "raw": "React.FocusEvent<HTMLTextAreaElement>",
+                      "elements": [
+                        {
+                          "name": "HTMLTextAreaElement"
+                        }
+                      ]
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Event handler called when the editor receives focus"
+          },
+          "onBlur": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(event: React.FocusEvent<HTMLTextAreaElement>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ReactFocusEvent",
+                      "raw": "React.FocusEvent<HTMLTextAreaElement>",
+                      "elements": [
+                        {
+                          "name": "HTMLTextAreaElement"
+                        }
+                      ]
+                    },
+                    "name": "event"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Event handler called when the editor loses focus"
+          },
+          "maxLength": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "The maximum number of characters"
+          },
+          "locale": {
+            "required": false,
+            "tsType": {
+              "name": "DsCodeInputLocale"
+            },
+            "description": "User-facing strings"
+          },
+          "slots": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "object",
+              "raw": "{\n\t/**\n\t * Adornment to display after the expand button\n\t */\n\tendAdornment?: React.ReactNode;\n}",
+              "signature": {
+                "properties": [
+                  {
+                    "key": "endAdornment",
+                    "value": {
+                      "name": "ReactReactNode",
+                      "raw": "React.ReactNode",
+                      "required": false
+                    },
+                    "description": "Adornment to display after the expand button"
+                  }
+                ]
+              }
+            },
+            "description": "Optional render slots for customizing parts of the collapsed field."
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "ReactCSSProperties",
+              "raw": "React.CSSProperties"
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-codeinput--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsCodeInput placeholder=\"Enter query\" />;",
+          "description": "Empty field. The trailing button opens a larger overlay with search; both\nviewports edit the same document."
+        },
+        {
+          "id": "components-codeinput--with-value",
+          "name": "With Value",
+          "snippet": "const WithValue = () => <DsCodeInput\n    defaultValue=\"Status = Active AND trigger = Scheduled\\nAND site IN (\\\"tel-aviv\\\", \\\"tokyo\\\", \\\"haifa\\\")\\nAND lastSeen > now() - 24h\" />;",
+          "description": "A multiline value. While collapsed and unfocused the field shows logical line 1\nand how many additional lines are hidden. Expand to review the full query."
+        },
+        {
+          "id": "components-codeinput--expanded",
+          "name": "Expanded",
+          "snippet": "const Expanded = () => <DsCodeInput\n    defaultExpanded\n    defaultValue=\"Status = Active AND trigger = Scheduled\\nAND site IN (\\\"tel-aviv\\\", \\\"tokyo\\\", \\\"haifa\\\")\\nAND lastSeen > now() - 24h\" />;",
+          "description": "Open on mount. Type in the search box to highlight every occurrence — matching is\nliteral and case-insensitive, so `status` marks `Status` too. The compact field stays\nvisible as a one-line echo of the line that contains the caret."
+        },
+        {
+          "id": "components-codeinput--small",
+          "name": "Small",
+          "snippet": "const Small = () => <DsCodeInput size=\"small\" defaultValue=\"Status = Active AND trigger = Scheduled\" />;"
+        },
+        {
+          "id": "components-codeinput--large",
+          "name": "Large",
+          "snippet": "const Large = () => <DsCodeInput size=\"large\" defaultValue=\"Status = Active AND trigger = Scheduled\" />;",
+          "description": "The largest field chrome. The overlay still matches the field width."
+        },
+        {
+          "id": "components-codeinput--read-only",
+          "name": "Read Only",
+          "snippet": "const ReadOnly = () => <DsCodeInput readOnly defaultValue=\"Status = Active AND trigger = Scheduled\" />;",
+          "description": "Read-only still expands, so a long value stays searchable, but neither surface accepts\nedits."
+        },
+        {
+          "id": "components-codeinput--disabled",
+          "name": "Disabled",
+          "snippet": "const Disabled = () => <DsCodeInput disabled defaultValue=\"Status = Active\\nAND trigger = Scheduled\" />;",
+          "description": "Disabled still expands, so a long value stays searchable, but neither surface accepts\nedits."
+        },
+        {
+          "id": "components-codeinput--with-help-adornment",
+          "name": "With Help Adornment",
+          "snippet": "const WithHelpAdornment = () => (\n    <DsCodeInput\n        defaultValue=\"Status = Active AND trigger = Scheduled\"\n        slots={{\n            endAdornment: (\n                <DsTooltip content=\"Query syntax\">\n                    <DsButtonV3 variant=\"tertiary\" size=\"small\" icon=\"help\" aria-label=\"Query syntax\" />\n                </DsTooltip>\n            ),\n        }}\n    />\n);",
+          "description": "The component owns only the expand button. Anything else in the trailing slot — a\nsyntax-help tooltip, for instance — is passed by the consumer and renders after it."
+        },
+        {
+          "id": "components-codeinput--controlled",
+          "name": "Controlled",
+          "snippet": "const Controlled = function Render() {\n    const [value, setValue] = useState('Status = Active AND trigger = Scheduled');\n\n    return <DsCodeInput value={value} onValueChange={setValue} />;\n};",
+          "description": "The parent owns the value via `value` and `onValueChange`. Use this when other UI\nneeds to react to edits."
+        },
+        {
+          "id": "components-codeinput--localized",
+          "name": "Localized",
+          "snippet": "const Localized = () => <DsCodeInput\n    placeholder=\"Enter query\"\n    locale={{\n        expand: 'Open editor',\n        collapse: 'Close editor',\n        searchPlaceholder: 'Find in code',\n    }} />;",
+          "description": "Override built-in strings with `locale`. Omitted keys keep their defaults."
+        }
+      ],
+      "import": "import { DsButtonV3, DsCodeInput, DsTooltip } from '@drivenets/design-system';"
+    },
     "components-comments-threaditem": {
       "id": "components-comments-threaditem",
       "name": "DsThreadItem",
@@ -6480,6 +6843,183 @@
         }
       ],
       "import": "import { DsFilterStatusIcon, DsStack, DsTypography } from '@drivenets/design-system';"
+    },
+    "components-formcontrol-codeinput": {
+      "id": "components-formcontrol-codeinput",
+      "name": "DsFormControl",
+      "path": "./src/components/ds-form-control/stories/ds-form-control-code-input.stories.tsx",
+      "jsDocTags": {},
+      "reactDocgen": {
+        "description": "",
+        "methods": [],
+        "displayName": "DsFormControlRoot",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-form-control/ds-form-control.tsx",
+        "actualName": "DsFormControlRoot",
+        "props": {
+          "id": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Unique identifier for the control"
+          },
+          "status": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof controlStatuses)[number]"
+            },
+            "description": "Visual status"
+          },
+          "label": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Label text"
+          },
+          "hideLabel": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "required": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Marks the field as required",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "slots": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "object",
+              "raw": "{\n\t/**\n\t * Adornment to display at the end of the label\n\t */\n\tendAdornment?: React.ReactNode;\n}",
+              "signature": {
+                "properties": [
+                  {
+                    "key": "endAdornment",
+                    "value": {
+                      "name": "ReactReactNode",
+                      "raw": "React.ReactNode",
+                      "required": false
+                    },
+                    "description": "Adornment to display at the end of the label"
+                  }
+                ]
+              }
+            },
+            "description": "Optional render slots for customizing parts of the control."
+          },
+          "message": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Message under the control"
+          },
+          "messageIcon": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "IconName | FunctionComponent<SVGProps<SVGSVGElement>>",
+              "elements": [
+                {
+                  "name": "union",
+                  "raw": "MaterialIconName | CustomIconName",
+                  "elements": [
+                    {
+                      "name": "unknown"
+                    },
+                    {
+                      "name": "unknown"
+                    }
+                  ]
+                },
+                {
+                  "name": "FunctionComponent",
+                  "elements": [
+                    {
+                      "name": "SVGProps",
+                      "elements": [
+                        {
+                          "name": "SVGSVGElement"
+                        }
+                      ],
+                      "raw": "SVGProps<SVGSVGElement>"
+                    }
+                  ],
+                  "raw": "FunctionComponent<SVGProps<SVGSVGElement>>"
+                }
+              ]
+            },
+            "description": "Icon shown next to message",
+            "defaultValue": {
+              "value": "'info'",
+              "computed": false
+            }
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Additional CSS class names"
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "ReactCSSProperties",
+              "raw": "React.CSSProperties"
+            },
+            "description": "Additional styles to apply to the component"
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-formcontrol-codeinput--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsFormControl\n    label=\"Query\"\n    required\n    message=\"Expand the field to search within a long query.\"><DsFormControl.CodeInput placeholder=\"Enter a query\" /></DsFormControl>;",
+          "description": "Baseline code field with a label, required marker, and a helper message."
+        },
+        {
+          "id": "components-formcontrol-codeinput--with-description",
+          "name": "With Description",
+          "snippet": "const WithDescription = () => <DsFormControl label=\"Query\" required>\n    <DsFormControl.Description>Combine attribute comparisons with AND, OR and parentheses.\n                    </DsFormControl.Description>\n    <DsFormControl.CodeInput placeholder=\"Enter a query\" />\n</DsFormControl>;",
+          "description": "Adds a description above the field to explain the expected syntax."
+        },
+        {
+          "id": "components-formcontrol-codeinput--with-help-icon",
+          "name": "With Help Icon",
+          "snippet": "const WithHelpIcon = () => <DsFormControl\n    label=\"Query\"\n    required\n    slots={{\n        endAdornment: <DsButtonV3 variant=\"tertiary\" size=\"small\" icon=\"help\" aria-label=\"Query syntax\" />,\n    }}>\n    <DsFormControl.CodeInput defaultValue=\"Status = Active AND trigger = Scheduled\" />\n</DsFormControl>;",
+          "description": "Contextual help belongs on the label row. The field itself owns only the expand\ntoggle, so a help affordance goes here rather than inside the field."
+        },
+        {
+          "id": "components-formcontrol-codeinput--error",
+          "name": "Error",
+          "snippet": "const Error = () => <DsFormControl\n    status=\"error\"\n    label=\"Query\"\n    message=\"Unexpected token near \\\"AND\\\".\"\n    messageIcon=\"error\">\n    <DsFormControl.CodeInput defaultValue=\"Status = Active AND trigger = Scheduled\" />\n</DsFormControl>;",
+          "description": "Error status flags an invalid expression and pairs the message with an error icon."
+        },
+        {
+          "id": "components-formcontrol-codeinput--disabled",
+          "name": "Disabled",
+          "snippet": "const Disabled = () => <DsFormControl label=\"Query\">\n    <DsFormControl.CodeInput defaultValue=\"Status = Active AND trigger = Scheduled\" disabled />\n</DsFormControl>;",
+          "description": "Disabled still expands so a long value stays searchable, but the editor does not accept edits."
+        }
+      ],
+      "import": "import { DsButtonV3, DsFormControl, DsStack } from '@drivenets/design-system';\nimport DsFormControl from '../ds-form-control';\nimport { DsButtonV3 } from '../../ds-button-v3';"
     },
     "components-formcontrol-dateinput-deprecated": {
       "id": "components-formcontrol-dateinput-deprecated",
@@ -28669,6 +29209,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5402
+    "durationMs": 5159
   }
 }
