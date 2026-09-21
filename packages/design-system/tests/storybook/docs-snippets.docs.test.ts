@@ -20,6 +20,7 @@ const COMPONENTS = [
 	'card',
 	'catalog-layout',
 	'checkbox',
+	'code-input',
 	'comment-bubble',
 	'comment-card',
 	'comment-indicator',
