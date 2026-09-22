@@ -2,8 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { DsCheckbox } from './index';
 import { DsCheckboxGroup, useCheckboxSelectAll } from '../ds-checkbox-group';
+import { DsPinToggle } from '../ds-pin-toggle';
 import { DsStack } from '../ds-stack';
-import { checkboxVariants } from './ds-checkbox.types';
+import styles from './ds-checkbox.stories.module.scss';
+import { checkboxSizes, checkboxVariants } from './ds-checkbox.types';
 
 const meta: Meta<typeof DsCheckbox> = {
 	title: 'Components/Checkbox',
@@ -15,6 +17,11 @@ const meta: Meta<typeof DsCheckbox> = {
 		variant: {
 			control: 'select',
 			options: checkboxVariants,
+		},
+		size: {
+			control: 'select',
+			options: checkboxSizes,
+			description: 'Row padding only — typography and control size are identical across sizes',
 		},
 		checked: {
 			control: 'radio',
@@ -35,6 +42,10 @@ const meta: Meta<typeof DsCheckbox> = {
 		disabled: {
 			control: 'boolean',
 			description: 'Disables the checkbox, preventing user interaction',
+		},
+		actions: {
+			control: false,
+			description: 'Trailing slot for interactive content, rendered outside the checkbox label',
 		},
 		className: {
 			table: { disable: true },
@@ -196,6 +207,121 @@ export const WarningIndeterminate: Story = {
 				checked={checked}
 				onCheckedChange={(newState) => setChecked(newState)}
 			/>
+		);
+	},
+};
+
+export const Large: Story = {
+	args: {
+		size: 'large',
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
+	},
+};
+
+export const Sizes: Story = {
+	tags: ['!manifest'],
+	parameters: {
+		docs: {
+			canvas: { sourceState: 'none' },
+		},
+	},
+	render: () => (
+		<DsStack gap="var(--3xs)">
+			<DsCheckbox size="medium" label="Medium" labelInfo="Receive email updates" />
+			<DsCheckbox size="large" label="Large" labelInfo="Receive email updates" />
+		</DsStack>
+	),
+};
+
+export const WithActions: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const [pinned, setPinned] = useState(false);
+
+		return (
+			<DsCheckbox
+				label="Enable notifications"
+				actions={<DsPinToggle itemLabel="notifications" pinned={pinned} onPinnedChange={setPinned} />}
+			/>
+		);
+	},
+};
+
+/**
+ * `actions` stays centred on the label row regardless of size or `labelInfo`, so
+ * a pinned `large` row lines up with its unpinned neighbors.
+ */
+export const LargeWithActions: Story = {
+	args: {
+		size: 'large',
+		label: 'Enable notifications',
+		labelInfo: 'Receive email updates',
+		actions: <DsPinToggle itemLabel="notifications" pinned />,
+	},
+};
+
+export const PinnedFilterList: Story = {
+	parameters: {
+		layout: 'padded',
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const interfaces = [
+			'ge-0/0/0',
+			'ge-0/0/1',
+			'ge-0/0/2',
+			'ge-0/0/3',
+			'xe-0/1/0',
+			'xe-0/1/1',
+			'xe-0/1/2',
+			'et-0/2/0',
+			'et-0/2/1',
+			'et-0/2/2',
+			'lo0',
+			'bundle-1',
+			'bundle-2',
+			'mgmt-0',
+			'mgmt-1',
+		];
+		const [pinned, setPinned] = useState<string[]>(['xe-0/1/1', 'lo0']);
+		const [selected, setSelected] = useState<string[]>([]);
+
+		const isPinned = (name: string) => pinned.includes(name);
+
+		// Stable partition, so pinning a row lifts it to the top without
+		// reshuffling the rows around it.
+		const ordered = [...interfaces.filter(isPinned), ...interfaces.filter((name) => !isPinned(name))];
+
+		return (
+			<div className={styles.filterList}>
+				<DsCheckboxGroup value={selected} onValueChange={setSelected} name="interfaces">
+					{ordered.map((name) => (
+						<DsCheckbox
+							key={name}
+							label={name}
+							value={name}
+							actions={
+								<DsPinToggle
+									itemLabel={name}
+									pinned={isPinned(name)}
+									onPinnedChange={(next) =>
+										setPinned((current) =>
+											next ? [...current, name] : current.filter((pin) => pin !== name),
+										)
+									}
+								/>
+							}
+						/>
+					))}
+				</DsCheckboxGroup>
+			</div>
 		);
 	},
 };
