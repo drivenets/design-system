@@ -1,4 +1,4 @@
-import { type RefObject, useCallback, useLayoutEffect, useState } from 'react';
+import { type RefObject, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { fitTagsInRow, getContainerAvailableWidth, getElementMeasurements } from '../utils';
 
 interface UseTagOverflowCalculationOptions {
@@ -27,6 +27,9 @@ export const useTagOverflowCalculation = ({
 		hasOverflow: false,
 	});
 
+	// Width is the only input to the calculation; see the ResizeObserver below.
+	const lastObservedWidth = useRef(-1);
+
 	const calculateLayout = useCallback(() => {
 		if (!tagsAreaRef.current || !measurementRef.current) {
 			return;
@@ -38,7 +41,11 @@ export const useTagOverflowCalculation = ({
 		const { tagWidths, gap } = getElementMeasurements(measurementContainer);
 
 		if (tagWidths.length === 0) {
-			setState({ visibleTagCount: 0, hasOverflow: false });
+			setState((previous) =>
+				previous.visibleTagCount === 0 && !previous.hasOverflow
+					? previous
+					: { visibleTagCount: 0, hasOverflow: false },
+			);
 			return;
 		}
 
@@ -47,16 +54,34 @@ export const useTagOverflowCalculation = ({
 		const { count } = fitTagsInRow(tagWidths, availableWidth, gap);
 		const hasOverflow = count < tagWidths.length;
 
-		setState({ visibleTagCount: count, hasOverflow });
+		// Bail out when nothing moved, so an observer tick cannot cause a re-render on its own.
+		setState((previous) =>
+			previous.visibleTagCount === count && previous.hasOverflow === hasOverflow
+				? previous
+				: { visibleTagCount: count, hasOverflow },
+		);
 	}, [tagsAreaRef, measurementRef]);
 
 	useLayoutEffect(() => {
+		let observerRafId = 0;
+
 		const rafId = requestAnimationFrame(() => {
 			calculateLayout();
 		});
 
-		const resizeObserver = new ResizeObserver(() => {
-			requestAnimationFrame(() => {
+		const resizeObserver = new ResizeObserver((entries) => {
+			const width = entries[0]?.contentRect.width ?? -1;
+
+			// Only width feeds the calculation. Height is an *output* of it -- a row that
+			// wrapped or a tag that grew is taller -- so reacting to height would let the
+			// measurement retrigger itself indefinitely (AR-95666).
+			if (width === lastObservedWidth.current) {
+				return;
+			}
+			lastObservedWidth.current = width;
+
+			cancelAnimationFrame(observerRafId);
+			observerRafId = requestAnimationFrame(() => {
 				calculateLayout();
 			});
 		});
@@ -67,6 +92,7 @@ export const useTagOverflowCalculation = ({
 
 		return () => {
 			cancelAnimationFrame(rafId);
+			cancelAnimationFrame(observerRafId);
 			resizeObserver.disconnect();
 		};
 	}, [tagsAreaRef, measurementRef, totalItems, expanded, calculateLayout]);

@@ -41,31 +41,35 @@ Two chained 200ms transitions match the reported period.
 
 ## Tasks
 
-- [ ] **T1 — Regression test (RED).** Add a browser test asserting the row settles and
+- [x] **T1 — Regression test (RED).** Add a browser test asserting the row settles and
       stays settled with the pointer parked on the last visible tag, at the confirmed
       trigger widths. Must fail on `main`.
-- [ ] **T2 — Measure the worst case.** Render the measurement clones with the delete
+- [x] **T2 — Measure the worst case.** Render the measurement clones with the delete
       affordance expanded and transitions disabled, so a measured width is the widest the
       tag can ever render. Space for the × is then reserved rather than discovered on hover.
-- [ ] **T3 — Do not wrap while collapsed.** `.tagsArea` keeps `flex-wrap: wrap` only when
+- [x] **T3 — Do not wrap while collapsed.** `.tagsArea` keeps `flex-wrap: wrap` only when
       `expanded`; collapsed it is `nowrap` so residual overshoot cannot change the height.
-- [ ] **T4 — Observe a stable box.** Move the `ResizeObserver` to the outer container,
-      whose width is set by the parent and does not depend on the calculation's result.
-- [ ] **T5 — Make the update idempotent.** Bail out of `setState` when the computed
+- [x] **T4 — Stop the observer feeding itself.** _Implemented differently than planned:_
+      rather than moving the `ResizeObserver` to the outer container, it now ignores ticks
+      where the observed **width** is unchanged. Width is the only real input; height is an
+      output of the calculation. This keeps legitimate width-driven recalculation working
+      (moving the observer would have missed the resize when `.actions` gains the toggle)
+      while cutting the height-driven feedback path, and it touches far less code.
+- [x] **T5 — Make the update idempotent.** Bail out of `setState` when the computed
       `visibleTagCount` / `hasOverflow` are unchanged.
-- [ ] **T6 — Verify.** `test:browser`, `test:unit`, `typecheck`, `lint`, and the docs
+- [x] **T6 — Verify.** `test:browser`, `test:unit`, `typecheck`, `lint`, and the docs
       snapshot for this component; refresh `ds-tag-filter.docs.snap` only if the public
       snippet genuinely changed.
 
 ## Acceptance criteria
 
-- [ ] With the pointer resting on any tag, the row reaches a layout and does not change again.
-- [ ] Holds at the confirmed trigger widths (540, 740, 920, 1040, 1060) and across a sweep.
-- [ ] Hovering a tag never wraps the collapsed row to a second row.
-- [ ] The delete button stays fully visible and clickable on hover — reserved, not clipped.
-- [ ] `onItemDelete` / `onItemSelect` / `onClearAll` / expand-collapse behavior unchanged.
-- [ ] Existing `ds-tag-filter` browser and utils tests still pass, unmodified.
-- [ ] No change to `DsTag`'s public API.
+- [x] With the pointer resting on any tag, the row reaches a layout and does not change again.
+- [x] Holds at the confirmed trigger widths (540, 740, 920, 1040, 1060) and across a sweep.
+- [x] Hovering a tag never wraps the collapsed row to a second row.
+- [x] The delete button stays fully visible and clickable on hover — reserved, not clipped.
+- [x] `onItemDelete` / `onItemSelect` / `onClearAll` / expand-collapse behavior unchanged.
+- [x] Existing `ds-tag-filter` browser and utils tests still pass, unmodified.
+- [x] No change to `DsTag`'s public API.
 
 ## Out of scope
 

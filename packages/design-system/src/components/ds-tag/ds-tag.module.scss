@@ -1,6 +1,7 @@
 @use '../../styles/typography';
 
 $warning-dot-size: 8px;
+$delete-button-max-width: 50px;
 
 .tag {
 	--transition-duration: 200ms;
@@ -128,8 +129,23 @@ $warning-dot-size: 8px;
 	&.selected:not(.disabled) .deleteButton {
 		opacity: 1;
 		visibility: visible;
-		max-width: 50px;
+		max-width: $delete-button-max-width;
 		margin-left: var(--3xs);
+	}
+
+	// DsTagFilter clones tags off-screen to budget how many fit on the first row. A clone
+	// must measure at the widest state the live tag can reach, or the hover-revealed
+	// delete button grows the tag past its budget and re-wraps the row forever (AR-95666).
+	&[data-measure-tag] {
+		transition: none;
+
+		.deleteButton {
+			opacity: 1;
+			visibility: visible;
+			max-width: $delete-button-max-width;
+			margin-left: var(--3xs);
+			transition: none;
+		}
 	}
 }
 

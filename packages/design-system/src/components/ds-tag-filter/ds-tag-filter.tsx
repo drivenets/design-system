@@ -74,7 +74,11 @@ const DsTagFilter = ({
 	return (
 		<>
 			<div className={classNames(styles.container, className)} style={style}>
-				<div ref={tagsAreaRef} className={styles.tagsArea} aria-live="polite">
+				<div
+					ref={tagsAreaRef}
+					className={classNames(styles.tagsArea, { [styles.tagsAreaExpanded]: expanded })}
+					aria-live="polite"
+				>
 					{visibleTags.map((item) => renderTag(item))}
 				</div>
 
