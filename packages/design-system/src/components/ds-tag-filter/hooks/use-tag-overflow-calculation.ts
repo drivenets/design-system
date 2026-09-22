@@ -27,8 +27,7 @@ export const useTagOverflowCalculation = ({
 		hasOverflow: false,
 	});
 
-	// Width is the only input to the calculation; see the ResizeObserver below.
-	const lastObservedWidth = useRef(-1);
+	const lastObservedWidths = useRef(new WeakMap<Element, number>());
 
 	const calculateLayout = useCallback(() => {
 		if (!tagsAreaRef.current || !measurementRef.current) {
@@ -70,15 +69,18 @@ export const useTagOverflowCalculation = ({
 		});
 
 		const resizeObserver = new ResizeObserver((entries) => {
-			const width = entries[0]?.contentRect.width ?? -1;
+			const widthChanged = entries.some((entry) => {
+				const { width } = entry.contentRect;
+				if (lastObservedWidths.current.get(entry.target) === width) {
+					return false;
+				}
+				lastObservedWidths.current.set(entry.target, width);
+				return true;
+			});
 
-			// Only width feeds the calculation. Height is an *output* of it -- a row that
-			// wrapped or a tag that grew is taller -- so reacting to height would let the
-			// measurement retrigger itself indefinitely (AR-95666).
-			if (width === lastObservedWidth.current) {
+			if (!widthChanged) {
 				return;
 			}
-			lastObservedWidth.current = width;
 
 			cancelAnimationFrame(observerRafId);
 			observerRafId = requestAnimationFrame(() => {
@@ -88,6 +90,10 @@ export const useTagOverflowCalculation = ({
 
 		if (tagsAreaRef.current) {
 			resizeObserver.observe(tagsAreaRef.current);
+		}
+
+		if (measurementRef.current) {
+			resizeObserver.observe(measurementRef.current);
 		}
 
 		return () => {

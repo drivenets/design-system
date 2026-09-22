@@ -15,9 +15,6 @@
 	flex: 1;
 	min-width: 0;
 	gap: var(--xs);
-	// Collapsed, the row must never wrap: a wrapped tag changes the area's height, and
-	// the ResizeObserver would read its own output back as input (AR-95666). Horizontal
-	// overshoot is clipped by `.container`'s overflow instead.
 	flex-wrap: nowrap;
 }
 

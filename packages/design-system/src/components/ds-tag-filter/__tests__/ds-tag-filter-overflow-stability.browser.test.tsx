@@ -3,12 +3,6 @@ import { page } from 'vitest/browser';
 import DsTagFilter from '../ds-tag-filter';
 import type { TagFilterItem } from '../ds-tag-filter.types';
 
-/**
- * Regression coverage for AR-95666: the collapsed row re-measured itself forever
- * because tags were budgeted at their delete-button-collapsed width, so hovering a
- * tag grew it past the budget, wrapped the row, and retriggered the ResizeObserver.
- */
-
 // The "Small Size" story data, which is what the bug report reproduces against.
 const smallItems: TagFilterItem[] = [
 	{ id: '1', label: 'Status: Active', slotProps: { tag: { size: 'small' } } },
@@ -41,7 +35,6 @@ const renderAt = async (width: number) => {
 	};
 };
 
-/** Natural widths of the off-screen measurement clones, plus the row gap. */
 const readMeasurements = () => {
 	// React keeps earlier portals mounted until cleanup, so take the newest one.
 	const clones = document.querySelectorAll('[data-measure-tag]');
