@@ -10479,6 +10479,134 @@
       ],
       "import": "import { DsButtonV3, DsPasswordInput, DsStack } from '@drivenets/design-system';"
     },
+    "components-pintoggle": {
+      "id": "components-pintoggle",
+      "name": "DsPinToggle",
+      "path": "./src/components/ds-pin-toggle/ds-pin-toggle.stories.tsx",
+      "jsDocTags": {},
+      "description": "Bare pushpin for \"keep this at the top\" affordances.",
+      "reactDocgen": {
+        "description": "Bare pushpin for \"keep this at the top\" affordances.",
+        "methods": [],
+        "displayName": "DsPinToggle",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-pin-toggle/ds-pin-toggle.tsx",
+        "actualName": "DsPinToggle",
+        "exportName": "default",
+        "props": {
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "HTMLButtonElement"
+                }
+              ],
+              "raw": "Ref<HTMLButtonElement>"
+            },
+            "description": ""
+          },
+          "itemLabel": {
+            "required": true,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "pinned": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "disabled": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "locale": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "object",
+              "raw": "{\n\t/**\n\t * @default 'Pin'\n\t */\n\tpin?: string;\n}",
+              "signature": {
+                "properties": [
+                  {
+                    "key": "pin",
+                    "value": {
+                      "name": "string",
+                      "required": false
+                    },
+                    "description": "@default 'Pin'"
+                  }
+                ]
+              }
+            },
+            "description": ""
+          },
+          "onPinnedChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(pinned: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "pinned"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "composes": [
+          "Omit"
+        ]
+      },
+      "stories": [
+        {
+          "id": "components-pintoggle--default",
+          "name": "Default",
+          "snippet": "const Default = function Render() {\n    const [pinned, setPinned] = useState(false);\n\n    return <DsPinToggle itemLabel=\"Notifications\" pinned={pinned} onPinnedChange={setPinned} />;\n};"
+        },
+        {
+          "id": "components-pintoggle--pinned",
+          "name": "Pinned",
+          "snippet": "const Pinned = () => <DsPinToggle itemLabel=\"Notifications\" pinned />;"
+        },
+        {
+          "id": "components-pintoggle--disabled",
+          "name": "Disabled",
+          "snippet": "const Disabled = () => <DsPinToggle itemLabel=\"Notifications\" pinned disabled />;"
+        },
+        {
+          "id": "components-pintoggle--localized",
+          "name": "Localized",
+          "snippet": "const Localized = () => <DsPinToggle itemLabel=\"Notifications\" locale={{ pin: 'Keep' }} />;"
+        }
+      ],
+      "import": "import { DsPinToggle, DsStack } from '@drivenets/design-system';"
+    },
     "components-popover": {
       "id": "components-popover",
       "name": "DsPopover.Root",
@@ -29209,6 +29337,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4503
+    "durationMs": 5247
   }
 }
