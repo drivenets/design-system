@@ -1,12 +1,13 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const internalComponents = ['ds-toggle-filter-data'];
+const internalComponents = ['ds-saved-filters', 'ds-toggle-filter-data'];
 
 describe('Design System exports', () => {
 	const expectedLines = fs
-		.readdirSync('./src/components')
-		.filter((component) => !internalComponents.includes(component))
+		.readdirSync('./src/components', { withFileTypes: true })
+		.filter((entry) => entry.isDirectory() && !internalComponents.includes(entry.name))
+		.map((entry) => entry.name)
 		.toSorted()
 		.map((component) => {
 			return `export * from './components/${component}';`;
