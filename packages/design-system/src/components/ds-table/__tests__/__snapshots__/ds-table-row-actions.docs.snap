@@ -402,7 +402,7 @@ const CustomReorderColumnWidth = () => <DsTable
   ]}
   secondaryRowActions={[
     {
-      className: '_destructiveAction_1cgub_140',
+      className: '_destructiveAction_licxz_141',
       disabled: () => {},
       icon: 'delete_outline',
       label: 'Delete',
@@ -672,7 +672,7 @@ const WithRowActions = () => <DsTable
       onClick: () => {}
     },
     {
-      className: '_destructiveAction_1cgub_140',
+      className: '_destructiveAction_licxz_141',
       hidden: () => {},
       icon: 'delete_outline',
       label: 'Delete',
@@ -932,7 +932,7 @@ const WithConditionallyHiddenActions = () => <DsTable
   ]}
   secondaryRowActions={[
     {
-      className: '_destructiveAction_1cgub_140',
+      className: '_destructiveAction_licxz_141',
       disabled: () => {},
       icon: 'delete_outline',
       label: 'Delete',

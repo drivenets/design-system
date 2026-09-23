@@ -105,7 +105,7 @@ export const ProgrammaticExpansion: Story = {
 		),
 	},
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const tableRef = useRef<DsTableApi<Person>>(null);

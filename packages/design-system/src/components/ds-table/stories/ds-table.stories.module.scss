@@ -6,10 +6,12 @@
 }
 
 .virtualizedStoryHeight {
-	display: flex;
-	flex-direction: column;
 	height: 700px;
 	min-height: 100%;
+
+	> * {
+		height: 100%;
+	}
 }
 
 .horizontalScrollWrapper {
@@ -42,7 +44,7 @@
 // loading scrim can overlay it while rows are fetched.
 .virtualizedTableWrapper {
 	position: relative;
-	flex: 1;
+	height: 100%;
 }
 
 .loadingOverlay {

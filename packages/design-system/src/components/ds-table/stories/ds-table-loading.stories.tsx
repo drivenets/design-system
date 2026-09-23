@@ -1,13 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsSkeleton } from '../../ds-skeleton';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-
-const loadingColumns: ColumnDef<Person>[] = columns.map((column, index) =>
-	index === 0 ? Object.assign({}, column, { loadingCell: () => <DsSkeleton.Circle size="sm" /> }) : column,
-);
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Loading',
@@ -46,6 +41,10 @@ export const Loading: Story = {
 export const CustomLoadingCell: Story = {
 	args: {
 		loading: true,
-		columns: loadingColumns,
+		columns: columns.map((column, index) =>
+			index === 0
+				? Object.assign({}, column, { loadingCell: () => <DsSkeleton.Circle size="sm" /> })
+				: column,
+		),
 	},
 };
