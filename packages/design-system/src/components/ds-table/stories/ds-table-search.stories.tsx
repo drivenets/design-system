@@ -40,7 +40,7 @@ type Story = StoryObj<typeof DsTable<Person, unknown>>;
 export const AdvancedSearch: Story = {
 	name: 'Search — Global Input',
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const [globalFilter, setGlobalFilter] = useState('');
@@ -81,7 +81,7 @@ export const AdvancedSearch: Story = {
 export const TabFilters: Story = {
 	name: 'Tabs — Status Filter',
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);

@@ -35,7 +35,7 @@ type Story = StoryObj<typeof DsTable<Person, unknown>>;
 
 export const Editable: Story = {
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const [data, setData] = useState(defaultData);
@@ -173,7 +173,7 @@ export const Editable: Story = {
  */
 export const LiveValidation: Story = {
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const [data, setData] = useState(defaultData);
@@ -242,7 +242,7 @@ export const LiveValidation: Story = {
 export const ValidateOnAsyncSave: Story = {
 	name: 'Validate on Async Save',
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const [data, setData] = useState(defaultData);

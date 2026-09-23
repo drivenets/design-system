@@ -370,9 +370,7 @@ const Loading = () => <DsTable
 
 ### MCP manifest
 const CustomLoadingCell = () => <DsTable
-    columns={columns.map((column, index) =>
-        index === 0 ? Object.assign({}, column, { loadingCell: () => <DsSkeleton.Circle size="sm" /> }) : column,
-    )}
+    columns={loadingColumns}
     data={defaultData}
     stickyHeader
     bordered

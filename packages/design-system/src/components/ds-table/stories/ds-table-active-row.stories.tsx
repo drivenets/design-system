@@ -56,7 +56,7 @@ export const WithDrawerAndActiveRow: Story = {
 		data: defaultData.slice(0, 10),
 	},
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { source: { type: 'dynamic' } },
 	},
 	render: function Render(args) {
 		const [selectedPerson, setSelectedPerson] = useState<Person | null>(null);

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
 import { columns, type Person } from '../stories/common/story-data';
+import styles from '../stories/ds-table.stories.module.scss';
 
 const statuses: Person['status'][] = ['single', 'relationship', 'complicated'];
 
@@ -120,5 +121,22 @@ describe('DsTable Virtualized', () => {
 		}
 
 		await expect.element(page.getByText('Expanded: First1'), { timeout: 2000 }).toBeVisible();
+	});
+
+	it('gives the virtualized body height inside the story host', async () => {
+		await page.render(
+			<div className={styles.virtualizedStoryHeight}>
+				<div className={styles.virtualizedTableWrapper}>
+					<DsTable columns={columns} data={largeData} virtualized />
+				</div>
+			</div>,
+		);
+
+		await expect.element(page.getByText('First1')).toBeVisible();
+
+		const tbody = document.querySelector('[class*="virtualizedContainer"] tbody');
+
+		expect(tbody).toBeTruthy();
+		expect(tbody?.getBoundingClientRect().height).toBeGreaterThan(0);
 	});
 });

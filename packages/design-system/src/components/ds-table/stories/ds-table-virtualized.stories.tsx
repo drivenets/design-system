@@ -24,6 +24,9 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
+		// A decorator wraps the canvas, so `auto`/`code` fall back to the raw CSF
+		// object (`render: function Render`). Pin dynamic for applied JSX snippets.
+		docs: { source: { type: 'dynamic' } },
 	},
 	args: {
 		columns,
@@ -79,9 +82,6 @@ export const EmptyState: Story = {
  */
 export const VirtualizedSelectable: Story = {
 	name: 'Virtualized Selectable Table',
-	parameters: {
-		docs: { source: { type: 'code' } },
-	},
 	render: function Render(args) {
 		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
@@ -160,9 +160,6 @@ export const VirtualizedSelectable: Story = {
  */
 export const VirtualizedExpandable: Story = {
 	name: 'Virtualized Expandable Table',
-	parameters: {
-		docs: { source: { type: 'code' } },
-	},
 	render: function Render(args) {
 		const pageSize = 10;
 		const [sorting, setSorting] = useState<SortingState>([]);
@@ -273,9 +270,6 @@ export const VirtualizedExpandable: Story = {
  */
 export const InfiniteScroll: Story = {
 	name: 'Virtualized Infinite Scroll',
-	parameters: {
-		docs: { source: { type: 'code' } },
-	},
 	render: function Render(args) {
 		const pageSize = 5;
 		const totalRows = 60;
@@ -412,8 +406,9 @@ const editableColumns: ColumnDef<Person>[] = [
  */
 export const VirtualizedEditable: Story = {
 	name: 'Virtualized Editable Table',
+	tags: ['!manifest'],
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { canvas: { sourceState: 'none' } },
 	},
 	render: function Render(args) {
 		const [data, setData] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
@@ -439,8 +434,9 @@ export const VirtualizedEditable: Story = {
  * body scrolls through a large dataset.
  */
 export const VirtualizedWithControls: Story = {
+	tags: ['!manifest'],
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { canvas: { sourceState: 'none' } },
 	},
 	render: function Render(args) {
 		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
@@ -474,8 +470,9 @@ export const VirtualizedWithControls: Story = {
  */
 export const VirtualizedResizable: Story = {
 	name: 'Virtualized Resizable Columns',
+	tags: ['!manifest'],
 	parameters: {
-		docs: { source: { type: 'code' } },
+		docs: { canvas: { sourceState: 'none' } },
 	},
 	render: function Render(args) {
 		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);

@@ -174,7 +174,6 @@
       visits: 88
     }
   ]}
-  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -365,7 +364,6 @@ const Default = () => <DsTable
       visits: 88
     }
   ]}
-  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -433,7 +431,6 @@ const WithControls = () => <DsTable
     }
   ]}
   data={[]}
-  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -453,7 +450,6 @@ const EmptyState = () => <DsTable
 
 ### Show code
 <DsTable
-  bordered={false}
   columns={[
     {
       accessorKey: 'firstName',
@@ -623,7 +619,6 @@ const EmptyState = () => <DsTable
       visits: 88
     }
   ]}
-  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -819,7 +814,6 @@ const NoBorder = () => <DsTable
       visits: 88
     }
   ]}
-  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -827,29 +821,7 @@ const NoBorder = () => <DsTable
 
 ### MCP manifest
 const HorizontalScroll = () => <DsTable
-    columns={[
-        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 250 },
-        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 250 },
-        { accessorKey: 'age', header: 'Age (years)', cell: (info) => info.getValue(), size: 200 },
-        {
-            accessorKey: 'visits',
-            header: 'Number of Visits',
-            cell: (info) => info.getValue(),
-            size: 250,
-        },
-        {
-            accessorKey: 'status',
-            header: 'Relationship Status',
-            cell: (info) => info.getValue(),
-            size: 250,
-        },
-        {
-            accessorKey: 'progress',
-            header: 'Profile Progress',
-            cell: (info) => `${String(info.getValue())}%`,
-            size: 250,
-        },
-    ]}
+    columns={horizontalScrollColumns}
     stickyHeader
     bordered
     fullWidth

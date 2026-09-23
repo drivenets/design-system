@@ -396,7 +396,7 @@ export const FiltersPanel: Story = {
 	name: 'Toolbar — Filters Panel',
 	parameters: {
 		docs: {
-			source: { type: 'code' },
+			source: { type: 'dynamic' },
 			description: {
 				story: `
 ### Interactive Filter Example
@@ -626,7 +626,7 @@ export const Controlled: Story = {
 	name: 'Toolbar — Controlled',
 	parameters: {
 		docs: {
-			source: { type: 'code' },
+			source: { type: 'dynamic' },
 			description: {
 				story: `
 ### Controlled Mode Example
