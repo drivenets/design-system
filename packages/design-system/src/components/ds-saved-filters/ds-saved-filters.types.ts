@@ -75,7 +75,7 @@ export interface DsSavedFiltersTriggerProps {
 	/**
 	 * Whether the working document diverged from the **Active saved filter**.
 	 */
-	dirty: boolean;
+	dirty?: boolean;
 	locale?: DsSavedFiltersLocale;
 	ref?: Ref<HTMLDivElement>;
 	className?: string;
