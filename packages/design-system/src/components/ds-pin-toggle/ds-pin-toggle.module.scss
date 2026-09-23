@@ -1,0 +1,41 @@
+$pin-border-radius: 2px;
+$pin-focus-ring-width: 2px;
+$transition-duration: 0.2s;
+
+.root {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	margin: 0;
+	padding: var(--4xs);
+	border: none;
+	border-radius: $pin-border-radius;
+	background-color: transparent;
+	line-height: 0;
+	color: var(--icon-tertiary);
+	cursor: pointer;
+	transition: color $transition-duration ease-in-out;
+
+	&:not(:disabled):hover {
+		color: var(--icon-secondary);
+	}
+
+	&[aria-pressed='true'] {
+		color: var(--icon-action);
+
+		&:not(:disabled):hover {
+			color: var(--icon-action-hover);
+		}
+	}
+
+	&:focus-visible {
+		outline: $pin-focus-ring-width solid var(--border-action-primary);
+		outline-offset: 0;
+	}
+
+	&:disabled {
+		color: var(--icon-disabled);
+		cursor: not-allowed;
+	}
+}

@@ -46,6 +46,7 @@ const COMPONENTS = [
 	'number-input',
 	'panel',
 	'password-input',
+	'pin-toggle',
 	'popover',
 	'progress-arc',
 	'progress-donut',
