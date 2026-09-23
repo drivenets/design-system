@@ -240,13 +240,9 @@ const LargeWithActions = () => <DsCheckbox
     const [pinned, setPinned] = useState<string[]>(['xe-0/1/1', 'lo0']);
     const [selected, setSelected] = useState<string[]>([]);
     const isPinned = (name: string) => pinned.includes(name);
-
-    // Stable partition, so pinning a row lifts it to the top without
-    // reshuffling the rows around it.
-    const ordered = [...interfaces.filter(isPinned), ...interfaces.filter(name => !isPinned(name))];
     return <div className={styles.filterList}>
                 <DsCheckboxGroup value={selected} onValueChange={setSelected} name="interfaces">
-                    {ordered.map(name => <DsCheckbox key={name} label={name} value={name} actions={<DsPinToggle itemLabel={name} pinned={isPinned(name)} onPinnedChange={next => setPinned(current => next ? [...current, name] : current.filter(pin => pin !== name))} />} />)}
+                    {interfaces.map(name => <DsCheckbox key={name} label={name} value={name} actions={<DsPinToggle itemLabel={name} pinned={isPinned(name)} onPinnedChange={next => setPinned(current => next ? [...current, name] : current.filter(pin => pin !== name))} />} />)}
                 </DsCheckboxGroup>
             </div>;
   }
@@ -276,14 +272,10 @@ const PinnedFilterList = function Render() {
 
     const isPinned = (name: string) => pinned.includes(name);
 
-    // Stable partition, so pinning a row lifts it to the top without
-    // reshuffling the rows around it.
-    const ordered = [...interfaces.filter(isPinned), ...interfaces.filter((name) => !isPinned(name))];
-
     return (
         <div className={styles.filterList}>
             <DsCheckboxGroup value={selected} onValueChange={setSelected} name="interfaces">
-                {ordered.map((name) => (
+                {interfaces.map((name) => (
                     <DsCheckbox
                         key={name}
                         label={name}

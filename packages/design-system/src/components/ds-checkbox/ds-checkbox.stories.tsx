@@ -295,14 +295,10 @@ export const PinnedFilterList: Story = {
 
 		const isPinned = (name: string) => pinned.includes(name);
 
-		// Stable partition, so pinning a row lifts it to the top without
-		// reshuffling the rows around it.
-		const ordered = [...interfaces.filter(isPinned), ...interfaces.filter((name) => !isPinned(name))];
-
 		return (
 			<div className={styles.filterList}>
 				<DsCheckboxGroup value={selected} onValueChange={setSelected} name="interfaces">
-					{ordered.map((name) => (
+					{interfaces.map((name) => (
 						<DsCheckbox
 							key={name}
 							label={name}

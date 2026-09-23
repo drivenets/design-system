@@ -113,13 +113,9 @@ export const InCheckboxRow: Story = {
 
 		const isPinned = (row: string) => pinned.includes(row);
 
-		// Stable partition, so pinning a row lifts it to the top without
-		// reshuffling the rows around it.
-		const ordered = [...rows.filter(isPinned), ...rows.filter((row) => !isPinned(row))];
-
 		return (
 			<DsStack gap="var(--3xs)" className={styles.checkboxRows}>
-				{ordered.map((row) => (
+				{rows.map((row) => (
 					<DsCheckbox
 						key={row}
 						label={row}

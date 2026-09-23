@@ -75,12 +75,8 @@ const Localized = () => <DsPinToggle itemLabel="Notifications" locale={{ pin: 'K
     const rows = ['Active', 'Deprecated', 'Inactive', 'Pending', 'Draft'];
     const [pinned, setPinned] = useState<string[]>(['Active']);
     const isPinned = (row: string) => pinned.includes(row);
-
-    // Stable partition, so pinning a row lifts it to the top without
-    // reshuffling the rows around it.
-    const ordered = [...rows.filter(isPinned), ...rows.filter(row => !isPinned(row))];
     return <DsStack gap="var(--3xs)" className={styles.checkboxRows}>
-                {ordered.map(row => <DsCheckbox key={row} label={row} actions={<DsPinToggle itemLabel={row} pinned={isPinned(row)} onPinnedChange={next => setPinned(current => next ? [...current, row] : current.filter(name => name !== row))} />} />)}
+                {rows.map(row => <DsCheckbox key={row} label={row} actions={<DsPinToggle itemLabel={row} pinned={isPinned(row)} onPinnedChange={next => setPinned(current => next ? [...current, row] : current.filter(name => name !== row))} />} />)}
             </DsStack>;
   }
 }
@@ -92,13 +88,9 @@ const InCheckboxRow = function Render() {
 
     const isPinned = (row: string) => pinned.includes(row);
 
-    // Stable partition, so pinning a row lifts it to the top without
-    // reshuffling the rows around it.
-    const ordered = [...rows.filter(isPinned), ...rows.filter((row) => !isPinned(row))];
-
     return (
         <DsStack gap="var(--3xs)" className={styles.checkboxRows}>
-            {ordered.map((row) => (
+            {rows.map((row) => (
                 <DsCheckbox
                     key={row}
                     label={row}
