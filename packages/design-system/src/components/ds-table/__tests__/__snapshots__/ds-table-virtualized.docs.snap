@@ -38,6 +38,7 @@
     }
   ]}
   data={[]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -95,6 +96,7 @@ const EmptyState = () => <DsTable
       }
     ]}
     data={[]}
+    expandable={false}
     fullWidth
     infiniteScroll={{
       hasMore: false,
@@ -410,6 +412,7 @@ const VirtualizedExpandable = () => {
       }
     ]}
     data={[]}
+    expandable={false}
     fullWidth
     infiniteScroll={{
       hasMore: true,

@@ -130,6 +130,7 @@
       visits: 110
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   stickyHeader
@@ -276,6 +277,7 @@ const ActiveRow = () => <DsTable
         visits: 110
       }
     ]}
+    expandable={false}
     fullWidth
     onRowClick={() => {}}
     stickyHeader

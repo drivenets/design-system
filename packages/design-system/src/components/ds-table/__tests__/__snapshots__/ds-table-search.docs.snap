@@ -188,6 +188,7 @@
         visits: 88
       }
     ]}
+    expandable={false}
     fullWidth
     onRowClick={() => {}}
     stickyHeader
@@ -444,6 +445,7 @@ const AdvancedSearch = () => {
         visits: 88
       }
     ]}
+    expandable={false}
     fullWidth
     onColumnFiltersChange={() => {}}
     onRowClick={() => {}}

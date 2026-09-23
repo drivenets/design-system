@@ -84,6 +84,7 @@
       visits: 250
     }
   ]}
+  expandable={false}
   fullWidth
   onOrderChange={() => {}}
   onRowClick={() => {}}
@@ -187,6 +188,7 @@ const Reorderable = () => <DsTable
       visits: 250
     }
   ]}
+  expandable={false}
   fullWidth
   onOrderChange={() => {}}
   onRowClick={() => {}}
@@ -382,6 +384,7 @@ const CustomReorderColumnWidth = () => <DsTable
       visits: 88
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   primaryRowActions={[
@@ -639,6 +642,7 @@ const WithRowActions = () => <DsTable
       visits: 88
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   primaryRowActions={[
@@ -910,6 +914,7 @@ const WithConditionallyHiddenActions = () => <DsTable
       visits: 88
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   primaryRowActions={[
@@ -1176,6 +1181,7 @@ const WithConditionallyDisabledActions = () => <DsTable
       visits: 88
     }
   ]}
+  expandable={false}
   fullWidth
   onRowClick={() => {}}
   selectable

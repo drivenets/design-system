@@ -1,4 +1,3 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import DsTable from '../ds-table';
@@ -7,30 +6,6 @@ import { DsButtonV3 } from '../../ds-button-v3';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import styles from './ds-table.stories.module.scss';
-
-const horizontalScrollColumns: ColumnDef<Person>[] = [
-	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 250 },
-	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 250 },
-	{ accessorKey: 'age', header: 'Age (years)', cell: (info) => info.getValue(), size: 200 },
-	{
-		accessorKey: 'visits',
-		header: 'Number of Visits',
-		cell: (info) => info.getValue(),
-		size: 250,
-	},
-	{
-		accessorKey: 'status',
-		header: 'Relationship Status',
-		cell: (info) => info.getValue(),
-		size: 250,
-	},
-	{
-		accessorKey: 'progress',
-		header: 'Profile Progress',
-		cell: (info) => `${String(info.getValue())}%`,
-		size: 250,
-	},
-];
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table',
@@ -116,6 +91,28 @@ export const HorizontalScroll: Story = {
 	],
 	args: {
 		data: defaultData,
-		columns: horizontalScrollColumns,
+		columns: [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 250 },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 250 },
+			{ accessorKey: 'age', header: 'Age (years)', cell: (info) => info.getValue(), size: 200 },
+			{
+				accessorKey: 'visits',
+				header: 'Number of Visits',
+				cell: (info) => info.getValue(),
+				size: 250,
+			},
+			{
+				accessorKey: 'status',
+				header: 'Relationship Status',
+				cell: (info) => info.getValue(),
+				size: 250,
+			},
+			{
+				accessorKey: 'progress',
+				header: 'Profile Progress',
+				cell: (info) => `${String(info.getValue())}%`,
+				size: 250,
+			},
+		],
 	},
 };
