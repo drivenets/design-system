@@ -1,0 +1,12 @@
+.bar {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+}
+
+.spacer {
+	width: 160px;
+	height: 28px;
+	border-radius: var(--3xs);
+	background: var(--background-secondary);
+}
