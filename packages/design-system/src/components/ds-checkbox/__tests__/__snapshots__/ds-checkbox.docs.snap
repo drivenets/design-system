@@ -162,6 +162,142 @@ const WarningIndeterminate = function Render() {
     );
 };
 
+## Large
+
+### Show code
+<DsCheckbox
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+  size="large"
+/>
+
+### MCP manifest
+const Large = () => <DsCheckbox
+    size="large"
+    label="Enable notifications"
+    labelInfo="Receive email updates" />;
+
+## With Actions
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [pinned, setPinned] = useState(false);
+    return <DsCheckbox label="Enable notifications" actions={<DsPinToggle itemLabel="notifications" pinned={pinned} onPinnedChange={setPinned} />} />;
+  }
+}
+
+### MCP manifest
+const WithActions = function Render() {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        <DsCheckbox
+            label="Enable notifications"
+            actions={<DsPinToggle itemLabel="notifications" pinned={pinned} onPinnedChange={setPinned} />}
+        />
+    );
+};
+
+## Large With Actions
+
+### Show code
+<DsCheckbox
+  actions={<DsPinToggle itemLabel="notifications" pinned/>}
+  label="Enable notifications"
+  labelInfo="Receive email updates"
+  size="large"
+/>
+
+### MCP manifest
+const LargeWithActions = () => <DsCheckbox
+    size="large"
+    label="Enable notifications"
+    labelInfo="Receive email updates"
+    actions={<DsPinToggle itemLabel="notifications" pinned />} />;
+
+## Pinned Filter List
+
+### Show code
+{
+  parameters: {
+    layout: 'padded',
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const interfaces = ['ge-0/0/0', 'ge-0/0/1', 'ge-0/0/2', 'ge-0/0/3', 'xe-0/1/0', 'xe-0/1/1', 'xe-0/1/2', 'et-0/2/0', 'et-0/2/1', 'et-0/2/2', 'lo0', 'bundle-1', 'bundle-2', 'mgmt-0', 'mgmt-1'];
+    const [pinned, setPinned] = useState<string[]>(['xe-0/1/1', 'lo0']);
+    const [selected, setSelected] = useState<string[]>([]);
+    const isPinned = (name: string) => pinned.includes(name);
+    return <div className={styles.filterList}>
+                <DsCheckboxGroup value={selected} onValueChange={setSelected} name="interfaces">
+                    {interfaces.map(name => <DsCheckbox key={name} label={name} value={name} actions={<DsPinToggle itemLabel={name} pinned={isPinned(name)} onPinnedChange={next => setPinned(current => next ? [...current, name] : current.filter(pin => pin !== name))} />} />)}
+                </DsCheckboxGroup>
+            </div>;
+  }
+}
+
+### MCP manifest
+const PinnedFilterList = function Render() {
+    const interfaces = [
+        'ge-0/0/0',
+        'ge-0/0/1',
+        'ge-0/0/2',
+        'ge-0/0/3',
+        'xe-0/1/0',
+        'xe-0/1/1',
+        'xe-0/1/2',
+        'et-0/2/0',
+        'et-0/2/1',
+        'et-0/2/2',
+        'lo0',
+        'bundle-1',
+        'bundle-2',
+        'mgmt-0',
+        'mgmt-1',
+    ];
+    const [pinned, setPinned] = useState<string[]>(['xe-0/1/1', 'lo0']);
+    const [selected, setSelected] = useState<string[]>([]);
+
+    const isPinned = (name: string) => pinned.includes(name);
+
+    return (
+        <div className={styles.filterList}>
+            <DsCheckboxGroup value={selected} onValueChange={setSelected} name="interfaces">
+                {interfaces.map((name) => (
+                    <DsCheckbox
+                        key={name}
+                        label={name}
+                        value={name}
+                        actions={
+                            <DsPinToggle
+                                itemLabel={name}
+                                pinned={isPinned(name)}
+                                onPinnedChange={(next) =>
+                                    setPinned((current) =>
+                                        next ? [...current, name] : current.filter((pin) => pin !== name),
+                                    )
+                                }
+                            />
+                        }
+                    />
+                ))}
+            </DsCheckboxGroup>
+        </div>
+    );
+};
+
 ## Group
 
 ### Show code

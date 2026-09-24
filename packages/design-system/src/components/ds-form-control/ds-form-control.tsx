@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { DsIcon } from '../ds-icon';
 import { DsSelect } from '../ds-select';
 import { DsTextInput } from '../ds-text-input';
+import { DsCodeInput } from '../ds-code-input';
 import { DsTextarea } from '../ds-textarea';
 import { DsNumberInput } from '../ds-number-input';
 import { DsPasswordInput } from '../ds-password-input';
@@ -109,6 +110,7 @@ DsFormControlDescription.displayName = 'DsFormControl.Description';
 const DsFormControl = Object.assign(DsFormControlRoot, {
 	displayName: 'DsFormControl',
 	TextInput: controlify(DsTextInput, 'DsFormControl.TextInput'),
+	CodeInput: controlify(DsCodeInput, 'DsFormControl.CodeInput'),
 	NumberInput: controlify(DsNumberInput, 'DsFormControl.NumberInput'),
 	PasswordInput: controlify(DsPasswordInput, 'DsFormControl.PasswordInput'),
 	/** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */

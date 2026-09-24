@@ -3,7 +3,10 @@
 
 $checkbox-size: 16px;
 $checkbox-border-radius: 2px;
+$checkbox-border-width: 1.5px;
 $checkbox-focus-ring-width: 2px;
+$row-padding-medium: var(--4xs);
+$row-padding-large: var(--xs);
 $transition-duration: 0.2s;
 
 .root {
@@ -11,7 +14,7 @@ $transition-duration: 0.2s;
 	display: inline-flex;
 	align-items: flex-start;
 	gap: var(--3xs);
-	padding: var(--4xs);
+	padding: $row-padding-medium;
 	border-radius: $checkbox-border-radius;
 	cursor: pointer;
 	transition: background-color $transition-duration ease-in-out;
@@ -34,7 +37,7 @@ $transition-duration: 0.2s;
 		flex-shrink: 0;
 		width: $checkbox-size;
 		height: $checkbox-size;
-		border: 1px solid var(--secondary-400);
+		border: $checkbox-border-width solid var(--border-contrast);
 		border-radius: $checkbox-border-radius;
 		background-color: transparent;
 		transition:
@@ -60,7 +63,7 @@ $transition-duration: 0.2s;
 	}
 
 	.label {
-		@include typography.body-sm-reg;
+		@include typography.body-sm-md;
 		line-height: normal;
 		color: var(--font-main);
 	}
@@ -103,24 +106,35 @@ $transition-duration: 0.2s;
 			}
 		}
 	}
-}
 
-// Overlay the native input over the control so `getByRole('checkbox')` clicks
-// land on a real interactive surface. Ark applies `visuallyHiddenStyle` inline
-// (1x1, clipped, off-screen) which Playwright refuses to click; `!important`
-// is required to beat inline-style specificity.
-.hiddenInput {
-	position: absolute !important;
-	inset-block-start: var(--4xs) !important;
-	inset-inline-start: var(--4xs) !important;
-	width: $checkbox-size !important;
-	height: $checkbox-size !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	clip: auto !important;
-	overflow: visible !important;
-	opacity: 0 !important;
-	cursor: inherit !important;
+	// Overlay the native input over the control so `getByRole('checkbox')`
+	// clicks land on a real interactive surface. Ark applies
+	// `visuallyHiddenStyle` inline (1x1, clipped, off-screen) which Playwright
+	// refuses to click; `!important` is required to beat inline-style
+	// specificity. The control is the row's first child, so the offset is the
+	// root's own padding — which is size-dependent.
+	.hiddenInput {
+		position: absolute !important;
+		inset-block-start: $row-padding-medium !important;
+		inset-inline-start: $row-padding-medium !important;
+		width: $checkbox-size !important;
+		height: $checkbox-size !important;
+		margin: 0 !important;
+		padding: 0 !important;
+		clip: auto !important;
+		overflow: visible !important;
+		opacity: 0 !important;
+		cursor: inherit !important;
+	}
+
+	&[data-size='large'] {
+		padding: $row-padding-large;
+
+		.hiddenInput {
+			inset-block-start: $row-padding-large !important;
+			inset-inline-start: $row-padding-large !important;
+		}
+	}
 }
 
 .warning {
@@ -140,5 +154,73 @@ $transition-duration: 0.2s;
 			background-color: var(--background-warning-strong);
 			border-color: var(--background-warning-strong);
 		}
+	}
+}
+
+// Only rendered when `actions` is set, so the plain checkbox keeps its
+// original single-element layout.
+//
+// The row reads as one unit, so the hover surface lives here rather than on
+// `.root`. `.root` is the `<label>`, which ends with the label text — painting
+// there leaves `actions` as a cold gap outside the highlight.
+.wrapper {
+	display: inline-flex;
+	align-items: flex-start;
+	gap: var(--3xs);
+	border-radius: $checkbox-border-radius;
+	transition: background-color $transition-duration ease-in-out;
+
+	// Balances the root's inline padding on the far side of `actions`, so the
+	// highlight is not inset at one end and tight against the pin at the other.
+	padding-inline-end: $row-padding-medium;
+
+	&[data-size='large'] {
+		padding-inline-end: $row-padding-large;
+	}
+
+	&:not([data-disabled]):hover,
+	&:not([data-disabled]):has(.root[data-focus-visible]) {
+		background-color: var(--background-secondary-hover);
+	}
+
+	&[data-variant='warning']:not([data-disabled]):hover,
+	&[data-variant='warning']:not([data-disabled]):has(.root[data-focus-visible]) {
+		background-color: var(--background-warning);
+	}
+
+	&:has(.root[data-focus-visible]) {
+		outline: $checkbox-focus-ring-width solid var(--background-primary-hover);
+		outline-offset: 0;
+	}
+
+	// The wrapper paints the row, so the label half must not paint a second,
+	// narrower highlight or ring inside it.
+	.root {
+		&:hover,
+		&[data-hover],
+		&[data-focus-visible] {
+			background-color: transparent;
+			outline: none;
+		}
+	}
+}
+
+// Matches the height of the root's first row — the control plus the root's
+// block padding — so the slot centres against the control at either size,
+// with or without `labelInfo`.
+//
+// `margin-inline-start: auto` pins the slot to the end of the row whenever the
+// row is wider than its content — a stretched list row, as inside a
+// `DsCheckboxGroup` — matching Figma, where the pin sits at the row's trailing
+// edge rather than hugging the label. It is inert when the row is content-width.
+.actions {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	margin-inline-start: auto;
+	min-block-size: calc(#{$checkbox-size} + #{$row-padding-medium} * 2);
+
+	&[data-size='large'] {
+		min-block-size: calc(#{$checkbox-size} + #{$row-padding-large} * 2);
 	}
 }
