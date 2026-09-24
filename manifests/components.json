@@ -2177,6 +2177,18 @@
               "computed": false
             }
           },
+          "size": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof checkboxSizes)[number]"
+            },
+            "description": "",
+            "defaultValue": {
+              "value": "'medium'",
+              "computed": false
+            }
+          },
           "label": {
             "required": false,
             "tsType": {
@@ -2190,6 +2202,13 @@
               "name": "ReactNode"
             },
             "description": "Additional label info for the checkbox"
+          },
+          "actions": {
+            "required": false,
+            "tsType": {
+              "name": "ReactNode"
+            },
+            "description": "Trailing slot for interactive content, such as a pin or overflow menu.\nRendered as a sibling of the checkbox rather than inside it: the checkbox\nroot is a `<label>`,"
           },
           "disabled": {
             "required": false,
@@ -2279,6 +2298,27 @@
           "description": "Warning variant in a controlled indeterminate state for partial selections\nthat also need elevated visual attention."
         },
         {
+          "id": "components-checkbox--large",
+          "name": "Large",
+          "snippet": "const Large = () => <DsCheckbox\n    size=\"large\"\n    label=\"Enable notifications\"\n    labelInfo=\"Receive email updates\" />;"
+        },
+        {
+          "id": "components-checkbox--with-actions",
+          "name": "With Actions",
+          "snippet": "const WithActions = function Render() {\n    const [pinned, setPinned] = useState(false);\n\n    return (\n        <DsCheckbox\n            label=\"Enable notifications\"\n            actions={<DsPinToggle itemLabel=\"notifications\" pinned={pinned} onPinnedChange={setPinned} />}\n        />\n    );\n};"
+        },
+        {
+          "id": "components-checkbox--large-with-actions",
+          "name": "Large With Actions",
+          "snippet": "const LargeWithActions = () => <DsCheckbox\n    size=\"large\"\n    label=\"Enable notifications\"\n    labelInfo=\"Receive email updates\"\n    actions={<DsPinToggle itemLabel=\"notifications\" pinned />} />;",
+          "description": "`actions` stays centred on the label row regardless of size or `labelInfo`, so\na pinned `large` row lines up with its unpinned neighbors."
+        },
+        {
+          "id": "components-checkbox--pinned-filter-list",
+          "name": "Pinned Filter List",
+          "snippet": "const PinnedFilterList = function Render() {\n    const interfaces = [\n        'ge-0/0/0',\n        'ge-0/0/1',\n        'ge-0/0/2',\n        'ge-0/0/3',\n        'xe-0/1/0',\n        'xe-0/1/1',\n        'xe-0/1/2',\n        'et-0/2/0',\n        'et-0/2/1',\n        'et-0/2/2',\n        'lo0',\n        'bundle-1',\n        'bundle-2',\n        'mgmt-0',\n        'mgmt-1',\n    ];\n    const [pinned, setPinned] = useState<string[]>(['xe-0/1/1', 'lo0']);\n    const [selected, setSelected] = useState<string[]>([]);\n\n    const isPinned = (name: string) => pinned.includes(name);\n\n    return (\n        <div className={styles.filterList}>\n            <DsCheckboxGroup value={selected} onValueChange={setSelected} name=\"interfaces\">\n                {interfaces.map((name) => (\n                    <DsCheckbox\n                        key={name}\n                        label={name}\n                        value={name}\n                        actions={\n                            <DsPinToggle\n                                itemLabel={name}\n                                pinned={isPinned(name)}\n                                onPinnedChange={(next) =>\n                                    setPinned((current) =>\n                                        next ? [...current, name] : current.filter((pin) => pin !== name),\n                                    )\n                                }\n                            />\n                        }\n                    />\n                ))}\n            </DsCheckboxGroup>\n        </div>\n    );\n};"
+        },
+        {
           "id": "components-checkbox--group",
           "name": "Group",
           "snippet": "const Group = function Render() {\n    const [value, setValue] = useState<string[]>(['react']);\n    const frameworkItems = [\n        { label: 'React', value: 'react' },\n        { label: 'Solid', value: 'solid' },\n        { label: 'Vue', value: 'vue' },\n    ];\n\n    return (\n        <DsCheckboxGroup orientation=\"vertical\" value={value} onValueChange={setValue} name=\"framework\">\n            {frameworkItems.map((item) => (\n                <DsCheckbox key={item.value} label={item.label} value={item.value} />\n            ))}\n        </DsCheckboxGroup>\n    );\n};",
@@ -2291,7 +2331,7 @@
           "description": "Select-all pattern for a checkbox group. Use `useCheckboxSelectAll` from\n`ds-checkbox-group` to derive the parent checkbox state and toggle every item."
         }
       ],
-      "import": "import { DsCheckbox, DsCheckboxGroup, DsStack } from '@drivenets/design-system';"
+      "import": "import { DsCheckbox, DsCheckboxGroup, DsPinToggle, DsStack } from '@drivenets/design-system';\nimport { DsPinToggle } from '../ds-pin-toggle';"
     },
     "components-chipgroup-deprecated": {
       "id": "components-chipgroup-deprecated",
@@ -10603,9 +10643,14 @@
           "id": "components-pintoggle--localized",
           "name": "Localized",
           "snippet": "const Localized = () => <DsPinToggle itemLabel=\"Notifications\" locale={{ pin: 'Keep' }} />;"
+        },
+        {
+          "id": "components-pintoggle--in-checkbox-row",
+          "name": "In Checkbox Row",
+          "snippet": "const InCheckboxRow = function Render() {\n    const rows = ['Active', 'Deprecated', 'Inactive', 'Pending', 'Draft'];\n    const [pinned, setPinned] = useState<string[]>(['Active']);\n\n    const isPinned = (row: string) => pinned.includes(row);\n\n    return (\n        <DsStack gap=\"var(--3xs)\" className={styles.checkboxRows}>\n            {rows.map((row) => (\n                <DsCheckbox\n                    key={row}\n                    label={row}\n                    actions={\n                        <DsPinToggle\n                            itemLabel={row}\n                            pinned={isPinned(row)}\n                            onPinnedChange={(next) =>\n                                setPinned((current) => (next ? [...current, row] : current.filter((name) => name !== row)))\n                            }\n                        />\n                    }\n                />\n            ))}\n        </DsStack>\n    );\n};"
         }
       ],
-      "import": "import { DsPinToggle, DsStack } from '@drivenets/design-system';"
+      "import": "import { DsCheckbox, DsPinToggle, DsStack } from '@drivenets/design-system';"
     },
     "components-popover": {
       "id": "components-popover",
@@ -29337,6 +29382,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5443
+    "durationMs": 5513
   }
 }

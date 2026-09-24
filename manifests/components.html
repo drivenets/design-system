@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">592 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/592 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">597 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/597 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -3940,9 +3940,9 @@ header and a minimal content column are used.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsCheckbox</h2>
       <div class="badges">
-        <label for="c-12-components-checkbox-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-12-components-checkbox-props" class="badge ok as-toggle">8 prop types</label>
         <label for="c-12-components-checkbox-info" class="badge info as-toggle">1 info</label>
-        <label for="c-12-components-checkbox-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-12-components-checkbox-stories" class="badge ok as-toggle">13 stories</label>
         
         
       </div>
@@ -3976,11 +3976,18 @@ header and a minimal content column are used.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">6 prop types</span>
+              <span class="badge ok">8 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-checkbox/ds-checkbox.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>/**
+ * Trailing slot for interactive content, such as a pin or overflow menu.
+ * Rendered as a sibling of the checkbox rather than inside it: the checkbox
+ * root is a `&lt;label&gt;`,
+ */
+actions?: ReactNode
+
+/**
  * Disables the checkbox, preventing user interaction
  */
 disabled?: boolean
@@ -3999,6 +4006,8 @@ labelInfo?: ReactNode
  * Callback invoked when the checked state changes
  */
 onCheckedChange?: (checked: boolean | &#39;indeterminate&#39;) =&gt; void
+
+size?: (typeof checkboxSizes)[number] = &#39;medium&#39;
 
 /**
  * Value when used in a group or for form submission. Coerced to string for the native control.
@@ -4020,7 +4029,8 @@ variant?: (typeof checkboxVariants)[number] = &#39;default&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCheckbox, DsCheckboxGroup, DsStack } from '@drivenets/design-system';</code></pre>
+                <pre><code>import { DsCheckbox, DsCheckboxGroup, DsPinToggle, DsStack } from '@drivenets/design-system';
+import { DsPinToggle } from '../ds-pin-toggle';</code></pre>
               </div>
           
           
@@ -4149,6 +4159,110 @@ that also need elevated visual attention.</div>
             checked={checked}
             onCheckedChange={(newState) =&gt; setChecked(newState)}
         /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Large = () =&gt; &lt;DsCheckbox
+    size=&quot;large&quot;
+    label=&quot;Enable notifications&quot;
+    labelInfo=&quot;Receive email updates&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithActions = function Render() {
+    const [pinned, setPinned] = useState(false);
+
+    return (
+        &lt;DsCheckbox
+            label=&quot;Enable notifications&quot;
+            actions={&lt;DsPinToggle itemLabel=&quot;notifications&quot; pinned={pinned} onPinnedChange={setPinned} /&gt;}
+        /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large With Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`actions` stays centred on the label row regardless of size or `labelInfo`, so
+a pinned `large` row lines up with its unpinned neighbors.</div>
+              <pre><code>const LargeWithActions = () =&gt; &lt;DsCheckbox
+    size=&quot;large&quot;
+    label=&quot;Enable notifications&quot;
+    labelInfo=&quot;Receive email updates&quot;
+    actions={&lt;DsPinToggle itemLabel=&quot;notifications&quot; pinned /&gt;} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Pinned Filter List</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const PinnedFilterList = function Render() {
+    const interfaces = [
+        &#39;ge-0/0/0&#39;,
+        &#39;ge-0/0/1&#39;,
+        &#39;ge-0/0/2&#39;,
+        &#39;ge-0/0/3&#39;,
+        &#39;xe-0/1/0&#39;,
+        &#39;xe-0/1/1&#39;,
+        &#39;xe-0/1/2&#39;,
+        &#39;et-0/2/0&#39;,
+        &#39;et-0/2/1&#39;,
+        &#39;et-0/2/2&#39;,
+        &#39;lo0&#39;,
+        &#39;bundle-1&#39;,
+        &#39;bundle-2&#39;,
+        &#39;mgmt-0&#39;,
+        &#39;mgmt-1&#39;,
+    ];
+    const [pinned, setPinned] = useState&lt;string[]&gt;([&#39;xe-0/1/1&#39;, &#39;lo0&#39;]);
+    const [selected, setSelected] = useState&lt;string[]&gt;([]);
+
+    const isPinned = (name: string) =&gt; pinned.includes(name);
+
+    return (
+        &lt;div className={styles.filterList}&gt;
+            &lt;DsCheckboxGroup value={selected} onValueChange={setSelected} name=&quot;interfaces&quot;&gt;
+                {interfaces.map((name) =&gt; (
+                    &lt;DsCheckbox
+                        key={name}
+                        label={name}
+                        value={name}
+                        actions={
+                            &lt;DsPinToggle
+                                itemLabel={name}
+                                pinned={isPinned(name)}
+                                onPinnedChange={(next) =&gt;
+                                    setPinned((current) =&gt;
+                                        next ? [...current, name] : current.filter((pin) =&gt; pin !== name),
+                                    )
+                                }
+                            /&gt;
+                        }
+                    /&gt;
+                ))}
+            &lt;/DsCheckboxGroup&gt;
+        &lt;/div&gt;
     );
 };</code></pre>
               
@@ -14974,7 +15088,7 @@ toggles visibility so users can verify what they typed.</div>
       <div class="badges">
         <label for="c-52-components-pintoggle-props" class="badge ok as-toggle">6 prop types</label>
         
-        <label for="c-52-components-pintoggle-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-52-components-pintoggle-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -15038,7 +15152,7 @@ ref?: Ref&lt;HTMLButtonElement&gt;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsPinToggle, DsStack } from '@drivenets/design-system';</code></pre>
+                <pre><code>import { DsCheckbox, DsPinToggle, DsStack } from '@drivenets/design-system';</code></pre>
               </div>
           
           
@@ -15084,6 +15198,41 @@ ref?: Ref&lt;HTMLButtonElement&gt;</code></pre>
               
               
               <pre><code>const Localized = () =&gt; &lt;DsPinToggle itemLabel=&quot;Notifications&quot; locale={{ pin: &#39;Keep&#39; }} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">In Checkbox Row</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const InCheckboxRow = function Render() {
+    const rows = [&#39;Active&#39;, &#39;Deprecated&#39;, &#39;Inactive&#39;, &#39;Pending&#39;, &#39;Draft&#39;];
+    const [pinned, setPinned] = useState&lt;string[]&gt;([&#39;Active&#39;]);
+
+    const isPinned = (row: string) =&gt; pinned.includes(row);
+
+    return (
+        &lt;DsStack gap=&quot;var(--3xs)&quot; className={styles.checkboxRows}&gt;
+            {rows.map((row) =&gt; (
+                &lt;DsCheckbox
+                    key={row}
+                    label={row}
+                    actions={
+                        &lt;DsPinToggle
+                            itemLabel={row}
+                            pinned={isPinned(row)}
+                            onPinnedChange={(next) =&gt;
+                                setPinned((current) =&gt; (next ? [...current, row] : current.filter((name) =&gt; name !== row)))
+                            }
+                        /&gt;
+                    }
+                /&gt;
+            ))}
+        &lt;/DsStack&gt;
+    );
+};</code></pre>
               
             </div>
         </div>
