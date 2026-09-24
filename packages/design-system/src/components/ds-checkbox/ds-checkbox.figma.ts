@@ -28,6 +28,9 @@ const state = instance.getEnum('state', {
 const checkedAttr =
 	checked === 'partial' ? 'defaultChecked="indeterminate"' : checked === 'checked' ? 'defaultChecked' : '';
 
+// `size` is not mapped: it lives on `Structure_CheckboxV1`, while the published
+// `DsCheckboxV3` set still exposes only `checked x state x color`. The snippet
+// therefore emits the `medium` default until design bubbles the variant up.
 const attrs = [
 	'label="Label"',
 	color === 'warning' ? 'variant="warning"' : '',

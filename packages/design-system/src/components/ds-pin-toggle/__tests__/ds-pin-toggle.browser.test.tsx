@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import DsPinToggle from '../ds-pin-toggle';
+import { DsCheckbox } from '../../ds-checkbox';
 
 const resolveToken = (token: string) => {
 	if (!getComputedStyle(document.documentElement).getPropertyValue(token).trim()) {
@@ -198,5 +199,46 @@ describe('DsPinToggle', () => {
 
 		expect(width).toBeCloseTo(20, 1);
 		expect(height).toBeCloseTo(20, 1);
+	});
+
+	describe('inside DsCheckbox actions', () => {
+		it('should pin the row without toggling the checkbox when clicked', async () => {
+			const onPinnedChange = vi.fn();
+			const onCheckedChange = vi.fn();
+
+			await page.render(
+				<DsCheckbox
+					label="Active"
+					onCheckedChange={onCheckedChange}
+					actions={<DsPinToggle itemLabel="Active" onPinnedChange={onPinnedChange} />}
+				/>,
+			);
+
+			await page.getByRole('button', { name: 'Pin Active' }).click();
+
+			expect(onPinnedChange).toHaveBeenCalledWith(true);
+			expect(onCheckedChange).not.toHaveBeenCalled();
+			await expect.element(page.getByRole('checkbox')).not.toBeChecked();
+		});
+
+		it('should pin the row without toggling the checkbox when activated by keyboard', async () => {
+			const onPinnedChange = vi.fn();
+			const onCheckedChange = vi.fn();
+
+			await page.render(
+				<DsCheckbox
+					label="Active"
+					onCheckedChange={onCheckedChange}
+					actions={<DsPinToggle itemLabel="Active" onPinnedChange={onPinnedChange} />}
+				/>,
+			);
+
+			(page.getByRole('button', { name: 'Pin Active' }).element() as HTMLElement).focus();
+			await userEvent.keyboard('{Enter}');
+
+			expect(onPinnedChange).toHaveBeenCalledWith(true);
+			expect(onCheckedChange).not.toHaveBeenCalled();
+			await expect.element(page.getByRole('checkbox')).not.toBeChecked();
+		});
 	});
 });

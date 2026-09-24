@@ -59,3 +59,52 @@ const Disabled = () => <DsPinToggle itemLabel="Notifications" pinned disabled />
 
 ### MCP manifest
 const Localized = () => <DsPinToggle itemLabel="Notifications" locale={{ pin: 'Keep' }} />;
+
+## In Checkbox Row
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const rows = ['Active', 'Deprecated', 'Inactive', 'Pending', 'Draft'];
+    const [pinned, setPinned] = useState<string[]>(['Active']);
+    const isPinned = (row: string) => pinned.includes(row);
+    return <DsStack gap="var(--3xs)" className={styles.checkboxRows}>
+                {rows.map(row => <DsCheckbox key={row} label={row} actions={<DsPinToggle itemLabel={row} pinned={isPinned(row)} onPinnedChange={next => setPinned(current => next ? [...current, row] : current.filter(name => name !== row))} />} />)}
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const InCheckboxRow = function Render() {
+    const rows = ['Active', 'Deprecated', 'Inactive', 'Pending', 'Draft'];
+    const [pinned, setPinned] = useState<string[]>(['Active']);
+
+    const isPinned = (row: string) => pinned.includes(row);
+
+    return (
+        <DsStack gap="var(--3xs)" className={styles.checkboxRows}>
+            {rows.map((row) => (
+                <DsCheckbox
+                    key={row}
+                    label={row}
+                    actions={
+                        <DsPinToggle
+                            itemLabel={row}
+                            pinned={isPinned(row)}
+                            onPinnedChange={(next) =>
+                                setPinned((current) => (next ? [...current, row] : current.filter((name) => name !== row)))
+                            }
+                        />
+                    }
+                />
+            ))}
+        </DsStack>
+    );
+};
