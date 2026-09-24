@@ -23,6 +23,7 @@ const NAME_POPOVER_WIDTH_PX = 320;
 export const DsSavedFiltersSave = ({
 	items,
 	value,
+	disabled = false,
 	locale: localeProp,
 	ref,
 	className,
@@ -81,6 +82,7 @@ export const DsSavedFiltersSave = ({
 			variant="tertiary"
 			size="small"
 			icon="bookmark_add"
+			disabled={disabled}
 			loading={updating}
 		>
 			{locale.saveFilter}

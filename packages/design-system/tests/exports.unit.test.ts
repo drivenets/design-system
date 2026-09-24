@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
-const internalComponents = ['ds-saved-filters', 'ds-toggle-filter-data'];
+const internalComponents = ['ds-filters-bar', 'ds-saved-filters', 'ds-toggle-filter-data'];
 
 describe('Design System exports', () => {
 	const expectedLines = fs

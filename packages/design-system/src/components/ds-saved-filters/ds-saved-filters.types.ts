@@ -92,6 +92,11 @@ export interface DsSavedFiltersSaveProps {
 	 * Id of the **Active saved filter**, or `null` when none is applied.
 	 */
 	value: string | null;
+	/**
+	 * Blocks saving, for example while there is nothing to save
+	 * @default false
+	 */
+	disabled?: boolean;
 	locale?: DsSavedFiltersLocale;
 	ref?: Ref<HTMLButtonElement>;
 	className?: string;
