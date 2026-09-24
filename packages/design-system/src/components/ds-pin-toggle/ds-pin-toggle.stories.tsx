@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { DsPinToggle } from './index';
+import { DsCheckbox } from '../ds-checkbox';
 import { DsStack } from '../ds-stack';
+import styles from './ds-pin-toggle.stories.module.scss';
 
 const meta: Meta<typeof DsPinToggle> = {
 	title: 'Components/PinToggle',
@@ -97,4 +99,38 @@ export const States: Story = {
 			<DsPinToggle itemLabel="disabled pinned row" pinned disabled />
 		</DsStack>
 	),
+};
+
+export const InCheckboxRow: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	render: function Render() {
+		const rows = ['Active', 'Deprecated', 'Inactive', 'Pending', 'Draft'];
+		const [pinned, setPinned] = useState<string[]>(['Active']);
+
+		const isPinned = (row: string) => pinned.includes(row);
+
+		return (
+			<DsStack gap="var(--3xs)" className={styles.checkboxRows}>
+				{rows.map((row) => (
+					<DsCheckbox
+						key={row}
+						label={row}
+						actions={
+							<DsPinToggle
+								itemLabel={row}
+								pinned={isPinned(row)}
+								onPinnedChange={(next) =>
+									setPinned((current) => (next ? [...current, row] : current.filter((name) => name !== row)))
+								}
+							/>
+						}
+					/>
+				))}
+			</DsStack>
+		);
+	},
 };
