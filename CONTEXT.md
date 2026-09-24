@@ -8,6 +8,10 @@ Shared vocabulary for building and maintaining `ds-*` React components in this m
 A public `Ds{Name}` export backed by a `ds-{name}/` folder (types, implementation, styles, stories).
 _Avoid_: widget, element (unless HTML element), control (unless form field)
 
+**Internal component**:
+A `ds-*` folder with stories and tests that is omitted from the package barrel and MCP manifest (`!manifest`). A building block of a future public **Component**.
+_Avoid_: private component, unexported widget
+
 **Variant**:
 A named visual or behavioral axis on a **Component**, backed by an `as const` array and union type in `*.types.ts`.
 _Avoid_: mode, type (when meaning visual style), theme
@@ -136,6 +140,38 @@ _Avoid_: resize handle, drag line
 A header-only cell at the end of every header row that occupies the body’s vertical scrollbar width when that scrollbar is present.
 _Avoid_: Scrollbar gutter, placeholder, gutter cell
 
+**Code input**:
+A **Component** (`DsCodeInput`) whose value is one multiline code or query string, presented through a **Collapsed field** and an **Expanded overlay**.
+_Avoid_: query editor (as the Component name), JQL editor, two-surface code field
+
+**Collapsed field**:
+The one-visual-row viewport of a **Code input** — one logical line of the same document, not a flattened single-line copy.
+_Avoid_: compact input (as a different value), single-line mode, collapsed mode
+
+**Expanded overlay**:
+The larger viewport of the same **Code input** editor, in a non-modal dialog that does not push layout and does not cover the compact chrome.
+_Avoid_: dropdown editor, second editor, expanded mode
+
+**Hidden-line indicator**:
+The compact disclosure on a **Collapsed field** that reports additional logical lines, the current visible line, or a hidden multiline selection.
+_Avoid_: ellipsis (horizontal clip only), line count badge
+
+**Filters bar**:
+The public **Component** (`DsFiltersBarV1`) that composes query, builder, filter, and pinned regions with **Saved filters**.
+_Avoid_: filter toolbar, search bar
+
+**Saved filter**:
+A named snapshot of the current filter document (`id`, `name`, and a consumer-owned payload). Selected from the **Saved filters** picker.
+_Avoid_: savedSearch, preset, bookmark (the icon is not the concept)
+
+**Filter condition**:
+One chip or clause in a filter document. A **Saved filter**'s `count` is how many **Filter conditions** that snapshot holds.
+_Avoid_: individual filter (as a synonym for **Saved filter**), sub-filter
+
+**Active saved filter**:
+The **Saved filter** currently applied. Distinct from merely having items in the list.
+_Avoid_: selected filter, current filter (when meaning the snapshot, not the working document)
+
 ## Relationships
 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
@@ -156,6 +192,11 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
 - A **Scrollbar spacer** is not a **Leaf column** and has no **Resize handle**
 - Every header row of a **Column group** includes a **Scrollbar spacer**, not only the last row
+- A **Code input** has one editor document and two presentations: **Collapsed field** and **Expanded overlay**
+- A **Hidden-line indicator** belongs to the **Collapsed field**; an ellipsis on that field means horizontal clip only
+- An **Internal component** is not a public **Component**; consumers reach it only through the **Component** it belongs to
+- A **Filters bar** has zero or one **Active saved filter**
+- A **Saved filter** contains zero or more **Filter conditions**
 
 ## Example dialogue
 
@@ -183,6 +224,15 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 > **Dev:** "Should a long column title wrap onto two lines in the header?"
 > **Domain expert:** "No — that's a **Header label**. It stays one line with an ellipsis; don't call it a column title."
 
+> **Dev:** "Is the compact query box a different editor from the overlay?"
+> **Domain expert:** "No — that's one **Code input**. The **Collapsed field** and **Expanded overlay** are two presentations of the same document, not two fields."
+
+> **Dev:** "Should we export `DsSavedFilters` from the package?"
+> **Domain expert:** "No — that's an **Internal component** of the **Filters bar**. Keep it out of the barrel; product gets **Saved filters** through the bar, not as its own **Component**."
+
+> **Dev:** "Is the number on the row how many **Saved filters** the user has?"
+> **Domain expert:** "No — that's **Filter condition** count on that **Saved filter**. The list length is how many snapshots exist; `count` is how many clauses that snapshot holds."
+
 ## Flagged ambiguities
 
 - "Adapter" in file-upload vs "adapter" in generic architecture docs — resolved: use **Upload adapter** in design-system context; architecture skill uses **Adapter** at a **seam** ([LANGUAGE.md](.agents/skills/improve-codebase-architecture/LANGUAGE.md)).
@@ -190,3 +240,5 @@ _Avoid_: Scrollbar gutter, placeholder, gutter cell
 - "placeholder" in header layout meant **Scrollbar spacer**, not TanStack `header.isPlaceholder` (spanning-cell hole) and not **Empty state**.
 - "Scrollbar gutter" meant CSS reservation on `thead`; the structure is a **Scrollbar spacer**.
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
+- "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
+- "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.

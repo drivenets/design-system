@@ -1,0 +1,61 @@
+# DsPinToggle docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [pinned, setPinned] = useState(false);
+    return <DsPinToggle itemLabel="Notifications" pinned={pinned} onPinnedChange={setPinned} />;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [pinned, setPinned] = useState(false);
+
+    return <DsPinToggle itemLabel="Notifications" pinned={pinned} onPinnedChange={setPinned} />;
+};
+
+## Pinned
+
+### Show code
+<DsPinToggle
+  itemLabel="Notifications"
+  pinned
+/>
+
+### MCP manifest
+const Pinned = () => <DsPinToggle itemLabel="Notifications" pinned />;
+
+## Disabled
+
+### Show code
+<DsPinToggle
+  disabled
+  itemLabel="Notifications"
+  pinned
+/>
+
+### MCP manifest
+const Disabled = () => <DsPinToggle itemLabel="Notifications" pinned disabled />;
+
+## Localized
+
+### Show code
+<DsPinToggle
+  itemLabel="Notifications"
+  locale={{
+    pin: 'Keep'
+  }}
+/>
+
+### MCP manifest
+const Localized = () => <DsPinToggle itemLabel="Notifications" locale={{ pin: 'Keep' }} />;

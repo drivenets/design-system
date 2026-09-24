@@ -1,0 +1,68 @@
+$count-dot-size: 8px;
+
+.row {
+	display: flex;
+	align-items: center;
+	gap: var(--xs);
+	width: 100%;
+	min-height: 20px;
+	border-radius: var(--3xs);
+
+	&[data-selected] {
+		min-height: 26px;
+		padding-block: var(--3xs);
+		background: var(--background-primary-subtle-hover);
+	}
+
+	&:hover {
+		background: var(--background-primary-subtle-hover);
+	}
+}
+
+.rowMain {
+	display: flex;
+	flex: 1;
+	gap: var(--3xs);
+	align-items: center;
+	min-width: 0;
+	padding: 0;
+	border: none;
+	background: transparent;
+	text-align: start;
+	cursor: pointer;
+	color: inherit;
+
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: 2px;
+		border-radius: var(--3xs);
+	}
+}
+
+.rowName {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.rowMeta {
+	display: flex;
+	flex-shrink: 0;
+	gap: var(--xs);
+	align-items: center;
+}
+
+.count {
+	display: flex;
+	gap: var(--3xs);
+	align-items: center;
+}
+
+.countDot {
+	flex-shrink: 0;
+	width: $count-dot-size;
+	height: $count-dot-size;
+	border-radius: 9999px;
+	background: var(--color-dap-blue-700);
+}

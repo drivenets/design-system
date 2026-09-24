@@ -1,3 +1,101 @@
+# DsFormControl docs snippets
+
+## Default
+
+### Show code
+<DsFormControl
+  label="Query"
+  message="Expand the field to search within a long query."
+  required
+>
+  <DsFormControl.CodeInput placeholder="Enter a query" />
+</DsFormControl>
+
+### MCP manifest
+const Default = () => <DsFormControl
+    label="Query"
+    required
+    message="Expand the field to search within a long query."><DsFormControl.CodeInput placeholder="Enter a query" /></DsFormControl>;
+
+## With Description
+
+### Show code
+<DsFormControl
+  label="Query"
+  required
+>
+  <DsFormControl.Description>
+    Combine attribute comparisons with AND, OR and parentheses.
+  </DsFormControl.Description>
+  <DsFormControl.CodeInput placeholder="Enter a query" />
+</DsFormControl>
+
+### MCP manifest
+const WithDescription = () => <DsFormControl label="Query" required>
+    <DsFormControl.Description>Combine attribute comparisons with AND, OR and parentheses.
+                    </DsFormControl.Description>
+    <DsFormControl.CodeInput placeholder="Enter a query" />
+</DsFormControl>;
+
+## With Help Icon
+
+### Show code
+<DsFormControl
+  label="Query"
+  required
+  slots={{
+    endAdornment: <DsButtonV3 aria-label="Query syntax" icon="help" size="small" variant="tertiary"/>
+  }}
+>
+  <DsFormControl.CodeInput defaultValue="Status = Active AND trigger = Scheduled" />
+</DsFormControl>
+
+### MCP manifest
+const WithHelpIcon = () => <DsFormControl
+    label="Query"
+    required
+    slots={{
+        endAdornment: <DsButtonV3 variant="tertiary" size="small" icon="help" aria-label="Query syntax" />,
+    }}>
+    <DsFormControl.CodeInput defaultValue="Status = Active AND trigger = Scheduled" />
+</DsFormControl>;
+
+## Error
+
+### Show code
+<DsFormControl
+  label="Query"
+  message="Unexpected token near &quot;AND&quot;."
+  messageIcon="error"
+  status="error"
+>
+  <DsFormControl.CodeInput defaultValue="Status = Active AND trigger = Scheduled" />
+</DsFormControl>
+
+### MCP manifest
+const Error = () => <DsFormControl
+    status="error"
+    label="Query"
+    message="Unexpected token near \"AND\"."
+    messageIcon="error">
+    <DsFormControl.CodeInput defaultValue="Status = Active AND trigger = Scheduled" />
+</DsFormControl>;
+
+## Disabled
+
+### Show code
+<DsFormControl label="Query">
+  <DsFormControl.CodeInput
+    defaultValue="Status = Active AND trigger = Scheduled"
+    disabled
+  />
+</DsFormControl>
+
+### MCP manifest
+const Disabled = () => <DsFormControl label="Query">
+    <DsFormControl.CodeInput defaultValue="Status = Active AND trigger = Scheduled" disabled />
+</DsFormControl>;
+
 # DsFormControl.DateInput docs snippets
 
 ## Default
