@@ -157,8 +157,28 @@ The compact disclosure on a **Collapsed field** that reports additional logical 
 _Avoid_: ellipsis (horizontal clip only), line count badge
 
 **Filters bar**:
-The public **Component** (`DsFiltersBarV1`) that composes query, builder, filter, and pinned regions with **Saved filters**.
+The **Internal component** (`DsFiltersBar`, public once built) that composes the **Filter views**, the pinned row and **Saved filters** around one **Filter document**.
 _Avoid_: filter toolbar, search bar
+
+**Filter document**:
+The single state a **Filters bar** filters by: either its **Filter conditions** or an **Advanced query**, never both. **Pins** are not part of it.
+_Avoid_: filter state, s.filters, working copy
+
+**Advanced query**:
+Free query text that, once the user edits it, replaces the **Filter conditions** as the source of the **Filter document**; until then it is only a rendering of those conditions.
+_Avoid_: DQL, JQL, code (as the concept name), query override
+
+**Field schema**:
+The consumer's description of what can be filtered — each field's type, operators, and options or subfields; the type decides what a **Filter condition** on that field can hold.
+_Avoid_: BUILDER_SCHEMA, columns, filter config
+
+**Filter view**:
+One of the three presentations of the same **Filter document** — `filters`, `builder`, `advanced` — switched by the view switch. Switching changes the presentation only.
+_Avoid_: mode, segment, tab, code view
+
+**Pin**:
+A field option the user marked for quick access in the pinned row; a user preference that outlives any **Saved filter** or clear.
+_Avoid_: favorite, quick-view pill
 
 **Saved filter**:
 A named snapshot of the current filter document (`id`, `name`, and a consumer-owned payload). Selected from the **Saved filters** picker.
@@ -197,6 +217,10 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - An **Internal component** is not a public **Component**; consumers reach it only through the **Component** it belongs to
 - A **Filters bar** has zero or one **Active saved filter**
 - A **Saved filter** contains zero or more **Filter conditions**
+- A **Filters bar** has one **Filter document**; every **Filter view** reads and writes it
+- A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once; clearing the **Advanced query** hands control back to the conditions
+- A **Filter condition** names a field from the **Field schema**, or is free search text
+- Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
 
 ## Example dialogue
 
@@ -242,3 +266,5 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
 - "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.
+- The filters-bar design says the query builder locks the other views like the **Advanced query** does, while its samples mix builder conditions with filter chips — resolved: the builder writes ordinary **Filter conditions** and never locks (pending design confirmation).
+- "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** has exactly one active source, **Filter conditions** or an edited **Advanced query**.

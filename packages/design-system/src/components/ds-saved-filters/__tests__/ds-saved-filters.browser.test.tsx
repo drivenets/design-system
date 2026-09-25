@@ -15,6 +15,7 @@ interface HarnessProps {
 	value?: string | null;
 	dirty?: boolean;
 	withSave?: boolean;
+	saveDisabled?: boolean;
 	onValueChange?: (id: string | null) => void;
 	onClear?: () => void | Promise<void>;
 	onUpdate?: () => void | Promise<void>;
@@ -37,6 +38,7 @@ const Harness = ({
 	value = null,
 	dirty = false,
 	withSave = false,
+	saveDisabled = false,
 	onValueChange,
 	onClear,
 	onUpdate,
@@ -82,6 +84,7 @@ const Harness = ({
 				<DsSavedFilters.Save
 					items={currentItems}
 					value={currentValue}
+					disabled={saveDisabled}
 					onUpdate={() => onUpdate?.()}
 					onSaveAs={(name) => {
 						const result = onSaveAs?.(name);
@@ -206,6 +209,16 @@ describe('DsSavedFilters save', () => {
 		await page.getByRole('button', { name: /^Save$/ }).click();
 
 		expect(onSaveAs).toHaveBeenCalledWith('Night shift');
+	});
+
+	it('does not open the name popover while disabled', async () => {
+		await page.render(<Harness items={[]} withSave saveDisabled />);
+
+		const saveButton = page.getByRole('button', { name: 'Save filter' });
+
+		await expect.element(saveButton).toBeDisabled();
+		await saveButton.click({ force: true });
+		await expect.element(page.getByLabelText('Filter name')).not.toBeInTheDocument();
 	});
 
 	it('disables confirm when the name is blank', async () => {
