@@ -626,7 +626,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -30307,7 +30307,7 @@ auto-dismiss, so they cannot also set `duration`.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToggle</h2>
       <div class="badges">
-        <label for="c-93-components-toggle-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-93-components-toggle-props" class="badge ok as-toggle">10 prop types</label>
         
         <label for="c-93-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -30336,11 +30336,17 @@ auto-dismiss, so they cannot also set `duration`.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">9 prop types</span>
+              <span class="badge ok">10 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-toggle/ds-toggle.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>/**
+ * Accessible name for a toggle without a visible `label` or `children`.
+ * Ignored by assistive tech when a visible label is rendered.
+ */
+aria-label?: string
+
+/**
  * Controlled checked state
  */
 checked?: boolean

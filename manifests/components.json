@@ -28449,6 +28449,13 @@
               "name": "boolean"
             },
             "description": "Whether the toggle is disabled"
+          },
+          "aria-label": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Accessible name for a toggle without a visible `label` or `children`.\nIgnored by assistive tech when a visible label is rendered."
           }
         }
       },
@@ -29382,6 +29389,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5529
+    "durationMs": 3508
   }
 }
