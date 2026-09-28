@@ -64,6 +64,7 @@ const DsCodeInput = ({
 	placeholder,
 	disabled = false,
 	readOnly = false,
+	'aria-describedby': ariaDescribedBy,
 	expanded,
 	defaultExpanded = false,
 	onExpandChange,
@@ -236,7 +237,9 @@ const DsCodeInput = ({
 					autoComplete="off"
 					aria-multiline="true"
 					aria-label={isExpanded && !id ? strings.codeLabel : undefined}
-					aria-describedby={description ? descriptionId : undefined}
+					aria-describedby={
+						[description && descriptionId, ariaDescribedBy].filter(Boolean).join(' ') || undefined
+					}
 					onChange={handleChange}
 					onSelect={viewport.onSelect}
 					onKeyUp={viewport.onKeyUp}

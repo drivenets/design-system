@@ -14,7 +14,13 @@ import { DsDateInput } from '../ds-date-input';
 import { DsDatePicker } from '../ds-date-picker';
 import { DsTimePicker } from '../ds-time-picker';
 
-const FormControlContext = createContext<{ controlId: string } | null>(null);
+const FormControlContext = createContext<{
+	controlId: string;
+	/**
+	 * Id of the message, while there is one
+	 */
+	messageId?: string;
+} | null>(null);
 
 const useFormControlContext = () => {
 	const context = useContext(FormControlContext);
@@ -46,6 +52,26 @@ const controlify = <TProps extends { id?: string }>(
 	return WrappedFormControl;
 };
 
+/**
+ * Like `controlify`, and also points the control's `aria-describedby` at the message, for
+ * components that accept it.
+ */
+const controlifyDescribed = <TProps extends { id?: string; 'aria-describedby'?: string }>(
+	Component: ComponentType<TProps>,
+	displayName: string,
+) => {
+	const WrappedFormControl = (props: TProps) => {
+		const { controlId, messageId } = useFormControlContext();
+		const describedBy = [messageId, props['aria-describedby']].filter(Boolean).join(' ') || undefined;
+
+		return <Component id={controlId} {...props} aria-describedby={describedBy} />;
+	};
+
+	WrappedFormControl.displayName = displayName;
+
+	return WrappedFormControl;
+};
+
 const DsFormControlDescription: React.FC<DsFormControlDescriptionProps> = ({ children, className }) => {
 	return <div className={classNames(styles.description, className)}>{children}</div>;
 };
@@ -64,10 +90,11 @@ const DsFormControlRoot = ({
 	children,
 }: DsFormControlProps) => {
 	const generatedId = useId();
+	const messageId = useId();
 	const controlId = id || generatedId;
 
 	return (
-		<FormControlContext.Provider value={{ controlId }}>
+		<FormControlContext.Provider value={{ controlId, messageId: message ? messageId : undefined }}>
 			<div
 				className={classNames(
 					styles.container,
@@ -78,7 +105,11 @@ const DsFormControlRoot = ({
 				)}
 				style={style}
 			>
-				{!hideLabel && (
+				{hideLabel ? (
+					<label htmlFor={controlId} className={styles.visuallyHidden}>
+						{label}
+					</label>
+				) : (
 					<div className={styles.labelContainer}>
 						<label
 							htmlFor={controlId}
@@ -94,12 +125,14 @@ const DsFormControlRoot = ({
 
 				{children}
 
-				{message && (
-					<div className={styles.message}>
-						<DsIcon icon={messageIcon} size="tiny" filled />
-						<span>{message}</span>
-					</div>
-				)}
+				<div className={styles.messageRegion} aria-live="polite">
+					{message && (
+						<div className={styles.message}>
+							<DsIcon icon={messageIcon} size="tiny" filled />
+							<span id={messageId}>{message}</span>
+						</div>
+					)}
+				</div>
 			</div>
 		</FormControlContext.Provider>
 	);
@@ -110,7 +143,7 @@ DsFormControlDescription.displayName = 'DsFormControl.Description';
 const DsFormControl = Object.assign(DsFormControlRoot, {
 	displayName: 'DsFormControl',
 	TextInput: controlify(DsTextInput, 'DsFormControl.TextInput'),
-	CodeInput: controlify(DsCodeInput, 'DsFormControl.CodeInput'),
+	CodeInput: controlifyDescribed(DsCodeInput, 'DsFormControl.CodeInput'),
 	NumberInput: controlify(DsNumberInput, 'DsFormControl.NumberInput'),
 	PasswordInput: controlify(DsPasswordInput, 'DsFormControl.PasswordInput'),
 	/** @deprecated DsDateInput is deprecated. Use DsDatePicker or DsDateRangePicker instead. */

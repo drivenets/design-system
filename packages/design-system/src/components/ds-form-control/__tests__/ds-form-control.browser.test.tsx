@@ -44,15 +44,47 @@ describe('DsFormControl with TextInput', () => {
 		await expect.element(page.getByLabelText('Input label')).toHaveAttribute('id', 'email-field');
 	});
 
-	it('should not render a visible label when hideLabel is set', async () => {
+	it('keeps the label as the accessible name when hideLabel is set', async () => {
 		await page.render(
 			<DsFormControl label="Input label" hideLabel>
 				<DsFormControl.TextInput placeholder="Search" />
 			</DsFormControl>,
 		);
 
-		await expect.element(page.getByRole('textbox')).toBeVisible();
-		await expect.element(page.getByText('Input label')).not.toBeInTheDocument();
+		await expect.element(page.getByRole('textbox', { name: 'Input label' })).toBeVisible();
+	});
+
+	it('describes a code input with the message', async () => {
+		await page.render(
+			<DsFormControl label="Query" status="error" message="Unknown field">
+				<DsFormControl.CodeInput placeholder="Enter a query" />
+			</DsFormControl>,
+		);
+
+		await expect.element(page.getByPlaceholder('Enter a query')).toHaveAccessibleDescription('Unknown field');
+	});
+
+	it('announces a message that appears after render', async () => {
+		const { rerender } = await page.render(
+			<DsFormControl label="Query">
+				<DsFormControl.CodeInput placeholder="Enter a query" />
+			</DsFormControl>,
+		);
+
+		const regionsBefore = [...document.querySelectorAll('[aria-live="polite"]')];
+
+		await rerender(
+			<DsFormControl label="Query" status="error" message="Unknown field">
+				<DsFormControl.CodeInput placeholder="Enter a query" />
+			</DsFormControl>,
+		);
+
+		await expect.element(page.getByText('Unknown field')).toBeVisible();
+
+		// A live region only announces changes to itself, so it must have been there before the message
+		const region = page.getByText('Unknown field').element().closest('[aria-live="polite"]');
+
+		expect(regionsBefore).toContain(region);
 	});
 
 	it('should support custom inline styles', async () => {
