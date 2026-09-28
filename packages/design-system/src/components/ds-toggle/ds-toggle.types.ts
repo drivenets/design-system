@@ -52,6 +52,12 @@ export type DsToggleProps = {
 	 * Whether the toggle is disabled
 	 */
 	disabled?: boolean;
+
+	/**
+	 * Accessible name for a toggle without a visible `label` or `children`.
+	 * Ignored by assistive tech when a visible label is rendered.
+	 */
+	'aria-label'?: string;
 } & (
 	| {
 			/**
