@@ -21,6 +21,7 @@ const DsToggle = ({
 	size = 'default',
 	children,
 	checked,
+	'aria-label': ariaLabel,
 	...rest
 }: DsToggleProps) => {
 	const isSmall = size === 'small';
@@ -58,21 +59,24 @@ const DsToggle = ({
 				<DsIcon icon="close" size={iconSize} className={closeIconClass} />
 			</Switch.Control>
 
-			<Switch.Label>
-				{label ? (
-					<>
-						<DsTypography variant={isSmall ? 'body-xs-md' : 'body-sm-md'}>{label}</DsTypography>
-						{!!labelInfo && (
-							<DsTypography variant="body-xs-reg" className={styles.labelInfo}>
-								{labelInfo}
-							</DsTypography>
-						)}
-					</>
-				) : (
-					children
-				)}
-			</Switch.Label>
-			<Switch.HiddenInput className={styles.hiddenInput} />
+			{/* An empty Switch.Label would still be the input's aria-labelledby target and override aria-label. */}
+			{(label || children) && (
+				<Switch.Label>
+					{label ? (
+						<>
+							<DsTypography variant={isSmall ? 'body-xs-md' : 'body-sm-md'}>{label}</DsTypography>
+							{!!labelInfo && (
+								<DsTypography variant="body-xs-reg" className={styles.labelInfo}>
+									{labelInfo}
+								</DsTypography>
+							)}
+						</>
+					) : (
+						children
+					)}
+				</Switch.Label>
+			)}
+			<Switch.HiddenInput className={styles.hiddenInput} aria-label={ariaLabel} />
 		</Switch.Root>
 	);
 };

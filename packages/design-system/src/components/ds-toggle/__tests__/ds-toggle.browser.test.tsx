@@ -52,6 +52,24 @@ describe('DsToggle', () => {
 		await expect.element(toggle).not.toBeChecked();
 	});
 
+	it('uses aria-label as the accessible name when there is no label or children', async () => {
+		await page.render(<DsToggle aria-label="Enable notifications" />);
+
+		const toggle = page.getByRole('checkbox', { name: 'Enable notifications' });
+
+		await expect.element(toggle).toHaveAccessibleName('Enable notifications');
+
+		// Chromium falls back to aria-label when aria-labelledby resolves to empty text; jsdom
+		// (consumer unit tests) does not, so there must be no empty label for it to point at.
+		const labelledBy = toggle.element().getAttribute('aria-labelledby');
+		expect(labelledBy ? document.getElementById(labelledBy) : null).toBeNull();
+
+		await expect.element(toggle).not.toBeChecked();
+
+		await toggle.click();
+		await expect.element(toggle).toBeChecked();
+	});
+
 	it('uses custom children as the accessible label and toggles on click', async () => {
 		await page.render(<DsToggle size="small">Custom label totally!</DsToggle>);
 
