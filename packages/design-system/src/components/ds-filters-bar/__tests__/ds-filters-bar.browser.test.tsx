@@ -378,8 +378,6 @@ const ControlledConditionsBar = ({
 	);
 };
 
-const DIALOG_BACKDROP = '[data-scope="dialog"][data-part="backdrop"]';
-
 const addFilterButton = (name = 'Add filter') => page.getByRole('button', { name, exact: true });
 const filtersDialog = (name = 'Filters') => page.getByRole('dialog', { name });
 // A tab's name is its field label, followed by the checked count and pin indicator when present.
@@ -400,11 +398,10 @@ const openFiltersDialog = async () => {
 
 const saveFilters = () => page.getByRole('button', { name: 'Save filters', exact: true }).click();
 
-// The backdrop fills the viewport behind the dialog, so its corner is outside the dialog.
+// The open modal disables pointer events outside it, backdrop included, so a click in the
+// viewport corner lands on <html> — outside the dialog, as a real click would.
 const clickOutsideDialog = () =>
-	page
-		.elementLocator(document.querySelector<HTMLElement>(DIALOG_BACKDROP) as HTMLElement)
-		.click({ position: { x: 1, y: 1 } });
+	page.elementLocator(document.documentElement).click({ position: { x: 1, y: 1 } });
 
 const closeWays = [
 	{ way: 'the close button', close: () => page.getByRole('button', { name: 'Close', exact: true }).click() },

@@ -367,12 +367,9 @@ describe('DsFiltersBar.FiltersDialog', () => {
 		await page.render(<Harness onSave={onSave} onOpenChange={onOpenChange} />);
 
 		await expect.element(dialog()).toBeVisible();
-		// The backdrop fills the viewport behind the dialog, so its corner is outside the dialog.
-		await page
-			.elementLocator(
-				document.querySelector<HTMLElement>('[data-scope="dialog"][data-part="backdrop"]') as HTMLElement,
-			)
-			.click({ position: { x: 1, y: 1 } });
+		// The open modal disables pointer events outside it, backdrop included, so a click in the
+		// viewport corner lands on <html> — outside the dialog, as a real click would.
+		await page.elementLocator(document.documentElement).click({ position: { x: 1, y: 1 } });
 
 		expect(onOpenChange).toHaveBeenCalledExactlyOnceWith(false);
 		expect(onSave).not.toHaveBeenCalled();
