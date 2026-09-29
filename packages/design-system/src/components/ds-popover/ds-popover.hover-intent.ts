@@ -14,6 +14,7 @@ export interface HoverIntent {
 	consumeFocusRestore: () => boolean;
 	/** Owns one shared timer */
 	schedule: (action: () => void, delay: number) => void;
+	/** Drops a pending open or close so a click's toggle is the final word. */
 	cancel: () => void;
 	/** A pinned panel was opened, or kept open, by a click — pointer leave no longer closes it. */
 	isPinned: () => boolean;

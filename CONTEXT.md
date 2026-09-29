@@ -165,8 +165,16 @@ The single state a **Filters bar** filters by: either its **Filter conditions** 
 _Avoid_: filter state, s.filters, working copy
 
 **Advanced query**:
-Free query text that, once the user edits it, replaces the **Filter conditions** as the source of the **Filter document**; until then it is only a rendering of those conditions.
+Text in the **Query language** that the user edited and that is valid but not a **Compatible query**, so it replaces the **Filter conditions** as the source of the **Filter document**.
 _Avoid_: DQL, JQL, code (as the concept name), query override
+
+**Query language**:
+The design system's one filter grammar (`field op value` clauses, `AND`/`OR`, parentheses, free-text strings), validated against the **Field schema**.
+_Avoid_: DQL, JQL, query syntax (as a product-specific name)
+
+**Compatible query**:
+A valid query made only of clauses joined by `AND`, so it maps one-to-one onto **Filter conditions**.
+_Avoid_: simple query, flat query
 
 **Field schema**:
 The consumer's description of what can be filtered — each field's type, operators, and options or subfields; the type decides what a **Filter condition** on that field can hold.
@@ -218,9 +226,12 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - A **Filters bar** has zero or one **Active saved filter**
 - A **Saved filter** contains zero or more **Filter conditions**
 - A **Filters bar** has one **Filter document**; every **Filter view** reads and writes it
-- A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once; clearing the **Advanced query** hands control back to the conditions
+- A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once
+- A **Compatible query** becomes **Filter conditions** (nothing locks); any other valid query becomes the **Advanced query** and locks the filters and builder **Filter views**; invalid text never reaches the **Filter document**
+- Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
 - A **Filter condition** names a field from the **Field schema**, or is free search text
 - Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
+- A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
 
 ## Example dialogue
 
@@ -254,6 +265,9 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 > **Dev:** "Should we export `DsSavedFilters` from the package?"
 > **Domain expert:** "No — that's an **Internal component** of the **Filters bar**. Keep it out of the barrel; product gets **Saved filters** through the bar, not as its own **Component**."
 
+> **Dev:** "The user typed `status = \"A\" OR status = \"B\"` — do we lock the other views?"
+> **Domain expert:** "Yes. Any `OR` means it isn't a **Compatible query**, so it becomes the **Advanced query** and locks filters and builder. `status IN (\"A\", \"B\")` is compatible and stays as **Filter conditions**."
+
 > **Dev:** "Is the number on the row how many **Saved filters** the user has?"
 > **Domain expert:** "No — that's **Filter condition** count on that **Saved filter**. The list length is how many snapshots exist; `count` is how many clauses that snapshot holds."
 
@@ -267,4 +281,5 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
 - "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.
 - The filters-bar design says the query builder locks the other views like the **Advanced query** does, while its samples mix builder conditions with filter chips — resolved: the builder writes ordinary **Filter conditions** and never locks (pending design confirmation).
-- "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** has exactly one active source, **Filter conditions** or an edited **Advanced query**.
+- "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** has exactly one active source, **Filter conditions** or an **Advanced query**; a **Compatible query** is converted into conditions rather than kept as text.
+- "Valid query" was used both for syntax-correct text and for text the other views can show — resolved: validity is grammar plus **Field schema**; whether the other views can show it is **Compatible query**.

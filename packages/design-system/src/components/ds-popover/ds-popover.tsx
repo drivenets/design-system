@@ -145,9 +145,11 @@ const DsPopoverRoot = ({
 						: undefined
 				}
 				onOpenChange={(details) => {
+					// Pointer enter may have scheduled an open; any toggle is the final word.
+					cancel();
+
 					if (!details.open) {
-						// Any close ends the pin and drops a pending hover open, so it cannot reopen the panel.
-						cancel();
+						// A close also ends the pin.
 						setPinned(false);
 					}
 

@@ -12,8 +12,8 @@ import {
 	replaceCondition,
 } from './ds-filters-bar.utils';
 
-const EQUALS = { value: '=', label: 'equals', symbol: '=' };
-const NOT_EQUALS = { value: '!=', label: 'not equals', symbol: '≠' };
+const EQUALS = { value: '=', label: 'equals', symbol: '=' } as const;
+const NOT_EQUALS = { value: '!=', label: 'not equals', symbol: '≠' } as const;
 
 const FIELDS: DsFilterField[] = [
 	{
@@ -173,7 +173,7 @@ describe('describeCondition', () => {
 			kind: 'field',
 			id: '1',
 			field: 'parents',
-			operator: '>',
+			operator: '=',
 			value: { from: 2, to: 5 },
 		};
 

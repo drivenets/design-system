@@ -1,5 +1,6 @@
 affordances
 affordances
+ANTLR
 aroba
 artipacked
 autoboot
@@ -26,6 +27,7 @@ gnmi
 greyscale
 haspopup
 labelledby
+Lezer
 loadingdone
 matchall
 mgmt
