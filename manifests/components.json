@@ -6947,7 +6947,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -7124,7 +7124,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -7331,7 +7331,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -7514,7 +7514,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -7703,7 +7703,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -7892,7 +7892,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -8081,7 +8081,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -8270,7 +8270,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -8453,7 +8453,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "When true, the label row is not rendered (e.g. inline table cell editors).",
+            "description": "Hides the label row (e.g. inline table cell editors). The label stays as the control's\naccessible name.",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -29413,6 +29413,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5662
+    "durationMs": 5435
   }
 }
