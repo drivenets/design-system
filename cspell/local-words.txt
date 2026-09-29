@@ -11,6 +11,7 @@ clickability
 controlify
 cooldown
 cursoragents
+describedby
 deslop
 domcontentloaded
 drivenets

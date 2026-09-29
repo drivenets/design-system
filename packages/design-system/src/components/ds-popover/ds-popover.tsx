@@ -1,7 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState, type FocusEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type FocusEvent, type Ref } from 'react';
 import { Popover, type PopoverRootProps } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 import { PopoverTrigger } from './components/popover-trigger';
@@ -12,9 +13,11 @@ import {
 	useHoverIntentProps,
 } from './ds-popover.hover-intent';
 import { invokeCloseAutoFocus, toFocusEl, toPlacement } from './ds-popover.utils';
+import { mergeRefs } from '../../utils/merge-refs';
 import styles from './ds-popover.module.scss';
 import type {
 	DsPopoverAnchorProps,
+	DsPopoverCloseTriggerProps,
 	DsPopoverContentItemProps,
 	DsPopoverContentProps,
 	DsPopoverFooterProps,
@@ -26,6 +29,7 @@ import type {
 
 const DEFAULT_PANEL_WIDTH = 400;
 const MATCHED_PANEL_WIDTH = 'var(--reference-width)';
+const DEFAULT_CLOSE_TRIGGER_LOCALE = Object.freeze({ close: 'Close' });
 
 const DsPopoverRoot = ({
 	open,
@@ -49,14 +53,23 @@ const DsPopoverRoot = ({
 	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 	const anchorRef = useRef<HTMLElement | null>(null);
 	const restoringFocus = useRef(false);
+	const pinned = useRef(false);
 	const [contentId, setContentId] = useState<string>();
 	const [focusInPanel, setFocusInPanel] = useState(false);
 
 	useEffect(() => () => clearTimeout(timer.current), []);
 
+	const cancel = () => clearTimeout(timer.current);
+
 	const schedule = (action: () => void, delay: number) => {
-		clearTimeout(timer.current);
+		cancel();
 		timer.current = setTimeout(action, delay);
+	};
+
+	const isPinned = () => pinned.current;
+
+	const setPinned = (next: boolean) => {
+		pinned.current = next;
 	};
 
 	const isHover = openOn === 'hover';
@@ -86,7 +99,16 @@ const DsPopoverRoot = ({
 				registerAnchor,
 				registerContentId: setContentId,
 				hoverIntent: isHover
-					? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore }
+					? {
+							openDelay,
+							closeDelay,
+							schedule,
+							cancel,
+							isPinned,
+							setPinned,
+							setFocusInPanel,
+							consumeFocusRestore,
+						}
 					: null,
 			}}
 		>
@@ -103,7 +125,9 @@ const DsPopoverRoot = ({
 					placement: toPlacement(side, align),
 					gutter,
 					sameWidth: matchAnchorWidth,
-					...(getAnchorElement ? { getAnchorElement } : {}),
+					// Position from the registered Anchor element rather than zag's id lookup: an outer
+					// `asChild` wrapper around `DsPopover.Anchor` replaces that id. `null` falls back to the trigger.
+					getAnchorElement: () => getAnchorElement?.() ?? anchorRef.current,
 				}}
 				initialFocusEl={initialFocusEl}
 				finalFocusEl={finalFocusEl}
@@ -121,6 +145,12 @@ const DsPopoverRoot = ({
 						: undefined
 				}
 				onOpenChange={(details) => {
+					if (!details.open) {
+						// Any close ends the pin and drops a pending hover open, so it cannot reopen the panel.
+						cancel();
+						setPinned(false);
+					}
+
 					if (!details.open && focusInPanel) {
 						restoringFocus.current = true;
 					}
@@ -138,11 +168,17 @@ const DsPopoverRoot = ({
 	);
 };
 
-const DsPopoverAnchor = ({ children, className }: DsPopoverAnchorProps) => {
+const DsPopoverAnchor = ({ children, className, style, ref, ...injectedProps }: DsPopoverAnchorProps) => {
 	const { registerAnchor } = useDsPopoverContext();
 
 	return (
-		<Popover.Anchor asChild className={className} ref={registerAnchor}>
+		<Popover.Anchor
+			asChild
+			{...injectedProps}
+			className={className}
+			style={style}
+			ref={mergeRefs<HTMLDivElement>(registerAnchor, ref as Ref<HTMLDivElement>)}
+		>
 			{children}
 		</Popover.Anchor>
 	);
@@ -193,7 +229,7 @@ const DsPopoverPanel = ({
 	);
 };
 
-const DsPopoverHeader = ({ icon, className, style, children }: DsPopoverHeaderProps) => (
+const DsPopoverHeader = ({ icon, actions, className, style, children }: DsPopoverHeaderProps) => (
 	<div className={classNames(styles.header, className)} style={style}>
 		{icon && <span className={styles.headerIcon}>{icon}</span>}
 		<Popover.Title className={styles.title} asChild>
@@ -201,7 +237,24 @@ const DsPopoverHeader = ({ icon, className, style, children }: DsPopoverHeaderPr
 				{children}
 			</DsTypography>
 		</Popover.Title>
+		{actions && <div className={styles.headerActions}>{actions}</div>}
 	</div>
+);
+
+const DsPopoverCloseTrigger = ({ className, style, ref, locale }: DsPopoverCloseTriggerProps) => (
+	<Popover.CloseTrigger asChild>
+		<DsButtonV3
+			ref={ref}
+			variant="tertiary"
+			size="small"
+			icon="close"
+			className={className}
+			style={style}
+			aria-label={locale?.close ?? DEFAULT_CLOSE_TRIGGER_LOCALE.close}
+			// Icon-only DsButtonV3 always sets `aria-pressed`; a close button is not a toggle.
+			aria-pressed={undefined}
+		/>
+	</Popover.CloseTrigger>
 );
 
 const DsPopoverContent = ({ className, style, children }: DsPopoverContentProps) => (
@@ -273,6 +326,7 @@ DsPopoverRoot.displayName = 'DsPopover.Root';
 DsPopoverAnchor.displayName = 'DsPopover.Anchor';
 DsPopoverPanel.displayName = 'DsPopover.Panel';
 DsPopoverHeader.displayName = 'DsPopover.Header';
+DsPopoverCloseTrigger.displayName = 'DsPopover.CloseTrigger';
 DsPopoverContent.displayName = 'DsPopover.Content';
 DsPopoverContentItem.displayName = 'DsPopover.ContentItem';
 DsPopoverFooter.displayName = 'DsPopover.Footer';
@@ -283,6 +337,7 @@ export const DsPopover = Object.assign(DsPopoverLegacy, {
 	Anchor: DsPopoverAnchor,
 	Panel: DsPopoverPanel,
 	Header: DsPopoverHeader,
+	CloseTrigger: DsPopoverCloseTrigger,
 	Content: DsPopoverContent,
 	ContentItem: DsPopoverContentItem,
 	Footer: DsPopoverFooter,

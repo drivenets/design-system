@@ -1,6 +1,7 @@
-import { useRef } from 'react';
+import { createRef, useRef, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
+import { DsTooltip } from '../../ds-tooltip';
 import { DsPopover } from '../ds-popover';
 import type { DsPopoverRootProps } from '../ds-popover.types';
 import styles from '../ds-popover.stories.module.scss';
@@ -335,6 +336,94 @@ describe('DsPopover openOn="hover"', () => {
 		await expect.element(getPanel()).toBeVisible();
 
 		await getTrigger().click();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+
+	it('keeps a hover-opened panel open when the trigger is clicked', async () => {
+		await renderHoverExample();
+
+		await getTrigger().hover();
+		await expect.element(getPanel()).toBeVisible();
+
+		await getTrigger().click();
+		await wait(OPEN_DELAY);
+
+		await expect.element(getPanel()).toBeVisible();
+	});
+
+	it('keeps a click-opened panel open after the pointer leaves', async () => {
+		await renderHoverExample();
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await getTrigger().unhover();
+		await wait(CLOSE_DELAY + OPEN_DELAY);
+
+		await expect.element(getPanel()).toBeVisible();
+	});
+
+	it('closes a hover-opened panel once the pointer leaves the trigger', async () => {
+		await renderHoverExample();
+
+		await getTrigger().hover();
+		await expect.element(getPanel()).toBeVisible();
+
+		await getTrigger().unhover();
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+
+	it('keeps a pinned panel open when the pointer enters and leaves it', async () => {
+		await renderHoverExample();
+
+		await getTrigger().hover();
+		await expect.element(getPanel()).toBeVisible();
+		await getTrigger().click();
+
+		await getPanel().hover();
+		await getPanel().unhover();
+		await wait(CLOSE_DELAY + OPEN_DELAY);
+
+		await expect.element(getPanel()).toBeVisible();
+	});
+
+	it('closes a pinned panel on a second trigger click', async () => {
+		await renderHoverExample();
+
+		await getTrigger().hover();
+		await expect.element(getPanel()).toBeVisible();
+
+		await getTrigger().click();
+		await getTrigger().click();
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+
+	it('does not carry a pin over to the next hover-opened session', async () => {
+		await renderHoverExample();
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+		await userEvent.keyboard('{Escape}');
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+
+		await getTrigger().unhover();
+		await getTrigger().hover();
+		await expect.element(getPanel()).toBeVisible();
+		await getTrigger().unhover();
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+
+	it('stays closed after a quick open-close click pair, before the hover delay elapses', async () => {
+		await renderHoverExample();
+
+		// The pointer enters and schedules a hover open; clicking must drop that pending open.
+		await getTrigger().click();
+		await getTrigger().click();
+		await wait(OPEN_DELAY * 2);
+
 		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
 	});
 
@@ -712,5 +801,204 @@ describe('DsPopover.Panel id', () => {
 		await expect
 			.element(page.getByRole('dialog', { name: /sized panel/i }))
 			.toHaveAttribute('id', 'device-panel');
+	});
+});
+
+type CompositionProps = Pick<DsPopoverRootProps, 'defaultOpen' | 'onOpenChange'>;
+
+const PanelBody = () => (
+	<DsPopover.Panel width={200}>
+		<DsPopover.Header>Device details</DsPopover.Header>
+		<DsPopover.Content>
+			<DsPopover.ContentItem>Edge router is online.</DsPopover.ContentItem>
+		</DsPopover.Content>
+	</DsPopover.Panel>
+);
+
+const TooltipAroundTrigger = (props: CompositionProps) => (
+	<DsPopover.Root {...props}>
+		<DsTooltip content="Preview">
+			<DsPopover.Trigger>
+				<button type="button">Open details</button>
+			</DsPopover.Trigger>
+		</DsTooltip>
+		<PanelBody />
+	</DsPopover.Root>
+);
+
+const TooltipInsideTrigger = (props: CompositionProps) => (
+	<DsPopover.Root {...props}>
+		<DsPopover.Trigger>
+			<DsTooltip content="Preview">
+				<button type="button">Open details</button>
+			</DsTooltip>
+		</DsPopover.Trigger>
+		<PanelBody />
+	</DsPopover.Root>
+);
+
+const expectPanelBelowTrigger = () =>
+	expect
+		.poll(() => {
+			const trigger = getTrigger().element().getBoundingClientRect();
+			const panel = getPanel().element().getBoundingClientRect();
+
+			// Default side is bottom with an 8px gutter; a panel with no reference element sits at the viewport origin.
+			return Math.round(panel.top - trigger.bottom);
+		})
+		.toBe(8);
+
+describe.each([
+	['DsTooltip > DsPopover.Trigger', TooltipAroundTrigger],
+	['DsPopover.Trigger > DsTooltip', TooltipInsideTrigger],
+])('DsPopover composed with DsTooltip (%s)', (_, Composition) => {
+	it('shows the tooltip on hover and swaps it for the panel on click', async () => {
+		await page.render(<Composition />);
+
+		await getTrigger().hover();
+		await expect.element(page.getByRole('tooltip', { name: 'Preview' })).toBeVisible();
+
+		await getTrigger().click();
+
+		await expect.element(getPanel()).toBeVisible();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+		await expect.element(getTrigger()).toHaveAttribute('aria-haspopup', 'dialog');
+		await expect.element(getTrigger()).toHaveAttribute('data-state', 'open');
+	});
+
+	it('closes on a second trigger click and positions the panel against the trigger', async () => {
+		const onOpenChange = vi.fn();
+		await page.render(<Composition onOpenChange={onOpenChange} />);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+		await expectPanelBelowTrigger();
+
+		// The trigger must stay excluded from outside-click dismissal, or this click closes then reopens.
+		await getTrigger().click();
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		expect(onOpenChange.mock.calls).toEqual([[true], [false]]);
+	});
+
+	it('positions and dismisses a panel that is open on mount', async () => {
+		await page.render(<Composition defaultOpen />);
+
+		await expect.element(getPanel()).toBeVisible();
+		await expectPanelBelowTrigger();
+
+		await getTrigger().click();
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+	});
+
+	it('returns focus to the trigger when Escape closes the panel', async () => {
+		await page.render(<Composition />);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(getTrigger()).toHaveFocus();
+	});
+});
+
+describe('DsPopover ref forwarding', () => {
+	it('forwards a ref through DsPopover.Trigger to the trigger element', async () => {
+		const ref = createRef<HTMLElement>();
+
+		await page.render(
+			<DsPopover.Root>
+				<DsPopover.Trigger ref={ref}>
+					<button type="button">Open details</button>
+				</DsPopover.Trigger>
+				<PanelBody />
+			</DsPopover.Root>,
+		);
+
+		expect(ref.current).toBe(getTrigger().element());
+	});
+
+	it('forwards a ref through DsPopover.Anchor while still positioning against it', async () => {
+		const ref = createRef<HTMLElement>();
+
+		await page.render(
+			<DsPopover.Root defaultOpen align="start">
+				<DsPopover.Anchor ref={ref}>
+					<div data-testid="anchor" style={{ display: 'flex', gap: 40, marginInlineStart: 100 }}>
+						<span>Field</span>
+						<DsPopover.Trigger>
+							<button type="button">Open details</button>
+						</DsPopover.Trigger>
+					</div>
+				</DsPopover.Anchor>
+				<PanelBody />
+			</DsPopover.Root>,
+		);
+
+		const anchor = page.getByTestId('anchor');
+		expect(ref.current).toBe(anchor.element());
+
+		await expect
+			.poll(() => Math.round(getPanel().element().getBoundingClientRect().left))
+			.toBe(Math.round(anchor.element().getBoundingClientRect().left));
+	});
+});
+
+const CloseExample = ({
+	actions = <DsPopover.CloseTrigger />,
+	...props
+}: Pick<DsPopoverRootProps, 'open' | 'onOpenChange'> & { actions?: ReactNode }) => (
+	<DsPopover.Root {...props}>
+		<DsPopover.Trigger>
+			<button type="button">Open details</button>
+		</DsPopover.Trigger>
+		<DsPopover.Panel>
+			<DsPopover.Header actions={actions}>Device details</DsPopover.Header>
+			<DsPopover.Content>
+				<DsPopover.ContentItem>Edge router is online.</DsPopover.ContentItem>
+			</DsPopover.Content>
+		</DsPopover.Panel>
+	</DsPopover.Root>
+);
+
+describe('DsPopover.CloseTrigger', () => {
+	it('closes the panel and returns focus to the trigger', async () => {
+		await page.render(<CloseExample />);
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		await getPanel().getByRole('button', { name: 'Close' }).click();
+
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+		await expect.element(getTrigger()).toHaveFocus();
+	});
+
+	it('uses the locale for its accessible name and is not a toggle button', async () => {
+		await page.render(<CloseExample actions={<DsPopover.CloseTrigger locale={{ close: 'Dismiss' }} />} />);
+
+		await getTrigger().click();
+
+		const close = getPanel().getByRole('button', { name: 'Dismiss' });
+		await expect.element(close).toBeVisible();
+		await expect.element(close).not.toHaveAttribute('aria-pressed');
+	});
+
+	it('asks a controlled parent to close', async () => {
+		const onOpenChange = vi.fn();
+		await page.render(<CloseExample open onOpenChange={onOpenChange} />);
+
+		await getPanel().getByRole('button', { name: 'Close' }).click();
+
+		expect(onOpenChange).toHaveBeenCalledWith(false);
+	});
+
+	it('keeps header actions out of the panel accessible name', async () => {
+		await page.render(<CloseExample open />);
+
+		await expect.element(page.getByRole('dialog', { name: 'Device details', exact: true })).toBeVisible();
 	});
 });
