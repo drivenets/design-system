@@ -1,0 +1,22 @@
+@use '../../../../../styles/typography' as typography;
+
+.operators {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: var(--4xs) var(--sm);
+	margin: 0;
+
+	dd {
+		@include typography.body-sm-reg;
+		margin: 0;
+		color: var(--font-main);
+	}
+}
+
+.operator {
+	display: contents;
+}
+
+.example {
+	overflow-wrap: anywhere;
+}

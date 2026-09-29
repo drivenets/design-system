@@ -59,6 +59,10 @@ const DsPopoverRoot = ({
 		timer.current = setTimeout(action, delay);
 	};
 
+	const cancel = () => {
+		clearTimeout(timer.current);
+	};
+
 	const isHover = openOn === 'hover';
 
 	const consumeFocusRestore = () => {
@@ -86,7 +90,7 @@ const DsPopoverRoot = ({
 				registerAnchor,
 				registerContentId: setContentId,
 				hoverIntent: isHover
-					? { openDelay, closeDelay, schedule, setFocusInPanel, consumeFocusRestore }
+					? { openDelay, closeDelay, schedule, cancel, setFocusInPanel, consumeFocusRestore }
 					: null,
 			}}
 		>
@@ -121,6 +125,10 @@ const DsPopoverRoot = ({
 						: undefined
 				}
 				onOpenChange={(details) => {
+					// Pointer enter already scheduled an open. A click toggles immediately, and
+					// that timer must not undo it.
+					cancel();
+
 					if (!details.open && focusInPanel) {
 						restoringFocus.current = true;
 					}

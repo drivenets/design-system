@@ -115,19 +115,16 @@ describe('DsFiltersBar filter document', () => {
 });
 
 describe('DsFiltersBar query source', () => {
-	it('shows the formatted conditions while no query is edited', async () => {
-		await renderBar({
-			defaultConditions: [STATUS],
-			formatQuery: (conditions) => conditions.map((condition) => condition.id).join(' AND '),
-		});
+	it('shows the conditions in the query language while no query is set', async () => {
+		await renderBar({ defaultConditions: [STATUS, SEARCH] });
 
 		await expect.element(output('query')).toHaveTextContent('null');
-		await expect.element(output('query text')).toHaveTextContent('status-1');
+		await expect.element(output('query text')).toHaveTextContent('status = "active" AND "AAA"');
 		await expect.element(output('locked')).toHaveTextContent('');
 	});
 
-	it('makes an edited query the source and locks the filters and builder views', async () => {
-		await renderBar({ defaultConditions: [STATUS], formatQuery: () => 'generated' });
+	it('makes a set query the source and locks the filters and builder views', async () => {
+		await renderBar({ defaultConditions: [STATUS] });
 
 		await page.getByRole('button', { name: 'query', exact: true }).click();
 
