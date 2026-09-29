@@ -32,7 +32,7 @@ const textOf = (token: DsFilterQueryToken): RawQueryText => ({
 /**
  * Precedence: `AND` binds tighter than `OR`; parentheses group. Throws `QueryFailure`.
  */
-export const parse = (query: string, tokens: ReadonlyArray<DsFilterQueryToken>): RawQueryNode => {
+const parse = (query: string, tokens: ReadonlyArray<DsFilterQueryToken>): RawQueryNode => {
 	let index = 0;
 
 	const fail = (code: SyntaxErrorCode, at: { from: number; to: number }): never => {
