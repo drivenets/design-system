@@ -115,6 +115,24 @@ describe('DsModal', () => {
 		expect(onOpenChange).toHaveBeenCalledWith(false);
 	});
 
+	it('stays open on an outside click by default', async () => {
+		const onOpenChange = vi.fn();
+		await page.render(<ModalExample onOpenChange={onOpenChange} />);
+
+		await page.getByRole('button', { name: /open modal/i }).click();
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+
+		// The backdrop fills the viewport behind the dialog, so its corner is outside the dialog.
+		await page
+			.elementLocator(
+				document.querySelector<HTMLElement>('[data-scope="dialog"][data-part="backdrop"]') as HTMLElement,
+			)
+			.click({ position: { x: 1, y: 1 } });
+
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
+
 	it('should release body scroll-lock when unmounted while open', async () => {
 		await page.render(<UnmountWhileOpenModal />);
 
