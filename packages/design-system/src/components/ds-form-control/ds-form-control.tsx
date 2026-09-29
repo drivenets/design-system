@@ -53,8 +53,7 @@ const controlify = <TProps extends { id?: string }>(
 };
 
 /**
- * Like `controlify`, and also points the control's `aria-describedby` at the message, for
- * components that accept it.
+ * HOC, same as `controlify`. Also sets `aria-describedby` to the message, for inputs that accept that prop.
  */
 const controlifyDescribed = <TProps extends { id?: string; 'aria-describedby'?: string }>(
 	Component: ComponentType<TProps>,

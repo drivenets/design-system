@@ -81,7 +81,8 @@ describe('DsFormControl with TextInput', () => {
 
 		await expect.element(page.getByText('Unknown field')).toBeVisible();
 
-		// A live region only announces changes to itself, so it must have been there before the message
+		// The live region is mounted with the form, before any message. A region that
+		// appears together with the message is not announced by a screen reader.
 		const region = page.getByText('Unknown field').element().closest('[aria-live="polite"]');
 
 		expect(regionsBefore).toContain(region);
