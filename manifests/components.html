@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">597 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/597 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">598 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/598 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -4649,9 +4649,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsCodeInput</h2>
       <div class="badges">
-        <label for="c-15-components-codeinput-props" class="badge ok as-toggle">21 prop types</label>
+        <label for="c-15-components-codeinput-props" class="badge ok as-toggle">23 prop types</label>
         
-        <label for="c-15-components-codeinput-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-15-components-codeinput-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -4680,11 +4680,16 @@ There is one textarea: collapsed and expanded are two homes it moves between.</d
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">21 prop types</span>
+              <span class="badge ok">23 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-code-input/ds-code-input.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
-            <pre><code>className?: string
+            <pre><code>/**
+ * Id of an element that describes the value, such as an error message
+ */
+aria-describedby?: string
+
+className?: string
 
 /**
  * Initial overlay state when uncontrolled.
@@ -4714,6 +4719,12 @@ expanded?: boolean
  * textarea keeps that name instead of `locale.codeLabel`.
  */
 id?: string
+
+/**
+ * Shows the error border and sets `aria-invalid`. Point `aria-describedby` at the message.
+ * @default false
+ */
+invalid?: boolean = false
 
 /**
  * User-facing strings
@@ -4921,6 +4932,22 @@ needs to react to edits.</div>
 
     return &lt;DsCodeInput value={value} onValueChange={setValue} /&gt;;
 };</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Invalid</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">`invalid` shows the error border and sets `aria-invalid`. Render the message yourself and point
+`aria-describedby` at it.</div>
+              <pre><code>const Invalid = () =&gt; (
+    &lt;&gt;
+        &lt;DsCodeInput invalid defaultValue=&quot;Status = Active AND&quot; aria-describedby=&quot;code-input-error&quot; /&gt;
+        &lt;span id=&quot;code-input-error&quot;&gt;The query is incomplete&lt;/span&gt;
+    &lt;/&gt;
+);</code></pre>
               
             </div>
             <div class="note ok">

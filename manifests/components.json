@@ -2764,6 +2764,24 @@
               "computed": false
             }
           },
+          "invalid": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Shows the error border and sets `aria-invalid`. Point `aria-describedby` at the message.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "aria-describedby": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Id of an element that describes the value, such as an error message"
+          },
           "expanded": {
             "required": false,
             "tsType": {
@@ -3016,6 +3034,12 @@
           "name": "Controlled",
           "snippet": "const Controlled = function Render() {\n    const [value, setValue] = useState('Status = Active AND trigger = Scheduled');\n\n    return <DsCodeInput value={value} onValueChange={setValue} />;\n};",
           "description": "The parent owns the value via `value` and `onValueChange`. Use this when other UI\nneeds to react to edits."
+        },
+        {
+          "id": "components-codeinput--invalid",
+          "name": "Invalid",
+          "snippet": "const Invalid = () => (\n    <>\n        <DsCodeInput invalid defaultValue=\"Status = Active AND\" aria-describedby=\"code-input-error\" />\n        <span id=\"code-input-error\">The query is incomplete</span>\n    </>\n);",
+          "description": "`invalid` shows the error border and sets `aria-invalid`. Render the message yourself and point\n`aria-describedby` at it."
         },
         {
           "id": "components-codeinput--localized",
@@ -29389,6 +29413,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 3508
+    "durationMs": 5662
   }
 }
