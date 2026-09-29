@@ -579,4 +579,20 @@ describe('DsCodeInput', () => {
 		await expect.element(page.getByText('Ln 2/2')).toBeVisible();
 		await expect.element(page.getByRole('button', { name: 'Return to cursor' })).not.toBeInTheDocument();
 	});
+
+	it('marks the value invalid and keeps its own description alongside the given one', async () => {
+		await page.render(
+			<>
+				<DsCodeInput placeholder="Enter a query" defaultValue={multiline} invalid aria-describedby="error" />
+				<span id="error">Unknown field</span>
+			</>,
+		);
+
+		await expect.element(getField()).toHaveAttribute('aria-invalid', 'true');
+		await expect
+			.element(getField())
+			.toHaveAccessibleDescription(
+				'Multiline code, 2 lines. Only one line is visible. Expand to view the complete code. Unknown field',
+			);
+	});
 });

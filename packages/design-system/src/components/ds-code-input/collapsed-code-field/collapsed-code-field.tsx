@@ -9,6 +9,7 @@ export interface CollapsedCodeFieldProps {
 	size: CodeInputSize;
 	placeholder?: string;
 	disabled: boolean;
+	invalid: boolean;
 	showEcho: boolean;
 	echoText: string;
 	fadeStart: boolean;
@@ -29,6 +30,7 @@ const CollapsedCodeField = ({
 	size,
 	placeholder,
 	disabled,
+	invalid,
 	showEcho,
 	echoText,
 	fadeStart,
@@ -47,6 +49,7 @@ const CollapsedCodeField = ({
 	<div
 		className={classNames(styles.container, styles[size], className)}
 		data-disabled={disabled || undefined}
+		data-invalid={invalid || undefined}
 	>
 		<div className={styles.field}>
 			{/* While expanded, paint a fake line so the overlay can take the real
