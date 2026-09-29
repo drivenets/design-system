@@ -134,6 +134,19 @@ export const Controlled: Story = {
 };
 
 /**
+ * `invalid` shows the error border and sets `aria-invalid`. Render the message yourself and point
+ * `aria-describedby` at it.
+ */
+export const Invalid: Story = {
+	render: () => (
+		<>
+			<DsCodeInput invalid defaultValue="Status = Active AND" aria-describedby="code-input-error" />
+			<span id="code-input-error">The query is incomplete</span>
+		</>
+	),
+};
+
+/**
  * Override built-in strings with `locale`. Omitted keys keep their defaults.
  */
 export const Localized: Story = {

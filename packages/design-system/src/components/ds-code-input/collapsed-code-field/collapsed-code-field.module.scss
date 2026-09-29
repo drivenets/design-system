@@ -5,6 +5,10 @@
 	@include input.inputContainer;
 	gap: var(--xs);
 
+	&[data-invalid] {
+		--form-control-border-color: var(--background-error);
+	}
+
 	&.small {
 		height: input.$input-text-height-small;
 		padding-block: var(--none);
