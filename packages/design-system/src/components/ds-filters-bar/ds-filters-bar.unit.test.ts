@@ -1,15 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import type { DsFilterCondition, DsFilterField } from './ds-filters-bar.types';
+import type { DsFilterCondition, DsFilterField, DsFilterPin } from './ds-filters-bar.types';
 import {
 	appendCondition,
 	createConditionId,
 	createSearchCondition,
 	describeCondition,
+	filtersDialogFields,
+	fromFiltersDialogValue,
 	isFiltersBarView,
 	lockedViewsFor,
 	normalizeQuery,
 	removeConditionById,
 	replaceCondition,
+	toFiltersDialogValue,
 } from './ds-filters-bar.utils';
 
 const EQUALS = { value: '=', label: 'equals', symbol: '=' };
@@ -212,5 +215,299 @@ describe('describeCondition', () => {
 			operatorSymbol: '=',
 			value: 'x',
 		});
+	});
+});
+
+const DIALOG_FIELDS: DsFilterField[] = [
+	...FIELDS,
+	{
+		type: 'enum',
+		id: 'owner',
+		label: 'Owner',
+		operators: [NOT_EQUALS, EQUALS],
+		options: [
+			{ value: 'alice', label: 'Alice' },
+			{ value: 'bob', label: 'Bob' },
+		],
+	},
+	{
+		type: 'compound',
+		id: 'output',
+		label: 'Output',
+		subfields: [
+			{
+				type: 'enum',
+				id: 'vendor',
+				label: 'Vendor',
+				operators: [EQUALS],
+				options: [{ value: 'acme', label: 'Acme' }],
+			},
+		],
+	},
+];
+
+describe('filtersDialogFields', () => {
+	it('keeps top-level enum fields in order and skips compound subfields', () => {
+		expect(filtersDialogFields(DIALOG_FIELDS).map((field) => field.id)).toEqual(['status', 'owner']);
+	});
+
+	it('skips enum fields without options', () => {
+		const fields: DsFilterField[] = [
+			...DIALOG_FIELDS,
+			{ type: 'enum', id: 'empty', label: 'Empty', operators: [EQUALS], options: [] },
+		];
+
+		expect(filtersDialogFields(fields).map((field) => field.id)).toEqual(['status', 'owner']);
+	});
+});
+
+describe('toFiltersDialogValue', () => {
+	it('seeds an entry from the enum condition of a field', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated'] },
+		];
+
+		expect(toFiltersDialogValue(DIALOG_FIELDS, conditions, [])).toEqual([
+			{ field: 'status', operator: '!=', selected: ['deprecated'], pinned: [] },
+		]);
+	});
+
+	it('seeds a pinned field without a condition with its first operator and nothing checked', () => {
+		const pins: DsFilterPin[] = [
+			{ field: 'owner', value: 'bob' },
+			{ field: 'status', value: 'active' },
+			{ field: 'owner', value: 'alice' },
+		];
+
+		expect(toFiltersDialogValue(DIALOG_FIELDS, [], pins)).toEqual([
+			{ field: 'status', operator: '=', selected: [], pinned: ['active'] },
+			{ field: 'owner', operator: '!=', selected: [], pinned: ['bob', 'alice'] },
+		]);
+	});
+
+	it('seeds from the first of several enum conditions and ignores other condition shapes', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'search', id: 's1', text: 'status' },
+			{ kind: 'field', id: 'c0', field: 'status', operator: '=', value: 'active' },
+			{ kind: 'field', id: 'c1', field: 'output', subfield: 'vendor', operator: '=', value: ['acme'] },
+			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
+			{ kind: 'field', id: 'c3', field: 'status', operator: '=', value: ['active'] },
+		];
+
+		expect(toFiltersDialogValue(DIALOG_FIELDS, conditions, [])).toEqual([
+			{ field: 'status', operator: '!=', selected: ['deprecated'], pinned: [] },
+		]);
+	});
+
+	it('falls back to an empty operator for a field without operators', () => {
+		const fields: DsFilterField[] = [
+			{ type: 'enum', id: 'tag', label: 'Tag', operators: [], options: [{ value: 'x', label: 'X' }] },
+		];
+
+		expect(toFiltersDialogValue(fields, [], [{ field: 'tag', value: 'x' }])).toEqual([
+			{ field: 'tag', operator: '', selected: [], pinned: ['x'] },
+		]);
+	});
+});
+
+describe('fromFiltersDialogValue', () => {
+	const search: DsFilterCondition = { kind: 'search', id: 's1', text: 'WF456' };
+	const number: DsFilterCondition = { kind: 'field', id: 'n1', field: 'parents', operator: '>', value: 2 };
+	const subfield: DsFilterCondition = {
+		kind: 'field',
+		id: 'o1',
+		field: 'output',
+		subfield: 'vendor',
+		operator: '=',
+		value: ['acme'],
+	};
+	const unknown: DsFilterCondition = {
+		kind: 'field',
+		id: 'r1',
+		field: 'removed',
+		operator: '=',
+		value: ['x'],
+	};
+	const untouched = [search, number, subfield, unknown];
+
+	it('appends a new condition with a generated id and keeps the other conditions', () => {
+		const { conditions } = fromFiltersDialogValue(
+			DIALOG_FIELDS,
+			untouched,
+			[],
+			[{ field: 'owner', operator: '=', selected: ['alice'], pinned: [] }],
+		);
+
+		const added = conditions.at(-1);
+
+		expect(conditions.slice(0, -1)).toEqual(untouched);
+		expect(added).toMatchObject({ kind: 'field', field: 'owner', operator: '=', value: ['alice'] });
+		expect(added?.id).toMatch(/^condition-/);
+	});
+
+	it('replaces all enum conditions of a field with one condition at the first one’s id and position', () => {
+		const conditions: DsFilterCondition[] = [
+			search,
+			{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
+			number,
+			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
+			subfield,
+			unknown,
+		];
+
+		const result = fromFiltersDialogValue(
+			DIALOG_FIELDS,
+			conditions,
+			[],
+			[{ field: 'status', operator: '!=', selected: ['active', 'deprecated'], pinned: [] }],
+		);
+
+		expect(result.conditions).toEqual([
+			search,
+			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['active', 'deprecated'] },
+			number,
+			subfield,
+			unknown,
+		]);
+	});
+
+	it('removes the enum conditions of a field left unchecked or missing from the value', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
+			...untouched,
+			{ kind: 'field', id: 'c2', field: 'owner', operator: '=', value: ['bob'] },
+		];
+
+		const result = fromFiltersDialogValue(
+			DIALOG_FIELDS,
+			conditions,
+			[],
+			[{ field: 'status', operator: '=', selected: [], pinned: [] }],
+		);
+
+		expect(result.conditions).toEqual(untouched);
+	});
+
+	it('ignores entries for fields the dialog does not show', () => {
+		const result = fromFiltersDialogValue(
+			DIALOG_FIELDS,
+			untouched,
+			[],
+			[
+				{ field: 'parents', operator: '>', selected: ['3'], pinned: ['3'] },
+				{ field: 'unknown', operator: '=', selected: ['x'], pinned: ['x'] },
+			],
+		);
+
+		expect(result).toEqual({ conditions: untouched, pins: [] });
+	});
+
+	it('keeps pins in place, drops unpinned dialog pins and appends new ones in fields order', () => {
+		const pins: DsFilterPin[] = [
+			{ field: 'status', value: 'deprecated' },
+			{ field: 'lastRun', value: 'today' },
+			{ field: 'owner', value: 'bob' },
+			{ field: 'removed', value: 'x' },
+		];
+
+		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], pins, [
+			{ field: 'owner', operator: '=', selected: [], pinned: ['alice'] },
+			{ field: 'status', operator: '=', selected: [], pinned: ['active', 'deprecated'] },
+		]);
+
+		expect(result.pins).toEqual([
+			{ field: 'status', value: 'deprecated' },
+			{ field: 'lastRun', value: 'today' },
+			{ field: 'removed', value: 'x' },
+			{ field: 'status', value: 'active' },
+			{ field: 'owner', value: 'alice' },
+		]);
+	});
+
+	it('keeps the order of a dialog pin placed before a non-dialog pin on a no-op save', () => {
+		const pins: ReadonlyArray<DsFilterPin> = [
+			{ field: 'owner', value: 'bob' },
+			{ field: 'lastRun', value: 'today' },
+		];
+
+		const value = toFiltersDialogValue(DIALOG_FIELDS, [], pins);
+
+		expect(fromFiltersDialogValue(DIALOG_FIELDS, [], pins, value).pins).toEqual(pins);
+	});
+
+	it('keeps the order of mixed pins from two dialog fields on a no-op save', () => {
+		const pins: ReadonlyArray<DsFilterPin> = [
+			{ field: 'owner', value: 'bob' },
+			{ field: 'status', value: 'active' },
+			{ field: 'owner', value: 'alice' },
+			{ field: 'status', value: 'deprecated' },
+		];
+
+		const value = toFiltersDialogValue(DIALOG_FIELDS, [], pins);
+
+		expect(fromFiltersDialogValue(DIALOG_FIELDS, [], pins, value).pins).toEqual(pins);
+	});
+
+	it('removes an unpinned value in place', () => {
+		const pins: DsFilterPin[] = [
+			{ field: 'status', value: 'active' },
+			{ field: 'owner', value: 'bob' },
+			{ field: 'lastRun', value: 'today' },
+			{ field: 'owner', value: 'alice' },
+		];
+
+		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], pins, [
+			{ field: 'status', operator: '=', selected: [], pinned: ['active'] },
+			{ field: 'owner', operator: '!=', selected: [], pinned: ['alice'] },
+		]);
+
+		expect(result.pins).toEqual([
+			{ field: 'status', value: 'active' },
+			{ field: 'lastRun', value: 'today' },
+			{ field: 'owner', value: 'alice' },
+		]);
+	});
+
+	it('appends a newly pinned value at the end', () => {
+		const pins: DsFilterPin[] = [
+			{ field: 'owner', value: 'bob' },
+			{ field: 'lastRun', value: 'today' },
+		];
+
+		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], pins, [
+			{ field: 'owner', operator: '!=', selected: [], pinned: ['alice', 'bob'] },
+		]);
+
+		expect(result.pins).toEqual([
+			{ field: 'owner', value: 'bob' },
+			{ field: 'lastRun', value: 'today' },
+			{ field: 'owner', value: 'alice' },
+		]);
+	});
+
+	it('drops the pins of a dialog field missing from the value', () => {
+		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], [{ field: 'owner', value: 'bob' }], []);
+
+		expect(result.pins).toEqual([]);
+	});
+
+	it('leaves conditions and pins in canonical form unchanged after a round trip, without mutating them', () => {
+		const conditions: ReadonlyArray<DsFilterCondition> = Object.freeze([
+			search,
+			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated'] },
+			number,
+			subfield,
+			unknown,
+			{ kind: 'field', id: 'c2', field: 'owner', operator: '=', value: ['alice', 'bob'] },
+		]);
+		const pins: ReadonlyArray<DsFilterPin> = Object.freeze([
+			{ field: 'lastRun', value: 'today' },
+			{ field: 'status', value: 'active' },
+			{ field: 'owner', value: 'bob' },
+		]);
+
+		const value = toFiltersDialogValue(DIALOG_FIELDS, conditions, pins);
+
+		expect(fromFiltersDialogValue(DIALOG_FIELDS, conditions, pins, value)).toEqual({ conditions, pins });
 	});
 });

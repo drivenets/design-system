@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { useId } from 'react';
 import { useControlled } from '../../utils/use-controlled';
 import {
@@ -17,6 +18,7 @@ import {
 	ViewSwitch,
 } from './components';
 import { DsFiltersBarContext } from './ds-filters-bar.context';
+import styles from './ds-filters-bar.module.scss';
 import {
 	defaultDsFiltersBarLocale,
 	type DsFilterCondition,
@@ -37,7 +39,28 @@ const EMPTY_CONDITIONS: ReadonlyArray<DsFilterCondition> = Object.freeze([]);
 const EMPTY_PINS: ReadonlyArray<DsFilterPin> = Object.freeze([]);
 const formatNothing = () => '';
 
-// TODO: render. Root only provides the context and every part returns null.
+/**
+ * `useControlled` that also reports changes while uncontrolled, so `defaultX` pairs with `onXChange`
+ */
+const useReportedState = <T,>(
+	value: T | undefined,
+	onChange: ((value: T) => void) | undefined,
+	defaultValue: T,
+) => {
+	const [current, setCurrent] = useControlled(value, onChange, defaultValue);
+
+	const set = (next: T) => {
+		setCurrent(next);
+
+		// While controlled, `setCurrent` already is `onChange`.
+		if (value === undefined) {
+			onChange?.(next);
+		}
+	};
+
+	return [current, set] as const;
+};
+
 const Root = ({
 	fields = EMPTY_FIELDS,
 	conditions: conditionsProp,
@@ -51,7 +74,10 @@ const Root = ({
 	view: viewProp,
 	defaultView = 'filters',
 	formatQuery = formatNothing,
-	locale,
+	locale: localeProp,
+	ref,
+	className,
+	style,
 	children,
 	onConditionsChange,
 	onQueryChange,
@@ -59,12 +85,13 @@ const Root = ({
 	onExpandedChange,
 	onViewChange,
 }: DsFiltersBarRootProps) => {
-	const [conditions, setConditions] = useControlled(conditionsProp, onConditionsChange, defaultConditions);
-	const [query, setQuery] = useControlled<string | null>(queryProp, onQueryChange, defaultQuery);
-	const [pins, setPins] = useControlled(pinsProp, onPinsChange, defaultPins);
-	const [expanded, setExpanded] = useControlled(expandedProp, onExpandedChange, defaultExpanded);
-	const [view, setView] = useControlled<DsFiltersBarView>(viewProp, onViewChange, defaultView);
+	const [conditions, setConditions] = useReportedState(conditionsProp, onConditionsChange, defaultConditions);
+	const [query, setQuery] = useReportedState<string | null>(queryProp, onQueryChange, defaultQuery);
+	const [pins, setPins] = useReportedState(pinsProp, onPinsChange, defaultPins);
+	const [expanded, setExpanded] = useReportedState(expandedProp, onExpandedChange, defaultExpanded);
+	const [view, setView] = useReportedState<DsFiltersBarView>(viewProp, onViewChange, defaultView);
 	const toolbarId = useId();
+	const locale = { ...defaultDsFiltersBarLocale, ...localeProp };
 
 	return (
 		<DsFiltersBarContext.Provider
@@ -79,7 +106,7 @@ const Root = ({
 				expanded,
 				view,
 				toolbarId,
-				locale: { ...defaultDsFiltersBarLocale, ...locale },
+				locale,
 				setConditions,
 				addCondition: (condition) => setConditions(appendCondition(conditions, condition)),
 				updateCondition: (condition) => setConditions(replaceCondition(conditions, condition)),
@@ -94,7 +121,15 @@ const Root = ({
 				setView,
 			}}
 		>
-			{children}
+			<div
+				ref={ref}
+				role="region"
+				aria-label={locale.label}
+				className={classNames(styles.root, className)}
+				style={style}
+			>
+				{children}
+			</div>
 		</DsFiltersBarContext.Provider>
 	);
 };
