@@ -5,8 +5,10 @@ import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { DsTableEditableCell } from '../edit/ds-table-editable-cell';
 import { DsTableEditingCell } from '../edit/ds-table-editing-cell';
+import { SecondaryRowActionItems } from './components/secondary-row-action-items';
 import styles from './ds-table-cell.module.scss';
 import type { DsTableCellProps } from './ds-table-cell.types';
+import { filterVisibleActions, resolveLabel, resolveTooltip } from './ds-table-cell.utils';
 
 export const DsTableCell = <TData, TValue>({
 	row,
@@ -19,7 +21,7 @@ export const DsTableCell = <TData, TValue>({
 		editing !== null && editing.cell.row.id === row.id && editing.cell.column.id === cell.column.id;
 
 	const visiblePrimary = primaryRowActions.filter((action) => !action.hidden?.(row.original));
-	const visibleSecondary = secondaryRowActions.filter((action) => !action.hidden?.(row.original));
+	const visibleSecondary = filterVisibleActions(secondaryRowActions, row.original);
 
 	if (!isCellBeingEdited && (visiblePrimary.length || visibleSecondary.length)) {
 		const hasSecondaryRowActions = visibleSecondary.length > 0;
@@ -30,13 +32,13 @@ export const DsTableCell = <TData, TValue>({
 				<div className={styles.cellActions}>
 					{visiblePrimary.map((action, i) => {
 						const isDisabled = action.disabled?.(row.original);
-						const label = typeof action.label === 'function' ? action.label(row.original) : action.label;
+						const label = resolveLabel(action, row.original);
 						return (
 							<button
 								key={i}
 								type="button"
 								className={classnames(styles.rowActionIcon, { [styles.disabled]: isDisabled })}
-								title={action.tooltip || label}
+								title={resolveTooltip(action, row.original) || label}
 								onClick={(e) => {
 									e.stopPropagation();
 
@@ -70,24 +72,7 @@ export const DsTableCell = <TData, TValue>({
 								</button>
 							</DsDropdownMenu.Trigger>
 							<DsDropdownMenu.Content>
-								{visibleSecondary.map((action, i) => {
-									const label =
-										typeof action.label === 'function' ? action.label(row.original) : action.label;
-									const isDisabled = action.disabled?.(row.original);
-									return (
-										<DsDropdownMenu.Item
-											key={i}
-											value={label}
-											disabled={isDisabled}
-											className={action.className}
-											onClick={(e) => e.stopPropagation()}
-											onSelect={() => action.onClick(row.original)}
-										>
-											{action.icon && <DsIcon icon={action.icon} />}
-											<span>{label}</span>
-										</DsDropdownMenu.Item>
-									);
-								})}
+								<SecondaryRowActionItems actions={visibleSecondary} row={row.original} />
 							</DsDropdownMenu.Content>
 						</DsDropdownMenu.Root>
 					)}
