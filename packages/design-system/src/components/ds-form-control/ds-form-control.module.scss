@@ -125,6 +125,24 @@ $form-control-description-max-height: calc(
 	}
 }
 
+// Stays in the tree while empty, so a message that appears later is announced. Out of the flex
+// flow while empty, so it adds no gap.
+.messageRegion:empty {
+	position: absolute;
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}
+
 .message {
 	@include typography.body-xs-reg;
 	color: var(--font-secondary);

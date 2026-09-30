@@ -1,5 +1,6 @@
 affordances
 affordances
+ANTLR
 aroba
 artipacked
 autoboot
@@ -11,6 +12,7 @@ clickability
 controlify
 cooldown
 cursoragents
+describedby
 deslop
 domcontentloaded
 drivenets
@@ -25,6 +27,7 @@ gnmi
 greyscale
 haspopup
 labelledby
+Lezer
 loadingdone
 matchall
 mgmt

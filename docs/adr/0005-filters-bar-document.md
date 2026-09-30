@@ -1,3 +1,7 @@
+---
+status: superseded in part by ADR-0006 (query parsing and serialization)
+---
+
 # Filters bar owns the filter document, not the query language
 
 `DsFiltersBar.Root` owns one **Filter document** and receives the **Field schema** through `fields`. The document has exactly one active source: the **Filter conditions**, or an edited **Advanced query** (`query: string | null`, where `null` means the conditions are the source). While a query is set, it alone filters, the conditions are ignored, and the bar locks the filters and builder views itself; clearing hands control back to the conditions. Every component that adds filters either writes ordinary **Filter conditions** (the query builder does) or is an exclusive source like the **Advanced query** — there is no third kind. The bar never parses the query and only renders conditions as query text through the consumer's `formatQuery`. **Pins** sit outside the document as a user preference.

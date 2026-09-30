@@ -5,6 +5,11 @@
 
 .panel {
 	overflow: hidden;
+
+	&.invalid {
+		outline: 1px solid var(--background-error);
+		outline-offset: -1px;
+	}
 }
 
 .visuallyHidden {

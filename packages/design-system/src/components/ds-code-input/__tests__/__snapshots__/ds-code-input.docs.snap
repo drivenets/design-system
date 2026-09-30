@@ -137,6 +137,28 @@ const Controlled = function Render() {
     return <DsCodeInput value={value} onValueChange={setValue} />;
 };
 
+## Invalid
+
+### Show code
+<>
+  <DsCodeInput
+    aria-describedby="code-input-error"
+    defaultValue="Status = Active AND"
+    invalid
+  />
+  <span id="code-input-error">
+    The query is incomplete
+  </span>
+</>
+
+### MCP manifest
+const Invalid = () => (
+    <>
+        <DsCodeInput invalid defaultValue="Status = Active AND" aria-describedby="code-input-error" />
+        <span id="code-input-error">The query is incomplete</span>
+    </>
+);
+
 ## Localized
 
 ### Show code

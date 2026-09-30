@@ -13,7 +13,8 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 		docs: {
 			description: {
 				component: `
-**Work in progress — the API is wired, the parts render nothing yet.**
+**Work in progress — the API is wired; the advanced query view renders, the other parts render
+nothing yet.** Until \`Toolbar\` renders, the stories place the advanced view directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
 
@@ -25,13 +26,11 @@ and describes what can be filtered through \`fields\`. Every view reads and writ
 document, so a condition built in the query builder shows as a chip in the filters view and in the
 collapsed summary.
 
-**One source at a time.** While \`query\` is \`null\` the conditions filter the data and the
-advanced view shows them through \`formatQuery\`. Once the user edits the query it becomes the only
-source, the conditions are ignored, and the filters and builder views lock. Clearing hands control
-back to the conditions.
-
-**The bar does not own the query language.** It never parses \`query\`; \`formatQuery\` renders
-conditions in the consumer's syntax.
+**One query language.** The advanced view writes the conditions as query text and checks what the
+user types against \`fields\`: \`status IN ("active", "pending") AND input.vendor ~ "cisco"\`.
+Only a valid query reaches the document. One made of clauses joined by \`AND\` becomes conditions;
+one with \`OR\` or parentheses becomes \`query\`, the only source, and the filters and builder
+views lock until it is cleared. Evaluate such a query with \`parseFilterQuery(query, fields)\`.
 
 **Pins are a user preference,** not part of the document: loading a saved filter or clearing leaves
 them alone.
@@ -51,6 +50,11 @@ them alone.
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
 		ref: { table: { disable: true } },
+		onConditionsChange: { table: { disable: true } },
+		onQueryChange: { table: { disable: true } },
+		onPinsChange: { table: { disable: true } },
+		onExpandedChange: { table: { disable: true } },
+		onViewChange: { table: { disable: true } },
 	},
 	args: {
 		onConditionsChange: fn(),
@@ -67,10 +71,12 @@ type Story = StoryObj<typeof DsFiltersBar.Root>;
 /**
  * The canonical layout. `fields` describes what can be filtered; `defaultConditions` seeds the
  * document with a search, an enum, a compound-field and a date-preset condition — one of each shape.
+ * Only the advanced query renders for now; the other parts are in progress.
  */
 export const Default: Story = {
 	args: {
 		defaultExpanded: true,
+		defaultView: 'advanced',
 		fields: [
 			{
 				type: 'enum',
@@ -101,7 +107,8 @@ export const Default: Story = {
 				label: 'Last run',
 				operators: [
 					{ value: '=', label: 'is', symbol: '=' },
-					{ value: 'between', label: 'between' },
+					{ value: '>', label: 'after', symbol: '>' },
+					{ value: '<', label: 'before', symbol: '<' },
 				],
 				presets: [
 					{ value: 'today', label: 'Today' },
@@ -119,7 +126,7 @@ export const Default: Story = {
 						label: 'Name',
 						operators: [
 							{ value: '~', label: 'contains' },
-							{ value: '^', label: 'starts with' },
+							{ value: '!~', label: 'does not contain' },
 						],
 					},
 					{ type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'equals' }] },
@@ -161,9 +168,6 @@ export const Default: Story = {
 				<DsFiltersBar.View value="builder">
 					<DsFiltersBar.Builder suggestedFields={['input', 'status']} />
 				</DsFiltersBar.View>
-				<DsFiltersBar.View value="advanced">
-					<DsFiltersBar.Query />
-				</DsFiltersBar.View>
 				<DsFiltersBar.SaveFilter
 					items={[
 						{ id: '1', name: 'MyFilter_1', count: 2 },
@@ -176,6 +180,11 @@ export const Default: Story = {
 				<DsFiltersBar.ClearAll />
 			</DsFiltersBar.Toolbar>
 
+			{/* Moves back into Toolbar once Toolbar renders */}
+			<DsFiltersBar.View value="advanced">
+				<DsFiltersBar.Query />
+			</DsFiltersBar.View>
+
 			<DsFiltersBar.Pinned>
 				<DsFiltersBar.PinnedGroup label="Status">
 					<DsFiltersBar.PinnedToggle label="Active" count={10} active />
@@ -187,23 +196,100 @@ export const Default: Story = {
 };
 
 /**
- * An edited advanced query is the only source: the conditions are ignored and the filters and
- * builder views lock until the query is cleared.
+ * The advanced view shows the conditions as query text. Edit it: a query joined by `AND` goes back
+ * to the conditions, and one that breaks the rules shows why under the field.
  */
-export const LockedViews: Story = {
+export const AdvancedQuery: Story = {
 	args: {
-		defaultExpanded: true,
 		defaultView: 'advanced',
-		defaultQuery: 'status = "Active" OR trigger = "Scheduled"',
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [
+					{ value: '=', label: 'equals' },
+					{ value: '!=', label: 'not equals' },
+					{ value: 'IN', label: 'is one of' },
+					{ value: 'NOT IN', label: 'is none of' },
+				],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'deprecated', label: 'Deprecated' },
+					{ value: 'pending', label: 'Pending' },
+				],
+			},
+			{
+				type: 'number',
+				id: 'parents',
+				label: 'Parents',
+				operators: [
+					{ value: '>', label: 'greater than' },
+					{ value: '<', label: 'less than' },
+				],
+			},
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [
+					{
+						type: 'text',
+						id: 'vendor',
+						label: 'Vendor',
+						operators: [
+							{ value: '=', label: 'equals' },
+							{ value: '~', label: 'contains' },
+						],
+					},
+				],
+			},
+		],
+		defaultConditions: [
+			{ kind: 'field', id: 'c1', field: 'status', operator: 'IN', value: ['active', 'pending'] },
+			{ kind: 'field', id: 'c2', field: 'input', subfield: 'vendor', operator: '~', value: 'cisco' },
+			{ kind: 'search', id: 'c3', text: 'timeout' },
+		],
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.ViewSwitch />
-				<DsFiltersBar.View value="advanced">
-					<DsFiltersBar.Query />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
+			<DsFiltersBar.View value="advanced">
+				<DsFiltersBar.Query />
+			</DsFiltersBar.View>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * A query with `OR` or parentheses cannot be shown as conditions, so it becomes the only source:
+ * the conditions are ignored and the filters and builder views lock until the query is cleared.
+ */
+export const LockedViews: Story = {
+	args: {
+		defaultView: 'advanced',
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [{ value: 'active', label: 'Active' }],
+			},
+			{
+				type: 'enum',
+				id: 'trigger',
+				label: 'Trigger',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [{ value: 'scheduled', label: 'Scheduled' }],
+			},
+		],
+		defaultQuery: 'status = "active" OR trigger = "scheduled"',
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.View value="advanced">
+				<DsFiltersBar.Query />
+			</DsFiltersBar.View>
 		</DsFiltersBar.Root>
 	),
 };
@@ -214,6 +300,16 @@ export const LockedViews: Story = {
 export const Localized: Story = {
 	args: {
 		defaultExpanded: true,
+		defaultView: 'advanced',
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [{ value: 'active', label: 'Active' }],
+			},
+		],
 		locale: { label: 'Refine results', expand: 'Show refinements', collapse: 'Hide refinements' },
 	},
 	render: (args) => (
@@ -225,6 +321,13 @@ export const Localized: Story = {
 				/>
 				<DsFiltersBar.ClearAll locale={{ label: 'Reset' }} />
 			</DsFiltersBar.Toolbar>
+
+			{/* Moves back into Toolbar once Toolbar renders */}
+			<DsFiltersBar.View value="advanced">
+				<DsFiltersBar.Query
+					locale={{ label: 'Query editor', placeholder: 'status = "Active"', help: 'Syntax' }}
+				/>
+			</DsFiltersBar.View>
 		</DsFiltersBar.Root>
 	),
 };
