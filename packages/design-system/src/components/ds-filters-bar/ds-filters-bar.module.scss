@@ -1,0 +1,23 @@
+.root {
+	display: flex;
+	flex-direction: column;
+	gap: var(--standard);
+	width: 100%;
+	min-width: 0;
+}
+
+.toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--xs);
+	min-width: 0;
+}
+
+.conditions {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--xs);
+	min-width: 0;
+}
