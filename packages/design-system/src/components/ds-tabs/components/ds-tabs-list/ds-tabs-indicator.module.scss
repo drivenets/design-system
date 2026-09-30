@@ -23,9 +23,6 @@ $transition-duration: 0.2s;
 	}
 
 	[data-orientation='vertical'] & {
-		left: 0;
-		width: $indicator-thickness;
-		top: var(--top);
-		height: var(--height);
+		display: none;
 	}
 }
