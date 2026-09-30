@@ -1,4 +1,4 @@
-import { createRef, useRef, type ReactNode } from 'react';
+import { createRef, useRef, useState, type ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsTooltip } from '../../ds-tooltip';
@@ -856,6 +856,44 @@ const expectPanelBelowTrigger = () =>
 			return Math.round(panel.top - trigger.bottom);
 		})
 		.toBe(8);
+
+// The WithTooltip story recipe: the tooltip is disabled while the panel is open.
+const TooltipDisabledWhileOpen = () => {
+	const [open, setOpen] = useState(false);
+
+	return (
+		<div>
+			<button type="button">Outside</button>
+			<DsPopover.Root onOpenChange={setOpen}>
+				<DsPopover.Trigger>
+					<DsTooltip content="Preview" disabled={open}>
+						<button type="button">Open details</button>
+					</DsTooltip>
+				</DsPopover.Trigger>
+				<PanelBody />
+			</DsPopover.Root>
+		</div>
+	);
+};
+
+describe('DsPopover with a tooltip disabled while open', () => {
+	it('shows the tooltip on the first hover after the panel closes', async () => {
+		await page.render(<TooltipDisabledWhileOpen />);
+
+		await getTrigger().hover();
+		await expect.element(page.getByRole('tooltip', { name: 'Preview' })).toBeVisible();
+
+		await getTrigger().click();
+		await expect.element(getPanel()).toBeVisible();
+
+		// The pointer leaves the trigger while the tooltip is disabled.
+		await page.getByRole('button', { name: 'Outside' }).click();
+		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
+
+		await getTrigger().hover();
+		await expect.element(page.getByRole('tooltip', { name: 'Preview' })).toBeVisible();
+	});
+});
 
 describe.each([
 	['DsTooltip > DsPopover.Trigger', TooltipAroundTrigger],

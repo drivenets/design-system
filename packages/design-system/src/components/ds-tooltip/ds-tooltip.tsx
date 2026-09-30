@@ -53,22 +53,30 @@ const DsTooltip = ({
 
 	const triggerId = getTriggerId(children, triggerProps.id);
 
+	// Zag's own `disabled` also ignores pointer leave, so a tooltip disabled under the pointer
+	// keeps its "opened by this pointer" flag and skips the next hover. Treat `disabled` as a
+	// controlled close instead, so the machine keeps tracking the pointer.
+	const resolvedOpen = disabled ? false : open;
+
 	return (
 		<Tooltip.Root
 			ids={triggerId ? { trigger: triggerId } : undefined}
-			open={open}
+			open={resolvedOpen}
 			// Zag skips its controlled guard when another tooltip is already visible
 			// (instant open), so let a controlled `open` decide what renders.
-			present={open}
+			present={resolvedOpen}
 			defaultOpen={defaultOpen}
 			interactive={interactive}
 			openDelay={openDelay}
 			closeDelay={closeDelay}
-			disabled={disabled}
 			positioning={{ placement, gutter: TOOLTIP_GUTTER_PX, getAnchorRect: getAnchorRect ?? undefined }}
 			lazyMount
 			unmountOnExit
-			onOpenChange={(details) => onOpenChange?.(details.open)}
+			onOpenChange={(details) => {
+				if (!disabled) {
+					onOpenChange?.(details.open);
+				}
+			}}
 		>
 			<Tooltip.Trigger asChild ref={ref as TriggerRef} {...triggerProps}>
 				{children}
