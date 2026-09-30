@@ -13,9 +13,9 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 		docs: {
 			description: {
 				component: `
-**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`, the
-add-filter button with its filters dialog in \`Conditions\`, and the advanced query view render; the
-other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
+\`Search\`, the add-filter button with its filters dialog and the search chips in \`Conditions\`,
+and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
 directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
@@ -266,6 +266,41 @@ export const FiltersDialog: Story = {
 		<DsFiltersBar.Root {...args}>
 			<DsFiltersBar.Toolbar>
 				<DsFiltersBar.Conditions />
+			</DsFiltersBar.Toolbar>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * Enter adds the typed text as a search condition, shown as a chip after the "+" button, and clears
+ * the input; the same search is not added twice. \`/\` focuses the input from anywhere outside a text
+ * field or dialog. Clicking a chip moves its text back into the input for editing; its × removes it.
+ * Search is disabled while an Advanced query is the source.
+ */
+export const Search: Story = {
+	args: {
+		defaultExpanded: true,
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'pending', label: 'Pending' },
+				],
+			},
+		],
+		defaultConditions: [{ kind: 'search', id: 'c1', text: 'AAA' }],
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.Search />
+				<DsFiltersBar.View value="filters">
+					<DsFiltersBar.Conditions />
+				</DsFiltersBar.View>
 			</DsFiltersBar.Toolbar>
 		</DsFiltersBar.Root>
 	),
