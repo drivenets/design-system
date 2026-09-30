@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t}from"./ds-chip-DlQe1BfJ.js";function n(){return(n=e((()=>{t()})))()}export{n as t};
