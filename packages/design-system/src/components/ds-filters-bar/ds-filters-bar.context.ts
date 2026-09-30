@@ -15,13 +15,17 @@ export interface DsFiltersBarContextValue {
 	fields: ReadonlyArray<DsFilterField>;
 	conditions: ReadonlyArray<DsFilterCondition>;
 	/**
-	 * Edited advanced query, or `null` while the conditions are the source
+	 * Advanced query, or `null` while the conditions are the source
 	 */
 	query: string | null;
 	/**
-	 * What the advanced view shows: the edited query, or the consumer's rendering of the conditions
+	 * What the advanced view shows: the query, or the conditions written in the query language
 	 */
 	queryText: string;
+	/**
+	 * Changes on every explicit clear, even when the document is already empty
+	 */
+	resetRevision: number;
 	pins: ReadonlyArray<DsFilterPin>;
 	/**
 	 * No conditions and no edited query

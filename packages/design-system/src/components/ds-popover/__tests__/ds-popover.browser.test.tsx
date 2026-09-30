@@ -375,10 +375,10 @@ describe('DsPopover openOn="hover"', () => {
 	});
 });
 
-const FocusExample = () => (
+const FocusExample = ({ openDelay = 100 }: { openDelay?: number }) => (
 	<div>
 		<input aria-label="Elsewhere" />
-		<DsPopover.Root openOn="hover" openDelay={100} closeDelay={200} side="right">
+		<DsPopover.Root openOn="hover" openDelay={openDelay} closeDelay={200} side="right">
 			<DsPopover.Trigger>
 				<button type="button">Open details</button>
 			</DsPopover.Trigger>
@@ -441,13 +441,22 @@ describe('DsPopover openOn="hover" focus behavior', () => {
 	});
 
 	it('does not open from the focus a mouse click puts on the trigger', async () => {
-		await page.render(<FocusExample />);
+		const openDelay = 200;
+
+		await page.render(<FocusExample openDelay={openDelay} />);
 		await getTrigger().unhover();
 
-		// Click opens, second click closes — focus-opening must not re-open it.
-		await getTrigger().click();
+		const trigger = getTrigger().element() as HTMLElement;
+
+		// locator.click() waits longer than openDelay, so the hover timer fires while the
+		// panel is still open and the race disappears. These are the same events, back to back.
+		trigger.dispatchEvent(new PointerEvent('pointerover', { bubbles: true, pointerType: 'mouse' }));
+		trigger.click();
 		await expect.element(panelText()).toBeVisible();
-		await getTrigger().click();
+		trigger.click();
+		await expect.element(panelText()).not.toBeVisible();
+
+		await wait(openDelay + 100);
 		await expect.element(panelText()).not.toBeVisible();
 	});
 
