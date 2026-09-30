@@ -263,3 +263,39 @@ describe('DsTooltip forwarding', () => {
 		await expect.element(page.getByRole('dialog', { name: 'Details' })).toBeVisible();
 	});
 });
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+describe('DsTooltip disabled', () => {
+	it('does not hold the shared visible-tooltip slot after the pointer passes over it', async () => {
+		const OPEN_DELAY = 600;
+
+		await page.render(
+			<div style={{ display: 'flex', gap: 80, padding: 40 }}>
+				<DsTooltip content="First" openDelay={OPEN_DELAY}>
+					<button type="button">First</button>
+				</DsTooltip>
+				<DsTooltip content="Second" disabled>
+					<button type="button">Second</button>
+				</DsTooltip>
+			</div>,
+		);
+
+		const first = page.getByRole('button', { name: 'First' });
+		await first.hover();
+		await expect.element(page.getByRole('tooltip', { name: 'First' })).toBeVisible();
+
+		// Another tooltip is visible, so zag takes its instant-open path for the disabled one.
+		await page.getByRole('button', { name: 'Second' }).hover();
+		await page.getByRole('button', { name: 'Second' }).unhover();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+
+		// With the slot free, the next hover waits for the open delay again.
+		await first.hover();
+		await wait(OPEN_DELAY / 3);
+		await expect
+			.element(page.getByRole('tooltip', { name: 'First' }), { timeout: 0 })
+			.not.toBeInTheDocument();
+		await expect.element(page.getByRole('tooltip', { name: 'First' })).toBeVisible();
+	});
+});
