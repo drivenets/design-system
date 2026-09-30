@@ -1,5 +1,17 @@
 # @drivenets/design-system
 
+## 0.21.0
+
+### Minor Changes
+
+- da76266: Add query parsing, validation, and syntax help to "DsFiltersBar.Query"
+
+### Patch Changes
+
+- 9c4c26e: Fix `DsCheckbox` size to match Figma
+- f386344: Fix `DsDrawer` flashing its close animation on mount.
+- da76266: Fix a second click reopening "DsPopover" when it opens on hover
+
 ## 0.20.0
 
 ### Minor Changes
