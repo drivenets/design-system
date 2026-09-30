@@ -21,7 +21,8 @@ const meta: Meta<typeof DsCheckbox> = {
 		size: {
 			control: 'select',
 			options: checkboxSizes,
-			description: 'Row padding only — typography and control size are identical across sizes',
+			description:
+				'Row padding for labelled checkboxes only — typography and control size are identical across sizes; an unlabelled checkbox is the bare 20px control',
 		},
 		checked: {
 			control: 'radio',

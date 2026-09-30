@@ -26,7 +26,7 @@ export interface DsModalProps extends Pick<
 	closeOnEscape?: DialogProps['closeOnEscape'];
 	/**
 	 * Whether clicking or focusing outside the modal closes it.
-	 * @default true
+	 * @default false
 	 */
 	closeOnInteractOutside?: DialogProps['closeOnInteractOutside'];
 	/**
