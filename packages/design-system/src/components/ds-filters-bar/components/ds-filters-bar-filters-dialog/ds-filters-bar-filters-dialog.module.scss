@@ -1,0 +1,150 @@
+@use '../../../../styles/typography';
+
+$dialog-width: 560px;
+$dialog-max-width: 90vw;
+$content-height: 472px;
+$content-max-height: 70vh;
+$tab-list-width: 200px;
+$tab-height: var(--2xl);
+$tab-indicator-width: var(--4xs);
+$counter-dot-size: var(--2xs);
+$transition-duration: 0.2s;
+
+// A fixed width instead of DsModal's viewport-relative `columns`. Doubled to match `.modal.cols-N`,
+// which it then beats by loading after DsModal's styles.
+.dialog.dialog {
+	inline-size: min(#{$dialog-width}, #{$dialog-max-width});
+}
+
+.dialog {
+	.header,
+	.footer {
+		padding: var(--sm) var(--lg);
+	}
+
+	.body {
+		display: flex;
+		// DsModal's `flex: 1` would size the body to its content and ignore `block-size`.
+		flex: none;
+		block-size: min(#{$content-height}, #{$content-max-height});
+		padding: 0;
+	}
+}
+
+.tabs {
+	display: flex;
+	flex: 1;
+	min-width: 0;
+}
+
+.tabs .tabList {
+	flex: 0 0 $tab-list-width;
+	width: $tab-list-width;
+	gap: var(--3xs);
+	padding-block: var(--3xs);
+	background: var(--background-secondary);
+}
+
+.tabs .tab {
+	gap: var(--3xs);
+	height: $tab-height;
+	min-height: $tab-height;
+	padding: 0 var(--xs) 0 var(--standard);
+	border-bottom: none;
+	border-right: $tab-indicator-width solid transparent;
+	color: var(--font-main);
+
+	&[aria-selected='true'] {
+		background: var(--background-active-status);
+		border-right-color: var(--border-action-primary);
+	}
+}
+
+// Outranks DsVerticalTabs' hover rule, which would otherwise repaint the selected tab.
+.tabs .tabList .tab[aria-selected='true']:hover:not([data-disabled]) {
+	background: var(--background-active-status);
+}
+
+.tabLabel {
+	@include typography.ellipsis;
+	flex: 1;
+	min-width: 0;
+}
+
+.counter {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	gap: var(--3xs);
+	color: var(--font-main);
+}
+
+.counterDot {
+	width: $counter-dot-size;
+	height: $counter-dot-size;
+	border-radius: 50%;
+	background: var(--background-primary);
+}
+
+.tabPin {
+	display: inline-flex;
+	flex-shrink: 0;
+	color: var(--icon-main);
+}
+
+.panel {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.panelHeader {
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	gap: var(--sm);
+	padding: var(--standard);
+	border-bottom: 1px solid var(--border);
+}
+
+.control {
+	width: 100%;
+}
+
+.options {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--xs);
+	min-height: 0;
+	padding: var(--standard);
+	overflow-y: auto;
+}
+
+.option {
+	width: 100%;
+}
+
+.optionPin {
+	transition:
+		color $transition-duration ease-in-out,
+		opacity $transition-duration ease-in-out;
+}
+
+// Unpinned pins stay in the tab order, so keyboard focus reveals them via `:focus-within`.
+.option:not(:hover, :focus-within) .optionPin[aria-pressed='false'] {
+	opacity: 0;
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}

@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import type { DsFiltersBarFiltersDialogLocale } from '../ds-filters-bar-filters-dialog';
 
 export interface DsFiltersBarConditionsLocale {
 	/**
@@ -11,6 +12,11 @@ export interface DsFiltersBarConditionsLocale {
 	removeCondition?: (label: string) => string;
 	filtersDialogTitle?: string;
 	saveFilters?: string;
+	/**
+	 * The filters dialog's other strings. Its title and save button come from `filtersDialogTitle`
+	 * and `saveFilters`.
+	 */
+	filtersDialog?: Omit<DsFiltersBarFiltersDialogLocale, 'title' | 'save'>;
 }
 
 export const defaultDsFiltersBarConditionsLocale: Required<DsFiltersBarConditionsLocale> = Object.freeze({
@@ -18,6 +24,7 @@ export const defaultDsFiltersBarConditionsLocale: Required<DsFiltersBarCondition
 	removeCondition: (label: string) => `Remove filter: ${label}`,
 	filtersDialogTitle: 'Filters',
 	saveFilters: 'Save filters',
+	filtersDialog: Object.freeze({}),
 });
 
 /**
