@@ -15,8 +15,8 @@ import {
 	toFiltersDialogValue,
 } from './ds-filters-bar.utils';
 
-const EQUALS = { value: '=', label: 'equals', symbol: '=' };
-const NOT_EQUALS = { value: '!=', label: 'not equals', symbol: '≠' };
+const EQUALS = { value: '=', label: 'equals', symbol: '=' } as const;
+const NOT_EQUALS = { value: '!=', label: 'not equals', symbol: '≠' } as const;
 
 const FIELDS: DsFilterField[] = [
 	{
@@ -176,7 +176,7 @@ describe('describeCondition', () => {
 			kind: 'field',
 			id: '1',
 			field: 'parents',
-			operator: '>',
+			operator: '=',
 			value: { from: 2, to: 5 },
 		};
 
@@ -299,13 +299,13 @@ describe('toFiltersDialogValue', () => {
 		]);
 	});
 
-	it('falls back to an empty operator for a field without operators', () => {
+	it('falls back to equals for a field without operators', () => {
 		const fields: DsFilterField[] = [
 			{ type: 'enum', id: 'tag', label: 'Tag', operators: [], options: [{ value: 'x', label: 'X' }] },
 		];
 
 		expect(toFiltersDialogValue(fields, [], [{ field: 'tag', value: 'x' }])).toEqual([
-			{ field: 'tag', operator: '', selected: [], pinned: ['x'] },
+			{ field: 'tag', operator: '=', selected: [], pinned: ['x'] },
 		]);
 	});
 });
@@ -394,7 +394,7 @@ describe('fromFiltersDialogValue', () => {
 			untouched,
 			[],
 			[
-				{ field: 'parents', operator: '>', selected: ['3'], pinned: ['3'] },
+				{ field: 'parents', operator: '=', selected: ['3'], pinned: ['3'] },
 				{ field: 'unknown', operator: '=', selected: ['x'], pinned: ['x'] },
 			],
 		);

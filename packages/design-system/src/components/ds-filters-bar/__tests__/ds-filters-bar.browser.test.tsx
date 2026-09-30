@@ -7,6 +7,7 @@ import type {
 	DsFilterCondition,
 	DsFilterField,
 	DsFilterFieldCondition,
+	DsFilterOperatorValue,
 	DsFilterPin,
 	DsFiltersBarRootProps,
 } from '../ds-filters-bar.types';
@@ -145,19 +146,16 @@ describe('DsFiltersBar filter document', () => {
 });
 
 describe('DsFiltersBar query source', () => {
-	it('shows the formatted conditions while no query is edited', async () => {
-		await renderBar({
-			defaultConditions: [STATUS],
-			formatQuery: (conditions) => conditions.map((condition) => condition.id).join(' AND '),
-		});
+	it('shows the conditions in the query language while no query is set', async () => {
+		await renderBar({ defaultConditions: [STATUS, SEARCH] });
 
 		await expect.element(output('query')).toHaveTextContent('null');
-		await expect.element(output('query text')).toHaveTextContent('status-1');
+		await expect.element(output('query text')).toHaveTextContent('status = "active" AND "AAA"');
 		await expect.element(output('locked')).toHaveTextContent('');
 	});
 
-	it('makes an edited query the source and locks the filters and builder views', async () => {
-		await renderBar({ defaultConditions: [STATUS], formatQuery: () => 'generated' });
+	it('makes a set query the source and locks the filters and builder views', async () => {
+		await renderBar({ defaultConditions: [STATUS] });
 
 		await page.getByRole('button', { name: 'query', exact: true }).click();
 
@@ -280,7 +278,7 @@ const DIALOG_FIELDS: ReadonlyArray<DsFilterField> = [
 		type: 'enum',
 		id: 'workflow',
 		label: 'Workflow',
-		operators: [{ value: 'in', label: 'is any of' }],
+		operators: [{ value: 'IN', label: 'is any of' }],
 		options: [
 			{ value: 'deploy', label: 'Deploy' },
 			{ value: 'backup', label: 'Backup' },
@@ -323,7 +321,7 @@ const STATUS_CONDITION: DsFilterCondition = {
 // Saving mints ids for new conditions, so only their shape is asserted.
 const newEnumCondition = (
 	field: string,
-	operator: string,
+	operator: DsFilterOperatorValue,
 	value: ReadonlyArray<string>,
 ): DsFilterCondition => ({
 	kind: 'field',
@@ -537,7 +535,7 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 			SEARCH_CONDITION,
 			STATUS_CONDITION,
 			PARENTS_CONDITION,
-			newEnumCondition('workflow', 'in', ['deploy']),
+			newEnumCondition('workflow', 'IN', ['deploy']),
 		]);
 	});
 

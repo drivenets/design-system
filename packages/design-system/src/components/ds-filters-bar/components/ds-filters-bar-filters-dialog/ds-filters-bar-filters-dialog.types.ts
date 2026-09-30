@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { DsFilterEnumField, DsFilterOperator } from '../../ds-filters-bar.types';
+import type { DsFilterEnumField, DsFilterEnumOperator, DsFilterOperator } from '../../ds-filters-bar.types';
 
 /**
  * Dialog state for one field. A missing entry means the field's first operator, nothing checked
@@ -13,7 +13,7 @@ export interface DsFiltersBarFiltersDialogEntry {
 	/**
 	 * `DsFilterOperator.value`
 	 */
-	operator: string;
+	operator: DsFilterEnumOperator;
 	/**
 	 * Checked option values
 	 */

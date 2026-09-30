@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useId } from 'react';
+import { useId, useState } from 'react';
 import { useControlled } from '../../utils/use-controlled';
 import {
 	Builder,
@@ -33,11 +33,11 @@ import {
 	removeConditionById,
 	replaceCondition,
 } from './ds-filters-bar.utils';
+import { serializeFilterQuery } from './query-language';
 
 const EMPTY_FIELDS = Object.freeze([]);
 const EMPTY_CONDITIONS: ReadonlyArray<DsFilterCondition> = Object.freeze([]);
 const EMPTY_PINS: ReadonlyArray<DsFilterPin> = Object.freeze([]);
-const formatNothing = () => '';
 
 /**
  * `useControlled` that also reports changes while uncontrolled, so `defaultX` pairs with `onXChange`
@@ -73,7 +73,6 @@ const Root = ({
 	defaultExpanded = false,
 	view: viewProp,
 	defaultView = 'filters',
-	formatQuery = formatNothing,
 	locale: localeProp,
 	ref,
 	className,
@@ -92,6 +91,7 @@ const Root = ({
 	const [view, setView] = useReportedState<DsFiltersBarView>(viewProp, onViewChange, defaultView);
 	const toolbarId = useId();
 	const locale = { ...defaultDsFiltersBarLocale, ...localeProp };
+	const [resetRevision, setResetRevision] = useState(0);
 
 	return (
 		<DsFiltersBarContext.Provider
@@ -99,7 +99,8 @@ const Root = ({
 				fields,
 				conditions,
 				query,
-				queryText: query ?? formatQuery(conditions, fields),
+				queryText: query ?? serializeFilterQuery(conditions),
+				resetRevision,
 				pins,
 				isEmpty: query === null && conditions.length === 0,
 				lockedViews: lockedViewsFor(query),
@@ -114,6 +115,7 @@ const Root = ({
 				setQuery: (next) => setQuery(normalizeQuery(next)),
 				setPins,
 				clear: () => {
+					setResetRevision((revision) => revision + 1);
 					setConditions(EMPTY_CONDITIONS);
 					setQuery(null);
 				},

@@ -26,7 +26,7 @@ const getEntry = (
 ): DsFiltersBarFiltersDialogEntry =>
 	value.find((entry) => entry.field === field.id) ?? {
 		field: field.id,
-		operator: field.operators[0]?.value ?? '',
+		operator: field.operators[0]?.value ?? '=',
 		selected: [],
 		pinned: [],
 	};
@@ -106,7 +106,9 @@ const FieldPanel = ({ field, entry, search, locale, onSearchChange, onEntryChang
 		label: locale.operatorOption(field.label, operator),
 	}));
 
-	const handleOperatorChange = (operator: string) => {
+	const handleOperatorChange = (value: string) => {
+		const operator = field.operators.find((item) => item.value === value)?.value;
+
 		if (!operator || operator === entry.operator) {
 			return;
 		}

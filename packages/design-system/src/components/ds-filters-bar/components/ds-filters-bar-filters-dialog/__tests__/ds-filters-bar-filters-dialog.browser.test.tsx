@@ -30,7 +30,7 @@ const WORKFLOW: DsFilterEnumField = {
 	id: 'workflow',
 	label: 'Workflow',
 	type: 'enum',
-	operators: [{ value: 'in', label: 'is any of' }],
+	operators: [{ value: 'IN', label: 'is any of' }],
 	options: [
 		{ value: 'deploy', label: 'Deploy' },
 		{ value: 'backup', label: 'Backup' },
@@ -50,7 +50,9 @@ const RESULT: DsFilterEnumField = {
 
 const FIELDS = [STATUS, WORKFLOW, RESULT];
 
-const entry = (overrides: Partial<DsFiltersBarFiltersDialogEntry> & { field: string }) => ({
+const entry = (
+	overrides: Partial<DsFiltersBarFiltersDialogEntry> & { field: string },
+): DsFiltersBarFiltersDialogEntry => ({
 	operator: '=',
 	selected: [],
 	pinned: [],
@@ -276,7 +278,7 @@ describe('DsFiltersBar.FiltersDialog', () => {
 
 	it('shows a pin icon on tabs that have pinned options', async () => {
 		await page.render(
-			<Harness initialValue={[entry({ field: 'workflow', operator: 'in', pinned: ['deploy'] })]} />,
+			<Harness initialValue={[entry({ field: 'workflow', operator: 'IN', pinned: ['deploy'] })]} />,
 		);
 
 		await expect.element(tab('Workflow').getByRole('img', { name: 'Pinned' })).toBeVisible();
@@ -313,7 +315,7 @@ describe('DsFiltersBar.FiltersDialog', () => {
 
 	it('appends a materialized entry for a field without one', async () => {
 		const onChange = vi.fn();
-		const workflow = entry({ field: 'workflow', operator: 'in', selected: ['deploy'] });
+		const workflow = entry({ field: 'workflow', operator: 'IN', selected: ['deploy'] });
 		await page.render(<Harness initialValue={[workflow]} onChange={onChange} />);
 
 		await optionCheckbox('Pending').click();

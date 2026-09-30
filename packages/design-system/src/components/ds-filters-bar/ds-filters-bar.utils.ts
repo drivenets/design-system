@@ -3,9 +3,11 @@ import type {
 	DsFiltersBarFiltersDialogValue,
 } from './components/ds-filters-bar-filters-dialog';
 import {
+	enumFilterOperators,
 	filtersBarViews,
 	type DsFilterCondition,
 	type DsFilterEnumField,
+	type DsFilterEnumOperator,
 	type DsFilterField,
 	type DsFilterFieldCondition,
 	type DsFilterOption,
@@ -152,7 +154,13 @@ export const filtersDialogFields = (fields: ReadonlyArray<DsFilterField>): Reado
 
 const NO_VALUES: ReadonlyArray<string> = Object.freeze([]);
 
-type DsFilterEnumCondition = DsFilterFieldCondition & { value: ReadonlyArray<string> };
+type DsFilterEnumCondition = DsFilterFieldCondition & {
+	operator: DsFilterEnumOperator;
+	value: ReadonlyArray<string>;
+};
+
+const isEnumOperator = (operator: string): operator is DsFilterEnumOperator =>
+	(enumFilterOperators as ReadonlyArray<string>).includes(operator);
 
 const isEnumConditionOf = (
 	condition: DsFilterCondition,
@@ -161,6 +169,7 @@ const isEnumConditionOf = (
 	condition.kind === 'field' &&
 	condition.field === fieldId &&
 	!condition.subfield &&
+	isEnumOperator(condition.operator) &&
 	Array.isArray(condition.value);
 
 export const toFiltersDialogValue = (
@@ -179,7 +188,7 @@ export const toFiltersDialogValue = (
 		return [
 			{
 				field: field.id,
-				operator: condition?.operator ?? field.operators[0]?.value ?? '',
+				operator: condition?.operator ?? field.operators[0]?.value ?? '=',
 				selected: condition?.value ?? NO_VALUES,
 				pinned,
 			},
