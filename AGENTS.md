@@ -170,6 +170,7 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 - [`pr-prep`](.agents/skills/pr-prep/SKILL.md) — "prepare my PR"; lint, typecheck, test on diff, changeset
 - [`deslop`](.agents/skills/deslop/SKILL.md) — "clean up this code"; remove AI slop, fix style
 - [`get-pr-comments`](.agents/skills/get-pr-comments/SKILL.md) — "get PR comments"; summarize active PR review comments
+- [`release-summary`](.agents/skills/release-summary/SKILL.md) — "summarize the release"; Slack-ready announcement from the latest GitHub Releases batch
 
 ### Engineering
 
