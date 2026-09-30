@@ -8,7 +8,7 @@ import type {
 	VisibilityState,
 } from '@tanstack/react-table';
 import type { IconType } from '../ds-icon';
-import type { RowAction, SecondaryRowAction } from './components/ds-table-cell';
+import type { RowAction, SecondaryRowAction } from './components/ds-table-row-actions-cell';
 import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-body-virtualized';
 
 /**
@@ -480,12 +480,14 @@ export interface DsDataTableProps<TData, TValue> {
 	actions?: Action<TData>[];
 
 	/**
-	 * Primary actions to be shown on each row (on hover)
+	 * Primary actions shown as icon buttons on each row, in a trailing column sized
+	 * to fit every declared primary action plus the "more" trigger
 	 */
 	primaryRowActions?: RowAction<TData>[];
 
 	/**
-	 * Secondary actions to be shown in a dropdown on each row (on hover)
+	 * Secondary actions shown in a "more" dropdown on each row, in the same trailing column
+	 * as `primaryRowActions`
 	 */
 	secondaryRowActions?: SecondaryRowAction<TData>[];
 

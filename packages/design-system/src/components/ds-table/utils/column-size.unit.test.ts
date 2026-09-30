@@ -13,6 +13,7 @@ import {
 	getResizableColumnStyle,
 	getResizableHeaderStyle,
 	getResizeOriginSize,
+	getRowActionsColumnWidth,
 	getUtilityColumnSizing,
 	growFillLeavesToContainer,
 	isExplicitColumnWidth,
@@ -366,5 +367,20 @@ describe('getUtilityColumnSizing', () => {
 			[EXPANDER_COLUMN_ID]: 40,
 			[SELECT_COLUMN_ID]: 48,
 		});
+	});
+});
+
+describe('getRowActionsColumnWidth', () => {
+	it('returns 0 when no actions are declared', () => {
+		expect(getRowActionsColumnWidth(0, false)).toBe(0);
+	});
+
+	it('fits primary actions with gaps and cell padding', () => {
+		expect(getRowActionsColumnWidth(2, false)).toBe(2 * 36 + 8 + 2 * 16);
+	});
+
+	it('adds a trigger slot and its offset when secondary actions exist', () => {
+		expect(getRowActionsColumnWidth(2, true)).toBe(3 * 36 + 2 * 8 + 12 + 2 * 16);
+		expect(getRowActionsColumnWidth(0, true)).toBe(36 + 12 + 2 * 16);
 	});
 });
