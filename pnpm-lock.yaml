@@ -336,7 +336,7 @@ importers:
   packages/design-system:
     dependencies:
       '@ark-ui/react':
-        specifier: ^5.38.2
+        specifier: ^5.37.2
         version: 5.39.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@dnd-kit/core':
         specifier: ^6.3.1
@@ -372,10 +372,10 @@ importers:
         specifier: ^3.14.10
         version: 3.14.10(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@zag-js/react':
-        specifier: ^1.43.3
+        specifier: ^1.42.0
         version: 1.43.3(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@zag-js/steps':
-        specifier: ^1.43.3
+        specifier: ^1.42.0
         version: 1.43.3
       classnames:
         specifier: ^2.5.1
