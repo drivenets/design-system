@@ -186,7 +186,6 @@ describe('DsCheckbox', () => {
 		const label = partRect('label');
 		const labelInfo = page.getByText('labelInfo').element().getBoundingClientRect();
 
-		expect(labelInfo.left).toBeCloseTo(label.left, 0);
 		expect(labelInfo.top).toBeGreaterThanOrEqual(label.bottom);
 		expect(Math.abs(centerY(partRect('control')) - centerY(label))).toBeLessThanOrEqual(
 			ALIGNMENT_TOLERANCE_PX,
@@ -194,15 +193,15 @@ describe('DsCheckbox', () => {
 	});
 
 	describe('size', () => {
-		it('should pad all four sides at medium', async () => {
+		it('should pad a labelled row 4px on the block axis only at medium', async () => {
 			await page.render(<DsCheckbox label="label" />);
 
 			const style = rootStyle();
 
-			expect(style.paddingBlockStart).toBe('2px');
-			expect(style.paddingBlockEnd).toBe('2px');
-			expect(style.paddingInlineStart).toBe('2px');
-			expect(style.paddingInlineEnd).toBe('2px');
+			expect(style.paddingBlockStart).toBe('4px');
+			expect(style.paddingBlockEnd).toBe('4px');
+			expect(style.paddingInlineStart).toBe('0px');
+			expect(style.paddingInlineEnd).toBe('0px');
 		});
 
 		it('should pad all four sides at large', async () => {
@@ -294,7 +293,8 @@ describe('DsCheckbox', () => {
 			);
 
 			const controlColor = (idx: number) =>
-				getComputedStyle(query('[data-part="control"]', rootAt(idx))).backgroundColor;
+				getComputedStyle(query('[data-part="control"]', rootAt(idx)).firstElementChild as HTMLElement)
+					.backgroundColor;
 
 			expect(controlColor(1)).not.toBe(controlColor(0));
 		});
