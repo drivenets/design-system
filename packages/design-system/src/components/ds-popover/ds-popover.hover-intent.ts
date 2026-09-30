@@ -14,6 +14,8 @@ export interface HoverIntent {
 	consumeFocusRestore: () => boolean;
 	/** Owns one shared timer */
 	schedule: (action: () => void, delay: number) => void;
+	/** Drops a pending open or close so a click's toggle is the final word. */
+	cancel: () => void;
 }
 
 const useHoverIntent = () => useDsPopoverContext().hoverIntent;
@@ -51,6 +53,9 @@ export const useHoverTriggerProps = () => {
 
 	return {
 		...pointerProps,
+		onPointerDown: () => {
+			intent.cancel();
+		},
 		onFocus: (event: FocusEvent<HTMLElement>) => {
 			// Closing with focus inside the panel makes Ark re-focus the trigger
 			if (intent.consumeFocusRestore()) {

@@ -1,11 +1,26 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { DsSavedFiltersSaveProps, DsSavedFiltersTriggerProps } from '../ds-saved-filters';
 
-export interface DsFilterOperator {
+export const filterOperatorValues = ['=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', '~', '!~'] as const;
+export type DsFilterOperatorValue = (typeof filterOperatorValues)[number];
+
+export const enumFilterOperators = ['=', '!=', 'IN', 'NOT IN'] as const;
+export type DsFilterEnumOperator = (typeof enumFilterOperators)[number];
+
+export const textFilterOperators = ['=', '!=', '~', '!~'] as const;
+export type DsFilterTextOperator = (typeof textFilterOperators)[number];
+
+/**
+ * Shared by number and date fields
+ */
+export const comparisonFilterOperators = ['=', '!=', '>', '>=', '<', '<='] as const;
+export type DsFilterComparisonOperator = (typeof comparisonFilterOperators)[number];
+
+export interface DsFilterOperator<TValue extends DsFilterOperatorValue = DsFilterOperatorValue> {
 	/**
-	 * Stable id stored on the condition, for example `!=`
+	 * Query language token stored on the condition, for example `!=`
 	 */
-	value: string;
+	value: TValue;
 	/**
 	 * Words for the summary line and menus, for example `not equals`
 	 */
@@ -31,18 +46,18 @@ interface DsFilterFieldBase {
  */
 export interface DsFilterEnumField extends DsFilterFieldBase {
 	type: 'enum';
-	operators: ReadonlyArray<DsFilterOperator>;
+	operators: ReadonlyArray<DsFilterOperator<DsFilterEnumOperator>>;
 	options: ReadonlyArray<DsFilterOption>;
 }
 
 export interface DsFilterTextField extends DsFilterFieldBase {
 	type: 'text';
-	operators: ReadonlyArray<DsFilterOperator>;
+	operators: ReadonlyArray<DsFilterOperator<DsFilterTextOperator>>;
 }
 
 export interface DsFilterNumberField extends DsFilterFieldBase {
 	type: 'number';
-	operators: ReadonlyArray<DsFilterOperator>;
+	operators: ReadonlyArray<DsFilterOperator<DsFilterComparisonOperator>>;
 }
 
 /**
@@ -50,7 +65,7 @@ export interface DsFilterNumberField extends DsFilterFieldBase {
  */
 export interface DsFilterDateField extends DsFilterFieldBase {
 	type: 'date';
-	operators: ReadonlyArray<DsFilterOperator>;
+	operators: ReadonlyArray<DsFilterOperator<DsFilterComparisonOperator>>;
 	/**
 	 * @default []
 	 */
@@ -86,7 +101,9 @@ export interface DsFilterRange<T> {
  * - enum: option values, always an array, even for one
  * - text: a string
  * - number: a number, or a range
- * - date: a preset value, or a range of ISO 8601 dates
+ * - date: a preset value, an ISO 8601 date, or a range of ISO 8601 dates
+ *
+ * A range only goes with the `=` operator, meaning "within", both ends included.
  */
 export type DsFilterValue =
 	| ReadonlyArray<string>
@@ -113,9 +130,9 @@ export interface DsFilterFieldCondition {
 	 */
 	subfield?: string;
 	/**
-	 * `DsFilterOperator.value`
+	 * `DsFilterOperator.value`. Must be `=` when `value` is a range.
 	 */
-	operator: string;
+	operator: DsFilterOperatorValue;
 	value: DsFilterValue;
 }
 
@@ -172,9 +189,11 @@ export interface DsFiltersBarRootProps {
 	 */
 	defaultConditions?: ReadonlyArray<DsFilterCondition>;
 	/**
-	 * Edited advanced query, or `null` while the conditions are the source. While set, it alone
-	 * filters the data, the conditions are ignored, and the filters and builder views lock. The bar
-	 * never parses it. Pair with `onQueryChange`.
+	 * Advanced query, or `null` while the conditions are the source. The advanced view only sets it
+	 * for a valid query that the conditions cannot hold (one with `OR` or parentheses); a valid
+	 * query of clauses joined by `AND` becomes conditions instead. While set, it alone filters the
+	 * data, the conditions are ignored, and the filters and builder views lock. Evaluate it with
+	 * `parseFilterQuery`. Pair with `onQueryChange`.
 	 */
 	query?: string | null;
 	/**
@@ -206,15 +225,6 @@ export interface DsFiltersBarRootProps {
 	 * @default 'filters'
 	 */
 	defaultView?: DsFiltersBarView;
-	/**
-	 * Renders the conditions as query text, shown by the advanced view while `query` is `null`. The
-	 * query language belongs to the consumer.
-	 * @default () => ''
-	 */
-	formatQuery?: (
-		conditions: ReadonlyArray<DsFilterCondition>,
-		fields: ReadonlyArray<DsFilterField>,
-	) => string;
 	locale?: DsFiltersBarLocale;
 	ref?: Ref<HTMLDivElement>;
 	className?: string;
