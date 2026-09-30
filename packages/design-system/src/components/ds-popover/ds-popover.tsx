@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState, type FocusEvent, type Ref } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState, type FocusEvent, type Ref } from 'react';
 import { Popover, type PopoverRootProps } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
@@ -55,6 +55,8 @@ const DsPopoverRoot = ({
 	const restoringFocus = useRef(false);
 	const pinned = useRef(false);
 	const [contentId, setContentId] = useState<string>();
+	const ownTriggerId = useId();
+	const injectedTriggerId = useRef<string | undefined>(undefined);
 	const [focusInPanel, setFocusInPanel] = useState(false);
 
 	useEffect(() => () => clearTimeout(timer.current), []);
@@ -98,6 +100,9 @@ const DsPopoverRoot = ({
 				matchAnchorWidth,
 				registerAnchor,
 				registerContentId: setContentId,
+				registerTriggerId: (id) => {
+					injectedTriggerId.current = id;
+				},
 				hoverIntent: isHover
 					? {
 							openDelay,
@@ -116,7 +121,12 @@ const DsPopoverRoot = ({
 				open={open}
 				defaultOpen={defaultOpen}
 				modal={modal}
-				ids={contentId ? { content: contentId } : undefined}
+				ids={{
+					// Resolved on every lookup, so an id an outer wrapper (e.g. DsTooltip) puts on the
+					// trigger is found from the first effect, including a panel open on mount.
+					trigger: () => injectedTriggerId.current ?? ownTriggerId,
+					...(contentId ? { content: contentId } : {}),
+				}}
 				// Trigger focus is lost when open on hover
 				// eslint-disable-next-line jsx-a11y/no-autofocus
 				autoFocus={!isHover}
