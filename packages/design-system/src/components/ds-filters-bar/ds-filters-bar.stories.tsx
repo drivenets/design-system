@@ -13,8 +13,10 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 		docs: {
 			description: {
 				component: `
-**Work in progress — the API is wired; the advanced query view renders, the other parts render
-nothing yet.** Until \`Toolbar\` renders, the stories place the advanced view directly under \`Root\`.
+**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`, the
+add-filter button with its filters dialog in \`Conditions\`, and the advanced query view render; the
+other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
 
@@ -191,6 +193,80 @@ export const Default: Story = {
 					<DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
 				</DsFiltersBar.PinnedGroup>
 			</DsFiltersBar.Pinned>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * The "+" button in `Conditions` opens the filters dialog: one tab per enum field, with an operator,
+ * an option search, and a checkbox and pin per option. Edits stay a draft until **Save filters**
+ * writes one condition per field with checked options and the pins back to the document; closing any
+ * other way drops the draft. Search and non-enum conditions are left as they are.
+ */
+export const FiltersDialog: Story = {
+	args: {
+		defaultExpanded: true,
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '!=', label: 'not equals', symbol: '≠' },
+				],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'deprecated', label: 'Deprecated' },
+					{ value: 'inactive', label: 'Inactive' },
+					{ value: 'pending', label: 'Pending' },
+					{ value: 'draft', label: 'Draft' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'workflow',
+				label: 'Workflow',
+				operators: [
+					{ value: 'IN', label: 'is any of', symbol: '∈' },
+					{ value: 'NOT IN', label: 'is none of', symbol: '∉' },
+				],
+				options: [
+					{ value: 'deploy', label: 'Deploy' },
+					{ value: 'backup', label: 'Backup' },
+					{ value: 'upgrade', label: 'Upgrade' },
+					{ value: 'rollback', label: 'Rollback' },
+					{ value: 'healthCheck', label: 'Health check' },
+					{ value: 'provision', label: 'Provision' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'trigger',
+				label: 'Trigger',
+				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				options: [
+					{ value: 'manual', label: 'Manual' },
+					{ value: 'scheduled', label: 'Scheduled' },
+					{ value: 'api', label: 'API' },
+					{ value: 'webhook', label: 'Webhook' },
+				],
+			},
+		],
+		defaultConditions: [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated', 'draft'] },
+			{ kind: 'field', id: 'c2', field: 'trigger', operator: '=', value: ['scheduled'] },
+		],
+		defaultPins: [
+			{ field: 'status', value: 'active' },
+			{ field: 'workflow', value: 'deploy' },
+		],
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.Conditions />
+			</DsFiltersBar.Toolbar>
 		</DsFiltersBar.Root>
 	),
 };

@@ -115,6 +115,21 @@ describe('DsModal', () => {
 		expect(onOpenChange).toHaveBeenCalledWith(false);
 	});
 
+	it('stays open on an outside click by default', async () => {
+		const onOpenChange = vi.fn();
+		await page.render(<ModalExample onOpenChange={onOpenChange} />);
+
+		await page.getByRole('button', { name: /open modal/i }).click();
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+
+		// The open modal disables pointer events outside it, backdrop included, so a click in the
+		// viewport corner lands on <html> — outside the dialog, as a real click would.
+		await page.elementLocator(document.documentElement).click({ position: { x: 1, y: 1 } });
+
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
+
 	it('should release body scroll-lock when unmounted while open', async () => {
 		await page.render(<UnmountWhileOpenModal />);
 
