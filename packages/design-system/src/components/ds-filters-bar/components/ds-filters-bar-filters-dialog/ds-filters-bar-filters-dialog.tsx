@@ -16,7 +16,6 @@ import {
 	type DsFiltersBarFiltersDialogValue,
 	defaultDsFiltersBarFiltersDialogLocale,
 } from './ds-filters-bar-filters-dialog.types';
-import barStyles from '../../ds-filters-bar.module.scss';
 import styles from './ds-filters-bar-filters-dialog.module.scss';
 
 type Locale = Required<NonNullable<DsFiltersBarFiltersDialogProps['locale']>>;
@@ -74,7 +73,7 @@ const TabLabel = ({ field, entry, locale }: TabLabelProps) => {
 						<span className={styles.counterDot} />
 						<DsTypography variant="body-xs-semi-bold">{checkedCount}</DsTypography>
 					</span>
-					<span className={barStyles.visuallyHidden}>{locale.selectedCount(checkedCount)}</span>
+					<span className={styles.visuallyHidden}>{locale.selectedCount(checkedCount)}</span>
 				</>
 			)}
 			{hasPins && (
@@ -120,7 +119,7 @@ const FieldPanel = ({ field, entry, search, locale, onSearchChange, onEntryChang
 	return (
 		<>
 			<div className={styles.panelHeader}>
-				<label htmlFor={operatorId} className={barStyles.visuallyHidden}>
+				<label htmlFor={operatorId} className={styles.visuallyHidden}>
 					{locale.operator}
 				</label>
 				<DsSelect
@@ -130,7 +129,7 @@ const FieldPanel = ({ field, entry, search, locale, onSearchChange, onEntryChang
 					value={entry.operator}
 					onValueChange={handleOperatorChange}
 				/>
-				<label htmlFor={searchId} className={barStyles.visuallyHidden}>
+				<label htmlFor={searchId} className={styles.visuallyHidden}>
 					{locale.search(field.label)}
 				</label>
 				<DsTextInput

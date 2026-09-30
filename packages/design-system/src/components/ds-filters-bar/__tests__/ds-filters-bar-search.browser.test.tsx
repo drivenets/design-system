@@ -234,6 +234,36 @@ describe('DsFiltersBar.Search chips', () => {
 		await expect.element(searchInput()).toHaveFocus();
 	});
 
+	it('hands the chip text to the latest onValueChange', async () => {
+		const onValueChange = vi.fn();
+
+		// The handler reads this render's value, so a handle kept from the first render would report ''.
+		const ControlledSearchBar = () => {
+			const [value, setValue] = useState('');
+
+			return (
+				<SearchBar
+					defaultConditions={[AAA]}
+					searchProps={{
+						value,
+						onValueChange: (next) => {
+							onValueChange({ next, previous: value });
+							setValue(next);
+						},
+					}}
+				/>
+			);
+		};
+
+		await page.render(<ControlledSearchBar />);
+
+		await searchInput().fill('draft');
+		await chip('AAA').click();
+
+		expect(onValueChange).toHaveBeenLastCalledWith({ next: 'AAA', previous: 'draft' });
+		await expect.element(searchInput()).toHaveValue('AAA');
+	});
+
 	it('only removes chips when the bar has no search input', async () => {
 		await page.render(<SearchBar withSearch={false} defaultConditions={[AAA]} />);
 

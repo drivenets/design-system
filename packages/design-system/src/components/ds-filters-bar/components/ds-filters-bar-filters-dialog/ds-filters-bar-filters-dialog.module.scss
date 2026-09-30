@@ -136,3 +136,15 @@ $transition-duration: 0.2s;
 .option:not(:hover, :focus-within) .optionPin[aria-pressed='false'] {
 	opacity: 0;
 }
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}

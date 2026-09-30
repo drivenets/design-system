@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import { useEffect, useId, useLayoutEffect, useRef, type KeyboardEvent } from 'react';
+import { useEffect, useLayoutEffect, useRef, type KeyboardEvent } from 'react';
 import { mergeRefs } from '../../../utils/merge-refs';
 import { DsButtonV3 } from '../../ds-button-v3';
+import { DsFormControl } from '../../ds-form-control';
 import { DsIcon } from '../../ds-icon';
-import { DsTextInput } from '../../ds-text-input';
 import { useDsFiltersBarContext } from '../ds-filters-bar.context';
 import styles from '../ds-filters-bar.module.scss';
 import { defaultDsFiltersBarSearchLocale, type DsFiltersBarSearchProps } from '../ds-filters-bar.types';
@@ -34,7 +34,6 @@ export const Search = ({
 
 	const [value, setValue] = useReportedState(valueProp, onValueChange, defaultValue);
 	const inputRef = useRef<HTMLInputElement>(null);
-	const id = useId();
 
 	// An Advanced query is the only source, so a new condition would not reach the document.
 	const disabled = disabledProp || query !== null;
@@ -109,12 +108,13 @@ export const Search = ({
 	};
 
 	return (
-		<div className={classNames(styles.search, className)} style={style}>
-			<label htmlFor={id} className={styles.visuallyHidden}>
-				{locale.label}
-			</label>
-			<DsTextInput
-				id={id}
+		<DsFormControl
+			label={locale.label}
+			hideLabel
+			className={classNames(styles.search, className)}
+			style={style}
+		>
+			<DsFormControl.TextInput
 				ref={mergeRefs(inputRef, ref)}
 				size="small"
 				value={value}
@@ -137,7 +137,7 @@ export const Search = ({
 				onValueChange={setValue}
 				onKeyDown={handleKeyDown}
 			/>
-		</div>
+		</DsFormControl>
 	);
 };
 
