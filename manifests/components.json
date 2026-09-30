@@ -9706,7 +9706,7 @@
               "name": "DialogProps['closeOnInteractOutside']",
               "raw": "DialogProps['closeOnInteractOutside']"
             },
-            "description": "Whether clicking or focusing outside the modal closes it.\n@default true",
+            "description": "Whether clicking or focusing outside the modal closes it.\n@default false",
             "defaultValue": {
               "value": "false",
               "computed": false
@@ -29413,6 +29413,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6014
+    "durationMs": 5250
   }
 }
