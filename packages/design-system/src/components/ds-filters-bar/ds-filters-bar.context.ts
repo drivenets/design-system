@@ -8,6 +8,16 @@ import type {
 } from './ds-filters-bar.types';
 
 /**
+ * What a mounted `Search` lets other parts do with its pending text
+ */
+export interface DsFiltersBarSearchHandle {
+	/**
+	 * Replaces the pending text and focuses the input
+	 */
+	edit: (text: string) => void;
+}
+
+/**
  * The contract every part builds on. View parts read the filter document from here and write it
  * back through these actions only, so all views stay one source of truth.
  */
@@ -58,6 +68,11 @@ export interface DsFiltersBarContextValue {
 	clear: () => void;
 	setExpanded: (expanded: boolean) => void;
 	setView: (view: DsFiltersBarView) => void;
+	/**
+	 * The mounted `Search`, or `null` when the bar has none
+	 */
+	search: DsFiltersBarSearchHandle | null;
+	registerSearch: (search: DsFiltersBarSearchHandle | null) => void;
 }
 
 export const DsFiltersBarContext = createContext<DsFiltersBarContextValue | null>(null);
