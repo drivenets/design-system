@@ -350,6 +350,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.8)
+      '@internationalized/date':
+        specifier: ^3.0.0
+        version: 3.12.2
       '@radix-ui/react-collapsible':
         specifier: ^1.1.20
         version: 1.1.20(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -405,9 +408,6 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.9.1
         version: 5.9.1(@standard-schema/spec@1.1.0)(ajv@8.20.0)(react-hook-form@7.87.0(react@19.2.8))(valibot@1.4.2(@typescript/typescript6@6.0.2))(zod@4.6.1)
-      '@internationalized/date':
-        specifier: 3.12.2
-        version: 3.12.2
       '@rolldown/plugin-babel':
         specifier: ^0.2.3
         version: 0.2.3(@babel/core@7.29.7(supports-color@8.1.1))(@babel/runtime@7.29.7)(rolldown@1.2.7)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.6.4)(sass-embedded@1.104.0)(sass@1.104.0)(stylus@0.62.0(supports-color@8.1.1))(yaml@2.9.0))

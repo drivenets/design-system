@@ -88,7 +88,6 @@
 		"@figma/code-connect": "^2.0.0",
 		"@github-ui/storybook-addon-performance-panel": "^1.2.0",
 		"@hookform/resolvers": "^5.9.1",
-		"@internationalized/date": "3.12.2",
 		"@rolldown/plugin-babel": "^0.2.3",
 		"@storybook/addon-a11y": "^10.6.0",
 		"@storybook/addon-docs": "^10.6.0",
