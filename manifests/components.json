@@ -10744,7 +10744,7 @@
         {
           "id": "components-popover--with-content-items-and-cta",
           "name": "With Content Items And CTA",
-          "snippet": "const WithContentItemsAndCTA = () => <DsPopover.Root side=\"bottom\" align=\"center\" gutter={8} modal={false} defaultOpen={false}>\n    <DsPopover.Trigger>\n        <DsButtonV3 variant=\"secondary\">Release lock</DsButtonV3>\n    </DsPopover.Trigger>\n    <DsPopover.Panel>\n        <DsPopover.Header icon={<DsIcon icon=\"lock\" color=\"action-secondary\" />}>Release lock\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem status={<DsStatusBadgeV2 phase=\"active\" label=\"Active\" size=\"small\" />}>Releases a physical lock on a device or asset, granting immediate access to the selected inventory\n                                        item.\n                                    </DsPopover.ContentItem>\n            <DsDivider />\n            <DsPopover.ContentItem headline=\"Last version: 2.3.4\">\n                <DsStack direction=\"row\" alignItems=\"center\" gap=\"var(--xs)\">\n                    <DsAvatar name=\"John Smith\" size=\"xsm\" />\n                    <DsTypography variant=\"body-xs-reg\" color=\"secondary\">John Smith • 23-May-2024 04:47 PM\n                                                    </DsTypography>\n                </DsStack>\n            </DsPopover.ContentItem>\n            <DsDivider />\n            <DsPopover.ContentItem headline=\"Category\">\n                <DsIcon icon=\"sell\" size=\"small\" color=\"secondary\" />DAP / Inventory / Physical\n                                    </DsPopover.ContentItem>\n        </DsPopover.Content>\n        <DsPopover.Footer>\n            <DsButtonV3 variant=\"secondary\" size=\"small\" icon=\"check_circle\">Confirm\n                                    </DsButtonV3>\n        </DsPopover.Footer>\n    </DsPopover.Panel>\n</DsPopover.Root>;"
+          "snippet": "const WithContentItemsAndCTA = () => <DsPopover.Root side=\"bottom\" align=\"center\" gutter={8} modal={false} defaultOpen={false}>\n    <DsPopover.Trigger>\n        <DsButtonV3 variant=\"secondary\">Release lock</DsButtonV3>\n    </DsPopover.Trigger>\n    <DsPopover.Panel>\n        <DsPopover.Header\n            icon={<DsIcon icon=\"lock\" color=\"action-secondary\" />}\n            actions={<DsPopover.CloseTrigger />}>Release lock\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem status={<DsStatusBadgeV2 phase=\"active\" label=\"Active\" size=\"small\" />}>Releases a physical lock on a device or asset, granting immediate access to the selected inventory\n                                        item.\n                                    </DsPopover.ContentItem>\n            <DsDivider />\n            <DsPopover.ContentItem headline=\"Last version: 2.3.4\">\n                <DsStack direction=\"row\" alignItems=\"center\" gap=\"var(--xs)\">\n                    <DsAvatar name=\"John Smith\" size=\"xsm\" />\n                    <DsTypography variant=\"body-xs-reg\" color=\"secondary\">John Smith • 23-May-2024 04:47 PM\n                                                    </DsTypography>\n                </DsStack>\n            </DsPopover.ContentItem>\n            <DsDivider />\n            <DsPopover.ContentItem headline=\"Category\">\n                <DsIcon icon=\"sell\" size=\"small\" color=\"secondary\" />DAP / Inventory / Physical\n                                    </DsPopover.ContentItem>\n        </DsPopover.Content>\n        <DsPopover.Footer>\n            <DsButtonV3 variant=\"secondary\" size=\"small\" icon=\"check_circle\">Confirm\n                                    </DsButtonV3>\n        </DsPopover.Footer>\n    </DsPopover.Panel>\n</DsPopover.Root>;"
         },
         {
           "id": "components-popover--single-content-item",
@@ -10761,7 +10761,7 @@
           "id": "components-popover--hover-trigger",
           "name": "Hover Trigger",
           "snippet": "const HoverTrigger = () => <DsPopover.Root\n    side=\"right\"\n    align=\"start\"\n    gutter={8}\n    modal={false}\n    defaultOpen={false}\n    openOn=\"hover\">\n    <DsPopover.Trigger>\n        <DsButtonV3 variant=\"secondary\" icon=\"account_tree\">Inventory\n                            </DsButtonV3>\n    </DsPopover.Trigger>\n    <DsPopover.Panel width={280}>\n        <DsPopover.Header icon={<DsIcon icon=\"account_tree\" color=\"action-secondary\" />}>Inventory\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem>\n                <DsStack direction=\"column\" gap=\"var(--xs)\">\n                    <DsTypography variant=\"body-md-link\" asChild>\n                        <a href=\"#physical\">Physical</a>\n                    </DsTypography>\n                    <DsTypography variant=\"body-md-link\" asChild>\n                        <a href=\"#logical\">Logical</a>\n                    </DsTypography>\n                    <DsTypography variant=\"body-md-link\" asChild>\n                        <a href=\"#topology\">Topology</a>\n                    </DsTypography>\n                </DsStack>\n            </DsPopover.ContentItem>\n        </DsPopover.Content>\n    </DsPopover.Panel>\n</DsPopover.Root>;",
-          "description": "`openOn=\"hover\"` layers pointer intent on top of the click behavior: the panel\nopens after `openDelay`, survives the pointer crossing the `gutter` gap onto the\npanel itself, and closes `closeDelay` after the pointer leaves both. Click and\nkeyboard activation still toggle, so touch devices keep working.\n\nUnder `openOn=\"hover\"` the panel deliberately does not take focus on open — tab\nfrom the trigger to reach the links inside."
+          "description": "`openOn=\"hover\"` layers pointer intent on top of the click behavior: the panel\nopens after `openDelay`, survives the pointer crossing the `gutter` gap onto the\npanel itself, and closes `closeDelay` after the pointer leaves both.\n\nA click pins the panel: clicking the trigger of a hover-opened panel keeps it open,\nand a click-opened panel survives the pointer leaving. It then closes on Escape, an\noutside click, `DsPopover.CloseTrigger`, or another trigger click. Touch devices\nnever hover, so a tap opens and a second tap closes.\n\nUnder `openOn=\"hover\"` the panel deliberately does not take focus on open — tab\nfrom the trigger to reach the links inside."
         },
         {
           "id": "components-popover--with-image",
@@ -10773,9 +10773,15 @@
           "name": "Custom Anchor",
           "snippet": "const CustomAnchor = () => <DsPopover.Root\n    side=\"bottom\"\n    align=\"start\"\n    gutter={8}\n    modal={false}\n    defaultOpen={false}\n    matchAnchorWidth>\n    <DsPopover.Anchor>\n        <div className={styles.anchorField}>\n            <DsTypography variant=\"body-sm-reg\" color=\"main\">Query filter\n                                    </DsTypography>\n            <DsPopover.Trigger>\n                <DsButtonV3 variant=\"tertiary\" size=\"small\" icon=\"info\" aria-label=\"Filter details\" />\n            </DsPopover.Trigger>\n        </div>\n    </DsPopover.Anchor>\n    <DsPopover.Panel>\n        <DsPopover.Header icon={<DsIcon icon=\"filter_alt\" color=\"action-secondary\" />}>Query filter\n                            </DsPopover.Header>\n        <DsPopover.Content>\n            <DsPopover.ContentItem>The panel positions against the field and matches its width. The info button only toggles open\n                                        state.\n                                    </DsPopover.ContentItem>\n        </DsPopover.Content>\n    </DsPopover.Panel>\n</DsPopover.Root>;",
           "description": "When the trigger is not the positioning reference — for example a field with an\nend-adornment button — wrap the field in `DsPopover.Anchor` and set `matchAnchorWidth`\nso the panel lines up with the field rather than the button."
+        },
+        {
+          "id": "components-popover--with-tooltip",
+          "name": "With Tooltip",
+          "snippet": "const WithTooltip = () => {\n    const [open, setOpen] = useState(false);\n\n    return (\n        <DsPopover.Root\n            side=\"bottom\"\n            align=\"center\"\n            gutter={8}\n            modal={false}\n            defaultOpen={false}\n            onOpenChange={setOpen}>\n            <DsPopover.Trigger>\n                <DsTooltip content=\"Provision edge · v2.3.4 · Active\" disabled={open}>\n                    <DsButtonV3 variant=\"secondary\" icon=\"account_tree\">Provision edge\n                                                </DsButtonV3>\n                </DsTooltip>\n            </DsPopover.Trigger>\n            <DsPopover.Panel>\n                <DsPopover.Header\n                    icon={<DsIcon icon=\"account_tree\" color=\"action-secondary\" />}\n                    actions={<DsPopover.CloseTrigger />}>Provision edge\n                                        </DsPopover.Header>\n                <DsPopover.Content>\n                    <DsPopover.ContentItem status={<DsStatusBadgeV2 phase=\"active\" label=\"Active\" size=\"small\" />}>Provisions a new edge device and attaches it to the selected site, including the full\n                                                    description that the preview truncates.\n                                                </DsPopover.ContentItem>\n                    <DsDivider />\n                    <DsPopover.ContentItem headline=\"Version\">2.3.4 (latest)</DsPopover.ContentItem>\n                </DsPopover.Content>\n                <DsPopover.Footer>\n                    <DsButtonV3 variant=\"secondary\" size=\"small\" icon=\"open_in_new\">Open in catalog\n                                                </DsButtonV3>\n                </DsPopover.Footer>\n            </DsPopover.Panel>\n        </DsPopover.Root>\n    );\n};",
+          "description": "A tooltip and a popover can share one trigger: nest `DsTooltip` inside\n`DsPopover.Trigger`, around the trigger element. Hover shows a short preview; a click\nopens the full panel. Disable the tooltip while the panel is open so it does not\nreappear over it, and give the panel a `DsPopover.CloseTrigger` in the header `actions`."
         }
       ],
-      "import": "import {\n  DsAvatar,\n  DsButtonV3,\n  DsDivider,\n  DsIcon,\n  DsPopover,\n  DsStack,\n  DsStatusBadgeV2,\n  DsTypography,\n} from '@drivenets/design-system';"
+      "import": "import {\n  DsAvatar,\n  DsButtonV3,\n  DsDivider,\n  DsIcon,\n  DsPopover,\n  DsStack,\n  DsStatusBadgeV2,\n  DsTooltip,\n  DsTypography,\n} from '@drivenets/design-system';"
     },
     "components-progressarc": {
       "id": "components-progressarc",
@@ -28530,6 +28536,218 @@
         "actualName": "DsTooltip",
         "exportName": "default",
         "props": {
+          "id": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "Ref<T>"
+            },
+            "description": ""
+          },
+          "dir": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "'ltr' | 'rtl'",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "'ltr'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'rtl'"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "tabIndex": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": ""
+          },
+          "aria-haspopup": {
+            "required": false,
+            "tsType": {
+              "name": "AriaAttributes['aria-haspopup']",
+              "raw": "AriaAttributes['aria-haspopup']"
+            },
+            "description": ""
+          },
+          "aria-expanded": {
+            "required": false,
+            "tsType": {
+              "name": "AriaAttributes['aria-expanded']",
+              "raw": "AriaAttributes['aria-expanded']"
+            },
+            "description": ""
+          },
+          "aria-controls": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "aria-describedby": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "data-state": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "onClick": {
+            "required": false,
+            "tsType": {
+              "name": "MouseEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "MouseEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onPointerDown": {
+            "required": false,
+            "tsType": {
+              "name": "PointerEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "PointerEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onPointerEnter": {
+            "required": false,
+            "tsType": {
+              "name": "PointerEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "PointerEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onPointerLeave": {
+            "required": false,
+            "tsType": {
+              "name": "PointerEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "PointerEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onPointerMove": {
+            "required": false,
+            "tsType": {
+              "name": "PointerEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "PointerEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onPointerOver": {
+            "required": false,
+            "tsType": {
+              "name": "PointerEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "PointerEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onPointerCancel": {
+            "required": false,
+            "tsType": {
+              "name": "PointerEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "PointerEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onFocus": {
+            "required": false,
+            "tsType": {
+              "name": "FocusEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "FocusEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onBlur": {
+            "required": false,
+            "tsType": {
+              "name": "FocusEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "FocusEventHandler<T>"
+            },
+            "description": ""
+          },
+          "onKeyDown": {
+            "required": false,
+            "tsType": {
+              "name": "KeyboardEventHandler",
+              "elements": [
+                {
+                  "name": "T"
+                }
+              ],
+              "raw": "KeyboardEventHandler<T>"
+            },
+            "description": ""
+          },
           "content": {
             "required": false,
             "tsType": {
@@ -28633,6 +28851,20 @@
             },
             "description": "Anchors the tooltip to a virtual rect instead of the trigger, re-evaluated on\neach reposition. Return `null` to fall back to the trigger."
           },
+          "open": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Controlled open state. Pair with `onOpenChange`."
+          },
+          "defaultOpen": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Initial open state when uncontrolled."
+          },
           "slotProps": {
             "required": false,
             "tsType": {
@@ -28673,6 +28905,28 @@
               }
             },
             "description": "Props forwarded to nested sub-components."
+          },
+          "onOpenChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(open: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "open"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Fires when the tooltip requests to open or close (hover, focus, Escape, trigger click)."
           }
         }
       },
@@ -28713,6 +28967,12 @@
           "id": "components-tooltip--custom-width-with-ellipsis",
           "name": "Custom Width With Ellipsis",
           "snippet": "const CustomWidthWithEllipsis = () => <DsTooltip\n    content=\"Narrow tooltip with custom max-width and text overflow ellipsis applied via slotProps.\"\n    slotProps={{\n        content: {\n            style: {\n                maxWidth: 200,\n                overflow: 'hidden',\n                textOverflow: 'ellipsis',\n                whiteSpace: 'nowrap',\n            },\n        },\n    }}><DsIcon icon=\"info\" /></DsTooltip>;"
+        },
+        {
+          "id": "components-tooltip--controlled",
+          "name": "Controlled",
+          "snippet": "const Controlled = () => {\n    const [open, setOpen] = useState(false);\n\n    return (\n        <DsStack direction=\"row\" alignItems=\"center\" gap=\"var(--sm)\">\n            <DsButtonV3 variant=\"secondary\" size=\"small\" onClick={() => setOpen(!open)}>\n                {open ? 'Hide tooltip' : 'Show tooltip'}\n            </DsButtonV3>\n            <DsTooltip\n                content=\"Opened from outside the trigger.\"\n                open={open}\n                onOpenChange={setOpen}>\n                <DsIcon icon=\"info\" />\n            </DsTooltip>\n        </DsStack>\n    );\n};",
+          "description": "Drive the tooltip from your own state with `open` + `onOpenChange` — for example to\nreveal it from elsewhere, or to keep it closed while the trigger is being dragged.\nHover and focus still report their intent through `onOpenChange`."
         }
       ],
       "import": "import { DsButtonV3, DsIcon, DsStack, DsTooltip, DsTypography } from '@drivenets/design-system';\nimport { DsIcon } from '../ds-icon';\nimport { DsStack } from '../ds-stack';\nimport { DsTypography } from '../ds-typography';\nimport { DsButtonV3 } from '../ds-button-v3';"
@@ -29413,6 +29673,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5451
+    "durationMs": 5421
   }
 }

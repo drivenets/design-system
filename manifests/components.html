@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">598 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/598 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">600 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/600 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -15293,7 +15293,7 @@ ref?: Ref&lt;HTMLButtonElement&gt;</code></pre>
       <div class="badges">
         <label for="c-53-components-popover-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-53-components-popover-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-53-components-popover-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -15370,6 +15370,7 @@ trigger: ReactNode</code></pre>
   DsPopover,
   DsStack,
   DsStatusBadgeV2,
+  DsTooltip,
   DsTypography,
 } from '@drivenets/design-system';</code></pre>
               </div>
@@ -15387,7 +15388,9 @@ trigger: ReactNode</code></pre>
         &lt;DsButtonV3 variant=&quot;secondary&quot;&gt;Release lock&lt;/DsButtonV3&gt;
     &lt;/DsPopover.Trigger&gt;
     &lt;DsPopover.Panel&gt;
-        &lt;DsPopover.Header icon={&lt;DsIcon icon=&quot;lock&quot; color=&quot;action-secondary&quot; /&gt;}&gt;Release lock
+        &lt;DsPopover.Header
+            icon={&lt;DsIcon icon=&quot;lock&quot; color=&quot;action-secondary&quot; /&gt;}
+            actions={&lt;DsPopover.CloseTrigger /&gt;}&gt;Release lock
                             &lt;/DsPopover.Header&gt;
         &lt;DsPopover.Content&gt;
             &lt;DsPopover.ContentItem status={&lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;Active&quot; size=&quot;small&quot; /&gt;}&gt;Releases a physical lock on a device or asset, granting immediate access to the selected inventory
@@ -15468,8 +15471,12 @@ Prefer the compound API shown above.</div>
               
               <div class="hint">`openOn=&quot;hover&quot;` layers pointer intent on top of the click behavior: the panel
 opens after `openDelay`, survives the pointer crossing the `gutter` gap onto the
-panel itself, and closes `closeDelay` after the pointer leaves both. Click and
-keyboard activation still toggle, so touch devices keep working.
+panel itself, and closes `closeDelay` after the pointer leaves both.
+
+A click pins the panel: clicking the trigger of a hover-opened panel keeps it open,
+and a click-opened panel survives the pointer leaving. It then closes on Escape, an
+outside click, `DsPopover.CloseTrigger`, or another trigger click. Touch devices
+never hover, so a tap opens and a second tap closes.
 
 Under `openOn=&quot;hover&quot;` the panel deliberately does not take focus on open — tab
 from the trigger to reach the links inside.</div>
@@ -15564,6 +15571,55 @@ so the panel lines up with the field rather than the button.</div>
         &lt;/DsPopover.Content&gt;
     &lt;/DsPopover.Panel&gt;
 &lt;/DsPopover.Root&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Tooltip</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">A tooltip and a popover can share one trigger: nest `DsTooltip` inside
+`DsPopover.Trigger`, around the trigger element. Hover shows a short preview; a click
+opens the full panel. Disable the tooltip while the panel is open so it does not
+reappear over it, and give the panel a `DsPopover.CloseTrigger` in the header `actions`.</div>
+              <pre><code>const WithTooltip = () =&gt; {
+    const [open, setOpen] = useState(false);
+
+    return (
+        &lt;DsPopover.Root
+            side=&quot;bottom&quot;
+            align=&quot;center&quot;
+            gutter={8}
+            modal={false}
+            defaultOpen={false}
+            onOpenChange={setOpen}&gt;
+            &lt;DsPopover.Trigger&gt;
+                &lt;DsTooltip content=&quot;Provision edge · v2.3.4 · Active&quot; disabled={open}&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; icon=&quot;account_tree&quot;&gt;Provision edge
+                                                &lt;/DsButtonV3&gt;
+                &lt;/DsTooltip&gt;
+            &lt;/DsPopover.Trigger&gt;
+            &lt;DsPopover.Panel&gt;
+                &lt;DsPopover.Header
+                    icon={&lt;DsIcon icon=&quot;account_tree&quot; color=&quot;action-secondary&quot; /&gt;}
+                    actions={&lt;DsPopover.CloseTrigger /&gt;}&gt;Provision edge
+                                        &lt;/DsPopover.Header&gt;
+                &lt;DsPopover.Content&gt;
+                    &lt;DsPopover.ContentItem status={&lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;Active&quot; size=&quot;small&quot; /&gt;}&gt;Provisions a new edge device and attaches it to the selected site, including the full
+                                                    description that the preview truncates.
+                                                &lt;/DsPopover.ContentItem&gt;
+                    &lt;DsDivider /&gt;
+                    &lt;DsPopover.ContentItem headline=&quot;Version&quot;&gt;2.3.4 (latest)&lt;/DsPopover.ContentItem&gt;
+                &lt;/DsPopover.Content&gt;
+                &lt;DsPopover.Footer&gt;
+                    &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; icon=&quot;open_in_new&quot;&gt;Open in catalog
+                                                &lt;/DsButtonV3&gt;
+                &lt;/DsPopover.Footer&gt;
+            &lt;/DsPopover.Panel&gt;
+        &lt;/DsPopover.Root&gt;
+    );
+};</code></pre>
               
             </div>
         </div>
@@ -30536,9 +30592,9 @@ styled or composed content.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
-        <label for="c-94-components-tooltip-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-94-components-tooltip-props" class="badge ok as-toggle">31 prop types</label>
         <label for="c-94-components-tooltip-info" class="badge info as-toggle">1 info</label>
-        <label for="c-94-components-tooltip-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-94-components-tooltip-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -30572,11 +30628,19 @@ styled or composed content.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">9 prop types</span>
+              <span class="badge ok">31 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-tooltip/ds-tooltip.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
-            <pre><code>/**
+            <pre><code>aria-controls?: string
+
+aria-describedby?: string
+
+aria-expanded?: AriaAttributes[&#39;aria-expanded&#39;]
+
+aria-haspopup?: AriaAttributes[&#39;aria-haspopup&#39;]
+
+/**
  * The content to be rendered inside the tooltip
  */
 children: ReactNode
@@ -30592,6 +30656,15 @@ closeDelay?: number = 0
  */
 content?: string | ReactNode
 
+data-state?: string
+
+/**
+ * Initial open state when uncontrolled.
+ */
+defaultOpen?: boolean
+
+dir?: &#39;ltr&#39; | &#39;rtl&#39;
+
 /**
  * When true the trigger renders but the tooltip never opens.
  */
@@ -30603,6 +30676,8 @@ disabled?: boolean = false
  */
 getAnchorRect?: () =&gt; TooltipAnchorRect | null
 
+id?: string
+
 /**
  * When true, content is pointer-reachable and the tooltip stays open while the
  * pointer is over it. Pair with a non-zero `closeDelay` (e.g. 150) so the pointer
@@ -30610,6 +30685,36 @@ getAnchorRect?: () =&gt; TooltipAnchorRect | null
  * @default false
  */
 interactive?: boolean = false
+
+onBlur?: FocusEventHandler&lt;T&gt;
+
+onClick?: MouseEventHandler&lt;T&gt;
+
+onFocus?: FocusEventHandler&lt;T&gt;
+
+onKeyDown?: KeyboardEventHandler&lt;T&gt;
+
+/**
+ * Fires when the tooltip requests to open or close (hover, focus, Escape, trigger click).
+ */
+onOpenChange?: (open: boolean) =&gt; void
+
+onPointerCancel?: PointerEventHandler&lt;T&gt;
+
+onPointerDown?: PointerEventHandler&lt;T&gt;
+
+onPointerEnter?: PointerEventHandler&lt;T&gt;
+
+onPointerLeave?: PointerEventHandler&lt;T&gt;
+
+onPointerMove?: PointerEventHandler&lt;T&gt;
+
+onPointerOver?: PointerEventHandler&lt;T&gt;
+
+/**
+ * Controlled open state. Pair with `onOpenChange`.
+ */
+open?: boolean
 
 /**
  * Milliseconds after pointer enter or focus before the tooltip opens.
@@ -30622,6 +30727,8 @@ openDelay?: number = 200
  */
 placement?: (typeof tooltipPlacements)[number] = &#39;top&#39;
 
+ref?: Ref&lt;T&gt;
+
 /**
  * Props forwarded to nested sub-components.
  */
@@ -30633,7 +30740,9 @@ slotProps?: {
 		className?: string;
 		style?: CSSProperties;
 	};
-}</code></pre>
+}
+
+tabIndex?: number</code></pre>
           </div>
         </div>
     
@@ -30744,6 +30853,34 @@ Actions inside the tooltip should use the light/on-dark palette.</div>
             },
         },
     }}&gt;&lt;DsIcon icon=&quot;info&quot; /&gt;&lt;/DsTooltip&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Drive the tooltip from your own state with `open` + `onOpenChange` — for example to
+reveal it from elsewhere, or to keep it closed while the trigger is being dragged.
+Hover and focus still report their intent through `onOpenChange`.</div>
+              <pre><code>const Controlled = () =&gt; {
+    const [open, setOpen] = useState(false);
+
+    return (
+        &lt;DsStack direction=&quot;row&quot; alignItems=&quot;center&quot; gap=&quot;var(--sm)&quot;&gt;
+            &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={() =&gt; setOpen(!open)}&gt;
+                {open ? &#39;Hide tooltip&#39; : &#39;Show tooltip&#39;}
+            &lt;/DsButtonV3&gt;
+            &lt;DsTooltip
+                content=&quot;Opened from outside the trigger.&quot;
+                open={open}
+                onOpenChange={setOpen}&gt;
+                &lt;DsIcon icon=&quot;info&quot; /&gt;
+            &lt;/DsTooltip&gt;
+        &lt;/DsStack&gt;
+    );
+};</code></pre>
               
             </div>
         </div>
