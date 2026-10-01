@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import DsTooltip from './ds-tooltip';
 import { tooltipPlacements } from './ds-tooltip.types';
@@ -37,6 +38,10 @@ const meta: Meta<typeof DsTooltip> = {
 			control: 'object',
 			description: 'Element that triggers the tooltip on hover',
 		},
+		open: { table: { disable: true } },
+		defaultOpen: { control: 'boolean' },
+		onOpenChange: { table: { disable: true } },
+		ref: { table: { disable: true } },
 	},
 };
 
@@ -122,5 +127,31 @@ export const CustomWidthWithEllipsis: Story = {
 				},
 			},
 		},
+	},
+};
+
+/**
+ * Drive the tooltip from your own state with `open` + `onOpenChange` — for example to
+ * reveal it from elsewhere, or to keep it closed while the trigger is being dragged.
+ * Hover and focus still report their intent through `onOpenChange`.
+ */
+export const Controlled: Story = {
+	args: {
+		content: 'Opened from outside the trigger.',
+	},
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+
+		return (
+			<DsStack direction="row" alignItems="center" gap="var(--sm)">
+				<DsButtonV3 variant="secondary" size="small" onClick={() => setOpen(!open)}>
+					{open ? 'Hide tooltip' : 'Show tooltip'}
+				</DsButtonV3>
+				<DsTooltip {...args} open={open} onOpenChange={setOpen}>
+					<DsIcon icon="info" />
+				</DsTooltip>
+			</DsStack>
+		);
 	},
 };

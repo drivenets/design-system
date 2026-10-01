@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
+import type { DsAsChildTriggerProps } from '../../utils/as-child-trigger-props';
 
 export const tooltipPlacements = [
 	'top',
@@ -27,7 +28,11 @@ export interface TooltipAnchorRect {
 	height: number;
 }
 
-export interface DsTooltipProps {
+/**
+ * Besides its own props, `DsTooltip` forwards `ref` and the props an outer `asChild` trigger
+ * injects (e.g. `DsPopover.Trigger`) to the element it wraps, so it composes on a shared trigger.
+ */
+export interface DsTooltipProps extends DsAsChildTriggerProps {
 	/**
 	 * Tooltip content
 	 */
@@ -67,6 +72,14 @@ export interface DsTooltipProps {
 	 */
 	getAnchorRect?: () => TooltipAnchorRect | null;
 	/**
+	 * Controlled open state. Pair with `onOpenChange`.
+	 */
+	open?: boolean;
+	/**
+	 * Initial open state when uncontrolled.
+	 */
+	defaultOpen?: boolean;
+	/**
 	 * Props forwarded to nested sub-components.
 	 */
 	slotProps?: {
@@ -78,4 +91,8 @@ export interface DsTooltipProps {
 			style?: CSSProperties;
 		};
 	};
+	/**
+	 * Fires when the tooltip requests to open or close (hover, focus, Escape, trigger click).
+	 */
+	onOpenChange?: (open: boolean) => void;
 }

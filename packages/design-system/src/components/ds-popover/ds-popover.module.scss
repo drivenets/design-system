@@ -38,6 +38,14 @@
 	margin: 0;
 }
 
+.headerActions {
+	display: inline-flex;
+	align-items: center;
+	flex-shrink: 0;
+	gap: var(--3xs);
+	margin-inline-start: auto;
+}
+
 .content {
 	display: flex;
 	flex-direction: column;
