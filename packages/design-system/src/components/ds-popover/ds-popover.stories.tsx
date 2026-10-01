@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsIcon } from '../ds-icon';
@@ -5,6 +6,7 @@ import { DsAvatar } from '../ds-avatar';
 import { DsDivider } from '../ds-divider';
 import { DsStatusBadgeV2 } from '../ds-status-badge-v2';
 import { DsStack } from '../ds-stack';
+import { DsTooltip } from '../ds-tooltip';
 import { DsTypography } from '../ds-typography';
 import { DsPopover } from './ds-popover';
 import { popoverAligns, popoverOpenTriggers, popoverSides } from './ds-popover.types';
@@ -63,7 +65,10 @@ export const WithContentItemsAndCTA: Story = {
 				<DsButtonV3 variant="secondary">Release lock</DsButtonV3>
 			</DsPopover.Trigger>
 			<DsPopover.Panel>
-				<DsPopover.Header icon={<DsIcon icon="lock" color="action-secondary" />}>
+				<DsPopover.Header
+					icon={<DsIcon icon="lock" color="action-secondary" />}
+					actions={<DsPopover.CloseTrigger />}
+				>
 					Release lock
 				</DsPopover.Header>
 				<DsPopover.Content>
@@ -142,8 +147,12 @@ export const Legacy: Story = {
 /**
  * `openOn="hover"` layers pointer intent on top of the click behavior: the panel
  * opens after `openDelay`, survives the pointer crossing the `gutter` gap onto the
- * panel itself, and closes `closeDelay` after the pointer leaves both. Click and
- * keyboard activation still toggle, so touch devices keep working.
+ * panel itself, and closes `closeDelay` after the pointer leaves both.
+ *
+ * A click pins the panel: clicking the trigger of a hover-opened panel keeps it open,
+ * and a click-opened panel survives the pointer leaving. It then closes on Escape, an
+ * outside click, `DsPopover.CloseTrigger`, or another trigger click. Touch devices
+ * never hover, so a tap opens and a second tap closes.
  *
  * Under `openOn="hover"` the panel deliberately does not take focus on open — tab
  * from the trigger to reach the links inside.
@@ -236,4 +245,50 @@ export const CustomAnchor: Story = {
 			</DsPopover.Panel>
 		</DsPopover.Root>
 	),
+};
+
+/**
+ * A tooltip and a popover can share one trigger: nest `DsTooltip` inside
+ * `DsPopover.Trigger`, around the trigger element. Hover shows a short preview; a click
+ * opens the full panel. Disable the tooltip while the panel is open so it does not
+ * reappear over it, and give the panel a `DsPopover.CloseTrigger` in the header `actions`.
+ */
+export const WithTooltip: Story = {
+	parameters: { docs: { source: { type: 'code' } } },
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+
+		return (
+			<DsPopover.Root {...args} onOpenChange={setOpen}>
+				<DsPopover.Trigger>
+					<DsTooltip content="Provision edge · v2.3.4 · Active" disabled={open}>
+						<DsButtonV3 variant="secondary" icon="account_tree">
+							Provision edge
+						</DsButtonV3>
+					</DsTooltip>
+				</DsPopover.Trigger>
+				<DsPopover.Panel>
+					<DsPopover.Header
+						icon={<DsIcon icon="account_tree" color="action-secondary" />}
+						actions={<DsPopover.CloseTrigger />}
+					>
+						Provision edge
+					</DsPopover.Header>
+					<DsPopover.Content>
+						<DsPopover.ContentItem status={<DsStatusBadgeV2 phase="active" label="Active" size="small" />}>
+							Provisions a new edge device and attaches it to the selected site, including the full
+							description that the preview truncates.
+						</DsPopover.ContentItem>
+						<DsDivider />
+						<DsPopover.ContentItem headline="Version">2.3.4 (latest)</DsPopover.ContentItem>
+					</DsPopover.Content>
+					<DsPopover.Footer>
+						<DsButtonV3 variant="secondary" size="small" icon="open_in_new">
+							Open in catalog
+						</DsButtonV3>
+					</DsPopover.Footer>
+				</DsPopover.Panel>
+			</DsPopover.Root>
+		);
+	},
 };

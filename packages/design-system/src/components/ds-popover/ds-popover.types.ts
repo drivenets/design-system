@@ -1,4 +1,5 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
+import type { DsAsChildTriggerProps } from '../../utils/as-child-trigger-props';
 
 export const popoverSides = ['top', 'right', 'bottom', 'left'] as const;
 export type DsPopoverSide = (typeof popoverSides)[number];
@@ -46,7 +47,9 @@ export interface DsPopoverRootProps {
 	 */
 	restoreFocus?: boolean;
 	/**
-	 * Trigger open method - click / hover
+	 * Trigger open method - click / hover.
+	 * Under `'hover'`, a click pins the panel: it stays open after the pointer leaves
+	 * until Escape, an outside click, `DsPopover.CloseTrigger`, or another trigger click.
 	 * @default 'click'
 	 */
 	openOn?: DsPopoverOpenTrigger;
@@ -94,16 +97,25 @@ export interface DsPopoverRootProps {
 	onOpenChange?: (open: boolean) => void;
 }
 
-export interface DsPopoverTriggerProps {
+/**
+ * Also forwards `ref` and props injected by an outer `asChild` trigger (e.g. `DsTooltip`),
+ * so the trigger element can be shared. Prefer `DsPopover.Trigger > DsTooltip > element`.
+ */
+export interface DsPopoverTriggerProps extends DsAsChildTriggerProps {
 	/** Single focusable element that toggles the popover. */
 	children: ReactNode;
 	className?: string;
+	style?: CSSProperties;
 }
 
-export interface DsPopoverAnchorProps {
+/**
+ * Also forwards `ref` and props injected by an outer `asChild` trigger.
+ */
+export interface DsPopoverAnchorProps extends DsAsChildTriggerProps {
 	/** Single element the panel positions against. Wraps the trigger when they share a field. */
 	children: ReactNode;
 	className?: string;
+	style?: CSSProperties;
 }
 
 export interface DsPopoverPanelProps {
@@ -123,10 +135,28 @@ export interface DsPopoverPanelProps {
 export interface DsPopoverHeaderProps {
 	/** Leading visual (e.g. a colored task-type icon) rendered before the title. */
 	icon?: ReactNode;
+	/**
+	 * Trailing controls after the title, e.g. `<DsPopover.CloseTrigger />`.
+	 * Kept out of the title, so they are not part of the popover's accessible name.
+	 */
+	actions?: ReactNode;
 	className?: string;
 	style?: CSSProperties;
 	/** Title content, exposed as the popover's accessible name. */
 	children: ReactNode;
+}
+
+export interface DsPopoverCloseTriggerProps {
+	className?: string;
+	style?: CSSProperties;
+	ref?: Ref<HTMLButtonElement>;
+	locale?: {
+		/**
+		 * Accessible name of the icon-only close button.
+		 * @default 'Close'
+		 */
+		close?: string;
+	};
 }
 
 export interface DsPopoverContentProps {
