@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">600 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/600 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">602 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/602 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -24566,7 +24566,7 @@ min/max is ignored — each leaf clamps independently.</div>
       <div class="badges">
         <label for="c-81-components-table-row-actions-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-81-components-table-row-actions-stories" class="badge ok as-toggle">6 stories · 1 incomplete</label>
+        <label for="c-81-components-table-row-actions-stories" class="badge ok as-toggle">8 stories · 1 incomplete</label>
         
         
       </div>
@@ -25181,6 +25181,98 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
             disabled: (data) =&gt; data.status === &#39;single&#39;,
             className: styles.destructiveAction,
             onClick: fn(),
+        },
+        {
+            icon: &#39;info&#39;,
+            label: &#39;Details&#39;,
+            tooltip: &#39;Show details&#39;,
+            onClick: fn(),
+        },
+    ]} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Nested Secondary Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithNestedSecondaryActions = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    secondaryRowActions={[
+        {
+            icon: &#39;edit&#39;,
+            label: &#39;Edit&#39;,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;code&#39;,
+            label: &#39;Review PR&#39;,
+            children: [
+                { label: &#39;Visual&#39;, onClick: fn() },
+                { label: &#39;Code&#39;, onClick: fn() },
+            ],
+        },
+        {
+            icon: &#39;filter_list&#39;,
+            label: &#39;Filter by workflow&#39;,
+            children: [
+                { label: &#39;All versions&#39;, onClick: fn() },
+                { label: &#39;Direct parents&#39;, onClick: fn() },
+                { label: &#39;All parents&#39;, onClick: fn() },
+                { label: &#39;Direct children&#39;, onClick: fn() },
+                { label: &#39;All children&#39;, onClick: fn() },
+                {
+                    label: &#39;Custom&#39;,
+                    hidden: (data) =&gt; data.status === &#39;single&#39;,
+                    onClick: fn(),
+                },
+            ],
+        },
+    ]} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Disabled Action Reasons</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithDisabledActionReasons = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    secondaryRowActions={[
+        {
+            icon: &#39;delete_outline&#39;,
+            label: &#39;Delete&#39;,
+            disabled: (data) =&gt; data.status === &#39;single&#39;,
+            tooltip: (data) =&gt;
+                data.status === &#39;single&#39; ? `You don&#39;t have permission to delete ${data.firstName}` : undefined,
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;code&#39;,
+            label: &#39;Review PR&#39;,
+            disabled: (data) =&gt; data.firstName === &#39;Tanner&#39;,
+            tooltip: (data) =&gt; (data.firstName === &#39;Tanner&#39; ? &#39;No open pull request&#39; : undefined),
+            children: [
+                { label: &#39;Visual&#39;, onClick: fn() },
+                { label: &#39;Code&#39;, onClick: fn() },
+            ],
         },
         {
             icon: &#39;info&#39;,
