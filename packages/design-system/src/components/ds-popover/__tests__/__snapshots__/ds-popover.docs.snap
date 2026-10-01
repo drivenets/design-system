@@ -16,7 +16,10 @@
     </DsButtonV3>
   </DsPopover.Trigger>
   <DsPopover.Panel>
-    <DsPopover.Header icon={<DsIcon color="action-secondary" icon="lock"/>}>
+    <DsPopover.Header
+      actions={<DsPopover.CloseTrigger />}
+      icon={<DsIcon color="action-secondary" icon="lock"/>}
+    >
       Release lock
     </DsPopover.Header>
     <DsPopover.Content>
@@ -70,7 +73,9 @@ const WithContentItemsAndCTA = () => <DsPopover.Root side="bottom" align="center
         <DsButtonV3 variant="secondary">Release lock</DsButtonV3>
     </DsPopover.Trigger>
     <DsPopover.Panel>
-        <DsPopover.Header icon={<DsIcon icon="lock" color="action-secondary" />}>Release lock
+        <DsPopover.Header
+            icon={<DsIcon icon="lock" color="action-secondary" />}
+            actions={<DsPopover.CloseTrigger />}>Release lock
                             </DsPopover.Header>
         <DsPopover.Content>
             <DsPopover.ContentItem status={<DsStatusBadgeV2 phase="active" label="Active" size="small" />}>Releases a physical lock on a device or asset, granting immediate access to the selected inventory
@@ -377,3 +382,85 @@ const CustomAnchor = () => <DsPopover.Root
         </DsPopover.Content>
     </DsPopover.Panel>
 </DsPopover.Root>;
+
+## With Tooltip
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <DsPopover.Root {...args} onOpenChange={setOpen}>
+                <DsPopover.Trigger>
+                    <DsTooltip content="Provision edge · v2.3.4 · Active" disabled={open}>
+                        <DsButtonV3 variant="secondary" icon="account_tree">
+                            Provision edge
+                        </DsButtonV3>
+                    </DsTooltip>
+                </DsPopover.Trigger>
+                <DsPopover.Panel>
+                    <DsPopover.Header icon={<DsIcon icon="account_tree" color="action-secondary" />} actions={<DsPopover.CloseTrigger />}>
+                        Provision edge
+                    </DsPopover.Header>
+                    <DsPopover.Content>
+                        <DsPopover.ContentItem status={<DsStatusBadgeV2 phase="active" label="Active" size="small" />}>
+                            Provisions a new edge device and attaches it to the selected site, including the full
+                            description that the preview truncates.
+                        </DsPopover.ContentItem>
+                        <DsDivider />
+                        <DsPopover.ContentItem headline="Version">2.3.4 (latest)</DsPopover.ContentItem>
+                    </DsPopover.Content>
+                    <DsPopover.Footer>
+                        <DsButtonV3 variant="secondary" size="small" icon="open_in_new">
+                            Open in catalog
+                        </DsButtonV3>
+                    </DsPopover.Footer>
+                </DsPopover.Panel>
+            </DsPopover.Root>;
+  }
+}
+
+### MCP manifest
+const WithTooltip = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <DsPopover.Root
+            side="bottom"
+            align="center"
+            gutter={8}
+            modal={false}
+            defaultOpen={false}
+            onOpenChange={setOpen}>
+            <DsPopover.Trigger>
+                <DsTooltip content="Provision edge · v2.3.4 · Active" disabled={open}>
+                    <DsButtonV3 variant="secondary" icon="account_tree">Provision edge
+                                                </DsButtonV3>
+                </DsTooltip>
+            </DsPopover.Trigger>
+            <DsPopover.Panel>
+                <DsPopover.Header
+                    icon={<DsIcon icon="account_tree" color="action-secondary" />}
+                    actions={<DsPopover.CloseTrigger />}>Provision edge
+                                        </DsPopover.Header>
+                <DsPopover.Content>
+                    <DsPopover.ContentItem status={<DsStatusBadgeV2 phase="active" label="Active" size="small" />}>Provisions a new edge device and attaches it to the selected site, including the full
+                                                    description that the preview truncates.
+                                                </DsPopover.ContentItem>
+                    <DsDivider />
+                    <DsPopover.ContentItem headline="Version">2.3.4 (latest)</DsPopover.ContentItem>
+                </DsPopover.Content>
+                <DsPopover.Footer>
+                    <DsButtonV3 variant="secondary" size="small" icon="open_in_new">Open in catalog
+                                                </DsButtonV3>
+                </DsPopover.Footer>
+            </DsPopover.Panel>
+        </DsPopover.Root>
+    );
+};

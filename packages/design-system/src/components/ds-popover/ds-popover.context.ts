@@ -5,6 +5,8 @@ export interface DsPopoverContextValue {
 	matchAnchorWidth: boolean;
 	registerAnchor: (el: HTMLElement | null) => void;
 	registerContentId: (id: string | undefined) => void;
+	/** An id an outer `asChild` wrapper put on the trigger element; zag looks the trigger up by it. */
+	registerTriggerId: (id: string | undefined) => void;
 	hoverIntent: HoverIntent | null;
 }
 
@@ -12,6 +14,7 @@ export const DsPopoverContext = createContext<DsPopoverContextValue>({
 	matchAnchorWidth: false,
 	registerAnchor: () => undefined,
 	registerContentId: () => undefined,
+	registerTriggerId: () => undefined,
 	hoverIntent: null,
 });
 

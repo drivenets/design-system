@@ -111,3 +111,49 @@ const CustomWidthWithEllipsis = () => <DsTooltip
             },
         },
     }}><DsIcon icon="info" /></DsTooltip>;
+
+## Controlled
+
+### Show code
+{
+  args: {
+    content: 'Opened from outside the trigger.'
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [open, setOpen] = useState(false);
+    return <DsStack direction="row" alignItems="center" gap="var(--sm)">
+                <DsButtonV3 variant="secondary" size="small" onClick={() => setOpen(!open)}>
+                    {open ? 'Hide tooltip' : 'Show tooltip'}
+                </DsButtonV3>
+                <DsTooltip {...args} open={open} onOpenChange={setOpen}>
+                    <DsIcon icon="info" />
+                </DsTooltip>
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const Controlled = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <DsStack direction="row" alignItems="center" gap="var(--sm)">
+            <DsButtonV3 variant="secondary" size="small" onClick={() => setOpen(!open)}>
+                {open ? 'Hide tooltip' : 'Show tooltip'}
+            </DsButtonV3>
+            <DsTooltip
+                content="Opened from outside the trigger."
+                open={open}
+                onOpenChange={setOpen}>
+                <DsIcon icon="info" />
+            </DsTooltip>
+        </DsStack>
+    );
+};
