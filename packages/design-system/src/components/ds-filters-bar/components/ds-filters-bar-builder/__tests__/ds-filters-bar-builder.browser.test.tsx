@@ -185,11 +185,13 @@ describe('DsFiltersBar.Builder', () => {
 	});
 
 	it('uses locale strings', async () => {
-		await page.render(<Harness locale={{ title: 'Constructeur', save: 'Enregistrer', close: 'Fermer' }} />);
+		await page.render(
+			<Harness locale={{ title: 'Build a condition', save: 'Add condition', close: 'Dismiss' }} />,
+		);
 
-		await expect.element(page.getByRole('dialog', { name: 'Constructeur' })).toBeVisible();
-		await expect.element(choice('Enregistrer')).toBeVisible();
-		await expect.element(choice('Fermer')).toBeVisible();
+		await expect.element(page.getByRole('dialog', { name: 'Build a condition' })).toBeVisible();
+		await expect.element(choice('Add condition')).toBeVisible();
+		await expect.element(choice('Dismiss')).toBeVisible();
 	});
 
 	it('stays closed while the view is locked', async () => {

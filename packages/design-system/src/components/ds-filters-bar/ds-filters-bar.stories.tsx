@@ -272,19 +272,19 @@ export const QueryBuilderLocalized: Story = {
 					<DsFiltersBar.Builder
 						suggestedFields={['input', 'output', 'status', 'tag']}
 						locale={{
-							title: 'Constructeur de requête',
-							close: 'Fermer',
-							clear: 'Effacer la sélection',
-							searchField: 'Rechercher un champ',
-							selectField: 'Choisir un champ',
-							searchSubfield: 'Rechercher un sous-champ',
-							selectSubfield: 'Choisir un sous-champ',
-							searchOperator: 'Rechercher un opérateur',
-							selectOperator: 'Choisir un opérateur',
-							searchValue: 'Rechercher une valeur',
-							selectValue: 'Choisir une valeur',
-							valuePlaceholder: 'Valeur',
-							save: 'Enregistrer la requête',
+							title: 'Build a condition',
+							close: 'Dismiss',
+							clear: 'Start over',
+							searchField: 'Find a field',
+							selectField: 'Pick a field',
+							searchSubfield: 'Find a part',
+							selectSubfield: 'Pick a part',
+							searchOperator: 'Find an operator',
+							selectOperator: 'Pick an operator',
+							searchValue: 'Find a value',
+							selectValue: 'Pick a value',
+							valuePlaceholder: 'Enter a value',
+							save: 'Add condition',
 						}}
 					/>
 				</DsFiltersBar.View>
