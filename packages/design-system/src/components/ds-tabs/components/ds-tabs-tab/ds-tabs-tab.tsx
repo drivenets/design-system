@@ -12,7 +12,9 @@ export const DsTabsTab = ({
 	disabled,
 	icon,
 	label,
+	selectedCount,
 	badge,
+	pinned,
 	menuActionItems,
 	onMenuActionSelect,
 	tooltip,
@@ -49,7 +51,18 @@ export const DsTabsTab = ({
 						</div>
 					)}
 					{label && <span className={styles.label}>{label}</span>}
+					{selectedCount !== undefined && (
+						<span className={styles.selectedCount}>
+							<span className={styles.selectedCountDot} aria-hidden />
+							<span className={styles.selectedCountValue}>{selectedCount}</span>
+						</span>
+					)}
 					{badge !== undefined && <div className={styles.badge}>{badge}</div>}
+					{pinned && (
+						<span className={styles.pin}>
+							<DsIcon icon="keep" size="tiny" filled aria-hidden />
+						</span>
+					)}
 					{hasMenuActions && (
 						<div
 							ref={menuTriggerRef}
