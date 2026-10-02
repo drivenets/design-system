@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">602 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/602 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">603 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/603 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -27356,7 +27356,7 @@ rows. Double-click a handle to restore the snapshotted width.</div>
       <div class="badges">
         <label for="c-85-components-tabs-err" class="badge err as-toggle">API error</label>
         <label for="c-85-components-tabs-info" class="badge info as-toggle">1 info</label>
-        <label for="c-85-components-tabs-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-85-components-tabs-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -27789,6 +27789,65 @@ needs contextual actions (edit, duplicate, delete) without leaving the tab bar.<
                         &lt;DsTypography variant=&quot;heading3&quot;&gt;Advanced&lt;/DsTypography&gt;
                         &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Advanced configuration options for power users.
                                                         &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+            &lt;/DsTabs.Root&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Vertical With Counts</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Vertical content parts from `Structure_TabsVerticalContent`: leading icon,
+selected count, total badge, and pin. This is the `DsTabsVerticalV2` layout.</div>
+              <pre><code>const VerticalWithCounts = () =&gt; {
+    const [selected, setSelected] = useState(&#39;status&#39;);
+
+    return (
+        &lt;div className={styles.verticalContainer}&gt;
+            &lt;DsTabs.Root
+                orientation=&quot;vertical&quot;
+                size=&quot;medium&quot;
+                value={selected}
+                onValueChange={(val: string | null) =&gt; setSelected(val ?? &#39;status&#39;)}&gt;
+                &lt;DsTabs.List&gt;
+                    &lt;DsTabs.Tab
+                        value=&quot;status&quot;
+                        label=&quot;Status&quot;
+                        icon=&quot;check_circle&quot;
+                        selectedCount={3}
+                        badge={20}
+                        pinned /&gt;
+                    &lt;DsTabs.Tab value=&quot;running&quot; label=&quot;Running&quot; selectedCount={1} /&gt;
+                    &lt;DsTabs.Tab value=&quot;category&quot; label=&quot;Category&quot; badge={8} /&gt;
+                    &lt;DsTabs.Tab value=&quot;version&quot; label=&quot;Version&quot; disabled /&gt;
+                &lt;/DsTabs.List&gt;
+
+                &lt;DsTabs.Content value=&quot;status&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Status&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;3 selected of 20. The pin keeps this tab at the top.
+                                                        &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+                &lt;DsTabs.Content value=&quot;running&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Running&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+                &lt;DsTabs.Content value=&quot;category&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Category&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+                &lt;DsTabs.Content value=&quot;version&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Version&lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
@@ -34841,7 +34900,7 @@ export type DsStackProps = ComponentProps&lt;typeof DsStack&gt;;
       <div class="badges">
         <label for="c-error-3-components-tabs-err" class="badge err as-toggle">API error</label>
         <label for="c-error-3-components-tabs-info" class="badge info as-toggle">1 info</label>
-        <label for="c-error-3-components-tabs-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-error-3-components-tabs-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -35274,6 +35333,65 @@ needs contextual actions (edit, duplicate, delete) without leaving the tab bar.<
                         &lt;DsTypography variant=&quot;heading3&quot;&gt;Advanced&lt;/DsTypography&gt;
                         &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;Advanced configuration options for power users.
                                                         &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+            &lt;/DsTabs.Root&gt;
+        &lt;/div&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Vertical With Counts</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Vertical content parts from `Structure_TabsVerticalContent`: leading icon,
+selected count, total badge, and pin. This is the `DsTabsVerticalV2` layout.</div>
+              <pre><code>const VerticalWithCounts = () =&gt; {
+    const [selected, setSelected] = useState(&#39;status&#39;);
+
+    return (
+        &lt;div className={styles.verticalContainer}&gt;
+            &lt;DsTabs.Root
+                orientation=&quot;vertical&quot;
+                size=&quot;medium&quot;
+                value={selected}
+                onValueChange={(val: string | null) =&gt; setSelected(val ?? &#39;status&#39;)}&gt;
+                &lt;DsTabs.List&gt;
+                    &lt;DsTabs.Tab
+                        value=&quot;status&quot;
+                        label=&quot;Status&quot;
+                        icon=&quot;check_circle&quot;
+                        selectedCount={3}
+                        badge={20}
+                        pinned /&gt;
+                    &lt;DsTabs.Tab value=&quot;running&quot; label=&quot;Running&quot; selectedCount={1} /&gt;
+                    &lt;DsTabs.Tab value=&quot;category&quot; label=&quot;Category&quot; badge={8} /&gt;
+                    &lt;DsTabs.Tab value=&quot;version&quot; label=&quot;Version&quot; disabled /&gt;
+                &lt;/DsTabs.List&gt;
+
+                &lt;DsTabs.Content value=&quot;status&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;heading3&quot;&gt;Status&lt;/DsTypography&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot; color=&quot;secondary&quot;&gt;3 selected of 20. The pin keeps this tab at the top.
+                                                        &lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+                &lt;DsTabs.Content value=&quot;running&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Running&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+                &lt;DsTabs.Content value=&quot;category&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Category&lt;/DsTypography&gt;
+                    &lt;/div&gt;
+                &lt;/DsTabs.Content&gt;
+                &lt;DsTabs.Content value=&quot;version&quot;&gt;
+                    &lt;div className={styles.content}&gt;
+                        &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Version&lt;/DsTypography&gt;
                     &lt;/div&gt;
                 &lt;/DsTabs.Content&gt;
             &lt;/DsTabs.Root&gt;
