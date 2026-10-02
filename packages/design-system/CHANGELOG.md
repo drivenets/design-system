@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.23.0
+
+### Minor Changes
+
+- ffc55a9: Update vertical `DsTabs` to the V2 design, and add `selectedCount` and `pinned` to `DsTabs.Tab`.
+
 ## 0.22.0
 
 ### Minor Changes
