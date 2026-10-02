@@ -15,7 +15,7 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 				component: `
 **Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
 \`Search\`, the add-filter button with its filters dialog and the search chips in \`Conditions\`,
-and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+the query builder, and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
 directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
@@ -193,6 +193,102 @@ export const Default: Story = {
 					<DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
 				</DsFiltersBar.PinnedGroup>
 			</DsFiltersBar.Pinned>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * Guided condition: suggested fields, then — depending on the field — a subfield, an operator and a
+ * value. **Save query** appends one condition and clears the draft. Closing returns to the filters view.
+ */
+export const QueryBuilder: Story = {
+	args: {
+		defaultExpanded: true,
+		defaultView: 'builder',
+		fields: [
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [
+					{
+						type: 'text',
+						id: 'name',
+						label: 'Name',
+						operators: [
+							{ value: '~', label: 'Contains' },
+							{ value: '=', label: 'Equal' },
+							{ value: '!=', label: 'Not equal' },
+						],
+					},
+					{ type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'Equal' }] },
+					{ type: 'text', id: 'type', label: 'Type', operators: [{ value: '=', label: 'Equal' }] },
+					{ type: 'text', id: 'version', label: 'Version', operators: [{ value: '=', label: 'Equal' }] },
+				],
+			},
+			{ type: 'text', id: 'output', label: 'Output', operators: [{ value: '=', label: 'Equal' }] },
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'pending', label: 'Pending' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'tag',
+				label: 'Tag',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [
+					{ value: 'core', label: 'Core' },
+					{ value: 'edge', label: 'Edge' },
+				],
+			},
+		],
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.View value="builder">
+					<DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
+				</DsFiltersBar.View>
+			</DsFiltersBar.Toolbar>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * Same dialog with every built-in string replaced.
+ */
+export const QueryBuilderLocalized: Story = {
+	...QueryBuilder,
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.View value="builder">
+					<DsFiltersBar.Builder
+						suggestedFields={['input', 'output', 'status', 'tag']}
+						locale={{
+							title: 'Build a condition',
+							close: 'Dismiss',
+							clear: 'Start over',
+							searchField: 'Find a field',
+							selectField: 'Pick a field',
+							searchSubfield: 'Find a part',
+							selectSubfield: 'Pick a part',
+							searchOperator: 'Find an operator',
+							selectOperator: 'Pick an operator',
+							searchValue: 'Find a value',
+							selectValue: 'Pick a value',
+							valuePlaceholder: 'Enter a value',
+							save: 'Add condition',
+						}}
+					/>
+				</DsFiltersBar.View>
+			</DsFiltersBar.Toolbar>
 		</DsFiltersBar.Root>
 	),
 };
