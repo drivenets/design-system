@@ -1,7 +1,9 @@
 @use '../../../../styles/typography';
 
 $tab-border-width: 1px;
+$vertical-border-width: 2px;
 $badge-height: 20px;
+$selected-count-dot-size: 6px;
 $menu-content-width: 142px;
 $transition-duration: 0.2s;
 $disabled-opacity: 0.5;
@@ -52,6 +54,10 @@ $disabled-opacity: 0.5;
 		cursor: not-allowed;
 		opacity: $disabled-opacity;
 		color: var(--font-disabled);
+
+		.selectedCountDot {
+			background: var(--icon-disabled);
+		}
 	}
 
 	&[aria-selected='true'] {
@@ -100,24 +106,73 @@ $disabled-opacity: 0.5;
 		padding: var(--2xs) var(--sm);
 	}
 
-	// Vertical orientation + size variants
 	[data-orientation='vertical'] & {
+		box-sizing: border-box;
 		flex-direction: row;
 		justify-content: flex-start;
 		gap: var(--3xs);
 		width: 100%;
-	}
-
-	[data-orientation='vertical'][data-size='medium'] & {
-		padding: var(--sm) var(--standard);
-		padding-left: var(--xs);
+		height: var(--2xl);
+		padding: 0 var(--xs) 0 var(--standard);
+		border-width: $vertical-border-width;
 		border-radius: var(--3xs) 0 0 var(--3xs);
+
+		&:hover:not(:disabled):not([aria-selected='true']),
+		&:active:not(:disabled):not([aria-selected='true']) {
+			background: var(--background-secondary-hover);
+		}
+
+		&:focus-visible:not(:disabled):not([aria-selected='true']) {
+			border-color: var(--border-action-secondary);
+			background: var(--background-secondary-hover);
+			outline: none;
+		}
+
+		&:disabled {
+			opacity: 1;
+			color: var(--font-disabled);
+		}
+
+		&[aria-selected='true'] {
+			@include typography.body-sm-reg;
+			color: var(--font-main);
+			background: var(--background-active-status);
+			border-right-color: var(--border-action-primary);
+
+			.icon {
+				color: var(--icon-main);
+			}
+
+			.label {
+				@include typography.body-sm-reg;
+			}
+
+			.badge {
+				background: var(--background-secondary);
+				color: var(--font-main);
+			}
+
+			&:hover:not(:disabled),
+			&:active:not(:disabled) {
+				background: var(--background-action-secondary-hover);
+			}
+
+			&:focus-visible:not(:disabled) {
+				border-color: var(--border-action-primary-hover);
+				background: var(--background-action-secondary-hover);
+				outline: none;
+			}
+
+			&:disabled {
+				color: var(--font-disabled);
+				background: var(--background-active-status);
+				border-right-color: var(--border-action-primary);
+			}
+		}
 	}
 
 	[data-orientation='vertical'][data-size='small'] & {
-		padding: var(--xs) var(--standard);
-		padding-left: var(--xs);
-		border-radius: var(--3xs) 0 0 var(--3xs);
+		height: var(--xl);
 	}
 }
 
@@ -182,6 +237,34 @@ $disabled-opacity: 0.5;
 		cursor: not-allowed;
 		pointer-events: none;
 	}
+}
+
+.selectedCount {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--3xs);
+	flex-shrink: 0;
+}
+
+.selectedCountDot {
+	width: $selected-count-dot-size;
+	height: $selected-count-dot-size;
+	border-radius: 50%;
+	background: var(--icon-action);
+	flex-shrink: 0;
+}
+
+.selectedCountValue {
+	@include typography.body-xs-md;
+	color: inherit;
+}
+
+.pin {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	color: inherit;
 }
 
 .badge {

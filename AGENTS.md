@@ -171,6 +171,7 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 - [`deslop`](.agents/skills/deslop/SKILL.md) — "clean up this code"; remove AI slop, fix style
 - [`get-pr-comments`](.agents/skills/get-pr-comments/SKILL.md) — "get PR comments"; summarize active PR review comments
 - [`release-summary`](.agents/skills/release-summary/SKILL.md) — "summarize the release"; Slack-ready announcement from the latest GitHub Releases batch
+- [`release`](.agents/skills/release/SKILL.md) — "release the design system"; close/reopen, approve and merge the release PR, wait for publish, post `release-summary` to Slack
 
 ### Engineering
 
