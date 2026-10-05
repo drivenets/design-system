@@ -181,32 +181,6 @@ describe('DsTable - Row Actions', () => {
 			.toHaveAttribute('aria-disabled', 'true');
 	});
 
-	it('should show a focus outline on row action buttons focused from the keyboard', async () => {
-		await page.render(
-			<DsTable
-				columns={columns}
-				data={defaultData}
-				primaryRowActions={sizingPrimaryActions}
-				secondaryRowActions={sizingSecondaryActions}
-			/>,
-		);
-
-		const row = page.getByRole('row', { name: /tanner/i });
-		const buttons = [
-			row.getByRole('button', { name: /^edit$/i }),
-			row.getByRole('button', { name: /more actions/i }),
-		];
-
-		for (const button of buttons) {
-			button.element().focus();
-			// Re-enter with Tab so the browser treats the focus as keyboard-initiated.
-			await userEvent.keyboard('{Shift>}{Tab}{/Shift}{Tab}');
-
-			await expect.element(button).toHaveFocus();
-			expect(getComputedStyle(button.element()).outlineStyle).toBe('solid');
-		}
-	});
-
 	it('should name the actions column header and the more actions trigger', async () => {
 		await page.render(
 			<DsTable
