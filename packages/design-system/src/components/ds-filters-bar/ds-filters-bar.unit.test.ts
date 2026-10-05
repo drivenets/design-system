@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import type { DsFilterCondition, DsFilterField, DsFilterPin } from './ds-filters-bar.types';
+import type {
+	DsFilterCondition,
+	DsFilterField,
+	DsFilterFieldCondition,
+	DsFilterPin,
+} from './ds-filters-bar.types';
 import {
 	appendCondition,
+	conditionDialogField,
+	conditionOperators,
+	conditionText,
 	createConditionId,
 	createSearchCondition,
 	describeCondition,
@@ -245,6 +253,106 @@ const DIALOG_FIELDS: DsFilterField[] = [
 		],
 	},
 ];
+
+describe('conditionText', () => {
+	it('joins the field path, the operator in words and the value', () => {
+		expect(
+			conditionText({
+				fieldPath: ['Input', 'Name'],
+				operator: 'contains',
+				operatorSymbol: '~',
+				value: 'WF456',
+			}),
+		).toBe('Input Name contains WF456');
+	});
+
+	it('is the text alone for a search', () => {
+		expect(conditionText({ fieldPath: [], value: 'WF456' })).toBe('WF456');
+	});
+});
+
+describe('conditionOperators', () => {
+	const fieldCondition = (overrides: Partial<DsFilterFieldCondition>): DsFilterFieldCondition => ({
+		kind: 'field',
+		id: '1',
+		field: 'status',
+		operator: '=',
+		value: ['active'],
+		...overrides,
+	});
+
+	it("returns the field's operators when there are several", () => {
+		expect(conditionOperators(fieldCondition({}), FIELDS)).toEqual([EQUALS, NOT_EQUALS]);
+	});
+
+	it("returns a compound subfield's operators", () => {
+		const fields: DsFilterField[] = [
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [{ type: 'text', id: 'vendor', label: 'Vendor', operators: [EQUALS, NOT_EQUALS] }],
+			},
+		];
+
+		expect(
+			conditionOperators(fieldCondition({ field: 'input', subfield: 'vendor', value: 'cisco' }), fields),
+		).toEqual([EQUALS, NOT_EQUALS]);
+	});
+
+	it('returns null for a single operator', () => {
+		expect(
+			conditionOperators(fieldCondition({ field: 'parents', operator: '>', value: 3 }), FIELDS),
+		).toBeNull();
+	});
+
+	it('returns null for a field or subfield missing from fields', () => {
+		expect(conditionOperators(fieldCondition({ field: 'removed' }), FIELDS)).toBeNull();
+		expect(
+			conditionOperators(fieldCondition({ field: 'input', subfield: 'removed', value: 'x' }), FIELDS),
+		).toBeNull();
+	});
+
+	it('returns null for a range, which only goes with =', () => {
+		const fields: DsFilterField[] = [
+			{ type: 'number', id: 'parents', label: 'Parents', operators: [EQUALS, NOT_EQUALS] },
+		];
+
+		expect(
+			conditionOperators(fieldCondition({ field: 'parents', value: { from: 1, to: 5 } }), fields),
+		).toBeNull();
+	});
+});
+
+describe('conditionDialogField', () => {
+	it('returns the enum field the filters dialog can edit', () => {
+		const condition: DsFilterCondition = {
+			kind: 'field',
+			id: '1',
+			field: 'status',
+			operator: '!=',
+			value: ['active'],
+		};
+
+		expect(conditionDialogField(condition, FIELDS)).toBe('status');
+	});
+
+	it('returns undefined for conditions the dialog has no tab for', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'search', id: '1', text: 'status' },
+			{ kind: 'field', id: '2', field: 'parents', operator: '>', value: 3 },
+			{ kind: 'field', id: '3', field: 'input', subfield: 'name', operator: '~', value: 'WF' },
+			{ kind: 'field', id: '4', field: 'removed', operator: '=', value: ['x'] },
+		];
+
+		expect(conditions.map((condition) => conditionDialogField(condition, FIELDS))).toEqual([
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+		]);
+	});
+});
 
 describe('filtersDialogFields', () => {
 	it('keeps top-level enum fields in order and skips compound subfields', () => {

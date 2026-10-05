@@ -28,3 +28,31 @@ $search-width: 240px;
 	width: $search-width;
 	min-width: 0;
 }
+
+.operatorTrigger {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--4xs);
+	padding: 0 var(--3xs);
+	border: 1px solid var(--border-secondary-hover);
+	border-radius: 4px;
+	background: transparent;
+	color: var(--font-main);
+	font: inherit;
+	cursor: pointer;
+	transition: border-color 0.2s;
+
+	&:hover,
+	&[data-state='open'] {
+		border-color: var(--border-action-primary);
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: 1px;
+	}
+}
+
+.operatorText {
+	color: var(--font-main);
+}

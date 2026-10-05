@@ -10,6 +10,7 @@ import {
 	type DsFilterEnumOperator,
 	type DsFilterField,
 	type DsFilterFieldCondition,
+	type DsFilterOperator,
 	type DsFilterOption,
 	type DsFilterPin,
 	type DsFilterRange,
@@ -96,7 +97,7 @@ const RANGE_SEPARATOR = ' – ';
 const labelFor = (options: ReadonlyArray<DsFilterOption>, value: string) =>
 	options.find((option) => option.value === value)?.label ?? value;
 
-const isRange = (value: DsFilterValue): value is DsFilterRange<number> | DsFilterRange<string> =>
+export const isRange = (value: DsFilterValue): value is DsFilterRange<number> | DsFilterRange<string> =>
 	typeof value === 'object' && 'from' in value;
 
 const formatValue = (value: DsFilterValue, field: DsFilterScalarField | undefined): string => {
@@ -149,6 +150,38 @@ export const describeCondition = (
 	};
 };
 
+/**
+ * One line naming the whole condition, for example `Input Name contains WF456`, so two conditions on
+ * the same field stay distinguishable to screen readers
+ */
+export const conditionText = ({ fieldPath, operator, value }: DsFilterConditionDescription): string =>
+	[...fieldPath, operator, value].filter(Boolean).join(' ');
+
+const MIN_EDITABLE_OPERATORS = 2;
+
+/**
+ * Operators the condition can switch between in place, or `null` when there is nothing to pick: a
+ * field or subfield missing from `fields`, a single operator, or a range, which only goes with `=`.
+ */
+export const conditionOperators = (
+	condition: DsFilterFieldCondition,
+	fields: ReadonlyArray<DsFilterField>,
+): ReadonlyArray<DsFilterOperator> | null => {
+	if (isRange(condition.value)) {
+		return null;
+	}
+
+	const field = fields.find((item) => item.id === condition.field);
+	const scalarField =
+		field?.type === 'compound' ? field.subfields.find((item) => item.id === condition.subfield) : field;
+
+	if (!scalarField || scalarField.operators.length < MIN_EDITABLE_OPERATORS) {
+		return null;
+	}
+
+	return scalarField.operators;
+};
+
 export const filtersDialogFields = (fields: ReadonlyArray<DsFilterField>): ReadonlyArray<DsFilterEnumField> =>
 	fields.filter((field): field is DsFilterEnumField => field.type === 'enum' && field.options.length > 0);
 
@@ -171,6 +204,16 @@ const isEnumConditionOf = (
 	!condition.subfield &&
 	isEnumOperator(condition.operator) &&
 	Array.isArray(condition.value);
+
+/**
+ * Id of the filters dialog field that can edit the condition, or `undefined` when the dialog has no
+ * tab for it
+ */
+export const conditionDialogField = (
+	condition: DsFilterCondition,
+	fields: ReadonlyArray<DsFilterField>,
+): string | undefined =>
+	filtersDialogFields(fields).find((field) => isEnumConditionOf(condition, field.id))?.id;
 
 export const toFiltersDialogValue = (
 	fields: ReadonlyArray<DsFilterField>,

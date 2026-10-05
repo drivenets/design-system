@@ -84,6 +84,10 @@ export interface DsFiltersBarFiltersDialogProps {
 	 * May be sparse, in any order
 	 */
 	value: DsFiltersBarFiltersDialogValue;
+	/**
+	 * Field whose tab is selected each time the dialog opens. Falls back to the first field.
+	 */
+	initialField?: string;
 	locale?: DsFiltersBarFiltersDialogLocale;
 	className?: string;
 	style?: CSSProperties;

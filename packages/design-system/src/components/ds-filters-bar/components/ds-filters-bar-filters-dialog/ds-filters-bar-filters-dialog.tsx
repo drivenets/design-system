@@ -185,6 +185,7 @@ export const FiltersDialog = ({
 	open,
 	fields,
 	value,
+	initialField,
 	locale: localeProp,
 	className,
 	style,
@@ -193,8 +194,9 @@ export const FiltersDialog = ({
 	onSave,
 }: DsFiltersBarFiltersDialogProps) => {
 	const locale: Locale = { ...defaultDsFiltersBarFiltersDialogLocale, ...localeProp };
+	const openingFieldId = initialField ?? fields[0]?.id ?? '';
 
-	const [selectedFieldId, setSelectedFieldId] = useState(fields[0]?.id ?? '');
+	const [selectedFieldId, setSelectedFieldId] = useState(openingFieldId);
 	const [search, setSearch] = useState('');
 	const [wasOpen, setWasOpen] = useState(open);
 
@@ -202,7 +204,7 @@ export const FiltersDialog = ({
 		setWasOpen(open);
 
 		if (open) {
-			setSelectedFieldId(fields[0]?.id ?? '');
+			setSelectedFieldId(openingFieldId);
 			setSearch('');
 		}
 	}

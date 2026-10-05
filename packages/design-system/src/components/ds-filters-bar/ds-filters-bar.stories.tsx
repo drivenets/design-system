@@ -14,8 +14,8 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 			description: {
 				component: `
 **Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
-\`Search\`, the add-filter button with its filters dialog and the search chips in \`Conditions\`,
-and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+\`Search\`, \`Conditions\` (the add-filter button with its filters dialog, and a chip per
+condition) and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
 directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
@@ -293,6 +293,118 @@ export const Search: Story = {
 			},
 		],
 		defaultConditions: [{ kind: 'search', id: 'c1', text: 'AAA' }],
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.Search />
+				<DsFiltersBar.View value="filters">
+					<DsFiltersBar.Conditions />
+				</DsFiltersBar.View>
+			</DsFiltersBar.Toolbar>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * Every condition shows as a chip after the "+" button: the field, its operator and the value, with
+ * \`Input › Name\` for a compound field's subfield. When the field has more than one operator, the
+ * operator is a menu that switches it in place. A single operator or a field missing from \`fields\`
+ * shows as text, and a range shows none, since it means "within". Clicking an enum chip opens the
+ * filters dialog on that field; × removes a condition. While an Advanced query is the source, the
+ * chips and the "+" button are hidden.
+ */
+export const SelectedFilters: Story = {
+	args: {
+		defaultExpanded: true,
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '!=', label: 'not equals', symbol: '≠' },
+				],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'deprecated', label: 'Deprecated' },
+					{ value: 'pending', label: 'Pending' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'lastRunResult',
+				label: 'Last run result',
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '!=', label: 'not equals', symbol: '≠' },
+				],
+				options: [
+					{ value: 'succeeded', label: 'Succeeded' },
+					{ value: 'failed', label: 'Failed' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'trigger',
+				label: 'Trigger',
+				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				options: [
+					{ value: 'manual', label: 'Manual' },
+					{ value: 'scheduled', label: 'Scheduled' },
+				],
+			},
+			{
+				type: 'number',
+				id: 'parents',
+				label: 'Parents',
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '>', label: 'greater than', symbol: '>' },
+					{ value: '<', label: 'less than', symbol: '<' },
+				],
+			},
+			{
+				type: 'date',
+				id: 'lastRun',
+				label: 'Last run',
+				operators: [
+					{ value: '=', label: 'is', symbol: '=' },
+					{ value: '>', label: 'after', symbol: '>' },
+					{ value: '<', label: 'before', symbol: '<' },
+				],
+				presets: [
+					{ value: 'today', label: 'Today' },
+					{ value: 'last7Days', label: 'Last 7 days' },
+				],
+			},
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [
+					{
+						type: 'text',
+						id: 'name',
+						label: 'Name',
+						operators: [
+							{ value: '~', label: 'contains' },
+							{ value: '!~', label: 'does not contain' },
+						],
+					},
+				],
+			},
+		],
+		defaultConditions: [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['active', 'pending'] },
+			{ kind: 'field', id: 'c2', field: 'lastRunResult', operator: '!=', value: ['succeeded'] },
+			{ kind: 'field', id: 'c3', field: 'trigger', operator: '=', value: ['scheduled'] },
+			{ kind: 'field', id: 'c4', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
+			{ kind: 'field', id: 'c5', field: 'lastRun', operator: '>', value: 'last7Days' },
+			{ kind: 'field', id: 'c6', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
+			{ kind: 'search', id: 'c7', text: 'AAA' },
+		],
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>

@@ -61,13 +61,21 @@ const entry = (
 
 interface HarnessProps {
 	initialValue?: DsFiltersBarFiltersDialogValue;
+	initialField?: string;
 	locale?: DsFiltersBarFiltersDialogLocale;
 	onChange?: (changed: DsFiltersBarFiltersDialogEntry, value: DsFiltersBarFiltersDialogValue) => void;
 	onSave?: (value: DsFiltersBarFiltersDialogValue) => void;
 	onOpenChange?: (open: boolean) => void;
 }
 
-const Harness = ({ initialValue = [], locale, onChange, onSave, onOpenChange }: HarnessProps) => {
+const Harness = ({
+	initialValue = [],
+	initialField,
+	locale,
+	onChange,
+	onSave,
+	onOpenChange,
+}: HarnessProps) => {
 	const [open, setOpen] = useState(true);
 	const [value, setValue] = useState(initialValue);
 
@@ -80,6 +88,7 @@ const Harness = ({ initialValue = [], locale, onChange, onSave, onOpenChange }: 
 				open={open}
 				fields={FIELDS}
 				value={value}
+				initialField={initialField}
 				locale={locale}
 				onOpenChange={(next) => {
 					onOpenChange?.(next);
@@ -144,6 +153,26 @@ describe('DsFiltersBar.FiltersDialog', () => {
 
 		await expect.element(tab('Status')).toHaveAttribute('aria-selected', 'true');
 		await expect.element(page.getByRole('textbox', { name: 'Search Status' })).toHaveValue('');
+	});
+
+	it('selects the initial field tab on every open', async () => {
+		await page.render(<Harness initialField="workflow" />);
+
+		await expect.element(tab('Workflow')).toHaveAttribute('aria-selected', 'true');
+		await expect.element(optionCheckbox('Deploy')).toBeVisible();
+
+		await tab('Status').click();
+		await page.getByRole('button', { name: 'Close' }).click();
+		await page.getByRole('button', { name: 'Open filters' }).click();
+
+		await expect.element(tab('Workflow')).toHaveAttribute('aria-selected', 'true');
+	});
+
+	it('falls back to the first tab for an unknown initial field', async () => {
+		await page.render(<Harness initialField="removed" />);
+
+		await expect.element(tab('Status')).toHaveAttribute('aria-selected', 'true');
+		await expect.element(page.getByRole('group', { name: 'Status' })).toBeVisible();
 	});
 
 	it('lists the field operators and defaults to the first one without a value entry', async () => {
