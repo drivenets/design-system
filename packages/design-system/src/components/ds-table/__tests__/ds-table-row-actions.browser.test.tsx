@@ -4,6 +4,10 @@ import DsTable from '../ds-table';
 import type { Action } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 
+// Menus open with a clip-path animation; items below the first aren't hit-testable until it ends.
+const waitForMenuAnimations = () =>
+	Promise.all(document.getAnimations().map((animation) => animation.finished));
+
 describe('DsTable - Row Actions', () => {
 	it('should reorder rows when dragging the handle past the next row', async () => {
 		const onOrderChange = vi.fn();
@@ -222,6 +226,170 @@ describe('DsTable - Row Actions', () => {
 		const firstDataRow = page.getByRole('row').nth(1);
 		await firstDataRow.hover();
 		await expect.element(firstDataRow.getByRole('button', { name: /more actions/i })).toBeVisible();
+	});
+
+	it('should call secondary action onClick with the row data without triggering row click', async () => {
+		const onRowClick = vi.fn();
+		const onDetails = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				onRowClick={onRowClick}
+				secondaryRowActions={[{ icon: 'info', label: 'Details', onClick: onDetails }]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		await tannerRow.hover();
+		await tannerRow.getByRole('button', { name: /more actions/i }).click();
+		await page.getByRole('menuitem', { name: /details/i }).click();
+
+		expect(onDetails).toHaveBeenCalledExactlyOnceWith(defaultData[0]);
+		expect(onRowClick).not.toHaveBeenCalled();
+	});
+
+	it('should open a nested submenu and call the child action with the row data', async () => {
+		const onRowClick = vi.fn();
+		const onCode = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				onRowClick={onRowClick}
+				secondaryRowActions={[
+					{
+						icon: 'code',
+						label: 'Review PR',
+						children: [
+							{ label: 'Visual', onClick: vi.fn() },
+							{ label: 'Code', onClick: onCode },
+						],
+					},
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		await tannerRow.hover();
+		await tannerRow.getByRole('button', { name: /more actions/i }).click();
+		await page.getByRole('menuitem', { name: /review pr/i }).click();
+		await expect.element(page.getByRole('menuitem', { name: /visual/i })).toBeVisible();
+		await waitForMenuAnimations();
+		await page.getByRole('menuitem', { name: /^code$/i }).click();
+
+		expect(onCode).toHaveBeenCalledExactlyOnceWith(defaultData[0]);
+		expect(onRowClick).not.toHaveBeenCalled();
+	});
+
+	it('should hide nested actions per-row and omit parents with no visible children', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				secondaryRowActions={[
+					{ icon: 'info', label: 'Details', onClick: vi.fn() },
+					{
+						label: 'Review PR',
+						children: [
+							{
+								label: 'Visual',
+								hidden: (data: Person) => data.firstName === 'Tanner',
+								onClick: vi.fn(),
+							},
+						],
+					},
+					{
+						label: 'Filter by workflow',
+						children: [
+							{ label: 'All versions', onClick: vi.fn() },
+							{
+								label: 'Custom',
+								hidden: (data: Person) => data.firstName === 'Tanner',
+								onClick: vi.fn(),
+							},
+						],
+					},
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		await tannerRow.hover();
+		await tannerRow.getByRole('button', { name: /more actions/i }).click();
+
+		await expect.element(page.getByRole('menuitem', { name: /details/i })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /review pr/i })).not.toBeInTheDocument();
+
+		await page.getByRole('menuitem', { name: /filter by workflow/i }).click();
+		await expect.element(page.getByRole('menuitem', { name: /all versions/i })).toBeVisible();
+		await expect.element(page.getByRole('menuitem', { name: /custom/i })).not.toBeInTheDocument();
+	});
+
+	it('should show the tooltip on a disabled action and not call onClick', async () => {
+		const onDelete = vi.fn();
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				secondaryRowActions={[
+					{
+						icon: 'delete_outline',
+						label: 'Delete',
+						disabled: () => true,
+						tooltip: (data: Person) => `No permission to delete ${data.firstName}`,
+						onClick: onDelete,
+					},
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		await tannerRow.hover();
+		await tannerRow.getByRole('button', { name: /more actions/i }).click();
+
+		const deleteItem = page.getByRole('menuitem', { name: /delete/i });
+		await expect.element(deleteItem).toHaveAttribute('aria-disabled', 'true');
+
+		await deleteItem.hover();
+		await expect.element(page.getByRole('tooltip', { name: 'No permission to delete Tanner' })).toBeVisible();
+
+		await deleteItem.click({ force: true });
+		expect(onDelete).not.toHaveBeenCalled();
+	});
+
+	it('should show the tooltip on a disabled parent and not open its submenu', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				secondaryRowActions={[
+					{
+						icon: 'code',
+						label: 'Review PR',
+						disabled: () => true,
+						tooltip: 'No open pull request',
+						children: [{ label: 'Visual', onClick: vi.fn() }],
+					},
+				]}
+			/>,
+		);
+
+		const tannerRow = page.getByRole('row').nth(1);
+		await tannerRow.hover();
+		await tannerRow.getByRole('button', { name: /more actions/i }).click();
+
+		const reviewItem = page.getByRole('menuitem', { name: /review pr/i });
+		await expect.element(reviewItem).toHaveAttribute('aria-disabled', 'true');
+
+		await reviewItem.hover();
+		await expect.element(page.getByRole('tooltip', { name: 'No open pull request' })).toBeVisible();
+
+		await reviewItem.click({ force: true });
+		await expect.element(page.getByRole('menuitem', { name: /visual/i })).not.toBeInTheDocument();
 	});
 
 	it('should show bulk actions when rows are selected', async () => {

@@ -1,3 +1,5 @@
+$search-width: 240px;
+
 .root {
 	display: flex;
 	flex-direction: column;
@@ -19,5 +21,10 @@
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--xs);
+	min-width: 0;
+}
+
+.search {
+	width: $search-width;
 	min-width: 0;
 }

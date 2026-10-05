@@ -1,5 +1,29 @@
 # @drivenets/design-system
 
+## 0.22.0
+
+### Minor Changes
+
+- 5431dd1: Add the search field and search chips to "DsFiltersBar"
+- 328dee3: Make `DsPopover` and `DsTooltip` controllable and composable on a shared trigger
+- 96d963a: Add nested submenus (`children`) and reason tooltips on disabled items to `secondaryRowActions` in `DsTable`.
+
+### Patch Changes
+
+- 70dec90: Downgrade ark-ui to 5.37.2 and zag-js to 1.41.2 (the versions ark-ui 5.37.2 ships with), pinned.
+
+## 0.21.0
+
+### Minor Changes
+
+- da76266: Add query parsing, validation, and syntax help to "DsFiltersBar.Query"
+
+### Patch Changes
+
+- 9c4c26e: Fix `DsCheckbox` size to match Figma
+- f386344: Fix `DsDrawer` flashing its close animation on mount.
+- da76266: Fix a second click reopening "DsPopover" when it opens on hover
+
 ## 0.20.0
 
 ### Minor Changes

@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { useId, useState } from 'react';
-import { useControlled } from '../../utils/use-controlled';
 import {
 	Builder,
 	ClearAll,
@@ -17,7 +16,7 @@ import {
 	View,
 	ViewSwitch,
 } from './components';
-import { DsFiltersBarContext } from './ds-filters-bar.context';
+import { DsFiltersBarContext, type DsFiltersBarSearchHandle } from './ds-filters-bar.context';
 import styles from './ds-filters-bar.module.scss';
 import {
 	defaultDsFiltersBarLocale,
@@ -34,32 +33,11 @@ import {
 	replaceCondition,
 } from './ds-filters-bar.utils';
 import { serializeFilterQuery } from './query-language';
+import { useReportedState } from './use-reported-state';
 
 const EMPTY_FIELDS = Object.freeze([]);
 const EMPTY_CONDITIONS: ReadonlyArray<DsFilterCondition> = Object.freeze([]);
 const EMPTY_PINS: ReadonlyArray<DsFilterPin> = Object.freeze([]);
-
-/**
- * `useControlled` that also reports changes while uncontrolled, so `defaultX` pairs with `onXChange`
- */
-const useReportedState = <T,>(
-	value: T | undefined,
-	onChange: ((value: T) => void) | undefined,
-	defaultValue: T,
-) => {
-	const [current, setCurrent] = useControlled(value, onChange, defaultValue);
-
-	const set = (next: T) => {
-		setCurrent(next);
-
-		// While controlled, `setCurrent` already is `onChange`.
-		if (value === undefined) {
-			onChange?.(next);
-		}
-	};
-
-	return [current, set] as const;
-};
 
 const Root = ({
 	fields = EMPTY_FIELDS,
@@ -92,6 +70,7 @@ const Root = ({
 	const toolbarId = useId();
 	const locale = { ...defaultDsFiltersBarLocale, ...localeProp };
 	const [resetRevision, setResetRevision] = useState(0);
+	const [search, registerSearch] = useState<DsFiltersBarSearchHandle | null>(null);
 
 	return (
 		<DsFiltersBarContext.Provider
@@ -121,6 +100,8 @@ const Root = ({
 				},
 				setExpanded,
 				setView,
+				search,
+				registerSearch,
 			}}
 		>
 			<div
