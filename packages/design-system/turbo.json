@@ -15,6 +15,10 @@
 			"outputs": ["storybook-static/**"],
 			"inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/vite-plugin/**"]
 		},
+		"test:visual": {
+			"env": ["PW_WS_ENDPOINT"],
+			"outputs": [".vitest/attachments/**"]
+		},
 		"test:storybook-docs": {
 			"dependsOn": ["build:storybook", "install:playwright"]
 		},

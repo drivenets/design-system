@@ -122,6 +122,15 @@ For visual-only grids (size/variant matrices) that aren't real usage examples:
 - Exclude from the manifest: `tags: ['!manifest']`.
 - Hide the noisy code panel: `parameters: { docs: { canvas: { sourceState: 'none' } } }`.
 
+## Visual tests
+
+Stories tagged `visual` get a **Visual test**: a screenshot of `document.body` at 1280×800, compared with zero tolerance against a committed **Baseline** in `stories/__screenshots__/`. Wired in `.storybook/vitest.visual.setup.ts`; runs in the pinned `linux/amd64` Playwright container (same CPU architecture as CI) so pixels match on every machine.
+
+- **Opt in** — `tags: ['visual']` on the meta (DsTable today). Opt one story out with `tags: ['!visual']`.
+- **Deterministic stories** — no `Math.random()` / `Date.now()` in rendered output; seed data (see `ds-table/stories/common/story-data-generator.ts`). Animations and transitions are frozen globally.
+- **Async data** — `parameters: { chromatic: { delay: 500 } }` waits before the screenshot. `chromatic: { disableSnapshot: true }` skips it. These are Chromatic's own knobs, so they carry over when we migrate.
+- **Run / update** — `pnpm --filter @drivenets/design-system test:visual:server` in one terminal, then `pnpm --filter @drivenets/design-system test:visual --run` (add `-u` to accept changes). Review every changed PNG in the diff before committing. Failure diffs land in `.vitest/attachments/`.
+
 ## AI / MCP manifests
 
 Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI best practices](https://storybook.js.org/docs/ai/best-practices):
@@ -139,4 +148,5 @@ Stories and MDX feed the DS MCP server (`packages/mcp`). Follow [Storybook AI be
 - New component: [component-scaffold](../component-scaffold/SKILL.md)
 - Behavioral tests: [browser-tests](../browser-tests/SKILL.md)
 - Show code / MCP snippet tests: [docs-tests](../docs-tests/SKILL.md)
+- Visual tests decision: [ADR 0007](../../../docs/adr/0007-visual-tests-on-stories-in-pinned-browser.md)
 - React in stories: [react-patterns](../react-patterns/SKILL.md)

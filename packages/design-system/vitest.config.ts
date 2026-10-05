@@ -9,6 +9,8 @@ import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
+const DEFAULT_PLAYWRIGHT_WS_ENDPOINT = 'ws://127.0.0.1:3000/';
+
 export default defineConfig({
 	test: {
 		coverage: {
@@ -100,6 +102,48 @@ export default defineConfig({
 						instances: [{ browser: 'chromium' }],
 					},
 					setupFiles: ['.storybook/vitest.setup.ts'],
+				},
+			},
+			{
+				extends: true,
+				plugins: [
+					storybookTest({
+						configDir: path.join(dirname, '.storybook'),
+						tags: { include: ['visual'] },
+					}),
+				],
+				test: {
+					name: 'storybook-visual',
+					isolate: false,
+					testTimeout: 30000,
+					browser: {
+						enabled: true,
+						headless: true,
+						// The browser runs in the pinned Playwright container (`pnpm test:visual:server`)
+						// so screenshots render identically on every machine.
+						provider: playwright({
+							connectOptions: {
+								wsEndpoint: process.env.PW_WS_ENDPOINT ?? DEFAULT_PLAYWRIGHT_WS_ENDPOINT,
+								exposeNetwork: '<loopback>',
+							},
+						}),
+						instances: [{ browser: 'chromium' }],
+						expect: {
+							toMatchScreenshot: {
+								// A single rendering environment, so no browser/platform suffix.
+								resolveScreenshotPath: ({
+									arg,
+									ext,
+									root,
+									testFileDirectory,
+									testFileName,
+									screenshotDirectory,
+								}) =>
+									path.resolve(root, testFileDirectory, screenshotDirectory, testFileName, `${arg}${ext}`),
+							},
+						},
+					},
+					setupFiles: ['.storybook/vitest.visual.setup.ts'],
 				},
 			},
 			{

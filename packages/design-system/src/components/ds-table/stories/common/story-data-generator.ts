@@ -1,5 +1,11 @@
+import { Faker, en } from '@faker-js/faker';
 import type { SortingState } from '@tanstack/react-table';
 import type { Person, Status } from './story-data';
+
+const STORY_DATA_SEED = 42;
+
+// A dedicated instance, so seeding it doesn't affect other stories that use the global `faker`.
+const faker = new Faker({ locale: en });
 
 export interface GeneratedDataResult {
 	data: Person[];
@@ -32,6 +38,9 @@ export const generatePersonData = (
 	];
 	const statuses: Status[] = ['single', 'relationship', 'complicated'];
 
+	// Re-seed on every call so each page and sort order sees the same rows (stable screenshots).
+	faker.seed(STORY_DATA_SEED);
+
 	// Generate all data first for sorting
 	const allData = Array.from({ length: totalRows }).map((_, index) => {
 		const i = index + 1;
@@ -40,9 +49,9 @@ export const generatePersonData = (
 			firstName: firstNames[i % firstNames.length] as string,
 			lastName: lastNames[i % lastNames.length] as string,
 			age: 20 + (i % 50),
-			visits: Math.floor(Math.random() * 500) + 1,
+			visits: faker.number.int({ min: 1, max: 500 }),
 			status: statuses[i % statuses.length] as Status,
-			progress: Math.floor(Math.random() * 100) + 1,
+			progress: faker.number.int({ min: 1, max: 100 }),
 		} satisfies Person;
 	});
 

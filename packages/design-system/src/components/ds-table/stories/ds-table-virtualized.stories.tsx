@@ -21,9 +21,13 @@ import { fullHeightDecorator } from './common/story-decorators';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Virtualized',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
+		// Several stories fetch through `simulateApiCall` (200ms); visual tests wait for the first page.
+		// Set on the meta so it stays out of the stories' Show code.
+		chromatic: { delay: 500 },
 	},
 	args: {
 		columns,

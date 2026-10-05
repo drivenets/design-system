@@ -11,6 +11,7 @@ const loadingColumns: ColumnDef<Person>[] = columns.map((column, index) =>
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Loading',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

@@ -149,6 +149,48 @@ jobs:
       - name: Run Storybook docs snippet tests
         run: pnpm test:storybook-docs --affected
 
+  visual-tests:
+    name: Visual Tests
+    runs-on: ubuntu-latest
+    # Burn-in period: report failures without blocking merges. Remove once the suite is proven stable.
+    continue-on-error: true
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          filter: 'blob:none'
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Cache turbo
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .turbo
+          key: ${{ runner.os }}-turbo-visual-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-visual-
+
+      - name: Start Playwright browser server
+        run: pnpm --filter @drivenets/design-system test:visual:server --detach
+
+      - name: Run visual tests
+        run: pnpm test:visual --affected
+
+      - name: Upload screenshot diffs
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: visual-test-diffs
+          path: packages/design-system/.vitest/attachments/
+          retention-days: 7
+
   build:
     name: Build
     runs-on: ubuntu-latest
