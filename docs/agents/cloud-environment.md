@@ -26,19 +26,19 @@ At [claude.ai/code](https://claude.ai/code), pick `drivenets/design-system`, the
 #!/bin/bash
 set -euo pipefail
 
-# The repo is already cloned when this runs; find it and run the session hook ahead of time
-hook="$(find "$PWD" /home /root -maxdepth 6 -path '*/.claude/hooks/cloud-setup.sh' -print -quit 2>/dev/null || true)"
+# Runs as root in /home/user, after the repo is cloned to /home/user/<repo> at the default branch
+for hook in "$PWD"/*/.claude/hooks/cloud-setup.sh; do
+	if [ -x "$hook" ]; then
+		echo "setup: running $hook"
+		CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR="${hook%/.claude/hooks/cloud-setup.sh}" "$hook"
+		exit 0
+	fi
+done
 
-if [ -z "$hook" ]; then
-	echo "setup: .claude/hooks/cloud-setup.sh not found (pwd: $PWD)" >&2
-	exit 1
-fi
-
-echo "setup: running $hook"
-CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR="$(cd "$(dirname "$hook")/../.." && pwd)" "$hook"
+echo "setup: no .claude/hooks/cloud-setup.sh in $PWD/*/, the SessionStart hook will install everything"
 ```
 
-The setup script runs after the repo is cloned and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do.
+The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do. If the hook isn't found, the setup script still succeeds and the session's hook does the work, just slower.
 
 The setup script never needs editing. If `.nvmrc`, `packageManager` or the lockfile change after the snapshot was taken, the hook installs whatever differs, so sessions stay correct and only start slower until the snapshot is rebuilt.
 
