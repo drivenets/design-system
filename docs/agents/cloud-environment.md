@@ -62,7 +62,7 @@ pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-tim
   "http://localhost:6006/iframe.html?id=<story-id>&viewMode=story" /tmp/story.png
 ```
 
-Story IDs come from the DS MCP server (`list-all-documentation` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
+The session's HTTPS traffic goes through a proxy with its own CA; the hook adds that CA to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`list-all-documentation` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
 
 ## Limits
 

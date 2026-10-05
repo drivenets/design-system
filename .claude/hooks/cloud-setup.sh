@@ -84,4 +84,45 @@ if ! pnpm --filter @drivenets/design-system exec playwright install chromium >"$
 	echo "cloud-setup: allow cdn.playwright.dev in the environment's network access (docs/agents/cloud-environment.md)" >&2
 fi
 
+# 5. Chromium trusts the session's HTTPS proxy CA (curl and Node do already); without it Storybook can't load
+# Google Fonts and screenshots show fallback fonts and raw icon names. Not fatal, redone when the bundle changes.
+ca_bundle="$HOME/.ccr/ca-bundle.crt"
+nssdb="$HOME/.pki/nssdb"
+
+trust_proxy_ca() {
+	local certs
+	certs="$(mktemp -d)"
+
+	if ! command -v certutil >/dev/null; then
+		as_root apt-get update -qq && as_root apt-get install -y -qq libnss3-tools || return 1
+	fi
+
+	mkdir -p "$nssdb"
+	[ -f "$nssdb/cert9.db" ] || certutil -d "sql:$nssdb" -N --empty-password || return 1
+
+	awk -v dir="$certs" '/BEGIN CERTIFICATE/ { n++ } n { print > (dir "/" n ".pem") }' "$ca_bundle"
+
+	for cert in "$certs"/*.pem; do
+		certutil -d "sql:$nssdb" -A -t "C,," -n "cloud-proxy-$(basename "$cert" .pem)" -i "$cert" || return 1
+	done
+
+	rm -rf "$certs"
+}
+
+if [ -f "$ca_bundle" ]; then
+	ca_sha="$(sha256sum "$ca_bundle" | cut -d' ' -f1)"
+
+	if [ "$(cat "$STATE_DIR/proxy-ca" 2>/dev/null)" != "$ca_sha" ]; then
+		echo "cloud-setup: trust proxy CA in Chromium"
+
+		if trust_proxy_ca >"$log" 2>&1; then
+			as_root mkdir -p "$STATE_DIR"
+			echo "$ca_sha" | as_root tee "$STATE_DIR/proxy-ca" >/dev/null
+		else
+			echo "cloud-setup: WARNING proxy CA not trusted by Chromium, Storybook fonts won't load:" >&2
+			tail -n 5 "$log" >&2
+		fi
+	fi
+fi
+
 echo "cloud-setup: node $(node -v), pnpm $(pnpm -v), dependencies ready"

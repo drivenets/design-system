@@ -11,6 +11,7 @@ dist
 actionlint
 
 coverage/
+.vitest/
 **/.env*
 
 # AI
