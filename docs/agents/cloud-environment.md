@@ -18,7 +18,7 @@ At [claude.ai/code](https://claude.ai/code), pick `drivenets/design-system`, the
 | Field                 | Value                       |
 | --------------------- | --------------------------- |
 | Name                  | `design-system`             |
-| Network access        | Trusted                     |
+| Network access        | Custom, see below           |
 | Environment variables | leave empty                 |
 | Setup script          | paste the block below as is |
 
@@ -44,7 +44,14 @@ The setup script never needs editing. If `.nvmrc`, `packageManager` or the lockf
 
 Never put secrets in environment variables — everyone using the environment can read them. Jira and Slack access come from each person's own connectors (`claude.ai/customize/connectors`); GitHub access comes from the Claude GitHub App.
 
-If a download is blocked under Trusted, switch network access to Custom, keep the default allowlist, and add the blocked host (likely candidates: `nodejs.org`, `cdn.playwright.dev`, `playwright.download.prss.microsoft.com`).
+**Network access:** Custom, with the default (Trusted) allowlist kept and these hosts added:
+
+```
+cdn.playwright.dev
+playwright.download.prss.microsoft.com
+```
+
+Trusted already covers npm, nodejs.org and apt. The image ships an older Chromium in `/opt/pw-browsers`, and the Playwright version in the lockfile needs its own build from `cdn.playwright.dev`. Without it, the hook prints a warning and browser tests can't run; everything else still works.
 
 ## Storybook and visual checks
 

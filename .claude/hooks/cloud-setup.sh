@@ -52,8 +52,9 @@ if [ -n "${CLAUDE_ENV_FILE:-}" ]; then
 	echo "export PATH=\"$NODE_PREFIX/bin:\$PATH\"" >>"$CLAUDE_ENV_FILE"
 fi
 
-# 2. pnpm pinned to package.json#packageManager
-if [ "$(pnpm -v 2>/dev/null)" != "$pnpm_version" ]; then
+# 2. pnpm pinned to package.json#packageManager, installed next to Node 24. Checked from / because inside the
+# repo any pnpm reports the packageManager version: it switches to a self-downloaded copy that turbo can't exec.
+if [ "$(cd / && "$NODE_PREFIX/bin/pnpm" -v 2>/dev/null)" != "$pnpm_version" ]; then
 	run as_root "$NODE_PREFIX/bin/npm" install -g "pnpm@$pnpm_version"
 fi
 
@@ -72,6 +73,13 @@ if [ ! -f "$STATE_DIR/playwright-deps" ]; then
 	as_root touch "$STATE_DIR/playwright-deps"
 fi
 
-run pnpm --filter @drivenets/design-system exec playwright install chromium
+# Not fatal: without Chromium only browser tests fail, so don't block the session over it
+echo "cloud-setup: playwright install chromium"
 
-echo "cloud-setup: node $(node -v), pnpm $(pnpm -v), dependencies and Playwright Chromium ready"
+if ! pnpm --filter @drivenets/design-system exec playwright install chromium >"$log" 2>&1; then
+	echo "cloud-setup: WARNING Playwright Chromium not installed, browser tests won't run." >&2
+	grep -m1 -o 'request blocked[^.]*' "$log" >&2 || tail -n 5 "$log" >&2
+	echo "cloud-setup: allow cdn.playwright.dev in the environment's network access (docs/agents/cloud-environment.md)" >&2
+fi
+
+echo "cloud-setup: node $(node -v), pnpm $(pnpm -v), dependencies ready"
