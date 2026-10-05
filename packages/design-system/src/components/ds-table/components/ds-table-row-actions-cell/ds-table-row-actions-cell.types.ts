@@ -16,9 +16,10 @@ export interface RowAction<TData> {
 	label: string | ((row: TData) => string);
 
 	/**
-	 * Optional tooltip text to show on hover
+	 * Optional tooltip text to show on hover, either static or resolved per row.
+	 * For secondary actions it is also shown when the action is disabled (e.g. to explain why).
 	 */
-	tooltip?: string;
+	tooltip?: string | ((row: TData) => string | undefined);
 
 	/**
 	 * Optional function to determine if the action should be hidden for a specific row.
@@ -37,10 +38,7 @@ export interface RowAction<TData> {
 	onClick: (row: TData) => void;
 }
 
-/**
- * Represents a secondary action that can be performed on a single row
- */
-export type SecondaryRowAction<TData> = Omit<RowAction<TData>, 'icon'> & {
+type SecondaryRowActionBase<TData> = Omit<RowAction<TData>, 'icon' | 'onClick'> & {
 	/**
 	 * Optional icon to be displayed for the action
 	 */
@@ -51,6 +49,30 @@ export type SecondaryRowAction<TData> = Omit<RowAction<TData>, 'icon'> & {
 	 */
 	className?: string;
 };
+
+type SecondaryRowActionLeaf<TData> = SecondaryRowActionBase<TData> & {
+	/**
+	 * Function to be called when the action is clicked, receives the row data as parameter
+	 */
+	onClick: (row: TData) => void;
+	children?: never;
+};
+
+type SecondaryRowActionBranch<TData> = SecondaryRowActionBase<TData> & {
+	/**
+	 * Nested actions rendered as a cascading submenu. Mutually exclusive with `onClick`.
+	 * `hidden` and `disabled` on the parent apply to the whole submenu; a parent whose
+	 * children are all hidden is omitted.
+	 */
+	children: SecondaryRowAction<TData>[];
+	onClick?: never;
+};
+
+/**
+ * Represents a secondary action that can be performed on a single row.
+ * Either a leaf with `onClick`, or a parent with nested `children` that opens a submenu.
+ */
+export type SecondaryRowAction<TData> = SecondaryRowActionLeaf<TData> | SecondaryRowActionBranch<TData>;
 
 /**
  * Props for the row actions cell component

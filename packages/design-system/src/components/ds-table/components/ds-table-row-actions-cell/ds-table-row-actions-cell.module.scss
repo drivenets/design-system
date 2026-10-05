@@ -1,3 +1,5 @@
+@use '../../../../styles/shared/dropdown';
+
 // Sizes must match the `ROW_ACTION*` constants in `utils/constants.ts`, which pin the row actions column width.
 .rowActions {
 	display: flex;
@@ -36,4 +38,21 @@
 
 .secondaryActionsTrigger {
 	margin-inline-start: var(--sm);
+}
+
+.secondaryActionContent {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+
+.submenuIndicator {
+	margin-inline-start: auto;
+}
+
+// Submenus stack above $dropdown-z-index, so tooltips on their items must clear them too.
+.secondaryActionTooltip[data-part='content'] {
+	z-index: dropdown.$dropdown-z-index + 2;
 }

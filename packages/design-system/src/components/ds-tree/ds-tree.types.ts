@@ -1,17 +1,8 @@
-import type {
-	AriaAttributes,
-	CSSProperties,
-	FocusEventHandler,
-	KeyboardEventHandler,
-	MouseEvent,
-	MouseEventHandler,
-	PointerEventHandler,
-	ReactNode,
-	Ref,
-} from 'react';
+import type { CSSProperties, MouseEvent, ReactNode, Ref } from 'react';
 import type { TreeView as ArkTreeView } from '@ark-ui/react/tree-view';
 import type { IconType } from '../ds-icon';
 import type { FilterStatus } from '../ds-filter-status-icon';
+import type { DsAsChildTriggerProps } from '../../utils/as-child-trigger-props';
 
 export interface DsTreeNode {
 	/**
@@ -163,22 +154,7 @@ export type DsTreeTreeProps = DsTreeBasePropsWithChildren;
  * the element it wraps. Row parts forward these so wrapping a row actually wires up
  * instead of silently doing nothing.
  */
-export interface DsTreeRowTriggerProps<T extends HTMLElement = HTMLElement> {
-	id?: string;
-	ref?: Ref<T>;
-	tabIndex?: number;
-	'aria-haspopup'?: AriaAttributes['aria-haspopup'];
-	'aria-expanded'?: AriaAttributes['aria-expanded'];
-	'aria-controls'?: string;
-	'data-state'?: string;
-	onClick?: MouseEventHandler<T>;
-	onPointerDown?: PointerEventHandler<T>;
-	onPointerEnter?: PointerEventHandler<T>;
-	onPointerLeave?: PointerEventHandler<T>;
-	onFocus?: FocusEventHandler<T>;
-	onBlur?: FocusEventHandler<T>;
-	onKeyDown?: KeyboardEventHandler<T>;
-}
+export type DsTreeRowTriggerProps<T extends HTMLElement = HTMLElement> = DsAsChildTriggerProps<T>;
 
 export type DsTreeBranchProps = DsTreeBasePropsWithChildren & DsTreeRowTriggerProps<HTMLDivElement>;
 

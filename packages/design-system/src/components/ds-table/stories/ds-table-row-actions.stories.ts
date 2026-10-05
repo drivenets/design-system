@@ -292,6 +292,98 @@ export const WithConditionallyDisabledActions: Story = {
 	},
 };
 
+export const WithNestedSecondaryActions: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'A secondary action can declare `children` instead of `onClick` to open a cascading submenu. Children support the same `hidden`, `disabled`, `tooltip` and `className` options, and receive the row data in `onClick`:\n\n' +
+					'- `Review PR` opens `Visual` / `Code`.\n' +
+					'- `Filter by workflow` opens the filter scopes; `Custom` is hidden on rows where `status === "single"`.\n\n' +
+					'A parent whose children are all hidden is omitted from the menu.',
+			},
+		},
+	},
+	args: {
+		onRowClick: fn(),
+		secondaryRowActions: [
+			{
+				icon: 'edit',
+				label: 'Edit',
+				onClick: fn(),
+			},
+			{
+				icon: 'code',
+				label: 'Review PR',
+				children: [
+					{ label: 'Visual', onClick: fn() },
+					{ label: 'Code', onClick: fn() },
+				],
+			},
+			{
+				icon: 'filter_list',
+				label: 'Filter by workflow',
+				children: [
+					{ label: 'All versions', onClick: fn() },
+					{ label: 'Direct parents', onClick: fn() },
+					{ label: 'All parents', onClick: fn() },
+					{ label: 'Direct children', onClick: fn() },
+					{ label: 'All children', onClick: fn() },
+					{
+						label: 'Custom',
+						hidden: (data) => data.status === 'single',
+						onClick: fn(),
+					},
+				],
+			},
+		],
+	},
+};
+
+export const WithDisabledActionReasons: Story = {
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Pair `disabled` with `tooltip` to keep an unauthorized action visible while explaining why it is unavailable. The tooltip is shown on hover even when the item is disabled, and `tooltip` can be resolved per row:\n\n' +
+					'- `Delete` is disabled on rows where `status === "single"`, with a per-row reason.\n' +
+					'- `Review PR` (a submenu) is disabled on Tanner’s row; the submenu does not open.\n' +
+					'- `Details` is always enabled and shows a static tooltip.',
+			},
+		},
+	},
+	args: {
+		onRowClick: fn(),
+		secondaryRowActions: [
+			{
+				icon: 'delete_outline',
+				label: 'Delete',
+				disabled: (data) => data.status === 'single',
+				tooltip: (data) =>
+					data.status === 'single' ? `You don't have permission to delete ${data.firstName}` : undefined,
+				className: styles.destructiveAction,
+				onClick: fn(),
+			},
+			{
+				icon: 'code',
+				label: 'Review PR',
+				disabled: (data) => data.firstName === 'Tanner',
+				tooltip: (data) => (data.firstName === 'Tanner' ? 'No open pull request' : undefined),
+				children: [
+					{ label: 'Visual', onClick: fn() },
+					{ label: 'Code', onClick: fn() },
+				],
+			},
+			{
+				icon: 'info',
+				label: 'Details',
+				tooltip: 'Show details',
+				onClick: fn(),
+			},
+		],
+	},
+};
+
 export const WithBulkActions: Story = {
 	args: {
 		selectable: true,

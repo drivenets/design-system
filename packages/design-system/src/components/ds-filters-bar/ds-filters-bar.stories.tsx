@@ -13,8 +13,10 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 		docs: {
 			description: {
 				component: `
-**Work in progress — the API is wired; the advanced query view renders, the other parts render
-nothing yet.** Until \`Toolbar\` renders, the stories place the advanced view directly under \`Root\`.
+**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
+\`Search\`, the add-filter button with its filters dialog and the search chips in \`Conditions\`,
+and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
 
@@ -191,6 +193,115 @@ export const Default: Story = {
 					<DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
 				</DsFiltersBar.PinnedGroup>
 			</DsFiltersBar.Pinned>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * The "+" button in `Conditions` opens the filters dialog: one tab per enum field, with an operator,
+ * an option search, and a checkbox and pin per option. Edits stay a draft until **Save filters**
+ * writes one condition per field with checked options and the pins back to the document; closing any
+ * other way drops the draft. Search and non-enum conditions are left as they are.
+ */
+export const FiltersDialog: Story = {
+	args: {
+		defaultExpanded: true,
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '!=', label: 'not equals', symbol: '≠' },
+				],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'deprecated', label: 'Deprecated' },
+					{ value: 'inactive', label: 'Inactive' },
+					{ value: 'pending', label: 'Pending' },
+					{ value: 'draft', label: 'Draft' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'workflow',
+				label: 'Workflow',
+				operators: [
+					{ value: 'IN', label: 'is any of', symbol: '∈' },
+					{ value: 'NOT IN', label: 'is none of', symbol: '∉' },
+				],
+				options: [
+					{ value: 'deploy', label: 'Deploy' },
+					{ value: 'backup', label: 'Backup' },
+					{ value: 'upgrade', label: 'Upgrade' },
+					{ value: 'rollback', label: 'Rollback' },
+					{ value: 'healthCheck', label: 'Health check' },
+					{ value: 'provision', label: 'Provision' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'trigger',
+				label: 'Trigger',
+				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				options: [
+					{ value: 'manual', label: 'Manual' },
+					{ value: 'scheduled', label: 'Scheduled' },
+					{ value: 'api', label: 'API' },
+					{ value: 'webhook', label: 'Webhook' },
+				],
+			},
+		],
+		defaultConditions: [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated', 'draft'] },
+			{ kind: 'field', id: 'c2', field: 'trigger', operator: '=', value: ['scheduled'] },
+		],
+		defaultPins: [
+			{ field: 'status', value: 'active' },
+			{ field: 'workflow', value: 'deploy' },
+		],
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.Conditions />
+			</DsFiltersBar.Toolbar>
+		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * Enter adds the typed text as a search condition, shown as a chip after the "+" button, and clears
+ * the input; the same search is not added twice. \`/\` focuses the input from anywhere outside a text
+ * field or dialog. Clicking a chip moves its text back into the input for editing; its × removes it.
+ * Search is disabled while an Advanced query is the source.
+ */
+export const Search: Story = {
+	args: {
+		defaultExpanded: true,
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'pending', label: 'Pending' },
+				],
+			},
+		],
+		defaultConditions: [{ kind: 'search', id: 'c1', text: 'AAA' }],
+	},
+	render: (args) => (
+		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.Search />
+				<DsFiltersBar.View value="filters">
+					<DsFiltersBar.Conditions />
+				</DsFiltersBar.View>
+			</DsFiltersBar.Toolbar>
 		</DsFiltersBar.Root>
 	),
 };

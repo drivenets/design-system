@@ -1,8 +1,17 @@
+import type {
+	DsFiltersBarFiltersDialogEntry,
+	DsFiltersBarFiltersDialogValue,
+} from './components/ds-filters-bar-filters-dialog';
 import {
+	enumFilterOperators,
 	filtersBarViews,
 	type DsFilterCondition,
+	type DsFilterEnumField,
+	type DsFilterEnumOperator,
 	type DsFilterField,
+	type DsFilterFieldCondition,
 	type DsFilterOption,
+	type DsFilterPin,
 	type DsFilterRange,
 	type DsFilterScalarField,
 	type DsFilterSearchCondition,
@@ -138,4 +147,113 @@ export const describeCondition = (
 		operatorSymbol: operator?.symbol ?? operator?.label ?? condition.operator,
 		value: formatValue(condition.value, scalarField),
 	};
+};
+
+export const filtersDialogFields = (fields: ReadonlyArray<DsFilterField>): ReadonlyArray<DsFilterEnumField> =>
+	fields.filter((field): field is DsFilterEnumField => field.type === 'enum' && field.options.length > 0);
+
+const NO_VALUES: ReadonlyArray<string> = Object.freeze([]);
+
+type DsFilterEnumCondition = DsFilterFieldCondition & {
+	operator: DsFilterEnumOperator;
+	value: ReadonlyArray<string>;
+};
+
+const isEnumOperator = (operator: string): operator is DsFilterEnumOperator =>
+	(enumFilterOperators as ReadonlyArray<string>).includes(operator);
+
+const isEnumConditionOf = (
+	condition: DsFilterCondition,
+	fieldId: string,
+): condition is DsFilterEnumCondition =>
+	condition.kind === 'field' &&
+	condition.field === fieldId &&
+	!condition.subfield &&
+	isEnumOperator(condition.operator) &&
+	Array.isArray(condition.value);
+
+export const toFiltersDialogValue = (
+	fields: ReadonlyArray<DsFilterField>,
+	conditions: ReadonlyArray<DsFilterCondition>,
+	pins: ReadonlyArray<DsFilterPin>,
+): DsFiltersBarFiltersDialogValue =>
+	filtersDialogFields(fields).flatMap((field): DsFiltersBarFiltersDialogEntry[] => {
+		const condition = conditions.find((item) => isEnumConditionOf(item, field.id));
+		const pinned = pins.filter((pin) => pin.field === field.id).map((pin) => pin.value);
+
+		if (!condition && !pinned.length) {
+			return [];
+		}
+
+		return [
+			{
+				field: field.id,
+				operator: condition?.operator ?? field.operators[0]?.value ?? '=',
+				selected: condition?.value ?? NO_VALUES,
+				pinned,
+			},
+		];
+	});
+
+const toEnumCondition = (entry: DsFiltersBarFiltersDialogEntry, id: string): DsFilterFieldCondition => ({
+	kind: 'field',
+	id,
+	field: entry.field,
+	operator: entry.operator,
+	value: entry.selected,
+});
+
+/**
+ * Save replaces every enum condition of a dialog field: the new one keeps the id and position of
+ * the first, the rest are dropped. Conditions the dialog can't show are kept as they are.
+ * Pins keep their order: unpinned dialog pins are removed in place and new ones are appended.
+ */
+export const fromFiltersDialogValue = (
+	fields: ReadonlyArray<DsFilterField>,
+	conditions: ReadonlyArray<DsFilterCondition>,
+	pins: ReadonlyArray<DsFilterPin>,
+	value: DsFiltersBarFiltersDialogValue,
+): { conditions: ReadonlyArray<DsFilterCondition>; pins: ReadonlyArray<DsFilterPin> } => {
+	const dialogFields = filtersDialogFields(fields);
+	const entries = dialogFields.flatMap((field) => value.find((item) => item.field === field.id) ?? []);
+	const committed = new Map(
+		entries.filter((entry) => entry.selected.length).map((entry) => [entry.field, entry] as const),
+	);
+	const placed = new Set<string>();
+
+	const kept = conditions.flatMap((condition): DsFilterCondition[] => {
+		const field = dialogFields.find((item) => isEnumConditionOf(condition, item.id));
+
+		if (!field) {
+			return [condition];
+		}
+
+		const entry = committed.get(field.id);
+
+		if (!entry || placed.has(field.id)) {
+			return [];
+		}
+
+		placed.add(field.id);
+
+		return [toEnumCondition(entry, condition.id)];
+	});
+
+	const added = [...committed.values()]
+		.filter((entry) => !placed.has(entry.field))
+		.map((entry) => toEnumCondition(entry, createConditionId()));
+
+	const pinnedByField = new Map(entries.map((entry) => [entry.field, entry.pinned] as const));
+	const isDialogField = (fieldId: string) => dialogFields.some((field) => field.id === fieldId);
+	const isKept = (pin: DsFilterPin) =>
+		!isDialogField(pin.field) || !!pinnedByField.get(pin.field)?.includes(pin.value);
+
+	const keptPins = pins.filter(isKept);
+	const addedPins = entries.flatMap((entry) =>
+		entry.pinned
+			.filter((pinned) => !keptPins.some((pin) => pin.field === entry.field && pin.value === pinned))
+			.map((pinned) => ({ field: entry.field, value: pinned })),
+	);
+
+	return { conditions: [...kept, ...added], pins: [...keptPins, ...addedPins] };
 };

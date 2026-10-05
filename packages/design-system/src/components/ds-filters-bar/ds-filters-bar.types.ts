@@ -301,16 +301,22 @@ export interface DsFiltersBarSaveFilterProps extends Omit<DsSavedFiltersSaveProp
 export interface DsFiltersBarSearchLocale {
 	label?: string;
 	placeholder?: string;
+	/**
+	 * Accessible name of the button that clears the pending text
+	 */
+	clear?: string;
 }
 
 export const defaultDsFiltersBarSearchLocale: Required<DsFiltersBarSearchLocale> = Object.freeze({
 	label: 'Search',
 	placeholder: 'Type ‘/’ to search',
+	clear: 'Clear search',
 });
 
 /**
- * Free-text input. Enter adds the trimmed text as a search condition and clears the input; `/`
- * focuses it from anywhere outside an editable element.
+ * Free-text input. Enter adds the trimmed text as a search condition, unless the same search is
+ * already there, and clears the input; `/` focuses it from anywhere outside an editable element or
+ * dialog. Disabled while an Advanced query is the source.
  */
 export interface DsFiltersBarSearchProps {
 	/**
