@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { fn } from 'storybook/test';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsFiltersBar } from './index';
-import { filtersBarViews } from './ds-filters-bar.types';
+import { filtersBarViews, type DsFiltersBarView } from './ds-filters-bar.types';
 
 const meta: Meta<typeof DsFiltersBar.Root> = {
 	title: 'Components/FiltersBar',
@@ -199,12 +201,13 @@ export const Default: Story = {
 
 /**
  * Guided condition: suggested fields, then — depending on the field — a subfield, an operator and a
- * value. **Save query** appends one condition and clears the draft. Closing returns to the filters view.
+ * value. **Save query** appends one condition and clears the draft. Closing returns to the filters
+ * view, and the query text shows the condition. **Query builder** opens the dialog again.
+ * `ViewSwitch` does not render yet, so this story opens the builder itself.
  */
 export const QueryBuilder: Story = {
 	args: {
 		defaultExpanded: true,
-		defaultView: 'builder',
 		fields: [
 			{
 				type: 'compound',
@@ -249,15 +252,43 @@ export const QueryBuilder: Story = {
 			},
 		],
 	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.View value="builder">
-					<DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+			// The dialog is position:fixed. Inline docs share one document, so an open dialog covers
+			// the whole page. An iframe keeps it inside this story.
+			story: { inline: false, height: '520px' },
+		},
+	},
+	render: (args) => {
+		const [view, setView] = useState<DsFiltersBarView>('builder');
+
+		return (
+			<DsFiltersBar.Root
+				{...args}
+				view={view}
+				onViewChange={(next) => {
+					setView(next);
+					args.onViewChange?.(next);
+				}}
+			>
+				<DsFiltersBar.Toolbar>
+					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
+						Query builder
+					</DsButtonV3>
+					<DsFiltersBar.Search />
+					<DsFiltersBar.View value="filters">
+						<DsFiltersBar.Conditions />
+					</DsFiltersBar.View>
+					<DsFiltersBar.View value="builder">
+						<DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
+					</DsFiltersBar.View>
+					<DsFiltersBar.ClearAll />
+				</DsFiltersBar.Toolbar>
+				<DsFiltersBar.Query />
+			</DsFiltersBar.Root>
+		);
+	},
 };
 
 /**
@@ -265,32 +296,52 @@ export const QueryBuilder: Story = {
  */
 export const QueryBuilderLocalized: Story = {
 	...QueryBuilder,
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.View value="builder">
-					<DsFiltersBar.Builder
-						suggestedFields={['input', 'output', 'status', 'tag']}
-						locale={{
-							title: 'Build a condition',
-							close: 'Dismiss',
-							clear: 'Start over',
-							searchField: 'Find a field',
-							selectField: 'Pick a field',
-							searchSubfield: 'Find a part',
-							selectSubfield: 'Pick a part',
-							searchOperator: 'Find an operator',
-							selectOperator: 'Pick an operator',
-							searchValue: 'Find a value',
-							selectValue: 'Pick a value',
-							valuePlaceholder: 'Enter a value',
-							save: 'Add condition',
-						}}
-					/>
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
+	render: (args) => {
+		const [view, setView] = useState<DsFiltersBarView>('builder');
+
+		return (
+			<DsFiltersBar.Root
+				{...args}
+				view={view}
+				onViewChange={(next) => {
+					setView(next);
+					args.onViewChange?.(next);
+				}}
+			>
+				<DsFiltersBar.Toolbar>
+					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
+						Query builder
+					</DsButtonV3>
+					<DsFiltersBar.Search />
+					<DsFiltersBar.View value="filters">
+						<DsFiltersBar.Conditions />
+					</DsFiltersBar.View>
+					<DsFiltersBar.View value="builder">
+						<DsFiltersBar.Builder
+							suggestedFields={['input', 'output', 'status', 'tag']}
+							locale={{
+								title: 'Build a condition',
+								close: 'Dismiss',
+								clear: 'Start over',
+								searchField: 'Find a field',
+								selectField: 'Pick a field',
+								searchSubfield: 'Find a part',
+								selectSubfield: 'Pick a part',
+								searchOperator: 'Find an operator',
+								selectOperator: 'Pick an operator',
+								searchValue: 'Find a value',
+								selectValue: 'Pick a value',
+								valuePlaceholder: 'Enter a value',
+								save: 'Add condition',
+							}}
+						/>
+					</DsFiltersBar.View>
+					<DsFiltersBar.ClearAll />
+				</DsFiltersBar.Toolbar>
+				<DsFiltersBar.Query />
+			</DsFiltersBar.Root>
+		);
+	},
 };
 
 /**
