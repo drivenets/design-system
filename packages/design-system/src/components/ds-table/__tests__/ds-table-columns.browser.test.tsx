@@ -8,6 +8,11 @@ import { columns, defaultData } from '../stories/common/story-data';
 
 type SizedRow = { id: string; firstName: string; lastName: string };
 
+// The Vitest UI's pane splitter overlaps the left edge of the test iframe, so a
+// real click on a control mounted at the iframe origin lands on the splitter
+// instead. Offsetting the mount keeps the toggle clicks inside the iframe.
+const HARNESS_OFFSET_PX = 16;
+
 const getDataRows = () => page.getByRole('row').all().slice(1);
 
 const getHeaderCell = (columnId: string): HTMLElement => {
@@ -42,7 +47,7 @@ describe('DsTable - Columns', () => {
 			};
 
 			return (
-				<div>
+				<div style={{ padding: HARNESS_OFFSET_PX }}>
 					<div data-testid="column-toggles">
 						<DsCheckbox
 							label="Age"
