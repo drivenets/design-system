@@ -41,7 +41,6 @@ OKCAOKLU
 ondark
 onwarn
 oxfmtrc
-pwuser
 reorderable
 resizer
 retryable

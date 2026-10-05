@@ -1,3 +1,4 @@
+// cspell:ignore pwuser
 // Starts the Playwright browser server used by `pnpm test:visual`.
 // The image tag follows the installed `playwright` version, because client and server must match.
 // Pass `--detach` to run it in the background and wait until it accepts connections (used in CI).

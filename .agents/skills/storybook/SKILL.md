@@ -128,8 +128,8 @@ Stories tagged `visual` get a **Visual test**: a screenshot of `document.body` a
 
 - **Opt in** — `tags: ['visual']` on the meta (DsTable today). Opt one story out with `tags: ['!visual']`.
 - **Deterministic stories** — no `Math.random()` / `Date.now()` in rendered output; seed data (see `ds-table/stories/common/story-data-generator.ts`). Animations and transitions are frozen globally.
-- **Async data** — `parameters: { chromatic: { delay: 500 } }` waits before the screenshot. `chromatic: { disableSnapshot: true }` skips it. These are Chromatic's own knobs, so they carry over when we migrate.
-- **Run / update** — `pnpm --filter @drivenets/design-system test:visual:server` in one terminal, then `pnpm --filter @drivenets/design-system test:visual --run` (add `-u` to accept changes). Review every changed PNG in the diff before committing. On failure, `pnpm --filter @drivenets/design-system test:visual:report` builds `.vitest/attachments/visual-test-report.html` with baseline, actual and diff side by side (git-ignored; CI uploads the same file as an artifact).
+- **Async data** — `parameters: { chromatic: { delay: 500 } }` waits before the screenshot. `chromatic: { disableSnapshot: true }` skips it. We don't use Chromatic yet; the keys reuse its parameter names so stories need no changes if we migrate ([ADR 0007](../../../docs/adr/0007-visual-tests-on-stories-in-pinned-browser.md)).
+- **Run / update** — the browser runs in a pinned Linux Playwright container, because macOS and Linux render fonts and anti-aliasing differently; screenshots taken there match CI. Start it with `pnpm --filter @drivenets/design-system test:visual:server` (needs Docker) in one terminal, then `pnpm --filter @drivenets/design-system test:visual --run` (add `-u` to accept changes). Review every changed PNG in the diff before committing. On failure, `pnpm --filter @drivenets/design-system test:visual:report` builds `.vitest/attachments/visual-test-report.html` with baseline, actual and diff side by side (git-ignored; CI uploads the same file as an artifact).
 
 ## AI / MCP manifests
 
