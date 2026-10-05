@@ -25,6 +25,7 @@ fromentries
 Gbps
 gnmi
 greyscale
+gstatic
 haspopup
 labelledby
 Lezer
@@ -41,6 +42,8 @@ OKCAOKLU
 ondark
 onwarn
 oxfmtrc
+pipefail
+prss
 reorderable
 resizer
 retryable
