@@ -25,7 +25,8 @@ const args = [
 	'linux/amd64',
 	...(detach ? ['--detach'] : []),
 	'--publish',
-	`${PORT}:${PORT}`,
+	// Loopback only: the server has no auth, so don't expose it to the local network.
+	`127.0.0.1:${PORT}:${PORT}`,
 	'--workdir',
 	'/home/pwuser',
 	'--user',

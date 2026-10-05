@@ -232,7 +232,6 @@ const meta: Meta<typeof DsTable<Workflow, unknown>> = {
 	// snippet is incomplete (`sampleUsers` cannot be resolved statically) and dwarfs the docs it
 	// belongs to. Keep them out of the MCP manifest and let the focused filter stories document the API.
 	tags: ['!manifest', 'visual'],
-	excludeStories: ['statusFilter', 'rangeFilter', 'myFilters'],
 	parameters: {
 		layout: 'fullscreen',
 		docs: {
