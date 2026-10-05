@@ -3,6 +3,7 @@
 // Sizes must match the `ROW_ACTION*` constants in `utils/constants.ts`, which pin the row actions column width.
 .rowActions {
 	display: flex;
+	flex: 1;
 	align-items: center;
 	justify-content: flex-end;
 	gap: var(--xs);
@@ -34,6 +35,12 @@
 		background: var(--background-action-hover-weak);
 		color: var(--font-action);
 	}
+
+	// Inset so the outline stays inside the pinned actions column.
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: -2px;
+	}
 }
 
 .secondaryActionsTrigger {
@@ -55,4 +62,16 @@
 // Submenus stack above $dropdown-z-index, so tooltips on their items must clear them too.
 .secondaryActionTooltip[data-part='content'] {
 	z-index: dropdown.$dropdown-z-index + 2;
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
 }

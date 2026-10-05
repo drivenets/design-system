@@ -46,8 +46,14 @@ const getActionsHeaderCell = () => {
 	return cell;
 };
 
+// Checks against the content box, so the `ROW_ACTION*` constants drifting from the SCSS fails here
+// instead of letting the buttons spill into the cell padding.
 const expectActionsInsideActionsCell = (row: Locator) => {
-	const cellRect = getActionsCellRect(row);
+	const cell = row.getByRole('cell').last().element();
+	const cellRect = cell.getBoundingClientRect();
+	const { paddingLeft, paddingRight } = getComputedStyle(cell);
+	const contentLeft = cellRect.left + parseFloat(paddingLeft);
+	const contentRight = cellRect.right - parseFloat(paddingRight);
 	const buttons = row.getByRole('button').elements();
 
 	expect(buttons.length).toBeGreaterThan(0);
@@ -55,8 +61,8 @@ const expectActionsInsideActionsCell = (row: Locator) => {
 	for (const button of buttons) {
 		const buttonRect = button.getBoundingClientRect();
 
-		expect(buttonRect.left).toBeGreaterThanOrEqual(cellRect.left);
-		expect(buttonRect.right).toBeLessThanOrEqual(cellRect.right);
+		expect(buttonRect.left).toBeGreaterThanOrEqual(contentLeft - 0.5);
+		expect(buttonRect.right).toBeLessThanOrEqual(contentRight + 0.5);
 		expect(buttonRect.width).toBeCloseTo(buttonRect.height, 0);
 	}
 };
@@ -67,6 +73,16 @@ const expectActionsColumnAligned = (dataRows: Locator[]) => {
 	for (const row of dataRows) {
 		expect(getActionsCellRect(row).width).toBeCloseTo(headerWidth, 0);
 	}
+};
+
+const getTableElement = () => {
+	const table = document.querySelector('table');
+
+	if (!(table instanceof HTMLElement)) {
+		throw new Error('Expected the table element');
+	}
+
+	return table;
 };
 
 // Menus open with a clip-path animation; items below the first aren't hit-testable until it ends.
@@ -163,6 +179,65 @@ describe('DsTable - Row Actions', () => {
 		await expect
 			.element(firstDataRow.getByRole('button', { name: /open in new window/i }))
 			.toHaveAttribute('aria-disabled', 'true');
+	});
+
+	it('should show a focus outline on row action buttons focused from the keyboard', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				primaryRowActions={sizingPrimaryActions}
+				secondaryRowActions={sizingSecondaryActions}
+			/>,
+		);
+
+		const row = page.getByRole('row', { name: /tanner/i });
+		const buttons = [
+			row.getByRole('button', { name: /^edit$/i }),
+			row.getByRole('button', { name: /more actions/i }),
+		];
+
+		for (const button of buttons) {
+			button.element().focus();
+			// Re-enter with Tab so the browser treats the focus as keyboard-initiated.
+			await userEvent.keyboard('{Shift>}{Tab}{/Shift}{Tab}');
+
+			await expect.element(button).toHaveFocus();
+			expect(getComputedStyle(button.element()).outlineStyle).toBe('solid');
+		}
+	});
+
+	it('should name the actions column header and the more actions trigger', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				primaryRowActions={sizingPrimaryActions}
+				secondaryRowActions={sizingSecondaryActions}
+			/>,
+		);
+
+		await expect
+			.element(page.getByRole('row', { name: /tanner/i }).getByRole('button', { name: 'More actions' }))
+			.toBeVisible();
+		expect(getActionsHeaderCell()).toHaveTextContent('Row actions');
+	});
+
+	it('should localize the actions column header and the more actions trigger', async () => {
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				primaryRowActions={sizingPrimaryActions}
+				secondaryRowActions={sizingSecondaryActions}
+				locale={{ rowActions: 'Actions', moreRowActions: 'Show more' }}
+			/>,
+		);
+
+		await expect
+			.element(page.getByRole('row', { name: /tanner/i }).getByRole('button', { name: 'Show more' }))
+			.toBeVisible();
+		expect(getActionsHeaderCell()).toHaveTextContent('Actions');
 	});
 
 	it('should hide primary action per-row via hidden callback', async () => {
@@ -612,6 +687,43 @@ describe('DsTable - Row Actions', () => {
 			expectActionsColumnAligned(getDataRows());
 		});
 
+		it('keeps the more actions trigger aligned to the end when some rows hide actions', async () => {
+			await page.render(
+				<DsTable
+					columns={columns}
+					data={defaultData}
+					primaryRowActions={[
+						{ icon: 'edit', label: 'Edit', onClick: vi.fn() },
+						{
+							icon: 'open_in_new',
+							label: 'Open in New Window',
+							hidden: (data: Person) => data.firstName === 'Tanner',
+							onClick: vi.fn(),
+						},
+					]}
+					secondaryRowActions={sizingSecondaryActions}
+				/>,
+			);
+
+			await expect
+				.element(
+					page.getByRole('row', { name: /tanner/i }).getByRole('button', { name: /open in new window/i }),
+				)
+				.not.toBeInTheDocument();
+
+			const triggerRights = getDataRows().map(
+				(row) =>
+					row
+						.getByRole('button', { name: /more actions/i })
+						.element()
+						.getBoundingClientRect().right,
+			);
+
+			for (const right of triggerRights) {
+				expect(right).toBeCloseTo(triggerRights[0] ?? 0, 0);
+			}
+		});
+
 		it('keeps actions fully inside their cells when the last consumer column is shrunk to its minimum', async () => {
 			const onColumnSizingChange = vi.fn();
 
@@ -659,6 +771,64 @@ describe('DsTable - Row Actions', () => {
 					.getByRole('cell')
 					.elements(),
 			).toHaveLength(columns.length);
+		});
+
+		it.each([
+			{ name: 'appear', before: false, after: true },
+			{ name: 'are removed', before: true, after: false },
+		])(
+			're-fits resizable columns to the container when row actions $name after seeding',
+			async ({ before, after }) => {
+				const onColumnSizingChange = vi.fn();
+				const renderTable = (withActions: boolean) => (
+					<div style={{ width: 1000, height: 400 }}>
+						<DsTable
+							columns={columns}
+							data={defaultData}
+							resizableColumns
+							onColumnSizingChange={onColumnSizingChange}
+							primaryRowActions={withActions ? sizingPrimaryActions : []}
+							secondaryRowActions={withActions ? sizingSecondaryActions : []}
+						/>
+					</div>
+				);
+
+				const getRowWidth = () => {
+					const cells = (getDataRows()[0] as Locator).getByRole('cell').elements();
+					const first = cells.at(0)?.getBoundingClientRect();
+					const last = cells.at(-1)?.getBoundingClientRect();
+
+					return first && last ? last.right - first.left : 0;
+				};
+
+				const { rerender } = await page.render(renderTable(before));
+
+				await expect.poll(() => getTableElement().style.width).not.toBe('');
+
+				const seededRowWidth = getRowWidth();
+
+				await rerender(renderTable(after));
+
+				await expect
+					.poll(() => document.querySelector(`thead th[data-column-id="${ROW_ACTIONS_COLUMN_ID}"]`) !== null)
+					.toBe(after);
+
+				await expect.poll(getRowWidth).toBeCloseTo(seededRowWidth, 0);
+				expect(onColumnSizingChange).not.toHaveBeenCalled();
+			},
+		);
+
+		it('keeps the content of a consumer column named like the actions column', async () => {
+			const consumerColumns: ColumnDef<Person>[] = [
+				...columns,
+				{ id: 'rowActions', header: 'Status', cell: () => 'consumer content' },
+			];
+
+			await page.render(<DsTable columns={consumerColumns} data={defaultData} />);
+
+			const row = page.getByRole('row', { name: /tanner/i });
+
+			await expect.element(row.getByRole('cell').last()).toHaveTextContent('consumer content');
 		});
 	});
 });

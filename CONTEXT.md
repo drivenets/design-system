@@ -121,11 +121,11 @@ The text in a **Leaf column** or **Column group** header cell.
 _Avoid_: column title, header caption
 
 **Utility column**:
-A table-injected **Leaf column** (`select`, `expander`, `reorder`, or `rowActions`) that is not in the consumer `columns` array.
+A table-injected **Leaf column** (`select`, `expander`, `reorder`, or `__dsRowActions`) that is not in the consumer `columns` array.
 _Avoid_: builtin column, synthetic column, feature column
 
 **Row actions**:
-Per-row controls in a table: **Primary row actions** shown inline as icon buttons, and **Secondary row actions** behind a "more" trigger menu.
+Per-row controls in a table: primary actions (`primaryRowActions`) shown inline as icon buttons, and secondary actions (`secondaryRowActions`) behind a "more" trigger menu.
 _Avoid_: row buttons, cell actions, inline actions
 
 **Row actions column**:

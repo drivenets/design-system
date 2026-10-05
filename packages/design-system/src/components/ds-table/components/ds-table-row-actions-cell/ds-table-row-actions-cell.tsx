@@ -2,13 +2,15 @@ import classnames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { DsDropdownMenu } from '../../../ds-dropdown-menu';
 import { useDsTableContext } from '../../context/ds-table-context';
+import { defaultDsTableLocale } from '../../ds-table.types';
 import { SecondaryRowActionItems } from './components/secondary-row-action-items';
 import styles from './ds-table-row-actions-cell.module.scss';
 import type { DsTableRowActionsCellProps } from './ds-table-row-actions-cell.types';
 import { filterVisibleActions, resolveLabel, resolveTooltip } from './ds-table-row-actions-cell.utils';
 
 export const DsTableRowActionsCell = <TData,>({ row }: DsTableRowActionsCellProps<TData>) => {
-	const { primaryRowActions = [], secondaryRowActions = [] } = useDsTableContext<TData, unknown>();
+	const { primaryRowActions = [], secondaryRowActions = [], locale } = useDsTableContext<TData, unknown>();
+	const { moreRowActions } = { ...defaultDsTableLocale, ...locale };
 
 	const visiblePrimary = primaryRowActions.filter((action) => !action.hidden?.(row.original));
 	const visibleSecondary = filterVisibleActions(secondaryRowActions, row.original);
@@ -46,13 +48,13 @@ export const DsTableRowActionsCell = <TData,>({ row }: DsTableRowActionsCellProp
 				<DsDropdownMenu.Root>
 					<DsDropdownMenu.Trigger
 						className={classnames(styles.rowActionIcon, styles.secondaryActionsTrigger)}
-						aria-label="More actions"
+						aria-label={moreRowActions}
 						asChild
 					>
 						<button
 							type="button"
-							title="More actions"
-							aria-label="More actions"
+							title={moreRowActions}
+							aria-label={moreRowActions}
 							onClick={(e) => e.stopPropagation()}
 						>
 							<DsIcon icon="more_vert" size="tiny" />
@@ -65,4 +67,10 @@ export const DsTableRowActionsCell = <TData,>({ row }: DsTableRowActionsCellProp
 			)}
 		</div>
 	);
+};
+
+export const DsTableRowActionsHeader = () => {
+	const { locale } = useDsTableContext();
+
+	return <span className={styles.visuallyHidden}>{{ ...defaultDsTableLocale, ...locale }.rowActions}</span>;
 };

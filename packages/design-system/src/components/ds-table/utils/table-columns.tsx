@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsSkeletonText } from '../../ds-skeleton';
 import { DsTableHeaderSelectableCell } from '../components/ds-table-header-selectable-cell';
+import { DsTableRowActionsHeader } from '../components/ds-table-row-actions-cell';
 import { DsTableRowExpandableCell } from '../components/ds-table-row-expandable-cell';
 import { DsTableRowSelectableCell } from '../components/ds-table-row-selectable-cell';
 import { resolveUtilityColumnWidth } from './column-size';
@@ -126,7 +127,7 @@ export const getAugmentedColumns = <TData, TValue>(
 			enableSorting: false,
 			enableResizing: false,
 			meta: EXPLICIT_SIZE_META,
-			header: () => null,
+			header: () => <DsTableRowActionsHeader />,
 			cell: () => null,
 		});
 	}

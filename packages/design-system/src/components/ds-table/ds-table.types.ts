@@ -36,6 +36,16 @@ export interface DsTableLocale {
 	 * Accessible label for the column resize handle.
 	 */
 	resizeColumn: string;
+
+	/**
+	 * Visually hidden header label for the row actions column.
+	 */
+	rowActions: string;
+
+	/**
+	 * Accessible label for the trigger that opens the secondary row actions menu.
+	 */
+	moreRowActions: string;
 }
 
 /**
@@ -45,6 +55,8 @@ export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	collapseColumnGroup: 'Collapse column group',
 	expandColumnGroup: 'Expand column group',
 	resizeColumn: 'Resize column',
+	rowActions: 'Row actions',
+	moreRowActions: 'More actions',
 });
 
 /**
@@ -196,7 +208,7 @@ export interface DsTableApi<TData> {
 	expandRows: (rowIds: string[]) => void;
 }
 
-export type { InfiniteScrollConfig } from './components/ds-table-body-virtualized';
+export type { InfiniteScrollConfig };
 
 /**
  * Represents a bulk action that can be performed on multiple selected rows

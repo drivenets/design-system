@@ -31,8 +31,9 @@ export const REORDER_COLUMN_WIDTH = 60;
 
 /**
  * Column id used for the synthetic trailing column injected when row actions are declared.
+ * Namespaced because `DsTableCell` swaps this column's content, so it must never match a consumer id.
  */
-export const ROW_ACTIONS_COLUMN_ID = 'rowActions';
+export const ROW_ACTIONS_COLUMN_ID = '__dsRowActions';
 
 /**
  * Width (in px) of one row action button. Must match `.rowActionIcon` in
@@ -59,7 +60,7 @@ export const ROW_ACTIONS_TRIGGER_OFFSET = 12;
 export const ROW_ACTIONS_CELL_PADDING = 16;
 
 /**
- * Injected utility leaf ids (`select`, `expander`, `reorder`, `rowActions`). Present in internal
+ * Injected utility leaf ids (`select`, `expander`, `reorder`, `__dsRowActions`). Present in internal
  * sizing for layout; omitted from the public `onColumnSizingChange` payload.
  */
 export const BUILTIN_COLUMN_IDS: ReadonlySet<string> = Object.freeze(
