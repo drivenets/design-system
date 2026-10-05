@@ -245,14 +245,22 @@ const isScalarOrRange = (condition: DsFilterFieldCondition, scalar: 'number' | '
 	return typeof value === scalar && includesOperator(comparisonFilterOperators, operator);
 };
 
+const fieldHasOperator = (tab: DsFiltersBarFiltersDialogTab, operator: string) =>
+	tab.schema.operators.some((item) => item.value === operator);
+
 /**
- * Whether the tab can show the condition: same field and subfield, and a value of the tab's type
+ * Whether the tab can show the condition: same field and subfield, an operator the field lists, and
+ * a value of the tab's type
  */
 const tabShows = (
 	tab: DsFiltersBarFiltersDialogTab,
 	condition: DsFilterCondition,
 ): condition is DsFilterFieldCondition => {
 	if (condition.kind !== 'field' || condition.field !== tab.field || condition.subfield !== tab.subfield) {
+		return false;
+	}
+
+	if (!fieldHasOperator(tab, condition.operator)) {
 		return false;
 	}
 
@@ -362,7 +370,10 @@ const seedEntry = (
 		return { ...empty, operator: first.operator as DsFilterTextOperator, text: first.value as string };
 	}
 
-	const range = rangeFromPair(shown) ?? (isRange(first.value) ? first.value : null);
+	// `between` saves as `=`, so only a field that lists `=` can show a range.
+	const range = fieldHasOperator(tab, '=')
+		? (rangeFromPair(shown) ?? (isRange(first.value) ? first.value : null))
+		: null;
 
 	if (empty.type === 'number') {
 		return range
@@ -445,6 +456,23 @@ const entryCondition = (
 export const isFiltersDialogEntrySet = (entry: DsFiltersBarFiltersDialogEntry) =>
 	entryCondition(entry) !== null;
 
+type SavedCondition = Pick<DsFilterFieldCondition, 'operator' | 'value'>;
+
+const isSameValue = (a: DsFilterValue, b: DsFilterValue): boolean => {
+	if (Array.isArray(a) && Array.isArray(b)) {
+		return a.length === b.length && a.every((item, index) => item === b[index]);
+	}
+
+	if (isRange(a) && isRange(b)) {
+		return a.from === b.from && a.to === b.to;
+	}
+
+	return a === b;
+};
+
+const isSameSaved = (a: SavedCondition | null, b: SavedCondition | null) =>
+	a === null || b === null ? a === b : a.operator === b.operator && isSameValue(a.value, b.value);
+
 const toCondition = (
 	entry: DsFiltersBarFiltersDialogEntry,
 	saved: Pick<DsFilterFieldCondition, 'operator' | 'value'>,
@@ -458,8 +486,9 @@ const toCondition = (
 });
 
 /**
- * Save replaces every condition a tab shows: the new one keeps the id and position of the first,
- * the rest are dropped. Conditions no tab can show are kept as they are.
+ * Save replaces every condition of a tab whose value changed: the new one keeps the id and position
+ * of the first, the rest are dropped. Tabs left as they were seeded keep all their conditions, and
+ * conditions no tab can show are kept as they are.
  * Pins keep their order: unpinned dialog pins are removed in place and new ones are appended.
  */
 export const fromFiltersDialogValue = (
@@ -470,6 +499,15 @@ export const fromFiltersDialogValue = (
 ): { conditions: ReadonlyArray<DsFilterCondition>; pins: ReadonlyArray<DsFilterPin> } => {
 	const tabs = filtersDialogTabs(fields);
 	const entries = tabs.flatMap((tab) => value.find((entry) => isEntryOf(entry, tab)) ?? []);
+	const seeded = toFiltersDialogValue(fields, conditions, pins);
+	const savedOf = (from: DsFiltersBarFiltersDialogValue, tab: DsFiltersBarFiltersDialogTab) => {
+		const entry = from.find((item) => isEntryOf(item, tab));
+
+		return entry ? entryCondition(entry) : null;
+	};
+	const changedTabs = new Set(
+		tabs.filter((tab) => !isSameSaved(savedOf(seeded, tab), savedOf(entries, tab))).map((tab) => tab.id),
+	);
 	const committed = new Map(
 		tabs.flatMap((tab) => {
 			const entry = entries.find((item) => isEntryOf(item, tab));
@@ -483,7 +521,7 @@ export const fromFiltersDialogValue = (
 	const kept = conditions.flatMap((condition): DsFilterCondition[] => {
 		const tab = tabs.find((item) => tabShows(item, condition));
 
-		if (!tab) {
+		if (!tab || !changedTabs.has(tab.id)) {
 			return [condition];
 		}
 
@@ -499,7 +537,7 @@ export const fromFiltersDialogValue = (
 	});
 
 	const added = [...committed.entries()]
-		.filter(([tabId]) => !placed.has(tabId))
+		.filter(([tabId]) => changedTabs.has(tabId) && !placed.has(tabId))
 		.map(([, commit]) => toCondition(commit.entry, commit.saved, createConditionId()));
 
 	const pinEntries = entries.filter(

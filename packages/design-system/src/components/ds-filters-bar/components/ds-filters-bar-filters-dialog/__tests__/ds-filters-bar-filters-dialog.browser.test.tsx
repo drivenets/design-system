@@ -533,6 +533,33 @@ describe('DsFiltersBar.FiltersDialog other field types', () => {
 		await expect.element(page.getByRole('option', { name: 'Last run (between)' })).toBeVisible();
 	});
 
+	it('moves a preset picked under between to equals, so it saves', async () => {
+		const onSave = vi.fn();
+		await page.render(
+			<Harness
+				tabs={[LAST_RUN]}
+				initialValue={[
+					{
+						type: 'date',
+						field: 'lastRun',
+						operator: 'between',
+						preset: null,
+						date: null,
+						range: { from: '2026-09-01', to: '2026-09-30' },
+					},
+				]}
+				onSave={onSave}
+			/>,
+		);
+
+		await page.getByText('Last 7 days', { exact: true }).click();
+		await page.getByRole('button', { name: 'Save filters' }).click();
+
+		expect(onSave).toHaveBeenCalledExactlyOnceWith([
+			{ type: 'date', field: 'lastRun', operator: '=', preset: 'last7Days', date: null, range: OPEN_RANGE },
+		]);
+	});
+
 	it('shows a count of one on a scalar tab with a value', async () => {
 		await page.render(
 			<Harness

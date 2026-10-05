@@ -326,19 +326,26 @@ describe('conditionOperators', () => {
 	});
 });
 
+const AT_LEAST = { value: '>=', label: 'at least' } as const;
+const AT_MOST = { value: '<=', label: 'at most' } as const;
+
+// Fields that list every operator a range and its `>=` / `<=` pair need
+const RANGE_FIELDS: DsFilterField[] = [
+	{ type: 'number', id: 'parents', label: 'Parents', operators: [EQUALS, NOT_EQUALS, AT_LEAST, AT_MOST] },
+	{ type: 'date', id: 'lastRun', label: 'Last run', operators: [EQUALS, AT_LEAST, AT_MOST] },
+];
+
 describe('conditionDialogTab', () => {
 	it('returns the tab of a field condition the dialog can show', () => {
 		const conditions: DsFilterCondition[] = [
 			{ kind: 'field', id: '1', field: 'status', operator: '!=', value: ['active'] },
 			{ kind: 'field', id: '2', field: 'parents', operator: '>', value: 3 },
-			{ kind: 'field', id: '3', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
 			{ kind: 'field', id: '4', field: 'lastRun', operator: '=', value: 'today' },
 			{ kind: 'field', id: '5', field: 'input', subfield: 'name', operator: '~', value: 'WF' },
 		];
 
 		expect(conditions.map((condition) => conditionDialogTab(condition, FIELDS))).toEqual([
 			'status',
-			'parents',
 			'parents',
 			'lastRun',
 			'input.name',
@@ -356,6 +363,18 @@ describe('conditionDialogTab', () => {
 		expect(conditions.map((condition) => conditionDialogTab(condition, FIELDS))).toEqual([
 			undefined,
 			undefined,
+			undefined,
+			undefined,
+		]);
+	});
+
+	it('returns undefined for an operator the field does not list, a range included', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: '1', field: 'parents', operator: '<', value: 3 },
+			{ kind: 'field', id: '2', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
+		];
+
+		expect(conditions.map((condition) => conditionDialogTab(condition, FIELDS))).toEqual([
 			undefined,
 			undefined,
 		]);
@@ -505,12 +524,24 @@ describe('toFiltersDialogValue', () => {
 			{ kind: 'field', id: 'c2', field: 'lastRun', operator: '>=', value: '2026-09-01' },
 		];
 
-		expect(toFiltersDialogValue(FIELDS, range, [])).toMatchObject([
+		expect(toFiltersDialogValue(RANGE_FIELDS, range, [])).toMatchObject([
 			{ operator: 'between', range: { from: 1, to: null } },
 		]);
-		expect(toFiltersDialogValue(FIELDS, pair, [])).toMatchObject([
+		expect(toFiltersDialogValue(RANGE_FIELDS, pair, [])).toMatchObject([
 			{ operator: 'between', range: { from: '2026-09-01', to: '2026-09-30' } },
 		]);
+	});
+
+	it('seeds a >= and <= pair as its first condition when the field has no =', () => {
+		const fields: DsFilterField[] = [
+			{ type: 'number', id: 'parents', label: 'Parents', operators: [AT_LEAST, AT_MOST] },
+		];
+		const pair: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'parents', operator: '>=', value: 1 },
+			{ kind: 'field', id: 'c2', field: 'parents', operator: '<=', value: 5 },
+		];
+
+		expect(toFiltersDialogValue(fields, pair, [])).toMatchObject([{ operator: '>=', value: 1 }]);
 	});
 
 	it('falls back to equals for a field without operators', () => {
@@ -616,12 +647,29 @@ describe('fromFiltersDialogValue', () => {
 			{ kind: 'field', id: 'hi', field: 'parents', operator: '<=', value: 5 },
 		];
 
-		const value = toFiltersDialogValue(FIELDS, conditions, []);
+		const value = toFiltersDialogValue(RANGE_FIELDS, conditions, []).map((entry) =>
+			entry.type === 'number' ? { ...entry, range: { from: 1, to: 9 } } : entry,
+		);
 
-		expect(fromFiltersDialogValue(FIELDS, conditions, [], value).conditions).toEqual([
-			{ kind: 'field', id: 'lo', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
+		expect(fromFiltersDialogValue(RANGE_FIELDS, conditions, [], value).conditions).toEqual([
+			{ kind: 'field', id: 'lo', field: 'parents', operator: '=', value: { from: 1, to: 9 } },
 			search,
 		]);
+	});
+
+	it('keeps every condition of a tab left as it was seeded', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'n1', field: 'input', subfield: 'name', operator: '~', value: 'foo' },
+			{ kind: 'field', id: 'n2', field: 'input', subfield: 'name', operator: '~', value: 'bar' },
+			{ kind: 'field', id: 's1', field: 'status', operator: '=', value: ['active'] },
+			{ kind: 'field', id: 's2', field: 'status', operator: '!=', value: ['deprecated'] },
+		];
+
+		const value = toFiltersDialogValue(DIALOG_FIELDS, conditions, []).map((entry) =>
+			entry.type === 'enum' ? { ...entry, pinned: ['active'] } : entry,
+		);
+
+		expect(fromFiltersDialogValue(DIALOG_FIELDS, conditions, [], value).conditions).toEqual(conditions);
 	});
 
 	it('saves text trimmed, a subfield with its id, and a preset or a date', () => {

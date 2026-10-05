@@ -348,6 +348,12 @@ const DatePanel = ({ tab, entry, locale, onEntryChange }: PanelProps<DsFiltersBa
 	}
 
 	const presets = tab.schema.presets ?? [];
+	// `between` saves only a range, so a preset picked under it moves to `=` or the first operator.
+	const presetOperator =
+		entry.operator === BETWEEN
+			? ((tab.schema.operators.find((operator) => operator.value === '=') ?? tab.schema.operators[0])
+					?.value ?? '=')
+			: entry.operator;
 	// A preset and a date never save together: choosing one clears the other.
 	const setRange = (range: DsFilterRange<string>) => onEntryChange({ ...entry, preset: null, range });
 
@@ -403,7 +409,9 @@ const DatePanel = ({ tab, entry, locale, onEntryChange }: PanelProps<DsFiltersBa
 				<div className={styles.options} role="group" aria-label={locale.presets(tab.label)}>
 					<DsRadioGroup.Root
 						value={entry.preset}
-						onValueChange={(preset) => onEntryChange({ ...entry, preset, date: null, range: OPEN_RANGE })}
+						onValueChange={(preset) =>
+							onEntryChange({ ...entry, operator: presetOperator, preset, date: null, range: OPEN_RANGE })
+						}
 					>
 						{presets.map((preset) => (
 							<DsRadioGroup.Item key={preset.value} value={preset.value} label={preset.label} />

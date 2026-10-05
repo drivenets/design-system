@@ -42,8 +42,8 @@ export const defaultDsFiltersBarConditionsLocale: Required<DsFiltersBarCondition
 
 /**
  * Filters view: the add-filter button with its filters dialog, and one chip per condition. A field
- * chip switches its operator in place, and an enum chip opens the filters dialog on its field.
- * Renders nothing while an Advanced query is the source.
+ * chip switches its operator in place, and opens the filters dialog on its field's tab. Renders
+ * nothing while an Advanced query is the source.
  */
 export interface DsFiltersBarConditionsProps {
 	locale?: DsFiltersBarConditionsLocale;
