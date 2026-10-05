@@ -126,6 +126,11 @@ export default defineConfig({
 								wsEndpoint: process.env.PW_WS_ENDPOINT ?? DEFAULT_PLAYWRIGHT_WS_ENDPOINT,
 								exposeNetwork: '<loopback>',
 							},
+							launchOptions: {
+								// Skia otherwise picks SIMD code paths per CPU (AVX on CI, SSE under Rosetta),
+								// which shifts anti-aliased edges by a pixel.
+								args: ['--disable-skia-runtime-opts'],
+							},
 						}),
 						instances: [{ browser: 'chromium' }],
 						expect: {

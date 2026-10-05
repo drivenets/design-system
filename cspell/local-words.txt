@@ -48,6 +48,7 @@ retryable
 sbdocs
 scrollers
 scrollers
+skia
 subcomponent
 subcomponents
 timelapse
