@@ -124,7 +124,7 @@ For visual-only grids (size/variant matrices) that aren't real usage examples:
 
 ## Visual tests
 
-Stories tagged `visual` get a **Visual test**: a screenshot of `document.body` at 1280×800, compared with zero tolerance against a committed **Baseline** in `stories/__screenshots__/`. Wired in `.storybook/vitest.visual.setup.ts`; runs in the pinned `linux/amd64` Playwright container (same CPU architecture as CI) so pixels match on every machine.
+Stories tagged `visual` get a **Visual test**: a screenshot of `document.body` at 1280×800, compared against a committed **Baseline** with a 200-pixel budget for CPU-dependent anti-aliasing in `stories/__screenshots__/`. Wired in `.storybook/vitest.visual.setup.ts`; runs in the pinned `linux/amd64` Playwright container (same CPU architecture as CI) so pixels match on every machine.
 
 - **Opt in** — `tags: ['visual']` on the meta (DsTable today). Opt one story out with `tags: ['!visual']`.
 - **Deterministic stories** — no `Math.random()` / `Date.now()` in rendered output; seed data (see `ds-table/stories/common/story-data-generator.ts`). Animations and transitions are frozen globally.

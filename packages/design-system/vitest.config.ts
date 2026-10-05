@@ -10,6 +10,7 @@ import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
 const DEFAULT_PLAYWRIGHT_WS_ENDPOINT = 'ws://127.0.0.1:3000/';
+const VISUAL_TEST_ALLOWED_MISMATCHED_PIXELS = 200;
 
 export default defineConfig({
 	test: {
@@ -120,21 +121,22 @@ export default defineConfig({
 						enabled: true,
 						headless: true,
 						// The browser runs in the pinned Playwright container (`pnpm test:visual:server`)
-						// so screenshots render identically on every machine.
+						// so screenshots render the same on every machine, up to the pixel budget below.
 						provider: playwright({
 							connectOptions: {
 								wsEndpoint: process.env.PW_WS_ENDPOINT ?? DEFAULT_PLAYWRIGHT_WS_ENDPOINT,
 								exposeNetwork: '<loopback>',
 							},
-							launchOptions: {
-								// Skia otherwise picks SIMD code paths per CPU (AVX on CI, SSE under Rosetta),
-								// which shifts anti-aliased edges by a pixel.
-								args: ['--disable-skia-runtime-opts'],
-							},
 						}),
 						instances: [{ browser: 'chromium' }],
 						expect: {
 							toMatchScreenshot: {
+								comparatorName: 'pixelmatch',
+								comparatorOptions: {
+									// GitHub runners vary in CPU model, which shifts anti-aliased half-pixel edges
+									// (e.g. checkbox borders) by up to ~150px per screenshot. Real changes move far more.
+									allowedMismatchedPixels: VISUAL_TEST_ALLOWED_MISMATCHED_PIXELS,
+								},
 								// A single rendering environment, so no browser/platform suffix.
 								resolveScreenshotPath: ({
 									arg,
