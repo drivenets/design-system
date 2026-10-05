@@ -4,10 +4,12 @@ import { page, userEvent } from 'vitest/browser';
 import { FiltersDialog } from '../index';
 import type {
 	DsFiltersBarFiltersDialogEntry,
+	DsFiltersBarFiltersDialogEnumEntry,
 	DsFiltersBarFiltersDialogLocale,
+	DsFiltersBarFiltersDialogTab,
 	DsFiltersBarFiltersDialogValue,
 } from '../ds-filters-bar-filters-dialog.types';
-import type { DsFilterEnumField } from '../../../ds-filters-bar.types';
+import type { DsFilterEnumField, DsFilterScalarField } from '../../../ds-filters-bar.types';
 
 const STATUS: DsFilterEnumField = {
 	id: 'status',
@@ -48,11 +50,19 @@ const RESULT: DsFilterEnumField = {
 	],
 };
 
-const FIELDS = [STATUS, WORKFLOW, RESULT];
+const tabOf = (schema: DsFilterScalarField): DsFiltersBarFiltersDialogTab => ({
+	id: schema.id,
+	field: schema.id,
+	label: schema.label,
+	schema,
+});
+
+const TABS = [STATUS, WORKFLOW, RESULT].map(tabOf);
 
 const entry = (
-	overrides: Partial<DsFiltersBarFiltersDialogEntry> & { field: string },
-): DsFiltersBarFiltersDialogEntry => ({
+	overrides: Partial<DsFiltersBarFiltersDialogEnumEntry> & { field: string },
+): DsFiltersBarFiltersDialogEnumEntry => ({
+	type: 'enum',
 	operator: '=',
 	selected: [],
 	pinned: [],
@@ -60,8 +70,9 @@ const entry = (
 });
 
 interface HarnessProps {
+	tabs?: ReadonlyArray<DsFiltersBarFiltersDialogTab>;
 	initialValue?: DsFiltersBarFiltersDialogValue;
-	initialField?: string;
+	initialTab?: string;
 	locale?: DsFiltersBarFiltersDialogLocale;
 	onChange?: (changed: DsFiltersBarFiltersDialogEntry, value: DsFiltersBarFiltersDialogValue) => void;
 	onSave?: (value: DsFiltersBarFiltersDialogValue) => void;
@@ -69,8 +80,9 @@ interface HarnessProps {
 }
 
 const Harness = ({
+	tabs = TABS,
 	initialValue = [],
-	initialField,
+	initialTab,
 	locale,
 	onChange,
 	onSave,
@@ -86,9 +98,9 @@ const Harness = ({
 			</button>
 			<FiltersDialog
 				open={open}
-				fields={FIELDS}
+				tabs={tabs}
 				value={value}
-				initialField={initialField}
+				initialTab={initialTab}
 				locale={locale}
 				onOpenChange={(next) => {
 					onOpenChange?.(next);
@@ -156,7 +168,7 @@ describe('DsFiltersBar.FiltersDialog', () => {
 	});
 
 	it('selects the initial field tab on every open', async () => {
-		await page.render(<Harness initialField="workflow" />);
+		await page.render(<Harness initialTab="workflow" />);
 
 		await expect.element(tab('Workflow')).toHaveAttribute('aria-selected', 'true');
 		await expect.element(optionCheckbox('Deploy')).toBeVisible();
@@ -169,7 +181,7 @@ describe('DsFiltersBar.FiltersDialog', () => {
 	});
 
 	it('falls back to the first tab for an unknown initial field', async () => {
-		await page.render(<Harness initialField="removed" />);
+		await page.render(<Harness initialTab="removed" />);
 
 		await expect.element(tab('Status')).toHaveAttribute('aria-selected', 'true');
 		await expect.element(page.getByRole('group', { name: 'Status' })).toBeVisible();
@@ -418,5 +430,132 @@ describe('DsFiltersBar.FiltersDialog', () => {
 		expect(onOpenChange).toHaveBeenCalledExactlyOnceWith(false);
 		expect(onSave).not.toHaveBeenCalled();
 		await expect.element(dialog()).not.toBeInTheDocument();
+	});
+});
+
+const PARENTS = tabOf({
+	type: 'number',
+	id: 'parents',
+	label: 'Parents',
+	operators: [
+		{ value: '=', label: 'equals', symbol: '=' },
+		{ value: '>', label: 'greater than', symbol: '>' },
+	],
+});
+const LAST_RUN = tabOf({
+	type: 'date',
+	id: 'lastRun',
+	label: 'Last run',
+	operators: [
+		{ value: '=', label: 'is', symbol: '=' },
+		{ value: '>', label: 'after', symbol: '>' },
+	],
+	presets: [
+		{ value: 'today', label: 'Today' },
+		{ value: 'last7Days', label: 'Last 7 days' },
+	],
+});
+const INPUT_NAME: DsFiltersBarFiltersDialogTab = {
+	id: 'input.name',
+	field: 'input',
+	subfield: 'name',
+	label: 'Input › Name',
+	schema: { type: 'text', id: 'name', label: 'Name', operators: [{ value: '~', label: 'contains' }] },
+};
+
+const OPEN_RANGE = { from: null, to: null };
+
+describe('DsFiltersBar.FiltersDialog other field types', () => {
+	it('edits a compound subfield as text, labelled by its path', async () => {
+		const onSave = vi.fn();
+		await page.render(<Harness tabs={[INPUT_NAME]} onSave={onSave} />);
+
+		await expect.element(tab('Input › Name')).toHaveAttribute('aria-selected', 'true');
+		await page.getByRole('textbox', { name: 'Input › Name value' }).fill('WF456');
+		await page.getByRole('button', { name: 'Save filters' }).click();
+
+		expect(onSave).toHaveBeenCalledExactlyOnceWith([
+			{ type: 'text', field: 'input', subfield: 'name', operator: '~', text: 'WF456' },
+		]);
+	});
+
+	it('edits a number with one input, and a range after picking between', async () => {
+		const onChange = vi.fn();
+		await page.render(<Harness tabs={[PARENTS]} onChange={onChange} />);
+
+		await page.getByRole('spinbutton', { name: 'Parents value' }).fill('3');
+
+		expect(onChange).toHaveBeenLastCalledWith(
+			{ type: 'number', field: 'parents', operator: '=', value: 3, range: OPEN_RANGE },
+			expect.anything(),
+		);
+
+		await operatorSelect().click();
+		await page.getByRole('option', { name: 'Parents (between)' }).click();
+		await page.getByRole('spinbutton', { name: 'Parents from' }).fill('1');
+		await page.getByRole('spinbutton', { name: 'Parents to' }).fill('5');
+
+		expect(onChange).toHaveBeenLastCalledWith(
+			expect.objectContaining({ operator: 'between', range: { from: 1, to: 5 } }),
+			expect.anything(),
+		);
+	});
+
+	it('picks a date preset, clearing the date, and offers between on date fields', async () => {
+		const onChange = vi.fn();
+		await page.render(
+			<Harness
+				tabs={[LAST_RUN]}
+				initialValue={[
+					{
+						type: 'date',
+						field: 'lastRun',
+						operator: '>',
+						preset: null,
+						date: '2026-09-13',
+						range: OPEN_RANGE,
+					},
+				]}
+				onChange={onChange}
+			/>,
+		);
+
+		await page.getByText('Last 7 days', { exact: true }).click();
+
+		expect(onChange).toHaveBeenLastCalledWith(
+			{ type: 'date', field: 'lastRun', operator: '>', preset: 'last7Days', date: null, range: OPEN_RANGE },
+			expect.anything(),
+		);
+		await expect.element(page.getByRole('radio', { name: 'Last 7 days' })).toBeChecked();
+
+		await operatorSelect().click();
+
+		await expect.element(page.getByRole('option', { name: 'Last run (between)' })).toBeVisible();
+	});
+
+	it('shows a count of one on a scalar tab with a value', async () => {
+		await page.render(
+			<Harness
+				tabs={[TABS[0] as DsFiltersBarFiltersDialogTab, PARENTS]}
+				initialValue={[{ type: 'number', field: 'parents', operator: '>', value: 2, range: OPEN_RANGE }]}
+			/>,
+		);
+
+		await expect.element(tab('Parents')).toHaveAccessibleName('Parents 1 selected');
+	});
+
+	it('shows no pins on a compound subfield', async () => {
+		const subfield: DsFiltersBarFiltersDialogTab = {
+			id: 'output.status',
+			field: 'output',
+			subfield: 'status',
+			label: 'Output › Status',
+			schema: STATUS,
+		};
+
+		await page.render(<Harness tabs={[subfield]} />);
+
+		await expect.element(optionCheckbox('Active')).toBeVisible();
+		await expect.element(pinToggle('Active')).not.toBeInTheDocument();
 	});
 });

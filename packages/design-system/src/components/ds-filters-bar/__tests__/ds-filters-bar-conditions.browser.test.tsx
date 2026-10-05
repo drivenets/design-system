@@ -223,6 +223,12 @@ describe('DsFiltersBar.Conditions operator menu', () => {
 		expect(onConditionsChange).not.toHaveBeenCalled();
 	});
 
+	it('shows the operator token when the operator has no symbol', async () => {
+		await page.render(<ConditionsBar defaultConditions={[INPUT_NAME]} />);
+
+		await expect.element(operatorButton('Input Name').getByText('~', { exact: true })).toBeVisible();
+	});
+
 	it('edits a compound subfield operator, named by the field path', async () => {
 		const onConditionsChange = vi.fn();
 
@@ -291,14 +297,46 @@ describe('DsFiltersBar.Conditions chip click', () => {
 		await expect.element(fieldTab('Status')).toHaveAttribute('aria-selected', 'true');
 	});
 
-	it('does not open the dialog from chips it cannot edit', async () => {
-		await page.render(<ConditionsBar defaultConditions={[TRIGGER, PARENTS, INPUT_NAME]} />);
-
-		await expect.element(chip('Trigger')).toHaveAttribute('aria-pressed', 'true');
-		await expect.element(chip('Parents')).not.toHaveAttribute('aria-pressed');
-		await expect.element(chip('Input › Name')).not.toHaveAttribute('aria-pressed');
+	it('opens the dialog on the tab of a number, range or compound subfield chip', async () => {
+		await page.render(<ConditionsBar defaultConditions={[PARENTS_RANGE, INPUT_NAME]} />);
 
 		await chip('Parents').click();
+
+		await expect.element(fieldTab('Parents')).toHaveAttribute('aria-selected', 'true');
+		await expect.element(page.getByRole('spinbutton', { name: 'Parents from' })).toHaveValue('1');
+
+		await page.getByRole('button', { name: 'Close' }).click();
+		// The middle of this chip is its operator menu, so click the label.
+		await chip('Input › Name').getByText('Input › Name', { exact: true }).click();
+
+		await expect.element(fieldTab('Input › Name')).toHaveAttribute('aria-selected', 'true');
+		await expect.element(page.getByRole('textbox', { name: 'Input › Name value' })).toHaveValue('WF456');
+	});
+
+	it('saves an edited range back in place', async () => {
+		const onConditionsChange = vi.fn();
+
+		await page.render(
+			<ConditionsBar defaultConditions={[STATUS, PARENTS_RANGE]} onConditionsChange={onConditionsChange} />,
+		);
+
+		await chip('Parents').click();
+		await page.getByRole('spinbutton', { name: 'Parents to' }).fill('9');
+		await page.getByRole('button', { name: 'Save filters' }).click();
+
+		expect(onConditionsChange).toHaveBeenLastCalledWith([
+			STATUS,
+			{ ...PARENTS_RANGE, value: { from: 1, to: 9 } },
+		]);
+	});
+
+	it('does not open the dialog from a chip whose field is missing from fields', async () => {
+		await page.render(<ConditionsBar defaultConditions={[TRIGGER, REMOVED]} />);
+
+		await expect.element(chip('Trigger')).toHaveAttribute('aria-pressed', 'true');
+		await expect.element(chip('owner')).not.toHaveAttribute('aria-pressed');
+
+		await chip('owner').click();
 
 		await expect.element(filtersDialog()).not.toBeInTheDocument();
 	});

@@ -198,10 +198,12 @@ export const Default: Story = {
 };
 
 /**
- * The "+" button in `Conditions` opens the filters dialog: one tab per enum field, with an operator,
- * an option search, and a checkbox and pin per option. Edits stay a draft until **Save filters**
- * writes one condition per field with checked options and the pins back to the document; closing any
- * other way drops the draft. Search and non-enum conditions are left as they are.
+ * The "+" button in `Conditions` opens the filters dialog, with one tab per field and per compound
+ * subfield. An enum tab has an operator, an option search, and a checkbox and pin per option. Text,
+ * number and date tabs have an operator and a value; number and date tabs add **between** for a
+ * range, and a date tab lists its presets. Edits stay a draft until **Save filters** writes one
+ * condition per tab with a value, and the pins, back to the document; closing any other way drops
+ * the draft. Search conditions are left as they are.
  */
 export const FiltersDialog: Story = {
 	args: {
@@ -244,7 +246,10 @@ export const FiltersDialog: Story = {
 				type: 'enum',
 				id: 'trigger',
 				label: 'Trigger',
-				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '!=', label: 'not equals', symbol: '≠' },
+				],
 				options: [
 					{ value: 'manual', label: 'Manual' },
 					{ value: 'scheduled', label: 'Scheduled' },
@@ -252,10 +257,51 @@ export const FiltersDialog: Story = {
 					{ value: 'webhook', label: 'Webhook' },
 				],
 			},
+			{
+				type: 'number',
+				id: 'parents',
+				label: 'Parents',
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '>', label: 'greater than', symbol: '>' },
+					{ value: '<', label: 'less than', symbol: '<' },
+				],
+			},
+			{
+				type: 'date',
+				id: 'lastRun',
+				label: 'Last run',
+				operators: [
+					{ value: '=', label: 'is', symbol: '=' },
+					{ value: '>', label: 'after', symbol: '>' },
+					{ value: '<', label: 'before', symbol: '<' },
+				],
+				presets: [
+					{ value: 'today', label: 'Today' },
+					{ value: 'last7Days', label: 'Last 7 days' },
+				],
+			},
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [
+					{
+						type: 'text',
+						id: 'name',
+						label: 'Name',
+						operators: [
+							{ value: '~', label: 'contains' },
+							{ value: '!~', label: 'does not contain' },
+						],
+					},
+				],
+			},
 		],
 		defaultConditions: [
 			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated', 'draft'] },
 			{ kind: 'field', id: 'c2', field: 'trigger', operator: '=', value: ['scheduled'] },
+			{ kind: 'field', id: 'c3', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
 		],
 		defaultPins: [
 			{ field: 'status', value: 'active' },
@@ -308,11 +354,11 @@ export const Search: Story = {
 
 /**
  * Every condition shows as a chip after the "+" button: the field, its operator and the value, with
- * \`Input › Name\` for a compound field's subfield. When the field has more than one operator, the
- * operator is a menu that switches it in place. A single operator or a field missing from \`fields\`
- * shows as text, and a range shows none, since it means "within". Clicking an enum chip opens the
- * filters dialog on that field; × removes a condition. While an Advanced query is the source, the
- * chips and the "+" button are hidden.
+ * `Input › Name` for a compound field's subfield. When the field has more than one operator, the
+ * operator is a menu that switches it in place; a field with one operator shows it as text, and a
+ * range shows none, since it means "within". Clicking a chip opens the filters dialog on that field;
+ * × removes a condition. While an Advanced query is the source, the chips and the "+" button are
+ * hidden.
  */
 export const SelectedFilters: Story = {
 	args: {
@@ -349,7 +395,10 @@ export const SelectedFilters: Story = {
 				type: 'enum',
 				id: 'trigger',
 				label: 'Trigger',
-				operators: [{ value: '=', label: 'equals', symbol: '=' }],
+				operators: [
+					{ value: '=', label: 'equals', symbol: '=' },
+					{ value: '!=', label: 'not equals', symbol: '≠' },
+				],
 				options: [
 					{ value: 'manual', label: 'Manual' },
 					{ value: 'scheduled', label: 'Scheduled' },

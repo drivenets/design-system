@@ -14,11 +14,11 @@ import type {
 	DsFilterSearchCondition,
 } from '../../ds-filters-bar.types';
 import {
-	conditionDialogField,
+	conditionDialogTab,
 	conditionOperators,
 	conditionText,
 	describeCondition,
-	filtersDialogFields,
+	filtersDialogTabs,
 	fromFiltersDialogValue,
 	isRange,
 	toFiltersDialogValue,
@@ -109,7 +109,7 @@ const OperatorMenu = ({ value, symbol, operators, label, locale, onValueChange }
 interface FieldChipProps {
 	condition: DsFilterFieldCondition;
 	locale: Locale;
-	onEdit: (fieldId: string) => void;
+	onEdit: (tabId: string) => void;
 }
 
 const FieldChip = ({ condition, locale, onEdit }: FieldChipProps) => {
@@ -117,7 +117,7 @@ const FieldChip = ({ condition, locale, onEdit }: FieldChipProps) => {
 
 	const description = describeCondition(condition, fields);
 	const operators = conditionOperators(condition, fields);
-	const dialogField = conditionDialogField(condition, fields);
+	const dialogTab = conditionDialogTab(condition, fields);
 	const symbol = description.operatorSymbol ?? condition.operator;
 
 	const renderOperator = () => {
@@ -154,7 +154,7 @@ const FieldChip = ({ condition, locale, onEdit }: FieldChipProps) => {
 			value={description.value}
 			locale={{ deleteAriaLabel: locale.removeCondition(conditionText(description)) }}
 			slots={{ operator: renderOperator() }}
-			onClick={dialogField ? () => onEdit(dialogField) : undefined}
+			onClick={dialogTab ? () => onEdit(dialogTab) : undefined}
 			onDelete={() => removeCondition(condition.id)}
 		/>
 	);
@@ -170,7 +170,7 @@ export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBa
 
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(EMPTY_DRAFT);
-	const [initialField, setInitialField] = useState<string | undefined>(undefined);
+	const [initialTab, setInitialTab] = useState<string | undefined>(undefined);
 
 	// The conditions are ignored while an Advanced query filters, so neither show them nor add to them.
 	// A dialog left open would come back with a stale draft once the query clears.
@@ -182,9 +182,9 @@ export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBa
 		return null;
 	}
 
-	const handleOpen = (fieldId?: string) => {
+	const handleOpen = (tabId?: string) => {
 		setDraft(toFiltersDialogValue(fields, conditions, pins));
-		setInitialField(fieldId);
+		setInitialTab(tabId);
 		setOpen(true);
 	};
 
@@ -207,9 +207,9 @@ export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBa
 			/>
 			<FiltersDialog
 				open={open}
-				fields={filtersDialogFields(fields)}
+				tabs={filtersDialogTabs(fields)}
 				value={draft}
-				initialField={initialField}
+				initialTab={initialTab}
 				locale={{ ...locale.filtersDialog, title: locale.filtersDialogTitle, save: locale.saveFilters }}
 				onOpenChange={setOpen}
 				onChange={(_changed, value) => setDraft(value)}
