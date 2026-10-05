@@ -25,12 +25,20 @@ At [claude.ai/code](https://claude.ai/code), pick `drivenets/design-system`, the
 ```bash
 #!/bin/bash
 set -euo pipefail
-git clone --depth 1 https://github.com/drivenets/design-system.git /tmp/ds-setup
-CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR=/tmp/ds-setup /tmp/ds-setup/.claude/hooks/cloud-setup.sh
-rm -rf /tmp/ds-setup
+
+# The repo is already cloned when this runs; find it and run the session hook ahead of time
+hook="$(find "$PWD" /home /root -maxdepth 6 -path '*/.claude/hooks/cloud-setup.sh' -print -quit 2>/dev/null || true)"
+
+if [ -z "$hook" ]; then
+	echo "setup: .claude/hooks/cloud-setup.sh not found (pwd: $PWD)" >&2
+	exit 1
+fi
+
+echo "setup: running $hook"
+CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR="$(cd "$(dirname "$hook")/../.." && pwd)" "$hook"
 ```
 
-The setup script runs before the session's repo is cloned, so it runs the same hook from a throwaway clone of `main`. The VM snapshot then holds Node, pnpm, the pnpm store and Chromium, and the hook in each session only links `node_modules`.
+The setup script runs after the repo is cloned and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do.
 
 The setup script never needs editing. If `.nvmrc`, `packageManager` or the lockfile change after the snapshot was taken, the hook installs whatever differs, so sessions stay correct and only start slower until the snapshot is rebuilt.
 

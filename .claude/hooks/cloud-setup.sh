@@ -3,9 +3,8 @@
 # Playwright Chromium. Each step is skipped when already in place. No-op locally.
 #
 # Runs twice in the shared environment (see docs/agents/cloud-environment.md):
-# - as the environment setup script, on a throwaway clone, so the VM snapshot already has the toolchain,
-#   the pnpm store and Chromium;
-# - as the SessionStart hook, where only `pnpm install` is left to do (linking from the warm store).
+# - from the environment setup script, so the VM snapshot already has the toolchain, the pnpm store and Chromium;
+# - as the SessionStart hook, where whatever is still missing gets installed.
 set -euo pipefail
 
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
@@ -25,6 +24,8 @@ log="$(mktemp)"
 trap 'rm -f "$log"' EXIT
 
 run() {
+	echo "cloud-setup: $*"
+
 	if ! "$@" >"$log" 2>&1; then
 		echo "cloud-setup: '$*' failed:" >&2
 		tail -n 40 "$log" >&2
