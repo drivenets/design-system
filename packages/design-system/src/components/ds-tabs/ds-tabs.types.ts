@@ -70,8 +70,12 @@ export type DsTabsTabProps = DsTabsTabBaseProps &
 				label?: never;
 				/** Leading icon name (Material Icons) or SVG component */
 				icon?: never;
-				/** Badge count or text */
+				/** Selected-item count, shown beside a status dot. Omit to hide. */
+				selectedCount?: never;
+				/** Total count or label shown in the trailing badge */
 				badge?: never;
+				/** Shows a pin glyph after the badge */
+				pinned?: never;
 		  }
 		| {
 				/** Custom children (overrides default rendering) */
@@ -80,8 +84,12 @@ export type DsTabsTabProps = DsTabsTabBaseProps &
 				label?: string;
 				/** Leading icon name (Material Icons) or SVG component */
 				icon?: IconType;
-				/** Badge count or text */
+				/** Selected-item count, shown beside a status dot. Omit to hide. */
+				selectedCount?: number;
+				/** Total count or label shown in the trailing badge */
 				badge?: string | number;
+				/** Shows a pin glyph after the badge */
+				pinned?: boolean;
 		  }
 	);
 
