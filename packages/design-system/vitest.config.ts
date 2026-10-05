@@ -147,6 +147,9 @@ export default defineConfig({
 									screenshotDirectory,
 								}) =>
 									path.resolve(root, testFileDirectory, screenshotDirectory, testFileName, `${arg}${ext}`),
+								// `arg` already ends in `-actual` / `-diff`; `scripts/visual-test-report.ts` relies on this layout.
+								resolveDiffPath: ({ arg, ext, root, attachmentsDir, testFileDirectory, testFileName }) =>
+									path.resolve(root, attachmentsDir, testFileDirectory, testFileName, `${arg}${ext}`),
 							},
 						},
 					},

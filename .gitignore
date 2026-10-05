@@ -20,4 +20,4 @@ coverage/
 .claude/settings.json
 
 # Vitest visual test diffs
-.vitest/attachments
+**/.vitest/attachments/

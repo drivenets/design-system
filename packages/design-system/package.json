@@ -54,6 +54,7 @@
 		"test:storybook-docs": "vitest --project=storybook-docs",
 		"test:visual": "DS_VISUAL_TESTS=1 vitest --project=storybook-visual",
 		"test:visual:server": "node ./scripts/visual-test-server.ts",
+		"test:visual:report": "node ./scripts/visual-test-report.ts",
 		"build": "tsdown",
 		"build:watch": "pnpm build --watch",
 		"build:storybook": "storybook build"

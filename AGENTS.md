@@ -49,7 +49,7 @@ pnpm --filter @drivenets/design-system test:visual src/components/ds-table/ --ru
 pnpm --filter @drivenets/design-system test:visual src/components/ds-table/ --run -u
 ```
 
-Use `-u` only for intended visual changes, and review every changed PNG. Enforced in CI by the `visual-tests` job (diffs uploaded as an artifact). See [`storybook`](.agents/skills/storybook/SKILL.md#visual-tests).
+Use `-u` only for intended visual changes, and review every changed PNG. Enforced in CI by the `visual-tests` job; on failure it uploads `visual-test-report.html` (baseline / actual / diff per story) as a run artifact. See [`storybook`](.agents/skills/storybook/SKILL.md#visual-tests).
 
 ## When to Run What
 
