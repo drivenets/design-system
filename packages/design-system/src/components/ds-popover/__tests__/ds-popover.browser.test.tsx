@@ -736,6 +736,8 @@ describe('DsPopover focus', () => {
 		await page.render(<CloseFocusExample />);
 		await expect.element(getPanel()).toBeVisible();
 
+		// defaultOpen does not move focus. Escape is delivered to the focused node.
+		(getPanel().element() as HTMLElement).focus();
 		await userEvent.keyboard('{Escape}');
 
 		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
@@ -779,6 +781,8 @@ describe('DsPopover focus', () => {
 		await page.render(<CloseFocusExample />);
 		await expect.element(getPanel()).toBeVisible();
 
+		// defaultOpen does not move focus. Escape is delivered to the focused node.
+		(getPanel().element() as HTMLElement).focus();
 		await userEvent.keyboard('{Escape}');
 
 		await expect.element(page.getByText(/edge router is online/i)).not.toBeVisible();
