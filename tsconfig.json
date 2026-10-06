@@ -4,5 +4,5 @@
 		"types": ["node"]
 	},
 	"include": ["**/*", "./.github/scripts/**/*"],
-	"exclude": ["./packages/**"]
+	"exclude": ["./packages/**", "./.design-sync/**", "./ds-bundle/**", "./.ds-sync/**"]
 }
