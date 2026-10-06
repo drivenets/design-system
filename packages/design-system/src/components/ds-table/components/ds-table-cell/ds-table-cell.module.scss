@@ -1,5 +1,4 @@
 @use '../../../../styles/typography';
-@use '../../../../styles/shared/dropdown';
 
 .tableCellEllipsis {
 	flex: 1;
@@ -10,66 +9,4 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	word-break: break-word;
-}
-
-.lastCell {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 100%;
-	flex: 1;
-
-	.cellActions {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
-}
-
-.rowActionIcon {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 36px;
-	height: 36px;
-	border: none;
-	border-radius: 50%;
-	background: none;
-	cursor: pointer;
-	outline: none;
-	transition: background 0.15s;
-	color: var(--icon-action-secondary);
-
-	&.disabled {
-		opacity: 0.5;
-		cursor: not-allowed;
-		pointer-events: none;
-	}
-
-	&:hover,
-	&[data-state='open'] {
-		background: var(--background-action-hover-weak);
-		color: var(--font-action);
-	}
-}
-
-.secondaryActionsTrigger {
-	margin-inline-start: var(--sm);
-}
-
-.secondaryActionContent {
-	display: flex;
-	flex: 1;
-	align-items: center;
-	gap: 10px;
-	min-width: 0;
-}
-
-.submenuIndicator {
-	margin-inline-start: auto;
-}
-
-// Submenus stack above $dropdown-z-index, so tooltips on their items must clear them too.
-.secondaryActionTooltip[data-part='content'] {
-	z-index: dropdown.$dropdown-z-index + 2;
 }

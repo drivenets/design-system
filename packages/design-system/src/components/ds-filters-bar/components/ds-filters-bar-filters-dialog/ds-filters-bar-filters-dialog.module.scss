@@ -112,6 +112,18 @@ $transition-duration: 0.2s;
 	width: 100%;
 }
 
+.range {
+	display: flex;
+	gap: var(--xs);
+	min-width: 0;
+
+	// The inputs' own roots, which otherwise keep their intrinsic width and overflow the panel
+	> :not(label) {
+		flex: 1 1 0;
+		min-width: 0;
+	}
+}
+
 .options {
 	display: flex;
 	flex: 1;

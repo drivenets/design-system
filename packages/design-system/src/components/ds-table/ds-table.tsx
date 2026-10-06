@@ -27,7 +27,7 @@ import { DsTableContextProvider } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
 import { DsEmptyState } from '../ds-empty-state';
-import { getUtilityColumnSizing } from './utils/column-size';
+import { getRowActionsColumnWidth, getUtilityColumnSizing } from './utils/column-size';
 import { createSkeletonRows, getAugmentedColumns, toSkeletonColumns } from './utils/table-columns';
 import { createTableApi } from './utils/table-api';
 import { areBodiesFrozen } from './utils/frozen-body';
@@ -79,6 +79,8 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		selectableColumnWidth,
 		expandableColumnWidth,
 		reorderableColumnWidth,
+		primaryRowActions,
+		secondaryRowActions,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -151,6 +153,11 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	// not rebuild column defs (and remount cells) on every parent render.
 	const hasSelectColumn = Boolean(selectable);
 	const hasExpanderColumn = Boolean(expandable);
+	// Width from counts only — inline action arrays must not rebuild column defs.
+	const rowActionsColumnWidth = getRowActionsColumnWidth(
+		primaryRowActions.length,
+		(secondaryRowActions?.length ?? 0) > 0,
+	);
 	const columns = useMemo(
 		() =>
 			getAugmentedColumns(columnsProp, {
@@ -162,6 +169,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 				selectableColumnWidth,
 				expandableColumnWidth,
 				reorderableColumnWidth,
+				rowActionsColumnWidth,
 			}),
 		[
 			columnsProp,
@@ -173,6 +181,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 			selectableColumnWidth,
 			expandableColumnWidth,
 			reorderableColumnWidth,
+			rowActionsColumnWidth,
 		],
 	);
 

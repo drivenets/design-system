@@ -8,7 +8,7 @@ import type {
 	VisibilityState,
 } from '@tanstack/react-table';
 import type { IconType } from '../ds-icon';
-import type { RowAction, SecondaryRowAction } from './components/ds-table-cell';
+import type { RowAction, SecondaryRowAction } from './components/ds-table-row-actions-cell';
 import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-body-virtualized';
 
 /**
@@ -36,6 +36,16 @@ export interface DsTableLocale {
 	 * Accessible label for the column resize handle.
 	 */
 	resizeColumn: string;
+
+	/**
+	 * Visually hidden header label for the row actions column.
+	 */
+	rowActions: string;
+
+	/**
+	 * Accessible label for the trigger that opens the secondary row actions menu.
+	 */
+	moreRowActions: string;
 }
 
 /**
@@ -45,6 +55,8 @@ export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	collapseColumnGroup: 'Collapse column group',
 	expandColumnGroup: 'Expand column group',
 	resizeColumn: 'Resize column',
+	rowActions: 'Row actions',
+	moreRowActions: 'More actions',
 });
 
 /**
@@ -196,7 +208,7 @@ export interface DsTableApi<TData> {
 	expandRows: (rowIds: string[]) => void;
 }
 
-export type { InfiniteScrollConfig } from './components/ds-table-body-virtualized';
+export type { InfiniteScrollConfig };
 
 /**
  * Represents a bulk action that can be performed on multiple selected rows
@@ -480,12 +492,14 @@ export interface DsDataTableProps<TData, TValue> {
 	actions?: Action<TData>[];
 
 	/**
-	 * Primary actions to be shown on each row (on hover)
+	 * Primary actions shown as icon buttons on each row, in a trailing column sized
+	 * to fit every declared primary action plus the "more" trigger
 	 */
 	primaryRowActions?: RowAction<TData>[];
 
 	/**
-	 * Secondary actions to be shown in a dropdown on each row (on hover)
+	 * Secondary actions shown in a "more" dropdown on each row, in the same trailing column
+	 * as `primaryRowActions`
 	 */
 	secondaryRowActions?: SecondaryRowAction<TData>[];
 
