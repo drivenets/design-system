@@ -1,4 +1,4 @@
-import type { RowAction, SecondaryRowAction } from './ds-table-cell.types';
+import type { RowAction, SecondaryRowAction } from './ds-table-row-actions-cell.types';
 
 type ResolvableAction<TData> = Pick<RowAction<TData>, 'label' | 'tooltip'>;
 

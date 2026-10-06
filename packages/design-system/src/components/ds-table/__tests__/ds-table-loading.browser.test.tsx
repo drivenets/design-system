@@ -52,4 +52,24 @@ describe('DsTable loading', () => {
 		// Columns without a custom loadingCell still render the default skeleton.
 		expect(getSkeletons().length).toBeGreaterThan(0);
 	});
+
+	it('does not render row actions or run their callbacks on skeleton rows', async () => {
+		const label = vi.fn(() => 'Edit');
+		const hidden = vi.fn(() => false);
+
+		await page.render(
+			<DsTable
+				columns={columns}
+				data={defaultData}
+				loading
+				primaryRowActions={[{ icon: 'edit', label, hidden, onClick: vi.fn() }]}
+				secondaryRowActions={[{ label: 'Delete', onClick: vi.fn() }]}
+			/>,
+		);
+
+		expect(getDataRows()).toHaveLength(SKELETON_ROW_COUNT);
+		await expect.element(page.getByRole('button', { name: /more actions/i })).not.toBeInTheDocument();
+		expect(label).not.toHaveBeenCalled();
+		expect(hidden).not.toHaveBeenCalled();
+	});
 });

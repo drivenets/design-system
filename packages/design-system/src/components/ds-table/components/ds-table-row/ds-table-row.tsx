@@ -48,8 +48,6 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 		renderExpandedRow,
 		bordered,
 		rowSize,
-		primaryRowActions,
-		secondaryRowActions,
 		activeRowId,
 		loading,
 		resizeSizingReady,
@@ -98,7 +96,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 				onClick={() => onRowClick?.(row.original)}
 				onDoubleClick={() => onRowDoubleClick?.(row.original)}
 			>
-				{row.getVisibleCells().map((cell, idx) => {
+				{row.getVisibleCells().map((cell) => {
 					const columnSizing = cell.getContext().table.getState().columnSizing;
 					const cellStyle = getBodyCellSizeStyle(
 						cell.column.id,
@@ -119,8 +117,6 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 						);
 					}
 
-					const isLastColumn = idx === row.getVisibleCells().length - 1;
-
 					return (
 						<TableCell
 							key={cell.id}
@@ -133,16 +129,7 @@ const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) =>
 							)}
 							style={cellStyle}
 						>
-							{isLastColumn ? (
-								<DsTableCell
-									row={row}
-									cell={cell}
-									primaryRowActions={primaryRowActions}
-									secondaryRowActions={secondaryRowActions}
-								/>
-							) : (
-								<DsTableCell row={row} cell={cell} />
-							)}
+							<DsTableCell row={row} cell={cell} />
 						</TableCell>
 					);
 				})}

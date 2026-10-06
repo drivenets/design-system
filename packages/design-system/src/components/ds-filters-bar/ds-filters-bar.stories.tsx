@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 import { fn } from 'storybook/test';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsFiltersBar } from './index';
-import { filtersBarViews } from './ds-filters-bar.types';
+import { filtersBarViews, type DsFiltersBarView } from './ds-filters-bar.types';
 
 const meta: Meta<typeof DsFiltersBar.Root> = {
 	title: 'Components/FiltersBar',
@@ -15,7 +17,7 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 				component: `
 **Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
 \`Search\`, \`Conditions\` (the add-filter button with its filters dialog, and a chip per
-condition) and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+condition), the query builder, and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
 directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
@@ -195,6 +197,151 @@ export const Default: Story = {
 			</DsFiltersBar.Pinned>
 		</DsFiltersBar.Root>
 	),
+};
+
+/**
+ * Guided condition: suggested fields, then — depending on the field — a subfield, an operator and a
+ * value. **Save query** appends one condition and clears the draft. Closing returns to the filters
+ * view, and the query text shows the condition. **Query builder** opens the dialog again.
+ * `ViewSwitch` does not render yet, so this story opens the builder itself.
+ */
+export const QueryBuilder: Story = {
+	args: {
+		defaultExpanded: true,
+		fields: [
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [
+					{
+						type: 'text',
+						id: 'name',
+						label: 'Name',
+						operators: [
+							{ value: '~', label: 'Contains' },
+							{ value: '=', label: 'Equal' },
+							{ value: '!=', label: 'Not equal' },
+						],
+					},
+					{ type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'Equal' }] },
+					{ type: 'text', id: 'type', label: 'Type', operators: [{ value: '=', label: 'Equal' }] },
+					{ type: 'text', id: 'version', label: 'Version', operators: [{ value: '=', label: 'Equal' }] },
+				],
+			},
+			{ type: 'text', id: 'output', label: 'Output', operators: [{ value: '=', label: 'Equal' }] },
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'pending', label: 'Pending' },
+				],
+			},
+			{
+				type: 'enum',
+				id: 'tag',
+				label: 'Tag',
+				operators: [{ value: '=', label: 'equals' }],
+				options: [
+					{ value: 'core', label: 'Core' },
+					{ value: 'edge', label: 'Edge' },
+				],
+			},
+		],
+	},
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+			// The dialog is position:fixed. Inline docs share one document, so an open dialog covers
+			// the whole page. An iframe keeps it inside this story.
+			story: { inline: false, height: '520px' },
+		},
+	},
+	render: (args) => {
+		const [view, setView] = useState<DsFiltersBarView>('builder');
+
+		return (
+			<DsFiltersBar.Root
+				{...args}
+				view={view}
+				onViewChange={(next) => {
+					setView(next);
+					args.onViewChange?.(next);
+				}}
+			>
+				<DsFiltersBar.Toolbar>
+					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
+						Query builder
+					</DsButtonV3>
+					<DsFiltersBar.Search />
+					<DsFiltersBar.View value="filters">
+						<DsFiltersBar.Conditions />
+					</DsFiltersBar.View>
+					<DsFiltersBar.View value="builder">
+						<DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
+					</DsFiltersBar.View>
+					<DsFiltersBar.ClearAll />
+				</DsFiltersBar.Toolbar>
+				<DsFiltersBar.Query />
+			</DsFiltersBar.Root>
+		);
+	},
+};
+
+/**
+ * Same dialog with every built-in string replaced.
+ */
+export const QueryBuilderLocalized: Story = {
+	...QueryBuilder,
+	render: (args) => {
+		const [view, setView] = useState<DsFiltersBarView>('builder');
+
+		return (
+			<DsFiltersBar.Root
+				{...args}
+				view={view}
+				onViewChange={(next) => {
+					setView(next);
+					args.onViewChange?.(next);
+				}}
+			>
+				<DsFiltersBar.Toolbar>
+					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
+						Query builder
+					</DsButtonV3>
+					<DsFiltersBar.Search />
+					<DsFiltersBar.View value="filters">
+						<DsFiltersBar.Conditions />
+					</DsFiltersBar.View>
+					<DsFiltersBar.View value="builder">
+						<DsFiltersBar.Builder
+							suggestedFields={['input', 'output', 'status', 'tag']}
+							locale={{
+								title: 'Build a condition',
+								close: 'Dismiss',
+								clear: 'Start over',
+								searchField: 'Find a field',
+								selectField: 'Pick a field',
+								searchSubfield: 'Find a part',
+								selectSubfield: 'Pick a part',
+								searchOperator: 'Find an operator',
+								selectOperator: 'Pick an operator',
+								searchValue: 'Find a value',
+								selectValue: 'Pick a value',
+								valuePlaceholder: 'Enter a value',
+								save: 'Add condition',
+							}}
+						/>
+					</DsFiltersBar.View>
+					<DsFiltersBar.ClearAll />
+				</DsFiltersBar.Toolbar>
+				<DsFiltersBar.Query />
+			</DsFiltersBar.Root>
+		);
+	},
 };
 
 /**

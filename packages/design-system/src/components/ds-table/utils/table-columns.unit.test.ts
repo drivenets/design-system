@@ -6,6 +6,7 @@ import {
 	EXPANDER_COLUMN_WIDTH,
 	REORDER_COLUMN_ID,
 	REORDER_COLUMN_WIDTH,
+	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 	SELECT_COLUMN_WIDTH,
 	SKELETON_ROW_COUNT,
@@ -142,6 +143,30 @@ describe('getAugmentedColumns', () => {
 		expect(boundsById.get(SELECT_COLUMN_ID)?.size).toBe(SELECT_COLUMN_WIDTH);
 		expect(boundsById.get(EXPANDER_COLUMN_ID)?.size).toBe(EXPANDER_COLUMN_WIDTH);
 		expect(boundsById.get(REORDER_COLUMN_ID)?.size).toBe(REORDER_COLUMN_WIDTH);
+	});
+
+	it('appends a pinned, non-resizable row actions column when a width is given', () => {
+		const columns = getAugmentedColumns([nameColumn], {
+			...noFeatures,
+			selectable: true,
+			rowActionsColumnWidth: 168,
+		});
+		const rowActionsColumn = columns.at(-1);
+
+		expect(columnIds(columns)).toEqual([SELECT_COLUMN_ID, 'name', ROW_ACTIONS_COLUMN_ID]);
+		expect(rowActionsColumn).toMatchObject({
+			size: 168,
+			minSize: 168,
+			maxSize: 168,
+			enableSorting: false,
+			enableResizing: false,
+		});
+	});
+
+	it('omits the row actions column when the width is 0', () => {
+		expect(columnIds(getAugmentedColumns([nameColumn], { ...noFeatures, rowActionsColumnWidth: 0 }))).toEqual(
+			['name'],
+		);
 	});
 
 	it('stamps hasExplicitSize on authored leaves and builtins, not on unsized leaves', () => {
