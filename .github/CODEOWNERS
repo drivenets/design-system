@@ -1,9 +1,9 @@
 # Top-level configurations
-/* @StyleShit @aroba-dn
-/.github/ @StyleShit @aroba-dn
-/.husky/ @StyleShit @aroba-dn
-/.vscode/ @StyleShit @aroba-dn
-/.changeset/config.json @StyleShit @aroba-dn
+/* @aroba-dn
+/.github/ @aroba-dn
+/.husky/ @aroba-dn
+/.vscode/ @aroba-dn
+/.changeset/config.json @aroba-dn
 
 # Excluded shared files
 /pnpm-lock.yaml
@@ -12,23 +12,23 @@
 /CONTEXT.md
 
 # Design System internal configurations
-/packages/design-system/.storybook/ @StyleShit @aroba-dn
-/packages/design-system/rolldown/ @StyleShit @aroba-dn
-/packages/design-system/vitest/ @StyleShit @aroba-dn
-/packages/design-system/* @StyleShit @aroba-dn
+/packages/design-system/.storybook/ @aroba-dn
+/packages/design-system/rolldown/ @aroba-dn
+/packages/design-system/vitest/ @aroba-dn
+/packages/design-system/* @aroba-dn
 
 # MCP server internal configurations
-/packages/mcp/* @StyleShit @aroba-dn
+/packages/mcp/* @aroba-dn
 
 # ESLint plugin internal configurations
-/packages/eslint-plugin/* @StyleShit @aroba-dn
+/packages/eslint-plugin/* @aroba-dn
 
 # Vite plugin
-/packages/vite-plugin @StyleShit
+/packages/vite-plugin
 
 # Internal packages
-/packages/commitlint-plugin-internal/ @StyleShit
-/packages/eslint-plugin-internal/ @StyleShit
+/packages/commitlint-plugin-internal/
+/packages/eslint-plugin-internal/
 
 # Excluded publishable packages files
 /packages/design-system/*.md
