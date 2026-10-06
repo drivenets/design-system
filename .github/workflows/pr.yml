@@ -189,12 +189,19 @@ jobs:
 
       # Uploaded unzipped, so it opens straight from the run's Artifacts list.
       - name: Upload visual test report
+        id: upload-visual-report
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           path: packages/design-system/.vitest/attachments/visual-test-report.html
           archive: false
           retention-days: 7
+
+      - name: Link visual test report in job summary
+        if: failure() && steps.upload-visual-report.outputs.artifact-url
+        env:
+          REPORT_URL: ${{ steps.upload-visual-report.outputs.artifact-url }}
+        run: echo "[Open the visual test report]($REPORT_URL) (baseline, actual and diff for each failed story)" >> "$GITHUB_STEP_SUMMARY"
 
   build:
     name: Build

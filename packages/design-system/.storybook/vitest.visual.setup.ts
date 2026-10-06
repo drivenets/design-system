@@ -38,6 +38,7 @@ interface ChromaticParameters {
 
 // `@storybook/addon-vitest` resets the viewport before each story, so it is pinned per story.
 const VIEWPORT = { width: 1280, height: 800 } as const;
+const GOOGLE_FONTS_HOST = 'fonts.googleapis.com';
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -50,6 +51,12 @@ const visualAnnotations: Preview = {
 		a11y: { test: 'off' },
 	},
 	beforeEach: async () => {
+		// `main.ts` drops the Google Fonts links only when `DS_VISUAL_TESTS` is set; without it they'd load
+		// on top of the pinned fonts and baselines would mismatch for non-obvious reasons.
+		if (document.querySelector(`link[href*="${GOOGLE_FONTS_HOST}"]`)) {
+			throw new Error('Visual tests need DS_VISUAL_TESTS=1. Run them via `pnpm test:visual`.');
+		}
+
 		await page.viewport(VIEWPORT.width, VIEWPORT.height);
 	},
 	afterEach: async ({ parameters }) => {

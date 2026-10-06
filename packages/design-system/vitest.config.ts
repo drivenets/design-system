@@ -9,7 +9,7 @@ import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
-const DEFAULT_PLAYWRIGHT_WS_ENDPOINT = 'ws://127.0.0.1:3000/';
+const DEFAULT_PLAYWRIGHT_SERVER_PORT = '3000';
 const VISUAL_TEST_ALLOWED_MISMATCHED_PIXELS = 200;
 
 export default defineConfig({
@@ -124,7 +124,10 @@ export default defineConfig({
 						// so screenshots render the same on every machine, up to the pixel budget below.
 						provider: playwright({
 							connectOptions: {
-								wsEndpoint: process.env.PW_WS_ENDPOINT ?? DEFAULT_PLAYWRIGHT_WS_ENDPOINT,
+								// Same port variable as `scripts/visual-test-server.ts`.
+								wsEndpoint:
+									process.env.PW_WS_ENDPOINT ??
+									`ws://127.0.0.1:${process.env.PW_SERVER_PORT ?? DEFAULT_PLAYWRIGHT_SERVER_PORT}/`,
 								exposeNetwork: '<loopback>',
 							},
 						}),

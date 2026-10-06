@@ -1,7 +1,7 @@
 // Builds a single self-contained HTML page from failed visual tests, with baseline, actual and diff
 // images embedded, so CI can publish it as one artifact that opens directly in the browser.
 // Run after `pnpm test:visual`; writes nothing when there are no failures.
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { appendFileSync, existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -32,6 +32,11 @@ writeFileSync(REPORT_PATH, renderReport(failures));
 process.stdout.write(
 	`Wrote ${String(failures.length)} failure(s) to ${relative(process.cwd(), REPORT_PATH)}\n`,
 );
+
+// In GitHub Actions, list the failures on the job's summary page too.
+if (process.env.GITHUB_STEP_SUMMARY) {
+	appendFileSync(process.env.GITHUB_STEP_SUMMARY, renderSummary(failures));
+}
 
 function findFailures(): Failure[] {
 	if (!existsSync(ATTACHMENTS_DIR)) {
@@ -110,6 +115,22 @@ ${sections.join('\n')}
 </body>
 </html>
 `;
+}
+
+function renderSummary(items: Failure[]): string {
+	const rows = items.map(
+		(item) => `| \`${item.storyFile}\` | ${item.name} | ${item.baseline ? 'Changed' : 'No baseline'} |`,
+	);
+
+	return [
+		`### Visual tests: ${String(items.length)} failed`,
+		'',
+		'| Story file | Story | Result |',
+		'| --- | --- | --- |',
+		...rows,
+		'',
+		'',
+	].join('\n');
 }
 
 function renderImage(label: string, file: string | null, missingText = 'Missing'): string {
