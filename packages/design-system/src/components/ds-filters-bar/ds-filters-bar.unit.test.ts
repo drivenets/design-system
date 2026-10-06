@@ -1,11 +1,21 @@
 import { describe, expect, it } from 'vitest';
-import type { DsFilterCondition, DsFilterField, DsFilterPin } from './ds-filters-bar.types';
+import type {
+	DsFilterCondition,
+	DsFilterField,
+	DsFilterFieldCondition,
+	DsFilterPin,
+} from './ds-filters-bar.types';
 import {
 	appendCondition,
+	conditionDialogTab,
+	conditionOperators,
+	conditionText,
 	createConditionId,
 	createSearchCondition,
 	describeCondition,
-	filtersDialogFields,
+	emptyFiltersDialogEntry,
+	filtersDialogTabs,
+	isFiltersDialogEntrySet,
 	fromFiltersDialogValue,
 	isFiltersBarView,
 	lockedViewsFor,
@@ -144,7 +154,7 @@ describe('describeCondition', () => {
 		});
 	});
 
-	it('falls back to the operator label when there is no symbol', () => {
+	it('falls back to the operator token when there is no symbol', () => {
 		const condition: DsFilterCondition = {
 			kind: 'field',
 			id: '1',
@@ -154,7 +164,7 @@ describe('describeCondition', () => {
 		};
 
 		expect(describeCondition(condition, FIELDS)).toMatchObject({
-			operatorSymbol: 'greater than',
+			operatorSymbol: '>',
 			value: '2',
 		});
 	});
@@ -246,18 +256,184 @@ const DIALOG_FIELDS: DsFilterField[] = [
 	},
 ];
 
-describe('filtersDialogFields', () => {
-	it('keeps top-level enum fields in order and skips compound subfields', () => {
-		expect(filtersDialogFields(DIALOG_FIELDS).map((field) => field.id)).toEqual(['status', 'owner']);
+describe('conditionText', () => {
+	it('joins the field path, the operator in words and the value', () => {
+		expect(
+			conditionText({
+				fieldPath: ['Input', 'Name'],
+				operator: 'contains',
+				operatorSymbol: '~',
+				value: 'WF456',
+			}),
+		).toBe('Input Name contains WF456');
+	});
+
+	it('is the text alone for a search', () => {
+		expect(conditionText({ fieldPath: [], value: 'WF456' })).toBe('WF456');
+	});
+});
+
+describe('conditionOperators', () => {
+	const fieldCondition = (overrides: Partial<DsFilterFieldCondition>): DsFilterFieldCondition => ({
+		kind: 'field',
+		id: '1',
+		field: 'status',
+		operator: '=',
+		value: ['active'],
+		...overrides,
+	});
+
+	it("returns the field's operators when there are several", () => {
+		expect(conditionOperators(fieldCondition({}), FIELDS)).toEqual([EQUALS, NOT_EQUALS]);
+	});
+
+	it("returns a compound subfield's operators", () => {
+		const fields: DsFilterField[] = [
+			{
+				type: 'compound',
+				id: 'input',
+				label: 'Input',
+				subfields: [{ type: 'text', id: 'vendor', label: 'Vendor', operators: [EQUALS, NOT_EQUALS] }],
+			},
+		];
+
+		expect(
+			conditionOperators(fieldCondition({ field: 'input', subfield: 'vendor', value: 'cisco' }), fields),
+		).toEqual([EQUALS, NOT_EQUALS]);
+	});
+
+	it('returns null for a single operator', () => {
+		expect(
+			conditionOperators(fieldCondition({ field: 'parents', operator: '>', value: 3 }), FIELDS),
+		).toBeNull();
+	});
+
+	it('returns null for a field or subfield missing from fields', () => {
+		expect(conditionOperators(fieldCondition({ field: 'removed' }), FIELDS)).toBeNull();
+		expect(
+			conditionOperators(fieldCondition({ field: 'input', subfield: 'removed', value: 'x' }), FIELDS),
+		).toBeNull();
+	});
+
+	it('returns null for a range, which only goes with =', () => {
+		const fields: DsFilterField[] = [
+			{ type: 'number', id: 'parents', label: 'Parents', operators: [EQUALS, NOT_EQUALS] },
+		];
+
+		expect(
+			conditionOperators(fieldCondition({ field: 'parents', value: { from: 1, to: 5 } }), fields),
+		).toBeNull();
+	});
+});
+
+const AT_LEAST = { value: '>=', label: 'at least' } as const;
+const AT_MOST = { value: '<=', label: 'at most' } as const;
+
+// Fields that list every operator a range and its `>=` / `<=` pair need
+const RANGE_FIELDS: DsFilterField[] = [
+	{ type: 'number', id: 'parents', label: 'Parents', operators: [EQUALS, NOT_EQUALS, AT_LEAST, AT_MOST] },
+	{ type: 'date', id: 'lastRun', label: 'Last run', operators: [EQUALS, AT_LEAST, AT_MOST] },
+];
+
+describe('conditionDialogTab', () => {
+	it('returns the tab of a field condition the dialog can show', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: '1', field: 'status', operator: '!=', value: ['active'] },
+			{ kind: 'field', id: '2', field: 'parents', operator: '>', value: 3 },
+			{ kind: 'field', id: '4', field: 'lastRun', operator: '=', value: 'today' },
+			{ kind: 'field', id: '5', field: 'input', subfield: 'name', operator: '~', value: 'WF' },
+		];
+
+		expect(conditions.map((condition) => conditionDialogTab(condition, FIELDS))).toEqual([
+			'status',
+			'parents',
+			'lastRun',
+			'input.name',
+		]);
+	});
+
+	it('returns undefined for searches, unknown fields and values the tab cannot hold', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'search', id: '1', text: 'status' },
+			{ kind: 'field', id: '2', field: 'removed', operator: '=', value: ['x'] },
+			{ kind: 'field', id: '3', field: 'status', operator: '=', value: 'active' },
+			{ kind: 'field', id: '4', field: 'input', subfield: 'removed', operator: '~', value: 'x' },
+		];
+
+		expect(conditions.map((condition) => conditionDialogTab(condition, FIELDS))).toEqual([
+			undefined,
+			undefined,
+			undefined,
+			undefined,
+		]);
+	});
+
+	it('returns undefined for an operator the field does not list, a range included', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: '1', field: 'parents', operator: '<', value: 3 },
+			{ kind: 'field', id: '2', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
+		];
+
+		expect(conditions.map((condition) => conditionDialogTab(condition, FIELDS))).toEqual([
+			undefined,
+			undefined,
+		]);
+	});
+});
+
+describe('filtersDialogTabs', () => {
+	it('has a tab per top-level scalar field and per compound subfield, in fields order', () => {
+		expect(filtersDialogTabs(DIALOG_FIELDS).map(({ id, label }) => [id, label])).toEqual([
+			['status', 'Status'],
+			['parents', 'Parents'],
+			['lastRun', 'Last run'],
+			['input.name', 'Input › Name'],
+			['owner', 'Owner'],
+			['output.vendor', 'Output › Vendor'],
+		]);
 	});
 
 	it('skips enum fields without options', () => {
 		const fields: DsFilterField[] = [
-			...DIALOG_FIELDS,
 			{ type: 'enum', id: 'empty', label: 'Empty', operators: [EQUALS], options: [] },
+			{ type: 'text', id: 'name', label: 'Name', operators: [EQUALS] },
 		];
 
-		expect(filtersDialogFields(fields).map((field) => field.id)).toEqual(['status', 'owner']);
+		expect(filtersDialogTabs(fields).map((tab) => tab.id)).toEqual(['name']);
+	});
+});
+
+describe('isFiltersDialogEntrySet', () => {
+	const [statusTab, parentsTab, lastRunTab, nameTab] = filtersDialogTabs(FIELDS);
+
+	it('is false for every empty entry', () => {
+		expect(
+			[statusTab, parentsTab, lastRunTab, nameTab].map(
+				(tab) => tab && isFiltersDialogEntrySet(emptyFiltersDialogEntry(tab)),
+			),
+		).toEqual([false, false, false, false]);
+	});
+
+	it('ignores blank text and a range without ends', () => {
+		expect(isFiltersDialogEntrySet({ type: 'text', field: 'name', operator: '~', text: '  ' })).toBe(false);
+		expect(
+			isFiltersDialogEntrySet({
+				type: 'number',
+				field: 'parents',
+				operator: 'between',
+				value: 3,
+				range: { from: null, to: null },
+			}),
+		).toBe(false);
+		expect(
+			isFiltersDialogEntrySet({
+				type: 'number',
+				field: 'parents',
+				operator: 'between',
+				value: null,
+				range: { from: 1, to: null },
+			}),
+		).toBe(true);
 	});
 });
 
@@ -268,7 +444,7 @@ describe('toFiltersDialogValue', () => {
 		];
 
 		expect(toFiltersDialogValue(DIALOG_FIELDS, conditions, [])).toEqual([
-			{ field: 'status', operator: '!=', selected: ['deprecated'], pinned: [] },
+			{ type: 'enum', field: 'status', operator: '!=', selected: ['deprecated'], pinned: [] },
 		]);
 	});
 
@@ -280,23 +456,92 @@ describe('toFiltersDialogValue', () => {
 		];
 
 		expect(toFiltersDialogValue(DIALOG_FIELDS, [], pins)).toEqual([
-			{ field: 'status', operator: '=', selected: [], pinned: ['active'] },
-			{ field: 'owner', operator: '!=', selected: [], pinned: ['bob', 'alice'] },
+			{ type: 'enum', field: 'status', operator: '=', selected: [], pinned: ['active'] },
+			{ type: 'enum', field: 'owner', operator: '!=', selected: [], pinned: ['bob', 'alice'] },
 		]);
 	});
 
-	it('seeds from the first of several enum conditions and ignores other condition shapes', () => {
+	it('seeds from the first condition a tab shows and ignores other shapes', () => {
 		const conditions: DsFilterCondition[] = [
 			{ kind: 'search', id: 's1', text: 'status' },
 			{ kind: 'field', id: 'c0', field: 'status', operator: '=', value: 'active' },
-			{ kind: 'field', id: 'c1', field: 'output', subfield: 'vendor', operator: '=', value: ['acme'] },
 			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
 			{ kind: 'field', id: 'c3', field: 'status', operator: '=', value: ['active'] },
 		];
 
 		expect(toFiltersDialogValue(DIALOG_FIELDS, conditions, [])).toEqual([
-			{ field: 'status', operator: '!=', selected: ['deprecated'], pinned: [] },
+			{ type: 'enum', field: 'status', operator: '!=', selected: ['deprecated'], pinned: [] },
 		]);
+	});
+
+	it('seeds a compound subfield without pins', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'output', subfield: 'vendor', operator: '=', value: ['acme'] },
+		];
+
+		expect(toFiltersDialogValue(DIALOG_FIELDS, conditions, [{ field: 'output', value: 'acme' }])).toEqual([
+			{ type: 'enum', field: 'output', subfield: 'vendor', operator: '=', selected: ['acme'], pinned: [] },
+		]);
+	});
+
+	it('seeds text, number and date entries', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'parents', operator: '>', value: 2 },
+			{ kind: 'field', id: 'c2', field: 'lastRun', operator: '=', value: 'today' },
+			{ kind: 'field', id: 'c3', field: 'input', subfield: 'name', operator: '~', value: 'WF' },
+		];
+
+		expect(toFiltersDialogValue(FIELDS, conditions, [])).toEqual([
+			{ type: 'number', field: 'parents', operator: '>', value: 2, range: { from: null, to: null } },
+			{
+				type: 'date',
+				field: 'lastRun',
+				operator: '=',
+				preset: 'today',
+				date: null,
+				range: { from: null, to: null },
+			},
+			{ type: 'text', field: 'input', subfield: 'name', operator: '~', text: 'WF' },
+		]);
+	});
+
+	it('seeds a date that is not a preset as a date', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'lastRun', operator: '=', value: '2026-09-13' },
+		];
+
+		expect(toFiltersDialogValue(FIELDS, conditions, [])).toMatchObject([
+			{ preset: null, date: '2026-09-13' },
+		]);
+	});
+
+	it('seeds a range, or a >= and <= pair, as between', () => {
+		const range: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'parents', operator: '=', value: { from: 1, to: null } },
+		];
+		const pair: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'lastRun', operator: '<=', value: '2026-09-30' },
+			{ kind: 'field', id: 'c2', field: 'lastRun', operator: '>=', value: '2026-09-01' },
+		];
+
+		expect(toFiltersDialogValue(RANGE_FIELDS, range, [])).toMatchObject([
+			{ operator: 'between', range: { from: 1, to: null } },
+		]);
+		expect(toFiltersDialogValue(RANGE_FIELDS, pair, [])).toMatchObject([
+			{ operator: 'between', range: { from: '2026-09-01', to: '2026-09-30' } },
+		]);
+	});
+
+	it('seeds a >= and <= pair as its first condition when the field has no =', () => {
+		const fields: DsFilterField[] = [
+			{ type: 'number', id: 'parents', label: 'Parents', operators: [AT_LEAST, AT_MOST] },
+		];
+		const pair: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'parents', operator: '>=', value: 1 },
+			{ kind: 'field', id: 'c2', field: 'parents', operator: '<=', value: 5 },
+		];
+
+		expect(toFiltersDialogValue(fields, pair, [])).toMatchObject([{ operator: '>=', value: 1 }]);
 	});
 
 	it('falls back to equals for a field without operators', () => {
@@ -305,13 +550,28 @@ describe('toFiltersDialogValue', () => {
 		];
 
 		expect(toFiltersDialogValue(fields, [], [{ field: 'tag', value: 'x' }])).toEqual([
-			{ field: 'tag', operator: '=', selected: [], pinned: ['x'] },
+			{ type: 'enum', field: 'tag', operator: '=', selected: [], pinned: ['x'] },
 		]);
 	});
 });
 
 describe('fromFiltersDialogValue', () => {
 	const search: DsFilterCondition = { kind: 'search', id: 's1', text: 'WF456' };
+	const unknown: DsFilterCondition = {
+		kind: 'field',
+		id: 'r1',
+		field: 'removed',
+		operator: '=',
+		value: ['x'],
+	};
+	// A string on an enum field: no tab can show it.
+	const mismatched: DsFilterCondition = {
+		kind: 'field',
+		id: 'm1',
+		field: 'status',
+		operator: '=',
+		value: 'active',
+	};
 	const number: DsFilterCondition = { kind: 'field', id: 'n1', field: 'parents', operator: '>', value: 2 };
 	const subfield: DsFilterCondition = {
 		kind: 'field',
@@ -321,21 +581,14 @@ describe('fromFiltersDialogValue', () => {
 		operator: '=',
 		value: ['acme'],
 	};
-	const unknown: DsFilterCondition = {
-		kind: 'field',
-		id: 'r1',
-		field: 'removed',
-		operator: '=',
-		value: ['x'],
-	};
-	const untouched = [search, number, subfield, unknown];
+	const untouched = [search, unknown, mismatched];
 
-	it('appends a new condition with a generated id and keeps the other conditions', () => {
+	it('appends a new condition with a generated id and keeps the conditions no tab shows', () => {
 		const { conditions } = fromFiltersDialogValue(
 			DIALOG_FIELDS,
 			untouched,
 			[],
-			[{ field: 'owner', operator: '=', selected: ['alice'], pinned: [] }],
+			[{ type: 'enum', field: 'owner', operator: '=', selected: ['alice'], pinned: [] }],
 		);
 
 		const added = conditions.at(-1);
@@ -345,57 +598,112 @@ describe('fromFiltersDialogValue', () => {
 		expect(added?.id).toMatch(/^condition-/);
 	});
 
-	it('replaces all enum conditions of a field with one condition at the first one’s id and position', () => {
+	it('replaces all conditions of a tab with one condition at the first one’s id and position', () => {
 		const conditions: DsFilterCondition[] = [
 			search,
 			{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
-			number,
-			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
-			subfield,
 			unknown,
+			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
+			mismatched,
 		];
 
 		const result = fromFiltersDialogValue(
 			DIALOG_FIELDS,
 			conditions,
 			[],
-			[{ field: 'status', operator: '!=', selected: ['active', 'deprecated'], pinned: [] }],
+			[{ type: 'enum', field: 'status', operator: '!=', selected: ['active', 'deprecated'], pinned: [] }],
 		);
 
 		expect(result.conditions).toEqual([
 			search,
 			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['active', 'deprecated'] },
-			number,
-			subfield,
 			unknown,
+			mismatched,
 		]);
 	});
 
-	it('removes the enum conditions of a field left unchecked or missing from the value', () => {
+	it('removes the conditions of a tab left empty or missing from the value', () => {
 		const conditions: DsFilterCondition[] = [
 			{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
 			...untouched,
-			{ kind: 'field', id: 'c2', field: 'owner', operator: '=', value: ['bob'] },
+			number,
+			subfield,
 		];
 
 		const result = fromFiltersDialogValue(
 			DIALOG_FIELDS,
 			conditions,
 			[],
-			[{ field: 'status', operator: '=', selected: [], pinned: [] }],
+			[{ type: 'enum', field: 'status', operator: '=', selected: [], pinned: [] }],
 		);
 
 		expect(result.conditions).toEqual(untouched);
 	});
 
-	it('ignores entries for fields the dialog does not show', () => {
+	it('saves between as a range, merging a >= and <= pair into the first one', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'lo', field: 'parents', operator: '>=', value: 1 },
+			search,
+			{ kind: 'field', id: 'hi', field: 'parents', operator: '<=', value: 5 },
+		];
+
+		const value = toFiltersDialogValue(RANGE_FIELDS, conditions, []).map((entry) =>
+			entry.type === 'number' ? { ...entry, range: { from: 1, to: 9 } } : entry,
+		);
+
+		expect(fromFiltersDialogValue(RANGE_FIELDS, conditions, [], value).conditions).toEqual([
+			{ kind: 'field', id: 'lo', field: 'parents', operator: '=', value: { from: 1, to: 9 } },
+			search,
+		]);
+	});
+
+	it('keeps every condition of a tab left as it was seeded', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'n1', field: 'input', subfield: 'name', operator: '~', value: 'foo' },
+			{ kind: 'field', id: 'n2', field: 'input', subfield: 'name', operator: '~', value: 'bar' },
+			{ kind: 'field', id: 's1', field: 'status', operator: '=', value: ['active'] },
+			{ kind: 'field', id: 's2', field: 'status', operator: '!=', value: ['deprecated'] },
+		];
+
+		const value = toFiltersDialogValue(DIALOG_FIELDS, conditions, []).map((entry) =>
+			entry.type === 'enum' ? { ...entry, pinned: ['active'] } : entry,
+		);
+
+		expect(fromFiltersDialogValue(DIALOG_FIELDS, conditions, [], value).conditions).toEqual(conditions);
+	});
+
+	it('saves text trimmed, a subfield with its id, and a preset or a date', () => {
+		const { conditions } = fromFiltersDialogValue(
+			FIELDS,
+			[],
+			[],
+			[
+				{ type: 'text', field: 'input', subfield: 'name', operator: '~', text: ' WF ' },
+				{
+					type: 'date',
+					field: 'lastRun',
+					operator: '>',
+					preset: null,
+					date: '2026-09-13',
+					range: { from: null, to: null },
+				},
+			],
+		);
+
+		expect(conditions).toMatchObject([
+			{ field: 'lastRun', operator: '>', value: '2026-09-13' },
+			{ field: 'input', subfield: 'name', operator: '~', value: 'WF' },
+		]);
+	});
+
+	it('ignores entries for tabs the dialog does not have or of another type', () => {
 		const result = fromFiltersDialogValue(
 			DIALOG_FIELDS,
 			untouched,
 			[],
 			[
-				{ field: 'parents', operator: '=', selected: ['3'], pinned: ['3'] },
-				{ field: 'unknown', operator: '=', selected: ['x'], pinned: ['x'] },
+				{ type: 'enum', field: 'parents', operator: '=', selected: ['3'], pinned: ['3'] },
+				{ type: 'enum', field: 'unknown', operator: '=', selected: ['x'], pinned: ['x'] },
 			],
 		);
 
@@ -411,8 +719,8 @@ describe('fromFiltersDialogValue', () => {
 		];
 
 		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], pins, [
-			{ field: 'owner', operator: '=', selected: [], pinned: ['alice'] },
-			{ field: 'status', operator: '=', selected: [], pinned: ['active', 'deprecated'] },
+			{ type: 'enum', field: 'owner', operator: '=', selected: [], pinned: ['alice'] },
+			{ type: 'enum', field: 'status', operator: '=', selected: [], pinned: ['active', 'deprecated'] },
 		]);
 
 		expect(result.pins).toEqual([
@@ -457,8 +765,8 @@ describe('fromFiltersDialogValue', () => {
 		];
 
 		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], pins, [
-			{ field: 'status', operator: '=', selected: [], pinned: ['active'] },
-			{ field: 'owner', operator: '!=', selected: [], pinned: ['alice'] },
+			{ type: 'enum', field: 'status', operator: '=', selected: [], pinned: ['active'] },
+			{ type: 'enum', field: 'owner', operator: '!=', selected: [], pinned: ['alice'] },
 		]);
 
 		expect(result.pins).toEqual([
@@ -475,7 +783,7 @@ describe('fromFiltersDialogValue', () => {
 		];
 
 		const result = fromFiltersDialogValue(DIALOG_FIELDS, [], pins, [
-			{ field: 'owner', operator: '!=', selected: [], pinned: ['alice', 'bob'] },
+			{ type: 'enum', field: 'owner', operator: '!=', selected: [], pinned: ['alice', 'bob'] },
 		]);
 
 		expect(result.pins).toEqual([
@@ -499,6 +807,8 @@ describe('fromFiltersDialogValue', () => {
 			subfield,
 			unknown,
 			{ kind: 'field', id: 'c2', field: 'owner', operator: '=', value: ['alice', 'bob'] },
+			{ kind: 'field', id: 'c3', field: 'lastRun', operator: '=', value: { from: '2026-09-01', to: null } },
+			{ kind: 'field', id: 'c4', field: 'input', subfield: 'name', operator: '~', value: 'WF' },
 		]);
 		const pins: ReadonlyArray<DsFilterPin> = Object.freeze([
 			{ field: 'lastRun', value: 'today' },
