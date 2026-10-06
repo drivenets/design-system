@@ -1,4 +1,9 @@
 $search-width: 240px;
+$operator-border-width: 1px;
+$operator-radius: 4px;
+$operator-focus-width: 2px;
+$operator-focus-offset: 1px;
+$transition-duration: 0.2s;
 
 .root {
 	display: flex;
@@ -27,4 +32,32 @@ $search-width: 240px;
 .search {
 	width: $search-width;
 	min-width: 0;
+}
+
+.operatorTrigger {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--4xs);
+	padding: 0 var(--3xs);
+	border: $operator-border-width solid var(--border-secondary-hover);
+	border-radius: $operator-radius;
+	background: transparent;
+	color: var(--font-main);
+	font: inherit;
+	cursor: pointer;
+	transition: border-color $transition-duration;
+
+	&:hover,
+	&[data-state='open'] {
+		border-color: var(--border-action-primary);
+	}
+
+	&:focus-visible {
+		outline: $operator-focus-width solid var(--border-action-primary);
+		outline-offset: $operator-focus-offset;
+	}
+}
+
+.operatorText {
+	color: var(--font-main);
 }

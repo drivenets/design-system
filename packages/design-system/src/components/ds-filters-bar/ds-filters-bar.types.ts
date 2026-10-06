@@ -26,7 +26,7 @@ export interface DsFilterOperator<TValue extends DsFilterOperatorValue = DsFilte
 	 */
 	label: string;
 	/**
-	 * Compact form for chips, for example `≠`. Falls back to `label`.
+	 * Compact form for chips and operator menus, for example `≠`. Falls back to `value`.
 	 */
 	symbol?: string;
 }
