@@ -1442,7 +1442,7 @@ const WithNestedSecondaryActions = () => <DsTable
   onRowClick={() => {}}
   secondaryRowActions={[
     {
-      className: '_destructiveAction_1cgub_140',
+      className: '_destructiveAction_licxz_141',
       disabled: () => {},
       icon: 'delete_outline',
       label: 'Delete',
