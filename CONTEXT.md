@@ -121,8 +121,16 @@ The text in a **Leaf column** or **Column group** header cell.
 _Avoid_: column title, header caption
 
 **Utility column**:
-A table-injected **Leaf column** (`select`, `expander`, or `reorder`) that is not in the consumer `columns` array.
+A table-injected **Leaf column** (`select`, `expander`, `reorder`, or `__dsRowActions`) that is not in the consumer `columns` array.
 _Avoid_: builtin column, synthetic column, feature column
+
+**Row actions**:
+Per-row controls in a table: primary actions (`primaryRowActions`) shown inline as icon buttons, and secondary actions (`secondaryRowActions`) behind a "more" trigger menu.
+_Avoid_: row buttons, cell actions, inline actions
+
+**Row actions column**:
+The trailing **Utility column** that holds **Row actions**; its width comes from the declared actions, not from any row's visible ones.
+_Avoid_: actions column (collides with consumer column names), last-column actions
 
 **Fill column**:
 A **Leaf column** with no explicit width that grows with remaining table space. Only when column resizing is off.
@@ -215,7 +223,8 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - **Workspace layout mode** is opt-in: `Body` with `SideMenu` / `LeftPanel` adds horizontal chrome; `Content` always applies content-area spacing
 - A **Column group** contains one or more **Leaf columns**; dragging its **Resize handle** changes those leaves’ widths, not a separate group size
 - A **Header label** that does not fit its cell is shown as a single-line ellipsis; the full string is available while truncated
-- A **Utility column** is a **Leaf column**; the table injects it when select, expand, or reorder is on
+- A **Utility column** is a **Leaf column**; the table injects it when select, expand, or reorder is on, or when **Row actions** are declared
+- The **Row actions column** is always last and never resizable; the last consumer **Leaf column** keeps its own sizing
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
 - A **Scrollbar spacer** is not a **Leaf column** and has no **Resize handle**
@@ -229,6 +238,7 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once
 - A **Compatible query** becomes **Filter conditions** (nothing locks); any other valid query becomes the **Advanced query** and locks the filters and builder **Filter views**; invalid text never reaches the **Filter document**
 - Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
+- While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
 - A **Filter condition** names a field from the **Field schema**, or is free search text
 - Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
 - A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
@@ -277,6 +287,7 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - "Group resize" was used to mean a sized group column — resolved: dragging a **Column group** **Resize handle** changes **Leaf column** widths only.
 - "placeholder" in header layout meant **Scrollbar spacer**, not TanStack `header.isPlaceholder` (spanning-cell hole) and not **Empty state**.
 - "Scrollbar gutter" meant CSS reservation on `thead`; the structure is a **Scrollbar spacer**.
+- "Last column width doesn't respect row actions" (AR-98416) assumed **Row actions** live inside the last consumer column — resolved: they get their own **Row actions column**.
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
 - "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.

@@ -1,37 +1,52 @@
-// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=14841-6024
+// url=https://www.figma.com/design/nha3m67y7S57cHCSuQO2gp/DAP-Design-System-1.2?node-id=42725-280519
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-tabs
 // component=DsTabs.Tab
 //
-// `DAP_Tab item - vertical_v01` maps to `DsTabs.Tab`, resolved inside the vertical
-// `tabs slot` (nestable). Same code component as the horizontal tab item; the two
-// differ in Figma only by casing (`Show Leading Icon`) and by the vertical set
-// having no `Menu Actions` property.
+// `Part_TabsVerticalItemV2` maps to `DsTabs.Tab`, resolved inside the vertical
+// group's `Slot` (nestable). Content flags live on the nested
+// `Structure_TabsVerticalContent`: leading icon, selected count, total badge,
+// and pin.
 //
-// Variant divergence — `State`, `Selected` and `Size` have no `DsTabs.Tab` prop
-// (see `ds-tabs-tab.figma.ts` for the rationale).
+// Variant divergence — `active` and `state` (default / hover / focus) have no
+// `DsTabs.Tab` prop. Selection is owned by `DsTabs.Root`, and hover / focus are
+// CSS. Only `state=disabled` maps to `disabled`.
 import figma from 'figma';
 
 const instance = figma.selectedInstance;
 
-const label = instance.getString('Tab Name');
-const showIcon = instance.getBoolean('Show Leading Icon');
-const showBadge = instance.getBoolean('Show Badge');
+const state = instance.getEnum('state', {
+	default: 'default',
+	hover: 'hover',
+	focus: 'focus',
+	disabled: 'disabled',
+});
 
-// `value` is required by `DsTabsTabProps` but is data, not derivable from Figma.
-const value = label
-	? label
-			.toLowerCase()
-			.replace(/[^a-z0-9]+/g, '-')
-			.replace(/^-+|-+$/g, '')
-	: 'tab';
+const structure = instance.findInstance('Structure_TabsVerticalContent', { traverseInstances: true });
 
-// Leading icon → `DsTabs.Tab.icon` name, read from the connected ds-icon instance.
+const hasIcon = structure.type === 'INSTANCE' ? structure.getBoolean('hasIcon') : false;
+const hasPin = structure.type === 'INSTANCE' ? structure.getBoolean('hasPin') : false;
+const hasSelectCount = structure.type === 'INSTANCE' ? structure.getBoolean('hasSelectCount') : false;
+const hasTotalCount = structure.type === 'INSTANCE' ? structure.getBoolean('hasTotalCount') : false;
+
+const labelNode = instance.findText('Tab item', { traverseInstances: true });
+const label = labelNode.type === 'TEXT' ? labelNode.textContent.trim() : 'Tab item';
+
+const value =
+	label
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-+|-+$/g, '') || 'tab';
+
 const resolveIcon = (): string | undefined => {
-	const node = instance
-		.findConnectedInstances((n) => n.codeConnectId()?.startsWith('ds-icon-') ?? false, {
+	if (structure.type !== 'INSTANCE') {
+		return undefined;
+	}
+
+	const node = structure
+		.findConnectedInstances((candidate) => candidate.codeConnectId()?.startsWith('ds-icon-') ?? false, {
 			traverseInstances: true,
 		})
-		.find((n): n is figma.InstanceHandle => n.type === 'INSTANCE');
+		.find((candidate): candidate is figma.InstanceHandle => candidate.type === 'INSTANCE');
 
 	if (!node) {
 		return undefined;
@@ -52,21 +67,52 @@ const resolveIcon = (): string | undefined => {
 		.toLowerCase();
 };
 
-const icon = showIcon ? resolveIcon() : undefined;
+const icon = hasIcon ? resolveIcon() : undefined;
 
-// Badge count is freeform nested text, read from the badge instance when shown.
 const resolveBadge = (): string | undefined => {
-	const badge = instance.findInstance('DAP_Tab badge_v01', { traverseInstances: true });
+	if (structure.type !== 'INSTANCE') {
+		return undefined;
+	}
+
+	const badge = structure.findInstance('Part_TabsBadgeV1', { traverseInstances: true });
 	if (badge.type !== 'INSTANCE') {
 		return undefined;
 	}
-	return badge.children.find((c): c is figma.TextHandle => c.type === 'TEXT')?.textContent;
+
+	return badge.children.find((child): child is figma.TextHandle => child.type === 'TEXT')?.textContent.trim();
 };
 
-const badge = showBadge ? resolveBadge() : undefined;
+const badge = hasTotalCount ? resolveBadge() : undefined;
+
+const resolveSelectedCount = (totalCount: string | undefined): string | undefined => {
+	if (structure.type !== 'INSTANCE') {
+		return undefined;
+	}
+
+	const countText = structure
+		.findLayers((node): node is figma.TextHandle => node.type === 'TEXT', { traverseInstances: true })
+		.find(
+			(node): node is figma.TextHandle =>
+				node.type === 'TEXT' && node.name !== 'Tab item' && node.textContent.trim() !== totalCount,
+		);
+
+	return countText?.type === 'TEXT' ? countText.textContent.trim() : undefined;
+};
+
+const selectedCount = hasSelectCount ? resolveSelectedCount(badge) : undefined;
+const selectedCountAttr =
+	selectedCount && /^\d+$/.test(selectedCount) ? `selectedCount={${selectedCount}}` : '';
 const badgeAttr = badge ? (/^\d+$/.test(badge) ? `badge={${badge}}` : `badge="${badge}"`) : '';
 
-const attrs = [`value="${value}"`, `label="${label}"`, icon ? `icon="${icon}"` : '', badgeAttr]
+const attrs = [
+	`value="${value}"`,
+	`label="${label}"`,
+	icon ? `icon="${icon}"` : '',
+	selectedCountAttr,
+	badgeAttr,
+	hasPin ? 'pinned' : '',
+	state === 'disabled' ? 'disabled' : '',
+]
 	.filter(Boolean)
 	.join(' ');
 

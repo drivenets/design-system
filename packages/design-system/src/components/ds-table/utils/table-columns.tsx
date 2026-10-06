@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsSkeletonText } from '../../ds-skeleton';
 import { DsTableHeaderSelectableCell } from '../components/ds-table-header-selectable-cell';
+import { DsTableRowActionsHeader } from '../components/ds-table-row-actions-cell';
 import { DsTableRowExpandableCell } from '../components/ds-table-row-expandable-cell';
 import { DsTableRowSelectableCell } from '../components/ds-table-row-selectable-cell';
 import { resolveUtilityColumnWidth } from './column-size';
@@ -9,6 +10,7 @@ import {
 	EXPANDER_COLUMN_WIDTH,
 	REORDER_COLUMN_ID,
 	REORDER_COLUMN_WIDTH,
+	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 	SELECT_COLUMN_WIDTH,
 	SKELETON_ROW_COUNT,
@@ -23,6 +25,7 @@ export type GetAugmentedColumnsOptions = {
 	selectableColumnWidth?: number;
 	expandableColumnWidth?: number;
 	reorderableColumnWidth?: number;
+	rowActionsColumnWidth?: number;
 };
 
 const EXPLICIT_SIZE_META = { hasExplicitSize: true } as const;
@@ -54,8 +57,9 @@ const pinUtilityColumnSize = (width: number) => ({
 
 /**
  * Prepends the builtin select / expander / reorder columns when those features
- * are on. Reorder is omitted for virtualized tables. Unshift order yields
- * visual order: reorder, expander, select, then consumer columns.
+ * are on, and appends the row actions column when actions are declared. Reorder
+ * is omitted for virtualized tables. Visual order: reorder, expander, select,
+ * consumer columns, row actions.
  */
 export const getAugmentedColumns = <TData, TValue>(
 	columns: ColumnDef<TData, TValue>[],
@@ -68,6 +72,7 @@ export const getAugmentedColumns = <TData, TValue>(
 		selectableColumnWidth,
 		expandableColumnWidth,
 		reorderableColumnWidth,
+		rowActionsColumnWidth = 0,
 	}: GetAugmentedColumnsOptions,
 ): ColumnDef<TData, TValue>[] => {
 	const augmentedColumns: ColumnDef<TData, TValue>[] = stampExplicitSize(columns);
@@ -109,6 +114,20 @@ export const getAugmentedColumns = <TData, TValue>(
 			enableResizing: false,
 			meta: EXPLICIT_SIZE_META,
 			header: 'Order',
+			cell: () => null,
+		});
+	}
+
+	if (rowActionsColumnWidth > 0) {
+		// Cell is rendered by DsTableCell when it encounters ROW_ACTIONS_COLUMN_ID,
+		// reading the actions from table context so new action arrays don't rebuild columns.
+		augmentedColumns.push({
+			id: ROW_ACTIONS_COLUMN_ID,
+			...pinUtilityColumnSize(rowActionsColumnWidth),
+			enableSorting: false,
+			enableResizing: false,
+			meta: EXPLICIT_SIZE_META,
+			header: () => <DsTableRowActionsHeader />,
 			cell: () => null,
 		});
 	}

@@ -1,0 +1,77 @@
+@use '../../../../styles/shared/dropdown';
+
+// Sizes must match the `ROW_ACTION*` constants in `utils/constants.ts`, which pin the row actions column width.
+.rowActions {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--xs);
+	height: 100%;
+}
+
+.rowActionIcon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border: none;
+	border-radius: 50%;
+	background: none;
+	cursor: pointer;
+	outline: none;
+	transition: background 0.15s;
+	color: var(--icon-action-secondary);
+
+	&.disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	&:hover,
+	&[data-state='open'] {
+		background: var(--background-action-hover-weak);
+		color: var(--font-action);
+	}
+
+	// Inset so the outline stays inside the pinned actions column.
+	&:focus-visible {
+		outline: 2px solid var(--border-action-primary);
+		outline-offset: -2px;
+	}
+}
+
+.secondaryActionsTrigger {
+	margin-inline-start: var(--sm);
+}
+
+.secondaryActionContent {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	gap: 10px;
+	min-width: 0;
+}
+
+.submenuIndicator {
+	margin-inline-start: auto;
+}
+
+// Submenus stack above $dropdown-z-index, so tooltips on their items must clear them too.
+.secondaryActionTooltip[data-part='content'] {
+	z-index: dropdown.$dropdown-z-index + 2;
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}

@@ -57,6 +57,26 @@ describe('DsTabs', () => {
 		await expect.element(page.getByText('Security panel')).toBeVisible();
 	});
 
+	it('shows the vertical content parts on a tab', async () => {
+		await page.render(
+			<DsTabs.Root defaultValue="status" orientation="vertical">
+				<DsTabs.List>
+					<DsTabs.Tab value="status" label="Status" selectedCount={3} badge={20} pinned />
+					<DsTabs.Tab value="running" label="Running" />
+				</DsTabs.List>
+				<DsTabs.Content value="status">Status panel</DsTabs.Content>
+				<DsTabs.Content value="running">Running panel</DsTabs.Content>
+			</DsTabs.Root>,
+		);
+
+		const statusTab = page.getByRole('tab', { name: /Status/ });
+
+		await expect.element(statusTab).toHaveAttribute('aria-selected', 'true');
+		await expect.element(statusTab.getByText('3', { exact: true })).toBeVisible();
+		await expect.element(statusTab.getByText('20', { exact: true })).toBeVisible();
+		await expect.element(page.getByText('Status panel')).toBeVisible();
+	});
+
 	it('does not select a disabled tab', async () => {
 		await page.render(
 			<DsTabs.Root defaultValue="active">

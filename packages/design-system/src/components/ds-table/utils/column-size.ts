@@ -1,6 +1,13 @@
 import type { CSSProperties } from 'react';
 import { type ColumnSizingState } from '@tanstack/react-table';
-import { BUILTIN_COLUMN_IDS, RESIZE_MIN_COLUMN_WIDTH } from './constants';
+import {
+	BUILTIN_COLUMN_IDS,
+	RESIZE_MIN_COLUMN_WIDTH,
+	ROW_ACTION_BUTTON_SIZE,
+	ROW_ACTIONS_CELL_PADDING,
+	ROW_ACTIONS_GAP,
+	ROW_ACTIONS_TRIGGER_OFFSET,
+} from './constants';
 
 const DEFAULT_MAX_COLUMN_SIZE = Number.MAX_SAFE_INTEGER;
 
@@ -465,6 +472,29 @@ export const resolveUtilityColumnWidth = (width: number | undefined, fallback: n
 	}
 
 	return width;
+};
+
+/**
+ * Width of the row actions utility column, derived from the declared actions (not the
+ * per-row visible ones) so every row and the header share one width. One slot per
+ * primary action, plus one for the secondary "more" trigger. `0` when no actions are declared.
+ */
+export const getRowActionsColumnWidth = (
+	primaryActionCount: number,
+	hasSecondaryActions: boolean,
+): number => {
+	const slots = primaryActionCount + (hasSecondaryActions ? 1 : 0);
+
+	if (slots === 0) {
+		return 0;
+	}
+
+	return (
+		slots * ROW_ACTION_BUTTON_SIZE +
+		(slots - 1) * ROW_ACTIONS_GAP +
+		(hasSecondaryActions ? ROW_ACTIONS_TRIGGER_OFFSET : 0) +
+		2 * ROW_ACTIONS_CELL_PADDING
+	);
 };
 
 /**
