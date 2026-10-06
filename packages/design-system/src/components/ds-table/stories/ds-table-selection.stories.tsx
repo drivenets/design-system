@@ -62,7 +62,7 @@ export const ProgrammaticRowSelection: Story = {
 		onSelectionChange: fn(),
 	},
 	parameters: {
-		docs: { source: { type: 'dynamic' } },
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const tableRef = useRef<DsTableApi<Person>>(null);
@@ -122,7 +122,7 @@ export const MaxSelectionLimit: Story = {
 		onSelectionChange: fn(),
 	},
 	parameters: {
-		docs: { source: { type: 'dynamic' } },
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});

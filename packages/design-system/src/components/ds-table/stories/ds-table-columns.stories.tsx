@@ -68,7 +68,7 @@ export const WithProgressInfographic: Story = {
  */
 export const ColumnHiding: Story = {
 	parameters: {
-		docs: { source: { type: 'dynamic' } },
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const columnsToToggle = [

@@ -149,7 +149,7 @@ export const MinAndMaxSize: Story = {
 export const PersistedWidths: Story = {
 	name: 'Persisted widths',
 	parameters: {
-		docs: { source: { type: 'dynamic' } },
+		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const STORAGE_KEY = 'storybook.ds-table.resizable.persisted-widths';
