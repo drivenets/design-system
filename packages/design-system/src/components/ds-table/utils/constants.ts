@@ -30,11 +30,41 @@ export const REORDER_COLUMN_ID = 'reorder';
 export const REORDER_COLUMN_WIDTH = 60;
 
 /**
- * Injected utility leaf ids (`select`, `expander`, `reorder`). Present in internal
+ * Column id used for the synthetic trailing column injected when row actions are declared.
+ * Namespaced because `DsTableCell` swaps this column's content, so it must never match a consumer id.
+ */
+export const ROW_ACTIONS_COLUMN_ID = '__dsRowActions';
+
+/**
+ * Width (in px) of one row action button. Must match `.rowActionIcon` in
+ * `ds-table-row-actions-cell.module.scss`.
+ */
+export const ROW_ACTION_BUTTON_SIZE = 36;
+
+/**
+ * Gap (in px) between row action buttons. Must match `.rowActions` (`--xs`) in
+ * `ds-table-row-actions-cell.module.scss`.
+ */
+export const ROW_ACTIONS_GAP = 8;
+
+/**
+ * Extra start margin (in px) of the secondary actions trigger. Must match
+ * `.secondaryActionsTrigger` (`--sm`) in `ds-table-row-actions-cell.module.scss`.
+ */
+export const ROW_ACTIONS_TRIGGER_OFFSET = 12;
+
+/**
+ * Horizontal padding (in px) on each side of a body cell. Must match the
+ * `--standard` cell padding in the row styles.
+ */
+export const ROW_ACTIONS_CELL_PADDING = 16;
+
+/**
+ * Injected utility leaf ids (`select`, `expander`, `reorder`, `__dsRowActions`). Present in internal
  * sizing for layout; omitted from the public `onColumnSizingChange` payload.
  */
 export const BUILTIN_COLUMN_IDS: ReadonlySet<string> = Object.freeze(
-	new Set([SELECT_COLUMN_ID, EXPANDER_COLUMN_ID, REORDER_COLUMN_ID]),
+	new Set([SELECT_COLUMN_ID, EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, ROW_ACTIONS_COLUMN_ID]),
 );
 
 /**

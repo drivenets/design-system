@@ -12,3 +12,9 @@ export const fullHeightDecorator = (Story: () => ReactNode) => (
 		<Story />
 	</div>
 );
+
+export const narrowContainerDecorator = (Story: () => ReactNode) => (
+	<div className={styles.narrowContainer}>
+		<Story />
+	</div>
+);

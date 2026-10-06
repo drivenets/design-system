@@ -5,6 +5,10 @@
 	padding: var(--standard);
 }
 
+.narrowContainer {
+	width: 720px;
+}
+
 .virtualizedStoryHeight {
 	display: flex;
 	flex-direction: column;

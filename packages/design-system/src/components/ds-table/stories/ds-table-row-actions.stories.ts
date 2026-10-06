@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 import DsTable from '../ds-table';
 import { columns, defaultData, type Person } from './common/story-data';
-import { fullHeightDecorator } from './common/story-decorators';
+import { fullHeightDecorator, narrowContainerDecorator } from './common/story-decorators';
 import styles from './ds-table.stories.module.scss';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
@@ -84,6 +84,98 @@ export const WithRowActions: Story = {
 			{
 				icon: 'call',
 				label: (row) => `Call ${row.firstName}`,
+				onClick: fn(),
+			},
+		],
+	},
+};
+
+/**
+ * Row actions get their own trailing column sized to the declared actions, so they are never clipped. Drag the last column to its minimum: the actions keep their room.
+ */
+export const ResizableColumnsWithRowActions: Story = {
+	decorators: [narrowContainerDecorator],
+	args: {
+		resizableColumns: true,
+		columns: [
+			{ accessorKey: 'id', header: 'Person ID', size: 100 },
+			{ accessorKey: 'firstName', header: 'First Name', size: 140 },
+			{ accessorKey: 'lastName', header: 'Last Name', size: 140 },
+			{ accessorKey: 'age', header: 'Age' },
+			{ accessorKey: 'visits', header: 'Visits' },
+			{ accessorKey: 'status', header: 'Status', size: 140 },
+			{ accessorKey: 'progress', header: 'Profile Progress', size: 60 },
+		],
+		primaryRowActions: [
+			{
+				icon: 'edit',
+				label: 'Edit',
+				onClick: fn(),
+			},
+			{
+				icon: 'open_in_new',
+				label: 'Open in New Window',
+				onClick: fn(),
+			},
+		],
+		secondaryRowActions: [
+			{
+				icon: 'delete_outline',
+				label: 'Delete',
+				tooltip: 'Delete this row',
+				className: styles.destructiveAction,
+				onClick: fn(),
+			},
+			{
+				icon: 'info',
+				label: 'Details',
+				tooltip: 'Show details',
+				onClick: fn(),
+			},
+		],
+	},
+};
+
+/**
+ * Columns barely fit the container; the table scrolls horizontally instead of squeezing the row actions column.
+ */
+export const NonResizableColumnsWithRowActions: Story = {
+	decorators: [narrowContainerDecorator],
+	args: {
+		resizableColumns: false,
+		columns: [
+			{ accessorKey: 'id', header: 'Person ID', size: 100 },
+			{ accessorKey: 'firstName', header: 'First Name', size: 140 },
+			{ accessorKey: 'lastName', header: 'Last Name', size: 140 },
+			{ accessorKey: 'age', header: 'Age' },
+			{ accessorKey: 'visits', header: 'Visits' },
+			{ accessorKey: 'status', header: 'Status', size: 140 },
+			{ accessorKey: 'progress', header: 'Profile Progress', size: 60 },
+		],
+		primaryRowActions: [
+			{
+				icon: 'edit',
+				label: 'Edit',
+				onClick: fn(),
+			},
+			{
+				icon: 'open_in_new',
+				label: 'Open in New Window',
+				onClick: fn(),
+			},
+		],
+		secondaryRowActions: [
+			{
+				icon: 'delete_outline',
+				label: 'Delete',
+				tooltip: 'Delete this row',
+				className: styles.destructiveAction,
+				onClick: fn(),
+			},
+			{
+				icon: 'info',
+				label: 'Details',
+				tooltip: 'Show details',
 				onClick: fn(),
 			},
 		],

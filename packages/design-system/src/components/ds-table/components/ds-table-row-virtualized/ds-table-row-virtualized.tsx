@@ -21,8 +21,6 @@ export const DsTableRowVirtualized = <TData,>({
 		bordered,
 		rowSize,
 		activeRowId,
-		primaryRowActions,
-		secondaryRowActions,
 		renderExpandedRow,
 		onRowClick,
 		onRowDoubleClick,
@@ -69,8 +67,7 @@ export const DsTableRowVirtualized = <TData,>({
 				<TableCell>{renderExpandedRow?.(row.original)}</TableCell>
 			) : (
 				<>
-					{row.getVisibleCells().map((cell, idx) => {
-						const isLastColumn = idx === row.getVisibleCells().length - 1;
+					{row.getVisibleCells().map((cell) => {
 						const columnSizing = cell.getContext().table.getState().columnSizing;
 						const cellStyle = getBodyCellSizeStyle(
 							cell.column.id,
@@ -91,16 +88,7 @@ export const DsTableRowVirtualized = <TData,>({
 									typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 								)}
 							>
-								{isLastColumn ? (
-									<DsTableCell
-										row={row}
-										cell={cell}
-										primaryRowActions={primaryRowActions}
-										secondaryRowActions={secondaryRowActions}
-									/>
-								) : (
-									<DsTableCell row={row} cell={cell} />
-								)}
+								<DsTableCell row={row} cell={cell} />
 							</TableCell>
 						);
 					})}

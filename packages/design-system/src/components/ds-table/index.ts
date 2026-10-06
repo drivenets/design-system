@@ -1,7 +1,7 @@
 import './grouping/types/column-group-meta.augmentation';
 import './utils/column-size-meta.augmentation';
 
-export type { SecondaryRowAction, RowAction } from './components/ds-table-cell';
+export type { SecondaryRowAction, RowAction } from './components/ds-table-row-actions-cell';
 export type { ScrollParams } from './components/ds-table-body-virtualized';
 
 export * from './filters';
