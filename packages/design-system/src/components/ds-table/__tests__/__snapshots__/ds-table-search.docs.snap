@@ -196,7 +196,7 @@
 </DsStack>
 
 ### MCP manifest
-const AdvancedSearch = () => {
+const AdvancedSearch = args => {
     const [globalFilter, setGlobalFilter] = useState('');
 
     const filteredData = useMemo(() => {
@@ -454,7 +454,7 @@ const AdvancedSearch = () => {
 </DsStack>
 
 ### MCP manifest
-const TabFilters = () => {
+const TabFilters = args => {
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
     const [activeTab, setActiveTab] = useState<Status | 'all'>('all');
 

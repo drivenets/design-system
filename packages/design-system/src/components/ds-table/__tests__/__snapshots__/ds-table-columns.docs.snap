@@ -463,6 +463,7 @@ const ColumnHiding = () => {
                     />
                 ))}
             </DsStack>
+
             <DsTable
                 columns={columns}
                 data={defaultData}

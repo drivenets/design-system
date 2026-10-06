@@ -285,6 +285,7 @@ const ActiveRow = () => <DsTable
   <DsDrawer
     columns={4}
     onOpenChange={() => {}}
+    open={false}
     position="end"
   />
 </>
@@ -313,6 +314,7 @@ const WithDrawerAndActiveRow = () => {
                 expandable={false}
                 activeRowId={activeRowId}
                 onRowClick={handleRowClick} />
+
             <DsDrawer
                 open={isDrawerOpen}
                 onOpenChange={(open) => {
