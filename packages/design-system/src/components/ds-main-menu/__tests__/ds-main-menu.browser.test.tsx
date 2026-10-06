@@ -69,22 +69,31 @@ const assertClosed = () => expect.element(triggerLocator()).toHaveAttribute('ari
 const comingSoonTooltipVisible = () =>
 	[...document.querySelectorAll('[role="tooltip"]')].some((node) => node.textContent === COMING_SOON_TOOLTIP);
 
-// Hover the 24px coming-soon badge after the panel is laid out. Re-hover if the popover
-// is still positioning — Playwright can miss the trigger, and Ark only opens on pointermove.
+const TOOLTIP_POLL_INTERVAL_MS = 250;
+const TOOLTIP_POLL_TIMEOUT_MS = 5000;
+
 const hoverComingSoonBadge = async (tile: ReturnType<typeof page.getByRole>, badgeSelector: string) => {
 	await expect.element(tile).toBeVisible();
 	await page.getByRole('navigation', { name: 'Main menu' }).hover();
 
 	await expect
-		.poll(async () => {
-			const badge = tile.element().closest('li')?.querySelector(badgeSelector);
-			if (!(badge instanceof HTMLElement)) {
-				return false;
-			}
+		.poll(
+			async () => {
+				// Check before re-hovering: the previous tick's hover is what opens it.
+				if (comingSoonTooltipVisible()) {
+					return true;
+				}
 
-			await page.elementLocator(badge).hover();
-			return comingSoonTooltipVisible();
-		})
+				const badge = tile.element().closest('li')?.querySelector(badgeSelector);
+				if (!(badge instanceof HTMLElement)) {
+					return false;
+				}
+
+				await page.elementLocator(badge).hover();
+				return comingSoonTooltipVisible();
+			},
+			{ interval: TOOLTIP_POLL_INTERVAL_MS, timeout: TOOLTIP_POLL_TIMEOUT_MS },
+		)
 		.toBe(true);
 };
 

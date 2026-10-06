@@ -16,6 +16,9 @@ const meta: Meta<typeof DsTable<Person, unknown>> = {
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
+		// Args-only stories use dynamic Show code. Under CI load `auto` can race
+		// and fall back to the raw CSF object, so pin dynamic for stable JSX.
+		docs: { source: { type: 'dynamic' } },
 	},
 	args: {
 		columns,

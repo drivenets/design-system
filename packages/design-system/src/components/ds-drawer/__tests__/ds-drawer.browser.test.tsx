@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import DsDrawer from '../ds-drawer';
 import type { DsDrawerProps } from '../ds-drawer.types';
 
@@ -77,17 +77,50 @@ const UnmountWhileOpenDrawer = (props: Partial<DsDrawerProps>) => {
 	);
 };
 
+// A closed drawer is `hidden`, so it drops out of the a11y tree; reach it explicitly.
+const getDrawer = () => page.getByRole('dialog', { includeHidden: true });
+
 describe('DsDrawer', () => {
 	it('should open and close', async () => {
 		await page.render(<ControlledDrawer />);
 
 		await page.getByRole('button', { name: /open drawer/i }).click();
 
-		const drawer = page.getByRole('dialog');
+		const drawer = getDrawer();
 		await expect.element(drawer).toHaveAttribute('data-state', 'open');
 
 		await page.getByRole('button', { name: /close/i }).click();
 		await expect.element(drawer).toHaveAttribute('data-state', 'closed');
+	});
+
+	it('should not render or animate a drawer that was never opened', async () => {
+		await page.render(<ControlledDrawer />);
+
+		const drawer = getDrawer();
+		await expect.element(drawer).toHaveAttribute('hidden');
+
+		const drawerElement = drawer.element() as HTMLElement;
+		expect(getComputedStyle(drawerElement).display).toBe('none');
+		expect(drawerElement.getAnimations()).toHaveLength(0);
+		await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+	});
+
+	it('should remove a closed drawer from the a11y tree and tab order', async () => {
+		await page.render(<ControlledDrawer />);
+
+		const openButton = page.getByRole('button', { name: /open drawer/i });
+		await openButton.click();
+		await expect.element(page.getByRole('dialog')).toHaveAttribute('data-state', 'open');
+
+		await page.getByRole('button', { name: /close/i }).click();
+		await vi.waitFor(() => {
+			expect(getComputedStyle(getDrawer().element()).display).toBe('none');
+		});
+		await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+
+		(openButton.element() as HTMLElement).focus();
+		await userEvent.tab();
+		expect(getDrawer().element().contains(document.activeElement)).toBe(false);
 	});
 
 	it('should not intercept pointer events on sibling UI once closed', async () => {
@@ -123,7 +156,7 @@ describe('DsDrawer', () => {
 
 		await page.render(<InsetDrawerOverSibling />);
 
-		const drawer = page.getByRole('dialog');
+		const drawer = getDrawer();
 		await expect.element(drawer).toHaveAttribute('data-state', 'open');
 
 		await page.getByRole('button', { name: /close drawer/i }).click();
@@ -137,7 +170,7 @@ describe('DsDrawer', () => {
 		await page.render(<ControlledDrawer />);
 
 		await page.getByRole('button', { name: /open drawer/i }).click();
-		const drawer = page.getByRole('dialog');
+		const drawer = getDrawer();
 		await expect.element(drawer).toHaveAttribute('data-state', 'open');
 
 		await page.getByRole('button', { name: /close/i }).click();

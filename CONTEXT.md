@@ -8,6 +8,10 @@ Shared vocabulary for building and maintaining `ds-*` React components in this m
 A public `Ds{Name}` export backed by a `ds-{name}/` folder (types, implementation, styles, stories).
 _Avoid_: widget, element (unless HTML element), control (unless form field)
 
+**Internal component**:
+A `ds-*` folder with stories and tests that is omitted from the package barrel and MCP manifest (`!manifest`). A building block of a future public **Component**.
+_Avoid_: private component, unexported widget
+
 **Variant**:
 A named visual or behavioral axis on a **Component**, backed by an `as const` array and union type in `*.types.ts`.
 _Avoid_: mode, type (when meaning visual style), theme
@@ -152,6 +156,50 @@ _Avoid_: dropdown editor, second editor, expanded mode
 The compact disclosure on a **Collapsed field** that reports additional logical lines, the current visible line, or a hidden multiline selection.
 _Avoid_: ellipsis (horizontal clip only), line count badge
 
+**Filters bar**:
+The **Internal component** (`DsFiltersBar`, public once built) that composes the **Filter views**, the pinned row and **Saved filters** around one **Filter document**.
+_Avoid_: filter toolbar, search bar
+
+**Filter document**:
+The single state a **Filters bar** filters by: either its **Filter conditions** or an **Advanced query**, never both. **Pins** are not part of it.
+_Avoid_: filter state, s.filters, working copy
+
+**Advanced query**:
+Text in the **Query language** that the user edited and that is valid but not a **Compatible query**, so it replaces the **Filter conditions** as the source of the **Filter document**.
+_Avoid_: DQL, JQL, code (as the concept name), query override
+
+**Query language**:
+The design system's one filter grammar (`field op value` clauses, `AND`/`OR`, parentheses, free-text strings), validated against the **Field schema**.
+_Avoid_: DQL, JQL, query syntax (as a product-specific name)
+
+**Compatible query**:
+A valid query made only of clauses joined by `AND`, so it maps one-to-one onto **Filter conditions**.
+_Avoid_: simple query, flat query
+
+**Field schema**:
+The consumer's description of what can be filtered — each field's type, operators, and options or subfields; the type decides what a **Filter condition** on that field can hold.
+_Avoid_: BUILDER_SCHEMA, columns, filter config
+
+**Filter view**:
+One of the three presentations of the same **Filter document** — `filters`, `builder`, `advanced` — switched by the view switch. Switching changes the presentation only.
+_Avoid_: mode, segment, tab, code view
+
+**Pin**:
+A field option the user marked for quick access in the pinned row; a user preference that outlives any **Saved filter** or clear.
+_Avoid_: favorite, quick-view pill
+
+**Saved filter**:
+A named snapshot of the current filter document (`id`, `name`, and a consumer-owned payload). Selected from the **Saved filters** picker.
+_Avoid_: savedSearch, preset, bookmark (the icon is not the concept)
+
+**Filter condition**:
+One chip or clause in a filter document. A **Saved filter**'s `count` is how many **Filter conditions** that snapshot holds.
+_Avoid_: individual filter (as a synonym for **Saved filter**), sub-filter
+
+**Active saved filter**:
+The **Saved filter** currently applied. Distinct from merely having items in the list.
+_Avoid_: selected filter, current filter (when meaning the snapshot, not the working document)
+
 ## Relationships
 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
@@ -174,6 +222,17 @@ _Avoid_: ellipsis (horizontal clip only), line count badge
 - Every header row of a **Column group** includes a **Scrollbar spacer**, not only the last row
 - A **Code input** has one editor document and two presentations: **Collapsed field** and **Expanded overlay**
 - A **Hidden-line indicator** belongs to the **Collapsed field**; an ellipsis on that field means horizontal clip only
+- An **Internal component** is not a public **Component**; consumers reach it only through the **Component** it belongs to
+- A **Filters bar** has zero or one **Active saved filter**
+- A **Saved filter** contains zero or more **Filter conditions**
+- A **Filters bar** has one **Filter document**; every **Filter view** reads and writes it
+- A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once
+- A **Compatible query** becomes **Filter conditions** (nothing locks); any other valid query becomes the **Advanced query** and locks the filters and builder **Filter views**; invalid text never reaches the **Filter document**
+- Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
+- While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
+- A **Filter condition** names a field from the **Field schema**, or is free search text
+- Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
+- A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
 
 ## Example dialogue
 
@@ -204,6 +263,15 @@ _Avoid_: ellipsis (horizontal clip only), line count badge
 > **Dev:** "Is the compact query box a different editor from the overlay?"
 > **Domain expert:** "No — that's one **Code input**. The **Collapsed field** and **Expanded overlay** are two presentations of the same document, not two fields."
 
+> **Dev:** "Should we export `DsSavedFilters` from the package?"
+> **Domain expert:** "No — that's an **Internal component** of the **Filters bar**. Keep it out of the barrel; product gets **Saved filters** through the bar, not as its own **Component**."
+
+> **Dev:** "The user typed `status = \"A\" OR status = \"B\"` — do we lock the other views?"
+> **Domain expert:** "Yes. Any `OR` means it isn't a **Compatible query**, so it becomes the **Advanced query** and locks filters and builder. `status IN (\"A\", \"B\")` is compatible and stays as **Filter conditions**."
+
+> **Dev:** "Is the number on the row how many **Saved filters** the user has?"
+> **Domain expert:** "No — that's **Filter condition** count on that **Saved filter**. The list length is how many snapshots exist; `count` is how many clauses that snapshot holds."
+
 ## Flagged ambiguities
 
 - "Adapter" in file-upload vs "adapter" in generic architecture docs — resolved: use **Upload adapter** in design-system context; architecture skill uses **Adapter** at a **seam** ([LANGUAGE.md](.agents/skills/improve-codebase-architecture/LANGUAGE.md)).
@@ -212,3 +280,7 @@ _Avoid_: ellipsis (horizontal clip only), line count badge
 - "Scrollbar gutter" meant CSS reservation on `thead`; the structure is a **Scrollbar spacer**.
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
+- "individual filter" on a saved-filter row meant **Filter condition** count, not another **Saved filter**.
+- The filters-bar design says the query builder locks the other views like the **Advanced query** does, while its samples mix builder conditions with filter chips — resolved: the builder writes ordinary **Filter conditions** and never locks (pending design confirmation).
+- "One source of truth" for the filters bar described two stores (conditions and query text) kept in sync by hand — resolved: the **Filter document** has exactly one active source, **Filter conditions** or an **Advanced query**; a **Compatible query** is converted into conditions rather than kept as text.
+- "Valid query" was used both for syntax-correct text and for text the other views can show — resolved: validity is grammar plus **Field schema**; whether the other views can show it is **Compatible query**.

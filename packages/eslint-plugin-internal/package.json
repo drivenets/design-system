@@ -30,7 +30,7 @@
 		"ts-api-utils": "^2.5.0"
 	},
 	"devDependencies": {
-		"@typescript-eslint/rule-tester": "^8.69.0",
+		"@typescript-eslint/rule-tester": "^8.71.0",
 		"@vitest/coverage-v8": "catalog:",
 		"eslint": "catalog:",
 		"eslint-plugin-eslint-plugin": "^7.6.2",

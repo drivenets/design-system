@@ -56,16 +56,21 @@
 		transform 0.2s ease,
 		width 0.2s ease;
 
-	// A closed (or closing) drawer is invisible but stays mounted and transformed.
-	// Without this it still hit-tests and can swallow clicks on neighboring UI when
-	// docked at a non-zero offset. Keep it click-through whenever it is not open.
+	// `display: block` above (and any consumer `className` display) outranks the UA
+	// `[hidden]` rule, so a closed drawer would stay rendered: it flashes its exit
+	// animation on mount, stays in the a11y tree and its controls stay tabbable.
+	&[hidden] {
+		display: none;
+	}
+
+	// While the exit animation runs the drawer is `closed` but not yet `hidden`, so it
+	// still hit-tests and can swallow clicks on neighboring UI when docked at a
+	// non-zero offset. Keep it click-through whenever it is not open.
 	//
-	// `!important` is required: when this drawer is stacked with other open Ark
-	// dialogs (e.g. a non-modal drawer opened over another dialog), Ark's layer
-	// management writes an inline `pointer-events: auto` onto the content, which
-	// would otherwise win over this rule and let the closed drawer keep eating
-	// clicks. Overriding a third-party inline style is the canonical use of
-	// `!important`, and a closed drawer must never be a pointer target.
+	// `!important` is required: Ark writes an inline `pointer-events: auto` onto
+	// non-modal dialog content, which would otherwise win over this rule. Overriding
+	// a third-party inline style is the canonical use of `!important`, and a closed
+	// drawer must never be a pointer target.
 	&[data-state='closed'] {
 		pointer-events: none !important;
 	}

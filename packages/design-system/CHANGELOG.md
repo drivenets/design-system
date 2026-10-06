@@ -1,5 +1,57 @@
 # @drivenets/design-system
 
+## 0.22.0
+
+### Minor Changes
+
+- 5431dd1: Add the search field and search chips to "DsFiltersBar"
+- 328dee3: Make `DsPopover` and `DsTooltip` controllable and composable on a shared trigger
+- 96d963a: Add nested submenus (`children`) and reason tooltips on disabled items to `secondaryRowActions` in `DsTable`.
+
+### Patch Changes
+
+- 70dec90: Downgrade ark-ui to 5.37.2 and zag-js to 1.41.2 (the versions ark-ui 5.37.2 ships with), pinned.
+
+## 0.21.0
+
+### Minor Changes
+
+- da76266: Add query parsing, validation, and syntax help to "DsFiltersBar.Query"
+
+### Patch Changes
+
+- 9c4c26e: Fix `DsCheckbox` size to match Figma
+- f386344: Fix `DsDrawer` flashing its close animation on mount.
+- da76266: Fix a second click reopening "DsPopover" when it opens on hover
+
+## 0.20.0
+
+### Minor Changes
+
+- f8644e0: Add "DsCodeInput" component
+- a38954b: Add `size` (`'medium' | 'large'`) and an `actions` slot to `DsCheckbox`.
+- b4c98c2: Add an `invalid` state and `aria-describedby` to "DsCodeInput"
+- f066e7e: Add `DsPinToggle` component.
+- 46174bf: Add `operator-filter` and `query-filter` variants to `DsTag`, plus `shape`, `warning` and `onExpandClick` props
+- 0eaff5f: Add hover triggering to `DsPopover`
+
+### Patch Changes
+
+- 1f0f795: Add "special-adv-filters" (Advanced Filters) to `DsIcon`
+- ac4f55e: Add "DsSavedFilters" component
+- 825f18d: Add "DsPopover" Anchor and focus events
+- b2ee079: Update `DsSegmentGroup` styles
+- d38dd57: Fix "DsFormControl" so `hideLabel` keeps the accessible name, and so its message is announced and linked to `DsFormControl.CodeInput`. `DsCodeInput` accepts `aria-describedby` for that link.
+- 42f0da6: Update dependencies
+- 7677183: Update dependencies
+- 225f1c7: Update dependencies
+- 225f1c7: Give the colliding `Components/Table/Filters` story files unique titles (`Filters`, `Search`, `Filters Panel`) so every file reaches the MCP component manifest, and keep the full-toolbar showcase stories out of the manifest
+- aa8f499: Fix `DsToggle` losing its `aria-label` accessible name when it has no `label` or `children`.
+- 205b07f: Fix an open `DsTooltip` swallowing clicks on elements it overlaps.
+- c52efbd: Fix `DsTree.Branch`, `DsTree.BranchControl` and `DsTree.BranchText` dropping injected props.
+- 2f6872c: Update dependencies
+- f651ade: Update dependencies
+
 ## 0.19.0
 
 ### Minor Changes

@@ -12,5 +12,8 @@
 		"interface": true,
 		"type": true
 	},
-	"ignoreBinaries": ["tail"]
+	"ignoreBinaries": ["tail"],
+	"ignoreIssues": {
+		"packages/design-system/src/components/ds-filters-bar/**/*.types.ts": ["exports"]
+	}
 }

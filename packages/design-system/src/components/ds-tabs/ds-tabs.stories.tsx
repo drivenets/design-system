@@ -9,7 +9,7 @@ import styles from './ds-tabs.stories.module.scss';
  * Compound tabs built on Ark UI. Compose `DsTabs.Root` with a `DsTabs.List` of
  * `DsTabs.Tab`s and one `DsTabs.Content` panel per tab `value`. Selection is
  * controlled by the `value` / `onValueChange` props on `DsTabs.Root`; tab
- * appearance (icon, label, badge, menu) is set on each `DsTabs.Tab`.
+ * appearance (icon, label, selected count, badge, pin, menu) is set on each `DsTabs.Tab`.
  */
 const meta: Meta<typeof DsTabs.Root> = {
 	title: 'Components/Tabs',
@@ -412,6 +412,73 @@ export const VerticalSmall: Story = {
 							<DsTypography variant="body-md-reg" color="secondary">
 								Advanced configuration options for power users.
 							</DsTypography>
+						</div>
+					</DsTabs.Content>
+				</DsTabs.Root>
+			</div>
+		);
+	},
+};
+
+/**
+ * Vertical content parts from `Structure_TabsVerticalContent`: leading icon,
+ * selected count, total badge, and pin. This is the `DsTabsVerticalV2` layout.
+ */
+export const VerticalWithCounts: Story = {
+	parameters: {
+		docs: {
+			source: { type: 'code' },
+		},
+	},
+	args: {
+		orientation: 'vertical',
+		size: 'medium',
+	},
+	render: function Render(args) {
+		const [selected, setSelected] = useState('status');
+
+		return (
+			<div className={styles.verticalContainer}>
+				<DsTabs.Root
+					{...args}
+					value={selected}
+					onValueChange={(val: string | null) => setSelected(val ?? 'status')}
+				>
+					<DsTabs.List>
+						<DsTabs.Tab
+							value="status"
+							label="Status"
+							icon="check_circle"
+							selectedCount={3}
+							badge={20}
+							pinned
+						/>
+						<DsTabs.Tab value="running" label="Running" selectedCount={1} />
+						<DsTabs.Tab value="category" label="Category" badge={8} />
+						<DsTabs.Tab value="version" label="Version" disabled />
+					</DsTabs.List>
+
+					<DsTabs.Content value="status">
+						<div className={styles.content}>
+							<DsTypography variant="heading3">Status</DsTypography>
+							<DsTypography variant="body-md-reg" color="secondary">
+								3 selected of 20. The pin keeps this tab at the top.
+							</DsTypography>
+						</div>
+					</DsTabs.Content>
+					<DsTabs.Content value="running">
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">Running</DsTypography>
+						</div>
+					</DsTabs.Content>
+					<DsTabs.Content value="category">
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">Category</DsTypography>
+						</div>
+					</DsTabs.Content>
+					<DsTabs.Content value="version">
+						<div className={styles.content}>
+							<DsTypography variant="body-md-reg">Version</DsTypography>
 						</div>
 					</DsTabs.Content>
 				</DsTabs.Root>

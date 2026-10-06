@@ -1,0 +1,21 @@
+.pickerHeader {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	border-bottom: 1px solid var(--border);
+}
+
+.pickerTitle {
+	flex: 1;
+	min-width: 0;
+	border-bottom: none;
+}
+
+.pickerClose {
+	flex-shrink: 0;
+	margin-inline-end: var(--sm);
+}
+
+.pickerContent {
+	padding: var(--standard);
+}

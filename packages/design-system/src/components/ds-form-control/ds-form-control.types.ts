@@ -18,7 +18,8 @@ export interface DsFormControlProps extends React.PropsWithChildren {
 	 */
 	label: string;
 	/**
-	 * When true, the label row is not rendered (e.g. inline table cell editors).
+	 * Hides the label row (e.g. inline table cell editors). The label stays as the control's
+	 * accessible name.
 	 */
 	hideLabel?: boolean;
 	/**

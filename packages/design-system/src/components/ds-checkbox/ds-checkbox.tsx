@@ -15,36 +15,72 @@ import { DsIcon } from '../ds-icon';
  */
 const DsCheckbox = ({
 	variant = 'default',
+	size = 'medium',
 	label,
 	labelInfo,
+	actions,
 	className,
+	style,
 	onCheckedChange,
 	value,
 	...props
 }: DsCheckboxProps) => {
-	return (
+	// `className` and `style` belong to whichever element is outermost, so they
+	// move to the wrapper when `actions` adds one.
+	const hasActions = Boolean(actions);
+	const hasLabel = Boolean(label || labelInfo);
+
+	const checkbox = (
 		<Checkbox.Root
-			className={classNames(styles.root, variant === 'warning' && styles.warning, className)}
+			className={classNames(
+				styles.root,
+				hasLabel && styles.withLabel,
+				variant === 'warning' && styles.warning,
+				!hasActions && className,
+			)}
+			style={hasActions ? undefined : style}
 			onCheckedChange={(details) => onCheckedChange?.(details.checked)}
 			{...props}
 			value={value === undefined ? undefined : String(value)}
+			data-size={size}
 		>
 			<Checkbox.Control className={styles.control}>
-				<Checkbox.Indicator className={styles.indicator}>
-					<DsIcon icon="check_small" size="tiny" variant="rounded" />
-				</Checkbox.Indicator>
-				<Checkbox.Indicator className={styles.indicator} indeterminate>
-					<DsIcon icon="check_indeterminate_small" size="tiny" variant="rounded" />
-				</Checkbox.Indicator>
+				<span className={styles.box}>
+					<Checkbox.Indicator className={styles.indicator}>
+						<DsIcon icon="check_small" size="tiny" variant="rounded" />
+					</Checkbox.Indicator>
+					<Checkbox.Indicator className={styles.indicator} indeterminate>
+						<DsIcon icon="check_indeterminate_small" size="tiny" variant="rounded" />
+					</Checkbox.Indicator>
+				</span>
 			</Checkbox.Control>
 			<Checkbox.HiddenInput className={styles.hiddenInput} />
-			{(label || labelInfo) && (
+			{hasLabel && (
 				<div className={styles.labelColumn}>
 					{label && <Checkbox.Label className={styles.label}>{label}</Checkbox.Label>}
 					{labelInfo && <div className={styles.labelInfo}>{labelInfo}</div>}
 				</div>
 			)}
 		</Checkbox.Root>
+	);
+
+	if (!hasActions) {
+		return checkbox;
+	}
+
+	return (
+		<div
+			className={classNames(styles.wrapper, className)}
+			style={style}
+			data-size={size}
+			data-variant={variant}
+			data-disabled={props.disabled ? '' : undefined}
+		>
+			{checkbox}
+			<div className={styles.actions} data-size={size}>
+				{actions}
+			</div>
+		</div>
 	);
 };
 

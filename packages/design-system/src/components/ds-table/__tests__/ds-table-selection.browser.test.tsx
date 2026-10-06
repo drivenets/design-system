@@ -229,15 +229,17 @@ describe('DsTable Selection', () => {
 		expect(onSelectionChange).toHaveBeenLastCalledWith({ '1': true });
 		await expect.element(page.getByRole('row').nth(1)).toHaveAttribute('data-state', 'selected');
 
-		const dragHandle = document.querySelector('tbody tr:nth-child(1) > td:nth-child(1)') as HTMLElement;
-		await page.elementLocator(dragHandle).click();
-		expect(onRowClick).not.toHaveBeenCalled();
-
 		const selectAllRoot = document.querySelector(`th ${CHECKBOX_ROOT_LABEL}`) as HTMLLabelElement;
 		await page.elementLocator(selectAllRoot).click();
 		for (const checkbox of page.getByRole('checkbox').all().slice(1)) {
 			await expect.element(checkbox).toBeChecked();
 		}
+
+		// Keep the drag-handle click last: dnd-kit swallows document clicks for
+		// 50ms after a drag ends, which would drop any click that follows it.
+		const dragHandle = document.querySelector('tbody tr:nth-child(1) > td:nth-child(1)') as HTMLElement;
+		await page.elementLocator(dragHandle).click();
+		expect(onRowClick).not.toHaveBeenCalled();
 
 		expect(onOrderChange).not.toHaveBeenCalled();
 	});

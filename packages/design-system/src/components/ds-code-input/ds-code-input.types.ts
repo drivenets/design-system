@@ -45,6 +45,15 @@ export interface DsCodeInputProps {
 	 */
 	readOnly?: boolean;
 	/**
+	 * Shows the error border and sets `aria-invalid`. Point `aria-describedby` at the message.
+	 * @default false
+	 */
+	invalid?: boolean;
+	/**
+	 * Id of an element that describes the value, such as an error message
+	 */
+	'aria-describedby'?: string;
+	/**
 	 * Whether the overlay is open. Pair with `onExpandChange`.
 	 */
 	expanded?: boolean;

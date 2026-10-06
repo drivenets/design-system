@@ -41,6 +41,7 @@ export * from './components/ds-modal';
 export * from './components/ds-number-input';
 export * from './components/ds-panel';
 export * from './components/ds-password-input';
+export * from './components/ds-pin-toggle';
 export * from './components/ds-popover';
 export * from './components/ds-progress-arc';
 export * from './components/ds-progress-donut';

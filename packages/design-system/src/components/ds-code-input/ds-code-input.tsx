@@ -64,6 +64,8 @@ const DsCodeInput = ({
 	placeholder,
 	disabled = false,
 	readOnly = false,
+	invalid = false,
+	'aria-describedby': ariaDescribedBy,
 	expanded,
 	defaultExpanded = false,
 	onExpandChange,
@@ -236,7 +238,10 @@ const DsCodeInput = ({
 					autoComplete="off"
 					aria-multiline="true"
 					aria-label={isExpanded && !id ? strings.codeLabel : undefined}
-					aria-describedby={description ? descriptionId : undefined}
+					aria-invalid={invalid || undefined}
+					aria-describedby={
+						[description && descriptionId, ariaDescribedBy].filter(Boolean).join(' ') || undefined
+					}
 					onChange={handleChange}
 					onSelect={viewport.onSelect}
 					onKeyUp={viewport.onKeyUp}
@@ -311,6 +316,7 @@ const DsCodeInput = ({
 						size={size}
 						placeholder={placeholder}
 						disabled={disabled}
+						invalid={invalid}
 						showEcho={isExpanded}
 						echoText={viewport.echoText}
 						fadeStart={viewport.fadeStart}
@@ -373,7 +379,11 @@ const DsCodeInput = ({
 				</div>
 			</DsPopover.Anchor>
 
-			<DsPopover.Panel id={panelId} className={styles.panel} aria-label={strings.codeLabel}>
+			<DsPopover.Panel
+				id={panelId}
+				className={classNames(styles.panel, invalid && styles.invalid)}
+				aria-label={strings.codeLabel}
+			>
 				<DsCodeInputPanel
 					value={currentValue}
 					isOpen={isExpanded}
