@@ -440,7 +440,7 @@ describe('DsFiltersBar.Conditions add filter', () => {
 });
 
 describe('DsFiltersBar.Conditions filters dialog', () => {
-	it('opens a dialog with one tab per enum field, in fields order', async () => {
+	it('opens a dialog with one tab per field, in fields order', async () => {
 		await page.render(<ConditionsBar defaultConditions={[SEARCH_CONDITION, PARENTS_CONDITION]} />);
 
 		await addFilterButton().click();
@@ -449,8 +449,13 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 
 		const tabs = filtersDialog().getByRole('tab').elements();
 
-		expect(tabs.map((element) => element.textContent)).toEqual(['Status', 'Workflow', 'Trigger']);
-		await expect.element(fieldTab('Parents')).not.toBeInTheDocument();
+		// Each tab's first node is its label; a count follows on a tab with a value.
+		expect(tabs.map((element) => element.firstChild?.textContent)).toEqual([
+			'Status',
+			'Workflow',
+			'Parents',
+			'Trigger',
+		]);
 	});
 
 	it('titles the dialog and its save button by the locale', async () => {

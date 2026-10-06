@@ -238,6 +238,7 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once
 - A **Compatible query** becomes **Filter conditions** (nothing locks); any other valid query becomes the **Advanced query** and locks the filters and builder **Filter views**; invalid text never reaches the **Filter document**
 - Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
+- While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
 - A **Filter condition** names a field from the **Field schema**, or is free search text
 - Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
 - A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
