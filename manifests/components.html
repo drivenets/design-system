@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">603 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/603 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">605 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/605 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.4s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -19644,7 +19644,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -19689,7 +19690,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -20216,7 +20218,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -20261,7 +20264,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -20789,7 +20793,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -20834,7 +20839,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -21312,7 +21318,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -21357,7 +21364,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -21847,7 +21855,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -21892,7 +21901,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -22393,7 +22403,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -22438,7 +22449,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -23126,7 +23138,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -23171,7 +23184,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -23729,7 +23743,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -23774,7 +23789,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -24213,7 +24229,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -24258,7 +24275,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -24566,7 +24584,7 @@ min/max is ignored — each leaf clamps independently.</div>
       <div class="badges">
         <label for="c-81-components-table-row-actions-props" class="badge ok as-toggle">46 prop types</label>
         
-        <label for="c-81-components-table-row-actions-stories" class="badge ok as-toggle">8 stories · 1 incomplete</label>
+        <label for="c-81-components-table-row-actions-stories" class="badge ok as-toggle">10 stories · 1 incomplete</label>
         
         
       </div>
@@ -24860,7 +24878,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -24905,7 +24924,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -25082,6 +25102,112 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
         },
     ]} /&gt;;</code></pre>
               <div class="snippet-warning">Incomplete snippet: `editClickHandler`, `openInNewWindowClickHandler` could not be resolved statically.</div>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Resizable Columns With Row Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Row actions get their own trailing column sized to the declared actions, so they are never clipped. Drag the last column to its minimum: the actions keep their room.</div>
+              <pre><code>const ResizableColumnsWithRowActions = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;id&#39;, header: &#39;Person ID&#39;, size: 100 },
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, size: 140 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, size: 140 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39; },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39; },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, size: 140 },
+        { accessorKey: &#39;progress&#39;, header: &#39;Profile Progress&#39;, size: 60 },
+    ]}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    resizableColumns
+    primaryRowActions={[
+        {
+            icon: &#39;edit&#39;,
+            label: &#39;Edit&#39;,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;open_in_new&#39;,
+            label: &#39;Open in New Window&#39;,
+            onClick: fn(),
+        },
+    ]}
+    secondaryRowActions={[
+        {
+            icon: &#39;delete_outline&#39;,
+            label: &#39;Delete&#39;,
+            tooltip: &#39;Delete this row&#39;,
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;info&#39;,
+            label: &#39;Details&#39;,
+            tooltip: &#39;Show details&#39;,
+            onClick: fn(),
+        },
+    ]} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Non Resizable Columns With Row Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Columns barely fit the container; the table scrolls horizontally instead of squeezing the row actions column.</div>
+              <pre><code>const NonResizableColumnsWithRowActions = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;id&#39;, header: &#39;Person ID&#39;, size: 100 },
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, size: 140 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, size: 140 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39; },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39; },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, size: 140 },
+        { accessorKey: &#39;progress&#39;, header: &#39;Profile Progress&#39;, size: 60 },
+    ]}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    resizableColumns={false}
+    primaryRowActions={[
+        {
+            icon: &#39;edit&#39;,
+            label: &#39;Edit&#39;,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;open_in_new&#39;,
+            label: &#39;Open in New Window&#39;,
+            onClick: fn(),
+        },
+    ]}
+    secondaryRowActions={[
+        {
+            icon: &#39;delete_outline&#39;,
+            label: &#39;Delete&#39;,
+            tooltip: &#39;Delete this row&#39;,
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;info&#39;,
+            label: &#39;Details&#39;,
+            tooltip: &#39;Show details&#39;,
+            onClick: fn(),
+        },
+    ]} /&gt;;</code></pre>
+              
             </div>
             <div class="note ok">
               <div class="row">
@@ -25634,7 +25760,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -25679,7 +25806,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -26218,7 +26346,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -26263,7 +26392,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 
@@ -26819,7 +26949,8 @@ onSortingChange?: (sorting: SortingState) =&gt; void
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
 
 /**
- * Primary actions to be shown on each row (on hover)
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
  */
 primaryRowActions?: RowAction&lt;TData&gt;[]
 
@@ -26864,7 +26995,8 @@ resizableColumns?: boolean
 rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
 
 /**
- * Secondary actions to be shown in a dropdown on each row (on hover)
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
  */
 secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
 

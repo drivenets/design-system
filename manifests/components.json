@@ -13735,7 +13735,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -14012,7 +14012,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -14983,7 +14983,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -15260,7 +15260,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -16217,7 +16217,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -16494,7 +16494,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -17449,7 +17449,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -17726,7 +17726,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -18696,7 +18696,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -18973,7 +18973,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -19930,7 +19930,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -20207,7 +20207,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -21169,7 +21169,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -21446,7 +21446,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -22408,7 +22408,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -22685,7 +22685,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -23642,7 +23642,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -23919,7 +23919,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -24894,7 +24894,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -25171,7 +25171,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -25462,6 +25462,18 @@
           "name": "With Row Actions",
           "snippet": "const WithRowActions = () => <DsTable\n    columns={columns}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    primaryRowActions={[\n        {\n            icon: 'edit',\n            label: 'Edit',\n            onClick: editClickHandler,\n        },\n        {\n            icon: 'open_in_new',\n            label: 'Open in New Window',\n            disabled: (data) => data.firstName === 'Tanner',\n            onClick: openInNewWindowClickHandler,\n        },\n    ]}\n    secondaryRowActions={[\n        {\n            icon: 'delete_outline',\n            label: 'Delete',\n            tooltip: 'Delete this row',\n            disabled: (data) => data.status === 'single',\n            className: styles.destructiveAction,\n            onClick: fn(),\n        },\n        {\n            icon: 'info',\n            label: 'Details',\n            tooltip: 'Show details',\n            onClick: fn(),\n        },\n        {\n            icon: 'call',\n            label: (row) => `Call ${row.firstName}`,\n            onClick: fn(),\n        },\n    ]} />;",
           "warning": "Incomplete snippet: `editClickHandler`, `openInNewWindowClickHandler` could not be resolved statically."
+        },
+        {
+          "id": "components-table-row-actions--resizable-columns-with-row-actions",
+          "name": "Resizable Columns With Row Actions",
+          "snippet": "const ResizableColumnsWithRowActions = () => <DsTable\n    columns={[\n        { accessorKey: 'id', header: 'Person ID', size: 100 },\n        { accessorKey: 'firstName', header: 'First Name', size: 140 },\n        { accessorKey: 'lastName', header: 'Last Name', size: 140 },\n        { accessorKey: 'age', header: 'Age' },\n        { accessorKey: 'visits', header: 'Visits' },\n        { accessorKey: 'status', header: 'Status', size: 140 },\n        { accessorKey: 'progress', header: 'Profile Progress', size: 60 },\n    ]}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    resizableColumns\n    primaryRowActions={[\n        {\n            icon: 'edit',\n            label: 'Edit',\n            onClick: fn(),\n        },\n        {\n            icon: 'open_in_new',\n            label: 'Open in New Window',\n            onClick: fn(),\n        },\n    ]}\n    secondaryRowActions={[\n        {\n            icon: 'delete_outline',\n            label: 'Delete',\n            tooltip: 'Delete this row',\n            className: styles.destructiveAction,\n            onClick: fn(),\n        },\n        {\n            icon: 'info',\n            label: 'Details',\n            tooltip: 'Show details',\n            onClick: fn(),\n        },\n    ]} />;",
+          "description": "Row actions get their own trailing column sized to the declared actions, so they are never clipped. Drag the last column to its minimum: the actions keep their room."
+        },
+        {
+          "id": "components-table-row-actions--non-resizable-columns-with-row-actions",
+          "name": "Non Resizable Columns With Row Actions",
+          "snippet": "const NonResizableColumnsWithRowActions = () => <DsTable\n    columns={[\n        { accessorKey: 'id', header: 'Person ID', size: 100 },\n        { accessorKey: 'firstName', header: 'First Name', size: 140 },\n        { accessorKey: 'lastName', header: 'Last Name', size: 140 },\n        { accessorKey: 'age', header: 'Age' },\n        { accessorKey: 'visits', header: 'Visits' },\n        { accessorKey: 'status', header: 'Status', size: 140 },\n        { accessorKey: 'progress', header: 'Profile Progress', size: 60 },\n    ]}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    resizableColumns={false}\n    primaryRowActions={[\n        {\n            icon: 'edit',\n            label: 'Edit',\n            onClick: fn(),\n        },\n        {\n            icon: 'open_in_new',\n            label: 'Open in New Window',\n            onClick: fn(),\n        },\n    ]}\n    secondaryRowActions={[\n        {\n            icon: 'delete_outline',\n            label: 'Delete',\n            tooltip: 'Delete this row',\n            className: styles.destructiveAction,\n            onClick: fn(),\n        },\n        {\n            icon: 'info',\n            label: 'Details',\n            tooltip: 'Show details',\n            onClick: fn(),\n        },\n    ]} />;",
+          "description": "Columns barely fit the container; the table scrolls horizontally instead of squeezing the row actions column."
         },
         {
           "id": "components-table-row-actions--with-conditionally-hidden-actions",
@@ -26158,7 +26170,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -26435,7 +26447,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -27392,7 +27404,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -27669,7 +27681,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -28637,7 +28649,7 @@
               ],
               "raw": "RowAction<TData>[]"
             },
-            "description": "Primary actions to be shown on each row (on hover)"
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
           },
           "secondaryRowActions": {
             "required": false,
@@ -28914,7 +28926,7 @@
               ],
               "raw": "SecondaryRowAction<TData>[]"
             },
-            "description": "Secondary actions to be shown in a dropdown on each row (on hover)"
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
           },
           "reorderable": {
             "required": false,
@@ -32120,6 +32132,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 3470
+    "durationMs": 5393
   }
 }
