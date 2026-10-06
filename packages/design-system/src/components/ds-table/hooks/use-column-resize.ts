@@ -27,7 +27,7 @@ import {
 	withUtilityColumnSizing,
 	type ColumnSizeBoundsSource,
 } from '../utils/column-size';
-import { RESIZE_DIVIDER_WIDTH, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
+import { BUILTIN_COLUMN_IDS, RESIZE_DIVIDER_WIDTH, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
 import type { DsTableResizePhase } from '../context/ds-table-context';
 import { useScrollbarSpacer, type ScrollbarSpacerWidth } from './use-scrollbar-spacer';
 
@@ -172,6 +172,10 @@ export const useColumnResize = ({
 	const spacerWidthRef = useRef(scrollbarSpacerWidth);
 	spacerWidthRef.current = scrollbarSpacerWidth;
 	const prevSpacerWidthRef = useRef<ScrollbarSpacerWidth | null>(null);
+	const utilityTrackWidth = Object.values(utilityColumnSizing ?? {}).reduce((sum, size) => sum + size, 0);
+	const utilityTrackWidthRef = useRef(utilityTrackWidth);
+	utilityTrackWidthRef.current = utilityTrackWidth;
+	const prevUtilityTrackWidthRef = useRef<number | null>(null);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any -- bind is generic; the ref only calls sizing APIs
 	const tableRef = useRef<Table<any> | null>(null);
 
@@ -270,6 +274,56 @@ export const useColumnResize = ({
 		[handleColumnSizingChange],
 	);
 
+	// After seed, utility leaves can change width (row actions declared or removed,
+	// `selectable` toggled). Their sizes are pinned, so no consumer leaf is missing
+	// and the seed below does not refit. Shift the consumer leaves by the delta so
+	// the track still fills the container — internally only, never via
+	// onColumnSizingChange. Declared before the seed effect so it reads the
+	// pre-change utility width that the seed then overwrites.
+	useLayoutEffect(() => {
+		if (!enabled) {
+			return;
+		}
+
+		const prevUtilityTrackWidth = prevUtilityTrackWidthRef.current;
+		if (prevUtilityTrackWidth === null || prevUtilityTrackWidth === utilityTrackWidth) {
+			return;
+		}
+
+		const container = containerRef.current;
+		const table = tableRef.current;
+		if (!container || !table) {
+			return;
+		}
+
+		prevUtilityTrackWidthRef.current = utilityTrackWidth;
+
+		const consumerLeafIds = table
+			.getVisibleLeafColumns()
+			.map((column) => column.id)
+			.filter((id) => !BUILTIN_COLUMN_IDS.has(id));
+		let consumerTotal = 0;
+
+		for (const id of consumerLeafIds) {
+			consumerTotal += columnSizingRef.current[id] ?? 0;
+		}
+
+		const track = container.clientWidth - spacerWidthRef.current;
+
+		if (Math.abs(consumerTotal + prevUtilityTrackWidth - track) > TRACK_MATCH_PX) {
+			return;
+		}
+
+		handleColumnSizingChange(
+			shiftColumnTrack(
+				columnSizingRef.current,
+				consumerLeafIds,
+				prevUtilityTrackWidth - utilityTrackWidth,
+				leafSizeBoundsRef.current,
+			),
+		);
+	}, [enabled, utilityTrackWidth, handleColumnSizingChange]);
+
 	useLayoutEffect(() => {
 		prevSpacerWidthRef.current = null;
 
@@ -332,6 +386,7 @@ export const useColumnResize = ({
 			}
 
 			prevSpacerWidthRef.current = spacerWidthRef.current;
+			prevUtilityTrackWidthRef.current = utilityTrackWidthRef.current;
 
 			return true;
 		};

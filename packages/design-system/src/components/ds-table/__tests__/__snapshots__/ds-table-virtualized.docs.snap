@@ -59,7 +59,7 @@ const EmptyState = () => <DsTable
 ## Virtualized Selectable Table
 
 ### Show code
-<div className="_virtualizedTableWrapper_licxz_40">
+<div className="_virtualizedTableWrapper_16n6w_44">
   <DsTable
     bordered
     columns={[
@@ -110,7 +110,7 @@ const EmptyState = () => <DsTable
     stickyHeader
     virtualized
   />
-  <div className="_loadingOverlay_licxz_45">
+  <div className="_loadingOverlay_16n6w_49">
     <DsStack
       alignItems="center"
       direction="column"
@@ -203,7 +203,7 @@ const VirtualizedSelectable = () => {
 ## Virtualized Expandable Table
 
 ### Show code
-<div className="_virtualizedTableWrapper_licxz_40">
+<div className="_virtualizedTableWrapper_16n6w_44">
   <DsTable
     bordered
     columns={[
@@ -254,7 +254,7 @@ const VirtualizedSelectable = () => {
     stickyHeader
     virtualized
   />
-  <div className="_loadingOverlay_licxz_45">
+  <div className="_loadingOverlay_16n6w_49">
     <DsStack
       alignItems="center"
       direction="column"
@@ -376,7 +376,7 @@ const VirtualizedExpandable = () => {
 ## Virtualized Infinite Scroll
 
 ### Show code
-<div className="_virtualizedTableWrapper_licxz_40">
+<div className="_virtualizedTableWrapper_16n6w_44">
   <DsTable
     bordered
     columns={[

@@ -2,9 +2,9 @@ import type { MouseEvent } from 'react';
 import { DsDropdownMenu } from '../../../../ds-dropdown-menu';
 import { DsIcon } from '../../../../ds-icon';
 import { DsTooltip } from '../../../../ds-tooltip';
-import styles from '../ds-table-cell.module.scss';
-import type { SecondaryRowAction } from '../ds-table-cell.types';
-import { isBranchAction, resolveLabel, resolveTooltip } from '../ds-table-cell.utils';
+import styles from '../ds-table-row-actions-cell.module.scss';
+import type { SecondaryRowAction } from '../ds-table-row-actions-cell.types';
+import { isBranchAction, resolveLabel, resolveTooltip } from '../ds-table-row-actions-cell.utils';
 
 const SUBMENU_PLACEMENT = 'right-start' as const;
 
