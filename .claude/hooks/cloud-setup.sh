@@ -50,8 +50,9 @@ export PATH="$NODE_PREFIX/bin:$PATH"
 
 # CI=true like GitHub Actions: no display, so Vitest browser tests and Storybook must run headless
 if [ -n "${CLAUDE_ENV_FILE:-}" ]; then
-	echo "export PATH=\"$NODE_PREFIX/bin:\$PATH\"" >>"$CLAUDE_ENV_FILE"
-	echo "export CI=true" >>"$CLAUDE_ENV_FILE"
+	for line in "export PATH=\"$NODE_PREFIX/bin:\$PATH\"" "export CI=true"; do
+		grep -qxF "$line" "$CLAUDE_ENV_FILE" 2>/dev/null || echo "$line" >>"$CLAUDE_ENV_FILE"
+	done
 fi
 
 # 2. pnpm pinned to package.json#packageManager, installed next to Node 24. Checked from / because inside the

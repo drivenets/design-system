@@ -58,7 +58,7 @@ Trusted already covers npm, nodejs.org and apt. The image ships an older Chromiu
 The hook doesn't start Storybook — most sessions and Routines don't need it. When a task does, Claude runs `pnpm start` in the background and screenshots stories with the installed Chromium:
 
 ```bash
-pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-timeout=1000 \
+pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-selector "#storybook-root > *" \
   "http://localhost:6006/iframe.html?id=<story-id>&viewMode=story" /tmp/story.png
 ```
 
