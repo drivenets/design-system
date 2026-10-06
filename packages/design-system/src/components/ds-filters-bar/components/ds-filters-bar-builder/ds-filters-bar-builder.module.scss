@@ -1,0 +1,94 @@
+$dialog-width: 400px;
+$dialog-max-width: 90vw;
+
+// Figma's caption-to-chips gap has no spacing token.
+.dialog {
+	--builder-caption-gap: 10px;
+}
+
+// A fixed width instead of DsModal's viewport-relative `columns`. Doubled to match `.modal.cols-N`,
+// which it then beats by loading after DsModal's styles.
+.dialog.dialog {
+	inline-size: min(#{$dialog-width}, #{$dialog-max-width});
+}
+
+.dialog {
+	.header,
+	.footer {
+		padding: var(--sm) var(--lg);
+	}
+
+	.body {
+		display: flex;
+		flex: none;
+		flex-direction: column;
+		padding: 0;
+	}
+}
+
+.pathRow {
+	padding: var(--standard) var(--standard) 0;
+}
+
+.path {
+	display: inline-flex;
+	align-items: center;
+	min-width: 0;
+	gap: var(--4xs);
+}
+
+.segment {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--4xs);
+}
+
+.separator {
+	flex-shrink: 0;
+	color: var(--icon-tertiary);
+}
+
+.pathValue {
+	font-weight: var(--font-weight-semi-bold);
+}
+
+.search {
+	padding: var(--standard);
+
+	&:not(:last-child) {
+		border-bottom: 1px solid var(--border);
+	}
+}
+
+.input {
+	width: 100%;
+}
+
+.options {
+	display: flex;
+	flex-direction: column;
+	gap: var(--builder-caption-gap);
+	padding: var(--standard);
+}
+
+.caption {
+	color: var(--font-main);
+}
+
+.choices {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--xs);
+}
+
+.visuallyHidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	border: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	clip-path: inset(50%);
+}
