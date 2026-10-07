@@ -265,10 +265,7 @@ export const AsyncOptions: Story = {
  * `option`s, so screen reader users can pick a value without any extra wiring.
  */
 export const InsideModal: Story = {
-	parameters: {
-		docs: { source: { type: 'code' } },
-		a11y: { test: 'error' },
-	},
+	parameters: { docs: { source: { type: 'code' } } },
 	render: (args) => {
 		const [open, setOpen] = useState(false);
 

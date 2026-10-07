@@ -427,9 +427,6 @@ const AsyncOptions = () => {
       source: {
         type: 'code'
       }
-    },
-    a11y: {
-      test: 'error'
     }
   },
   render: args => {
