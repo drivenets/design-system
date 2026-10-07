@@ -18,6 +18,7 @@ import editableStyles from './ds-table-editable.stories.module.scss';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Editable',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

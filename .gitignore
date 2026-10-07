@@ -11,10 +11,12 @@ dist
 actionlint
 
 coverage/
-.vitest/
 **/.env*
 
 # AI
 **/mcp.json
 .playwright-mcp
 .claude/launch.json
+
+# Vitest visual test diffs
+**/.vitest/attachments/

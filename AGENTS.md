@@ -39,22 +39,36 @@ pnpm --filter @drivenets/design-system figma:lint
 
 Runs `figma connect parse --exit-on-unreadable-files` (no Figma token required). Enforced in CI by the `figma-code-connect-lint` job.
 
+## Visual tests (screenshots)
+
+Stories tagged `visual` (DsTable today) get a screenshot compared to committed baselines in `stories/__screenshots__/`. The browser runs in a pinned Playwright Docker container, so start it first:
+
+```bash
+pnpm --filter @drivenets/design-system test:visual:server
+pnpm --filter @drivenets/design-system test:visual src/components/ds-table/ --run
+pnpm --filter @drivenets/design-system test:visual src/components/ds-table/ --run -u
+```
+
+Use `-u` only for intended visual changes, and review every changed PNG. Enforced in CI by the `visual-tests` job; on failure it uploads `visual-test-report.html` (baseline / actual / diff per story) as a run artifact. See [`storybook`](.agents/skills/storybook/SKILL.md#visual-tests).
+
 ## When to Run What
 
-| Changed                     | Run                                                                                                                                     |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `*.test.ts` file            | `pnpm --filter <pkg> test <path> --run`                                                                                                 |
-| Docs snippet coverage       | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
-| Source file with tests      | Lint the file + run related tests                                                                                                       |
-| Source file, no tests       | Lint the file + typecheck the package                                                                                                   |
-| SCSS file in design-system  | Lint the file                                                                                                                           |
-| `*.figma.ts` (Code Connect) | `pnpm --filter @drivenets/design-system figma:lint`                                                                                     |
+| Changed                                              | Run                                                                                                                                     |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `*.test.ts` file                                     | `pnpm --filter <pkg> test <path> --run`                                                                                                 |
+| Docs snippet coverage                                | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) |
+| Source file with tests                               | Lint the file + run related tests                                                                                                       |
+| Source file, no tests                                | Lint the file + typecheck the package                                                                                                   |
+| SCSS file in design-system                           | Lint the file                                                                                                                           |
+| `*.figma.ts` (Code Connect)                          | `pnpm --filter @drivenets/design-system figma:lint`                                                                                     |
+| Component with `visual` stories (TSX, SCSS, stories) | `pnpm --filter @drivenets/design-system test:visual <component dir> --run` (server running)                                             |
 
 ## Notes
 
 - `--run` flag prevents vitest watch mode
 - design-system typecheck auto-generates SCSS type defs
 - Prefer file-level lint, package-level typecheck, file-level test
+- Visual tests use the `storybook-visual` vitest project (excluded from default `pnpm test`; needs Docker)
 - Docs snippet tests use the `storybook-docs` vitest project (excluded from default `pnpm test`, like `requires-build`); one global runner covers all opted-in components — see [`docs-tests`](.agents/skills/docs-tests/SKILL.md) for workflow.
 
 ---
