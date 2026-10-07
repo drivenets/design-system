@@ -1,4 +1,5 @@
 @use '../../../../styles/typography';
+@use '../../../../styles/mixin' as mixins;
 
 $dialog-width: 560px;
 $dialog-max-width: 90vw;
@@ -150,13 +151,5 @@ $transition-duration: 0.2s;
 }
 
 .visuallyHidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	border: 0;
-	overflow: hidden;
-	white-space: nowrap;
-	clip-path: inset(50%);
+	@include mixins.visually-hidden;
 }

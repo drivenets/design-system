@@ -251,6 +251,14 @@ export interface DsFiltersBarSummaryLocale {
 	 */
 	emptyLabel?: string;
 	emptyValue?: string;
+	/**
+	 * Label shown before the text of a search condition, as in `Search: AAA`
+	 */
+	search?: string;
+	/**
+	 * Shown in place of the conditions while an Advanced query is the source
+	 */
+	advancedQuery?: string;
 }
 
 export const defaultDsFiltersBarSummaryLocale: Required<DsFiltersBarSummaryLocale> = Object.freeze({
@@ -258,10 +266,23 @@ export const defaultDsFiltersBarSummaryLocale: Required<DsFiltersBarSummaryLocal
 	activeSavedFilter: 'Filter',
 	emptyLabel: 'View',
 	emptyValue: 'All',
+	search: 'Search',
+	advancedQuery: 'Advanced query',
 });
 
 /**
- * Collapsed row. Lists the conditions from the filter document; renders nothing while expanded.
+ * Button that expands and collapses the bar. Place it once, before `Summary` and `Toolbar`; it
+ * renders in both states, so focus stays on it across the toggle.
+ */
+export interface DsFiltersBarDisclosureProps {
+	ref?: Ref<HTMLButtonElement>;
+	className?: string;
+	style?: CSSProperties;
+}
+
+/**
+ * Collapsed row. Lists the conditions from the filter document, or a fixed label while an Advanced
+ * query is the source; renders nothing while expanded.
  */
 export interface DsFiltersBarSummaryProps {
 	/**
@@ -273,6 +294,7 @@ export interface DsFiltersBarSummaryProps {
 	 */
 	activeSavedFilterName?: string;
 	locale?: DsFiltersBarSummaryLocale;
+	ref?: Ref<HTMLDivElement>;
 	className?: string;
 	style?: CSSProperties;
 }

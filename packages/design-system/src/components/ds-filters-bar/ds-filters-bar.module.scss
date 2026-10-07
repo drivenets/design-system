@@ -1,4 +1,14 @@
+@use '../../styles/typography';
+@use '../../styles/mixin' as mixins;
+
 $search-width: 240px;
+$swap-duration: 0.2s;
+$swap-offset: -4px;
+// The Query view's default-size code input, the tallest control on a toolbar line, and the small
+// Disclosure button
+$line-height: 36px;
+$disclosure-height: 28px;
+$disclosure-width: 44px;
 $operator-border-width: 1px;
 $operator-radius: 4px;
 $operator-focus-width: 2px;
@@ -6,19 +16,138 @@ $operator-focus-offset: 1px;
 $transition-duration: 0.2s;
 
 .root {
-	display: flex;
-	flex-direction: column;
-	gap: var(--standard);
+	display: grid;
+	grid-template-columns: auto minmax(0, 1fr);
+	row-gap: var(--standard);
 	width: 100%;
+	min-width: 0;
+
+	> * {
+		grid-column: 1 / -1;
+	}
+
+	// Centered on the toolbar's first line, not the whole cell: a wrapped toolbar has more lines.
+	> .disclosure {
+		position: relative;
+		z-index: 1;
+		grid-row: 1;
+		grid-column: 1;
+		align-self: start;
+		width: $disclosure-width;
+		margin-block: calc(($line-height - $disclosure-height) / 2);
+
+		// Figma: 4px side padding with the 1px border drawn inside it, not the small button's
+		// text padding. `[data-size]` outranks the button's own size rule.
+		&[data-size] {
+			padding-inline: calc(var(--3xs) - 1px);
+		}
+	}
+
+	> .summary {
+		grid-column: 2;
+	}
+
+	// Figma spaces the summary further from the button than the toolbar. A bar without a
+	// Disclosure keeps its parts flush left.
+	&:has(> .disclosure) {
+		> .summary {
+			margin-inline-start: var(--sm);
+		}
+
+		// The toolbar shares the Disclosure's row across both columns, so lines after the first
+		// wrap under the button; its first line leaves the button's width free.
+		> .toolbar {
+			grid-row: 1;
+
+			&::before {
+				width: $disclosure-width;
+				margin-inline-end: 0;
+			}
+		}
+	}
+}
+
+// Neutral icons instead of the secondary button's action color; the icons follow `currentColor`.
+.disclosure > * {
+	color: var(--icon-main);
+}
+
+.disclosureChevron {
+	transition: transform $swap-duration ease-in-out;
+
+	.disclosure[aria-expanded='true'] & {
+		transform: rotate(-90deg);
+	}
+}
+
+// Summary and Toolbar take turns in the same cell; the one that appears fades in.
+@keyframes swap-in {
+	from {
+		opacity: 0;
+		transform: translateX($swap-offset);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.summary {
+	@include typography.body-xs-reg;
+
+	animation: swap-in $swap-duration ease-in;
+	display: flex;
+	align-items: center;
+	align-self: center;
+	gap: var(--sm);
+	min-width: 0;
+	color: var(--font-main);
+	white-space: nowrap;
+}
+
+.summarySavedFilter,
+.summaryCount {
+	flex: none;
+}
+
+.summaryConditions {
+	flex: 0 1 auto;
 	min-width: 0;
 }
 
+.summaryLabel {
+	font-weight: var(--font-weight-bold);
+}
+
+.summaryOperator {
+	font-style: italic;
+}
+
+.summaryCount {
+	@include typography.body-xs-md;
+
+	color: var(--font-secondary);
+}
+
+.visuallyHidden {
+	@include mixins.visually-hidden;
+}
+
 .toolbar {
+	animation: swap-in $swap-duration ease-in;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	gap: var(--xs);
 	min-width: 0;
+
+	// Keeps the first line the same height in every view, so the Disclosure lines up
+	&::before {
+		content: '';
+		height: $line-height;
+		margin-inline-end: calc(-1 * var(--xs));
+	}
 }
 
 .conditions {
