@@ -1,5 +1,5 @@
 ---
-status: superseded in part by ADR-0006 (query parsing and serialization) and ADR-0010 (row matching and result counts)
+status: superseded in part by ADR-0006 (query parsing and serialization)
 ---
 
 # Filters bar owns the filter document, not the query language

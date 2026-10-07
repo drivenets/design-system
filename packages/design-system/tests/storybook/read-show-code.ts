@@ -1,4 +1,4 @@
-import type { ElementHandle, Frame, Locator, Page } from 'playwright';
+import type { Frame, Page } from 'playwright';
 import { getStorybookUrl } from './storybook-url';
 
 export interface ReadShowCodeSnippetOptions {
@@ -10,9 +10,6 @@ const NAVIGATION_TIMEOUT_MS = 60_000;
 const IFRAME_TIMEOUT_MS = 60_000;
 const SHOW_CODE_BUTTON_TIMEOUT_MS = 30_000;
 const SOURCE_PANEL_TIMEOUT_MS = 10_000;
-const STORY_RENDER_TIMEOUT_MS = 30_000;
-const STABLE_SOURCE_MS = 1_000;
-const STABLE_SOURCE_POLL_MS = 100;
 
 function isOnDocsPage(page: Page, docsStoryId: string): boolean {
 	try {
@@ -53,46 +50,6 @@ async function getDocsIframe(page: Page): Promise<Frame> {
 	return frame;
 }
 
-/**
- * A story sends its dynamic snippet once it renders, so wait for it: an inline story mounts
- * `#story--{id}-inner` (empty when it renders nothing), one with `docs.story.inline: false` renders
- * into its own iframe.
- */
-async function waitForStoryRender(section: Locator): Promise<void> {
-	const preview = section.locator('.sbdocs-preview');
-	const storyIframe = preview.locator('iframe').first();
-	const rendered =
-		(await storyIframe.count()) > 0
-			? storyIframe.contentFrame().locator('#storybook-root > *')
-			: preview.locator('[id^="story--"][id$="-inner"]');
-
-	await rendered.first().waitFor({ state: 'attached', timeout: STORY_RENDER_TIMEOUT_MS });
-}
-
-/**
- * Until the dynamic snippet arrives the panel shows the raw CSF story object, which also is the
- * final text of a `source: { type: 'code' }` story — so wait for that text to stop changing.
- */
-async function waitForStableText(frame: Frame, element: ElementHandle<Element>): Promise<void> {
-	await frame.waitForFunction(
-		({ target, stableMs }) => {
-			const text = target.textContent.trim();
-			const state = target as Element & { stableText?: string; stableSince?: number };
-
-			if (state.stableText !== text) {
-				state.stableText = text;
-				state.stableSince = Date.now();
-
-				return false;
-			}
-
-			return Date.now() - (state.stableSince ?? 0) >= stableMs;
-		},
-		{ target: element, stableMs: STABLE_SOURCE_MS },
-		{ timeout: SOURCE_PANEL_TIMEOUT_MS, polling: STABLE_SOURCE_POLL_MS },
-	);
-}
-
 export async function readShowCodeSnippet(
 	page: Page,
 	{ docsStoryId, storyName }: ReadShowCodeSnippetOptions,
@@ -114,7 +71,6 @@ export async function readShowCodeSnippet(
 		throw new Error(`Show code button not found for story "${storyName}" in ${docsStoryId}`);
 	}
 
-	await waitForStoryRender(section);
 	await showCodeButton.click();
 
 	// Story descriptions can contain fenced code blocks, which render their own `pre` inside the
@@ -132,10 +88,6 @@ export async function readShowCodeSnippet(
 		});
 	} catch {
 		throw new Error(`Show code panel is empty for story "${storyName}" in ${docsStoryId}`);
-	}
-
-	if ((await source.innerText()).trim().startsWith('{')) {
-		await waitForStableText(frame, sourceHandle);
 	}
 
 	return (await source.innerText()).trim();
