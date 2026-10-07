@@ -11,6 +11,7 @@ import { fullHeightDecorator } from './common/story-decorators';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Expansion',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

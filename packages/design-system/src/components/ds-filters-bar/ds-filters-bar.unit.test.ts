@@ -23,6 +23,7 @@ import {
 	removeConditionById,
 	replaceCondition,
 	toFiltersDialogValue,
+	toSummaryItems,
 } from './ds-filters-bar.utils';
 
 const EQUALS = { value: '=', label: 'equals', symbol: '=' } as const;
@@ -224,6 +225,106 @@ describe('describeCondition', () => {
 			operator: '=',
 			operatorSymbol: '=',
 			value: 'x',
+		});
+	});
+});
+
+describe('toSummaryItems', () => {
+	it('shows the empty view for an empty document', () => {
+		expect(toSummaryItems({ conditions: [], query: null, fields: FIELDS })).toEqual([{ kind: 'empty' }]);
+	});
+
+	it('lists field conditions in order, leaving out the operator only for `=`', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
+			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
+		];
+
+		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+			{ kind: 'condition', id: 'c1', label: 'Status', value: 'Active' },
+			{ kind: 'condition', id: 'c2', label: 'Status', operator: 'not equals', value: 'Deprecated' },
+		]);
+	});
+
+	it('joins the field path of a compound field with ›', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
+		];
+
+		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+			{ kind: 'condition', id: 'c1', label: 'Input › Name', operator: 'contains', value: 'WF456' },
+		]);
+	});
+
+	it('lists a search condition by its text, in document order', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
+			{ kind: 'search', id: 'c2', text: 'AAA' },
+		];
+
+		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+			{ kind: 'condition', id: 'c1', label: 'Status', value: 'Active' },
+			{ kind: 'search', id: 'c2', value: 'AAA' },
+		]);
+	});
+
+	it('shows no operator for a range, which always uses `=`', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'parents', operator: '=', value: { from: 2, to: 5 } },
+		];
+
+		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+			{ kind: 'condition', id: 'c1', label: 'Parents', value: '2 – 5' },
+		]);
+	});
+
+	it('falls back to raw ids for a field missing from the schema', () => {
+		const conditions: DsFilterCondition[] = [
+			{ kind: 'field', id: 'c1', field: 'removed', subfield: 'gone', operator: '!=', value: 'x' },
+		];
+
+		expect(toSummaryItems({ conditions, query: null, fields: FIELDS })).toEqual([
+			{ kind: 'condition', id: 'c1', label: 'removed › gone', operator: '!=', value: 'x' },
+		]);
+	});
+
+	it('shows only the advanced query label, without its text or the conditions, while a query is the source', () => {
+		const conditions: DsFilterCondition[] = [{ kind: 'search', id: 'c1', text: 'AAA' }];
+
+		expect(toSummaryItems({ conditions, query: 'status = "active" OR parents > 2', fields: FIELDS })).toEqual(
+			[{ kind: 'advancedQuery' }],
+		);
+	});
+
+	describe('with an active saved filter', () => {
+		it('shows only the name, without the empty view, when nothing follows', () => {
+			expect(
+				toSummaryItems({ conditions: [], query: null, fields: FIELDS, activeSavedFilterName: 'Ira123' }),
+			).toEqual([{ kind: 'savedFilter', name: 'Ira123' }]);
+		});
+
+		it('puts the name before the conditions', () => {
+			const conditions: DsFilterCondition[] = [
+				{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] },
+			];
+
+			expect(
+				toSummaryItems({ conditions, query: null, fields: FIELDS, activeSavedFilterName: 'Ira123' }),
+			).toEqual([
+				{ kind: 'savedFilter', name: 'Ira123' },
+				{ kind: 'condition', id: 'c1', label: 'Status', value: 'Active' },
+			]);
+		});
+
+		it('puts the name before the advanced query', () => {
+			expect(
+				toSummaryItems({
+					conditions: [],
+					query: 'status = "active" OR parents > 2',
+					fields: FIELDS,
+					activeSavedFilterName: 'Ira123',
+				}),
+			).toEqual([{ kind: 'savedFilter', name: 'Ira123' }, { kind: 'advancedQuery' }]);
 		});
 	});
 });

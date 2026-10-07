@@ -4,6 +4,7 @@ import {
 	Builder,
 	ClearAll,
 	Conditions,
+	Disclosure,
 	Pinned,
 	PinnedGroup,
 	PinnedToggle,
@@ -121,6 +122,7 @@ Root.displayName = 'DsFiltersBar.Root';
 
 export const DsFiltersBar = {
 	Root,
+	Disclosure,
 	Summary,
 	Toolbar,
 	SavedFilters,

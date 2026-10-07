@@ -36,6 +36,14 @@ _Avoid_: test, spec, play test
 Vitest browser-mode spec in `__tests__/*.browser.test.tsx` that asserts user-visible behavior (clicks, keyboard, callbacks).
 _Avoid_: unit test (for non-DOM logic), story test, play function
 
+**Visual test**:
+A pixel comparison of a **Story**'s rendered appearance against its **Baseline**.
+_Avoid_: snapshot test (text snapshots exist too), screenshot test, Chromatic test
+
+**Baseline**:
+The committed reference screenshot a **Visual test** compares against.
+_Avoid_: golden (reserved for docs snippet `.snap` files), reference image
+
 **Changeset**:
 A changesets entry describing a consumer-facing package change for release notes and version bumps.
 _Avoid_: changelog line, commit message
@@ -208,11 +216,16 @@ _Avoid_: individual filter (as a synonym for **Saved filter**), sub-filter
 The **Saved filter** currently applied. Distinct from merely having items in the list.
 _Avoid_: selected filter, current filter (when meaning the snapshot, not the working document)
 
+**Filter summary**:
+The one-line, read-only description of a **Filters bar**'s **Filter document** shown while the bar is collapsed, followed by the result count.
+_Avoid_: summed display, collapsed field (that is the **Code input** viewport), collapsed mode
+
 ## Relationships
 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
 - A **Component** may wrap a **Primitive** (Ark preferred; Radix only where already established)
 - **Stories** document UI; **Browser tests** assert interaction — never duplicate behavior checks via Storybook `play`
+- A **Visual test** consumes a **Story** without changing it into a test; one **Story** has exactly one **Baseline**
 - A **Successor component** supersedes a **Deprecated component**; both may ship until consumers migrate
 - **Tokens** flow from design into SCSS; **Components** consume tokens, not raw hex from Figma in new work
 - A **Component** shows its **Empty state** only when it has zero data items; a virtualized body gates **Empty state** on data count, never on the count of currently rendered (virtual) rows
@@ -238,6 +251,7 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 - A **Filter document** is driven by its **Filter conditions** or by an **Advanced query**, never both at once
 - A **Compatible query** becomes **Filter conditions** (nothing locks); any other valid query becomes the **Advanced query** and locks the filters and builder **Filter views**; invalid text never reaches the **Filter document**
 - Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
+- A **Filter summary** describes whichever source drives the **Filter document**: it lists the **Filter conditions**, or, while an **Advanced query** is the source, names it without repeating its text
 - While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
 - A **Filter condition** names a field from the **Field schema**, or is free search text
 - Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
