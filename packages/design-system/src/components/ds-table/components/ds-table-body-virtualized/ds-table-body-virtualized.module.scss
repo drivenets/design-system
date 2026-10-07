@@ -11,10 +11,10 @@
 
 	@include scrollbars.scrollbar-on-hover;
 
-	&:has(.emptyState) {
+	&:has(> .emptyStateRow > .emptyState) {
 		position: sticky;
 		inset-inline-start: 0;
-		max-width: var(--ds-table-viewport-width, 100%);
+		max-width: var(--ds-table-visible-width, 100%);
 	}
 }
 

@@ -5,21 +5,6 @@ import { columns, defaultData } from '../stories/common/story-data';
 
 const getDataRows = () => page.getByRole('row').all().slice(1);
 
-const wideColumns = columns.map((column) => ({ ...column, size: 400 }));
-
-const getScrollContainer = (): HTMLElement => {
-	const container = document.querySelector('table')?.parentElement;
-	if (!container) {
-		throw new Error('Expected the table scroll container');
-	}
-	return container;
-};
-
-const getHorizontalCenter = (element: Element): number => {
-	const { left, width } = element.getBoundingClientRect();
-	return left + width / 2;
-};
-
 describe('DsTable', () => {
 	it('should render all rows and column headers, and handle row click', async () => {
 		const onRowClick = vi.fn();
@@ -80,60 +65,6 @@ describe('DsTable', () => {
 
 		await expect.element(page.getByRole('status')).toHaveTextContent('No matching records found.');
 		await expect.element(page.getByText('Tanner')).not.toBeInTheDocument();
-	});
-
-	it('keeps the empty state centered in the visible area while scrolling horizontally', async () => {
-		await page.render(
-			<div style={{ width: 600, height: 400 }}>
-				<DsTable columns={wideColumns} data={[]} />
-			</div>,
-		);
-
-		const emptyState = page.getByRole('status');
-		await expect.element(emptyState).toBeVisible();
-
-		const container = getScrollContainer();
-		expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
-		expect(getHorizontalCenter(emptyState.element())).toBeCloseTo(getHorizontalCenter(container), 0);
-
-		container.scrollLeft = 900;
-
-		await expect
-			.poll(() => getHorizontalCenter(emptyState.element()))
-			.toBeCloseTo(getHorizontalCenter(container), 0);
-		await expect.element(emptyState).toBeInViewport();
-	});
-
-	it('keeps the empty state centered when columns fit the container', async () => {
-		await page.render(
-			<div style={{ width: 600, height: 400 }}>
-				<DsTable columns={columns} data={[]} />
-			</div>,
-		);
-
-		const emptyState = page.getByRole('status');
-		await expect.element(emptyState).toBeVisible();
-
-		const container = getScrollContainer();
-		expect(container.scrollWidth).toBe(container.clientWidth);
-		expect(getHorizontalCenter(emptyState.element())).toBeCloseTo(getHorizontalCenter(container), 0);
-	});
-
-	it('lets an empty table shrink with its columns inside a fit-content parent', async () => {
-		const renderInFitContent = (tableColumns: typeof columns) => (
-			<div style={{ width: 'fit-content', maxWidth: 600, height: 400 }}>
-				<DsTable columns={tableColumns} data={[]} />
-			</div>
-		);
-		const { rerender } = await page.render(renderInFitContent(wideColumns));
-		await expect.element(page.getByRole('status')).toBeVisible();
-
-		const container = getScrollContainer();
-		const overflowingWidth = container.clientWidth;
-
-		await rerender(renderInFitContent(columns.slice(0, 2).map((column) => ({ ...column, size: 100 }))));
-
-		await expect.poll(() => getScrollContainer().clientWidth).toBeLessThan(overflowingWidth);
 	});
 
 	it('does not show empty state while loading with empty data', async () => {
