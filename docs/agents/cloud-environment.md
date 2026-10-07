@@ -40,7 +40,7 @@ echo "setup: no .claude/hooks/cloud-setup.sh in $PWD/*/, the SessionStart hook w
 
 The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do. If the hook isn't found, the setup script still succeeds and the session's hook does the work, just slower.
 
-The setup script never needs editing. If `.nvmrc`, `packageManager` or the lockfile change after the snapshot was taken, the hook installs whatever differs, so sessions stay correct and only start slower until the snapshot is rebuilt.
+The setup script never needs editing; see [How it stays up to date](#how-it-stays-up-to-date).
 
 Never put secrets in environment variables — everyone using the environment can read them. Jira and Slack access come from each person's own connectors (`claude.ai/customize/connectors`); GitHub access comes from the Claude GitHub App.
 
@@ -52,6 +52,21 @@ playwright.download.prss.microsoft.com
 ```
 
 Trusted already covers npm, nodejs.org and apt. The image ships an older Chromium in `/opt/pw-browsers`, and the Playwright version in the lockfile needs its own build from `cdn.playwright.dev`. Without it, the hook prints a warning and browser tests can't run; everything else still works.
+
+## How it stays up to date
+
+The code is never cached: every session starts from a fresh clone of the selected branch. The VM snapshot holds only what lives outside the repo: Node and pnpm in `/opt/node24`, the pnpm store, Playwright Chromium, OS packages and the proxy CA.
+
+The snapshot is rebuilt when the setup script or the allowed network hosts change, and automatically about every 7 days. In between, the hook compares what the checkout needs with what is installed and adds only the difference:
+
+| Change in the repo                | Session start                                      |
+| --------------------------------- | -------------------------------------------------- |
+| No dependency changes (most PRs)  | `node_modules` linked from the cached store        |
+| Lockfile adds or bumps packages   | Only the new packages are downloaded               |
+| `.nvmrc` or `packageManager` bump | The new Node or pnpm is installed                  |
+| Playwright upgrade                | The matching Chromium is downloaded (about 150 MB) |
+
+A stale snapshot never means a wrong toolchain, only a slower start until the next rebuild. After a big upgrade (Node, Playwright) an Owner can rebuild right away by saving any edit to the setup script, for example a comment.
 
 ## Storybook and visual checks
 
