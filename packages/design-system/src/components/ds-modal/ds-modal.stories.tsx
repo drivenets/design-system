@@ -25,6 +25,15 @@ const meta: Meta<typeof DsModal> = {
 		},
 		open: { table: { disable: true } },
 		onOpenChange: { table: { disable: true } },
+		fullScreen: {
+			control: 'boolean',
+			description:
+				'Whether the modal fills the viewport. Passing it makes full screen controlled. `columns` has no effect while full screen',
+		},
+		defaultFullScreen: {
+			control: 'boolean',
+			description: 'Initial full screen state when uncontrolled. The modal returns to it after closing',
+		},
 		onFullScreenChange: { table: { disable: true } },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
