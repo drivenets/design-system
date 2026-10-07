@@ -1,5 +1,4 @@
 import { type KeyboardEvent, useId, useState } from 'react';
-import classNames from 'classnames';
 import { DsButtonV3 } from '../../../ds-button-v3';
 import { DsIcon } from '../../../ds-icon';
 import { DsModal } from '../../../ds-modal';
@@ -8,13 +7,16 @@ import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import { createConditionId } from '../../ds-filters-bar.utils';
+import { ConditionChips } from '../ds-filters-bar-condition-chips';
 import {
 	defaultDsFiltersBarBuilderLocale,
 	type DsFiltersBarBuilderProps,
 } from './ds-filters-bar-builder.types';
 import {
 	type BuilderChoice,
+	type BuilderDraft,
 	type BuilderPathSegment,
+	builderDraftFromCondition,
 	chooseBuilderOption,
 	describeBuilderStep,
 	emptyBuilderDraft,
@@ -66,8 +68,9 @@ const SelectionPath = ({ segments, clearLabel, onClear }: SelectionPathProps) =>
 };
 
 /**
- * Builds one condition at a time. Saving appends it to the filter document and clears the draft;
- * closing returns to the filters view and drops the draft.
+ * Owns the dialog and its draft: empty when opened from the add button, filled from the condition
+ * when opened from a field chip. Save adds or replaces that one condition and closes; any other close
+ * drops the draft.
  */
 export const Builder = ({
 	suggestedFields,
@@ -75,20 +78,31 @@ export const Builder = ({
 	className,
 	style,
 }: DsFiltersBarBuilderProps) => {
-	const { fields, lockedViews, addCondition, setView } = useDsFiltersBarContext();
+	const { fields, query, addCondition, updateCondition } = useDsFiltersBarContext();
 	const locale = { ...defaultDsFiltersBarBuilderLocale, ...localeProp };
+	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(emptyBuilderDraft);
+	// The condition being edited, or `null` while adding one
+	const [editingId, setEditingId] = useState<string | null>(null);
 	const inputId = useId();
+
+	// The conditions are ignored while an Advanced query filters, so neither show them nor add to them.
+	// A dialog left open would come back with a stale draft once the query clears.
+	if (query !== null) {
+		if (open) {
+			setOpen(false);
+		}
+
+		return null;
+	}
 
 	const view = describeBuilderStep(fields, draft, suggestedFields, locale);
 	const condition = toFieldCondition(fields, draft);
 
-	if (lockedViews.includes('builder')) {
-		return null;
-	}
-
-	const close = () => {
-		setView('filters');
+	const openWith = (next: BuilderDraft, id: string | null) => {
+		setDraft(next);
+		setEditingId(id);
+		setOpen(true);
 	};
 
 	const save = () => {
@@ -96,8 +110,13 @@ export const Builder = ({
 			return;
 		}
 
-		addCondition({ ...condition, id: createConditionId() });
-		setDraft(emptyBuilderDraft());
+		if (editingId) {
+			updateCondition({ ...condition, id: editingId });
+		} else {
+			addCondition({ ...condition, id: createConditionId() });
+		}
+
+		setOpen(false);
 	};
 
 	const choose = (choice: BuilderChoice) => {
@@ -125,72 +144,76 @@ export const Builder = ({
 	};
 
 	return (
-		<DsModal
-			open
-			dividers
-			closeOnInteractOutside
-			className={classNames(styles.dialog, className)}
+		<ConditionChips
+			locale={locale}
+			className={className}
 			style={style}
-			onOpenChange={(open) => {
-				if (!open) {
-					close();
-				}
-			}}
+			canEdit={(chip) => fields.some((field) => field.id === chip.field)}
+			onAdd={() => openWith(emptyBuilderDraft(), null)}
+			onEdit={(chip) => openWith(builderDraftFromCondition(fields, chip), chip.id)}
 		>
-			<DsModal.Header className={styles.header}>
-				<DsModal.Title>{locale.title}</DsModal.Title>
-				<DsButtonV3 variant="tertiary" size="small" icon="close" aria-label={locale.close} onClick={close} />
-			</DsModal.Header>
-
-			<DsModal.Body className={styles.body}>
-				<SelectionPath
-					segments={view.path}
-					clearLabel={locale.clear}
-					onClear={() => setDraft(emptyBuilderDraft())}
-				/>
-
-				<div className={styles.search}>
-					<label htmlFor={inputId} className={styles.visuallyHidden}>
-						{view.placeholder}
-					</label>
-					<DsTextInput
-						id={inputId}
-						className={styles.input}
-						value={view.inputValue}
-						placeholder={view.placeholder}
-						slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-						onValueChange={(value) => setDraft(setBuilderInput(fields, draft, value))}
-						onKeyDown={handleInputKeyDown}
+			<DsModal open={open} dividers closeOnInteractOutside className={styles.dialog} onOpenChange={setOpen}>
+				<DsModal.Header className={styles.header}>
+					<DsModal.Title>{locale.title}</DsModal.Title>
+					<DsButtonV3
+						variant="tertiary"
+						size="small"
+						icon="close"
+						aria-label={locale.close}
+						onClick={() => setOpen(false)}
 					/>
-				</div>
+				</DsModal.Header>
 
-				{view.caption && (
-					<div className={styles.options} role="group" aria-label={view.caption}>
-						<DsTypography variant="body-xs-reg" className={styles.caption}>
-							{view.caption}
-						</DsTypography>
-						<div className={styles.choices}>
-							{view.choices.map((choice) => (
-								<DsTag
-									key={`${choice.kind}-${choice.id}`}
-									label={choice.label}
-									selected={choice.id === view.selectedChoiceId}
-									onClick={() => choose(choice)}
-								/>
-							))}
-						</div>
+				<DsModal.Body className={styles.body}>
+					<SelectionPath
+						segments={view.path}
+						clearLabel={locale.clear}
+						onClear={() => setDraft(emptyBuilderDraft())}
+					/>
+
+					<div className={styles.search}>
+						<label htmlFor={inputId} className={styles.visuallyHidden}>
+							{view.placeholder}
+						</label>
+						<DsTextInput
+							id={inputId}
+							className={styles.input}
+							value={view.inputValue}
+							placeholder={view.placeholder}
+							slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+							onValueChange={(value) => setDraft(setBuilderInput(fields, draft, value))}
+							onKeyDown={handleInputKeyDown}
+						/>
 					</div>
-				)}
-			</DsModal.Body>
 
-			<DsModal.Footer className={styles.footer}>
-				<DsModal.Actions>
-					<DsButtonV3 variant="primary" size="medium" disabled={!condition} onClick={save}>
-						{locale.save}
-					</DsButtonV3>
-				</DsModal.Actions>
-			</DsModal.Footer>
-		</DsModal>
+					{view.caption && (
+						<div className={styles.options} role="group" aria-label={view.caption}>
+							<DsTypography variant="body-xs-reg" className={styles.caption}>
+								{view.caption}
+							</DsTypography>
+							<div className={styles.choices}>
+								{view.choices.map((choice) => (
+									<DsTag
+										key={`${choice.kind}-${choice.id}`}
+										label={choice.label}
+										selected={choice.id === view.selectedChoiceId}
+										onClick={() => choose(choice)}
+									/>
+								))}
+							</div>
+						</div>
+					)}
+				</DsModal.Body>
+
+				<DsModal.Footer className={styles.footer}>
+					<DsModal.Actions>
+						<DsButtonV3 variant="primary" size="medium" disabled={!condition} onClick={save}>
+							{locale.save}
+						</DsButtonV3>
+					</DsModal.Actions>
+				</DsModal.Footer>
+			</DsModal>
+		</ConditionChips>
 	);
 };
 

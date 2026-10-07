@@ -173,7 +173,7 @@ The compact disclosure on a **Collapsed field** that reports additional logical 
 _Avoid_: ellipsis (horizontal clip only), line count badge
 
 **Filters bar**:
-The **Internal component** (`DsFiltersBar`, public once built) that composes the **Filter views**, the pinned row and **Saved filters** around one **Filter document**.
+The **Component** (`DsFiltersBar`) that composes the **Filter views**, the pinned row and **Saved filters** around one **Filter document**.
 _Avoid_: filter toolbar, search bar
 
 **Filter document**:
@@ -253,8 +253,11 @@ _Avoid_: summed display, collapsed field (that is the **Code input** viewport), 
 - Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
 - A **Filter summary** describes whichever source drives the **Filter document**: it lists the **Filter conditions**, or, while an **Advanced query** is the source, names it without repeating its text
 - While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
+- While an **Advanced query** is the source, the **Filters bar** shows the advanced **Filter view** whichever view was asked for; the asked-for view comes back when the query is cleared
 - A **Filter condition** names a field from the **Field schema**, or is free search text
 - Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
+- The filters and builder **Filter views** show the same chips for the **Filter conditions**; they differ only in the dialog that adding a condition or clicking a chip opens — the filters dialog or the query builder
+- A **Pin** shows as a toggle in the pinned row; turning it on narrows the results the **Filter document** produced. Like the **Pin** itself, whether it is on lives outside the **Filter document** and never appears in the **Filter summary**
 - A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
 
 ## Example dialogue

@@ -1,51 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
-import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
+import { DsTable } from '../ds-table';
 import { DsFiltersBar } from './index';
-import { filtersBarViews, type DsFiltersBarView } from './ds-filters-bar.types';
-import styles from './ds-filters-bar.stories.module.scss';
+import { filtersBarViews, type DsFilterCondition, type DsFilterPin } from './ds-filters-bar.types';
+import { serializeFilterQuery } from './query-language';
+import { matchRows } from './stories/common/match-rows';
+import {
+	deviceColumns,
+	deviceFields,
+	devices,
+	deviceSavedFilters,
+	type DeviceSavedFilter,
+} from './stories/common/story-data';
 
 const meta: Meta<typeof DsFiltersBar.Root> = {
 	title: 'Components/FiltersBar',
 	component: DsFiltersBar.Root,
-	// Internal component, not exported from the package, so it stays out of the MCP manifest.
-	tags: ['!manifest'],
 	parameters: {
 		layout: 'padded',
 		docs: {
 			description: {
 				component: `
-**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Disclosure\`,
-\`Summary\`, \`Toolbar\`, \`Search\`, \`Conditions\` (the add-filter button with its filters dialog,
-and a chip per condition), the query builder, the advanced query view, and \`Pinned\` render; the
-other parts render nothing yet.
-
-**Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
-
-A toolbar above a table or list for narrowing the data with filters, a query builder or an advanced
-query, with **Saved filters** and a pinned row of quick toggles.
-
-**One filter document.** \`Root\` owns \`conditions\` and \`query\` (controlled or uncontrolled)
-and describes what can be filtered through \`fields\`. Every view reads and writes that same
-document, so a condition built in the query builder shows as a chip in the filters view and in the
-collapsed summary.
-
-**One query language.** The advanced view writes the conditions as query text and checks what the
-user types against \`fields\`: \`status IN ("active", "pending") AND input.vendor ~ "cisco"\`.
-Only a valid query reaches the document. One made of clauses joined by \`AND\` becomes conditions;
-one with \`OR\` or parentheses becomes \`query\`, the only source, and the filters and builder
-views lock until it is cleared. Evaluate such a query with \`parseFilterQuery(query, fields)\`.
-
-**Pins are a user preference,** not part of the document: loading a saved filter or clearing leaves
-them alone.
-
-**Collapsed shows a summary, expanded shows the toolbar.** \`Disclosure\` toggles between them and
-renders in both states, so place it once, before \`Summary\` and \`Toolbar\`; they share its line.
-\`Summary\` renders while collapsed, \`Toolbar\` while expanded, so everything that edits the
-document (search, chips, builder and the advanced query) goes inside \`Toolbar\` and hides with it.
-\`Pinned\` renders in both, below them at full width.
+A compound toolbar above a table or list: filter chips, a query builder, a typed query, **Saved
+filters** and pinned toggles. Every view edits one **Filter document**, \`conditions\` or (for
+\`OR\` and parentheses) a \`query\`, checked against \`fields\`. Each state prop is controlled or uncontrolled
+(\`default…\`). The bar never filters rows: evaluate the document, pass result counts to
+\`Summary\` and \`PinnedToggle\`, and keep saved filters and toggle states yourself.
 				`,
 			},
 		},
@@ -78,751 +60,313 @@ export default meta;
 type Story = StoryObj<typeof DsFiltersBar.Root>;
 
 /**
- * The canonical layout. `fields` describes what can be filtered; `defaultConditions` seeds the
- * document with a search, an enum, a compound-field and a date-preset condition — one of each shape.
- * Only the advanced query renders for now; the other parts are in progress.
+ * Every part in its canonical place. The story controls `conditions` and `query` so a loaded
+ * **Saved filter** can replace them; the result count and pinned counts are fixed. See
+ * **With Table** for a full loop that filters rows.
  */
 export const Default: Story = {
-	args: {
-		defaultExpanded: true,
-		defaultView: 'advanced',
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'deprecated', label: 'Deprecated' },
-					{ value: 'pending', label: 'Pending' },
-				],
-			},
-			{
-				type: 'number',
-				id: 'parents',
-				label: 'Parents',
-				operators: [
-					{ value: '>', label: 'greater than', symbol: '>' },
-					{ value: '<', label: 'less than', symbol: '<' },
-				],
-			},
-			{
-				type: 'date',
-				id: 'lastRun',
-				label: 'Last run',
-				operators: [
-					{ value: '=', label: 'is', symbol: '=' },
-					{ value: '>', label: 'after', symbol: '>' },
-					{ value: '<', label: 'before', symbol: '<' },
-				],
-				presets: [
-					{ value: 'today', label: 'Today' },
-					{ value: 'last7Days', label: 'Last 7 days' },
-				],
-			},
-			{
-				type: 'compound',
-				id: 'input',
-				label: 'Input',
-				subfields: [
-					{
-						type: 'text',
-						id: 'name',
-						label: 'Name',
-						operators: [
-							{ value: '~', label: 'contains' },
-							{ value: '!~', label: 'does not contain' },
-						],
-					},
-					{ type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'equals' }] },
-				],
-			},
-		],
-		defaultConditions: [
-			{ kind: 'search', id: 'c1', text: 'AAA' },
-			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['active'] },
-			{ kind: 'field', id: 'c3', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
-			{ kind: 'field', id: 'c4', field: 'lastRun', operator: '=', value: 'last7Days' },
-		],
-		defaultPins: [
-			{ field: 'status', value: 'active' },
-			{ field: 'status', value: 'pending' },
-		],
-	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Disclosure />
-			<DsFiltersBar.Summary count={18} />
-
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.SavedFilters
-					items={[
-						{ id: '1', name: 'MyFilter_1', count: 2 },
-						{ id: '2', name: 'MyFilter_2', count: 1 },
-					]}
-					value={null}
-					onValueChange={fn()}
-					onClear={fn()}
-					onRename={fn()}
-					onDelete={fn()}
-				/>
-				<DsFiltersBar.Search />
-				<DsFiltersBar.ViewSwitch />
-				<DsFiltersBar.View value="filters">
-					<DsFiltersBar.Conditions />
-				</DsFiltersBar.View>
-				<DsFiltersBar.View value="builder">
-					<DsFiltersBar.Builder suggestedFields={['input', 'status']} />
-				</DsFiltersBar.View>
-				<DsFiltersBar.View value="advanced">
-					<DsFiltersBar.Query />
-				</DsFiltersBar.View>
-				<DsFiltersBar.SaveFilter
-					items={[
-						{ id: '1', name: 'MyFilter_1', count: 2 },
-						{ id: '2', name: 'MyFilter_2', count: 1 },
-					]}
-					value={null}
-					onUpdate={fn()}
-					onSaveAs={fn()}
-				/>
-				<DsFiltersBar.ClearAll />
-			</DsFiltersBar.Toolbar>
-
-			<DsFiltersBar.Pinned>
-				<DsFiltersBar.PinnedGroup label="Status">
-					<DsFiltersBar.PinnedToggle label="Active" count={10} active />
-					<DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
-				</DsFiltersBar.PinnedGroup>
-			</DsFiltersBar.Pinned>
-		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * Quick toggles that stay visible while the bar is collapsed and while it is expanded. An active
- * pill narrows the results the conditions already produced. A count of 0 disables the pill.
- */
-export const Pinned: Story = {
 	parameters: {
 		docs: { source: { type: 'code' } },
 	},
 	render: function Render() {
-		const [active, setActive] = useState({
-			active: true,
-			pending: false,
-			today: false,
-			week: false,
-		});
+		const [conditions, setConditions] = useState<ReadonlyArray<DsFilterCondition>>([
+			{ kind: 'search', id: 'c1', text: 'router' },
+			{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
+			{ kind: 'field', id: 'c3', field: 'hardware', subfield: 'model', operator: '~', value: 'mx' },
+			{ kind: 'field', id: 'c4', field: 'lastSeen', operator: '=', value: 'last7Days' },
+		]);
+		const [query, setQuery] = useState<string | null>(null);
+		const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DeviceSavedFilter>>(deviceSavedFilters);
+		const [activeSavedFilterId, setActiveSavedFilterId] = useState<string | null>(null);
 
-		const toggle = (key: keyof typeof active) => (next: boolean) =>
-			setActive((current) => ({ ...current, [key]: next }));
+		const documentKey = (document: { conditions: ReadonlyArray<DsFilterCondition>; query: string | null }) =>
+			document.query ?? serializeFilterQuery(document.conditions);
 
-		const Row = () => (
-			<DsFiltersBar.Pinned>
-				<DsFiltersBar.PinnedGroup label="Status">
-					<DsFiltersBar.PinnedToggle
-						label="Active"
-						count={10}
-						active={active.active}
-						onActiveChange={toggle('active')}
-					/>
-					<DsFiltersBar.PinnedToggle
-						label="Pending"
-						count={4}
-						active={active.pending}
-						onActiveChange={toggle('pending')}
-					/>
-				</DsFiltersBar.PinnedGroup>
-				<DsFiltersBar.PinnedGroup label="Date">
-					<DsFiltersBar.PinnedToggle
-						label="Today"
-						count={2}
-						active={active.today}
-						onActiveChange={toggle('today')}
-					/>
-					<DsFiltersBar.PinnedToggle
-						label="Last 7 days"
-						count={12}
-						active={active.week}
-						onActiveChange={toggle('week')}
-					/>
-				</DsFiltersBar.PinnedGroup>
-			</DsFiltersBar.Pinned>
-		);
+		const activeSavedFilter = savedFilters.find((item) => item.id === activeSavedFilterId);
+		const dirty =
+			!!activeSavedFilter && documentKey(activeSavedFilter) !== documentKey({ conditions, query });
+		const savedFilterItems = savedFilters.map((item) => ({
+			id: item.id,
+			name: item.name,
+			...(item.query === null && { count: item.conditions.length }),
+		}));
+
+		const loadSavedFilter = (id: string | null) => {
+			const saved = savedFilters.find((item) => item.id === id);
+
+			setActiveSavedFilterId(saved?.id ?? null);
+
+			if (saved) {
+				setConditions(saved.conditions);
+				setQuery(saved.query);
+			}
+		};
 
 		return (
-			<DsStack direction="column" gap="24px">
-				<DsFiltersBar.Root>
-					<DsFiltersBar.Summary />
-					<Row />
-				</DsFiltersBar.Root>
-				<DsFiltersBar.Root defaultExpanded>
+			<DsFiltersBar.Root
+				fields={deviceFields}
+				conditions={conditions}
+				query={query}
+				defaultPins={[
+					{ field: 'status', value: 'active' },
+					{ field: 'status', value: 'pending' },
+				]}
+				defaultExpanded
+				onConditionsChange={setConditions}
+				onQueryChange={setQuery}
+			>
+				<DsFiltersBar.Disclosure />
+				<DsFiltersBar.Summary count={18} activeSavedFilterName={activeSavedFilter?.name} />
+
+				<DsFiltersBar.Toolbar>
+					<DsFiltersBar.SavedFilters
+						items={savedFilterItems}
+						value={activeSavedFilterId}
+						dirty={dirty}
+						onValueChange={loadSavedFilter}
+						onClear={() => setActiveSavedFilterId(null)}
+						onRename={(id, name) =>
+							setSavedFilters((current) => current.map((item) => (item.id === id ? { ...item, name } : item)))
+						}
+						onDelete={(id) => {
+							setSavedFilters((current) => current.filter((item) => item.id !== id));
+							setActiveSavedFilterId((current) => (current === id ? null : current));
+						}}
+					/>
+					<DsFiltersBar.Search />
+					<DsFiltersBar.ViewSwitch />
+					<DsFiltersBar.View value="filters">
+						<DsFiltersBar.Conditions />
+					</DsFiltersBar.View>
+					<DsFiltersBar.View value="builder">
+						<DsFiltersBar.Builder suggestedFields={['status', 'hardware']} />
+					</DsFiltersBar.View>
+					<DsFiltersBar.View value="advanced">
+						<DsFiltersBar.Query />
+					</DsFiltersBar.View>
+					<DsFiltersBar.SaveFilter
+						items={savedFilterItems}
+						value={activeSavedFilterId}
+						onUpdate={() =>
+							setSavedFilters((current) =>
+								current.map((item) =>
+									item.id === activeSavedFilterId ? { ...item, conditions, query } : item,
+								),
+							)
+						}
+						onSaveAs={(name) => {
+							const id = `saved-${String(Date.now())}`;
+
+							setSavedFilters((current) => [...current, { id, name, conditions, query }]);
+							setActiveSavedFilterId(id);
+						}}
+					/>
+					<DsFiltersBar.ClearAll onClick={() => setActiveSavedFilterId(null)} />
+				</DsFiltersBar.Toolbar>
+
+				<DsFiltersBar.Pinned>
+					<DsFiltersBar.PinnedGroup label="Status">
+						<DsFiltersBar.PinnedToggle label="Active" count={10} active={false} />
+						<DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
+					</DsFiltersBar.PinnedGroup>
+				</DsFiltersBar.Pinned>
+			</DsFiltersBar.Root>
+		);
+	},
+};
+
+/**
+ * The full loop, with the bar as a sibling above `DsTable`. The story controls `conditions` and
+ * `query` and filters the rows itself (`matchRows` is example code, not a design-system API), so
+ * every edit — a chip, a builder condition, a typed query, a loaded **Saved filter**, a pinned
+ * toggle, Clear all — changes the table, the `Summary` count and the pinned counts.
+ *
+ * - **Saved filters:** the story keeps each snapshot, the **Active saved filter** id, and `dirty`
+ *   by comparing the current document with the snapshot. Loading one sets `conditions` and
+ *   `query`; Save updates the active snapshot or adds a new one.
+ * - **Pins:** the `Pinned` row is built from `pins` and `fields`; each toggle's count is how many
+ *   rows the document matched with that option. Toggles in one group widen each other, groups
+ *   narrow each other, and Clear all also turns them off.
+ */
+export const WithTable: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render() {
+		const [conditions, setConditions] = useState<ReadonlyArray<DsFilterCondition>>([]);
+		const [query, setQuery] = useState<string | null>(null);
+		const [pins, setPins] = useState<ReadonlyArray<DsFilterPin>>([
+			{ field: 'status', value: 'active' },
+			{ field: 'status', value: 'pending' },
+			{ field: 'role', value: 'core' },
+			{ field: 'role', value: 'edge' },
+		]);
+		const [activeToggles, setActiveToggles] = useState<ReadonlyArray<DsFilterPin>>([]);
+		const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DeviceSavedFilter>>(deviceSavedFilters);
+		const [activeSavedFilterId, setActiveSavedFilterId] = useState<string | null>(null);
+
+		const isSamePin = (a: DsFilterPin, b: DsFilterPin) => a.field === b.field && a.value === b.value;
+		const documentKey = (document: { conditions: ReadonlyArray<DsFilterCondition>; query: string | null }) =>
+			document.query ?? serializeFilterQuery(document.conditions);
+
+		const activeSavedFilter = savedFilters.find((item) => item.id === activeSavedFilterId);
+		const dirty =
+			!!activeSavedFilter && documentKey(activeSavedFilter) !== documentKey({ conditions, query });
+		const savedFilterItems = savedFilters.map((item) => ({
+			id: item.id,
+			name: item.name,
+			...(item.query === null && { count: item.conditions.length }),
+		}));
+
+		// Toggles of options the user unpinned no longer apply
+		const effectiveToggles = activeToggles.filter((toggle) => pins.some((pin) => isSamePin(pin, toggle)));
+		const documentRows = matchRows(devices, { fields: deviceFields, conditions, query });
+		const rows = matchRows(documentRows, { fields: deviceFields, activeToggles: effectiveToggles });
+
+		const pinnedGroups = deviceFields.flatMap((field) => {
+			const options =
+				field.type === 'enum' ? field.options : field.type === 'date' ? (field.presets ?? []) : [];
+			const toggles = pins
+				.filter((pin) => pin.field === field.id)
+				.map((pin) => ({
+					pin,
+					label: options.find((option) => option.value === pin.value)?.label ?? pin.value,
+					count: matchRows(documentRows, { fields: deviceFields, activeToggles: [pin] }).length,
+					active: effectiveToggles.some((toggle) => isSamePin(toggle, pin)),
+				}));
+
+			return toggles.length > 0 ? [{ field, toggles }] : [];
+		});
+
+		const setToggle = (pin: DsFilterPin, active: boolean) =>
+			setActiveToggles((current) =>
+				active ? [...current, pin] : current.filter((toggle) => !isSamePin(toggle, pin)),
+			);
+
+		const loadSavedFilter = (id: string | null) => {
+			const saved = savedFilters.find((item) => item.id === id);
+
+			setActiveSavedFilterId(saved?.id ?? null);
+
+			if (saved) {
+				setConditions(saved.conditions);
+				setQuery(saved.query);
+			}
+		};
+
+		return (
+			<DsStack direction="column" gap="var(--standard)">
+				<DsFiltersBar.Root
+					fields={deviceFields}
+					conditions={conditions}
+					query={query}
+					pins={pins}
+					defaultExpanded
+					onConditionsChange={setConditions}
+					onQueryChange={setQuery}
+					onPinsChange={setPins}
+				>
+					<DsFiltersBar.Disclosure />
+					<DsFiltersBar.Summary count={rows.length} activeSavedFilterName={activeSavedFilter?.name} />
+
 					<DsFiltersBar.Toolbar>
+						<DsFiltersBar.SavedFilters
+							items={savedFilterItems}
+							value={activeSavedFilterId}
+							dirty={dirty}
+							onValueChange={loadSavedFilter}
+							onClear={() => setActiveSavedFilterId(null)}
+							onRename={(id, name) =>
+								setSavedFilters((current) =>
+									current.map((item) => (item.id === id ? { ...item, name } : item)),
+								)
+							}
+							onDelete={(id) => {
+								setSavedFilters((current) => current.filter((item) => item.id !== id));
+								setActiveSavedFilterId((current) => (current === id ? null : current));
+							}}
+						/>
 						<DsFiltersBar.Search />
-						<DsFiltersBar.ClearAll />
+						<DsFiltersBar.ViewSwitch />
+						<DsFiltersBar.View value="filters">
+							<DsFiltersBar.Conditions />
+						</DsFiltersBar.View>
+						<DsFiltersBar.View value="builder">
+							<DsFiltersBar.Builder suggestedFields={['status', 'role', 'hardware']} />
+						</DsFiltersBar.View>
+						<DsFiltersBar.View value="advanced">
+							<DsFiltersBar.Query />
+						</DsFiltersBar.View>
+						<DsFiltersBar.SaveFilter
+							items={savedFilterItems}
+							value={activeSavedFilterId}
+							onUpdate={() =>
+								setSavedFilters((current) =>
+									current.map((item) =>
+										item.id === activeSavedFilterId ? { ...item, conditions, query } : item,
+									),
+								)
+							}
+							onSaveAs={(name) => {
+								const id = `saved-${String(Date.now())}`;
+
+								setSavedFilters((current) => [...current, { id, name, conditions, query }]);
+								setActiveSavedFilterId(id);
+							}}
+						/>
+						<DsFiltersBar.ClearAll
+							onClick={() => {
+								setActiveToggles([]);
+								setActiveSavedFilterId(null);
+							}}
+						/>
 					</DsFiltersBar.Toolbar>
-					<Row />
+
+					{pinnedGroups.length > 0 && (
+						<DsFiltersBar.Pinned>
+							{pinnedGroups.map(({ field, toggles }) => (
+								<DsFiltersBar.PinnedGroup key={field.id} label={field.label}>
+									{toggles.map(({ pin, label, count, active }) => (
+										<DsFiltersBar.PinnedToggle
+											key={pin.value}
+											label={label}
+											count={count}
+											active={active}
+											onActiveChange={(next) => setToggle(pin, next)}
+										/>
+									))}
+								</DsFiltersBar.PinnedGroup>
+							))}
+						</DsFiltersBar.Pinned>
+					)}
 				</DsFiltersBar.Root>
+
+				<DsTable columns={deviceColumns} data={rows} stickyHeader bordered fullWidth />
 			</DsStack>
 		);
 	},
 };
 
 /**
- * Guided condition: suggested fields, then — depending on the field — a subfield, an operator and a
- * value. **Save query** appends one condition and clears the draft. Closing returns to the filters
- * view, and the query text shows the condition. **Query builder** opens the dialog again.
- * `ViewSwitch` does not render yet, so this story opens the builder itself.
- */
-export const QueryBuilder: Story = {
-	args: {
-		defaultExpanded: true,
-		fields: [
-			{
-				type: 'compound',
-				id: 'input',
-				label: 'Input',
-				subfields: [
-					{
-						type: 'text',
-						id: 'name',
-						label: 'Name',
-						operators: [
-							{ value: '~', label: 'Contains' },
-							{ value: '=', label: 'Equal' },
-							{ value: '!=', label: 'Not equal' },
-						],
-					},
-					{ type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'Equal' }] },
-					{ type: 'text', id: 'type', label: 'Type', operators: [{ value: '=', label: 'Equal' }] },
-					{ type: 'text', id: 'version', label: 'Version', operators: [{ value: '=', label: 'Equal' }] },
-				],
-			},
-			{ type: 'text', id: 'output', label: 'Output', operators: [{ value: '=', label: 'Equal' }] },
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [{ value: '=', label: 'equals' }],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'pending', label: 'Pending' },
-				],
-			},
-			{
-				type: 'enum',
-				id: 'tag',
-				label: 'Tag',
-				operators: [{ value: '=', label: 'equals' }],
-				options: [
-					{ value: 'core', label: 'Core' },
-					{ value: 'edge', label: 'Edge' },
-				],
-			},
-		],
-	},
-	parameters: {
-		docs: {
-			source: { type: 'code' },
-			// The dialog is position:fixed. Inline docs share one document, so an open dialog covers
-			// the whole page. An iframe keeps it inside this story.
-			story: { inline: false, height: '520px' },
-		},
-	},
-	render: (args) => {
-		const [view, setView] = useState<DsFiltersBarView>('builder');
-
-		return (
-			<DsFiltersBar.Root
-				{...args}
-				view={view}
-				onViewChange={(next) => {
-					setView(next);
-					args.onViewChange?.(next);
-				}}
-			>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Summary count={12} />
-				<DsFiltersBar.Toolbar>
-					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
-						Query builder
-					</DsButtonV3>
-					<DsFiltersBar.Search />
-					<DsFiltersBar.View value="filters">
-						<DsFiltersBar.Conditions />
-					</DsFiltersBar.View>
-					<DsFiltersBar.View value="builder">
-						<DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
-					</DsFiltersBar.View>
-					<DsFiltersBar.ClearAll />
-					<DsFiltersBar.Query />
-				</DsFiltersBar.Toolbar>
-			</DsFiltersBar.Root>
-		);
-	},
-};
-
-/**
- * Same dialog with every built-in string replaced.
- */
-export const QueryBuilderLocalized: Story = {
-	...QueryBuilder,
-	render: (args) => {
-		const [view, setView] = useState<DsFiltersBarView>('builder');
-
-		return (
-			<DsFiltersBar.Root
-				{...args}
-				view={view}
-				onViewChange={(next) => {
-					setView(next);
-					args.onViewChange?.(next);
-				}}
-			>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Summary count={12} />
-				<DsFiltersBar.Toolbar>
-					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
-						Query builder
-					</DsButtonV3>
-					<DsFiltersBar.Search />
-					<DsFiltersBar.View value="filters">
-						<DsFiltersBar.Conditions />
-					</DsFiltersBar.View>
-					<DsFiltersBar.View value="builder">
-						<DsFiltersBar.Builder
-							suggestedFields={['input', 'output', 'status', 'tag']}
-							locale={{
-								title: 'Build a condition',
-								close: 'Dismiss',
-								clear: 'Start over',
-								searchField: 'Find a field',
-								selectField: 'Pick a field',
-								searchSubfield: 'Find a part',
-								selectSubfield: 'Pick a part',
-								searchOperator: 'Find an operator',
-								selectOperator: 'Pick an operator',
-								searchValue: 'Find a value',
-								selectValue: 'Pick a value',
-								valuePlaceholder: 'Enter a value',
-								save: 'Add condition',
-							}}
-						/>
-					</DsFiltersBar.View>
-					<DsFiltersBar.ClearAll />
-					<DsFiltersBar.Query />
-				</DsFiltersBar.Toolbar>
-			</DsFiltersBar.Root>
-		);
-	},
-};
-
-/**
- * The "+" button in `Conditions` opens the filters dialog, with one tab per field and per compound
- * subfield. An enum tab has an operator, an option search, and a checkbox and pin per option. Text,
- * number and date tabs have an operator and a value; number and date tabs add **between** for a
- * range, and a date tab lists its presets. Edits stay a draft until **Save filters** writes one
- * condition per tab with a value, and the pins, back to the document; closing any other way drops
- * the draft. Search conditions are left as they are.
- */
-export const FiltersDialog: Story = {
-	args: {
-		defaultExpanded: true,
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'deprecated', label: 'Deprecated' },
-					{ value: 'inactive', label: 'Inactive' },
-					{ value: 'pending', label: 'Pending' },
-					{ value: 'draft', label: 'Draft' },
-				],
-			},
-			{
-				type: 'enum',
-				id: 'workflow',
-				label: 'Workflow',
-				operators: [
-					{ value: 'IN', label: 'is any of', symbol: '∈' },
-					{ value: 'NOT IN', label: 'is none of', symbol: '∉' },
-				],
-				options: [
-					{ value: 'deploy', label: 'Deploy' },
-					{ value: 'backup', label: 'Backup' },
-					{ value: 'upgrade', label: 'Upgrade' },
-					{ value: 'rollback', label: 'Rollback' },
-					{ value: 'healthCheck', label: 'Health check' },
-					{ value: 'provision', label: 'Provision' },
-				],
-			},
-			{
-				type: 'enum',
-				id: 'trigger',
-				label: 'Trigger',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: [
-					{ value: 'manual', label: 'Manual' },
-					{ value: 'scheduled', label: 'Scheduled' },
-					{ value: 'api', label: 'API' },
-					{ value: 'webhook', label: 'Webhook' },
-				],
-			},
-			{
-				type: 'number',
-				id: 'parents',
-				label: 'Parents',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '>', label: 'greater than', symbol: '>' },
-					{ value: '<', label: 'less than', symbol: '<' },
-				],
-			},
-			{
-				type: 'date',
-				id: 'lastRun',
-				label: 'Last run',
-				operators: [
-					{ value: '=', label: 'is', symbol: '=' },
-					{ value: '>', label: 'after', symbol: '>' },
-					{ value: '<', label: 'before', symbol: '<' },
-				],
-				presets: [
-					{ value: 'today', label: 'Today' },
-					{ value: 'last7Days', label: 'Last 7 days' },
-				],
-			},
-			{
-				type: 'compound',
-				id: 'input',
-				label: 'Input',
-				subfields: [
-					{
-						type: 'text',
-						id: 'name',
-						label: 'Name',
-						operators: [
-							{ value: '~', label: 'contains' },
-							{ value: '!~', label: 'does not contain' },
-						],
-					},
-				],
-			},
-		],
-		defaultConditions: [
-			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated', 'draft'] },
-			{ kind: 'field', id: 'c2', field: 'trigger', operator: '=', value: ['scheduled'] },
-			{ kind: 'field', id: 'c3', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
-		],
-		defaultPins: [
-			{ field: 'status', value: 'active' },
-			{ field: 'workflow', value: 'deploy' },
-		],
-	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Disclosure />
-			<DsFiltersBar.Summary count={42} />
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.Conditions />
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * Enter adds the typed text as a search condition, shown as a chip after the "+" button, and clears
- * the input; the same search is not added twice. \`/\` focuses the input from anywhere outside a text
- * field or dialog. Clicking a chip moves its text back into the input for editing; its × removes it.
- * Search is disabled while an Advanced query is the source.
- */
-export const Search: Story = {
-	args: {
-		defaultExpanded: true,
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [{ value: '=', label: 'equals', symbol: '=' }],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'pending', label: 'Pending' },
-				],
-			},
-		],
-		defaultConditions: [{ kind: 'search', id: 'c1', text: 'AAA' }],
-	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Disclosure />
-			<DsFiltersBar.Summary count={7} />
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.Search />
-				<DsFiltersBar.View value="filters">
-					<DsFiltersBar.Conditions />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * Every condition shows as a chip after the "+" button: the field, its operator and the value, with
- * `Input › Name` for a compound field's subfield. When the field has more than one operator, the
- * operator is a menu that switches it in place; a field with one operator shows it as text, and a
- * range shows none, since it means "within". Clicking a chip opens the filters dialog on that field;
- * × removes a condition. While an Advanced query is the source, the chips and the "+" button are
- * hidden.
- */
-export const SelectedFilters: Story = {
-	args: {
-		defaultExpanded: true,
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'deprecated', label: 'Deprecated' },
-					{ value: 'pending', label: 'Pending' },
-				],
-			},
-			{
-				type: 'enum',
-				id: 'lastRunResult',
-				label: 'Last run result',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: [
-					{ value: 'succeeded', label: 'Succeeded' },
-					{ value: 'failed', label: 'Failed' },
-				],
-			},
-			{
-				type: 'enum',
-				id: 'trigger',
-				label: 'Trigger',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: [
-					{ value: 'manual', label: 'Manual' },
-					{ value: 'scheduled', label: 'Scheduled' },
-				],
-			},
-			{
-				type: 'number',
-				id: 'parents',
-				label: 'Parents',
-				operators: [
-					{ value: '=', label: 'equals', symbol: '=' },
-					{ value: '>', label: 'greater than', symbol: '>' },
-					{ value: '<', label: 'less than', symbol: '<' },
-				],
-			},
-			{
-				type: 'date',
-				id: 'lastRun',
-				label: 'Last run',
-				operators: [
-					{ value: '=', label: 'is', symbol: '=' },
-					{ value: '>', label: 'after', symbol: '>' },
-					{ value: '<', label: 'before', symbol: '<' },
-				],
-				presets: [
-					{ value: 'today', label: 'Today' },
-					{ value: 'last7Days', label: 'Last 7 days' },
-				],
-			},
-			{
-				type: 'compound',
-				id: 'input',
-				label: 'Input',
-				subfields: [
-					{
-						type: 'text',
-						id: 'name',
-						label: 'Name',
-						operators: [
-							{ value: '~', label: 'contains' },
-							{ value: '!~', label: 'does not contain' },
-						],
-					},
-				],
-			},
-		],
-		defaultConditions: [
-			{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['active', 'pending'] },
-			{ kind: 'field', id: 'c2', field: 'lastRunResult', operator: '!=', value: ['succeeded'] },
-			{ kind: 'field', id: 'c3', field: 'trigger', operator: '=', value: ['scheduled'] },
-			{ kind: 'field', id: 'c4', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
-			{ kind: 'field', id: 'c5', field: 'lastRun', operator: '>', value: 'last7Days' },
-			{ kind: 'field', id: 'c6', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
-			{ kind: 'search', id: 'c7', text: 'AAA' },
-		],
-	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Disclosure />
-			<DsFiltersBar.Summary count={9} />
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.Search />
-				<DsFiltersBar.View value="filters">
-					<DsFiltersBar.Conditions />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * The advanced view shows the conditions as query text. Edit it: a query joined by `AND` goes back
- * to the conditions, and one that breaks the rules shows why under the field.
- */
-export const AdvancedQuery: Story = {
-	args: {
-		defaultExpanded: true,
-		defaultView: 'advanced',
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [
-					{ value: '=', label: 'equals' },
-					{ value: '!=', label: 'not equals' },
-					{ value: 'IN', label: 'is one of' },
-					{ value: 'NOT IN', label: 'is none of' },
-				],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'deprecated', label: 'Deprecated' },
-					{ value: 'pending', label: 'Pending' },
-				],
-			},
-			{
-				type: 'number',
-				id: 'parents',
-				label: 'Parents',
-				operators: [
-					{ value: '>', label: 'greater than' },
-					{ value: '<', label: 'less than' },
-				],
-			},
-			{
-				type: 'compound',
-				id: 'input',
-				label: 'Input',
-				subfields: [
-					{
-						type: 'text',
-						id: 'vendor',
-						label: 'Vendor',
-						operators: [
-							{ value: '=', label: 'equals' },
-							{ value: '~', label: 'contains' },
-						],
-					},
-				],
-			},
-		],
-		defaultConditions: [
-			{ kind: 'field', id: 'c1', field: 'status', operator: 'IN', value: ['active', 'pending'] },
-			{ kind: 'field', id: 'c2', field: 'input', subfield: 'vendor', operator: '~', value: 'cisco' },
-			{ kind: 'search', id: 'c3', text: 'timeout' },
-		],
-	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Disclosure />
-			<DsFiltersBar.Summary count={5} />
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.View value="advanced">
-					<DsFiltersBar.Query />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * A query with `OR` or parentheses cannot be shown as conditions, so it becomes the only source:
- * the conditions are ignored and the filters and builder views lock until the query is cleared.
- */
-export const LockedViews: Story = {
-	args: {
-		defaultExpanded: true,
-		defaultView: 'advanced',
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [{ value: '=', label: 'equals' }],
-				options: [{ value: 'active', label: 'Active' }],
-			},
-			{
-				type: 'enum',
-				id: 'trigger',
-				label: 'Trigger',
-				operators: [{ value: '=', label: 'equals' }],
-				options: [{ value: 'scheduled', label: 'Scheduled' }],
-			},
-		],
-		defaultQuery: 'status = "active" OR trigger = "scheduled"',
-	},
-	render: (args) => (
-		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.Disclosure />
-			<DsFiltersBar.Summary count={5} />
-			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.View value="advanced">
-					<DsFiltersBar.Query />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Toolbar>
-		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * `Root` takes its own strings through `locale`; each part takes its own `locale` too.
+ * `Root` takes its own strings through `locale`, and each part takes its own `locale` too, so
+ * every built-in string can be replaced.
  */
 export const Localized: Story = {
 	args: {
 		defaultExpanded: true,
-		defaultView: 'advanced',
 		fields: [
 			{
 				type: 'enum',
 				id: 'status',
 				label: 'Status',
 				operators: [{ value: '=', label: 'equals' }],
-				options: [{ value: 'active', label: 'Active' }],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'pending', label: 'Pending' },
+				],
 			},
 		],
+		defaultConditions: [{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] }],
 		locale: { label: 'Refine results', expand: 'Show refinements', collapse: 'Hide refinements' },
 	},
 	render: (args) => (
@@ -840,91 +384,51 @@ export const Localized: Story = {
 				}}
 			/>
 			<DsFiltersBar.Toolbar>
-				<DsFiltersBar.Search locale={{ label: 'Find', placeholder: 'Press ‘/’ to find' }} />
-				<DsFiltersBar.ViewSwitch
-					locale={{ views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' } }}
+				<DsFiltersBar.SavedFilters
+					items={[{ id: '1', name: 'Only active', count: 1 }]}
+					value={null}
+					locale={{ savedFilters: 'Presets', noSavedFilters: 'No presets yet' }}
+					onValueChange={fn()}
+					onClear={fn()}
+					onRename={fn()}
+					onDelete={fn()}
 				/>
+				<DsFiltersBar.Search
+					locale={{ label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Clear text' }}
+				/>
+				<DsFiltersBar.ViewSwitch
+					locale={{
+						label: 'Presentation',
+						views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' },
+						lockedView: 'Remove the custom query to switch',
+					}}
+				/>
+				<DsFiltersBar.View value="filters">
+					<DsFiltersBar.Conditions locale={{ addFilter: 'Add refinement', saveFilters: 'Apply' }} />
+				</DsFiltersBar.View>
+				<DsFiltersBar.View value="builder">
+					<DsFiltersBar.Builder locale={{ title: 'Build a condition', save: 'Add condition' }} />
+				</DsFiltersBar.View>
 				<DsFiltersBar.View value="advanced">
 					<DsFiltersBar.Query
 						locale={{ label: 'Query editor', placeholder: 'status = "Active"', help: 'Syntax' }}
 					/>
 				</DsFiltersBar.View>
+				<DsFiltersBar.SaveFilter
+					items={[{ id: '1', name: 'Only active', count: 1 }]}
+					value={null}
+					locale={{ saveFilter: 'Save preset', saveAsNew: 'Save as a new preset' }}
+					onUpdate={fn()}
+					onSaveAs={fn()}
+				/>
 				<DsFiltersBar.ClearAll locale={{ label: 'Reset' }} />
 			</DsFiltersBar.Toolbar>
 
 			<DsFiltersBar.Pinned locale={{ label: 'Shortcuts' }}>
 				<DsFiltersBar.PinnedGroup label="Status">
-					<DsFiltersBar.PinnedToggle label="Active" count={10} active />
+					<DsFiltersBar.PinnedToggle label="Active" count={3} active={false} />
 				</DsFiltersBar.PinnedGroup>
 			</DsFiltersBar.Pinned>
 		</DsFiltersBar.Root>
-	),
-};
-
-/**
- * `Summary` takes its own strings through `locale`: the saved filter, search and advanced query
- * labels, the empty view and the announced result count.
- */
-export const SummaryLocalized: Story = {
-	parameters: { docs: { canvas: { sourceState: 'none' } } },
-	args: {
-		fields: [
-			{
-				type: 'enum',
-				id: 'status',
-				label: 'Status',
-				operators: [
-					{ value: '=', label: 'equals' },
-					{ value: '!=', label: 'not equal' },
-				],
-				options: [
-					{ value: 'active', label: 'Active' },
-					{ value: 'deprecated', label: 'Deprecated' },
-				],
-			},
-		],
-		locale: { label: 'Refine results', expand: 'Show refinements', collapse: 'Hide refinements' },
-	},
-	render: (args) => (
-		<div className={styles.summaryMatrix}>
-			<DsFiltersBar.Root
-				{...args}
-				defaultConditions={[
-					{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated'] },
-					{ kind: 'search', id: 'c2', text: 'AAA' },
-				]}
-			>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Summary
-					count={18}
-					activeSavedFilterName="Ira123"
-					locale={{
-						resultCount: (count) => `${String(count)} matches`,
-						activeSavedFilter: 'Preset',
-						search: 'Text',
-					}}
-				/>
-			</DsFiltersBar.Root>
-
-			<DsFiltersBar.Root {...args} defaultQuery={'status = "active" OR status = "deprecated"'}>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Summary
-					count={5}
-					locale={{ resultCount: (count) => `${String(count)} matches`, advancedQuery: 'Custom query' }}
-				/>
-			</DsFiltersBar.Root>
-
-			<DsFiltersBar.Root {...args}>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Summary
-					count={726}
-					locale={{
-						resultCount: (count) => `${String(count)} matches`,
-						emptyLabel: 'Showing',
-						emptyValue: 'Everything',
-					}}
-				/>
-			</DsFiltersBar.Root>
-		</div>
 	),
 };

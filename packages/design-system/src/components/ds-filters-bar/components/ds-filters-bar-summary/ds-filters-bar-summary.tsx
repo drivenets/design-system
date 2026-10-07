@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import type { ReactNode } from 'react';
-import { DsTypography } from '../../ds-typography';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import styles from '../ds-filters-bar.module.scss';
+import { DsTypography } from '../../../ds-typography';
+import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
+import styles from './ds-filters-bar-summary.module.scss';
 import {
 	defaultDsFiltersBarSummaryLocale,
 	type DsFiltersBarSummaryLocale,
 	type DsFiltersBarSummaryProps,
-} from '../ds-filters-bar.types';
-import { toSummaryItems, type DsFiltersBarSummaryItem } from '../ds-filters-bar.utils';
+} from '../../ds-filters-bar.types';
+import { toSummaryItems, type DsFiltersBarSummaryItem } from '../../ds-filters-bar.utils';
 
 interface SummaryPhrase {
 	key: string;
@@ -97,7 +97,13 @@ export const Summary = ({
 	const documentPhrases = savedFilter ? phrases.slice(1) : phrases;
 
 	return (
-		<div ref={ref} className={classNames(styles.summary, className)} style={style}>
+		<div
+			ref={ref}
+			data-scope="filters-bar"
+			data-part="summary"
+			className={classNames(styles.summary, className)}
+			style={style}
+		>
 			{savedFilter && (
 				<>
 					<span className={styles.summarySavedFilter}>{renderPhrase(savedFilter)}</span>{' '}

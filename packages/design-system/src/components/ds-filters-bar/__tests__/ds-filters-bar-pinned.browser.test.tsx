@@ -60,6 +60,24 @@ describe('DsFiltersBar pinned', () => {
 		expect(onActiveChange).not.toHaveBeenCalled();
 	});
 
+	it('keeps an active zero-count toggle enabled so it can be turned off', async () => {
+		const onActiveChange = vi.fn();
+
+		await page.render(
+			<DsFiltersBar.Root>
+				<DsFiltersBar.Pinned>
+					<DsFiltersBar.PinnedGroup label="Status">
+						<DsFiltersBar.PinnedToggle label="Pending" count={0} active onActiveChange={onActiveChange} />
+					</DsFiltersBar.PinnedGroup>
+				</DsFiltersBar.Pinned>
+			</DsFiltersBar.Root>,
+		);
+
+		await page.getByRole('button', { name: /Pending/ }).click();
+
+		expect(onActiveChange).toHaveBeenCalledWith(false);
+	});
+
 	it('keeps a zero-count toggle enabled when disabled is false', async () => {
 		const onActiveChange = vi.fn();
 

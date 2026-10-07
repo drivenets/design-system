@@ -1,0 +1,524 @@
+# DsFiltersBar.Root docs snippets
+
+## Default
+
+### Show code
+<DsFiltersBar.Root
+  defaultConditions={[
+    {
+      field: 'input',
+      id: 'c1',
+      kind: 'field',
+      operator: '~',
+      subfield: 'name',
+      value: 'WF456'
+    },
+    {
+      field: 'status',
+      id: 'c2',
+      kind: 'field',
+      operator: '=',
+      value: [
+        'active',
+        'pending'
+      ]
+    }
+  ]}
+  defaultExpanded
+  defaultView="builder"
+  fields={[
+    {
+      id: 'input',
+      label: 'Input',
+      subfields: [
+        {
+          id: 'name',
+          label: 'Name',
+          operators: [
+            {
+              label: 'Contains',
+              value: '~'
+            },
+            {
+              label: 'Equal',
+              value: '='
+            },
+            {
+              label: 'Not equal',
+              value: '!='
+            }
+          ],
+          type: 'text'
+        },
+        {
+          id: 'vendor',
+          label: 'Vendor',
+          operators: [
+            {
+              label: 'Equal',
+              value: '='
+            }
+          ],
+          type: 'text'
+        },
+        {
+          id: 'type',
+          label: 'Type',
+          operators: [
+            {
+              label: 'Equal',
+              value: '='
+            }
+          ],
+          type: 'text'
+        },
+        {
+          id: 'version',
+          label: 'Version',
+          operators: [
+            {
+              label: 'Equal',
+              value: '='
+            }
+          ],
+          type: 'text'
+        }
+      ],
+      type: 'compound'
+    },
+    {
+      id: 'output',
+      label: 'Output',
+      operators: [
+        {
+          label: 'Equal',
+          value: '='
+        }
+      ],
+      type: 'text'
+    },
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        {
+          label: 'equals',
+          value: '='
+        }
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'tag',
+      label: 'Tag',
+      operators: [
+        {
+          label: 'equals',
+          value: '='
+        }
+      ],
+      options: [
+        {
+          label: 'Core',
+          value: 'core'
+        },
+        {
+          label: 'Edge',
+          value: 'edge'
+        }
+      ],
+      type: 'enum'
+    }
+  ]}
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary count={12} />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.Search />
+    <DsFiltersBar.ViewSwitch />
+    <DsFiltersBar.View value="filters">
+      <DsFiltersBar.Conditions />
+    </DsFiltersBar.View>
+    <DsFiltersBar.View value="builder">
+      <DsFiltersBar.Builder
+        suggestedFields={[
+          'input',
+          'output',
+          'status',
+          'tag'
+        ]}
+       />
+    </DsFiltersBar.View>
+    <DsFiltersBar.View value="advanced">
+      <DsFiltersBar.Query />
+    </DsFiltersBar.View>
+    <DsFiltersBar.ClearAll />
+  </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Default = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded
+    defaultView="builder"
+    fields={[
+        {
+            type: 'compound',
+            id: 'input',
+            label: 'Input',
+            subfields: [
+                {
+                    type: 'text',
+                    id: 'name',
+                    label: 'Name',
+                    operators: [
+                        { value: '~', label: 'Contains' },
+                        { value: '=', label: 'Equal' },
+                        { value: '!=', label: 'Not equal' },
+                    ],
+                },
+                { type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'Equal' }] },
+                { type: 'text', id: 'type', label: 'Type', operators: [{ value: '=', label: 'Equal' }] },
+                { type: 'text', id: 'version', label: 'Version', operators: [{ value: '=', label: 'Equal' }] },
+            ],
+        },
+        { type: 'text', id: 'output', label: 'Output', operators: [{ value: '=', label: 'Equal' }] },
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: [{ value: '=', label: 'equals' }],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'pending', label: 'Pending' },
+            ],
+        },
+        {
+            type: 'enum',
+            id: 'tag',
+            label: 'Tag',
+            operators: [{ value: '=', label: 'equals' }],
+            options: [
+                { value: 'core', label: 'Core' },
+                { value: 'edge', label: 'Edge' },
+            ],
+        },
+    ]}
+    defaultConditions={[
+        { kind: 'field', id: 'c1', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
+        { kind: 'field', id: 'c2', field: 'status', operator: '=', value: ['active', 'pending'] },
+    ]}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary count={12} />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.Search />
+        <DsFiltersBar.ViewSwitch />
+        <DsFiltersBar.View value="filters">
+            <DsFiltersBar.Conditions />
+        </DsFiltersBar.View>
+        <DsFiltersBar.View value="builder">
+            <DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
+        </DsFiltersBar.View>
+        <DsFiltersBar.View value="advanced">
+            <DsFiltersBar.Query />
+        </DsFiltersBar.View>
+        <DsFiltersBar.ClearAll />
+    </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>;
+
+## Localized
+
+### Show code
+<DsFiltersBar.Root
+  defaultConditions={[
+    {
+      field: 'input',
+      id: 'c1',
+      kind: 'field',
+      operator: '~',
+      subfield: 'name',
+      value: 'WF456'
+    },
+    {
+      field: 'status',
+      id: 'c2',
+      kind: 'field',
+      operator: '=',
+      value: [
+        'active',
+        'pending'
+      ]
+    }
+  ]}
+  defaultExpanded
+  defaultView="builder"
+  fields={[
+    {
+      id: 'input',
+      label: 'Input',
+      subfields: [
+        {
+          id: 'name',
+          label: 'Name',
+          operators: [
+            {
+              label: 'Contains',
+              value: '~'
+            },
+            {
+              label: 'Equal',
+              value: '='
+            },
+            {
+              label: 'Not equal',
+              value: '!='
+            }
+          ],
+          type: 'text'
+        },
+        {
+          id: 'vendor',
+          label: 'Vendor',
+          operators: [
+            {
+              label: 'Equal',
+              value: '='
+            }
+          ],
+          type: 'text'
+        },
+        {
+          id: 'type',
+          label: 'Type',
+          operators: [
+            {
+              label: 'Equal',
+              value: '='
+            }
+          ],
+          type: 'text'
+        },
+        {
+          id: 'version',
+          label: 'Version',
+          operators: [
+            {
+              label: 'Equal',
+              value: '='
+            }
+          ],
+          type: 'text'
+        }
+      ],
+      type: 'compound'
+    },
+    {
+      id: 'output',
+      label: 'Output',
+      operators: [
+        {
+          label: 'Equal',
+          value: '='
+        }
+      ],
+      type: 'text'
+    },
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        {
+          label: 'equals',
+          value: '='
+        }
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'tag',
+      label: 'Tag',
+      operators: [
+        {
+          label: 'equals',
+          value: '='
+        }
+      ],
+      options: [
+        {
+          label: 'Core',
+          value: 'core'
+        },
+        {
+          label: 'Edge',
+          value: 'edge'
+        }
+      ],
+      type: 'enum'
+    }
+  ]}
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary count={12} />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.Search />
+    <DsFiltersBar.ViewSwitch />
+    <DsFiltersBar.View value="filters">
+      <DsFiltersBar.Conditions />
+    </DsFiltersBar.View>
+    <DsFiltersBar.View value="builder">
+      <DsFiltersBar.Builder
+        locale={{
+          addFilter: 'New condition',
+          clear: 'Start over',
+          close: 'Dismiss',
+          save: 'Add condition',
+          searchField: 'Find a field',
+          searchOperator: 'Find an operator',
+          searchSubfield: 'Find a part',
+          searchValue: 'Find a value',
+          selectField: 'Pick a field',
+          selectOperator: 'Pick an operator',
+          selectSubfield: 'Pick a part',
+          selectValue: 'Pick a value',
+          title: 'Build a condition',
+          valuePlaceholder: 'Enter a value'
+        }}
+        suggestedFields={[
+          'input',
+          'output',
+          'status',
+          'tag'
+        ]}
+      />
+    </DsFiltersBar.View>
+    <DsFiltersBar.View value="advanced">
+      <DsFiltersBar.Query />
+    </DsFiltersBar.View>
+    <DsFiltersBar.ClearAll />
+  </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Localized = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded
+    defaultView="builder"
+    fields={[
+        {
+            type: 'compound',
+            id: 'input',
+            label: 'Input',
+            subfields: [
+                {
+                    type: 'text',
+                    id: 'name',
+                    label: 'Name',
+                    operators: [
+                        { value: '~', label: 'Contains' },
+                        { value: '=', label: 'Equal' },
+                        { value: '!=', label: 'Not equal' },
+                    ],
+                },
+                { type: 'text', id: 'vendor', label: 'Vendor', operators: [{ value: '=', label: 'Equal' }] },
+                { type: 'text', id: 'type', label: 'Type', operators: [{ value: '=', label: 'Equal' }] },
+                { type: 'text', id: 'version', label: 'Version', operators: [{ value: '=', label: 'Equal' }] },
+            ],
+        },
+        { type: 'text', id: 'output', label: 'Output', operators: [{ value: '=', label: 'Equal' }] },
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: [{ value: '=', label: 'equals' }],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'pending', label: 'Pending' },
+            ],
+        },
+        {
+            type: 'enum',
+            id: 'tag',
+            label: 'Tag',
+            operators: [{ value: '=', label: 'equals' }],
+            options: [
+                { value: 'core', label: 'Core' },
+                { value: 'edge', label: 'Edge' },
+            ],
+        },
+    ]}
+    defaultConditions={[
+        { kind: 'field', id: 'c1', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
+        { kind: 'field', id: 'c2', field: 'status', operator: '=', value: ['active', 'pending'] },
+    ]}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary count={12} />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.Search />
+        <DsFiltersBar.ViewSwitch />
+        <DsFiltersBar.View value="filters">
+            <DsFiltersBar.Conditions />
+        </DsFiltersBar.View>
+        <DsFiltersBar.View value="builder">
+            <DsFiltersBar.Builder
+                suggestedFields={['input', 'output', 'status', 'tag']}
+                locale={{
+                    title: 'Build a condition',
+                    close: 'Dismiss',
+                    clear: 'Start over',
+                    searchField: 'Find a field',
+                    selectField: 'Pick a field',
+                    searchSubfield: 'Find a part',
+                    selectSubfield: 'Pick a part',
+                    searchOperator: 'Find an operator',
+                    selectOperator: 'Pick an operator',
+                    searchValue: 'Find a value',
+                    selectValue: 'Pick a value',
+                    valuePlaceholder: 'Enter a value',
+                    save: 'Add condition',
+                    addFilter: 'New condition',
+                }} />
+        </DsFiltersBar.View>
+        <DsFiltersBar.View value="advanced">
+            <DsFiltersBar.Query />
+        </DsFiltersBar.View>
+        <DsFiltersBar.ClearAll />
+    </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>;

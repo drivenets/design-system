@@ -207,6 +207,31 @@ describe('DsFiltersBar UI state', () => {
 		await expect.element(output('view')).toHaveTextContent('filters');
 	});
 
+	it.each(['filters', 'builder'] as const)(
+		'shows the advanced view while a query locks the asked-for %s view, then that view after clear',
+		async (defaultView) => {
+			const onViewChange = vi.fn();
+
+			await renderBar({ defaultView, onViewChange });
+
+			await page.getByRole('button', { name: 'query', exact: true }).click();
+			await expect.element(output('view')).toHaveTextContent('advanced');
+
+			await page.getByRole('button', { name: 'clear' }).click();
+			await expect.element(output('view')).toHaveTextContent(defaultView);
+			expect(onViewChange).not.toHaveBeenCalled();
+		},
+	);
+
+	it('shows the advanced view over a controlled locked view without reporting a change', async () => {
+		const onViewChange = vi.fn();
+
+		await renderBar({ view: 'builder', query: 'status = "A" OR status = "B"', onViewChange });
+
+		await expect.element(output('view')).toHaveTextContent('advanced');
+		expect(onViewChange).not.toHaveBeenCalled();
+	});
+
 	it('throws when a part is used outside Root', async () => {
 		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 

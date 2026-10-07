@@ -11,7 +11,8 @@ const QUERY_DEBOUNCE_MS = 300;
 
 /**
  * Text the user typed, and the query text of the document it was typed over. The draft shows
- * while the field is focused, or while the document has not changed under it.
+ * while the field is focused, or while the document has not changed under it, so the user's
+ * casing and line breaks survive blur until another part edits the document.
  */
 interface Draft {
 	text: string;
@@ -110,17 +111,13 @@ const QueryEditor = ({ disabled = false, locale, slots, className, style }: DsFi
 			return;
 		}
 
-		const pending = timerRef.current !== undefined;
+		if (timerRef.current === undefined) {
+			return;
+		}
 
 		clearTimeout(timerRef.current);
 		timerRef.current = undefined;
-
-		const valid = pending ? commit(activeDraft.text) : error === null;
-
-		// A valid draft gives way to the document's canonical text; an invalid one stays to be fixed.
-		if (valid) {
-			setDraft(null);
-		}
+		commit(activeDraft.text);
 	};
 
 	return (

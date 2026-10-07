@@ -1,0 +1,726 @@
+# DsFiltersBar.Root docs snippets
+
+## Default
+
+### Show code
+<DsFiltersBar.Root
+  defaultConditions={[
+    {
+      field: 'status',
+      id: 'c1',
+      kind: 'field',
+      operator: '!=',
+      value: [
+        'active',
+        'pending'
+      ]
+    },
+    {
+      field: 'lastRunResult',
+      id: 'c2',
+      kind: 'field',
+      operator: '!=',
+      value: [
+        'succeeded'
+      ]
+    },
+    {
+      field: 'trigger',
+      id: 'c3',
+      kind: 'field',
+      operator: '=',
+      value: [
+        'scheduled'
+      ]
+    },
+    {
+      field: 'parents',
+      id: 'c4',
+      kind: 'field',
+      operator: '=',
+      value: {
+        from: 1,
+        to: 5
+      }
+    },
+    {
+      field: 'lastRun',
+      id: 'c5',
+      kind: 'field',
+      operator: '>',
+      value: 'last7Days'
+    },
+    {
+      field: 'input',
+      id: 'c6',
+      kind: 'field',
+      operator: '~',
+      subfield: 'name',
+      value: 'WF456'
+    },
+    {
+      id: 'c7',
+      kind: 'search',
+      text: 'AAA'
+    }
+  ]}
+  defaultExpanded
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'not equals',
+          symbol: '≠',
+          value: '!='
+        }
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Deprecated',
+          value: 'deprecated'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'lastRunResult',
+      label: 'Last run result',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'not equals',
+          symbol: '≠',
+          value: '!='
+        }
+      ],
+      options: [
+        {
+          label: 'Succeeded',
+          value: 'succeeded'
+        },
+        {
+          label: 'Failed',
+          value: 'failed'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'trigger',
+      label: 'Trigger',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'not equals',
+          symbol: '≠',
+          value: '!='
+        }
+      ],
+      options: [
+        {
+          label: 'Manual',
+          value: 'manual'
+        },
+        {
+          label: 'Scheduled',
+          value: 'scheduled'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'parents',
+      label: 'Parents',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'greater than',
+          symbol: '>',
+          value: '>'
+        },
+        {
+          label: 'less than',
+          symbol: '<',
+          value: '<'
+        }
+      ],
+      type: 'number'
+    },
+    {
+      id: 'lastRun',
+      label: 'Last run',
+      operators: [
+        {
+          label: 'is',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'after',
+          symbol: '>',
+          value: '>'
+        },
+        {
+          label: 'before',
+          symbol: '<',
+          value: '<'
+        }
+      ],
+      presets: [
+        {
+          label: 'Today',
+          value: 'today'
+        },
+        {
+          label: 'Last 7 days',
+          value: 'last7Days'
+        }
+      ],
+      type: 'date'
+    },
+    {
+      id: 'input',
+      label: 'Input',
+      subfields: [
+        {
+          id: 'name',
+          label: 'Name',
+          operators: [
+            {
+              label: 'contains',
+              value: '~'
+            },
+            {
+              label: 'does not contain',
+              value: '!~'
+            }
+          ],
+          type: 'text'
+        }
+      ],
+      type: 'compound'
+    }
+  ]}
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary count={9} />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.Search />
+    <DsFiltersBar.View value="filters">
+      <DsFiltersBar.Conditions />
+    </DsFiltersBar.View>
+  </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Default = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '!=', label: 'not equals', symbol: '≠' },
+            ],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'deprecated', label: 'Deprecated' },
+                { value: 'pending', label: 'Pending' },
+            ],
+        },
+        {
+            type: 'enum',
+            id: 'lastRunResult',
+            label: 'Last run result',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '!=', label: 'not equals', symbol: '≠' },
+            ],
+            options: [
+                { value: 'succeeded', label: 'Succeeded' },
+                { value: 'failed', label: 'Failed' },
+            ],
+        },
+        {
+            type: 'enum',
+            id: 'trigger',
+            label: 'Trigger',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '!=', label: 'not equals', symbol: '≠' },
+            ],
+            options: [
+                { value: 'manual', label: 'Manual' },
+                { value: 'scheduled', label: 'Scheduled' },
+            ],
+        },
+        {
+            type: 'number',
+            id: 'parents',
+            label: 'Parents',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '>', label: 'greater than', symbol: '>' },
+                { value: '<', label: 'less than', symbol: '<' },
+            ],
+        },
+        {
+            type: 'date',
+            id: 'lastRun',
+            label: 'Last run',
+            operators: [
+                { value: '=', label: 'is', symbol: '=' },
+                { value: '>', label: 'after', symbol: '>' },
+                { value: '<', label: 'before', symbol: '<' },
+            ],
+            presets: [
+                { value: 'today', label: 'Today' },
+                { value: 'last7Days', label: 'Last 7 days' },
+            ],
+        },
+        {
+            type: 'compound',
+            id: 'input',
+            label: 'Input',
+            subfields: [
+                {
+                    type: 'text',
+                    id: 'name',
+                    label: 'Name',
+                    operators: [
+                        { value: '~', label: 'contains' },
+                        { value: '!~', label: 'does not contain' },
+                    ],
+                },
+            ],
+        },
+    ]}
+    defaultConditions={[
+        { kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['active', 'pending'] },
+        { kind: 'field', id: 'c2', field: 'lastRunResult', operator: '!=', value: ['succeeded'] },
+        { kind: 'field', id: 'c3', field: 'trigger', operator: '=', value: ['scheduled'] },
+        { kind: 'field', id: 'c4', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
+        { kind: 'field', id: 'c5', field: 'lastRun', operator: '>', value: 'last7Days' },
+        { kind: 'field', id: 'c6', field: 'input', subfield: 'name', operator: '~', value: 'WF456' },
+        { kind: 'search', id: 'c7', text: 'AAA' },
+    ]}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary count={9} />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.Search />
+        <DsFiltersBar.View value="filters">
+            <DsFiltersBar.Conditions />
+        </DsFiltersBar.View>
+    </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>;
+
+## Filters Dialog
+
+### Show code
+<DsFiltersBar.Root
+  defaultConditions={[
+    {
+      field: 'status',
+      id: 'c1',
+      kind: 'field',
+      operator: '!=',
+      value: [
+        'deprecated',
+        'draft'
+      ]
+    },
+    {
+      field: 'trigger',
+      id: 'c2',
+      kind: 'field',
+      operator: '=',
+      value: [
+        'scheduled'
+      ]
+    },
+    {
+      field: 'parents',
+      id: 'c3',
+      kind: 'field',
+      operator: '=',
+      value: {
+        from: 1,
+        to: 5
+      }
+    }
+  ]}
+  defaultExpanded
+  defaultPins={[
+    {
+      field: 'status',
+      value: 'active'
+    },
+    {
+      field: 'workflow',
+      value: 'deploy'
+    }
+  ]}
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'not equals',
+          symbol: '≠',
+          value: '!='
+        }
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Deprecated',
+          value: 'deprecated'
+        },
+        {
+          label: 'Inactive',
+          value: 'inactive'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        },
+        {
+          label: 'Draft',
+          value: 'draft'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'workflow',
+      label: 'Workflow',
+      operators: [
+        {
+          label: 'is any of',
+          symbol: '∈',
+          value: 'IN'
+        },
+        {
+          label: 'is none of',
+          symbol: '∉',
+          value: 'NOT IN'
+        }
+      ],
+      options: [
+        {
+          label: 'Deploy',
+          value: 'deploy'
+        },
+        {
+          label: 'Backup',
+          value: 'backup'
+        },
+        {
+          label: 'Upgrade',
+          value: 'upgrade'
+        },
+        {
+          label: 'Rollback',
+          value: 'rollback'
+        },
+        {
+          label: 'Health check',
+          value: 'healthCheck'
+        },
+        {
+          label: 'Provision',
+          value: 'provision'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'trigger',
+      label: 'Trigger',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'not equals',
+          symbol: '≠',
+          value: '!='
+        }
+      ],
+      options: [
+        {
+          label: 'Manual',
+          value: 'manual'
+        },
+        {
+          label: 'Scheduled',
+          value: 'scheduled'
+        },
+        {
+          label: 'API',
+          value: 'api'
+        },
+        {
+          label: 'Webhook',
+          value: 'webhook'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'parents',
+      label: 'Parents',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'greater than',
+          symbol: '>',
+          value: '>'
+        },
+        {
+          label: 'less than',
+          symbol: '<',
+          value: '<'
+        }
+      ],
+      type: 'number'
+    },
+    {
+      id: 'lastRun',
+      label: 'Last run',
+      operators: [
+        {
+          label: 'is',
+          symbol: '=',
+          value: '='
+        },
+        {
+          label: 'after',
+          symbol: '>',
+          value: '>'
+        },
+        {
+          label: 'before',
+          symbol: '<',
+          value: '<'
+        }
+      ],
+      presets: [
+        {
+          label: 'Today',
+          value: 'today'
+        },
+        {
+          label: 'Last 7 days',
+          value: 'last7Days'
+        }
+      ],
+      type: 'date'
+    },
+    {
+      id: 'input',
+      label: 'Input',
+      subfields: [
+        {
+          id: 'name',
+          label: 'Name',
+          operators: [
+            {
+              label: 'contains',
+              value: '~'
+            },
+            {
+              label: 'does not contain',
+              value: '!~'
+            }
+          ],
+          type: 'text'
+        }
+      ],
+      type: 'compound'
+    }
+  ]}
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary count={42} />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.View value="filters">
+      <DsFiltersBar.Conditions />
+    </DsFiltersBar.View>
+  </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const FiltersDialog = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '!=', label: 'not equals', symbol: '≠' },
+            ],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'deprecated', label: 'Deprecated' },
+                { value: 'inactive', label: 'Inactive' },
+                { value: 'pending', label: 'Pending' },
+                { value: 'draft', label: 'Draft' },
+            ],
+        },
+        {
+            type: 'enum',
+            id: 'workflow',
+            label: 'Workflow',
+            operators: [
+                { value: 'IN', label: 'is any of', symbol: '∈' },
+                { value: 'NOT IN', label: 'is none of', symbol: '∉' },
+            ],
+            options: [
+                { value: 'deploy', label: 'Deploy' },
+                { value: 'backup', label: 'Backup' },
+                { value: 'upgrade', label: 'Upgrade' },
+                { value: 'rollback', label: 'Rollback' },
+                { value: 'healthCheck', label: 'Health check' },
+                { value: 'provision', label: 'Provision' },
+            ],
+        },
+        {
+            type: 'enum',
+            id: 'trigger',
+            label: 'Trigger',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '!=', label: 'not equals', symbol: '≠' },
+            ],
+            options: [
+                { value: 'manual', label: 'Manual' },
+                { value: 'scheduled', label: 'Scheduled' },
+                { value: 'api', label: 'API' },
+                { value: 'webhook', label: 'Webhook' },
+            ],
+        },
+        {
+            type: 'number',
+            id: 'parents',
+            label: 'Parents',
+            operators: [
+                { value: '=', label: 'equals', symbol: '=' },
+                { value: '>', label: 'greater than', symbol: '>' },
+                { value: '<', label: 'less than', symbol: '<' },
+            ],
+        },
+        {
+            type: 'date',
+            id: 'lastRun',
+            label: 'Last run',
+            operators: [
+                { value: '=', label: 'is', symbol: '=' },
+                { value: '>', label: 'after', symbol: '>' },
+                { value: '<', label: 'before', symbol: '<' },
+            ],
+            presets: [
+                { value: 'today', label: 'Today' },
+                { value: 'last7Days', label: 'Last 7 days' },
+            ],
+        },
+        {
+            type: 'compound',
+            id: 'input',
+            label: 'Input',
+            subfields: [
+                {
+                    type: 'text',
+                    id: 'name',
+                    label: 'Name',
+                    operators: [
+                        { value: '~', label: 'contains' },
+                        { value: '!~', label: 'does not contain' },
+                    ],
+                },
+            ],
+        },
+    ]}
+    defaultConditions={[
+        { kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated', 'draft'] },
+        { kind: 'field', id: 'c2', field: 'trigger', operator: '=', value: ['scheduled'] },
+        { kind: 'field', id: 'c3', field: 'parents', operator: '=', value: { from: 1, to: 5 } },
+    ]}
+    defaultPins={[
+        { field: 'status', value: 'active' },
+        { field: 'workflow', value: 'deploy' },
+    ]}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary count={42} />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.View value="filters">
+            <DsFiltersBar.Conditions />
+        </DsFiltersBar.View>
+    </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>;

@@ -1,5 +1,12 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
-import type { DsSavedFiltersSaveProps, DsSavedFiltersTriggerProps } from '../ds-saved-filters';
+import {
+	defaultDsSavedFiltersLocale,
+	type DsSavedFilterItem,
+	type DsSavedFiltersAsyncHandler,
+	type DsSavedFiltersLocale,
+	type DsSavedFiltersSaveProps,
+	type DsSavedFiltersTriggerProps,
+} from '../ds-saved-filters';
 
 export const filterOperatorValues = ['=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', '~', '!~'] as const;
 export type DsFilterOperatorValue = (typeof filterOperatorValues)[number];
@@ -218,10 +225,13 @@ export interface DsFiltersBarRootProps {
 	 */
 	defaultExpanded?: boolean;
 	/**
-	 * Active view. Pair with `onViewChange`.
+	 * Asked-for view. While an Advanced query locks it, the bar shows the advanced view instead and
+	 * shows this one again once the query is cleared; `onViewChange` does not fire for either.
+	 * Pair with `onViewChange`.
 	 */
 	view?: DsFiltersBarView;
 	/**
+	 * Locked by an Advanced query the same way as `view`
 	 * @default 'filters'
 	 */
 	defaultView?: DsFiltersBarView;
@@ -309,10 +319,38 @@ export interface DsFiltersBarToolbarProps {
 }
 
 /**
+ * One **Saved filter** in the `items` of `SavedFilters` and `SaveFilter`
+ */
+export type DsFiltersBarSavedFilterItem = DsSavedFilterItem;
+
+/**
+ * Strings of `SavedFilters` and `SaveFilter`
+ */
+export type DsFiltersBarSavedFiltersLocale = DsSavedFiltersLocale;
+
+export const defaultDsFiltersBarSavedFiltersLocale: Required<DsFiltersBarSavedFiltersLocale> =
+	defaultDsSavedFiltersLocale;
+
+/**
+ * Saved-filter callback. Return a Promise to keep the launching control in a loading state until it
+ * settles.
+ */
+export type DsFiltersBarSavedFiltersAsyncHandler<Args extends unknown[] = []> =
+	DsSavedFiltersAsyncHandler<Args>;
+
+/**
+ * Picker for **Saved filters**. The consumer owns the items, the **Active saved filter** id, `dirty`
+ * and each snapshot's payload; the bar stores none of them. Loading a snapshot means writing its
+ * payload back through controlled `conditions` / `query` on `Root` from `onValueChange`.
  * Clearing the **Active saved filter** also clears the filter document before `onClear` runs.
  */
 export type DsFiltersBarSavedFiltersProps = DsSavedFiltersTriggerProps;
 
+/**
+ * Saves the filter document as a **Saved filter**. The consumer owns the items, the **Active saved
+ * filter** id and the payload: `onSaveAs` and `onUpdate` read the current `conditions` / `query`
+ * from the consumer's own state, so pair this with controlled `conditions` / `query` on `Root`.
+ */
 export interface DsFiltersBarSaveFilterProps extends Omit<DsSavedFiltersSaveProps, 'disabled'> {
 	/**
 	 * Defaults to disabled while the filter document is empty
@@ -367,7 +405,7 @@ export interface DsFiltersBarViewSwitchLocale {
 	 */
 	views?: Partial<Record<DsFiltersBarView, string>>;
 	/**
-	 * Tooltip on a view locked by an edited advanced query
+	 * Tooltip and accessible description of a view locked by an edited advanced query
 	 */
 	lockedView?: string;
 }
@@ -387,6 +425,7 @@ export const defaultDsFiltersBarViewSwitchLocale = Object.freeze({
  */
 export interface DsFiltersBarViewSwitchProps {
 	locale?: DsFiltersBarViewSwitchLocale;
+	ref?: Ref<HTMLDivElement>;
 	className?: string;
 	style?: CSSProperties;
 }
@@ -409,7 +448,7 @@ export const defaultDsFiltersBarClearAllLocale: Required<DsFiltersBarClearAllLoc
 
 /**
  * Empties the conditions and drops the advanced query. Renders nothing while the filter document
- * is empty.
+ * is empty, so focus then moves to `Search`, or to `Disclosure` when there is no `Search`.
  */
 export interface DsFiltersBarClearAllProps {
 	locale?: DsFiltersBarClearAllLocale;
@@ -468,7 +507,7 @@ export interface DsFiltersBarPinnedToggleProps {
 	 */
 	active: boolean;
 	/**
-	 * Defaults to disabled when `count` is 0
+	 * Defaults to disabled when `count` is 0 and the toggle is off, so an active toggle can always be turned off
 	 */
 	disabled?: boolean;
 	ref?: Ref<HTMLButtonElement>;

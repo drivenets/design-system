@@ -34,7 +34,7 @@ const STATUS: DsFilterFieldCondition = {
 	value: ['active'],
 };
 
-// Switching views and clearing are other parts' jobs, so a probe drives them here.
+// Switching views, clearing and editing conditions are other parts' jobs, so a probe drives them here.
 const Probe = () => {
 	const bar = useDsFiltersBarContext();
 
@@ -46,6 +46,9 @@ const Probe = () => {
 			</button>
 			<button type="button" onClick={bar.clear}>
 				clear
+			</button>
+			<button type="button" onClick={() => bar.setConditions([STATUS])}>
+				set status active
 			</button>
 		</div>
 	);
@@ -127,13 +130,28 @@ describe('DsFiltersBar.Query', () => {
 		expect(onQueryChange).not.toHaveBeenCalled();
 	});
 
-	it('shows the canonical text of a valid query once the field loses focus', async () => {
-		await renderQuery();
+	it('keeps the typed text and its line breaks after the field loses focus', async () => {
+		const onConditionsChange = vi.fn();
 
-		await field().fill('STATUS in (Pending, active)');
+		await renderQuery({ onConditionsChange });
+
+		await field().fill('STATUS in (Pending, active)\nAND latency >= 5');
 		await userEvent.tab();
 
-		await expect.element(field()).toHaveValue('status IN ("pending", "active")');
+		await expect.element(field()).toHaveValue('STATUS in (Pending, active)\nAND latency >= 5');
+		expect(onConditionsChange).toHaveBeenCalledOnce();
+	});
+
+	it('shows the canonical text once the document changes elsewhere', async () => {
+		await renderQuery();
+
+		await field().fill('STATUS = Pending');
+		await userEvent.tab();
+		await expect.element(field()).toHaveValue('STATUS = Pending');
+
+		await page.getByRole('button', { name: 'set status active' }).click();
+
+		await expect.element(field()).toHaveValue('status = "active"');
 	});
 
 	it('keeps an invalid query through blur and drops it when the view changes', async () => {

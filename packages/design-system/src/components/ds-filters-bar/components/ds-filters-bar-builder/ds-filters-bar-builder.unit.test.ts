@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import type { DsFilterField } from '../../ds-filters-bar.types';
+import type { DsFilterField, DsFilterFieldCondition } from '../../ds-filters-bar.types';
 import { defaultDsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 import {
 	type BuilderDraft,
+	builderDraftFromCondition,
 	chooseBuilderOption,
 	describeBuilderStep,
 	emptyBuilderDraft,
@@ -143,5 +144,85 @@ describe('query builder draft', () => {
 
 		expect(draft.query).toBe('');
 		expect(viewOf(draft).placeholder).toBe('Search value');
+	});
+});
+
+describe('builderDraftFromCondition', () => {
+	it.each<DsFilterFieldCondition>([
+		{ kind: 'field', id: 'c1', field: 'input', subfield: 'name', operator: '~', value: 'AAA' },
+		{ kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['pending'] },
+		{ kind: 'field', id: 'c3', field: 'parents', operator: '>', value: 12.5 },
+		{ kind: 'field', id: 'c4', field: 'lastRun', operator: '=', value: 'today' },
+	])('fills every step from a condition the builder can hold: $field', (condition) => {
+		const rebuilt = toFieldCondition(FIELDS, builderDraftFromCondition(FIELDS, condition));
+
+		expect({ ...rebuilt, id: condition.id }).toEqual(condition);
+	});
+
+	it('shows the condition as the selection path', () => {
+		const draft = builderDraftFromCondition(FIELDS, {
+			kind: 'field',
+			id: 'c1',
+			field: 'input',
+			subfield: 'name',
+			operator: '~',
+			value: 'AAA',
+		});
+
+		expect(viewOf(draft).path.map((segment) => segment.text)).toEqual(['Input', 'Name', 'Contains', 'AAA']);
+		expect(viewOf(draft).inputValue).toBe('AAA');
+	});
+
+	it('opens an enum with several values at its value step, keeping the operator', () => {
+		const draft = builderDraftFromCondition(FIELDS, {
+			kind: 'field',
+			id: 'c1',
+			field: 'status',
+			operator: '!=',
+			value: ['active', 'pending'],
+		});
+
+		expect(draft).toEqual({ ...emptyBuilderDraft(), fieldId: 'status', operator: '!=' });
+		expect(viewOf(draft).caption).toBe('Select a value');
+		expect(toFieldCondition(FIELDS, draft)).toBeNull();
+	});
+
+	it('opens a range at its value step with the value empty', () => {
+		const draft = builderDraftFromCondition(FIELDS, {
+			kind: 'field',
+			id: 'c1',
+			field: 'lastRun',
+			operator: '=',
+			value: { from: '2024-01-01', to: null },
+		});
+
+		expect(draft).toEqual({ ...emptyBuilderDraft(), fieldId: 'lastRun', operator: '=' });
+		expect(viewOf(draft).placeholder).toBe('Value');
+	});
+
+	it('drops an operator the field does not offer, reopening at the operator step', () => {
+		const draft = builderDraftFromCondition(FIELDS, {
+			kind: 'field',
+			id: 'c1',
+			field: 'input',
+			subfield: 'vendor',
+			operator: '~',
+			value: 'Acme',
+		});
+
+		expect(draft).toEqual({ ...emptyBuilderDraft(), fieldId: 'input', subfieldId: 'vendor' });
+		expect(viewOf(draft).caption).toBe('Select an operator');
+	});
+
+	it('starts empty for a field missing from the schema', () => {
+		expect(
+			builderDraftFromCondition(FIELDS, {
+				kind: 'field',
+				id: 'c1',
+				field: 'gone',
+				operator: '=',
+				value: 'x',
+			}),
+		).toEqual(emptyBuilderDraft());
 	});
 });

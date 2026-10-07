@@ -1,0 +1,115 @@
+# DsFiltersBar.Root docs snippets
+
+## Default
+
+### Show code
+<DsFiltersBar.Root
+  defaultConditions={[
+    {
+      id: 'c1',
+      kind: 'search',
+      text: 'AAA'
+    }
+  ]}
+  defaultExpanded
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        {
+          label: 'equals',
+          symbol: '=',
+          value: '='
+        }
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        }
+      ],
+      type: 'enum'
+    }
+  ]}
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary count={7} />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.Search />
+    <DsFiltersBar.View value="filters">
+      <DsFiltersBar.Conditions />
+    </DsFiltersBar.View>
+  </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Default = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: [{ value: '=', label: 'equals', symbol: '=' }],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'pending', label: 'Pending' },
+            ],
+        },
+    ]}
+    defaultConditions={[{ kind: 'search', id: 'c1', text: 'AAA' }]}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary count={7} />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.Search />
+        <DsFiltersBar.View value="filters">
+            <DsFiltersBar.Conditions />
+        </DsFiltersBar.View>
+    </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>;
+
+## Disabled
+
+### Show code
+<DsFiltersBar.Root
+  defaultExpanded
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.Search disabled />
+  </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Disabled = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.Search disabled />
+    </DsFiltersBar.Toolbar>
+</DsFiltersBar.Root>;

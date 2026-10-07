@@ -1,0 +1,232 @@
+# DsFiltersBar.Root docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [active, setActive] = useState({
+      active: true,
+      pending: false,
+      deprecated: false,
+      today: false
+    });
+    return <DsFiltersBar.Root {...args}>
+                <DsFiltersBar.Disclosure />
+                <DsFiltersBar.Summary count={10} />
+                <DsFiltersBar.Pinned>
+                    <DsFiltersBar.PinnedGroup label="Status">
+                        <DsFiltersBar.PinnedToggle label="Active" count={10} active={active.active} onActiveChange={next => setActive(current => ({
+            ...current,
+            active: next
+          }))} />
+                        <DsFiltersBar.PinnedToggle label="Pending" count={4} active={active.pending} onActiveChange={next => setActive(current => ({
+            ...current,
+            pending: next
+          }))} />
+                        <DsFiltersBar.PinnedToggle label="Deprecated" count={0} active={active.deprecated} onActiveChange={next => setActive(current => ({
+            ...current,
+            deprecated: next
+          }))} />
+                    </DsFiltersBar.PinnedGroup>
+                    <DsFiltersBar.PinnedGroup label="Last seen">
+                        <DsFiltersBar.PinnedToggle label="Today" count={2} active={active.today} onActiveChange={next => setActive(current => ({
+            ...current,
+            today: next
+          }))} />
+                    </DsFiltersBar.PinnedGroup>
+                </DsFiltersBar.Pinned>
+            </DsFiltersBar.Root>;
+  }
+}
+
+### MCP manifest
+const Default = () => {
+    const [active, setActive] = useState({ active: true, pending: false, deprecated: false, today: false });
+
+    return (
+        <DsFiltersBar.Root
+            onConditionsChange={fn()}
+            onQueryChange={fn()}
+            onPinsChange={fn()}
+            onExpandedChange={fn()}
+            onViewChange={fn()}>
+            <DsFiltersBar.Disclosure />
+            <DsFiltersBar.Summary count={10} />
+            <DsFiltersBar.Pinned>
+                <DsFiltersBar.PinnedGroup label="Status">
+                    <DsFiltersBar.PinnedToggle
+                        label="Active"
+                        count={10}
+                        active={active.active}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, active: next }))} />
+                    <DsFiltersBar.PinnedToggle
+                        label="Pending"
+                        count={4}
+                        active={active.pending}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, pending: next }))} />
+                    <DsFiltersBar.PinnedToggle
+                        label="Deprecated"
+                        count={0}
+                        active={active.deprecated}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, deprecated: next }))} />
+                </DsFiltersBar.PinnedGroup>
+                <DsFiltersBar.PinnedGroup label="Last seen">
+                    <DsFiltersBar.PinnedToggle
+                        label="Today"
+                        count={2}
+                        active={active.today}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, today: next }))} />
+                </DsFiltersBar.PinnedGroup>
+            </DsFiltersBar.Pinned>
+        </DsFiltersBar.Root>
+    );
+};
+
+## Expanded
+
+### Show code
+{
+  args: {
+    defaultExpanded: true
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [active, setActive] = useState({
+      active: false,
+      pending: false,
+      today: true,
+      week: false
+    });
+    return <DsFiltersBar.Root {...args}>
+                <DsFiltersBar.Disclosure />
+                <DsFiltersBar.Toolbar>
+                    <DsFiltersBar.Search />
+                </DsFiltersBar.Toolbar>
+                <DsFiltersBar.Pinned>
+                    <DsFiltersBar.PinnedGroup label="Status">
+                        <DsFiltersBar.PinnedToggle label="Active" count={10} active={active.active} onActiveChange={next => setActive(current => ({
+            ...current,
+            active: next
+          }))} />
+                        <DsFiltersBar.PinnedToggle label="Pending" count={4} active={active.pending} onActiveChange={next => setActive(current => ({
+            ...current,
+            pending: next
+          }))} />
+                    </DsFiltersBar.PinnedGroup>
+                    <DsFiltersBar.PinnedGroup label="Last seen">
+                        <DsFiltersBar.PinnedToggle label="Today" count={2} active={active.today} onActiveChange={next => setActive(current => ({
+            ...current,
+            today: next
+          }))} />
+                        <DsFiltersBar.PinnedToggle label="Last 7 days" count={12} active={active.week} onActiveChange={next => setActive(current => ({
+            ...current,
+            week: next
+          }))} />
+                    </DsFiltersBar.PinnedGroup>
+                </DsFiltersBar.Pinned>
+            </DsFiltersBar.Root>;
+  }
+}
+
+### MCP manifest
+const Expanded = () => {
+    const [active, setActive] = useState({ active: false, pending: false, today: true, week: false });
+
+    return (
+        <DsFiltersBar.Root
+            onConditionsChange={fn()}
+            onQueryChange={fn()}
+            onPinsChange={fn()}
+            onExpandedChange={fn()}
+            onViewChange={fn()}
+            defaultExpanded>
+            <DsFiltersBar.Disclosure />
+            <DsFiltersBar.Toolbar>
+                <DsFiltersBar.Search />
+            </DsFiltersBar.Toolbar>
+            <DsFiltersBar.Pinned>
+                <DsFiltersBar.PinnedGroup label="Status">
+                    <DsFiltersBar.PinnedToggle
+                        label="Active"
+                        count={10}
+                        active={active.active}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, active: next }))} />
+                    <DsFiltersBar.PinnedToggle
+                        label="Pending"
+                        count={4}
+                        active={active.pending}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, pending: next }))} />
+                </DsFiltersBar.PinnedGroup>
+                <DsFiltersBar.PinnedGroup label="Last seen">
+                    <DsFiltersBar.PinnedToggle
+                        label="Today"
+                        count={2}
+                        active={active.today}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, today: next }))} />
+                    <DsFiltersBar.PinnedToggle
+                        label="Last 7 days"
+                        count={12}
+                        active={active.week}
+                        onActiveChange={(next) => setActive((current) => ({ ...current, week: next }))} />
+                </DsFiltersBar.PinnedGroup>
+            </DsFiltersBar.Pinned>
+        </DsFiltersBar.Root>
+    );
+};
+
+## Localized
+
+### Show code
+<DsFiltersBar.Root
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary count={10} />
+  <DsFiltersBar.Pinned
+    locale={{
+      label: 'Shortcuts'
+    }}
+  >
+    <DsFiltersBar.PinnedGroup label="Status">
+      <DsFiltersBar.PinnedToggle
+        active
+        count={10}
+        label="Active"
+      />
+    </DsFiltersBar.PinnedGroup>
+  </DsFiltersBar.Pinned>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Localized = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary count={10} />
+    <DsFiltersBar.Pinned locale={{ label: 'Shortcuts' }}>
+        <DsFiltersBar.PinnedGroup label="Status">
+            <DsFiltersBar.PinnedToggle label="Active" count={10} active />
+        </DsFiltersBar.PinnedGroup>
+    </DsFiltersBar.Pinned>
+</DsFiltersBar.Root>;

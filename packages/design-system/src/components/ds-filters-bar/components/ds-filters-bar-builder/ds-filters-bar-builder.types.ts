@@ -1,6 +1,17 @@
 import type { CSSProperties } from 'react';
+import {
+	defaultDsFiltersBarConditionChipsLocale,
+	type DsFiltersBarConditionChipsLocale,
+} from '../ds-filters-bar-condition-chips';
 
-export interface DsFiltersBarBuilderLocale {
+/**
+ * `addFilter` and the chip strings are shared with the filters view's locale; the rest words the
+ * query builder dialog.
+ */
+export interface DsFiltersBarBuilderLocale extends DsFiltersBarConditionChipsLocale {
+	/**
+	 * Query builder dialog title
+	 */
 	title?: string;
 	/**
 	 * Accessible name of the close button
@@ -29,6 +40,7 @@ export interface DsFiltersBarBuilderLocale {
 }
 
 export const defaultDsFiltersBarBuilderLocale: Required<DsFiltersBarBuilderLocale> = Object.freeze({
+	...defaultDsFiltersBarConditionChipsLocale,
 	title: 'Query builder',
 	close: 'Close',
 	clear: 'Clear selection',
@@ -45,9 +57,14 @@ export const defaultDsFiltersBarBuilderLocale: Required<DsFiltersBarBuilderLocal
 });
 
 /**
- * Query builder view: builds one condition step by step. The field's type decides the steps —
- * compound: subfield, then operator and value; text, number and date: operator, then value;
- * enum: value. Date presets and enum options are offered on the value step.
+ * Builder view: the add button and the same condition chips as the filters view. The add button
+ * opens the query builder dialog empty to add a condition; a field chip opens it filled from that
+ * condition, and Save replaces it. The dialog builds one condition step by step — the field's type
+ * decides the steps: compound: subfield, then operator and value; text, number and date: operator,
+ * then value; enum: value. Date presets and enum options are offered on the value step. A condition
+ * the dialog cannot hold, such as several enum values or a range, opens at its value step with the
+ * value empty. Save and close keep the builder view. Renders nothing while an Advanced query is the
+ * source.
  */
 export interface DsFiltersBarBuilderProps {
 	/**

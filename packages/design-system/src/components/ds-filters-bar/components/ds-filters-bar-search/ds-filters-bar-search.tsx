@@ -1,14 +1,14 @@
 import classNames from 'classnames';
 import { useEffect, useLayoutEffect, useRef, type KeyboardEvent } from 'react';
-import { mergeRefs } from '../../../utils/merge-refs';
-import { DsButtonV3 } from '../../ds-button-v3';
-import { DsFormControl } from '../../ds-form-control';
-import { DsIcon } from '../../ds-icon';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import styles from '../ds-filters-bar.module.scss';
-import { defaultDsFiltersBarSearchLocale, type DsFiltersBarSearchProps } from '../ds-filters-bar.types';
-import { createSearchCondition } from '../ds-filters-bar.utils';
-import { useReportedState } from '../use-reported-state';
+import { mergeRefs } from '../../../../utils/merge-refs';
+import { DsButtonV3 } from '../../../ds-button-v3';
+import { DsFormControl } from '../../../ds-form-control';
+import { DsIcon } from '../../../ds-icon';
+import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
+import styles from './ds-filters-bar-search.module.scss';
+import { defaultDsFiltersBarSearchLocale, type DsFiltersBarSearchProps } from '../../ds-filters-bar.types';
+import { createSearchCondition } from '../../ds-filters-bar.utils';
+import { useReportedState } from '../../use-reported-state';
 
 const FOCUS_KEY = '/';
 const EDITABLE_SELECTOR = 'input, textarea, select, [contenteditable]:not([contenteditable="false"])';
@@ -51,7 +51,10 @@ export const Search = ({
 	});
 
 	useEffect(() => {
-		registerSearch({ edit: (text) => editRef.current(text) });
+		registerSearch({
+			edit: (text) => editRef.current(text),
+			focus: () => inputRef.current?.focus(),
+		});
 
 		return () => registerSearch(null);
 	}, [registerSearch]);

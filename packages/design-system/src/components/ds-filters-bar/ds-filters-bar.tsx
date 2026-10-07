@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import {
 	Builder,
 	ClearAll,
@@ -67,11 +67,15 @@ const Root = ({
 	const [query, setQuery] = useReportedState<string | null>(queryProp, onQueryChange, defaultQuery);
 	const [pins, setPins] = useReportedState(pinsProp, onPinsChange, defaultPins);
 	const [expanded, setExpanded] = useReportedState(expandedProp, onExpandedChange, defaultExpanded);
-	const [view, setView] = useReportedState<DsFiltersBarView>(viewProp, onViewChange, defaultView);
+	const [requestedView, setView] = useReportedState<DsFiltersBarView>(viewProp, onViewChange, defaultView);
+	const lockedViews = lockedViewsFor(query);
+	// Derived, not reported: the asked-for view shows again once the query is cleared.
+	const view = lockedViews.includes(requestedView) ? 'advanced' : requestedView;
 	const toolbarId = useId();
 	const locale = { ...defaultDsFiltersBarLocale, ...localeProp };
 	const [resetRevision, setResetRevision] = useState(0);
 	const [search, registerSearch] = useState<DsFiltersBarSearchHandle | null>(null);
+	const disclosureRef = useRef<HTMLButtonElement>(null);
 
 	return (
 		<DsFiltersBarContext.Provider
@@ -83,7 +87,7 @@ const Root = ({
 				resetRevision,
 				pins,
 				isEmpty: query === null && conditions.length === 0,
-				lockedViews: lockedViewsFor(query),
+				lockedViews,
 				expanded,
 				view,
 				toolbarId,
@@ -103,6 +107,7 @@ const Root = ({
 				setView,
 				search,
 				registerSearch,
+				disclosureRef,
 			}}
 		>
 			<div

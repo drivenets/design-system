@@ -3,7 +3,9 @@ import type {
 	DsFilterFieldCondition,
 	DsFilterOperatorValue,
 	DsFilterScalarField,
+	DsFilterValue,
 } from '../../ds-filters-bar.types';
+import { isRange } from '../../ds-filters-bar.utils';
 import type { DsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 
 const COMPLETE_NUMBER = /^-?\d+(\.\d+)?$/;
@@ -465,4 +467,64 @@ export const toFieldCondition = (
 	}
 
 	return { ...base, value: text };
+};
+
+const sameValue = (a: DsFilterValue, b: DsFilterValue): boolean => {
+	if (Array.isArray(a) && Array.isArray(b)) {
+		return a.length === b.length && a.every((item, index) => item === b[index]);
+	}
+
+	return a === b;
+};
+
+const valueDraft = (
+	scalar: DsFilterScalarField,
+	value: DsFilterValue,
+): Pick<BuilderDraft, 'valueText' | 'optionValue'> => {
+	if (typeof value === 'string' || typeof value === 'number') {
+		return { valueText: scalar.type === 'enum' ? '' : String(value), optionValue: null };
+	}
+
+	if (isRange(value) || scalar.type !== 'enum') {
+		return { valueText: '', optionValue: null };
+	}
+
+	return { valueText: '', optionValue: value[0] ?? null };
+};
+
+/**
+ * The draft that edits `condition`: its field, subfield and operator, and its value when the
+ * builder can hold it. A value it cannot hold (several enum options, a range) is left empty, so the
+ * dialog opens at the value step; an operator the field does not offer opens it at the operator step.
+ */
+export const builderDraftFromCondition = (
+	fields: ReadonlyArray<DsFilterField>,
+	condition: DsFilterFieldCondition,
+): BuilderDraft => {
+	const located = resolveField(fields, {
+		...emptyBuilderDraft(),
+		fieldId: condition.field,
+		subfieldId: condition.subfield ?? null,
+	});
+
+	if (!located) {
+		return emptyBuilderDraft();
+	}
+
+	const base: BuilderDraft = {
+		...emptyBuilderDraft(),
+		fieldId: located.field.id,
+		subfieldId: located.field.type === 'compound' ? (located.scalar?.id ?? null) : null,
+	};
+	const { scalar } = located;
+
+	if (!scalar?.operators.some((operator) => operator.value === condition.operator)) {
+		return base;
+	}
+
+	const withOperator: BuilderDraft = { ...base, operator: condition.operator };
+	const filled: BuilderDraft = { ...withOperator, ...valueDraft(scalar, condition.value) };
+	const rebuilt = toFieldCondition(fields, filled);
+
+	return rebuilt && sameValue(rebuilt.value, condition.value) ? filled : withOperator;
 };

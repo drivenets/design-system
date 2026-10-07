@@ -1,0 +1,767 @@
+# DsFiltersBar.Root docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [conditions, setConditions] = useState<ReadonlyArray<DsFilterCondition>>([{
+      kind: 'search',
+      id: 'c1',
+      text: 'router'
+    }, {
+      kind: 'field',
+      id: 'c2',
+      field: 'status',
+      operator: '!=',
+      value: ['deprecated']
+    }, {
+      kind: 'field',
+      id: 'c3',
+      field: 'hardware',
+      subfield: 'model',
+      operator: '~',
+      value: 'mx'
+    }, {
+      kind: 'field',
+      id: 'c4',
+      field: 'lastSeen',
+      operator: '=',
+      value: 'last7Days'
+    }]);
+    const [query, setQuery] = useState<string | null>(null);
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DeviceSavedFilter>>(deviceSavedFilters);
+    const [activeSavedFilterId, setActiveSavedFilterId] = useState<string | null>(null);
+    const documentKey = (document: {
+      conditions: ReadonlyArray<DsFilterCondition>;
+      query: string | null;
+    }) => document.query ?? serializeFilterQuery(document.conditions);
+    const activeSavedFilter = savedFilters.find(item => item.id === activeSavedFilterId);
+    const dirty = !!activeSavedFilter && documentKey(activeSavedFilter) !== documentKey({
+      conditions,
+      query
+    });
+    const savedFilterItems = savedFilters.map(item => ({
+      id: item.id,
+      name: item.name,
+      ...(item.query === null && {
+        count: item.conditions.length
+      })
+    }));
+    const loadSavedFilter = (id: string | null) => {
+      const saved = savedFilters.find(item => item.id === id);
+      setActiveSavedFilterId(saved?.id ?? null);
+      if (saved) {
+        setConditions(saved.conditions);
+        setQuery(saved.query);
+      }
+    };
+    return <DsFiltersBar.Root fields={deviceFields} conditions={conditions} query={query} defaultPins={[{
+      field: 'status',
+      value: 'active'
+    }, {
+      field: 'status',
+      value: 'pending'
+    }]} defaultExpanded onConditionsChange={setConditions} onQueryChange={setQuery}>
+                <DsFiltersBar.Disclosure />
+                <DsFiltersBar.Summary count={18} activeSavedFilterName={activeSavedFilter?.name} />
+
+                <DsFiltersBar.Toolbar>
+                    <DsFiltersBar.SavedFilters items={savedFilterItems} value={activeSavedFilterId} dirty={dirty} onValueChange={loadSavedFilter} onClear={() => setActiveSavedFilterId(null)} onRename={(id, name) => setSavedFilters(current => current.map(item => item.id === id ? {
+          ...item,
+          name
+        } : item))} onDelete={id => {
+          setSavedFilters(current => current.filter(item => item.id !== id));
+          setActiveSavedFilterId(current => current === id ? null : current);
+        }} />
+                    <DsFiltersBar.Search />
+                    <DsFiltersBar.ViewSwitch />
+                    <DsFiltersBar.View value="filters">
+                        <DsFiltersBar.Conditions />
+                    </DsFiltersBar.View>
+                    <DsFiltersBar.View value="builder">
+                        <DsFiltersBar.Builder suggestedFields={['status', 'hardware']} />
+                    </DsFiltersBar.View>
+                    <DsFiltersBar.View value="advanced">
+                        <DsFiltersBar.Query />
+                    </DsFiltersBar.View>
+                    <DsFiltersBar.SaveFilter items={savedFilterItems} value={activeSavedFilterId} onUpdate={() => setSavedFilters(current => current.map(item => item.id === activeSavedFilterId ? {
+          ...item,
+          conditions,
+          query
+        } : item))} onSaveAs={name => {
+          const id = `saved-${String(Date.now())}`;
+          setSavedFilters(current => [...current, {
+            id,
+            name,
+            conditions,
+            query
+          }]);
+          setActiveSavedFilterId(id);
+        }} />
+                    <DsFiltersBar.ClearAll onClick={() => setActiveSavedFilterId(null)} />
+                </DsFiltersBar.Toolbar>
+
+                <DsFiltersBar.Pinned>
+                    <DsFiltersBar.PinnedGroup label="Status">
+                        <DsFiltersBar.PinnedToggle label="Active" count={10} active={false} />
+                        <DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
+                    </DsFiltersBar.PinnedGroup>
+                </DsFiltersBar.Pinned>
+            </DsFiltersBar.Root>;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [conditions, setConditions] = useState<ReadonlyArray<DsFilterCondition>>([
+        { kind: 'search', id: 'c1', text: 'router' },
+        { kind: 'field', id: 'c2', field: 'status', operator: '!=', value: ['deprecated'] },
+        { kind: 'field', id: 'c3', field: 'hardware', subfield: 'model', operator: '~', value: 'mx' },
+        { kind: 'field', id: 'c4', field: 'lastSeen', operator: '=', value: 'last7Days' },
+    ]);
+    const [query, setQuery] = useState<string | null>(null);
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DeviceSavedFilter>>(deviceSavedFilters);
+    const [activeSavedFilterId, setActiveSavedFilterId] = useState<string | null>(null);
+
+    const documentKey = (document: { conditions: ReadonlyArray<DsFilterCondition>; query: string | null }) =>
+        document.query ?? serializeFilterQuery(document.conditions);
+
+    const activeSavedFilter = savedFilters.find((item) => item.id === activeSavedFilterId);
+    const dirty =
+        !!activeSavedFilter && documentKey(activeSavedFilter) !== documentKey({ conditions, query });
+    const savedFilterItems = savedFilters.map((item) => ({
+        id: item.id,
+        name: item.name,
+        ...(item.query === null && { count: item.conditions.length }),
+    }));
+
+    const loadSavedFilter = (id: string | null) => {
+        const saved = savedFilters.find((item) => item.id === id);
+
+        setActiveSavedFilterId(saved?.id ?? null);
+
+        if (saved) {
+            setConditions(saved.conditions);
+            setQuery(saved.query);
+        }
+    };
+
+    return (
+        <DsFiltersBar.Root
+            fields={deviceFields}
+            conditions={conditions}
+            query={query}
+            defaultPins={[
+                { field: 'status', value: 'active' },
+                { field: 'status', value: 'pending' },
+            ]}
+            defaultExpanded
+            onConditionsChange={setConditions}
+            onQueryChange={setQuery}
+        >
+            <DsFiltersBar.Disclosure />
+            <DsFiltersBar.Summary count={18} activeSavedFilterName={activeSavedFilter?.name} />
+
+            <DsFiltersBar.Toolbar>
+                <DsFiltersBar.SavedFilters
+                    items={savedFilterItems}
+                    value={activeSavedFilterId}
+                    dirty={dirty}
+                    onValueChange={loadSavedFilter}
+                    onClear={() => setActiveSavedFilterId(null)}
+                    onRename={(id, name) =>
+                        setSavedFilters((current) => current.map((item) => (item.id === id ? { ...item, name } : item)))
+                    }
+                    onDelete={(id) => {
+                        setSavedFilters((current) => current.filter((item) => item.id !== id));
+                        setActiveSavedFilterId((current) => (current === id ? null : current));
+                    }}
+                />
+                <DsFiltersBar.Search />
+                <DsFiltersBar.ViewSwitch />
+                <DsFiltersBar.View value="filters">
+                    <DsFiltersBar.Conditions />
+                </DsFiltersBar.View>
+                <DsFiltersBar.View value="builder">
+                    <DsFiltersBar.Builder suggestedFields={['status', 'hardware']} />
+                </DsFiltersBar.View>
+                <DsFiltersBar.View value="advanced">
+                    <DsFiltersBar.Query />
+                </DsFiltersBar.View>
+                <DsFiltersBar.SaveFilter
+                    items={savedFilterItems}
+                    value={activeSavedFilterId}
+                    onUpdate={() =>
+                        setSavedFilters((current) =>
+                            current.map((item) =>
+                                item.id === activeSavedFilterId ? { ...item, conditions, query } : item,
+                            ),
+                        )
+                    }
+                    onSaveAs={(name) => {
+                        const id = `saved-${String(Date.now())}`;
+
+                        setSavedFilters((current) => [...current, { id, name, conditions, query }]);
+                        setActiveSavedFilterId(id);
+                    }}
+                />
+                <DsFiltersBar.ClearAll onClick={() => setActiveSavedFilterId(null)} />
+            </DsFiltersBar.Toolbar>
+
+            <DsFiltersBar.Pinned>
+                <DsFiltersBar.PinnedGroup label="Status">
+                    <DsFiltersBar.PinnedToggle label="Active" count={10} active={false} />
+                    <DsFiltersBar.PinnedToggle label="Pending" count={0} active={false} />
+                </DsFiltersBar.PinnedGroup>
+            </DsFiltersBar.Pinned>
+        </DsFiltersBar.Root>
+    );
+};
+
+## With Table
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [conditions, setConditions] = useState<ReadonlyArray<DsFilterCondition>>([]);
+    const [query, setQuery] = useState<string | null>(null);
+    const [pins, setPins] = useState<ReadonlyArray<DsFilterPin>>([{
+      field: 'status',
+      value: 'active'
+    }, {
+      field: 'status',
+      value: 'pending'
+    }, {
+      field: 'role',
+      value: 'core'
+    }, {
+      field: 'role',
+      value: 'edge'
+    }]);
+    const [activeToggles, setActiveToggles] = useState<ReadonlyArray<DsFilterPin>>([]);
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DeviceSavedFilter>>(deviceSavedFilters);
+    const [activeSavedFilterId, setActiveSavedFilterId] = useState<string | null>(null);
+    const isSamePin = (a: DsFilterPin, b: DsFilterPin) => a.field === b.field && a.value === b.value;
+    const documentKey = (document: {
+      conditions: ReadonlyArray<DsFilterCondition>;
+      query: string | null;
+    }) => document.query ?? serializeFilterQuery(document.conditions);
+    const activeSavedFilter = savedFilters.find(item => item.id === activeSavedFilterId);
+    const dirty = !!activeSavedFilter && documentKey(activeSavedFilter) !== documentKey({
+      conditions,
+      query
+    });
+    const savedFilterItems = savedFilters.map(item => ({
+      id: item.id,
+      name: item.name,
+      ...(item.query === null && {
+        count: item.conditions.length
+      })
+    }));
+
+    // Toggles of options the user unpinned no longer apply
+    const effectiveToggles = activeToggles.filter(toggle => pins.some(pin => isSamePin(pin, toggle)));
+    const documentRows = matchRows(devices, {
+      fields: deviceFields,
+      conditions,
+      query
+    });
+    const rows = matchRows(documentRows, {
+      fields: deviceFields,
+      activeToggles: effectiveToggles
+    });
+    const pinnedGroups = deviceFields.flatMap(field => {
+      const options = field.type === 'enum' ? field.options : field.type === 'date' ? field.presets ?? [] : [];
+      const toggles = pins.filter(pin => pin.field === field.id).map(pin => ({
+        pin,
+        label: options.find(option => option.value === pin.value)?.label ?? pin.value,
+        count: matchRows(documentRows, {
+          fields: deviceFields,
+          activeToggles: [pin]
+        }).length,
+        active: effectiveToggles.some(toggle => isSamePin(toggle, pin))
+      }));
+      return toggles.length > 0 ? [{
+        field,
+        toggles
+      }] : [];
+    });
+    const setToggle = (pin: DsFilterPin, active: boolean) => setActiveToggles(current => active ? [...current, pin] : current.filter(toggle => !isSamePin(toggle, pin)));
+    const loadSavedFilter = (id: string | null) => {
+      const saved = savedFilters.find(item => item.id === id);
+      setActiveSavedFilterId(saved?.id ?? null);
+      if (saved) {
+        setConditions(saved.conditions);
+        setQuery(saved.query);
+      }
+    };
+    return <DsStack direction="column" gap="var(--standard)">
+                <DsFiltersBar.Root fields={deviceFields} conditions={conditions} query={query} pins={pins} defaultExpanded onConditionsChange={setConditions} onQueryChange={setQuery} onPinsChange={setPins}>
+                    <DsFiltersBar.Disclosure />
+                    <DsFiltersBar.Summary count={rows.length} activeSavedFilterName={activeSavedFilter?.name} />
+
+                    <DsFiltersBar.Toolbar>
+                        <DsFiltersBar.SavedFilters items={savedFilterItems} value={activeSavedFilterId} dirty={dirty} onValueChange={loadSavedFilter} onClear={() => setActiveSavedFilterId(null)} onRename={(id, name) => setSavedFilters(current => current.map(item => item.id === id ? {
+            ...item,
+            name
+          } : item))} onDelete={id => {
+            setSavedFilters(current => current.filter(item => item.id !== id));
+            setActiveSavedFilterId(current => current === id ? null : current);
+          }} />
+                        <DsFiltersBar.Search />
+                        <DsFiltersBar.ViewSwitch />
+                        <DsFiltersBar.View value="filters">
+                            <DsFiltersBar.Conditions />
+                        </DsFiltersBar.View>
+                        <DsFiltersBar.View value="builder">
+                            <DsFiltersBar.Builder suggestedFields={['status', 'role', 'hardware']} />
+                        </DsFiltersBar.View>
+                        <DsFiltersBar.View value="advanced">
+                            <DsFiltersBar.Query />
+                        </DsFiltersBar.View>
+                        <DsFiltersBar.SaveFilter items={savedFilterItems} value={activeSavedFilterId} onUpdate={() => setSavedFilters(current => current.map(item => item.id === activeSavedFilterId ? {
+            ...item,
+            conditions,
+            query
+          } : item))} onSaveAs={name => {
+            const id = `saved-${String(Date.now())}`;
+            setSavedFilters(current => [...current, {
+              id,
+              name,
+              conditions,
+              query
+            }]);
+            setActiveSavedFilterId(id);
+          }} />
+                        <DsFiltersBar.ClearAll onClick={() => {
+            setActiveToggles([]);
+            setActiveSavedFilterId(null);
+          }} />
+                    </DsFiltersBar.Toolbar>
+
+                    {pinnedGroups.length > 0 && <DsFiltersBar.Pinned>
+                            {pinnedGroups.map(({
+            field,
+            toggles
+          }) => <DsFiltersBar.PinnedGroup key={field.id} label={field.label}>
+                                    {toggles.map(({
+              pin,
+              label,
+              count,
+              active
+            }) => <DsFiltersBar.PinnedToggle key={pin.value} label={label} count={count} active={active} onActiveChange={next => setToggle(pin, next)} />)}
+                                </DsFiltersBar.PinnedGroup>)}
+                        </DsFiltersBar.Pinned>}
+                </DsFiltersBar.Root>
+
+                <DsTable columns={deviceColumns} data={rows} stickyHeader bordered fullWidth />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const WithTable = function Render() {
+    const [conditions, setConditions] = useState<ReadonlyArray<DsFilterCondition>>([]);
+    const [query, setQuery] = useState<string | null>(null);
+    const [pins, setPins] = useState<ReadonlyArray<DsFilterPin>>([
+        { field: 'status', value: 'active' },
+        { field: 'status', value: 'pending' },
+        { field: 'role', value: 'core' },
+        { field: 'role', value: 'edge' },
+    ]);
+    const [activeToggles, setActiveToggles] = useState<ReadonlyArray<DsFilterPin>>([]);
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DeviceSavedFilter>>(deviceSavedFilters);
+    const [activeSavedFilterId, setActiveSavedFilterId] = useState<string | null>(null);
+
+    const isSamePin = (a: DsFilterPin, b: DsFilterPin) => a.field === b.field && a.value === b.value;
+    const documentKey = (document: { conditions: ReadonlyArray<DsFilterCondition>; query: string | null }) =>
+        document.query ?? serializeFilterQuery(document.conditions);
+
+    const activeSavedFilter = savedFilters.find((item) => item.id === activeSavedFilterId);
+    const dirty =
+        !!activeSavedFilter && documentKey(activeSavedFilter) !== documentKey({ conditions, query });
+    const savedFilterItems = savedFilters.map((item) => ({
+        id: item.id,
+        name: item.name,
+        ...(item.query === null && { count: item.conditions.length }),
+    }));
+
+    // Toggles of options the user unpinned no longer apply
+    const effectiveToggles = activeToggles.filter((toggle) => pins.some((pin) => isSamePin(pin, toggle)));
+    const documentRows = matchRows(devices, { fields: deviceFields, conditions, query });
+    const rows = matchRows(documentRows, { fields: deviceFields, activeToggles: effectiveToggles });
+
+    const pinnedGroups = deviceFields.flatMap((field) => {
+        const options =
+            field.type === 'enum' ? field.options : field.type === 'date' ? (field.presets ?? []) : [];
+        const toggles = pins
+            .filter((pin) => pin.field === field.id)
+            .map((pin) => ({
+                pin,
+                label: options.find((option) => option.value === pin.value)?.label ?? pin.value,
+                count: matchRows(documentRows, { fields: deviceFields, activeToggles: [pin] }).length,
+                active: effectiveToggles.some((toggle) => isSamePin(toggle, pin)),
+            }));
+
+        return toggles.length > 0 ? [{ field, toggles }] : [];
+    });
+
+    const setToggle = (pin: DsFilterPin, active: boolean) =>
+        setActiveToggles((current) =>
+            active ? [...current, pin] : current.filter((toggle) => !isSamePin(toggle, pin)),
+        );
+
+    const loadSavedFilter = (id: string | null) => {
+        const saved = savedFilters.find((item) => item.id === id);
+
+        setActiveSavedFilterId(saved?.id ?? null);
+
+        if (saved) {
+            setConditions(saved.conditions);
+            setQuery(saved.query);
+        }
+    };
+
+    return (
+        <DsStack direction="column" gap="var(--standard)">
+            <DsFiltersBar.Root
+                fields={deviceFields}
+                conditions={conditions}
+                query={query}
+                pins={pins}
+                defaultExpanded
+                onConditionsChange={setConditions}
+                onQueryChange={setQuery}
+                onPinsChange={setPins}
+            >
+                <DsFiltersBar.Disclosure />
+                <DsFiltersBar.Summary count={rows.length} activeSavedFilterName={activeSavedFilter?.name} />
+
+                <DsFiltersBar.Toolbar>
+                    <DsFiltersBar.SavedFilters
+                        items={savedFilterItems}
+                        value={activeSavedFilterId}
+                        dirty={dirty}
+                        onValueChange={loadSavedFilter}
+                        onClear={() => setActiveSavedFilterId(null)}
+                        onRename={(id, name) =>
+                            setSavedFilters((current) =>
+                                current.map((item) => (item.id === id ? { ...item, name } : item)),
+                            )
+                        }
+                        onDelete={(id) => {
+                            setSavedFilters((current) => current.filter((item) => item.id !== id));
+                            setActiveSavedFilterId((current) => (current === id ? null : current));
+                        }}
+                    />
+                    <DsFiltersBar.Search />
+                    <DsFiltersBar.ViewSwitch />
+                    <DsFiltersBar.View value="filters">
+                        <DsFiltersBar.Conditions />
+                    </DsFiltersBar.View>
+                    <DsFiltersBar.View value="builder">
+                        <DsFiltersBar.Builder suggestedFields={['status', 'role', 'hardware']} />
+                    </DsFiltersBar.View>
+                    <DsFiltersBar.View value="advanced">
+                        <DsFiltersBar.Query />
+                    </DsFiltersBar.View>
+                    <DsFiltersBar.SaveFilter
+                        items={savedFilterItems}
+                        value={activeSavedFilterId}
+                        onUpdate={() =>
+                            setSavedFilters((current) =>
+                                current.map((item) =>
+                                    item.id === activeSavedFilterId ? { ...item, conditions, query } : item,
+                                ),
+                            )
+                        }
+                        onSaveAs={(name) => {
+                            const id = `saved-${String(Date.now())}`;
+
+                            setSavedFilters((current) => [...current, { id, name, conditions, query }]);
+                            setActiveSavedFilterId(id);
+                        }}
+                    />
+                    <DsFiltersBar.ClearAll
+                        onClick={() => {
+                            setActiveToggles([]);
+                            setActiveSavedFilterId(null);
+                        }}
+                    />
+                </DsFiltersBar.Toolbar>
+
+                {pinnedGroups.length > 0 && (
+                    <DsFiltersBar.Pinned>
+                        {pinnedGroups.map(({ field, toggles }) => (
+                            <DsFiltersBar.PinnedGroup key={field.id} label={field.label}>
+                                {toggles.map(({ pin, label, count, active }) => (
+                                    <DsFiltersBar.PinnedToggle
+                                        key={pin.value}
+                                        label={label}
+                                        count={count}
+                                        active={active}
+                                        onActiveChange={(next) => setToggle(pin, next)}
+                                    />
+                                ))}
+                            </DsFiltersBar.PinnedGroup>
+                        ))}
+                    </DsFiltersBar.Pinned>
+                )}
+            </DsFiltersBar.Root>
+
+            <DsTable columns={deviceColumns} data={rows} stickyHeader bordered fullWidth />
+        </DsStack>
+    );
+};
+
+## Localized
+
+### Show code
+<DsFiltersBar.Root
+  defaultConditions={[
+    {
+      field: 'status',
+      id: 'c1',
+      kind: 'field',
+      operator: '=',
+      value: [
+        'active'
+      ]
+    }
+  ]}
+  defaultExpanded
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        {
+          label: 'equals',
+          value: '='
+        }
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        }
+      ],
+      type: 'enum'
+    }
+  ]}
+  locale={{
+    collapse: 'Hide refinements',
+    expand: 'Show refinements',
+    label: 'Refine results'
+  }}
+  onConditionsChange={() => {}}
+  onExpandedChange={() => {}}
+  onPinsChange={() => {}}
+  onQueryChange={() => {}}
+  onViewChange={() => {}}
+>
+  <DsFiltersBar.Disclosure />
+  <DsFiltersBar.Summary
+    count={3}
+    locale={{
+      activeSavedFilter: 'Preset',
+      advancedQuery: 'Custom query',
+      emptyLabel: 'Showing',
+      emptyValue: 'Everything',
+      resultCount: () => {},
+      search: 'Text'
+    }}
+  />
+  <DsFiltersBar.Toolbar>
+    <DsFiltersBar.SavedFilters
+      items={[
+        {
+          count: 1,
+          id: '1',
+          name: 'Only active'
+        }
+      ]}
+      locale={{
+        noSavedFilters: 'No presets yet',
+        savedFilters: 'Presets'
+      }}
+      onClear={() => {}}
+      onDelete={() => {}}
+      onRename={() => {}}
+      onValueChange={() => {}}
+      value={null}
+    />
+    <DsFiltersBar.Search
+      locale={{
+        clear: 'Clear text',
+        label: 'Find',
+        placeholder: 'Press ‘/’ to find'
+      }}
+     />
+    <DsFiltersBar.ViewSwitch
+      locale={{
+        label: 'Presentation',
+        lockedView: 'Remove the custom query to switch',
+        views: {
+          advanced: 'Query editor',
+          builder: 'Guided query',
+          filters: 'Quick filters'
+        }
+      }}
+     />
+    <DsFiltersBar.View value="filters">
+      <DsFiltersBar.Conditions
+        locale={{
+          addFilter: 'Add refinement',
+          saveFilters: 'Apply'
+        }}
+       />
+    </DsFiltersBar.View>
+    <DsFiltersBar.View value="builder">
+      <DsFiltersBar.Builder
+        locale={{
+          save: 'Add condition',
+          title: 'Build a condition'
+        }}
+       />
+    </DsFiltersBar.View>
+    <DsFiltersBar.View value="advanced">
+      <DsFiltersBar.Query
+        locale={{
+          help: 'Syntax',
+          label: 'Query editor',
+          placeholder: 'status = "Active"'
+        }}
+       />
+    </DsFiltersBar.View>
+    <DsFiltersBar.SaveFilter
+      items={[
+        {
+          count: 1,
+          id: '1',
+          name: 'Only active'
+        }
+      ]}
+      locale={{
+        saveAsNew: 'Save as a new preset',
+        saveFilter: 'Save preset'
+      }}
+      onSaveAs={() => {}}
+      onUpdate={() => {}}
+      value={null}
+    />
+    <DsFiltersBar.ClearAll
+      locale={{
+        label: 'Reset'
+      }}
+     />
+  </DsFiltersBar.Toolbar>
+  <DsFiltersBar.Pinned
+    locale={{
+      label: 'Shortcuts'
+    }}
+  >
+    <DsFiltersBar.PinnedGroup label="Status">
+      <DsFiltersBar.PinnedToggle
+        active={false}
+        count={3}
+        label="Active"
+      />
+    </DsFiltersBar.PinnedGroup>
+  </DsFiltersBar.Pinned>
+</DsFiltersBar.Root>
+
+### MCP manifest
+const Localized = () => <DsFiltersBar.Root
+    onConditionsChange={fn()}
+    onQueryChange={fn()}
+    onPinsChange={fn()}
+    onExpandedChange={fn()}
+    onViewChange={fn()}
+    defaultExpanded
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: [{ value: '=', label: 'equals' }],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'pending', label: 'Pending' },
+            ],
+        },
+    ]}
+    defaultConditions={[{ kind: 'field', id: 'c1', field: 'status', operator: '=', value: ['active'] }]}
+    locale={{ label: 'Refine results', expand: 'Show refinements', collapse: 'Hide refinements' }}>
+    <DsFiltersBar.Disclosure />
+    <DsFiltersBar.Summary
+        count={3}
+        locale={{
+            resultCount: (count) => `${String(count)} matches`,
+            activeSavedFilter: 'Preset',
+            emptyLabel: 'Showing',
+            emptyValue: 'Everything',
+            search: 'Text',
+            advancedQuery: 'Custom query',
+        }} />
+    <DsFiltersBar.Toolbar>
+        <DsFiltersBar.SavedFilters
+            items={[{ id: '1', name: 'Only active', count: 1 }]}
+            value={null}
+            locale={{ savedFilters: 'Presets', noSavedFilters: 'No presets yet' }}
+            onValueChange={fn()}
+            onClear={fn()}
+            onRename={fn()}
+            onDelete={fn()} />
+        <DsFiltersBar.Search
+            locale={{ label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Clear text' }} />
+        <DsFiltersBar.ViewSwitch
+            locale={{
+                label: 'Presentation',
+                views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' },
+                lockedView: 'Remove the custom query to switch',
+            }} />
+        <DsFiltersBar.View value="filters">
+            <DsFiltersBar.Conditions locale={{ addFilter: 'Add refinement', saveFilters: 'Apply' }} />
+        </DsFiltersBar.View>
+        <DsFiltersBar.View value="builder">
+            <DsFiltersBar.Builder locale={{ title: 'Build a condition', save: 'Add condition' }} />
+        </DsFiltersBar.View>
+        <DsFiltersBar.View value="advanced">
+            <DsFiltersBar.Query
+                locale={{ label: 'Query editor', placeholder: 'status = "Active"', help: 'Syntax' }} />
+        </DsFiltersBar.View>
+        <DsFiltersBar.SaveFilter
+            items={[{ id: '1', name: 'Only active', count: 1 }]}
+            value={null}
+            locale={{ saveFilter: 'Save preset', saveAsNew: 'Save as a new preset' }}
+            onUpdate={fn()}
+            onSaveAs={fn()} />
+        <DsFiltersBar.ClearAll locale={{ label: 'Reset' }} />
+    </DsFiltersBar.Toolbar>
+
+    <DsFiltersBar.Pinned locale={{ label: 'Shortcuts' }}>
+        <DsFiltersBar.PinnedGroup label="Status">
+            <DsFiltersBar.PinnedToggle label="Active" count={3} active={false} />
+        </DsFiltersBar.PinnedGroup>
+    </DsFiltersBar.Pinned>
+</DsFiltersBar.Root>;

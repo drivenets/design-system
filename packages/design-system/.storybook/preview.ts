@@ -29,6 +29,9 @@ const preview: Preview = {
 					'Guidelines',
 					['Colors', 'Typography', 'Layouts', 'Forms', 'Token Migration'],
 					'Components',
+					// Within each component, an `Internal` group (building blocks such as
+					// FiltersBar/Internal) goes after the component's own stories and groups.
+					['*', ['*', 'Internal']],
 					'*',
 				],
 			},

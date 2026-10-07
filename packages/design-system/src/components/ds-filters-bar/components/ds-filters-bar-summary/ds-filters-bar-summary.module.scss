@@ -1,0 +1,44 @@
+@use '../../../../styles/typography';
+@use '../../../../styles/mixin' as mixins;
+@use '../../styles/animations';
+
+.summary {
+	@include typography.body-xs-reg;
+	@include animations.swap-in;
+
+	display: flex;
+	align-items: center;
+	align-self: center;
+	gap: var(--sm);
+	min-width: 0;
+	color: var(--font-main);
+	white-space: nowrap;
+}
+
+.summarySavedFilter,
+.summaryCount {
+	flex: none;
+}
+
+.summaryConditions {
+	flex: 0 1 auto;
+	min-width: 0;
+}
+
+.summaryLabel {
+	font-weight: var(--font-weight-bold);
+}
+
+.summaryOperator {
+	font-style: italic;
+}
+
+.summaryCount {
+	@include typography.body-xs-md;
+
+	color: var(--font-secondary);
+}
+
+.visuallyHidden {
+	@include mixins.visually-hidden;
+}

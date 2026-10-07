@@ -1,26 +1,14 @@
 import type { CSSProperties } from 'react';
-import type { DsFilterOperator } from '../../ds-filters-bar.types';
+import {
+	defaultDsFiltersBarConditionChipsLocale,
+	type DsFiltersBarConditionChipsLocale,
+} from '../ds-filters-bar-condition-chips';
 import type { DsFiltersBarFiltersDialogLocale } from '../ds-filters-bar-filters-dialog';
 
-export interface DsFiltersBarConditionsLocale {
-	/**
-	 * Accessible name of the icon-only button that opens the filters dialog
-	 */
-	addFilter?: string;
-	/**
-	 * Accessible name of a chip's remove button. Receives the whole condition in words, for example
-	 * `Status not equals Active`, or the text of a search.
-	 */
-	removeCondition?: (condition: string) => string;
-	/**
-	 * Accessible name of a chip's operator menu button. Receives the field label, or the field and
-	 * subfield labels for a compound field.
-	 */
-	operator?: (fieldLabel: string) => string;
-	/**
-	 * Operator menu item text, as in `≠ (not equals)`
-	 */
-	operatorOption?: (operator: DsFilterOperator) => string;
+/**
+ * `addFilter` and the chip strings are shared with the builder view's locale.
+ */
+export interface DsFiltersBarConditionsLocale extends DsFiltersBarConditionChipsLocale {
 	filtersDialogTitle?: string;
 	saveFilters?: string;
 	/**
@@ -31,10 +19,7 @@ export interface DsFiltersBarConditionsLocale {
 }
 
 export const defaultDsFiltersBarConditionsLocale: Required<DsFiltersBarConditionsLocale> = Object.freeze({
-	addFilter: 'Add filter',
-	removeCondition: (condition: string) => `Remove filter: ${condition}`,
-	operator: (fieldLabel: string) => `${fieldLabel} operator`,
-	operatorOption: (operator: DsFilterOperator) => `${operator.symbol ?? operator.value} (${operator.label})`,
+	...defaultDsFiltersBarConditionChipsLocale,
 	filtersDialogTitle: 'Filters',
 	saveFilters: 'Save filters',
 	filtersDialog: Object.freeze({}),

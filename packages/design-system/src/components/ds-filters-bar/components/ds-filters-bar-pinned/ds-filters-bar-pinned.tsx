@@ -1,16 +1,16 @@
 import classNames from 'classnames';
 import { useId } from 'react';
-import { DsIcon } from '../../ds-icon';
-import { DsToggleFilterData } from '../../ds-toggle-filter-data';
-import { DsTypography } from '../../ds-typography';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import styles from '../ds-filters-bar.module.scss';
+import { DsIcon } from '../../../ds-icon';
+import { DsToggleFilterData } from '../../../ds-toggle-filter-data';
+import { DsTypography } from '../../../ds-typography';
+import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
+import styles from './ds-filters-bar-pinned.module.scss';
 import {
 	defaultDsFiltersBarPinnedLocale,
 	type DsFiltersBarPinnedGroupProps,
 	type DsFiltersBarPinnedProps,
 	type DsFiltersBarPinnedToggleProps,
-} from '../ds-filters-bar.types';
+} from '../../ds-filters-bar.types';
 
 export const Pinned = ({ locale: localeProp, className, style, children }: DsFiltersBarPinnedProps) => {
 	useDsFiltersBarContext();
@@ -70,7 +70,7 @@ export const PinnedToggle = ({
 			label={label}
 			value={count}
 			active={active}
-			disabled={disabled ?? count === 0}
+			disabled={disabled ?? (count === 0 && !active)}
 			className={className}
 			style={style}
 			onActiveChange={onActiveChange}

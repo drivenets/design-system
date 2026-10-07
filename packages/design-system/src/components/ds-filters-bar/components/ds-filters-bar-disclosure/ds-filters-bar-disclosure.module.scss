@@ -1,0 +1,20 @@
+@use '../../styles/variables';
+
+// Figma: 4px side padding with the 1px border drawn inside it, not the small button's text padding.
+// Doubled to outrank the button's own size rule.
+.disclosure.disclosure[data-size] {
+	padding-inline: calc(var(--3xs) - 1px);
+}
+
+// Neutral icons instead of the secondary button's action color; the icons follow `currentColor`.
+.disclosure > * {
+	color: var(--icon-main);
+}
+
+.disclosureChevron {
+	transition: transform variables.$swap-duration ease-in-out;
+
+	.disclosure[aria-expanded='true'] & {
+		transform: rotate(-90deg);
+	}
+}

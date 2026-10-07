@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, useContext, type RefObject } from 'react';
 import type {
 	DsFilterCondition,
 	DsFilterField,
@@ -15,6 +15,7 @@ export interface DsFiltersBarSearchHandle {
 	 * Replaces the pending text and focuses the input
 	 */
 	edit: (text: string) => void;
+	focus: () => void;
 }
 
 /**
@@ -43,6 +44,9 @@ export interface DsFiltersBarContextValue {
 	isEmpty: boolean;
 	lockedViews: ReadonlyArray<DsFiltersBarView>;
 	expanded: boolean;
+	/**
+	 * The view shown: `advanced` while the asked-for view is locked by an Advanced query
+	 */
 	view: DsFiltersBarView;
 	/**
 	 * Id of the expanded toolbar, referenced by the disclosure button's `aria-controls`
@@ -73,6 +77,10 @@ export interface DsFiltersBarContextValue {
 	 */
 	search: DsFiltersBarSearchHandle | null;
 	registerSearch: (search: DsFiltersBarSearchHandle | null) => void;
+	/**
+	 * The mounted `Disclosure` button, where focus falls back to when there is no `Search`
+	 */
+	disclosureRef: RefObject<HTMLButtonElement | null>;
 }
 
 export const DsFiltersBarContext = createContext<DsFiltersBarContextValue | null>(null);
