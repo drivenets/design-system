@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { fn } from 'storybook/test';
 import { DsButtonV3 } from '../ds-button-v3';
+import { DsStack } from '../ds-stack';
 import { DsFiltersBar } from './index';
 import { filtersBarViews, type DsFiltersBarView } from './ds-filters-bar.types';
 
@@ -17,7 +18,7 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 				component: `
 **Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
 \`Search\`, \`Conditions\` (the add-filter button with its filters dialog, and a chip per
-condition), the query builder, and the advanced query view render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
+condition), the query builder, the advanced query view, and \`Pinned\` render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
 directly under \`Root\`.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
@@ -197,6 +198,76 @@ export const Default: Story = {
 			</DsFiltersBar.Pinned>
 		</DsFiltersBar.Root>
 	),
+};
+
+/**
+ * Quick toggles that stay visible while the bar is collapsed and while it is expanded. An active
+ * pill narrows the results the conditions already produced. A count of 0 disables the pill.
+ */
+export const Pinned: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render() {
+		const [active, setActive] = useState({
+			active: true,
+			pending: false,
+			today: false,
+			week: false,
+		});
+
+		const toggle = (key: keyof typeof active) => (next: boolean) =>
+			setActive((current) => ({ ...current, [key]: next }));
+
+		const Row = () => (
+			<DsFiltersBar.Pinned>
+				<DsFiltersBar.PinnedGroup label="Status">
+					<DsFiltersBar.PinnedToggle
+						label="Active"
+						count={10}
+						active={active.active}
+						onActiveChange={toggle('active')}
+					/>
+					<DsFiltersBar.PinnedToggle
+						label="Pending"
+						count={4}
+						active={active.pending}
+						onActiveChange={toggle('pending')}
+					/>
+				</DsFiltersBar.PinnedGroup>
+				<DsFiltersBar.PinnedGroup label="Date">
+					<DsFiltersBar.PinnedToggle
+						label="Today"
+						count={2}
+						active={active.today}
+						onActiveChange={toggle('today')}
+					/>
+					<DsFiltersBar.PinnedToggle
+						label="Last 7 days"
+						count={12}
+						active={active.week}
+						onActiveChange={toggle('week')}
+					/>
+				</DsFiltersBar.PinnedGroup>
+			</DsFiltersBar.Pinned>
+		);
+
+		return (
+			<DsStack direction="column" gap="24px">
+				<DsFiltersBar.Root>
+					<DsFiltersBar.Summary />
+					<Row />
+				</DsFiltersBar.Root>
+				<DsFiltersBar.Root defaultExpanded>
+					<DsFiltersBar.Toolbar>
+						<DsFiltersBar.Search />
+						<DsFiltersBar.ClearAll />
+					</DsFiltersBar.Toolbar>
+					<Row />
+				</DsFiltersBar.Root>
+			</DsStack>
+		);
+	},
 };
 
 /**
@@ -740,6 +811,12 @@ export const Localized: Story = {
 				/>
 				<DsFiltersBar.ClearAll locale={{ label: 'Reset' }} />
 			</DsFiltersBar.Toolbar>
+
+			<DsFiltersBar.Pinned locale={{ label: 'Shortcuts' }}>
+				<DsFiltersBar.PinnedGroup label="Status">
+					<DsFiltersBar.PinnedToggle label="Active" count={10} active />
+				</DsFiltersBar.PinnedGroup>
+			</DsFiltersBar.Pinned>
 
 			{/* Moves back into Toolbar once Toolbar renders */}
 			<DsFiltersBar.View value="advanced">
