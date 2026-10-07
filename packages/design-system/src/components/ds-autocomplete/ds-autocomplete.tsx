@@ -74,6 +74,12 @@ export const DsAutocomplete = ({
 			onValueChange={handleValueChange}
 			onOpenChange={handleOpenChange}
 			closeOnSelect
+			// Mount the portalled dropdown only while open. A modal (DsModal, DsDialog) aria-hides
+			// everything outside itself when it opens, including an already-mounted dropdown in <body>.
+			//
+			// See: https://github.com/chakra-ui/ark/issues/3728
+			lazyMount
+			unmountOnExit
 		>
 			<Combobox.Control
 				className={classNames(

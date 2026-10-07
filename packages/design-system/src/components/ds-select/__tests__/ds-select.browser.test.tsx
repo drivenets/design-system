@@ -6,6 +6,7 @@ import type { DsSelectOption } from '../ds-select.types';
 import { DsTag } from '../../ds-tag';
 import { DsIcon } from '../../ds-icon';
 import { type DsStatus, DsStatusBadge } from '../../ds-status-badge';
+import { DsModal } from '../../ds-modal';
 import styles from '../ds-select.stories.module.scss';
 
 const mockOptions = [
@@ -635,5 +636,43 @@ describe('DsSelect', () => {
 
 		await searchInput.clear();
 		await userEvent.keyboard('{Escape}');
+	});
+
+	// DsModal aria-hides everything outside itself each time it opens, so a listbox
+	// still mounted in <body> from an earlier open would become unreachable by role.
+	it('should keep options reachable by role after a DsModal is closed and reopened', async () => {
+		const ModalHarness = () => {
+			const [open, setOpen] = useState(true);
+
+			return (
+				<>
+					<button type="button" onClick={() => setOpen(true)}>
+						Open modal
+					</button>
+					<DsModal open={open} onOpenChange={setOpen}>
+						<DsModal.Body>
+							<ControlledSelectHarness options={countryOptions} />
+							<button type="button" onClick={() => setOpen(false)}>
+								Close modal
+							</button>
+						</DsModal.Body>
+					</DsModal>
+				</>
+			);
+		};
+
+		await page.render(<ModalHarness />);
+
+		await page.getByRole('combobox').click();
+		await page.getByRole('option', { name: 'Germany' }).click();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await page.getByRole('combobox').click();
+		await page.getByRole('option', { name: 'Japan' }).click();
+
+		await expect.element(page.getByRole('combobox')).toMatchTextContent('Japan');
 	});
 });

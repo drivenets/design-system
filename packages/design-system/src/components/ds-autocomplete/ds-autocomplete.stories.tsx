@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { DsButtonV3 } from '../ds-button-v3';
 import { DsIcon } from '../ds-icon';
+import { DsModal } from '../ds-modal';
 import { DsStack } from '../ds-stack';
 import { DsTypography } from '../ds-typography';
 import { DsAutocomplete } from './ds-autocomplete';
@@ -254,6 +256,44 @@ export const AsyncOptions: Story = {
 		}, []);
 
 		return <DsAutocomplete {...args} options={options} loading={loading} placeholder="Select a country..." />;
+	},
+};
+
+/**
+ * DsAutocomplete can be placed inside a DsModal (or DsDialog). The dropdown opens over the
+ * modal content, and its options stay exposed to assistive technology as a `listbox` of
+ * `option`s, so screen reader users can pick a value without any extra wiring.
+ */
+export const InsideModal: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+		a11y: { test: 'error' },
+	},
+	render: (args) => {
+		const [open, setOpen] = useState(false);
+
+		return (
+			<>
+				<DsButtonV3 onClick={() => setOpen(true)}>Assign owner</DsButtonV3>
+				<DsModal open={open} onOpenChange={setOpen} columns={4}>
+					<DsModal.Header>
+						<DsModal.Title>Assign owner</DsModal.Title>
+						<DsModal.CloseTrigger />
+					</DsModal.Header>
+					<DsModal.Body>
+						<DsAutocomplete
+							{...args}
+							placeholder="Search team members..."
+							options={[
+								{ value: 'alice', label: 'Alice Cohen' },
+								{ value: 'bob', label: 'Bob Levi' },
+								{ value: 'carol', label: 'Carol Smith' },
+							]}
+						/>
+					</DsModal.Body>
+				</DsModal>
+			</>
+		);
 	},
 };
 
