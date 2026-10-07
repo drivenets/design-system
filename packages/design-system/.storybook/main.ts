@@ -37,7 +37,11 @@ const config: StorybookConfig = {
 			viteConfig.plugins = [];
 		}
 
-		viteConfig.plugins.push(vitePluginDesignSystem());
+		// Visual tests load pinned fonts instead of the plugin's Google Fonts links.
+		if (!process.env.DS_VISUAL_TESTS) {
+			viteConfig.plugins.push(vitePluginDesignSystem());
+		}
+
 		viteConfig.plugins.unshift(reactCompilerRolldownPlugin()); // Must be first.
 
 		// https://github.github.com/storybook-addon-performance-panel/docs/setup#react-profiling-in-production

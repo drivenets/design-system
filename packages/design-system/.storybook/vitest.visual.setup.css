@@ -1,0 +1,10 @@
+/* Freeze motion so every screenshot captures the same frame. */
+*,
+*::before,
+*::after {
+	animation-delay: 0s !important;
+	animation-duration: 0s !important;
+	animation-iteration-count: 1 !important;
+	transition: none !important;
+	caret-color: transparent !important;
+}

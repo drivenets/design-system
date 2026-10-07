@@ -34,6 +34,7 @@ const horizontalScrollColumns: ColumnDef<Person>[] = [
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
