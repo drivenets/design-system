@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t}from"./ds-textarea-CC8u3mu9.js";function n(){return(n=e((()=>{t()})))()}export{n as t};
