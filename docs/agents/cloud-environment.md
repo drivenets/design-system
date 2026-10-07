@@ -58,7 +58,7 @@ Trusted already covers npm, nodejs.org and apt. The image ships an older Chromiu
 
 ## How it stays up to date
 
-The code is never cached: every session starts from a fresh clone of the selected branch. The VM snapshot holds only what lives outside the repo: Node and pnpm in `/opt/node24`, the pnpm store, Playwright Chromium, OS packages and the proxy CA.
+The code is never cached: every session starts from a fresh clone of the selected branch. The VM snapshot holds only what lives outside the repo: Node and pnpm in `/opt/node24`, the pnpm store, Playwright Chromium and OS packages. The proxy CA comes from the session's `~/.ccr/ca-bundle.crt`, so it's imported at session start when the bundle differs from the last import, which takes a few seconds.
 
 The snapshot is rebuilt when the setup script or the allowed network hosts change, and automatically about every 7 days. In between, the hook compares what the checkout needs with what is installed and adds only the difference:
 
@@ -87,5 +87,5 @@ The session's HTTPS traffic goes through a proxy with its own CAs; the hook adds
 - VM: 4 vCPU, 16 GB RAM, 30 GB disk. Run checkers on changed files (see [AGENTS.md](../../AGENTS.md#code-quality-checkers)), not the full `ci:local`.
 - Routines belong to an individual account and aren't shared; runs use the owner's identity and usage.
 - `CI=true` is set for the whole session, so `pnpm install` defaults to `--frozen-lockfile`. After changing dependencies (e.g. a dependency-update Routine), run `pnpm install --no-frozen-lockfile`.
-- Trust model: the setup script runs the default branch's hook as root, and every session runs the hook from its selected branch. That's normal for project hooks, but Routines run unattended on branches, so review changes to `.claude/hooks/` and `.claude/settings.json` like CI config.
+- Trust model: the setup script runs the default branch's hook as root, and every session runs the hook from its selected branch. That's normal for project hooks, but Routines run unattended on branches, so review changes to `.claude/hooks/`, `.claude/settings.json` and `.mcp.json` like CI config. `drivenets-ds` is pre-approved by name, so a branch that changes its command in `.mcp.json` runs without a prompt for anyone who opens that branch in Claude Code, locally or in a Routine.
 - The DS MCP server (`.mcp.json`) is pre-approved in `.claude/settings.json` (`enabledMcpjsonServers`), so cloud sessions and Routines get it without an approval prompt. It's deliberately unpinned: every session runs the latest published `@drivenets/design-system-mcp`.
