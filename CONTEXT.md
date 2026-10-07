@@ -173,7 +173,7 @@ The compact disclosure on a **Collapsed field** that reports additional logical 
 _Avoid_: ellipsis (horizontal clip only), line count badge
 
 **Filters bar**:
-The **Component** (`DsFiltersBar`) that composes the **Filter views**, the pinned row and **Saved filters** around one **Filter document**.
+The **Component** (`DsFiltersBar`) that renders the **Filter views**, the pinned row and **Saved filters** around one **Filter document**. Its parts are **Internal components**, customized through its `slotProps`.
 _Avoid_: filter toolbar, search bar
 
 **Filter document**:
@@ -205,7 +205,7 @@ A field option the user marked for quick access in the pinned row; a user prefer
 _Avoid_: favorite, quick-view pill
 
 **Saved filter**:
-A named snapshot of the current filter document (`id`, `name`, and a consumer-owned payload). Selected from the **Saved filters** picker.
+A named snapshot of a **Filter document** (`id`, `name`, `document`). Selected from the **Saved filters** picker; the product only persists it.
 _Avoid_: savedSearch, preset, bookmark (the icon is not the concept)
 
 **Filter condition**:
@@ -219,6 +219,10 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 **Filter summary**:
 The one-line, read-only description of a **Filters bar**'s **Filter document** shown while the bar is collapsed, followed by the result count.
 _Avoid_: summed display, collapsed field (that is the **Code input** viewport), collapsed mode
+
+**Row matcher**:
+The design system's evaluation of a **Filter document** and the switched-on **Pins** against in-memory rows (`filterRows`), giving the matching rows and each **Pin**'s count.
+_Avoid_: evaluator, filter engine, matchRows
 
 ## Relationships
 
@@ -259,6 +263,8 @@ _Avoid_: summed display, collapsed field (that is the **Code input** viewport), 
 - The filters and builder **Filter views** show the same chips for the **Filter conditions**; they differ only in the dialog that adding a condition or clicking a chip opens — the filters dialog or the query builder
 - A **Pin** shows as a toggle in the pinned row; turning it on narrows the results the **Filter document** produced. Like the **Pin** itself, whether it is on lives outside the **Filter document** and never appears in the **Filter summary**
 - A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
+- A **Filters bar** owns which **Pins** are switched on and its **Active saved filter**; clearing it empties the **Filter document**, switches every **Pin** off and drops the **Active saved filter**, but keeps the **Pins**
+- A **Row matcher** serves client-side data only; a server-filtered product evaluates the **Filter document** itself and passes the counts to the **Filters bar**
 
 ## Example dialogue
 
