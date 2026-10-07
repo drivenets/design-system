@@ -2,7 +2,7 @@
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-modal
 // component=DsModal.Body
 //
-// `DAP_modal-content_v02` maps to `DsModal.Body`. Its freeform `Modal content slot`
+// `Part_modal-content_V2` maps to `DsModal.Body`. Its freeform `Modal content slot`
 // becomes the body children.
 import figma from 'figma';
 

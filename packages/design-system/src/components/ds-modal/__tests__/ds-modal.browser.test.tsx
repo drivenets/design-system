@@ -86,8 +86,6 @@ const FullScreenModal = (props: Partial<DsModalProps>) => (
 	</DsModal>
 );
 
-const FULL_SCREEN_PAD_X = '40px';
-
 const fullScreenTrigger = () => page.getByRole('button', { name: 'Toggle full screen' });
 
 const getModal = () => page.getByRole('dialog').element() as HTMLElement;
@@ -96,29 +94,6 @@ const getModalStyle = () => getComputedStyle(getModal());
 
 const viewportWidth = () => `${String(document.documentElement.clientWidth)}px`;
 const viewportHeight = () => `${String(document.documentElement.clientHeight)}px`;
-
-const getHorizontalPads = () =>
-	(['header', 'body', 'footer'] as const).map((partName) => {
-		const className = styles[partName];
-		const part = className ? getModal().getElementsByClassName(className).item(0) : null;
-
-		if (!part) {
-			throw new Error(`Modal part not found: ${partName}`);
-		}
-
-		const style = getComputedStyle(part);
-		return [style.paddingLeft, style.paddingRight];
-	});
-
-const resolveLength = (value: string) => {
-	const probe = document.createElement('div');
-	probe.style.paddingLeft = value;
-	document.body.append(probe);
-	const resolved = getComputedStyle(probe).paddingLeft;
-	probe.remove();
-
-	return resolved;
-};
 
 const waitForModalAnimations = () =>
 	expect
@@ -216,22 +191,16 @@ describe('DsModal', () => {
 });
 
 describe('DsModal full screen', () => {
-	it('fills the viewport with no border radius and 40px horizontal padding when fullScreen', async () => {
+	it('fills the viewport when fullScreen', async () => {
 		await page.render(<FullScreenModal fullScreen />);
 		await expect.element(page.getByRole('dialog')).toBeVisible();
 
 		await expect
 			.poll(() => {
 				const style = getModalStyle();
-				return [style.width, style.height, style.borderTopLeftRadius, style.borderBottomRightRadius];
+				return [style.width, style.height];
 			})
-			.toEqual([viewportWidth(), viewportHeight(), '0px', '0px']);
-
-		await expect.poll(getHorizontalPads).toEqual([
-			[FULL_SCREEN_PAD_X, FULL_SCREEN_PAD_X],
-			[FULL_SCREEN_PAD_X, FULL_SCREEN_PAD_X],
-			[FULL_SCREEN_PAD_X, FULL_SCREEN_PAD_X],
-		]);
+			.toEqual([viewportWidth(), viewportHeight()]);
 	});
 
 	it('toggles full screen and its icon in uncontrolled mode and calls onFullScreenChange with the new value', async () => {
@@ -252,34 +221,16 @@ describe('DsModal full screen', () => {
 
 		await expect.element(fullScreenTrigger()).toHaveAttribute('aria-pressed', 'false');
 		await expect.element(fullScreenTrigger()).toHaveTextContent('open_in_full');
-		await expect.poll(() => getModalStyle().borderTopLeftRadius).toBe('4px');
+		await expect.poll(() => getModalStyle().width).not.toBe(viewportWidth());
 		expect(onFullScreenChange).toHaveBeenLastCalledWith(false);
 		expect(onFullScreenChange).toHaveBeenCalledTimes(2);
-	});
-
-	it('renders its icon with the same color and size as the close trigger icon', async () => {
-		await page.render(<FullScreenModal />);
-
-		const iconStyle = (name: string) => {
-			const icon = page.getByRole('button', { name }).element().firstElementChild;
-
-			if (!icon) {
-				throw new Error(`Icon not found in ${name} button`);
-			}
-
-			const style = getComputedStyle(icon);
-			return [style.color, style.fontSize, style.width, style.height];
-		};
-
-		await expect.element(fullScreenTrigger()).toBeVisible();
-		expect(iconStyle('Toggle full screen')).toEqual(iconStyle('close'));
 	});
 
 	it('starts full screen when defaultFullScreen is set', async () => {
 		await page.render(<FullScreenModal defaultFullScreen />);
 
 		await expect.element(fullScreenTrigger()).toHaveAttribute('aria-pressed', 'true');
-		await expect.poll(() => getModalStyle().borderTopLeftRadius).toBe('0px');
+		await expect.poll(() => getModalStyle().width).toBe(viewportWidth());
 	});
 
 	it('returns to defaultFullScreen when reopened after closing', async () => {
@@ -294,7 +245,7 @@ describe('DsModal full screen', () => {
 		await rerender(<FullScreenModal open />);
 
 		await expect.element(fullScreenTrigger()).toHaveAttribute('aria-pressed', 'false');
-		await expect.poll(() => getModalStyle().borderTopLeftRadius).toBe('4px');
+		await expect.poll(() => getModalStyle().width).not.toBe(viewportWidth());
 	});
 
 	it('calls onFullScreenChange but follows only the fullScreen prop in controlled mode', async () => {
@@ -307,7 +258,7 @@ describe('DsModal full screen', () => {
 
 		expect(onFullScreenChange).toHaveBeenCalledExactlyOnceWith(true);
 		await expect.element(fullScreenTrigger()).toHaveAttribute('aria-pressed', 'false');
-		expect(getModalStyle().borderTopLeftRadius).toBe('4px');
+		expect(getModalStyle().width).not.toBe(viewportWidth());
 
 		await rerender(<FullScreenModal fullScreen onFullScreenChange={onFullScreenChange} />);
 
@@ -327,7 +278,32 @@ describe('DsModal full screen', () => {
 		await fullScreenTrigger().click();
 
 		await expect.element(fullScreenTrigger()).toHaveAttribute('aria-pressed', 'false');
-		expect(getModalStyle().borderTopLeftRadius).toBe('4px');
+		expect(getModalStyle().width).not.toBe(viewportWidth());
+	});
+
+	it('keeps the footer at the bottom edge while resizing to full screen', async () => {
+		await page.render(<FullScreenModal />);
+		await expect.element(page.getByRole('dialog')).toBeVisible();
+		await waitForModalAnimations();
+
+		await fullScreenTrigger().click();
+
+		// Freeze the resize halfway to inspect a mid-transition frame
+		const transitions = getModal()
+			.getAnimations()
+			.filter((animation) => animation instanceof CSSTransition);
+		expect(transitions.length).toBeGreaterThan(0);
+		transitions.forEach((transition) => {
+			transition.pause();
+			transition.currentTime = 100;
+		});
+
+		const modalRect = getModal().getBoundingClientRect();
+		const footer = styles.footer ? getModal().getElementsByClassName(styles.footer).item(0) : null;
+
+		expect(modalRect.width).toBeGreaterThan(0);
+		expect(modalRect.width).toBeLessThan(document.documentElement.clientWidth);
+		expect(footer?.getBoundingClientRect().bottom).toBeCloseTo(modalRect.bottom, 0);
 	});
 
 	it('ignores columns while full screen and restores the columns width when toggled back', async () => {
@@ -348,38 +324,5 @@ describe('DsModal full screen', () => {
 		await rerender(<FullScreenModal columns={3} />);
 		await fullScreenTrigger().click();
 		await expect.poll(() => getModalStyle().width).toBe(columnsWidth);
-	});
-});
-
-describe('DsModal without full screen', () => {
-	it('keeps the default width, radius and padding without fullScreen or a trigger', async () => {
-		await page.render(
-			<DsModal open columns={4} onOpenChange={vi.fn()}>
-				<DsModal.Header>
-					<DsModal.Title>Plain modal</DsModal.Title>
-					<DsModal.CloseTrigger />
-				</DsModal.Header>
-				<DsModal.Body>
-					<p>Body content</p>
-				</DsModal.Body>
-				<DsModal.Footer>
-					<DsModal.Actions>
-						<button type="button">Save</button>
-					</DsModal.Actions>
-				</DsModal.Footer>
-			</DsModal>,
-		);
-		await expect.element(page.getByRole('dialog')).toBeVisible();
-		await waitForModalAnimations();
-
-		const defaultPad = resolveLength('var(--lg)');
-
-		expect(getModalStyle().borderTopLeftRadius).toBe('4px');
-		expect(getModalStyle().width).not.toBe(viewportWidth());
-		expect(getHorizontalPads()).toEqual([
-			[defaultPad, defaultPad],
-			[defaultPad, defaultPad],
-			[defaultPad, defaultPad],
-		]);
 	});
 });

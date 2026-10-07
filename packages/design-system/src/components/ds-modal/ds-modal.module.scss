@@ -50,14 +50,26 @@ $trigger-divider-height: 16px;
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
 	z-index: 1200;
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 	inline-size: min(var(--col-span-6), $max-width);
 	block-size: auto;
-	interpolate-size: allow-keywords;
-	transition:
-		inline-size $resize-transition,
-		block-size $resize-transition,
-		border-radius $resize-transition;
+	transition: border-radius $resize-transition;
 	--ds-modal-pad-x: var(--lg);
+
+	// `block-size: auto` only animates with `interpolate-size`; elsewhere both sizes snap together
+	@supports (interpolate-size: allow-keywords) {
+		interpolate-size: allow-keywords;
+		transition:
+			inline-size $resize-transition,
+			block-size $resize-transition,
+			border-radius $resize-transition;
+	}
+
+	// `display: flex` above would otherwise override Ark's `hidden` on the closed modal
+	&[hidden] {
+		display: none;
+	}
 
 	&[data-state='open'] {
 		animation: scale-in-modal 0.2s 0.1s ease-in-out both;
@@ -95,7 +107,10 @@ $trigger-divider-height: 16px;
 .content {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+
+	// Grow with the modal instead of `height: 100%`, which collapses while `block-size` animates from `auto`
+	flex: 1;
+	min-height: 0;
 
 	// Keep `interpolate-size` from the modal resize out of consumer content
 	interpolate-size: numeric-only;
@@ -149,10 +164,21 @@ $trigger-divider-height: 16px;
 	min-height: 0;
 }
 
-// Header-scoped to win over DsDivider's vertical stretch
-.header .fullScreenDivider {
-	align-self: center;
-	height: $trigger-divider-height;
+// Divider before the trigger that follows (DsModal.CloseTrigger)
+.fullScreenTrigger:not(:last-child) {
+	position: relative;
+	margin-inline-end: calc(var(--xs) + #{$border-size});
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		inset-inline-end: calc(-1 * (var(--xs) + #{$border-size}));
+		width: $border-size;
+		height: $trigger-divider-height;
+		background: var(--border-secondary);
+		transform: translateY(-50%);
+	}
 }
 
 .actions {

@@ -2,9 +2,9 @@
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-modal
 // component=DsModal.Header
 //
-// `DAP_modal-header_v02` maps to the composed `DsModal.Header` (title + close
-// trigger). The `full-screen` boolean adds `DsModal.FullScreenTrigger` (which renders
-// its own trailing divider) before the close trigger. The `Type=drill-down` variant (back breadcrumb) and the optional
+// `Part_modal-header_V2` maps to the composed `DsModal.Header` (title + close
+// trigger). The `full-screen` boolean adds `DsModal.FullScreenTrigger` before the
+// close trigger. The `Type=drill-down` variant (back breadcrumb) and the optional
 // booleans (status badge, description, tags, etc.) have no code-component prop and
 // are omitted.
 import figma from 'figma';

@@ -7,7 +7,6 @@ import { DsModalContext, useDsModalContext } from './ds-modal.context';
 import styles from './ds-modal.module.scss';
 import { useArkDialogBodyLockCleanup } from '../../utils/use-ark-dialog-body-lock-cleanup';
 import { useControlled } from '../../utils/use-controlled';
-import { DsDivider } from '../ds-divider';
 import { DsIcon } from '../ds-icon';
 import { DsTypography } from '../ds-typography';
 
@@ -128,7 +127,7 @@ const CloseTrigger = ({ style, className }: { style?: CSSProperties; className?:
 
 /**
  * Toggles the modal between its `columns` width and full screen.
- * Place it in DsModal.Header right before DsModal.CloseTrigger; it renders its own trailing divider.
+ * Place it in DsModal.Header right before DsModal.CloseTrigger; a divider separates the two.
  */
 const FullScreenTrigger = ({
 	ref,
@@ -139,21 +138,18 @@ const FullScreenTrigger = ({
 	const { fullScreen, setFullScreen } = useDsModalContext();
 
 	return (
-		<>
-			{/* Rendered like CloseTrigger so both header icons look identical */}
-			<button
-				ref={ref}
-				type="button"
-				style={style}
-				className={className}
-				aria-label={ariaLabel}
-				aria-pressed={fullScreen}
-				onClick={() => setFullScreen(!fullScreen)}
-			>
-				<DsIcon icon={fullScreen ? 'close_fullscreen' : 'open_in_full'} size="small" />
-			</button>
-			<DsDivider orientation="vertical" className={styles.fullScreenDivider} />
-		</>
+		// Rendered like CloseTrigger so both header icons look identical
+		<button
+			ref={ref}
+			type="button"
+			style={style}
+			className={classNames(styles.fullScreenTrigger, className)}
+			aria-label={ariaLabel}
+			aria-pressed={fullScreen}
+			onClick={() => setFullScreen(!fullScreen)}
+		>
+			<DsIcon icon={fullScreen ? 'close_fullscreen' : 'open_in_full'} size="small" />
+		</button>
 	);
 };
 
