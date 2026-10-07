@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, Ref } from 'react';
 import type { UseDialogProps as DialogProps } from '@ark-ui/react/dialog';
 
 /**
@@ -41,6 +41,19 @@ export interface DsModalProps extends Pick<
 	columns?: DsModalColumns;
 
 	/**
+	 * Whether the modal fills the viewport. Passing this prop makes full screen controlled:
+	 * `DsModal.FullScreenTrigger` then only calls `onFullScreenChange`.
+	 * `columns` has no effect while full screen.
+	 */
+	fullScreen?: boolean;
+
+	/**
+	 * Initial full screen state when uncontrolled. The modal returns to it after closing.
+	 * @default false
+	 */
+	defaultFullScreen?: boolean;
+
+	/**
 	 * Show full-width dividers between header, body, and footer sections
 	 * @default false
 	 */
@@ -66,4 +79,20 @@ export interface DsModalProps extends Pick<
 	 * @param open - whether the modal is open
 	 */
 	onOpenChange: (open: boolean) => void;
+
+	/**
+	 * Called when `DsModal.FullScreenTrigger` requests a full screen change
+	 * @param fullScreen - the requested full screen state
+	 */
+	onFullScreenChange?: (fullScreen: boolean) => void;
+}
+
+export interface DsModalFullScreenTriggerProps {
+	/**
+	 * Accessible name of the icon-only trigger
+	 */
+	'aria-label': string;
+	ref?: Ref<HTMLButtonElement>;
+	style?: CSSProperties;
+	className?: string;
 }

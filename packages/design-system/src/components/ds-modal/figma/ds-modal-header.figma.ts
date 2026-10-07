@@ -3,7 +3,8 @@
 // component=DsModal.Header
 //
 // `DAP_modal-header_v02` maps to the composed `DsModal.Header` (title + close
-// trigger). The `Type=drill-down` variant (back breadcrumb) and the optional
+// trigger). The `full-screen` boolean adds `DsModal.FullScreenTrigger` (which renders
+// its own trailing divider) before the close trigger. The `Type=drill-down` variant (back breadcrumb) and the optional
 // booleans (status badge, description, tags, etc.) have no code-component prop and
 // are omitted.
 import figma from 'figma';
@@ -13,8 +14,12 @@ const instance = figma.selectedInstance;
 const titleNode = instance.findText('Left side', { traverseInstances: true });
 const title = titleNode.type === 'TEXT' ? titleNode.textContent : 'Modal title';
 
+const fullScreenTrigger = instance.getBoolean('full-screen')
+	? figma.code`<DsModal.FullScreenTrigger aria-label="Toggle full screen" />`
+	: '';
+
 export default {
-	example: figma.code`<DsModal.Header><DsModal.Title>${title}</DsModal.Title><DsModal.CloseTrigger /></DsModal.Header>`,
+	example: figma.code`<DsModal.Header><DsModal.Title>${title}</DsModal.Title>${fullScreenTrigger}<DsModal.CloseTrigger /></DsModal.Header>`,
 	imports: ["import { DsModal } from '@drivenets/design-system';"],
 	id: 'ds-modal-header',
 	metadata: { nestable: true },
