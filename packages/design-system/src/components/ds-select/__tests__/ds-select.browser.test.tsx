@@ -1,6 +1,6 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
-import { page, userEvent } from 'vitest/browser';
+import { type Locator, page, userEvent } from 'vitest/browser';
 import DsSelect from '../ds-select';
 import type { DsSelectOption } from '../ds-select.types';
 import { DsTag } from '../../ds-tag';
@@ -67,14 +67,16 @@ function ControlledSelectHarness({
 	multiple,
 	renderOption,
 	renderValue,
+	initialValue = '',
 }: {
 	options: DsSelectOption[];
 	style?: CSSProperties;
 	multiple?: true;
 	renderOption?: (option: DsSelectOption) => ReactNode;
 	renderValue?: ((selected: DsSelectOption) => ReactNode) | ((selected: DsSelectOption[]) => ReactNode);
+	initialValue?: string;
 }) {
-	const [value, setValue] = useState<string | string[]>(multiple ? [] : '');
+	const [value, setValue] = useState<string | string[]>(multiple ? [] : initialValue);
 
 	if (multiple) {
 		return (
@@ -635,5 +637,72 @@ describe('DsSelect', () => {
 
 		await searchInput.clear();
 		await userEvent.keyboard('{Escape}');
+	});
+
+	describe('search input in a scrolled list', () => {
+		const workflowOptions = Array.from({ length: 30 }, (_, i) => ({
+			value: `workflow-${String(i + 1)}`,
+			label: `Workflow ${String(i + 1)}`,
+		})) satisfies DsSelectOption[];
+
+		// Hit-tests the top and bottom edges, so an element scrolled out of the menu or covered by another one fails.
+		const isUnobstructed = (locator: Locator) => {
+			const element = locator.element();
+			const { left, right, top, bottom } = element.getBoundingClientRect();
+			const x = (left + right) / 2;
+
+			return [top + 1, bottom - 1].every((y) => element.contains(document.elementFromPoint(x, y)));
+		};
+
+		const expectSearchVisibleWithOptionScrolledIntoView = async (optionName: string) => {
+			await expect.poll(() => isUnobstructed(page.getByRole('option', { name: optionName }))).toBe(true);
+			await expect.element(page.getByPlaceholder('Search')).toHaveFocus();
+			expect(isUnobstructed(page.getByPlaceholder('Search'))).toBe(true);
+		};
+
+		it('should keep the search input visible on first open and on reopen with the selected option scrolled into view', async () => {
+			await page.render(
+				<ControlledSelectHarness
+					options={workflowOptions}
+					initialValue="workflow-28"
+					style={{ width: '250px' }}
+				/>,
+			);
+
+			const trigger = page.getByRole('combobox');
+
+			await trigger.click();
+			await expectSearchVisibleWithOptionScrolledIntoView('Workflow 28');
+
+			await page.getByRole('option', { name: 'Workflow 29' }).click();
+			await expect.element(trigger).toMatchTextContent('Workflow 29');
+
+			await trigger.click();
+			await expectSearchVisibleWithOptionScrolledIntoView('Workflow 29');
+		});
+
+		it('should keep keyboard-highlighted options clear of the search input', async () => {
+			await page.render(
+				<ControlledSelectHarness
+					options={workflowOptions}
+					initialValue="workflow-28"
+					style={{ width: '250px' }}
+				/>,
+			);
+
+			const trigger = page.getByRole('combobox');
+
+			await trigger.click();
+			await expectSearchVisibleWithOptionScrolledIntoView('Workflow 28');
+
+			await userEvent.keyboard('{Home}');
+
+			const firstOption = page.getByRole('option', { name: exactAriaName('Workflow 1') });
+			await expect.poll(() => isUnobstructed(firstOption)).toBe(true);
+			expect(isUnobstructed(page.getByPlaceholder('Search'))).toBe(true);
+
+			await userEvent.keyboard('{Enter}');
+			await expect.element(trigger).toMatchTextContent(/Workflow 1(?!\d)/);
+		});
 	});
 });
