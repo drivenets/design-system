@@ -1,4 +1,5 @@
 export { ClearAll } from './ds-filters-bar-clear-all';
+export { Disclosure } from './ds-filters-bar-disclosure';
 export { Pinned, PinnedGroup, PinnedToggle } from './ds-filters-bar-pinned';
 export { SavedFilters, SaveFilter } from './ds-filters-bar-saved-filters';
 export { Search } from './ds-filters-bar-search';

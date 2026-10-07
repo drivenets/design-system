@@ -5,6 +5,7 @@ import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 import { DsFiltersBar } from './index';
 import { filtersBarViews, type DsFiltersBarView } from './ds-filters-bar.types';
+import styles from './ds-filters-bar.stories.module.scss';
 
 const meta: Meta<typeof DsFiltersBar.Root> = {
 	title: 'Components/FiltersBar',
@@ -16,10 +17,10 @@ const meta: Meta<typeof DsFiltersBar.Root> = {
 		docs: {
 			description: {
 				component: `
-**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Toolbar\`,
-\`Search\`, \`Conditions\` (the add-filter button with its filters dialog, and a chip per
-condition), the query builder, the advanced query view, and \`Pinned\` render; the other parts render nothing yet. Until \`ViewSwitch\` renders, the stories place the advanced view
-directly under \`Root\`.
+**Work in progress — the API is wired, but only some parts render.** \`Root\`, \`Disclosure\`,
+\`Summary\`, \`Toolbar\`, \`Search\`, \`Conditions\` (the add-filter button with its filters dialog,
+and a chip per condition), the query builder, the advanced query view, and \`Pinned\` render; the
+other parts render nothing yet.
 
 **Internal component.** Not exported from \`@drivenets/design-system\` while it is being built.
 
@@ -40,8 +41,11 @@ views lock until it is cleared. Evaluate such a query with \`parseFilterQuery(qu
 **Pins are a user preference,** not part of the document: loading a saved filter or clearing leaves
 them alone.
 
-**Collapsed shows a summary, expanded shows the toolbar.** \`Summary\` renders while collapsed,
-\`Toolbar\` while expanded; \`Pinned\` renders in both.
+**Collapsed shows a summary, expanded shows the toolbar.** \`Disclosure\` toggles between them and
+renders in both states, so place it once, before \`Summary\` and \`Toolbar\`; they share its line.
+\`Summary\` renders while collapsed, \`Toolbar\` while expanded, so everything that edits the
+document (search, chips, builder and the advanced query) goes inside \`Toolbar\` and hides with it.
+\`Pinned\` renders in both, below them at full width.
 				`,
 			},
 		},
@@ -151,6 +155,7 @@ export const Default: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Disclosure />
 			<DsFiltersBar.Summary count={18} />
 
 			<DsFiltersBar.Toolbar>
@@ -173,6 +178,9 @@ export const Default: Story = {
 				<DsFiltersBar.View value="builder">
 					<DsFiltersBar.Builder suggestedFields={['input', 'status']} />
 				</DsFiltersBar.View>
+				<DsFiltersBar.View value="advanced">
+					<DsFiltersBar.Query />
+				</DsFiltersBar.View>
 				<DsFiltersBar.SaveFilter
 					items={[
 						{ id: '1', name: 'MyFilter_1', count: 2 },
@@ -184,11 +192,6 @@ export const Default: Story = {
 				/>
 				<DsFiltersBar.ClearAll />
 			</DsFiltersBar.Toolbar>
-
-			{/* Moves back into Toolbar once Toolbar renders */}
-			<DsFiltersBar.View value="advanced">
-				<DsFiltersBar.Query />
-			</DsFiltersBar.View>
 
 			<DsFiltersBar.Pinned>
 				<DsFiltersBar.PinnedGroup label="Status">
@@ -343,6 +346,8 @@ export const QueryBuilder: Story = {
 					args.onViewChange?.(next);
 				}}
 			>
+				<DsFiltersBar.Disclosure />
+				<DsFiltersBar.Summary count={12} />
 				<DsFiltersBar.Toolbar>
 					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
 						Query builder
@@ -355,8 +360,8 @@ export const QueryBuilder: Story = {
 						<DsFiltersBar.Builder suggestedFields={['input', 'output', 'status', 'tag']} />
 					</DsFiltersBar.View>
 					<DsFiltersBar.ClearAll />
+					<DsFiltersBar.Query />
 				</DsFiltersBar.Toolbar>
-				<DsFiltersBar.Query />
 			</DsFiltersBar.Root>
 		);
 	},
@@ -379,6 +384,8 @@ export const QueryBuilderLocalized: Story = {
 					args.onViewChange?.(next);
 				}}
 			>
+				<DsFiltersBar.Disclosure />
+				<DsFiltersBar.Summary count={12} />
 				<DsFiltersBar.Toolbar>
 					<DsButtonV3 variant="secondary" size="medium" onClick={() => setView('builder')}>
 						Query builder
@@ -408,8 +415,8 @@ export const QueryBuilderLocalized: Story = {
 						/>
 					</DsFiltersBar.View>
 					<DsFiltersBar.ClearAll />
+					<DsFiltersBar.Query />
 				</DsFiltersBar.Toolbar>
-				<DsFiltersBar.Query />
 			</DsFiltersBar.Root>
 		);
 	},
@@ -528,6 +535,8 @@ export const FiltersDialog: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Disclosure />
+			<DsFiltersBar.Summary count={42} />
 			<DsFiltersBar.Toolbar>
 				<DsFiltersBar.Conditions />
 			</DsFiltersBar.Toolbar>
@@ -560,6 +569,8 @@ export const Search: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Disclosure />
+			<DsFiltersBar.Summary count={7} />
 			<DsFiltersBar.Toolbar>
 				<DsFiltersBar.Search />
 				<DsFiltersBar.View value="filters">
@@ -675,6 +686,8 @@ export const SelectedFilters: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Disclosure />
+			<DsFiltersBar.Summary count={9} />
 			<DsFiltersBar.Toolbar>
 				<DsFiltersBar.Search />
 				<DsFiltersBar.View value="filters">
@@ -691,6 +704,7 @@ export const SelectedFilters: Story = {
  */
 export const AdvancedQuery: Story = {
 	args: {
+		defaultExpanded: true,
 		defaultView: 'advanced',
 		fields: [
 			{
@@ -743,9 +757,13 @@ export const AdvancedQuery: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.View value="advanced">
-				<DsFiltersBar.Query />
-			</DsFiltersBar.View>
+			<DsFiltersBar.Disclosure />
+			<DsFiltersBar.Summary count={5} />
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.View value="advanced">
+					<DsFiltersBar.Query />
+				</DsFiltersBar.View>
+			</DsFiltersBar.Toolbar>
 		</DsFiltersBar.Root>
 	),
 };
@@ -756,6 +774,7 @@ export const AdvancedQuery: Story = {
  */
 export const LockedViews: Story = {
 	args: {
+		defaultExpanded: true,
 		defaultView: 'advanced',
 		fields: [
 			{
@@ -777,9 +796,13 @@ export const LockedViews: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
-			<DsFiltersBar.View value="advanced">
-				<DsFiltersBar.Query />
-			</DsFiltersBar.View>
+			<DsFiltersBar.Disclosure />
+			<DsFiltersBar.Summary count={5} />
+			<DsFiltersBar.Toolbar>
+				<DsFiltersBar.View value="advanced">
+					<DsFiltersBar.Query />
+				</DsFiltersBar.View>
+			</DsFiltersBar.Toolbar>
 		</DsFiltersBar.Root>
 	),
 };
@@ -804,11 +827,28 @@ export const Localized: Story = {
 	},
 	render: (args) => (
 		<DsFiltersBar.Root {...args}>
+			<DsFiltersBar.Disclosure />
+			<DsFiltersBar.Summary
+				count={3}
+				locale={{
+					resultCount: (count) => `${String(count)} matches`,
+					activeSavedFilter: 'Preset',
+					emptyLabel: 'Showing',
+					emptyValue: 'Everything',
+					search: 'Text',
+					advancedQuery: 'Custom query',
+				}}
+			/>
 			<DsFiltersBar.Toolbar>
 				<DsFiltersBar.Search locale={{ label: 'Find', placeholder: 'Press ‘/’ to find' }} />
 				<DsFiltersBar.ViewSwitch
 					locale={{ views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' } }}
 				/>
+				<DsFiltersBar.View value="advanced">
+					<DsFiltersBar.Query
+						locale={{ label: 'Query editor', placeholder: 'status = "Active"', help: 'Syntax' }}
+					/>
+				</DsFiltersBar.View>
 				<DsFiltersBar.ClearAll locale={{ label: 'Reset' }} />
 			</DsFiltersBar.Toolbar>
 
@@ -817,13 +857,74 @@ export const Localized: Story = {
 					<DsFiltersBar.PinnedToggle label="Active" count={10} active />
 				</DsFiltersBar.PinnedGroup>
 			</DsFiltersBar.Pinned>
-
-			{/* Moves back into Toolbar once Toolbar renders */}
-			<DsFiltersBar.View value="advanced">
-				<DsFiltersBar.Query
-					locale={{ label: 'Query editor', placeholder: 'status = "Active"', help: 'Syntax' }}
-				/>
-			</DsFiltersBar.View>
 		</DsFiltersBar.Root>
+	),
+};
+
+/**
+ * `Summary` takes its own strings through `locale`: the saved filter, search and advanced query
+ * labels, the empty view and the announced result count.
+ */
+export const SummaryLocalized: Story = {
+	parameters: { docs: { canvas: { sourceState: 'none' } } },
+	args: {
+		fields: [
+			{
+				type: 'enum',
+				id: 'status',
+				label: 'Status',
+				operators: [
+					{ value: '=', label: 'equals' },
+					{ value: '!=', label: 'not equal' },
+				],
+				options: [
+					{ value: 'active', label: 'Active' },
+					{ value: 'deprecated', label: 'Deprecated' },
+				],
+			},
+		],
+		locale: { label: 'Refine results', expand: 'Show refinements', collapse: 'Hide refinements' },
+	},
+	render: (args) => (
+		<div className={styles.summaryMatrix}>
+			<DsFiltersBar.Root
+				{...args}
+				defaultConditions={[
+					{ kind: 'field', id: 'c1', field: 'status', operator: '!=', value: ['deprecated'] },
+					{ kind: 'search', id: 'c2', text: 'AAA' },
+				]}
+			>
+				<DsFiltersBar.Disclosure />
+				<DsFiltersBar.Summary
+					count={18}
+					activeSavedFilterName="Ira123"
+					locale={{
+						resultCount: (count) => `${String(count)} matches`,
+						activeSavedFilter: 'Preset',
+						search: 'Text',
+					}}
+				/>
+			</DsFiltersBar.Root>
+
+			<DsFiltersBar.Root {...args} defaultQuery={'status = "active" OR status = "deprecated"'}>
+				<DsFiltersBar.Disclosure />
+				<DsFiltersBar.Summary
+					count={5}
+					locale={{ resultCount: (count) => `${String(count)} matches`, advancedQuery: 'Custom query' }}
+				/>
+			</DsFiltersBar.Root>
+
+			<DsFiltersBar.Root {...args}>
+				<DsFiltersBar.Disclosure />
+				<DsFiltersBar.Summary
+					count={726}
+					locale={{
+						resultCount: (count) => `${String(count)} matches`,
+						emptyLabel: 'Showing',
+						emptyValue: 'Everything',
+					}}
+				/>
+			</DsFiltersBar.Root>
+		</div>
 	),
 };
