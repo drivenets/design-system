@@ -10,6 +10,12 @@
 	scrollbar-gutter: auto;
 
 	@include scrollbars.scrollbar-on-hover;
+
+	&:has(.emptyState) {
+		position: sticky;
+		inset-inline-start: 0;
+		max-width: var(--ds-table-viewport-width, 100%);
+	}
 }
 
 // 1px row pinned at `top: <totalSize>` (set inline) so absolutely-positioned

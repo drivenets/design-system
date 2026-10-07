@@ -72,8 +72,11 @@ $bulk-actions-reserved-space: 80px;
 		@include scrollbars.scrollbar-on-hover;
 
 		&:has(.emptyState) {
+			position: sticky;
+			inset-inline-start: 0;
 			display: flex;
 			flex-direction: column;
+			max-width: var(--ds-table-viewport-width, 100%);
 		}
 	}
 

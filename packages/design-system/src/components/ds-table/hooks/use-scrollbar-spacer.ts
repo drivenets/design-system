@@ -4,6 +4,7 @@ import { SCROLLBAR_SPACER_WIDTH } from '../utils/constants';
 export type ScrollbarSpacerWidth = 0 | typeof SCROLLBAR_SPACER_WIDTH;
 
 const BODY_SCROLLBAR_COMPENSATION_CSS_VAR = '--ds-table-body-scrollbar-compensation';
+const VIEWPORT_WIDTH_CSS_VAR = '--ds-table-viewport-width';
 
 const bodyOverflowsVertically = (body: HTMLElement): boolean => body.scrollHeight > body.clientHeight;
 
@@ -37,8 +38,18 @@ const syncBodyScrollbarCompensation = (
 };
 
 /**
+ * Caps the sticky empty body at the visible width, so the Empty state centers
+ * on screen instead of across the full horizontally-scrollable column track.
+ * Computed width keeps sub-pixel precision that `clientWidth` rounds away.
+ */
+const syncViewportWidth = (container: HTMLElement): void => {
+	container.style.setProperty(VIEWPORT_WIDTH_CSS_VAR, getComputedStyle(container).width);
+};
+
+/**
  * Overflow-only **Scrollbar spacer** width: `SCROLLBAR_SPACER_WIDTH` while the
- * body scroll container overflows vertically, otherwise 0.
+ * body scroll container overflows vertically, otherwise 0. Also syncs the
+ * container's visible width for the sticky empty body.
  *
  * Observes container/tbody size and tbody children (rows added/removed). Does
  * not watch `style` attributes — virtualized rows rewrite `transform` on scroll.
@@ -56,6 +67,8 @@ export const useScrollbarSpacer = (
 		}
 
 		const read = () => {
+			syncViewportWidth(container);
+
 			const body = container.querySelector('tbody');
 			if (!(body instanceof HTMLElement)) {
 				setWidth(0);
@@ -101,6 +114,7 @@ export const useScrollbarSpacer = (
 			bodyChildObserver.disconnect();
 			tableChildObserver.disconnect();
 			container.style.removeProperty(BODY_SCROLLBAR_COMPENSATION_CSS_VAR);
+			container.style.removeProperty(VIEWPORT_WIDTH_CSS_VAR);
 		};
 	}, [containerRef, overflowKey]);
 

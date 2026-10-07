@@ -21,6 +21,21 @@ const largeData = generateTestData(200);
 
 const CHECKBOX_ROOT_LABEL = 'label[data-scope="checkbox"][data-part="root"]';
 
+const wideColumns = columns.map((column) => ({ ...column, size: 400 }));
+
+const getScrollContainer = (): HTMLElement => {
+	const container = document.querySelector('table')?.parentElement;
+	if (!container) {
+		throw new Error('Expected the table scroll container');
+	}
+	return container;
+};
+
+const getHorizontalCenter = (element: Element): number => {
+	const { left, width } = element.getBoundingClientRect();
+	return left + width / 2;
+};
+
 describe('DsTable Virtualized', () => {
 	it('should show empty state when no data', async () => {
 		await page.render(
@@ -34,6 +49,43 @@ describe('DsTable Virtualized', () => {
 		await page.render(<DsTable columns={columns} data={[]} virtualized />);
 
 		await expect.element(page.getByRole('status')).toHaveTextContent('No data to display.');
+	});
+
+	it('keeps the empty state centered in the visible area while scrolling horizontally', async () => {
+		await page.render(
+			<div style={{ width: 600, height: 400 }}>
+				<DsTable columns={wideColumns} data={[]} virtualized />
+			</div>,
+		);
+
+		const emptyState = page.getByRole('status');
+		await expect.element(emptyState).toBeVisible();
+
+		const container = getScrollContainer();
+		expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
+		expect(getHorizontalCenter(emptyState.element())).toBeCloseTo(getHorizontalCenter(container), 0);
+
+		container.scrollLeft = 900;
+
+		await expect
+			.poll(() => getHorizontalCenter(emptyState.element()))
+			.toBeCloseTo(getHorizontalCenter(container), 0);
+		await expect.element(emptyState).toBeInViewport();
+	});
+
+	it('keeps the empty state centered when columns fit the container', async () => {
+		await page.render(
+			<div style={{ width: 600, height: 400 }}>
+				<DsTable columns={columns} data={[]} virtualized />
+			</div>,
+		);
+
+		const emptyState = page.getByRole('status');
+		await expect.element(emptyState).toBeVisible();
+
+		const container = getScrollContainer();
+		expect(container.scrollWidth).toBe(container.clientWidth);
+		expect(getHorizontalCenter(emptyState.element())).toBeCloseTo(getHorizontalCenter(container), 0);
 	});
 
 	it('infers no-matches empty state when filters hide every row', async () => {
