@@ -1,23 +1,77 @@
 export { DsFiltersBar } from './ds-filters-bar';
-export * from './ds-filters-bar.types';
-
-export { defaultDsFiltersBarBuilderLocale } from './components/ds-filters-bar-builder/ds-filters-bar-builder.types';
+export {
+	comparisonFilterOperators,
+	dateFilterPresets,
+	defaultDsFiltersBarLocale,
+	emptyFilterDocument,
+	enumFilterOperators,
+	filterOperatorValues,
+	filtersBarViews,
+	textFilterOperators,
+} from './ds-filters-bar.types';
 export type {
+	DsFilterComparisonOperator,
+	DsFilterCompoundField,
+	DsFilterCondition,
+	DsFilterConditionInput,
+	DsFilterDateField,
+	DsFilterDatePresetValue,
+	DsFilterDocument,
+	DsFilterDocumentInput,
+	DsFilterEnumField,
+	DsFilterEnumOperator,
+	DsFilterField,
+	DsFilterFieldCondition,
+	DsFilterFieldConditionInput,
+	DsFilterNumberField,
+	DsFilterOperator,
+	DsFilterOperatorLocale,
+	DsFilterOperators,
+	DsFilterOperatorValue,
+	DsFilterOption,
+	DsFilterPin,
+	DsFilterRange,
+	DsFilterResolvedOperator,
+	DsFilterScalarField,
+	DsFilterSearchCondition,
+	DsFilterSearchConditionInput,
+	DsFilterTextField,
+	DsFilterTextOperator,
+	DsFilterValue,
 	DsFiltersBarBuilderLocale,
-	DsFiltersBarBuilderProps,
-} from './components/ds-filters-bar-builder/ds-filters-bar-builder.types';
-export { defaultDsFiltersBarConditionsLocale } from './components/ds-filters-bar-conditions/ds-filters-bar-conditions.types';
-export type {
+	DsFiltersBarBuilderSlotProps,
+	DsFiltersBarChipsLocale,
+	DsFiltersBarClearAllLocale,
+	DsFiltersBarClearAllSlotProps,
 	DsFiltersBarConditionsLocale,
-	DsFiltersBarConditionsProps,
-} from './components/ds-filters-bar-conditions/ds-filters-bar-conditions.types';
-export { defaultDsFiltersBarFiltersDialogLocale } from './components/ds-filters-bar-filters-dialog/ds-filters-bar-filters-dialog.types';
-export type { DsFiltersBarFiltersDialogLocale } from './components/ds-filters-bar-filters-dialog/ds-filters-bar-filters-dialog.types';
-export { defaultDsFiltersBarQueryLocale } from './components/ds-filters-bar-query/ds-filters-bar-query.types';
-export type {
+	DsFiltersBarConditionsSlotProps,
+	DsFiltersBarDatePresetsLocale,
+	DsFiltersBarDisclosureSlotProps,
+	DsFiltersBarLocale,
+	DsFiltersBarOperatorsLocale,
+	DsFiltersBarPartSlotProps,
+	DsFiltersBarPinnedLocale,
+	DsFiltersBarPinnedSlotProps,
+	DsFiltersBarProps,
 	DsFiltersBarQueryLocale,
-	DsFiltersBarQueryProps,
-} from './components/ds-filters-bar-query/ds-filters-bar-query.types';
+	DsFiltersBarQuerySlotProps,
+	DsFiltersBarResolvedLocale,
+	DsFiltersBarResolvedOperatorsLocale,
+	DsFiltersBarSavedFilter,
+	DsFiltersBarSavedFiltersConfig,
+	DsFiltersBarSavedFiltersLocale,
+	DsFiltersBarSavedFiltersSlotProps,
+	DsFiltersBarSaveFilterSlotProps,
+	DsFiltersBarSearchLocale,
+	DsFiltersBarSearchSlotProps,
+	DsFiltersBarSlotProps,
+	DsFiltersBarSummaryLocale,
+	DsFiltersBarSummarySlotProps,
+	DsFiltersBarToolbarSlotProps,
+	DsFiltersBarView,
+	DsFiltersBarViewSwitchLocale,
+	DsFiltersBarViewSwitchSlotProps,
+} from './ds-filters-bar.types';
 
 export { parseFilterQuery, serializeFilterQuery, filterQueryErrorCodes } from './query-language';
 export type {
@@ -31,3 +85,6 @@ export type {
 	DsFilterQueryResult,
 	DsFilterQuerySearch,
 } from './query-language';
+
+export { filterRows, useFilteredRows } from './row-matcher';
+export type { DsFilterRowsOptions, DsFilterRowsResult } from './row-matcher';

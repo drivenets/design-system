@@ -193,8 +193,12 @@ A valid query made only of clauses joined by `AND`, so it maps one-to-one onto *
 _Avoid_: simple query, flat query
 
 **Field schema**:
-The consumer's description of what can be filtered — each field's type, operators, and options or subfields; the type decides what a **Filter condition** on that field can hold.
+The consumer's description of what can be filtered — each field's type, options, **Date presets** or subfields, and optionally the operators it narrows its type's built-in set to; the type decides what a **Filter condition** on that field can hold.
 _Avoid_: BUILDER_SCHEMA, columns, filter config
+
+**Date preset**:
+A named span of days a date field offers, such as `last7Days`: built-in, resolved by the **Row matcher** in UTC calendar days, or custom, resolved by the product.
+_Avoid_: quick date, relative date (as the concept name)
 
 **Filter view**:
 One of the three presentations of the same **Filter document** — `filters`, `builder`, `advanced` — switched by the view switch. Switching changes the presentation only.

@@ -1,154 +1,149 @@
-import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import type {
-	DsFilterCondition,
-	DsFiltersBarClearAllProps,
-	DsFiltersBarRootProps,
+import {
+	emptyFilterDocument,
+	type DsFilterCondition,
+	type DsFilterDocument,
+	type DsFilterField,
+	type DsFilterPin,
+	type DsFiltersBarProps,
+	type DsFiltersBarSavedFiltersConfig,
 } from '../ds-filters-bar.types';
 
+const FIELDS: ReadonlyArray<DsFilterField> = [
+	{
+		type: 'enum',
+		id: 'status',
+		label: 'Status',
+		operators: [{ value: '=', label: 'equals' }],
+		options: [
+			{ value: 'A', label: 'Active' },
+			{ value: 'B', label: 'Blocked' },
+		],
+	},
+];
+
 const SEARCH: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
-const QUERY = 'status = "A" OR status = "B"';
+const withSearch: DsFilterDocument = { conditions: [SEARCH], query: null };
+const withQuery: DsFilterDocument = { conditions: [], query: 'status = "A" OR status = "B"' };
+const ACTIVE: DsFilterPin = { field: 'status', value: 'A' };
 
-// Filling the document is other parts' job, so a probe drives it here.
-const Probe = () => {
-	const bar = useDsFiltersBarContext();
+const savedFilters = (
+	overrides: Partial<DsFiltersBarSavedFiltersConfig> = {},
+): DsFiltersBarSavedFiltersConfig => ({
+	items: [{ id: 'mine', name: 'Mine', document: withSearch }],
+	onSaveAs: () => 'new',
+	onUpdate: () => undefined,
+	onRename: () => undefined,
+	onDelete: () => undefined,
+	...overrides,
+});
 
-	return (
-		<div>
-			<output aria-label="conditions">{bar.conditions.map((condition) => condition.id).join(',')}</output>
-			<output aria-label="query">{String(bar.query)}</output>
-			<button type="button" onClick={() => bar.addCondition(SEARCH)}>
-				add
-			</button>
-		</div>
-	);
-};
-
-interface HarnessProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	clearAllProps?: DsFiltersBarClearAllProps;
-}
-
-const renderClearAll = ({ clearAllProps, ...props }: HarnessProps = {}) =>
-	page.render(
-		<DsFiltersBar.Root {...props}>
-			<Probe />
-			<DsFiltersBar.ClearAll {...clearAllProps} />
-		</DsFiltersBar.Root>,
-	);
+const ClearAllBar = (props: DsFiltersBarProps) => <DsFiltersBar fields={FIELDS} defaultExpanded {...props} />;
 
 const clearAll = (name = 'Clear all') => page.getByRole('button', { name, exact: true });
-const output = (name: string) => page.getByRole('status', { name });
+const searchInput = () => page.getByRole('textbox', { name: 'Search' });
+const activeToggle = () => page.getByRole('button', { name: 'Active', exact: true });
 
-describe('DsFiltersBar.ClearAll', () => {
-	it('renders nothing while the filter document is empty', async () => {
-		await renderClearAll();
+describe('DsFiltersBar clear all', () => {
+	it('renders only while there is something to clear', async () => {
+		await page.render(<ClearAllBar />);
 
 		await expect.element(clearAll()).not.toBeInTheDocument();
 
-		await page.getByRole('button', { name: 'add' }).click();
+		await searchInput().fill('AAA');
+		await userEvent.keyboard('{Enter}');
 
 		await expect.element(clearAll()).toBeVisible();
 	});
 
-	it('empties the conditions, then calls onClick', async () => {
-		const calls: string[] = [];
-		const onConditionsChange = vi.fn((conditions: ReadonlyArray<DsFilterCondition>) => {
-			calls.push(`conditions:${String(conditions.length)}`);
-		});
-		const onClick = vi.fn(() => {
-			calls.push('click');
-		});
+	it.each([
+		{ state: 'a switched-on toggle', props: { defaultPins: [ACTIVE], defaultActiveToggles: [ACTIVE] } },
+		{ state: 'an Active saved filter', props: { savedFilters: savedFilters({ defaultActiveId: 'mine' }) } },
+	])('renders for $state on an empty document', async ({ props }) => {
+		await page.render(<ClearAllBar {...props} />);
 
-		await renderClearAll({ defaultConditions: [SEARCH], onConditionsChange, clearAllProps: { onClick } });
-
-		await clearAll().click();
-
-		expect(calls).toEqual(['conditions:0', 'click']);
-		await expect.element(output('conditions')).toHaveTextContent('');
-		await expect.element(clearAll()).not.toBeInTheDocument();
-	});
-
-	it('drops the Advanced query', async () => {
-		const onQueryChange = vi.fn();
-		const onConditionsChange = vi.fn();
-
-		await renderClearAll({ defaultQuery: QUERY, onQueryChange, onConditionsChange });
-
-		await clearAll().click();
-
-		expect(onQueryChange).toHaveBeenCalledExactlyOnceWith(null);
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([]);
-		await expect.element(output('query')).toHaveTextContent('null');
+		await expect.element(clearAll()).toBeVisible();
 	});
 
 	it.each([
-		['conditions', { defaultConditions: [SEARCH] }],
-		['an Advanced query', { defaultQuery: QUERY }],
-	])('moves focus to Search after clearing %s', async (_, props) => {
+		{ source: 'conditions', defaultValue: withSearch },
+		{ source: 'an Advanced query', defaultValue: withQuery },
+	])('empties a document driven by $source, reporting it once', async ({ defaultValue }) => {
+		const onValueChange = vi.fn();
+
+		await page.render(<ClearAllBar defaultValue={defaultValue} onValueChange={onValueChange} />);
+
+		await clearAll().click();
+
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(emptyFilterDocument);
+		await expect.element(page.getByRole('button', { name: 'Remove filter: AAA' })).not.toBeInTheDocument();
+		await expect.element(clearAll()).not.toBeInTheDocument();
+	});
+
+	it('switches every toggle off and keeps the pins', async () => {
+		const onActiveTogglesChange = vi.fn();
+		const onPinsChange = vi.fn();
+
 		await page.render(
-			<DsFiltersBar.Root {...props}>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Search />
-				<DsFiltersBar.ClearAll />
-			</DsFiltersBar.Root>,
+			<ClearAllBar
+				defaultValue={withSearch}
+				defaultPins={[ACTIVE]}
+				defaultActiveToggles={[ACTIVE]}
+				onActiveTogglesChange={onActiveTogglesChange}
+				onPinsChange={onPinsChange}
+			/>,
 		);
+
+		await clearAll().click();
+
+		expect(onActiveTogglesChange).toHaveBeenCalledExactlyOnceWith([]);
+		expect(onPinsChange).not.toHaveBeenCalled();
+		await expect.element(activeToggle()).toHaveAttribute('aria-pressed', 'false');
+	});
+
+	it('drops the Active saved filter', async () => {
+		const onActiveIdChange = vi.fn();
+
+		await page.render(
+			<ClearAllBar
+				defaultValue={withSearch}
+				savedFilters={savedFilters({ defaultActiveId: 'mine', onActiveIdChange })}
+			/>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Mine', exact: true })).toBeVisible();
+
+		await clearAll().click();
+
+		expect(onActiveIdChange).toHaveBeenCalledExactlyOnceWith(null);
+		await expect.element(page.getByRole('button', { name: 'Saved filters', exact: true })).toBeVisible();
+	});
+
+	it.each([
+		{ source: 'conditions', defaultValue: withSearch },
+		{ source: 'an Advanced query', defaultValue: withQuery },
+	])('moves focus to the search input after clearing $source', async ({ defaultValue }) => {
+		await page.render(<ClearAllBar defaultValue={defaultValue} />);
 
 		await clearAll().click();
 
 		await expect.element(clearAll()).not.toBeInTheDocument();
-		await expect.element(page.getByRole('textbox', { name: 'Search' })).toHaveFocus();
+		await expect.element(searchInput()).toHaveFocus();
 	});
 
-	it('moves focus to the disclosure button after clearing when there is no Search', async () => {
-		await page.render(
-			<DsFiltersBar.Root defaultConditions={[SEARCH]}>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.ClearAll />
-			</DsFiltersBar.Root>,
-		);
+	it('moves focus to the disclosure button when the search input is disabled', async () => {
+		await page.render(<ClearAllBar defaultValue={withSearch} slotProps={{ search: { disabled: true } }} />);
 
 		await clearAll().click();
 
-		await expect.element(page.getByRole('button', { name: 'Show filters' })).toHaveFocus();
+		await expect.element(page.getByRole('button', { name: 'Hide filters' })).toHaveFocus();
 	});
 
-	it('leaves focus where onClick moved it', async () => {
-		const elsewhere = createRef<HTMLButtonElement>();
-
-		await page.render(
-			<DsFiltersBar.Root defaultConditions={[SEARCH]}>
-				<DsFiltersBar.Search />
-				<button ref={elsewhere} type="button">
-					elsewhere
-				</button>
-				<DsFiltersBar.ClearAll onClick={() => elsewhere.current?.focus()} />
-			</DsFiltersBar.Root>,
-		);
-
-		await clearAll().click();
-
-		await expect.element(page.getByRole('button', { name: 'elsewhere' })).toHaveFocus();
-	});
-
-	it('takes its label from the locale', async () => {
-		await renderClearAll({ defaultConditions: [SEARCH], clearAllProps: { locale: { label: 'Reset' } } });
+	it('takes its label from locale.clearAll', async () => {
+		await page.render(<ClearAllBar defaultValue={withSearch} locale={{ clearAll: { label: 'Reset' } }} />);
 
 		await expect.element(clearAll('Reset')).toBeVisible();
-	});
-
-	it('forwards ref, className and style', async () => {
-		const ref = createRef<HTMLButtonElement>();
-
-		await renderClearAll({
-			defaultConditions: [SEARCH],
-			clearAllProps: { ref, className: 'custom', style: { marginLeft: '3px' } },
-		});
-
-		await expect.element(clearAll()).toHaveClass('custom');
-		await expect.element(clearAll()).toHaveStyle({ marginLeft: '3px' });
-		expect(ref.current).toBe(clearAll().element());
 	});
 });

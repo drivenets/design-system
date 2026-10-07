@@ -3,11 +3,7 @@ import type { ReactNode } from 'react';
 import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-summary.module.scss';
-import {
-	defaultDsFiltersBarSummaryLocale,
-	type DsFiltersBarSummaryLocale,
-	type DsFiltersBarSummaryProps,
-} from '../../ds-filters-bar.types';
+import type { DsFiltersBarSummaryLocale, DsFiltersBarSummarySlotProps } from '../../ds-filters-bar.types';
 import { toSummaryItems, type DsFiltersBarSummaryItem } from '../../ds-filters-bar.utils';
 
 interface SummaryPhrase {
@@ -76,20 +72,21 @@ const renderPhrase = ({ key, label, operator, value, delimited }: SummaryPhrase)
 const renderPhrases = (phrases: ReadonlyArray<SummaryPhrase>): ReactNode[] =>
 	phrases.flatMap((phrase, index) => (index ? [' ', renderPhrase(phrase)] : [renderPhrase(phrase)]));
 
-export const Summary = ({
-	count,
-	activeSavedFilterName,
-	locale: localeProp,
-	ref,
-	className,
-	style,
-}: DsFiltersBarSummaryProps) => {
-	const { fields, conditions, query, expanded } = useDsFiltersBarContext();
-	const locale = { ...defaultDsFiltersBarSummaryLocale, ...localeProp };
-
-	if (expanded) {
-		return null;
-	}
+/**
+ * Collapsed row. Lists the conditions from the filter document, or a fixed label while an Advanced
+ * query is the source, after the **Active saved filter**'s name.
+ */
+export const Summary = ({ ref, className, style }: DsFiltersBarSummarySlotProps) => {
+	const {
+		fields,
+		conditions,
+		query,
+		activeSavedFilter,
+		resultCount: count,
+		locale: barLocale,
+	} = useDsFiltersBarContext();
+	const locale = barLocale.summary;
+	const activeSavedFilterName = activeSavedFilter?.name;
 
 	const items = toSummaryItems({ conditions, query, fields, activeSavedFilterName });
 	const phrases = items.map((item) => toPhrase(item, locale, items.length === 1));
@@ -135,5 +132,3 @@ export const Summary = ({
 		</div>
 	);
 };
-
-Summary.displayName = 'DsFiltersBar.Summary';

@@ -1,12 +1,22 @@
 import type { CSSProperties, ReactNode, Ref } from 'react';
+import { defaultDsSavedFiltersLocale, type DsSavedFiltersLocale } from '../ds-saved-filters';
 import {
-	defaultDsSavedFiltersLocale,
-	type DsSavedFilterItem,
-	type DsSavedFiltersAsyncHandler,
-	type DsSavedFiltersLocale,
-	type DsSavedFiltersSaveProps,
-	type DsSavedFiltersTriggerProps,
-} from '../ds-saved-filters';
+	defaultDsFiltersBarBuilderLocale,
+	type DsFiltersBarBuilderLocale,
+} from './components/ds-filters-bar-builder/ds-filters-bar-builder.types';
+import {
+	defaultDsFiltersBarConditionChipsLocale,
+	type DsFiltersBarConditionChipsLocale,
+} from './components/ds-filters-bar-condition-chips/ds-filters-bar-condition-chips.types';
+import {
+	defaultDsFiltersBarFiltersDialogLocale,
+	type DsFiltersBarFiltersDialogLocale,
+} from './components/ds-filters-bar-filters-dialog/ds-filters-bar-filters-dialog.types';
+import {
+	defaultDsFiltersBarQueryLocale,
+	type DsFiltersBarQueryLocale,
+} from './components/ds-filters-bar-query/ds-filters-bar-query.types';
+import type { DsFilterQueryErrorCode } from './query-language/query-language.types';
 
 export const filterOperatorValues = ['=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', '~', '!~'] as const;
 export type DsFilterOperatorValue = (typeof filterOperatorValues)[number];
@@ -29,19 +39,45 @@ export interface DsFilterOperator<TValue extends DsFilterOperatorValue = DsFilte
 	 */
 	value: TValue;
 	/**
-	 * Words for the summary line and menus, for example `not equals`
+	 * Words for the summary line and menus, for example `not equals`. Overrides
+	 * `locale.operators` for this field only.
 	 */
-	label: string;
+	label?: string;
 	/**
-	 * Compact form for chips and operator menus, for example `≠`. Falls back to `value`.
+	 * Compact form for chips and operator menus, for example `≠`. Overrides `locale.operators` for
+	 * this field only.
 	 */
 	symbol?: string;
 }
+
+/**
+ * Operators a field offers: plain values take their words from `locale.operators`, objects also set
+ * them for this field only
+ */
+export type DsFilterOperators<TValue extends DsFilterOperatorValue> = ReadonlyArray<
+	TValue | DsFilterOperator<TValue>
+>;
 
 export interface DsFilterOption {
 	value: string;
 	label: string;
 }
+
+export const dateFilterPresets = [
+	'today',
+	'yesterday',
+	'last7Days',
+	'last30Days',
+	'last90Days',
+	'thisMonth',
+	'lastMonth',
+	'thisYear',
+] as const;
+/**
+ * A built-in date preset. The row matcher resolves each to UTC calendar days: `lastNDays` ends
+ * today and includes it, `thisMonth` and `thisYear` run up to today.
+ */
+export type DsFilterDatePresetValue = (typeof dateFilterPresets)[number];
 
 interface DsFilterFieldBase {
 	id: string;
@@ -53,18 +89,27 @@ interface DsFilterFieldBase {
  */
 export interface DsFilterEnumField extends DsFilterFieldBase {
 	type: 'enum';
-	operators: ReadonlyArray<DsFilterOperator<DsFilterEnumOperator>>;
+	/**
+	 * @default enumFilterOperators
+	 */
+	operators?: DsFilterOperators<DsFilterEnumOperator>;
 	options: ReadonlyArray<DsFilterOption>;
 }
 
 export interface DsFilterTextField extends DsFilterFieldBase {
 	type: 'text';
-	operators: ReadonlyArray<DsFilterOperator<DsFilterTextOperator>>;
+	/**
+	 * @default textFilterOperators
+	 */
+	operators?: DsFilterOperators<DsFilterTextOperator>;
 }
 
 export interface DsFilterNumberField extends DsFilterFieldBase {
 	type: 'number';
-	operators: ReadonlyArray<DsFilterOperator<DsFilterComparisonOperator>>;
+	/**
+	 * @default comparisonFilterOperators
+	 */
+	operators?: DsFilterOperators<DsFilterComparisonOperator>;
 }
 
 /**
@@ -72,11 +117,16 @@ export interface DsFilterNumberField extends DsFilterFieldBase {
  */
 export interface DsFilterDateField extends DsFilterFieldBase {
 	type: 'date';
-	operators: ReadonlyArray<DsFilterOperator<DsFilterComparisonOperator>>;
 	/**
+	 * @default comparisonFilterOperators
+	 */
+	operators?: DsFilterOperators<DsFilterComparisonOperator>;
+	/**
+	 * A built-in preset by value, labeled from `locale.datePresets`, or a custom preset with its own
+	 * label. The row matcher resolves built-in values itself; custom ones need `resolveDatePreset`.
 	 * @default []
 	 */
-	presets?: ReadonlyArray<DsFilterOption>;
+	presets?: ReadonlyArray<DsFilterDatePresetValue | DsFilterOption>;
 }
 
 /**
@@ -94,6 +144,37 @@ export type DsFilterScalarField =
 	| DsFilterNumberField
 	| DsFilterDateField;
 export type DsFilterField = DsFilterScalarField | DsFilterCompoundField;
+
+/**
+ * An operator with its words filled in, from the field, `locale.operators` or the defaults
+ */
+export type DsFilterResolvedOperator<TValue extends DsFilterOperatorValue = DsFilterOperatorValue> = Required<
+	DsFilterOperator<TValue>
+>;
+
+type Resolved<TField extends DsFilterScalarField, TValue extends DsFilterOperatorValue> = Omit<
+	TField,
+	'operators'
+> & {
+	operators: ReadonlyArray<DsFilterResolvedOperator<TValue>>;
+};
+
+/**
+ * Internal: a field with every operator and preset spelled out, as the bar's parts read it
+ */
+export type DsFilterResolvedScalarField =
+	| Resolved<DsFilterEnumField, DsFilterEnumOperator>
+	| Resolved<DsFilterTextField, DsFilterTextOperator>
+	| Resolved<DsFilterNumberField, DsFilterComparisonOperator>
+	| (Omit<Resolved<DsFilterDateField, DsFilterComparisonOperator>, 'presets'> & {
+			presets: ReadonlyArray<DsFilterOption>;
+	  });
+
+export type DsFilterResolvedCompoundField = Omit<DsFilterCompoundField, 'subfields'> & {
+	subfields: ReadonlyArray<DsFilterResolvedScalarField>;
+};
+
+export type DsFilterResolvedField = DsFilterResolvedScalarField | DsFilterResolvedCompoundField;
 
 /**
  * Inclusive range. `null` leaves that side open.
@@ -149,6 +230,52 @@ export interface DsFilterFieldCondition {
 export type DsFilterCondition = DsFilterSearchCondition | DsFilterFieldCondition;
 
 /**
+ * The **Filter document**: what the bar filters by. `query` is `null` while the conditions are the
+ * source; while set, it alone filters and the conditions are ignored.
+ */
+export interface DsFilterDocument {
+	conditions: ReadonlyArray<DsFilterCondition>;
+	/**
+	 * Advanced query: a valid query the conditions cannot hold (one with `OR` or parentheses)
+	 */
+	query: string | null;
+}
+
+export interface DsFilterSearchConditionInput extends Omit<DsFilterSearchCondition, 'id'> {
+	id?: string;
+}
+
+export interface DsFilterFieldConditionInput extends Omit<DsFilterFieldCondition, 'id'> {
+	id?: string;
+}
+
+/**
+ * A **Filter condition** whose `id` may be left out
+ */
+export type DsFilterConditionInput = DsFilterSearchConditionInput | DsFilterFieldConditionInput;
+
+/**
+ * A **Filter document** as written by hand. A condition without an `id` gets one from its
+ * position, so the same input always gets the same ids. Whatever the bar reports is a full
+ * `DsFilterDocument`.
+ */
+export interface DsFilterDocumentInput {
+	/**
+	 * @default []
+	 */
+	conditions?: ReadonlyArray<DsFilterConditionInput>;
+	/**
+	 * @default null
+	 */
+	query?: string | null;
+}
+
+export const emptyFilterDocument: DsFilterDocument = Object.freeze({
+	conditions: Object.freeze([]),
+	query: null,
+});
+
+/**
  * A field option the user pinned for quick access in the pinned row. A user preference, not part
  * of the filter document: loading a saved filter or clearing leaves pins alone.
  */
@@ -160,100 +287,13 @@ export interface DsFilterPin {
 export const filtersBarViews = ['filters', 'builder', 'advanced'] as const;
 export type DsFiltersBarView = (typeof filtersBarViews)[number];
 
-export interface DsFiltersBarLocale {
-	/**
-	 * Accessible name of the region that holds the bar
-	 */
-	label?: string;
-	/**
-	 * Accessible name of the disclosure button while collapsed
-	 */
-	expand?: string;
-	/**
-	 * Accessible name of the disclosure button while expanded
-	 */
-	collapse?: string;
-}
-
-export const defaultDsFiltersBarLocale: Required<DsFiltersBarLocale> = Object.freeze({
-	label: 'Filters',
-	expand: 'Show filters',
-	collapse: 'Hide filters',
-});
-
-export interface DsFiltersBarRootProps {
-	/**
-	 * What can be filtered. Omit for a search-only bar.
-	 * @default []
-	 */
-	fields?: ReadonlyArray<DsFilterField>;
-	/**
-	 * Current conditions. Pair with `onConditionsChange`.
-	 */
-	conditions?: ReadonlyArray<DsFilterCondition>;
-	/**
-	 * @default []
-	 */
-	defaultConditions?: ReadonlyArray<DsFilterCondition>;
-	/**
-	 * Advanced query, or `null` while the conditions are the source. The advanced view only sets it
-	 * for a valid query that the conditions cannot hold (one with `OR` or parentheses); a valid
-	 * query of clauses joined by `AND` becomes conditions instead. While set, it alone filters the
-	 * data, the conditions are ignored, and the filters and builder views lock. Evaluate it with
-	 * `parseFilterQuery`. Pair with `onQueryChange`.
-	 */
-	query?: string | null;
-	/**
-	 * @default null
-	 */
-	defaultQuery?: string | null;
-	/**
-	 * Pinned field options. Pair with `onPinsChange`.
-	 */
-	pins?: ReadonlyArray<DsFilterPin>;
-	/**
-	 * @default []
-	 */
-	defaultPins?: ReadonlyArray<DsFilterPin>;
-	/**
-	 * Whether the full toolbar is shown. Collapsed shows the one-line summary. Pair with
-	 * `onExpandedChange`.
-	 */
-	expanded?: boolean;
-	/**
-	 * @default false
-	 */
-	defaultExpanded?: boolean;
-	/**
-	 * Asked-for view. While an Advanced query locks it, the bar shows the advanced view instead and
-	 * shows this one again once the query is cleared; `onViewChange` does not fire for either.
-	 * Pair with `onViewChange`.
-	 */
-	view?: DsFiltersBarView;
-	/**
-	 * Locked by an Advanced query the same way as `view`
-	 * @default 'filters'
-	 */
-	defaultView?: DsFiltersBarView;
-	locale?: DsFiltersBarLocale;
-	ref?: Ref<HTMLDivElement>;
-	className?: string;
-	style?: CSSProperties;
-	children: ReactNode;
-	onConditionsChange?: (conditions: ReadonlyArray<DsFilterCondition>) => void;
-	onQueryChange?: (query: string | null) => void;
-	onPinsChange?: (pins: ReadonlyArray<DsFilterPin>) => void;
-	onExpandedChange?: (expanded: boolean) => void;
-	onViewChange?: (view: DsFiltersBarView) => void;
-}
-
 export interface DsFiltersBarSummaryLocale {
 	/**
 	 * Announced result count. Receives the count.
 	 */
 	resultCount?: (count: number) => string;
 	/**
-	 * Label shown before `activeSavedFilterName`
+	 * Label shown before the name of the **Active saved filter**
 	 */
 	activeSavedFilter?: string;
 	/**
@@ -271,93 +311,6 @@ export interface DsFiltersBarSummaryLocale {
 	advancedQuery?: string;
 }
 
-export const defaultDsFiltersBarSummaryLocale: Required<DsFiltersBarSummaryLocale> = Object.freeze({
-	resultCount: (count: number) => `${String(count)} results`,
-	activeSavedFilter: 'Filter',
-	emptyLabel: 'View',
-	emptyValue: 'All',
-	search: 'Search',
-	advancedQuery: 'Advanced query',
-});
-
-/**
- * Button that expands and collapses the bar. Place it once, before `Summary` and `Toolbar`; it
- * renders in both states, so focus stays on it across the toggle.
- */
-export interface DsFiltersBarDisclosureProps {
-	ref?: Ref<HTMLButtonElement>;
-	className?: string;
-	style?: CSSProperties;
-}
-
-/**
- * Collapsed row. Lists the conditions from the filter document, or a fixed label while an Advanced
- * query is the source; renders nothing while expanded.
- */
-export interface DsFiltersBarSummaryProps {
-	/**
-	 * Number of results the current filters produce. Omit to hide the trailing count.
-	 */
-	count?: number;
-	/**
-	 * Name of the **Active saved filter**, shown before the conditions
-	 */
-	activeSavedFilterName?: string;
-	locale?: DsFiltersBarSummaryLocale;
-	ref?: Ref<HTMLDivElement>;
-	className?: string;
-	style?: CSSProperties;
-}
-
-/**
- * Expanded row. Renders nothing while collapsed.
- */
-export interface DsFiltersBarToolbarProps {
-	className?: string;
-	style?: CSSProperties;
-	children: ReactNode;
-}
-
-/**
- * One **Saved filter** in the `items` of `SavedFilters` and `SaveFilter`
- */
-export type DsFiltersBarSavedFilterItem = DsSavedFilterItem;
-
-/**
- * Strings of `SavedFilters` and `SaveFilter`
- */
-export type DsFiltersBarSavedFiltersLocale = DsSavedFiltersLocale;
-
-export const defaultDsFiltersBarSavedFiltersLocale: Required<DsFiltersBarSavedFiltersLocale> =
-	defaultDsSavedFiltersLocale;
-
-/**
- * Saved-filter callback. Return a Promise to keep the launching control in a loading state until it
- * settles.
- */
-export type DsFiltersBarSavedFiltersAsyncHandler<Args extends unknown[] = []> =
-	DsSavedFiltersAsyncHandler<Args>;
-
-/**
- * Picker for **Saved filters**. The consumer owns the items, the **Active saved filter** id, `dirty`
- * and each snapshot's payload; the bar stores none of them. Loading a snapshot means writing its
- * payload back through controlled `conditions` / `query` on `Root` from `onValueChange`.
- * Clearing the **Active saved filter** also clears the filter document before `onClear` runs.
- */
-export type DsFiltersBarSavedFiltersProps = DsSavedFiltersTriggerProps;
-
-/**
- * Saves the filter document as a **Saved filter**. The consumer owns the items, the **Active saved
- * filter** id and the payload: `onSaveAs` and `onUpdate` read the current `conditions` / `query`
- * from the consumer's own state, so pair this with controlled `conditions` / `query` on `Root`.
- */
-export interface DsFiltersBarSaveFilterProps extends Omit<DsSavedFiltersSaveProps, 'disabled'> {
-	/**
-	 * Defaults to disabled while the filter document is empty
-	 */
-	disabled?: boolean;
-}
-
 export interface DsFiltersBarSearchLocale {
 	label?: string;
 	placeholder?: string;
@@ -365,37 +318,6 @@ export interface DsFiltersBarSearchLocale {
 	 * Accessible name of the button that clears the pending text
 	 */
 	clear?: string;
-}
-
-export const defaultDsFiltersBarSearchLocale: Required<DsFiltersBarSearchLocale> = Object.freeze({
-	label: 'Search',
-	placeholder: 'Type ‘/’ to search',
-	clear: 'Clear search',
-});
-
-/**
- * Free-text input. Enter adds the trimmed text as a search condition, unless the same search is
- * already there, and clears the input; `/` focuses it from anywhere outside an editable element or
- * dialog. Disabled while an Advanced query is the source.
- */
-export interface DsFiltersBarSearchProps {
-	/**
-	 * Pending text, before it becomes a condition. Pair with `onValueChange`.
-	 */
-	value?: string;
-	/**
-	 * @default ''
-	 */
-	defaultValue?: string;
-	/**
-	 * @default false
-	 */
-	disabled?: boolean;
-	locale?: DsFiltersBarSearchLocale;
-	ref?: Ref<HTMLInputElement>;
-	className?: string;
-	style?: CSSProperties;
-	onValueChange?: (value: string) => void;
 }
 
 export interface DsFiltersBarViewSwitchLocale {
@@ -410,108 +332,438 @@ export interface DsFiltersBarViewSwitchLocale {
 	lockedView?: string;
 }
 
-export const defaultDsFiltersBarViewSwitchLocale = Object.freeze({
-	label: 'Filter view',
-	views: Object.freeze({
-		filters: 'Filters',
-		builder: 'Query builder',
-		advanced: 'Advanced query',
-	}),
-	lockedView: 'Clear the advanced query to switch views',
-}) satisfies Required<DsFiltersBarViewSwitchLocale>;
+export type { DsFiltersBarBuilderLocale, DsFiltersBarQueryLocale };
 
 /**
- * While an edited advanced query is the source, the filters and builder views are locked.
+ * Strings of the filters dialog that the filters view opens
  */
-export interface DsFiltersBarViewSwitchProps {
-	locale?: DsFiltersBarViewSwitchLocale;
-	ref?: Ref<HTMLDivElement>;
-	className?: string;
-	style?: CSSProperties;
-}
+export type DsFiltersBarConditionsLocale = DsFiltersBarFiltersDialogLocale;
 
-export interface DsFiltersBarViewProps {
-	/**
-	 * Children render only while this view is active
-	 */
-	value: DsFiltersBarView;
-	children: ReactNode;
-}
+/**
+ * Strings of the add button and the condition chips, shared by the filters and builder views
+ */
+export type DsFiltersBarChipsLocale = DsFiltersBarConditionChipsLocale;
+
+/**
+ * Strings of the saved-filters picker and the save button
+ */
+export type DsFiltersBarSavedFiltersLocale = DsSavedFiltersLocale;
 
 export interface DsFiltersBarClearAllLocale {
 	label?: string;
-}
-
-export const defaultDsFiltersBarClearAllLocale: Required<DsFiltersBarClearAllLocale> = Object.freeze({
-	label: 'Clear all',
-});
-
-/**
- * Empties the conditions and drops the advanced query. Renders nothing while the filter document
- * is empty, so focus then moves to `Search`, or to `Disclosure` when there is no `Search`.
- */
-export interface DsFiltersBarClearAllProps {
-	locale?: DsFiltersBarClearAllLocale;
-	ref?: Ref<HTMLButtonElement>;
-	className?: string;
-	style?: CSSProperties;
-	/**
-	 * Called after the document is cleared, for example to drop the **Active saved filter**
-	 */
-	onClick?: () => void;
 }
 
 export interface DsFiltersBarPinnedLocale {
 	label?: string;
 }
 
-export const defaultDsFiltersBarPinnedLocale: Required<DsFiltersBarPinnedLocale> = Object.freeze({
-	label: 'Pinned',
+/**
+ * Words for one operator
+ */
+export interface DsFilterOperatorLocale {
+	/**
+	 * For the summary line and menus, for example `not equals`
+	 */
+	label?: string;
+	/**
+	 * For chips and operator menus, for example `≠`
+	 */
+	symbol?: string;
+}
+
+/**
+ * Operator words by field type, since one token reads differently per type: `>` is `greater than`
+ * on a number and `after` on a date. An operator object on a field overrides these for that field.
+ */
+export interface DsFiltersBarOperatorsLocale {
+	text?: Partial<Record<DsFilterTextOperator, DsFilterOperatorLocale>>;
+	enum?: Partial<Record<DsFilterEnumOperator, DsFilterOperatorLocale>>;
+	number?: Partial<Record<DsFilterComparisonOperator, DsFilterOperatorLocale>>;
+	date?: Partial<Record<DsFilterComparisonOperator, DsFilterOperatorLocale>>;
+}
+
+/**
+ * Labels of the built-in date presets
+ */
+export type DsFiltersBarDatePresetsLocale = Partial<Record<DsFilterDatePresetValue, string>>;
+
+export interface DsFiltersBarResolvedOperatorsLocale {
+	text: Readonly<Record<DsFilterTextOperator, Required<DsFilterOperatorLocale>>>;
+	enum: Readonly<Record<DsFilterEnumOperator, Required<DsFilterOperatorLocale>>>;
+	number: Readonly<Record<DsFilterComparisonOperator, Required<DsFilterOperatorLocale>>>;
+	date: Readonly<Record<DsFilterComparisonOperator, Required<DsFilterOperatorLocale>>>;
+}
+
+/**
+ * Strings by part. Each section is merged over its defaults, so a section may set only the strings
+ * it changes.
+ */
+export interface DsFiltersBarLocale {
+	/**
+	 * Accessible name of the region that holds the bar
+	 */
+	label?: string;
+	/**
+	 * Accessible name of the disclosure button while collapsed
+	 */
+	expand?: string;
+	/**
+	 * Accessible name of the disclosure button while expanded
+	 */
+	collapse?: string;
+	summary?: DsFiltersBarSummaryLocale;
+	search?: DsFiltersBarSearchLocale;
+	viewSwitch?: DsFiltersBarViewSwitchLocale;
+	/**
+	 * The add button and the condition chips of both the filters and builder views
+	 */
+	chips?: DsFiltersBarChipsLocale;
+	/**
+	 * The filters dialog
+	 */
+	conditions?: DsFiltersBarConditionsLocale;
+	/**
+	 * The query builder dialog
+	 */
+	builder?: DsFiltersBarBuilderLocale;
+	query?: DsFiltersBarQueryLocale;
+	/**
+	 * The saved-filters picker and the save button
+	 */
+	savedFilters?: DsFiltersBarSavedFiltersLocale;
+	clearAll?: DsFiltersBarClearAllLocale;
+	pinned?: DsFiltersBarPinnedLocale;
+	/**
+	 * Operator labels and symbols by field type, for every field that lists the operator as a plain
+	 * value or leaves `operators` out
+	 */
+	operators?: DsFiltersBarOperatorsLocale;
+	/**
+	 * Labels of the built-in date presets a date field lists by value
+	 */
+	datePresets?: DsFiltersBarDatePresetsLocale;
+}
+
+/**
+ * Every string of the bar, with each section complete
+ */
+export interface DsFiltersBarResolvedLocale {
+	label: string;
+	expand: string;
+	collapse: string;
+	summary: Required<DsFiltersBarSummaryLocale>;
+	search: Required<DsFiltersBarSearchLocale>;
+	viewSwitch: Required<Omit<DsFiltersBarViewSwitchLocale, 'views'>> & {
+		views: Readonly<Record<DsFiltersBarView, string>>;
+	};
+	chips: Required<DsFiltersBarChipsLocale>;
+	conditions: Required<DsFiltersBarConditionsLocale>;
+	builder: Required<DsFiltersBarBuilderLocale>;
+	query: Required<Omit<DsFiltersBarQueryLocale, 'errors' | 'operators'>> & {
+		errors: Readonly<Record<DsFilterQueryErrorCode, (text: string) => string>>;
+		operators: Readonly<Record<DsFilterOperatorValue, string>>;
+	};
+	savedFilters: Required<DsFiltersBarSavedFiltersLocale>;
+	clearAll: Required<DsFiltersBarClearAllLocale>;
+	pinned: Required<DsFiltersBarPinnedLocale>;
+	operators: DsFiltersBarResolvedOperatorsLocale;
+	datePresets: Readonly<Record<DsFilterDatePresetValue, string>>;
+}
+
+export const defaultDsFiltersBarLocale: DsFiltersBarResolvedLocale = Object.freeze({
+	label: 'Filters',
+	expand: 'Show filters',
+	collapse: 'Hide filters',
+	summary: Object.freeze({
+		resultCount: (count: number) => `${String(count)} results`,
+		activeSavedFilter: 'Filter',
+		emptyLabel: 'View',
+		emptyValue: 'All',
+		search: 'Search',
+		advancedQuery: 'Advanced query',
+	}),
+	search: Object.freeze({
+		label: 'Search',
+		placeholder: 'Type ‘/’ to search',
+		clear: 'Clear search',
+	}),
+	viewSwitch: Object.freeze({
+		label: 'Filter view',
+		views: Object.freeze({
+			filters: 'Filters',
+			builder: 'Query builder',
+			advanced: 'Advanced query',
+		}),
+		lockedView: 'Clear the advanced query to switch views',
+	}),
+	chips: defaultDsFiltersBarConditionChipsLocale,
+	conditions: defaultDsFiltersBarFiltersDialogLocale,
+	builder: defaultDsFiltersBarBuilderLocale,
+	query: defaultDsFiltersBarQueryLocale,
+	savedFilters: defaultDsSavedFiltersLocale,
+	clearAll: Object.freeze({ label: 'Clear all' }),
+	pinned: Object.freeze({ label: 'Pinned' }),
+	operators: Object.freeze({
+		text: Object.freeze({
+			'~': Object.freeze({ label: 'contains', symbol: '~' }),
+			'!~': Object.freeze({ label: 'does not contain', symbol: '≁' }),
+			'=': Object.freeze({ label: 'equals', symbol: '=' }),
+			'!=': Object.freeze({ label: 'not equals', symbol: '≠' }),
+		}),
+		enum: Object.freeze({
+			'=': Object.freeze({ label: 'is', symbol: '=' }),
+			'!=': Object.freeze({ label: 'is not', symbol: '≠' }),
+			IN: Object.freeze({ label: 'is any of', symbol: '∈' }),
+			'NOT IN': Object.freeze({ label: 'is none of', symbol: '∉' }),
+		}),
+		number: Object.freeze({
+			'=': Object.freeze({ label: 'equals', symbol: '=' }),
+			'!=': Object.freeze({ label: 'not equals', symbol: '≠' }),
+			'>': Object.freeze({ label: 'greater than', symbol: '>' }),
+			'>=': Object.freeze({ label: 'at least', symbol: '≥' }),
+			'<': Object.freeze({ label: 'less than', symbol: '<' }),
+			'<=': Object.freeze({ label: 'at most', symbol: '≤' }),
+		}),
+		date: Object.freeze({
+			'=': Object.freeze({ label: 'is', symbol: '=' }),
+			'!=': Object.freeze({ label: 'is not', symbol: '≠' }),
+			'>': Object.freeze({ label: 'after', symbol: '>' }),
+			'>=': Object.freeze({ label: 'on or after', symbol: '≥' }),
+			'<': Object.freeze({ label: 'before', symbol: '<' }),
+			'<=': Object.freeze({ label: 'on or before', symbol: '≤' }),
+		}),
+	}),
+	datePresets: Object.freeze({
+		today: 'Today',
+		yesterday: 'Yesterday',
+		last7Days: 'Last 7 days',
+		last30Days: 'Last 30 days',
+		last90Days: 'Last 90 days',
+		thisMonth: 'This month',
+		lastMonth: 'Last month',
+		thisYear: 'This year',
+	}),
 });
 
 /**
- * Quick-toggle row, shown in both collapsed and expanded states. Toggles narrow the results the
- * conditions already produced; they never widen them.
+ * One **Saved filter**: a named snapshot of a **Filter document**
  */
-export interface DsFiltersBarPinnedProps {
-	locale?: DsFiltersBarPinnedLocale;
-	className?: string;
-	style?: CSSProperties;
-	/**
-	 * `DsFiltersBar.PinnedGroup` elements
-	 */
-	children: ReactNode;
+export interface DsFiltersBarSavedFilter {
+	id: string;
+	name: string;
+	document: DsFilterDocumentInput;
 }
 
-export interface DsFiltersBarPinnedGroupProps {
+/**
+ * The product keeps the items and persists them; the bar loads a chosen item into its document,
+ * counts its conditions, and marks it dirty once the document differs from it. Every callback may
+ * return a Promise to keep the control that launched it loading until it settles.
+ */
+export interface DsFiltersBarSavedFiltersConfig {
+	items: ReadonlyArray<DsFiltersBarSavedFilter>;
 	/**
-	 * Category name, also the accessible name of the group
+	 * Id of the **Active saved filter**, or `null`. Pair with `onActiveIdChange`. It does not load
+	 * the item's document: pair it with the bar's `value`.
 	 */
-	label: string;
-	className?: string;
-	style?: CSSProperties;
+	activeId?: string | null;
 	/**
-	 * `DsFiltersBar.PinnedToggle` elements
+	 * The bar also starts from this item's document when neither `value` nor `defaultValue` is
+	 * given.
+	 * @default null
 	 */
-	children: ReactNode;
+	defaultActiveId?: string | null;
+	onActiveIdChange?: (id: string | null) => void;
+	/**
+	 * Returns the new item's id, which becomes the **Active saved filter**
+	 */
+	onSaveAs: (name: string, document: DsFilterDocument) => string | Promise<string>;
+	/**
+	 * Overwrites the **Active saved filter** with the current document
+	 */
+	onUpdate: (id: string, document: DsFilterDocument) => void | Promise<void>;
+	onRename: (id: string, name: string) => void | Promise<void>;
+	/**
+	 * Deleting the **Active saved filter** also drops the active selection, once this settles
+	 */
+	onDelete: (id: string) => void | Promise<void>;
 }
 
-export interface DsFiltersBarPinnedToggleProps {
-	label: string;
+/**
+ * What every part forwards to the element it renders
+ */
+export interface DsFiltersBarPartSlotProps<TElement extends HTMLElement> {
+	ref?: Ref<TElement>;
+	className?: string;
+	style?: CSSProperties;
+}
+
+export type DsFiltersBarDisclosureSlotProps = DsFiltersBarPartSlotProps<HTMLButtonElement>;
+
+export type DsFiltersBarSummarySlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
+
+export type DsFiltersBarToolbarSlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
+
+export type DsFiltersBarSavedFiltersSlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
+
+export interface DsFiltersBarSaveFilterSlotProps extends DsFiltersBarPartSlotProps<HTMLButtonElement> {
 	/**
-	 * Matches within the results the conditions already produced
-	 */
-	count: number;
-	/**
-	 * Controlled. Surfaced as `aria-pressed`.
-	 */
-	active: boolean;
-	/**
-	 * Defaults to disabled when `count` is 0 and the toggle is off, so an active toggle can always be turned off
+	 * Defaults to disabled while the filter document is empty
 	 */
 	disabled?: boolean;
-	ref?: Ref<HTMLButtonElement>;
+}
+
+/**
+ * `ref` reaches the input; `className` and `style` its field wrapper.
+ */
+export interface DsFiltersBarSearchSlotProps extends DsFiltersBarPartSlotProps<HTMLInputElement> {
+	/**
+	 * Pending text, before Enter adds it as a search condition. Pair with `onValueChange`.
+	 */
+	value?: string;
+	/**
+	 * @default ''
+	 */
+	defaultValue?: string;
+	/**
+	 * Always disabled while an Advanced query is the source
+	 * @default false
+	 */
+	disabled?: boolean;
+	onValueChange?: (value: string) => void;
+}
+
+export type DsFiltersBarViewSwitchSlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
+
+export type DsFiltersBarConditionsSlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
+
+export interface DsFiltersBarBuilderSlotProps extends DsFiltersBarPartSlotProps<HTMLDivElement> {
+	/**
+	 * Field ids the query builder offers first, in this order. Every field stays searchable.
+	 * @default all fields, in `fields` order
+	 */
+	suggestedFields?: ReadonlyArray<string>;
+}
+
+/**
+ * `ref` reaches the code editor's textarea; `className` and `style` its field wrapper.
+ */
+export interface DsFiltersBarQuerySlotProps extends DsFiltersBarPartSlotProps<HTMLTextAreaElement> {
+	/**
+	 * @default false
+	 */
+	disabled?: boolean;
+	slots?: {
+		/**
+		 * Replaces the content of the syntax reference, for example with a link to product docs
+		 */
+		help?: ReactNode;
+	};
+}
+
+export type DsFiltersBarClearAllSlotProps = DsFiltersBarPartSlotProps<HTMLButtonElement>;
+
+export type DsFiltersBarPinnedSlotProps = DsFiltersBarPartSlotProps<HTMLDivElement>;
+
+export interface DsFiltersBarSlotProps {
+	disclosure?: DsFiltersBarDisclosureSlotProps;
+	summary?: DsFiltersBarSummarySlotProps;
+	toolbar?: DsFiltersBarToolbarSlotProps;
+	savedFilters?: DsFiltersBarSavedFiltersSlotProps;
+	saveFilter?: DsFiltersBarSaveFilterSlotProps;
+	search?: DsFiltersBarSearchSlotProps;
+	viewSwitch?: DsFiltersBarViewSwitchSlotProps;
+	conditions?: DsFiltersBarConditionsSlotProps;
+	builder?: DsFiltersBarBuilderSlotProps;
+	query?: DsFiltersBarQuerySlotProps;
+	clearAll?: DsFiltersBarClearAllSlotProps;
+	pinned?: DsFiltersBarPinnedSlotProps;
+}
+
+export interface DsFiltersBarProps {
+	/**
+	 * What can be filtered. Omit for a search-only bar.
+	 * @default []
+	 */
+	fields?: ReadonlyArray<DsFilterField>;
+	/**
+	 * The **Filter document**. Conditions may leave out `id`; each gets one from its position. Every
+	 * change, from any view, reports the whole document once, with every id. Pair with
+	 * `onValueChange`.
+	 */
+	value?: DsFilterDocumentInput;
+	/**
+	 * @default the document of `savedFilters.defaultActiveId`, else `emptyFilterDocument`
+	 */
+	defaultValue?: DsFilterDocumentInput;
+	/**
+	 * Field options shown in the pinned row, which is built from these and `fields`: one group per
+	 * field in `fields` order, one toggle per pin in this order. Pair with `onPinsChange`.
+	 */
+	pins?: ReadonlyArray<DsFilterPin>;
+	/**
+	 * @default []
+	 */
+	defaultPins?: ReadonlyArray<DsFilterPin>;
+	/**
+	 * Pins switched on in the pinned row. Toggles only count for pins the bar shows: a toggle whose
+	 * pin is gone, or whose field is missing from `fields`, no longer counts. Unpinning a switched-on
+	 * option from the bar also reports it switched off. Pair with `onActiveTogglesChange`.
+	 */
+	activeToggles?: ReadonlyArray<DsFilterPin>;
+	/**
+	 * @default []
+	 */
+	defaultActiveToggles?: ReadonlyArray<DsFilterPin>;
+	/**
+	 * Whether the full toolbar is shown. Collapsed shows the one-line summary. Pair with
+	 * `onExpandedChange`.
+	 */
+	expanded?: boolean;
+	/**
+	 * @default false
+	 */
+	defaultExpanded?: boolean;
+	/**
+	 * Asked-for view. While an Advanced query is the source, the bar shows the advanced view
+	 * instead, and shows this one again once the query is cleared; `onViewChange` does not fire for
+	 * either. A view missing from `views` falls back to the first of `views`. Pair with
+	 * `onViewChange`.
+	 */
+	view?: DsFiltersBarView;
+	/**
+	 * @default 'filters'
+	 */
+	defaultView?: DsFiltersBarView;
+	/**
+	 * Views the view switch offers. With one view the switch is hidden. An Advanced query still
+	 * shows the advanced view, so it stays visible and clearable.
+	 * @default ['filters', 'builder', 'advanced']
+	 */
+	views?: ReadonlyArray<DsFiltersBarView>;
+	/**
+	 * Shows the saved-filters picker and the save button
+	 */
+	savedFilters?: DsFiltersBarSavedFiltersConfig;
+	/**
+	 * Number of results the document and switched-on pins produce, shown in the summary. Omit to hide
+	 * it.
+	 */
+	resultCount?: number;
+	/**
+	 * Count shown on a pin's toggle, which is disabled at 0 unless switched on. Omit to show no counts.
+	 */
+	getPinCount?: (pin: DsFilterPin) => number;
+	locale?: DsFiltersBarLocale;
+	/**
+	 * Props forwarded to one part
+	 */
+	slotProps?: DsFiltersBarSlotProps;
+	ref?: Ref<HTMLDivElement>;
 	className?: string;
 	style?: CSSProperties;
-	onActiveChange?: (active: boolean) => void;
+	onValueChange?: (value: DsFilterDocument) => void;
+	onPinsChange?: (pins: ReadonlyArray<DsFilterPin>) => void;
+	onActiveTogglesChange?: (activeToggles: ReadonlyArray<DsFilterPin>) => void;
+	onExpandedChange?: (expanded: boolean) => void;
+	onViewChange?: (view: DsFiltersBarView) => void;
 }

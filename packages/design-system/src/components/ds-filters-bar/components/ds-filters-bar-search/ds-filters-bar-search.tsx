@@ -6,7 +6,7 @@ import { DsFormControl } from '../../../ds-form-control';
 import { DsIcon } from '../../../ds-icon';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-search.module.scss';
-import { defaultDsFiltersBarSearchLocale, type DsFiltersBarSearchProps } from '../../ds-filters-bar.types';
+import type { DsFiltersBarSearchSlotProps } from '../../ds-filters-bar.types';
 import { createSearchCondition } from '../../ds-filters-bar.utils';
 import { useReportedState } from '../../use-reported-state';
 
@@ -19,18 +19,22 @@ const EDITABLE_SELECTOR = 'input, textarea, select, [contenteditable]:not([conte
 const isShortcutTarget = (target: EventTarget | null) =>
 	!(target instanceof Element && (target.closest(EDITABLE_SELECTOR) || target.closest('[role="dialog"]')));
 
+/**
+ * Free-text input. Enter adds the trimmed text as a search condition, unless the same search is
+ * already there, and clears the input; `/` focuses it from anywhere outside an editable element or
+ * dialog.
+ */
 export const Search = ({
 	value: valueProp,
 	defaultValue = '',
 	disabled: disabledProp = false,
-	locale: localeProp,
 	ref,
 	className,
 	style,
 	onValueChange,
-}: DsFiltersBarSearchProps) => {
-	const { conditions, query, addCondition, registerSearch } = useDsFiltersBarContext();
-	const locale = { ...defaultDsFiltersBarSearchLocale, ...localeProp };
+}: DsFiltersBarSearchSlotProps) => {
+	const { conditions, query, locale: barLocale, addCondition, registerSearch } = useDsFiltersBarContext();
+	const locale = barLocale.search;
 
 	const [value, setValue] = useReportedState(valueProp, onValueChange, defaultValue);
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -143,5 +147,3 @@ export const Search = ({
 		</DsFormControl>
 	);
 };
-
-Search.displayName = 'DsFiltersBar.Search';

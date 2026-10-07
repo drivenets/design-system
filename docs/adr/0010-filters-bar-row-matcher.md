@@ -7,13 +7,15 @@ The rules are fixed:
 - **Text** comparisons ignore case.
 - **Search text** matches any string or number value in the row.
 - **Enum** values must be one of the condition's options.
-- **Number** and **date** conditions compare against a single value or an inclusive range. Dates are compared as UTC calendar days of ISO 8601 strings.
-- **Pins** narrow the rows the document matched. Pins on one field combine with OR, and different fields combine with AND. A **Pin**'s count is the number of the document's rows that pin alone matches.
+- **Number** and **date** conditions compare against a single value or an inclusive range. Dates are compared as UTC calendar days of ISO 8601 strings. A date-only string is its own day; a timestamp is read with its offset, or as UTC when it has none, and floored to its UTC day.
+- A built-in **Date preset** covers UTC calendar days counted from `now`: `today`, `yesterday`, `last7Days`, `last30Days` and `last90Days` (ending today, inclusive), `thisMonth` and `thisYear` (up to today), and `lastMonth` (the whole previous month).
+- **Pins** narrow the rows the document matched. Pins on one field combine with OR, and different fields combine with AND. A **Pin**'s count is the number of the document's rows that pin alone matches. A switched-on pin whose field is missing from `fields` is ignored, as the bar hides it.
 
-Two things only the product knows are options:
+Three options cover what only the product knows:
 
 - `getValue(row, field, subfield)` reads a value from a row. By default it reads `row[field]`, or `row[field][subfield]` for a compound field.
-- `resolveDatePreset(preset, field)` turns a date preset such as `last7Days` into a date range. A preset it cannot resolve matches nothing.
+- `resolveDatePreset(preset, field)` turns a custom **Date preset** into a date range. It is asked first for every preset, so it can also override a built-in one; when it returns nothing, a built-in preset falls back to the rule above. A preset that is neither matches nothing.
+- `now` is the moment built-in presets count from, which a product fixes for deterministic data. It defaults to the time of the call. `useFilteredRows` recomputes when it changes, so an inline `new Date()` recomputes on every render.
 
 Since [ADR 0006](0006-filters-bar-owns-query-language.md), the **Query language** belongs to the design system. Every product with a client-side table would otherwise reimplement the same grammar and the same rules. The pinned row cannot show counts without them.
 

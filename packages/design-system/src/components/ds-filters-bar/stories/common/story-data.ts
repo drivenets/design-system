@@ -1,10 +1,16 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import type { DsFilterCondition, DsFilterField, DsFilterOption } from '../../ds-filters-bar.types';
+import type { DsFilterField, DsFilterOption, DsFiltersBarSavedFilter } from '../../ds-filters-bar.types';
 
 /**
  * The day the date presets count back from, fixed so the rows each preset matches never change.
  */
-export const STORY_TODAY = '2026-05-20';
+const STORY_TODAY = '2026-05-20';
+
+/**
+ * Noon of `STORY_TODAY` in UTC, the `now` the row matcher counts built-in date presets from.
+ * Module scope keeps it stable, so `useFilteredRows` stays memoized.
+ */
+export const STORY_NOW = new Date(`${STORY_TODAY}T12:00:00Z`);
 
 const MS_PER_DAY = 86_400_000;
 const ISO_DAY_LENGTH = 10;
@@ -12,16 +18,16 @@ const ISO_DAY_LENGTH = 10;
 /**
  * The ISO 8601 day `days` before `from`
  */
-export const daysBefore = (from: string, days: number): string =>
+const daysBefore = (from: string, days: number): string =>
 	new Date(Date.parse(`${from}T00:00:00Z`) - days * MS_PER_DAY).toISOString().slice(0, ISO_DAY_LENGTH);
 
-export type DeviceStatus = 'active' | 'pending' | 'inactive' | 'deprecated';
-export type DeviceRole = 'core' | 'edge' | 'access' | 'aggregation';
-export type DeviceVendor = 'atlas' | 'orion' | 'vertex';
+type DeviceStatus = 'active' | 'pending' | 'inactive' | 'deprecated';
+type DeviceRole = 'core' | 'edge' | 'access' | 'aggregation';
+type DeviceVendor = 'atlas' | 'orion' | 'vertex';
 
 /**
- * A row keyed by the `deviceFields` ids, so the example matcher reads `row[field]` (and
- * `row[field][subfield]` for the compound `hardware` field).
+ * A row keyed by the `deviceFields` ids, so the row matcher's default `getValue` reads `row[field]`
+ * (and `row[field][subfield]` for the compound `hardware` field).
  */
 export interface DeviceRow {
 	id: string;
@@ -60,92 +66,25 @@ const vendorOptions: ReadonlyArray<DsFilterOption> = [
 ];
 
 /**
- * **Field schema** for `devices`: one field of every type, including a compound one.
+ * **Field schema** for `devices`: one field of every type, including a compound one. Fields take
+ * every operator of their type unless `operators` narrows them (Role, Model), and `lastSeen` lists
+ * built-in date presets by value.
  */
 export const deviceFields: ReadonlyArray<DsFilterField> = [
-	{
-		type: 'text',
-		id: 'name',
-		label: 'Name',
-		operators: [
-			{ value: '~', label: 'contains' },
-			{ value: '!~', label: 'does not contain', symbol: '≁' },
-			{ value: '=', label: 'equals' },
-			{ value: '!=', label: 'not equals', symbol: '≠' },
-		],
-	},
-	{
-		type: 'enum',
-		id: 'status',
-		label: 'Status',
-		operators: [
-			{ value: '=', label: 'equals' },
-			{ value: '!=', label: 'not equals', symbol: '≠' },
-		],
-		options: statusOptions,
-	},
-	{
-		type: 'enum',
-		id: 'role',
-		label: 'Role',
-		operators: [
-			{ value: 'IN', label: 'is any of', symbol: '∈' },
-			{ value: 'NOT IN', label: 'is none of', symbol: '∉' },
-		],
-		options: roleOptions,
-	},
+	{ type: 'text', id: 'name', label: 'Name' },
+	{ type: 'enum', id: 'status', label: 'Status', options: statusOptions },
+	{ type: 'enum', id: 'role', label: 'Role', operators: ['IN', 'NOT IN'], options: roleOptions },
 	{
 		type: 'compound',
 		id: 'hardware',
 		label: 'Hardware',
 		subfields: [
-			{
-				type: 'enum',
-				id: 'vendor',
-				label: 'Vendor',
-				operators: [
-					{ value: '=', label: 'equals' },
-					{ value: '!=', label: 'not equals', symbol: '≠' },
-				],
-				options: vendorOptions,
-			},
-			{
-				type: 'text',
-				id: 'model',
-				label: 'Model',
-				operators: [
-					{ value: '~', label: 'contains' },
-					{ value: '=', label: 'equals' },
-				],
-			},
+			{ type: 'enum', id: 'vendor', label: 'Vendor', options: vendorOptions },
+			{ type: 'text', id: 'model', label: 'Model', operators: ['~', '='] },
 		],
 	},
-	{
-		type: 'number',
-		id: 'ports',
-		label: 'Ports',
-		operators: [
-			{ value: '=', label: 'equals' },
-			{ value: '!=', label: 'not equals', symbol: '≠' },
-			{ value: '>', label: 'greater than' },
-			{ value: '<', label: 'less than' },
-		],
-	},
-	{
-		type: 'date',
-		id: 'lastSeen',
-		label: 'Last seen',
-		operators: [
-			{ value: '=', label: 'is' },
-			{ value: '>', label: 'after' },
-			{ value: '<', label: 'before' },
-		],
-		presets: [
-			{ value: 'today', label: 'Today' },
-			{ value: 'last7Days', label: 'Last 7 days' },
-			{ value: 'last30Days', label: 'Last 30 days' },
-		],
-	},
+	{ type: 'number', id: 'ports', label: 'Ports' },
+	{ type: 'date', id: 'lastSeen', label: 'Last seen', presets: ['today', 'last7Days', 'last30Days'] },
 ];
 
 type DeviceTuple = [
@@ -233,40 +172,30 @@ export const deviceColumns: Array<ColumnDef<DeviceRow>> = [
 	{ accessorKey: 'lastSeen', header: 'Last seen' },
 ];
 
-/**
- * A **Saved filter** as the consumer stores it: the picker item plus the **Filter document**
- * snapshot it loads.
- */
-export interface DeviceSavedFilter {
-	id: string;
-	name: string;
-	conditions: ReadonlyArray<DsFilterCondition>;
-	query: string | null;
-}
-
-export const deviceSavedFilters: ReadonlyArray<DeviceSavedFilter> = [
+export const deviceSavedFilters: ReadonlyArray<DsFiltersBarSavedFilter> = [
 	{
 		id: 'saved-core',
 		name: 'Active core',
-		conditions: [
-			{ kind: 'field', id: 'saved-core-1', field: 'status', operator: '=', value: ['active'] },
-			{ kind: 'field', id: 'saved-core-2', field: 'role', operator: 'IN', value: ['core'] },
-		],
-		query: null,
+		document: {
+			conditions: [
+				{ kind: 'field', field: 'status', operator: '=', value: ['active'] },
+				{ kind: 'field', field: 'role', operator: 'IN', value: ['core'] },
+			],
+		},
 	},
 	{
 		id: 'saved-recent-edge',
 		name: 'Edge seen this week',
-		conditions: [
-			{ kind: 'field', id: 'saved-edge-1', field: 'role', operator: 'IN', value: ['edge'] },
-			{ kind: 'field', id: 'saved-edge-2', field: 'lastSeen', operator: '=', value: 'last7Days' },
-		],
-		query: null,
+		document: {
+			conditions: [
+				{ kind: 'field', field: 'role', operator: 'IN', value: ['edge'] },
+				{ kind: 'field', field: 'lastSeen', operator: '=', value: 'last7Days' },
+			],
+		},
 	},
 	{
 		id: 'saved-attention',
 		name: 'Needs attention',
-		conditions: [],
-		query: 'status = "inactive" OR (status = "pending" AND ports > 40)',
+		document: { query: 'status = "inactive" OR (status = "pending" AND ports > 40)' },
 	},
 ];

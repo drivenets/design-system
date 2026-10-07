@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { DsFilterField, DsFilterFieldCondition } from '../../ds-filters-bar.types';
+import type { DsFilterFieldCondition } from '../../ds-filters-bar.types';
+import { resolveFields } from '../../resolve-fields';
 import { defaultDsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 import {
 	type BuilderDraft,
@@ -11,7 +12,7 @@ import {
 	toFieldCondition,
 } from './ds-filters-bar-builder.utils';
 
-const FIELDS: ReadonlyArray<DsFilterField> = [
+const FIELDS = resolveFields([
 	{
 		type: 'compound',
 		id: 'input',
@@ -51,7 +52,7 @@ const FIELDS: ReadonlyArray<DsFilterField> = [
 		operators: [{ value: '=', label: 'is' }],
 		presets: [{ value: 'today', label: 'Today' }],
 	},
-];
+]);
 
 const SUGGESTED = ['input', 'missing', 'status', 'input'];
 

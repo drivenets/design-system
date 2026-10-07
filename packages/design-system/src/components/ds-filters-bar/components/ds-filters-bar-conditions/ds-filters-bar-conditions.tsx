@@ -8,20 +8,20 @@ import {
 } from '../../ds-filters-bar.utils';
 import { ConditionChips } from '../ds-filters-bar-condition-chips';
 import { FiltersDialog, type DsFiltersBarFiltersDialogValue } from '../ds-filters-bar-filters-dialog';
-import {
-	defaultDsFiltersBarConditionsLocale,
-	type DsFiltersBarConditionsProps,
-} from './ds-filters-bar-conditions.types';
+import type { DsFiltersBarConditionsSlotProps } from '../../ds-filters-bar.types';
 
 const EMPTY_DRAFT: DsFiltersBarFiltersDialogValue = Object.freeze([]);
 
 /**
+ * Filters view: the add-filter button with its filters dialog, and one chip per condition. A field
+ * chip switches its operator in place, and opens the filters dialog on its field's tab. Renders
+ * nothing while an Advanced query is the source.
+ *
  * Owns the dialog draft: seeded from the filter document on open, written back only on Save, and
  * dropped on any other close.
  */
-export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBarConditionsProps) => {
-	const { fields, conditions, query, pins, setConditions, setPins } = useDsFiltersBarContext();
-	const locale = { ...defaultDsFiltersBarConditionsLocale, ...localeProp };
+export const Conditions = ({ ref, className, style }: DsFiltersBarConditionsSlotProps) => {
+	const { fields, conditions, query, pins, locale, setConditions, setPins } = useDsFiltersBarContext();
 
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(EMPTY_DRAFT);
@@ -52,7 +52,8 @@ export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBa
 
 	return (
 		<ConditionChips
-			locale={locale}
+			ref={ref}
+			locale={locale.chips}
 			className={className}
 			style={style}
 			canEdit={(condition) => conditionDialogTab(condition, fields) !== undefined}
@@ -64,7 +65,7 @@ export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBa
 				tabs={filtersDialogTabs(fields)}
 				value={draft}
 				initialTab={initialTab}
-				locale={{ ...locale.filtersDialog, title: locale.filtersDialogTitle, save: locale.saveFilters }}
+				locale={locale.conditions}
 				onOpenChange={setOpen}
 				onChange={(_changed, value) => setDraft(value)}
 				onSave={handleSave}
@@ -72,5 +73,3 @@ export const Conditions = ({ locale: localeProp, className, style }: DsFiltersBa
 		</ConditionChips>
 	);
 };
-
-Conditions.displayName = 'DsFiltersBar.Conditions';

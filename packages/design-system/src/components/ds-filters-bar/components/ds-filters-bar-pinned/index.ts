@@ -1,1 +1,1 @@
-export { Pinned, PinnedGroup, PinnedToggle } from './ds-filters-bar-pinned';
+export { Pinned } from './ds-filters-bar-pinned';

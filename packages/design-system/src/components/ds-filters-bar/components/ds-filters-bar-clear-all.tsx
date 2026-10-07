@@ -1,21 +1,30 @@
 import { flushSync } from 'react-dom';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import { defaultDsFiltersBarClearAllLocale, type DsFiltersBarClearAllProps } from '../ds-filters-bar.types';
+import type { DsFiltersBarClearAllSlotProps } from '../ds-filters-bar.types';
 
 const isFocusDropped = () => document.activeElement === null || document.activeElement === document.body;
 
-export const ClearAll = ({
-	locale: localeProp,
-	ref,
-	className,
-	style,
-	onClick,
-}: DsFiltersBarClearAllProps) => {
-	const { isEmpty, clear, search, disclosureRef } = useDsFiltersBarContext();
-	const locale = { ...defaultDsFiltersBarClearAllLocale, ...localeProp };
+/**
+ * Empties the document, switches every toggle off and drops the **Active saved filter**; pins stay.
+ * Renders only while there is something to clear, so it unmounts on click and hands focus to the
+ * search input.
+ */
+export const ClearAll = ({ ref, className, style }: DsFiltersBarClearAllSlotProps) => {
+	const {
+		isEmpty,
+		activeToggles,
+		activeSavedFilter,
+		activeSavedFilterId,
+		locale,
+		clear,
+		setActiveToggles,
+		setActiveSavedFilterId,
+		search,
+		disclosureRef,
+	} = useDsFiltersBarContext();
 
-	if (isEmpty) {
+	if (isEmpty && !activeToggles.length && !activeSavedFilter) {
 		return null;
 	}
 
@@ -23,14 +32,19 @@ export const ClearAll = ({
 		// Flushed so the button is gone and Search, no longer locked by a query, can take focus.
 		flushSync(() => {
 			clear();
-			onClick?.();
+
+			if (activeToggles.length) {
+				setActiveToggles([]);
+			}
+
+			if (activeSavedFilterId !== null) {
+				setActiveSavedFilterId(null);
+			}
 		});
 
-		// The button unmounts with the empty document; keep focus in the bar unless `onClick` moved it.
-		if (isFocusDropped()) {
-			search?.focus();
-		}
+		search?.focus();
 
+		// A search disabled through `slotProps` cannot take focus.
 		if (isFocusDropped()) {
 			disclosureRef.current?.focus();
 		}
@@ -46,9 +60,7 @@ export const ClearAll = ({
 			style={style}
 			onClick={handleClick}
 		>
-			{locale.label}
+			{locale.clearAll.label}
 		</DsButtonV3>
 	);
 };
-
-ClearAll.displayName = 'DsFiltersBar.ClearAll';

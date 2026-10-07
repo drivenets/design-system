@@ -1,5 +1,5 @@
-import type { CSSProperties, ReactNode } from 'react';
-import type { DsFilterFieldCondition, DsFilterOperator } from '../../ds-filters-bar.types';
+import type { CSSProperties, ReactNode, Ref } from 'react';
+import type { DsFilterFieldCondition, DsFilterResolvedOperator } from '../../ds-filters-bar.types';
 
 /**
  * Strings of the add button and the condition chips, shared by the filters and builder views
@@ -22,7 +22,7 @@ export interface DsFiltersBarConditionChipsLocale {
 	/**
 	 * Operator menu item text, as in `≠ (not equals)`
 	 */
-	operatorOption?: (operator: DsFilterOperator) => string;
+	operatorOption?: (operator: DsFilterResolvedOperator) => string;
 }
 
 export const defaultDsFiltersBarConditionChipsLocale: Required<DsFiltersBarConditionChipsLocale> =
@@ -30,8 +30,7 @@ export const defaultDsFiltersBarConditionChipsLocale: Required<DsFiltersBarCondi
 		addFilter: 'Add filter',
 		removeCondition: (condition: string) => `Remove filter: ${condition}`,
 		operator: (fieldLabel: string) => `${fieldLabel} operator`,
-		operatorOption: (operator: DsFilterOperator) =>
-			`${operator.symbol ?? operator.value} (${operator.label})`,
+		operatorOption: (operator: DsFilterResolvedOperator) => `${operator.symbol} (${operator.label})`,
 	});
 
 export interface ConditionChipsProps {
@@ -40,6 +39,7 @@ export interface ConditionChipsProps {
 	 * The dialog that the add button and the field chips open
 	 */
 	children?: ReactNode;
+	ref?: Ref<HTMLDivElement>;
 	className?: string;
 	style?: CSSProperties;
 	onAdd: () => void;

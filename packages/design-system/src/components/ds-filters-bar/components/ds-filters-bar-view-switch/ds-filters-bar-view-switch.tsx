@@ -5,12 +5,7 @@ import { DsSegmentGroup } from '../../../ds-segment-group';
 import { DsTooltip } from '../../../ds-tooltip';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-view-switch.module.scss';
-import {
-	defaultDsFiltersBarViewSwitchLocale,
-	filtersBarViews,
-	type DsFiltersBarView,
-	type DsFiltersBarViewSwitchProps,
-} from '../../ds-filters-bar.types';
+import type { DsFiltersBarView, DsFiltersBarViewSwitchSlotProps } from '../../ds-filters-bar.types';
 import { isFiltersBarView } from '../../ds-filters-bar.utils';
 
 const VIEW_ICONS: Readonly<Record<DsFiltersBarView, IconType>> = Object.freeze({
@@ -19,14 +14,14 @@ const VIEW_ICONS: Readonly<Record<DsFiltersBarView, IconType>> = Object.freeze({
 	advanced: 'code',
 });
 
-export const ViewSwitch = ({ locale: localeProp, ref, className, style }: DsFiltersBarViewSwitchProps) => {
-	const { view, lockedViews, setView } = useDsFiltersBarContext();
+/**
+ * Offers the listed views. While an edited advanced query is the source, the filters and builder
+ * views are locked.
+ */
+export const ViewSwitch = ({ ref, className, style }: DsFiltersBarViewSwitchSlotProps) => {
+	const { view, views, lockedViews, locale: barLocale, setView } = useDsFiltersBarContext();
 	const lockedReasonId = useId();
-	const locale = {
-		...defaultDsFiltersBarViewSwitchLocale,
-		...localeProp,
-		views: { ...defaultDsFiltersBarViewSwitchLocale.views, ...localeProp?.views },
-	};
+	const locale = barLocale.viewSwitch;
 
 	return (
 		<DsSegmentGroup.Root
@@ -43,12 +38,12 @@ export const ViewSwitch = ({ locale: localeProp, ref, className, style }: DsFilt
 			}}
 		>
 			{/* The tooltip only shows on hover, so a locked radio also carries the reason as its description. */}
-			{lockedViews.length > 0 && (
+			{views.some((item) => lockedViews.includes(item)) && (
 				<span id={lockedReasonId} className={styles.visuallyHidden}>
 					{locale.lockedView}
 				</span>
 			)}
-			{filtersBarViews.map((item) => {
+			{views.map((item) => {
 				const locked = lockedViews.includes(item);
 
 				return (
@@ -71,5 +66,3 @@ export const ViewSwitch = ({ locale: localeProp, ref, className, style }: DsFilt
 		</DsSegmentGroup.Root>
 	);
 };
-
-ViewSwitch.displayName = 'DsFiltersBar.ViewSwitch';

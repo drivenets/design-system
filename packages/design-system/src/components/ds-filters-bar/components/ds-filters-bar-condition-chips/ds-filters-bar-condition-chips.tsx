@@ -8,7 +8,7 @@ import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-condition-chips.module.scss';
 import type {
 	DsFilterFieldCondition,
-	DsFilterOperator,
+	DsFilterResolvedOperator,
 	DsFilterOperatorValue,
 	DsFilterSearchCondition,
 } from '../../ds-filters-bar.types';
@@ -50,10 +50,10 @@ const SearchChip = ({ condition, locale }: SearchChipProps) => {
 interface OperatorMenuProps {
 	value: DsFilterOperatorValue;
 	symbol: string;
-	operators: ReadonlyArray<DsFilterOperator>;
+	operators: ReadonlyArray<DsFilterResolvedOperator>;
 	label: string;
 	locale: Locale;
-	onValueChange: (operator: DsFilterOperator) => void;
+	onValueChange: (operator: DsFilterResolvedOperator) => void;
 }
 
 const OperatorMenu = ({ value, symbol, operators, label, locale, onValueChange }: OperatorMenuProps) => {
@@ -152,24 +152,27 @@ const FieldChip = ({ condition, locale, onEdit }: FieldChipProps) => {
 export const ConditionChips = ({
 	locale,
 	children,
+	ref,
 	className,
 	style,
 	onAdd,
 	canEdit,
 	onEdit,
 }: ConditionChipsProps) => {
-	const { conditions } = useDsFiltersBarContext();
+	const { conditions, canAdd } = useDsFiltersBarContext();
 
 	return (
-		<div className={classNames(styles.conditions, className)} style={style}>
-			<DsButtonV3
-				variant="secondary"
-				color="default"
-				size="small"
-				icon="add"
-				aria-label={locale.addFilter}
-				onClick={onAdd}
-			/>
+		<div ref={ref} className={classNames(styles.conditions, className)} style={style}>
+			{canAdd && (
+				<DsButtonV3
+					variant="secondary"
+					color="default"
+					size="small"
+					icon="add"
+					aria-label={locale.addFilter}
+					onClick={onAdd}
+				/>
+			)}
 			{children}
 			{conditions.map((condition) =>
 				condition.kind === 'search' ? (

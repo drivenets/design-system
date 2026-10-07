@@ -1,18 +1,22 @@
 import classNames from 'classnames';
-import type { FC } from 'react';
+import type { ReactNode } from 'react';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-toolbar.module.scss';
-import type { DsFiltersBarToolbarProps } from '../../ds-filters-bar.types';
+import type { DsFiltersBarToolbarSlotProps } from '../../ds-filters-bar.types';
 
-export const Toolbar: FC<DsFiltersBarToolbarProps> = ({ className, style, children }) => {
-	const { expanded, toolbarId } = useDsFiltersBarContext();
+interface ToolbarProps extends DsFiltersBarToolbarSlotProps {
+	children: ReactNode;
+}
 
-	if (!expanded) {
-		return null;
-	}
+/**
+ * Expanded row
+ */
+export const Toolbar = ({ ref, className, style, children }: ToolbarProps) => {
+	const { toolbarId } = useDsFiltersBarContext();
 
 	return (
 		<div
+			ref={ref}
 			id={toolbarId}
 			data-scope="filters-bar"
 			data-part="toolbar"
@@ -23,5 +27,3 @@ export const Toolbar: FC<DsFiltersBarToolbarProps> = ({ className, style, childr
 		</div>
 	);
 };
-
-Toolbar.displayName = 'DsFiltersBar.Toolbar';

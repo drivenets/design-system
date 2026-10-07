@@ -8,10 +8,7 @@ import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import { createConditionId } from '../../ds-filters-bar.utils';
 import { ConditionChips } from '../ds-filters-bar-condition-chips';
-import {
-	defaultDsFiltersBarBuilderLocale,
-	type DsFiltersBarBuilderProps,
-} from './ds-filters-bar-builder.types';
+import type { DsFiltersBarBuilderSlotProps } from '../../ds-filters-bar.types';
 import {
 	type BuilderChoice,
 	type BuilderDraft,
@@ -68,18 +65,22 @@ const SelectionPath = ({ segments, clearLabel, onClear }: SelectionPathProps) =>
 };
 
 /**
+ * Builder view: the add button and the same condition chips as the filters view. The add button
+ * opens the query builder dialog empty to add a condition; a field chip opens it filled from that
+ * condition, and Save replaces it. The dialog builds one condition step by step — the field's type
+ * decides the steps: compound: subfield, then operator and value; text, number and date: operator,
+ * then value; enum: value. Date presets and enum options are offered on the value step. A condition
+ * the dialog cannot hold, such as several enum values or a range, opens at its value step with the
+ * value empty. Save and close keep the builder view. Renders nothing while an Advanced query is the
+ * source.
+ *
  * Owns the dialog and its draft: empty when opened from the add button, filled from the condition
  * when opened from a field chip. Save adds or replaces that one condition and closes; any other close
  * drops the draft.
  */
-export const Builder = ({
-	suggestedFields,
-	locale: localeProp,
-	className,
-	style,
-}: DsFiltersBarBuilderProps) => {
-	const { fields, query, addCondition, updateCondition } = useDsFiltersBarContext();
-	const locale = { ...defaultDsFiltersBarBuilderLocale, ...localeProp };
+export const Builder = ({ suggestedFields, ref, className, style }: DsFiltersBarBuilderSlotProps) => {
+	const { fields, query, locale: barLocale, addCondition, updateCondition } = useDsFiltersBarContext();
+	const locale = barLocale.builder;
 	const [open, setOpen] = useState(false);
 	const [draft, setDraft] = useState(emptyBuilderDraft);
 	// The condition being edited, or `null` while adding one
@@ -145,7 +146,8 @@ export const Builder = ({
 
 	return (
 		<ConditionChips
-			locale={locale}
+			ref={ref}
+			locale={barLocale.chips}
 			className={className}
 			style={style}
 			canEdit={(chip) => fields.some((field) => field.id === chip.field)}
@@ -216,5 +218,3 @@ export const Builder = ({
 		</ConditionChips>
 	);
 };
-
-Builder.displayName = 'DsFiltersBar.Builder';

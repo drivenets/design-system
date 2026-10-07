@@ -1,67 +1,64 @@
-import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import type { DsFiltersBarRootProps, DsFiltersBarViewSwitchProps } from '../ds-filters-bar.types';
+import type { DsFilterDocument, DsFilterField, DsFiltersBarProps } from '../ds-filters-bar.types';
 
-// Setting and clearing the query are other parts' jobs, so a probe drives them here.
-const Probe = () => {
-	const bar = useDsFiltersBarContext();
+const FIELDS: ReadonlyArray<DsFilterField> = [
+	{
+		type: 'enum',
+		id: 'status',
+		label: 'Status',
+		operators: [{ value: '=', label: 'equals' }],
+		options: [
+			{ value: 'A', label: 'A' },
+			{ value: 'B', label: 'B' },
+		],
+	},
+];
 
-	return (
-		<div>
-			<output aria-label="view">{bar.view}</output>
-			<button type="button" onClick={() => bar.setQuery('status = "A" OR status = "B"')}>
-				query
-			</button>
-			<button type="button" onClick={bar.clear}>
-				clear
-			</button>
-		</div>
-	);
-};
+const OR_QUERY = 'status = "A" OR status = "B"';
+const withQuery: DsFilterDocument = { conditions: [], query: OR_QUERY };
+const LOCKED_REASON = 'Clear the advanced query to switch views';
 
-interface HarnessProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	switchProps?: DsFiltersBarViewSwitchProps;
-}
+const SwitchBar = (props: DsFiltersBarProps) => <DsFiltersBar fields={FIELDS} defaultExpanded {...props} />;
 
-const renderSwitch = ({ switchProps, ...props }: HarnessProps = {}) =>
-	page.render(
-		<DsFiltersBar.Root {...props}>
-			<Probe />
-			<DsFiltersBar.ViewSwitch {...switchProps} />
-		</DsFiltersBar.Root>,
-	);
-
+const viewSwitch = (name = 'Filter view') => page.getByRole('radiogroup', { name });
 const viewItem = (name: string) => page.getByRole('radio', { name, exact: true });
-const shownView = () => page.getByRole('status', { name: 'view' });
+const addFilterButton = () => page.getByRole('button', { name: 'Add filter', exact: true });
+const queryField = () => page.getByRole('textbox', { name: 'Advanced query' });
+const clearAll = () => page.getByRole('button', { name: 'Clear all', exact: true });
+const builderDialog = () => page.getByRole('dialog', { name: 'Query builder' });
 
 // Ark renders the radio as a visually hidden input outside the viewport, so fire a native click
 // on the element directly instead of a Playwright pointer click.
-const select = (name: string) => {
+const selectView = async (name: string) => {
+	await expect.element(viewItem(name)).toBeInTheDocument();
 	(viewItem(name).element() as HTMLElement).click();
 };
 
-describe('DsFiltersBar.ViewSwitch', () => {
-	it('renders one item per view, named by the default locale, with the shown view checked', async () => {
-		await renderSwitch({ defaultView: 'builder' });
+// The tooltip trigger wraps the radio's label.
+const hoverItem = (name: string) =>
+	page.elementLocator(viewItem(name).element().closest('label') as HTMLElement).hover();
 
-		await expect.element(page.getByRole('radiogroup', { name: 'Filter view' })).toBeVisible();
+describe('DsFiltersBar view switch', () => {
+	it('renders one item per view, named by the default locale, with the shown view checked', async () => {
+		await page.render(<SwitchBar defaultView="builder" />);
+
+		await expect.element(viewSwitch()).toBeVisible();
 		expect(page.getByRole('radio').elements()).toHaveLength(3);
 		await expect.element(viewItem('Filters')).not.toBeChecked();
 		await expect.element(viewItem('Query builder')).toBeChecked();
 		await expect.element(viewItem('Advanced query')).not.toBeChecked();
 	});
 
-	it('changes the view when an item is selected', async () => {
+	it('shows the selected view and reports it', async () => {
 		const onViewChange = vi.fn();
 
-		await renderSwitch({ onViewChange });
+		await page.render(<SwitchBar onViewChange={onViewChange} />);
 
-		select('Advanced query');
+		await selectView('Advanced query');
 
-		await expect.element(shownView()).toHaveTextContent('advanced');
+		await expect.element(queryField()).toBeVisible();
 		await expect.element(viewItem('Advanced query')).toBeChecked();
 		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
 	});
@@ -69,82 +66,109 @@ describe('DsFiltersBar.ViewSwitch', () => {
 	it('disables the filters and builder items while an Advanced query is the source', async () => {
 		const onViewChange = vi.fn();
 
-		await renderSwitch({ defaultView: 'builder', onViewChange });
+		await page.render(<SwitchBar defaultView="builder" onViewChange={onViewChange} />);
 
-		await page.getByRole('button', { name: 'query', exact: true }).click();
+		await selectView('Advanced query');
+		await queryField().fill(OR_QUERY);
 
 		await expect.element(viewItem('Filters')).toBeDisabled();
 		await expect.element(viewItem('Query builder')).toBeDisabled();
 		await expect.element(viewItem('Advanced query')).toBeEnabled();
 		await expect.element(viewItem('Advanced query')).toBeChecked();
 
-		select('Filters');
+		await selectView('Filters');
 
-		await expect.element(shownView()).toHaveTextContent('advanced');
-		expect(onViewChange).not.toHaveBeenCalled();
+		await expect.element(queryField()).toBeVisible();
+		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
 
-		await page.getByRole('button', { name: 'clear' }).click();
+		await clearAll().click();
 
 		await expect.element(viewItem('Filters')).toBeEnabled();
-		await expect.element(viewItem('Query builder')).toBeChecked();
+		await expect.element(viewItem('Advanced query')).toBeChecked();
 	});
 
 	it('explains a locked item with the lockedView tooltip', async () => {
-		await renderSwitch({ defaultQuery: 'status = "A" OR status = "B"' });
+		await page.render(<SwitchBar defaultValue={withQuery} />);
 
-		const lockedItem = page.elementLocator(viewItem('Filters').element().closest('label') as HTMLElement);
+		await hoverItem('Filters');
 
-		await lockedItem.hover();
-
-		await expect
-			.element(page.getByRole('tooltip', { name: 'Clear the advanced query to switch views' }))
-			.toBeVisible();
+		await expect.element(page.getByRole('tooltip', { name: LOCKED_REASON })).toBeVisible();
 	});
 
 	it('describes a locked item by the lockedView reason until the query is cleared', async () => {
-		await renderSwitch({ defaultQuery: 'status = "A" OR status = "B"' });
+		await page.render(<SwitchBar defaultValue={withQuery} />);
 
-		await expect
-			.element(viewItem('Filters'))
-			.toHaveAccessibleDescription('Clear the advanced query to switch views');
-		await expect
-			.element(viewItem('Query builder'))
-			.toHaveAccessibleDescription('Clear the advanced query to switch views');
+		await expect.element(viewItem('Filters')).toHaveAccessibleDescription(LOCKED_REASON);
+		await expect.element(viewItem('Query builder')).toHaveAccessibleDescription(LOCKED_REASON);
 		await expect.element(viewItem('Advanced query')).not.toHaveAccessibleDescription();
 
-		await page.getByRole('button', { name: 'clear' }).click();
+		await clearAll().click();
 
 		await expect.element(viewItem('Filters')).not.toHaveAccessibleDescription();
 		await expect.element(viewItem('Query builder')).not.toHaveAccessibleDescription();
 	});
 
-	it('takes names and the tooltip from a custom locale, keeping defaults for the rest', async () => {
-		await renderSwitch({
-			defaultQuery: 'status = "A" OR status = "B"',
-			switchProps: {
-				locale: { label: 'Mode', views: { advanced: 'Code' }, lockedView: 'Locked by the query' },
-			},
-		});
+	it('takes names and the tooltip from locale.viewSwitch, keeping defaults for the rest', async () => {
+		await page.render(
+			<SwitchBar
+				defaultValue={withQuery}
+				locale={{
+					viewSwitch: { label: 'Mode', views: { advanced: 'Code' }, lockedView: 'Locked by the query' },
+				}}
+			/>,
+		);
 
-		await expect.element(page.getByRole('radiogroup', { name: 'Mode' })).toBeVisible();
+		await expect.element(viewSwitch('Mode')).toBeVisible();
 		await expect.element(viewItem('Code')).toBeChecked();
 		await expect.element(viewItem('Filters')).toBeDisabled();
 
-		await page.elementLocator(viewItem('Query builder').element().closest('label') as HTMLElement).hover();
+		await hoverItem('Query builder');
 
 		await expect.element(page.getByRole('tooltip', { name: 'Locked by the query' })).toBeVisible();
 		await expect.element(viewItem('Filters')).toHaveAccessibleDescription('Locked by the query');
 	});
+});
 
-	it('forwards ref, className and style to the group', async () => {
-		const ref = createRef<HTMLDivElement>();
+describe('DsFiltersBar views', () => {
+	it('offers only the listed views, in Figma order', async () => {
+		await page.render(<SwitchBar views={['advanced', 'filters']} />);
 
-		await renderSwitch({ switchProps: { ref, className: 'custom', style: { marginLeft: '3px' } } });
+		expect(
+			page
+				.getByRole('radio')
+				.elements()
+				.map((element) => element.getAttribute('aria-label')),
+		).toEqual(['Filters', 'Advanced query']);
+		await expect.element(viewItem('Query builder')).not.toBeInTheDocument();
+	});
 
-		const group = page.getByRole('radiogroup', { name: 'Filter view' });
+	it('hides the switch and shows the only listed view', async () => {
+		await page.render(<SwitchBar views={['builder']} />);
 
-		await expect.element(group).toHaveClass('custom');
-		await expect.element(group).toHaveStyle({ marginLeft: '3px' });
-		expect(ref.current).toBe(group.element());
+		await expect.element(viewSwitch()).not.toBeInTheDocument();
+
+		await addFilterButton().click();
+
+		await expect.element(builderDialog()).toBeVisible();
+	});
+
+	it('falls back to the first listed view when the requested one is not listed', async () => {
+		await page.render(<SwitchBar views={['filters', 'advanced']} defaultView="builder" />);
+
+		await expect.element(viewItem('Filters')).toBeChecked();
+		await expect.element(addFilterButton()).toBeVisible();
+		await expect.element(queryField()).not.toBeInTheDocument();
+	});
+
+	it('shows the advanced view while a query is set, even when not listed', async () => {
+		await page.render(<SwitchBar views={['filters']} defaultValue={withQuery} />);
+
+		await expect.element(viewSwitch()).not.toBeInTheDocument();
+		await expect.element(queryField()).toHaveValue(OR_QUERY);
+
+		await clearAll().click();
+
+		await expect.element(queryField()).not.toBeInTheDocument();
+		await expect.element(addFilterButton()).toBeVisible();
 	});
 });

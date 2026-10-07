@@ -5,77 +5,78 @@ import { DsToggleFilterData } from '../../../ds-toggle-filter-data';
 import { DsTypography } from '../../../ds-typography';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-pinned.module.scss';
-import {
-	defaultDsFiltersBarPinnedLocale,
-	type DsFiltersBarPinnedGroupProps,
-	type DsFiltersBarPinnedProps,
-	type DsFiltersBarPinnedToggleProps,
-} from '../../ds-filters-bar.types';
+import type { DsFilterPin, DsFiltersBarPinnedSlotProps } from '../../ds-filters-bar.types';
+import { isSamePin, toPinnedGroups, type DsFiltersBarPinnedGroup } from '../../ds-filters-bar.utils';
 
-export const Pinned = ({ locale: localeProp, className, style, children }: DsFiltersBarPinnedProps) => {
-	useDsFiltersBarContext();
-	const locale = { ...defaultDsFiltersBarPinnedLocale, ...localeProp };
+interface PinnedToggleProps {
+	pin: DsFilterPin;
+	label: string;
+}
+
+/**
+ * Disabled at a zero count unless switched on, so an active toggle can always be turned off
+ */
+const PinnedToggle = ({ pin, label }: PinnedToggleProps) => {
+	const { activeToggles, getPinCount, setActiveToggles } = useDsFiltersBarContext();
+	const count = getPinCount?.(pin);
+	const active = activeToggles.some((toggle) => isSamePin(toggle, pin));
+
+	const handleActiveChange = (next: boolean) =>
+		setActiveToggles(
+			next ? [...activeToggles, pin] : activeToggles.filter((toggle) => !isSamePin(toggle, pin)),
+		);
 
 	return (
-		<div className={classNames(styles.pinned, className)} style={style}>
-			<span className={styles.pinnedLabel}>
-				<DsIcon icon="keep" size="tiny" filled aria-hidden />
-				<DsTypography variant="body-xs-md">{locale.label}</DsTypography>
-			</span>
-			{children}
-		</div>
+		<DsToggleFilterData
+			label={label}
+			value={count}
+			active={active}
+			disabled={count === 0 && !active}
+			onActiveChange={handleActiveChange}
+		/>
 	);
 };
 
-Pinned.displayName = 'DsFiltersBar.Pinned';
-
-export const PinnedGroup = ({ label, className, style, children }: DsFiltersBarPinnedGroupProps) => {
-	useDsFiltersBarContext();
+const PinnedGroup = ({ label, toggles }: DsFiltersBarPinnedGroup) => {
 	const labelId = useId();
 
 	return (
-		<div
-			role="group"
-			aria-labelledby={labelId}
-			className={classNames(styles.pinnedGroup, className)}
-			style={style}
-		>
+		<div role="group" aria-labelledby={labelId} className={styles.pinnedGroup}>
 			<span id={labelId} className={styles.pinnedGroupLabel}>
 				<DsTypography variant="body-xs-md" color="secondary">
 					{label}
 				</DsTypography>
 			</span>
-			<div className={styles.pinnedToggles}>{children}</div>
+			<div className={styles.pinnedToggles}>
+				{toggles.map(({ pin, label: toggleLabel }) => (
+					<PinnedToggle key={pin.value} pin={pin} label={toggleLabel} />
+				))}
+			</div>
 		</div>
 	);
 };
 
-PinnedGroup.displayName = 'DsFiltersBar.PinnedGroup';
+/**
+ * Quick-toggle row, shown in both collapsed and expanded states, built from the pins and the
+ * fields. Toggles narrow the results the document already produced; they never widen them.
+ */
+export const Pinned = ({ ref, className, style }: DsFiltersBarPinnedSlotProps) => {
+	const { fields, pins, locale } = useDsFiltersBarContext();
+	const groups = toPinnedGroups(fields, pins);
 
-export const PinnedToggle = ({
-	label,
-	count,
-	active,
-	disabled,
-	ref,
-	className,
-	style,
-	onActiveChange,
-}: DsFiltersBarPinnedToggleProps) => {
-	useDsFiltersBarContext();
+	if (!groups.length) {
+		return null;
+	}
 
 	return (
-		<DsToggleFilterData
-			ref={ref}
-			label={label}
-			value={count}
-			active={active}
-			disabled={disabled ?? (count === 0 && !active)}
-			className={className}
-			style={style}
-			onActiveChange={onActiveChange}
-		/>
+		<div ref={ref} className={classNames(styles.pinned, className)} style={style}>
+			<span className={styles.pinnedLabel}>
+				<DsIcon icon="keep" size="tiny" filled aria-hidden />
+				<DsTypography variant="body-xs-md">{locale.pinned.label}</DsTypography>
+			</span>
+			{groups.map((group) => (
+				<PinnedGroup key={group.field} {...group} />
+			))}
+		</div>
 	);
 };
-
-PinnedToggle.displayName = 'DsFiltersBar.PinnedToggle';

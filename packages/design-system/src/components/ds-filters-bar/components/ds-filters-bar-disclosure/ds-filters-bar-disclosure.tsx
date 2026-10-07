@@ -4,9 +4,12 @@ import { DsButtonV3 } from '../../../ds-button-v3';
 import { DsIcon } from '../../../ds-icon';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import styles from './ds-filters-bar-disclosure.module.scss';
-import type { DsFiltersBarDisclosureProps } from '../../ds-filters-bar.types';
+import type { DsFiltersBarDisclosureSlotProps } from '../../ds-filters-bar.types';
 
-export const Disclosure = ({ ref, className, style }: DsFiltersBarDisclosureProps) => {
+/**
+ * Renders in both states, so focus stays on it across the toggle.
+ */
+export const Disclosure = ({ ref, className, style }: DsFiltersBarDisclosureSlotProps) => {
 	const { expanded, toolbarId, locale, setExpanded, disclosureRef } = useDsFiltersBarContext();
 
 	return (
@@ -30,5 +33,3 @@ export const Disclosure = ({ ref, className, style }: DsFiltersBarDisclosureProp
 		</DsButtonV3>
 	);
 };
-
-Disclosure.displayName = 'DsFiltersBar.Disclosure';

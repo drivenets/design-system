@@ -84,7 +84,7 @@ const COMPONENTS = [
 // component) produce a single aggregated golden that runs to thousands of lines
 // where every section shares the same `# DsTable` header — unnavigable for humans
 // and agents alike. Split those into one golden per manifest component instead.
-const SPLIT_PER_MANIFEST = new Set(['filters-bar', 'table']);
+const SPLIT_PER_MANIFEST = new Set(['table']);
 
 function getComponentSnapshotPath(name: string): string {
 	const folder = `ds-${name}`;
