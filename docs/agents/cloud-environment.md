@@ -9,7 +9,7 @@ All setup logic lives in one script, [`.claude/hooks/cloud-setup.sh`](../../.cla
 At [claude.ai/code](https://claude.ai/code), pick `drivenets/design-system`, then pick an environment in the selector above the message box:
 
 - **design-system** (under **Organization**) — recommended, starts fastest.
-- **Default** — also works; the hook installs everything on first start, which takes a few minutes longer.
+- **Default** — only for lint, typecheck, build and unit tests. Its network access blocks `cdn.playwright.dev`, so Chromium can't be installed: browser tests and Storybook screenshots don't work, and sessions start a few minutes slower.
 
 ## Creating the shared environment (org Owner, once)
 
@@ -26,19 +26,21 @@ At [claude.ai/code](https://claude.ai/code), pick `drivenets/design-system`, the
 #!/bin/bash
 set -euo pipefail
 
-# Runs as root in /home/user, after the repo is cloned to /home/user/<repo> at the default branch
-for hook in "$PWD"/*/.claude/hooks/cloud-setup.sh; do
-	if [ -x "$hook" ]; then
-		echo "setup: running $hook"
-		CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR="${hook%/.claude/hooks/cloud-setup.sh}" "$hook"
-		exit 0
-	fi
-done
+# Runs as root in /home/user, after the repo is cloned to /home/user/design-system at the default branch
+repo="$PWD/design-system"
+hook="$repo/.claude/hooks/cloud-setup.sh"
 
-echo "setup: no .claude/hooks/cloud-setup.sh in $PWD/*/, the SessionStart hook will install everything"
+if [ ! -x "$hook" ]; then
+	echo "setup: $hook not found, the SessionStart hook will install everything"
+	exit 0
+fi
+
+if ! CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR="$repo" "$hook"; then
+	echo "setup: hook failed, the SessionStart hook will retry"
+fi
 ```
 
-The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do. If the hook isn't found, the setup script still succeeds and the session's hook does the work, just slower.
+The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do. The setup script never fails the environment build: if the hook is missing or fails, the session's hook does the work, just slower. Inside the hook, only Node, pnpm and `pnpm install` are required; Playwright and the proxy CA steps print a warning and carry on.
 
 The setup script never needs editing; see [How it stays up to date](#how-it-stays-up-to-date).
 
@@ -49,9 +51,10 @@ Never put secrets in environment variables — everyone using the environment ca
 ```
 cdn.playwright.dev
 playwright.download.prss.microsoft.com
+drivenets.github.io
 ```
 
-Trusted already covers npm, nodejs.org and apt. The image ships an older Chromium in `/opt/pw-browsers`, and the Playwright version in the lockfile needs its own build from `cdn.playwright.dev`. Without it, the hook prints a warning and browser tests can't run; everything else still works.
+Trusted already covers npm, nodejs.org and apt. The image ships an older Chromium in `/opt/pw-browsers`, and the Playwright version in the lockfile needs its own build from `cdn.playwright.dev`. Without it, the hook prints a warning and browser tests can't run; everything else still works. `drivenets.github.io` serves the Storybook manifests the DS MCP server (`.mcp.json`) reads.
 
 ## How it stays up to date
 
@@ -83,3 +86,6 @@ The session's HTTPS traffic goes through a proxy with its own CA; the hook adds 
 
 - VM: 4 vCPU, 16 GB RAM, 30 GB disk. Run checkers on changed files (see [AGENTS.md](../../AGENTS.md#code-quality-checkers)), not the full `ci:local`.
 - Routines belong to an individual account and aren't shared; runs use the owner's identity and usage.
+- `CI=true` is set for the whole session, so `pnpm install` defaults to `--frozen-lockfile`. After changing dependencies (e.g. a dependency-update Routine), run `pnpm install --no-frozen-lockfile`.
+- Trust model: the setup script runs the default branch's hook as root, and every session runs the hook from its selected branch. That's normal for project hooks, but Routines run unattended on branches, so review changes to `.claude/hooks/` and `.claude/settings.json` like CI config.
+- The DS MCP server is pinned in `.mcp.json`; bump it there when `@drivenets/design-system-mcp` is released.
