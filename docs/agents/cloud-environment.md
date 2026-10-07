@@ -80,7 +80,7 @@ pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-sel
   "http://localhost:6006/iframe.html?id=<story-id>&viewMode=story" /tmp/story.png
 ```
 
-The session's HTTPS traffic goes through a proxy with its own CA; the hook adds that CA to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`list-all-documentation` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
+The session's HTTPS traffic goes through a proxy with its own CAs; the hook adds them (the certs in `~/.ccr/ca-bundle.crt` that aren't public Mozilla roots) to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`list-all-documentation` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
 
 ## Limits
 
@@ -88,4 +88,4 @@ The session's HTTPS traffic goes through a proxy with its own CA; the hook adds 
 - Routines belong to an individual account and aren't shared; runs use the owner's identity and usage.
 - `CI=true` is set for the whole session, so `pnpm install` defaults to `--frozen-lockfile`. After changing dependencies (e.g. a dependency-update Routine), run `pnpm install --no-frozen-lockfile`.
 - Trust model: the setup script runs the default branch's hook as root, and every session runs the hook from its selected branch. That's normal for project hooks, but Routines run unattended on branches, so review changes to `.claude/hooks/` and `.claude/settings.json` like CI config.
-- The DS MCP server is pinned in `.mcp.json`; bump it there when `@drivenets/design-system-mcp` is released.
+- The DS MCP server is pinned in `.mcp.json` and pre-approved in `.claude/settings.json` (`enabledMcpjsonServers`), so cloud sessions and Routines get it without an approval prompt. Bump the version in `.mcp.json` when `@drivenets/design-system-mcp` is released.

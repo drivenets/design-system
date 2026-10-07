@@ -99,7 +99,7 @@ fi
 # 5. Chromium trusts the session's HTTPS proxy CA (curl and Node do already); without it Storybook can't load
 # Google Fonts and screenshots show fallback fonts and raw icon names. Not fatal, redone when the bundle changes.
 ca_bundle="$HOME/.ccr/ca-bundle.crt"
-system_ca_bundle=/etc/ssl/certs/ca-certificates.crt
+public_roots_dir=/usr/share/ca-certificates/mozilla
 nssdb="$HOME/.pki/nssdb"
 
 split_bundle() {
@@ -112,9 +112,8 @@ fingerprint() {
 
 trust_proxy_ca() {
 	local work cert nick
-	local -a selected=()
+	local -a proxy_cas=()
 	work="$(mktemp -d)"
-	mkdir -p "$work/bundle" "$work/system"
 
 	if ! command -v certutil >/dev/null; then
 		as_root apt-get update -qq && as_root apt-get install -y -qq libnss3-tools || return 1
@@ -123,32 +122,37 @@ trust_proxy_ca() {
 	mkdir -p "$nssdb"
 	[ -f "$nssdb/cert9.db" ] || certutil -d "sql:$nssdb" -N --empty-password || return 1
 
-	# The bundle is the system roots plus the proxy CA: keep only what the system store doesn't have
-	split_bundle "$ca_bundle" "$work/bundle"
-	[ -f "$system_ca_bundle" ] && split_bundle "$system_ca_bundle" "$work/system"
-
-	for cert in "$work"/system/*.pem; do
-		[ -f "$cert" ] && fingerprint "$cert" >>"$work/system-fingerprints"
+	# The bundle is the public (Mozilla) roots plus the proxy CAs, which may also be in the system store already:
+	# the proxy CAs are whatever isn't a public root
+	for cert in "$public_roots_dir"/*.crt; do
+		[ -f "$cert" ] && fingerprint "$cert" >>"$work/public-roots"
 	done
 
-	for cert in "$work"/bundle/*.pem; do
-		grep -qxF "$(fingerprint "$cert")" "$work/system-fingerprints" 2>/dev/null || selected+=("$cert")
+	[ -s "$work/public-roots" ] || {
+		echo "no public roots in $public_roots_dir, can't tell the proxy CAs apart"
+		return 1
+	}
+
+	split_bundle "$ca_bundle" "$work"
+
+	for cert in "$work"/*.pem; do
+		grep -qxF "$(fingerprint "$cert")" "$work/public-roots" || proxy_cas+=("$cert")
 	done
 
-	# Proxy CA already in the system store (or no system store): Chromium only reads NSS, so trust the whole bundle
-	[ "${#selected[@]}" -gt 0 ] || selected=("$work"/bundle/*.pem)
-
-	# Drop what an earlier bundle imported, so a rotated CA doesn't stay trusted
+	# Drop what an earlier run imported, so a rotated CA doesn't stay trusted
 	certutil -d "sql:$nssdb" -L | awk '$1 ~ /^cloud-proxy-/ { print $1 }' | while read -r nick; do
 		certutil -d "sql:$nssdb" -D -n "$nick"
 	done
 
-	for cert in "${selected[@]}"; do
+	# A CA already in NSS under another nickname keeps it; importing it again is a no-op
+	for cert in "${proxy_cas[@]}"; do
 		nick="cloud-proxy-$(fingerprint "$cert" | cut -c1-16)"
 		certutil -d "sql:$nssdb" -A -t "C,," -n "$nick" -i "$cert" || return 1
 	done
 
-	echo "imported ${#selected[@]} certificate(s)"
+	echo "trusted ${#proxy_cas[@]} proxy CA(s): $(for cert in "${proxy_cas[@]}"; do
+		openssl x509 -in "$cert" -noout -subject -nameopt multiline | sed -n 's/ *commonName *= //p'
+	done | paste -sd ';' -)"
 	rm -rf "$work"
 }
 
