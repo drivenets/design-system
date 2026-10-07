@@ -80,7 +80,7 @@ pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-sel
   "http://localhost:6006/iframe.html?id=<story-id>&viewMode=story" /tmp/story.png
 ```
 
-The session's HTTPS traffic goes through a proxy with its own CAs; the hook adds them (the certs in `~/.ccr/ca-bundle.crt` that aren't public Mozilla roots) to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`list-all-documentation` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
+The session's HTTPS traffic goes through a proxy with its own CAs; the hook adds them (the certs in `~/.ccr/ca-bundle.crt` that aren't public Mozilla roots) to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`docs-list` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
 
 ## Limits
 
