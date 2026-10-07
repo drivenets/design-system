@@ -36,6 +36,14 @@ _Avoid_: test, spec, play test
 Vitest browser-mode spec in `__tests__/*.browser.test.tsx` that asserts user-visible behavior (clicks, keyboard, callbacks).
 _Avoid_: unit test (for non-DOM logic), story test, play function
 
+**Visual test**:
+A pixel comparison of a **Story**'s rendered appearance against its **Baseline**.
+_Avoid_: snapshot test (text snapshots exist too), screenshot test, Chromatic test
+
+**Baseline**:
+The committed reference screenshot a **Visual test** compares against.
+_Avoid_: golden (reserved for docs snippet `.snap` files), reference image
+
 **Changeset**:
 A changesets entry describing a consumer-facing package change for release notes and version bumps.
 _Avoid_: changelog line, commit message
@@ -217,6 +225,7 @@ _Avoid_: summed display, collapsed field (that is the **Code input** viewport), 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
 - A **Component** may wrap a **Primitive** (Ark preferred; Radix only where already established)
 - **Stories** document UI; **Browser tests** assert interaction — never duplicate behavior checks via Storybook `play`
+- A **Visual test** consumes a **Story** without changing it into a test; one **Story** has exactly one **Baseline**
 - A **Successor component** supersedes a **Deprecated component**; both may ship until consumers migrate
 - **Tokens** flow from design into SCSS; **Components** consume tokens, not raw hex from Figma in new work
 - A **Component** shows its **Empty state** only when it has zero data items; a virtualized body gates **Empty state** on data count, never on the count of currently rendered (virtual) rows

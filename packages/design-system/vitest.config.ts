@@ -9,6 +9,9 @@ import { reactCompilerRolldownPlugin } from './rolldown/react-compiler-rolldown-
 
 const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
+const DEFAULT_PLAYWRIGHT_SERVER_PORT = '3000';
+const VISUAL_TEST_ALLOWED_MISMATCHED_PIXELS = 200;
+
 export default defineConfig({
 	test: {
 		coverage: {
@@ -100,6 +103,60 @@ export default defineConfig({
 						instances: [{ browser: 'chromium' }],
 					},
 					setupFiles: ['.storybook/vitest.setup.ts'],
+				},
+			},
+			{
+				extends: true,
+				plugins: [
+					storybookTest({
+						configDir: path.join(dirname, '.storybook'),
+						tags: { include: ['visual'] },
+					}),
+				],
+				test: {
+					name: 'storybook-visual',
+					isolate: false,
+					testTimeout: 30000,
+					browser: {
+						enabled: true,
+						headless: true,
+						// The browser runs in the pinned Playwright container (`pnpm test:visual:server`)
+						// so screenshots render the same on every machine, up to the pixel budget below.
+						provider: playwright({
+							connectOptions: {
+								// Same port variable as `scripts/visual-test-server.ts`.
+								wsEndpoint:
+									process.env.PW_WS_ENDPOINT ??
+									`ws://127.0.0.1:${process.env.PW_SERVER_PORT ?? DEFAULT_PLAYWRIGHT_SERVER_PORT}/`,
+								exposeNetwork: '<loopback>',
+							},
+						}),
+						instances: [{ browser: 'chromium' }],
+						expect: {
+							toMatchScreenshot: {
+								comparatorName: 'pixelmatch',
+								comparatorOptions: {
+									// GitHub runners vary in CPU model, which shifts anti-aliased half-pixel edges
+									// (e.g. checkbox borders) by up to ~150px per screenshot. Real changes move far more.
+									allowedMismatchedPixels: VISUAL_TEST_ALLOWED_MISMATCHED_PIXELS,
+								},
+								// A single rendering environment, so no browser/platform suffix.
+								resolveScreenshotPath: ({
+									arg,
+									ext,
+									root,
+									testFileDirectory,
+									testFileName,
+									screenshotDirectory,
+								}) =>
+									path.resolve(root, testFileDirectory, screenshotDirectory, testFileName, `${arg}${ext}`),
+								// `arg` already ends in `-actual` / `-diff`; `scripts/visual-test-report.ts` relies on this layout.
+								resolveDiffPath: ({ arg, ext, root, attachmentsDir, testFileDirectory, testFileName }) =>
+									path.resolve(root, attachmentsDir, testFileDirectory, testFileName, `${arg}${ext}`),
+							},
+						},
+					},
+					setupFiles: ['.storybook/vitest.visual.setup.ts'],
 				},
 			},
 			{

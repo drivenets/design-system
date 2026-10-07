@@ -7,6 +7,7 @@ import styles from './ds-table.stories.module.scss';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Row Actions',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',

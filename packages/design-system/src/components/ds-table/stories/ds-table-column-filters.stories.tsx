@@ -269,6 +269,7 @@ function ControlledDevicesTable({ rows }: { rows: DeviceRow[] }) {
 
 const meta: Meta<typeof DsTable<DeviceRow, unknown>> = {
 	title: 'Components/Table/Filters',
+	tags: ['visual'],
 	component: DsTable,
 	parameters: {
 		layout: 'fullscreen',
