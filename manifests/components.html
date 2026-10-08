@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">605 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/605 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/102 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/102 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/102 without API description</a><span class="filter-pill ok" aria-disabled="true">607 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/607 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>3.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -14129,9 +14129,9 @@ fully.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsModal</h2>
       <div class="badges">
-        <label for="c-48-components-modal-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-48-components-modal-props" class="badge ok as-toggle">13 prop types</label>
         
-        <label for="c-48-components-modal-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-48-components-modal-stories" class="badge ok as-toggle">7 stories</label>
         
         
       </div>
@@ -14140,7 +14140,8 @@ fully.</div>
     
     <div class="hint">Composable modal dialog.
 Supports custom header, footer, and body content with grid-based sizing.
-Use columns prop to control modal width (1-12 grid columns).</div>
+Use columns prop to control modal width (1-12 grid columns), and
+DsModal.FullScreenTrigger or the fullScreen prop to fill the viewport.</div>
     
   </div>
 
@@ -14160,7 +14161,7 @@ Use columns prop to control modal width (1-12 grid columns).</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">10 prop types</span>
+              <span class="badge ok">13 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-modal/ds-modal.tsx</code></pre>
             <pre><code>Props:</code></pre>
@@ -14193,10 +14194,23 @@ closeOnInteractOutside?: DialogProps[&#39;closeOnInteractOutside&#39;] = false
 columns?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 = 6
 
 /**
+ * Initial full screen state when uncontrolled. The modal returns to it after closing.
+ * @default false
+ */
+defaultFullScreen?: boolean = false
+
+/**
  * Show full-width dividers between header, body, and footer sections
  * @default false
  */
 dividers?: boolean = false
+
+/**
+ * Whether the modal fills the viewport. Passing this prop makes full screen controlled:
+ * `DsModal.FullScreenTrigger` then only calls `onFullScreenChange`.
+ * `columns` has no effect while full screen.
+ */
+fullScreen?: boolean
 
 /**
  * Whether the modal traps focus and blocks interaction with the page behind the
@@ -14204,6 +14218,12 @@ dividers?: boolean = false
  * @default true
  */
 modal?: DialogProps[&#39;modal&#39;] = true
+
+/**
+ * Called when `DsModal.FullScreenTrigger` requests a full screen change
+ * @param fullScreen - the requested full screen state
+ */
+onFullScreenChange?: (fullScreen: boolean) =&gt; void
 
 /**
  * Callback when modal open state changes
@@ -14422,6 +14442,88 @@ Use this pattern instead of a variant when the body content is self-explanatory.
                         &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Close
                                                         &lt;/DsButtonV3&gt;
                         &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Continue&lt;/DsButtonV3&gt;
+                    &lt;/DsModal.Actions&gt;
+                &lt;/DsModal.Footer&gt;
+            &lt;/DsModal&gt;
+        &lt;/&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Full Screen</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Place DsModal.FullScreenTrigger in the header before DsModal.CloseTrigger to let users
+expand the modal to fill the viewport, for dense content such as large forms or tables.
+The modal tracks the state itself; set `defaultFullScreen` to open it full screen.</div>
+              <pre><code>const FullScreen = () =&gt; {
+    const [open, setOpen] = useState(false);
+
+    return (
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal columns={4} defaultFullScreen={false} open={open} onOpenChange={setOpen}&gt;
+                &lt;DsModal.Header&gt;
+                    &lt;DsModal.Title&gt;Network elements&lt;/DsModal.Title&gt;
+                    &lt;DsModal.FullScreenTrigger aria-label=&quot;Toggle full screen&quot; /&gt;
+                    &lt;DsModal.CloseTrigger /&gt;
+                &lt;/DsModal.Header&gt;
+                &lt;DsModal.Body&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Use the button next to the close button to expand the modal to full screen.
+                                                &lt;/DsTypography&gt;
+                &lt;/DsModal.Body&gt;
+                &lt;DsModal.Footer&gt;
+                    &lt;DsModal.Actions&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Cancel
+                                                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Confirm&lt;/DsButtonV3&gt;
+                    &lt;/DsModal.Actions&gt;
+                &lt;/DsModal.Footer&gt;
+            &lt;/DsModal&gt;
+        &lt;/&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Full Screen Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pass `fullScreen` with `onFullScreenChange` to own the full screen state, for example to
+persist it or to change it from outside the modal. DsModal.FullScreenTrigger then only
+requests changes through `onFullScreenChange`.</div>
+              <pre><code>const FullScreenControlled = () =&gt; {
+    const [open, setOpen] = useState(false);
+    const [fullScreen, setFullScreen] = useState(false);
+
+    return (
+        &lt;&gt;
+            &lt;DsButtonV3 onClick={() =&gt; setOpen(true)}&gt;Open modal&lt;/DsButtonV3&gt;
+            &lt;DsModal
+                columns={4}
+                open={open}
+                fullScreen={fullScreen}
+                onFullScreenChange={setFullScreen}
+                onOpenChange={setOpen}&gt;
+                &lt;DsModal.Header&gt;
+                    &lt;DsModal.Title&gt;Network elements&lt;/DsModal.Title&gt;
+                    &lt;DsModal.FullScreenTrigger aria-label=&quot;Toggle full screen&quot; /&gt;
+                    &lt;DsModal.CloseTrigger /&gt;
+                &lt;/DsModal.Header&gt;
+                &lt;DsModal.Body&gt;
+                    &lt;DsTypography variant=&quot;body-md-reg&quot;&gt;Full screen is {fullScreen ? &#39;on&#39; : &#39;off&#39;}. The parent component owns this state.
+                                                &lt;/DsTypography&gt;
+                &lt;/DsModal.Body&gt;
+                &lt;DsModal.Footer&gt;
+                    &lt;DsModal.Actions&gt;
+                        &lt;DsButtonV3 variant=&quot;secondary&quot; onClick={() =&gt; setOpen(false)}&gt;Cancel
+                                                        &lt;/DsButtonV3&gt;
+                        &lt;DsButtonV3 onClick={() =&gt; setOpen(false)}&gt;Confirm&lt;/DsButtonV3&gt;
                     &lt;/DsModal.Actions&gt;
                 &lt;/DsModal.Footer&gt;
             &lt;/DsModal&gt;

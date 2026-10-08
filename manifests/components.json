@@ -9672,9 +9672,9 @@
       "name": "DsModal",
       "path": "./src/components/ds-modal/ds-modal.stories.tsx",
       "jsDocTags": {},
-      "description": "Composable modal dialog.\nSupports custom header, footer, and body content with grid-based sizing.\nUse columns prop to control modal width (1-12 grid columns).",
+      "description": "Composable modal dialog.\nSupports custom header, footer, and body content with grid-based sizing.\nUse columns prop to control modal width (1-12 grid columns), and\nDsModal.FullScreenTrigger or the fullScreen prop to fill the viewport.",
       "reactDocgen": {
-        "description": "Composable modal dialog.\nSupports custom header, footer, and body content with grid-based sizing.\nUse columns prop to control modal width (1-12 grid columns).",
+        "description": "Composable modal dialog.\nSupports custom header, footer, and body content with grid-based sizing.\nUse columns prop to control modal width (1-12 grid columns), and\nDsModal.FullScreenTrigger or the fullScreen prop to fill the viewport.",
         "methods": [],
         "displayName": "DsModalRoot",
         "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-modal/ds-modal.tsx",
@@ -9781,6 +9781,24 @@
               "computed": false
             }
           },
+          "fullScreen": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the modal fills the viewport. Passing this prop makes full screen controlled:\n`DsModal.FullScreenTrigger` then only calls `onFullScreenChange`.\n`columns` has no effect while full screen."
+          },
+          "defaultFullScreen": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Initial full screen state when uncontrolled. The modal returns to it after closing.\n@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
           "dividers": {
             "required": false,
             "tsType": {
@@ -9834,6 +9852,28 @@
               }
             },
             "description": "Callback when modal open state changes\n@param open - whether the modal is open"
+          },
+          "onFullScreenChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(fullScreen: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "fullScreen"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called when `DsModal.FullScreenTrigger` requests a full screen change\n@param fullScreen - the requested full screen state"
           }
         },
         "composes": [
@@ -9870,6 +9910,18 @@
           "name": "Without Header",
           "snippet": "const WithoutHeader = () => {\n    const [open, setOpen] = useState(false);\n\n    return (\n        <>\n            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>\n            <DsModal columns={4} open={open} onOpenChange={setOpen}>\n                <DsModal.Body>\n                    <DsTypography variant=\"body-md-reg\">This modal has no header section. Use this pattern when you want a cleaner look without the\n                                                    header underline.\n                                                </DsTypography>\n                </DsModal.Body>\n                <DsModal.Footer>\n                    <DsModal.Actions>\n                        <DsButtonV3 variant=\"secondary\" onClick={() => setOpen(false)}>Close\n                                                        </DsButtonV3>\n                        <DsButtonV3 onClick={() => setOpen(false)}>Continue</DsButtonV3>\n                    </DsModal.Actions>\n                </DsModal.Footer>\n            </DsModal>\n        </>\n    );\n};",
           "description": "Omit DsModal.Header entirely for a cleaner surface without the header underline.\nUse this pattern instead of a variant when the body content is self-explanatory."
+        },
+        {
+          "id": "components-modal--full-screen",
+          "name": "Full Screen",
+          "snippet": "const FullScreen = () => {\n    const [open, setOpen] = useState(false);\n\n    return (\n        <>\n            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>\n            <DsModal columns={4} defaultFullScreen={false} open={open} onOpenChange={setOpen}>\n                <DsModal.Header>\n                    <DsModal.Title>Network elements</DsModal.Title>\n                    <DsModal.FullScreenTrigger aria-label=\"Toggle full screen\" />\n                    <DsModal.CloseTrigger />\n                </DsModal.Header>\n                <DsModal.Body>\n                    <DsTypography variant=\"body-md-reg\">Use the button next to the close button to expand the modal to full screen.\n                                                </DsTypography>\n                </DsModal.Body>\n                <DsModal.Footer>\n                    <DsModal.Actions>\n                        <DsButtonV3 variant=\"secondary\" onClick={() => setOpen(false)}>Cancel\n                                                        </DsButtonV3>\n                        <DsButtonV3 onClick={() => setOpen(false)}>Confirm</DsButtonV3>\n                    </DsModal.Actions>\n                </DsModal.Footer>\n            </DsModal>\n        </>\n    );\n};",
+          "description": "Place DsModal.FullScreenTrigger in the header before DsModal.CloseTrigger to let users\nexpand the modal to fill the viewport, for dense content such as large forms or tables.\nThe modal tracks the state itself; set `defaultFullScreen` to open it full screen."
+        },
+        {
+          "id": "components-modal--full-screen-controlled",
+          "name": "Full Screen Controlled",
+          "snippet": "const FullScreenControlled = () => {\n    const [open, setOpen] = useState(false);\n    const [fullScreen, setFullScreen] = useState(false);\n\n    return (\n        <>\n            <DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>\n            <DsModal\n                columns={4}\n                open={open}\n                fullScreen={fullScreen}\n                onFullScreenChange={setFullScreen}\n                onOpenChange={setOpen}>\n                <DsModal.Header>\n                    <DsModal.Title>Network elements</DsModal.Title>\n                    <DsModal.FullScreenTrigger aria-label=\"Toggle full screen\" />\n                    <DsModal.CloseTrigger />\n                </DsModal.Header>\n                <DsModal.Body>\n                    <DsTypography variant=\"body-md-reg\">Full screen is {fullScreen ? 'on' : 'off'}. The parent component owns this state.\n                                                </DsTypography>\n                </DsModal.Body>\n                <DsModal.Footer>\n                    <DsModal.Actions>\n                        <DsButtonV3 variant=\"secondary\" onClick={() => setOpen(false)}>Cancel\n                                                        </DsButtonV3>\n                        <DsButtonV3 onClick={() => setOpen(false)}>Confirm</DsButtonV3>\n                    </DsModal.Actions>\n                </DsModal.Footer>\n            </DsModal>\n        </>\n    );\n};",
+          "description": "Pass `fullScreen` with `onFullScreenChange` to own the full screen state, for example to\npersist it or to change it from outside the modal. DsModal.FullScreenTrigger then only\nrequests changes through `onFullScreenChange`."
         }
       ],
       "import": "import { DsButtonV3, DsFormControl, DsIcon, DsModal, DsStack, DsTypography } from '@drivenets/design-system';"
@@ -32132,6 +32184,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6122
+    "durationMs": 3723
   }
 }
