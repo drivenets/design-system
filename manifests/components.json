@@ -6908,6 +6908,462 @@
       ],
       "import": "import { DsFilterStatusIcon, DsStack, DsTypography } from '@drivenets/design-system';"
     },
+    "components-filtersbar": {
+      "id": "components-filtersbar",
+      "name": "DsFiltersBar",
+      "path": "./src/components/ds-filters-bar/ds-filters-bar.stories.tsx",
+      "jsDocTags": {
+        "summary": [
+          "Filters a table or list by one **Filter document**: search, filter chips, a query builder and an advanced query, with a pinned row of quick toggles and optional saved filters."
+        ]
+      },
+      "description": "",
+      "summary": "Filters a table or list by one **Filter document**: search, filter chips, a query builder and an advanced query, with a pinned row of quick toggles and optional saved filters.",
+      "reactDocgen": {
+        "description": "@summary Filters a table or list by one **Filter document**: search, filter chips, a query\nbuilder and an advanced query, with a pinned row of quick toggles and optional saved filters.",
+        "methods": [],
+        "displayName": "DsFiltersBar",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-filters-bar/ds-filters-bar.tsx",
+        "actualName": "DsFiltersBar",
+        "exportName": "DsFiltersBar",
+        "props": {
+          "fields": {
+            "required": false,
+            "tsType": {
+              "name": "ReadonlyArray",
+              "elements": [
+                {
+                  "name": "union",
+                  "raw": "DsFilterScalarField | DsFilterCompoundField",
+                  "elements": [
+                    {
+                      "name": "union",
+                      "raw": "| DsFilterEnumField\n| DsFilterTextField\n| DsFilterNumberField\n| DsFilterDateField",
+                      "elements": [
+                        {
+                          "name": "DsFilterEnumField"
+                        },
+                        {
+                          "name": "DsFilterTextField"
+                        },
+                        {
+                          "name": "DsFilterNumberField"
+                        },
+                        {
+                          "name": "DsFilterDateField"
+                        }
+                      ]
+                    },
+                    {
+                      "name": "DsFilterCompoundField"
+                    }
+                  ]
+                }
+              ],
+              "raw": "ReadonlyArray<DsFilterField>"
+            },
+            "description": "What can be filtered. Omit for a search-only bar.\n@default []",
+            "defaultValue": {
+              "value": "Object.freeze([])",
+              "computed": true
+            }
+          },
+          "value": {
+            "required": false,
+            "tsType": {
+              "name": "DsFilterDocumentInput"
+            },
+            "description": "The **Filter document**. Conditions may leave out `id`; each gets one from its position. Every\nchange, from any view, reports the whole document once, with every id. Pair with\n`onValueChange`."
+          },
+          "defaultValue": {
+            "required": false,
+            "tsType": {
+              "name": "DsFilterDocumentInput"
+            },
+            "description": "@default the document of `savedFilters.defaultActiveId`, else `emptyFilterDocument`"
+          },
+          "pins": {
+            "required": false,
+            "tsType": {
+              "name": "ReadonlyArray",
+              "elements": [
+                {
+                  "name": "DsFilterPin"
+                }
+              ],
+              "raw": "ReadonlyArray<DsFilterPin>"
+            },
+            "description": "Field options shown in the pinned row, which is built from these and `fields`: one group per\nfield in `fields` order, one toggle per pin in this order. Pair with `onPinsChange`."
+          },
+          "defaultPins": {
+            "required": false,
+            "tsType": {
+              "name": "ReadonlyArray",
+              "elements": [
+                {
+                  "name": "DsFilterPin"
+                }
+              ],
+              "raw": "ReadonlyArray<DsFilterPin>"
+            },
+            "description": "@default []",
+            "defaultValue": {
+              "value": "Object.freeze([])",
+              "computed": true
+            }
+          },
+          "activeToggles": {
+            "required": false,
+            "tsType": {
+              "name": "ReadonlyArray",
+              "elements": [
+                {
+                  "name": "DsFilterPin"
+                }
+              ],
+              "raw": "ReadonlyArray<DsFilterPin>"
+            },
+            "description": "Pins switched on in the pinned row. Toggles only count for pins the bar shows: a toggle whose\npin is gone, or whose field is missing from `fields`, no longer counts. Unpinning a switched-on\noption from the bar also reports it switched off. Pair with `onActiveTogglesChange`."
+          },
+          "defaultActiveToggles": {
+            "required": false,
+            "tsType": {
+              "name": "ReadonlyArray",
+              "elements": [
+                {
+                  "name": "DsFilterPin"
+                }
+              ],
+              "raw": "ReadonlyArray<DsFilterPin>"
+            },
+            "description": "@default []",
+            "defaultValue": {
+              "value": "Object.freeze([])",
+              "computed": true
+            }
+          },
+          "expanded": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the full toolbar is shown. Collapsed shows the one-line summary. Pair with\n`onExpandedChange`."
+          },
+          "defaultExpanded": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "@default false",
+            "defaultValue": {
+              "value": "false",
+              "computed": false
+            }
+          },
+          "view": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof filtersBarViews)[number]"
+            },
+            "description": "Asked-for view. While an Advanced query is the source, the bar shows the advanced view\ninstead, and shows this one again once the query is cleared; `onViewChange` does not fire for\neither. A view missing from `views` falls back to the first of `views`. Pair with\n`onViewChange`."
+          },
+          "defaultView": {
+            "required": false,
+            "tsType": {
+              "name": "unknown[number]",
+              "raw": "(typeof filtersBarViews)[number]"
+            },
+            "description": "@default 'filters'",
+            "defaultValue": {
+              "value": "'filters'",
+              "computed": false
+            }
+          },
+          "views": {
+            "required": false,
+            "tsType": {
+              "name": "ReadonlyArray",
+              "elements": [
+                {
+                  "name": "unknown[number]",
+                  "raw": "(typeof filtersBarViews)[number]"
+                }
+              ],
+              "raw": "ReadonlyArray<DsFiltersBarView>"
+            },
+            "description": "Views the view switch offers. With one view the switch is hidden. An Advanced query still\nshows the advanced view, so it stays visible and clearable.\n@default ['filters', 'builder', 'advanced']",
+            "defaultValue": {
+              "value": "['filters', 'builder', 'advanced']",
+              "computed": false
+            }
+          },
+          "savedFilters": {
+            "required": false,
+            "tsType": {
+              "name": "DsFiltersBarSavedFiltersConfig"
+            },
+            "description": "Shows the saved-filters picker and the save button"
+          },
+          "resultCount": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "Number of results the document and switched-on pins produce, shown in the summary. Omit to hide\nit."
+          },
+          "getPinCount": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(pin: DsFilterPin) => number",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsFilterPin"
+                    },
+                    "name": "pin"
+                  }
+                ],
+                "return": {
+                  "name": "number"
+                }
+              }
+            },
+            "description": "Count shown on a pin's toggle, which is disabled at 0 unless switched on. Omit to show no counts."
+          },
+          "locale": {
+            "required": false,
+            "tsType": {
+              "name": "DsFiltersBarLocale"
+            },
+            "description": ""
+          },
+          "slotProps": {
+            "required": false,
+            "tsType": {
+              "name": "DsFiltersBarSlotProps"
+            },
+            "description": "Props forwarded to one part"
+          },
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "Ref",
+              "elements": [
+                {
+                  "name": "HTMLDivElement"
+                }
+              ],
+              "raw": "Ref<HTMLDivElement>"
+            },
+            "description": ""
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": ""
+          },
+          "style": {
+            "required": false,
+            "tsType": {
+              "name": "CSSProperties"
+            },
+            "description": ""
+          },
+          "onValueChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(value: DsFilterDocument) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsFilterDocument"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onPinsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(pins: ReadonlyArray<DsFilterPin>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ReadonlyArray",
+                      "elements": [
+                        {
+                          "name": "DsFilterPin"
+                        }
+                      ],
+                      "raw": "ReadonlyArray<DsFilterPin>"
+                    },
+                    "name": "pins"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onActiveTogglesChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(activeToggles: ReadonlyArray<DsFilterPin>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ReadonlyArray",
+                      "elements": [
+                        {
+                          "name": "DsFilterPin"
+                        }
+                      ],
+                      "raw": "ReadonlyArray<DsFilterPin>"
+                    },
+                    "name": "activeToggles"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onExpandedChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(expanded: boolean) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "boolean"
+                    },
+                    "name": "expanded"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          },
+          "onViewChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(view: DsFiltersBarView) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "unknown[number]",
+                      "raw": "(typeof filtersBarViews)[number]"
+                    },
+                    "name": "view"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-filtersbar--default",
+          "name": "Default",
+          "snippet": "const Default = function Render() {\n    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([\n        {\n            id: 'saved-core',\n            name: 'Active core',\n            document: {\n                conditions: [\n                    { kind: 'field', field: 'status', operator: '=', value: ['active'] },\n                    { kind: 'field', field: 'role', operator: 'IN', value: ['core'] },\n                ],\n            },\n        },\n        {\n            id: 'saved-attention',\n            name: 'Needs attention',\n            document: { query: 'status = \"inactive\" OR ports > 40' },\n        },\n    ]);\n\n    return (\n        <DsFiltersBar\n            fields={[\n                { type: 'text', id: 'name', label: 'Name' },\n                {\n                    type: 'enum',\n                    id: 'status',\n                    label: 'Status',\n                    options: [\n                        { value: 'active', label: 'Active' },\n                        { value: 'inactive', label: 'Inactive' },\n                        { value: 'deprecated', label: 'Deprecated' },\n                    ],\n                },\n                {\n                    type: 'enum',\n                    id: 'role',\n                    label: 'Role',\n                    operators: ['IN', 'NOT IN'],\n                    options: [\n                        { value: 'core', label: 'Core' },\n                        { value: 'edge', label: 'Edge' },\n                    ],\n                },\n                { type: 'number', id: 'ports', label: 'Ports' },\n                { type: 'date', id: 'lastSeen', label: 'Last seen', presets: ['today', 'last7Days'] },\n            ]}\n            defaultValue={{\n                conditions: [\n                    { kind: 'search', text: 'router' },\n                    { kind: 'field', field: 'status', operator: '!=', value: ['deprecated'] },\n                ],\n            }}\n            defaultPins={[\n                { field: 'status', value: 'active' },\n                { field: 'role', value: 'core' },\n            ]}\n            defaultExpanded\n            resultCount={18}\n            savedFilters={{\n                items: savedFilters,\n                onSaveAs: (name, document) => {\n                    const id = `saved-${String(Date.now())}`;\n\n                    setSavedFilters((items) => [...items, { id, name, document }]);\n\n                    return id;\n                },\n                onUpdate: (id, document) =>\n                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, document } : item))),\n                onRename: (id, name) =>\n                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, name } : item))),\n                onDelete: (id) => setSavedFilters((items) => items.filter((item) => item.id !== id)),\n            }}\n        />\n    );\n};",
+          "description": "The full bar. It keeps the **Filter document** itself; the story only persists the **Saved\nfilters** it hands back. Load one, edit it to make it dirty, then update it or save a new one.\nThe result count is fixed here; **With Table** computes it."
+        },
+        {
+          "id": "components-filtersbar--with-table",
+          "name": "With Table",
+          "snippet": "const WithTable = function Render() {\n    const [value, setValue] = useState<DsFilterDocument>(emptyFilterDocument);\n    const [activeToggles, setActiveToggles] = useState<ReadonlyArray<DsFilterPin>>([]);\n    const [savedFilters, setSavedFilters] = useState(deviceSavedFilters);\n\n    const { rows, getPinCount } = useFilteredRows(devices, {\n        fields: deviceFields,\n        value,\n        activeToggles,\n        now: STORY_NOW,\n    });\n\n    return (\n        <DsStack direction=\"column\" gap=\"var(--standard)\">\n            <DsFiltersBar\n                fields={deviceFields}\n                value={value}\n                activeToggles={activeToggles}\n                defaultPins={[\n                    { field: 'status', value: 'active' },\n                    { field: 'status', value: 'pending' },\n                    { field: 'role', value: 'core' },\n                    { field: 'role', value: 'edge' },\n                ]}\n                defaultExpanded\n                resultCount={rows.length}\n                getPinCount={getPinCount}\n                savedFilters={{\n                    items: savedFilters,\n                    onSaveAs: (name, document) => {\n                        const id = `saved-${String(Date.now())}`;\n\n                        setSavedFilters((items) => [...items, { id, name, document }]);\n\n                        return id;\n                    },\n                    onUpdate: (id, document) =>\n                        setSavedFilters((items) =>\n                            items.map((item) => (item.id === id ? { ...item, document } : item)),\n                        ),\n                    onRename: (id, name) =>\n                        setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, name } : item))),\n                    onDelete: (id) => setSavedFilters((items) => items.filter((item) => item.id !== id)),\n                }}\n                onValueChange={setValue}\n                onActiveTogglesChange={setActiveToggles}\n            />\n\n            <DsTable columns={deviceColumns} data={rows} stickyHeader bordered fullWidth />\n        </DsStack>\n    );\n};",
+          "description": "The full loop, with the bar as a sibling above `DsTable`. The story controls the document and the\nactive toggles, and `useFilteredRows` turns them into the table's rows, the summary count and\neach pin's count. Every edit — a chip, a builder condition, a typed query, a loaded **Saved\nfilter**, a pinned toggle, Clear all — changes the table.\n\nKeep the matcher's inputs stable: `fields` and `now` live at module scope, the document and\ntoggles in state. The matcher resolves the built-in `lastSeen` presets itself, counting from\n`now`, which is fixed here so the rows never change; omit it to count from the current time."
+        },
+        {
+          "id": "components-filtersbar--localized",
+          "name": "Localized",
+          "snippet": "const Localized = function Render() {\n    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([\n        {\n            id: 'only-active',\n            name: 'Only active',\n            document: { conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }] },\n        },\n    ]);\n\n    return (\n        <DsFiltersBar\n            fields={[\n                {\n                    type: 'enum',\n                    id: 'status',\n                    label: 'Status',\n                    operators: ['=', '!='],\n                    options: [\n                        { value: 'active', label: 'Active' },\n                        { value: 'pending', label: 'Pending' },\n                    ],\n                },\n                { type: 'date', id: 'lastSeen', label: 'Last seen', presets: ['today', 'last7Days'] },\n            ]}\n            defaultValue={{\n                conditions: [\n                    { kind: 'field', field: 'status', operator: '!=', value: ['pending'] },\n                    { kind: 'field', field: 'lastSeen', operator: '=', value: 'last7Days' },\n                ],\n            }}\n            defaultPins={[\n                { field: 'status', value: 'active' },\n                { field: 'lastSeen', value: 'today' },\n            ]}\n            defaultExpanded\n            resultCount={3}\n            savedFilters={{\n                items: savedFilters,\n                onSaveAs: (name, document) => {\n                    const id = `preset-${String(Date.now())}`;\n\n                    setSavedFilters((items) => [...items, { id, name, document }]);\n\n                    return id;\n                },\n                onUpdate: (id, document) =>\n                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, document } : item))),\n                onRename: (id, name) =>\n                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, name } : item))),\n                onDelete: (id) => setSavedFilters((items) => items.filter((item) => item.id !== id)),\n            }}\n            locale={{\n                label: 'Refine results',\n                expand: 'Show refinements',\n                collapse: 'Hide refinements',\n                summary: {\n                    resultCount: (count) => `${String(count)} matches`,\n                    activeSavedFilter: 'Preset',\n                    emptyLabel: 'Showing',\n                    emptyValue: 'Everything',\n                },\n                search: { label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Clear text' },\n                viewSwitch: {\n                    label: 'Presentation',\n                    views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' },\n                    lockedView: 'Remove the custom query to switch',\n                },\n                chips: { addFilter: 'Add refinement' },\n                conditions: { title: 'Refinements', save: 'Apply' },\n                builder: { title: 'Build a condition', save: 'Add condition' },\n                query: { label: 'Query editor', help: 'Syntax' },\n                savedFilters: {\n                    savedFilters: 'Presets',\n                    saveFilter: 'Save preset',\n                    saveAsNew: 'Save as a new preset',\n                },\n                clearAll: { label: 'Reset' },\n                pinned: { label: 'Shortcuts' },\n                operators: {\n                    enum: { '=': { label: 'matches' }, '!=': { label: 'excludes', symbol: '∌' } },\n                    date: { '=': { label: 'within' } },\n                },\n                datePresets: { today: 'Since midnight', last7Days: 'This past week' },\n            }}\n        />\n    );\n};",
+          "description": "`locale` is nested by part. Each section is merged over its defaults, so set only the strings\nyou change. Strings that depend on a value, such as the result count, are functions. Operator\nwords go in `locale.operators` by field type, and built-in date preset labels in\n`locale.datePresets`."
+        },
+        {
+          "id": "components-filtersbar--collapsed",
+          "name": "Collapsed",
+          "snippet": "const Collapsed = () => <DsFiltersBar\n    fields={[\n        {\n            type: 'enum',\n            id: 'status',\n            label: 'Status',\n            options: [\n                { value: 'active', label: 'Active' },\n                { value: 'deprecated', label: 'Deprecated' },\n            ],\n        },\n    ]}\n    defaultValue={{\n        conditions: [\n            { kind: 'search', text: 'router' },\n            { kind: 'field', field: 'status', operator: '!=', value: ['deprecated'] },\n        ],\n    }}\n    resultCount={12} />;",
+          "description": "Collapsed, the bar reads as one line: each condition as `Label operator: value;`, a search as\n`Search: text;`, then `resultCount`. It starts collapsed unless `defaultExpanded` is set."
+        },
+        {
+          "id": "components-filtersbar--search-only",
+          "name": "Search Only",
+          "snippet": "const SearchOnly = () => <DsFiltersBar\n    defaultExpanded\n    defaultValue={{ conditions: [{ kind: 'search', text: 'router' }] }} />;",
+          "description": "Without `fields`, the bar filters by free text only: Enter adds the typed text as a search chip.\n`/` focuses the search from anywhere outside a text field or dialog."
+        },
+        {
+          "id": "components-filtersbar--views",
+          "name": "Views",
+          "snippet": "const Views = () => <DsFiltersBar\n    defaultExpanded\n    views={['filters', 'advanced']}\n    fields={[\n        {\n            type: 'enum',\n            id: 'status',\n            label: 'Status',\n            operators: ['='],\n            options: [\n                { value: 'active', label: 'Active' },\n                { value: 'pending', label: 'Pending' },\n            ],\n        },\n    ]}\n    defaultValue={{\n        conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }],\n    }} />;",
+          "description": "`views` limits the view switch to the listed views, in their usual order. With one view the\nswitch is hidden."
+        },
+        {
+          "id": "components-filtersbar--advanced-query",
+          "name": "Advanced Query",
+          "snippet": "const AdvancedQuery = () => <DsFiltersBar\n    defaultExpanded\n    fields={[\n        {\n            type: 'enum',\n            id: 'status',\n            label: 'Status',\n            options: [\n                { value: 'active', label: 'Active' },\n                { value: 'inactive', label: 'Inactive' },\n            ],\n        },\n        { type: 'number', id: 'ports', label: 'Ports', operators: ['=', '>', '<'] },\n    ]}\n    defaultValue={{ query: 'status = \"inactive\" OR ports > 40' }} />;",
+          "description": "A query with `OR` or parentheses cannot be shown as conditions, so it becomes the document's\nonly source: the bar shows the advanced view, disables search, and locks the filters and builder\nviews until the query is cleared."
+        },
+        {
+          "id": "components-filtersbar--pinned",
+          "name": "Pinned",
+          "snippet": "const Pinned = () => (\n    <DsFiltersBar\n        fields={[\n            {\n                type: 'enum',\n                id: 'status',\n                label: 'Status',\n                operators: ['='],\n                options: [\n                    { value: 'active', label: 'Active' },\n                    { value: 'pending', label: 'Pending' },\n                    { value: 'deprecated', label: 'Deprecated' },\n                ],\n            },\n            {\n                type: 'date',\n                id: 'lastSeen',\n                label: 'Last seen',\n                operators: ['='],\n                presets: ['today', 'last7Days'],\n            },\n        ]}\n        defaultPins={[\n            { field: 'status', value: 'active' },\n            { field: 'status', value: 'deprecated' },\n            { field: 'lastSeen', value: 'today' },\n        ]}\n        defaultActiveToggles={[{ field: 'status', value: 'active' }]}\n        getPinCount={(pin) => (pin.value === 'deprecated' ? 0 : 8)}\n    />\n);",
+          "description": "`pins` build the pinned row below the bar: one group per field, one toggle per enum option or\ndate preset. Pin more from the filters dialog. `getPinCount` shows each toggle's count and\ndisables a toggle with none; see **With Table** for counts from `useFilteredRows`."
+        },
+        {
+          "id": "components-filtersbar--saved-filters",
+          "name": "Saved Filters",
+          "snippet": "const SavedFilters = function Render() {\n    const [items, setItems] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([\n        {\n            id: 'active',\n            name: 'Active',\n            document: { conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }] },\n        },\n        {\n            id: 'core-or-edge',\n            name: 'Core or edge',\n            document: { query: 'role = \"core\" OR role = \"edge\"' },\n        },\n    ]);\n\n    // Stands in for a request to the backend\n    const persist = () => new Promise((resolve) => setTimeout(resolve, 600));\n\n    return (\n        <DsFiltersBar\n            fields={[\n                {\n                    type: 'enum',\n                    id: 'status',\n                    label: 'Status',\n                    operators: ['='],\n                    options: [\n                        { value: 'active', label: 'Active' },\n                        { value: 'pending', label: 'Pending' },\n                    ],\n                },\n                {\n                    type: 'enum',\n                    id: 'role',\n                    label: 'Role',\n                    operators: ['='],\n                    options: [\n                        { value: 'core', label: 'Core' },\n                        { value: 'edge', label: 'Edge' },\n                    ],\n                },\n            ]}\n            defaultExpanded\n            savedFilters={{\n                items,\n                onSaveAs: async (name, document) => {\n                    await persist();\n                    const id = `saved-${String(Date.now())}`;\n\n                    setItems((current) => [...current, { id, name, document }]);\n\n                    return id;\n                },\n                onUpdate: async (id, document) => {\n                    await persist();\n                    setItems((current) => current.map((item) => (item.id === id ? { ...item, document } : item)));\n                },\n                onRename: async (id, name) => {\n                    await persist();\n                    setItems((current) => current.map((item) => (item.id === id ? { ...item, name } : item)));\n                },\n                onDelete: async (id) => {\n                    await persist();\n                    setItems((current) => current.filter((item) => item.id !== id));\n                },\n            }}\n        />\n    );\n};",
+          "description": "The product owns the items and persists them; every callback may return a Promise, and the\ncontrol that launched it stays loading until it settles. Save as returns the new id, which\nbecomes the **Active saved filter**. A saved **Advanced query** loads into the advanced view."
+        },
+        {
+          "id": "components-filtersbar--slot-props",
+          "name": "Slot Props",
+          "snippet": "const SlotProps = function Render() {\n    const searchRef = useRef<HTMLInputElement>(null);\n\n    return (\n        <DsStack direction=\"column\" gap=\"var(--standard)\">\n            <DsButtonV3 variant=\"secondary\" size=\"small\" onClick={() => searchRef.current?.focus()}>\n                Focus search\n            </DsButtonV3>\n\n            <DsFiltersBar\n                fields={[\n                    { type: 'text', id: 'name', label: 'Name', operators: ['~'] },\n                    {\n                        type: 'enum',\n                        id: 'status',\n                        label: 'Status',\n                        operators: ['='],\n                        options: [\n                            { value: 'active', label: 'Active' },\n                            { value: 'pending', label: 'Pending' },\n                        ],\n                    },\n                    {\n                        type: 'enum',\n                        id: 'role',\n                        label: 'Role',\n                        operators: ['='],\n                        options: [\n                            { value: 'core', label: 'Core' },\n                            { value: 'edge', label: 'Edge' },\n                        ],\n                    },\n                ]}\n                defaultExpanded\n                defaultView=\"builder\"\n                slotProps={{\n                    search: { ref: searchRef },\n                    builder: { suggestedFields: ['role', 'status'] },\n                    query: { slots: { help: 'Combine clauses with AND or OR. See the product docs for more.' } },\n                }}\n            />\n        </DsStack>\n    );\n};",
+          "description": "`slotProps` forwards props to one part. Here `search.ref` lets a button focus the search,\n`builder.suggestedFields` lists Role first in the query builder, and `query.slots.help` replaces\nthe advanced view's syntax reference."
+        }
+      ],
+      "import": "import { DsButtonV3, DsFiltersBar, DsStack, DsTable } from '@drivenets/design-system';"
+    },
     "components-formcontrol-codeinput": {
       "id": "components-formcontrol-codeinput",
       "name": "DsFormControl",
@@ -11505,7 +11961,7 @@
       "jsDocTags": {},
       "error": {
         "name": "No component definition found",
-        "message": "File: /home/runner/work/design-system/design-system/packages/design-system/src/components/ds-segment-group/ds-segment-group.tsx\nError:\nNo suitable component definition found.\nYou can debug your component file in this playground: https://react-docgen.dev/playground\nCode:\nimport type React from 'react';\nimport { SegmentGroup } from '@ark-ui/react/segment-group';\nimport classNames from 'classnames';\nimport styles from './ds-segment-group.module.scss';\nimport { DsTypography } from '../ds-typography';\nimport {\n\ttype DsSegmentGroupItemProps,\n\ttype DsSegmentGroupItemTextProps,\n\ttype DsSegmentGroupRootProps,\n} from './ds-segment-group.types';\n\n/**\n * Root component - provides segment group context\n */\nconst Root: React.FC<DsSegmentGroupRootProps> = ({\n\tclassName,\n\tchildren,\n\tonValueChange,\n\tsize = 'default',\n\t...props\n}) => (\n\t<SegmentGroup.Root\n\t\tclassName={classNames(styles.segmentGroupRoot, size === 'small' && styles.small, className)}\n\t\tonValueChange={(details) => onValueChange?.(details.value)}\n\t\t{...props}\n\t>\n\t\t<SegmentGroup.Indicator className={styles.segmentIndicator} />\n\t\t{children}\n\t</SegmentGroup.Root>\n);\n\n/**\n * Item component - renders a single segment button\n */\nconst Item: React.FC<DsSegmentGroupItemProps> = ({\n\tvalue,\n\tlabel,\n\tclassName,\n\tstyle,\n\tchildren,\n\tsize = 'default',\n\t...props\n}) => {\n\treturn (\n\t\t<SegmentGroup.Item\n\t\t\tvalue={value}\n\t\t\tclassName={classNames(styles.segmentItem, className)}\n\t\t\tstyle={style}\n\t\t\t{...props}\n\t\t>\n\t\t\t{label ? <ItemText size={size}>{label}</ItemText> : children}\n\t\t\t<SegmentGroup.ItemControl />\n\t\t\t<SegmentGroup.ItemHiddenInput />\n\t\t</SegmentGroup.Item>\n\t);\n};\n\n/**\n * ItemText component - renders text content within an item\n */\nconst ItemText: React.FC<DsSegmentGroupItemTextProps> = ({\n\tclassName,\n\tchildren,\n\tsize = 'default',\n\t...props\n}) => (\n\t<SegmentGroup.ItemText className={classNames(styles.segmentItemText, className)} {...props} asChild>\n\t\t<DsTypography variant={size === 'small' ? 'body-xs-md' : 'body-sm-md'}>{children}</DsTypography>\n\t</SegmentGroup.ItemText>\n);\n\n/**\n * Design system SegmentGroup component\n *\n * @example\n * <DsSegmentGroup.Root value={value} onValueChange={setValue} size=\"default\">\n *   <DsSegmentGroup.Item value=\"option1\" label=\"Option 1\" />\n *   <DsSegmentGroup.Item value=\"option2\">\n *     <DsIcon icon=\"settings\" />\n *     <DsSegmentGroup.ItemText>Option 2</DsSegmentGroup.ItemText>\n *   </DsSegmentGroup.Item>\n * </DsSegmentGroup.Root>\n */\nexport const DsSegmentGroup = {\n\tRoot,\n\tItem,\n\tItemText,\n};\nDsSegmentGroup.Root.displayName = 'DsSegmentGroup.Root';\nDsSegmentGroup.Item.displayName = 'DsSegmentGroup.Item';\nDsSegmentGroup.ItemText.displayName = 'DsSegmentGroup.ItemText';\n"
+        "message": "File: /home/runner/work/design-system/design-system/packages/design-system/src/components/ds-segment-group/ds-segment-group.tsx\nError:\nNo suitable component definition found.\nYou can debug your component file in this playground: https://react-docgen.dev/playground\nCode:\nimport type React from 'react';\nimport { SegmentGroup } from '@ark-ui/react/segment-group';\nimport classNames from 'classnames';\nimport styles from './ds-segment-group.module.scss';\nimport { DsTypography } from '../ds-typography';\nimport {\n\ttype DsSegmentGroupItemProps,\n\ttype DsSegmentGroupItemTextProps,\n\ttype DsSegmentGroupRootProps,\n} from './ds-segment-group.types';\n\n/**\n * Root component - provides segment group context\n */\nconst Root: React.FC<DsSegmentGroupRootProps> = ({\n\tclassName,\n\tchildren,\n\tonValueChange,\n\tsize = 'default',\n\t...props\n}) => (\n\t<SegmentGroup.Root\n\t\tclassName={classNames(styles.segmentGroupRoot, size === 'small' && styles.small, className)}\n\t\tonValueChange={(details) => onValueChange?.(details.value)}\n\t\t{...props}\n\t>\n\t\t<SegmentGroup.Indicator className={styles.segmentIndicator} />\n\t\t{children}\n\t</SegmentGroup.Root>\n);\n\n/**\n * Item component - renders a single segment button\n */\nconst Item: React.FC<DsSegmentGroupItemProps> = ({\n\tvalue,\n\tlabel,\n\tclassName,\n\tstyle,\n\tchildren,\n\tsize = 'default',\n\t'aria-label': ariaLabel,\n\t'aria-describedby': ariaDescribedBy,\n\t...props\n}) => {\n\treturn (\n\t\t<SegmentGroup.Item\n\t\t\tvalue={value}\n\t\t\tclassName={classNames(styles.segmentItem, className)}\n\t\t\tstyle={style}\n\t\t\t{...props}\n\t\t>\n\t\t\t{label ? <ItemText size={size}>{label}</ItemText> : children}\n\t\t\t<SegmentGroup.ItemControl />\n\t\t\t{/* The radio is the focusable control, so it carries the item's name and description. */}\n\t\t\t<SegmentGroup.ItemHiddenInput aria-label={ariaLabel} aria-describedby={ariaDescribedBy} />\n\t\t</SegmentGroup.Item>\n\t);\n};\n\n/**\n * ItemText component - renders text content within an item\n */\nconst ItemText: React.FC<DsSegmentGroupItemTextProps> = ({\n\tclassName,\n\tchildren,\n\tsize = 'default',\n\t...props\n}) => (\n\t<SegmentGroup.ItemText className={classNames(styles.segmentItemText, className)} {...props} asChild>\n\t\t<DsTypography variant={size === 'small' ? 'body-xs-md' : 'body-sm-md'}>{children}</DsTypography>\n\t</SegmentGroup.ItemText>\n);\n\n/**\n * Design system SegmentGroup component\n *\n * @example\n * <DsSegmentGroup.Root value={value} onValueChange={setValue} size=\"default\">\n *   <DsSegmentGroup.Item value=\"option1\" label=\"Option 1\" />\n *   <DsSegmentGroup.Item value=\"option2\">\n *     <DsIcon icon=\"settings\" />\n *     <DsSegmentGroup.ItemText>Option 2</DsSegmentGroup.ItemText>\n *   </DsSegmentGroup.Item>\n * </DsSegmentGroup.Root>\n */\nexport const DsSegmentGroup = {\n\tRoot,\n\tItem,\n\tItemText,\n};\nDsSegmentGroup.Root.displayName = 'DsSegmentGroup.Root';\nDsSegmentGroup.Item.displayName = 'DsSegmentGroup.Item';\nDsSegmentGroup.ItemText.displayName = 'DsSegmentGroup.ItemText';\n"
       },
       "stories": [
         {
@@ -32184,6 +32640,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 3723
+    "durationMs": 5701
   }
 }
