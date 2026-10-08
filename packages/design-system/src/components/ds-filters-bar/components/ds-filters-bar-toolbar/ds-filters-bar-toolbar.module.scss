@@ -1,0 +1,19 @@
+@use '../../styles/animations';
+@use '../../styles/variables';
+
+.toolbar {
+	@include animations.swap-in;
+
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--xs);
+	min-width: 0;
+
+	// Keeps the first line the same height in every view, so the Disclosure lines up
+	&::before {
+		content: '';
+		height: variables.$line-height;
+		margin-inline-end: calc(-1 * var(--xs));
+	}
+}

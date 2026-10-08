@@ -1,3 +1,5 @@
+@use '../../../../styles/mixin' as mixins;
+
 $dialog-width: 400px;
 $dialog-max-width: 90vw;
 
@@ -82,13 +84,5 @@ $dialog-max-width: 90vw;
 }
 
 .visuallyHidden {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	margin: -1px;
-	padding: 0;
-	border: 0;
-	overflow: hidden;
-	white-space: nowrap;
-	clip-path: inset(50%);
+	@include mixins.visually-hidden;
 }

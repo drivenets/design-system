@@ -1,4 +1,7 @@
+// Below this the input wraps to its own toolbar line instead of shrinking
+$min-width: 320px;
+
 .root {
-	flex: 1;
+	flex: 1 1 $min-width;
 	min-width: 0;
 }
