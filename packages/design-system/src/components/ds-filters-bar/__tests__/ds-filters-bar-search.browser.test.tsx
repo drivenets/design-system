@@ -1,13 +1,12 @@
-import { createRef, useState } from 'react';
+import { useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
 import type {
 	DsFilterCondition,
+	DsFilterDocument,
 	DsFilterField,
-	DsFiltersBarRootProps,
-	DsFiltersBarSearchProps,
+	DsFiltersBarProps,
 } from '../ds-filters-bar.types';
 
 const FIELDS: ReadonlyArray<DsFilterField> = [
@@ -26,96 +25,84 @@ const FIELDS: ReadonlyArray<DsFilterField> = [
 const AAA: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
 const OR_QUERY = 'status = "active" OR status = "pending"';
 
-// Shows the document the search writes to, and clears it the way ClearAll will.
-const Probe = () => {
-	const bar = useDsFiltersBarContext();
+const withAAA: DsFilterDocument = { conditions: [AAA], query: null };
 
-	return (
-		<div>
-			<output aria-label="searches">
-				{bar.conditions.map((condition) => (condition.kind === 'search' ? condition.text : '')).join(',')}
-			</output>
-			<button type="button" onClick={bar.clear}>
-				clear
-			</button>
-		</div>
-	);
-};
-
-interface SearchBarProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	searchProps?: DsFiltersBarSearchProps;
-	withSearch?: boolean;
-}
-
-const SearchBar = ({ searchProps, withSearch = true, ...props }: SearchBarProps) => (
-	<DsFiltersBar.Root defaultExpanded fields={FIELDS} {...props}>
-		<Probe />
-		<DsFiltersBar.Toolbar>
-			{withSearch && <DsFiltersBar.Search {...searchProps} />}
-			<DsFiltersBar.Conditions />
-		</DsFiltersBar.Toolbar>
-	</DsFiltersBar.Root>
-);
+const SearchBar = (props: DsFiltersBarProps) => <DsFiltersBar defaultExpanded fields={FIELDS} {...props} />;
 
 const searchInput = (name = 'Search') => page.getByRole('textbox', { name });
 const clearButton = (name = 'Clear search') => page.getByRole('button', { name, exact: true });
 const chip = (text: string) => page.getByRole('button', { name: text, exact: true });
 const removeChip = (text: string) =>
 	page.getByRole('button', { name: `Remove filter: ${text}`, exact: true });
-const searches = () => page.getByRole('status', { name: 'searches' });
+const clearAll = () => page.getByRole('button', { name: 'Clear all', exact: true });
+
+const searchTexts = (document: DsFilterDocument | undefined) =>
+	document?.conditions.map((condition) => (condition.kind === 'search' ? condition.text : ''));
 
 const submit = async (text: string) => {
 	await searchInput().fill(text);
 	await userEvent.keyboard('{Enter}');
 };
 
-describe('DsFiltersBar.Search adding a search', () => {
+describe('DsFiltersBar search adding a search', () => {
 	it('adds the trimmed text as a search condition on Enter and clears the input', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
 
-		await page.render(<SearchBar onConditionsChange={onConditionsChange} />);
+		await page.render(<SearchBar onValueChange={onValueChange} />);
 
 		await submit('  AAA  ');
 
-		expect(onConditionsChange).toHaveBeenCalledOnce();
-		expect(onConditionsChange.mock.lastCall?.[0]).toMatchObject([{ kind: 'search', text: 'AAA' }]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
+			conditions: [expect.objectContaining({ kind: 'search', text: 'AAA' })],
+			query: null,
+		});
 		await expect.element(searchInput()).toHaveValue('');
 		await expect.element(chip('AAA')).toBeVisible();
 	});
 
 	it('ignores blank text', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
 
-		await page.render(<SearchBar onConditionsChange={onConditionsChange} />);
+		await page.render(<SearchBar onValueChange={onValueChange} />);
 
 		await submit('   ');
 
-		expect(onConditionsChange).not.toHaveBeenCalled();
+		expect(onValueChange).not.toHaveBeenCalled();
 		await expect.element(searchInput()).toHaveValue('   ');
 	});
 
 	it('clears the input without adding a search that already exists', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
 
-		await page.render(<SearchBar defaultConditions={[AAA]} onConditionsChange={onConditionsChange} />);
+		await page.render(<SearchBar defaultValue={withAAA} onValueChange={onValueChange} />);
 
 		await submit('AAA ');
 
-		expect(onConditionsChange).not.toHaveBeenCalled();
+		expect(onValueChange).not.toHaveBeenCalled();
 		await expect.element(searchInput()).toHaveValue('');
-		expect(page.getByRole('button', { name: 'AAA', exact: true }).elements()).toHaveLength(1);
+		expect(chip('AAA').elements()).toHaveLength(1);
 	});
 
 	it('appends each new search after the existing conditions', async () => {
-		await page.render(<SearchBar defaultConditions={[AAA]} />);
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
+
+		await page.render(<SearchBar defaultValue={withAAA} onValueChange={onValueChange} />);
 
 		await submit('BBB');
 
-		await expect.element(searches()).toHaveTextContent('AAA,BBB');
+		expect(searchTexts(onValueChange.mock.lastCall?.[0])).toEqual(['AAA', 'BBB']);
+	});
+
+	it('writes a search into the Advanced query as a quoted string', async () => {
+		await page.render(<SearchBar defaultView="advanced" />);
+
+		await submit('AAA');
+
+		await expect.element(page.getByRole('textbox', { name: 'Advanced query' })).toHaveValue('"AAA"');
 	});
 });
 
-describe('DsFiltersBar.Search clear button', () => {
+describe('DsFiltersBar search clear button', () => {
 	it('shows only while there is pending text, and clears and refocuses the input', async () => {
 		await page.render(<SearchBar />);
 
@@ -130,7 +117,7 @@ describe('DsFiltersBar.Search clear button', () => {
 	});
 });
 
-describe('DsFiltersBar.Search `/` shortcut', () => {
+describe('DsFiltersBar search `/` shortcut', () => {
 	it('focuses the input without typing the slash', async () => {
 		await page.render(<SearchBar />);
 
@@ -182,7 +169,7 @@ describe('DsFiltersBar.Search `/` shortcut', () => {
 	});
 
 	it('does nothing while disabled', async () => {
-		await page.render(<SearchBar searchProps={{ disabled: true }} />);
+		await page.render(<SearchBar slotProps={{ search: { disabled: true } }} />);
 
 		await userEvent.keyboard('/');
 
@@ -190,52 +177,52 @@ describe('DsFiltersBar.Search `/` shortcut', () => {
 	});
 });
 
-describe('DsFiltersBar.Search disabled', () => {
-	it('is disabled by the disabled prop', async () => {
-		await page.render(<SearchBar searchProps={{ disabled: true }} />);
+describe('DsFiltersBar search disabled', () => {
+	it('is disabled by slotProps.search.disabled', async () => {
+		await page.render(<SearchBar slotProps={{ search: { disabled: true } }} />);
 
 		await expect.element(searchInput()).toBeDisabled();
 	});
 
 	it('is disabled while an Advanced query is the source, until it is cleared', async () => {
-		await page.render(<SearchBar defaultQuery={OR_QUERY} />);
+		await page.render(<SearchBar defaultValue={{ conditions: [], query: OR_QUERY }} />);
 
 		await expect.element(searchInput()).toBeDisabled();
 
-		await page.getByRole('button', { name: 'clear', exact: true }).click();
+		await clearAll().click();
 
 		await expect.element(searchInput()).toBeEnabled();
 	});
 });
 
-describe('DsFiltersBar.Search chips', () => {
+describe('DsFiltersBar search chips', () => {
 	it('removes the search with the chip remove button', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
 
-		await page.render(<SearchBar defaultConditions={[AAA]} onConditionsChange={onConditionsChange} />);
+		await page.render(<SearchBar defaultValue={withAAA} onValueChange={onValueChange} />);
 
 		await removeChip('AAA').click();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({ conditions: [], query: null });
 		await expect.element(chip('AAA')).not.toBeInTheDocument();
 	});
 
 	it('moves the text back into the input on click, replacing the pending text', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
 
-		await page.render(<SearchBar defaultConditions={[AAA]} onConditionsChange={onConditionsChange} />);
+		await page.render(<SearchBar defaultValue={withAAA} onValueChange={onValueChange} />);
 
 		await searchInput().fill('draft');
 		await chip('AAA').click();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({ conditions: [], query: null });
 		await expect.element(chip('AAA')).not.toBeInTheDocument();
 		await expect.element(searchInput()).toHaveValue('AAA');
 		await expect.element(searchInput()).toHaveFocus();
 	});
 
 	it('hands the chip text to the latest onValueChange', async () => {
-		const onValueChange = vi.fn();
+		const onSearchChange = vi.fn();
 
 		// The handler reads this render's value, so a handle kept from the first render would report ''.
 		const ControlledSearchBar = () => {
@@ -243,12 +230,14 @@ describe('DsFiltersBar.Search chips', () => {
 
 			return (
 				<SearchBar
-					defaultConditions={[AAA]}
-					searchProps={{
-						value,
-						onValueChange: (next) => {
-							onValueChange({ next, previous: value });
-							setValue(next);
+					defaultValue={withAAA}
+					slotProps={{
+						search: {
+							value,
+							onValueChange: (next) => {
+								onSearchChange({ next, previous: value });
+								setValue(next);
+							},
 						},
 					}}
 				/>
@@ -260,50 +249,44 @@ describe('DsFiltersBar.Search chips', () => {
 		await searchInput().fill('draft');
 		await chip('AAA').click();
 
-		expect(onValueChange).toHaveBeenLastCalledWith({ next: 'AAA', previous: 'draft' });
+		expect(onSearchChange).toHaveBeenLastCalledWith({ next: 'AAA', previous: 'draft' });
 		await expect.element(searchInput()).toHaveValue('AAA');
-	});
-
-	it('only removes chips when the bar has no search input', async () => {
-		await page.render(<SearchBar withSearch={false} defaultConditions={[AAA]} />);
-
-		await chip('AAA').click();
-
-		await expect.element(searches()).toHaveTextContent('AAA');
-
-		await removeChip('AAA').click();
-
-		await expect.element(searches()).toHaveTextContent('');
 	});
 });
 
-describe('DsFiltersBar.Search value', () => {
-	it('starts from defaultValue while uncontrolled and reports changes', async () => {
-		const onValueChange = vi.fn();
+describe('DsFiltersBar search pending text', () => {
+	it('starts from slotProps.search.defaultValue while uncontrolled and reports changes', async () => {
+		const onSearchChange = vi.fn();
 
-		await page.render(<SearchBar searchProps={{ defaultValue: 'AA', onValueChange }} />);
+		await page.render(
+			<SearchBar slotProps={{ search: { defaultValue: 'AA', onValueChange: onSearchChange } }} />,
+		);
 
 		await expect.element(searchInput()).toHaveValue('AA');
 
 		await searchInput().click();
 		await userEvent.keyboard('{End}A');
 
-		expect(onValueChange).toHaveBeenLastCalledWith('AAA');
+		expect(onSearchChange).toHaveBeenLastCalledWith('AAA');
 	});
 
-	it('follows value while controlled', async () => {
-		const onValueChange = vi.fn();
+	it('follows slotProps.search.value while controlled', async () => {
+		const onSearchChange = vi.fn();
+		const onValueChange = vi.fn<(value: DsFilterDocument) => void>();
 
 		const ControlledSearchBar = () => {
 			const [value, setValue] = useState('');
 
 			return (
 				<SearchBar
-					searchProps={{
-						value,
-						onValueChange: (next) => {
-							onValueChange(next);
-							setValue(next.toUpperCase());
+					onValueChange={onValueChange}
+					slotProps={{
+						search: {
+							value,
+							onValueChange: (next) => {
+								onSearchChange(next);
+								setValue(next.toUpperCase());
+							},
 						},
 					}}
 				/>
@@ -317,50 +300,21 @@ describe('DsFiltersBar.Search value', () => {
 
 		await userEvent.keyboard('{Enter}');
 
-		expect(onValueChange).toHaveBeenLastCalledWith('');
-		await expect.element(searches()).toHaveTextContent('AAA');
+		expect(onSearchChange).toHaveBeenLastCalledWith('');
+		expect(searchTexts(onValueChange.mock.lastCall?.[0])).toEqual(['AAA']);
 	});
 });
 
-describe('DsFiltersBar.Search parts', () => {
-	it('uses a custom locale', async () => {
+describe('DsFiltersBar search locale', () => {
+	it('takes its strings from locale.search', async () => {
 		await page.render(
 			<SearchBar
-				searchProps={{
-					defaultValue: 'x',
-					locale: { label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Reset' },
-				}}
+				locale={{ search: { label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Reset' } }}
+				slotProps={{ search: { defaultValue: 'x' } }}
 			/>,
 		);
 
 		await expect.element(searchInput('Find')).toHaveAttribute('placeholder', 'Press ‘/’ to find');
 		await expect.element(clearButton('Reset')).toBeVisible();
-	});
-
-	it('forwards ref to the input, and className and style to its wrapper', async () => {
-		const ref = createRef<HTMLInputElement>();
-
-		await page.render(<SearchBar searchProps={{ ref, className: 'custom', style: { marginLeft: '3px' } }} />);
-
-		expect(ref.current).toBe(searchInput().element());
-
-		const wrapper = ref.current?.closest('.custom');
-
-		expect(wrapper).toHaveStyle({ marginLeft: '3px' });
-	});
-
-	it('writes a search into the Advanced query as a quoted string', async () => {
-		await page.render(
-			<DsFiltersBar.Root fields={FIELDS} defaultView="advanced">
-				<DsFiltersBar.Search />
-				<DsFiltersBar.View value="advanced">
-					<DsFiltersBar.Query />
-				</DsFiltersBar.View>
-			</DsFiltersBar.Root>,
-		);
-
-		await submit('AAA');
-
-		await expect.element(page.getByRole('textbox', { name: 'Advanced query' })).toHaveValue('"AAA"');
 	});
 });

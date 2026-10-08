@@ -1,4 +1,3 @@
-import type { CSSProperties, ReactNode } from 'react';
 import type { DsFilterOperatorValue } from '../../ds-filters-bar.types';
 import type { DsFilterQueryErrorCode } from '../../query-language/query-language.types';
 
@@ -74,25 +73,3 @@ export const defaultDsFiltersBarQueryLocale = Object.freeze({
 		'!~': 'does not contain',
 	}),
 }) satisfies Required<DsFiltersBarQueryLocale>;
-
-/**
- * Advanced query view: one-line code field with an overlay for long queries. The text is checked
- * against the **Field schema** as the user types. A valid query of clauses joined by `AND` becomes
- * conditions; a valid query with `OR` or parentheses becomes the query and locks the other views;
- * an invalid one only shows its error.
- */
-export interface DsFiltersBarQueryProps {
-	/**
-	 * @default false
-	 */
-	disabled?: boolean;
-	locale?: DsFiltersBarQueryLocale;
-	slots?: {
-		/**
-		 * Replaces the content of the syntax reference, for example with a link to product docs
-		 */
-		help?: ReactNode;
-	};
-	className?: string;
-	style?: CSSProperties;
-}

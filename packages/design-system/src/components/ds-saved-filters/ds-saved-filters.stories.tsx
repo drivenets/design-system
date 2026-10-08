@@ -14,7 +14,7 @@ import styles from './ds-saved-filters.stories.module.scss';
 type StoryArgs = DsSavedFiltersTriggerProps & Pick<DsSavedFiltersSaveProps, 'onUpdate' | 'onSaveAs'>;
 
 const meta: Meta<StoryArgs> = {
-	title: 'Components/SavedFilters',
+	title: 'Components/FiltersBar/Internal/SavedFilters',
 	component: DsSavedFilters.Trigger,
 	tags: ['!manifest'],
 	parameters: {

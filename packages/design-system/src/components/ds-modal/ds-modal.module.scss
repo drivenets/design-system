@@ -1,8 +1,10 @@
-$pad-x: var(--lg);
 $pad-y: var(--standard);
+$full-screen-pad-x: 40px;
 $max-width: 90vw;
 $border-size: 1px;
 $border: $border-size solid var(--border-secondary);
+$resize-transition: 0.2s ease-in-out;
+$trigger-divider-height: 16px;
 
 .overlay {
 	position: fixed;
@@ -48,7 +50,26 @@ $border: $border-size solid var(--border-secondary);
 	box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.15);
 	z-index: 1200;
 	overflow: hidden;
+	display: flex;
+	flex-direction: column;
 	inline-size: min(var(--col-span-6), $max-width);
+	block-size: auto;
+	transition: border-radius $resize-transition;
+	--ds-modal-pad-x: var(--lg);
+
+	// `block-size: auto` only animates with `interpolate-size`; elsewhere both sizes snap together
+	@supports (interpolate-size: allow-keywords) {
+		interpolate-size: allow-keywords;
+		transition:
+			inline-size $resize-transition,
+			block-size $resize-transition,
+			border-radius $resize-transition;
+	}
+
+	// `display: flex` above would otherwise override Ark's `hidden` on the closed modal
+	&[hidden] {
+		display: none;
+	}
 
 	&[data-state='open'] {
 		animation: scale-in-modal 0.2s 0.1s ease-in-out both;
@@ -86,13 +107,20 @@ $border: $border-size solid var(--border-secondary);
 .content {
 	display: flex;
 	flex-direction: column;
-	height: 100%;
+
+	// Grow with the modal instead of `height: 100%`, which collapses while `block-size` animates from `auto`
+	flex: 1;
+	min-height: 0;
+
+	// Keep `interpolate-size` from the modal resize out of consumer content
+	interpolate-size: numeric-only;
 }
 
 .header,
 .footer,
 .body {
-	padding: $pad-y $pad-x;
+	padding: $pad-y var(--ds-modal-pad-x);
+	transition: padding-inline $resize-transition;
 }
 
 .header {
@@ -107,10 +135,13 @@ $border: $border-size solid var(--border-secondary);
 		content: '';
 		position: absolute;
 		bottom: 0;
-		left: $pad-x;
-		right: $pad-x;
+		left: var(--ds-modal-pad-x);
+		right: var(--ds-modal-pad-x);
 		height: $border-size;
 		background: var(--border-secondary);
+		transition:
+			left $resize-transition,
+			right $resize-transition;
 	}
 }
 
@@ -131,6 +162,23 @@ $border: $border-size solid var(--border-secondary);
 	overflow-y: auto;
 	overflow-x: hidden;
 	min-height: 0;
+}
+
+// Divider before the trigger that follows (DsModal.CloseTrigger)
+.fullScreenTrigger:not(:last-child) {
+	position: relative;
+	margin-inline-end: calc(var(--xs) + #{$border-size});
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		inset-inline-end: calc(-1 * (var(--xs) + #{$border-size}));
+		width: $border-size;
+		height: $trigger-divider-height;
+		background: var(--border-secondary);
+		transform: translateY(-50%);
+	}
 }
 
 .actions {
@@ -160,4 +208,12 @@ $border: $border-size solid var(--border-secondary);
 	.modal.cols-#{$i} {
 		inline-size: min(var(--col-span-#{$i}), $max-width);
 	}
+}
+
+// Comes after the cols-N loop so it wins at equal specificity: `columns` has no effect while full screen
+.modal[data-full-screen] {
+	inline-size: 100%;
+	block-size: 100%;
+	border-radius: 0;
+	--ds-modal-pad-x: #{$full-screen-pad-x};
 }

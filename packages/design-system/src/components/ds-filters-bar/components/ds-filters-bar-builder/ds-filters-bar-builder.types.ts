@@ -1,6 +1,11 @@
-import type { CSSProperties } from 'react';
-
+/**
+ * Strings of the query builder dialog that the builder view opens. The add button and the chips
+ * take theirs from the shared chip strings.
+ */
 export interface DsFiltersBarBuilderLocale {
+	/**
+	 * Query builder dialog title
+	 */
 	title?: string;
 	/**
 	 * Accessible name of the close button
@@ -43,20 +48,3 @@ export const defaultDsFiltersBarBuilderLocale: Required<DsFiltersBarBuilderLocal
 	valuePlaceholder: 'Value',
 	save: 'Save query',
 });
-
-/**
- * Query builder view: builds one condition step by step. The field's type decides the steps —
- * compound: subfield, then operator and value; text, number and date: operator, then value;
- * enum: value. Date presets and enum options are offered on the value step.
- */
-export interface DsFiltersBarBuilderProps {
-	/**
-	 * Field ids offered first, in this order — chosen by product or suggested by AI. Every field in
-	 * the bar stays searchable.
-	 * @default all fields, in `fields` order
-	 */
-	suggestedFields?: ReadonlyArray<string>;
-	locale?: DsFiltersBarBuilderLocale;
-	className?: string;
-	style?: CSSProperties;
-}

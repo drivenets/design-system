@@ -333,3 +333,48 @@ describe('a date field that declares only equals', () => {
 		]);
 	});
 });
+
+describe('a shorthand schema', () => {
+	const SHORTHAND: ReadonlyArray<DsFilterField> = [
+		{ type: 'text', id: 'name', label: 'Name' },
+		{
+			type: 'enum',
+			id: 'role',
+			label: 'Role',
+			operators: ['IN', 'NOT IN'],
+			options: [{ value: 'core', label: 'Core' }],
+		},
+		{ type: 'date', id: 'seen', label: 'Seen', presets: ['today', 'last7Days'] },
+	];
+
+	const parseShorthand = (query: string) => {
+		const result = parseFilterQuery(query, SHORTHAND);
+
+		return result.ok ? withoutIds(result.conditions) : result.error.code;
+	};
+
+	it('accepts every operator of the type on a field that lists none', () => {
+		expect(parseShorthand('name ~ "edge" AND name != "lab"')).toEqual([
+			{ kind: 'field', field: 'name', operator: '~', value: 'edge' },
+			{ kind: 'field', field: 'name', operator: '!=', value: 'lab' },
+		]);
+	});
+
+	it('accepts only the operator values a field lists', () => {
+		expect(parseShorthand('role NOT IN (core)')).toEqual([
+			{ kind: 'field', field: 'role', operator: 'NOT IN', value: ['core'] },
+		]);
+		expect(parseShorthand('role = core')).toBe('operatorNotAllowed');
+	});
+
+	it('reads a built-in date preset by value or by its default label', () => {
+		expect(parseShorthand('seen = last7days AND seen = "Today"')).toEqual([
+			{ kind: 'field', field: 'seen', operator: '=', value: 'last7Days' },
+			{ kind: 'field', field: 'seen', operator: '=', value: 'today' },
+		]);
+	});
+
+	it('rejects a built-in preset the field does not list', () => {
+		expect(parseShorthand('seen = yesterday')).toBe('invalidDate');
+	});
+});

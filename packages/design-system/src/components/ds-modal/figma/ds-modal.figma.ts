@@ -2,7 +2,7 @@
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-modal
 // component=DsModal
 //
-// `DAP_modal_v02` is the full modal. It composes the header, content, and footer
+// `DsModalV2` is the full modal. It composes the header, content, and footer
 // parts, each of which has its own Code Connect template; resolve them dynamically
 // so swapped variants stay in sync. The `Type` variant (confirmation/form) has no
 // `DsModal` prop equivalent — both render the same composition.
@@ -10,19 +10,19 @@ import figma from 'figma';
 
 const instance = figma.selectedInstance;
 
-const header = instance.findInstance('DAP_modal-header_v02', { traverseInstances: true });
+const header = instance.findInstance('Part_modal-header_V2', { traverseInstances: true });
 let headerCode: figma.ResultSection[] | undefined;
 if (header.type === 'INSTANCE') {
 	headerCode = header.executeTemplate().example;
 }
 
-const content = instance.findInstance('DAP_modal-content_v02', { traverseInstances: true });
+const content = instance.findInstance('Part_modal-content_V2', { traverseInstances: true });
 let contentCode: figma.ResultSection[] | undefined;
 if (content.type === 'INSTANCE') {
 	contentCode = content.executeTemplate().example;
 }
 
-const footer = instance.findInstance('DAP_modal-footer_v02', { traverseInstances: true });
+const footer = instance.findInstance('Part_modal-footer_V2', { traverseInstances: true });
 let footerCode: figma.ResultSection[] | undefined;
 if (footer.type === 'INSTANCE') {
 	footerCode = footer.executeTemplate().example;

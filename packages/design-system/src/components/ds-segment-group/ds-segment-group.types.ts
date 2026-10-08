@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, type Ref } from 'react';
 import {
 	type SegmentGroupItemProps,
 	type SegmentGroupItemTextProps,
@@ -16,7 +16,7 @@ export type DsSegmentGroupSize = (typeof segmentGroupSizes)[number];
  */
 export interface DsSegmentGroupRootProps extends Pick<
 	SegmentGroupRootProps,
-	'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'children'
+	'value' | 'defaultValue' | 'disabled' | 'name' | 'className' | 'style' | 'children' | 'aria-label'
 > {
 	/**
 	 * Currently selected segment value (controlled). Pair with `onValueChange`.
@@ -40,6 +40,7 @@ export interface DsSegmentGroupRootProps extends Pick<
 	 * @default 'default'
 	 */
 	size?: DsSegmentGroupSize;
+	ref?: Ref<HTMLDivElement>;
 	/**
 	 * Event handler called when the selected value changes
 	 */
@@ -51,7 +52,7 @@ export interface DsSegmentGroupRootProps extends Pick<
  */
 export type DsSegmentGroupItemProps = Pick<
 	SegmentGroupItemProps,
-	'id' | 'value' | 'disabled' | 'className' | 'style' | 'aria-label'
+	'id' | 'value' | 'disabled' | 'className' | 'style' | 'aria-label' | 'aria-describedby'
 > & {
 	/**
 	 * Size variant of the segment item. Pass through to `ItemText` when using `label`.
