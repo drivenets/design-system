@@ -30,6 +30,7 @@ export * from './components/ds-empty-state';
 export * from './components/ds-expandable-text-input';
 export * from './components/ds-file-upload';
 export * from './components/ds-filter-status-icon';
+export * from './components/ds-filters-bar';
 export * from './components/ds-form-control';
 export * from './components/ds-grid';
 export * from './components/ds-icon';

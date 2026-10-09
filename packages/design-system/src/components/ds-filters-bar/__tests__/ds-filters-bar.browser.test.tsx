@@ -1,260 +1,455 @@
-import { createRef, useState, type ComponentProps } from 'react';
+import { createRef, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import type {
-	DsFilterCondition,
-	DsFilterField,
-	DsFilterFieldCondition,
-	DsFilterOperatorValue,
-	DsFilterPin,
-	DsFiltersBarRootProps,
+import {
+	emptyFilterDocument,
+	type DsFilterCondition,
+	type DsFilterDocument,
+	type DsFilterField,
+	type DsFilterFieldCondition,
+	type DsFilterOperatorValue,
+	type DsFilterPin,
+	type DsFiltersBarProps,
+	type DsFiltersBarSavedFiltersConfig,
+	type DsFiltersBarSlotProps,
 } from '../ds-filters-bar.types';
 
-// A probe drives the shared context directly, independent of the parts' UI.
-const Probe = () => {
-	const bar = useDsFiltersBarContext();
-
-	return (
-		<div>
-			<output aria-label="conditions">{bar.conditions.map((condition) => condition.id).join(',')}</output>
-			<output aria-label="query">{String(bar.query)}</output>
-			<output aria-label="query text">{bar.queryText}</output>
-			<output aria-label="locked">{bar.lockedViews.join(',')}</output>
-			<output aria-label="empty">{String(bar.isEmpty)}</output>
-			<output aria-label="expanded">{String(bar.expanded)}</output>
-			<output aria-label="view">{bar.view}</output>
-			<button type="button" onClick={() => bar.addCondition(SEARCH)}>
-				add
-			</button>
-			<button type="button" onClick={() => bar.updateCondition({ ...STATUS, operator: '!=' })}>
-				update
-			</button>
-			<button type="button" onClick={() => bar.removeCondition(STATUS.id)}>
-				remove
-			</button>
-			<button type="button" onClick={() => bar.setQuery('status = "Active"')}>
-				query
-			</button>
-			<button type="button" onClick={() => bar.setQuery('  ')}>
-				blank query
-			</button>
-			<button type="button" onClick={bar.clear}>
-				clear
-			</button>
-			<button type="button" onClick={() => bar.setExpanded(!bar.expanded)}>
-				toggle
-			</button>
-			<button type="button" onClick={() => bar.setView('advanced')}>
-				advanced
-			</button>
-		</div>
-	);
-};
+const FIELDS: ReadonlyArray<DsFilterField> = [
+	{
+		type: 'enum',
+		id: 'status',
+		label: 'Status',
+		operators: [
+			{ value: '=', label: 'equals', symbol: '=' },
+			{ value: '!=', label: 'not equals', symbol: '≠' },
+		],
+		options: [
+			{ value: 'active', label: 'Active' },
+			{ value: 'pending', label: 'Pending' },
+		],
+	},
+	{
+		type: 'number',
+		id: 'latency',
+		label: 'Latency',
+		operators: [{ value: '>=', label: 'at least' }],
+	},
+];
 
 const STATUS: DsFilterFieldCondition = {
 	kind: 'field',
 	id: 'status-1',
 	field: 'status',
 	operator: '=',
-	value: 'active',
+	value: ['active'],
 };
 const SEARCH: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
+const OR_QUERY = 'status = "active" OR status = "pending"';
+const PINS: ReadonlyArray<DsFilterPin> = [{ field: 'status', value: 'active' }];
 
-const renderBar = (props: Omit<DsFiltersBarRootProps, 'children'> = {}) =>
-	page.render(
-		<DsFiltersBar.Root {...props}>
-			<Probe />
-		</DsFiltersBar.Root>,
-	);
+const savedFiltersConfig = (
+	overrides: Partial<DsFiltersBarSavedFiltersConfig> = {},
+): DsFiltersBarSavedFiltersConfig => ({
+	items: [{ id: 'night', name: 'Night shift', document: { conditions: [STATUS], query: null } }],
+	onSaveAs: vi.fn(() => 'new'),
+	onUpdate: vi.fn(),
+	onRename: vi.fn(),
+	onDelete: vi.fn(),
+	...overrides,
+});
 
-const output = (name: string) => page.getByRole('status', { name });
+const region = (name = 'Filters') => page.getByRole('region', { name });
+const showButton = () => page.getByRole('button', { name: 'Show filters', exact: true });
+const hideButton = () => page.getByRole('button', { name: 'Hide filters', exact: true });
+const searchInput = () => page.getByRole('textbox', { name: 'Search' });
+const queryField = () => page.getByRole('textbox', { name: 'Advanced query' });
+const addFilterButton = (name = 'Add filter') => page.getByRole('button', { name, exact: true });
+const clearAllButton = () => page.getByRole('button', { name: 'Clear all', exact: true });
+const saveFilterButton = () => page.getByRole('button', { name: 'Save filter', exact: true });
+const savedFiltersTag = () => page.getByRole('button', { name: 'Saved filters', exact: true });
+const viewSwitch = () => page.getByRole('radiogroup', { name: 'Filter view' });
+const viewItem = (name: string) => page.getByRole('radio', { name, exact: true });
+const pinnedGroup = (name: string) => page.getByRole('group', { name });
+const removeChip = (text: string) =>
+	page.getByRole('button', { name: `Remove filter: ${text}`, exact: true });
 
-describe('DsFiltersBar filter document', () => {
-	it('adds, updates and removes conditions when uncontrolled', async () => {
-		await renderBar({ defaultConditions: [STATUS] });
+// Ark renders the radio as a visually hidden input outside the viewport, so fire a native click
+// on the element directly instead of a Playwright pointer click.
+const selectView = async (name: string) => {
+	await expect.element(viewItem(name)).toBeInTheDocument();
+	(viewItem(name).element() as HTMLElement).click();
+};
 
-		await page.getByRole('button', { name: 'add' }).click();
-		await expect.element(output('conditions')).toHaveTextContent('status-1,search-1');
+const search = async (text: string) => {
+	await searchInput().fill(text);
+	await userEvent.keyboard('{Enter}');
+};
 
-		await page.getByRole('button', { name: 'remove' }).click();
-		await expect.element(output('conditions')).toHaveTextContent('search-1');
+const isBefore = (first: Element, second: Element) =>
+	Boolean(first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+// Names of the parts, sorted by where their elements sit in the document
+const documentOrderOf = (parts: Record<string, Element>) =>
+	Object.entries(parts)
+		.sort(([, first], [, second]) => (isBefore(first, second) ? -1 : 1))
+		.map(([name]) => name);
+
+describe('DsFiltersBar composition', () => {
+	it('is one component, not a namespace of parts', () => {
+		for (const part of ['Root', 'Toolbar', 'Search', 'Summary', 'Conditions', 'Pinned', 'View']) {
+			expect(part in DsFiltersBar).toBe(false);
+		}
 	});
 
-	it('reports every change while uncontrolled', async () => {
-		const onConditionsChange = vi.fn();
-		const onQueryChange = vi.fn();
-		const onExpandedChange = vi.fn();
-		const onViewChange = vi.fn();
+	it('shows the summary while collapsed and the toolbar while expanded, with the pinned row in both', async () => {
+		await page.render(<DsFiltersBar fields={FIELDS} defaultPins={PINS} />);
 
-		await renderBar({
-			defaultConditions: [STATUS],
-			onConditionsChange,
-			onQueryChange,
-			onExpandedChange,
-			onViewChange,
+		await expect.element(region()).toMatchTextContent('View: All;');
+		await expect.element(searchInput()).not.toBeInTheDocument();
+		await expect.element(pinnedGroup('Status')).toBeVisible();
+		expect(isBefore(page.getByText(/^View:?$/).element(), pinnedGroup('Status').element())).toBe(true);
+
+		await showButton().click();
+
+		await expect.element(searchInput()).toBeVisible();
+		await expect.element(page.getByText(/^View:?$/)).not.toBeInTheDocument();
+		await expect.element(pinnedGroup('Status')).toBeVisible();
+		expect(isBefore(searchInput().element(), pinnedGroup('Status').element())).toBe(true);
+	});
+
+	it('renders the expanded toolbar in Figma order', async () => {
+		await page.render(
+			<DsFiltersBar
+				fields={FIELDS}
+				defaultExpanded
+				defaultValue={{ conditions: [SEARCH], query: null }}
+				savedFilters={savedFiltersConfig()}
+			/>,
+		);
+
+		const parts = {
+			disclosure: hideButton().element(),
+			savedFilters: savedFiltersTag().element(),
+			search: searchInput().element(),
+			viewSwitch: viewSwitch().element(),
+			addFilter: addFilterButton().element(),
+			chip: removeChip('AAA').element(),
+			saveFilter: saveFilterButton().element(),
+			clearAll: clearAllButton().element(),
+		};
+
+		expect(documentOrderOf(parts)).toEqual(Object.keys(parts));
+	});
+
+	it('names the region by the locale and forwards ref, className and style to it', async () => {
+		const ref = createRef<HTMLDivElement>();
+
+		await page.render(
+			<DsFiltersBar
+				locale={{ label: 'Device filters' }}
+				ref={ref}
+				className="custom"
+				style={{ marginLeft: '3px' }}
+			/>,
+		);
+
+		const bar = region('Device filters');
+
+		await expect.element(bar).toHaveClass('custom');
+		await expect.element(bar).toHaveStyle({ marginLeft: '3px' });
+		expect(ref.current).toBe(bar.element());
+	});
+
+	it('renders a search-only bar without fields', async () => {
+		const onValueChange = vi.fn();
+
+		await page.render(<DsFiltersBar defaultExpanded defaultView="builder" onValueChange={onValueChange} />);
+
+		await expect.element(searchInput()).toBeVisible();
+		await expect.element(viewSwitch()).not.toBeInTheDocument();
+		await expect.element(addFilterButton()).not.toBeInTheDocument();
+		await expect.element(queryField()).not.toBeInTheDocument();
+
+		await search('router');
+
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
+			conditions: [expect.objectContaining({ kind: 'search', text: 'router' })],
+			query: null,
 		});
-
-		await page.getByRole('button', { name: 'add' }).click();
-		await page.getByRole('button', { name: 'query', exact: true }).click();
-		await page.getByRole('button', { name: 'toggle' }).click();
-		await page.getByRole('button', { name: 'advanced' }).click();
-
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([STATUS, SEARCH]);
-		expect(onQueryChange).toHaveBeenCalledExactlyOnceWith('status = "Active"');
-		expect(onExpandedChange).toHaveBeenCalledExactlyOnceWith(true);
-		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
-		await expect.element(output('conditions')).toHaveTextContent('status-1,search-1');
-		await expect.element(output('expanded')).toHaveTextContent('true');
-	});
-
-	it('reports the next conditions and keeps the controlled value', async () => {
-		const onConditionsChange = vi.fn();
-
-		await renderBar({ conditions: [STATUS], onConditionsChange });
-
-		await page.getByRole('button', { name: 'update' }).click();
-
-		expect(onConditionsChange).toHaveBeenCalledWith([{ ...STATUS, operator: '!=' }]);
-		await expect.element(output('conditions')).toHaveTextContent('status-1');
-	});
-
-	it('clears conditions and drops the query but reports each change', async () => {
-		const onConditionsChange = vi.fn();
-		const onQueryChange = vi.fn();
-
-		await renderBar({ conditions: [STATUS], query: 'x', onConditionsChange, onQueryChange });
-
-		await page.getByRole('button', { name: 'clear' }).click();
-
-		expect(onConditionsChange).toHaveBeenCalledWith([]);
-		expect(onQueryChange).toHaveBeenCalledWith(null);
-	});
-
-	it('is empty only without conditions and without an edited query', async () => {
-		await renderBar();
-
-		await expect.element(output('empty')).toHaveTextContent('true');
-
-		await page.getByRole('button', { name: 'query', exact: true }).click();
-		await expect.element(output('empty')).toHaveTextContent('false');
-
-		await page.getByRole('button', { name: 'clear' }).click();
-		await expect.element(output('empty')).toHaveTextContent('true');
 	});
 });
 
-describe('DsFiltersBar query source', () => {
-	it('shows the conditions in the query language while no query is set', async () => {
-		await renderBar({ defaultConditions: [STATUS, SEARCH] });
+describe('DsFiltersBar filter document', () => {
+	it('starts from defaultValue and reports the whole document once per change', async () => {
+		const onValueChange = vi.fn();
 
-		await expect.element(output('query')).toHaveTextContent('null');
-		await expect.element(output('query text')).toHaveTextContent('status = "active" AND "AAA"');
-		await expect.element(output('locked')).toHaveTextContent('');
+		await page.render(
+			<DsFiltersBar
+				fields={FIELDS}
+				defaultExpanded
+				defaultValue={{ conditions: [STATUS], query: null }}
+				onValueChange={onValueChange}
+			/>,
+		);
+
+		await search('AAA');
+
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
+			conditions: [STATUS, expect.objectContaining({ kind: 'search', text: 'AAA' })],
+			query: null,
+		});
+
+		await removeChip('Status equals Active').click();
+
+		expect(onValueChange).toHaveBeenCalledTimes(2);
+		expect(onValueChange).toHaveBeenLastCalledWith({
+			conditions: [expect.objectContaining({ kind: 'search', text: 'AAA' })],
+			query: null,
+		});
 	});
 
-	it('makes a set query the source and locks the filters and builder views', async () => {
-		await renderBar({ defaultConditions: [STATUS] });
+	it('reports a query and its conditions together in one document', async () => {
+		const onValueChange = vi.fn();
 
-		await page.getByRole('button', { name: 'query', exact: true }).click();
+		await page.render(
+			<DsFiltersBar
+				fields={FIELDS}
+				defaultExpanded
+				defaultView="advanced"
+				defaultValue={{ conditions: [STATUS], query: null }}
+				onValueChange={onValueChange}
+			/>,
+		);
 
-		await expect.element(output('query text')).toHaveTextContent('status = "Active"');
-		await expect.element(output('locked')).toHaveTextContent('filters,builder');
+		await queryField().fill(OR_QUERY);
+
+		await expect.poll(() => onValueChange.mock.calls).toEqual([[{ conditions: [STATUS], query: OR_QUERY }]]);
 	});
 
-	it('hands control back to the conditions for a blank query', async () => {
-		const onQueryChange = vi.fn();
+	it('reports the next document and keeps the controlled value', async () => {
+		const onValueChange = vi.fn();
 
-		await renderBar({ query: 'x', onQueryChange });
+		await page.render(
+			<DsFiltersBar
+				fields={FIELDS}
+				defaultExpanded
+				value={{ conditions: [STATUS], query: null }}
+				onValueChange={onValueChange}
+			/>,
+		);
 
-		await page.getByRole('button', { name: 'blank query' }).click();
+		await removeChip('Status equals Active').click();
 
-		expect(onQueryChange).toHaveBeenCalledWith(null);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(emptyFilterDocument);
+		await expect.element(removeChip('Status equals Active')).toBeVisible();
+	});
+
+	it('follows a controlled value', async () => {
+		const ControlledBar = () => {
+			const [value, setValue] = useState<DsFilterDocument>(emptyFilterDocument);
+
+			return <DsFiltersBar fields={FIELDS} defaultExpanded value={value} onValueChange={setValue} />;
+		};
+
+		await page.render(<ControlledBar />);
+
+		await search('AAA');
+		await expect.element(removeChip('AAA')).toBeVisible();
+
+		await removeChip('AAA').click();
+		await expect.element(removeChip('AAA')).not.toBeInTheDocument();
 	});
 });
 
 describe('DsFiltersBar UI state', () => {
 	it('starts collapsed on the filters view', async () => {
-		await renderBar();
+		await page.render(<DsFiltersBar fields={FIELDS} />);
 
-		await expect.element(output('expanded')).toHaveTextContent('false');
-		await expect.element(output('view')).toHaveTextContent('filters');
+		await expect.element(showButton()).toHaveAttribute('aria-expanded', 'false');
+
+		await showButton().click();
+
+		await expect.element(viewItem('Filters')).toBeChecked();
+		await expect.element(addFilterButton()).toBeVisible();
 	});
 
-	it('toggles expanded and switches view when uncontrolled', async () => {
-		await renderBar();
-
-		await page.getByRole('button', { name: 'toggle' }).click();
-		await page.getByRole('button', { name: 'advanced' }).click();
-
-		await expect.element(output('expanded')).toHaveTextContent('true');
-		await expect.element(output('view')).toHaveTextContent('advanced');
-	});
-
-	it('reports expanded and view changes when controlled', async () => {
+	it('reports expanded and view changes while uncontrolled', async () => {
 		const onExpandedChange = vi.fn();
 		const onViewChange = vi.fn();
 
-		await renderBar({ expanded: false, view: 'filters', onExpandedChange, onViewChange });
-
-		await page.getByRole('button', { name: 'toggle' }).click();
-		await page.getByRole('button', { name: 'advanced' }).click();
-
-		expect(onExpandedChange).toHaveBeenCalledWith(true);
-		expect(onViewChange).toHaveBeenCalledWith('advanced');
-		await expect.element(output('expanded')).toHaveTextContent('false');
-		await expect.element(output('view')).toHaveTextContent('filters');
-	});
-
-	it('throws when a part is used outside Root', async () => {
-		const consoleError = vi.spyOn(console, 'error').mockImplementation(() => undefined);
-
-		await expect(page.render(<DsFiltersBar.Summary />)).rejects.toThrow(
-			'DsFiltersBar compound components must be used within DsFiltersBar.Root',
+		await page.render(
+			<DsFiltersBar fields={FIELDS} onExpandedChange={onExpandedChange} onViewChange={onViewChange} />,
 		);
 
-		consoleError.mockRestore();
+		await showButton().click();
+		await selectView('Advanced query');
+
+		expect(onExpandedChange).toHaveBeenCalledExactlyOnceWith(true);
+		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
+		await expect.element(queryField()).toBeVisible();
+	});
+
+	it('reports expanded and view changes and keeps the controlled values', async () => {
+		const onExpandedChange = vi.fn();
+		const onViewChange = vi.fn();
+		const props: DsFiltersBarProps = { fields: FIELDS, view: 'filters', onExpandedChange, onViewChange };
+
+		const { rerender } = await page.render(<DsFiltersBar {...props} expanded={false} />);
+
+		await showButton().click();
+
+		expect(onExpandedChange).toHaveBeenCalledExactlyOnceWith(true);
+		await expect.element(showButton()).toHaveAttribute('aria-expanded', 'false');
+
+		await rerender(<DsFiltersBar {...props} expanded />);
+
+		await selectView('Advanced query');
+
+		expect(onViewChange).toHaveBeenCalledExactlyOnceWith('advanced');
+		await expect.element(addFilterButton()).toBeVisible();
+		await expect.element(queryField()).not.toBeInTheDocument();
+	});
+
+	it.each(['filters', 'builder'] as const)(
+		'shows the advanced view while a query overrides the asked-for %s view, then that view after clear',
+		async (defaultView) => {
+			const onViewChange = vi.fn();
+
+			await page.render(
+				<DsFiltersBar
+					fields={FIELDS}
+					defaultExpanded
+					defaultView={defaultView}
+					defaultValue={{ conditions: [], query: OR_QUERY }}
+					onViewChange={onViewChange}
+				/>,
+			);
+
+			await expect.element(viewItem('Advanced query')).toBeChecked();
+			await expect.element(queryField()).toHaveValue(OR_QUERY);
+
+			await clearAllButton().click();
+
+			await expect.element(queryField()).not.toBeInTheDocument();
+			await expect.element(viewItem(defaultView === 'filters' ? 'Filters' : 'Query builder')).toBeChecked();
+			expect(onViewChange).not.toHaveBeenCalled();
+		},
+	);
+
+	it('shows the advanced view over a controlled view without reporting a change', async () => {
+		const onViewChange = vi.fn();
+
+		await page.render(
+			<DsFiltersBar
+				fields={FIELDS}
+				defaultExpanded
+				view="builder"
+				value={{ conditions: [], query: OR_QUERY }}
+				onViewChange={onViewChange}
+			/>,
+		);
+
+		await expect.element(queryField()).toHaveValue(OR_QUERY);
+		await expect.element(viewItem('Advanced query')).toBeChecked();
+		expect(onViewChange).not.toHaveBeenCalled();
 	});
 });
 
-describe('DsFiltersBar layout', () => {
-	it('renders a region named by the default label', async () => {
-		await renderBar();
+describe('DsFiltersBar slotProps', () => {
+	it('focuses the search input through slotProps.search.ref', async () => {
+		const ref = createRef<HTMLInputElement>();
 
-		await expect.element(page.getByRole('region', { name: 'Filters' })).toBeInTheDocument();
+		await page.render(<DsFiltersBar defaultExpanded slotProps={{ search: { ref } }} />);
+
+		ref.current?.focus();
+
+		await expect.element(searchInput()).toHaveFocus();
 	});
 
-	it('names the region by a custom label and forwards ref and className', async () => {
-		const ref = createRef<HTMLDivElement>();
+	const slotCases: ReadonlyArray<{
+		slot: keyof DsFiltersBarSlotProps;
+		props?: Partial<DsFiltersBarProps>;
+		// An element inside the part; the part is it or its closest ancestor with the slot class.
+		anchor: () => Element;
+		// Where `ref` lands: the part, or the anchor for parts whose ref reaches an inner control.
+		refTo?: 'part' | 'anchor';
+	}> = [
+		{ slot: 'disclosure', anchor: () => hideButton().element() },
+		{
+			slot: 'summary',
+			props: { defaultExpanded: false, defaultValue: emptyFilterDocument },
+			anchor: () => page.getByText(/^View:?$/).element(),
+		},
+		{ slot: 'toolbar', anchor: () => searchInput().element() },
+		{ slot: 'savedFilters', anchor: () => savedFiltersTag().element() },
+		{ slot: 'saveFilter', anchor: () => saveFilterButton().element() },
+		{ slot: 'search', anchor: () => searchInput().element(), refTo: 'anchor' },
+		{ slot: 'viewSwitch', anchor: () => viewSwitch().element() },
+		{ slot: 'conditions', anchor: () => addFilterButton().element() },
+		{ slot: 'builder', props: { defaultView: 'builder' }, anchor: () => addFilterButton().element() },
+		{
+			slot: 'query',
+			props: { defaultView: 'advanced' },
+			anchor: () => queryField().element(),
+			refTo: 'anchor',
+		},
+		{ slot: 'clearAll', anchor: () => clearAllButton().element() },
+		{ slot: 'pinned', anchor: () => pinnedGroup('Status').element() },
+	];
 
-		await renderBar({ locale: { label: 'Device filters' }, ref, className: 'custom' });
+	it.each(slotCases)(
+		'forwards slotProps.$slot ref, className and style',
+		async ({ slot, props, anchor, refTo }) => {
+			const ref = createRef<HTMLElement>();
+			const slotProps = { [slot]: { ref, className: 'slot-part', style: { marginLeft: '3px' } } };
 
-		const region = page.getByRole('region', { name: 'Device filters' });
+			await page.render(
+				<DsFiltersBar
+					fields={FIELDS}
+					defaultExpanded
+					defaultValue={{ conditions: [SEARCH], query: null }}
+					defaultPins={PINS}
+					savedFilters={savedFiltersConfig()}
+					slotProps={slotProps}
+					{...props}
+				/>,
+			);
 
-		await expect.element(region).toHaveClass('custom');
-		expect(ref.current).toBe(region.element());
-	});
+			await expect.poll(anchor).toBeInstanceOf(Element);
 
-	it('shows and hides the toolbar as expanded toggles', async () => {
+			const part = anchor().closest('.slot-part');
+
+			expect(part).toBeInstanceOf(HTMLElement);
+			expect(part).toHaveStyle({ marginLeft: '3px' });
+			expect(ref.current).toBe(refTo === 'anchor' ? anchor() : part);
+		},
+	);
+});
+
+describe('DsFiltersBar locale', () => {
+	it('overrides strings by part, keeping the defaults of the rest', async () => {
 		await page.render(
-			<DsFiltersBar.Root>
-				<Probe />
-				<DsFiltersBar.Toolbar>
-					<button type="button">add filter</button>
-				</DsFiltersBar.Toolbar>
-			</DsFiltersBar.Root>,
+			<DsFiltersBar
+				fields={FIELDS}
+				defaultExpanded
+				savedFilters={savedFiltersConfig()}
+				locale={{
+					collapse: 'Fold filters',
+					search: { placeholder: 'Find…' },
+					chips: { addFilter: 'New filter' },
+					viewSwitch: { views: { builder: 'Builder' } },
+					savedFilters: { saveFilter: 'Keep filter' },
+				}}
+			/>,
 		);
 
-		const addFilter = page.getByRole('button', { name: 'add filter' });
-
-		await expect.element(addFilter).not.toBeInTheDocument();
-
-		await page.getByRole('button', { name: 'toggle' }).click();
-		await expect.element(addFilter).toBeInTheDocument();
-
-		await page.getByRole('button', { name: 'toggle' }).click();
-		await expect.element(addFilter).not.toBeInTheDocument();
+		await expect.element(page.getByRole('button', { name: 'Fold filters', exact: true })).toBeVisible();
+		await expect.element(searchInput()).toHaveAttribute('placeholder', 'Find…');
+		await expect.element(addFilterButton('New filter')).toBeVisible();
+		await expect.element(viewItem('Builder')).toBeVisible();
+		await expect.element(viewItem('Filters')).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Keep filter', exact: true })).toBeVisible();
 	});
 });
 
@@ -331,22 +526,14 @@ const newEnumCondition = (
 	value,
 });
 
-interface ConditionsBarProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	conditionsLocale?: ComponentProps<typeof DsFiltersBar.Conditions>['locale'];
-}
-
-const ConditionsBar = ({ conditionsLocale, ...props }: ConditionsBarProps) => (
-	<DsFiltersBar.Root defaultExpanded fields={DIALOG_FIELDS} {...props}>
-		<DsFiltersBar.Toolbar>
-			<DsFiltersBar.Conditions locale={conditionsLocale} />
-		</DsFiltersBar.Toolbar>
-	</DsFiltersBar.Root>
+const ConditionsBar = (props: DsFiltersBarProps) => (
+	<DsFiltersBar defaultExpanded fields={DIALOG_FIELDS} {...props} />
 );
 
 interface ControlledConditionsBarProps {
 	initialConditions?: ReadonlyArray<DsFilterCondition>;
 	initialPins?: ReadonlyArray<DsFilterPin>;
-	onConditionsChange: (conditions: ReadonlyArray<DsFilterCondition>) => void;
+	onValueChange: (value: DsFilterDocument) => void;
 	onPinsChange: (pins: ReadonlyArray<DsFilterPin>) => void;
 }
 
@@ -354,19 +541,19 @@ interface ControlledConditionsBarProps {
 const ControlledConditionsBar = ({
 	initialConditions = [],
 	initialPins = [],
-	onConditionsChange,
+	onValueChange,
 	onPinsChange,
 }: ControlledConditionsBarProps) => {
-	const [conditions, setConditions] = useState(initialConditions);
+	const [value, setValue] = useState<DsFilterDocument>({ conditions: initialConditions, query: null });
 	const [pins, setPins] = useState(initialPins);
 
 	return (
 		<ConditionsBar
-			conditions={conditions}
+			value={value}
 			pins={pins}
-			onConditionsChange={(next) => {
-				onConditionsChange(next);
-				setConditions(next);
+			onValueChange={(next) => {
+				onValueChange(next);
+				setValue(next);
 			}}
 			onPinsChange={(next) => {
 				onPinsChange(next);
@@ -376,7 +563,6 @@ const ControlledConditionsBar = ({
 	);
 };
 
-const addFilterButton = (name = 'Add filter') => page.getByRole('button', { name, exact: true });
 const filtersDialog = (name = 'Filters') => page.getByRole('dialog', { name });
 // A tab's name is its field label, followed by the checked count and pin indicator when present.
 const fieldTab = (label: string) => page.getByRole('tab', { name: new RegExp(`^${label}(\\s|$)`) });
@@ -407,7 +593,7 @@ const closeWays = [
 	{ way: 'an outside click', close: clickOutsideDialog },
 ];
 
-describe('DsFiltersBar.Conditions add filter', () => {
+describe('DsFiltersBar filters view add filter', () => {
 	it('renders an icon-only button named by the default locale', async () => {
 		await page.render(<ConditionsBar />);
 
@@ -416,32 +602,19 @@ describe('DsFiltersBar.Conditions add filter', () => {
 		await expect.element(filtersDialog()).not.toBeInTheDocument();
 	});
 
-	it('names the button by a custom locale', async () => {
-		await page.render(<ConditionsBar conditionsLocale={{ addFilter: 'New filter' }} />);
+	it('names the button by locale.chips', async () => {
+		await page.render(<ConditionsBar locale={{ chips: { addFilter: 'New filter' } }} />);
 
 		await expect.element(addFilterButton('New filter')).toBeVisible();
 		await expect.element(addFilterButton()).not.toBeInTheDocument();
 	});
-
-	it('forwards className and style to its wrapper', async () => {
-		await page.render(
-			<DsFiltersBar.Root defaultExpanded>
-				<DsFiltersBar.Toolbar>
-					<DsFiltersBar.Conditions className="custom" style={{ marginLeft: '3px' }} />
-				</DsFiltersBar.Toolbar>
-			</DsFiltersBar.Root>,
-		);
-
-		const wrapper = addFilterButton().element().parentElement;
-
-		expect(wrapper).toHaveClass('custom');
-		expect(wrapper).toHaveStyle({ marginLeft: '3px' });
-	});
 });
 
-describe('DsFiltersBar.Conditions filters dialog', () => {
+describe('DsFiltersBar filters dialog', () => {
 	it('opens a dialog with one tab per field, in fields order', async () => {
-		await page.render(<ConditionsBar defaultConditions={[SEARCH_CONDITION, PARENTS_CONDITION]} />);
+		await page.render(
+			<ConditionsBar defaultValue={{ conditions: [SEARCH_CONDITION, PARENTS_CONDITION], query: null }} />,
+		);
 
 		await addFilterButton().click();
 
@@ -458,10 +631,8 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 		]);
 	});
 
-	it('titles the dialog and its save button by the locale', async () => {
-		await page.render(
-			<ConditionsBar conditionsLocale={{ filtersDialogTitle: 'Refine', saveFilters: 'Apply' }} />,
-		);
+	it('titles the dialog and its save button by locale.conditions', async () => {
+		await page.render(<ConditionsBar locale={{ conditions: { title: 'Refine', save: 'Apply' } }} />);
 
 		await addFilterButton().click();
 
@@ -469,11 +640,11 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 		await expect.element(page.getByRole('button', { name: 'Apply', exact: true })).toBeVisible();
 	});
 
-	it('passes the other dialog strings through the locale', async () => {
+	it('passes the other dialog strings through locale.conditions', async () => {
 		await page.render(
 			<ConditionsBar
-				conditionsLocale={{
-					filtersDialog: { close: 'Dismiss', operator: 'Match', search: (label) => `Find in ${label}` },
+				locale={{
+					conditions: { close: 'Dismiss', operator: 'Match', search: (label) => `Find in ${label}` },
 				}}
 			/>,
 		);
@@ -487,12 +658,10 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 	});
 
 	it('saves one enum condition per field with checked values and the draft pins, then closes', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 		const onPinsChange = vi.fn();
 
-		await page.render(
-			<ControlledConditionsBar onConditionsChange={onConditionsChange} onPinsChange={onPinsChange} />,
-		);
+		await page.render(<ControlledConditionsBar onValueChange={onValueChange} onPinsChange={onPinsChange} />);
 
 		await openFiltersDialog();
 		await pickOperator('Status ≠ (not equals)');
@@ -504,15 +673,18 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 		await fieldTab('Workflow').click();
 		await pinToggle('Backup').click();
 
-		expect(onConditionsChange).not.toHaveBeenCalled();
+		expect(onValueChange).not.toHaveBeenCalled();
 		expect(onPinsChange).not.toHaveBeenCalled();
 
 		await saveFilters();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([
-			newEnumCondition('status', '!=', ['active', 'pending']),
-			newEnumCondition('trigger', '=', ['manual']),
-		]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
+			conditions: [
+				newEnumCondition('status', '!=', ['active', 'pending']),
+				newEnumCondition('trigger', '=', ['manual']),
+			],
+			query: null,
+		});
 		expect(onPinsChange).toHaveBeenCalledExactlyOnceWith([
 			{ field: 'status', value: 'deprecated' },
 			{ field: 'workflow', value: 'backup' },
@@ -521,12 +693,12 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 	});
 
 	it('leaves conditions the dialog does not produce untouched on save', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 
 		await page.render(
 			<ControlledConditionsBar
 				initialConditions={[SEARCH_CONDITION, STATUS_CONDITION, PARENTS_CONDITION]}
-				onConditionsChange={onConditionsChange}
+				onValueChange={onValueChange}
 				onPinsChange={vi.fn()}
 			/>,
 		);
@@ -536,27 +708,33 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 		await optionCheckbox('Deploy').click();
 		await saveFilters();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([
-			SEARCH_CONDITION,
-			STATUS_CONDITION,
-			PARENTS_CONDITION,
-			newEnumCondition('workflow', 'IN', ['deploy']),
-		]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
+			conditions: [
+				SEARCH_CONDITION,
+				STATUS_CONDITION,
+				PARENTS_CONDITION,
+				newEnumCondition('workflow', 'IN', ['deploy']),
+			],
+			query: null,
+		});
 	});
 
 	it('seeds the dialog from the existing conditions and pins', async () => {
 		await page.render(
 			<ConditionsBar
-				defaultConditions={[
-					SEARCH_CONDITION,
-					{
-						kind: 'field',
-						id: 'status-2',
-						field: 'status',
-						operator: '!=',
-						value: ['deprecated', 'pending'],
-					},
-				]}
+				defaultValue={{
+					conditions: [
+						SEARCH_CONDITION,
+						{
+							kind: 'field',
+							id: 'status-2',
+							field: 'status',
+							operator: '!=',
+							value: ['deprecated', 'pending'],
+						},
+					],
+					query: null,
+				}}
 				defaultPins={[
 					{ field: 'status', value: 'draft' },
 					{ field: 'workflow', value: 'backup' },
@@ -582,10 +760,10 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 	});
 
 	it('reports the save and shows it when reopened while uncontrolled', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 		const onPinsChange = vi.fn();
 
-		await page.render(<ConditionsBar onConditionsChange={onConditionsChange} onPinsChange={onPinsChange} />);
+		await page.render(<ConditionsBar onValueChange={onValueChange} onPinsChange={onPinsChange} />);
 
 		await openFiltersDialog();
 		await pickOperator('Status ≠ (not equals)');
@@ -594,7 +772,10 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 		await saveFilters();
 		await expect.element(filtersDialog()).not.toBeInTheDocument();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([newEnumCondition('status', '!=', ['draft'])]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith({
+			conditions: [newEnumCondition('status', '!=', ['draft'])],
+			query: null,
+		});
 		expect(onPinsChange).toHaveBeenCalledExactlyOnceWith([{ field: 'status', value: 'pending' }]);
 
 		await openFiltersDialog();
@@ -607,14 +788,14 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 	});
 
 	it.each(closeWays)('discards the draft when closed with $way', async ({ close }) => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 		const onPinsChange = vi.fn();
 
 		await page.render(
 			<ControlledConditionsBar
 				initialConditions={[STATUS_CONDITION]}
 				initialPins={[{ field: 'status', value: 'pending' }]}
-				onConditionsChange={onConditionsChange}
+				onValueChange={onValueChange}
 				onPinsChange={onPinsChange}
 			/>,
 		);
@@ -629,7 +810,7 @@ describe('DsFiltersBar.Conditions filters dialog', () => {
 		await close();
 
 		await expect.element(filtersDialog()).not.toBeInTheDocument();
-		expect(onConditionsChange).not.toHaveBeenCalled();
+		expect(onValueChange).not.toHaveBeenCalled();
 		expect(onPinsChange).not.toHaveBeenCalled();
 
 		await openFiltersDialog();

@@ -1,0 +1,1102 @@
+# DsFiltersBar docs snippets
+
+## Default
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([{
+      id: 'saved-core',
+      name: 'Active core',
+      document: {
+        conditions: [{
+          kind: 'field',
+          field: 'status',
+          operator: '=',
+          value: ['active']
+        }, {
+          kind: 'field',
+          field: 'role',
+          operator: 'IN',
+          value: ['core']
+        }]
+      }
+    }, {
+      id: 'saved-attention',
+      name: 'Needs attention',
+      document: {
+        query: 'status = "inactive" OR ports > 40'
+      }
+    }]);
+    return <DsFiltersBar fields={[{
+      type: 'text',
+      id: 'name',
+      label: 'Name'
+    }, {
+      type: 'enum',
+      id: 'status',
+      label: 'Status',
+      options: [{
+        value: 'active',
+        label: 'Active'
+      }, {
+        value: 'inactive',
+        label: 'Inactive'
+      }, {
+        value: 'deprecated',
+        label: 'Deprecated'
+      }]
+    }, {
+      type: 'enum',
+      id: 'role',
+      label: 'Role',
+      operators: ['IN', 'NOT IN'],
+      options: [{
+        value: 'core',
+        label: 'Core'
+      }, {
+        value: 'edge',
+        label: 'Edge'
+      }]
+    }, {
+      type: 'number',
+      id: 'ports',
+      label: 'Ports'
+    }, {
+      type: 'date',
+      id: 'lastSeen',
+      label: 'Last seen',
+      presets: ['today', 'last7Days']
+    }]} defaultValue={{
+      conditions: [{
+        kind: 'search',
+        text: 'router'
+      }, {
+        kind: 'field',
+        field: 'status',
+        operator: '!=',
+        value: ['deprecated']
+      }]
+    }} defaultPins={[{
+      field: 'status',
+      value: 'active'
+    }, {
+      field: 'role',
+      value: 'core'
+    }]} defaultExpanded resultCount={18} savedFilters={{
+      items: savedFilters,
+      onSaveAs: (name, document) => {
+        const id = `saved-${String(Date.now())}`;
+        setSavedFilters(items => [...items, {
+          id,
+          name,
+          document
+        }]);
+        return id;
+      },
+      onUpdate: (id, document) => setSavedFilters(items => items.map(item => item.id === id ? {
+        ...item,
+        document
+      } : item)),
+      onRename: (id, name) => setSavedFilters(items => items.map(item => item.id === id ? {
+        ...item,
+        name
+      } : item)),
+      onDelete: id => setSavedFilters(items => items.filter(item => item.id !== id))
+    }} />;
+  }
+}
+
+### MCP manifest
+const Default = function Render() {
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([
+        {
+            id: 'saved-core',
+            name: 'Active core',
+            document: {
+                conditions: [
+                    { kind: 'field', field: 'status', operator: '=', value: ['active'] },
+                    { kind: 'field', field: 'role', operator: 'IN', value: ['core'] },
+                ],
+            },
+        },
+        {
+            id: 'saved-attention',
+            name: 'Needs attention',
+            document: { query: 'status = "inactive" OR ports > 40' },
+        },
+    ]);
+
+    return (
+        <DsFiltersBar
+            fields={[
+                { type: 'text', id: 'name', label: 'Name' },
+                {
+                    type: 'enum',
+                    id: 'status',
+                    label: 'Status',
+                    options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'inactive', label: 'Inactive' },
+                        { value: 'deprecated', label: 'Deprecated' },
+                    ],
+                },
+                {
+                    type: 'enum',
+                    id: 'role',
+                    label: 'Role',
+                    operators: ['IN', 'NOT IN'],
+                    options: [
+                        { value: 'core', label: 'Core' },
+                        { value: 'edge', label: 'Edge' },
+                    ],
+                },
+                { type: 'number', id: 'ports', label: 'Ports' },
+                { type: 'date', id: 'lastSeen', label: 'Last seen', presets: ['today', 'last7Days'] },
+            ]}
+            defaultValue={{
+                conditions: [
+                    { kind: 'search', text: 'router' },
+                    { kind: 'field', field: 'status', operator: '!=', value: ['deprecated'] },
+                ],
+            }}
+            defaultPins={[
+                { field: 'status', value: 'active' },
+                { field: 'role', value: 'core' },
+            ]}
+            defaultExpanded
+            resultCount={18}
+            savedFilters={{
+                items: savedFilters,
+                onSaveAs: (name, document) => {
+                    const id = `saved-${String(Date.now())}`;
+
+                    setSavedFilters((items) => [...items, { id, name, document }]);
+
+                    return id;
+                },
+                onUpdate: (id, document) =>
+                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, document } : item))),
+                onRename: (id, name) =>
+                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, name } : item))),
+                onDelete: (id) => setSavedFilters((items) => items.filter((item) => item.id !== id)),
+            }}
+        />
+    );
+};
+
+## With Table
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [value, setValue] = useState<DsFilterDocument>(emptyFilterDocument);
+    const [activeToggles, setActiveToggles] = useState<ReadonlyArray<DsFilterPin>>([]);
+    const [savedFilters, setSavedFilters] = useState(deviceSavedFilters);
+    const {
+      rows,
+      getPinCount
+    } = useFilteredRows(devices, {
+      fields: deviceFields,
+      value,
+      activeToggles,
+      now: STORY_NOW
+    });
+    return <DsStack direction="column" gap="var(--standard)">
+                <DsFiltersBar fields={deviceFields} value={value} activeToggles={activeToggles} defaultPins={[{
+        field: 'status',
+        value: 'active'
+      }, {
+        field: 'status',
+        value: 'pending'
+      }, {
+        field: 'role',
+        value: 'core'
+      }, {
+        field: 'role',
+        value: 'edge'
+      }]} defaultExpanded resultCount={rows.length} getPinCount={getPinCount} savedFilters={{
+        items: savedFilters,
+        onSaveAs: (name, document) => {
+          const id = `saved-${String(Date.now())}`;
+          setSavedFilters(items => [...items, {
+            id,
+            name,
+            document
+          }]);
+          return id;
+        },
+        onUpdate: (id, document) => setSavedFilters(items => items.map(item => item.id === id ? {
+          ...item,
+          document
+        } : item)),
+        onRename: (id, name) => setSavedFilters(items => items.map(item => item.id === id ? {
+          ...item,
+          name
+        } : item)),
+        onDelete: id => setSavedFilters(items => items.filter(item => item.id !== id))
+      }} onValueChange={setValue} onActiveTogglesChange={setActiveToggles} />
+
+                <DsTable columns={deviceColumns} data={rows} stickyHeader bordered fullWidth />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const WithTable = function Render() {
+    const [value, setValue] = useState<DsFilterDocument>(emptyFilterDocument);
+    const [activeToggles, setActiveToggles] = useState<ReadonlyArray<DsFilterPin>>([]);
+    const [savedFilters, setSavedFilters] = useState(deviceSavedFilters);
+
+    const { rows, getPinCount } = useFilteredRows(devices, {
+        fields: deviceFields,
+        value,
+        activeToggles,
+        now: STORY_NOW,
+    });
+
+    return (
+        <DsStack direction="column" gap="var(--standard)">
+            <DsFiltersBar
+                fields={deviceFields}
+                value={value}
+                activeToggles={activeToggles}
+                defaultPins={[
+                    { field: 'status', value: 'active' },
+                    { field: 'status', value: 'pending' },
+                    { field: 'role', value: 'core' },
+                    { field: 'role', value: 'edge' },
+                ]}
+                defaultExpanded
+                resultCount={rows.length}
+                getPinCount={getPinCount}
+                savedFilters={{
+                    items: savedFilters,
+                    onSaveAs: (name, document) => {
+                        const id = `saved-${String(Date.now())}`;
+
+                        setSavedFilters((items) => [...items, { id, name, document }]);
+
+                        return id;
+                    },
+                    onUpdate: (id, document) =>
+                        setSavedFilters((items) =>
+                            items.map((item) => (item.id === id ? { ...item, document } : item)),
+                        ),
+                    onRename: (id, name) =>
+                        setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, name } : item))),
+                    onDelete: (id) => setSavedFilters((items) => items.filter((item) => item.id !== id)),
+                }}
+                onValueChange={setValue}
+                onActiveTogglesChange={setActiveToggles}
+            />
+
+            <DsTable columns={deviceColumns} data={rows} stickyHeader bordered fullWidth />
+        </DsStack>
+    );
+};
+
+## Localized
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([{
+      id: 'only-active',
+      name: 'Only active',
+      document: {
+        conditions: [{
+          kind: 'field',
+          field: 'status',
+          operator: '=',
+          value: ['active']
+        }]
+      }
+    }]);
+    return <DsFiltersBar fields={[{
+      type: 'enum',
+      id: 'status',
+      label: 'Status',
+      operators: ['=', '!='],
+      options: [{
+        value: 'active',
+        label: 'Active'
+      }, {
+        value: 'pending',
+        label: 'Pending'
+      }]
+    }, {
+      type: 'date',
+      id: 'lastSeen',
+      label: 'Last seen',
+      presets: ['today', 'last7Days']
+    }]} defaultValue={{
+      conditions: [{
+        kind: 'field',
+        field: 'status',
+        operator: '!=',
+        value: ['pending']
+      }, {
+        kind: 'field',
+        field: 'lastSeen',
+        operator: '=',
+        value: 'last7Days'
+      }]
+    }} defaultPins={[{
+      field: 'status',
+      value: 'active'
+    }, {
+      field: 'lastSeen',
+      value: 'today'
+    }]} defaultExpanded resultCount={3} savedFilters={{
+      items: savedFilters,
+      onSaveAs: (name, document) => {
+        const id = `preset-${String(Date.now())}`;
+        setSavedFilters(items => [...items, {
+          id,
+          name,
+          document
+        }]);
+        return id;
+      },
+      onUpdate: (id, document) => setSavedFilters(items => items.map(item => item.id === id ? {
+        ...item,
+        document
+      } : item)),
+      onRename: (id, name) => setSavedFilters(items => items.map(item => item.id === id ? {
+        ...item,
+        name
+      } : item)),
+      onDelete: id => setSavedFilters(items => items.filter(item => item.id !== id))
+    }} locale={{
+      label: 'Refine results',
+      expand: 'Show refinements',
+      collapse: 'Hide refinements',
+      summary: {
+        resultCount: count => `${String(count)} matches`,
+        activeSavedFilter: 'Preset',
+        emptyLabel: 'Showing',
+        emptyValue: 'Everything'
+      },
+      search: {
+        label: 'Find',
+        placeholder: 'Press ‘/’ to find',
+        clear: 'Clear text'
+      },
+      viewSwitch: {
+        label: 'Presentation',
+        views: {
+          filters: 'Quick filters',
+          builder: 'Guided query',
+          advanced: 'Query editor'
+        },
+        lockedView: 'Remove the custom query to switch'
+      },
+      chips: {
+        addFilter: 'Add refinement'
+      },
+      conditions: {
+        title: 'Refinements',
+        save: 'Apply'
+      },
+      builder: {
+        title: 'Build a condition',
+        save: 'Add condition'
+      },
+      query: {
+        label: 'Query editor',
+        help: 'Syntax'
+      },
+      savedFilters: {
+        savedFilters: 'Presets',
+        saveFilter: 'Save preset',
+        saveAsNew: 'Save as a new preset'
+      },
+      clearAll: {
+        label: 'Reset'
+      },
+      pinned: {
+        label: 'Shortcuts'
+      },
+      operators: {
+        enum: {
+          '=': {
+            label: 'matches'
+          },
+          '!=': {
+            label: 'excludes',
+            symbol: '∌'
+          }
+        },
+        date: {
+          '=': {
+            label: 'within'
+          }
+        }
+      },
+      datePresets: {
+        today: 'Since midnight',
+        last7Days: 'This past week'
+      }
+    }} />;
+  }
+}
+
+### MCP manifest
+const Localized = function Render() {
+    const [savedFilters, setSavedFilters] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([
+        {
+            id: 'only-active',
+            name: 'Only active',
+            document: { conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }] },
+        },
+    ]);
+
+    return (
+        <DsFiltersBar
+            fields={[
+                {
+                    type: 'enum',
+                    id: 'status',
+                    label: 'Status',
+                    operators: ['=', '!='],
+                    options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'pending', label: 'Pending' },
+                    ],
+                },
+                { type: 'date', id: 'lastSeen', label: 'Last seen', presets: ['today', 'last7Days'] },
+            ]}
+            defaultValue={{
+                conditions: [
+                    { kind: 'field', field: 'status', operator: '!=', value: ['pending'] },
+                    { kind: 'field', field: 'lastSeen', operator: '=', value: 'last7Days' },
+                ],
+            }}
+            defaultPins={[
+                { field: 'status', value: 'active' },
+                { field: 'lastSeen', value: 'today' },
+            ]}
+            defaultExpanded
+            resultCount={3}
+            savedFilters={{
+                items: savedFilters,
+                onSaveAs: (name, document) => {
+                    const id = `preset-${String(Date.now())}`;
+
+                    setSavedFilters((items) => [...items, { id, name, document }]);
+
+                    return id;
+                },
+                onUpdate: (id, document) =>
+                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, document } : item))),
+                onRename: (id, name) =>
+                    setSavedFilters((items) => items.map((item) => (item.id === id ? { ...item, name } : item))),
+                onDelete: (id) => setSavedFilters((items) => items.filter((item) => item.id !== id)),
+            }}
+            locale={{
+                label: 'Refine results',
+                expand: 'Show refinements',
+                collapse: 'Hide refinements',
+                summary: {
+                    resultCount: (count) => `${String(count)} matches`,
+                    activeSavedFilter: 'Preset',
+                    emptyLabel: 'Showing',
+                    emptyValue: 'Everything',
+                },
+                search: { label: 'Find', placeholder: 'Press ‘/’ to find', clear: 'Clear text' },
+                viewSwitch: {
+                    label: 'Presentation',
+                    views: { filters: 'Quick filters', builder: 'Guided query', advanced: 'Query editor' },
+                    lockedView: 'Remove the custom query to switch',
+                },
+                chips: { addFilter: 'Add refinement' },
+                conditions: { title: 'Refinements', save: 'Apply' },
+                builder: { title: 'Build a condition', save: 'Add condition' },
+                query: { label: 'Query editor', help: 'Syntax' },
+                savedFilters: {
+                    savedFilters: 'Presets',
+                    saveFilter: 'Save preset',
+                    saveAsNew: 'Save as a new preset',
+                },
+                clearAll: { label: 'Reset' },
+                pinned: { label: 'Shortcuts' },
+                operators: {
+                    enum: { '=': { label: 'matches' }, '!=': { label: 'excludes', symbol: '∌' } },
+                    date: { '=': { label: 'within' } },
+                },
+                datePresets: { today: 'Since midnight', last7Days: 'This past week' },
+            }}
+        />
+    );
+};
+
+## Collapsed
+
+### Show code
+<DsFiltersBar
+  defaultValue={{
+    conditions: [
+      {
+        kind: 'search',
+        text: 'router'
+      },
+      {
+        field: 'status',
+        kind: 'field',
+        operator: '!=',
+        value: [
+          'deprecated'
+        ]
+      }
+    ]
+  }}
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Deprecated',
+          value: 'deprecated'
+        }
+      ],
+      type: 'enum'
+    }
+  ]}
+  resultCount={12}
+/>
+
+### MCP manifest
+const Collapsed = () => <DsFiltersBar
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'deprecated', label: 'Deprecated' },
+            ],
+        },
+    ]}
+    defaultValue={{
+        conditions: [
+            { kind: 'search', text: 'router' },
+            { kind: 'field', field: 'status', operator: '!=', value: ['deprecated'] },
+        ],
+    }}
+    resultCount={12} />;
+
+## Search Only
+
+### Show code
+<DsFiltersBar
+  defaultExpanded
+  defaultValue={{
+    conditions: [
+      {
+        kind: 'search',
+        text: 'router'
+      }
+    ]
+  }}
+/>
+
+### MCP manifest
+const SearchOnly = () => <DsFiltersBar
+    defaultExpanded
+    defaultValue={{ conditions: [{ kind: 'search', text: 'router' }] }} />;
+
+## Views
+
+### Show code
+<DsFiltersBar
+  defaultExpanded
+  defaultValue={{
+    conditions: [
+      {
+        field: 'status',
+        kind: 'field',
+        operator: '=',
+        value: [
+          'active'
+        ]
+      }
+    ]
+  }}
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      operators: [
+        '='
+      ],
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Pending',
+          value: 'pending'
+        }
+      ],
+      type: 'enum'
+    }
+  ]}
+  views={[
+    'filters',
+    'advanced'
+  ]}
+/>
+
+### MCP manifest
+const Views = () => <DsFiltersBar
+    defaultExpanded
+    views={['filters', 'advanced']}
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            operators: ['='],
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'pending', label: 'Pending' },
+            ],
+        },
+    ]}
+    defaultValue={{
+        conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }],
+    }} />;
+
+## Advanced Query
+
+### Show code
+<DsFiltersBar
+  defaultExpanded
+  defaultValue={{
+    query: 'status = "inactive" OR ports > 40'
+  }}
+  fields={[
+    {
+      id: 'status',
+      label: 'Status',
+      options: [
+        {
+          label: 'Active',
+          value: 'active'
+        },
+        {
+          label: 'Inactive',
+          value: 'inactive'
+        }
+      ],
+      type: 'enum'
+    },
+    {
+      id: 'ports',
+      label: 'Ports',
+      operators: [
+        '=',
+        '>',
+        '<'
+      ],
+      type: 'number'
+    }
+  ]}
+/>
+
+### MCP manifest
+const AdvancedQuery = () => <DsFiltersBar
+    defaultExpanded
+    fields={[
+        {
+            type: 'enum',
+            id: 'status',
+            label: 'Status',
+            options: [
+                { value: 'active', label: 'Active' },
+                { value: 'inactive', label: 'Inactive' },
+            ],
+        },
+        { type: 'number', id: 'ports', label: 'Ports', operators: ['=', '>', '<'] },
+    ]}
+    defaultValue={{ query: 'status = "inactive" OR ports > 40' }} />;
+
+## Pinned
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: () => <DsFiltersBar fields={[{
+    type: 'enum',
+    id: 'status',
+    label: 'Status',
+    operators: ['='],
+    options: [{
+      value: 'active',
+      label: 'Active'
+    }, {
+      value: 'pending',
+      label: 'Pending'
+    }, {
+      value: 'deprecated',
+      label: 'Deprecated'
+    }]
+  }, {
+    type: 'date',
+    id: 'lastSeen',
+    label: 'Last seen',
+    operators: ['='],
+    presets: ['today', 'last7Days']
+  }]} defaultPins={[{
+    field: 'status',
+    value: 'active'
+  }, {
+    field: 'status',
+    value: 'deprecated'
+  }, {
+    field: 'lastSeen',
+    value: 'today'
+  }]} defaultActiveToggles={[{
+    field: 'status',
+    value: 'active'
+  }]} getPinCount={pin => pin.value === 'deprecated' ? 0 : 8} />
+}
+
+### MCP manifest
+const Pinned = () => (
+    <DsFiltersBar
+        fields={[
+            {
+                type: 'enum',
+                id: 'status',
+                label: 'Status',
+                operators: ['='],
+                options: [
+                    { value: 'active', label: 'Active' },
+                    { value: 'pending', label: 'Pending' },
+                    { value: 'deprecated', label: 'Deprecated' },
+                ],
+            },
+            {
+                type: 'date',
+                id: 'lastSeen',
+                label: 'Last seen',
+                operators: ['='],
+                presets: ['today', 'last7Days'],
+            },
+        ]}
+        defaultPins={[
+            { field: 'status', value: 'active' },
+            { field: 'status', value: 'deprecated' },
+            { field: 'lastSeen', value: 'today' },
+        ]}
+        defaultActiveToggles={[{ field: 'status', value: 'active' }]}
+        getPinCount={(pin) => (pin.value === 'deprecated' ? 0 : 8)}
+    />
+);
+
+## Saved Filters
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const [items, setItems] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([{
+      id: 'active',
+      name: 'Active',
+      document: {
+        conditions: [{
+          kind: 'field',
+          field: 'status',
+          operator: '=',
+          value: ['active']
+        }]
+      }
+    }, {
+      id: 'core-or-edge',
+      name: 'Core or edge',
+      document: {
+        query: 'role = "core" OR role = "edge"'
+      }
+    }]);
+
+    // Stands in for a request to the backend
+    const persist = () => new Promise(resolve => setTimeout(resolve, 600));
+    return <DsFiltersBar fields={[{
+      type: 'enum',
+      id: 'status',
+      label: 'Status',
+      operators: ['='],
+      options: [{
+        value: 'active',
+        label: 'Active'
+      }, {
+        value: 'pending',
+        label: 'Pending'
+      }]
+    }, {
+      type: 'enum',
+      id: 'role',
+      label: 'Role',
+      operators: ['='],
+      options: [{
+        value: 'core',
+        label: 'Core'
+      }, {
+        value: 'edge',
+        label: 'Edge'
+      }]
+    }]} defaultExpanded savedFilters={{
+      items,
+      onSaveAs: async (name, document) => {
+        await persist();
+        const id = `saved-${String(Date.now())}`;
+        setItems(current => [...current, {
+          id,
+          name,
+          document
+        }]);
+        return id;
+      },
+      onUpdate: async (id, document) => {
+        await persist();
+        setItems(current => current.map(item => item.id === id ? {
+          ...item,
+          document
+        } : item));
+      },
+      onRename: async (id, name) => {
+        await persist();
+        setItems(current => current.map(item => item.id === id ? {
+          ...item,
+          name
+        } : item));
+      },
+      onDelete: async id => {
+        await persist();
+        setItems(current => current.filter(item => item.id !== id));
+      }
+    }} />;
+  }
+}
+
+### MCP manifest
+const SavedFilters = function Render() {
+    const [items, setItems] = useState<ReadonlyArray<DsFiltersBarSavedFilter>>([
+        {
+            id: 'active',
+            name: 'Active',
+            document: { conditions: [{ kind: 'field', field: 'status', operator: '=', value: ['active'] }] },
+        },
+        {
+            id: 'core-or-edge',
+            name: 'Core or edge',
+            document: { query: 'role = "core" OR role = "edge"' },
+        },
+    ]);
+
+    // Stands in for a request to the backend
+    const persist = () => new Promise((resolve) => setTimeout(resolve, 600));
+
+    return (
+        <DsFiltersBar
+            fields={[
+                {
+                    type: 'enum',
+                    id: 'status',
+                    label: 'Status',
+                    operators: ['='],
+                    options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'pending', label: 'Pending' },
+                    ],
+                },
+                {
+                    type: 'enum',
+                    id: 'role',
+                    label: 'Role',
+                    operators: ['='],
+                    options: [
+                        { value: 'core', label: 'Core' },
+                        { value: 'edge', label: 'Edge' },
+                    ],
+                },
+            ]}
+            defaultExpanded
+            savedFilters={{
+                items,
+                onSaveAs: async (name, document) => {
+                    await persist();
+                    const id = `saved-${String(Date.now())}`;
+
+                    setItems((current) => [...current, { id, name, document }]);
+
+                    return id;
+                },
+                onUpdate: async (id, document) => {
+                    await persist();
+                    setItems((current) => current.map((item) => (item.id === id ? { ...item, document } : item)));
+                },
+                onRename: async (id, name) => {
+                    await persist();
+                    setItems((current) => current.map((item) => (item.id === id ? { ...item, name } : item)));
+                },
+                onDelete: async (id) => {
+                    await persist();
+                    setItems((current) => current.filter((item) => item.id !== id));
+                },
+            }}
+        />
+    );
+};
+
+## Slot Props
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render() {
+    const searchRef = useRef<HTMLInputElement>(null);
+    return <DsStack direction="column" gap="var(--standard)">
+                <DsButtonV3 variant="secondary" size="small" onClick={() => searchRef.current?.focus()}>
+                    Focus search
+                </DsButtonV3>
+
+                <DsFiltersBar fields={[{
+        type: 'text',
+        id: 'name',
+        label: 'Name',
+        operators: ['~']
+      }, {
+        type: 'enum',
+        id: 'status',
+        label: 'Status',
+        operators: ['='],
+        options: [{
+          value: 'active',
+          label: 'Active'
+        }, {
+          value: 'pending',
+          label: 'Pending'
+        }]
+      }, {
+        type: 'enum',
+        id: 'role',
+        label: 'Role',
+        operators: ['='],
+        options: [{
+          value: 'core',
+          label: 'Core'
+        }, {
+          value: 'edge',
+          label: 'Edge'
+        }]
+      }]} defaultExpanded defaultView="builder" slotProps={{
+        search: {
+          ref: searchRef
+        },
+        builder: {
+          suggestedFields: ['role', 'status']
+        },
+        query: {
+          slots: {
+            help: 'Combine clauses with AND or OR. See the product docs for more.'
+          }
+        }
+      }} />
+            </DsStack>;
+  }
+}
+
+### MCP manifest
+const SlotProps = function Render() {
+    const searchRef = useRef<HTMLInputElement>(null);
+
+    return (
+        <DsStack direction="column" gap="var(--standard)">
+            <DsButtonV3 variant="secondary" size="small" onClick={() => searchRef.current?.focus()}>
+                Focus search
+            </DsButtonV3>
+
+            <DsFiltersBar
+                fields={[
+                    { type: 'text', id: 'name', label: 'Name', operators: ['~'] },
+                    {
+                        type: 'enum',
+                        id: 'status',
+                        label: 'Status',
+                        operators: ['='],
+                        options: [
+                            { value: 'active', label: 'Active' },
+                            { value: 'pending', label: 'Pending' },
+                        ],
+                    },
+                    {
+                        type: 'enum',
+                        id: 'role',
+                        label: 'Role',
+                        operators: ['='],
+                        options: [
+                            { value: 'core', label: 'Core' },
+                            { value: 'edge', label: 'Edge' },
+                        ],
+                    },
+                ]}
+                defaultExpanded
+                defaultView="builder"
+                slotProps={{
+                    search: { ref: searchRef },
+                    builder: { suggestedFields: ['role', 'status'] },
+                    query: { slots: { help: 'Combine clauses with AND or OR. See the product docs for more.' } },
+                }}
+            />
+        </DsStack>
+    );
+};

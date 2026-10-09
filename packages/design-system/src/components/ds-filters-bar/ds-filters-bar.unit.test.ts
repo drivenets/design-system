@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import type {
-	DsFilterCondition,
-	DsFilterField,
-	DsFilterFieldCondition,
-	DsFilterPin,
+import {
+	defaultDsFiltersBarLocale,
+	type DsFilterCondition,
+	type DsFilterFieldCondition,
+	type DsFilterPin,
 } from './ds-filters-bar.types';
 import {
 	appendCondition,
@@ -22,14 +22,17 @@ import {
 	normalizeQuery,
 	removeConditionById,
 	replaceCondition,
+	resolveLocale,
 	toFiltersDialogValue,
+	toPinnedGroups,
 	toSummaryItems,
 } from './ds-filters-bar.utils';
+import { resolveFields } from './resolve-fields';
 
 const EQUALS = { value: '=', label: 'equals', symbol: '=' } as const;
 const NOT_EQUALS = { value: '!=', label: 'not equals', symbol: '≠' } as const;
 
-const FIELDS: DsFilterField[] = [
+const FIELDS = resolveFields([
 	{
 		type: 'enum',
 		id: 'status',
@@ -54,7 +57,7 @@ const FIELDS: DsFilterField[] = [
 		label: 'Input',
 		subfields: [{ type: 'text', id: 'name', label: 'Name', operators: [{ value: '~', label: 'contains' }] }],
 	},
-];
+]);
 
 describe('isFiltersBarView', () => {
 	it.each(['filters', 'builder', 'advanced'])('accepts %s', (value) => {
@@ -329,7 +332,7 @@ describe('toSummaryItems', () => {
 	});
 });
 
-const DIALOG_FIELDS: DsFilterField[] = [
+const DIALOG_FIELDS = resolveFields([
 	...FIELDS,
 	{
 		type: 'enum',
@@ -355,7 +358,7 @@ const DIALOG_FIELDS: DsFilterField[] = [
 			},
 		],
 	},
-];
+]);
 
 describe('conditionText', () => {
 	it('joins the field path, the operator in words and the value', () => {
@@ -389,14 +392,14 @@ describe('conditionOperators', () => {
 	});
 
 	it("returns a compound subfield's operators", () => {
-		const fields: DsFilterField[] = [
+		const fields = resolveFields([
 			{
 				type: 'compound',
 				id: 'input',
 				label: 'Input',
 				subfields: [{ type: 'text', id: 'vendor', label: 'Vendor', operators: [EQUALS, NOT_EQUALS] }],
 			},
-		];
+		]);
 
 		expect(
 			conditionOperators(fieldCondition({ field: 'input', subfield: 'vendor', value: 'cisco' }), fields),
@@ -417,9 +420,9 @@ describe('conditionOperators', () => {
 	});
 
 	it('returns null for a range, which only goes with =', () => {
-		const fields: DsFilterField[] = [
+		const fields = resolveFields([
 			{ type: 'number', id: 'parents', label: 'Parents', operators: [EQUALS, NOT_EQUALS] },
-		];
+		]);
 
 		expect(
 			conditionOperators(fieldCondition({ field: 'parents', value: { from: 1, to: 5 } }), fields),
@@ -431,10 +434,10 @@ const AT_LEAST = { value: '>=', label: 'at least' } as const;
 const AT_MOST = { value: '<=', label: 'at most' } as const;
 
 // Fields that list every operator a range and its `>=` / `<=` pair need
-const RANGE_FIELDS: DsFilterField[] = [
+const RANGE_FIELDS = resolveFields([
 	{ type: 'number', id: 'parents', label: 'Parents', operators: [EQUALS, NOT_EQUALS, AT_LEAST, AT_MOST] },
 	{ type: 'date', id: 'lastRun', label: 'Last run', operators: [EQUALS, AT_LEAST, AT_MOST] },
-];
+]);
 
 describe('conditionDialogTab', () => {
 	it('returns the tab of a field condition the dialog can show', () => {
@@ -495,10 +498,10 @@ describe('filtersDialogTabs', () => {
 	});
 
 	it('skips enum fields without options', () => {
-		const fields: DsFilterField[] = [
+		const fields = resolveFields([
 			{ type: 'enum', id: 'empty', label: 'Empty', operators: [EQUALS], options: [] },
 			{ type: 'text', id: 'name', label: 'Name', operators: [EQUALS] },
-		];
+		]);
 
 		expect(filtersDialogTabs(fields).map((tab) => tab.id)).toEqual(['name']);
 	});
@@ -634,9 +637,9 @@ describe('toFiltersDialogValue', () => {
 	});
 
 	it('seeds a >= and <= pair as its first condition when the field has no =', () => {
-		const fields: DsFilterField[] = [
+		const fields = resolveFields([
 			{ type: 'number', id: 'parents', label: 'Parents', operators: [AT_LEAST, AT_MOST] },
-		];
+		]);
 		const pair: DsFilterCondition[] = [
 			{ kind: 'field', id: 'c1', field: 'parents', operator: '>=', value: 1 },
 			{ kind: 'field', id: 'c2', field: 'parents', operator: '<=', value: 5 },
@@ -646,9 +649,9 @@ describe('toFiltersDialogValue', () => {
 	});
 
 	it('falls back to equals for a field without operators', () => {
-		const fields: DsFilterField[] = [
+		const fields = resolveFields([
 			{ type: 'enum', id: 'tag', label: 'Tag', operators: [], options: [{ value: 'x', label: 'X' }] },
-		];
+		]);
 
 		expect(toFiltersDialogValue(fields, [], [{ field: 'tag', value: 'x' }])).toEqual([
 			{ type: 'enum', field: 'tag', operator: '=', selected: [], pinned: ['x'] },
@@ -920,5 +923,56 @@ describe('fromFiltersDialogValue', () => {
 		const value = toFiltersDialogValue(DIALOG_FIELDS, conditions, pins);
 
 		expect(fromFiltersDialogValue(DIALOG_FIELDS, conditions, pins, value)).toEqual({ conditions, pins });
+	});
+});
+
+describe('built-in date presets in the bar', () => {
+	const SEEN_FIELDS = resolveFields(
+		[{ type: 'date', id: 'seen', label: 'Seen', presets: ['today', 'last7Days'] }],
+		resolveLocale({ datePresets: { today: 'Current day' } }),
+	);
+
+	it('labels a pinned preset with its resolved label', () => {
+		expect(
+			toPinnedGroups(SEEN_FIELDS, [
+				{ field: 'seen', value: 'last7Days' },
+				{ field: 'seen', value: 'today' },
+			]),
+		).toEqual([
+			{
+				field: 'seen',
+				label: 'Seen',
+				toggles: [
+					{ pin: { field: 'seen', value: 'last7Days' }, label: 'Last 7 days' },
+					{ pin: { field: 'seen', value: 'today' }, label: 'Current day' },
+				],
+			},
+		]);
+	});
+
+	it('describes a condition on a preset with its resolved label and default operator words', () => {
+		expect(
+			describeCondition(
+				{ kind: 'field', id: 'c1', field: 'seen', operator: '!=', value: 'today' },
+				SEEN_FIELDS,
+			),
+		).toEqual({ fieldPath: ['Seen'], operator: 'is not', operatorSymbol: '≠', value: 'Current day' });
+	});
+});
+
+// Paths of every object or array under `value`, the root included, that is not frozen
+const unfrozenPaths = (value: unknown, path = 'locale'): string[] => {
+	if (typeof value !== 'object' || value === null) {
+		return [];
+	}
+
+	const own = Object.isFrozen(value) ? [] : [path];
+
+	return [...own, ...Object.entries(value).flatMap(([key, child]) => unfrozenPaths(child, `${path}.${key}`))];
+};
+
+describe('defaultDsFiltersBarLocale', () => {
+	it('is frozen deeply', () => {
+		expect(unfrozenPaths(defaultDsFiltersBarLocale)).toEqual([]);
 	});
 });

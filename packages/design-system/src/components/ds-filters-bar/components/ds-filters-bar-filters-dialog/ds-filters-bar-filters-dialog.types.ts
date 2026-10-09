@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import type {
 	DsFilterComparisonOperator,
 	DsFilterEnumOperator,
-	DsFilterOperator,
+	DsFilterResolvedOperator,
 	DsFilterRange,
 	DsFilterScalarField,
 	DsFilterTextOperator,
@@ -119,7 +119,7 @@ export interface DsFiltersBarFiltersDialogLocale {
 	/**
 	 * Operator option text, as in `Status = (equals)`. Receives the tab label and the operator.
 	 */
-	operatorOption?: (fieldLabel: string, operator: DsFilterOperator) => string;
+	operatorOption?: (fieldLabel: string, operator: DsFilterResolvedOperator) => string;
 	/**
 	 * Text of the `between` operator option on number and date tabs. Receives the tab label.
 	 */
@@ -161,8 +161,8 @@ export const defaultDsFiltersBarFiltersDialogLocale: Required<DsFiltersBarFilter
 		save: 'Save filters',
 		close: 'Close',
 		operator: 'Operator',
-		operatorOption: (fieldLabel: string, operator: DsFilterOperator) =>
-			`${fieldLabel} ${operator.symbol ?? operator.value} (${operator.label})`,
+		operatorOption: (fieldLabel: string, operator: DsFilterResolvedOperator) =>
+			`${fieldLabel} ${operator.symbol} (${operator.label})`,
 		betweenOption: (fieldLabel: string) => `${fieldLabel} (between)`,
 		search: (fieldLabel: string) => `Search ${fieldLabel}`,
 		searchPlaceholder: (fieldLabel: string) => `Search ${fieldLabel}`,

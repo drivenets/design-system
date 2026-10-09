@@ -4,7 +4,7 @@ import { DsToggleFilterData } from './index';
 import { DsStack } from '../ds-stack';
 
 const meta: Meta<typeof DsToggleFilterData> = {
-	title: 'Components/ToggleFilterData',
+	title: 'Components/FiltersBar/Internal/ToggleFilterData',
 	component: DsToggleFilterData,
 	// Internal part of the filters component, not exported from the package, so it stays out of the
 	// MCP manifest that advertises the public API.

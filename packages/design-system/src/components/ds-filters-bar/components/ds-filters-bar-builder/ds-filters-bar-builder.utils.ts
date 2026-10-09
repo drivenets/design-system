@@ -1,9 +1,11 @@
 import type {
-	DsFilterField,
+	DsFilterResolvedField,
 	DsFilterFieldCondition,
 	DsFilterOperatorValue,
-	DsFilterScalarField,
+	DsFilterResolvedScalarField,
+	DsFilterValue,
 } from '../../ds-filters-bar.types';
+import { isRange } from '../../ds-filters-bar.utils';
 import type { DsFiltersBarBuilderLocale } from './ds-filters-bar-builder.types';
 
 const COMPLETE_NUMBER = /^-?\d+(\.\d+)?$/;
@@ -53,8 +55,8 @@ export interface BuilderStepView {
 type Locale = Required<DsFiltersBarBuilderLocale>;
 
 interface ResolvedField {
-	field: DsFilterField;
-	scalar: DsFilterScalarField | null;
+	field: DsFilterResolvedField;
+	scalar: DsFilterResolvedScalarField | null;
 }
 
 export const emptyBuilderDraft = (): BuilderDraft => ({
@@ -66,7 +68,7 @@ export const emptyBuilderDraft = (): BuilderDraft => ({
 	query: '',
 });
 
-const defaultOperator = (field: DsFilterScalarField): DsFilterOperatorValue | null =>
+const defaultOperator = (field: DsFilterResolvedScalarField): DsFilterOperatorValue | null =>
 	field.operators[0]?.value ?? null;
 
 const matchesQuery = (label: string, query: string): boolean => {
@@ -80,9 +82,9 @@ const matchesQuery = (label: string, query: string): boolean => {
 };
 
 const offeredFields = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	suggestedFields: ReadonlyArray<string> | undefined,
-): ReadonlyArray<DsFilterField> => {
+): ReadonlyArray<DsFilterResolvedField> => {
 	if (!suggestedFields) {
 		return fields;
 	}
@@ -102,7 +104,10 @@ const offeredFields = (
 	});
 };
 
-const resolveField = (fields: ReadonlyArray<DsFilterField>, draft: BuilderDraft): ResolvedField | null => {
+const resolveField = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	draft: BuilderDraft,
+): ResolvedField | null => {
 	const field = fields.find((item) => item.id === draft.fieldId);
 
 	if (!field) {
@@ -137,14 +142,14 @@ const stepOf = (
 	return 'value';
 };
 
-const isValueInput = (fields: ReadonlyArray<DsFilterField>, draft: BuilderDraft): boolean => {
+const isValueInput = (fields: ReadonlyArray<DsFilterResolvedField>, draft: BuilderDraft): boolean => {
 	const resolved = resolveField(fields, draft);
 
 	return stepOf(resolved, draft) === 'value' && resolved?.scalar?.type !== 'enum';
 };
 
 const fieldChoices = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	draft: BuilderDraft,
 	suggestedFields: ReadonlyArray<string> | undefined,
 ): ReadonlyArray<BuilderChoice> => {
@@ -166,12 +171,12 @@ const subfieldChoices = (resolved: ResolvedField, query: string): ReadonlyArray<
 		.map((subfield) => ({ kind: 'subfield', id: subfield.id, label: subfield.label }));
 };
 
-const operatorChoices = (scalar: DsFilterScalarField, query: string): ReadonlyArray<BuilderChoice> =>
+const operatorChoices = (scalar: DsFilterResolvedScalarField, query: string): ReadonlyArray<BuilderChoice> =>
 	scalar.operators
 		.filter((operator) => matchesQuery(operator.label, query))
 		.map((operator) => ({ kind: 'operator', id: operator.value, label: operator.label }));
 
-const optionChoices = (scalar: DsFilterScalarField, query: string): ReadonlyArray<BuilderChoice> => {
+const optionChoices = (scalar: DsFilterResolvedScalarField, query: string): ReadonlyArray<BuilderChoice> => {
 	if (scalar.type === 'enum') {
 		return scalar.options
 			.filter((option) => matchesQuery(option.label, query))
@@ -179,7 +184,7 @@ const optionChoices = (scalar: DsFilterScalarField, query: string): ReadonlyArra
 	}
 
 	if (scalar.type === 'date') {
-		return (scalar.presets ?? []).map((preset) => ({
+		return scalar.presets.map((preset) => ({
 			kind: 'option',
 			id: preset.value,
 			label: preset.label,
@@ -189,7 +194,7 @@ const optionChoices = (scalar: DsFilterScalarField, query: string): ReadonlyArra
 	return [];
 };
 
-const valueLabel = (scalar: DsFilterScalarField | null, draft: BuilderDraft): string | null => {
+const valueLabel = (scalar: DsFilterResolvedScalarField | null, draft: BuilderDraft): string | null => {
 	if (!scalar) {
 		return null;
 	}
@@ -205,7 +210,7 @@ const valueLabel = (scalar: DsFilterScalarField | null, draft: BuilderDraft): st
 	}
 
 	if (scalar.type === 'date') {
-		return scalar.presets?.find((preset) => preset.value === text)?.label ?? text;
+		return scalar.presets.find((preset) => preset.value === text)?.label ?? text;
 	}
 
 	return text;
@@ -237,7 +242,7 @@ const pathOf = (resolved: ResolvedField | null, draft: BuilderDraft): ReadonlyAr
 	return segments;
 };
 
-const selectedChoiceId = (scalar: DsFilterScalarField | null, draft: BuilderDraft): string | null => {
+const selectedChoiceId = (scalar: DsFilterResolvedScalarField | null, draft: BuilderDraft): string | null => {
 	if (!scalar) {
 		return null;
 	}
@@ -247,7 +252,7 @@ const selectedChoiceId = (scalar: DsFilterScalarField | null, draft: BuilderDraf
 	}
 
 	if (scalar.type === 'date') {
-		return scalar.presets?.some((preset) => preset.value === draft.valueText) ? draft.valueText : null;
+		return scalar.presets.some((preset) => preset.value === draft.valueText) ? draft.valueText : null;
 	}
 
 	return null;
@@ -257,7 +262,7 @@ const selectedChoiceId = (scalar: DsFilterScalarField | null, draft: BuilderDraf
  * What the dialog shows for the current draft: the input, the caption, and the choices.
  */
 export const describeBuilderStep = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	draft: BuilderDraft,
 	suggestedFields: ReadonlyArray<string> | undefined,
 	locale: Locale,
@@ -306,7 +311,7 @@ export const describeBuilderStep = (
 	const searchingOptions = scalar?.type === 'enum';
 	const presetLabel =
 		scalar?.type === 'date'
-			? scalar.presets?.find((preset) => preset.value === draft.valueText)?.label
+			? scalar.presets.find((preset) => preset.value === draft.valueText)?.label
 			: undefined;
 
 	return {
@@ -330,7 +335,7 @@ const clearedValue = {
  * Moves the draft to the choice the user picked, dropping anything that came after it.
  */
 export const chooseBuilderOption = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	draft: BuilderDraft,
 	choice: BuilderChoice,
 ): BuilderDraft => {
@@ -390,7 +395,7 @@ export const chooseBuilderOption = (
 	}
 
 	if (choice.kind === 'option' && resolved.scalar?.type === 'date') {
-		const preset = resolved.scalar.presets?.find((item) => item.value === choice.id);
+		const preset = resolved.scalar.presets.find((item) => item.value === choice.id);
 
 		if (!preset) {
 			return draft;
@@ -403,7 +408,7 @@ export const chooseBuilderOption = (
 };
 
 export const setBuilderInput = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	draft: BuilderDraft,
 	text: string,
 ): BuilderDraft => {
@@ -419,7 +424,7 @@ export const setBuilderInput = (
  * and a number value is a complete number.
  */
 export const toFieldCondition = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	draft: BuilderDraft,
 ): Omit<DsFilterFieldCondition, 'id'> | null => {
 	const resolved = resolveField(fields, draft);
@@ -465,4 +470,64 @@ export const toFieldCondition = (
 	}
 
 	return { ...base, value: text };
+};
+
+const sameValue = (a: DsFilterValue, b: DsFilterValue): boolean => {
+	if (Array.isArray(a) && Array.isArray(b)) {
+		return a.length === b.length && a.every((item, index) => item === b[index]);
+	}
+
+	return a === b;
+};
+
+const valueDraft = (
+	scalar: DsFilterResolvedScalarField,
+	value: DsFilterValue,
+): Pick<BuilderDraft, 'valueText' | 'optionValue'> => {
+	if (typeof value === 'string' || typeof value === 'number') {
+		return { valueText: scalar.type === 'enum' ? '' : String(value), optionValue: null };
+	}
+
+	if (isRange(value) || scalar.type !== 'enum') {
+		return { valueText: '', optionValue: null };
+	}
+
+	return { valueText: '', optionValue: value[0] ?? null };
+};
+
+/**
+ * The draft that edits `condition`: its field, subfield and operator, and its value when the
+ * builder can hold it. A value it cannot hold (several enum options, a range) is left empty, so the
+ * dialog opens at the value step; an operator the field does not offer opens it at the operator step.
+ */
+export const builderDraftFromCondition = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	condition: DsFilterFieldCondition,
+): BuilderDraft => {
+	const located = resolveField(fields, {
+		...emptyBuilderDraft(),
+		fieldId: condition.field,
+		subfieldId: condition.subfield ?? null,
+	});
+
+	if (!located) {
+		return emptyBuilderDraft();
+	}
+
+	const base: BuilderDraft = {
+		...emptyBuilderDraft(),
+		fieldId: located.field.id,
+		subfieldId: located.field.type === 'compound' ? (located.scalar?.id ?? null) : null,
+	};
+	const { scalar } = located;
+
+	if (!scalar?.operators.some((operator) => operator.value === condition.operator)) {
+		return base;
+	}
+
+	const withOperator: BuilderDraft = { ...base, operator: condition.operator };
+	const filled: BuilderDraft = { ...withOperator, ...valueDraft(scalar, condition.value) };
+	const rebuilt = toFieldCondition(fields, filled);
+
+	return rebuilt && sameValue(rebuilt.value, condition.value) ? filled : withOperator;
 };

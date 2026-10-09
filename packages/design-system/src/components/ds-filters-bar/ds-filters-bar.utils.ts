@@ -4,21 +4,31 @@ import type {
 	DsFiltersBarFiltersDialogTab,
 	DsFiltersBarFiltersDialogValue,
 } from './components/ds-filters-bar-filters-dialog';
+import { serializeFilterQuery } from './query-language/serialize-query';
+import { resolveScalarField } from './resolve-fields';
 import {
 	comparisonFilterOperators,
+	defaultDsFiltersBarLocale,
 	enumFilterOperators,
 	filtersBarViews,
 	textFilterOperators,
 	type DsFilterComparisonOperator,
 	type DsFilterCondition,
+	type DsFilterDocument,
 	type DsFilterEnumOperator,
-	type DsFilterField,
+	type DsFiltersBarLocale,
+	type DsFiltersBarResolvedLocale,
+	type DsFilterResolvedField,
 	type DsFilterFieldCondition,
-	type DsFilterOperator,
+	type DsFilterOperatorLocale,
+	type DsFilterOperatorValue,
 	type DsFilterOption,
+	type DsFiltersBarOperatorsLocale,
+	type DsFiltersBarResolvedOperatorsLocale,
 	type DsFilterPin,
 	type DsFilterRange,
-	type DsFilterScalarField,
+	type DsFilterResolvedOperator,
+	type DsFilterResolvedScalarField,
 	type DsFilterSearchCondition,
 	type DsFilterTextOperator,
 	type DsFilterValue,
@@ -105,7 +115,7 @@ const labelFor = (options: ReadonlyArray<DsFilterOption>, value: string) =>
 export const isRange = (value: DsFilterValue): value is DsFilterRange<number> | DsFilterRange<string> =>
 	typeof value === 'object' && 'from' in value;
 
-const formatValue = (value: DsFilterValue, field: DsFilterScalarField | undefined): string => {
+const formatValue = (value: DsFilterValue, field: DsFilterResolvedScalarField | undefined): string => {
 	if (isRange(value)) {
 		return [value.from ?? '', value.to ?? ''].map(String).join(RANGE_SEPARATOR).trim();
 	}
@@ -117,7 +127,7 @@ const formatValue = (value: DsFilterValue, field: DsFilterScalarField | undefine
 	}
 
 	if (typeof value === 'string' && field?.type === 'date') {
-		return labelFor(field.presets ?? [], value);
+		return labelFor(field.presets, value);
 	}
 
 	return String(value);
@@ -129,7 +139,7 @@ const formatValue = (value: DsFilterValue, field: DsFilterScalarField | undefine
  */
 export const describeCondition = (
 	condition: DsFilterCondition,
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 ): DsFilterConditionDescription => {
 	if (condition.kind === 'search') {
 		return { fieldPath: [], value: condition.text };
@@ -178,7 +188,7 @@ export type DsFiltersBarSummaryItem =
 export interface DsFiltersBarSummarySource {
 	conditions: ReadonlyArray<DsFilterCondition>;
 	query: string | null;
-	fields: ReadonlyArray<DsFilterField>;
+	fields: ReadonlyArray<DsFilterResolvedField>;
 	activeSavedFilterName?: string;
 }
 
@@ -187,7 +197,7 @@ const FIELD_PATH_SEPARATOR = ' › ';
 
 const toSummaryCondition = (
 	condition: DsFilterCondition,
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 ): DsFiltersBarSummaryItem => {
 	const { fieldPath, operator, value } = describeCondition(condition, fields);
 
@@ -243,8 +253,8 @@ const MIN_EDITABLE_OPERATORS = 2;
  */
 export const conditionOperators = (
 	condition: DsFilterFieldCondition,
-	fields: ReadonlyArray<DsFilterField>,
-): ReadonlyArray<DsFilterOperator> | null => {
+	fields: ReadonlyArray<DsFilterResolvedField>,
+): ReadonlyArray<DsFilterResolvedOperator> | null => {
 	if (isRange(condition.value)) {
 		return null;
 	}
@@ -264,8 +274,8 @@ const PATH_SEPARATOR = '.';
 const TAB_LABEL_SEPARATOR = ' › ';
 
 const scalarTab = (
-	schema: DsFilterScalarField,
-	parent?: DsFilterField,
+	schema: DsFilterResolvedScalarField,
+	parent?: DsFilterResolvedField,
 ): DsFiltersBarFiltersDialogTab | null => {
 	if (schema.type === 'enum' && !schema.options.length) {
 		return null;
@@ -289,7 +299,7 @@ const scalarTab = (
  * without options are skipped.
  */
 export const filtersDialogTabs = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 ): ReadonlyArray<DsFiltersBarFiltersDialogTab> =>
 	fields.flatMap((field) => {
 		const tabs =
@@ -318,8 +328,14 @@ const isScalarOrRange = (condition: DsFilterFieldCondition, scalar: 'number' | '
 	return typeof value === scalar && includesOperator(comparisonFilterOperators, operator);
 };
 
+/**
+ * The tab's field with its operators and presets spelled out. The bar builds tabs from resolved
+ * fields, so this only fills in defaults for a tab built elsewhere.
+ */
+const schemaOf = (tab: DsFiltersBarFiltersDialogTab) => resolveScalarField(tab.schema);
+
 const fieldHasOperator = (tab: DsFiltersBarFiltersDialogTab, operator: string) =>
-	tab.schema.operators.some((item) => item.value === operator);
+	schemaOf(tab).operators.some((item) => item.value === operator);
 
 /**
  * Whether the tab can show the condition: same field and subfield, an operator the field lists, and
@@ -354,7 +370,7 @@ const tabShows = (
  */
 export const conditionDialogTab = (
 	condition: DsFilterCondition,
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 ): string | undefined => filtersDialogTabs(fields).find((tab) => tabShows(tab, condition))?.id;
 
 const BETWEEN = 'between';
@@ -368,23 +384,24 @@ export const emptyFiltersDialogEntry = (
 	tab: DsFiltersBarFiltersDialogTab,
 ): DsFiltersBarFiltersDialogEntry => {
 	const key = tab.subfield ? { field: tab.field, subfield: tab.subfield } : { field: tab.field };
+	const schema = schemaOf(tab);
 
-	switch (tab.schema.type) {
+	switch (schema.type) {
 		case 'enum':
 			return {
 				...key,
 				type: 'enum',
-				operator: tab.schema.operators[0]?.value ?? '=',
+				operator: schema.operators[0]?.value ?? '=',
 				selected: NO_VALUES,
 				pinned: NO_VALUES,
 			};
 		case 'text':
-			return { ...key, type: 'text', operator: tab.schema.operators[0]?.value ?? '=', text: '' };
+			return { ...key, type: 'text', operator: schema.operators[0]?.value ?? '=', text: '' };
 		case 'number':
 			return {
 				...key,
 				type: 'number',
-				operator: tab.schema.operators[0]?.value ?? '=',
+				operator: schema.operators[0]?.value ?? '=',
 				value: null,
 				range: OPEN_RANGE,
 			};
@@ -392,7 +409,7 @@ export const emptyFiltersDialogEntry = (
 			return {
 				...key,
 				type: 'date',
-				operator: tab.schema.operators[0]?.value ?? '=',
+				operator: schema.operators[0]?.value ?? '=',
 				preset: null,
 				date: null,
 				range: OPEN_RANGE,
@@ -459,8 +476,8 @@ const seedEntry = (
 	}
 
 	const value = first.value as string;
-	const isPreset =
-		tab.schema.type === 'date' && !!tab.schema.presets?.some((preset) => preset.value === value);
+	const schema = schemaOf(tab);
+	const isPreset = schema.type === 'date' && schema.presets.some((preset) => preset.value === value);
 
 	return {
 		...empty,
@@ -475,7 +492,7 @@ const seedEntry = (
  * except that a `>=` and `<=` pair on a number or date field shows as `between`.
  */
 export const toFiltersDialogValue = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	conditions: ReadonlyArray<DsFilterCondition>,
 	pins: ReadonlyArray<DsFilterPin>,
 ): DsFiltersBarFiltersDialogValue =>
@@ -565,7 +582,7 @@ const toCondition = (
  * Pins keep their order: unpinned dialog pins are removed in place and new ones are appended.
  */
 export const fromFiltersDialogValue = (
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 	conditions: ReadonlyArray<DsFilterCondition>,
 	pins: ReadonlyArray<DsFilterPin>,
 	value: DsFiltersBarFiltersDialogValue,
@@ -629,4 +646,161 @@ export const fromFiltersDialogValue = (
 	);
 
 	return { conditions: [...kept, ...added], pins: [...keptPins, ...addedPins] };
+};
+
+/**
+ * Each operator's words merged over its defaults
+ */
+const mergeOperatorWords = <TValue extends DsFilterOperatorValue>(
+	defaults: Readonly<Record<TValue, Required<DsFilterOperatorLocale>>>,
+	overrides: Partial<Record<TValue, DsFilterOperatorLocale>> | undefined,
+): Readonly<Record<TValue, Required<DsFilterOperatorLocale>>> => {
+	if (!overrides) {
+		return defaults;
+	}
+
+	const merged: Record<TValue, Required<DsFilterOperatorLocale>> = { ...defaults };
+
+	for (const value of Object.keys(overrides) as TValue[]) {
+		merged[value] = { ...defaults[value], ...overrides[value] };
+	}
+
+	return merged;
+};
+
+const resolveOperatorsLocale = (
+	locale: DsFiltersBarOperatorsLocale | undefined,
+): DsFiltersBarResolvedOperatorsLocale => {
+	const defaults = defaultDsFiltersBarLocale.operators;
+
+	return {
+		text: mergeOperatorWords(defaults.text, locale?.text),
+		enum: mergeOperatorWords(defaults.enum, locale?.enum),
+		number: mergeOperatorWords(defaults.number, locale?.number),
+		date: mergeOperatorWords(defaults.date, locale?.date),
+	};
+};
+
+/**
+ * Each section merged over its defaults, one level deep; the view names, the query's errors and
+ * operators, and each operator's words deeper
+ */
+export const resolveLocale = (locale: DsFiltersBarLocale | undefined): DsFiltersBarResolvedLocale => {
+	const defaults = defaultDsFiltersBarLocale;
+
+	return {
+		label: locale?.label ?? defaults.label,
+		expand: locale?.expand ?? defaults.expand,
+		collapse: locale?.collapse ?? defaults.collapse,
+		summary: { ...defaults.summary, ...locale?.summary },
+		search: { ...defaults.search, ...locale?.search },
+		viewSwitch: {
+			...defaults.viewSwitch,
+			...locale?.viewSwitch,
+			views: { ...defaults.viewSwitch.views, ...locale?.viewSwitch?.views },
+		},
+		chips: { ...defaults.chips, ...locale?.chips },
+		conditions: { ...defaults.conditions, ...locale?.conditions },
+		builder: { ...defaults.builder, ...locale?.builder },
+		query: {
+			...defaults.query,
+			...locale?.query,
+			errors: { ...defaults.query.errors, ...locale?.query?.errors },
+			operators: { ...defaults.query.operators, ...locale?.query?.operators },
+		},
+		savedFilters: { ...defaults.savedFilters, ...locale?.savedFilters },
+		clearAll: { ...defaults.clearAll, ...locale?.clearAll },
+		pinned: { ...defaults.pinned, ...locale?.pinned },
+		operators: resolveOperatorsLocale(locale?.operators),
+		datePresets: { ...defaults.datePresets, ...locale?.datePresets },
+	};
+};
+
+export const isEmptyDocument = (document: DsFilterDocument) =>
+	document.query === null && document.conditions.length === 0;
+
+/**
+ * Two documents with the same key filter the same way, whatever their condition ids
+ */
+export const documentKey = (document: DsFilterDocument): string =>
+	document.query ?? serializeFilterQuery(document.conditions);
+
+/**
+ * The view shown: `advanced` while a query is set, even when not listed, so the query stays
+ * visible and clearable; else the asked-for view if listed; else the first listed one.
+ */
+export const shownViewFor = (
+	query: string | null,
+	requested: DsFiltersBarView,
+	views: ReadonlyArray<DsFiltersBarView>,
+): DsFiltersBarView => {
+	if (query !== null) {
+		return 'advanced';
+	}
+
+	return views.includes(requested) ? requested : (views[0] ?? requested);
+};
+
+export const isSamePin = (a: DsFilterPin, b: DsFilterPin) => a.field === b.field && a.value === b.value;
+
+/**
+ * The toggles the pinned row shows: still pinned, on a field `fields` has
+ */
+export const keepPinned = (
+	toggles: ReadonlyArray<DsFilterPin>,
+	pins: ReadonlyArray<DsFilterPin>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
+): ReadonlyArray<DsFilterPin> =>
+	toggles.filter(
+		(toggle) =>
+			pins.some((pin) => isSamePin(pin, toggle)) && fields.some((field) => field.id === toggle.field),
+	);
+
+export interface DsFiltersBarPinnedGroup {
+	field: string;
+	label: string;
+	toggles: ReadonlyArray<{ pin: DsFilterPin; label: string }>;
+}
+
+const pinOptions = (field: DsFilterResolvedField): ReadonlyArray<DsFilterOption> => {
+	switch (field.type) {
+		case 'enum':
+			return field.options;
+		case 'date':
+			return field.presets;
+		default:
+			return [];
+	}
+};
+
+/**
+ * One group per field that has pins, in `fields` order, with one toggle per pin in `pins` order.
+ * Pins on fields missing from `fields` are left out.
+ */
+export const toPinnedGroups = (
+	fields: ReadonlyArray<DsFilterResolvedField>,
+	pins: ReadonlyArray<DsFilterPin>,
+): ReadonlyArray<DsFiltersBarPinnedGroup> =>
+	fields.flatMap((field) => {
+		const options = pinOptions(field);
+		const toggles = pins
+			.filter((pin) => pin.field === field.id)
+			.map((pin) => ({ pin, label: labelFor(options, pin.value) }));
+
+		return toggles.length ? [{ field: field.id, label: field.label, toggles }] : [];
+	});
+
+const isPromise = <T>(value: T | Promise<T>): value is Promise<T> =>
+	typeof (value as Partial<Promise<T>> | null | undefined)?.then === 'function';
+
+/**
+ * Runs `then` with the result, after it settles when it is a Promise, which is then returned so
+ * the control that launched it stays loading meanwhile
+ */
+export const afterSettled = <T>(result: T | Promise<T>, then: (value: T) => void): void | Promise<void> => {
+	if (isPromise(result)) {
+		return result.then(then);
+	}
+
+	then(result);
 };

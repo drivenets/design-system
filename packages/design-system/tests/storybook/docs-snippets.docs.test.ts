@@ -35,6 +35,7 @@ const COMPONENTS = [
 	'expandable-text-input',
 	'file-upload',
 	'filter-status-icon',
+	'filters-bar',
 	'form-control',
 	'grid',
 	'icon',

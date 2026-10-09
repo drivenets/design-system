@@ -25,11 +25,13 @@ fromentries
 Gbps
 gnmi
 greyscale
+gstatic
 haspopup
 labelledby
 Lezer
 loadingdone
 matchall
+Mcpjson
 mgmt
 mktemp
 modelcontextprotocol
@@ -41,6 +43,8 @@ OKCAOKLU
 ondark
 onwarn
 oxfmtrc
+pipefail
+prss
 reorderable
 resizer
 retryable
