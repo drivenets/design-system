@@ -2,6 +2,8 @@
 @use '../../styles/shared/dropdown';
 @use '../../styles/shared/input';
 
+$search-header-height: calc(#{input.$input-text-height-default} + 2 * var(--3xs) + 1px);
+
 .control {
 	@include input.selectControl;
 }
@@ -16,6 +18,10 @@
 
 .searchInput {
 	@include input.searchInput;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: var(--background);
 }
 
 .viewport {
@@ -26,6 +32,10 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 		scrollbar-width: thin;
+
+		&:has(> .searchInput) {
+			scroll-padding-top: $search-header-height;
+		}
 	}
 }
 
