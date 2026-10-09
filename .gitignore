@@ -20,3 +20,6 @@ coverage/
 
 # Vitest visual test diffs
 **/.vitest/attachments/
+
+# Vitest JUnit reports (CI)
+test-results/
