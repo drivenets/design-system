@@ -1,0 +1,14 @@
+name: Upload JUnit Report
+description: Upload the Vitest JUnit reports of the current job, read by the flaky test tracker Routine
+
+runs:
+  using: composite
+  steps:
+    # The attempt suffix keeps each re-run's report.
+    - name: Upload JUnit report
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      with:
+        name: junit-${{ github.job }}-attempt-${{ github.run_attempt }}
+        path: packages/*/test-results/junit.xml
+        if-no-files-found: ignore
+        retention-days: 14

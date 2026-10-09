@@ -120,15 +120,9 @@ jobs:
       - name: Run Tests
         run: pnpm test:coverage --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
 
-      # Read by the flaky test tracker Routine. The attempt suffix keeps each re-run's report.
       - name: Upload JUnit report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: junit-test-attempt-${{ github.run_attempt }}
-          path: packages/*/test-results/junit.xml
-          if-no-files-found: ignore
-          retention-days: 14
+        uses: ./.github/actions/upload-junit
 
   docs-tests:
     name: Storybook Docs Tests
@@ -159,15 +153,9 @@ jobs:
       - name: Run Storybook docs snippet tests
         run: pnpm test:storybook-docs --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
 
-      # Read by the flaky test tracker Routine. The attempt suffix keeps each re-run's report.
       - name: Upload JUnit report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: junit-docs-attempt-${{ github.run_attempt }}
-          path: packages/*/test-results/junit.xml
-          if-no-files-found: ignore
-          retention-days: 14
+        uses: ./.github/actions/upload-junit
 
   visual-tests:
     name: Visual Tests
@@ -203,15 +191,9 @@ jobs:
       - name: Run visual tests
         run: pnpm test:visual --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
 
-      # Read by the flaky test tracker Routine. The attempt suffix keeps each re-run's report.
       - name: Upload JUnit report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: junit-visual-attempt-${{ github.run_attempt }}
-          path: packages/*/test-results/junit.xml
-          if-no-files-found: ignore
-          retention-days: 14
+        uses: ./.github/actions/upload-junit
 
       - name: Build visual test report
         if: failure()
@@ -267,15 +249,9 @@ jobs:
       - name: Run Tests With Build
         run: pnpm test:requires-build --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
 
-      # Read by the flaky test tracker Routine. The attempt suffix keeps each re-run's report.
       - name: Upload JUnit report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: junit-requires-build-attempt-${{ github.run_attempt }}
-          path: packages/*/test-results/junit.xml
-          if-no-files-found: ignore
-          retention-days: 14
+        uses: ./.github/actions/upload-junit
 
   packages-versions:
     name: Check Packages Versions
