@@ -118,7 +118,11 @@ jobs:
             ${{ runner.os }}-turbo-test-
 
       - name: Run Tests
-        run: pnpm test:coverage --affected
+        run: pnpm test:coverage --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
+
+      - name: Upload JUnit report
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/upload-junit
 
   docs-tests:
     name: Storybook Docs Tests
@@ -147,7 +151,11 @@ jobs:
             ${{ runner.os }}-turbo-docs-
 
       - name: Run Storybook docs snippet tests
-        run: pnpm test:storybook-docs --affected
+        run: pnpm test:storybook-docs --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
+
+      - name: Upload JUnit report
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/upload-junit
 
   visual-tests:
     name: Visual Tests
@@ -181,7 +189,11 @@ jobs:
         run: pnpm --filter @drivenets/design-system test:visual:server --detach
 
       - name: Run visual tests
-        run: pnpm test:visual --affected
+        run: pnpm test:visual --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
+
+      - name: Upload JUnit report
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/upload-junit
 
       - name: Build visual test report
         if: failure()
@@ -235,7 +247,11 @@ jobs:
           pnpm lint:build --affected
 
       - name: Run Tests With Build
-        run: pnpm test:requires-build --affected
+        run: pnpm test:requires-build --affected -- --reporter=default --reporter=github-actions --reporter=junit --outputFile.junit=test-results/junit.xml
+
+      - name: Upload JUnit report
+        if: ${{ !cancelled() }}
+        uses: ./.github/actions/upload-junit
 
   packages-versions:
     name: Check Packages Versions
