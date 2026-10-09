@@ -1,5 +1,13 @@
 # @drivenets/design-system
 
+## 0.23.1
+
+### Patch Changes
+
+- be3f954: Fix `DsAutocomplete` options being unreachable by screen readers inside `DsModal` and `DsDialog`, and `DsSelect` options becoming unreachable after a `DsModal` is closed and reopened.
+- e6afe56: Fix `DsTable` empty state drifting off-center when columns overflow horizontally; it now stays centered in the visible area while scrolling
+- f25561a: Fix `DsSelect` search input scrolling out of view when the dropdown opens with a selected option further down the list, and keyboard-highlighted options being hidden behind it.
+
 ## 0.23.0
 
 ### Minor Changes
