@@ -1,0 +1,34 @@
+.pinned {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--standard);
+	min-width: 0;
+}
+
+.pinnedLabel {
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	gap: var(--4xs);
+	color: var(--font-main);
+}
+
+.pinnedGroup {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--xs);
+	min-width: 0;
+}
+
+.pinnedGroupLabel {
+	flex-shrink: 0;
+}
+
+.pinnedToggles {
+	display: inline-flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--3xs);
+	min-width: 0;
+}

@@ -5,7 +5,7 @@ import { DsStack } from '../../../../ds-stack';
 import { DsTypography } from '../../../../ds-typography';
 import {
 	filterOperatorValues,
-	type DsFilterField,
+	type DsFilterResolvedField,
 	type DsFilterOperatorValue,
 } from '../../../ds-filters-bar.types';
 import type { DsFiltersBarQueryLocale } from '../ds-filters-bar-query.types';
@@ -19,7 +19,7 @@ type QueryHelpLocale = Required<
 > & { operators: Readonly<Record<DsFilterOperatorValue, string>> };
 
 interface QueryHelpProps {
-	fields: ReadonlyArray<DsFilterField>;
+	fields: ReadonlyArray<DsFilterResolvedField>;
 	locale: QueryHelpLocale;
 	content?: ReactNode;
 }

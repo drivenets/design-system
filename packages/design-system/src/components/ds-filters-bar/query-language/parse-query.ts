@@ -4,6 +4,7 @@ import {
 	type DsFilterField,
 	type DsFilterOperatorValue,
 } from '../ds-filters-bar.types';
+import { resolveFields } from '../resolve-fields';
 import { QueryFailure } from './query-failure';
 import type { DsFilterQueryResult, DsFilterQueryToken } from './query-language.types';
 import type { RawQueryClause, RawQueryNode, RawQueryText } from './raw-query.types';
@@ -182,8 +183,9 @@ const parse = (query: string, tokens: ReadonlyArray<DsFilterQueryToken>): RawQue
 };
 
 /**
- * Parses query text and checks it against the **Field schema**. `previous` conditions lend their
- * ids to parsed conditions with the same content.
+ * Parses query text and checks it against the **Field schema**: each field's operators, the
+ * built-in ones where it lists none, and its options or date presets by value or label. `previous`
+ * conditions lend their ids to parsed conditions with the same content.
  */
 export const parseFilterQuery = (
 	query: string,
@@ -191,7 +193,7 @@ export const parseFilterQuery = (
 	previous: ReadonlyArray<DsFilterCondition> = [],
 ): DsFilterQueryResult => {
 	try {
-		const node = validate(query, parse(query, tokenize(query)), fields);
+		const node = validate(query, parse(query, tokenize(query)), resolveFields(fields));
 
 		return { ok: true, node, conditions: toConditions(node, previous) };
 	} catch (failure) {

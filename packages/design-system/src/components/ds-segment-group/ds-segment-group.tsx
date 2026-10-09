@@ -39,6 +39,8 @@ const Item: React.FC<DsSegmentGroupItemProps> = ({
 	style,
 	children,
 	size = 'default',
+	'aria-label': ariaLabel,
+	'aria-describedby': ariaDescribedBy,
 	...props
 }) => {
 	return (
@@ -50,7 +52,8 @@ const Item: React.FC<DsSegmentGroupItemProps> = ({
 		>
 			{label ? <ItemText size={size}>{label}</ItemText> : children}
 			<SegmentGroup.ItemControl />
-			<SegmentGroup.ItemHiddenInput />
+			{/* The radio is the focusable control, so it carries the item's name and description. */}
+			<SegmentGroup.ItemHiddenInput aria-label={ariaLabel} aria-describedby={ariaDescribedBy} />
 		</SegmentGroup.Item>
 	);
 };

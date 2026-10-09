@@ -43,9 +43,11 @@ const DsToggleFilterData = ({
 			<DsTypography variant="body-xs-md" className={styles.label}>
 				{label}
 			</DsTypography>
-			<DsTypography variant="body-xs-reg" className={styles.value}>
-				{value}
-			</DsTypography>
+			{value !== undefined && value !== null && (
+				<DsTypography variant="body-xs-reg" className={styles.value}>
+					{value}
+				</DsTypography>
+			)}
 		</button>
 	);
 };

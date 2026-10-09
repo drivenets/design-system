@@ -173,7 +173,7 @@ The compact disclosure on a **Collapsed field** that reports additional logical 
 _Avoid_: ellipsis (horizontal clip only), line count badge
 
 **Filters bar**:
-The **Internal component** (`DsFiltersBar`, public once built) that composes the **Filter views**, the pinned row and **Saved filters** around one **Filter document**.
+The **Component** (`DsFiltersBar`) that renders the **Filter views**, the pinned row and **Saved filters** around one **Filter document**. Its parts are **Internal components**, customized through its `slotProps`.
 _Avoid_: filter toolbar, search bar
 
 **Filter document**:
@@ -193,8 +193,12 @@ A valid query made only of clauses joined by `AND`, so it maps one-to-one onto *
 _Avoid_: simple query, flat query
 
 **Field schema**:
-The consumer's description of what can be filtered — each field's type, operators, and options or subfields; the type decides what a **Filter condition** on that field can hold.
+The consumer's description of what can be filtered — each field's type, options, **Date presets** or subfields, and optionally the operators it narrows its type's built-in set to; the type decides what a **Filter condition** on that field can hold.
 _Avoid_: BUILDER_SCHEMA, columns, filter config
+
+**Date preset**:
+A named span of days a date field offers, such as `last7Days`: built-in, resolved by the **Row matcher** in UTC calendar days, or custom, resolved by the product.
+_Avoid_: quick date, relative date (as the concept name)
 
 **Filter view**:
 One of the three presentations of the same **Filter document** — `filters`, `builder`, `advanced` — switched by the view switch. Switching changes the presentation only.
@@ -205,7 +209,7 @@ A field option the user marked for quick access in the pinned row; a user prefer
 _Avoid_: favorite, quick-view pill
 
 **Saved filter**:
-A named snapshot of the current filter document (`id`, `name`, and a consumer-owned payload). Selected from the **Saved filters** picker.
+A named snapshot of a **Filter document** (`id`, `name`, `document`). Selected from the **Saved filters** picker; the product only persists it.
 _Avoid_: savedSearch, preset, bookmark (the icon is not the concept)
 
 **Filter condition**:
@@ -219,6 +223,10 @@ _Avoid_: selected filter, current filter (when meaning the snapshot, not the wor
 **Filter summary**:
 The one-line, read-only description of a **Filters bar**'s **Filter document** shown while the bar is collapsed, followed by the result count.
 _Avoid_: summed display, collapsed field (that is the **Code input** viewport), collapsed mode
+
+**Row matcher**:
+The design system's evaluation of a **Filter document** and the switched-on **Pins** against in-memory rows (`filterRows`), giving the matching rows and each **Pin**'s count.
+_Avoid_: evaluator, filter engine, matchRows
 
 ## Relationships
 
@@ -253,9 +261,14 @@ _Avoid_: summed display, collapsed field (that is the **Code input** viewport), 
 - Clearing the query text leaves a **Compatible query** with zero clauses, so it empties the **Filter conditions**
 - A **Filter summary** describes whichever source drives the **Filter document**: it lists the **Filter conditions**, or, while an **Advanced query** is the source, names it without repeating its text
 - While an **Advanced query** is the source, the filters **Filter view** shows no **Filter conditions** and offers no way to add one; they return when the query is cleared
+- While an **Advanced query** is the source, the **Filters bar** shows the advanced **Filter view** whichever view was asked for; the asked-for view comes back when the query is cleared
 - A **Filter condition** names a field from the **Field schema**, or is free search text
 - Anything that adds filters to a **Filters bar** either writes **Filter conditions** or is an exclusive source like the **Advanced query** — the query builder writes **Filter conditions**
+- The filters and builder **Filter views** show the same chips for the **Filter conditions**; they differ only in the dialog that adding a condition or clicking a chip opens — the filters dialog or the query builder
+- A **Pin** shows as a toggle in the pinned row; turning it on narrows the results the **Filter document** produced. Like the **Pin** itself, whether it is on lives outside the **Filter document** and never appears in the **Filter summary**
 - A **Field schema** is the only validation rule set for the **Query language**; consumers narrow what can be queried by narrowing the schema
+- A **Filters bar** owns which **Pins** are switched on and its **Active saved filter**; clearing it empties the **Filter document**, switches every **Pin** off and drops the **Active saved filter**, but keeps the **Pins**
+- A **Row matcher** serves client-side data only; a server-filtered product evaluates the **Filter document** itself and passes the counts to the **Filters bar**
 
 ## Example dialogue
 

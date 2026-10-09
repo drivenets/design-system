@@ -2,7 +2,7 @@
 // source=https://github.com/drivenets/design-system/tree/main/packages/design-system/src/components/ds-modal
 // component=DsModal.Footer
 //
-// `DAP_modal-footer_v02` maps to `DsModal.Footer` > `DsModal.Actions`. The
+// `Part_modal-footer_V2` maps to `DsModal.Footer` > `DsModal.Actions`. The
 // `right side buttons` slot resolves its `DAP_Button_v03` instances via the
 // existing `ds-button-v3` Code Connect.
 import figma from 'figma';

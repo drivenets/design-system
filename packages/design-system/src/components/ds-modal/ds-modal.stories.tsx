@@ -25,6 +25,16 @@ const meta: Meta<typeof DsModal> = {
 		},
 		open: { table: { disable: true } },
 		onOpenChange: { table: { disable: true } },
+		fullScreen: {
+			control: 'boolean',
+			description:
+				'Whether the modal fills the viewport. Passing it makes full screen controlled. `columns` has no effect while full screen',
+		},
+		defaultFullScreen: {
+			control: 'boolean',
+			description: 'Initial full screen state when uncontrolled. The modal returns to it after closing',
+		},
+		onFullScreenChange: { table: { disable: true } },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
 	},
@@ -246,6 +256,103 @@ export const WithoutHeader: Story = {
 								Close
 							</DsButtonV3>
 							<DsButtonV3 onClick={() => setOpen(false)}>Continue</DsButtonV3>
+						</DsModal.Actions>
+					</DsModal.Footer>
+				</DsModal>
+			</>
+		);
+	},
+};
+
+/**
+ * Place DsModal.FullScreenTrigger in the header before DsModal.CloseTrigger to let users
+ * expand the modal to fill the viewport, for dense content such as large forms or tables.
+ * The modal tracks the state itself; set `defaultFullScreen` to open it full screen.
+ */
+export const FullScreen: Story = {
+	parameters: {
+		// Passing `fullScreen` would make the state controlled — see FullScreenControlled
+		controls: { exclude: ['fullScreen'] },
+		docs: { source: { type: 'code' } },
+	},
+	args: {
+		columns: 4,
+		defaultFullScreen: false,
+	},
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+
+		return (
+			<>
+				<DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+				<DsModal {...args} open={open} onOpenChange={setOpen}>
+					<DsModal.Header>
+						<DsModal.Title>Network elements</DsModal.Title>
+						<DsModal.FullScreenTrigger aria-label="Toggle full screen" />
+						<DsModal.CloseTrigger />
+					</DsModal.Header>
+					<DsModal.Body>
+						<DsTypography variant="body-md-reg">
+							Use the button next to the close button to expand the modal to full screen.
+						</DsTypography>
+					</DsModal.Body>
+					<DsModal.Footer>
+						<DsModal.Actions>
+							<DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>
+								Cancel
+							</DsButtonV3>
+							<DsButtonV3 onClick={() => setOpen(false)}>Confirm</DsButtonV3>
+						</DsModal.Actions>
+					</DsModal.Footer>
+				</DsModal>
+			</>
+		);
+	},
+};
+
+/**
+ * Pass `fullScreen` with `onFullScreenChange` to own the full screen state, for example to
+ * persist it or to change it from outside the modal. DsModal.FullScreenTrigger then only
+ * requests changes through `onFullScreenChange`.
+ */
+export const FullScreenControlled: Story = {
+	parameters: {
+		controls: { exclude: ['fullScreen', 'defaultFullScreen'] },
+		docs: { source: { type: 'code' } },
+	},
+	args: {
+		columns: 4,
+	},
+	render: function Render(args) {
+		const [open, setOpen] = useState(false);
+		const [fullScreen, setFullScreen] = useState(false);
+
+		return (
+			<>
+				<DsButtonV3 onClick={() => setOpen(true)}>Open modal</DsButtonV3>
+				<DsModal
+					{...args}
+					open={open}
+					fullScreen={fullScreen}
+					onFullScreenChange={setFullScreen}
+					onOpenChange={setOpen}
+				>
+					<DsModal.Header>
+						<DsModal.Title>Network elements</DsModal.Title>
+						<DsModal.FullScreenTrigger aria-label="Toggle full screen" />
+						<DsModal.CloseTrigger />
+					</DsModal.Header>
+					<DsModal.Body>
+						<DsTypography variant="body-md-reg">
+							Full screen is {fullScreen ? 'on' : 'off'}. The parent component owns this state.
+						</DsTypography>
+					</DsModal.Body>
+					<DsModal.Footer>
+						<DsModal.Actions>
+							<DsButtonV3 variant="secondary" onClick={() => setOpen(false)}>
+								Cancel
+							</DsButtonV3>
+							<DsButtonV3 onClick={() => setOpen(false)}>Confirm</DsButtonV3>
 						</DsModal.Actions>
 					</DsModal.Footer>
 				</DsModal>

@@ -1,0 +1,8 @@
+{
+	"mcpServers": {
+		"drivenets-ds": {
+			"command": "npx",
+			"args": ["-y", "@drivenets/design-system-mcp"]
+		}
+	}
+}

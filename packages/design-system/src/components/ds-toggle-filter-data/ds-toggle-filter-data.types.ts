@@ -10,9 +10,10 @@ export interface DsToggleFilterDataProps {
 	 */
 	label: ReactNode;
 	/**
-	 * Secondary-colored trailing segment, typically the count the `label` refers to
+	 * Secondary-colored trailing segment, typically the count the `label` refers to. Omit to show
+	 * the label alone.
 	 */
-	value: ReactNode;
+	value?: ReactNode;
 	/**
 	 * Whether the pill is toggled on. Controlled — pair it with `onActiveChange` and re-render with
 	 * the next value. Surfaced as `aria-pressed`, which stays exposed while `disabled`.
