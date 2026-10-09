@@ -1,9 +1,11 @@
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsAutocomplete } from '../ds-autocomplete';
 import type { DsAutocompleteOption } from '../ds-autocomplete.types';
 import { DsIcon } from '../../ds-icon';
+import { DsModal } from '../../ds-modal';
+import { DsDialog } from '../../ds-dialog';
 
 const mockOptions: DsAutocompleteOption[] = [
 	{ value: 'apple', label: 'Apple' },
@@ -324,5 +326,78 @@ describe('DsAutocomplete', () => {
 			await page.getByRole('option', { name: /United States/i }).click();
 			expect(onValueChange).toHaveBeenCalledWith('us');
 		});
+	});
+
+	// Modal dialogs aria-hide everything outside themselves when they open, so a dropdown
+	// portalled to <body> must not be in the DOM yet or its options become unreachable by role.
+	describe.each([
+		{
+			container: 'DsModal',
+			renderIn: (children: ReactNode) => (
+				<DsModal open onOpenChange={() => {}}>
+					<DsModal.Body>{children}</DsModal.Body>
+				</DsModal>
+			),
+		},
+		{
+			container: 'DsDialog',
+			renderIn: (children: ReactNode) => (
+				<DsDialog open onOpenChange={() => {}} title="Pick a fruit">
+					{children}
+				</DsDialog>
+			),
+		},
+	])('inside $container', ({ renderIn }) => {
+		it('should expose the listbox options by role and select one', async () => {
+			const onValueChange = vi.fn();
+
+			await page.render(renderIn(<DsAutocomplete options={mockOptions} onValueChange={onValueChange} />));
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('b');
+
+			await expect.element(page.getByRole('listbox')).toBeVisible();
+			await page.getByRole('option', { name: /Banana/i }).click();
+
+			expect(onValueChange).toHaveBeenCalledWith('banana');
+		});
+	});
+
+	it('should keep options reachable by role after a DsModal is closed and reopened', async () => {
+		const ModalHarness = () => {
+			const [open, setOpen] = useState(true);
+
+			return (
+				<>
+					<button type="button" onClick={() => setOpen(true)}>
+						Open modal
+					</button>
+					<DsModal open={open} onOpenChange={setOpen}>
+						<DsModal.Body>
+							<DsAutocomplete options={mockOptions} />
+							<button type="button" onClick={() => setOpen(false)}>
+								Close modal
+							</button>
+						</DsModal.Body>
+					</DsModal>
+				</>
+			);
+		};
+
+		await page.render(<ModalHarness />);
+
+		await page.getByRole('combobox').click();
+		await page.getByRole('combobox').fill('b');
+		await page.getByRole('option', { name: /Banana/i }).click();
+
+		await page.getByRole('button', { name: 'Close modal' }).click();
+		await expect.element(page.getByRole('dialog')).not.toBeInTheDocument();
+		await page.getByRole('button', { name: 'Open modal' }).click();
+
+		await page.getByRole('combobox').fill('c');
+		await page.getByRole('option', { name: /Cherry/i }).click();
+
+		await expect.element(page.getByRole('combobox')).toHaveValue('Cherry');
 	});
 });
