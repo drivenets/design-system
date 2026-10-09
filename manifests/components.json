@@ -516,9 +516,15 @@
           "name": "Async Options",
           "snippet": "const AsyncOptions = () => {\n    const [options, setOptions] = useState<DsAutocompleteOption[]>([]);\n    const [loading, setLoading] = useState(true);\n\n    useEffect(() => {\n        const load = async () => {\n            await new Promise((resolve) => setTimeout(resolve, 150));\n            setOptions([\n                { value: 'us', label: 'United States' },\n                { value: 'uk', label: 'United Kingdom' },\n                { value: 'ca', label: 'Canada' },\n            ]);\n            setLoading(false);\n        };\n\n        void load();\n    }, []);\n\n    return <DsAutocomplete options={options} loading={loading} placeholder=\"Select a country...\" />;\n};",
           "description": "When the full option set is fetched once on mount, start in a `loading` state and swap in\nthe results when the request resolves. After that the component filters locally."
+        },
+        {
+          "id": "components-autocomplete--inside-modal",
+          "name": "Inside Modal",
+          "snippet": "const InsideModal = () => {\n    const [open, setOpen] = useState(false);\n\n    return (\n        <>\n            <DsButtonV3 onClick={() => setOpen(true)}>Assign owner</DsButtonV3>\n            <DsModal open={open} onOpenChange={setOpen} columns={4}>\n                <DsModal.Header>\n                    <DsModal.Title>Assign owner</DsModal.Title>\n                    <DsModal.CloseTrigger />\n                </DsModal.Header>\n                <DsModal.Body>\n                    <DsAutocomplete\n                        placeholder=\"Search team members...\"\n                        options={[\n                            { value: 'alice', label: 'Alice Cohen' },\n                            { value: 'bob', label: 'Bob Levi' },\n                            { value: 'carol', label: 'Carol Smith' },\n                        ]} />\n                </DsModal.Body>\n            </DsModal>\n        </>\n    );\n};",
+          "description": "DsAutocomplete can be placed inside a DsModal (or DsDialog). The dropdown opens over the\nmodal content, and its options stay exposed to assistive technology as a `listbox` of\n`option`s, so screen reader users can pick a value without any extra wiring."
         }
       ],
-      "import": "import { DsAutocomplete, DsIcon, DsStack, DsTypography } from '@drivenets/design-system';\nimport { DsIcon } from '../ds-icon';"
+      "import": "import { DsAutocomplete, DsButtonV3, DsIcon, DsModal, DsStack, DsTypography } from '@drivenets/design-system';\nimport { DsIcon } from '../ds-icon';"
     },
     "components-avatargroup": {
       "id": "components-avatargroup",
@@ -32640,6 +32646,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 3876
+    "durationMs": 5468
   }
 }
