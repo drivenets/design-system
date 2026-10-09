@@ -23,6 +23,7 @@ import { applyDsTableDefaults } from './ds-table-defaults';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { useColumnResize } from './hooks/use-column-resize';
+import { useTableVisibleWidth } from './hooks/use-table-visible-width';
 import { DsTableContextProvider } from './context/ds-table-context';
 import { DsTableBodyVirtualized } from './components/ds-table-body-virtualized';
 import { useColumnGroups } from './grouping';
@@ -230,6 +231,8 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	});
 
 	const { columnSizeVars, activeResize, context: resizeContext } = resize.bind(table);
+
+	useTableVisibleWidth(resizeContext.resizeContainerRef);
 
 	useImperativeHandle(ref, () => createTableApi(table), [table]);
 
