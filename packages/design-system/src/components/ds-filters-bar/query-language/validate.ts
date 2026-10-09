@@ -1,8 +1,8 @@
 import type {
-	DsFilterField,
+	DsFilterResolvedField,
 	DsFilterOperatorValue,
 	DsFilterOption,
-	DsFilterScalarField,
+	DsFilterResolvedScalarField,
 	DsFilterValue,
 } from '../ds-filters-bar.types';
 import type { RawQueryClause, RawQueryNode, RawQueryText } from './raw-query.types';
@@ -23,7 +23,7 @@ type SchemaErrorCode = Extract<
 interface ResolvedField {
 	field: string;
 	subfield?: string;
-	scalar: DsFilterScalarField;
+	scalar: DsFilterResolvedScalarField;
 }
 
 const SUBFIELD_SEPARATOR = '.';
@@ -65,7 +65,7 @@ const IMPLIED_OPERATORS: Readonly<Partial<Record<DsFilterOperatorValue, DsFilter
  * language writes an enum `=` with several values as `IN` and a range as `>=` and `<=`, so those
  * must parse back on a field that declares only `=` or `!=`.
  */
-const impliedOperator = (scalar: DsFilterScalarField, written: DsFilterOperatorValue) => {
+const impliedOperator = (scalar: DsFilterResolvedScalarField, written: DsFilterOperatorValue) => {
 	const plain = IMPLIED_OPERATORS[written];
 	const listOperator = written === 'IN' || written === 'NOT IN';
 	const fits = listOperator ? scalar.type === 'enum' : scalar.type === 'number' || scalar.type === 'date';
@@ -102,7 +102,7 @@ const impliedValue = (written: DsFilterOperatorValue, value: DsFilterValue): DsF
 export const validate = (
 	query: string,
 	root: RawQueryNode,
-	fields: ReadonlyArray<DsFilterField>,
+	fields: ReadonlyArray<DsFilterResolvedField>,
 ): DsFilterQueryNode => {
 	const fail = (code: SchemaErrorCode, at: RawQueryText): never => {
 		throw new QueryFailure(query, code, at.from, at.to, at.text);
@@ -147,7 +147,7 @@ export const validate = (
 		return { field: parent.id, subfield: subfield.id, scalar: subfield };
 	};
 
-	const resolveValue = (scalar: DsFilterScalarField, clause: RawQueryClause): DsFilterValue => {
+	const resolveValue = (scalar: DsFilterResolvedScalarField, clause: RawQueryClause): DsFilterValue => {
 		const [first] = clause.values;
 
 		switch (scalar.type) {
@@ -161,7 +161,7 @@ export const validate = (
 				return NUMBER.test(first.text) && Number.isFinite(value) ? value : fail('notANumber', first);
 			}
 			case 'date': {
-				const preset = findOption(scalar.presets ?? [], first.text);
+				const preset = findOption(scalar.presets, first.text);
 
 				if (preset) {
 					return preset.value;

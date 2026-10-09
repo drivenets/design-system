@@ -1,12 +1,7 @@
-import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent, type Locator } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import type {
-	DsFilterField,
-	DsFiltersBarDisclosureProps,
-	DsFiltersBarRootProps,
-} from '../ds-filters-bar.types';
+import type { DsFilterField, DsFiltersBarProps } from '../ds-filters-bar.types';
 
 const FIELDS: ReadonlyArray<DsFilterField> = [
 	{
@@ -18,28 +13,17 @@ const FIELDS: ReadonlyArray<DsFilterField> = [
 	},
 ];
 
-interface BarProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	disclosureProps?: DsFiltersBarDisclosureProps;
-}
-
-const DisclosureBar = ({ disclosureProps, ...props }: BarProps) => (
-	<DsFiltersBar.Root fields={FIELDS} {...props}>
-		<DsFiltersBar.Disclosure {...disclosureProps} />
-		<DsFiltersBar.Summary count={18} />
-		<DsFiltersBar.Toolbar>
-			<button type="button">Add filter</button>
-		</DsFiltersBar.Toolbar>
-		<div>Below the bar</div>
-	</DsFiltersBar.Root>
+const DisclosureBar = (props: DsFiltersBarProps) => (
+	<DsFiltersBar fields={FIELDS} resultCount={18} {...props} />
 );
 
 const region = () => page.getByRole('region', { name: 'Filters' });
 const showButton = (name = 'Show filters') => page.getByRole('button', { name, exact: true });
 const hideButton = (name = 'Hide filters') => page.getByRole('button', { name, exact: true });
-const addFilter = () => page.getByRole('button', { name: 'Add filter' });
-const below = () => page.getByText('Below the bar', { exact: true });
+const searchInput = () => page.getByRole('textbox', { name: 'Search' });
+const pinnedGroup = () => page.getByRole('group', { name: 'Status' });
 
-// Root renders its parts as direct children, so the part holding a located element is its child of the region.
+// The bar renders its parts as direct children, so the part holding a located element is its child of the region.
 const partOf = (locator: Locator): HTMLElement => {
 	const root = region().element();
 	let element = locator.element() as HTMLElement;
@@ -62,7 +46,7 @@ const settleAnimations = () => Promise.all(document.getAnimations().map((animati
 const isSameLineBefore = (first: DOMRect, second: DOMRect) =>
 	first.top < second.bottom && second.top < first.bottom && first.right <= second.left;
 
-describe('DsFiltersBar.Disclosure', () => {
+describe('DsFiltersBar disclosure', () => {
 	it('toggles the bar, its accessible name and aria-expanded', async () => {
 		const onExpandedChange = vi.fn();
 
@@ -77,22 +61,22 @@ describe('DsFiltersBar.Disclosure', () => {
 		expect(onExpandedChange).toHaveBeenLastCalledWith(true);
 		await expect.element(hideButton()).toHaveAttribute('aria-expanded', 'true');
 		await expect.element(hideButton()).not.toHaveAttribute('aria-pressed');
-		await expect.element(addFilter()).toBeVisible();
+		await expect.element(searchInput()).toBeVisible();
 
 		await hideButton().click();
 
 		expect(onExpandedChange).toHaveBeenLastCalledWith(false);
 		await expect.element(showButton()).toHaveAttribute('aria-expanded', 'false');
-		await expect.element(addFilter()).not.toBeInTheDocument();
+		await expect.element(searchInput()).not.toBeInTheDocument();
 	});
 
 	it('points the chevron down while collapsed and turns it right while expanded', async () => {
 		await page.render(<DisclosureBar />);
 
-		const chevron = page.getByText('keyboard_arrow_down', { exact: true });
-		const transformOf = () => getComputedStyle(chevron.element()).transform;
+		const chevron = showButton().getByText('keyboard_arrow_down', { exact: true }).element();
+		const transformOf = () => getComputedStyle(chevron).transform;
 
-		expect(chevron.element().closest('[aria-hidden="true"]')).not.toBeNull();
+		expect(chevron.closest('[aria-hidden="true"]')).not.toBeNull();
 		await expect.poll(transformOf).toBe('none');
 
 		await showButton().click();
@@ -107,7 +91,7 @@ describe('DsFiltersBar.Disclosure', () => {
 		const toolbar = document.getElementById(hideButton().element().getAttribute('aria-controls') ?? '');
 
 		expect(toolbar).not.toBeNull();
-		expect(toolbar).toContainElement(addFilter().element());
+		expect(toolbar).toContainElement(searchInput().element());
 	});
 
 	it('keeps keyboard focus on the button across the toggle', async () => {
@@ -129,32 +113,17 @@ describe('DsFiltersBar.Disclosure', () => {
 		await expect.element(showButton()).toHaveFocus();
 	});
 
-	it('takes its accessible names from the Root locale', async () => {
+	it('takes its accessible names from the locale', async () => {
 		await page.render(<DisclosureBar locale={{ expand: 'Open filters', collapse: 'Close filters' }} />);
 
 		await showButton('Open filters').click();
 
 		await expect.element(hideButton('Close filters')).toHaveAttribute('aria-expanded', 'true');
 	});
-
-	it('forwards ref, className and style to the button', async () => {
-		const ref = createRef<HTMLButtonElement>();
-
-		await page.render(
-			<DisclosureBar disclosureProps={{ ref, className: 'custom', style: { marginTop: 3 } }} />,
-		);
-
-		const button = showButton();
-
-		await expect.element(button).toHaveClass('custom');
-		await expect.element(button).toHaveStyle({ marginTop: '3px' });
-		expect(ref.current).toBeInstanceOf(HTMLButtonElement);
-		expect(ref.current).toBe(button.element());
-	});
 });
 
-describe('DsFiltersBar.Disclosure layout', () => {
-	it('sits on the same line as the Summary while collapsed', async () => {
+describe('DsFiltersBar disclosure layout', () => {
+	it('sits on the same line as the summary while collapsed', async () => {
 		await page.render(<DisclosureBar />);
 
 		await expect.element(region()).toMatchTextContent('View: All;');
@@ -165,55 +134,49 @@ describe('DsFiltersBar.Disclosure layout', () => {
 		expect(isSameLineBefore(rectOf(showButton()), rectOf(summary))).toBe(true);
 	});
 
-	it('sits on the same line as the Toolbar while expanded', async () => {
+	it('sits on the same line as the toolbar while expanded', async () => {
 		await page.render(<DisclosureBar defaultExpanded />);
 
-		await expect.element(addFilter()).toBeVisible();
+		await expect.element(searchInput()).toBeVisible();
 		await settleAnimations();
 
-		expect(isSameLineBefore(rectOf(hideButton()), rectOf(addFilter()))).toBe(true);
+		expect(isSameLineBefore(rectOf(hideButton()), rectOf(searchInput()))).toBe(true);
 	});
 
-	it('wraps the lines after the first under the Disclosure', async () => {
-		await page.render(
-			<DsFiltersBar.Root fields={FIELDS} defaultExpanded style={{ width: 200 }}>
-				<DsFiltersBar.Disclosure />
-				<DsFiltersBar.Toolbar>
-					<button type="button" style={{ width: 120 }}>
-						First
-					</button>
-					<button type="button" style={{ width: 120 }}>
-						Second
-					</button>
-				</DsFiltersBar.Toolbar>
-			</DsFiltersBar.Root>,
-		);
+	it('wraps the toolbar lines after the first under the disclosure', async () => {
+		await page.render(<DisclosureBar defaultExpanded style={{ width: 320 }} />);
 
 		await settleAnimations();
 
 		const disclosure = rectOf(hideButton());
-		const first = rectOf(page.getByRole('button', { name: 'First' }));
-		const second = rectOf(page.getByRole('button', { name: 'Second' }));
+		const items = [
+			searchInput(),
+			page.getByRole('radiogroup', { name: 'Filter view' }),
+			page.getByRole('button', { name: 'Add filter', exact: true }),
+		].map(rectOf);
+		const wrapped = items.filter((item) => item.top >= disclosure.bottom);
 
-		expect(isSameLineBefore(disclosure, first)).toBe(true);
-		expect(second.top).toBeGreaterThanOrEqual(disclosure.bottom);
-		expect(Math.abs(second.left - disclosure.left)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+		expect(isSameLineBefore(disclosure, items[0] as DOMRect)).toBe(true);
+		expect(wrapped).not.toHaveLength(0);
+		expect(Math.abs(Math.min(...wrapped.map((item) => item.left)) - disclosure.left)).toBeLessThanOrEqual(
+			LAYOUT_TOLERANCE_PX,
+		);
 	});
 
-	it('places any other child below the Disclosure line at full width', async () => {
-		await page.render(<DisclosureBar />);
+	it('places the pinned row below the disclosure line at full width', async () => {
+		await page.render(<DisclosureBar defaultPins={[{ field: 'status', value: 'active' }]} />);
 
-		await expect.element(below()).toBeVisible();
+		await expect.element(pinnedGroup()).toBeVisible();
 		await settleAnimations();
 
 		const disclosure = rectOf(showButton());
 		const summary = rectOf(partOf(page.getByText(/^View:?$/)));
-		const other = rectOf(partOf(below()));
+		const pinned = rectOf(partOf(pinnedGroup()));
 
-		expect(other.top).toBeGreaterThanOrEqual(
+		expect(pinned.top).toBeGreaterThanOrEqual(
 			Math.max(disclosure.bottom, summary.bottom) - LAYOUT_TOLERANCE_PX,
 		);
-		expect(Math.abs(other.left - disclosure.left)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
-		expect(Math.abs(other.right - summary.right)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+		expect(Math.abs(pinned.left - disclosure.left)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
+		expect(Math.abs(pinned.right - summary.right)).toBeLessThanOrEqual(LAYOUT_TOLERANCE_PX);
 	});
 });

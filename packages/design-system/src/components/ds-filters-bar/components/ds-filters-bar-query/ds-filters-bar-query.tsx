@@ -4,28 +4,24 @@ import { DsFormControl } from '../../../ds-form-control';
 import { useDsFiltersBarContext } from '../../ds-filters-bar.context';
 import { parseFilterQuery, serializeFilterQuery, type DsFilterQueryError } from '../../query-language';
 import styles from './ds-filters-bar-query.module.scss';
-import { defaultDsFiltersBarQueryLocale, type DsFiltersBarQueryProps } from './ds-filters-bar-query.types';
+import type { DsFiltersBarQuerySlotProps } from '../../ds-filters-bar.types';
 import { QueryHelp } from './ds-filters-bar-query-help';
 
 const QUERY_DEBOUNCE_MS = 300;
 
 /**
  * Text the user typed, and the query text of the document it was typed over. The draft shows
- * while the field is focused, or while the document has not changed under it.
+ * while the field is focused, or while the document has not changed under it, so the user's
+ * casing and line breaks survive blur until another part edits the document.
  */
 interface Draft {
 	text: string;
 	base: string;
 }
 
-const QueryEditor = ({ disabled = false, locale, slots, className, style }: DsFiltersBarQueryProps) => {
+const QueryEditor = ({ disabled = false, slots, ref, className, style }: DsFiltersBarQuerySlotProps) => {
 	const bar = useDsFiltersBarContext();
-	const strings = {
-		...defaultDsFiltersBarQueryLocale,
-		...locale,
-		errors: { ...defaultDsFiltersBarQueryLocale.errors, ...locale?.errors },
-		operators: { ...defaultDsFiltersBarQueryLocale.operators, ...locale?.operators },
-	};
+	const strings = bar.locale.query;
 
 	const [draft, setDraft] = useState<Draft | null>(null);
 	const [error, setError] = useState<DsFilterQueryError | null>(null);
@@ -66,12 +62,9 @@ const QueryEditor = ({ disabled = false, locale, slots, className, style }: DsFi
 				conditions.length === current.conditions.length &&
 				conditions.every((condition, index) => condition.id === current.conditions[index]?.id);
 
-			if (!unchanged) {
-				current.setConditions(conditions);
-			}
-
-			if (current.query !== null) {
-				current.setQuery(null);
+			// One write, so the document is reported once with both the conditions and the cleared query.
+			if (!unchanged || current.query !== null) {
+				current.setDocument({ conditions: unchanged ? current.conditions : conditions, query: null });
 			}
 		} else if (current.query !== text) {
 			current.setQuery(text);
@@ -110,17 +103,13 @@ const QueryEditor = ({ disabled = false, locale, slots, className, style }: DsFi
 			return;
 		}
 
-		const pending = timerRef.current !== undefined;
+		if (timerRef.current === undefined) {
+			return;
+		}
 
 		clearTimeout(timerRef.current);
 		timerRef.current = undefined;
-
-		const valid = pending ? commit(activeDraft.text) : error === null;
-
-		// A valid draft gives way to the document's canonical text; an invalid one stays to be fixed.
-		if (valid) {
-			setDraft(null);
-		}
+		commit(activeDraft.text);
 	};
 
 	return (
@@ -134,6 +123,7 @@ const QueryEditor = ({ disabled = false, locale, slots, className, style }: DsFi
 			style={style}
 		>
 			<DsFormControl.CodeInput
+				ref={ref}
 				value={activeDraft?.text ?? bar.queryText}
 				placeholder={strings.placeholder}
 				disabled={disabled}
@@ -148,11 +138,15 @@ const QueryEditor = ({ disabled = false, locale, slots, className, style }: DsFi
 	);
 };
 
-export const Query = (props: DsFiltersBarQueryProps) => {
+/**
+ * Advanced query view: one-line code field with an overlay for long queries. The text is checked
+ * against the **Field schema** as the user types. A valid query of clauses joined by `AND` becomes
+ * conditions; a valid query with `OR` or parentheses becomes the query and locks the other views;
+ * an invalid one only shows its error.
+ */
+export const Query = (props: DsFiltersBarQuerySlotProps) => {
 	const { resetRevision } = useDsFiltersBarContext();
 
 	// Clearing also discards local drafts, errors and pending commits when the query text is unchanged.
 	return <QueryEditor key={resetRevision} {...props} />;
 };
-
-Query.displayName = 'DsFiltersBar.Query';

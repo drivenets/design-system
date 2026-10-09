@@ -17,7 +17,6 @@ coverage/
 **/mcp.json
 .playwright-mcp
 .claude/launch.json
-.claude/settings.json
 
 # Vitest visual test diffs
 **/.vitest/attachments/

@@ -33,6 +33,7 @@ const meta: Meta<typeof DsSegmentGroup.Root> = {
 		children: { table: { disable: true } },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
+		ref: { table: { disable: true } },
 	},
 };
 

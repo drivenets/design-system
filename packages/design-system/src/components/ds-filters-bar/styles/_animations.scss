@@ -1,0 +1,18 @@
+@use 'variables';
+
+// Summary and Toolbar take turns in the same cell; the one that appears fades in.
+@keyframes swap-in {
+	from {
+		opacity: 0;
+		transform: translateX(variables.$swap-offset);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+@mixin swap-in {
+	animation: swap-in variables.$swap-duration ease-in;
+}

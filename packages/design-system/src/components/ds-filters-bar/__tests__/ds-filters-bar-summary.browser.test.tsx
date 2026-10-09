@@ -1,12 +1,12 @@
-import { createRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page, type Locator } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
 import type {
 	DsFilterCondition,
+	DsFilterDocument,
 	DsFilterField,
-	DsFiltersBarRootProps,
-	DsFiltersBarSummaryProps,
+	DsFiltersBarProps,
+	DsFiltersBarSavedFiltersConfig,
 } from '../ds-filters-bar.types';
 
 const FIELDS: ReadonlyArray<DsFilterField> = [
@@ -93,25 +93,20 @@ const SEARCH_AAA: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'A
 const OR_QUERY = 'status = "active" OR status = "pending"';
 const SAVED_FILTER = 'Ira123';
 
-interface BarProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	summaryProps?: DsFiltersBarSummaryProps;
-}
+const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items, query: null });
+const orQuery: DsFilterDocument = { conditions: [], query: OR_QUERY };
 
-const SummaryBar = ({ summaryProps, ...props }: BarProps) => (
-	<DsFiltersBar.Root fields={FIELDS} {...props}>
-		<DsFiltersBar.Summary {...summaryProps} />
-	</DsFiltersBar.Root>
-);
+// The summary names the Active saved filter, whatever document the bar holds.
+const activeSavedFilter: DsFiltersBarSavedFiltersConfig = {
+	items: [{ id: 'saved', name: SAVED_FILTER, document: conditions(STATUS) }],
+	defaultActiveId: 'saved',
+	onSaveAs: () => 'new',
+	onUpdate: () => undefined,
+	onRename: () => undefined,
+	onDelete: () => undefined,
+};
 
-const DisclosureBar = ({ summaryProps, ...props }: BarProps) => (
-	<DsFiltersBar.Root fields={FIELDS} {...props}>
-		<DsFiltersBar.Disclosure />
-		<DsFiltersBar.Summary {...summaryProps} />
-		<DsFiltersBar.Toolbar>
-			<button type="button">Add filter</button>
-		</DsFiltersBar.Toolbar>
-	</DsFiltersBar.Root>
-);
+const SummaryBar = (props: DsFiltersBarProps) => <DsFiltersBar fields={FIELDS} {...props} />;
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -150,15 +145,15 @@ const isInside = (inner: Locator, outer: Locator) => {
 	return innerRect.left >= outerRect.left && innerRect.right <= outerRect.right;
 };
 
-describe('DsFiltersBar.Summary text', () => {
-	it('reads `View: All;` and the count for an empty document', async () => {
-		await page.render(<SummaryBar summaryProps={{ count: 18 }} />);
+describe('DsFiltersBar summary text', () => {
+	it('reads `View: All;` and the result count for an empty document', async () => {
+		await page.render(<SummaryBar resultCount={18} />);
 
 		await expect.element(region()).toMatchTextContent(summaryOf('View: All;', '(18)'));
 	});
 
 	it('omits the operator for `=` and words every other operator by its label', async () => {
-		await page.render(<SummaryBar defaultConditions={[STATUS, LAST_RUN]} summaryProps={{ count: 18 }} />);
+		await page.render(<SummaryBar defaultValue={conditions(STATUS, LAST_RUN)} resultCount={18} />);
 
 		await expect
 			.element(region())
@@ -168,27 +163,27 @@ describe('DsFiltersBar.Summary text', () => {
 	});
 
 	it('shows a range without an operator', async () => {
-		await page.render(<SummaryBar defaultConditions={[DURATION_RANGE]} />);
+		await page.render(<SummaryBar defaultValue={conditions(DURATION_RANGE)} />);
 
 		await expect.element(region()).toMatchTextContent('Duration: 10 – 20;');
 		await expect.element(region()).not.toMatchTextContent('equals');
 	});
 
 	it('joins a compound field path with ` › `', async () => {
-		await page.render(<SummaryBar defaultConditions={[INPUT_NAME]} />);
+		await page.render(<SummaryBar defaultValue={conditions(INPUT_NAME)} />);
 
 		await expect.element(region()).toMatchTextContent('Input › Name contains: WF456;');
 	});
 
 	it('reads a search condition as `Search: <text>;`', async () => {
-		await page.render(<SummaryBar defaultConditions={[STATUS, SEARCH_AAA]} />);
+		await page.render(<SummaryBar defaultValue={conditions(STATUS, SEARCH_AAA)} />);
 
 		await expect.element(region()).toMatchTextContent(summaryOf('Status: Active;', 'Search: AAA;'));
 	});
 
 	it('reads `Advanced query;` without conditions or query text while an Advanced query is the source', async () => {
 		await page.render(
-			<SummaryBar defaultConditions={[STATUS]} defaultQuery={OR_QUERY} summaryProps={{ count: 18 }} />,
+			<SummaryBar defaultValue={{ conditions: [STATUS], query: OR_QUERY }} resultCount={18} />,
 		);
 
 		await expect.element(region()).toMatchTextContent(summaryOf('Advanced query;', '(18)'));
@@ -198,7 +193,9 @@ describe('DsFiltersBar.Summary text', () => {
 	});
 
 	it('reads `Filter: <name>;` without `View: All` when the saved filter has nothing after it', async () => {
-		await page.render(<SummaryBar summaryProps={{ count: 18, activeSavedFilterName: SAVED_FILTER }} />);
+		await page.render(
+			<SummaryBar defaultValue={conditions()} resultCount={18} savedFilters={activeSavedFilter} />,
+		);
 
 		await expect.element(region()).toMatchTextContent(summaryOf(`Filter: ${SAVED_FILTER};`, '(18)'));
 		await expect.element(region()).not.toMatchTextContent('View');
@@ -207,8 +204,9 @@ describe('DsFiltersBar.Summary text', () => {
 	it('drops the `;` after the saved filter name when conditions follow', async () => {
 		await page.render(
 			<SummaryBar
-				defaultConditions={[STATUS, SEARCH_AAA]}
-				summaryProps={{ count: 18, activeSavedFilterName: SAVED_FILTER }}
+				defaultValue={conditions(STATUS, SEARCH_AAA)}
+				resultCount={18}
+				savedFilters={activeSavedFilter}
 			/>,
 		);
 
@@ -219,9 +217,7 @@ describe('DsFiltersBar.Summary text', () => {
 	});
 
 	it('drops the `;` after the saved filter name when an Advanced query follows', async () => {
-		await page.render(
-			<SummaryBar defaultQuery={OR_QUERY} summaryProps={{ activeSavedFilterName: SAVED_FILTER }} />,
-		);
+		await page.render(<SummaryBar defaultValue={orQuery} savedFilters={activeSavedFilter} />);
 
 		await expect
 			.element(region())
@@ -229,21 +225,33 @@ describe('DsFiltersBar.Summary text', () => {
 		await expect.element(region()).not.toMatchTextContent(`${SAVED_FILTER};`);
 	});
 
-	it('updates as the conditions change', async () => {
-		const { rerender } = await page.render(<SummaryBar onConditionsChange={vi.fn()} conditions={[]} />);
+	it('updates as the document changes', async () => {
+		const { rerender } = await page.render(<SummaryBar value={conditions()} onValueChange={vi.fn()} />);
 
 		await expect.element(region()).toMatchTextContent('View: All;');
 
-		await rerender(<SummaryBar onConditionsChange={vi.fn()} conditions={[STATUS]} />);
+		await rerender(<SummaryBar value={conditions(STATUS)} onValueChange={vi.fn()} />);
 
 		await expect.element(region()).toMatchTextContent('Status: Active;');
 		await expect.element(region()).not.toMatchTextContent('View: All');
 	});
+
+	it('leaves switched-on pins out of the summary', async () => {
+		await page.render(
+			<SummaryBar
+				defaultPins={[{ field: 'status', value: 'pending' }]}
+				defaultActiveToggles={[{ field: 'status', value: 'pending' }]}
+			/>,
+		);
+
+		await expect.element(region()).toMatchTextContent('View: All;');
+		await expect.element(region()).not.toMatchTextContent('Status: Pending');
+	});
 });
 
-describe('DsFiltersBar.Summary typography', () => {
+describe('DsFiltersBar summary typography', () => {
 	it('renders the operator label in italics and the field label in bold', async () => {
-		await page.render(<SummaryBar defaultConditions={[STATUS, LAST_RUN]} />);
+		await page.render(<SummaryBar defaultValue={conditions(STATUS, LAST_RUN)} />);
 
 		await expect.element(page.getByText('not equal', { exact: true })).toHaveStyle({ fontStyle: 'italic' });
 		await expect.poll(fontWeightOf(label('Last run result'))).toBeGreaterThanOrEqual(600);
@@ -251,15 +259,21 @@ describe('DsFiltersBar.Summary typography', () => {
 	});
 
 	it('renders the `View`, `Filter` and `Search` labels in bold', async () => {
-		const { rerender } = await page.render(<SummaryBar onConditionsChange={vi.fn()} conditions={[]} />);
+		const { rerender } = await page.render(
+			<SummaryBar
+				value={conditions()}
+				savedFilters={{ ...activeSavedFilter, activeId: null, onActiveIdChange: vi.fn() }}
+				onValueChange={vi.fn()}
+			/>,
+		);
 
 		await expect.poll(fontWeightOf(label('View'))).toBeGreaterThanOrEqual(600);
 
 		await rerender(
 			<SummaryBar
-				onConditionsChange={vi.fn()}
-				conditions={[SEARCH_AAA]}
-				summaryProps={{ activeSavedFilterName: SAVED_FILTER }}
+				value={conditions(SEARCH_AAA)}
+				savedFilters={{ ...activeSavedFilter, activeId: 'saved', onActiveIdChange: vi.fn() }}
+				onValueChange={vi.fn()}
 			/>,
 		);
 
@@ -268,25 +282,25 @@ describe('DsFiltersBar.Summary typography', () => {
 	});
 });
 
-describe('DsFiltersBar.Summary count', () => {
-	it('announces the count in a status region and hides the visible `(N)` from assistive tech', async () => {
-		await page.render(<SummaryBar summaryProps={{ count: 18 }} />);
+describe('DsFiltersBar summary result count', () => {
+	it('announces resultCount in a status region and hides the visible `(N)` from assistive tech', async () => {
+		await page.render(<SummaryBar resultCount={18} />);
 
 		await expect.element(page.getByRole('status')).toMatchTextContent(/^\s*18 results\s*$/);
 		await expect.element(visibleCount(18)).toBeVisible();
 		expect(visibleCount(18).element().closest('[aria-hidden="true"]')).not.toBeNull();
 	});
 
-	it('announces a new count when it changes', async () => {
-		const { rerender } = await page.render(<SummaryBar summaryProps={{ count: 18 }} />);
+	it('announces a new count when resultCount changes', async () => {
+		const { rerender } = await page.render(<SummaryBar resultCount={18} />);
 
-		await rerender(<SummaryBar summaryProps={{ count: 4 }} />);
+		await rerender(<SummaryBar resultCount={4} />);
 
 		await expect.element(page.getByRole('status')).toHaveTextContent('4 results');
 		await expect.element(visibleCount(4)).toBeVisible();
 	});
 
-	it('renders no count and no status region when count is omitted', async () => {
+	it('renders no count and no status region without resultCount', async () => {
 		await page.render(<SummaryBar />);
 
 		await expect.element(region()).toMatchTextContent('View: All;');
@@ -295,13 +309,13 @@ describe('DsFiltersBar.Summary count', () => {
 	});
 });
 
-describe('DsFiltersBar.Summary locale', () => {
+describe('DsFiltersBar summary locale', () => {
 	it('replaces the empty label, empty value and result count', async () => {
 		await page.render(
 			<SummaryBar
-				summaryProps={{
-					count: 18,
-					locale: {
+				resultCount={18}
+				locale={{
+					summary: {
 						emptyLabel: 'Showing',
 						emptyValue: 'Everything',
 						resultCount: (count) => `${String(count)} matches`,
@@ -318,11 +332,9 @@ describe('DsFiltersBar.Summary locale', () => {
 	it('replaces the saved filter and search labels', async () => {
 		await page.render(
 			<SummaryBar
-				defaultConditions={[SEARCH_AAA]}
-				summaryProps={{
-					activeSavedFilterName: SAVED_FILTER,
-					locale: { activeSavedFilter: 'Saved view', search: 'Text' },
-				}}
+				defaultValue={conditions(SEARCH_AAA)}
+				savedFilters={activeSavedFilter}
+				locale={{ summary: { activeSavedFilter: 'Saved view', search: 'Text' } }}
 			/>,
 		);
 
@@ -333,7 +345,7 @@ describe('DsFiltersBar.Summary locale', () => {
 
 	it('replaces the advanced query label', async () => {
 		await page.render(
-			<SummaryBar defaultQuery={OR_QUERY} summaryProps={{ locale: { advancedQuery: 'Custom query' } }} />,
+			<SummaryBar defaultValue={orQuery} locale={{ summary: { advancedQuery: 'Custom query' } }} />,
 		);
 
 		await expect.element(region()).toMatchTextContent('Custom query;');
@@ -341,11 +353,9 @@ describe('DsFiltersBar.Summary locale', () => {
 	});
 });
 
-describe('DsFiltersBar.Summary expanded state', () => {
+describe('DsFiltersBar summary expanded state', () => {
 	it('renders nothing while expanded', async () => {
-		await page.render(
-			<DisclosureBar defaultExpanded defaultConditions={[STATUS]} summaryProps={{ count: 18 }} />,
-		);
+		await page.render(<SummaryBar defaultExpanded defaultValue={conditions(STATUS)} resultCount={18} />);
 
 		await expect.element(hideButton()).toBeInTheDocument();
 		await expect.element(region()).not.toMatchTextContent('Status: Active;');
@@ -356,7 +366,7 @@ describe('DsFiltersBar.Summary expanded state', () => {
 	it('does not expand the bar when the summary text is clicked', async () => {
 		const onExpandedChange = vi.fn();
 
-		await page.render(<DisclosureBar onExpandedChange={onExpandedChange} summaryProps={{ count: 18 }} />);
+		await page.render(<SummaryBar resultCount={18} onExpandedChange={onExpandedChange} />);
 
 		await label('View').click();
 
@@ -366,40 +376,17 @@ describe('DsFiltersBar.Summary expanded state', () => {
 	});
 });
 
-describe('DsFiltersBar.Summary parts', () => {
-	it('forwards ref, className and style to its element', async () => {
-		const ref = createRef<HTMLDivElement>();
-
-		await page.render(<SummaryBar summaryProps={{ ref, className: 'custom', style: { marginLeft: 3 } }} />);
-
-		await expect.element(region()).toMatchTextContent('View: All;');
-
-		const summary = ref.current;
-
-		expect(summary).toBeInstanceOf(HTMLDivElement);
-		expect(summary).toContainElement(label('View').element());
-		expect(summary).toHaveClass('custom');
-		expect(summary).toHaveStyle({ marginLeft: '3px' });
+describe('DsFiltersBar summary overflow', () => {
+	const MANY_CONDITIONS = conditions(STATUS, LAST_RUN, INPUT_NAME, DURATION_RANGE, SEARCH_AAA, {
+		kind: 'search',
+		id: 'search-2',
+		text: 'a rather long search phrase that cannot fit',
 	});
-});
-
-describe('DsFiltersBar.Summary overflow', () => {
-	const MANY_CONDITIONS: ReadonlyArray<DsFilterCondition> = [
-		STATUS,
-		LAST_RUN,
-		INPUT_NAME,
-		DURATION_RANGE,
-		SEARCH_AAA,
-		{ kind: 'search', id: 'search-2', text: 'a rather long search phrase that cannot fit' },
-	];
 
 	it('keeps the saved filter name and the count visible while the conditions truncate', async () => {
 		await page.render(
 			<div style={{ width: 200 }}>
-				<DisclosureBar
-					defaultConditions={MANY_CONDITIONS}
-					summaryProps={{ count: 18, activeSavedFilterName: SAVED_FILTER }}
-				/>
+				<SummaryBar defaultValue={MANY_CONDITIONS} resultCount={18} savedFilters={activeSavedFilter} />
 			</div>,
 		);
 
@@ -407,16 +394,16 @@ describe('DsFiltersBar.Summary overflow', () => {
 		await expect.poll(() => isInside(visibleCount(18), region())).toBe(true);
 		await expect.poll(() => isInside(page.getByText(new RegExp(SAVED_FILTER)), region())).toBe(true);
 
-		const conditions = truncatingAncestorOf(label('Status'));
+		const truncating = truncatingAncestorOf(label('Status'));
 
-		expect(conditions).not.toBeNull();
-		expect(conditions).toHaveStyle({ textOverflow: 'ellipsis', whiteSpace: 'nowrap' });
+		expect(truncating).not.toBeNull();
+		expect(truncating).toHaveStyle({ textOverflow: 'ellipsis', whiteSpace: 'nowrap' });
 	});
 
 	it('shows the full summary in a tooltip on hover while truncated', async () => {
 		await page.render(
 			<div style={{ width: 200 }}>
-				<DisclosureBar defaultConditions={MANY_CONDITIONS} summaryProps={{ count: 18 }} />
+				<SummaryBar defaultValue={MANY_CONDITIONS} resultCount={18} />
 			</div>,
 		);
 
@@ -442,7 +429,7 @@ describe('DsFiltersBar.Summary overflow', () => {
 	it('shows no tooltip on hover while the summary fits', async () => {
 		await page.render(
 			<div style={{ width: 1200 }}>
-				<DisclosureBar defaultConditions={[STATUS]} summaryProps={{ count: 18 }} />
+				<SummaryBar defaultValue={conditions(STATUS)} resultCount={18} />
 			</div>,
 		);
 

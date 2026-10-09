@@ -151,6 +151,7 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 - **DS MCP:** [packages/mcp/README.md](packages/mcp/README.md) — Storybook docs for agents (`list-all-documentation`, `get-documentation`); local dev uses `pnpm start` + `--manifests-url http://localhost:6006`. Story edits: verify snippets via [`docs-tests`](.agents/skills/docs-tests/SKILL.md) and [storybook Snippet verification](.agents/skills/storybook/SKILL.md#snippet-verification).
 - **Flows:** [docs/agents/skills.md](docs/agents/skills.md)
 - **Subagents:** [docs/agents/subagents.md](docs/agents/subagents.md)
+- **Claude Code cloud environment:** [docs/agents/cloud-environment.md](docs/agents/cloud-environment.md)
 
 ## Cursor subagents (`.cursor/agents/`)
 

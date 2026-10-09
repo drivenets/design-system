@@ -1,5 +1,21 @@
 # @drivenets/design-system
 
+## 0.23.0
+
+### Minor Changes
+
+- f9f81df: Add full screen mode to `DsModal`
+- 5eab0a1: Add the query builder view to `DsFiltersBar`.
+- e9735a8: Add the pinned filters row to `DsFiltersBar`.
+- 9fce9f3: Add `DsFiltersBar` component
+- ffc55a9: Update vertical `DsTabs` to the V2 design, and add `selectedCount` and `pinned` to `DsTabs.Tab`.
+- 383e4e3: Add the collapsed summary and the expand/collapse button to "DsFiltersBar"
+
+### Patch Changes
+
+- 9ca69b9: Update ark-ui to 5.39.3 and zag-js to 1.45.0 (unpinned). Fixes menu items not selecting on click without a prior hover.
+- 907898d: Fix `DsTable` row actions getting clipped
+
 ## 0.22.0
 
 ### Minor Changes

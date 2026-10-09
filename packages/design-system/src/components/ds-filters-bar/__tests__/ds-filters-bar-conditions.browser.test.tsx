@@ -1,9 +1,12 @@
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsFiltersBar } from '../index';
-import { useDsFiltersBarContext } from '../ds-filters-bar.context';
-import type { DsFilterCondition, DsFilterField, DsFiltersBarRootProps } from '../ds-filters-bar.types';
-import type { DsFiltersBarConditionsLocale } from '../components/ds-filters-bar-conditions';
+import type {
+	DsFilterCondition,
+	DsFilterDocument,
+	DsFilterField,
+	DsFiltersBarProps,
+} from '../ds-filters-bar.types';
 
 const FIELDS: ReadonlyArray<DsFilterField> = [
 	{
@@ -100,28 +103,10 @@ const AAA: DsFilterCondition = { kind: 'search', id: 'search-1', text: 'AAA' };
 
 const OR_QUERY = 'status = "active" OR status = "pending"';
 
-// Clears the document the way ClearAll will.
-const ClearProbe = () => {
-	const bar = useDsFiltersBarContext();
+const conditions = (...items: DsFilterCondition[]): DsFilterDocument => ({ conditions: items, query: null });
 
-	return (
-		<button type="button" onClick={bar.clear}>
-			clear
-		</button>
-	);
-};
-
-interface ConditionsBarProps extends Omit<DsFiltersBarRootProps, 'children'> {
-	conditionsLocale?: DsFiltersBarConditionsLocale;
-}
-
-const ConditionsBar = ({ conditionsLocale, ...props }: ConditionsBarProps) => (
-	<DsFiltersBar.Root defaultExpanded fields={FIELDS} {...props}>
-		<ClearProbe />
-		<DsFiltersBar.Toolbar>
-			<DsFiltersBar.Conditions locale={conditionsLocale} />
-		</DsFiltersBar.Toolbar>
-	</DsFiltersBar.Root>
+const ConditionsBar = (props: DsFiltersBarProps) => (
+	<DsFiltersBar defaultExpanded fields={FIELDS} {...props} />
 );
 
 const removeButton = (description: string) =>
@@ -135,9 +120,9 @@ const addFilterButton = () => page.getByRole('button', { name: 'Add filter', exa
 const filtersDialog = () => page.getByRole('dialog', { name: 'Filters' });
 const fieldTab = (label: string) => page.getByRole('tab', { name: new RegExp(`^${label}(\\s|$)`) });
 
-describe('DsFiltersBar.Conditions field chips', () => {
+describe('DsFiltersBar filters view field chips', () => {
 	it('renders one chip per condition, in document order, with the field path and value', async () => {
-		await page.render(<ConditionsBar defaultConditions={[STATUS, AAA, INPUT_NAME]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(STATUS, AAA, INPUT_NAME)} />);
 
 		await expect.element(chip('Status').getByText('Active, Pending', { exact: true })).toBeVisible();
 		await expect.element(chip('Input › Name').getByText('WF456', { exact: true })).toBeVisible();
@@ -155,15 +140,15 @@ describe('DsFiltersBar.Conditions field chips', () => {
 	});
 
 	it('removes the condition with its remove button', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 
 		await page.render(
-			<ConditionsBar defaultConditions={[STATUS, PARENTS]} onConditionsChange={onConditionsChange} />,
+			<ConditionsBar defaultValue={conditions(STATUS, PARENTS)} onValueChange={onValueChange} />,
 		);
 
 		await removeButton('Status not equals Active, Pending').click();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([PARENTS]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(conditions(PARENTS));
 		await expect.element(removeButton('Status not equals Active, Pending')).not.toBeInTheDocument();
 		await expect.element(removeButton('Parents greater than 3')).toBeVisible();
 	});
@@ -171,8 +156,8 @@ describe('DsFiltersBar.Conditions field chips', () => {
 	it('names the remove button through the locale', async () => {
 		await page.render(
 			<ConditionsBar
-				defaultConditions={[PARENTS]}
-				conditionsLocale={{ removeCondition: (condition) => `Drop ${condition}` }}
+				defaultValue={conditions(PARENTS)}
+				locale={{ chips: { removeCondition: (condition) => `Drop ${condition}` } }}
 			/>,
 		);
 
@@ -182,9 +167,9 @@ describe('DsFiltersBar.Conditions field chips', () => {
 	});
 });
 
-describe('DsFiltersBar.Conditions operator menu', () => {
+describe('DsFiltersBar filters view operator menu', () => {
 	it("lists the field's operators and marks the current one", async () => {
-		await page.render(<ConditionsBar defaultConditions={[STATUS]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(STATUS)} />);
 
 		await expect.element(operatorButton('Status').getByText('≠', { exact: true })).toBeVisible();
 
@@ -199,56 +184,56 @@ describe('DsFiltersBar.Conditions operator menu', () => {
 	});
 
 	it('switches the operator in place, keeping the condition id and position', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 
 		await page.render(
-			<ConditionsBar defaultConditions={[STATUS, PARENTS]} onConditionsChange={onConditionsChange} />,
+			<ConditionsBar defaultValue={conditions(STATUS, PARENTS)} onValueChange={onValueChange} />,
 		);
 
 		await operatorButton('Status').click();
 		await page.getByRole('menuitem', { name: '= (equals)' }).click();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([{ ...STATUS, operator: '=' }, PARENTS]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(conditions({ ...STATUS, operator: '=' }, PARENTS));
 		await expect.element(operatorButton('Status').getByText('=', { exact: true })).toBeVisible();
 	});
 
 	it('reports nothing when the current operator is picked again', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 
-		await page.render(<ConditionsBar defaultConditions={[STATUS]} onConditionsChange={onConditionsChange} />);
+		await page.render(<ConditionsBar defaultValue={conditions(STATUS)} onValueChange={onValueChange} />);
 
 		await operatorButton('Status').click();
 		await page.getByRole('menuitem', { name: '≠ (not equals)' }).click();
 
-		expect(onConditionsChange).not.toHaveBeenCalled();
+		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
 	it('shows the operator token when the operator has no symbol', async () => {
-		await page.render(<ConditionsBar defaultConditions={[INPUT_NAME]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(INPUT_NAME)} />);
 
 		await expect.element(operatorButton('Input Name').getByText('~', { exact: true })).toBeVisible();
 	});
 
 	it('edits a compound subfield operator, named by the field path', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 
-		await page.render(
-			<ConditionsBar defaultConditions={[INPUT_NAME]} onConditionsChange={onConditionsChange} />,
-		);
+		await page.render(<ConditionsBar defaultValue={conditions(INPUT_NAME)} onValueChange={onValueChange} />);
 
 		await operatorButton('Input Name').click();
-		await page.getByRole('menuitem', { name: '!~ (does not contain)' }).click();
+		await page.getByRole('menuitem', { name: '≁ (does not contain)' }).click();
 
-		expect(onConditionsChange).toHaveBeenCalledExactlyOnceWith([{ ...INPUT_NAME, operator: '!~' }]);
+		expect(onValueChange).toHaveBeenCalledExactlyOnceWith(conditions({ ...INPUT_NAME, operator: '!~' }));
 	});
 
 	it('words the menu button and items through the locale', async () => {
 		await page.render(
 			<ConditionsBar
-				defaultConditions={[STATUS]}
-				conditionsLocale={{
-					operator: (fieldLabel) => `Comparison for ${fieldLabel}`,
-					operatorOption: (operator) => operator.label,
+				defaultValue={conditions(STATUS)}
+				locale={{
+					chips: {
+						operator: (fieldLabel) => `Comparison for ${fieldLabel}`,
+						operatorOption: (operator) => operator.label,
+					},
 				}}
 			/>,
 		);
@@ -259,7 +244,7 @@ describe('DsFiltersBar.Conditions operator menu', () => {
 	});
 
 	it('shows the operator as text when there is nothing to pick', async () => {
-		await page.render(<ConditionsBar defaultConditions={[TRIGGER, REMOVED]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(TRIGGER, REMOVED)} />);
 
 		await expect.element(removeButton('Trigger equals Manual')).toBeVisible();
 		await expect.element(removeButton('owner = me')).toBeVisible();
@@ -269,7 +254,7 @@ describe('DsFiltersBar.Conditions operator menu', () => {
 	});
 
 	it('shows no operator for a range', async () => {
-		await page.render(<ConditionsBar defaultConditions={[PARENTS_RANGE]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(PARENTS_RANGE)} />);
 
 		await expect.element(page.getByText('1 – 5', { exact: true })).toBeVisible();
 		await expect.element(operatorButton('Parents')).not.toBeInTheDocument();
@@ -277,9 +262,9 @@ describe('DsFiltersBar.Conditions operator menu', () => {
 	});
 });
 
-describe('DsFiltersBar.Conditions chip click', () => {
+describe('DsFiltersBar filters view chip click', () => {
 	it('opens the filters dialog on the tab of an enum chip', async () => {
-		await page.render(<ConditionsBar defaultConditions={[TRIGGER]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(TRIGGER)} />);
 
 		await chip('Trigger').click();
 
@@ -288,7 +273,7 @@ describe('DsFiltersBar.Conditions chip click', () => {
 	});
 
 	it('opens the dialog on the first tab from the add button after a chip opened it', async () => {
-		await page.render(<ConditionsBar defaultConditions={[TRIGGER]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(TRIGGER)} />);
 
 		await chip('Trigger').click();
 		await page.getByRole('button', { name: 'Close' }).click();
@@ -298,7 +283,7 @@ describe('DsFiltersBar.Conditions chip click', () => {
 	});
 
 	it('opens the dialog on the tab of a number, range or compound subfield chip', async () => {
-		await page.render(<ConditionsBar defaultConditions={[PARENTS_RANGE, INPUT_NAME]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(PARENTS_RANGE, INPUT_NAME)} />);
 
 		await chip('Parents').click();
 
@@ -314,24 +299,23 @@ describe('DsFiltersBar.Conditions chip click', () => {
 	});
 
 	it('saves an edited range back in place', async () => {
-		const onConditionsChange = vi.fn();
+		const onValueChange = vi.fn();
 
 		await page.render(
-			<ConditionsBar defaultConditions={[STATUS, PARENTS_RANGE]} onConditionsChange={onConditionsChange} />,
+			<ConditionsBar defaultValue={conditions(STATUS, PARENTS_RANGE)} onValueChange={onValueChange} />,
 		);
 
 		await chip('Parents').click();
 		await page.getByRole('spinbutton', { name: 'Parents to' }).fill('9');
 		await page.getByRole('button', { name: 'Save filters' }).click();
 
-		expect(onConditionsChange).toHaveBeenLastCalledWith([
-			STATUS,
-			{ ...PARENTS_RANGE, value: { from: 1, to: 9 } },
-		]);
+		expect(onValueChange).toHaveBeenLastCalledWith(
+			conditions(STATUS, { ...PARENTS_RANGE, value: { from: 1, to: 9 } }),
+		);
 	});
 
 	it('does not open the dialog from a chip whose field is missing from fields', async () => {
-		await page.render(<ConditionsBar defaultConditions={[TRIGGER, REMOVED]} />);
+		await page.render(<ConditionsBar defaultValue={conditions(TRIGGER, REMOVED)} />);
 
 		await expect.element(chip('Trigger')).toHaveAttribute('aria-pressed', 'true');
 		await expect.element(chip('owner')).not.toHaveAttribute('aria-pressed');
@@ -342,40 +326,46 @@ describe('DsFiltersBar.Conditions chip click', () => {
 	});
 });
 
-describe('DsFiltersBar.Conditions while an Advanced query is the source', () => {
+describe('DsFiltersBar filters view while an Advanced query is the source', () => {
 	it('shows no chips and no add button until the query is cleared', async () => {
-		await page.render(<ConditionsBar defaultConditions={[STATUS, AAA]} defaultQuery={OR_QUERY} />);
+		await page.render(<ConditionsBar defaultValue={{ conditions: [STATUS, AAA], query: OR_QUERY }} />);
 
 		await expect.element(addFilterButton()).not.toBeInTheDocument();
 		await expect.element(removeButton('AAA')).not.toBeInTheDocument();
 		await expect.element(removeButton('Status not equals Active, Pending')).not.toBeInTheDocument();
 
-		await page.getByRole('button', { name: 'clear', exact: true }).click();
+		await page.getByRole('button', { name: 'Clear all', exact: true }).click();
 
 		await expect.element(addFilterButton()).toBeVisible();
 	});
 
 	it('closes an open filters dialog when a query takes over', async () => {
-		const controlled = { conditions: [TRIGGER], onConditionsChange: vi.fn(), onQueryChange: vi.fn() };
-		const { rerender } = await page.render(<ConditionsBar {...controlled} query={null} />);
+		const onValueChange = vi.fn();
+		const { rerender } = await page.render(
+			<ConditionsBar value={conditions(TRIGGER)} onValueChange={onValueChange} />,
+		);
 
 		await addFilterButton().click();
 		await expect.element(filtersDialog()).toBeVisible();
 
-		await rerender(<ConditionsBar {...controlled} query={OR_QUERY} />);
-		await rerender(<ConditionsBar {...controlled} query={null} />);
+		await rerender(
+			<ConditionsBar value={{ conditions: [TRIGGER], query: OR_QUERY }} onValueChange={onValueChange} />,
+		);
+		await rerender(<ConditionsBar value={conditions(TRIGGER)} onValueChange={onValueChange} />);
 
 		await expect.element(addFilterButton()).toBeVisible();
 		await expect.element(filtersDialog()).not.toBeInTheDocument();
 	});
 
 	it('brings the kept conditions back once the query is dropped', async () => {
-		const controlled = { conditions: [STATUS], onConditionsChange: vi.fn(), onQueryChange: vi.fn() };
-		const { rerender } = await page.render(<ConditionsBar {...controlled} query={OR_QUERY} />);
+		const onValueChange = vi.fn();
+		const { rerender } = await page.render(
+			<ConditionsBar value={{ conditions: [STATUS], query: OR_QUERY }} onValueChange={onValueChange} />,
+		);
 
 		await expect.element(removeButton('Status not equals Active, Pending')).not.toBeInTheDocument();
 
-		await rerender(<ConditionsBar {...controlled} query={null} />);
+		await rerender(<ConditionsBar value={conditions(STATUS)} onValueChange={onValueChange} />);
 
 		await expect.element(removeButton('Status not equals Active, Pending')).toBeVisible();
 		await expect.element(addFilterButton()).toBeVisible();

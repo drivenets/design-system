@@ -12,8 +12,13 @@ import { DsSelect } from '../../../ds-select';
 import { DsTextInput } from '../../../ds-text-input';
 import { DsTypography } from '../../../ds-typography';
 import { DsVerticalTabs } from '../../../ds-vertical-tabs';
-import type { DsFilterOperator, DsFilterRange } from '../../ds-filters-bar.types';
+import type {
+	DsFilterRange,
+	DsFilterResolvedOperator,
+	DsFilterResolvedScalarField,
+} from '../../ds-filters-bar.types';
 import { emptyFiltersDialogEntry, isFiltersDialogEntrySet } from '../../ds-filters-bar.utils';
+import { resolveScalarField } from '../../resolve-fields';
 import {
 	type DsFiltersBarFiltersDialogDateEntry,
 	type DsFiltersBarFiltersDialogEntry,
@@ -122,7 +127,7 @@ const LabeledInput = ({ label, children }: LabeledInputProps) => {
 
 interface OperatorSelectProps<TOperator extends string> {
 	label: string;
-	operators: ReadonlyArray<DsFilterOperator>;
+	operators: ReadonlyArray<DsFilterResolvedOperator>;
 	value: TOperator;
 	/**
 	 * Adds the `between` option, for number and date tabs whose field has `=`
@@ -172,8 +177,13 @@ const OperatorSelect = <TOperator extends string>({
 	);
 };
 
+/**
+ * A tab whose field has its operators and presets spelled out
+ */
+type ResolvedTab = Omit<DsFiltersBarFiltersDialogTab, 'schema'> & { schema: DsFilterResolvedScalarField };
+
 interface PanelProps<TEntry extends DsFiltersBarFiltersDialogEntry> {
-	tab: DsFiltersBarFiltersDialogTab;
+	tab: ResolvedTab;
 	entry: TEntry;
 	locale: Locale;
 	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
@@ -347,7 +357,7 @@ const DatePanel = ({ tab, entry, locale, onEntryChange }: PanelProps<DsFiltersBa
 		return null;
 	}
 
-	const presets = tab.schema.presets ?? [];
+	const { presets } = tab.schema;
 	// `between` saves only a range, so a preset picked under it moves to `=` or the first operator.
 	const presetOperator =
 		entry.operator === BETWEEN
@@ -432,7 +442,10 @@ interface TabPanelProps {
 	onEntryChange: (entry: DsFiltersBarFiltersDialogEntry) => void;
 }
 
-const TabPanel = ({ entry, search, onSearchChange, ...props }: TabPanelProps) => {
+const TabPanel = ({ tab, entry, search, onSearchChange, ...rest }: TabPanelProps) => {
+	// The bar passes resolved fields; a tab built elsewhere gets the default operators and presets.
+	const props = { ...rest, tab: { ...tab, schema: resolveScalarField(tab.schema) } };
+
 	switch (entry.type) {
 		case 'enum':
 			return <EnumPanel entry={entry} search={search} onSearchChange={onSearchChange} {...props} />;
@@ -554,5 +567,3 @@ export const FiltersDialog = ({
 		</DsModal>
 	);
 };
-
-FiltersDialog.displayName = 'DsFiltersBar.FiltersDialog';
