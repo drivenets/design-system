@@ -417,3 +417,66 @@ const AsyncOptions = () => {
 
     return <DsAutocomplete options={options} loading={loading} placeholder="Select a country..." />;
 };
+
+## Inside Modal
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: args => {
+    const [open, setOpen] = useState(false);
+    return <>
+                <DsButtonV3 onClick={() => setOpen(true)}>Assign owner</DsButtonV3>
+                <DsModal open={open} onOpenChange={setOpen} columns={4}>
+                    <DsModal.Header>
+                        <DsModal.Title>Assign owner</DsModal.Title>
+                        <DsModal.CloseTrigger />
+                    </DsModal.Header>
+                    <DsModal.Body>
+                        <DsAutocomplete {...args} placeholder="Search team members..." options={[{
+            value: 'alice',
+            label: 'Alice Cohen'
+          }, {
+            value: 'bob',
+            label: 'Bob Levi'
+          }, {
+            value: 'carol',
+            label: 'Carol Smith'
+          }]} />
+                    </DsModal.Body>
+                </DsModal>
+            </>;
+  }
+}
+
+### MCP manifest
+const InsideModal = () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+        <>
+            <DsButtonV3 onClick={() => setOpen(true)}>Assign owner</DsButtonV3>
+            <DsModal open={open} onOpenChange={setOpen} columns={4}>
+                <DsModal.Header>
+                    <DsModal.Title>Assign owner</DsModal.Title>
+                    <DsModal.CloseTrigger />
+                </DsModal.Header>
+                <DsModal.Body>
+                    <DsAutocomplete
+                        placeholder="Search team members..."
+                        options={[
+                            { value: 'alice', label: 'Alice Cohen' },
+                            { value: 'bob', label: 'Bob Levi' },
+                            { value: 'carol', label: 'Carol Smith' },
+                        ]} />
+                </DsModal.Body>
+            </DsModal>
+        </>
+    );
+};

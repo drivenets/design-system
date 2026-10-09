@@ -129,10 +129,12 @@ const DsSelect = ({
 		<Select.RootProvider
 			value={select}
 			// When rendering the Select inside a Modal, it has an `aria-hidden="true"` attribute
-			// which causes screen readers to ignore it.
+			// which causes screen readers to ignore it. Unmount on close too, so the content is
+			// not already in the DOM (and hidden again) when the Modal is closed and reopened.
 			//
 			// See: https://github.com/chakra-ui/ark/issues/3728
 			lazyMount
+			unmountOnExit
 		>
 			<Select.Control
 				className={classNames(
