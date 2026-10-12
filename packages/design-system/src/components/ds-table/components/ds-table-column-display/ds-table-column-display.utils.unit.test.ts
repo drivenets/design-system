@@ -60,11 +60,11 @@ describe('getColumnDisplayTree', () => {
 		const [identity] = getColumnDisplayTree(getAllColumns(columns), {});
 		const firstName = identity?.children[0];
 
-		expect(firstName).toMatchObject({ locked: true, checked: true, hideableLeafIds: [] });
-		expect(identity).toMatchObject({ locked: false, hideableLeafIds: ['lastName', 'age'] });
+		expect(firstName).toMatchObject({ locked: true, checked: true, leafIdsToToggle: [] });
+		expect(identity).toMatchObject({ locked: false, leafIdsToToggle: ['lastName', 'age'] });
 	});
 
-	it('derives the group state from its hideable columns', () => {
+	it('derives the group state from the columns it can hide', () => {
 		const groupState = (visibility: Record<string, boolean>) =>
 			getColumnDisplayTree(getAllColumns(columns), visibility)[0]?.checked;
 
@@ -87,11 +87,11 @@ describe('getCheckedState', () => {
 });
 
 describe('getAllColumnsTarget', () => {
-	it('covers every hideable column in the tree', () => {
+	it('covers every column in the tree that can be hidden', () => {
 		const tree = getColumnDisplayTree(getAllColumns(columns), { visits: false });
 
 		expect(getAllColumnsTarget(tree, { visits: false })).toEqual({
-			hideableLeafIds: ['lastName', 'age', 'visits'],
+			leafIdsToToggle: ['lastName', 'age', 'visits'],
 			checked: 'indeterminate',
 			locked: false,
 		});
@@ -100,7 +100,7 @@ describe('getAllColumnsTarget', () => {
 	it('is locked when no column can be hidden', () => {
 		const tree = getColumnDisplayTree(getAllColumns([{ id: 'name', enableHiding: false }]), {});
 
-		expect(getAllColumnsTarget(tree, {})).toEqual({ hideableLeafIds: [], checked: true, locked: true });
+		expect(getAllColumnsTarget(tree, {})).toEqual({ leafIdsToToggle: [], checked: true, locked: true });
 	});
 });
 
@@ -130,21 +130,21 @@ describe('filterColumnDisplayTree', () => {
 });
 
 describe('getToggleVisibilityUpdate', () => {
-	const hideableLeafIds = ['lastName', 'age'];
+	const leafIdsToToggle = ['lastName', 'age'];
 
-	it('hides every hideable column of a checked row', () => {
-		expect(getToggleVisibilityUpdate({ hideableLeafIds, checked: true, locked: false })).toEqual({
+	it('hides every column of a checked row', () => {
+		expect(getToggleVisibilityUpdate({ leafIdsToToggle, checked: true, locked: false })).toEqual({
 			lastName: false,
 			age: false,
 		});
 	});
 
-	it('shows every hideable column of an unchecked or partial row', () => {
-		expect(getToggleVisibilityUpdate({ hideableLeafIds, checked: false, locked: false })).toEqual({
+	it('shows every column of an unchecked or partial row', () => {
+		expect(getToggleVisibilityUpdate({ leafIdsToToggle, checked: false, locked: false })).toEqual({
 			lastName: true,
 			age: true,
 		});
-		expect(getToggleVisibilityUpdate({ hideableLeafIds, checked: 'indeterminate', locked: false })).toEqual({
+		expect(getToggleVisibilityUpdate({ leafIdsToToggle, checked: 'indeterminate', locked: false })).toEqual({
 			lastName: true,
 			age: true,
 		});

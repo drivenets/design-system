@@ -17,16 +17,16 @@ export interface ColumnDisplayNode {
 	id: string;
 	label: string;
 	/**
-	 * Leaf column ids the row toggles. A hideable leaf lists itself; a group lists
-	 * its hideable descendants. Empty when every leaf has `enableHiding: false`.
+	 * Leaf column ids the row toggles: the leaf itself, or a group's descendant
+	 * leaves. Leaves with `enableHiding: false` are left out.
 	 */
-	hideableLeafIds: string[];
+	leafIdsToToggle: string[];
 	checked: ColumnDisplayCheckedState;
 	/**
-	 * No hideable leaves, so the row renders checked, disabled, and with a lock.
+	 * Nothing to toggle, so the row renders checked, disabled, and with a lock.
 	 */
 	locked: boolean;
 	children: ColumnDisplayNode[];
 }
 
-export type ColumnDisplayToggleTarget = Pick<ColumnDisplayNode, 'hideableLeafIds' | 'checked' | 'locked'>;
+export type ColumnDisplayToggleTarget = Pick<ColumnDisplayNode, 'leafIdsToToggle' | 'checked' | 'locked'>;

@@ -31,17 +31,17 @@ export const getCheckedState = (
 
 const buildNode = <TData>(column: Column<TData>, visibility: VisibilityState): ColumnDisplayNode => {
 	const leafIds = column.getLeafColumns().map((leaf) => leaf.id);
-	const hideableLeafIds = column
+	const leafIdsToToggle = column
 		.getLeafColumns()
 		.filter((leaf) => leaf.getCanHide())
 		.map((leaf) => leaf.id);
-	const locked = hideableLeafIds.length === 0;
+	const locked = leafIdsToToggle.length === 0;
 
 	return {
 		id: column.id,
 		label: getColumnLabel(column),
-		hideableLeafIds,
-		checked: getCheckedState(locked ? leafIds : hideableLeafIds, visibility),
+		leafIdsToToggle,
+		checked: getCheckedState(locked ? leafIds : leafIdsToToggle, visibility),
 		locked,
 		children: column.columns.map((child) => buildNode(child, visibility)),
 	};
@@ -61,18 +61,18 @@ export const getColumnDisplayTree = <TData>(
 		.map((column) => buildNode(column, visibility));
 
 /**
- * The "All columns" row: every hideable leaf in the tree.
+ * The "All columns" row: every leaf in the tree that can be hidden.
  */
 export const getAllColumnsTarget = (
 	tree: ColumnDisplayNode[],
 	visibility: VisibilityState,
 ): ColumnDisplayToggleTarget => {
-	const hideableLeafIds = tree.flatMap((node) => node.hideableLeafIds);
+	const leafIdsToToggle = tree.flatMap((node) => node.leafIdsToToggle);
 
 	return {
-		hideableLeafIds,
-		checked: getCheckedState(hideableLeafIds, visibility),
-		locked: hideableLeafIds.length === 0,
+		leafIdsToToggle,
+		checked: getCheckedState(leafIdsToToggle, visibility),
+		locked: leafIdsToToggle.length === 0,
 	};
 };
 
@@ -102,14 +102,14 @@ export const filterColumnDisplayTree = (nodes: ColumnDisplayNode[], query: strin
 };
 
 /**
- * Visibility patch for clicking a row: a fully checked row hides its hideable
- * leaves; an unchecked or partial row shows them.
+ * Visibility patch for clicking a row: a fully checked row hides its leaves; an
+ * unchecked or partial row shows them.
  */
 export const getToggleVisibilityUpdate = ({
-	hideableLeafIds,
+	leafIdsToToggle,
 	checked,
 }: ColumnDisplayToggleTarget): VisibilityState => {
 	const visible = checked !== true;
 
-	return Object.fromEntries(hideableLeafIds.map((id) => [id, visible]));
+	return Object.fromEntries(leafIdsToToggle.map((id) => [id, visible]));
 };
