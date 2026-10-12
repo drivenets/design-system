@@ -51,7 +51,7 @@ Then, at [claude.ai/code](https://claude.ai/code) → **Routines** → **New rou
 2. Repository: `drivenets/design-system`. Environment: `design-system`.
 3. Connectors: enable the ones the table lists. A Routine created from a Claude session (instead of this page) may come without connectors or a repository; open it here and add them.
 4. Save, then **Run now** once and check the Slack message and any tickets it filed.
-5. Update the Owner and Trigger ID in this file in a PR.
+5. Update the Owner and Trigger ID in this file in a PR, and the Jira assignee in the Routine's instructions file if it should change too.
 
 The previous owner (or an org admin) should pause or delete their copy, so the Routine doesn't run twice.
 

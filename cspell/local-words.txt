@@ -27,6 +27,7 @@ gnmi
 greyscale
 gstatic
 haspopup
+Ihor
 iromanchuk
 labelledby
 Lezer
@@ -49,6 +50,7 @@ prss
 reorderable
 resizer
 retryable
+Romanchuk
 sbdocs
 scrollers
 scrollers
