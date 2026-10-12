@@ -6,25 +6,26 @@ A Routine belongs to one person's claude.ai account: it runs as that person and 
 
 ## Current Routines
 
-| Routine                                     | Schedule                     | What it does                                                                                   | Owner            |
-| ------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------- | ---------------- |
-| [Flaky test tracker](flaky-test-tracker.md) | Sundays 08:58 Asia/Jerusalem | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack | `@iromanchuk-dn` |
+| Routine                                     | Schedule                    | What it does                                                                                   | Owner            |
+| ------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------- | ---------------- |
+| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack | `@iromanchuk-dn` |
 
 Not a Routine: dependency updates. Dependabot already covers them (`.github/dependabot.yml`), see the decision on [AR-100283](https://drivenets.atlassian.net/browse/AR-100283).
 
 ## Flaky test tracker
 
-| Field        | Value                                                                                                                                |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Name         | `Flaky test tracker (design-system)`                                                                                                 |
-| Trigger ID   | `trig_01M5SrYsBEiQzf3oShPPK5hX` (owner's account)                                                                                    |
-| Schedule     | `CRON_TZ=Asia/Jerusalem 58 8 * * 0`                                                                                                  |
-| Environment  | `design-system`                                                                                                                      |
-| Repository   | `drivenets/design-system`, default branch                                                                                            |
-| Session      | A new session on every run                                                                                                           |
-| Connectors   | Atlassian (Jira), Slack. GitHub access comes from the Claude GitHub App.                                                             |
-| Instructions | [flaky-test-tracker.md](flaky-test-tracker.md)                                                                                       |
-| Output       | Jira Bugs under [AR-58393](https://drivenets.atlassian.net/browse/AR-58393), `claude/flaky-*` PRs, `#design-system-ai-notifications` |
+| Field         | Value                                                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Name          | `Flaky test tracker (design-system)`                                                                                                 |
+| Trigger ID    | `trig_01M5SrYsBEiQzf3oShPPK5hX` (owner's account)                                                                                    |
+| Schedule      | `CRON_TZ=Europe/Warsaw 58 7 * * 1`                                                                                                   |
+| Environment   | `design-system`                                                                                                                      |
+| Repository    | `drivenets/design-system`, default branch                                                                                            |
+| Session       | A new session on every run                                                                                                           |
+| Connectors    | Atlassian (Jira), Slack. GitHub access comes from the Claude GitHub App.                                                             |
+| Notifications | Push and Slack to the owner when a run finishes                                                                                      |
+| Instructions  | [flaky-test-tracker.md](flaky-test-tracker.md)                                                                                       |
+| Output        | Jira Bugs under [AR-58393](https://drivenets.atlassian.net/browse/AR-58393), `claude/flaky-*` PRs, `#design-system-ai-notifications` |
 
 Stored prompt:
 
