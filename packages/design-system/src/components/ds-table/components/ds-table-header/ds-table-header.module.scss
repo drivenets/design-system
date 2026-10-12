@@ -73,6 +73,11 @@
 	text-align: center;
 }
 
+.columnDisplayHeaderCell {
+	padding: 0;
+	justify-content: center;
+}
+
 .groupStart:not(:first-child) {
 	border-left: vars.$group-border-width solid var(--border);
 }

@@ -7,10 +7,11 @@ import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableHeaderProps } from './ds-table-header.types';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getHeaderCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
-import { SELECT_COLUMN_ID } from '../../utils/constants';
+import { COLUMN_DISPLAY_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 import { DsStack } from '../../../ds-stack';
 import { DsTableColumnFilterPopover } from '../../filters/components/column-filter-popover';
 import type { ResolvedColumnFilter } from '../../filters/types/filter-adapter.types';
+import { DsTableColumnDisplay } from '../ds-table-column-display';
 import { DsTableGroupHeaderCell } from '../ds-table-group-header-cell';
 import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
@@ -22,7 +23,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 
 	return (
 		<TableHeader className={classnames(styles.header, virtualized && styles.virtualizedHeader)}>
-			{table.getHeaderGroups().map((headerGroup) => (
+			{table.getHeaderGroups().map((headerGroup, headerGroupIndex) => (
 				<TableRow
 					key={headerGroup.id}
 					className={classnames(
@@ -33,6 +34,28 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 				>
 					{headerGroup.headers.map((header) => {
 						const columnSizing = table.getState().columnSizing;
+
+						// The Columns button sits in the top header row: the group headers
+						// row when columns are grouped, otherwise the only row. Keyed by column
+						// id so hiding or showing every grouped column (which adds or removes
+						// the group row) does not remount the button and close its popup.
+						if (header.column.id === COLUMN_DISPLAY_COLUMN_ID) {
+							return (
+								<TableHead
+									key={header.column.id}
+									data-column-id={header.isPlaceholder ? undefined : header.column.id}
+									className={classnames(styles.headerCell, styles.columnDisplayHeaderCell)}
+									style={getHeaderCellSizeStyle(
+										header.id,
+										header.getSize(),
+										isExplicitColumnWidth(header.column, resizeSizingReady ? columnSizing : {}),
+										!!resizeSizingReady,
+									)}
+								>
+									{headerGroupIndex === 0 && <DsTableColumnDisplay table={table} />}
+								</TableHead>
+							);
+						}
 
 						if (header.isPlaceholder) {
 							return (

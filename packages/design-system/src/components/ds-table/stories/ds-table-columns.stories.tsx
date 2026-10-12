@@ -114,3 +114,48 @@ export const ColumnHiding: Story = {
 		);
 	},
 };
+
+/**
+ * The header ends with a tertiary icon-only Columns button. Its popup lists
+ * every column with a checkbox (checked columns stay visible), a search field
+ * that filters the list, and an "All columns" checkbox that toggles every
+ * column at once.
+ */
+export const ColumnDisplay: Story = {
+	args: {
+		columnDisplay: true,
+	},
+};
+
+/**
+ * With column groups, the Columns button sits at the end of the group headers
+ * row. Each group gets a checkbox that toggles all of its columns and shows a
+ * partial state when only some are visible. Columns with `enableHiding: false`
+ * are listed as locked.
+ */
+export const ColumnDisplayWithGroups: Story = {
+	args: {
+		columnDisplay: true,
+		selectable: true,
+		columns: [
+			{
+				id: 'identity',
+				header: 'Identity',
+				columns: [
+					{ accessorKey: 'firstName', header: 'First Name', enableHiding: false },
+					{ accessorKey: 'lastName', header: 'Last Name' },
+					{ accessorKey: 'age', header: 'Age' },
+				],
+			},
+			{
+				id: 'activity',
+				header: 'Activity',
+				columns: [
+					{ accessorKey: 'visits', header: 'Visits' },
+					{ accessorKey: 'status', header: 'Status' },
+					{ accessorKey: 'progress', header: 'Profile Progress' },
+				],
+			},
+		],
+	},
+};
