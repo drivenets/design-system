@@ -141,20 +141,19 @@ const DsTag = ({
 					<DsTypography variant={mediumVariant} className={styles.key}>
 						{label}
 					</DsTypography>
-					{operatorSlot !== undefined &&
-						operatorSlot !== null && (
-							// The wrapper is a pure event boundary with no semantics of its own; the slotted
-							// control keeps its own. `role="presentation"` is what satisfies
-							// jsx-a11y/no-static-element-interactions for a span carrying these handlers.
-							<span
-								role="presentation"
-								className={styles.operatorSlot}
-								onClick={stopPropagation}
-								onKeyDown={stopPropagation}
-							>
-								{operatorSlot}
-							</span>
-						)}
+					{operatorSlot !== undefined && operatorSlot !== null && (
+						// The wrapper is a pure event boundary with no semantics of its own; the slotted
+						// control keeps its own. `role="presentation"` is what satisfies
+						// jsx-a11y/no-static-element-interactions for a span carrying these handlers.
+						<span
+							role="presentation"
+							className={styles.operatorSlot}
+							onClick={stopPropagation}
+							onKeyDown={stopPropagation}
+						>
+							{operatorSlot}
+						</span>
+					)}
 					<DsTypography variant={regularVariant} className={styles.value}>
 						{value}
 					</DsTypography>
