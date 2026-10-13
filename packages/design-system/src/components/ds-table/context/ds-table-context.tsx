@@ -63,8 +63,8 @@ export interface DsTableContextType<TData, TValue>
 	 */
 	scrollbarSpacerWidth: ScrollbarSpacerWidth;
 	/**
-	 * Consumer-facing column visibility (controlled or internal), without the
-	 * collapsed-group overrides layered on for rendering.
+	 * Which columns the user chose to show. Collapsing a group hides columns
+	 * without changing this.
 	 */
 	columnVisibility: VisibilityState;
 }

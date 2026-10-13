@@ -35,13 +35,12 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 					{headerGroup.headers.map((header) => {
 						const columnSizing = table.getState().columnSizing;
 
-						// The Columns button sits in the top header row: the group headers
-						// row when columns are grouped, otherwise the only row. Keyed by column
-						// id so hiding or showing every grouped column (which adds or removes
-						// the group row) does not remount the button and close its popup.
 						if (header.column.id === COLUMN_DISPLAY_COLUMN_ID) {
+							const isTopRow = headerGroupIndex === 0;
+
 							return (
 								<TableHead
+									// Stable key: a remount would close the open popup.
 									key={header.column.id}
 									data-column-id={header.isPlaceholder ? undefined : header.column.id}
 									className={classnames(styles.headerCell, styles.columnDisplayHeaderCell)}
@@ -52,7 +51,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 										!!resizeSizingReady,
 									)}
 								>
-									{headerGroupIndex === 0 && <DsTableColumnDisplay table={table} />}
+									{isTopRow && <DsTableColumnDisplay table={table} />}
 								</TableHead>
 							);
 						}

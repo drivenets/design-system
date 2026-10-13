@@ -496,3 +496,22 @@ export const VirtualizedResizable: Story = {
 		resizableColumns: true,
 	},
 };
+
+/**
+ * Row virtualization with the Columns button. Hidden columns drop out of every
+ * virtualized row.
+ */
+export const VirtualizedWithColumnDisplay: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+		return <DsTable {...args} data={data} />;
+	},
+	args: {
+		virtualized: true,
+		columnDisplay: true,
+	},
+};

@@ -124,3 +124,41 @@ export const WithControls: Story = {
 		),
 	},
 };
+
+/**
+ * The Columns button sits at the end of the group headers row. Each group gets
+ * a checkbox that toggles all of its columns and shows a partial state when
+ * only some are visible. Columns with `enableHiding: false` are listed as locked.
+ */
+export const WithColumnDisplay: Story = {
+	args: {
+		columnDisplay: true,
+		columns: [
+			{
+				id: 'identity',
+				header: 'Identity',
+				meta: { group: { collapsible: true } },
+				columns: [
+					{
+						accessorKey: 'firstName',
+						header: 'First Name',
+						enableHiding: false,
+						meta: { keepVisibleWhenCollapsed: true },
+					},
+					{ accessorKey: 'lastName', header: 'Last Name' },
+					{ accessorKey: 'age', header: 'Age' },
+				],
+			},
+			{
+				id: 'activity',
+				header: 'Activity',
+				meta: { group: { collapsible: true } },
+				columns: [
+					{ accessorKey: 'visits', header: 'Visits', meta: { keepVisibleWhenCollapsed: true } },
+					{ accessorKey: 'status', header: 'Status' },
+					{ accessorKey: 'progress', header: 'Profile Progress' },
+				],
+			},
+		],
+	},
+};

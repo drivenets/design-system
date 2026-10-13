@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { fn } from 'storybook/test';
 import type { VisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { DsCheckbox } from '../../ds-checkbox';
 import { DsStack } from '../../ds-stack';
 import DsTable from '../ds-table';
@@ -128,34 +129,31 @@ export const ColumnDisplay: Story = {
 };
 
 /**
- * With column groups, the Columns button sits at the end of the group headers
- * row. Each group gets a checkbox that toggles all of its columns and shows a
- * partial state when only some are visible. Columns with `enableHiding: false`
- * are listed as locked.
+ * Control the visible columns from outside with `columnVisibility` and
+ * `onColumnVisibilityChange`, e.g. to persist the user's choice or reset it.
  */
-export const ColumnDisplayWithGroups: Story = {
-	args: {
-		columnDisplay: true,
-		selectable: true,
-		columns: [
-			{
-				id: 'identity',
-				header: 'Identity',
-				columns: [
-					{ accessorKey: 'firstName', header: 'First Name', enableHiding: false },
-					{ accessorKey: 'lastName', header: 'Last Name' },
-					{ accessorKey: 'age', header: 'Age' },
-				],
-			},
-			{
-				id: 'activity',
-				header: 'Activity',
-				columns: [
-					{ accessorKey: 'visits', header: 'Visits' },
-					{ accessorKey: 'status', header: 'Status' },
-					{ accessorKey: 'progress', header: 'Profile Progress' },
-				],
-			},
-		],
+export const ColumnDisplayControlled: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ age: false, visits: false });
+
+		return (
+			<DsStack direction="column" gap={16}>
+				<DsStack direction="row">
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setColumnVisibility({})}>
+						Show all columns
+					</DsButtonV3>
+				</DsStack>
+
+				<DsTable
+					{...args}
+					columnDisplay
+					columnVisibility={columnVisibility}
+					onColumnVisibilityChange={setColumnVisibility}
+				/>
+			</DsStack>
+		);
 	},
 };

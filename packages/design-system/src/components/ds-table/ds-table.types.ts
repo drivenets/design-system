@@ -553,14 +553,9 @@ export interface DsDataTableProps<TData, TValue> {
 	onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
 
 	/**
-	 * Adds a trailing header cell with an icon-only Columns button. Its popup
-	 * lists every column with a checkbox (checked columns stay visible), a search
-	 * field that filters the list, and an "All columns" checkbox. Column groups
-	 * get a checkbox that toggles all of their columns and shows a partial state
-	 * when only some are visible; with groups, the button sits in the group
-	 * header row. Columns with `enableHiding: false` are listed as locked. Set
+	 * Adds a Columns button to the header for showing and hiding columns. Uses
+	 * `columnVisibility` / `onColumnVisibilityChange`; set
 	 * `meta.columnDisplayLabel` on columns whose `header` is not a string.
-	 * Visibility flows through `columnVisibility` / `onColumnVisibilityChange`.
 	 * @default false
 	 */
 	columnDisplay?: boolean;
