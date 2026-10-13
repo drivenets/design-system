@@ -152,6 +152,7 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 - **Flows:** [docs/agents/skills.md](docs/agents/skills.md)
 - **Subagents:** [docs/agents/subagents.md](docs/agents/subagents.md)
 - **Claude Code cloud environment:** [docs/agents/cloud-environment.md](docs/agents/cloud-environment.md)
+- **Routines (scheduled Claude sessions):** [docs/agents/routines/](docs/agents/routines/README.md)
 
 ## Cursor subagents (`.cursor/agents/`)
 
