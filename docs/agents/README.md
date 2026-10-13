@@ -8,5 +8,6 @@ For LLMs in this monorepo. Human onboarding: [README.md](../../README.md).
 | ---------------------------- | ---------------------------------------------------- |
 | [skills.md](skills.md)       | Layers, typical flows                                |
 | [subagents.md](subagents.md) | `ds-*` subagents, invoke                             |
+| [routines/](routines/)       | Scheduled Routines, owners, handover                 |
 | [domain.md](domain.md)       | [CONTEXT.md](../../CONTEXT.md), [docs/adr/](../adr/) |
 | [AGENTS.md](../../AGENTS.md) | Checkers, skill index                                |
