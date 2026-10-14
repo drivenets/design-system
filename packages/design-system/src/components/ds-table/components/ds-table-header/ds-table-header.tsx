@@ -7,7 +7,7 @@ import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableHeaderProps } from './ds-table-header.types';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getHeaderCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
-import { COLUMN_DISPLAY_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
+import { COLUMN_DISPLAY_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 import { DsStack } from '../../../ds-stack';
 import { DsTableColumnFilterPopover } from '../../filters/components/column-filter-popover';
 import type { ResolvedColumnFilter } from '../../filters/types/filter-adapter.types';
@@ -18,7 +18,7 @@ import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
-	const { bordered, virtualized, resizableColumns, resizeSizingReady, scrollbarSpacerWidth } =
+	const { bordered, virtualized, resizableColumns, resizeSizingReady, scrollbarSpacerWidth, columnDisplay } =
 		useDsTableContext<TData, unknown>();
 
 	return (
@@ -35,7 +35,11 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 					{headerGroup.headers.map((header) => {
 						const columnSizing = table.getState().columnSizing;
 
-						if (header.column.id === COLUMN_DISPLAY_COLUMN_ID) {
+						const isRowActionsColumn = header.column.id === ROW_ACTIONS_COLUMN_ID;
+						const hostsColumnDisplay =
+							header.column.id === COLUMN_DISPLAY_COLUMN_ID || (columnDisplay && isRowActionsColumn);
+
+						if (hostsColumnDisplay) {
 							const isTopRow = headerGroupIndex === 0;
 
 							return (
@@ -43,7 +47,10 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 									// Stable key: a remount would close the open popup.
 									key={header.column.id}
 									data-column-id={header.isPlaceholder ? undefined : header.column.id}
-									className={classnames(styles.headerCell, styles.columnDisplayHeaderCell)}
+									className={classnames(
+										styles.headerCell,
+										isRowActionsColumn ? styles.rowActionsHeaderCell : styles.columnDisplayHeaderCell,
+									)}
 									style={getHeaderCellSizeStyle(
 										header.id,
 										header.getSize(),
@@ -51,7 +58,12 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 										!!resizeSizingReady,
 									)}
 								>
-									{isTopRow && <DsTableColumnDisplay table={table} />}
+									{!header.isPlaceholder && flexRender(header.column.columnDef.header, header.getContext())}
+									{isTopRow && (
+										<span className={styles.columnDisplaySlot}>
+											<DsTableColumnDisplay table={table} />
+										</span>
+									)}
 								</TableHead>
 							);
 						}

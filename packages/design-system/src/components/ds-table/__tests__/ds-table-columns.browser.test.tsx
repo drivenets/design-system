@@ -154,6 +154,12 @@ describe('DsTable - Columns', () => {
 				.closest('[data-scope="checkbox"][data-part="root"]')
 				?.getAttribute('data-state');
 
+		const getCenterX = (element: Element) => {
+			const { x, width } = element.getBoundingClientRect();
+
+			return x + width / 2;
+		};
+
 		// Clicks can reach a popup painted underneath a modal, so stacking is asserted
 		// by hit-testing the element's center instead.
 		const isTopmostAtCenter = (element: Element | null) => {
@@ -372,6 +378,49 @@ describe('DsTable - Columns', () => {
 
 			await expect.element(columnHeader('Age')).toBeVisible();
 			await expect.element(columnHeader('Last Name')).not.toBeInTheDocument();
+		});
+
+		it.each([
+			{
+				lastAction: 'More actions',
+				secondaryRowActions: [{ icon: 'info' as const, label: 'Details', onClick: () => undefined }],
+			},
+			{ lastAction: 'Open', secondaryRowActions: undefined },
+		])(
+			'centers the button over the last row action ($lastAction)',
+			async ({ lastAction, secondaryRowActions }) => {
+				await renderTable({
+					primaryRowActions: [
+						{ icon: 'edit', label: 'Edit', onClick: () => undefined },
+						{ icon: 'open_in_new', label: 'Open', onClick: () => undefined },
+					],
+					secondaryRowActions,
+				});
+
+				const button = page.getByRole('button', { name: 'Columns' }).element();
+				const lastActionButton = page
+					.getByRole('button', { name: lastAction, exact: true })
+					.first()
+					.element();
+
+				expect(Math.abs(getCenterX(button) - getCenterX(lastActionButton))).toBeLessThanOrEqual(1);
+				expect(document.querySelector(`thead th[data-column-id="${COLUMN_DISPLAY_COLUMN_ID}"]`)).toBeNull();
+			},
+		);
+
+		it('keeps the button in the group headers row above the row actions', async () => {
+			await renderTable({
+				columns: groupedColumns,
+				primaryRowActions: [{ icon: 'edit', label: 'Edit', onClick: () => undefined }],
+			});
+
+			const headerRows = page.getByRole('rowgroup').first().getByRole('row');
+			await expect.element(headerRows.first().getByRole('button', { name: 'Columns' })).toBeVisible();
+
+			const button = page.getByRole('button', { name: 'Columns' }).element();
+			const editButton = page.getByRole('button', { name: 'Edit', exact: true }).first().element();
+
+			expect(Math.abs(getCenterX(button) - getCenterX(editButton))).toBeLessThanOrEqual(1);
 		});
 
 		it('works inside a DsModal', async () => {

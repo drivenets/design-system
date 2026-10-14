@@ -37,7 +37,8 @@ export const ROW_ACTIONS_COLUMN_ID = '__dsRowActions';
 
 /**
  * Width (in px) of one row action button. Must match `.rowActionIcon` in
- * `ds-table-row-actions-cell.module.scss`.
+ * `ds-table-row-actions-cell.module.scss` and `.columnDisplaySlot` in
+ * `ds-table-header.module.scss`.
  */
 export const ROW_ACTION_BUTTON_SIZE = 36;
 

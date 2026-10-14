@@ -78,6 +78,19 @@
 	justify-content: center;
 }
 
+.rowActionsHeaderCell {
+	justify-content: flex-end;
+}
+
+// As wide as a row action button (`.rowActionIcon`), so the Columns button
+// centers over the last action in the row actions column.
+.columnDisplaySlot {
+	display: flex;
+	flex-shrink: 0;
+	justify-content: center;
+	width: 36px;
+}
+
 .groupStart:not(:first-child) {
 	border-left: vars.$group-border-width solid var(--border);
 }

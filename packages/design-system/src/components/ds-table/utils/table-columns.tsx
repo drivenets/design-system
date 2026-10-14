@@ -60,10 +60,11 @@ const pinUtilityColumnSize = (width: number) => ({
 
 /**
  * Prepends the builtin select / expander / reorder columns when those features
- * are on, and appends the row actions column when actions are declared, then
- * the column-display column when `columnDisplay` is set. Reorder is omitted
- * for virtualized tables. Visual order: reorder, expander, select, consumer
- * columns, row actions, column display.
+ * are on, and appends the row actions column when actions are declared, or
+ * else the column-display column when `columnDisplay` is set (with row actions,
+ * the Columns button shares their column). Reorder is omitted for virtualized
+ * tables. Visual order: reorder, expander, select, consumer columns, row
+ * actions or column display.
  */
 export const getAugmentedColumns = <TData, TValue>(
 	columns: ColumnDef<TData, TValue>[],
@@ -137,7 +138,7 @@ export const getAugmentedColumns = <TData, TValue>(
 		});
 	}
 
-	if (columnDisplay) {
+	if (columnDisplay && rowActionsColumnWidth === 0) {
 		// Header is rendered by DsTableHeader when it encounters COLUMN_DISPLAY_COLUMN_ID,
 		// since the button belongs in the top header row even when columns are grouped.
 		augmentedColumns.push({

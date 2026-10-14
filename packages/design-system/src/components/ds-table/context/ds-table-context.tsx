@@ -125,6 +125,7 @@ export const DsTableContextProvider = <TData, TValue>({
 		locale,
 		onCellEdit,
 		onCellValidate,
+		columnDisplay,
 	} = tableProps;
 
 	const { collapsedColumnGroups, onToggleColumnGroup } = derived.grouping;
@@ -166,6 +167,7 @@ export const DsTableContextProvider = <TData, TValue>({
 			collapsedColumnGroups,
 			onToggleColumnGroup,
 			columnVisibility,
+			columnDisplay,
 			locale,
 			onCellEdit,
 			resizableColumns,
@@ -202,6 +204,7 @@ export const DsTableContextProvider = <TData, TValue>({
 			collapsedColumnGroups,
 			onToggleColumnGroup,
 			columnVisibility,
+			columnDisplay,
 			locale,
 			onCellEdit,
 			resizableColumns,

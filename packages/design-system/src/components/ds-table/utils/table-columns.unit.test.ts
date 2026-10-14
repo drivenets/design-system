@@ -165,15 +165,11 @@ describe('getAugmentedColumns', () => {
 		});
 	});
 
-	it('appends a pinned column-display column after row actions when enabled', () => {
-		const columns = getAugmentedColumns([nameColumn], {
-			...noFeatures,
-			rowActionsColumnWidth: 168,
-			columnDisplay: true,
-		});
+	it('appends a pinned column-display column when enabled', () => {
+		const columns = getAugmentedColumns([nameColumn], { ...noFeatures, columnDisplay: true });
 		const columnDisplay = columns.at(-1);
 
-		expect(columnIds(columns)).toEqual(['name', ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_ID]);
+		expect(columnIds(columns)).toEqual(['name', COLUMN_DISPLAY_COLUMN_ID]);
 		expect(columnDisplay).toMatchObject({
 			size: COLUMN_DISPLAY_COLUMN_WIDTH,
 			minSize: COLUMN_DISPLAY_COLUMN_WIDTH,
@@ -186,6 +182,16 @@ describe('getAugmentedColumns', () => {
 
 	it('omits the column-display column when the feature is off', () => {
 		expect(columnIds(getAugmentedColumns([nameColumn], noFeatures))).toEqual(['name']);
+	});
+
+	it('leaves the Columns button to the row actions column when actions are declared', () => {
+		const columns = getAugmentedColumns([nameColumn], {
+			...noFeatures,
+			rowActionsColumnWidth: 168,
+			columnDisplay: true,
+		});
+
+		expect(columnIds(columns)).toEqual(['name', ROW_ACTIONS_COLUMN_ID]);
 	});
 
 	it('keeps the column-display column out of the loading skeleton', () => {
