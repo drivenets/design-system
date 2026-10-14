@@ -6,17 +6,18 @@ The Routine finds tests that fail and then pass without a code change, confirms 
 
 ## Settings
 
-| Setting               | Value                                                                                                              |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Repository            | `drivenets/design-system`                                                                                          |
-| Workflow              | `PR Checks` (`.github/workflows/pr.yml`)                                                                           |
-| Test jobs             | `Test`, `Storybook Docs Tests`, `Visual Tests`, `Build` (its `Run Tests With Build` step)                          |
-| JUnit artifacts       | `junit-<job id>-attempt-<n>` (`junit-test`, `junit-docs-tests`, `junit-visual-tests`, `junit-build`), kept 14 days |
-| Look-back window      | 7 days                                                                                                             |
-| Jira                  | Project `AR`, issue type **Bug**, parent epic [AR-58393](https://drivenets.atlassian.net/browse/AR-58393)          |
-| Jira component, label | `Design System`, `flaky-test`                                                                                      |
-| Slack                 | `#design-system-ai-notifications`                                                                                  |
-| Limits per run        | Confirm at most 5 candidates, open at most 2 fix PRs                                                               |
+| Setting                 | Value                                                                                                                                           |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Repository              | `drivenets/design-system`                                                                                                                       |
+| Workflow                | `PR Checks` (`.github/workflows/pr.yml`)                                                                                                        |
+| Test jobs               | `Test`, `Storybook Docs Tests`, `Visual Tests`, `Build` (its `Run Tests With Build` step)                                                       |
+| JUnit artifacts         | `junit-<job id>-attempt-<n>` (`junit-test`, `junit-docs-tests`, `junit-visual-tests`, `junit-build`), kept 14 days                              |
+| Look-back window        | 7 days                                                                                                                                          |
+| Jira                    | Project `AR`, issue type **Bug**, parent epic [AR-58393](https://drivenets.atlassian.net/browse/AR-58393)                                       |
+| Jira component, label   | `Design System`, `flaky-test`                                                                                                                   |
+| Jira priority, assignee | `Low`, the Routine's owner: the Jira user the Atlassian connector runs as (get its account ID with `atlassianUserInfo` at the start of the run) |
+| Slack                   | `#design-system-ai-notifications`                                                                                                               |
+| Limits per run          | Confirm at most 5 candidates, open at most 2 fix PRs                                                                                            |
 
 ## 1. Collect candidates
 
@@ -74,6 +75,8 @@ One Bug per confirmed or filed test:
 | Parent      | AR-58393                                                                                                 |
 | Component   | Design System                                                                                            |
 | Labels      | `flaky-test`                                                                                             |
+| Priority    | Low                                                                                                      |
+| Assignee    | The Routine's owner (see [Settings](#settings)), set by account ID                                       |
 | Description | Test file and name, project, CI occurrences with run links, local result, error message, suspected cause |
 
 Add a line saying it was filed by the flaky test tracker Routine and link this file.
