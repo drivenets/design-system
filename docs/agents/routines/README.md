@@ -1,3 +1,5 @@
+<!-- cspell:ignore Wapw XRTMM -->
+
 # Routines
 
 Scheduled Claude Code sessions that do recurring Design System chores ([AR-100283](https://drivenets.atlassian.net/browse/AR-100283)). They run in the shared `design-system` cloud environment ([cloud-environment.md](../cloud-environment.md)).
@@ -73,7 +75,7 @@ Otherwise follow the file exactly. It is the source of truth for what to scan, h
 | Field         | Value                                                                                                     |
 | ------------- | --------------------------------------------------------------------------------------------------------- |
 | Name          | `Weekly release (design-system)`                                                                          |
-| Trigger ID    | TBD (owner's account)                                                                                     |
+| Trigger ID    | `trig_01X45TtWapwQbXRTMM88H1rj` (owner's account)                                                         |
 | Schedule      | `CRON_TZ=Europe/Warsaw 57 8 * * 3`                                                                        |
 | Environment   | `design-system`                                                                                           |
 | Repository    | `drivenets/design-system`, default branch                                                                 |
