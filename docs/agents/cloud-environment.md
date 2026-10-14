@@ -35,12 +35,12 @@ if [ ! -x "$hook" ]; then
 	exit 0
 fi
 
-if ! CLAUDE_CODE_REMOTE=true CLAUDE_PROJECT_DIR="$repo" "$hook"; then
+if ! CLAUDE_CODE_REMOTE=true DS_CLOUD_SNAPSHOT=true CLAUDE_PROJECT_DIR="$repo" "$hook"; then
 	echo "setup: hook failed, the SessionStart hook will retry"
 fi
 ```
 
-The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store and Chromium, and the hook in each session has little or nothing left to do. The setup script never fails the environment build: if the hook is missing or fails, the session's hook does the work, just slower. Inside the hook, only Node, pnpm and `pnpm install` are required; Playwright and the proxy CA steps print a warning and carry on.
+The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store, Chromium and the Playwright Docker image for visual tests (`DS_CLOUD_SNAPSHOT=true` turns on that ~3.5 GB pull, which sessions skip), and the hook in each session has little or nothing left to do. The setup script never fails the environment build: if the hook is missing or fails, the session's hook does the work, just slower. Inside the hook, only Node, pnpm and `pnpm install` are required; Playwright and the proxy CA steps print a warning and carry on.
 
 The setup script never needs editing; see [How it stays up to date](#how-it-stays-up-to-date).
 
@@ -51,10 +51,12 @@ Never put secrets in environment variables — everyone using the environment ca
 ```
 cdn.playwright.dev
 playwright.download.prss.microsoft.com
+mcr.microsoft.com
+*.data.mcr.microsoft.com
 drivenets.github.io
 ```
 
-Trusted already covers npm, nodejs.org and apt. The image ships an older Chromium in `/opt/pw-browsers`, and the Playwright version in the lockfile needs its own build from `cdn.playwright.dev`. Without it, the hook prints a warning and browser tests can't run; everything else still works. `drivenets.github.io` serves the Storybook manifests the DS MCP server (`.mcp.json`) reads.
+Trusted already covers npm, nodejs.org and apt. The image ships an older Chromium in `/opt/pw-browsers`, and the Playwright version in the lockfile needs its own build from `cdn.playwright.dev`. Without it, the hook prints a warning and browser tests can't run; everything else still works. `mcr.microsoft.com` serves the pinned Playwright image for visual tests; without it only visual tests fail. `drivenets.github.io` serves the Storybook manifests the DS MCP server (`.mcp.json`) reads.
 
 ## How it stays up to date
 
@@ -68,6 +70,7 @@ The snapshot is rebuilt when the setup script or the allowed network hosts chang
 | Lockfile adds or bumps packages   | Only the new packages are downloaded               |
 | `.nvmrc` or `packageManager` bump | The new Node or pnpm is installed                  |
 | Playwright upgrade                | The matching Chromium is downloaded (about 150 MB) |
+| Playwright upgrade (visual tests) | First `test:visual:server` pulls the image (~45 s) |
 
 A stale snapshot never means a wrong toolchain, only a slower start until the next rebuild. After a big upgrade (Node, Playwright) an Owner can rebuild right away by saving any edit to the setup script, for example a comment.
 
@@ -81,6 +84,8 @@ pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-sel
 ```
 
 The session's HTTPS traffic goes through a proxy with its own CAs; the hook adds them (the certs in `~/.ccr/ca-bundle.crt` that aren't public Mozilla roots) to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`docs-list` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
+
+Visual tests (`test:visual`, see [AGENTS.md](../../AGENTS.md#visual-tests-screenshots)) run as documented: the hook starts the Docker daemon on every session and resume, and the snapshot already holds the Playwright image, so `pnpm --filter @drivenets/design-system test:visual:server --detach` starts in seconds. Screenshots match the CI baselines, so `-u` here produces committable PNGs.
 
 ## Limits
 
