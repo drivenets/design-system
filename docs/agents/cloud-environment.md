@@ -42,7 +42,7 @@ fi
 
 The setup script runs as root after the repo is cloned at the default branch, and before Claude Code starts. It runs the same hook early so the VM snapshot already holds Node, pnpm, the pnpm store, Chromium and the Playwright Docker image for visual tests (`DS_CLOUD_SNAPSHOT=true` turns on that ~3.5 GB pull, which sessions skip), and the hook in each session has little or nothing left to do. The setup script never fails the environment build: if the hook is missing or fails, the session's hook does the work, just slower. Inside the hook, only Node, pnpm and `pnpm install` are required; Playwright and the proxy CA steps print a warning and carry on.
 
-The setup script never needs editing; see [How it stays up to date](#how-it-stays-up-to-date).
+The setup script rarely needs editing, only when a PR that changes it says so; hook changes reach every environment on their own, see [How it stays up to date](#how-it-stays-up-to-date).
 
 Never put secrets in environment variables — everyone using the environment can read them. Jira and Slack access come from each person's own connectors (`claude.ai/customize/connectors`); GitHub access comes from the Claude GitHub App.
 
