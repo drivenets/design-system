@@ -380,33 +380,54 @@ describe('DsTable - Columns', () => {
 			await expect.element(columnHeader('Last Name')).not.toBeInTheDocument();
 		});
 
-		it.each([
-			{
-				lastAction: 'More actions',
-				secondaryRowActions: [{ icon: 'info' as const, label: 'Details', onClick: () => undefined }],
-			},
-			{ lastAction: 'Open', secondaryRowActions: undefined },
-		])(
-			'centers the button over the last row action ($lastAction)',
-			async ({ lastAction, secondaryRowActions }) => {
-				await renderTable({
-					primaryRowActions: [
-						{ icon: 'edit', label: 'Edit', onClick: () => undefined },
-						{ icon: 'open_in_new', label: 'Open', onClick: () => undefined },
-					],
-					secondaryRowActions,
-				});
+		describe.each([
+			{ resizableColumns: false, virtualized: false },
+			{ resizableColumns: false, virtualized: true },
+			{ resizableColumns: true, virtualized: false },
+			{ resizableColumns: true, virtualized: true },
+		])('with row actions (resizableColumns=$resizableColumns, virtualized=$virtualized)', (tableMode) => {
+			it.each([
+				{
+					lastAction: 'More actions',
+					secondaryRowActions: [{ icon: 'info' as const, label: 'Details', onClick: () => undefined }],
+				},
+				{ lastAction: 'Open', secondaryRowActions: undefined },
+			])(
+				'centers the button over the last action of every row ($lastAction)',
+				async ({ lastAction, secondaryRowActions }) => {
+					await page.render(
+						<div style={{ padding: HARNESS_OFFSET_PX, height: 400 }}>
+							<DsTable
+								columns={columns}
+								data={defaultData}
+								columnDisplay
+								{...tableMode}
+								primaryRowActions={[
+									{ icon: 'edit', label: 'Edit', onClick: () => undefined },
+									{ icon: 'open_in_new', label: 'Open', onClick: () => undefined },
+								]}
+								secondaryRowActions={secondaryRowActions}
+							/>
+						</div>,
+					);
 
-				const button = page.getByRole('button', { name: 'Columns' }).element();
-				const lastActionButton = page
-					.getByRole('button', { name: lastAction, exact: true })
-					.first()
-					.element();
+					const lastActions = page.getByRole('button', { name: lastAction, exact: true });
+					await expect.element(lastActions.first()).toBeVisible();
 
-				expect(Math.abs(getCenterX(button) - getCenterX(lastActionButton))).toBeLessThanOrEqual(1);
-				expect(document.querySelector(`thead th[data-column-id="${COLUMN_DISPLAY_COLUMN_ID}"]`)).toBeNull();
-			},
-		);
+					const getMaxOffset = () => {
+						const buttonCenter = getCenterX(page.getByRole('button', { name: 'Columns' }).element());
+						const offsets = lastActions
+							.elements()
+							.map((action) => Math.abs(getCenterX(action) - buttonCenter));
+
+						return Math.max(...offsets);
+					};
+
+					await expect.poll(getMaxOffset).toBeLessThanOrEqual(1);
+					expect(document.querySelector(`thead th[data-column-id="${COLUMN_DISPLAY_COLUMN_ID}"]`)).toBeNull();
+				},
+			);
+		});
 
 		it('keeps the button in the group headers row above the row actions', async () => {
 			await renderTable({
