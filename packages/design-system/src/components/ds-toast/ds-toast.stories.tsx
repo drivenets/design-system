@@ -244,6 +244,9 @@ export const Error: Story = {
 	),
 };
 
+/**
+ * Long descriptions scroll once the toast reaches its 400px max height.
+ */
 export const LongContent: Story = {
 	render: () => {
 		const LongContentDemo = () => {
@@ -253,9 +256,11 @@ export const LongContent: Story = {
 				createToast({
 					title: 'Important Notice',
 					description:
-						'This is a longer message that demonstrates how the toast component handles extended content. The text will wrap appropriately and maintain good readability while staying within the toast boundaries.',
+						'This is a longer message that demonstrates how the toast component handles extended content. '.repeat(
+							30,
+						),
 					variant: 'warning',
-					duration: 8000,
+					persistent: true,
 				});
 			};
 
