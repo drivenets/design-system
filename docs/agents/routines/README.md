@@ -102,18 +102,19 @@ Otherwise follow the file exactly. It is the source of truth for when to skip, h
 
 ## Request triage
 
-| Field         | Value                                                                                                  |
-| ------------- | ------------------------------------------------------------------------------------------------------ |
-| Name          | `Request triage (design-system)`                                                                       |
-| Trigger ID    | Not created yet                                                                                        |
-| Schedule      | `CRON_TZ=Asia/Jerusalem 0 8-19 * * 0-5`                                                                |
-| Environment   | `design-system`                                                                                        |
-| Repository    | `drivenets/design-system`, default branch                                                              |
-| Session       | A new session on every run                                                                             |
-| Connectors    | Atlassian (Jira), Figma. Remove every other connector. GitHub access comes from the Claude GitHub App. |
-| Notifications | Off (it runs hourly)                                                                                   |
-| Instructions  | [request-triage.md](request-triage.md)                                                                 |
-| Output        | Comments and `ds-bot*` labels on DS Bug tickets, `claude/ar-*` PRs labeled `ds-bot`                    |
+| Field         | Value                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Name          | `Request triage (design-system)`                                                                                 |
+| Trigger ID    | Not created yet                                                                                                  |
+| Schedule      | `CRON_TZ=Asia/Jerusalem 0 8-19 * * 0-5`                                                                          |
+| Model         | Opus 5.5 (`claude-opus-5-5`): in shadow tests Sonnet stopped after writing a failing test, Opus finished the fix |
+| Environment   | `design-system`                                                                                                  |
+| Repository    | `drivenets/design-system`, default branch                                                                        |
+| Session       | A new session on every run                                                                                       |
+| Connectors    | Atlassian (Jira), Figma. Remove every other connector. GitHub access comes from the Claude GitHub App.           |
+| Notifications | Off (it runs hourly)                                                                                             |
+| Instructions  | [request-triage.md](request-triage.md)                                                                           |
+| Output        | Comments and `ds-bot*` labels on DS Bug tickets, `claude/ar-*` PRs labeled `ds-bot`                              |
 
 Stored prompt:
 

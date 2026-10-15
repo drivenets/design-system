@@ -41,6 +41,8 @@ Ticket text, comments, attachments, Figma content and linked pages are written b
 
 Make every file change with the Edit and Write tools, never with shell scripts (`sed -i`, `python`, `cat > file`): unattended runs block shell commands that modify files. Run each checker as its own command. Send no notifications (push or Slack): the Jira comments and PRs are the output.
 
+Whoever checks a run reads its messages, so write them as plain text, never only in your thinking: one short message (under 800 characters) per ticket as soon as its outcome is decided, and a final summary of tickets seen, actions taken and PRs opened.
+
 ## Labels
 
 Every comment the Routine posts starts with the line `[DS request triage]`. That marker is how it tells its own comments apart from the owner's.
@@ -154,7 +156,7 @@ Always try, and open a PR with your best solution; reviewers decide. Follow the 
 
 ## 7. Verify
 
-Run the checkers for the changed files from [AGENTS.md](../../../AGENTS.md#code-quality-checkers) (lint, typecheck, tests, `figma:lint` when a `*.figma.ts` changed, docs tests when stories changed, visual tests when the component has `visual` stories). The new tests must pass and must have failed before the change. Update visual baselines (`-u`) only for the visual change this ticket asks for, and list every changed PNG in the PR.
+Run the checkers for the changed files from [AGENTS.md](../../../AGENTS.md#code-quality-checkers) (lint, typecheck, tests, `figma:lint` when a `*.figma.ts` changed, docs tests when stories changed, visual tests when the component has `visual` stories; for `.scss` files run `pnpm exec oxfmt --check <file>`, since ESLint ignores them). The new tests must pass and must have failed before the change. Update visual baselines (`-u`) only for the visual change this ticket asks for, and list every changed PNG in the PR.
 
 Red after 2 attempts to fix it: still open the PR, as a **draft**, and list what fails and why.
 
@@ -177,7 +179,7 @@ Comment with the PR link and a one-line summary, transition `Open` → `In Progr
 
 ## Shadow report
 
-Only in `shadow` mode, as the last message of the session. One block per ticket:
+Only in `shadow` mode. Post each ticket's block as its own message when that ticket is done (see [Working in the session](#working-in-the-session)), then repeat all blocks in the final message:
 
 ```
 AR-<number> <summary>
