@@ -1,6 +1,10 @@
+---
+enabled: true
+---
+
 # Flaky test tracker
 
-Instructions for the weekly **Flaky test tracker** Routine ([AR-100283](https://drivenets.atlassian.net/browse/AR-100283)). The Routine's stored prompt only points here, so edit this file (in a PR) to change what it does. Setup, owner and handover: [README.md](README.md).
+Instructions for the weekly **Flaky test tracker** Routine ([AR-100283](https://drivenets.atlassian.net/browse/AR-100283)). The Routine's stored prompt only points here, so edit this file (in a PR) to change what it does. Anyone can pause it by setting `enabled: false` above, see [Routine switch](README.md#routine-switch). Setup, owner and handover: [README.md](README.md).
 
 The Routine finds tests that fail and then pass without a code change, confirms them, files a Jira Bug for each one, fixes the clear cases in a PR, and posts a weekly summary to Slack.
 
