@@ -6,7 +6,6 @@ import {
 	ROW_ACTION_BUTTON_SIZE,
 	ROW_ACTIONS_CELL_PADDING,
 	ROW_ACTIONS_GAP,
-	ROW_ACTIONS_TRIGGER_OFFSET,
 } from './constants';
 
 const DEFAULT_MAX_COLUMN_SIZE = Number.MAX_SAFE_INTEGER;
@@ -489,12 +488,7 @@ export const getRowActionsColumnWidth = (
 		return 0;
 	}
 
-	return (
-		slots * ROW_ACTION_BUTTON_SIZE +
-		(slots - 1) * ROW_ACTIONS_GAP +
-		(hasSecondaryActions ? ROW_ACTIONS_TRIGGER_OFFSET : 0) +
-		2 * ROW_ACTIONS_CELL_PADDING
-	);
+	return slots * ROW_ACTION_BUTTON_SIZE + (slots - 1) * ROW_ACTIONS_GAP + 2 * ROW_ACTIONS_CELL_PADDING;
 };
 
 /**

@@ -49,16 +49,10 @@ export const ROW_ACTION_BUTTON_SIZE = 36;
 export const ROW_ACTIONS_GAP = 8;
 
 /**
- * Extra start margin (in px) of the secondary actions trigger. Must match
- * `.secondaryActionsTrigger` (`--sm`) in `ds-table-row-actions-cell.module.scss`.
+ * Horizontal padding (in px) on each side of a row actions cell. Must match
+ * `.rowActionsCell` (`--xs`) in the row styles.
  */
-export const ROW_ACTIONS_TRIGGER_OFFSET = 12;
-
-/**
- * Horizontal padding (in px) on each side of a body cell. Must match the
- * `--standard` cell padding in the row styles.
- */
-export const ROW_ACTIONS_CELL_PADDING = 16;
+export const ROW_ACTIONS_CELL_PADDING = 8;
 
 /**
  * Column id for the trailing Columns button injected when `columnDisplay` is set.
@@ -107,11 +101,12 @@ export const RESIZE_MIN_COLUMN_WIDTH = 52;
 export const RESIZE_DIVIDER_WIDTH = 2;
 
 /**
- * Rest width of the header **Scrollbar spacer** when the body overflows
- * vertically. Must match `$scrollbar-default-size` in `styles/_scrollbars.scss`.
- * Hover (12px) is intentionally not tracked.
+ * Width (in px) kept free at the inline end of every row while the table
+ * overflows vertically, so columns never sit under the vertical scrollbar and
+ * keep the same widths whether the scrollbar takes layout space or overlays
+ * the content. Must match `$scrollbar-default-size` in `styles/_scrollbars.scss`.
  */
-export const SCROLLBAR_SPACER_WIDTH = 10;
+export const SCROLLBAR_GUTTER_WIDTH = 10;
 
 /**
  * Width change (in px) applied per Arrow key press when a resize handle is
