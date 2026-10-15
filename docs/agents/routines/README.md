@@ -161,4 +161,4 @@ The previous owner (or an org admin) should pause or delete their copy, so the R
 
 - A run is an unattended Claude session: it only does what the instructions allow, and everything it creates is a PR or a ticket for people to review. It never merges, except the Weekly release Routine, which approves and merges only the Release PR, and only when every required check is green.
 - Runs use the owner's usage limits.
-- The cloud environment has no running Docker daemon, so Routines can't run the visual tests (`storybook-visual`).
+- Visual tests (`storybook-visual`) run in the cloud environment: its hook starts Docker, see [cloud-environment.md](../cloud-environment.md#storybook-and-visual-checks).
