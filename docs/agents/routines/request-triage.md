@@ -193,7 +193,7 @@ Implemented: <no | yes: files changed, tests added, checker results, would open 
 
 ## Never
 
-- Make tests pass by deleting or weakening them, or by adding `.skip`, `.only`, `eslint-disable`, `@ts-ignore` or snapshot updates (visual baselines only change for the ticket's intended visual change, see step 7). You may add tests. Change an existing test only when it asserts the buggy behavior, and say so in the PR.
+- Make tests pass by deleting or weakening them, or by adding `.skip`, `.only`, `eslint-disable`, `@ts-ignore` or snapshot updates (visual baselines only change for the ticket's intended visual change, see step 7). Never add `force: true`, longer timeouts, retries or waits to an existing test either. You may add tests. Change an existing test only when it asserts the buggy behavior (for example "stays mounted but hidden" when the fix unmounts), and list every such change in the PR.
 - Create or change anything in Figma.
 - Change `.github/`, `.claude/` or `.mcp.json`. If a fix seems to need it, leave that part out and explain it in the PR.
 - Merge, approve, push outside `claude/ar-*` branches, or change the assignee, issue type or an existing parent.
