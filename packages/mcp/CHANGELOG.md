@@ -1,5 +1,11 @@
 # @drivenets/design-system-mcp
 
+## 0.1.7
+
+### Patch Changes
+
+- 4541d3f: Update `@storybook/mcp` to 10.6.1.
+
 ## 0.1.6
 
 ### Patch Changes
