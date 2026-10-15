@@ -448,6 +448,17 @@ const WithRowActions = () => <DsTable
 
 ### Show code
 {
+  args: {
+    primaryRowActions: [{
+      icon: 'edit',
+      label: 'Edit',
+      onClick: fn()
+    }, {
+      icon: 'download',
+      label: 'Download',
+      onClick: fn()
+    }]
+  },
   parameters: {
     docs: {
       source: {
@@ -456,10 +467,6 @@ const WithRowActions = () => <DsTable
     }
   },
   render: function Render(args) {
-    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
-      left: ['firstName']
-    });
-    const pinnedIds = stickyColumns.left ?? [];
     const managedColumns = [{
       id: 'firstName',
       label: 'First Name'
@@ -472,38 +479,95 @@ const WithRowActions = () => <DsTable
     }, {
       id: 'visits',
       label: 'Visits'
+    }, {
+      id: 'progress',
+      label: 'Profile Progress'
+    }, {
+      id: 'status',
+      label: 'Status'
     }];
-    const togglePin = (id: string, pinned: boolean) => setStickyColumns({
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({});
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({
+      id
+    }) => isVisible(id)).length;
+    const allColumnsChecked = visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({
+      label
+    }) => label.toLowerCase().includes(query));
+    const setPinned = (id: string, pinned: boolean) => setStickyColumns({
+      ...stickyColumns,
       left: pinned ? [...pinnedIds, id] : pinnedIds.filter(pinnedId => pinnedId !== id)
     });
-    return <DsTable {...args} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" gap="var(--md)" alignItems="center" flexWrap="wrap">
-                        <DsTypography variant="body-sm-semi-bold">Pinned columns</DsTypography>
-                        {managedColumns.map(({
-        id,
-        label
-      }) => <DsStack key={id} direction="row" gap="var(--3xs)" alignItems="center">
-                                <DsTypography variant="body-sm-reg">{label}</DsTypography>
-                                <DsPinToggle itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => togglePin(id, pinned)} />
-                            </DsStack>)}
+    const setAllVisible = (visible: boolean) => setColumnVisibility(Object.fromEntries(managedColumns.map(({
+      id
+    }) => [id, visible])));
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" justifyContent="flex-end" width="100%">
+                        <DsPopover.Root align="end" gutter={4}>
+                            <DsPopover.Trigger>
+                                <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                            </DsPopover.Trigger>
+                            <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                                <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                    Search columns
+                                </label>
+                                <DsTextInput id={searchId} placeholder="Search" value={search} onValueChange={setSearch} slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" aria-hidden />
+          }} />
+                                <DsStack direction="column" className={styles.columnList}>
+                                    {matchingColumns.map(({
+              id,
+              label
+            }) => <DsCheckbox key={id} size="large" className={styles.columnRow} label={label} checked={isVisible(id)} onCheckedChange={checked => setColumnVisibility({
+              ...columnVisibility,
+              [id]: checked === true
+            })} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />)}
+                                    <DsCheckbox size="large" label="Row actions" checked disabled actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />} />
+                                </DsStack>
+                                <DsDivider className={styles.divider} />
+                                <DsCheckbox size="large" label="All columns" checked={allColumnsChecked} onCheckedChange={() => setAllVisible(allColumnsChecked !== true)} />
+                            </DsPopover.Panel>
+                        </DsPopover.Root>
                     </DsStack>} />;
   }
 }
 
 ### MCP manifest
 const ColumnManager = () => {
-    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['firstName'] });
-    const pinnedIds = stickyColumns.left ?? [];
     const managedColumns = [
         { id: 'firstName', label: 'First Name' },
         { id: 'lastName', label: 'Last Name' },
         { id: 'age', label: 'Age' },
         { id: 'visits', label: 'Visits' },
+        { id: 'progress', label: 'Profile Progress' },
+        { id: 'status', label: 'Status' },
     ];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({});
 
-    const togglePin = (id: string, pinned: boolean) =>
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
+    const allColumnsChecked =
+        visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
+
+    const setPinned = (id: string, pinned: boolean) =>
         setStickyColumns({
+            ...stickyColumns,
             left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
         });
+
+    const setAllVisible = (visible: boolean) =>
+        setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
 
     return (
         <DsTable
@@ -522,21 +586,614 @@ const ColumnManager = () => {
             ]}
             data={defaultData}
             onRowClick={fn()}
+            primaryRowActions={[
+                { icon: 'edit', label: 'Edit', onClick: fn() },
+                { icon: 'download', label: 'Download', onClick: fn() },
+            ]}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
             stickyColumns={stickyColumns}
             onStickyColumnsChange={setStickyColumns}
             controls={
-                <DsStack direction="row" gap="var(--md)" alignItems="center" flexWrap="wrap">
-                    <DsTypography variant="body-sm-semi-bold">Pinned columns</DsTypography>
-                    {managedColumns.map(({ id, label }) => (
-                        <DsStack key={id} direction="row" gap="var(--3xs)" alignItems="center">
-                            <DsTypography variant="body-sm-reg">{label}</DsTypography>
-                            <DsPinToggle
-                                itemLabel={label}
-                                pinned={pinnedIds.includes(id)}
-                                onPinnedChange={(pinned) => togglePin(id, pinned)}
+                <DsStack direction="row" justifyContent="flex-end" width="100%">
+                    <DsPopover.Root align="end" gutter={4}>
+                        <DsPopover.Trigger>
+                            <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                        </DsPopover.Trigger>
+                        <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                            <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                Search columns
+                            </label>
+                            <DsTextInput
+                                id={searchId}
+                                placeholder="Search"
+                                value={search}
+                                onValueChange={setSearch}
+                                slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
                             />
-                        </DsStack>
-                    ))}
+                            <DsStack direction="column" className={styles.columnList}>
+                                {matchingColumns.map(({ id, label }) => (
+                                    <DsCheckbox
+                                        key={id}
+                                        size="large"
+                                        className={styles.columnRow}
+                                        label={label}
+                                        checked={isVisible(id)}
+                                        onCheckedChange={(checked) =>
+                                            setColumnVisibility({ ...columnVisibility, [id]: checked === true })
+                                        }
+                                        actions={
+                                            <DsPinToggle
+                                                className={styles.pinToggle}
+                                                itemLabel={label}
+                                                pinned={pinnedIds.includes(id)}
+                                                onPinnedChange={(pinned) => setPinned(id, pinned)}
+                                            />
+                                        }
+                                    />
+                                ))}
+                                <DsCheckbox
+                                    size="large"
+                                    label="Row actions"
+                                    checked
+                                    disabled
+                                    actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
+                                />
+                            </DsStack>
+                            <DsDivider className={styles.divider} />
+                            <DsCheckbox
+                                size="large"
+                                label="All columns"
+                                checked={allColumnsChecked}
+                                onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
+                            />
+                        </DsPopover.Panel>
+                    </DsPopover.Root>
+                </DsStack>
+            } />
+    );
+};
+
+## Column Manager With Saved State
+
+### Show code
+{
+  args: {
+    primaryRowActions: [{
+      icon: 'edit',
+      label: 'Edit',
+      onClick: fn()
+    }, {
+      icon: 'download',
+      label: 'Download',
+      onClick: fn()
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const managedColumns = [{
+      id: 'firstName',
+      label: 'First Name'
+    }, {
+      id: 'lastName',
+      label: 'Last Name'
+    }, {
+      id: 'age',
+      label: 'Age'
+    }, {
+      id: 'visits',
+      label: 'Visits'
+    }, {
+      id: 'progress',
+      label: 'Profile Progress'
+    }, {
+      id: 'status',
+      label: 'Status'
+    }];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      lastName: false
+    });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+      left: ['firstName', 'lastName']
+    });
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({
+      id
+    }) => isVisible(id)).length;
+    const allColumnsChecked = visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({
+      label
+    }) => label.toLowerCase().includes(query));
+    const setPinned = (id: string, pinned: boolean) => setStickyColumns({
+      ...stickyColumns,
+      left: pinned ? [...pinnedIds, id] : pinnedIds.filter(pinnedId => pinnedId !== id)
+    });
+    const setAllVisible = (visible: boolean) => setColumnVisibility(Object.fromEntries(managedColumns.map(({
+      id
+    }) => [id, visible])));
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" justifyContent="flex-end" width="100%">
+                        <DsPopover.Root align="end" gutter={4}>
+                            <DsPopover.Trigger>
+                                <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                            </DsPopover.Trigger>
+                            <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                                <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                    Search columns
+                                </label>
+                                <DsTextInput id={searchId} placeholder="Search" value={search} onValueChange={setSearch} slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" aria-hidden />
+          }} />
+                                <DsStack direction="column" className={styles.columnList}>
+                                    {matchingColumns.map(({
+              id,
+              label
+            }) => <DsCheckbox key={id} size="large" className={styles.columnRow} label={label} checked={isVisible(id)} onCheckedChange={checked => setColumnVisibility({
+              ...columnVisibility,
+              [id]: checked === true
+            })} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />)}
+                                    <DsCheckbox size="large" label="Row actions" checked disabled actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />} />
+                                </DsStack>
+                                <DsDivider className={styles.divider} />
+                                <DsCheckbox size="large" label="All columns" checked={allColumnsChecked} onCheckedChange={() => setAllVisible(allColumnsChecked !== true)} />
+                            </DsPopover.Panel>
+                        </DsPopover.Root>
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const ColumnManagerWithSavedState = () => {
+    const managedColumns = [
+        { id: 'firstName', label: 'First Name' },
+        { id: 'lastName', label: 'Last Name' },
+        { id: 'age', label: 'Age' },
+        { id: 'visits', label: 'Visits' },
+        { id: 'progress', label: 'Profile Progress' },
+        { id: 'status', label: 'Status' },
+    ];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+        left: ['firstName', 'lastName'],
+    });
+
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
+    const allColumnsChecked =
+        visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
+
+    const setPinned = (id: string, pinned: boolean) =>
+        setStickyColumns({
+            ...stickyColumns,
+            left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+        });
+
+    const setAllVisible = (visible: boolean) =>
+        setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            primaryRowActions={[
+                { icon: 'edit', label: 'Edit', onClick: fn() },
+                { icon: 'download', label: 'Download', onClick: fn() },
+            ]}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns}
+            controls={
+                <DsStack direction="row" justifyContent="flex-end" width="100%">
+                    <DsPopover.Root align="end" gutter={4}>
+                        <DsPopover.Trigger>
+                            <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                        </DsPopover.Trigger>
+                        <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                            <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                Search columns
+                            </label>
+                            <DsTextInput
+                                id={searchId}
+                                placeholder="Search"
+                                value={search}
+                                onValueChange={setSearch}
+                                slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+                            />
+                            <DsStack direction="column" className={styles.columnList}>
+                                {matchingColumns.map(({ id, label }) => (
+                                    <DsCheckbox
+                                        key={id}
+                                        size="large"
+                                        className={styles.columnRow}
+                                        label={label}
+                                        checked={isVisible(id)}
+                                        onCheckedChange={(checked) =>
+                                            setColumnVisibility({ ...columnVisibility, [id]: checked === true })
+                                        }
+                                        actions={
+                                            <DsPinToggle
+                                                className={styles.pinToggle}
+                                                itemLabel={label}
+                                                pinned={pinnedIds.includes(id)}
+                                                onPinnedChange={(pinned) => setPinned(id, pinned)}
+                                            />
+                                        }
+                                    />
+                                ))}
+                                <DsCheckbox
+                                    size="large"
+                                    label="Row actions"
+                                    checked
+                                    disabled
+                                    actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
+                                />
+                            </DsStack>
+                            <DsDivider className={styles.divider} />
+                            <DsCheckbox
+                                size="large"
+                                label="All columns"
+                                checked={allColumnsChecked}
+                                onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
+                            />
+                        </DsPopover.Panel>
+                    </DsPopover.Root>
+                </DsStack>
+            } />
+    );
+};
+
+## Column Manager With Column Groups
+
+### Show code
+{
+  args: {
+    columns: [{
+      id: 'identity',
+      header: 'Identity',
+      columns: [{
+        accessorKey: 'firstName',
+        header: 'First Name',
+        cell: info => info.getValue<string>(),
+        size: 160
+      }, {
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        cell: info => info.getValue<string>(),
+        size: 160
+      }]
+    }, {
+      id: 'activity',
+      header: 'Activity',
+      columns: [{
+        accessorKey: 'age',
+        header: 'Age',
+        cell: info => info.getValue<number>(),
+        size: 140
+      }, {
+        accessorKey: 'visits',
+        header: 'Visits',
+        cell: info => info.getValue<number>(),
+        size: 160
+      }, {
+        accessorKey: 'progress',
+        header: 'Profile Progress',
+        cell: info => `${String(info.getValue<number>())}%`,
+        size: 200
+      }]
+    }, {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: info => info.getValue(),
+      size: 160
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const managedColumns = [{
+      id: 'identity',
+      label: 'Identity',
+      leaves: [{
+        id: 'firstName',
+        label: 'First Name'
+      }, {
+        id: 'lastName',
+        label: 'Last Name'
+      }]
+    }, {
+      id: 'activity',
+      label: 'Activity',
+      leaves: [{
+        id: 'age',
+        label: 'Age'
+      }, {
+        id: 'visits',
+        label: 'Visits'
+      }, {
+        id: 'progress',
+        label: 'Profile Progress'
+      }]
+    }, {
+      id: 'status',
+      label: 'Status',
+      leaves: [{
+        id: 'status',
+        label: 'Status'
+      }]
+    }];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      visits: false
+    });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+      left: ['identity']
+    });
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const getCheckedState = (ids: string[]) => {
+      const visibleCount = ids.filter(isVisible).length;
+      return visibleCount === ids.length ? true : visibleCount > 0 && 'indeterminate';
+    };
+    const allLeafIds = managedColumns.flatMap(({
+      leaves
+    }) => leaves.map(({
+      id
+    }) => id));
+    const allColumnsChecked = getCheckedState(allLeafIds);
+    const query = search.trim().toLowerCase();
+    const matches = (label: string) => label.toLowerCase().includes(query);
+    const matchingColumns = managedColumns.map(entry => ({
+      ...entry,
+      leaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({
+        label
+      }) => matches(label))
+    })).filter(({
+      leaves
+    }) => leaves.length > 0);
+    const setPinned = (id: string, pinned: boolean) => setStickyColumns({
+      ...stickyColumns,
+      left: pinned ? [...pinnedIds, id] : pinnedIds.filter(pinnedId => pinnedId !== id)
+    });
+    const setVisible = (ids: string[], visible: boolean) => setColumnVisibility({
+      ...columnVisibility,
+      ...Object.fromEntries(ids.map(id => [id, visible]))
+    });
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" justifyContent="flex-end" width="100%">
+                        <DsPopover.Root align="end" gutter={4}>
+                            <DsPopover.Trigger>
+                                <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                            </DsPopover.Trigger>
+                            <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                                <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                    Search columns
+                                </label>
+                                <DsTextInput id={searchId} placeholder="Search" value={search} onValueChange={setSearch} slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" aria-hidden />
+          }} />
+                                <DsStack direction="column" className={styles.columnList}>
+                                    {matchingColumns.map(({
+              id,
+              label,
+              leaves
+            }) => {
+              const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
+              const leafIds = leaves.map(leaf => leaf.id);
+              const checked = getCheckedState(leafIds);
+              return <DsStack key={id} direction="column">
+                                                <DsCheckbox size="large" className={styles.columnRow} label={label} checked={checked} onCheckedChange={() => setVisible(leafIds, checked !== true)} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />
+                                                {isGroup && <DsStack direction="column" className={styles.groupLeaves}>
+                                                        {leaves.map(leaf => <DsCheckbox key={leaf.id} size="large" label={leaf.label} checked={isVisible(leaf.id)} onCheckedChange={next => setVisible([leaf.id], next === true)} />)}
+                                                    </DsStack>}
+                                            </DsStack>;
+            })}
+                                </DsStack>
+                                <DsDivider className={styles.divider} />
+                                <DsCheckbox size="large" label="All columns" checked={allColumnsChecked} onCheckedChange={() => setVisible(allLeafIds, allColumnsChecked !== true)} />
+                            </DsPopover.Panel>
+                        </DsPopover.Root>
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const ColumnManagerWithColumnGroups = () => {
+    const managedColumns = [
+        {
+            id: 'identity',
+            label: 'Identity',
+            leaves: [
+                { id: 'firstName', label: 'First Name' },
+                { id: 'lastName', label: 'Last Name' },
+            ],
+        },
+        {
+            id: 'activity',
+            label: 'Activity',
+            leaves: [
+                { id: 'age', label: 'Age' },
+                { id: 'visits', label: 'Visits' },
+                { id: 'progress', label: 'Profile Progress' },
+            ],
+        },
+        { id: 'status', label: 'Status', leaves: [{ id: 'status', label: 'Status' }] },
+    ];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ visits: false });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });
+
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const getCheckedState = (ids: string[]) => {
+        const visibleCount = ids.filter(isVisible).length;
+        return visibleCount === ids.length ? true : visibleCount > 0 && 'indeterminate';
+    };
+    const allLeafIds = managedColumns.flatMap(({ leaves }) => leaves.map(({ id }) => id));
+    const allColumnsChecked = getCheckedState(allLeafIds);
+    const query = search.trim().toLowerCase();
+    const matches = (label: string) => label.toLowerCase().includes(query);
+    const matchingColumns = managedColumns
+        .map((entry) => ({
+            ...entry,
+            leaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({ label }) => matches(label)),
+        }))
+        .filter(({ leaves }) => leaves.length > 0);
+
+    const setPinned = (id: string, pinned: boolean) =>
+        setStickyColumns({
+            ...stickyColumns,
+            left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+        });
+
+    const setVisible = (ids: string[], visible: boolean) =>
+        setColumnVisibility({
+            ...columnVisibility,
+            ...Object.fromEntries(ids.map((id) => [id, visible])),
+        });
+
+    return (
+        <DsTable
+            columns={[
+                {
+                    id: 'identity',
+                    header: 'Identity',
+                    columns: [
+                        {
+                            accessorKey: 'firstName',
+                            header: 'First Name',
+                            cell: (info) => info.getValue<string>(),
+                            size: 160,
+                        },
+                        {
+                            accessorKey: 'lastName',
+                            header: 'Last Name',
+                            cell: (info) => info.getValue<string>(),
+                            size: 160,
+                        },
+                    ],
+                },
+                {
+                    id: 'activity',
+                    header: 'Activity',
+                    columns: [
+                        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },
+                        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },
+                        {
+                            accessorKey: 'progress',
+                            header: 'Profile Progress',
+                            cell: (info) => `${String(info.getValue<number>())}%`,
+                            size: 200,
+                        },
+                    ],
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns}
+            controls={
+                <DsStack direction="row" justifyContent="flex-end" width="100%">
+                    <DsPopover.Root align="end" gutter={4}>
+                        <DsPopover.Trigger>
+                            <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                        </DsPopover.Trigger>
+                        <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                            <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                Search columns
+                            </label>
+                            <DsTextInput
+                                id={searchId}
+                                placeholder="Search"
+                                value={search}
+                                onValueChange={setSearch}
+                                slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+                            />
+                            <DsStack direction="column" className={styles.columnList}>
+                                {matchingColumns.map(({ id, label, leaves }) => {
+                                    const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
+                                    const leafIds = leaves.map((leaf) => leaf.id);
+                                    const checked = getCheckedState(leafIds);
+
+                                    return (
+                                        <DsStack key={id} direction="column">
+                                            <DsCheckbox
+                                                size="large"
+                                                className={styles.columnRow}
+                                                label={label}
+                                                checked={checked}
+                                                onCheckedChange={() => setVisible(leafIds, checked !== true)}
+                                                actions={
+                                                    <DsPinToggle
+                                                        className={styles.pinToggle}
+                                                        itemLabel={label}
+                                                        pinned={pinnedIds.includes(id)}
+                                                        onPinnedChange={(pinned) => setPinned(id, pinned)}
+                                                    />
+                                                }
+                                            />
+                                            {isGroup && (
+                                                <DsStack direction="column" className={styles.groupLeaves}>
+                                                    {leaves.map((leaf) => (
+                                                        <DsCheckbox
+                                                            key={leaf.id}
+                                                            size="large"
+                                                            label={leaf.label}
+                                                            checked={isVisible(leaf.id)}
+                                                            onCheckedChange={(next) => setVisible([leaf.id], next === true)}
+                                                        />
+                                                    ))}
+                                                </DsStack>
+                                            )}
+                                        </DsStack>
+                                    );
+                                })}
+                            </DsStack>
+                            <DsDivider className={styles.divider} />
+                            <DsCheckbox
+                                size="large"
+                                label="All columns"
+                                checked={allColumnsChecked}
+                                onCheckedChange={() => setVisible(allLeafIds, allColumnsChecked !== true)}
+                            />
+                        </DsPopover.Panel>
+                    </DsPopover.Root>
                 </DsStack>
             } />
     );

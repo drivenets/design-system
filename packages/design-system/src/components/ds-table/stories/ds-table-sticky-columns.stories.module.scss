@@ -1,3 +1,7 @@
+@use '../../../styles/mixin' as mixins;
+
+$column-list-max-height: 320px;
+
 // Narrower than the columns so the table scrolls horizontally, and bounded in
 // height for the virtualized story.
 .wrapper {
@@ -5,4 +9,31 @@
 	flex-direction: column;
 	width: 720px;
 	height: 420px;
+}
+
+.columnManager {
+	gap: var(--xs);
+	padding: var(--xs);
+}
+
+.columnList {
+	max-height: $column-list-max-height;
+	overflow-y: auto;
+}
+
+.groupLeaves {
+	padding-inline-start: var(--lg);
+}
+
+// The pin shows on hover or keyboard focus, and stays while the column is pinned.
+.columnRow:not(:hover, :focus-within) .pinToggle:not([aria-pressed='true']) {
+	opacity: 0;
+}
+
+.divider {
+	margin: 0;
+}
+
+.visuallyHidden {
+	@include mixins.visually-hidden;
 }
