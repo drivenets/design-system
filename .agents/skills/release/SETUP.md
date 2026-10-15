@@ -1,4 +1,4 @@
-<!-- cspell:ignore JRKXGB -->
+<!-- cspell:ignore JRKXGB Roba -->
 
 # Release prerequisites
 
@@ -28,6 +28,14 @@ If no Slack tool is available, tell the user how to connect one, then continue w
 
 - **Claude Code / Claude desktop:** claude.ai → Settings → Connectors → Slack → Connect, then enable it for the session (`/mcp` in the CLI). A connector that shows `needs_auth` is signed in from the same place.
 - **Cursor:** Settings → MCP → add the Slack MCP server and sign in.
+
+## Contacts
+
+| Role           | Person      | Slack         | GitHub      |
+| -------------- | ----------- | ------------- | ----------- |
+| DAP bump owner | Andrei Roba | `U031P2M3KK9` | `@aroba-dn` |
+
+Step 8 tags the DAP bump owner. If that changes, update this table and the Slack ID in step 8 of [SKILL.md](SKILL.md).
 
 ## Troubleshooting
 

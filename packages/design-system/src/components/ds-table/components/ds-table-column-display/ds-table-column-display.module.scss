@@ -1,0 +1,56 @@
+@use '../../../../styles/mixin' as mixins;
+@use '../../../../styles/scrollbars' as scrollbars;
+@use '../../../../styles/shared/dropdown';
+
+.content {
+	--column-display-min-width: 240px;
+	--column-display-max-width: 320px;
+	--column-display-list-max-height: 480px;
+
+	z-index: dropdown.$dropdown-z-index;
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+	min-width: var(--column-display-min-width);
+	max-width: var(--column-display-max-width);
+	padding: var(--xs);
+	background: var(--background);
+	border: 1px solid var(--border-secondary);
+	border-radius: var(--3xs);
+	box-shadow: 0 5px 15px 0 var(--shadow-moderate);
+}
+
+.list,
+.children {
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+	margin: 0;
+	list-style: none;
+}
+
+.list {
+	@include scrollbars.scrollbar-on-hover;
+
+	max-height: var(--column-display-list-max-height);
+	padding: var(--4xs);
+	overflow-y: auto;
+}
+
+.children {
+	padding: 0 0 0 var(--lg);
+}
+
+.item {
+	display: flex;
+	flex-direction: column;
+	gap: var(--xs);
+}
+
+.divider {
+	margin: 0;
+}
+
+.visuallyHidden {
+	@include mixins.visually-hidden;
+}

@@ -1,3 +1,4 @@
+import './components/ds-table-column-display/column-display-meta.augmentation';
 import './grouping/types/column-group-meta.augmentation';
 import './utils/column-size-meta.augmentation';
 

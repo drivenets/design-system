@@ -1,28 +1,32 @@
+---
+enabled: true
+---
+
 <!-- cspell:ignore Ihor Romanchuk Michal Murawski Polessky mmurawski vpolessky -->
 
 # Request triage
 
-Instructions for the hourly **Request triage** Routine ([AR-100283](https://drivenets.atlassian.net/browse/AR-100283)). The Routine's stored prompt only points here, so edit this file (in a PR) to change what it does. Setup, owner and handover: [README.md](README.md).
+Instructions for the hourly **Request triage** Routine ([AR-100283](https://drivenets.atlassian.net/browse/AR-100283)). The Routine's stored prompt only points here, so edit this file (in a PR) to change what it does. Anyone can pause it by setting `enabled: false` above, see [Routine switch](README.md#routine-switch). Setup, owner and handover: [README.md](README.md).
 
 Design System consumers file every request as a Jira Bug: real bugs, missing props and variants, mismatches with Figma. The Routine picks these tickets up, asks the reporter for anything missing, then implements the bug fix or the small feature and opens a PR. People always review the PR; the Routine never merges.
 
 ## Settings
 
-| Setting           | Value                                                                                                                                 |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Mode              | `shadow` (see [Modes](#modes))                                                                                                        |
-| Repository        | `drivenets/design-system`                                                                                                             |
-| Jira tickets      | Project `AR`, issue type **Bug**, component `Design System` or `DS - Design System`                                                   |
-| Start date        | `2026-10-15`: tickets created earlier are ignored unless they carry `ds-bot:retry`                                                    |
-| Parent epic       | [AR-58393](https://drivenets.atlassian.net/browse/AR-58393), set only when the ticket has no parent. Never change an existing parent. |
-| Owner             | The account the Routine runs as (see [README.md](README.md)). Jira assignee "unclaimed" means no assignee or the owner                |
-| DS team           | Jira: Ihor Romanchuk, Michal Murawski, Valentine Polessky. GitHub: `iromanchuk-dn`, `mmurawski-dn`, `vpolessky-dn`                    |
-| PR reviewers      | The DS team's GitHub accounts, except the owner (who authors the PR). CODEOWNERS adds the rest                                        |
-| Connectors        | Atlassian (Jira) and Figma. Figma is **read-only**: never call a tool that creates or changes a Figma file                            |
-| Limits per run    | Triage at most 15 tickets, implement at most 1                                                                                        |
-| Lock timeout      | 3 hours                                                                                                                               |
-| Waiting for reply | One reminder after 7 days; `ds-bot:needs-human` after 14 days or when a 3rd round of questions would be needed                        |
-| Shadow tickets    | AR-101918, AR-103233, AR-99411, AR-99459, AR-101870, AR-101552, AR-99461, AR-77146, AR-102289, AR-103374                              |
+| Setting           | Value                                                                                                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mode              | `shadow` (see [Modes](#modes))                                                                                                                                          |
+| Repository        | `drivenets/design-system`                                                                                                                                               |
+| Jira tickets      | Project `AR`, issue type **Bug**, component `Design System` or `DS - Design System`                                                                                     |
+| Start date        | `2026-10-15`: tickets created earlier are ignored unless they carry `ds-bot:retry`                                                                                      |
+| Parent epic       | [AR-58393](https://drivenets.atlassian.net/browse/AR-58393), set only when the ticket has no parent. Never change an existing parent.                                   |
+| Owner             | The Jira user the Atlassian connector runs as: get its account ID with `atlassianUserInfo` at the start of the run. Assignee "unclaimed" means no assignee or the owner |
+| DS team           | Jira: Ihor Romanchuk, Michal Murawski, Valentine Polessky. GitHub: `iromanchuk-dn`, `mmurawski-dn`, `vpolessky-dn`                                                      |
+| PR reviewers      | The DS team's GitHub accounts, except the owner (who authors the PR). CODEOWNERS adds the rest                                                                          |
+| Connectors        | Atlassian (Jira) and Figma. Figma is **read-only**: never call a tool that creates or changes a Figma file                                                              |
+| Limits per run    | Triage at most 15 tickets, implement at most 1                                                                                                                          |
+| Lock timeout      | 3 hours                                                                                                                                                                 |
+| Waiting for reply | One reminder after 7 days; `ds-bot:needs-human` after 14 days or when a 3rd round of questions would be needed                                                          |
+| Shadow tickets    | AR-101918, AR-103233, AR-99411, AR-99459, AR-101870, AR-101552, AR-99461, AR-77146, AR-102289, AR-103374                                                                |
 
 ## Untrusted input
 
@@ -146,7 +150,7 @@ Always try, and open a PR with your best solution; reviewers decide. Follow the 
 
 ## 7. Verify
 
-Run the checkers for the changed files from [AGENTS.md](../../../AGENTS.md#code-quality-checkers) (lint, typecheck, tests, `figma:lint` when a `*.figma.ts` changed, docs tests when stories changed). The new tests must pass and must have failed before the change. Visual tests can't run (no Docker); say so in the PR.
+Run the checkers for the changed files from [AGENTS.md](../../../AGENTS.md#code-quality-checkers) (lint, typecheck, tests, `figma:lint` when a `*.figma.ts` changed, docs tests when stories changed, visual tests when the component has `visual` stories). The new tests must pass and must have failed before the change. Update visual baselines (`-u`) only for the visual change this ticket asks for, and list every changed PNG in the PR.
 
 Red after 2 attempts to fix it: still open the PR, as a **draft**, and list what fails and why.
 
@@ -160,7 +164,7 @@ Run the [hands-off check](#2-hands-off-check) again, then push and open the PR:
   2. For enhancements: **Proposed API**. For changes to shared `src/styles` or `src/utils`, more than one component, new tokens, or a changed public API: a **Scope** note saying so.
   3. Root cause (bugs) or what was added (enhancements), as short bullets.
   4. The tests that pin it, before/after values or screenshots (attach screenshots to the Jira ticket and link them).
-  5. What wasn't run locally (visual tests), and for drafts what is failing.
+  5. For drafts: what is failing and why.
 - **Label:** `ds-bot`. **Reviewers:** from [Settings](#settings). Ready for review, or draft per step 7.
 
 ## 9. Update Jira
@@ -183,7 +187,7 @@ Implemented: <no | yes: files changed, tests added, checker results, would open 
 
 ## Never
 
-- Make tests pass by deleting or weakening them, or by adding `.skip`, `.only`, `eslint-disable`, `@ts-ignore` or snapshot updates. You may add tests. Change an existing test only when it asserts the buggy behavior, and say so in the PR.
+- Make tests pass by deleting or weakening them, or by adding `.skip`, `.only`, `eslint-disable`, `@ts-ignore` or snapshot updates (visual baselines only change for the ticket's intended visual change, see step 7). You may add tests. Change an existing test only when it asserts the buggy behavior, and say so in the PR.
 - Create or change anything in Figma.
 - Change `.github/`, `.claude/` or `.mcp.json`. If a fix seems to need it, leave that part out and explain it in the PR.
 - Merge, approve, push outside `claude/ar-*` branches, or change the assignee, issue type or an existing parent.

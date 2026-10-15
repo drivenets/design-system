@@ -13,7 +13,8 @@ type DefaultedDsTableProp =
 	| 'primaryRowActions'
 	| 'actions'
 	| 'reorderable'
-	| 'resizableColumns';
+	| 'resizableColumns'
+	| 'columnDisplay';
 
 export type DsTablePropsWithDefaults<TData, TValue> = DsDataTableProps<TData, TValue> &
 	Required<Pick<DsDataTableProps<TData, TValue>, DefaultedDsTableProp>>;
@@ -39,4 +40,5 @@ export const applyDsTableDefaults = <TData, TValue>(
 	actions: props.actions ?? [],
 	reorderable: props.reorderable ?? false,
 	resizableColumns: props.resizableColumns ?? false,
+	columnDisplay: props.columnDisplay ?? false,
 });

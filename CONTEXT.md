@@ -228,6 +228,18 @@ _Avoid_: summed display, collapsed field (that is the **Code input** viewport), 
 The design system's evaluation of a **Filter document** and the switched-on **Pins** against in-memory rows (`filterRows`), giving the matching rows and each **Pin**'s count.
 _Avoid_: evaluator, filter engine, matchRows
 
+**Routine**:
+A scheduled, unattended Claude Code session that does one recurring Design System chore, owned by one person's claude.ai account and driven by an instructions file in `docs/agents/routines/`.
+_Avoid_: bot, cron job, automation (as the concept name)
+
+**Routine switch**:
+The `enabled` flag in a **Routine**'s instructions file; anything other than `enabled: true` means the run does nothing.
+_Avoid_: kill switch, pause toggle (that is the owner's claude.ai control, not the repo flag)
+
+**Release PR**:
+The `chore(release): publish` pull request Changesets keeps open on `changeset-release/main`; merging it publishes every package version it lists.
+_Avoid_: version PR, publish PR
+
 ## Relationships
 
 - A **Component** exposes **Variants** and may accept **Locale** when it shows built-in user-facing text
