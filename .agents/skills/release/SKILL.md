@@ -9,7 +9,12 @@ description: Run the Design System package release end-to-end — find the "chor
 
 Repo: `drivenets/design-system` (pass `-R drivenets/design-system` to every `gh` call — `origin` may be a fork). Slack channel: `#dap-ask-design-system` (`C08T4JRKXGB`) — the only channel to post to. The one exception is the DM fallback in step 8.
 
-Invoking this skill authorizes steps 1–6, including approving the PR as the user and merging it. The only prompt is the release-notes review in step 7.
+Invoking this skill authorizes steps 1–8, including approving the PR as the user, merging it and posting to Slack.
+
+## Modes
+
+- **Interactive** (default): a person invoked the skill. The only prompt is the release-notes review in step 7.
+- **Unattended**: a Routine runs the skill ([weekly-release.md](../../../docs/agents/routines/weekly-release.md)) and nobody is there to answer. Never ask a question or wait for input. Step 7 posts the announcement without review. Wherever this skill says to tell, ask or walk the user through something, or to return text for manual posting, report to the Routine's status channel instead and stop if the step can't continue.
 
 ## Workflow
 
@@ -71,7 +76,11 @@ Copy this checklist and tick it off as you go:
 
    The run can take a few seconds to appear — retry `gh run list` until it does. If it fails, stop and report the run URL. Then confirm `gh release list -R drivenets/design-system --limit 10` shows a tag for every version from step 2.
 
-7. **Compose, review and post.** Follow [release-summary](../release-summary/SKILL.md) for the versions from step 2. Show the message and ask the user to check it covers the changes they expect — this is the one confirmation. Apply any edits they ask for, then send it unchanged to `C08T4JRKXGB` with the Slack MCP send-message tool and return the message link. Without Slack, return the text in a fenced block for manual posting.
+7. **Compose, review and post.** Follow [release-summary](../release-summary/SKILL.md) for the versions from step 2; this step is the request to post it.
+   - **Interactive:** show the message and ask the user to check it covers the changes they expect — this is the one confirmation. Apply any edits they ask for, then send it unchanged.
+   - **Unattended:** don't show or ask, send it as composed.
+
+   Send it to `C08T4JRKXGB` with the Slack MCP send-message tool and keep the message link and `ts` for step 8. Without Slack, interactive runs return the text in a fenced block for manual posting.
 
 8. **Ask for the DAP bump.** Take the versions from step 2 of `@drivenets/design-system`, `@drivenets/vite-plugin-design-system` and `@drivenets/eslint-plugin-design-system`. If none of them was released, or step 7 produced no announcement, skip this step. Otherwise reply in the announcement's thread (`thread_ts` = the `ts` of the message from step 7, without also sending to the channel), tagging the DAP bump owner from [SETUP.md](SETUP.md#contacts):
 
