@@ -6,6 +6,7 @@ import DsTable from '../ds-table';
 import type { DsTableStickyColumns } from '../ds-table.types';
 import type { ScrollParams } from '../components/ds-table-body-virtualized';
 import { DsTableEditCellText } from '../components/edit/cell-editors';
+import { getColumnTrackWidth } from '../hooks/use-scrollbar-gutter';
 import {
 	EXPANDER_COLUMN_ID,
 	REORDER_COLUMN_ID,
@@ -814,7 +815,8 @@ describe('DsTable sticky columns', () => {
 			expect(firstNameCell.textContent).toBe('First51');
 			expect(visibleLeft(firstNameCell)).toBeCloseTo(0, 0);
 			expect(visibleLeft(getHeaderCell('firstName'))).toBeCloseTo(0, 0);
-			expect(visibleRight(getHeaderCell('status'))).toBeCloseTo(container.clientWidth, 0);
+			// Right sticky cells stop before the scrollbar gutter padding.
+			expect(visibleRight(getHeaderCell('status'))).toBeCloseTo(getColumnTrackWidth(container), 0);
 		});
 
 		it('stays within a bounded flex parent whose child keeps the default min-height', async () => {

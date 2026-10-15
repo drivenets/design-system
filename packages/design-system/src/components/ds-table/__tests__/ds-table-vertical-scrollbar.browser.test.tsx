@@ -4,6 +4,7 @@ import type { CellContext, ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsTableEditCellText } from '../components/edit/cell-editors';
 import { columns, type Person } from '../stories/common/story-data';
+import { getColumnTrackWidth } from '../hooks/use-scrollbar-gutter';
 import { SCROLLBAR_GUTTER_WIDTH } from '../utils/constants';
 
 type Row = {
@@ -176,9 +177,12 @@ describe('DsTable vertical scrollbar', () => {
 			</div>,
 		);
 
-		await expect.poll(() => overflowsVertically(getScrollContainer())).toBe(true);
+		const container = getScrollContainer();
+		await expect.poll(() => overflowsVertically(container)).toBe(true);
 
 		const tableRight = getTable().getBoundingClientRect().right;
+		// Non-zero when the scrollbar takes no layout space (overlay or hidden).
+		const gutterPadding = container.clientWidth - getColumnTrackWidth(container);
 		const rows = document.querySelectorAll('thead tr');
 
 		expect(rows).toHaveLength(2);
@@ -190,7 +194,10 @@ describe('DsTable vertical scrollbar', () => {
 			}
 
 			expect(getComputedStyle(lastCell).borderBottomWidth).not.toBe('0px');
-			expect(Math.abs(lastCell.getBoundingClientRect().right - tableRight)).toBeLessThan(1);
+			// Cells stop at the gutter padding; the row's inset shadow carries the
+			// border through it to the table edge.
+			expect(Math.abs(lastCell.getBoundingClientRect().right + gutterPadding - tableRight)).toBeLessThan(1);
+			expect(getComputedStyle(row).boxShadow).toContain('inset');
 		}
 	});
 
