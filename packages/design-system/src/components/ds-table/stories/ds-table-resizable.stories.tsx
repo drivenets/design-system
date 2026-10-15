@@ -145,6 +145,16 @@ export const MinAndMaxSize: Story = {
 };
 
 /**
+ * Resizable columns with the Columns button. The Columns cell keeps its fixed
+ * width and has no resize handle.
+ */
+export const WithColumnDisplay: Story = {
+	args: {
+		columnDisplay: true,
+	},
+};
+
+/**
  * Restore column widths across remounts via `columnSizing`.
  */
 export const PersistedWidths: Story = {

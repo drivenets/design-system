@@ -1,9 +1,10 @@
 #!/bin/bash
 # Bootstraps Claude Code cloud sessions: Node per .nvmrc, pnpm per packageManager, node_modules,
-# Playwright Chromium. Each step is skipped when already in place. No-op locally.
+# Playwright Chromium, Docker for visual tests. Each step is skipped when already in place. No-op locally.
 #
-# Runs twice in the shared environment (see docs/agents/cloud-environment.md):
-# - from the environment setup script, so the VM snapshot already has the toolchain, the pnpm store and Chromium;
+# Runs twice in the environment (see docs/agents/cloud-environment.md):
+# - from the environment setup script with DS_CLOUD_SNAPSHOT=true, so the VM snapshot already has the toolchain,
+#   the pnpm store, Chromium and the visual-tests Docker image;
 # - as the SessionStart hook, where whatever is still missing gets installed.
 set -euo pipefail
 
@@ -163,6 +164,65 @@ if [ -f "$ca_bundle" ]; then
 		tail -n 1 "$log"
 		as_root mkdir -p "$STATE_DIR"
 		echo "$ca_sha" | as_root tee "$STATE_DIR/proxy-ca" >/dev/null
+	fi
+fi
+
+# 6. Docker for visual tests (`pnpm test:visual:server`). The image ships Docker Engine but its daemon stops with the VM,
+# so it's started on every session and resume (~1s). The ~3.5 GB Playwright image is pulled only for the snapshot: a
+# session started before the next rebuild after a Playwright bump pulls it on the first `test:visual:server`. Not fatal.
+DOCKER_READY_TIMEOUT_S=10
+DOCKER_STOP_TIMEOUT_S=30
+DOCKER_PID_FILE=/var/run/docker.pid
+PLAYWRIGHT_IMAGE_REPO=mcr.microsoft.com/playwright
+
+start_docker() {
+	as_root setsid sh -c 'exec dockerd </dev/null >>/var/log/dockerd.log 2>&1' &
+
+	for _ in $(seq "$DOCKER_READY_TIMEOUT_S"); do
+		as_root docker info >/dev/null 2>&1 && return 0
+		sleep 1
+	done
+
+	echo "dockerd not ready after ${DOCKER_READY_TIMEOUT_S}s, see /var/log/dockerd.log"
+	return 1
+}
+
+# Same tag as scripts/visual-test-server.ts; older versions are removed so a bump doesn't double the disk use
+pull_playwright_image() {
+	local version image old
+	version="$(cd packages/design-system && node -p "require('playwright/package.json').version")"
+	image="$PLAYWRIGHT_IMAGE_REPO:v$version-noble"
+
+	as_root docker image inspect "$image" >/dev/null 2>&1 ||
+		as_root docker pull --platform linux/amd64 "$image" || return 1
+
+	as_root docker images --format '{{.Repository}}:{{.Tag}}' "$PLAYWRIGHT_IMAGE_REPO" | { grep -vxF "$image" || true; } |
+		while read -r old; do
+			as_root docker rmi "$old" || return 1
+		done
+}
+
+# Stop cleanly so the snapshot doesn't capture Docker's databases mid-write
+stop_docker() {
+	local pid
+	pid="$(cat "$DOCKER_PID_FILE" 2>/dev/null)" || return 0
+	as_root kill "$pid"
+
+	for _ in $(seq "$DOCKER_STOP_TIMEOUT_S"); do
+		as_root kill -0 "$pid" 2>/dev/null || return 0
+		sleep 1
+	done
+
+	echo "dockerd still running after ${DOCKER_STOP_TIMEOUT_S}s"
+	return 1
+}
+
+if command -v dockerd >/dev/null && { as_root docker info >/dev/null 2>&1 || try_run start_docker; }; then
+	if [ "${DS_CLOUD_SNAPSHOT:-}" = "true" ]; then
+		try_run pull_playwright_image ||
+			echo "cloud-setup: allow mcr.microsoft.com in the environment's network access" \
+				"(docs/agents/cloud-environment.md)" >&2
+		try_run stop_docker || true
 	fi
 fi
 

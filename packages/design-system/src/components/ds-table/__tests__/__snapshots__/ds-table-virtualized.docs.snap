@@ -631,3 +631,42 @@ const VirtualizedResizable = () => {
         </div>
     );
 };
+
+## Virtualized With Column Display
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+    return <DsTable {...args} data={data} />;
+  },
+  args: {
+    virtualized: true,
+    columnDisplay: true
+  }
+}
+
+### MCP manifest
+const VirtualizedWithColumnDisplay = () => {
+    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        <DsTable
+            columns={columns}
+            stickyHeader
+            bordered
+            fullWidth
+            expandable={false}
+            onRowClick={fn()}
+            virtualized
+            columnDisplay
+            data={data} />
+    );
+};
