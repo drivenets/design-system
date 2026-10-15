@@ -132,7 +132,10 @@ export const ColumnManager: Story = {
 		const setPinned = (id: string, pinned: boolean) =>
 			setStickyColumns({
 				...stickyColumns,
-				left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+				// Pinned columns keep the order they have in the manager.
+				left: managedColumns
+					.map((column) => column.id)
+					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
 			});
 
 		const setAllVisible = (visible: boolean) =>
@@ -250,7 +253,10 @@ export const ColumnManagerWithSavedState: Story = {
 		const setPinned = (id: string, pinned: boolean) =>
 			setStickyColumns({
 				...stickyColumns,
-				left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+				// Pinned columns keep the order they have in the manager.
+				left: managedColumns
+					.map((column) => column.id)
+					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
 			});
 
 		const setAllVisible = (visible: boolean) =>
@@ -370,7 +376,10 @@ export const ColumnManagerOpen: Story = {
 		const setPinned = (id: string, pinned: boolean) =>
 			setStickyColumns({
 				...stickyColumns,
-				left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+				// Pinned columns keep the order they have in the manager.
+				left: managedColumns
+					.map((column) => column.id)
+					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
 			});
 
 		const setAllVisible = (visible: boolean) =>
@@ -538,14 +547,19 @@ export const ColumnManagerWithColumnGroups: Story = {
 		const matchingColumns = managedColumns
 			.map((entry) => ({
 				...entry,
-				leaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({ label }) => matches(label)),
+				matchingLeaves: matches(entry.label)
+					? entry.leaves
+					: entry.leaves.filter(({ label }) => matches(label)),
 			}))
-			.filter(({ leaves }) => leaves.length > 0);
+			.filter(({ matchingLeaves }) => matchingLeaves.length > 0);
 
 		const setPinned = (id: string, pinned: boolean) =>
 			setStickyColumns({
 				...stickyColumns,
-				left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+				// Pinned columns keep the order they have in the manager.
+				left: managedColumns
+					.map((column) => column.id)
+					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
 			});
 
 		const setVisible = (ids: string[], visible: boolean) =>
@@ -579,7 +593,7 @@ export const ColumnManagerWithColumnGroups: Story = {
 									slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
 								/>
 								<DsStack direction="column" className={styles.columnList}>
-									{matchingColumns.map(({ id, label, leaves }) => {
+									{matchingColumns.map(({ id, label, leaves, matchingLeaves }) => {
 										const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
 										const leafIds = leaves.map((leaf) => leaf.id);
 										const checked = getCheckedState(leafIds);
@@ -603,7 +617,7 @@ export const ColumnManagerWithColumnGroups: Story = {
 												/>
 												{isGroup && (
 													<DsStack direction="column" className={styles.groupLeaves}>
-														{leaves.map((leaf) => (
+														{matchingLeaves.map((leaf) => (
 															<DsCheckbox
 																key={leaf.id}
 																size="large"

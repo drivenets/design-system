@@ -502,7 +502,8 @@ const WithRowActions = () => <DsTable
     }) => label.toLowerCase().includes(query));
     const setPinned = (id: string, pinned: boolean) => setStickyColumns({
       ...stickyColumns,
-      left: pinned ? [...pinnedIds, id] : pinnedIds.filter(pinnedId => pinnedId !== id)
+      // Pinned columns keep the order they have in the manager.
+      left: managedColumns.map(column => column.id).filter(columnId => columnId === id ? pinned : pinnedIds.includes(columnId))
     });
     const setAllVisible = (visible: boolean) => setColumnVisibility(Object.fromEntries(managedColumns.map(({
       id
@@ -563,7 +564,10 @@ const ColumnManager = () => {
     const setPinned = (id: string, pinned: boolean) =>
         setStickyColumns({
             ...stickyColumns,
-            left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+            // Pinned columns keep the order they have in the manager.
+            left: managedColumns
+                .map((column) => column.id)
+                .filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
         });
 
     const setAllVisible = (visible: boolean) =>
@@ -716,7 +720,8 @@ const ColumnManager = () => {
     }) => label.toLowerCase().includes(query));
     const setPinned = (id: string, pinned: boolean) => setStickyColumns({
       ...stickyColumns,
-      left: pinned ? [...pinnedIds, id] : pinnedIds.filter(pinnedId => pinnedId !== id)
+      // Pinned columns keep the order they have in the manager.
+      left: managedColumns.map(column => column.id).filter(columnId => columnId === id ? pinned : pinnedIds.includes(columnId))
     });
     const setAllVisible = (visible: boolean) => setColumnVisibility(Object.fromEntries(managedColumns.map(({
       id
@@ -779,7 +784,10 @@ const ColumnManagerWithSavedState = () => {
     const setPinned = (id: string, pinned: boolean) =>
         setStickyColumns({
             ...stickyColumns,
-            left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+            // Pinned columns keep the order they have in the manager.
+            left: managedColumns
+                .map((column) => column.id)
+                .filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
         });
 
     const setAllVisible = (visible: boolean) =>
@@ -978,15 +986,16 @@ const ColumnManagerWithSavedState = () => {
     const matches = (label: string) => label.toLowerCase().includes(query);
     const matchingColumns = managedColumns.map(entry => ({
       ...entry,
-      leaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({
+      matchingLeaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({
         label
       }) => matches(label))
     })).filter(({
-      leaves
-    }) => leaves.length > 0);
+      matchingLeaves
+    }) => matchingLeaves.length > 0);
     const setPinned = (id: string, pinned: boolean) => setStickyColumns({
       ...stickyColumns,
-      left: pinned ? [...pinnedIds, id] : pinnedIds.filter(pinnedId => pinnedId !== id)
+      // Pinned columns keep the order they have in the manager.
+      left: managedColumns.map(column => column.id).filter(columnId => columnId === id ? pinned : pinnedIds.includes(columnId))
     });
     const setVisible = (ids: string[], visible: boolean) => setColumnVisibility({
       ...columnVisibility,
@@ -1008,7 +1017,8 @@ const ColumnManagerWithSavedState = () => {
                                     {matchingColumns.map(({
               id,
               label,
-              leaves
+              leaves,
+              matchingLeaves
             }) => {
               const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
               const leafIds = leaves.map(leaf => leaf.id);
@@ -1016,7 +1026,7 @@ const ColumnManagerWithSavedState = () => {
               return <DsStack key={id} direction="column">
                                                 <DsCheckbox size="large" className={styles.columnRow} label={label} checked={checked} onCheckedChange={() => setVisible(leafIds, checked !== true)} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />
                                                 {isGroup && <DsStack direction="column" className={styles.groupLeaves}>
-                                                        {leaves.map(leaf => <DsCheckbox key={leaf.id} size="large" label={leaf.label} checked={isVisible(leaf.id)} onCheckedChange={next => setVisible([leaf.id], next === true)} />)}
+                                                        {matchingLeaves.map(leaf => <DsCheckbox key={leaf.id} size="large" label={leaf.label} checked={isVisible(leaf.id)} onCheckedChange={next => setVisible([leaf.id], next === true)} />)}
                                                     </DsStack>}
                                             </DsStack>;
             })}
@@ -1069,14 +1079,19 @@ const ColumnManagerWithColumnGroups = () => {
     const matchingColumns = managedColumns
         .map((entry) => ({
             ...entry,
-            leaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({ label }) => matches(label)),
+            matchingLeaves: matches(entry.label)
+                ? entry.leaves
+                : entry.leaves.filter(({ label }) => matches(label)),
         }))
-        .filter(({ leaves }) => leaves.length > 0);
+        .filter(({ matchingLeaves }) => matchingLeaves.length > 0);
 
     const setPinned = (id: string, pinned: boolean) =>
         setStickyColumns({
             ...stickyColumns,
-            left: pinned ? [...pinnedIds, id] : pinnedIds.filter((pinnedId) => pinnedId !== id),
+            // Pinned columns keep the order they have in the manager.
+            left: managedColumns
+                .map((column) => column.id)
+                .filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
         });
 
     const setVisible = (ids: string[], visible: boolean) =>
@@ -1146,7 +1161,7 @@ const ColumnManagerWithColumnGroups = () => {
                                 slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
                             />
                             <DsStack direction="column" className={styles.columnList}>
-                                {matchingColumns.map(({ id, label, leaves }) => {
+                                {matchingColumns.map(({ id, label, leaves, matchingLeaves }) => {
                                     const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
                                     const leafIds = leaves.map((leaf) => leaf.id);
                                     const checked = getCheckedState(leafIds);
@@ -1170,7 +1185,7 @@ const ColumnManagerWithColumnGroups = () => {
                                             />
                                             {isGroup && (
                                                 <DsStack direction="column" className={styles.groupLeaves}>
-                                                    {leaves.map((leaf) => (
+                                                    {matchingLeaves.map((leaf) => (
                                                         <DsCheckbox
                                                             key={leaf.id}
                                                             size="large"
