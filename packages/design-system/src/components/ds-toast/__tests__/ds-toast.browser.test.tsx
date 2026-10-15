@@ -148,6 +148,7 @@ describe('DsToast', () => {
 	describe.each([
 		{ name: 'desktop', width: 1280, height: 720 },
 		{ name: 'mobile', width: 375, height: 667 },
+		{ name: 'short viewport', width: 1280, height: 360 },
 	])('long description ($name)', ({ width, height }) => {
 		it('should keep the toast and close button inside the viewport', async () => {
 			await page.viewport(width, height);
@@ -202,24 +203,22 @@ describe('DsToast', () => {
 		});
 	});
 
-	it('should let consumers set a lower max height', async () => {
+	it.each([
+		{ name: 'cap at 400px by default', style: undefined, expected: 400 },
+		{ name: 'let consumers lower the cap', style: { maxHeight: 200 }, expected: 200 },
+		{ name: 'let consumers raise the cap', style: { maxHeight: 600 }, expected: 600 },
+	])('should $name', async ({ style, expected }) => {
 		await page.viewport(1280, 720);
 		await page.render(
 			<DsToastProvider>
-				<ToastTrigger
-					variant="error"
-					title="Error"
-					description={LONG_DESCRIPTION}
-					style={{ maxHeight: 200 }}
-					persistent
-				/>
+				<ToastTrigger variant="error" title="Error" description={LONG_DESCRIPTION} style={style} persistent />
 			</DsToastProvider>,
 		);
 
 		await page.getByRole('button', { name: 'Show toast' }).click();
 
 		await expect.poll(() => getPart('root')?.dataset.state).toBe('open');
-		await expect.poll(() => getPart('root')?.getBoundingClientRect().height).toBe(200);
+		await expect.poll(() => getPart('root')?.getBoundingClientRect().height).toBe(expected);
 
 		const description = getPart('description');
 		expect(description?.scrollHeight).toBeGreaterThan(description?.clientHeight ?? 0);

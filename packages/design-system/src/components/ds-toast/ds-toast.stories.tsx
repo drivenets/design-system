@@ -244,8 +244,10 @@ export const WithActions: Story = {
 };
 
 /**
- * Long descriptions wrap within the max width. The toast height is capped to the viewport: the title and
- * close button stay visible and the description scrolls. Pass `className` or `style` to set a lower cap.
+ * Long descriptions wrap within the max width. The toast height is capped at 400px (and never exceeds the
+ * viewport): the title and close button stay visible and the description scrolls. To change the cap, pass
+ * `style={{ maxHeight }}` to `createToast`. A raised value replaces the viewport limit too, so wrap it in
+ * `min()`, e.g. `'min(600px, calc(100dvh - 2rem))'`.
  */
 export const LongContent: Story = {
 	parameters: { docs: { source: { type: 'code' } } },
