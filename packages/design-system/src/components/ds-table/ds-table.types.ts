@@ -46,6 +46,21 @@ export interface DsTableLocale {
 	 * Accessible label for the trigger that opens the secondary row actions menu.
 	 */
 	moreRowActions: string;
+
+	/**
+	 * Accessible name for the button that opens the column display popup.
+	 */
+	columns: string;
+
+	/**
+	 * Placeholder for the search field that filters the column display list.
+	 */
+	searchColumns: string;
+
+	/**
+	 * Label for the column display checkbox that shows or hides every column.
+	 */
+	allColumns: string;
 }
 
 /**
@@ -57,6 +72,9 @@ export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	resizeColumn: 'Resize column',
 	rowActions: 'Row actions',
 	moreRowActions: 'More actions',
+	columns: 'Columns',
+	searchColumns: 'Search',
+	allColumns: 'All columns',
 });
 
 /**
@@ -354,17 +372,18 @@ export interface DsDataTableProps<TData, TValue> {
 	 * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
 	 * restore widths; columns absent from the map are measured and sized
 	 * automatically. This seeds widths — live resizing still updates them
-	 * internally — so it is not a fully controlled value. Ids for the select,
-	 * expander, and reorder utility columns are ignored; use the matching
-	 * `*ColumnWidth` props instead.
+	 * internally — so it is not a fully controlled value. Ids for the utility
+	 * columns are ignored: select, expander, and reorder widths come from the
+	 * matching `*ColumnWidth` props; row actions and column display widths are
+	 * fixed.
 	 */
 	columnSizing?: Record<string, number>;
 
 	/**
 	 * Called with the next column id → width (px) map when a resize finishes
 	 * (drag end, double-click restore, or keyboard nudge). Use this to persist
-	 * widths across sessions. Select, expander, and reorder utility columns are
-	 * omitted from the map.
+	 * widths across sessions. Select, expander, reorder, row actions, and column
+	 * display utility columns are omitted from the map.
 	 */
 	onColumnSizingChange?: (columnSizing: Record<string, number>) => void;
 
@@ -534,7 +553,16 @@ export interface DsDataTableProps<TData, TValue> {
 	onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
 
 	/**
-	 * External column visibility state
+	 * Adds a Columns button to the header for showing and hiding columns. Uses
+	 * `columnVisibility` / `onColumnVisibilityChange`; set
+	 * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+	 * @default false
+	 */
+	columnDisplay?: boolean;
+
+	/**
+	 * External column visibility state. When omitted, the table tracks visibility
+	 * itself and still calls `onColumnVisibilityChange`.
 	 * @example
 	 * ```tsx
 	 * const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({

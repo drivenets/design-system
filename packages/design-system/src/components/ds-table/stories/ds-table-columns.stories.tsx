@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { fn } from 'storybook/test';
 import type { VisibilityState } from '@tanstack/react-table';
 import classnames from 'classnames';
+import { DsButtonV3 } from '../../ds-button-v3';
 import { DsCheckbox } from '../../ds-checkbox';
 import { DsStack } from '../../ds-stack';
 import DsTable from '../ds-table';
@@ -107,6 +108,48 @@ export const ColumnHiding: Story = {
 
 				<DsTable
 					{...args}
+					columnVisibility={columnVisibility}
+					onColumnVisibilityChange={setColumnVisibility}
+				/>
+			</DsStack>
+		);
+	},
+};
+
+/**
+ * The header ends with a tertiary icon-only Columns button. Its popup lists
+ * every column with a checkbox (checked columns stay visible), a search field
+ * that filters the list, and an "All columns" checkbox that toggles every
+ * column at once.
+ */
+export const ColumnDisplay: Story = {
+	args: {
+		columnDisplay: true,
+	},
+};
+
+/**
+ * Control the visible columns from outside with `columnVisibility` and
+ * `onColumnVisibilityChange`, e.g. to persist the user's choice or reset it.
+ */
+export const ColumnDisplayControlled: Story = {
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ age: false, visits: false });
+
+		return (
+			<DsStack direction="column" gap={16}>
+				<DsStack direction="row">
+					<DsButtonV3 variant="secondary" size="small" onClick={() => setColumnVisibility({})}>
+						Show all columns
+					</DsButtonV3>
+				</DsStack>
+
+				<DsTable
+					{...args}
+					columnDisplay
 					columnVisibility={columnVisibility}
 					onColumnVisibilityChange={setColumnVisibility}
 				/>

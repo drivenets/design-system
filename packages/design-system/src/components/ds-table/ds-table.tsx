@@ -82,6 +82,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		reorderableColumnWidth,
 		primaryRowActions,
 		secondaryRowActions,
+		columnDisplay,
 	} = tableProps;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -117,11 +118,11 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		const newVisibility =
 			typeof updaterOrValue === 'function' ? updaterOrValue(baseColumnVisibility) : updaterOrValue;
 
-		if (onColumnVisibilityChange) {
-			onColumnVisibilityChange(newVisibility);
-		} else {
+		if (externalColumnVisibility === undefined) {
 			setInternalColumnVisibility(newVisibility);
 		}
+
+		onColumnVisibilityChange?.(newVisibility);
 	};
 
 	const { collapsedColumnGroups, toggleColumnGroup, collapsedVisibility } = useColumnGroups({
@@ -171,6 +172,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 				expandableColumnWidth,
 				reorderableColumnWidth,
 				rowActionsColumnWidth,
+				columnDisplay,
 			}),
 		[
 			columnsProp,
@@ -183,6 +185,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 			expandableColumnWidth,
 			reorderableColumnWidth,
 			rowActionsColumnWidth,
+			columnDisplay,
 		],
 	);
 
@@ -214,7 +217,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 		getSortedRowModel: getSortedRowModel(),
 		onColumnFiltersChange: handleColumnFiltersChange, // TODO: looks like this is not used, since filters are handled from the outside
 		getFilteredRowModel: getFilteredRowModel(),
-		onColumnVisibilityChange: handleColumnVisibilityChange, // TODO: looks like this is not used, since visibility is handled from the outside
+		onColumnVisibilityChange: handleColumnVisibilityChange,
 		onRowSelectionChange: handleRowSelectionChange,
 		getRowId: (row) => row.id,
 		getExpandedRowModel: getExpandedRowModel(),
@@ -254,6 +257,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 					onToggleColumnGroup: toggleColumnGroup,
 				},
 				resize: resizeContext,
+				columnVisibility: baseColumnVisibility,
 			}}
 		>
 			<div

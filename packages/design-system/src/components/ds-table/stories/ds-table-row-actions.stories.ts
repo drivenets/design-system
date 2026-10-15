@@ -92,6 +92,42 @@ export const WithRowActions: Story = {
 };
 
 /**
+ * With row actions, the Columns button follows the row actions column at the end of the header row.
+ */
+export const WithColumnDisplay: Story = {
+	args: {
+		columnDisplay: true,
+		primaryRowActions: [
+			{
+				icon: 'edit',
+				label: 'Edit',
+				onClick: fn(),
+			},
+			{
+				icon: 'open_in_new',
+				label: 'Open in New Window',
+				onClick: fn(),
+			},
+		],
+		secondaryRowActions: [
+			{
+				icon: 'delete_outline',
+				label: 'Delete',
+				tooltip: 'Delete this row',
+				className: styles.destructiveAction,
+				onClick: fn(),
+			},
+			{
+				icon: 'info',
+				label: 'Details',
+				tooltip: 'Show details',
+				onClick: fn(),
+			},
+		],
+	},
+};
+
+/**
  * Row actions get their own trailing column sized to the declared actions, so they are never clipped. Drag the last column to its minimum: the actions keep their room.
  */
 export const ResizableColumnsWithRowActions: Story = {

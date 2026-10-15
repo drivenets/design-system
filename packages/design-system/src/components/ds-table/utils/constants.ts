@@ -37,7 +37,8 @@ export const ROW_ACTIONS_COLUMN_ID = '__dsRowActions';
 
 /**
  * Width (in px) of one row action button. Must match `.rowActionIcon` in
- * `ds-table-row-actions-cell.module.scss`.
+ * `ds-table-row-actions-cell.module.scss` and `.columnDisplaySlot` in
+ * `ds-table-header.module.scss`.
  */
 export const ROW_ACTION_BUTTON_SIZE = 36;
 
@@ -60,11 +61,30 @@ export const ROW_ACTIONS_TRIGGER_OFFSET = 12;
 export const ROW_ACTIONS_CELL_PADDING = 16;
 
 /**
- * Injected utility leaf ids (`select`, `expander`, `reorder`, `__dsRowActions`). Present in internal
- * sizing for layout; omitted from the public `onColumnSizingChange` payload.
+ * Column id for the trailing Columns button injected when `columnDisplay` is set.
+ * Namespaced so it cannot collide with a consumer column id.
+ */
+export const COLUMN_DISPLAY_COLUMN_ID = '__dsColumnDisplay';
+
+/**
+ * Width (in px) of the column-display utility column. Matches the 52px
+ * single-icon trailing cell in the Figma table spec.
+ */
+export const COLUMN_DISPLAY_COLUMN_WIDTH = 52;
+
+/**
+ * Injected utility leaf ids (`select`, `expander`, `reorder`, `__dsRowActions`,
+ * `__dsColumnDisplay`). Present in internal sizing for layout; omitted from the
+ * public `onColumnSizingChange` payload.
  */
 export const BUILTIN_COLUMN_IDS: ReadonlySet<string> = Object.freeze(
-	new Set([SELECT_COLUMN_ID, EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, ROW_ACTIONS_COLUMN_ID]),
+	new Set([
+		SELECT_COLUMN_ID,
+		EXPANDER_COLUMN_ID,
+		REORDER_COLUMN_ID,
+		ROW_ACTIONS_COLUMN_ID,
+		COLUMN_DISPLAY_COLUMN_ID,
+	]),
 );
 
 /**
