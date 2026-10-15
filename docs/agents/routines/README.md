@@ -6,9 +6,10 @@ A Routine belongs to one person's claude.ai account: it runs as that person and 
 
 ## Current Routines
 
-| Routine                                     | Schedule                    | What it does                                                                                   | Owner            |
-| ------------------------------------------- | --------------------------- | ---------------------------------------------------------------------------------------------- | ---------------- |
-| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack | `@iromanchuk-dn` |
+| Routine                                     | Schedule                     | What it does                                                                                   | Owner            |
+| ------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------- | ---------------- |
+| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw  | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack | `@iromanchuk-dn` |
+| [Request triage](request-triage.md)         | Hourly 08–19 Israel, Sun–Fri | Triages new DS Bug tickets, asks reporters for missing info, opens fix and feature PRs         | `@iromanchuk-dn` |
 
 Not a Routine: dependency updates. Dependabot already covers them (`.github/dependabot.yml`), see the decision on [AR-100283](https://drivenets.atlassian.net/browse/AR-100283).
 
@@ -36,6 +37,33 @@ Read docs/agents/routines/flaky-test-tracker.md from the repository's default br
 
 If that file does not exist, post one message to the Slack channel #design-system-ai-notifications saying "Flaky test tracker: instructions file docs/agents/routines/flaky-test-tracker.md not found on the default branch, nothing was run", and stop.
 ```
+
+## Request triage
+
+| Field         | Value                                                                                                  |
+| ------------- | ------------------------------------------------------------------------------------------------------ |
+| Name          | `Request triage (design-system)`                                                                       |
+| Trigger ID    | Not created yet                                                                                        |
+| Schedule      | `CRON_TZ=Asia/Jerusalem 0 8-19 * * 0-5`                                                                |
+| Environment   | `design-system`                                                                                        |
+| Repository    | `drivenets/design-system`, default branch                                                              |
+| Session       | A new session on every run                                                                             |
+| Connectors    | Atlassian (Jira), Figma. Remove every other connector. GitHub access comes from the Claude GitHub App. |
+| Notifications | Off (it runs hourly)                                                                                   |
+| Instructions  | [request-triage.md](request-triage.md)                                                                 |
+| Output        | Comments and `ds-bot*` labels on DS Bug tickets, `claude/ar-*` PRs labeled `ds-bot`                    |
+
+Stored prompt:
+
+```text
+Run the hourly request triage for the drivenets/design-system repository.
+
+Read docs/agents/routines/request-triage.md from the repository's default branch and follow it exactly. That file is the source of truth for which Jira tickets to pick up, what to ask reporters, what to implement, and how to open PRs. Its Mode setting decides whether you may write anything.
+
+If that file does not exist, stop without changing anything.
+```
+
+Extra setup for this Routine: the owner needs a Figma Dev or Full seat in the Drivenets Figma org (a View seat allows only a few MCP calls a month), and the `ds-bot` label must exist in the GitHub repo (`gh label create ds-bot -R drivenets/design-system --description "Opened by the Request triage Routine"`). Start in `shadow` mode: create the Routine without a schedule, **Run now**, read the shadow report, then switch the mode to `live` in a PR and add the schedule.
 
 ## Creating or taking over a Routine
 
