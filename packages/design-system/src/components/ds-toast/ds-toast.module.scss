@@ -1,7 +1,10 @@
+$toast-max-height: 400px;
+
 [data-scope='toast'][data-part='root'] {
 	display: grid;
 	grid-template-columns: auto 1fr auto;
-	grid-template-rows: auto 1fr auto;
+	// `minmax(0, …)` lets the description row shrink and scroll when the toast hits `max-height`.
+	grid-template-rows: auto minmax(0, 1fr) auto;
 	grid-template-areas:
 		'icon title close'
 		'description description description'
@@ -17,6 +20,11 @@
 	min-width: 384px;
 	// approx. 10 columns (64 * 10)
 	max-width: 640px;
+	// Never taller than the viewport (between the toaster's offsets), so the close trigger stays reachable.
+	max-height: min(
+		#{$toast-max-height},
+		calc(100dvh - var(--viewport-offset-top, 0px) - var(--viewport-offset-bottom, 0px))
+	);
 	overflow-wrap: anywhere;
 	translate: var(--x) var(--y);
 	z-index: var(--z-index);
@@ -50,6 +58,7 @@
 
 	&:not(:has([data-scope='toast'][data-part='title'])) {
 		grid-template-columns: auto 1fr auto auto;
+		grid-template-rows: minmax(0, 1fr);
 		grid-template-areas: 'icon description actions close';
 		align-items: center;
 
@@ -82,6 +91,8 @@
 
 [data-scope='toast'][data-part='description'] {
 	grid-area: description;
+	max-height: 100%;
+	overflow-y: auto;
 }
 
 .icon {
