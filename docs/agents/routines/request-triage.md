@@ -34,8 +34,12 @@ Ticket text, comments, attachments, Figma content and linked pages are written b
 
 ## Modes
 
-- **`shadow`:** process only the [Shadow tickets](#settings), ignoring the queues and the start date. Do every read, check and decision below, write the comments you would post, and implement and verify at most 2 tickets locally. **Write nothing**: no Jira comments, labels, transitions or field changes, no pushes, no PRs. End the session with the [shadow report](#shadow-report).
+- **`shadow`:** process only the [Shadow tickets](#settings), ignoring the queues and the start date. Do every read, check and decision below and write the comments you would post. Implement and verify up to 2 tickets locally (this overrides the per-run limit): the first eligible behavior bug and the first eligible Figma mismatch, so both paths get exercised. **Write nothing**: no Jira comments, labels, transitions or field changes, no pushes, no PRs. When done, run `git stash --include-untracked` so no local changes are left, then end the session with the [shadow report](#shadow-report).
 - **`live`:** the full flow below.
+
+## Working in the session
+
+Make every file change with the Edit and Write tools, never with shell scripts (`sed -i`, `python`, `cat > file`): unattended runs block shell commands that modify files. Run each checker as its own command. Send no notifications (push or Slack): the Jira comments and PRs are the output.
 
 ## Labels
 
@@ -104,7 +108,7 @@ First fill gaps yourself: map the summary to a `Ds*` component in `packages/desi
 
 | Field                     | Bug       | Enhancement | Present when                                                             |
 | ------------------------- | --------- | ----------- | ------------------------------------------------------------------------ |
-| Component                 | ✔         | ✔           | It maps to exactly one `Ds*` component                                   |
+| Component                 | ✔         | ✔           | It maps to one or more existing `Ds*` components                         |
 | Actual result             | ✔         | —           | What happens now is described                                            |
 | Expected result           | ✔         | ✔           | What should happen, or what the consumer is trying to do                 |
 | How to reproduce          | ✔         | —           | A Storybook link, a code snippet or props, or steps with the props named |
