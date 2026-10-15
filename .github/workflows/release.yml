@@ -25,8 +25,27 @@ jobs:
 
     outputs:
       should-publish: ${{ steps.changesets.outputs.has-changesets == 'false' }}
+      publish-args: ${{ steps.publish-args.outputs.args }}
 
     steps:
+      # Runs first, so an unsupported branch fails before a release PR is opened.
+      # `main` publishes as `latest` with no extra arguments (an explicit `--tag` is rejected in pre mode).
+      # A hotfix line (`release/X.Y.x`) publishes as `release-X.Y`, so an older version never takes over `latest`.
+      - name: Resolve publish arguments
+        id: publish-args
+        run: |
+          if [[ "$GITHUB_REF_NAME" == "main" ]]; then
+            echo "args=" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if [[ ! "$GITHUB_REF_NAME" =~ ^release/([0-9]+\.[0-9]+)\.x$ ]]; then
+            echo "Error: unsupported release branch '$GITHUB_REF_NAME'. Expected 'main' or 'release/X.Y.x'."
+            exit 1
+          fi
+
+          echo "args=--tag release-${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+
       # changesets/action commits the release PR via git push, so it needs the persisted GITHUB_TOKEN.
       - name: Checkout source code # zizmor: ignore[artipacked]
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -96,7 +115,7 @@ jobs:
   #   We don't want dependencies and build scripts to have access to this token.
   publish:
     name: Publish
-    needs: build
+    needs: [prepare, build]
     runs-on: ubuntu-latest
 
     permissions:
@@ -116,27 +135,10 @@ jobs:
           name: release-build
           path: packages
 
-      # `main` publishes as `latest`. A hotfix line (`release/X.Y.x`) publishes as `release-X.Y`,
-      # so an older version never takes over `latest`.
-      - name: Resolve npm dist-tag
-        id: dist-tag
-        run: |
-          if [[ "$GITHUB_REF_NAME" == "main" ]]; then
-            echo "tag=latest" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          if [[ ! "$GITHUB_REF_NAME" =~ ^release/([0-9]+\.[0-9]+)\.x$ ]]; then
-            echo "Error: unsupported release branch '$GITHUB_REF_NAME'. Expected 'main' or 'release/X.Y.x'."
-            exit 1
-          fi
-
-          echo "tag=release-${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
-
       - name: Publish
         uses: changesets/action@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2.1.2
         with:
-          publish-script: pnpm changeset publish --tag ${{ steps.dist-tag.outputs.tag }}
+          publish-script: pnpm changeset publish ${{ needs.prepare.outputs.publish-args }}
           push-with-git-cli: true
         env:
           NPM_TOKEN: '' # https://github.com/changesets/action/issues/542#issuecomment-3642334398
