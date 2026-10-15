@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">618 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/618 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">624 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/624 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.6s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -20199,7 +20199,7 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-73-components-table-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-73-components-table-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-73-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -20228,7 +20228,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20285,6 +20285,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -20299,14 +20307,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -20435,8 +20445,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -20773,7 +20783,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-74-components-table-active-row-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-74-components-table-active-row-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-74-components-table-active-row-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -20802,7 +20812,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20859,6 +20869,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -20873,14 +20891,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -21009,8 +21029,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -21348,7 +21368,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-75-components-table-filters-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-75-components-table-filters-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-75-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -21377,7 +21397,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21434,6 +21454,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -21448,14 +21476,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -21584,8 +21614,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -21873,9 +21903,9 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-76-components-table-column-groups-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-76-components-table-column-groups-props" class="badge ok as-toggle">47 prop types</label>
         
-        <label for="c-76-components-table-column-groups-stories" class="badge ok as-toggle">4 stories · 4 incomplete</label>
+        <label for="c-76-components-table-column-groups-stories" class="badge ok as-toggle">5 stories · 4 incomplete</label>
         
         
       </div>
@@ -21902,7 +21932,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21959,6 +21989,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -21973,14 +22011,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -22109,8 +22149,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -22390,6 +22430,51 @@ the controls bar coexists with column groups and row selection.</div>
     &lt;/DsStack&gt;)} /&gt;;</code></pre>
               <div class="snippet-warning">Incomplete snippet: `buildColumns` could not be resolved statically.</div>
             </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Column Display</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The Columns button sits at the end of the group headers row. Each group gets
+a checkbox that toggles all of its columns and shows a partial state when
+only some are visible. Columns with `enableHiding: false` are listed as locked.</div>
+              <pre><code>const WithColumnDisplay = () =&gt; &lt;DsTable
+    columns={[
+        {
+            id: &#39;identity&#39;,
+            header: &#39;Identity&#39;,
+            meta: { group: { collapsible: true } },
+            columns: [
+                {
+                    accessorKey: &#39;firstName&#39;,
+                    header: &#39;First Name&#39;,
+                    enableHiding: false,
+                    meta: { keepVisibleWhenCollapsed: true },
+                },
+                { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39; },
+                { accessorKey: &#39;age&#39;, header: &#39;Age&#39; },
+            ],
+        },
+        {
+            id: &#39;activity&#39;,
+            header: &#39;Activity&#39;,
+            meta: { group: { collapsible: true } },
+            columns: [
+                { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, meta: { keepVisibleWhenCollapsed: true } },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39; },
+                { accessorKey: &#39;progress&#39;, header: &#39;Profile Progress&#39; },
+            ],
+        },
+    ]}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    selectable
+    columnDisplay /&gt;;</code></pre>
+              
+            </div>
         </div>
     
     
@@ -22410,9 +22495,9 @@ the controls bar coexists with column groups and row selection.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-77-components-table-columns-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-77-components-table-columns-props" class="badge ok as-toggle">47 prop types</label>
         
-        <label for="c-77-components-table-columns-stories" class="badge ok as-toggle">2 stories · 1 incomplete</label>
+        <label for="c-77-components-table-columns-stories" class="badge ok as-toggle">4 stories · 1 incomplete</label>
         
         
       </div>
@@ -22439,7 +22524,7 @@ the controls bar coexists with column groups and row selection.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22496,6 +22581,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -22510,14 +22603,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -22646,8 +22741,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -22833,7 +22928,7 @@ zebra?: boolean</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';
+                <pre><code>import { DsButtonV3, DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';
 import { columns, defaultData } from './common/story-data';
 import { ProgressInfographic } from './components';
 import classnames from 'classnames';
@@ -22938,6 +23033,61 @@ responsive layouts. Toggle a checkbox to add or remove the matching column.</div
 };</code></pre>
               
             </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Display</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">The header ends with a tertiary icon-only Columns button. Its popup lists
+every column with a checkbox (checked columns stay visible), a search field
+that filters the list, and an &quot;All columns&quot; checkbox that toggles every
+column at once.</div>
+              <pre><code>const ColumnDisplay = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    columnDisplay /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Display Controlled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Control the visible columns from outside with `columnVisibility` and
+`onColumnVisibilityChange`, e.g. to persist the user&#39;s choice or reset it.</div>
+              <pre><code>const ColumnDisplayControlled = () =&gt; {
+    const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({ age: false, visits: false });
+
+    return (
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsStack direction=&quot;row&quot;&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={() =&gt; setColumnVisibility({})}&gt;Show all columns
+                                        &lt;/DsButtonV3&gt;
+            &lt;/DsStack&gt;
+
+            &lt;DsTable
+                columns={columns}
+                data={defaultData}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable={false}
+                onRowClick={fn()}
+                columnDisplay
+                columnVisibility={columnVisibility}
+                onColumnVisibilityChange={setColumnVisibility} /&gt;
+        &lt;/DsStack&gt;
+    );
+};</code></pre>
+              
+            </div>
         </div>
     
     
@@ -22958,7 +23108,7 @@ responsive layouts. Toggle a checkbox to add or remove the matching column.</div
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-78-components-table-editable-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-78-components-table-editable-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-78-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -22987,7 +23137,7 @@ responsive layouts. Toggle a checkbox to add or remove the matching column.</div
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23044,6 +23194,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -23058,14 +23216,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -23194,8 +23354,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -23693,7 +23853,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-79-components-table-expansion-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -23722,7 +23882,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23779,6 +23939,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -23793,14 +23961,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -23929,8 +24099,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -24298,7 +24468,7 @@ collapse rows from outside the table.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-80-components-table-loading-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-80-components-table-loading-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-80-components-table-loading-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -24327,7 +24497,7 @@ collapse rows from outside the table.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24384,6 +24554,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -24398,14 +24576,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -24534,8 +24714,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -24784,9 +24964,9 @@ of the default bar.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-81-components-table-resizable-columns-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-81-components-table-resizable-columns-props" class="badge ok as-toggle">47 prop types</label>
         
-        <label for="c-81-components-table-resizable-columns-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-81-components-table-resizable-columns-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -24813,7 +24993,7 @@ of the default bar.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24870,6 +25050,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -24884,14 +25072,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -25020,8 +25210,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -25358,6 +25548,24 @@ min/max is ignored — each leaf clamps independently.</div>
             </div>
             <div class="note ok">
               <div class="row">
+                <span class="ex-name">With Column Display</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Resizable columns with the Columns button. The Columns cell keeps its fixed
+width and has no resize handle.</div>
+              <pre><code>const WithColumnDisplay = () =&gt; &lt;DsTable
+    data={defaultData}
+    columns={columns}
+    resizableColumns
+    stickyHeader
+    bordered
+    fullWidth
+    columnDisplay /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
                 <span class="ex-name">Persisted widths</span>
                 <span class="badge ok">story ok</span>
               </div>
@@ -25433,9 +25641,9 @@ min/max is ignored — each leaf clamps independently.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-82-components-table-row-actions-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-82-components-table-row-actions-props" class="badge ok as-toggle">47 prop types</label>
         
-        <label for="c-82-components-table-row-actions-stories" class="badge ok as-toggle">10 stories · 1 incomplete</label>
+        <label for="c-82-components-table-row-actions-stories" class="badge ok as-toggle">11 stories · 1 incomplete</label>
         
         
       </div>
@@ -25462,7 +25670,7 @@ min/max is ignored — each leaf clamps independently.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25519,6 +25727,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -25533,14 +25749,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -25669,8 +25887,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -25953,6 +26171,51 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
         },
     ]} /&gt;;</code></pre>
               <div class="snippet-warning">Incomplete snippet: `editClickHandler`, `openInNewWindowClickHandler` could not be resolved statically.</div>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Column Display</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">With row actions, the Columns button follows the row actions column at the end of the header row.</div>
+              <pre><code>const WithColumnDisplay = () =&gt; &lt;DsTable
+    columns={columns}
+    data={defaultData}
+    stickyHeader
+    bordered
+    fullWidth
+    expandable={false}
+    onRowClick={fn()}
+    columnDisplay
+    primaryRowActions={[
+        {
+            icon: &#39;edit&#39;,
+            label: &#39;Edit&#39;,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;open_in_new&#39;,
+            label: &#39;Open in New Window&#39;,
+            onClick: fn(),
+        },
+    ]}
+    secondaryRowActions={[
+        {
+            icon: &#39;delete_outline&#39;,
+            label: &#39;Delete&#39;,
+            tooltip: &#39;Delete this row&#39;,
+            className: styles.destructiveAction,
+            onClick: fn(),
+        },
+        {
+            icon: &#39;info&#39;,
+            label: &#39;Details&#39;,
+            tooltip: &#39;Show details&#39;,
+            onClick: fn(),
+        },
+    ]} /&gt;;</code></pre>
+              
             </div>
             <div class="note ok">
               <div class="row">
@@ -26315,7 +26578,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-83-components-table-search-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-83-components-table-search-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-83-components-table-search-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -26344,7 +26607,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -26401,6 +26664,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -26415,14 +26686,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -26551,8 +26824,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -26901,7 +27174,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-84-components-table-selection-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-84-components-table-selection-props" class="badge ok as-toggle">47 prop types</label>
         
         <label for="c-84-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -26930,7 +27203,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -26987,6 +27260,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -27001,14 +27282,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -27137,8 +27420,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -27504,9 +27787,9 @@ once the cap is reached.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-85-components-table-virtualized-props" class="badge ok as-toggle">46 prop types</label>
+        <label for="c-85-components-table-virtualized-props" class="badge ok as-toggle">47 prop types</label>
         
-        <label for="c-85-components-table-virtualized-stories" class="badge ok as-toggle">7 stories</label>
+        <label for="c-85-components-table-virtualized-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -27533,7 +27816,7 @@ once the cap is reached.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">46 prop types</span>
+              <span class="badge ok">47 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27590,6 +27873,14 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
+ * Adds a Columns button to the header for showing and hiding columns. Uses
+ * `columnVisibility` / `onColumnVisibilityChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
  * External column filters state
  */
 columnFilters?: ColumnFiltersState
@@ -27604,14 +27895,16 @@ columns: ColumnDef&lt;TData, TValue&gt;[]
  * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
  * restore widths; columns absent from the map are measured and sized
  * automatically. This seeds widths — live resizing still updates them
- * internally — so it is not a fully controlled value. Ids for the select,
- * expander, and reorder utility columns are ignored; use the matching
- * `*ColumnWidth` props instead.
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
  */
 columnSizing?: Record&lt;string, number&gt;
 
 /**
- * External column visibility state
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
  * @example
  * ```tsx
  * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
@@ -27740,8 +28033,8 @@ onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
 /**
  * Called with the next column id → width (px) map when a resize finishes
  * (drag end, double-click restore, or keyboard nudge). Use this to persist
- * widths across sessions. Select, expander, and reorder utility columns are
- * omitted from the map.
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
  */
 onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
 
@@ -28313,6 +28606,32 @@ rows. Double-click a handle to restore the snapshotted width.</div>
                 resizableColumns
                 data={data} /&gt;
         &lt;/div&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Virtualized With Column Display</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Row virtualization with the Columns button. Hidden columns drop out of every
+virtualized row.</div>
+              <pre><code>const VirtualizedWithColumnDisplay = () =&gt; {
+    const [data] = useState(() =&gt; generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);
+
+    return (
+        &lt;DsTable
+            columns={columns}
+            stickyHeader
+            bordered
+            fullWidth
+            expandable={false}
+            onRowClick={fn()}
+            virtualized
+            columnDisplay
+            data={data} /&gt;
     );
 };</code></pre>
               

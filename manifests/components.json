@@ -13987,7 +13987,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -14018,7 +14018,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -14599,12 +14599,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -15235,7 +15242,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -15266,7 +15273,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -15847,12 +15854,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -16469,7 +16483,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -16500,7 +16514,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -17081,12 +17095,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -17701,7 +17722,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -17732,7 +17753,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -18313,12 +18334,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -18539,6 +18567,12 @@
           "snippet": "const WithControls = () => <DsTable\n    columns={buildColumns()}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    selectable\n    controls={(<DsStack direction=\"row\" justifyContent=\"space-between\" alignItems=\"center\" width=\"100%\">\n        <DsButtonV3 variant=\"secondary\" size=\"small\">\n            RED version V2\n        </DsButtonV3>\n        <DsStack direction=\"row\" gap={8} alignItems=\"center\">\n            <DsButtonV3 variant=\"secondary\" size=\"small\">\n                Import RED\n            </DsButtonV3>\n            <DsButtonV3 variant=\"secondary\" size=\"small\">\n                Export RED\n            </DsButtonV3>\n            <DsButtonV3 size=\"small\">Actions</DsButtonV3>\n        </DsStack>\n    </DsStack>)} />;",
           "description": "The pinned `controls` slot renders above grouped, collapsible headers, confirming\nthe controls bar coexists with column groups and row selection.",
           "warning": "Incomplete snippet: `buildColumns` could not be resolved statically."
+        },
+        {
+          "id": "components-table-column-groups--with-column-display",
+          "name": "With Column Display",
+          "snippet": "const WithColumnDisplay = () => <DsTable\n    columns={[\n        {\n            id: 'identity',\n            header: 'Identity',\n            meta: { group: { collapsible: true } },\n            columns: [\n                {\n                    accessorKey: 'firstName',\n                    header: 'First Name',\n                    enableHiding: false,\n                    meta: { keepVisibleWhenCollapsed: true },\n                },\n                { accessorKey: 'lastName', header: 'Last Name' },\n                { accessorKey: 'age', header: 'Age' },\n            ],\n        },\n        {\n            id: 'activity',\n            header: 'Activity',\n            meta: { group: { collapsible: true } },\n            columns: [\n                { accessorKey: 'visits', header: 'Visits', meta: { keepVisibleWhenCollapsed: true } },\n                { accessorKey: 'status', header: 'Status' },\n                { accessorKey: 'progress', header: 'Profile Progress' },\n            ],\n        },\n    ]}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    selectable\n    columnDisplay />;",
+          "description": "The Columns button sits at the end of the group headers row. Each group gets\na checkbox that toggles all of its columns and shows a partial state when\nonly some are visible. Columns with `enableHiding: false` are listed as locked."
         }
       ],
       "import": "import { DsButtonV3, DsStack, DsTable } from '@drivenets/design-system';\nimport { defaultData } from './common/story-data';\nimport { DsStack } from '../../ds-stack';\nimport { DsButtonV3 } from '../../ds-button-v3';"
@@ -18948,7 +18982,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -18979,7 +19013,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -19560,12 +19594,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -19773,9 +19814,21 @@
           "name": "Column Hiding",
           "snippet": "const ColumnHiding = () => {\n    const columnsToToggle = [\n        { id: 'age', label: 'Age' },\n        { id: 'visits', label: 'Visits' },\n        { id: 'status', label: 'Status' },\n        { id: 'progress', label: 'Profile Progress' },\n    ];\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n        age: true,\n        visits: true,\n        status: true,\n        progress: true,\n    });\n\n    const toggleColumn = (columnId: string) => {\n        setColumnVisibility((prev) => ({\n            ...prev,\n            [columnId]: !prev[columnId],\n        }));\n    };\n\n    return (\n        <DsStack direction=\"column\" gap={16}>\n            <DsStack direction=\"row\" gap={16} flexWrap=\"wrap\">\n                {columnsToToggle.map((column) => (\n                    <DsCheckbox\n                        key={column.id}\n                        label={column.label}\n                        checked={columnVisibility[column.id]}\n                        onCheckedChange={() => toggleColumn(column.id)}\n                    />\n                ))}\n            </DsStack>\n\n            <DsTable\n                columns={columns}\n                data={defaultData}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                columnVisibility={columnVisibility}\n                onColumnVisibilityChange={setColumnVisibility} />\n        </DsStack>\n    );\n};",
           "description": "Show or hide columns dynamically via the controlled `columnVisibility` /\n`onColumnVisibilityChange` props — useful for customizable table views or\nresponsive layouts. Toggle a checkbox to add or remove the matching column."
+        },
+        {
+          "id": "components-table-columns--column-display",
+          "name": "Column Display",
+          "snippet": "const ColumnDisplay = () => <DsTable\n    columns={columns}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    columnDisplay />;",
+          "description": "The header ends with a tertiary icon-only Columns button. Its popup lists\nevery column with a checkbox (checked columns stay visible), a search field\nthat filters the list, and an \"All columns\" checkbox that toggles every\ncolumn at once."
+        },
+        {
+          "id": "components-table-columns--column-display-controlled",
+          "name": "Column Display Controlled",
+          "snippet": "const ColumnDisplayControlled = () => {\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ age: false, visits: false });\n\n    return (\n        <DsStack direction=\"column\" gap={16}>\n            <DsStack direction=\"row\">\n                <DsButtonV3 variant=\"secondary\" size=\"small\" onClick={() => setColumnVisibility({})}>Show all columns\n                                        </DsButtonV3>\n            </DsStack>\n\n            <DsTable\n                columns={columns}\n                data={defaultData}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                columnDisplay\n                columnVisibility={columnVisibility}\n                onColumnVisibilityChange={setColumnVisibility} />\n        </DsStack>\n    );\n};",
+          "description": "Control the visible columns from outside with `columnVisibility` and\n`onColumnVisibilityChange`, e.g. to persist the user's choice or reset it."
         }
       ],
-      "import": "import { DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';\nimport { columns, defaultData } from './common/story-data';\nimport { ProgressInfographic } from './components';\nimport classnames from 'classnames';\nimport styles from './ds-table.stories.module.scss';\nimport { fn } from 'storybook/test';"
+      "import": "import { DsButtonV3, DsCheckbox, DsStack, DsTable, ProgressInfographic } from '@drivenets/design-system';\nimport { columns, defaultData } from './common/story-data';\nimport { ProgressInfographic } from './components';\nimport classnames from 'classnames';\nimport styles from './ds-table.stories.module.scss';\nimport { fn } from 'storybook/test';"
     },
     "components-table-editable": {
       "id": "components-table-editable",
@@ -20182,7 +20235,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -20213,7 +20266,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -20794,12 +20847,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -21421,7 +21481,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -21452,7 +21512,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -22033,12 +22093,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -22660,7 +22727,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -22691,7 +22758,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -23272,12 +23339,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -23894,7 +23968,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -23925,7 +23999,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -24506,12 +24580,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -24731,6 +24812,12 @@
           "name": "Min And Max Size",
           "snippet": "const MinAndMaxSize = () => <DsTable\n    data={defaultData}\n    columns={[\n        {\n            accessorKey: 'firstName',\n            header: 'First Name',\n            cell: (info) => info.getValue(),\n            size: 200,\n            minSize: 80,\n            maxSize: 280,\n        },\n        {\n            accessorKey: 'lastName',\n            header: 'Last Name',\n            cell: (info) => info.getValue(),\n            size: 200,\n            minSize: 120,\n        },\n        {\n            accessorKey: 'age',\n            header: 'Age',\n            cell: (info) => info.getValue(),\n            size: 120,\n            maxSize: 180,\n        },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 120 },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },\n    ]}\n    resizableColumns\n    stickyHeader\n    bordered\n    fullWidth />;",
           "description": "Leaf columns may set `minSize` and `maxSize` (px). Dragging stops at those\nbounds; the default min is 52px when `minSize` is omitted. Group-level\nmin/max is ignored — each leaf clamps independently."
+        },
+        {
+          "id": "components-table-resizable-columns--with-column-display",
+          "name": "With Column Display",
+          "snippet": "const WithColumnDisplay = () => <DsTable\n    data={defaultData}\n    columns={columns}\n    resizableColumns\n    stickyHeader\n    bordered\n    fullWidth\n    columnDisplay />;",
+          "description": "Resizable columns with the Columns button. The Columns cell keeps its fixed\nwidth and has no resize handle."
         },
         {
           "id": "components-table-resizable-columns--persisted-widths",
@@ -25146,7 +25233,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -25177,7 +25264,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -25758,12 +25845,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -25976,6 +26070,12 @@
           "name": "With Row Actions",
           "snippet": "const WithRowActions = () => <DsTable\n    columns={columns}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    primaryRowActions={[\n        {\n            icon: 'edit',\n            label: 'Edit',\n            onClick: editClickHandler,\n        },\n        {\n            icon: 'open_in_new',\n            label: 'Open in New Window',\n            disabled: (data) => data.firstName === 'Tanner',\n            onClick: openInNewWindowClickHandler,\n        },\n    ]}\n    secondaryRowActions={[\n        {\n            icon: 'delete_outline',\n            label: 'Delete',\n            tooltip: 'Delete this row',\n            disabled: (data) => data.status === 'single',\n            className: styles.destructiveAction,\n            onClick: fn(),\n        },\n        {\n            icon: 'info',\n            label: 'Details',\n            tooltip: 'Show details',\n            onClick: fn(),\n        },\n        {\n            icon: 'call',\n            label: (row) => `Call ${row.firstName}`,\n            onClick: fn(),\n        },\n    ]} />;",
           "warning": "Incomplete snippet: `editClickHandler`, `openInNewWindowClickHandler` could not be resolved statically."
+        },
+        {
+          "id": "components-table-row-actions--with-column-display",
+          "name": "With Column Display",
+          "snippet": "const WithColumnDisplay = () => <DsTable\n    columns={columns}\n    data={defaultData}\n    stickyHeader\n    bordered\n    fullWidth\n    expandable={false}\n    onRowClick={fn()}\n    columnDisplay\n    primaryRowActions={[\n        {\n            icon: 'edit',\n            label: 'Edit',\n            onClick: fn(),\n        },\n        {\n            icon: 'open_in_new',\n            label: 'Open in New Window',\n            onClick: fn(),\n        },\n    ]}\n    secondaryRowActions={[\n        {\n            icon: 'delete_outline',\n            label: 'Delete',\n            tooltip: 'Delete this row',\n            className: styles.destructiveAction,\n            onClick: fn(),\n        },\n        {\n            icon: 'info',\n            label: 'Details',\n            tooltip: 'Show details',\n            onClick: fn(),\n        },\n    ]} />;",
+          "description": "With row actions, the Columns button follows the row actions column at the end of the header row."
         },
         {
           "id": "components-table-row-actions--resizable-columns-with-row-actions",
@@ -26422,7 +26522,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -26453,7 +26553,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -27034,12 +27134,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -27656,7 +27763,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -27687,7 +27794,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -28268,12 +28375,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -28901,7 +29015,7 @@
               ],
               "raw": "Record<string, number>"
             },
-            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the select,\nexpander, and reorder utility columns are ignored; use the matching\n`*ColumnWidth` props instead."
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
           },
           "onColumnSizingChange": {
             "required": false,
@@ -28932,7 +29046,7 @@
                 }
               }
             },
-            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, and reorder utility columns are\nomitted from the map."
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
           },
           "loading": {
             "required": false,
@@ -29513,12 +29627,19 @@
             },
             "description": "Callback when column filters change"
           },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
           "columnVisibility": {
             "required": false,
             "tsType": {
               "name": "VisibilityState"
             },
-            "description": "External column visibility state\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
           },
           "onColumnVisibilityChange": {
             "required": false,
@@ -29756,6 +29877,12 @@
           "name": "Virtualized Resizable Columns",
           "snippet": "const VirtualizedResizable = () => {\n    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);\n\n    return (\n        <div className={styles.virtualizedTableWrapper}>\n            <DsTable\n                columns={columns}\n                stickyHeader\n                bordered\n                fullWidth\n                expandable={false}\n                onRowClick={fn()}\n                virtualized\n                resizableColumns\n                data={data} />\n        </div>\n    );\n};",
           "description": "Row virtualization and column resize work together. Scroll a large\ndataset and drag a header edge to resize; widths apply to virtualized\nrows. Double-click a handle to restore the snapshotted width."
+        },
+        {
+          "id": "components-table-virtualized--virtualized-with-column-display",
+          "name": "Virtualized With Column Display",
+          "snippet": "const VirtualizedWithColumnDisplay = () => {\n    const [data] = useState(() => generatePersonData(0, VIRTUALIZED_ROW_COUNT, []).data);\n\n    return (\n        <DsTable\n            columns={columns}\n            stickyHeader\n            bordered\n            fullWidth\n            expandable={false}\n            onRowClick={fn()}\n            virtualized\n            columnDisplay\n            data={data} />\n    );\n};",
+          "description": "Row virtualization with the Columns button. Hidden columns drop out of every\nvirtualized row."
         }
       ],
       "import": "import {\n  DsButtonV3,\n  DsSpinner,\n  DsStack,\n  DsTable,\n  DsTableEditCellNumber,\n  DsTableEditCellSelect,\n  DsTableEditCellText,\n  DsTypography,\n} from '@drivenets/design-system';\nimport { columns } from './common/story-data';\nimport { fn } from 'storybook/test';\nimport { DsStack } from '../../ds-stack';\nimport { DsButtonV3 } from '../../ds-button-v3';"
@@ -32646,6 +32773,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 4254
+    "durationMs": 5552
   }
 }
