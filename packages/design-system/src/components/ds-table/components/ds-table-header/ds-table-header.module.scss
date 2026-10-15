@@ -73,8 +73,11 @@
 	justify-content: center;
 }
 
+// Same inline padding as the body `.rowActionsCell`, so the Columns button
+// lines up with the last row action.
 .rowActionsHeaderCell {
 	justify-content: flex-end;
+	padding-inline: var(--xs);
 }
 
 // As wide as a row action button (`.rowActionIcon`), so the Columns button

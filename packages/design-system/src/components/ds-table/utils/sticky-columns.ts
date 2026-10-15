@@ -4,6 +4,7 @@ import type { DsTableStickyColumns } from '../ds-table.types';
 import { getBodyCellSizeStyle, getColumnSizeCssVar, isExplicitColumnWidth } from './column-size';
 import {
 	BUILTIN_COLUMN_IDS,
+	COLUMN_DISPLAY_COLUMN_ID,
 	EXPANDER_COLUMN_ID,
 	REORDER_COLUMN_ID,
 	ROW_ACTIONS_COLUMN_ID,
@@ -12,6 +13,9 @@ import {
 
 /** Visual order of the always-sticky left utility columns (matches `getAugmentedColumns`). */
 const LEFT_UTILITY_COLUMN_IDS = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID] as const;
+
+/** Always-sticky right utility columns; a table renders at most one of them. */
+const RIGHT_UTILITY_COLUMN_IDS = [ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_ID] as const;
 
 export type DsTableStickySide = 'left' | 'right';
 
@@ -69,8 +73,8 @@ const expandToGroupLeaves = (ids: readonly string[], columnDefs: readonly Column
 
 /**
  * Public `stickyColumns` → TanStack `columnPinning`, with utility columns always
- * pinned (left: reorder / expander / select, right: row actions). A column
- * listed on both sides stays on the left.
+ * pinned (left: reorder / expander / select, right: row actions or column
+ * display). A column listed on both sides stays on the left.
  */
 export const resolveColumnPinning = (
 	stickyColumns: DsTableStickyColumns | undefined,
@@ -83,7 +87,7 @@ export const resolveColumnPinning = (
 
 	return {
 		left: [...LEFT_UTILITY_COLUMN_IDS, ...left],
-		right: [...right, ROW_ACTIONS_COLUMN_ID],
+		right: [...right, ...RIGHT_UTILITY_COLUMN_IDS],
 	};
 };
 

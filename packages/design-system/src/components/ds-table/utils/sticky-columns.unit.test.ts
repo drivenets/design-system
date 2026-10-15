@@ -8,7 +8,13 @@ import {
 	type VisibilityState,
 } from '@tanstack/react-table';
 import { getStickyCellProps, resolveColumnPinning, toStickyColumns } from './sticky-columns';
-import { EXPANDER_COLUMN_ID, REORDER_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from './constants';
+import {
+	COLUMN_DISPLAY_COLUMN_ID,
+	EXPANDER_COLUMN_ID,
+	REORDER_COLUMN_ID,
+	ROW_ACTIONS_COLUMN_ID,
+	SELECT_COLUMN_ID,
+} from './constants';
 
 type Row = { id: string; firstName: string; lastName: string; age: number; status: string };
 
@@ -30,6 +36,7 @@ const groupedColumns: ColumnDef<Row>[] = [
 ];
 
 const LEFT_UTILITIES = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID];
+const RIGHT_UTILITIES = [ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_ID];
 
 const createTestTable = (
 	columns: ColumnDef<Row>[],
@@ -63,7 +70,7 @@ describe('resolveColumnPinning', () => {
 	it('pins the utility columns even without consumer sticky columns', () => {
 		expect(resolveColumnPinning(undefined, flatColumns)).toEqual({
 			left: LEFT_UTILITIES,
-			right: [ROW_ACTIONS_COLUMN_ID],
+			right: RIGHT_UTILITIES,
 		});
 	});
 
@@ -72,7 +79,7 @@ describe('resolveColumnPinning', () => {
 			resolveColumnPinning({ left: ['lastName', 'firstName'], right: ['status', 'age'] }, flatColumns),
 		).toEqual({
 			left: [...LEFT_UTILITIES, 'lastName', 'firstName'],
-			right: ['status', 'age', ROW_ACTIONS_COLUMN_ID],
+			right: ['status', 'age', ...RIGHT_UTILITIES],
 		});
 	});
 
@@ -87,7 +94,7 @@ describe('resolveColumnPinning', () => {
 			),
 		).toEqual({
 			left: [...LEFT_UTILITIES, 'firstName'],
-			right: ['status', ROW_ACTIONS_COLUMN_ID],
+			right: ['status', ...RIGHT_UTILITIES],
 		});
 	});
 
@@ -103,14 +110,14 @@ describe('resolveColumnPinning', () => {
 		expect(resolveColumnPinning({ right: ['lastName'] }, groupedColumns).right).toEqual([
 			'firstName',
 			'lastName',
-			ROW_ACTIONS_COLUMN_ID,
+			...RIGHT_UTILITIES,
 		]);
 	});
 
 	it('keeps a column on the left when it is listed on both sides', () => {
 		expect(resolveColumnPinning({ left: ['age'], right: ['age', 'status'] }, flatColumns)).toEqual({
 			left: [...LEFT_UTILITIES, 'age'],
-			right: ['status', ROW_ACTIONS_COLUMN_ID],
+			right: ['status', ...RIGHT_UTILITIES],
 		});
 	});
 
@@ -141,7 +148,7 @@ describe('toStickyColumns', () => {
 	it('drops utility ids so consumers only see their own columns', () => {
 		expect(
 			toStickyColumns(
-				{ left: [...LEFT_UTILITIES, 'firstName'], right: ['status', ROW_ACTIONS_COLUMN_ID] },
+				{ left: [...LEFT_UTILITIES, 'firstName'], right: ['status', ...RIGHT_UTILITIES] },
 				{},
 				flatColumns,
 			),
@@ -156,7 +163,7 @@ describe('toStickyColumns', () => {
 		const previous = { left: ['identity'] };
 		const next = {
 			left: [...LEFT_UTILITIES, 'firstName', 'lastName', 'age'],
-			right: [ROW_ACTIONS_COLUMN_ID],
+			right: RIGHT_UTILITIES,
 		};
 
 		expect(toStickyColumns(next, previous, groupedColumns)).toEqual({ left: ['identity', 'age'], right: [] });
@@ -181,7 +188,7 @@ describe('toStickyColumns', () => {
 
 	it('moves a column between sides', () => {
 		const previous = { left: ['firstName'], right: ['status'] };
-		const next = { left: [...LEFT_UTILITIES], right: ['status', 'firstName', ROW_ACTIONS_COLUMN_ID] };
+		const next = { left: [...LEFT_UTILITIES], right: ['status', 'firstName', ...RIGHT_UTILITIES] };
 
 		expect(toStickyColumns(next, previous, flatColumns)).toEqual({
 			left: [],

@@ -28,7 +28,8 @@ export interface DsTableStickyColumns {
 	left?: string[];
 
 	/**
-	 * Column ids stuck to the right edge, before the row actions column.
+	 * Column ids stuck to the right edge, before the row actions or column
+	 * display column.
 	 */
 	right?: string[];
 }
@@ -606,8 +607,9 @@ export interface DsDataTableProps<TData, TValue> {
 	 * pass it with `onStickyColumnsChange` to control it.
 	 *
 	 * - The reorder, expander and select columns are always sticky left, before
-	 *   these columns. The row actions column is always sticky right, after them.
-	 *   Listing their ids has no effect.
+	 *   these columns. The row actions column (or, without row actions, the
+	 *   `columnDisplay` column) is always sticky right, after them. Listing
+	 *   their ids has no effect.
 	 * - Listing a group id, or any leaf of a group, pins every leaf of that
 	 *   top-level group.
 	 * - A sticky column without `size` renders at a fixed width (its

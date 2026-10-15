@@ -8,6 +8,7 @@ import type { ScrollParams } from '../components/ds-table-body-virtualized';
 import { DsTableEditCellText } from '../components/edit/cell-editors';
 import { getColumnTrackWidth } from '../hooks/use-scrollbar-gutter';
 import {
+	COLUMN_DISPLAY_COLUMN_ID,
 	EXPANDER_COLUMN_ID,
 	REORDER_COLUMN_ID,
 	ROW_ACTIONS_COLUMN_ID,
@@ -306,6 +307,34 @@ describe('DsTable sticky columns', () => {
 			await scrollToLeft(0);
 			const container = getScrollContainer();
 			expect(visibleRight(getBodyCell(ROW_ACTIONS_COLUMN_ID))).toBeCloseTo(container.clientWidth, 0);
+		});
+
+		it.each([
+			{ name: 'its own column', props: {}, columnId: COLUMN_DISPLAY_COLUMN_ID },
+			{ name: 'the row actions column', props: rowActions, columnId: ROW_ACTIONS_COLUMN_ID },
+		])('keeps the column display button sticky right in $name', async ({ props, columnId }) => {
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						{...props}
+						columnDisplay
+						stickyColumns={{ right: ['status', COLUMN_DISPLAY_COLUMN_ID] }}
+					/>
+				</Frame>,
+			);
+
+			const headerCell = getHeaderCell(columnId);
+			await expect.element(page.getByRole('button', { name: 'Columns' })).toBeInTheDocument();
+			expect(headerCell.contains(page.getByRole('button', { name: 'Columns' }).element())).toBe(true);
+
+			await scrollToLeft(100);
+			const container = getScrollContainer();
+
+			expect(visibleRight(headerCell)).toBeCloseTo(container.clientWidth, 0);
+			expect(visibleRight(getBodyCell(columnId))).toBeCloseTo(container.clientWidth, 0);
+			expect(visibleRight(getHeaderCell('status'))).toBeCloseTo(visibleLeft(headerCell), 0);
 		});
 	});
 
