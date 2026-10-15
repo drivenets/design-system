@@ -626,7 +626,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.2s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -31406,7 +31406,7 @@ toast with `dismissToast(id)` — pair actions with `persistent` so the toast wa
                 <span class="badge ok">story ok</span>
               </div>
               
-              <div class="hint">Long descriptions wrap and the toast grows to fit while staying within its max width.</div>
+              <div class="hint">Long descriptions scroll once the toast reaches its 400px max height.</div>
               <pre><code>const LongContent = () =&gt; {
     const ToastTrigger = () =&gt; {
         const { createToast } = useToaster();
@@ -31420,8 +31420,10 @@ toast with `dismissToast(id)` — pair actions with `persistent` so the toast wa
                         variant: &#39;warning&#39;,
                         title: &#39;Important notice&#39;,
                         description:
-                            &#39;This is a longer message that demonstrates how the toast handles extended content. &#39; +
-                            &#39;The text wraps and stays readable while remaining within the toast boundaries.&#39;,
+                            &#39;This is a longer message that demonstrates how the toast handles extended content. &#39;.repeat(
+                                30,
+                            ),
+                        persistent: true,
                     })
                 }
             &gt;

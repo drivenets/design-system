@@ -31307,8 +31307,8 @@
         {
           "id": "components-toast--long-content",
           "name": "Long Content",
-          "snippet": "const LongContent = () => {\n    const ToastTrigger = () => {\n        const { createToast } = useToaster();\n\n        return (\n            <DsButton\n                design=\"v1.2\"\n                variant=\"filled\"\n                onClick={() =>\n                    createToast({\n                        variant: 'warning',\n                        title: 'Important notice',\n                        description:\n                            'This is a longer message that demonstrates how the toast handles extended content. ' +\n                            'The text wraps and stays readable while remaining within the toast boundaries.',\n                    })\n                }\n            >\n                Show long content toast\n            </DsButton>\n        );\n    };\n\n    return (\n        <DsToastProvider>\n            <ToastTrigger />\n        </DsToastProvider>\n    );\n};",
-          "description": "Long descriptions wrap and the toast grows to fit while staying within its max width."
+          "snippet": "const LongContent = () => {\n    const ToastTrigger = () => {\n        const { createToast } = useToaster();\n\n        return (\n            <DsButton\n                design=\"v1.2\"\n                variant=\"filled\"\n                onClick={() =>\n                    createToast({\n                        variant: 'warning',\n                        title: 'Important notice',\n                        description:\n                            'This is a longer message that demonstrates how the toast handles extended content. '.repeat(\n                                30,\n                            ),\n                        persistent: true,\n                    })\n                }\n            >\n                Show long content toast\n            </DsButton>\n        );\n    };\n\n    return (\n        <DsToastProvider>\n            <ToastTrigger />\n        </DsToastProvider>\n    );\n};",
+          "description": "Long descriptions scroll once the toast reaches its 400px max height."
         },
         {
           "id": "components-toast--persistent",
@@ -32646,6 +32646,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 6237
+    "durationMs": 5968
   }
 }
