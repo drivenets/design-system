@@ -24,13 +24,12 @@ The Routine releases the Design System packages every Wednesday morning without 
 
 ## Run
 
-Nobody watches this session: never ask a question or wait for an answer. Follow the [`release`](../../../.agents/skills/release/SKILL.md) skill in **unattended mode**, with these additions:
+Nobody watches this session: never ask a question or wait for an answer. Follow the [`release`](../../../.agents/skills/release/SKILL.md) skill, with these additions:
 
 1. **Prerequisites.** Use `gh` if `gh auth status` succeeds. Otherwise do every step with the session's GitHub tools: list, close and reopen the PR, read its required checks, approve, squash-merge with the expected head commit, find and watch the `Release` workflow run, list releases. Slack is required; without it, stop and say so in the session (there's nowhere to post).
 2. **Nothing to release.** If no Release PR is open, or its body has no `## @drivenets/…@x.y.z` headings, post `Weekly release: nothing to release` to the status channel and stop.
 3. **Head changed.** When the skill sends you back to close and reopen, do it at most 2 times in one run, then stop and report.
 4. **Someone else acted.** If the Release PR gets merged or closed by someone else during the run, stop and report. Don't post the announcement.
-5. **Announcement.** In step 7 post the release-summary text as composed, with no review, then do step 8 (DAP bump request) as written.
 
 ## Reports
 
