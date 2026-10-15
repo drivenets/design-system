@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - release/**
 
 concurrency: ${{ github.workflow }} @ ${{ github.ref }}
 
@@ -114,6 +115,7 @@ jobs:
       - name: Publish
         uses: changesets/action@a45c4d594aa4e2c509dc14a9f2b3b67ba3780d0d # v1.9.0
         with:
-          publish: pnpm changeset publish
+          # Hotfix line: publish under its own dist-tag so `latest` keeps pointing at the newest release.
+          publish: pnpm changeset publish --tag release-0.18
         env:
           NPM_TOKEN: '' # https://github.com/changesets/action/issues/542#issuecomment-3642334398
