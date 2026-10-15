@@ -244,7 +244,8 @@ export const WithActions: Story = {
 };
 
 /**
- * Long descriptions wrap and the toast grows to fit while staying within its max width.
+ * Long descriptions wrap within the max width. The toast height is capped to the viewport: the title and
+ * close button stay visible and the description scrolls. Pass `className` or `style` to set a lower cap.
  */
 export const LongContent: Story = {
 	parameters: { docs: { source: { type: 'code' } } },
@@ -261,8 +262,10 @@ export const LongContent: Story = {
 							variant: 'warning',
 							title: 'Important notice',
 							description:
-								'This is a longer message that demonstrates how the toast handles extended content. ' +
-								'The text wraps and stays readable while remaining within the toast boundaries.',
+								'This is a longer message that demonstrates how the toast handles extended content. '.repeat(
+									30,
+								),
+							persistent: true,
 						})
 					}
 				>

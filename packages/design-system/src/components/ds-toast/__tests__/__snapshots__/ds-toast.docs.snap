@@ -395,7 +395,8 @@ const WithActions = () => {
       return <DsButton design="v1.2" variant="filled" onClick={() => createToast({
         variant: 'warning',
         title: 'Important notice',
-        description: 'This is a longer message that demonstrates how the toast handles extended content. ' + 'The text wraps and stays readable while remaining within the toast boundaries.'
+        description: 'This is a longer message that demonstrates how the toast handles extended content. '.repeat(30),
+        persistent: true
       })}>
                     Show long content toast
                 </DsButton>;
@@ -420,8 +421,10 @@ const LongContent = () => {
                         variant: 'warning',
                         title: 'Important notice',
                         description:
-                            'This is a longer message that demonstrates how the toast handles extended content. ' +
-                            'The text wraps and stays readable while remaining within the toast boundaries.',
+                            'This is a longer message that demonstrates how the toast handles extended content. '.repeat(
+                                30,
+                            ),
+                        persistent: true,
                     })
                 }
             >
