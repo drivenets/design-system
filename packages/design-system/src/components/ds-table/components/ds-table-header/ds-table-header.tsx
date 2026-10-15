@@ -19,8 +19,10 @@ import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 
 const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
-	const { bordered, virtualized, resizableColumns, resizeSizingReady, columnDisplay } =
-		useDsTableContext<TData, unknown>();
+	const { bordered, virtualized, resizableColumns, resizeSizingReady, columnDisplay } = useDsTableContext<
+		TData,
+		unknown
+	>();
 
 	return (
 		<TableHeader className={classnames(styles.header, virtualized && styles.virtualizedHeader)}>
