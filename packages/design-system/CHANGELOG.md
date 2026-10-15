@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.18.2
+
+### Patch Changes
+
+- 9d6e84a: Cap `DsToast` height at 400px so long descriptions scroll
+
 ## 0.18.1
 
 ### Patch Changes
