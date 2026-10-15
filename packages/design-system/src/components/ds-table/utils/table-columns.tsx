@@ -6,6 +6,8 @@ import { DsTableRowExpandableCell } from '../components/ds-table-row-expandable-
 import { DsTableRowSelectableCell } from '../components/ds-table-row-selectable-cell';
 import { resolveUtilityColumnWidth } from './column-size';
 import {
+	COLUMN_DISPLAY_COLUMN_ID,
+	COLUMN_DISPLAY_COLUMN_WIDTH,
 	EXPANDER_COLUMN_ID,
 	EXPANDER_COLUMN_WIDTH,
 	REORDER_COLUMN_ID,
@@ -26,6 +28,7 @@ export type GetAugmentedColumnsOptions = {
 	expandableColumnWidth?: number;
 	reorderableColumnWidth?: number;
 	rowActionsColumnWidth?: number;
+	columnDisplay?: boolean;
 };
 
 const EXPLICIT_SIZE_META = { hasExplicitSize: true } as const;
@@ -57,9 +60,11 @@ const pinUtilityColumnSize = (width: number) => ({
 
 /**
  * Prepends the builtin select / expander / reorder columns when those features
- * are on, and appends the row actions column when actions are declared. Reorder
- * is omitted for virtualized tables. Visual order: reorder, expander, select,
- * consumer columns, row actions.
+ * are on, and appends the row actions column when actions are declared, or
+ * else the column-display column when `columnDisplay` is set (with row actions,
+ * the Columns button shares their column). Reorder is omitted for virtualized
+ * tables. Visual order: reorder, expander, select, consumer columns, row
+ * actions or column display.
  */
 export const getAugmentedColumns = <TData, TValue>(
 	columns: ColumnDef<TData, TValue>[],
@@ -73,6 +78,7 @@ export const getAugmentedColumns = <TData, TValue>(
 		expandableColumnWidth,
 		reorderableColumnWidth,
 		rowActionsColumnWidth = 0,
+		columnDisplay = false,
 	}: GetAugmentedColumnsOptions,
 ): ColumnDef<TData, TValue>[] => {
 	const augmentedColumns: ColumnDef<TData, TValue>[] = stampExplicitSize(columns);
@@ -129,6 +135,22 @@ export const getAugmentedColumns = <TData, TValue>(
 			meta: EXPLICIT_SIZE_META,
 			header: () => <DsTableRowActionsHeader />,
 			cell: () => null,
+		});
+	}
+
+	if (columnDisplay && rowActionsColumnWidth === 0) {
+		// Header is rendered by DsTableHeader when it encounters COLUMN_DISPLAY_COLUMN_ID,
+		// since the button belongs in the top header row even when columns are grouped.
+		augmentedColumns.push({
+			id: COLUMN_DISPLAY_COLUMN_ID,
+			...pinUtilityColumnSize(COLUMN_DISPLAY_COLUMN_WIDTH),
+			enableSorting: false,
+			enableResizing: false,
+			enableHiding: false,
+			meta: EXPLICIT_SIZE_META,
+			header: () => null,
+			cell: () => null,
+			loadingCell: () => null,
 		});
 	}
 

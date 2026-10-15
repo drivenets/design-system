@@ -1,4 +1,5 @@
 import { createContext, useContext, useMemo, type ReactNode, type RefObject } from 'react';
+import type { VisibilityState } from '@tanstack/react-table';
 import type { DsDataTableProps, DsTableRowSize } from '../ds-table.types';
 import type { DsTablePropsWithDefaults } from '../ds-table-defaults';
 import type { DsTableResizeContextSlice } from '../hooks/use-column-resize';
@@ -61,6 +62,11 @@ export interface DsTableContextType<TData, TValue>
 	 * Overflow-only **Scrollbar spacer** width (0 or rest scrollbar size).
 	 */
 	scrollbarSpacerWidth: ScrollbarSpacerWidth;
+	/**
+	 * Which columns the user chose to show. Collapsing a group hides columns
+	 * without changing this.
+	 */
+	columnVisibility: VisibilityState;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,6 +86,7 @@ interface DsTableContextProviderDerived {
 		onToggleColumnGroup: (groupId: string) => void;
 	};
 	resize: DsTableResizeContextSlice;
+	columnVisibility: VisibilityState;
 }
 
 export interface DsTableContextProviderProps<TData, TValue> {
@@ -118,9 +125,11 @@ export const DsTableContextProvider = <TData, TValue>({
 		locale,
 		onCellEdit,
 		onCellValidate,
+		columnDisplay,
 	} = tableProps;
 
 	const { collapsedColumnGroups, onToggleColumnGroup } = derived.grouping;
+	const { columnVisibility } = derived;
 	const {
 		resizableColumns,
 		resizeSizingReady,
@@ -157,6 +166,8 @@ export const DsTableContextProvider = <TData, TValue>({
 			activeRowId,
 			collapsedColumnGroups,
 			onToggleColumnGroup,
+			columnVisibility,
+			columnDisplay,
 			locale,
 			onCellEdit,
 			resizableColumns,
@@ -192,6 +203,8 @@ export const DsTableContextProvider = <TData, TValue>({
 			activeRowId,
 			collapsedColumnGroups,
 			onToggleColumnGroup,
+			columnVisibility,
+			columnDisplay,
 			locale,
 			onCellEdit,
 			resizableColumns,
