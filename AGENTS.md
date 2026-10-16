@@ -145,6 +145,29 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 - Whitespace between logical chunks; early returns; name magic numbers
 - kebab-case files; barrel exports use `index.ts` not `index.tsx`
 
+## Comments & changesets
+
+Applies to every package. When in doubt, write less.
+
+**Code comments** (`.ts`, `.tsx`, `.scss`)
+
+- Default: none. Names, types, and tests carry the meaning.
+- Allowed only for a _why_ the code can't show — browser quirk, spec or a11y constraint, workaround (link the issue). One line.
+- Never: restate what the code does, narrate the change (`now`, `previously`, `fixed`, `changed to`), ticket IDs, multi-line walkthroughs.
+- Public JSDoc (props, components, stories) is consumer docs — follow [`component-api`](.agents/skills/component-api/SKILL.md) and [`storybook`](.agents/skills/storybook/SKILL.md). Describe behavior, not internals.
+- Before finishing, re-read every comment you added and delete those that fail this bar.
+
+**Changesets** (`pnpm changelog`)
+
+- One sentence: what a consumer can now do, or no longer hits. Name the component or prop in backticks.
+- No cause, mechanism, CSS values, internals, or test notes — those go in the PR description.
+
+| Bad                                                                                                                                            | Good                                                           |
+| ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Fix `DsDrawer` intercepting pointer events while closed. A closed (or closing) drawer stays mounted and transformed; for inset/offset drawers… | Fix a closed `DsDrawer` blocking clicks on content beneath it. |
+| Scrollbars now auto-hide and only show on hover. At rest the thumb is subtle (10px); on hover it widens (12px) and darkens…                    | Auto-hide scrollbars until hover.                              |
+| Refactor card to use CSS modules and fix hover state selector specificity                                                                      | Fix `DsCard` hover state.                                      |
+
 ## Additional rules
 
 - **Domain glossary:** [CONTEXT.md](CONTEXT.md) · **ADRs:** [docs/adr/](docs/adr/)

@@ -34,7 +34,7 @@ Smallest change that turns the test green. No refactoring past the bug, no drive
 
 ## Step 5 — Wrap
 
-- Changeset: patch-level, user-facing wording ("Fix X in Ds{Name}"). Remind the user to run `pnpm changelog` if none exists.
+- Changeset: patch-level, one user-facing sentence ("Fix X in Ds{Name}") — [AGENTS.md](../../../AGENTS.md#comments--changesets). Remind the user to run `pnpm changelog` if none exists.
 - Leave changes uncommitted (per repo branch rules) unless the user asks to commit.
 - Report: bug → test → fix in one block, plus checker results.
 

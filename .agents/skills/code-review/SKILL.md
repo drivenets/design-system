@@ -7,26 +7,16 @@ description: Apply when preparing a PR, reviewing code changes, running git diff
 
 ## Git & PR Workflow
 
-| Requirement                            | Details                                                                     |
-| -------------------------------------- | --------------------------------------------------------------------------- |
-| **No force-push after review**         | GitHub loses review history; use merge commits instead                      |
-| **Changelog required**                 | Run `pnpm changelog` before merge                                           |
-| **Conventional commits**               | PR title must follow conventional commit format                             |
-| **Separate concerns**                  | Unrelated changes go in separate PRs; easier revert and isolation           |
-| **Changeset messages are user-facing** | Write "Add X to Y" or "Fix X in Y", not implementation details              |
-| **`skip changelog` label**             | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes |
-| **Use `--frozen-lockfile`**            | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes  |
-| **Deprecation rules**                  | Add to `@drivenets/eslint-plugin-design-system` when deprecating            |
-
-```markdown
-<!-- Good changeset message -->
-
-Add DsCard component
-
-<!-- Bad changeset message - implementation details -->
-
-Refactor card to use CSS modules and fix hover state selector specificity
-```
+| Requirement                            | Details                                                                                        |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **No force-push after review**         | GitHub loses review history; use merge commits instead                                         |
+| **Changelog required**                 | Run `pnpm changelog` before merge                                                              |
+| **Conventional commits**               | PR title must follow conventional commit format                                                |
+| **Separate concerns**                  | Unrelated changes go in separate PRs; easier revert and isolation                              |
+| **Changeset messages are user-facing** | One sentence, no implementation details — [AGENTS.md](../../../AGENTS.md#comments--changesets) |
+| **`skip changelog` label**             | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes                    |
+| **Use `--frozen-lockfile`**            | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes                     |
+| **Deprecation rules**                  | Add to `@drivenets/eslint-plugin-design-system` when deprecating                               |
 
 ---
 
@@ -66,7 +56,8 @@ Refactor card to use CSS modules and fix hover state selector specificity
 
 Before submitting a PR:
 
-- [ ] Changelog added (`pnpm changelog`) with user-facing message
+- [ ] Changelog added (`pnpm changelog`): one user-facing sentence
+- [ ] New comments explain a _why_ the code can't show; none narrate the code or the change
 - [ ] Behavioral coverage in `*.browser.test.tsx` where interactions matter
 - [ ] Browser tests use a11y queries (no test-ids unless unavoidable)
 - [ ] CSS uses design tokens, no `!important`
