@@ -11,8 +11,10 @@ Automate the pre-submission checklist from the `code-review` skill.
 
 ### Step 1: Identify changed files
 
+Set `$base` first ([AGENTS.md#git--prs](../../../AGENTS.md#git--prs)); every diff below uses it.
+
 ```bash
-git diff origin/main --name-only
+git diff "$base" --name-only
 ```
 
 Categorize files by type:
@@ -81,7 +83,8 @@ Date/time in stories and browser tests: follow [storybook](../storybook/SKILL.md
 List every comment line the branch adds:
 
 ```bash
-git diff origin/main -U0 -- '*.ts' '*.tsx' '*.scss' | grep -E '^\+\s*(//|/\*|\*)'
+git diff "$base" -U0 -- '*.ts' '*.tsx' '*.scss' \
+  | grep -E '^\+(.*[^:])?//|^\+.*/\*|^\+\s*\*'
 ```
 
 For each, keep it only if it states a _why_ the code can't show ([AGENTS.md](../../../AGENTS.md#comments--changesets)). Flag the rest — narration of the code or the change, ticket IDs, multi-line walkthroughs. Public JSDoc on props, components, and stories is exempt from "default none", but not from "no internals".

@@ -73,18 +73,6 @@ Use `-u` only for intended visual changes, and review every changed PNG. Enforce
 
 ---
 
-## Monorepo Structure
-
-```
-packages/
-├── design-system/              # @drivenets/design-system
-├── eslint-plugin/              # @drivenets/eslint-plugin-design-system
-├── vite-plugin/                # @drivenets/vite-plugin-design-system
-├── mcp/                        # @drivenets/design-system-mcp
-├── eslint-plugin-internal/     # @drivenets/eslint-plugin-internal
-├── commitlint-plugin-internal/ # @drivenets/commitlint-plugin-internal
-```
-
 ## Design-system package
 
 `packages/design-system/src/components/ds-{name}/`
@@ -116,7 +104,7 @@ ds-{name}/
 - PR / review — [`code-review`](.agents/skills/code-review/SKILL.md), [`pr-prep`](.agents/skills/pr-prep/SKILL.md), [`create-pr`](.agents/skills/create-pr/SKILL.md)
 - Ticket / bug workflow — [`implement`](.agents/skills/implement/SKILL.md) (`.md` ticket → tested), [`fix`](.agents/skills/fix/SKILL.md) (small bug / adjustment)
 - Plan / debug / TDD — [`grill-me`](.agents/skills/grill-me/SKILL.md), [`to-plan`](.agents/skills/to-plan/SKILL.md), [`diagnose`](.agents/skills/diagnose/SKILL.md), [`tdd`](.agents/skills/tdd/SKILL.md)
-- Subagents — `ds-component-builder`, `ds-browser-test-writer`, `ds-review`, `ds-verifier` (see [Cursor subagents](#cursor-subagents-cursoragents))
+- Subagents — `ds-component-builder`, `ds-browser-test-writer`, `ds-review`, `ds-verifier` (see [Subagents](#subagents))
 
 **Primitives:** Ark UI first → TanStack for data-heavy → custom last. Radix: existing only.
 
@@ -147,20 +135,29 @@ Use skill [`ts-standards`](.agents/skills/ts-standards/SKILL.md) for full rules.
 
 ## Comments & changesets
 
-Applies to every package. When in doubt, write less.
+Applies to every package. Comments drift from the code and every future reader pays for them; the diff and PR already say what changed. When in doubt, write less.
 
 **Code comments** (`.ts`, `.tsx`, `.scss`)
 
 - Default: none. Names, types, and tests carry the meaning.
 - Allowed only for a _why_ the code can't show — browser quirk, spec or a11y constraint, workaround (link the issue). One line.
 - Never: restate what the code does, narrate the change (`now`, `previously`, `fixed`, `changed to`), ticket IDs, multi-line walkthroughs.
+- `TODO` only with a linked issue.
 - Public JSDoc (props, components, stories) is consumer docs — follow [`component-api`](.agents/skills/component-api/SKILL.md) and [`storybook`](.agents/skills/storybook/SKILL.md). Describe behavior, not internals.
-- Before finishing, re-read every comment you added and delete those that fail this bar.
+- Before finishing, run the [`pr-prep` Step 5b](.agents/skills/pr-prep/SKILL.md#step-5b-review-new-comments) command and delete each added comment that fails this bar.
+
+| Bad                                                                | Good                                                                    |
+| ------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| `// Now uses pointer-events: none instead of visibility (AR-1234)` | `// Stays mounted for the exit animation, so it must not catch clicks.` |
+| `// Loop over rows and collect the selected ids`                   | No comment.                                                             |
+| `/* Scrollbar: 10px at rest, 12px on hover, darker thumb … */`     | No comment; the values are in the code.                                 |
+| No comment on a workaround                                         | `// Zag leaves this wrapper clickable; see <issue link>`                |
 
 **Changesets** (`pnpm changelog`)
 
 - One sentence: what a consumer can now do, or no longer hits. Name the component or prop in backticks.
 - No cause, mechanism, CSS values, internals, or test notes — those go in the PR description.
+- Breaking change: add one line per migration step, `before` → `after`.
 
 | Bad                                                                                                                                            | Good                                                           |
 | ---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
@@ -170,9 +167,16 @@ Applies to every package. When in doubt, write less.
 
 ## Git & PRs
 
-- **Branch:** `drivenets/<your-name>/AR-XXXX-short-desc` — Jira key, then 2–4 lowercase kebab-case words. Example: `drivenets/anna/AR-1234-fix-tooltip-overflow`.
+- **Branch:** include the Jira key and 2–4 lowercase kebab-case words, e.g. `fix/AR-1234-tooltip-overflow`. Cloud sessions and Routines keep their `claude/` prefix: `claude/AR-1234-tooltip-overflow`. A personal prefix such as `drivenets/<your-name>/` is fine.
 - **Commits:** `type(scope): description [AR-XXXX]` — Conventional Commits with the Jira key, enforced by [commitlint](commitlint.config.ts). Use `!` only for breaking changes.
-- **Forks:** push to your fork; open PRs against `drivenets/design-system` `main` (hotfix PRs: `release/**`). Never push to a `dependabot/*` branch — take it over in your own branch and close the original.
+- **Forks:** push to your fork; open PRs against `drivenets/design-system` `main` (hotfix PRs: `release/**`). Start cloud sessions on your fork. Never push to a `dependabot/*` branch — take it over in your own branch and close the original.
+- **Diff base:** your fork's `main` is usually stale, so diff against the merge base with upstream:
+
+  ```bash
+  upstream=$(git remote -v | awk '/[:\/]drivenets\/design-system(\.git)? \(fetch\)/ {print $1; exit}')
+  git fetch -q "$upstream" main && base=$(git merge-base HEAD "$upstream/main")
+  ```
+
 - **After review:** no force-push, squash, or amend — add commits.
 - **Scope:** one concern per PR; unrelated changes go in separate PRs.
 - **Opening a PR:** [`create-pr`](.agents/skills/create-pr/SKILL.md).
@@ -181,56 +185,13 @@ Applies to every package. When in doubt, write less.
 
 - **Domain glossary:** [CONTEXT.md](CONTEXT.md) · **ADRs:** [docs/adr/](docs/adr/)
 - **DS MCP:** [packages/mcp/README.md](packages/mcp/README.md) — Storybook docs for agents (`list-all-documentation`, `get-documentation`); local dev uses `pnpm start` + `--manifests-url http://localhost:6006`. Story edits: verify snippets via [`docs-tests`](.agents/skills/docs-tests/SKILL.md) and [storybook Snippet verification](.agents/skills/storybook/SKILL.md#snippet-verification).
-- **Flows:** [docs/agents/skills.md](docs/agents/skills.md)
-- **Subagents:** [docs/agents/subagents.md](docs/agents/subagents.md)
 - **Claude Code cloud environment:** [docs/agents/cloud-environment.md](docs/agents/cloud-environment.md)
 - **Routines (scheduled Claude sessions):** [docs/agents/routines/](docs/agents/routines/README.md)
 
-## Cursor subagents (`.cursor/agents/`)
+## Subagents
 
-- `ds-verifier` — readonly; after work claimed done — run checkers on changed files only
-- `ds-component-builder` — new or extended `ds-*` component end-to-end
-- `ds-browser-test-writer` — `*.browser.test.tsx` or Storybook `play` → browser tests
-- `ds-review` — readonly; PR review on design-system diff
-
-Invoke: `/ds-verifier`, `/ds-component-builder`, etc. See [docs/agents/subagents.md](docs/agents/subagents.md) for vs-skills and Claude Code setup.
+`ds-verifier` (readonly; checkers on changed files after work is claimed done), `ds-component-builder`, `ds-browser-test-writer`, `ds-review` (readonly; PR review). They live in `.cursor/agents/`; `.claude/agents` links there. Invoke `/ds-verifier` etc. — see [docs/agents/subagents.md](docs/agents/subagents.md).
 
 ## Project skills
 
-All skills live in `.agents/skills/` (edit in PRs). Read each `SKILL.md` fully when invoked.
-
-### Design-system
-
-File → skill routing: [Design-system package](#design-system-package). Skill bodies:
-
-- [`ark-ui`](.agents/skills/ark-ui/SKILL.md) — before custom ds-\* component; Ark MCP and primitive integration
-- [`component-api`](.agents/skills/component-api/SKILL.md) — edit `*.types.ts`; public props API, variants, locale
-- [`react-patterns`](.agents/skills/react-patterns/SKILL.md) — edit design-system `*.tsx`; hooks, ref, memoization, state
-- [`scss`](.agents/skills/scss/SKILL.md) — edit `*.scss`; tokens, focus/disabled, CSS modules
-- [`ts-standards`](.agents/skills/ts-standards/SKILL.md) — edit `.ts` / `.tsx`; JSDoc, exports, Object.freeze
-- [`browser-tests`](.agents/skills/browser-tests/SKILL.md) — add/edit `*.browser.test.tsx`; Vitest browser patterns, a11y queries, Ark locators
-- [`docs-tests`](.agents/skills/docs-tests/SKILL.md) — opt a component into the global `docs-snippets.docs.test.ts`; Show code + MCP manifest snippet verification
-- [`storybook`](.agents/skills/storybook/SKILL.md) — edit `*.stories.tsx`; story variants, args, MCP-friendly docs, no play functions
-- [`component-scaffold`](.agents/skills/component-scaffold/SKILL.md) — "scaffold a new component"; orchestrator for files, exports, skill read order
-- [`figma-to-component`](.agents/skills/figma-to-component/SKILL.md) — Figma URL; trust boundary, Figma/DS MCP orchestration, then component-scaffold
-- [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md) — "migrate tests for ds-X"; Storybook `play` → browser tests
-- [`code-review`](.agents/skills/code-review/SKILL.md) — "review my changes"; PR checklist and inline review
-- [`pr-prep`](.agents/skills/pr-prep/SKILL.md) — "prepare my PR"; lint, typecheck, test on diff, changeset
-- [`create-pr`](.agents/skills/create-pr/SKILL.md) — "open a PR"; gates, short body, before/after screenshots on the fork's `pr-screenshots` branch
-- [`deslop`](.agents/skills/deslop/SKILL.md) — "clean up this code"; remove AI slop, fix style
-- [`get-pr-comments`](.agents/skills/get-pr-comments/SKILL.md) — "get PR comments"; summarize active PR review comments
-- [`release-summary`](.agents/skills/release-summary/SKILL.md) — "summarize the release"; Slack-ready announcement from the latest GitHub Releases batch
-- [`release`](.agents/skills/release/SKILL.md) — "release the design system"; close/reopen, approve and merge the release PR, wait for publish, post `release-summary` to Slack and ask for the DAP bump in its thread
-
-### Engineering
-
-- [`implement`](.agents/skills/implement/SKILL.md) — "implement this ticket"; orchestrate a markdown ticket → plan → build → test → verify (assumes ticket is already grilled/clear)
-- [`fix`](.agents/skills/fix/SKILL.md) — "fix this bug" / small adjustment; fast path (regression test → minimal fix → verify), no ticket or plan gate
-- [`diagnose`](.agents/skills/diagnose/SKILL.md) — hard bugs or perf regressions; reproduce → minimize → hypothesize → instrument → fix
-- [`tdd`](.agents/skills/tdd/SKILL.md) — test-first implementation; red-green-refactor
-- [`grill-me`](.agents/skills/grill-me/SKILL.md) — stress-test a plan; one question at a time until decisions locked (default before implementation)
-- [`grill-with-docs`](.agents/skills/grill-with-docs/SKILL.md) — like grill-me plus CONTEXT.md / ADR updates; cross-cutting domain or irreversible architecture
-- [`to-plan`](.agents/skills/to-plan/SKILL.md) — after grill-me; package locked decisions into a concise execution plan (no new planning)
-- [`improve-codebase-architecture`](.agents/skills/improve-codebase-architecture/SKILL.md) — on demand; find deepening/refactor opportunities against CONTEXT.md and ADRs
-- [`handoff`](.agents/skills/handoff/SKILL.md) — mid-session; compact conversation for another agent (reference `/to-plan` output, do not duplicate)
-- [`write-a-skill`](.agents/skills/write-a-skill/SKILL.md) — author a new skill in `.agents/skills/`
+All skills live in `.agents/skills/` (edit in PRs). Both tools list them by their `description`; read each `SKILL.md` fully when invoked. File → skill routing: [Design-system package](#design-system-package). Flows: [docs/agents/skills.md](docs/agents/skills.md).

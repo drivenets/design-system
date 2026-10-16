@@ -1,5 +1,3 @@
-// Screenshots one Storybook story canvas for PR before/after tables. See the `create-pr` skill.
-// Usage: pnpm screenshot <story-id> <out.png> [--url http://localhost:6006] [--width 1280] [--height 720] [--click <text>]
 import { resolve } from 'node:path';
 import { parseArgs } from 'node:util';
 import { chromium } from 'playwright';

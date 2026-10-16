@@ -12,6 +12,11 @@ shift
 branch=pr-screenshots
 slug=$(gh repo view "$(git remote get-url origin)" --json nameWithOwner -q .nameWithOwner)
 
+if [ "$slug" = drivenets/design-system ]; then
+	echo "origin is upstream; push screenshots to your fork" >&2
+	exit 1
+fi
+
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 export GIT_INDEX_FILE=$tmp/index

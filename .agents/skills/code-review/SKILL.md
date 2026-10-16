@@ -18,7 +18,7 @@ Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.
 
 ## Code Review Process
 
-1. Get diff: `git diff origin/main`
+1. Get diff: `git diff "$base"` — [`$base`](../../../AGENTS.md#git--prs)
 2. Review every changed file — read the matching skill(s) **fully** for paths in the diff:
 
 | Changed paths                    | Skills                                                                               |
@@ -32,7 +32,7 @@ Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.
 | `*.figma.ts` (Code Connect)      | [figma-to-component](../figma-to-component/SKILL.md); validate parse (see step 3)    |
 
 3. When any `*.figma.ts` (Figma Code Connect) file is in the diff, validate that all Code Connect files still parse: `pnpm --filter @drivenets/design-system figma:lint` (see [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse)). Flag any file that fails to parse.
-4. Flag only clear, high-severity issues (max 10 inline comments)
+4. Flag only clear, high-severity issues (max 10 inline comments). Separately, list every comment or changeset that fails [Comments & changesets](../../../AGENTS.md#comments--changesets) as one grouped finding; it doesn't count toward the cap.
 
 ### Inline comment format
 

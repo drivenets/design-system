@@ -12,9 +12,10 @@ pnpm --filter @drivenets/design-system screenshot <story-id> <out.png>
 - `<story-id>` is the `?path=/story/<id>` part of the Storybook URL, e.g. `components-toast--long-content`.
 - Defaults: 1280×720 viewport, device scale factor 2, light theme (the only one). Override with `--width`, `--height`, `--url` (e.g. a PR's Netlify preview).
 - States behind a click (open toast, menu, dialog) → `--click "<visible text>"`, repeatable. Hover, focus or typing → drive your browser tool on the same canvas URL and viewport.
+- No Chromium (cloud **Default** environment, see [cloud-environment](../../../docs/agents/cloud-environment.md)) → say so under "Notes for reviewers" and skip.
 - Name files `before-<state>.png` / `after-<state>.png`, e.g. `before-long-content.png`.
 
-Before: capture on the base commit before the first edit, and upload right away so the URLs survive across sessions and machines. Forgot → `git worktree add ../ds-before $(git merge-base HEAD drivenets/main)`, run Storybook there, capture.
+Before: capture on the base commit before the first edit, and upload right away so the URLs survive across sessions and machines. Forgot → `git worktree add ../ds-before "$base"` ([`$base`](../../../AGENTS.md#git--prs)), run Storybook there, capture.
 
 ## Host
 
