@@ -12,6 +12,7 @@ on:
     branches:
       - main
       - next
+      - release/**
 
 permissions: {}
 
@@ -82,4 +83,38 @@ jobs:
         if: steps.check-major.outputs.has-major == 'true'
         run: |
           echo "Error: Major changesets are not allowed. Did you mean to create a minor or patch changeset instead?"
+          exit 1
+
+  patch-only-on-release-branches:
+    name: Patch Only On Release Branches
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    # Hotfix lines (`release/X.Y.x`) only ship patches: a minor bump would collide with a version
+    # already released from `main`. Skip release & dependabot PRs.
+    if: |
+      startsWith(github.event.pull_request.base.ref, 'release/') &&
+      ! (github.event.pull_request.title == 'chore(release): publish' && github.event.pull_request.user.login == 'github-actions[bot]') &&
+      ! (github.event.pull_request.user.login == 'dependabot[bot]')
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Install Dependencies
+        uses: ./.github/actions/install
+
+      - name: Check for Non-Patch Changeset
+        id: check-version
+        uses: ./.github/actions/check-major-version
+
+      - name: Disallow Non-Patch Version
+        if: steps.check-version.outputs.has-non-patch == 'true'
+        run: |
+          echo "Error: Release branches only accept patch changesets."
           exit 1
