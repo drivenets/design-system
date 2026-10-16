@@ -17,6 +17,24 @@ import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-b
 export type DsTableRowSize = 'small' | 'medium' | 'large';
 
 /**
+ * Column ids kept in view during horizontal scroll, per side. Array order is the
+ * visual order within each side.
+ */
+export interface DsTableStickyColumns {
+	/**
+	 * Column ids stuck to the left edge, after the reorder, expander and select
+	 * columns.
+	 */
+	left?: string[];
+
+	/**
+	 * Column ids stuck to the right edge, before the row actions or column
+	 * display column.
+	 */
+	right?: string[];
+}
+
+/**
  * Overridable, user-facing strings used by the table (e.g. accessible labels for
  * the column-group collapse toggle). Pass a partial object via the `locale` prop
  * to localize.
@@ -271,7 +289,8 @@ export interface DsDataTableProps<TData, TValue> {
 	controls?: React.ReactNode;
 
 	/**
-	 * Whether the table is virtualized
+	 * Whether the table is virtualized. The table needs a parent with a bounded
+	 * height; without one it grows to fit every row and renders them all.
 	 * @default false
 	 */
 	virtualized?: boolean;
@@ -582,6 +601,45 @@ export interface DsDataTableProps<TData, TValue> {
 	 * Callback when column visibility changes
 	 */
 	onColumnVisibilityChange?: (visibility: VisibilityState) => void;
+
+	/**
+	 * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+	 * pass it with `onStickyColumnsChange` to control it.
+	 *
+	 * - The reorder, expander and select columns are always sticky left, before
+	 *   these columns. The row actions column (or, without row actions, the
+	 *   `columnDisplay` column) is always sticky right, after them. Listing
+	 *   their ids has no effect.
+	 * - Listing a group id, or any leaf of a group, pins every leaf of that
+	 *   top-level group.
+	 * - A sticky column without `size` renders at a fixed width (its
+	 *   `getSize()`, 150px by default) instead of filling.
+	 * - A column hidden via `columnVisibility` keeps its pin and is sticky again
+	 *   when shown.
+	 * - Sticky columns wider than the table viewport are not handled; keep their
+	 *   total width below the visible width.
+	 *
+	 * @example
+	 * ```tsx
+	 * const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+	 *   left: ['firstName'],
+	 *   right: ['status'],
+	 * });
+	 *
+	 * <DsTable
+	 *   stickyColumns={stickyColumns}
+	 *   onStickyColumnsChange={setStickyColumns}
+	 * />
+	 * ```
+	 */
+	stickyColumns?: DsTableStickyColumns;
+
+	/**
+	 * Called with the next sticky columns when a column is pinned or unpinned
+	 * through the TanStack column API (e.g. `column.pin('left')` in a header
+	 * renderer). Contains consumer column ids only, never utility column ids.
+	 */
+	onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) => void;
 
 	/**
 	 * Controlled list of collapsed column-group ids. A group is collapsible when its

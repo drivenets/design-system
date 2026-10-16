@@ -67,6 +67,11 @@
 	text-align: center;
 }
 
+// Must match `ROW_ACTIONS_CELL_PADDING` in `utils/constants.ts`.
+.rowActionsCell {
+	padding-inline: var(--xs);
+}
+
 .groupStart:not(:first-child) {
 	border-left: vars.$group-border-width solid var(--border);
 }

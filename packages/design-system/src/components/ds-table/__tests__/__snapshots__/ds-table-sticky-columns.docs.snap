@@ -1,0 +1,2022 @@
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  stickyColumns={{
+    left: [
+      'firstName'
+    ],
+    right: [
+      'status'
+    ]
+  }}
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['firstName'], right: ['status'] }} />;
+
+## With Row Actions
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  primaryRowActions={[
+    {
+      icon: 'edit',
+      label: 'Edit',
+      onClick: () => {}
+    },
+    {
+      icon: 'download',
+      label: 'Download',
+      onClick: () => {}
+    }
+  ]}
+  secondaryRowActions={[
+    {
+      icon: 'delete',
+      label: 'Delete',
+      onClick: () => {}
+    }
+  ]}
+  selectable
+  stickyColumns={{
+    left: [
+      'firstName'
+    ],
+    right: [
+      'status'
+    ]
+  }}
+/>
+
+### MCP manifest
+const WithRowActions = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['firstName'], right: ['status'] }}
+    selectable
+    primaryRowActions={[
+        { icon: 'edit', label: 'Edit', onClick: fn() },
+        { icon: 'download', label: 'Download', onClick: fn() },
+    ]}
+    secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]} />;
+
+## Column Manager
+
+### Show code
+{
+  args: {
+    primaryRowActions: [{
+      icon: 'edit',
+      label: 'Edit',
+      onClick: fn()
+    }, {
+      icon: 'download',
+      label: 'Download',
+      onClick: fn()
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const managedColumns = [{
+      id: 'firstName',
+      label: 'First Name'
+    }, {
+      id: 'lastName',
+      label: 'Last Name'
+    }, {
+      id: 'age',
+      label: 'Age'
+    }, {
+      id: 'visits',
+      label: 'Visits'
+    }, {
+      id: 'progress',
+      label: 'Profile Progress'
+    }, {
+      id: 'status',
+      label: 'Status'
+    }];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({});
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({
+      id
+    }) => isVisible(id)).length;
+    const allColumnsChecked = visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({
+      label
+    }) => label.toLowerCase().includes(query));
+    const setPinned = (id: string, pinned: boolean) => setStickyColumns({
+      ...stickyColumns,
+      // Pinned columns keep the order they have in the manager.
+      left: managedColumns.map(column => column.id).filter(columnId => columnId === id ? pinned : pinnedIds.includes(columnId))
+    });
+    const setAllVisible = (visible: boolean) => setColumnVisibility(Object.fromEntries(managedColumns.map(({
+      id
+    }) => [id, visible])));
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" justifyContent="flex-end" width="100%">
+                        <DsPopover.Root align="end" gutter={4}>
+                            <DsPopover.Trigger>
+                                <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                            </DsPopover.Trigger>
+                            <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                                <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                    Search columns
+                                </label>
+                                <DsTextInput id={searchId} placeholder="Search" value={search} onValueChange={setSearch} slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" aria-hidden />
+          }} />
+                                <DsStack direction="column" className={styles.columnList}>
+                                    {matchingColumns.map(({
+              id,
+              label
+            }) => <DsCheckbox key={id} size="large" className={styles.columnRow} label={label} checked={isVisible(id)} onCheckedChange={checked => setColumnVisibility({
+              ...columnVisibility,
+              [id]: checked === true
+            })} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />)}
+                                    <DsCheckbox size="large" label="Row actions" checked disabled actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />} />
+                                </DsStack>
+                                <DsDivider className={styles.divider} />
+                                <DsCheckbox size="large" label="All columns" checked={allColumnsChecked} onCheckedChange={() => setAllVisible(allColumnsChecked !== true)} />
+                            </DsPopover.Panel>
+                        </DsPopover.Root>
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const ColumnManager = () => {
+    const managedColumns = [
+        { id: 'firstName', label: 'First Name' },
+        { id: 'lastName', label: 'Last Name' },
+        { id: 'age', label: 'Age' },
+        { id: 'visits', label: 'Visits' },
+        { id: 'progress', label: 'Profile Progress' },
+        { id: 'status', label: 'Status' },
+    ];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({});
+
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
+    const allColumnsChecked =
+        visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
+
+    const setPinned = (id: string, pinned: boolean) =>
+        setStickyColumns({
+            ...stickyColumns,
+            // Pinned columns keep the order they have in the manager.
+            left: managedColumns
+                .map((column) => column.id)
+                .filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
+        });
+
+    const setAllVisible = (visible: boolean) =>
+        setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            primaryRowActions={[
+                { icon: 'edit', label: 'Edit', onClick: fn() },
+                { icon: 'download', label: 'Download', onClick: fn() },
+            ]}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns}
+            controls={
+                <DsStack direction="row" justifyContent="flex-end" width="100%">
+                    <DsPopover.Root align="end" gutter={4}>
+                        <DsPopover.Trigger>
+                            <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                        </DsPopover.Trigger>
+                        <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                            <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                Search columns
+                            </label>
+                            <DsTextInput
+                                id={searchId}
+                                placeholder="Search"
+                                value={search}
+                                onValueChange={setSearch}
+                                slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+                            />
+                            <DsStack direction="column" className={styles.columnList}>
+                                {matchingColumns.map(({ id, label }) => (
+                                    <DsCheckbox
+                                        key={id}
+                                        size="large"
+                                        className={styles.columnRow}
+                                        label={label}
+                                        checked={isVisible(id)}
+                                        onCheckedChange={(checked) =>
+                                            setColumnVisibility({ ...columnVisibility, [id]: checked === true })
+                                        }
+                                        actions={
+                                            <DsPinToggle
+                                                className={styles.pinToggle}
+                                                itemLabel={label}
+                                                pinned={pinnedIds.includes(id)}
+                                                onPinnedChange={(pinned) => setPinned(id, pinned)}
+                                            />
+                                        }
+                                    />
+                                ))}
+                                <DsCheckbox
+                                    size="large"
+                                    label="Row actions"
+                                    checked
+                                    disabled
+                                    actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
+                                />
+                            </DsStack>
+                            <DsDivider className={styles.divider} />
+                            <DsCheckbox
+                                size="large"
+                                label="All columns"
+                                checked={allColumnsChecked}
+                                onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
+                            />
+                        </DsPopover.Panel>
+                    </DsPopover.Root>
+                </DsStack>
+            } />
+    );
+};
+
+## Column Manager With Saved State
+
+### Show code
+{
+  args: {
+    primaryRowActions: [{
+      icon: 'edit',
+      label: 'Edit',
+      onClick: fn()
+    }, {
+      icon: 'download',
+      label: 'Download',
+      onClick: fn()
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const managedColumns = [{
+      id: 'firstName',
+      label: 'First Name'
+    }, {
+      id: 'lastName',
+      label: 'Last Name'
+    }, {
+      id: 'age',
+      label: 'Age'
+    }, {
+      id: 'visits',
+      label: 'Visits'
+    }, {
+      id: 'progress',
+      label: 'Profile Progress'
+    }, {
+      id: 'status',
+      label: 'Status'
+    }];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      lastName: false
+    });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+      left: ['firstName', 'lastName']
+    });
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({
+      id
+    }) => isVisible(id)).length;
+    const allColumnsChecked = visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({
+      label
+    }) => label.toLowerCase().includes(query));
+    const setPinned = (id: string, pinned: boolean) => setStickyColumns({
+      ...stickyColumns,
+      // Pinned columns keep the order they have in the manager.
+      left: managedColumns.map(column => column.id).filter(columnId => columnId === id ? pinned : pinnedIds.includes(columnId))
+    });
+    const setAllVisible = (visible: boolean) => setColumnVisibility(Object.fromEntries(managedColumns.map(({
+      id
+    }) => [id, visible])));
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" justifyContent="flex-end" width="100%">
+                        <DsPopover.Root align="end" gutter={4}>
+                            <DsPopover.Trigger>
+                                <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                            </DsPopover.Trigger>
+                            <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                                <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                    Search columns
+                                </label>
+                                <DsTextInput id={searchId} placeholder="Search" value={search} onValueChange={setSearch} slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" aria-hidden />
+          }} />
+                                <DsStack direction="column" className={styles.columnList}>
+                                    {matchingColumns.map(({
+              id,
+              label
+            }) => <DsCheckbox key={id} size="large" className={styles.columnRow} label={label} checked={isVisible(id)} onCheckedChange={checked => setColumnVisibility({
+              ...columnVisibility,
+              [id]: checked === true
+            })} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />)}
+                                    <DsCheckbox size="large" label="Row actions" checked disabled actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />} />
+                                </DsStack>
+                                <DsDivider className={styles.divider} />
+                                <DsCheckbox size="large" label="All columns" checked={allColumnsChecked} onCheckedChange={() => setAllVisible(allColumnsChecked !== true)} />
+                            </DsPopover.Panel>
+                        </DsPopover.Root>
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const ColumnManagerWithSavedState = () => {
+    const managedColumns = [
+        { id: 'firstName', label: 'First Name' },
+        { id: 'lastName', label: 'Last Name' },
+        { id: 'age', label: 'Age' },
+        { id: 'visits', label: 'Visits' },
+        { id: 'progress', label: 'Profile Progress' },
+        { id: 'status', label: 'Status' },
+    ];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+        left: ['firstName', 'lastName'],
+    });
+
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
+    const allColumnsChecked =
+        visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
+    const query = search.trim().toLowerCase();
+    const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
+
+    const setPinned = (id: string, pinned: boolean) =>
+        setStickyColumns({
+            ...stickyColumns,
+            // Pinned columns keep the order they have in the manager.
+            left: managedColumns
+                .map((column) => column.id)
+                .filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
+        });
+
+    const setAllVisible = (visible: boolean) =>
+        setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            primaryRowActions={[
+                { icon: 'edit', label: 'Edit', onClick: fn() },
+                { icon: 'download', label: 'Download', onClick: fn() },
+            ]}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns}
+            controls={
+                <DsStack direction="row" justifyContent="flex-end" width="100%">
+                    <DsPopover.Root align="end" gutter={4}>
+                        <DsPopover.Trigger>
+                            <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                        </DsPopover.Trigger>
+                        <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                            <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                Search columns
+                            </label>
+                            <DsTextInput
+                                id={searchId}
+                                placeholder="Search"
+                                value={search}
+                                onValueChange={setSearch}
+                                slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+                            />
+                            <DsStack direction="column" className={styles.columnList}>
+                                {matchingColumns.map(({ id, label }) => (
+                                    <DsCheckbox
+                                        key={id}
+                                        size="large"
+                                        className={styles.columnRow}
+                                        label={label}
+                                        checked={isVisible(id)}
+                                        onCheckedChange={(checked) =>
+                                            setColumnVisibility({ ...columnVisibility, [id]: checked === true })
+                                        }
+                                        actions={
+                                            <DsPinToggle
+                                                className={styles.pinToggle}
+                                                itemLabel={label}
+                                                pinned={pinnedIds.includes(id)}
+                                                onPinnedChange={(pinned) => setPinned(id, pinned)}
+                                            />
+                                        }
+                                    />
+                                ))}
+                                <DsCheckbox
+                                    size="large"
+                                    label="Row actions"
+                                    checked
+                                    disabled
+                                    actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
+                                />
+                            </DsStack>
+                            <DsDivider className={styles.divider} />
+                            <DsCheckbox
+                                size="large"
+                                label="All columns"
+                                checked={allColumnsChecked}
+                                onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
+                            />
+                        </DsPopover.Panel>
+                    </DsPopover.Root>
+                </DsStack>
+            } />
+    );
+};
+
+## Column Manager With Column Groups
+
+### Show code
+{
+  args: {
+    columns: [{
+      id: 'identity',
+      header: 'Identity',
+      columns: [{
+        accessorKey: 'firstName',
+        header: 'First Name',
+        cell: info => info.getValue<string>(),
+        size: 160
+      }, {
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        cell: info => info.getValue<string>(),
+        size: 160
+      }]
+    }, {
+      id: 'activity',
+      header: 'Activity',
+      columns: [{
+        accessorKey: 'age',
+        header: 'Age',
+        cell: info => info.getValue<number>(),
+        size: 140
+      }, {
+        accessorKey: 'visits',
+        header: 'Visits',
+        cell: info => info.getValue<number>(),
+        size: 160
+      }, {
+        accessorKey: 'progress',
+        header: 'Profile Progress',
+        cell: info => `${String(info.getValue<number>())}%`,
+        size: 200
+      }]
+    }, {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: info => info.getValue(),
+      size: 160
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const managedColumns = [{
+      id: 'identity',
+      label: 'Identity',
+      leaves: [{
+        id: 'firstName',
+        label: 'First Name'
+      }, {
+        id: 'lastName',
+        label: 'Last Name'
+      }]
+    }, {
+      id: 'activity',
+      label: 'Activity',
+      leaves: [{
+        id: 'age',
+        label: 'Age'
+      }, {
+        id: 'visits',
+        label: 'Visits'
+      }, {
+        id: 'progress',
+        label: 'Profile Progress'
+      }]
+    }, {
+      id: 'status',
+      label: 'Status',
+      leaves: [{
+        id: 'status',
+        label: 'Status'
+      }]
+    }];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      visits: false
+    });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+      left: ['identity']
+    });
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const getCheckedState = (ids: string[]) => {
+      const visibleCount = ids.filter(isVisible).length;
+      return visibleCount === ids.length ? true : visibleCount > 0 && 'indeterminate';
+    };
+    const allLeafIds = managedColumns.flatMap(({
+      leaves
+    }) => leaves.map(({
+      id
+    }) => id));
+    const allColumnsChecked = getCheckedState(allLeafIds);
+    const query = search.trim().toLowerCase();
+    const matches = (label: string) => label.toLowerCase().includes(query);
+    const matchingColumns = managedColumns.map(entry => ({
+      ...entry,
+      matchingLeaves: matches(entry.label) ? entry.leaves : entry.leaves.filter(({
+        label
+      }) => matches(label))
+    })).filter(({
+      matchingLeaves
+    }) => matchingLeaves.length > 0);
+    const setPinned = (id: string, pinned: boolean) => setStickyColumns({
+      ...stickyColumns,
+      // Pinned columns keep the order they have in the manager.
+      left: managedColumns.map(column => column.id).filter(columnId => columnId === id ? pinned : pinnedIds.includes(columnId))
+    });
+    const setVisible = (ids: string[], visible: boolean) => setColumnVisibility({
+      ...columnVisibility,
+      ...Object.fromEntries(ids.map(id => [id, visible]))
+    });
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} controls={<DsStack direction="row" justifyContent="flex-end" width="100%">
+                        <DsPopover.Root align="end" gutter={4}>
+                            <DsPopover.Trigger>
+                                <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                            </DsPopover.Trigger>
+                            <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                                <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                    Search columns
+                                </label>
+                                <DsTextInput id={searchId} placeholder="Search" value={search} onValueChange={setSearch} slots={{
+            startAdornment: <DsIcon icon="search" size="tiny" aria-hidden />
+          }} />
+                                <DsStack direction="column" className={styles.columnList}>
+                                    {matchingColumns.map(({
+              id,
+              label,
+              leaves,
+              matchingLeaves
+            }) => {
+              const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
+              const leafIds = leaves.map(leaf => leaf.id);
+              const checked = getCheckedState(leafIds);
+              return <DsStack key={id} direction="column">
+                                                <DsCheckbox size="large" className={styles.columnRow} label={label} checked={checked} onCheckedChange={() => setVisible(leafIds, checked !== true)} actions={<DsPinToggle className={styles.pinToggle} itemLabel={label} pinned={pinnedIds.includes(id)} onPinnedChange={pinned => setPinned(id, pinned)} />} />
+                                                {isGroup && <DsStack direction="column" className={styles.groupLeaves}>
+                                                        {matchingLeaves.map(leaf => <DsCheckbox key={leaf.id} size="large" label={leaf.label} checked={isVisible(leaf.id)} onCheckedChange={next => setVisible([leaf.id], next === true)} />)}
+                                                    </DsStack>}
+                                            </DsStack>;
+            })}
+                                </DsStack>
+                                <DsDivider className={styles.divider} />
+                                <DsCheckbox size="large" label="All columns" checked={allColumnsChecked} onCheckedChange={() => setVisible(allLeafIds, allColumnsChecked !== true)} />
+                            </DsPopover.Panel>
+                        </DsPopover.Root>
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const ColumnManagerWithColumnGroups = () => {
+    const managedColumns = [
+        {
+            id: 'identity',
+            label: 'Identity',
+            leaves: [
+                { id: 'firstName', label: 'First Name' },
+                { id: 'lastName', label: 'Last Name' },
+            ],
+        },
+        {
+            id: 'activity',
+            label: 'Activity',
+            leaves: [
+                { id: 'age', label: 'Age' },
+                { id: 'visits', label: 'Visits' },
+                { id: 'progress', label: 'Profile Progress' },
+            ],
+        },
+        { id: 'status', label: 'Status', leaves: [{ id: 'status', label: 'Status' }] },
+    ];
+    const searchId = useId();
+    const [search, setSearch] = useState('');
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ visits: false });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });
+
+    const pinnedIds = stickyColumns.left ?? [];
+    const isVisible = (id: string) => columnVisibility[id] !== false;
+    const getCheckedState = (ids: string[]) => {
+        const visibleCount = ids.filter(isVisible).length;
+        return visibleCount === ids.length ? true : visibleCount > 0 && 'indeterminate';
+    };
+    const allLeafIds = managedColumns.flatMap(({ leaves }) => leaves.map(({ id }) => id));
+    const allColumnsChecked = getCheckedState(allLeafIds);
+    const query = search.trim().toLowerCase();
+    const matches = (label: string) => label.toLowerCase().includes(query);
+    const matchingColumns = managedColumns
+        .map((entry) => ({
+            ...entry,
+            matchingLeaves: matches(entry.label)
+                ? entry.leaves
+                : entry.leaves.filter(({ label }) => matches(label)),
+        }))
+        .filter(({ matchingLeaves }) => matchingLeaves.length > 0);
+
+    const setPinned = (id: string, pinned: boolean) =>
+        setStickyColumns({
+            ...stickyColumns,
+            // Pinned columns keep the order they have in the manager.
+            left: managedColumns
+                .map((column) => column.id)
+                .filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
+        });
+
+    const setVisible = (ids: string[], visible: boolean) =>
+        setColumnVisibility({
+            ...columnVisibility,
+            ...Object.fromEntries(ids.map((id) => [id, visible])),
+        });
+
+    return (
+        <DsTable
+            columns={[
+                {
+                    id: 'identity',
+                    header: 'Identity',
+                    columns: [
+                        {
+                            accessorKey: 'firstName',
+                            header: 'First Name',
+                            cell: (info) => info.getValue<string>(),
+                            size: 160,
+                        },
+                        {
+                            accessorKey: 'lastName',
+                            header: 'Last Name',
+                            cell: (info) => info.getValue<string>(),
+                            size: 160,
+                        },
+                    ],
+                },
+                {
+                    id: 'activity',
+                    header: 'Activity',
+                    columns: [
+                        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },
+                        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },
+                        {
+                            accessorKey: 'progress',
+                            header: 'Profile Progress',
+                            cell: (info) => `${String(info.getValue<number>())}%`,
+                            size: 200,
+                        },
+                    ],
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns}
+            controls={
+                <DsStack direction="row" justifyContent="flex-end" width="100%">
+                    <DsPopover.Root align="end" gutter={4}>
+                        <DsPopover.Trigger>
+                            <DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
+                        </DsPopover.Trigger>
+                        <DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
+                            <label htmlFor={searchId} className={styles.visuallyHidden}>
+                                Search columns
+                            </label>
+                            <DsTextInput
+                                id={searchId}
+                                placeholder="Search"
+                                value={search}
+                                onValueChange={setSearch}
+                                slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+                            />
+                            <DsStack direction="column" className={styles.columnList}>
+                                {matchingColumns.map(({ id, label, leaves, matchingLeaves }) => {
+                                    const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
+                                    const leafIds = leaves.map((leaf) => leaf.id);
+                                    const checked = getCheckedState(leafIds);
+
+                                    return (
+                                        <DsStack key={id} direction="column">
+                                            <DsCheckbox
+                                                size="large"
+                                                className={styles.columnRow}
+                                                label={label}
+                                                checked={checked}
+                                                onCheckedChange={() => setVisible(leafIds, checked !== true)}
+                                                actions={
+                                                    <DsPinToggle
+                                                        className={styles.pinToggle}
+                                                        itemLabel={label}
+                                                        pinned={pinnedIds.includes(id)}
+                                                        onPinnedChange={(pinned) => setPinned(id, pinned)}
+                                                    />
+                                                }
+                                            />
+                                            {isGroup && (
+                                                <DsStack direction="column" className={styles.groupLeaves}>
+                                                    {matchingLeaves.map((leaf) => (
+                                                        <DsCheckbox
+                                                            key={leaf.id}
+                                                            size="large"
+                                                            label={leaf.label}
+                                                            checked={isVisible(leaf.id)}
+                                                            onCheckedChange={(next) => setVisible([leaf.id], next === true)}
+                                                        />
+                                                    ))}
+                                                </DsStack>
+                                            )}
+                                        </DsStack>
+                                    );
+                                })}
+                            </DsStack>
+                            <DsDivider className={styles.divider} />
+                            <DsCheckbox
+                                size="large"
+                                label="All columns"
+                                checked={allColumnsChecked}
+                                onCheckedChange={() => setVisible(allLeafIds, allColumnsChecked !== true)}
+                            />
+                        </DsPopover.Panel>
+                    </DsPopover.Root>
+                </DsStack>
+            } />
+    );
+};
+
+## Column Groups
+
+### Show code
+<DsTable
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          size: 160
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name',
+          size: 160
+        }
+      ],
+      header: 'Identity',
+      id: 'identity'
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'age',
+          cell: () => {},
+          header: 'Age',
+          size: 140
+        },
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits',
+          size: 160
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Profile Progress',
+          size: 200
+        }
+      ],
+      header: 'Activity',
+      id: 'activity'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  stickyColumns={{
+    left: [
+      'identity'
+    ]
+  }}
+/>
+
+### MCP manifest
+const ColumnGroups = () => <DsTable
+    columns={[
+        {
+            id: 'identity',
+            header: 'Identity',
+            columns: [
+                {
+                    accessorKey: 'firstName',
+                    header: 'First Name',
+                    cell: (info) => info.getValue<string>(),
+                    size: 160,
+                },
+                {
+                    accessorKey: 'lastName',
+                    header: 'Last Name',
+                    cell: (info) => info.getValue<string>(),
+                    size: 160,
+                },
+            ],
+        },
+        {
+            id: 'activity',
+            header: 'Activity',
+            columns: [
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue<number>())}%`,
+                    size: 200,
+                },
+            ],
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['identity'] }} />;
+
+## Resizable
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  resizableColumns
+  stickyColumns={{
+    left: [
+      'firstName',
+      'lastName'
+    ],
+    right: [
+      'status'
+    ]
+  }}
+/>
+
+### MCP manifest
+const Resizable = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    resizableColumns
+    stickyColumns={{ left: ['firstName', 'lastName'], right: ['status'] }} />;
+
+## Virtualized
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, 1_000, []).data);
+    return <DsTable {...args} data={data} virtualized selectable stickyColumns={{
+      left: ['firstName'],
+      right: ['status']
+    }} />;
+  }
+}
+
+### MCP manifest
+const Virtualized = () => {
+    const [data] = useState(() => generatePersonData(0, 1_000, []).data);
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            onRowClick={fn()}
+            data={data}
+            virtualized
+            selectable
+            stickyColumns={{ left: ['firstName'], right: ['status'] }} />
+    );
+};
+
+## Expandable
+
+### Show code
+{
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    useEffect(() => {
+      tableRef.current?.expandRows(['1']);
+    }, []);
+    return <DsTable {...args} ref={tableRef} stickyColumns={{
+      left: ['firstName']
+    }} expandable renderExpandedRow={row => <DsStack direction="column" gap="var(--xs)">
+                        <DsTypography variant="body-sm-semi-bold">
+                            Recent visits for {row.firstName} {row.lastName}
+                        </DsTypography>
+                        <DsTable columns={[{
+        accessorKey: 'firstName',
+        header: 'First Name',
+        size: 180
+      }, {
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        size: 180
+      }, {
+        accessorKey: 'age',
+        header: 'Age',
+        size: 140
+      }, {
+        accessorKey: 'visits',
+        header: 'Visits',
+        size: 160
+      }, {
+        accessorKey: 'status',
+        header: 'Status',
+        size: 160
+      }]} data={defaultData.slice(0, 2)} stickyColumns={{
+        left: ['firstName']
+      }} />
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const Expandable = () => {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+
+    useEffect(() => {
+        tableRef.current?.expandRows(['1']);
+    }, []);
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            ref={tableRef}
+            stickyColumns={{ left: ['firstName'] }}
+            expandable
+            renderExpandedRow={(row) => (
+                <DsStack direction="column" gap="var(--xs)">
+                    <DsTypography variant="body-sm-semi-bold">
+                        Recent visits for {row.firstName} {row.lastName}
+                    </DsTypography>
+                    <DsTable
+                        columns={[
+                            { accessorKey: 'firstName', header: 'First Name', size: 180 },
+                            { accessorKey: 'lastName', header: 'Last Name', size: 180 },
+                            { accessorKey: 'age', header: 'Age', size: 140 },
+                            { accessorKey: 'visits', header: 'Visits', size: 160 },
+                            { accessorKey: 'status', header: 'Status', size: 160 },
+                        ]}
+                        data={defaultData.slice(0, 2)}
+                        stickyColumns={{ left: ['firstName'] }}
+                    />
+                </DsStack>
+            )} />
+    );
+};
+
+## Reorderable
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onOrderChange={() => {}}
+  onRowClick={() => {}}
+  reorderable
+  stickyColumns={{
+    left: [
+      'firstName'
+    ]
+  }}
+/>
+
+### MCP manifest
+const Reorderable = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['firstName'] }}
+    reorderable
+    onOrderChange={fn()} />;

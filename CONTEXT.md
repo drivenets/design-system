@@ -129,7 +129,7 @@ The text in a **Leaf column** or **Column group** header cell.
 _Avoid_: column title, header caption
 
 **Utility column**:
-A table-injected **Leaf column** (`select`, `expander`, `reorder`, or `__dsRowActions`) that is not in the consumer `columns` array.
+A table-injected **Leaf column** (`select`, `expander`, `reorder`, `__dsRowActions`, or `__dsColumnDisplay`) that is not in the consumer `columns` array.
 _Avoid_: builtin column, synthetic column, feature column
 
 **Row actions**:
@@ -152,9 +152,13 @@ _Avoid_: resizer (when meaning the overlay)
 Full-height divider for the active resize boundary (hover or drag).
 _Avoid_: resize handle, drag line
 
-**Scrollbar spacer**:
-A header-only cell at the end of every header row that occupies the body’s vertical scrollbar width when that scrollbar is present.
-_Avoid_: Scrollbar gutter, placeholder, gutter cell
+**Sticky column**:
+A **Leaf column** kept in view at the left or right edge while the table scrolls horizontally. Consumers choose them with `stickyColumns`; the **Utility columns** are always sticky.
+_Avoid_: pinned column (TanStack's term), frozen column, fixed column
+
+**Edge divider**:
+The border and shadow on the last left **Sticky column** or the first right one, shown only while scrolled content sits under it.
+_Avoid_: sticky shadow, separator
 
 **Code input**:
 A **Component** (`DsCodeInput`) whose value is one multiline code or query string, presented through a **Collapsed field** and an **Expanded overlay**.
@@ -265,8 +269,9 @@ _Avoid_: maintenance branch, hotfix branch
 - The **Row actions column** is always last and never resizable; the last consumer **Leaf column** keeps its own sizing
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
-- A **Scrollbar spacer** is not a **Leaf column** and has no **Resize handle**
-- Every header row of a **Column group** includes a **Scrollbar spacer**, not only the last row
+- A table has one scroll container for both axes; the header and every **Sticky column** stick inside it, and its vertical scrollbar sits at the visible right edge
+- **Utility columns** are always **Sticky columns** (select, expander and reorder on the left, the **Row actions column** or the column display column on the right) and cannot be unpinned
+- Making one **Leaf column** of a **Column group** sticky makes the whole top-level group sticky
 - A **Code input** has one editor document and two presentations: **Collapsed field** and **Expanded overlay**
 - A **Hidden-line indicator** belongs to the **Collapsed field**; an ellipsis on that field means horizontal clip only
 - An **Internal component** is not a public **Component**; consumers reach it only through the **Component** it belongs to
@@ -304,8 +309,8 @@ _Avoid_: maintenance branch, hotfix branch
 > **Dev:** "When I drag the group header, are we resizing the group as its own column?"
 > **Domain expert:** "No — a **Column group** has no own size. The **Resize handle** on the group scales its **Leaf columns**. The **Resize overlay** follows that boundary."
 
-> **Dev:** "Should I restore `overflow-y: scroll` on thead so Fill columns line up?"
-> **Domain expert:** "No — that's a CSS scrollbar gutter. Put a **Scrollbar spacer** on every header row so borders reach the table edge, including between **Column group** rows."
+> **Dev:** "Should the body get its own vertical scroll so the header stays put?"
+> **Domain expert:** "No — the table has one scroll container. The header is sticky inside it, and so are the **Sticky columns**; a second scroll container would break them."
 
 > **Dev:** "When I make the expander column wider, does that also size the nested details columns?"
 > **Domain expert:** "No — that width belongs to the expander **Utility column**. Nested details are consumer **Leaf columns**."
@@ -329,8 +334,7 @@ _Avoid_: maintenance branch, hotfix branch
 
 - "Adapter" in file-upload vs "adapter" in generic architecture docs — resolved: use **Upload adapter** in design-system context; architecture skill uses **Adapter** at a **seam** ([LANGUAGE.md](.agents/skills/improve-codebase-architecture/LANGUAGE.md)).
 - "Group resize" was used to mean a sized group column — resolved: dragging a **Column group** **Resize handle** changes **Leaf column** widths only.
-- "placeholder" in header layout meant **Scrollbar spacer**, not TanStack `header.isPlaceholder` (spanning-cell hole) and not **Empty state**.
-- "Scrollbar gutter" meant CSS reservation on `thead`; the structure is a **Scrollbar spacer**.
+- "Pinned column" (TanStack `columnPinning`) and "sticky column" name the same thing — resolved: the public API and docs say **Sticky column**; the TanStack column API (`column.pin()`) is only how a header renderer changes it.
 - "Last column width doesn't respect row actions" (AR-98416) assumed **Row actions** live inside the last consumer column — resolved: they get their own **Row actions column**.
 - "Expandable column width" was used to mean nested details columns — resolved: that width belongs to the expander **Utility column**.
 - "Query editor" / JQL editor in the compact-field spec meant this **Code input**, not a product-specific Component.
