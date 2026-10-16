@@ -241,8 +241,12 @@ The `enabled` flag in a **Routine**'s instructions file; anything other than `en
 _Avoid_: kill switch, pause toggle (that is the owner's claude.ai control, not the repo flag)
 
 **Release PR**:
-The `chore(release): publish` pull request Changesets keeps open on `changeset-release/main`; merging it publishes every package version it lists.
+The `chore(release): publish` pull request Changesets keeps open on `changeset-release/main` (or `changeset-release/release/X.Y.x` for a **Release branch**); merging it publishes every package version it lists.
 _Avoid_: version PR, publish PR
+
+**Release branch**:
+A `release/X.Y.x` branch cut from an older release tag to publish patch-only fixes under the `release-X.Y` npm dist-tag, leaving `latest` on the newest `main` release.
+_Avoid_: maintenance branch, hotfix branch
 
 ## Relationships
 
@@ -254,6 +258,7 @@ _Avoid_: version PR, publish PR
 - **Tokens** flow from design into SCSS; **Components** consume tokens, not raw hex from Figma in new work
 - A **Component** shows its **Empty state** only when it has zero data items; a virtualized body gates **Empty state** on data count, never on the count of currently rendered (virtual) rows
 - **Changesets** attach to package releases; a new **Component** or breaking API change typically needs one
+- A **Release branch** only receives patches cherry-picked from `main`; it is never merged back into `main`
 - A **Workspace page** has one header and one **Workspace body**; the body may combine **Side menu panel**, **Left side panel**, **Content area**, and **Right side panel**
 - **Side menu panel** and **Left side panel** differ: only **Left side panel** toggles **Content area** horizontal margins (24px vs 40px)
 - **Left side panel** pushes layout; **Right side panel** overlays **Content area** via `DsDrawer` (no symmetric right layout slot)
