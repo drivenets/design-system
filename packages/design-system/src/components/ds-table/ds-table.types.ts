@@ -224,6 +224,20 @@ export interface DsTableApi<TData> {
 	 * ```
 	 */
 	expandRows: (rowIds: string[]) => void;
+
+	/**
+	 * Returns the IDs of all currently expanded rows. Pass them back to `expandRows`
+	 * to restore the expansion state, e.g. after navigating away and back.
+	 * Restore after the table data has loaded: changing `data` resets the expansion state.
+	 *
+	 * @returns Array of expanded row IDs
+	 *
+	 * @example
+	 * ```tsx
+	 * const expandedRowIds = tableRef.current?.getExpandedRowIds();
+	 * ```
+	 */
+	getExpandedRowIds: () => string[];
 }
 
 export type { InfiniteScrollConfig };
