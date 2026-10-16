@@ -1,15 +1,15 @@
 ---
 name: release
-description: Run the Design System package release end-to-end — find the "chore(release): publish" PR, close and reopen it to trigger CI, approve and merge once checks pass, wait for npm publish, then post the release-summary announcement to Slack. Use when the user asks to release, publish, ship, or cut a release of the design-system packages, or to merge the release PR.
+description: Run the Design System package release end-to-end — find the "chore(release): publish" PR, close and reopen it to trigger CI, approve and merge once checks pass, wait for npm publish, then post the release-summary announcement to Slack and ask for the DAP bump in its thread. Use when the user asks to release, publish, ship, or cut a release of the design-system packages, or to merge the release PR.
 ---
 
 <!-- cspell:ignore JRKXGB -->
 
 # Release
 
-Repo: `drivenets/design-system` (pass `-R drivenets/design-system` to every `gh` call — `origin` may be a fork). Slack channel: `#dap-ask-design-system` (`C08T4JRKXGB`) — the only channel to post to.
+Repo: `drivenets/design-system` (pass `-R drivenets/design-system` to every `gh` call — `origin` may be a fork). Slack channel: `#dap-ask-design-system` (`C08T4JRKXGB`) — the only channel to post to. The one exception is the DM fallback in step 8.
 
-Invoking this skill authorizes steps 1–6, including approving the PR as the user and merging it. The only prompt is the release-notes review in step 7.
+Invoking this skill authorizes steps 1–8, including approving the PR as the user, merging it and posting to Slack. It never asks for confirmation, so it also runs unattended in the [Weekly release](../../../docs/agents/routines/weekly-release.md) Routine.
 
 ## Workflow
 
@@ -22,10 +22,11 @@ Copy this checklist and tick it off as you go:
 - [ ] 4. Wait for required checks
 - [ ] 5. Approve and merge
 - [ ] 6. Wait for publish
-- [ ] 7. Compose, review and post the announcement
+- [ ] 7. Compose and post the announcement
+- [ ] 8. Ask for the DAP bump
 ```
 
-1. **Prerequisites.** Run the checks in [SETUP.md](SETUP.md). If GitHub fails, stop and walk the user through its fix. If only Slack fails, tell the user and continue — step 7 falls back to returning the text for manual posting.
+1. **Prerequisites.** Run the checks in [SETUP.md](SETUP.md). If GitHub fails, stop and walk the user through its fix. If only Slack fails, tell the user and continue — steps 7 and 8 fall back to returning the text for manual posting.
 
 2. **Find the release PR.** Changesets opens it from `changeset-release/main`, authored by `github-actions`:
 
@@ -70,10 +71,21 @@ Copy this checklist and tick it off as you go:
 
    The run can take a few seconds to appear — retry `gh run list` until it does. If it fails, stop and report the run URL. Then confirm `gh release list -R drivenets/design-system --limit 10` shows a tag for every version from step 2.
 
-7. **Compose, review and post.** Follow [release-summary](../release-summary/SKILL.md) for the versions from step 2. Show the message and ask the user to check it covers the changes they expect — this is the one confirmation. Apply any edits they ask for, then send it unchanged to `C08T4JRKXGB` with the Slack MCP send-message tool and return the message link. Without Slack, return the text in a fenced block for manual posting.
+7. **Compose and post.** Follow [release-summary](../release-summary/SKILL.md) for the versions from step 2, then send the text as composed to `C08T4JRKXGB` with the Slack MCP send-message tool — this step is the request to post it, no review. Keep the message link and `ts` for step 8. Without Slack, return the text in a fenced block for manual posting.
+
+8. **Ask for the DAP bump.** Take the versions from step 2 of `@drivenets/design-system`, `@drivenets/vite-plugin-design-system` and `@drivenets/eslint-plugin-design-system`. If none of them was released, or step 7 produced no announcement, skip this step. Otherwise reply in the announcement's thread (`thread_ts` = the `ts` of the message from step 7, without also sending to the channel), tagging the DAP bump owner from [SETUP.md](SETUP.md#contacts):
+
+   ```
+   <@U031P2M3KK9> could you please bump the Design System in DAP to the new version?
+   • @drivenets/design-system@0.21.0
+   • @drivenets/eslint-plugin-design-system@0.8.2
+   ```
+
+   List only the released packages of the three, one bullet each. If the thread reply fails, send the same text as a DM to `U031P2M3KK9` — never as a top-level channel message. Without Slack, return it as a second fenced block, labelled as a thread reply to the announcement.
 
 ## Done when
 
 - [ ] Release PR is merged and the `Release` run succeeded
 - [ ] A GitHub Release exists for every package version in the PR
 - [ ] Announcement is posted (link returned) or handed to the user to post
+- [ ] DAP bump request is in the announcement's thread (or a DM, or handed to the user) when one of those three packages was released
