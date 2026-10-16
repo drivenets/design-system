@@ -119,6 +119,14 @@ describe('DsTable Expansion', () => {
 
 	it('should return expanded row ids that restore the state after a remount', async () => {
 		const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+		const tableApi = () => {
+			if (!tableRef.current) {
+				throw new Error('DsTable did not set its ref');
+			}
+
+			return tableRef.current;
+		};
 		const data = defaultData.slice(0, 5);
 
 		const renderTable = () =>
@@ -134,13 +142,13 @@ describe('DsTable Expansion', () => {
 
 		const screen = await renderTable();
 
-		expect(tableRef.current?.getExpandedRowIds()).toEqual([]);
+		expect(tableApi().getExpandedRowIds()).toEqual([]);
 
 		await page.getByRole('button', { name: 'chevron_right' }).nth(0).click();
 		await page.getByRole('button', { name: 'chevron_right' }).nth(1).click();
 		await expect.element(page.getByText('Expanded details for John')).toBeVisible();
 
-		const savedRowIds = tableRef.current?.getExpandedRowIds() ?? [];
+		const savedRowIds = tableApi().getExpandedRowIds();
 
 		expect(savedRowIds).toEqual(['2', '3']);
 
@@ -148,11 +156,11 @@ describe('DsTable Expansion', () => {
 		await renderTable();
 		await expect.element(page.getByText('Expanded details for Kevin')).not.toBeInTheDocument();
 
-		tableRef.current?.expandRows(savedRowIds);
+		tableApi().expandRows(savedRowIds);
 		await expect.element(page.getByText('Expanded details for Kevin')).toBeVisible();
 		await expect.element(page.getByText('Expanded details for John')).toBeVisible();
 
-		tableRef.current?.expandAllRows();
-		await expect.poll(() => tableRef.current?.getExpandedRowIds()).toEqual(['2', '3', '4', '5']);
+		tableApi().expandAllRows();
+		await expect.poll(() => tableApi().getExpandedRowIds()).toEqual(['2', '3', '4', '5']);
 	});
 });
