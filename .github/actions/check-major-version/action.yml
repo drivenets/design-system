@@ -9,6 +9,9 @@ outputs:
   has-major:
     description: Whether the changeset contains a major version bump ('true' or 'false')
     value: ${{ steps.check.outputs.has-major }}
+  has-non-patch:
+    description: Whether the changeset contains a minor or major version bump ('true' or 'false')
+    value: ${{ steps.check.outputs.has-non-patch }}
 
 runs:
   using: composite
