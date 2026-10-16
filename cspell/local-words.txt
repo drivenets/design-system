@@ -28,6 +28,7 @@ greyscale
 gstatic
 haspopup
 iromanchuk
+issuetype
 labelledby
 Lezer
 loadingdone
@@ -58,6 +59,7 @@ timelapse
 timelapse
 tmcp
 tosorted
+triaging
 TSESTree
 unhover
 unitless
