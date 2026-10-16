@@ -729,12 +729,23 @@ describe('DsSelect', () => {
 			await userEvent.type(page.getByPlaceholder('Search'), 'Workflow 2');
 
 			await userEvent.keyboard('{End}');
-			// No ARIA state reflects the keyboard highlight in a listbox without focus on the option.
+			// Focus stays in the search input, so the highlight is checked through `data-highlighted`.
 			await expect
 				.element(page.getByRole('option', { name: 'Workflow 29' }))
 				.toHaveAttribute('data-highlighted');
 
 			await userEvent.keyboard('{Home}');
+			await expect
+				.element(page.getByRole('option', { name: exactAriaName('Workflow 2') }))
+				.toHaveAttribute('data-highlighted');
+
+			// Workflow 3 to Workflow 19 are hidden, so the arrows jump straight between 2 and 20.
+			await userEvent.keyboard('{ArrowDown}');
+			await expect
+				.element(page.getByRole('option', { name: 'Workflow 20' }))
+				.toHaveAttribute('data-highlighted');
+
+			await userEvent.keyboard('{ArrowUp}');
 			await expect
 				.element(page.getByRole('option', { name: exactAriaName('Workflow 2') }))
 				.toHaveAttribute('data-highlighted');
