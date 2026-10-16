@@ -720,6 +720,57 @@ describe('DsSelect', () => {
 			await expectSearchVisibleWithOptionScrolledIntoView('Workflow 29');
 		});
 
+		it('should navigate and select only the options matching the search', async () => {
+			await page.render(<ControlledSelectHarness options={workflowOptions} style={{ width: '250px' }} />);
+
+			const trigger = page.getByRole('combobox');
+
+			await trigger.click();
+			await userEvent.type(page.getByPlaceholder('Search'), 'Workflow 2');
+
+			await userEvent.keyboard('{End}');
+			// No ARIA state reflects the keyboard highlight in a listbox without focus on the option.
+			await expect
+				.element(page.getByRole('option', { name: 'Workflow 29' }))
+				.toHaveAttribute('data-highlighted');
+
+			await userEvent.keyboard('{Home}');
+			await expect
+				.element(page.getByRole('option', { name: exactAriaName('Workflow 2') }))
+				.toHaveAttribute('data-highlighted');
+
+			await userEvent.clear(page.getByPlaceholder('Search'));
+			await userEvent.type(page.getByPlaceholder('Search'), 'Workflow 27');
+			await userEvent.keyboard('{ArrowDown}{Enter}');
+
+			await expect.element(trigger).toMatchTextContent('Workflow 27');
+		});
+
+		it('should start from the first match when the search hides the highlighted option', async () => {
+			await page.render(<ControlledSelectHarness options={workflowOptions} style={{ width: '250px' }} />);
+
+			const trigger = page.getByRole('combobox');
+
+			await trigger.click();
+			await userEvent.keyboard('{End}');
+			await userEvent.type(page.getByPlaceholder('Search'), 'Workflow 1');
+			await userEvent.keyboard('{ArrowDown}{Enter}');
+
+			await expect.element(trigger).toMatchTextContent(/Workflow 1(?!\d)/);
+		});
+
+		it('should not select anything on Enter when the search has no matches', async () => {
+			await page.render(<ControlledSelectHarness options={workflowOptions} style={{ width: '250px' }} />);
+
+			const trigger = page.getByRole('combobox');
+
+			await trigger.click();
+			await userEvent.type(page.getByPlaceholder('Search'), 'no such workflow');
+			await userEvent.keyboard('{ArrowDown}{Enter}');
+
+			await expect.element(trigger).toMatchTextContent(PLACEHOLDER);
+		});
+
 		it('should keep keyboard-highlighted options clear of the search input', async () => {
 			await page.render(
 				<ControlledSelectHarness
