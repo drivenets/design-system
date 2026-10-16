@@ -11,20 +11,24 @@ import type { UtilityLinkProps } from './utility-link.types';
 export const UtilityLink = ({ link, onItemSelect, onClose }: UtilityLinkProps) => {
 	const state = link.state ?? 'default';
 	const nonActivatable = isNonActivatable(state);
-	const tooltip = link.tooltip ?? (state === 'comingSoon' ? COMING_SOON_TOOLTIP : undefined);
+	const tooltip = link.tooltip || (state === 'comingSoon' ? COMING_SOON_TOOLTIP : undefined);
+	// A disabled link stays focusable when it has a tooltip, so keyboard users can read it.
+	const focusable = state !== 'disabled' || Boolean(tooltip);
+	// An unavailable link drops its `href`, so it can't be opened in a new tab either.
+	const href = nonActivatable ? undefined : link.href;
 
 	const commonProps = {
 		className: classNames(styles.utilityLink, nonActivatable && styles.utilityLinkDisabled),
 		'aria-disabled': nonActivatable ? true : undefined,
-		tabIndex: state === 'disabled' ? -1 : undefined,
+		tabIndex: !focusable ? -1 : nonActivatable && link.href ? 0 : undefined,
 		onClick: nonActivatable
 			? (event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => event.preventDefault()
 			: (event: MouseEvent<HTMLAnchorElement | HTMLButtonElement>) =>
-					handleActivatableClick(event, link.id, link.href, onItemSelect, onClose),
+					handleActivatableClick(event, link.id, href, onItemSelect, onClose),
 		onKeyDown: nonActivatable
 			? undefined
 			: (event: KeyboardEvent<HTMLAnchorElement | HTMLButtonElement>) =>
-					handleActivatableKeyDown(event, link.id, link.href, onItemSelect, onClose),
+					handleActivatableKeyDown(event, link.id, href, onItemSelect, onClose),
 	};
 
 	const content = (
@@ -40,7 +44,7 @@ export const UtilityLink = ({ link, onItemSelect, onClose }: UtilityLinkProps) =
 	);
 
 	const element = link.href ? (
-		<a href={link.href} {...commonProps}>
+		<a href={href} role={href ? undefined : 'link'} {...commonProps}>
 			{content}
 		</a>
 	) : (

@@ -416,11 +416,12 @@ describe('DsMainMenu — utility link states', () => {
 
 		await openMenu();
 
-		const docsLink = page.getByRole('link', { name: 'Knowledge Center', exact: false }).element();
-		const clickEvent = new MouseEvent('click', { bubbles: true, cancelable: true });
-		docsLink.dispatchEvent(clickEvent);
+		const docsLink = page.getByRole('link', { name: 'Knowledge Center', exact: false });
+		expect(docsLink.element().hasAttribute('href')).toBe(false);
+		expect(docsLink.element().getAttribute('aria-disabled')).toBe('true');
 
-		expect(clickEvent.defaultPrevented).toBe(true);
+		(docsLink.element() as HTMLAnchorElement).click();
+
 		expect(onItemSelect).not.toHaveBeenCalled();
 		await expect.element(triggerLocator()).toHaveAttribute('aria-expanded', 'true');
 	});
@@ -437,6 +438,26 @@ describe('DsMainMenu — utility link states', () => {
 		const comingSoonLink = page.getByRole('button', { name: 'Help & Support', exact: false });
 		expect(comingSoonLink.element().tabIndex).toBe(0);
 		expect(comingSoonLink.element().getAttribute('aria-disabled')).toBe('true');
+	});
+
+	it('keeps a disabled link with a tooltip reachable by keyboard', async () => {
+		await page.render(<DsMainMenu trigger={TRIGGER} items={ITEMS} utilityLinks={STATEFUL_UTILITY_LINKS} />);
+
+		await openMenu();
+
+		const communityLink = page.getByRole('button', { name: 'Community', exact: false });
+		await expect.element(communityLink).toBeVisible();
+
+		for (let i = 0; i < ITEMS.length + STATEFUL_UTILITY_LINKS.length; i++) {
+			if (document.activeElement === communityLink.element()) {
+				break;
+			}
+
+			await userEvent.tab();
+		}
+
+		await expect.element(communityLink).toHaveFocus();
+		await expect.element(page.getByRole('tooltip', { name: 'Available in the next release' })).toBeVisible();
 	});
 
 	it('shows the built-in coming soon tooltip on hover', async () => {
