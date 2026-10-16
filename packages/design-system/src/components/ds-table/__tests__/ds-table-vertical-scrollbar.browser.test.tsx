@@ -231,6 +231,68 @@ describe('DsTable vertical scrollbar', () => {
 		},
 	);
 
+	it('keeps the gutter when bordered is false but paints no header border through it', async () => {
+		await page.render(
+			<>
+				<style>{'div:has(> table) { scrollbar-width: none !important; }'}</style>
+				<div style={{ width: 900, height: 400 }}>
+					<DsTable columns={columns} data={generatePeople(40)} bordered={false} />
+				</div>
+			</>,
+		);
+
+		const container = getScrollContainer();
+		await expect.poll(() => overflowsVertically(container)).toBe(true);
+		await expect
+			.poll(() => contentBoxRight(container) - getHeaderCell('progress').getBoundingClientRect().right)
+			.toBeCloseTo(SCROLLBAR_GUTTER_WIDTH, 0);
+
+		const headerRow = getHeaderCell('progress').closest('tr');
+		if (!headerRow) {
+			throw new Error('Expected a header row');
+		}
+
+		expect(getComputedStyle(headerRow).boxShadow).toBe('none');
+		expect(getComputedStyle(getHeaderCell('progress')).borderBottomWidth).toBe('0px');
+	});
+
+	it('keeps the last resize handle on the last leaf, not in the gutter', async () => {
+		const fillColumns: ColumnDef<Row>[] = [
+			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
+			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
+		];
+
+		await page.render(
+			<>
+				<style>{'div:has(> table) { scrollbar-width: none !important; }'}</style>
+				<div style={{ width: 380, height: 300 }}>
+					<DsTable columns={fillColumns} data={generateRows(40)} resizableColumns />
+				</div>
+			</>,
+		);
+
+		const container = getScrollContainer();
+		await expect.poll(() => overflowsVertically(container)).toBe(true);
+		await expect.poll(() => getTable().style.width).not.toBe('');
+
+		const lastLeaf = getHeaderCell('lastName');
+		const lastHandle = lastLeaf.querySelector('[aria-label="Resize column"]');
+		if (!(lastHandle instanceof HTMLElement)) {
+			throw new Error('Expected a resize handle on the last leaf');
+		}
+
+		// The last leaf ends where the gutter starts, and its handle straddles that edge.
+		const lastLeafRight = lastLeaf.getBoundingClientRect().right;
+		const handle = lastHandle.getBoundingClientRect();
+		expect(
+			Math.abs(lastLeafRight - (contentBoxRight(container) - SCROLLBAR_GUTTER_WIDTH)),
+		).toBeLessThanOrEqual(1);
+		expect(Math.abs((handle.left + handle.right) / 2 - lastLeafRight)).toBeLessThanOrEqual(1);
+
+		// No extra handle for the gutter: one per resizable leaf.
+		expect(document.querySelectorAll('thead [aria-label="Resize column"]')).toHaveLength(fillColumns.length);
+	});
+
 	it('fills the visible width with the last leaf when the body does not overflow', async () => {
 		await page.render(
 			<div style={{ width: 900, height: 400 }}>

@@ -10,6 +10,13 @@ const getGutterPadding = (container: HTMLElement): number =>
 	parseFloat(container.style.getPropertyValue(SCROLLBAR_GUTTER_PADDING_CSS_VAR)) || 0;
 
 /**
+ * Row padding that completes the gutter when the scrollbar takes less layout
+ * space than `gutterWidth` (overlay or hidden: all of it; classic: none).
+ */
+export const getScrollbarGutterPadding = (gutterWidth: number, scrollbarOccupancy: number): number =>
+	Math.max(0, gutterWidth - scrollbarOccupancy);
+
+/**
  * Width the column track can fill: the scroll container's content box minus
  * the gutter padding rows keep for a scrollbar that takes no layout space.
  */
@@ -42,7 +49,7 @@ export const useScrollbarGutter = (containerRef: RefObject<HTMLElement | null>):
 		const sync = () => {
 			const gutter = container.scrollHeight > container.clientHeight ? SCROLLBAR_GUTTER_WIDTH : 0;
 			const occupancy = verticalScrollbarOccupancy(container);
-			const padding = Math.max(0, gutter - occupancy);
+			const padding = getScrollbarGutterPadding(gutter, occupancy);
 
 			container.style.setProperty(SCROLLBAR_GUTTER_PADDING_CSS_VAR, `${String(padding)}px`);
 			setReservedWidth(occupancy + padding);
