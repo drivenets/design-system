@@ -126,4 +126,4 @@ PR Preparation Report
 {N}/18 checks passed.
 ```
 
-If all pass, the PR is ready for submission. If any fail, list the specific files and lines that need fixing.
+If all pass, open the PR with [create-pr](../create-pr/SKILL.md). If any fail, list the specific files and lines that need fixing.

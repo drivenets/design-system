@@ -7,16 +7,12 @@ description: Apply when preparing a PR, reviewing code changes, running git diff
 
 ## Git & PR Workflow
 
-| Requirement                            | Details                                                                                        |
-| -------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| **No force-push after review**         | GitHub loses review history; use merge commits instead                                         |
-| **Changelog required**                 | Run `pnpm changelog` before merge                                                              |
-| **Conventional commits**               | PR title must follow conventional commit format                                                |
-| **Separate concerns**                  | Unrelated changes go in separate PRs; easier revert and isolation                              |
-| **Changeset messages are user-facing** | One sentence, no implementation details — [AGENTS.md](../../../AGENTS.md#comments--changesets) |
-| **`skip changelog` label**             | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes                    |
-| **Use `--frozen-lockfile`**            | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes                     |
-| **Deprecation rules**                  | Add to `@drivenets/eslint-plugin-design-system` when deprecating                               |
+Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.md#git--prs). PR title, body, screenshots and labels: [create-pr](../create-pr/SKILL.md). Changeset wording: [AGENTS.md#comments--changesets](../../../AGENTS.md#comments--changesets).
+
+| Requirement                 | Details                                                                    |
+| --------------------------- | -------------------------------------------------------------------------- |
+| **Use `--frozen-lockfile`** | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes |
+| **Deprecation rules**       | Add to `@drivenets/eslint-plugin-design-system` when deprecating           |
 
 ---
 
@@ -57,6 +53,7 @@ description: Apply when preparing a PR, reviewing code changes, running git diff
 Before submitting a PR:
 
 - [ ] Changelog added (`pnpm changelog`): one user-facing sentence
+- [ ] Before/after screenshots when the diff changes what renders ([create-pr](../create-pr/SKILL.md))
 - [ ] New comments explain a _why_ the code can't show; none narrate the code or the change
 - [ ] Behavioral coverage in `*.browser.test.tsx` where interactions matter
 - [ ] Browser tests use a11y queries (no test-ids unless unavoidable)

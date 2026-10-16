@@ -113,7 +113,7 @@ ds-{name}/
 - `*.browser.test.tsx` — [`browser-tests`](.agents/skills/browser-tests/SKILL.md)
 - `docs-snippets.docs.test.ts` — [`docs-tests`](.agents/skills/docs-tests/SKILL.md)
 - Storybook `play` → tests — [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md)
-- PR / review — [`code-review`](.agents/skills/code-review/SKILL.md), [`pr-prep`](.agents/skills/pr-prep/SKILL.md)
+- PR / review — [`code-review`](.agents/skills/code-review/SKILL.md), [`pr-prep`](.agents/skills/pr-prep/SKILL.md), [`create-pr`](.agents/skills/create-pr/SKILL.md)
 - Ticket / bug workflow — [`implement`](.agents/skills/implement/SKILL.md) (`.md` ticket → tested), [`fix`](.agents/skills/fix/SKILL.md) (small bug / adjustment)
 - Plan / debug / TDD — [`grill-me`](.agents/skills/grill-me/SKILL.md), [`to-plan`](.agents/skills/to-plan/SKILL.md), [`diagnose`](.agents/skills/diagnose/SKILL.md), [`tdd`](.agents/skills/tdd/SKILL.md)
 - Subagents — `ds-component-builder`, `ds-browser-test-writer`, `ds-review`, `ds-verifier` (see [Cursor subagents](#cursor-subagents-cursoragents))
@@ -168,6 +168,15 @@ Applies to every package. When in doubt, write less.
 | Scrollbars now auto-hide and only show on hover. At rest the thumb is subtle (10px); on hover it widens (12px) and darkens…                    | Auto-hide scrollbars until hover.                              |
 | Refactor card to use CSS modules and fix hover state selector specificity                                                                      | Fix `DsCard` hover state.                                      |
 
+## Git & PRs
+
+- **Branch:** `drivenets/<your-name>/AR-XXXX-short-desc` — Jira key, then 2–4 lowercase kebab-case words. Example: `drivenets/anna/AR-1234-fix-tooltip-overflow`.
+- **Commits:** `type(scope): description [AR-XXXX]` — Conventional Commits with the Jira key, enforced by [commitlint](commitlint.config.ts). Use `!` only for breaking changes.
+- **Forks:** push to your fork; open PRs against `drivenets/design-system` `main` (hotfix PRs: `release/**`). Never push to a `dependabot/*` branch — take it over in your own branch and close the original.
+- **After review:** no force-push, squash, or amend — add commits.
+- **Scope:** one concern per PR; unrelated changes go in separate PRs.
+- **Opening a PR:** [`create-pr`](.agents/skills/create-pr/SKILL.md).
+
 ## Additional rules
 
 - **Domain glossary:** [CONTEXT.md](CONTEXT.md) · **ADRs:** [docs/adr/](docs/adr/)
@@ -207,6 +216,7 @@ File → skill routing: [Design-system package](#design-system-package). Skill b
 - [`migrate-story-tests`](.agents/skills/migrate-story-tests/SKILL.md) — "migrate tests for ds-X"; Storybook `play` → browser tests
 - [`code-review`](.agents/skills/code-review/SKILL.md) — "review my changes"; PR checklist and inline review
 - [`pr-prep`](.agents/skills/pr-prep/SKILL.md) — "prepare my PR"; lint, typecheck, test on diff, changeset
+- [`create-pr`](.agents/skills/create-pr/SKILL.md) — "open a PR"; gates, short body, before/after screenshots on the fork's `pr-screenshots` branch
 - [`deslop`](.agents/skills/deslop/SKILL.md) — "clean up this code"; remove AI slop, fix style
 - [`get-pr-comments`](.agents/skills/get-pr-comments/SKILL.md) — "get PR comments"; summarize active PR review comments
 - [`release-summary`](.agents/skills/release-summary/SKILL.md) — "summarize the release"; Slack-ready announcement from the latest GitHub Releases batch

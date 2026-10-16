@@ -13,6 +13,8 @@ For net-new features or ticket-driven work, use [implement](../implement/SKILL.m
 
 One line: expected vs actual (bug) or before vs after (adjustment). Name the component/file. If you can't state it crisply, ask — don't guess.
 
+Visible bug or adjustment → capture the broken state now, before any edit, and upload it ([create-pr screenshots](../create-pr/SCREENSHOTS.md)). Report the URLs with the fix for the PR.
+
 ## Step 1 — Reproduce
 
 - Behavior bug with an unclear cause → escalate to [diagnose](../diagnose/SKILL.md) (reproduce → minimize → hypothesize → instrument), then come back.
@@ -35,7 +37,7 @@ Smallest change that turns the test green. No refactoring past the bug, no drive
 ## Step 5 — Wrap
 
 - Changeset: patch-level, one user-facing sentence ("Fix X in Ds{Name}") — [AGENTS.md](../../../AGENTS.md#comments--changesets). Remind the user to run `pnpm changelog` if none exists.
-- Leave changes uncommitted (per repo branch rules) unless the user asks to commit.
+- Leave changes uncommitted (per repo branch rules) unless the user asks to commit; open the PR with [create-pr](../create-pr/SKILL.md).
 - Report: bug → test → fix in one block, plus checker results.
 
 ## Done when

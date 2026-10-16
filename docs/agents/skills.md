@@ -23,9 +23,9 @@ Two user-invoked orchestrators are the entry points — reach for these first; e
 - **`/implement <ticket.md>`** — ticket → plan → build → test → verify. Assumes the ticket is already grilled/clear (it does **not** grill).
 - **`/fix`** — small bug or adjustment on existing code; regression test → minimal fix → verify. No ticket, no plan gate.
 
-**Feature (what `implement` runs):** `to-plan` (skip if trivial) → `component-scaffold` / `figma-to-component` → `tdd` + `storybook` + `browser-tests` + `docs-tests` → `ds-verifier` + `ds-review` → `pr-prep` + `code-review`
+**Feature (what `implement` runs):** before screenshots → `to-plan` (skip if trivial) → `component-scaffold` / `figma-to-component` → `tdd` + `storybook` + `browser-tests` + `docs-tests` → `ds-verifier` + `ds-review` → `pr-prep` + `code-review` → `create-pr`
 
-**Bug (what `fix` runs):** reproduce (escalate to `diagnose` only if the cause is unclear) → `tdd` regression → `ds-verifier` → patch changeset
+**Bug (what `fix` runs):** before screenshot → reproduce (escalate to `diagnose` only if the cause is unclear) → `tdd` regression → `ds-verifier` → patch changeset → `create-pr`
 
 **Planning (deliberate — not model-auto-invoked):** run `grill-me` → `to-plan` yourself to turn a loose idea into a clear ticket, _then_ hand it to `implement`. `grill-with-docs` when the decision touches `CONTEXT.md` or ADRs.
 
