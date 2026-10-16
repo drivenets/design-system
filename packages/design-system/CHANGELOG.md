@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.24.0
+
+### Minor Changes
+
+- ad16bf5: Add `columnDisplay` to `DsTable`: a Columns button in the header that shows and hides columns.
+
 ## 0.23.1
 
 ### Patch Changes
