@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">624 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/624 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">625 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/625 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.0s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -23855,7 +23855,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
       <div class="badges">
         <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">47 prop types</label>
         
-        <label for="c-79-components-table-expansion-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-79-components-table-expansion-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -24441,6 +24441,60 @@ collapse rows from outside the table.</div>
                         &lt;/DsTypography&gt;
                         &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;Status: {row.status}&lt;/DsTypography&gt;
                     &lt;/DsStack&gt;
+                )}
+                ref={tableRef} /&gt;
+        &lt;/DsStack&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Persist Expansion</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Persist expansion across navigation. Read the current state with `getExpandedRowIds`,
+store it (e.g. in an app store before navigating away), then restore it with `expandRows`
+after the table remounts.</div>
+              <pre><code>const PersistExpansion = () =&gt; {
+    const tableRef = useRef&lt;DsTableApi&lt;Person&gt;&gt;(null);
+    const [savedRowIds, setSavedRowIds] = useState&lt;string[]&gt;([]);
+    const [tableKey, setTableKey] = useState(0);
+
+    const leaveAndReturn = () =&gt; {
+        setSavedRowIds(tableRef.current?.getExpandedRowIds() ?? []);
+        setTableKey((key) =&gt; key + 1);
+    };
+
+    return (
+        &lt;DsStack direction=&quot;column&quot; gap={16}&gt;
+            &lt;DsTypography variant=&quot;body-sm-reg&quot; color=&quot;secondary&quot;&gt;Saved expanded rows: {savedRowIds.length &gt; 0 ? savedRowIds.join(&#39;, &#39;) : &#39;None&#39;}
+            &lt;/DsTypography&gt;
+
+            &lt;DsStack direction=&quot;row&quot; gap={8}&gt;
+                &lt;DsButtonV3 variant=&quot;secondary&quot; size=&quot;small&quot; onClick={leaveAndReturn}&gt;Leave page &amp; return
+                                        &lt;/DsButtonV3&gt;
+                &lt;DsButtonV3
+                    variant=&quot;secondary&quot;
+                    size=&quot;small&quot;
+                    onClick={() =&gt; tableRef.current?.expandRows(savedRowIds)}&gt;Restore expanded rows
+                                        &lt;/DsButtonV3&gt;
+            &lt;/DsStack&gt;
+
+            &lt;DsTable
+                key={tableKey}
+                columns={columns}
+                data={defaultData.slice(0, 5)}
+                stickyHeader
+                bordered
+                fullWidth
+                expandable
+                onRowClick={fn()}
+                renderExpandedRow={(row) =&gt; (
+                    &lt;DsTypography variant=&quot;body-sm-reg&quot;&gt;
+                        Details for {row.firstName} {row.lastName}
+                    &lt;/DsTypography&gt;
                 )}
                 ref={tableRef} /&gt;
         &lt;/DsStack&gt;
