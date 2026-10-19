@@ -2,7 +2,7 @@
 
 Specialized agents in **`.cursor/agents/`** — separate context from the main chat. Skills teach workflows; subagents run them in isolation or in parallel.
 
-**When to use each subagent:** see bullets in [AGENTS.md#cursor-subagents-cursoragents](../../AGENTS.md#cursor-subagents-cursoragents).
+**When to use each subagent:** see bullets in [AGENTS.md#subagents](../../AGENTS.md#subagents).
 
 ## Invoke
 
@@ -23,4 +23,4 @@ Built-in Cursor subagents (`explore`, `bash`, `browser`) still apply for search,
 
 ## Claude Code
 
-Copy or symlink the same `.md` files to `.claude/agents/` if you use Claude Code in this repo.
+`.claude/agents` is a symlink to `.cursor/agents`, so Claude Code uses the same files. Claude Code ignores `readonly`; read-only agents also set `disallowedTools: Write, Edit`.

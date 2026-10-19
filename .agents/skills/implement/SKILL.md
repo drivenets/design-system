@@ -22,6 +22,10 @@ Read the file and extract:
 
 Restate the goal + criteria back to the user in one short block before proceeding.
 
+## Step 0b — Before screenshots
+
+When the ticket changes what an existing component renders, capture each affected story and state now, before the first edit, and upload them ([create-pr screenshots](../create-pr/SCREENSHOTS.md)). Keep the printed URLs in the ticket file for the PR. Skip for new components and non-visual work.
+
 ## Step 1 — Plan (skip only if trivial)
 
 The ticket is assumed already grilled — decisions are locked in the file. **Do not grill the user.** If the ticket is genuinely ambiguous or self-contradictory, stop and surface it rather than inventing requirements.
@@ -58,7 +62,7 @@ Fix findings from both, then re-run. Do not proceed while either is red.
 
 ## Step 5 — Wrap
 
-- [pr-prep](../pr-prep/SKILL.md) — full pre-submission checklist + changeset.
+- [pr-prep](../pr-prep/SKILL.md) — full pre-submission checklist + changeset. Opening the PR: [create-pr](../create-pr/SKILL.md) when the user asks.
 - Report: files changed, acceptance criteria → test mapping, checker results. Leave changes uncommitted (per repo branch rules) unless the user asks to commit.
 
 ## Done when
