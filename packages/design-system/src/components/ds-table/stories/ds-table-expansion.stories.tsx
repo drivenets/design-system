@@ -169,3 +169,56 @@ export const ProgrammaticExpansion: Story = {
 		);
 	},
 };
+
+/**
+ * Persist expansion across navigation. Read the current state with `getExpandedRowIds`,
+ * store it (e.g. in an app store before navigating away), then restore it with `expandRows`
+ * after the table remounts.
+ */
+export const PersistExpansion: Story = {
+	args: {
+		data: defaultData.slice(0, 5),
+		expandable: true,
+		renderExpandedRow: (row) => (
+			<DsTypography variant="body-sm-reg">
+				Details for {row.firstName} {row.lastName}
+			</DsTypography>
+		),
+	},
+	parameters: {
+		docs: { source: { type: 'code' } },
+	},
+	render: function Render(args) {
+		const tableRef = useRef<DsTableApi<Person>>(null);
+		const [savedRowIds, setSavedRowIds] = useState<string[]>([]);
+		const [tableKey, setTableKey] = useState(0);
+
+		const leaveAndReturn = () => {
+			setSavedRowIds(tableRef.current?.getExpandedRowIds() ?? []);
+			setTableKey((key) => key + 1);
+		};
+
+		return (
+			<DsStack direction="column" gap={16}>
+				<DsTypography variant="body-sm-reg" color="secondary">
+					Saved expanded rows: {savedRowIds.length > 0 ? savedRowIds.join(', ') : 'None'}
+				</DsTypography>
+
+				<DsStack direction="row" gap={8}>
+					<DsButtonV3 variant="secondary" size="small" onClick={leaveAndReturn}>
+						Leave page & return
+					</DsButtonV3>
+					<DsButtonV3
+						variant="secondary"
+						size="small"
+						onClick={() => tableRef.current?.expandRows(savedRowIds)}
+					>
+						Restore expanded rows
+					</DsButtonV3>
+				</DsStack>
+
+				<DsTable key={tableKey} {...args} ref={tableRef} />
+			</DsStack>
+		);
+	},
+};

@@ -39,4 +39,10 @@ export const createTableApi = <TData>(table: Table<TData>): DsTableApi<TData> =>
 		rowIds.forEach((id) => (expansion[id] = true));
 		table.setExpanded(expansion);
 	},
+	getExpandedRowIds: () => {
+		return table
+			.getCoreRowModel()
+			.flatRows.filter((row) => row.getCanExpand() && row.getIsExpanded())
+			.map((row) => row.id);
+	},
 });
