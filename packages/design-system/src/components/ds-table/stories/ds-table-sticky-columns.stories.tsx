@@ -1,17 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { fn } from 'storybook/test';
 import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import type { DsTableApi, DsTableStickyColumns } from '../ds-table.types';
-import { DsButtonV3 } from '../../ds-button-v3';
-import { DsCheckbox } from '../../ds-checkbox';
-import { DsDivider } from '../../ds-divider';
-import { DsIcon } from '../../ds-icon';
-import { DsPinToggle } from '../../ds-pin-toggle';
-import { DsPopover } from '../../ds-popover';
 import { DsStack } from '../../ds-stack';
-import { DsTextInput } from '../../ds-text-input';
 import { DsTypography } from '../../ds-typography';
 import { defaultData, type Person } from './common/story-data';
 import { generatePersonData } from './common/story-data-generator';
@@ -88,17 +81,30 @@ export const WithRowActions: Story = {
 };
 
 /**
- * A column manager that combines column visibility and sticky columns, composed
- * from `DsPopover`, `DsTextInput`, `DsCheckbox` and `DsPinToggle` in the
- * `controls` slot. Each checkbox shows or hides a column through
- * `columnVisibility`; the pin in its `actions` slot adds or removes the column in
- * `stickyColumns.left`. The pin appears on hover and stays visible while the
- * column is pinned. Row actions are always visible and sticky, so their entry
- * is locked. Hiding a pinned column keeps its pin, and the column is sticky
- * again once shown. For visibility alone, use the built-in `columnDisplay`.
+ * With `columnDisplay`, the Columns button in the header lists every column.
+ * Its checkbox shows or hides the column, and the sticky toggle next to it
+ * makes the column sticky on the left. The toggle appears on hover or focus
+ * and stays visible while the column is sticky. A hidden sticky column stays listed in
+ * `stickyColumns` and is sticky again once shown.
  */
-export const ColumnManager: Story = {
+export const ColumnDisplay: Story = {
 	args: {
+		columnDisplay: true,
+		primaryRowActions: [
+			{ icon: 'edit', label: 'Edit', onClick: fn() },
+			{ icon: 'download', label: 'Download', onClick: fn() },
+		],
+	},
+};
+
+/**
+ * Pass `columnVisibility` and `stickyColumns` with their callbacks to restore
+ * and persist the user's choice. Here First Name and Last Name start sticky,
+ * and Last Name starts hidden, so showing it again makes it sticky right away.
+ */
+export const ColumnDisplayWithSavedState: Story = {
+	args: {
+		columnDisplay: true,
 		primaryRowActions: [
 			{ icon: 'edit', label: 'Edit', onClick: fn() },
 			{ icon: 'download', label: 'Download', onClick: fn() },
@@ -108,160 +114,11 @@ export const ColumnManager: Story = {
 		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
-		const managedColumns = [
-			{ id: 'firstName', label: 'First Name' },
-			{ id: 'lastName', label: 'Last Name' },
-			{ id: 'age', label: 'Age' },
-			{ id: 'visits', label: 'Visits' },
-			{ id: 'progress', label: 'Profile Progress' },
-			{ id: 'status', label: 'Status' },
-		];
-		const searchId = useId();
-		const [search, setSearch] = useState('');
-		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-		const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({});
-
-		const pinnedIds = stickyColumns.left ?? [];
-		const isVisible = (id: string) => columnVisibility[id] !== false;
-		const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
-		const allColumnsChecked =
-			visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
-		const query = search.trim().toLowerCase();
-		const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
-
-		const setPinned = (id: string, pinned: boolean) =>
-			setStickyColumns({
-				...stickyColumns,
-				// Pinned columns keep the order they have in the manager.
-				left: managedColumns
-					.map((column) => column.id)
-					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
-			});
-
-		const setAllVisible = (visible: boolean) =>
-			setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
-
-		return (
-			<DsTable
-				{...args}
-				columnVisibility={columnVisibility}
-				onColumnVisibilityChange={setColumnVisibility}
-				stickyColumns={stickyColumns}
-				onStickyColumnsChange={setStickyColumns}
-				controls={
-					<DsStack direction="row" justifyContent="flex-end" width="100%">
-						<DsPopover.Root align="end" gutter={4}>
-							<DsPopover.Trigger>
-								<DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
-							</DsPopover.Trigger>
-							<DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
-								<label htmlFor={searchId} className={styles.visuallyHidden}>
-									Search columns
-								</label>
-								<DsTextInput
-									id={searchId}
-									placeholder="Search"
-									value={search}
-									onValueChange={setSearch}
-									slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-								/>
-								<DsStack direction="column" className={styles.columnList}>
-									{matchingColumns.map(({ id, label }) => (
-										<DsCheckbox
-											key={id}
-											size="large"
-											className={styles.columnRow}
-											label={label}
-											checked={isVisible(id)}
-											onCheckedChange={(checked) =>
-												setColumnVisibility({ ...columnVisibility, [id]: checked === true })
-											}
-											actions={
-												<DsPinToggle
-													className={styles.pinToggle}
-													itemLabel={label}
-													pinned={pinnedIds.includes(id)}
-													onPinnedChange={(pinned) => setPinned(id, pinned)}
-												/>
-											}
-										/>
-									))}
-									<DsCheckbox
-										size="large"
-										label="Row actions"
-										checked
-										disabled
-										actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
-									/>
-								</DsStack>
-								<DsDivider className={styles.divider} />
-								<DsCheckbox
-									size="large"
-									label="All columns"
-									checked={allColumnsChecked}
-									onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
-								/>
-							</DsPopover.Panel>
-						</DsPopover.Root>
-					</DsStack>
-				}
-			/>
-		);
-	},
-};
-
-/**
- * The same column manager starting from saved preferences: First Name and
- * Last Name are pinned, and Last Name is hidden. A hidden column keeps its pin,
- * so showing Last Name again makes it sticky right away without pinning it
- * twice.
- */
-export const ColumnManagerWithSavedState: Story = {
-	args: {
-		primaryRowActions: [
-			{ icon: 'edit', label: 'Edit', onClick: fn() },
-			{ icon: 'download', label: 'Download', onClick: fn() },
-		],
-	},
-	parameters: {
-		docs: { source: { type: 'code' } },
-	},
-	render: function Render(args) {
-		const managedColumns = [
-			{ id: 'firstName', label: 'First Name' },
-			{ id: 'lastName', label: 'Last Name' },
-			{ id: 'age', label: 'Age' },
-			{ id: 'visits', label: 'Visits' },
-			{ id: 'progress', label: 'Profile Progress' },
-			{ id: 'status', label: 'Status' },
-		];
-		const searchId = useId();
-		const [search, setSearch] = useState('');
 		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });
 		const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
 			left: ['firstName', 'lastName'],
 		});
 
-		const pinnedIds = stickyColumns.left ?? [];
-		const isVisible = (id: string) => columnVisibility[id] !== false;
-		const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
-		const allColumnsChecked =
-			visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
-		const query = search.trim().toLowerCase();
-		const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
-
-		const setPinned = (id: string, pinned: boolean) =>
-			setStickyColumns({
-				...stickyColumns,
-				// Pinned columns keep the order they have in the manager.
-				left: managedColumns
-					.map((column) => column.id)
-					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
-			});
-
-		const setAllVisible = (visible: boolean) =>
-			setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
-
 		return (
 			<DsTable
 				{...args}
@@ -269,205 +126,18 @@ export const ColumnManagerWithSavedState: Story = {
 				onColumnVisibilityChange={setColumnVisibility}
 				stickyColumns={stickyColumns}
 				onStickyColumnsChange={setStickyColumns}
-				controls={
-					<DsStack direction="row" justifyContent="flex-end" width="100%">
-						<DsPopover.Root align="end" gutter={4}>
-							<DsPopover.Trigger>
-								<DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
-							</DsPopover.Trigger>
-							<DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
-								<label htmlFor={searchId} className={styles.visuallyHidden}>
-									Search columns
-								</label>
-								<DsTextInput
-									id={searchId}
-									placeholder="Search"
-									value={search}
-									onValueChange={setSearch}
-									slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-								/>
-								<DsStack direction="column" className={styles.columnList}>
-									{matchingColumns.map(({ id, label }) => (
-										<DsCheckbox
-											key={id}
-											size="large"
-											className={styles.columnRow}
-											label={label}
-											checked={isVisible(id)}
-											onCheckedChange={(checked) =>
-												setColumnVisibility({ ...columnVisibility, [id]: checked === true })
-											}
-											actions={
-												<DsPinToggle
-													className={styles.pinToggle}
-													itemLabel={label}
-													pinned={pinnedIds.includes(id)}
-													onPinnedChange={(pinned) => setPinned(id, pinned)}
-												/>
-											}
-										/>
-									))}
-									<DsCheckbox
-										size="large"
-										label="Row actions"
-										checked
-										disabled
-										actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
-									/>
-								</DsStack>
-								<DsDivider className={styles.divider} />
-								<DsCheckbox
-									size="large"
-									label="All columns"
-									checked={allColumnsChecked}
-									onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
-								/>
-							</DsPopover.Panel>
-						</DsPopover.Root>
-					</DsStack>
-				}
 			/>
 		);
 	},
 };
 
 /**
- * Visual baseline for the open column manager menu: pinned rows, a hidden
- * pinned column, the locked row actions entry and a partial "All columns"
- * checkbox. It opens on mount, which would steal focus and float over the
- * docs page, so it is left out of Autodocs and the manifest; use
- * `ColumnManagerWithSavedState` as the example.
+ * With column groups, only the top-level rows (a group or an ungrouped
+ * column) have a sticky toggle, because making any leaf sticky makes its whole
+ * top-level group sticky. Here the Identity group starts sticky and Visits
+ * starts hidden.
  */
-export const ColumnManagerOpen: Story = {
-	tags: ['!autodocs', '!manifest'],
-	args: {
-		primaryRowActions: [
-			{ icon: 'edit', label: 'Edit', onClick: fn() },
-			{ icon: 'download', label: 'Download', onClick: fn() },
-		],
-	},
-	parameters: {
-		chromatic: { delay: 300 },
-	},
-	render: function Render(args) {
-		const managedColumns = [
-			{ id: 'firstName', label: 'First Name' },
-			{ id: 'lastName', label: 'Last Name' },
-			{ id: 'age', label: 'Age' },
-			{ id: 'visits', label: 'Visits' },
-			{ id: 'progress', label: 'Profile Progress' },
-			{ id: 'status', label: 'Status' },
-		];
-		const searchId = useId();
-		const [search, setSearch] = useState('');
-		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });
-		const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
-			left: ['firstName', 'lastName'],
-		});
-
-		const pinnedIds = stickyColumns.left ?? [];
-		const isVisible = (id: string) => columnVisibility[id] !== false;
-		const visibleCount = managedColumns.filter(({ id }) => isVisible(id)).length;
-		const allColumnsChecked =
-			visibleCount === managedColumns.length ? true : visibleCount > 0 && 'indeterminate';
-		const query = search.trim().toLowerCase();
-		const matchingColumns = managedColumns.filter(({ label }) => label.toLowerCase().includes(query));
-
-		const setPinned = (id: string, pinned: boolean) =>
-			setStickyColumns({
-				...stickyColumns,
-				// Pinned columns keep the order they have in the manager.
-				left: managedColumns
-					.map((column) => column.id)
-					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
-			});
-
-		const setAllVisible = (visible: boolean) =>
-			setColumnVisibility(Object.fromEntries(managedColumns.map(({ id }) => [id, visible])));
-
-		return (
-			<DsTable
-				{...args}
-				columnVisibility={columnVisibility}
-				onColumnVisibilityChange={setColumnVisibility}
-				stickyColumns={stickyColumns}
-				onStickyColumnsChange={setStickyColumns}
-				controls={
-					<DsStack direction="row" justifyContent="flex-end" width="100%">
-						<DsPopover.Root
-							defaultOpen
-							align="end"
-							gutter={4}
-							// Keeps the caret out of the screenshot.
-							onOpenAutoFocus={(event) => event.preventDefault()}
-						>
-							<DsPopover.Trigger>
-								<DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
-							</DsPopover.Trigger>
-							<DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
-								<label htmlFor={searchId} className={styles.visuallyHidden}>
-									Search columns
-								</label>
-								<DsTextInput
-									id={searchId}
-									placeholder="Search"
-									value={search}
-									onValueChange={setSearch}
-									slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-								/>
-								<DsStack direction="column" className={styles.columnList}>
-									{matchingColumns.map(({ id, label }) => (
-										<DsCheckbox
-											key={id}
-											size="large"
-											className={styles.columnRow}
-											label={label}
-											checked={isVisible(id)}
-											onCheckedChange={(checked) =>
-												setColumnVisibility({ ...columnVisibility, [id]: checked === true })
-											}
-											actions={
-												<DsPinToggle
-													className={styles.pinToggle}
-													itemLabel={label}
-													pinned={pinnedIds.includes(id)}
-													onPinnedChange={(pinned) => setPinned(id, pinned)}
-												/>
-											}
-										/>
-									))}
-									<DsCheckbox
-										size="large"
-										label="Row actions"
-										checked
-										disabled
-										actions={<DsIcon icon="lock" size="tiny" color="secondary" aria-hidden />}
-									/>
-								</DsStack>
-								<DsDivider className={styles.divider} />
-								<DsCheckbox
-									size="large"
-									label="All columns"
-									checked={allColumnsChecked}
-									onCheckedChange={() => setAllVisible(allColumnsChecked !== true)}
-								/>
-							</DsPopover.Panel>
-						</DsPopover.Root>
-					</DsStack>
-				}
-			/>
-		);
-	},
-};
-
-/**
- * A column manager for grouped columns. Each top-level entry (a group or an
- * ungrouped column) has one pin, because pinning any leaf pins its whole
- * top-level group; the pin lists the group id in `stickyColumns`. A group's
- * checkbox shows or hides all of its leaves and reads as partial when only
- * some are visible, while each leaf keeps its own checkbox.
- */
-export const ColumnManagerWithColumnGroups: Story = {
+export const ColumnDisplayWithColumnGroups: Story = {
 	args: {
 		columns: [
 			{
@@ -504,69 +174,14 @@ export const ColumnManagerWithColumnGroups: Story = {
 			},
 			{ accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
 		],
+		columnDisplay: true,
 	},
 	parameters: {
 		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
-		const managedColumns = [
-			{
-				id: 'identity',
-				label: 'Identity',
-				leaves: [
-					{ id: 'firstName', label: 'First Name' },
-					{ id: 'lastName', label: 'Last Name' },
-				],
-			},
-			{
-				id: 'activity',
-				label: 'Activity',
-				leaves: [
-					{ id: 'age', label: 'Age' },
-					{ id: 'visits', label: 'Visits' },
-					{ id: 'progress', label: 'Profile Progress' },
-				],
-			},
-			{ id: 'status', label: 'Status', leaves: [{ id: 'status', label: 'Status' }] },
-		];
-		const searchId = useId();
-		const [search, setSearch] = useState('');
 		const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ visits: false });
 		const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });
-
-		const pinnedIds = stickyColumns.left ?? [];
-		const isVisible = (id: string) => columnVisibility[id] !== false;
-		const getCheckedState = (ids: string[]) => {
-			const visibleCount = ids.filter(isVisible).length;
-			return visibleCount === ids.length ? true : visibleCount > 0 && 'indeterminate';
-		};
-		const allLeafIds = managedColumns.flatMap(({ leaves }) => leaves.map(({ id }) => id));
-		const allColumnsChecked = getCheckedState(allLeafIds);
-		const query = search.trim().toLowerCase();
-		const matches = (label: string) => label.toLowerCase().includes(query);
-		const matchingColumns = managedColumns
-			.map((entry) => ({
-				...entry,
-				matchingLeaves: matches(entry.label)
-					? entry.leaves
-					: entry.leaves.filter(({ label }) => matches(label)),
-			}))
-			.filter(({ matchingLeaves }) => matchingLeaves.length > 0);
-
-		const setPinned = (id: string, pinned: boolean) =>
-			setStickyColumns({
-				...stickyColumns,
-				// Pinned columns keep the order they have in the manager.
-				left: managedColumns
-					.map((column) => column.id)
-					.filter((columnId) => (columnId === id ? pinned : pinnedIds.includes(columnId))),
-			});
-
-		const setVisible = (ids: string[], visible: boolean) =>
-			setColumnVisibility({
-				...columnVisibility,
-				...Object.fromEntries(ids.map((id) => [id, visible])),
-			});
 
 		return (
 			<DsTable
@@ -575,82 +190,14 @@ export const ColumnManagerWithColumnGroups: Story = {
 				onColumnVisibilityChange={setColumnVisibility}
 				stickyColumns={stickyColumns}
 				onStickyColumnsChange={setStickyColumns}
-				controls={
-					<DsStack direction="row" justifyContent="flex-end" width="100%">
-						<DsPopover.Root align="end" gutter={4}>
-							<DsPopover.Trigger>
-								<DsButtonV3 variant="tertiary" size="tiny" icon="view_column" aria-label="Columns" />
-							</DsPopover.Trigger>
-							<DsPopover.Panel width={240} aria-label="Columns" className={styles.columnManager}>
-								<label htmlFor={searchId} className={styles.visuallyHidden}>
-									Search columns
-								</label>
-								<DsTextInput
-									id={searchId}
-									placeholder="Search"
-									value={search}
-									onValueChange={setSearch}
-									slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-								/>
-								<DsStack direction="column" className={styles.columnList}>
-									{matchingColumns.map(({ id, label, leaves, matchingLeaves }) => {
-										const isGroup = leaves.length > 1 || leaves[0]?.id !== id;
-										const leafIds = leaves.map((leaf) => leaf.id);
-										const checked = getCheckedState(leafIds);
-
-										return (
-											<DsStack key={id} direction="column">
-												<DsCheckbox
-													size="large"
-													className={styles.columnRow}
-													label={label}
-													checked={checked}
-													onCheckedChange={() => setVisible(leafIds, checked !== true)}
-													actions={
-														<DsPinToggle
-															className={styles.pinToggle}
-															itemLabel={label}
-															pinned={pinnedIds.includes(id)}
-															onPinnedChange={(pinned) => setPinned(id, pinned)}
-														/>
-													}
-												/>
-												{isGroup && (
-													<DsStack direction="column" className={styles.groupLeaves}>
-														{matchingLeaves.map((leaf) => (
-															<DsCheckbox
-																key={leaf.id}
-																size="large"
-																label={leaf.label}
-																checked={isVisible(leaf.id)}
-																onCheckedChange={(next) => setVisible([leaf.id], next === true)}
-															/>
-														))}
-													</DsStack>
-												)}
-											</DsStack>
-										);
-									})}
-								</DsStack>
-								<DsDivider className={styles.divider} />
-								<DsCheckbox
-									size="large"
-									label="All columns"
-									checked={allColumnsChecked}
-									onCheckedChange={() => setVisible(allLeafIds, allColumnsChecked !== true)}
-								/>
-							</DsPopover.Panel>
-						</DsPopover.Root>
-					</DsStack>
-				}
 			/>
 		);
 	},
 };
 
 /**
- * Listing a group id, or any leaf of a group, pins every leaf of that
- * top-level group. The group header renders once and sticks with its leaves.
+ * Listing a group id, or any leaf of a group, makes every leaf of that
+ * top-level group sticky. The group header renders once and sticks with its leaves.
  */
 export const ColumnGroups: Story = {
 	args: {

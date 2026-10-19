@@ -452,6 +452,137 @@ describe('DsTable sticky columns', () => {
 		});
 	});
 
+	describe('column display', () => {
+		const openColumnDisplay = async () => {
+			await page.getByRole('button', { name: 'Columns' }).click();
+			await expect.element(page.getByRole('dialog', { name: 'Columns' })).toBeVisible();
+		};
+
+		const stickyToggle = (name: string) => page.getByRole('button', { name: `Sticky ${name}`, exact: true });
+
+		it('makes a column sticky and not sticky again from the Columns popup', async () => {
+			const onStickyColumnsChange = vi.fn();
+
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						columnDisplay
+						onStickyColumnsChange={onStickyColumnsChange}
+					/>
+				</Frame>,
+			);
+			await openColumnDisplay();
+
+			await expect.element(stickyToggle('Age')).toHaveAttribute('aria-pressed', 'false');
+			await stickyToggle('Age').click();
+
+			await expect.element(stickyToggle('Age')).toHaveAttribute('aria-pressed', 'true');
+			expect(onStickyColumnsChange).toHaveBeenLastCalledWith({ left: ['age'], right: [] });
+			await expect
+				.poll(() => getHeaderCell('age').parentElement?.firstElementChild)
+				.toBe(getHeaderCell('age'));
+
+			await scrollToLeft(300);
+			expect(visibleLeft(getHeaderCell('age'))).toBeCloseTo(0, 0);
+			expect(visibleLeft(getBodyCell('age'))).toBeCloseTo(0, 0);
+
+			await stickyToggle('Age').click();
+
+			await expect.element(stickyToggle('Age')).toHaveAttribute('aria-pressed', 'false');
+			expect(onStickyColumnsChange).toHaveBeenLastCalledWith({ left: [], right: [] });
+			await expect.poll(() => getHeaderCell('age').getAttribute('data-sticky')).toBeNull();
+		});
+
+		it('shows a sticky toggle only on top-level rows and makes a whole group sticky', async () => {
+			const onStickyColumnsChange = vi.fn();
+
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={groupedColumns}
+						data={rows}
+						columnDisplay
+						onStickyColumnsChange={onStickyColumnsChange}
+					/>
+				</Frame>,
+			);
+			await openColumnDisplay();
+
+			await expect.element(stickyToggle('Identity')).toBeInTheDocument();
+			await expect.element(stickyToggle('Age')).toBeInTheDocument();
+			await expect.element(stickyToggle('First Name')).not.toBeInTheDocument();
+			await expect.element(stickyToggle('Last Name')).not.toBeInTheDocument();
+
+			await stickyToggle('Identity').click();
+
+			expect(onStickyColumnsChange).toHaveBeenLastCalledWith({ left: ['firstName', 'lastName'], right: [] });
+			await expect.poll(() => getHeaderCell('firstName').getAttribute('data-sticky')).toBe('left');
+			expect(getHeaderCell('lastName').getAttribute('data-sticky')).toBe('left');
+		});
+
+		it('reads hidden and right sticky columns as sticky and clears a right one', async () => {
+			const onStickyColumnsChange = vi.fn();
+
+			await page.render(
+				<Frame>
+					<DsTable
+						columns={wideColumns}
+						data={rows}
+						columnDisplay
+						columnVisibility={{ firstName: false }}
+						stickyColumns={{ left: ['firstName'], right: ['status'] }}
+						onStickyColumnsChange={onStickyColumnsChange}
+					/>
+				</Frame>,
+			);
+			await openColumnDisplay();
+
+			await expect.element(stickyToggle('First Name')).toHaveAttribute('aria-pressed', 'true');
+			await expect.element(stickyToggle('Status')).toHaveAttribute('aria-pressed', 'true');
+
+			await stickyToggle('Status').click();
+
+			expect(onStickyColumnsChange).toHaveBeenLastCalledWith({ left: ['firstName'], right: [] });
+		});
+
+		it('hides the toggle of a non-sticky row until hover or focus and keeps a sticky one visible', async () => {
+			await page.render(
+				<Frame>
+					<DsTable columns={wideColumns} data={rows} columnDisplay stickyColumns={{ left: ['firstName'] }} />
+				</Frame>,
+			);
+			await openColumnDisplay();
+			await page.getByPlaceholder('Search').hover();
+
+			await expect.poll(() => getComputedStyle(stickyToggle('Age').element()).opacity).toBe('0');
+			expect(getComputedStyle(stickyToggle('First Name').element()).opacity).toBe('1');
+
+			await page.getByRole('checkbox', { name: 'Age', exact: true }).hover();
+
+			await expect.poll(() => getComputedStyle(stickyToggle('Age').element()).opacity).toBe('1');
+
+			await page.getByPlaceholder('Search').hover();
+			await expect.poll(() => getComputedStyle(stickyToggle('Visits').element()).opacity).toBe('0');
+
+			stickyToggle('Visits').element().focus();
+
+			await expect.poll(() => getComputedStyle(stickyToggle('Visits').element()).opacity).toBe('1');
+		});
+
+		it('labels the toggle from locale.stickyColumn', async () => {
+			await page.render(
+				<Frame>
+					<DsTable columns={wideColumns} data={rows} columnDisplay locale={{ stickyColumn: 'Fixer' }} />
+				</Frame>,
+			);
+			await openColumnDisplay();
+
+			await expect.element(page.getByRole('button', { name: 'Fixer Age', exact: true })).toBeInTheDocument();
+		});
+	});
+
 	describe('edge dividers', () => {
 		it('shows the left divider only while content is scrolled under the left sticky columns', async () => {
 			await page.render(

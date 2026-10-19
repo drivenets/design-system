@@ -47,6 +47,14 @@
 	gap: var(--xs);
 }
 
+// The sticky toggle shows on hover or keyboard focus, and stays while the
+// column is sticky. Without hover (touch) it always shows.
+@media (hover: hover) {
+	.row:not(:hover, :focus-within) .stickyToggle:not([aria-pressed='true']) {
+		opacity: 0;
+	}
+}
+
 .divider {
 	margin: 0;
 }

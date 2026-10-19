@@ -79,6 +79,12 @@ export interface DsTableLocale {
 	 * Label for the column display checkbox that shows or hides every column.
 	 */
 	allColumns: string;
+
+	/**
+	 * Accessible label prefix for the column display toggle that makes a column
+	 * sticky; the column label follows it.
+	 */
+	stickyColumn: string;
 }
 
 /**
@@ -93,6 +99,7 @@ export const defaultDsTableLocale: DsTableLocale = Object.freeze({
 	columns: 'Columns',
 	searchColumns: 'Search',
 	allColumns: 'All columns',
+	stickyColumn: 'Sticky',
 });
 
 /**
@@ -586,8 +593,10 @@ export interface DsDataTableProps<TData, TValue> {
 	onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
 
 	/**
-	 * Adds a Columns button to the header for showing and hiding columns. Uses
-	 * `columnVisibility` / `onColumnVisibilityChange`; set
+	 * Adds a Columns button to the header for showing and hiding columns and
+	 * making them sticky on the left. A right sticky column reads as sticky, and
+	 * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+	 * and `stickyColumns` / `onStickyColumnsChange`; set
 	 * `meta.columnDisplayLabel` on columns whose `header` is not a string.
 	 * @default false
 	 */
@@ -624,11 +633,11 @@ export interface DsDataTableProps<TData, TValue> {
 	 *   these columns. The row actions column (or, without row actions, the
 	 *   `columnDisplay` column) is always sticky right, after them. Listing
 	 *   their ids has no effect.
-	 * - Listing a group id, or any leaf of a group, pins every leaf of that
-	 *   top-level group.
+	 * - Listing a group id, or any leaf of a group, makes every leaf of that
+	 *   top-level group sticky.
 	 * - A sticky column without `size` renders at a fixed width (its
 	 *   `getSize()`, 150px by default) instead of filling.
-	 * - A column hidden via `columnVisibility` keeps its pin and is sticky again
+	 * - A column hidden via `columnVisibility` stays listed and is sticky again
 	 *   when shown.
 	 * - Sticky columns wider than the table viewport are not handled; keep their
 	 *   total width below the visible width.
@@ -649,9 +658,10 @@ export interface DsDataTableProps<TData, TValue> {
 	stickyColumns?: DsTableStickyColumns;
 
 	/**
-	 * Called with the next sticky columns when a column is pinned or unpinned
-	 * through the TanStack column API (e.g. `column.pin('left')` in a header
-	 * renderer). Contains consumer column ids only, never utility column ids.
+	 * Called with the next sticky columns when a column is made sticky or not
+	 * from the `columnDisplay` popup or through the TanStack column API (e.g.
+	 * `column.pin('left')` in a header renderer). Contains consumer column ids
+	 * only, never utility column ids.
 	 */
 	onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) => void;
 
