@@ -6,7 +6,7 @@ $divider-width: 1px;
 $border-width: 1px;
 
 @mixin when-button-disabled {
-	.root:has(.actionButton:is(:disabled, [data-disabled])) & {
+	.root:has(.actionButton:disabled) & {
 		@content;
 	}
 }
@@ -18,11 +18,7 @@ $border-width: 1px;
 }
 
 @mixin when-button-highlighted {
-	.root:has(
-			.actionButton:not(:disabled, [data-disabled]):is(:hover, :active, [data-selected='true']),
-			.actionButton:focus-visible
-		)
-		& {
+	.root:has(.actionButton:not(:disabled):is(:hover, :focus-visible, :active, [data-selected='true'])) & {
 		@content;
 	}
 }
@@ -52,11 +48,11 @@ $border-width: 1px;
 		transition: border-color button.$transition-duration-quick;
 	}
 
-	&:not(:disabled, [data-disabled]):is(:hover, :active, [data-selected='true']) {
+	&:not(:disabled):is(:hover, :active, [data-selected='true']) {
 		border-right-color: var(--border-secondary-hover);
 	}
 
-	&:not(:disabled, [data-disabled]):focus-visible {
+	&:not(:disabled):focus-visible {
 		border-right-color: var(--border-inverse);
 	}
 }

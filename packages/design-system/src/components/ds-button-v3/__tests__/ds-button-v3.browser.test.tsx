@@ -261,10 +261,6 @@ describe('DsButtonV3', () => {
 });
 
 const REASON = 'You need edit access to delete this item';
-// Long enough for a tooltip opened by keyboard focus to render.
-const SETTLE_MS = 500;
-
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // `userEvent.tab()` presses Tab in the top-level page, which reaches the test frame only once it has focus.
 const tabIntoFrame = async () => {
@@ -287,12 +283,12 @@ const disabledLook = (element: Element) => {
 	return Object.fromEntries(DISABLED_LOOK.map((property) => [property, style.getPropertyValue(property)]));
 };
 
-describe('DsButtonV3 disabledReason', () => {
-	it('stays focusable and is announced as disabled with the reason as its description', async () => {
+describe('DsButtonV3 disabled inside DsTooltip', () => {
+	it('stays focusable and is announced as disabled with the tooltip as its description', async () => {
 		await page.render(
-			<DsButtonV3 disabled disabledReason={REASON}>
-				Delete
-			</DsButtonV3>,
+			<DsTooltip content={REASON}>
+				<DsButtonV3 disabled>Delete</DsButtonV3>
+			</DsTooltip>,
 		);
 
 		const button = page.getByRole('button', { name: 'Delete', disabled: true });
@@ -300,17 +296,18 @@ describe('DsButtonV3 disabledReason', () => {
 		await tabIntoFrame();
 
 		await expect.element(button).toHaveFocus();
+		await expect.element(page.getByRole('tooltip', { name: REASON })).toBeVisible();
 		await expect.element(button).toHaveAttribute('aria-disabled', 'true');
 		await expect.element(button).not.toHaveAttribute('disabled');
 		await expect.element(button).toHaveAccessibleName('Delete');
 		await expect.element(button).toHaveAccessibleDescription(REASON);
 	});
 
-	it('shows the reason on hover and hides it when the pointer leaves', async () => {
+	it('shows the tooltip on hover and hides it when the pointer leaves', async () => {
 		await page.render(
-			<DsButtonV3 disabled disabledReason={REASON}>
-				Delete
-			</DsButtonV3>,
+			<DsTooltip content={REASON}>
+				<DsButtonV3 disabled>Delete</DsButtonV3>
+			</DsTooltip>,
 		);
 
 		const button = page.getByRole('button', { name: 'Delete' });
@@ -322,12 +319,12 @@ describe('DsButtonV3 disabledReason', () => {
 		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
 	});
 
-	it('shows the reason on keyboard focus and dismisses it on blur and Escape', async () => {
+	it('shows the tooltip on keyboard focus and dismisses it on blur and Escape', async () => {
 		await page.render(
 			<>
-				<DsButtonV3 disabled disabledReason={REASON}>
-					Delete
-				</DsButtonV3>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 disabled>Delete</DsButtonV3>
+				</DsTooltip>
 				<DsButtonV3>Next</DsButtonV3>
 			</>,
 		);
@@ -361,9 +358,11 @@ describe('DsButtonV3 disabledReason', () => {
 
 		await page.render(
 			<form onSubmit={onSubmit}>
-				<DsButtonV3 type="submit" disabled disabledReason={REASON} onClick={onClick}>
-					Save
-				</DsButtonV3>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 type="submit" disabled onClick={onClick}>
+						Save
+					</DsButtonV3>
+				</DsTooltip>
 			</form>,
 		);
 
@@ -380,36 +379,15 @@ describe('DsButtonV3 disabledReason', () => {
 		expect(onDocumentClick).not.toHaveBeenCalled();
 	});
 
-	it('acts as a regular button while enabled', async () => {
-		const onClick = vi.fn();
-
-		await page.render(
-			<DsButtonV3 disabledReason={REASON} onClick={onClick}>
-				Delete
-			</DsButtonV3>,
-		);
-
-		const button = page.getByRole('button', { name: 'Delete' });
-
-		// Keyboard focus would open the reason right away, with no hover delay.
-		await tabIntoFrame();
-		await expect.element(button).toHaveFocus();
-		await wait(SETTLE_MS);
-		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
-
-		await button.click();
-		expect(onClick).toHaveBeenCalledOnce();
-		await expect.element(button).not.toHaveAttribute('aria-disabled');
-		await expect.element(button).not.toHaveAccessibleDescription();
-	});
-
-	it('keeps its own aria-describedby alongside the reason', async () => {
+	it('keeps its own aria-describedby alongside the tooltip', async () => {
 		await page.render(
 			<>
 				<p id="delete-hint">Deleted items stay in the bin for 30 days</p>
-				<DsButtonV3 disabled disabledReason={REASON} aria-describedby="delete-hint">
-					Delete
-				</DsButtonV3>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 disabled aria-describedby="delete-hint">
+						Delete
+					</DsButtonV3>
+				</DsTooltip>
 			</>,
 		);
 
@@ -418,30 +396,26 @@ describe('DsButtonV3 disabledReason', () => {
 			.toHaveAccessibleDescription(`${REASON} Deleted items stay in the bin for 30 days`);
 	});
 
-	it('shows the reason when a wrapping label tooltip is turned off while disabled', async () => {
-		const { rerender } = await page.render(
-			<DsTooltip content="Delete row" disabled>
-				<DsButtonV3 icon="delete" aria-label="Delete" disabled disabledReason={REASON} />
+	it('stays natively disabled while the tooltip is disabled', async () => {
+		await page.render(
+			<DsTooltip content={REASON} disabled>
+				<DsButtonV3 disabled>Delete</DsButtonV3>
 			</DsTooltip>,
 		);
 
-		const button = page.getByRole('button', { name: 'Delete' });
+		await expect.element(page.getByRole('button', { name: 'Delete' })).toBeDisabled();
+	});
 
-		await expect.element(button).toHaveAccessibleName('Delete');
-		await expect.element(button).toHaveAccessibleDescription(REASON);
-
-		await button.hover();
-		await expect.element(page.getByRole('tooltip', { name: REASON })).toBeVisible();
-
-		await button.unhover();
-		await rerender(
-			<DsTooltip content="Delete row">
-				<DsButtonV3 icon="delete" aria-label="Delete" disabledReason={REASON} />
+	it('stays natively disabled when the tooltip wraps an element around it', async () => {
+		await page.render(
+			<DsTooltip content="Card details">
+				<div>
+					<DsButtonV3 disabled>Delete</DsButtonV3>
+				</div>
 			</DsTooltip>,
 		);
 
-		await button.hover();
-		await expect.element(page.getByRole('tooltip', { name: 'Delete row' })).toBeVisible();
+		await expect.element(page.getByRole('button', { name: 'Delete' })).toBeDisabled();
 	});
 
 	it.each(colorVariantPairs)(
@@ -452,16 +426,18 @@ describe('DsButtonV3 disabledReason', () => {
 					<DsButtonV3 color={color} variant={variant} disabled>
 						Native
 					</DsButtonV3>
-					<DsButtonV3 color={color} variant={variant} disabled disabledReason={REASON}>
-						With reason
-					</DsButtonV3>
+					<DsTooltip content={REASON}>
+						<DsButtonV3 color={color} variant={variant} disabled>
+							With tooltip
+						</DsButtonV3>
+					</DsTooltip>
 				</>,
 			);
 
 			const native = page.getByRole('button', { name: 'Native' }).element();
-			const withReason = page.getByRole('button', { name: 'With reason' }).element();
+			const withTooltip = page.getByRole('button', { name: 'With tooltip' }).element();
 
-			expect(disabledLook(withReason)).toEqual(disabledLook(native));
+			expect(disabledLook(withTooltip)).toEqual(disabledLook(native));
 		},
 	);
 
@@ -469,22 +445,22 @@ describe('DsButtonV3 disabledReason', () => {
 		await page.render(
 			<>
 				<DsButtonV3 disabled>Native</DsButtonV3>
-				<DsButtonV3 disabled disabledReason={REASON}>
-					With reason
-				</DsButtonV3>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 disabled>With tooltip</DsButtonV3>
+				</DsTooltip>
 			</>,
 		);
 
-		const withReasonButton = page.getByRole('button', { name: 'With reason' });
+		const withTooltipButton = page.getByRole('button', { name: 'With tooltip' });
 
 		await tabIntoFrame();
-		await expect.element(withReasonButton).toHaveFocus();
+		await expect.element(withTooltipButton).toHaveFocus();
 
 		const native = getComputedStyle(page.getByRole('button', { name: 'Native' }).element());
-		const withReason = getComputedStyle(withReasonButton.element());
+		const withTooltip = getComputedStyle(withTooltipButton.element());
 
-		expect(withReason.backgroundColor).toBe(native.backgroundColor);
-		expect(withReason.color).toBe(native.color);
-		expect(withReason.outlineStyle).toBe('solid');
+		expect(withTooltip.backgroundColor).toBe(native.backgroundColor);
+		expect(withTooltip.color).toBe(native.color);
+		expect(withTooltip.outlineStyle).toBe('solid');
 	});
 });

@@ -188,36 +188,4 @@ describe('DsSplitButton', () => {
 
 		expect(buttonHeight).toBe(selectHeight);
 	});
-
-	it('explains a disabled primary action through slotProps.button.disabledReason', async () => {
-		const onClick = vi.fn();
-
-		await page.render(
-			<DsSplitButton
-				disabled
-				slotProps={{
-					button: {
-						icon: 'refresh',
-						'aria-label': 'Refresh',
-						disabledReason: 'Refreshing is paused while you edit',
-						onClick,
-					},
-					select: defaultSelect,
-				}}
-			/>,
-		);
-
-		const button = page.getByRole('button', { name: 'Refresh' });
-
-		await expect.element(button).toHaveAttribute('aria-disabled', 'true');
-		await expect.element(button).toHaveAccessibleDescription('Refreshing is paused while you edit');
-
-		await button.hover();
-		await expect
-			.element(page.getByRole('tooltip', { name: 'Refreshing is paused while you edit' }))
-			.toBeVisible();
-
-		await button.click({ force: true });
-		expect(onClick).not.toHaveBeenCalled();
-	});
 });

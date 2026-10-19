@@ -25,7 +25,6 @@ const meta: Meta<typeof DsButtonV3> = {
 		size: { control: 'select', options: buttonV3Sizes },
 		loading: { control: 'boolean' },
 		disabled: { control: 'boolean' },
-		disabledReason: { control: 'text' },
 		highEmphasis: { control: 'boolean' },
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
@@ -70,10 +69,10 @@ export const Disabled: Story = {
 };
 
 /**
- * Explains why an action is unavailable: the disabled button stays focusable and shows the reason in
- * a tooltip on hover and keyboard focus.
+ * Wrap a disabled button in `DsTooltip` to explain why it is unavailable. The button stays
+ * focusable, so the tooltip opens on hover and keyboard focus.
  */
-export const DisabledWithReason: Story = {
+export const DisabledWithTooltip: Story = {
 	args: {
 		color: 'default',
 		variant: 'primary',
@@ -81,26 +80,9 @@ export const DisabledWithReason: Story = {
 		icon: 'delete',
 		children: 'Delete',
 		disabled: true,
-		disabledReason: 'You need edit access to delete this item',
-	},
-};
-
-/**
- * Turn off an icon-only button's label tooltip while the button is disabled, so the reason shows
- * instead.
- */
-export const IconOnlyDisabledWithReason: Story = {
-	args: {
-		color: 'default',
-		variant: 'tertiary',
-		size: 'medium',
-		icon: 'delete',
-		'aria-label': 'Delete',
-		disabled: true,
-		disabledReason: 'Delete is unavailable: you need edit access',
 	},
 	render: (args) => (
-		<DsTooltip content="Delete" disabled={args.disabled}>
+		<DsTooltip content="You need edit access to delete this item">
 			<DsButtonV3 {...args} />
 		</DsTooltip>
 	),

@@ -63,12 +63,6 @@ export interface DsButtonV3BaseProps extends ButtonHTMLAttributes<HTMLButtonElem
 	 * @default false
 	 */
 	loading?: boolean;
-
-	/**
-	 * Why the button is unavailable. While `disabled`, the button stays focusable, ignores clicks,
-	 * and shows the reason in a tooltip; screen readers read it as the button's description.
-	 */
-	disabledReason?: string;
 }
 
 export interface DsButtonV3Props extends Omit<DsButtonV3BaseProps, 'size'> {
