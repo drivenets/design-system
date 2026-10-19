@@ -217,6 +217,28 @@ export const ItemStates: Story = {
 	},
 };
 
+/**
+ * Utility links accept the same `state` values as tiles. `disabled` and `comingSoon` links don't
+ * activate; `tooltip` overrides the built-in coming-soon message.
+ */
+export const UtilityLinkStates: Story = {
+	args: {
+		items: SAMPLE_ITEMS.slice(0, 3),
+		utilityLinks: [
+			{ id: 'available', label: 'Knowledge Center', icon: 'local_library' },
+			{ id: 'disabled', label: 'Release notes', icon: 'description', state: 'disabled' },
+			{ id: 'coming-soon', label: 'Help & Support', icon: 'contact_support', state: 'comingSoon' },
+			{
+				id: 'custom-tooltip',
+				label: 'Community',
+				icon: 'forum',
+				state: 'disabled',
+				tooltip: 'Available in the next release',
+			},
+		],
+	},
+};
+
 export const TileInteractionStates: Story = {
 	args: {
 		items: [
