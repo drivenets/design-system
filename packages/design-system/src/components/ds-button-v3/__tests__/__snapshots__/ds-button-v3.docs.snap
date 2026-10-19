@@ -67,6 +67,33 @@ const Disabled = () => <DsButtonV3
     variant="primary"
     disabled>Button</DsButtonV3>;
 
+## Disabled With Tooltip
+
+### Show code
+<DsTooltip content="You need edit access to delete this item">
+  <DsButtonV3
+    color="default"
+    disabled
+    icon="delete"
+    onClick={() => {}}
+    size="medium"
+    variant="primary"
+  >
+    Delete
+  </DsButtonV3>
+</DsTooltip>
+
+### MCP manifest
+const DisabledWithTooltip = () => <DsTooltip content="You need edit access to delete this item">
+    <DsButtonV3
+        onClick={fn()}
+        color="default"
+        variant="primary"
+        size="medium"
+        icon="delete"
+        disabled>Delete</DsButtonV3>
+</DsTooltip>;
+
 ## Icon Only
 
 ### Show code
