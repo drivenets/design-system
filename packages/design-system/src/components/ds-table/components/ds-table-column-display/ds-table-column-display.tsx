@@ -70,6 +70,7 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 		return (
 			<li key={node.id} className={styles.item}>
 				<DsCheckbox
+					size="large"
 					className={styles.row}
 					label={node.label}
 					checked={node.checked}
@@ -93,21 +94,25 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 
 	return (
 		<>
-			<label htmlFor={searchId} className={styles.visuallyHidden}>
-				{searchColumns}
-			</label>
-			<DsTextInput
-				id={searchId}
-				placeholder={searchColumns}
-				value={query}
-				onValueChange={setQuery}
-				slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-			/>
+			<div className={styles.header}>
+				<label htmlFor={searchId} className={styles.visuallyHidden}>
+					{searchColumns}
+				</label>
+				<DsTextInput
+					id={searchId}
+					placeholder={searchColumns}
+					value={query}
+					onValueChange={setQuery}
+					slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+				/>
+			</div>
 			{visibleTree.length > 0 && (
 				<ul className={styles.list}>{visibleTree.map((node) => renderNode(node, true))}</ul>
 			)}
 			<DsDivider className={styles.divider} />
 			<DsCheckbox
+				size="large"
+				className={styles.allColumns}
 				label={allColumns}
 				checked={allColumnsTarget.checked}
 				disabled={allColumnsTarget.locked}
