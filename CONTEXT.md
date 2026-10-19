@@ -270,7 +270,7 @@ _Avoid_: maintenance branch, hotfix branch
 - A **Fill column** exists only when column resizing is off; with resizing on, every **Leaf column** has a pixel width
 - A **Resize overlay** marks the boundary of a **Resize handle** interaction; it is not the handle itself
 - A table has one scroll container for both axes; the header and every **Sticky column** stick inside it, and its vertical scrollbar sits at the visible right edge
-- **Utility columns** are always **Sticky columns** (select, expander and reorder on the left, the **Row actions column** or the column display column on the right) and cannot be unpinned
+- **Utility columns** are always **Sticky columns** (select, expander and reorder on the left, the **Row actions column** or the column display column on the right) and are always sticky
 - Making one **Leaf column** of a **Column group** sticky makes the whole top-level group sticky
 - A **Code input** has one editor document and two presentations: **Collapsed field** and **Expanded overlay**
 - A **Hidden-line indicator** belongs to the **Collapsed field**; an ellipsis on that field means horizontal clip only

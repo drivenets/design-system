@@ -420,7 +420,7 @@ const shrinkColumnTrack = (
 
 /**
  * Grows or shrinks `ids` so the column track changes by `delta` (positive =
- * grow). Used when the **Scrollbar spacer** toggles after seed; does not
+ * grow). Used when the scrollbar gutter appears or disappears after seed; does not
  * invent ids missing from `sizing`.
  */
 export const shiftColumnTrack = (

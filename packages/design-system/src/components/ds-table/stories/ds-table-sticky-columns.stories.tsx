@@ -253,25 +253,22 @@ export const Resizable: Story = {
 
 /**
  * Sticky columns work with virtualization and infinite scroll. A virtualized
- * table needs a parent with a bounded height; without one it renders every
- * row.
+ * table takes its height from its parent, so the parent needs a bounded
+ * height.
  */
 export const Virtualized: Story = {
+	args: {
+		virtualized: true,
+		selectable: true,
+		stickyColumns: { left: ['firstName'], right: ['status'] },
+	},
 	parameters: {
 		docs: { source: { type: 'code' } },
 	},
 	render: function Render(args) {
 		const [data] = useState(() => generatePersonData(0, 1_000, []).data);
 
-		return (
-			<DsTable
-				{...args}
-				data={data}
-				virtualized
-				selectable
-				stickyColumns={{ left: ['firstName'], right: ['status'] }}
-			/>
-		);
+		return <DsTable {...args} data={data} />;
 	},
 };
 
@@ -281,6 +278,10 @@ export const Virtualized: Story = {
  * visible width, scrolls on its own and keeps its own sticky columns.
  */
 export const Expandable: Story = {
+	args: {
+		stickyColumns: { left: ['firstName'] },
+		expandable: true,
+	},
 	parameters: {
 		docs: { source: { type: 'code' } },
 	},
@@ -295,8 +296,6 @@ export const Expandable: Story = {
 			<DsTable
 				{...args}
 				ref={tableRef}
-				stickyColumns={{ left: ['firstName'] }}
-				expandable
 				renderExpandedRow={(row) => (
 					<DsStack direction="column" gap="var(--xs)">
 						<DsTypography variant="body-sm-semi-bold">

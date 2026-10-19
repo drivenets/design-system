@@ -271,7 +271,7 @@ describe('shiftColumnTrack', () => {
 		expect(shiftColumnTrack(sizing, ['a', 'b'], 0, bounds)).toBe(sizing);
 	});
 
-	it('shrinks from the last leaf when the spacer appears', () => {
+	it('shrinks from the last leaf when the scrollbar gutter appears', () => {
 		const next = shiftColumnTrack({ a: 500, b: 500 }, ['a', 'b'], -10, bounds);
 
 		expect(next.a).toBe(500);
@@ -279,7 +279,7 @@ describe('shiftColumnTrack', () => {
 		expect((next.a ?? 0) + (next.b ?? 0)).toBe(990);
 	});
 
-	it('grows leaves when the spacer disappears', () => {
+	it('grows leaves when the scrollbar gutter disappears', () => {
 		const next = shiftColumnTrack({ a: 500, b: 490 }, ['a', 'b'], 10, bounds);
 
 		expect((next.a ?? 0) + (next.b ?? 0)).toBe(1000);

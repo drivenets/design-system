@@ -1304,6 +1304,14 @@ const Resizable = () => <DsTable
 
 ### Show code
 {
+  args: {
+    virtualized: true,
+    selectable: true,
+    stickyColumns: {
+      left: ['firstName'],
+      right: ['status']
+    }
+  },
   parameters: {
     docs: {
       source: {
@@ -1313,10 +1321,7 @@ const Resizable = () => <DsTable
   },
   render: function Render(args) {
     const [data] = useState(() => generatePersonData(0, 1_000, []).data);
-    return <DsTable {...args} data={data} virtualized selectable stickyColumns={{
-      left: ['firstName'],
-      right: ['status']
-    }} />;
+    return <DsTable {...args} data={data} />;
   }
 }
 
@@ -1340,10 +1345,10 @@ const Virtualized = () => {
                 { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
             ]}
             onRowClick={fn()}
-            data={data}
             virtualized
             selectable
-            stickyColumns={{ left: ['firstName'], right: ['status'] }} />
+            stickyColumns={{ left: ['firstName'], right: ['status'] }}
+            data={data} />
     );
 };
 
@@ -1351,6 +1356,12 @@ const Virtualized = () => {
 
 ### Show code
 {
+  args: {
+    stickyColumns: {
+      left: ['firstName']
+    },
+    expandable: true
+  },
   parameters: {
     docs: {
       source: {
@@ -1363,9 +1374,7 @@ const Virtualized = () => {
     useEffect(() => {
       tableRef.current?.expandRows(['1']);
     }, []);
-    return <DsTable {...args} ref={tableRef} stickyColumns={{
-      left: ['firstName']
-    }} expandable renderExpandedRow={row => <DsStack direction="column" gap="var(--xs)">
+    return <DsTable {...args} ref={tableRef} renderExpandedRow={row => <DsStack direction="column" gap="var(--xs)">
                         <DsTypography variant="body-sm-semi-bold">
                             Recent visits for {row.firstName} {row.lastName}
                         </DsTypography>
@@ -1421,9 +1430,9 @@ const Expandable = () => {
             ]}
             data={defaultData}
             onRowClick={fn()}
-            ref={tableRef}
             stickyColumns={{ left: ['firstName'] }}
             expandable
+            ref={tableRef}
             renderExpandedRow={(row) => (
                 <DsStack direction="column" gap="var(--xs)">
                     <DsTypography variant="body-sm-semi-bold">

@@ -310,8 +310,9 @@ export interface DsDataTableProps<TData, TValue> {
 	controls?: React.ReactNode;
 
 	/**
-	 * Whether the table is virtualized. The table needs a parent with a bounded
-	 * height; without one it grows to fit every row and renders them all.
+	 * Whether the table is virtualized. The table takes its height from its
+	 * parent, so the parent needs a bounded height; without one the table
+	 * collapses to zero height.
 	 * @default false
 	 */
 	virtualized?: boolean;
