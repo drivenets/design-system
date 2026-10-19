@@ -341,6 +341,89 @@ const ItemStates = args => <DsMainMenu
         )
     } />;
 
+## Utility Link States
+
+### Show code
+<DsMainMenu
+  align="start"
+  aria-label="Main menu"
+  gutter={8}
+  items={[
+    {
+      icon: 'visibility',
+      id: 'network-visibility',
+      label: 'Network visibility'
+    },
+    {
+      icon: 'account_tree',
+      id: 'planning',
+      label: 'Planning'
+    },
+    {
+      icon: 'tune',
+      id: 'configurations',
+      label: 'Configurations'
+    }
+  ]}
+  side="bottom"
+  trigger={<DsButton schema="secondary"><DsIcon icon="apps" />{' '}Open main menu</DsButton>}
+  utilityLinks={[
+    {
+      icon: 'local_library',
+      id: 'available',
+      label: 'Knowledge Center'
+    },
+    {
+      icon: 'description',
+      id: 'disabled',
+      label: 'Release notes',
+      state: 'disabled'
+    },
+    {
+      icon: 'contact_support',
+      id: 'coming-soon',
+      label: 'Help & Support',
+      state: 'comingSoon'
+    },
+    {
+      icon: 'forum',
+      id: 'custom-tooltip',
+      label: 'Community',
+      state: 'disabled',
+      tooltip: 'Available in the next release'
+    }
+  ]}
+  variant="compact"
+/>
+
+### MCP manifest
+const UtilityLinkStates = args => <DsMainMenu
+    variant="compact"
+    items={SAMPLE_ITEMS.slice(0, 3)}
+    utilityLinks={[
+        { id: 'available', label: 'Knowledge Center', icon: 'local_library' },
+        { id: 'disabled', label: 'Release notes', icon: 'description', state: 'disabled' },
+        { id: 'coming-soon', label: 'Help & Support', icon: 'contact_support', state: 'comingSoon' },
+        {
+            id: 'custom-tooltip',
+            label: 'Community',
+            icon: 'forum',
+            state: 'disabled',
+            tooltip: 'Available in the next release',
+        },
+    ]}
+    side="bottom"
+    align="start"
+    gutter={8}
+    aria-label="Main menu"
+    trigger={
+        args.trigger ?? (
+            <DsButton schema="secondary">
+                <DsIcon icon="apps" /> Open main menu
+            </DsButton>
+        )
+    } />;
+
 ## Tile Interaction States
 
 ### Show code
