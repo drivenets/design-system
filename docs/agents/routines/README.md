@@ -8,10 +8,11 @@ A Routine belongs to one person's claude.ai account: it runs as that person and 
 
 ## Current Routines
 
-| Routine                                     | Schedule                       | What it does                                                                                   | Owner            | Status |
-| ------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------- | ---------------- | ------ |
-| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw    | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack | `@iromanchuk-dn` | on     |
-| [Weekly release](weekly-release.md)         | Wednesdays 08:57 Europe/Warsaw | Merges the Release PR, waits for npm publish, posts the announcement and the DAP bump request  | `@iromanchuk-dn` | on     |
+| Routine                                     | Schedule                       | What it does                                                                                     | Owner            | Status |
+| ------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------ | ---------------- | ------ |
+| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw    | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack   | `@iromanchuk-dn` | on     |
+| [Weekly release](weekly-release.md)         | Wednesdays 08:57 Europe/Warsaw | Merges the Release PR, waits for npm publish, posts the announcement and the DAP bump request    | `@iromanchuk-dn` | on     |
+| [Request triage](request-triage.md)         | Hourly 08–19 Israel, Sun–Fri   | Triages DS Bug tickets, asks reporters for missing info, opens fix and feature PRs (shadow mode) | `@iromanchuk-dn` | on     |
 
 Status mirrors each instructions file's [Routine switch](#routine-switch).
 
@@ -99,6 +100,40 @@ If its YAML front matter does not contain exactly `enabled: true`, end the sessi
 Otherwise follow the file exactly. It is the source of truth for when to skip, how to release, what to post to Slack and what to report.
 ```
 
+## Request triage
+
+| Field         | Value                                                                                                            |
+| ------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Name          | `Request triage (design-system)`                                                                                 |
+| Trigger ID    | Not created yet                                                                                                  |
+| Schedule      | `CRON_TZ=Asia/Jerusalem 0 8-19 * * 0-5`                                                                          |
+| Model         | Opus 5.5 (`claude-opus-5-5`): in shadow tests Sonnet stopped after writing a failing test, Opus finished the fix |
+| Environment   | `design-system`                                                                                                  |
+| Repository    | `drivenets/design-system`, default branch                                                                        |
+| Session       | A new session on every run                                                                                       |
+| Connectors    | Atlassian (Jira), Figma. Remove every other connector. GitHub access comes from the Claude GitHub App.           |
+| Notifications | Off (it runs hourly)                                                                                             |
+| Instructions  | [request-triage.md](request-triage.md)                                                                           |
+| Output        | Comments and `ds-bot*` labels on DS Bug tickets, `claude/ar-*` PRs labeled `ds-bot`                              |
+
+Stored prompt:
+
+```text
+Run the hourly request triage for the drivenets/design-system repository.
+
+Read docs/agents/routines/request-triage.md from the repository's default branch.
+
+If that file does not exist, stop without changing anything.
+
+If its YAML front matter does not contain exactly `enabled: true`, end the session immediately: do not run anything, post anything or change anything.
+
+Otherwise follow the file exactly. It is the source of truth for which Jira tickets to pick up, what to ask reporters, what to implement and how to open PRs. Its Mode setting decides whether you may write anything.
+```
+
+This Routine has no Slack connector, so a missing instructions file ends the run silently instead of posting the usual note to Slack.
+
+Extra setup for this Routine: the owner needs a Figma Dev or Full seat in the Drivenets Figma org (a View seat allows only a few MCP calls a month), and the `ds-bot` label must exist in the GitHub repo (`gh label create ds-bot -R drivenets/design-system --description "Opened by the Request triage Routine"`). Start in `shadow` mode: create the Routine without a schedule, **Run now**, read the shadow report, then switch the mode to `live` in a PR and add the schedule.
+
 ## Creating or taking over a Routine
 
 Do this when setting a Routine up for the first time, or when its owner leaves and someone else takes it over. The new owner needs:
@@ -127,4 +162,4 @@ The previous owner (or an org admin) should pause or delete their copy, so the R
 
 - A run is an unattended Claude session: it only does what the instructions allow, and everything it creates is a PR or a ticket for people to review. It never merges, except the Weekly release Routine, which approves and merges only the Release PR, and only when every required check is green.
 - Runs use the owner's usage limits.
-- The cloud environment has no running Docker daemon, so Routines can't run the visual tests (`storybook-visual`).
+- Visual tests (`storybook-visual`) run in the cloud environment: its hook starts Docker, see [cloud-environment.md](../cloud-environment.md#storybook-and-visual-checks).
