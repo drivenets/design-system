@@ -19,6 +19,19 @@
 	box-shadow: 0 5px 15px 0 var(--shadow-moderate);
 }
 
+// Figma draws the resting icon in `--icon-main`; tertiary buttons default to
+// the blue `--font-action`. Hover, focus, open and disabled keep the button's
+// own colors.
+.trigger[data-variant='tertiary'][data-color='default']:not(
+		:hover,
+		:active,
+		:focus-visible,
+		[data-selected='true'],
+		:disabled
+	) {
+	color: var(--icon-main);
+}
+
 .header {
 	padding: var(--xs);
 }

@@ -142,9 +142,10 @@ export const DsTableColumnDisplay = <TData,>({ table }: DsTableColumnDisplayProp
 		>
 			<Popover.Trigger asChild>
 				<DsButtonV3
+					className={styles.trigger}
 					variant="tertiary"
-					size="tiny"
-					icon="view_column"
+					size="small"
+					icon="width_normal"
 					selected={open}
 					aria-pressed={undefined}
 					aria-label={label}
