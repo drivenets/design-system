@@ -109,7 +109,7 @@ We follow a fork-and-pull-request workflow.
 LLM skills and subagents live in this repo. Two user-invoked entry points orchestrate the rest: **`/implement <ticket.md>`** (ticket → plan → build → test → verify) and **`/fix`** (small bug or adjustment, fast path). See [flows](docs/agents/skills.md#typical-flows).
 
 - [docs/agents/README.md](docs/agents/README.md) — agent doc index
-- [AGENTS.md](AGENTS.md) — checkers and skill catalog
+- [AGENTS.md](AGENTS.md) — checkers, skill routing, comment/changeset and git rules
 - [CONTEXT.md](CONTEXT.md) — design-system vocabulary for agents (Component, Variant, Locale, …); glossary only, not how-to
 - [docs/adr/](docs/adr/) — load-bearing decisions agents must not contradict (primitive stack, props layer, interaction testing, doc layout)
 
