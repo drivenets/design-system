@@ -59,6 +59,9 @@ const withTanStackRouter = (Story: ComponentType, initialPath: string) => {
 			),
 		),
 		history: createMemoryHistory({ initialEntries: [initialPath] }),
+		// Every router resets the window scroll to the top on render, which yanks the Autodocs
+		// page back up each time a story mounts. A predicate returning false skips that reset.
+		scrollRestoration: () => false,
 	});
 
 	return <RouterProvider router={router} />;

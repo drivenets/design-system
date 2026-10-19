@@ -32,17 +32,17 @@ Ark `data-*` attrs: [ark-ui](../ark-ui/SKILL.md).
 
 ## Code style
 
-| Requirement                         | Details                       |
-| ----------------------------------- | ----------------------------- |
-| **Use mixins**                      | Repeated size/state patterns  |
-| **Pill border-radius**              | `9999px`                      |
-| **Pseudo-element order**            | `content: ''` first           |
-| **Logical property order**          | Position → box model → visual |
-| **No comments**                     | Unless genuinely complex      |
-| **No `!important`**                 | Refactor selectors instead    |
-| **Transitions**                     | `0.2s` standard               |
-| **Component-scoped variables**      | In component file             |
-| **No webkit-only without fallback** | Cross-browser or `@supports`  |
+| Requirement                         | Details                                              |
+| ----------------------------------- | ---------------------------------------------------- |
+| **Use mixins**                      | Repeated size/state patterns                         |
+| **Pill border-radius**              | `9999px`                                             |
+| **Pseudo-element order**            | `content: ''` first                                  |
+| **Logical property order**          | Position → box model → visual                        |
+| **No comments**                     | [AGENTS.md](../../../AGENTS.md#comments--changesets) |
+| **No `!important`**                 | Refactor selectors instead                           |
+| **Transitions**                     | `0.2s` standard                                      |
+| **Component-scoped variables**      | In component file                                    |
+| **No webkit-only without fallback** | Cross-browser or `@supports`                         |
 
 ```scss
 .button {

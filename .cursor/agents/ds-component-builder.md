@@ -27,6 +27,7 @@ Package layout: [AGENTS.md#design-system-package](../../AGENTS.md#design-system-
 - Barrel export in `packages/design-system/src/index.ts` (alphabetical)
 - Stories: Default, variants, Disabled, Controlled/Localized if applicable — **no `play` functions**
 - Interaction coverage in `__tests__/*.browser.test.tsx` when behavior matters
+- Comments and changeset follow [AGENTS.md#comments--changesets](../../AGENTS.md#comments--changesets) — no narration, one-sentence changeset
 - Checkers pass on touched paths (see [AGENTS.md#code-quality-checkers](../../AGENTS.md#code-quality-checkers))
 
 Return a short summary: component name, files created/changed, stories added, tests added, checkers run.
