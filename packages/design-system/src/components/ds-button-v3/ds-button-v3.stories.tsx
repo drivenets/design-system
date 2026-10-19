@@ -11,6 +11,7 @@ import {
 } from './ds-button-v3.types';
 import storyStyles from './ds-button-v3.stories.module.scss';
 import { DsStack } from '../ds-stack';
+import { DsTooltip } from '../ds-tooltip';
 
 const meta: Meta<typeof DsButtonV3> = {
 	title: 'Components/ButtonV3',
@@ -65,6 +66,26 @@ export const Loading: Story = {
  */
 export const Disabled: Story = {
 	args: { ...baseArgs, variant: 'primary', disabled: true },
+};
+
+/**
+ * Wrap a disabled button in `DsTooltip` to explain why it is unavailable. The button stays
+ * focusable, so the tooltip opens on hover and keyboard focus.
+ */
+export const DisabledWithTooltip: Story = {
+	args: {
+		color: 'default',
+		variant: 'primary',
+		size: 'medium',
+		icon: 'delete',
+		children: 'Delete',
+		disabled: true,
+	},
+	render: (args) => (
+		<DsTooltip content="You need edit access to delete this item">
+			<DsButtonV3 {...args} />
+		</DsTooltip>
+	),
 };
 
 /**

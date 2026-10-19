@@ -1,7 +1,8 @@
-import { createRef } from 'react';
-import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
-import { DsButtonV3 } from '../index';
+import { createRef, type FormEvent } from 'react';
+import { describe, expect, it, onTestFinished, vi } from 'vitest';
+import { page, userEvent } from 'vitest/browser';
+import { buttonV3Colors, buttonV3Variants, DsButtonV3 } from '../index';
+import { DsTooltip } from '../../ds-tooltip';
 
 describe('DsButtonV3', () => {
 	it('calls onClick when clicked', async () => {
@@ -256,5 +257,210 @@ describe('DsButtonV3', () => {
 
 			expect(getComputedStyle(el).backgroundColor).not.toBe(transparent);
 		});
+	});
+});
+
+const REASON = 'You need edit access to delete this item';
+
+// `userEvent.tab()` presses Tab in the top-level page, which reaches the test frame only once it has focus.
+const tabIntoFrame = async () => {
+	window.focus();
+	await userEvent.tab();
+};
+
+// `color="light"` has no `primary-subtle`.
+const colorVariantPairs = buttonV3Colors.flatMap((color) =>
+	buttonV3Variants
+		.filter((variant) => color !== 'light' || variant !== 'primary-subtle')
+		.map((variant) => ({ color, variant })),
+);
+
+const DISABLED_LOOK = ['background-color', 'color', 'border-color', 'cursor'] as const;
+
+const disabledLook = (element: Element) => {
+	const style = getComputedStyle(element);
+
+	return Object.fromEntries(DISABLED_LOOK.map((property) => [property, style.getPropertyValue(property)]));
+};
+
+describe('DsButtonV3 disabled inside DsTooltip', () => {
+	it('stays focusable and is announced as disabled with the tooltip as its description', async () => {
+		await page.render(
+			<DsTooltip content={REASON}>
+				<DsButtonV3 disabled>Delete</DsButtonV3>
+			</DsTooltip>,
+		);
+
+		const button = page.getByRole('button', { name: 'Delete', disabled: true });
+
+		await tabIntoFrame();
+
+		await expect.element(button).toHaveFocus();
+		await expect.element(page.getByRole('tooltip', { name: REASON })).toBeVisible();
+		await expect.element(button).toHaveAttribute('aria-disabled', 'true');
+		await expect.element(button).not.toHaveAttribute('disabled');
+		await expect.element(button).toHaveAccessibleName('Delete');
+		await expect.element(button).toHaveAccessibleDescription(REASON);
+	});
+
+	it('shows the tooltip on hover and hides it when the pointer leaves', async () => {
+		await page.render(
+			<DsTooltip content={REASON}>
+				<DsButtonV3 disabled>Delete</DsButtonV3>
+			</DsTooltip>,
+		);
+
+		const button = page.getByRole('button', { name: 'Delete' });
+
+		await button.hover();
+		await expect.element(page.getByRole('tooltip', { name: REASON })).toBeVisible();
+
+		await button.unhover();
+		await expect.element(page.getByRole('tooltip')).not.toBeInTheDocument();
+	});
+
+	it('shows the tooltip on keyboard focus and dismisses it on blur and Escape', async () => {
+		await page.render(
+			<>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 disabled>Delete</DsButtonV3>
+				</DsTooltip>
+				<DsButtonV3>Next</DsButtonV3>
+			</>,
+		);
+
+		const button = page.getByRole('button', { name: 'Delete' });
+		const tooltip = page.getByRole('tooltip', { name: REASON });
+
+		await tabIntoFrame();
+		await expect.element(button).toHaveFocus();
+		await expect.element(tooltip).toBeVisible();
+
+		await userEvent.tab();
+		await expect.element(page.getByRole('button', { name: 'Next' })).toHaveFocus();
+		await expect.element(tooltip).not.toBeInTheDocument();
+
+		await userEvent.tab({ shift: true });
+		await expect.element(tooltip).toBeVisible();
+
+		await userEvent.keyboard('{Escape}');
+		await expect.element(tooltip).not.toBeInTheDocument();
+		await expect.element(button).toHaveFocus();
+	});
+
+	it('ignores clicks, Enter and Space without submitting its form or reaching ancestors', async () => {
+		const onClick = vi.fn();
+		const onSubmit = vi.fn((event: FormEvent) => event.preventDefault());
+		const onDocumentClick = vi.fn();
+
+		document.addEventListener('click', onDocumentClick);
+		onTestFinished(() => document.removeEventListener('click', onDocumentClick));
+
+		await page.render(
+			<form onSubmit={onSubmit}>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 type="submit" disabled onClick={onClick}>
+						Save
+					</DsButtonV3>
+				</DsTooltip>
+			</form>,
+		);
+
+		const button = page.getByRole('button', { name: 'Save' });
+
+		await tabIntoFrame();
+		await expect.element(button).toHaveFocus();
+		await userEvent.keyboard('{Enter}');
+		await userEvent.keyboard(' ');
+		await button.click({ force: true });
+
+		expect(onClick).not.toHaveBeenCalled();
+		expect(onSubmit).not.toHaveBeenCalled();
+		expect(onDocumentClick).not.toHaveBeenCalled();
+	});
+
+	it('keeps its own aria-describedby alongside the tooltip', async () => {
+		await page.render(
+			<>
+				<p id="delete-hint">Deleted items stay in the bin for 30 days</p>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 disabled aria-describedby="delete-hint">
+						Delete
+					</DsButtonV3>
+				</DsTooltip>
+			</>,
+		);
+
+		await expect
+			.element(page.getByRole('button', { name: 'Delete' }))
+			.toHaveAccessibleDescription(`${REASON} Deleted items stay in the bin for 30 days`);
+	});
+
+	it('stays natively disabled while the tooltip is disabled', async () => {
+		await page.render(
+			<DsTooltip content={REASON} disabled>
+				<DsButtonV3 disabled>Delete</DsButtonV3>
+			</DsTooltip>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Delete' })).toBeDisabled();
+	});
+
+	it('stays natively disabled when the tooltip wraps an element around it', async () => {
+		await page.render(
+			<DsTooltip content="Card details">
+				<div>
+					<DsButtonV3 disabled>Delete</DsButtonV3>
+				</div>
+			</DsTooltip>,
+		);
+
+		await expect.element(page.getByRole('button', { name: 'Delete' })).toBeDisabled();
+	});
+
+	it.each(colorVariantPairs)(
+		'looks the same as a natively disabled $color $variant button',
+		async ({ color, variant }) => {
+			await page.render(
+				<>
+					<DsButtonV3 color={color} variant={variant} disabled>
+						Native
+					</DsButtonV3>
+					<DsTooltip content={REASON}>
+						<DsButtonV3 color={color} variant={variant} disabled>
+							With tooltip
+						</DsButtonV3>
+					</DsTooltip>
+				</>,
+			);
+
+			const native = page.getByRole('button', { name: 'Native' }).element();
+			const withTooltip = page.getByRole('button', { name: 'With tooltip' }).element();
+
+			expect(disabledLook(withTooltip)).toEqual(disabledLook(native));
+		},
+	);
+
+	it('keeps disabled colors and shows a focus ring when focused from the keyboard', async () => {
+		await page.render(
+			<>
+				<DsButtonV3 disabled>Native</DsButtonV3>
+				<DsTooltip content={REASON}>
+					<DsButtonV3 disabled>With tooltip</DsButtonV3>
+				</DsTooltip>
+			</>,
+		);
+
+		const withTooltipButton = page.getByRole('button', { name: 'With tooltip' });
+
+		await tabIntoFrame();
+		await expect.element(withTooltipButton).toHaveFocus();
+
+		const native = getComputedStyle(page.getByRole('button', { name: 'Native' }).element());
+		const withTooltip = getComputedStyle(withTooltipButton.element());
+
+		expect(withTooltip.backgroundColor).toBe(native.backgroundColor);
+		expect(withTooltip.color).toBe(native.color);
+		expect(withTooltip.outlineStyle).toBe('solid');
 	});
 });

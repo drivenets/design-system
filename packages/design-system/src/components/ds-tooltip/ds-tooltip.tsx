@@ -6,6 +6,7 @@ import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
 import styles from './ds-tooltip.module.scss';
 import type { DsAsChildTriggerProps } from '../../utils/as-child-trigger-props';
+import { TooltipTriggerContext } from '../../utils/tooltip-trigger-context';
 import type { DsTooltipProps } from './ds-tooltip.types';
 
 const OPEN_DELAY_MS = 200;
@@ -64,7 +65,7 @@ const TooltipWithContent = ({
 
 	// Zag ignores pointer leave while disabled, so a tooltip disabled under the pointer keeps its
 	// "opened by this pointer" flag and would skip the next hover. Replay the missed leave once enabled.
-	const replayPointerLeave = tooltip.getTriggerProps().onPointerLeave;
+	const { id: resolvedTriggerId, onPointerLeave: replayPointerLeave } = tooltip.getTriggerProps();
 
 	useEffect(() => {
 		if (disabled || !leftWhileDisabled.current) {
@@ -95,13 +96,19 @@ const TooltipWithContent = ({
 			lazyMount
 			unmountOnExit
 		>
-			<Tooltip.Trigger
-				asChild
-				ref={ref as TriggerRef}
-				{...mergeProps<Record<string, unknown>>(trackDisabledLeave, triggerProps)}
+			<TooltipTriggerContext.Provider
+				value={
+					disabled ? null : { triggerId: resolvedTriggerId, contentId: tooltip.getContentProps().id, content }
+				}
 			>
-				{children}
-			</Tooltip.Trigger>
+				<Tooltip.Trigger
+					asChild
+					ref={ref as TriggerRef}
+					{...mergeProps<Record<string, unknown>>(trackDisabledLeave, triggerProps)}
+				>
+					{children}
+				</Tooltip.Trigger>
+			</TooltipTriggerContext.Provider>
 			<Portal>
 				<Tooltip.Positioner className={styles.positioner}>
 					<Tooltip.Content
@@ -119,6 +126,12 @@ const TooltipWithContent = ({
 	);
 };
 
+/**
+ * Short hint shown on hover and keyboard focus of the element it wraps. A disabled `DsButtonV3`
+ * it wraps stays focusable, so the hint can explain why the button is unavailable.
+ *
+ * @summary hint on hover and keyboard focus, including on a disabled DsButtonV3
+ */
 const DsTooltip = ({
 	content,
 	children,
