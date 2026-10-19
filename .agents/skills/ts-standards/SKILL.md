@@ -13,6 +13,7 @@ Applies to `packages/**/*.ts` and `packages/**/*.tsx` (design-system, eslint-plu
 | Requirement                        | Details                                                                                      |
 | ---------------------------------- | -------------------------------------------------------------------------------------------- |
 | **No redundant JSDoc**             | Don't restate name or type; skip `@interface` / `@type`                                      |
+| **Comments**                       | Default none; one-line _why_ only — [AGENTS.md](../../../AGENTS.md#comments--changesets)     |
 | **Prop JSDoc on ds-\* APIs**       | [component-api](../component-api/SKILL.md) — `@default` in `*.types.ts` when helpful         |
 | **Full type references**           | Import named types                                                                           |
 | **Export from `.types.ts`**        | Dedicated type files for components                                                          |

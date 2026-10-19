@@ -11,8 +11,10 @@ Automate the pre-submission checklist from the `code-review` skill.
 
 ### Step 1: Identify changed files
 
+Set `$base` first ([AGENTS.md#git--prs](../../../AGENTS.md#git--prs)); every diff below uses it.
+
 ```bash
-git diff origin/main --name-only
+git diff "$base" --name-only
 ```
 
 Categorize files by type:
@@ -76,6 +78,17 @@ For every `.tsx` / `.ts` in the diff:
 
 Date/time in stories and browser tests: follow [storybook](../storybook/SKILL.md) and [browser-tests](../browser-tests/SKILL.md)
 
+### Step 5b: Review new comments
+
+List every comment line the branch adds:
+
+```bash
+git diff "$base" -U0 -- '*.ts' '*.tsx' '*.scss' \
+  | grep -E '^\+(.*[^:])?//|^\+.*/\*|^\+\s*\*'
+```
+
+For each, keep it only if it states a _why_ the code can't show ([AGENTS.md](../../../AGENTS.md#comments--changesets)). Flag the rest — narration of the code or the change, ticket IDs, multi-line walkthroughs. Public JSDoc on props, components, and stories is exempt from "default none", but not from "no internals".
+
 ### Step 6: Check changeset
 
 ```bash
@@ -83,7 +96,7 @@ ls .changeset/*.md 2>/dev/null | grep -v README
 ```
 
 - If no changeset file exists and this PR has user-facing changes, prompt the user to run `pnpm changelog`.
-- If a changeset exists, read it and verify the message is user-facing ("Add X to Y" or "Fix X in Y"), not implementation details.
+- If a changeset exists, read it and verify it is one user-facing sentence ("Add X to Y" or "Fix X in Y") with no cause, mechanism, or internals — see [AGENTS.md](../../../AGENTS.md#comments--changesets).
 - Remind: use `skip changelog` label only for CI/test/docs changes, never for bug fixes.
 
 ### Step 7: Output report
@@ -110,9 +123,10 @@ PR Preparation Report
 [PASS/FAIL] No raw <img> ........ {details}
 [PASS/FAIL] No webkit-only ..... {details}
 [PASS/FAIL] No AI test slop .... {details}
+[PASS/FAIL] No comment slop .... {details}
 [PASS/FAIL] Changeset ............ {details}
 
-{N}/17 checks passed.
+{N}/18 checks passed.
 ```
 
-If all pass, the PR is ready for submission. If any fail, list the specific files and lines that need fixing.
+If all pass, open the PR with [create-pr](../create-pr/SKILL.md). If any fail, list the specific files and lines that need fixing.

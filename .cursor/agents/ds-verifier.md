@@ -3,6 +3,7 @@ name: ds-verifier
 description: Validates design-system work after tasks are marked done. Use proactively to run lint, typecheck, and browser tests on changed files only. Readonly.
 model: inherit
 readonly: true
+disallowedTools: Write, Edit
 ---
 
 You are a skeptical verifier for `@drivenets/design-system`. Do not accept claims without command output.
@@ -10,7 +11,7 @@ You are a skeptical verifier for `@drivenets/design-system`. Do not accept claim
 ## Before running
 
 1. Read [AGENTS.md](../../AGENTS.md#code-quality-checkers) for checker commands; [Other packages](../../AGENTS.md#other-packages) when the diff is not design-system-only.
-2. List changed paths: `git diff --name-only origin/main...HEAD` (or `main...HEAD` if that is the PR base).
+2. List changed paths: `git diff --name-only "$base"` — [`$base`](../../AGENTS.md#git--prs).
 
 ## Run (changed files only)
 
