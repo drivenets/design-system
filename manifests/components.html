@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">625 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">12/625 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">626 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/626 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -14220,7 +14220,7 @@ Use it for softer, ambient loading affordances.</div>
   no-error
   has-info
   no-story-error
-  no-story-warning
+  has-story-warning
   
   no-doc-error"
   role="listitem"
@@ -14231,7 +14231,7 @@ Use it for softer, ambient loading affordances.</div>
       <div class="badges">
         <label for="c-48-components-mainmenu-props" class="badge ok as-toggle">16 prop types</label>
         <label for="c-48-components-mainmenu-info" class="badge info as-toggle">1 info</label>
-        <label for="c-48-components-mainmenu-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-48-components-mainmenu-stories" class="badge ok as-toggle">12 stories · 1 incomplete</label>
         
         
       </div>
@@ -14552,6 +14552,42 @@ fully.</div>
         )
     } /&gt;;</code></pre>
               
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Utility Link States</span>
+                <span class="badge info">incomplete example</span>
+              </div>
+              
+              <div class="hint">Utility links accept the same `state` values as tiles. `disabled` and `comingSoon` links don&#39;t
+activate; `tooltip` overrides the built-in coming-soon message.</div>
+              <pre><code>const UtilityLinkStates = args =&gt; &lt;DsMainMenu
+    variant=&quot;compact&quot;
+    items={SAMPLE_ITEMS.slice(0, 3)}
+    utilityLinks={[
+        { id: &#39;available&#39;, label: &#39;Knowledge Center&#39;, icon: &#39;local_library&#39; },
+        { id: &#39;disabled&#39;, label: &#39;Release notes&#39;, icon: &#39;description&#39;, state: &#39;disabled&#39; },
+        { id: &#39;coming-soon&#39;, label: &#39;Help &amp; Support&#39;, icon: &#39;contact_support&#39;, state: &#39;comingSoon&#39; },
+        {
+            id: &#39;custom-tooltip&#39;,
+            label: &#39;Community&#39;,
+            icon: &#39;forum&#39;,
+            state: &#39;disabled&#39;,
+            tooltip: &#39;Available in the next release&#39;,
+        },
+    ]}
+    side=&quot;bottom&quot;
+    align=&quot;start&quot;
+    gutter={8}
+    aria-label=&quot;Main menu&quot;
+    trigger={
+        args.trigger ?? (
+            &lt;DsButton schema=&quot;secondary&quot;&gt;
+                &lt;DsIcon icon=&quot;apps&quot; /&gt; Open main menu
+            &lt;/DsButton&gt;
+        )
+    } /&gt;;</code></pre>
+              <div class="snippet-warning">Incomplete snippet: `SAMPLE_ITEMS` could not be resolved statically.</div>
             </div>
             <div class="note ok">
               <div class="row">

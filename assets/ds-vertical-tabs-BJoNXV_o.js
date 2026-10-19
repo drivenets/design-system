@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-DkW27tQK.js";import{n as t}from"./ds-vertical-tabs-DSj3M8tA.js";function n(){return(n=e((()=>{t()})))()}export{n as t};

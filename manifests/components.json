@@ -10092,6 +10092,13 @@
           "snippet": "const ItemStates = args => <DsMainMenu\n    variant=\"compact\"\n    items={[\n        { id: 'available', label: 'My Dashboard', icon: 'speed' },\n        { id: 'disabled', label: 'My Dashboard', icon: 'speed', state: 'disabled' },\n        { id: 'coming-soon', label: 'My Dashboard', icon: 'speed', state: 'comingSoon' },\n    ]}\n    utilityLinks={[]}\n    side=\"bottom\"\n    align=\"start\"\n    gutter={8}\n    aria-label=\"Main menu\"\n    trigger={\n        args.trigger ?? (\n            <DsButton schema=\"secondary\">\n                <DsIcon icon=\"apps\" /> Open main menu\n            </DsButton>\n        )\n    } />;"
         },
         {
+          "id": "components-mainmenu--utility-link-states",
+          "name": "Utility Link States",
+          "snippet": "const UtilityLinkStates = args => <DsMainMenu\n    variant=\"compact\"\n    items={SAMPLE_ITEMS.slice(0, 3)}\n    utilityLinks={[\n        { id: 'available', label: 'Knowledge Center', icon: 'local_library' },\n        { id: 'disabled', label: 'Release notes', icon: 'description', state: 'disabled' },\n        { id: 'coming-soon', label: 'Help & Support', icon: 'contact_support', state: 'comingSoon' },\n        {\n            id: 'custom-tooltip',\n            label: 'Community',\n            icon: 'forum',\n            state: 'disabled',\n            tooltip: 'Available in the next release',\n        },\n    ]}\n    side=\"bottom\"\n    align=\"start\"\n    gutter={8}\n    aria-label=\"Main menu\"\n    trigger={\n        args.trigger ?? (\n            <DsButton schema=\"secondary\">\n                <DsIcon icon=\"apps\" /> Open main menu\n            </DsButton>\n        )\n    } />;",
+          "description": "Utility links accept the same `state` values as tiles. `disabled` and `comingSoon` links don't\nactivate; `tooltip` overrides the built-in coming-soon message.",
+          "warning": "Incomplete snippet: `SAMPLE_ITEMS` could not be resolved statically."
+        },
+        {
           "id": "components-mainmenu--tile-interaction-states",
           "name": "Tile Interaction States",
           "snippet": "const TileInteractionStates = args => <DsMainMenu\n    variant=\"compact\"\n    items={[\n        { id: 'regular', label: 'My Dashboard', icon: 'speed' },\n        { id: 'selected', label: 'My Dashboard', icon: 'speed' },\n    ]}\n    utilityLinks={[]}\n    side=\"bottom\"\n    align=\"start\"\n    gutter={8}\n    aria-label=\"Main menu\"\n    selectedId=\"selected\"\n    trigger={\n        args.trigger ?? (\n            <DsButton schema=\"secondary\">\n                <DsIcon icon=\"apps\" /> Open main menu\n            </DsButton>\n        )\n    } />;"
@@ -32870,6 +32877,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5514
+    "durationMs": 6138
   }
 }
