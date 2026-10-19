@@ -61,7 +61,14 @@ pnpm --filter @drivenets/design-system exec vitest run <test file> --project=<pr
 
 Then run the whole file 3 more times as separate commands, since some flakes only show up with a fresh browser or test order.
 
-Use the package's own filter for tests outside design-system. `storybook-visual` tests need a Docker daemon, which the cloud environment doesn't run, so skip confirming them and file them as **not reproduced**.
+Use the package's own filter for tests outside design-system. `storybook-visual` tests run in the Playwright Docker container: start its server once, then run them through `test:visual`, which sets `DS_VISUAL_TESTS` and the project, with the same 30 repeats and 3 file runs:
+
+```bash
+pnpm --filter @drivenets/design-system test:visual:server --detach
+pnpm --filter @drivenets/design-system test:visual <test file> --run -t "<test name>" --repeats=29
+```
+
+The VM stops background processes when it pauses, so start the server again after resuming. See [cloud-environment.md](../cloud-environment.md#storybook-and-visual-checks).
 
 Result per candidate:
 
