@@ -10,4 +10,4 @@ For LLMs in this monorepo. Human onboarding: [README.md](../../README.md).
 | [subagents.md](subagents.md) | `ds-*` subagents, invoke                             |
 | [routines/](routines/)       | Scheduled Routines, owners, handover                 |
 | [domain.md](domain.md)       | [CONTEXT.md](../../CONTEXT.md), [docs/adr/](../adr/) |
-| [AGENTS.md](../../AGENTS.md) | Checkers, skill index                                |
+| [AGENTS.md](../../AGENTS.md) | Checkers, routing, cross-cutting rules               |
