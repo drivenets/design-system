@@ -304,11 +304,11 @@ $icon-size: 42px;
 		color $transition-duration ease,
 		border-color $transition-duration ease;
 
-	&:hover {
+	&:hover:not([aria-disabled='true']) {
 		@include interactive-surface;
 	}
 
-	&:active {
+	&:active:not([aria-disabled='true']) {
 		@include interactive-surface;
 
 		border-color: var(--border-action-primary);
@@ -319,9 +319,20 @@ $icon-size: 42px;
 	}
 
 	&:focus-visible {
-		@include interactive-surface;
-
 		border-color: var(--border-action-primary);
+
+		&:not([aria-disabled='true']) {
+			@include interactive-surface;
+		}
+	}
+}
+
+.utilityLinkDisabled {
+	color: var(--font-disabled);
+	cursor: not-allowed;
+
+	.utilityIcon {
+		opacity: $disabled-icon-opacity;
 	}
 }
 
