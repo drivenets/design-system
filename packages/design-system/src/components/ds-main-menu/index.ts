@@ -4,6 +4,12 @@ export type {
 	DsMainMenuItemState,
 	DsMainMenuProps,
 	DsMainMenuUtilityLink,
+	DsMainMenuUtilityLinkState,
 	DsMainMenuVariant,
 } from './ds-main-menu.types';
-export { COMING_SOON_TOOLTIP, mainMenuItemStates, mainMenuVariants } from './ds-main-menu.types';
+export {
+	COMING_SOON_TOOLTIP,
+	mainMenuItemStates,
+	mainMenuUtilityLinkStates,
+	mainMenuVariants,
+} from './ds-main-menu.types';

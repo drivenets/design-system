@@ -79,4 +79,25 @@ describe('createTableApi', () => {
 		expect(mock.toggleAllRowsExpanded).toHaveBeenCalledWith(false);
 		expect(mock.setExpanded).toHaveBeenCalledWith({ a: true, b: true });
 	});
+
+	it('returns the ids of rows that can expand and are expanded', () => {
+		const createRow = (id: string, canExpand: boolean, isExpanded: boolean) => ({
+			id,
+			getCanExpand: () => canExpand,
+			getIsExpanded: () => isExpanded,
+		});
+
+		const table = {
+			getCoreRowModel: () => ({
+				flatRows: [
+					createRow('a', true, true),
+					createRow('b', true, false),
+					createRow('c', false, true),
+					createRow('d', true, true),
+				],
+			}),
+		} as unknown as Table<Person>;
+
+		expect(createTableApi(table).getExpandedRowIds()).toEqual(['a', 'd']);
+	});
 });

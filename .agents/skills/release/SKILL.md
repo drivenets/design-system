@@ -11,6 +11,8 @@ Repo: `drivenets/design-system` (pass `-R drivenets/design-system` to every `gh`
 
 Invoking this skill authorizes steps 1–8, including approving the PR as the user, merging it and posting to Slack. It never asks for confirmation, so it also runs unattended in the [Weekly release](../../../docs/agents/routines/weekly-release.md) Routine.
 
+This skill releases from `main` only. To patch an older version line, follow [HOTFIX.md](HOTFIX.md) instead.
+
 ## Workflow
 
 Copy this checklist and tick it off as you go:
