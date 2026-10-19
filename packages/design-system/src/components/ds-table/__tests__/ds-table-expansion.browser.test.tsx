@@ -116,4 +116,51 @@ describe('DsTable Expansion', () => {
 		await page.getByRole('button', { name: /collapse all/i }).click();
 		await expect.element(page.getByText('Expanded rows: None')).toBeVisible();
 	});
+
+	it('should return expanded row ids that restore the state after a remount', async () => {
+		const tableRef: { current: DsTableApi<Person> | null } = { current: null };
+
+		const tableApi = () => {
+			if (!tableRef.current) {
+				throw new Error('DsTable did not set its ref');
+			}
+
+			return tableRef.current;
+		};
+		const data = defaultData.slice(0, 5);
+
+		const renderTable = () =>
+			page.render(
+				<DsTable
+					ref={tableRef}
+					columns={columns}
+					data={data}
+					expandable={(row) => row.firstName !== 'Tanner'}
+					renderExpandedRow={(row) => <div>Expanded details for {row.firstName}</div>}
+				/>,
+			);
+
+		const screen = await renderTable();
+
+		expect(tableApi().getExpandedRowIds()).toEqual([]);
+
+		await page.getByRole('button', { name: 'chevron_right' }).nth(0).click();
+		await page.getByRole('button', { name: 'chevron_right' }).nth(1).click();
+		await expect.element(page.getByText('Expanded details for John')).toBeVisible();
+
+		const savedRowIds = tableApi().getExpandedRowIds();
+
+		expect(savedRowIds).toEqual(['2', '3']);
+
+		await screen.unmount();
+		await renderTable();
+		await expect.element(page.getByText('Expanded details for Kevin')).not.toBeInTheDocument();
+
+		tableApi().expandRows(savedRowIds);
+		await expect.element(page.getByText('Expanded details for Kevin')).toBeVisible();
+		await expect.element(page.getByText('Expanded details for John')).toBeVisible();
+
+		tableApi().expandAllRows();
+		await expect.poll(() => tableApi().getExpandedRowIds()).toEqual(['2', '3', '4', '5']);
+	});
 });

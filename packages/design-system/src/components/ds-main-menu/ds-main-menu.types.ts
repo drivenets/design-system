@@ -28,12 +28,24 @@ export interface DsMainMenuItem {
 	statusBadge?: ReactElement | null;
 }
 
+export const mainMenuUtilityLinkStates = ['default', 'disabled', 'comingSoon'] as const;
+export type DsMainMenuUtilityLinkState = (typeof mainMenuUtilityLinkStates)[number];
+
 export interface DsMainMenuUtilityLink {
 	id: string;
 	label: string;
 	/** Leading graphic. Material/custom icon name or an SVG component. */
 	icon: IconType;
 	href?: string;
+	/**
+	 * `'disabled'` and `'comingSoon'` links render as unavailable and don't activate.
+	 * @default 'default'
+	 */
+	state?: DsMainMenuUtilityLinkState;
+	/**
+	 * Message shown on hover. `'comingSoon'` links fall back to the built-in coming-soon message.
+	 */
+	tooltip?: string;
 }
 
 export interface DsMainMenuProps {
