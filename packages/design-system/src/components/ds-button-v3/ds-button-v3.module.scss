@@ -31,7 +31,7 @@ $focus-ring-width: 2px;
 		color button.$transition-duration-default,
 		outline-color button.$transition-duration-quick;
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		cursor: not-allowed;
 	}
 
@@ -106,11 +106,11 @@ $focus-ring-width: 2px;
 	color: var(--font-on-action);
 	border-color: transparent;
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-primary-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-primary-selected);
 	}
 
@@ -125,7 +125,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-primary-selected);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: var(--background-disable);
 		color: var(--font-on-action);
 	}
@@ -136,11 +136,11 @@ $focus-ring-width: 2px;
 	color: var(--font-action);
 	border-color: var(--border-action-primary);
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-primary-subtle-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-primary-subtle-active);
 	}
 
@@ -155,7 +155,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-primary-subtle-active);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: var(--background-primary-subtle-disabled);
 		color: var(--font-disabled);
 		border-color: var(--border-disabled);
@@ -167,13 +167,13 @@ $focus-ring-width: 2px;
 	color: var(--font-action);
 	border-color: var(--border);
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-secondary-hover);
 		color: var(--font-action-secondary);
 		border-color: var(--border-secondary-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-action-secondary-hover);
 		color: var(--font-action-secondary);
 		border-color: var(--border-secondary-hover);
@@ -193,7 +193,7 @@ $focus-ring-width: 2px;
 		border-color: var(--border-secondary-hover);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: var(--background-action-secondary);
 		color: var(--font-disabled);
 		border-color: var(--border-disabled);
@@ -205,12 +205,12 @@ $focus-ring-width: 2px;
 	color: var(--font-action);
 	border-color: transparent;
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-secondary-hover);
 		color: var(--font-action-secondary);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-action-secondary-hover);
 		color: var(--font-action-secondary);
 	}
@@ -228,7 +228,7 @@ $focus-ring-width: 2px;
 		color: var(--font-action-secondary);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: transparent;
 		color: var(--font-disabled);
 	}
@@ -239,11 +239,11 @@ $focus-ring-width: 2px;
 	color: var(--font-on-action);
 	border-color: transparent;
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-error-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-error-selected);
 	}
 
@@ -258,7 +258,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-error-selected);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: var(--background-disable);
 		color: var(--font-on-action);
 	}
@@ -269,11 +269,11 @@ $focus-ring-width: 2px;
 	color: var(--font-error);
 	border-color: var(--border-error);
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-error-subtle-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-error-subtle-active);
 	}
 
@@ -288,7 +288,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-error-subtle-active);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: var(--background-error-subtle-disabled);
 		color: var(--font-disabled);
 		border-color: var(--border-disabled);
@@ -300,12 +300,12 @@ $focus-ring-width: 2px;
 	color: var(--font-error);
 	border-color: var(--border-error-weak);
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-error-secondary-hover);
 		border-color: var(--border-error-medium);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-error-secondary-active);
 		border-color: var(--border-error-medium);
 	}
@@ -322,7 +322,7 @@ $focus-ring-width: 2px;
 		border-color: var(--border-error-medium);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: var(--background-action-secondary);
 		color: var(--font-disabled);
 		border-color: var(--border-disabled);
@@ -334,11 +334,11 @@ $focus-ring-width: 2px;
 	color: var(--font-error);
 	border-color: transparent;
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-error-secondary-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-error-secondary-selected);
 	}
 
@@ -353,7 +353,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-error-secondary-selected);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: transparent;
 		color: var(--font-disabled);
 	}
@@ -364,11 +364,11 @@ $focus-ring-width: 2px;
 	color: var(--font-on-action);
 	border-color: var(--border-inverse);
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--background-light-hover);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-light-active);
 	}
 
@@ -382,7 +382,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-light-active);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: transparent;
 		color: var(--font-disabled);
 		border-color: var(--border-disabled);
@@ -394,12 +394,12 @@ $focus-ring-width: 2px;
 	color: var(--font-on-action);
 	border-color: var(--border-light-secondary);
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--light-buttons-secondary-background);
 		color: var(--font-on-action);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-light-secondary-selected);
 		color: var(--font-on-action);
 	}
@@ -416,7 +416,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-light-secondary-selected);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: transparent;
 		color: var(--font-light-disabled);
 		border-color: var(--border-light-disabled);
@@ -428,12 +428,12 @@ $focus-ring-width: 2px;
 	color: var(--font-on-action);
 	border-color: transparent;
 
-	&:hover:not(:disabled):not(:active):not([data-selected='true']) {
+	&:hover:not(:disabled, [data-disabled]):not(:active):not([data-selected='true']) {
 		background-color: var(--light-buttons-secondary-background);
 		color: var(--font-on-action);
 	}
 
-	&:active:not(:disabled) {
+	&:active:not(:disabled, [data-disabled]) {
 		background-color: var(--background-light-secondary-selected);
 		color: var(--font-on-action);
 	}
@@ -450,7 +450,7 @@ $focus-ring-width: 2px;
 		background-color: var(--background-light-secondary-selected);
 	}
 
-	&:disabled:not([data-loading]) {
+	&:is(:disabled, [data-disabled]):not([data-loading]) {
 		background-color: transparent;
 		color: var(--font-light-disabled);
 	}
