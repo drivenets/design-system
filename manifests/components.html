@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">61/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">626 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/626 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">627 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/627 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.5s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>4.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -2843,7 +2843,7 @@ import { DsSpinner } from '../../../ds-spinner';</code></pre>
       <div class="badges">
         <label for="c-9-components-buttonv3-props" class="badge ok as-toggle">9 prop types</label>
         
-        <label for="c-9-components-buttonv3-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-9-components-buttonv3-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -2851,7 +2851,8 @@ import { DsSpinner } from '../../../ds-spinner';</code></pre>
     <div class="meta" title="./src/components/ds-button-v3/ds-button-v3.stories.tsx">components-buttonv3 · ./src/components/ds-button-v3/ds-button-v3.stories.tsx</div>
     <div>action button with color/variant/size, icon-only, loading and selected states</div>
     <div class="hint">Button for user-triggered actions that do not navigate to another route.
-Supports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.</div>
+Supports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.
+Wrapped in `DsTooltip` while disabled, it stays focusable so the tooltip can explain why.</div>
     <div class="kv"><span class="chip">summary: action button with color/variant/size, icon-only, loading and selected states</span></div>
   </div>
 
@@ -2939,7 +2940,7 @@ variant?: (typeof buttonV3Variants)[number] = &#39;primary&#39;</code></pre>
                 <div class="row">
                   <span class="ex-name">Imports</span>
                 </div>
-                <pre><code>import { DsButtonV3, DsStack } from '@drivenets/design-system';
+                <pre><code>import { DsButtonV3, DsStack, DsTooltip } from '@drivenets/design-system';
 import { fn } from 'storybook/test';</code></pre>
               </div>
           
@@ -2990,6 +2991,25 @@ async action triggered by the button is in progress.</div>
     icon=&quot;check_circle&quot;
     variant=&quot;primary&quot;
     disabled&gt;Button&lt;/DsButtonV3&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled With Tooltip</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Wrap a disabled button in `DsTooltip` to explain why it is unavailable. The button stays
+focusable, so the tooltip opens on hover and keyboard focus.</div>
+              <pre><code>const DisabledWithTooltip = () =&gt; &lt;DsTooltip content=&quot;You need edit access to delete this item&quot;&gt;
+    &lt;DsButtonV3
+        onClick={fn()}
+        color=&quot;default&quot;
+        variant=&quot;primary&quot;
+        size=&quot;medium&quot;
+        icon=&quot;delete&quot;
+        disabled&gt;Delete&lt;/DsButtonV3&gt;
+&lt;/DsTooltip&gt;;</code></pre>
               
             </div>
             <div class="note ok">
@@ -32126,7 +32146,7 @@ styled or composed content.</div>
   id="components-tooltip"
   class="card 
   no-error
-  has-info
+  no-info
   no-story-error
   no-story-warning
   
@@ -32138,21 +32158,22 @@ styled or composed content.</div>
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
         <label for="c-95-components-tooltip-props" class="badge ok as-toggle">31 prop types</label>
-        <label for="c-95-components-tooltip-info" class="badge info as-toggle">1 info</label>
+        
         <label for="c-95-components-tooltip-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
     </div>
     <div class="meta" title="./src/components/ds-tooltip/ds-tooltip.stories.tsx">components-tooltip · ./src/components/ds-tooltip/ds-tooltip.stories.tsx</div>
-    
-    
-    
+    <div>hint on hover and keyboard focus, including on a disabled DsButtonV3</div>
+    <div class="hint">Short hint shown on hover and keyboard focus of the element it wraps. A disabled `DsButtonV3`
+it wraps stays focusable, so the hint can explain why the button is unavailable.</div>
+    <div class="kv"><span class="chip">summary: hint on hover and keyboard focus, including on a disabled DsButtonV3</span></div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-95-components-tooltip-info" class="tg tg-info" type="checkbox" hidden />
+  
   <input id="c-95-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
@@ -32161,13 +32182,6 @@ styled or composed content.</div>
   <div class="panels">
     
     
-        <div class="panel panel-info">
-          
-    <div class="note info">
-      <div class="note-title">Info</div>
-      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
-    </div>
-        </div>
     
         <div class="panel panel-props">
           <div class="note ok">

@@ -1622,10 +1622,10 @@
           "action button with color/variant/size, icon-only, loading and selected states"
         ]
       },
-      "description": "Button for user-triggered actions that do not navigate to another route.\nSupports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.",
+      "description": "Button for user-triggered actions that do not navigate to another route.\nSupports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.\nWrapped in `DsTooltip` while disabled, it stays focusable so the tooltip can explain why.",
       "summary": "action button with color/variant/size, icon-only, loading and selected states",
       "reactDocgen": {
-        "description": "Button for user-triggered actions that do not navigate to another route.\nSupports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.\n\n@summary action button with color/variant/size, icon-only, loading and selected states",
+        "description": "Button for user-triggered actions that do not navigate to another route.\nSupports color palettes, emphasis variants, sizes, icon-only layout, loading and selected states.\nWrapped in `DsTooltip` while disabled, it stays focusable so the tooltip can explain why.\n\n@summary action button with color/variant/size, icon-only, loading and selected states",
         "methods": [],
         "displayName": "DsButtonV3",
         "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-button-v3/ds-button-v3.tsx",
@@ -1782,6 +1782,12 @@
           "description": "Non-interactive state for an action that is currently unavailable."
         },
         {
+          "id": "components-buttonv3--disabled-with-tooltip",
+          "name": "Disabled With Tooltip",
+          "snippet": "const DisabledWithTooltip = () => <DsTooltip content=\"You need edit access to delete this item\">\n    <DsButtonV3\n        onClick={fn()}\n        color=\"default\"\n        variant=\"primary\"\n        size=\"medium\"\n        icon=\"delete\"\n        disabled>Delete</DsButtonV3>\n</DsTooltip>;",
+          "description": "Wrap a disabled button in `DsTooltip` to explain why it is unavailable. The button stays\nfocusable, so the tooltip opens on hover and keyboard focus."
+        },
+        {
           "id": "components-buttonv3--icon-only",
           "name": "Icon Only",
           "snippet": "const IconOnly = () => <DsButtonV3\n    onClick={fn()}\n    color=\"default\"\n    size=\"medium\"\n    variant=\"primary\"\n    icon=\"check_circle\"\n    aria-label=\"Confirm\" />;",
@@ -1812,7 +1818,7 @@
           "description": "The `size` prop accepts a responsive object (`{ lg, md }`) as well as a static value.\nUse the object form to adapt the button size across breakpoints; the static form\nkeeps a single size everywhere."
         }
       ],
-      "import": "import { DsButtonV3, DsStack } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';"
+      "import": "import { DsButtonV3, DsStack, DsTooltip } from '@drivenets/design-system';\nimport { fn } from 'storybook/test';"
     },
     "components-buttonlegacy-deprecated": {
       "id": "components-buttonlegacy-deprecated",
@@ -31731,9 +31737,15 @@
       "id": "components-tooltip",
       "name": "DsTooltip",
       "path": "./src/components/ds-tooltip/ds-tooltip.stories.tsx",
-      "jsDocTags": {},
+      "jsDocTags": {
+        "summary": [
+          "hint on hover and keyboard focus, including on a disabled DsButtonV3"
+        ]
+      },
+      "description": "Short hint shown on hover and keyboard focus of the element it wraps. A disabled `DsButtonV3`\nit wraps stays focusable, so the hint can explain why the button is unavailable.",
+      "summary": "hint on hover and keyboard focus, including on a disabled DsButtonV3",
       "reactDocgen": {
-        "description": "",
+        "description": "Short hint shown on hover and keyboard focus of the element it wraps. A disabled `DsButtonV3`\nit wraps stays focusable, so the hint can explain why the button is unavailable.\n\n@summary hint on hover and keyboard focus, including on a disabled DsButtonV3",
         "methods": [],
         "displayName": "DsTooltip",
         "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-tooltip/ds-tooltip.tsx",
@@ -32877,6 +32889,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5537
+    "durationMs": 4137
   }
 }
