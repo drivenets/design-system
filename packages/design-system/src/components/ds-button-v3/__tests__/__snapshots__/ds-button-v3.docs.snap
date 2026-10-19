@@ -95,7 +95,10 @@ const DisabledWithReason = () => <DsButtonV3
 ## Icon Only Disabled With Reason
 
 ### Show code
-<DsTooltip content="Delete">
+<DsTooltip
+  content="Delete"
+  disabled
+>
   <DsButtonV3
     aria-label="Delete"
     color="default"
@@ -109,7 +112,7 @@ const DisabledWithReason = () => <DsButtonV3
 </DsTooltip>
 
 ### MCP manifest
-const IconOnlyDisabledWithReason = () => <DsTooltip content="Delete">
+const IconOnlyDisabledWithReason = () => <DsTooltip content="Delete" disabled>
     <DsButtonV3
         onClick={fn()}
         color="default"

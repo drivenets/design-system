@@ -1,14 +1,4 @@
-import {
-	createContext,
-	isValidElement,
-	useContext,
-	useEffect,
-	useRef,
-	useState,
-	type AriaAttributes,
-	type PointerEvent,
-	type Ref,
-} from 'react';
+import { isValidElement, useEffect, useRef, type PointerEvent, type Ref } from 'react';
 import { ark } from '@ark-ui/react/factory';
 import { Tooltip, useTooltip } from '@ark-ui/react/tooltip';
 import { mergeProps } from '@ark-ui/react/utils';
@@ -36,28 +26,6 @@ const getTriggerId = (children: DsTooltipProps['children'], injectedId: string |
 	return childId ?? injectedId;
 };
 
-const isAriaDisabled = (children: DsTooltipProps['children']) => {
-	if (!isValidElement<{ 'aria-disabled'?: AriaAttributes['aria-disabled'] }>(children)) {
-		return false;
-	}
-
-	const ariaDisabled = children.props['aria-disabled'];
-
-	return ariaDisabled === true || ariaDisabled === 'true';
-};
-
-interface OuterTooltip {
-	triggerId?: string;
-	setSuppressed: (suppressed: boolean) => void;
-}
-
-/**
- * Lets a tooltip on an `aria-disabled` element (e.g. `DsButtonV3`'s `disabledReason`) keep closed
- * the tooltips wrapping that same element, such as an icon button's label. Otherwise zag shows
- * whichever opens first, and the outermost handlers always run first.
- */
-const OuterTooltipContext = createContext<OuterTooltip | null>(null);
-
 type TooltipWithContentProps = Omit<DsTooltipProps, keyof DsAsChildTriggerProps> & {
 	ref: DsTooltipProps['ref'];
 	triggerProps: Omit<DsAsChildTriggerProps, 'ref'>;
@@ -81,14 +49,12 @@ const TooltipWithContent = ({
 }: TooltipWithContentProps) => {
 	const triggerId = getTriggerId(children, triggerProps.id);
 	const leftWhileDisabled = useRef(false);
-	const [suppressedByInner, setSuppressedByInner] = useState(false);
-	const isDisabled = disabled || suppressedByInner;
 
 	const tooltip = useTooltip({
 		ids: triggerId ? { trigger: triggerId } : undefined,
 		open,
 		defaultOpen,
-		disabled: isDisabled,
+		disabled,
 		interactive,
 		openDelay,
 		closeDelay,
@@ -98,41 +64,23 @@ const TooltipWithContent = ({
 
 	// Zag ignores pointer leave while disabled, so a tooltip disabled under the pointer keeps its
 	// "opened by this pointer" flag and would skip the next hover. Replay the missed leave once enabled.
-	const { id: resolvedTriggerId, onPointerLeave: replayPointerLeave } = tooltip.getTriggerProps();
+	const replayPointerLeave = tooltip.getTriggerProps().onPointerLeave;
 
 	useEffect(() => {
-		if (isDisabled || !leftWhileDisabled.current) {
+		if (disabled || !leftWhileDisabled.current) {
 			return;
 		}
 
 		leftWhileDisabled.current = false;
 		replayPointerLeave?.({} as PointerEvent<HTMLButtonElement>);
-	}, [isDisabled, replayPointerLeave]);
-
-	const outerTooltip = useContext(OuterTooltipContext);
-	const suppressOuter =
-		resolvedTriggerId !== undefined && outerTooltip?.triggerId === resolvedTriggerId
-			? outerTooltip.setSuppressed
-			: undefined;
-	// Being suppressed passes the takeover on, so it reaches every tooltip wrapping the element.
-	const keepsOuterClosed = (!disabled && isAriaDisabled(children)) || suppressedByInner;
-
-	useEffect(() => {
-		if (!suppressOuter || !keepsOuterClosed) {
-			return;
-		}
-
-		suppressOuter(true);
-
-		return () => suppressOuter(false);
-	}, [suppressOuter, keepsOuterClosed]);
+	}, [disabled, replayPointerLeave]);
 
 	const trackDisabledLeave = {
 		onPointerEnter: () => {
 			leftWhileDisabled.current = false;
 		},
 		onPointerLeave: () => {
-			if (isDisabled) {
+			if (disabled) {
 				leftWhileDisabled.current = true;
 			}
 		},
@@ -147,17 +95,13 @@ const TooltipWithContent = ({
 			lazyMount
 			unmountOnExit
 		>
-			<OuterTooltipContext.Provider
-				value={{ triggerId: resolvedTriggerId, setSuppressed: setSuppressedByInner }}
+			<Tooltip.Trigger
+				asChild
+				ref={ref as TriggerRef}
+				{...mergeProps<Record<string, unknown>>(trackDisabledLeave, triggerProps)}
 			>
-				<Tooltip.Trigger
-					asChild
-					ref={ref as TriggerRef}
-					{...mergeProps<Record<string, unknown>>(trackDisabledLeave, triggerProps)}
-				>
-					{children}
-				</Tooltip.Trigger>
-			</OuterTooltipContext.Provider>
+				{children}
+			</Tooltip.Trigger>
 			<Portal>
 				<Tooltip.Positioner className={styles.positioner}>
 					<Tooltip.Content
@@ -175,15 +119,6 @@ const TooltipWithContent = ({
 	);
 };
 
-/**
- * Short hint shown while the pointer rests on, or keyboard focus is on, the element it wraps.
- *
- * A natively disabled element never receives those events, so a tooltip on it never opens. To explain
- * why a `DsButtonV3` is disabled, set its `disabledReason` instead: the button stays focusable and the
- * reason takes over any tooltip wrapping it.
- *
- * @summary hint on hover and keyboard focus; explain a disabled DsButtonV3 with its `disabledReason`
- */
 const DsTooltip = ({
 	content,
 	children,

@@ -2,7 +2,6 @@ import { createRef, type FormEvent } from 'react';
 import { describe, expect, it, onTestFinished, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { buttonV3Colors, buttonV3Variants, DsButtonV3 } from '../index';
-import { DsDropdownMenu } from '../../ds-dropdown-menu';
 import { DsTooltip } from '../../ds-tooltip';
 
 describe('DsButtonV3', () => {
@@ -262,7 +261,7 @@ describe('DsButtonV3', () => {
 });
 
 const REASON = 'You need edit access to delete this item';
-// Longer than a render and than the reason tooltip's close delay.
+// Long enough for a tooltip opened by keyboard focus to render.
 const SETTLE_MS = 500;
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -381,69 +380,6 @@ describe('DsButtonV3 disabledReason', () => {
 		expect(onDocumentClick).not.toHaveBeenCalled();
 	});
 
-	it('keeps the reason open when the disabled button is clicked', async () => {
-		await page.render(
-			<DsButtonV3 disabled disabledReason={REASON}>
-				Delete
-			</DsButtonV3>,
-		);
-
-		const button = page.getByRole('button', { name: 'Delete' });
-		const tooltip = page.getByRole('tooltip', { name: REASON });
-
-		await button.hover();
-		await expect.element(tooltip).toBeVisible();
-
-		await button.click({ force: true });
-		await expect.element(tooltip).toBeVisible();
-	});
-
-	it('keeps the reason open while the pointer moves onto it', async () => {
-		await page.render(
-			<DsButtonV3 disabled disabledReason={REASON}>
-				Delete
-			</DsButtonV3>,
-		);
-
-		const tooltip = page.getByRole('tooltip', { name: REASON });
-
-		await page.getByRole('button', { name: 'Delete' }).hover();
-		await expect.element(tooltip).toBeVisible();
-
-		await tooltip.hover();
-		await wait(SETTLE_MS);
-		await expect.element(tooltip).toBeVisible();
-	});
-
-	it('does not open a menu it triggers', async () => {
-		const onOpenChange = vi.fn();
-
-		await page.render(
-			<DsDropdownMenu.Root onOpenChange={onOpenChange}>
-				<DsDropdownMenu.Trigger asChild>
-					<DsButtonV3 disabled disabledReason={REASON}>
-						Actions
-					</DsButtonV3>
-				</DsDropdownMenu.Trigger>
-				<DsDropdownMenu.Content>
-					<DsDropdownMenu.Item value="edit">Edit</DsDropdownMenu.Item>
-				</DsDropdownMenu.Content>
-			</DsDropdownMenu.Root>,
-		);
-
-		const trigger = page.getByRole('button', { name: 'Actions' });
-
-		await tabIntoFrame();
-		await expect.element(trigger).toHaveFocus();
-
-		await userEvent.keyboard('{Enter}');
-		await userEvent.keyboard('{ArrowDown}');
-		await trigger.click({ force: true });
-
-		expect(onOpenChange).not.toHaveBeenCalled();
-		await expect.element(trigger).toHaveAttribute('aria-expanded', 'false');
-	});
-
 	it('acts as a regular button while enabled', async () => {
 		const onClick = vi.fn();
 
@@ -482,9 +418,9 @@ describe('DsButtonV3 disabledReason', () => {
 			.toHaveAccessibleDescription(`${REASON} Deleted items stay in the bin for 30 days`);
 	});
 
-	it('shows the reason instead of a wrapping label tooltip while disabled', async () => {
+	it('shows the reason when a wrapping label tooltip is turned off while disabled', async () => {
 		const { rerender } = await page.render(
-			<DsTooltip content="Delete row">
+			<DsTooltip content="Delete row" disabled>
 				<DsButtonV3 icon="delete" aria-label="Delete" disabled disabledReason={REASON} />
 			</DsTooltip>,
 		);
@@ -496,7 +432,6 @@ describe('DsButtonV3 disabledReason', () => {
 
 		await button.hover();
 		await expect.element(page.getByRole('tooltip', { name: REASON })).toBeVisible();
-		await expect.element(page.getByRole('tooltip', { name: 'Delete row' })).not.toBeInTheDocument();
 
 		await button.unhover();
 		await rerender(
@@ -507,28 +442,6 @@ describe('DsButtonV3 disabledReason', () => {
 
 		await button.hover();
 		await expect.element(page.getByRole('tooltip', { name: 'Delete row' })).toBeVisible();
-	});
-
-	it('keeps focus on the same button when it becomes disabled with a reason', async () => {
-		const ExportButton = ({ reason }: { reason?: string }) => (
-			<DsButtonV3 disabled={reason !== undefined} disabledReason={reason}>
-				Export
-			</DsButtonV3>
-		);
-
-		const { rerender } = await page.render(<ExportButton />);
-
-		await tabIntoFrame();
-		const focusedBefore = page.getByRole('button', { name: 'Export' }).element();
-		await expect.element(page.getByRole('button', { name: 'Export' })).toHaveFocus();
-
-		await rerender(<ExportButton reason="An export is already running" />);
-
-		const button = page.getByRole('button', { name: 'Export' });
-
-		expect(button.element()).toBe(focusedBefore);
-		await expect.element(button).toHaveFocus();
-		await expect.element(button).toHaveAccessibleDescription('An export is already running');
 	});
 
 	it.each(colorVariantPairs)(

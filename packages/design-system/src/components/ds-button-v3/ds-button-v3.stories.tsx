@@ -70,19 +70,8 @@ export const Disabled: Story = {
 };
 
 /**
- * Tells users why an action is unavailable. While `disabled`, a button with a `disabledReason`
- * stays in the tab order and shows the reason in a tooltip on hover and keyboard focus; the pointer
- * can move onto the reason, and Escape, blur and pointer leave dismiss it. Clicks, Enter and Space
- * still do nothing, so a submit button does not submit its form.
- *
- * Accessibility:
- * - Screen readers announce the button as disabled (`aria-disabled`) and read the reason as its
- *   description (`aria-describedby`), whether the user tabs to it or browses to it.
- * - Prefer it over a bare `disabled` whenever the user can act on the reason, e.g. "Complete
- *   step 1 first" or "Ask an admin for edit access".
- * - Keep the reason short, plain text and self-contained: it is read right after the button's name.
- * - The reason is ignored while the button is enabled, so it can stay set as `disabled` toggles.
- *   A focused button keeps its focus when it becomes disabled.
+ * Explains why an action is unavailable: the disabled button stays focusable and shows the reason in
+ * a tooltip on hover and keyboard focus.
  */
 export const DisabledWithReason: Story = {
 	args: {
@@ -97,10 +86,8 @@ export const DisabledWithReason: Story = {
 };
 
 /**
- * Icon-only buttons often sit inside a label tooltip. Keep that wrapper: while the button is
- * disabled, its `disabledReason` takes over the tooltip, and the label returns once it is enabled.
- * Name the action in the reason, since sighted users no longer see the label. Toggle `disabled`
- * in the controls to compare.
+ * Turn off an icon-only button's label tooltip while the button is disabled, so the reason shows
+ * instead.
  */
 export const IconOnlyDisabledWithReason: Story = {
 	args: {
@@ -113,7 +100,7 @@ export const IconOnlyDisabledWithReason: Story = {
 		disabledReason: 'Delete is unavailable: you need edit access',
 	},
 	render: (args) => (
-		<DsTooltip content="Delete">
+		<DsTooltip content="Delete" disabled={args.disabled}>
 			<DsButtonV3 {...args} />
 		</DsTooltip>
 	),

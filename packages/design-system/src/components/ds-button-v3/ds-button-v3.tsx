@@ -1,4 +1,4 @@
-import { useId, type MouseEvent, type PointerEvent } from 'react';
+import { useId, type MouseEvent } from 'react';
 import classNames from 'classnames';
 import { DsIcon, type IconSize } from '../ds-icon';
 import { DsSpinner } from '../ds-spinner';
@@ -13,22 +13,11 @@ const iconSizeMap: Record<ButtonV3Size, IconSize> = Object.freeze({
 	tiny: 'tiny',
 });
 
-// Lets the pointer travel from the button onto the reason without it closing (WCAG 1.4.13).
-const REASON_CLOSE_DELAY_MS = 150;
-
-// A natively disabled button receives none of these, so neither does one kept focusable to
-// explain itself, including handlers an `asChild` trigger (menu, popover) injects.
-// `preventDefault` also stops form submission and keeps the reason tooltip open.
-const blockedActivation = Object.freeze({
-	onClick: (event: MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-		event.stopPropagation();
-	},
-	onPointerDown: (event: PointerEvent<HTMLButtonElement>) => event.preventDefault(),
-	onMouseDown: undefined,
-	onKeyDown: undefined,
-	onKeyUp: undefined,
-});
+// Like a natively disabled button: no click handler, no form submit, nothing reaching ancestors.
+const blockClick = (event: MouseEvent<HTMLButtonElement>) => {
+	event.preventDefault();
+	event.stopPropagation();
+};
 
 /**
  * Button for user-triggered actions that do not navigate to another route.
@@ -37,29 +26,28 @@ const blockedActivation = Object.freeze({
  *
  * @summary action button with color/variant/size, icon-only, loading, selected and disabled-reason states
  */
-const DsButtonV3 = (props: DsButtonV3BaseProps) => {
-	const {
-		ref,
-		className,
-		style,
-		children,
-		icon,
-		disabled,
-		disabledReason,
-		loading = false,
-		color = 'default',
-		variant = 'primary',
-		size = 'medium',
-		selected = false,
-		highEmphasis = false,
-		type = 'button',
-		'aria-disabled': ariaDisabled,
-		'aria-describedby': ariaDescribedBy,
-		...rest
-	} = props;
-
+const DsButtonV3 = ({
+	ref,
+	className,
+	style,
+	children,
+	icon,
+	disabled,
+	disabledReason,
+	loading = false,
+	color = 'default',
+	variant = 'primary',
+	size = 'medium',
+	selected = false,
+	highEmphasis = false,
+	type = 'button',
+	onClick,
+	'aria-describedby': ariaDescribedBy,
+	...rest
+}: DsButtonV3BaseProps) => {
 	const reasonId = useId();
 	const isIconOnly = icon !== undefined && !children;
+	// A natively disabled button gets no hover or focus, so it could never open the reason tooltip.
 	const showsReason = Boolean(disabled && disabledReason);
 
 	const button = (
@@ -68,7 +56,7 @@ const DsButtonV3 = (props: DsButtonV3BaseProps) => {
 			// eslint-disable-next-line react/button-has-type -- Dynamic by nature of this component
 			type={type}
 			disabled={!showsReason && (disabled || loading)}
-			aria-disabled={showsReason || ariaDisabled}
+			aria-disabled={showsReason || undefined}
 			aria-describedby={showsReason ? [reasonId, ariaDescribedBy].filter(Boolean).join(' ') : ariaDescribedBy}
 			aria-busy={loading || undefined}
 			aria-pressed={selected}
@@ -82,11 +70,12 @@ const DsButtonV3 = (props: DsButtonV3BaseProps) => {
 			data-icon-only={isIconOnly || undefined}
 			data-loading={loading && !disabled ? '' : undefined}
 			data-disabled={showsReason ? '' : undefined}
+			onClick={showsReason ? blockClick : onClick}
 			{...rest}
-			{...(showsReason ? blockedActivation : {})}
 		>
 			{loading ? <DsSpinner /> : icon && <DsIcon icon={icon} size={iconSizeMap[size]} aria-hidden />}
 			{children}
+			{/* Screen readers get the reason even while the tooltip is closed. */}
 			{showsReason && (
 				<span id={reasonId} hidden>
 					{disabledReason}
@@ -95,19 +84,12 @@ const DsButtonV3 = (props: DsButtonV3BaseProps) => {
 		</button>
 	);
 
-	// Wrap whenever the prop is passed, even while enabled or unset, so toggling `disabled` or the
-	// reason never remounts the button and drops its focus.
-	if (!('disabledReason' in props)) {
+	if (!disabledReason) {
 		return button;
 	}
 
 	return (
-		<DsTooltip
-			content={disabledReason ?? null}
-			disabled={!showsReason}
-			interactive
-			closeDelay={REASON_CLOSE_DELAY_MS}
-		>
+		<DsTooltip content={disabledReason} disabled={!disabled}>
 			{button}
 		</DsTooltip>
 	);

@@ -65,11 +65,8 @@ export interface DsButtonV3BaseProps extends ButtonHTMLAttributes<HTMLButtonElem
 	loading?: boolean;
 
 	/**
-	 * Tells the user why the button is unavailable. Applies only while `disabled`: the button then
-	 * stays focusable and is announced as disabled (`aria-disabled`) with the reason as its
-	 * description, ignores clicks, Enter and Space, and shows the reason in a tooltip on hover and
-	 * keyboard focus. Use short plain text. Pass the prop on every render, `undefined` when there is
-	 * no reason, so a focused button keeps its focus as the reason comes and goes.
+	 * Why the button is unavailable. While `disabled`, the button stays focusable, ignores clicks,
+	 * and shows the reason in a tooltip; screen readers read it as the button's description.
 	 */
 	disabledReason?: string;
 }
