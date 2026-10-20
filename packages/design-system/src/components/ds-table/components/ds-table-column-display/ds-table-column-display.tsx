@@ -5,6 +5,7 @@ import { DsButtonV3 } from '../../../ds-button-v3';
 import { DsCheckbox } from '../../../ds-checkbox';
 import { DsDivider } from '../../../ds-divider';
 import { DsIcon } from '../../../ds-icon';
+import { DsPinToggle } from '../../../ds-pin-toggle';
 import { DsTextInput } from '../../../ds-text-input';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { defaultDsTableLocale } from '../../ds-table.types';
@@ -29,7 +30,7 @@ const stopPropagation = (event: MouseEvent) => event.stopPropagation();
 
 const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
 	const { locale, columnVisibility } = useDsTableContext<TData, unknown>();
-	const { searchColumns, allColumns } = { ...defaultDsTableLocale, ...locale };
+	const { searchColumns, allColumns, stickyColumn } = { ...defaultDsTableLocale, ...locale };
 	const searchId = useId();
 	const [query, setQuery] = useState('');
 
@@ -42,34 +43,76 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 		table.setColumnVisibility((old) => ({ ...old, ...update }));
 	};
 
-	const renderNode = (node: ColumnDisplayNode) => (
-		<li key={node.id} className={styles.item}>
-			<DsCheckbox
-				label={node.label}
-				checked={node.checked}
-				disabled={node.locked}
-				actions={node.locked ? <DsIcon icon="lock" size="tiny" color="secondary" aria-hidden /> : undefined}
-				onCheckedChange={() => toggle(node)}
+	// Only top-level rows get the toggle: making any leaf sticky makes its whole
+	// top-level group sticky.
+	const renderStickyToggle = (node: ColumnDisplayNode) => {
+		const column = table.getColumn(node.id);
+
+		if (!column?.getCanPin()) {
+			return null;
+		}
+
+		return (
+			<DsPinToggle
+				className={styles.stickyToggle}
+				itemLabel={node.label}
+				locale={{ pin: stickyColumn }}
+				pinned={column.getIsPinned() !== false}
+				onPinnedChange={(sticky) => column.pin(sticky ? 'left' : false)}
 			/>
-			{node.children.length > 0 && <ul className={styles.children}>{node.children.map(renderNode)}</ul>}
-		</li>
-	);
+		);
+	};
+
+	const renderNode = (node: ColumnDisplayNode, isTopLevel: boolean) => {
+		const stickyToggle = isTopLevel ? renderStickyToggle(node) : null;
+		const lock = node.locked ? <DsIcon icon="lock" size="tiny" color="secondary" aria-hidden /> : null;
+
+		return (
+			<li key={node.id} className={styles.item}>
+				<DsCheckbox
+					size="large"
+					className={styles.row}
+					label={node.label}
+					checked={node.checked}
+					disabled={node.locked}
+					actions={
+						stickyToggle || lock ? (
+							<>
+								{stickyToggle}
+								{lock}
+							</>
+						) : undefined
+					}
+					onCheckedChange={() => toggle(node)}
+				/>
+				{node.children.length > 0 && (
+					<ul className={styles.children}>{node.children.map((child) => renderNode(child, false))}</ul>
+				)}
+			</li>
+		);
+	};
 
 	return (
 		<>
-			<label htmlFor={searchId} className={styles.visuallyHidden}>
-				{searchColumns}
-			</label>
-			<DsTextInput
-				id={searchId}
-				placeholder={searchColumns}
-				value={query}
-				onValueChange={setQuery}
-				slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
-			/>
-			{visibleTree.length > 0 && <ul className={styles.list}>{visibleTree.map(renderNode)}</ul>}
+			<div className={styles.header}>
+				<label htmlFor={searchId} className={styles.visuallyHidden}>
+					{searchColumns}
+				</label>
+				<DsTextInput
+					id={searchId}
+					placeholder={searchColumns}
+					value={query}
+					onValueChange={setQuery}
+					slots={{ startAdornment: <DsIcon icon="search" size="tiny" aria-hidden /> }}
+				/>
+			</div>
+			{visibleTree.length > 0 && (
+				<ul className={styles.list}>{visibleTree.map((node) => renderNode(node, true))}</ul>
+			)}
 			<DsDivider className={styles.divider} />
 			<DsCheckbox
+				size="large"
+				className={styles.allColumns}
 				label={allColumns}
 				checked={allColumnsTarget.checked}
 				disabled={allColumnsTarget.locked}
@@ -81,7 +124,8 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 
 /**
  * Column display control: a tertiary icon-only button whose popup lists every
- * column with a checkbox, plus a search field and an "All columns" toggle.
+ * column with a checkbox and a sticky toggle per top-level row, plus a search
+ * field and an "All columns" toggle.
  */
 export const DsTableColumnDisplay = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
 	const { locale } = useDsTableContext<TData, unknown>();
@@ -98,9 +142,10 @@ export const DsTableColumnDisplay = <TData,>({ table }: DsTableColumnDisplayProp
 		>
 			<Popover.Trigger asChild>
 				<DsButtonV3
+					className={styles.trigger}
 					variant="tertiary"
-					size="tiny"
-					icon="view_column"
+					size="small"
+					icon="width_normal"
 					selected={open}
 					aria-pressed={undefined}
 					aria-label={label}

@@ -7,32 +7,18 @@ description: Apply when preparing a PR, reviewing code changes, running git diff
 
 ## Git & PR Workflow
 
-| Requirement                            | Details                                                                     |
-| -------------------------------------- | --------------------------------------------------------------------------- |
-| **No force-push after review**         | GitHub loses review history; use merge commits instead                      |
-| **Changelog required**                 | Run `pnpm changelog` before merge                                           |
-| **Conventional commits**               | PR title must follow conventional commit format                             |
-| **Separate concerns**                  | Unrelated changes go in separate PRs; easier revert and isolation           |
-| **Changeset messages are user-facing** | Write "Add X to Y" or "Fix X in Y", not implementation details              |
-| **`skip changelog` label**             | Use only for non-user-facing changes (CI, tests, docs); never for bug fixes |
-| **Use `--frozen-lockfile`**            | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes  |
-| **Deprecation rules**                  | Add to `@drivenets/eslint-plugin-design-system` when deprecating            |
+Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.md#git--prs). PR title, body, screenshots and labels: [create-pr](../create-pr/SKILL.md). Changeset wording: [AGENTS.md#comments--changesets](../../../AGENTS.md#comments--changesets).
 
-```markdown
-<!-- Good changeset message -->
-
-Add DsCard component
-
-<!-- Bad changeset message - implementation details -->
-
-Refactor card to use CSS modules and fix hover state selector specificity
-```
+| Requirement                 | Details                                                                    |
+| --------------------------- | -------------------------------------------------------------------------- |
+| **Use `--frozen-lockfile`** | Run `pnpm install --frozen-lockfile` to avoid unnecessary lockfile changes |
+| **Deprecation rules**       | Add to `@drivenets/eslint-plugin-design-system` when deprecating           |
 
 ---
 
 ## Code Review Process
 
-1. Get diff: `git diff origin/main`
+1. Get diff: `git diff "$base"` — [`$base`](../../../AGENTS.md#git--prs)
 2. Review every changed file — read the matching skill(s) **fully** for paths in the diff:
 
 | Changed paths                    | Skills                                                                               |
@@ -46,7 +32,7 @@ Refactor card to use CSS modules and fix hover state selector specificity
 | `*.figma.ts` (Code Connect)      | [figma-to-component](../figma-to-component/SKILL.md); validate parse (see step 3)    |
 
 3. When any `*.figma.ts` (Figma Code Connect) file is in the diff, validate that all Code Connect files still parse: `pnpm --filter @drivenets/design-system figma:lint` (see [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse)). Flag any file that fails to parse.
-4. Flag only clear, high-severity issues (max 10 inline comments)
+4. Flag only clear, high-severity issues (max 10 inline comments). Separately, list every comment or changeset that fails [Comments & changesets](../../../AGENTS.md#comments--changesets) as one grouped finding; it doesn't count toward the cap.
 
 ### Inline comment format
 
@@ -66,7 +52,9 @@ Refactor card to use CSS modules and fix hover state selector specificity
 
 Before submitting a PR:
 
-- [ ] Changelog added (`pnpm changelog`) with user-facing message
+- [ ] Changelog added (`pnpm changelog`): one user-facing sentence
+- [ ] Before/after screenshots when the diff changes what renders ([create-pr](../create-pr/SKILL.md))
+- [ ] New comments explain a _why_ the code can't show; none narrate the code or the change
 - [ ] Behavioral coverage in `*.browser.test.tsx` where interactions matter
 - [ ] Browser tests use a11y queries (no test-ids unless unavoidable)
 - [ ] CSS uses design tokens, no `!important`
