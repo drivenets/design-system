@@ -10,7 +10,6 @@ export const NoSearchResultIllustration: FC<SVGProps<SVGSVGElement>> = (props) =
 		xmlns="http://www.w3.org/2000/svg"
 		{...props}
 	>
-		<rect width="250" height="200" fill="var(--background)" />
 		<IllustrationClouds />
 		<path
 			d="M120.5 133C139.002 133 154 118.002 154 99.5C154 80.9985 139.002 66 120.5 66C101.998 66 87 80.9985 87 99.5C87 118.002 101.998 133 120.5 133Z"
