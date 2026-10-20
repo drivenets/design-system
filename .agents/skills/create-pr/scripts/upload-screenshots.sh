@@ -1,19 +1,27 @@
 #!/usr/bin/env bash
-# Usage: upload-screenshots.sh AR-1234 before-x.png after-x.png [...]
+# Usage: upload-screenshots.sh [--upstream] AR-1234 before-x.png after-x.png [...]
+# --upstream: for Routines, whose origin is drivenets/design-system; pushes to claude/pr-screenshots there.
 set -euo pipefail
 
+branch=pr-screenshots
+upstream=false
+if [ "${1:-}" = --upstream ]; then
+	branch=claude/pr-screenshots
+	upstream=true
+	shift
+fi
+
 if [ $# -lt 2 ]; then
-	echo "Usage: $0 AR-XXXX <file.png> [file.png ...]" >&2
+	echo "Usage: $0 [--upstream] AR-XXXX <file.png> [file.png ...]" >&2
 	exit 1
 fi
 
 ticket=$1
 shift
-branch=pr-screenshots
 slug=$(gh repo view "$(git remote get-url origin)" --json nameWithOwner -q .nameWithOwner)
 
-if [ "$slug" = drivenets/design-system ]; then
-	echo "origin is upstream; push screenshots to your fork" >&2
+if [ "$slug" = drivenets/design-system ] && [ "$upstream" = false ]; then
+	echo "origin is upstream; push screenshots to your fork (Routines: pass --upstream)" >&2
 	exit 1
 fi
 
