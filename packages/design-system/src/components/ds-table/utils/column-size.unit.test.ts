@@ -271,7 +271,7 @@ describe('shiftColumnTrack', () => {
 		expect(shiftColumnTrack(sizing, ['a', 'b'], 0, bounds)).toBe(sizing);
 	});
 
-	it('shrinks from the last leaf when the spacer appears', () => {
+	it('shrinks from the last leaf when the scrollbar gutter appears', () => {
 		const next = shiftColumnTrack({ a: 500, b: 500 }, ['a', 'b'], -10, bounds);
 
 		expect(next.a).toBe(500);
@@ -279,7 +279,7 @@ describe('shiftColumnTrack', () => {
 		expect((next.a ?? 0) + (next.b ?? 0)).toBe(990);
 	});
 
-	it('grows leaves when the spacer disappears', () => {
+	it('grows leaves when the scrollbar gutter disappears', () => {
 		const next = shiftColumnTrack({ a: 500, b: 490 }, ['a', 'b'], 10, bounds);
 
 		expect((next.a ?? 0) + (next.b ?? 0)).toBe(1000);
@@ -376,11 +376,11 @@ describe('getRowActionsColumnWidth', () => {
 	});
 
 	it('fits primary actions with gaps and cell padding', () => {
-		expect(getRowActionsColumnWidth(2, false)).toBe(2 * 36 + 8 + 2 * 16);
+		expect(getRowActionsColumnWidth(2, false)).toBe(2 * 36 + 8 + 2 * 8);
 	});
 
-	it('adds a trigger slot and its offset when secondary actions exist', () => {
-		expect(getRowActionsColumnWidth(2, true)).toBe(3 * 36 + 2 * 8 + 12 + 2 * 16);
-		expect(getRowActionsColumnWidth(0, true)).toBe(36 + 12 + 2 * 16);
+	it('adds a trigger slot when secondary actions exist', () => {
+		expect(getRowActionsColumnWidth(2, true)).toBe(3 * 36 + 2 * 8 + 2 * 8);
+		expect(getRowActionsColumnWidth(0, true)).toBe(36 + 2 * 8);
 	});
 });
