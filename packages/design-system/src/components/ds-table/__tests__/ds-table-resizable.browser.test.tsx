@@ -157,14 +157,6 @@ const getScrollContainer = (): HTMLElement => {
 	return container;
 };
 
-const getTableBody = (container: HTMLElement): HTMLElement => {
-	const body = container.querySelector('tbody');
-	if (!(body instanceof HTMLElement)) {
-		throw new Error('Expected the table body');
-	}
-	return body;
-};
-
 describe('DsTable - resizable columns', () => {
 	it('renders a resize handle per resizable column when enabled', async () => {
 		await page.render(<DsTable columns={sizedColumns} data={rows} resizableColumns />);
@@ -920,7 +912,6 @@ describe('DsTable - resizable columns', () => {
 			.not.toBe('');
 
 		const container = getScrollContainer();
-		expect(getComputedStyle(getTableBody(container)).overflowX).toBe('hidden');
 		expect(container.scrollWidth).toBe(container.clientWidth);
 	});
 
@@ -944,7 +935,6 @@ describe('DsTable - resizable columns', () => {
 			.not.toBe('');
 
 		const container = getScrollContainer();
-		expect(getComputedStyle(getTableBody(container)).overflowX).toBe('hidden');
 		expect(container.scrollWidth).toBeGreaterThan(container.clientWidth);
 	});
 

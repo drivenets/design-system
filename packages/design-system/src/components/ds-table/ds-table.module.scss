@@ -10,6 +10,15 @@
 }
 
 $bulk-actions-reserved-space: 80px;
+$sticky-cell-z-index: 1;
+$sticky-header-cell-z-index: 2;
+$sticky-header-z-index: 3;
+// Above sticky body cells, below the sticky header.
+$editing-cell-z-index: 2;
+$sticky-divider-shadow-offset: 2px;
+$sticky-divider-shadow-blur: 2px;
+// Expanded row cell padding plus its side border.
+$expanded-content-inset: calc(var(--standard) + #{vars.$border-width});
 
 .container {
 	position: relative;
@@ -34,43 +43,172 @@ $bulk-actions-reserved-space: 80px;
 	flex-shrink: 0;
 }
 
-.dataTableContainer {
+// One scroll container per table scrolls both axes, so the header and sticky
+// columns can use native `position: sticky` and the vertical scrollbar sits
+// at the visible right edge.
+.dataTableContainer,
+.virtualizedContainer {
 	position: relative;
+	display: flex;
 	flex: 1;
+	flex-direction: column;
 	min-height: 0;
 	max-height: 100%;
-	overflow-x: auto;
-	overflow-y: hidden;
-	display: flex;
-	flex-direction: column;
+	overflow: auto;
 
-	@include scrollbars.scrollbar-on-hover;
+	// Same scrollbar size on hover: a wider scrollbar would shrink the content box
+	// and reflow the columns.
+	@include scrollbars.scrollbar-auto-hide(
+		scrollbars.$scrollbar-default-size,
+		scrollbars.$scrollbar-default-size
+	);
 
 	> table {
 		display: flex;
+		flex: 1 0 auto;
 		flex-direction: column;
-		flex: 1;
-		min-height: 0;
 		width: max-content;
 		min-width: 100%;
 	}
 
 	thead {
+		position: sticky;
+		top: 0;
+		z-index: $sticky-header-z-index;
 		display: block;
 		flex-shrink: 0;
-		overflow-y: hidden;
 	}
 
 	tbody {
 		display: block;
-		overflow-y: auto;
-		overflow-x: hidden;
-		flex: 1;
-		min-height: 0;
-		scrollbar-gutter: auto;
+		flex: 1 0 auto;
+	}
 
-		@include scrollbars.scrollbar-on-hover;
+	thead tr {
+		display: flex;
+		width: 100%;
+	}
 
+	thead th {
+		display: flex;
+		align-items: center;
+	}
+
+	[data-sticky] {
+		position: sticky;
+		z-index: $sticky-cell-z-index;
+	}
+
+	thead [data-sticky] {
+		z-index: $sticky-header-cell-z-index;
+	}
+
+	// The inline editor overlay spills over neighboring cells.
+	tbody td[data-editing] {
+		z-index: $editing-cell-z-index;
+	}
+
+	[data-sticky='left'] {
+		inset-inline-start: var(--ds-table-sticky-offset, 0px);
+	}
+
+	// Right sticky columns stop before the scrollbar gutter, where they sit when
+	// scrolled to the end, so they never jump by the gutter width.
+	[data-sticky='right'] {
+		inset-inline-end: calc(var(--ds-table-sticky-offset, 0px) + var(--ds-table-scrollbar-gutter, 0px));
+	}
+
+	// Inset border + outer shadow: toggling the divider never shifts layout.
+	// Child combinators keep a nested table's cells out of this table's state.
+	&[data-overflow-left] > table > * > tr > [data-sticky-edge='left'] {
+		box-shadow:
+			inset -1px 0 0 var(--border),
+			$sticky-divider-shadow-offset 0 $sticky-divider-shadow-blur var(--shadow-moderate);
+
+		&:dir(rtl) {
+			box-shadow:
+				inset 1px 0 0 var(--border),
+				(-$sticky-divider-shadow-offset) 0 $sticky-divider-shadow-blur var(--shadow-moderate);
+		}
+	}
+
+	&[data-overflow-right] > table > * > tr > [data-sticky-edge='right'] {
+		box-shadow:
+			inset 1px 0 0 var(--border),
+			(-$sticky-divider-shadow-offset) 0 $sticky-divider-shadow-blur var(--shadow-moderate);
+
+		&:dir(rtl) {
+			box-shadow:
+				inset -1px 0 0 var(--border),
+				$sticky-divider-shadow-offset 0 $sticky-divider-shadow-blur var(--shadow-moderate);
+		}
+	}
+
+	// Expanded panel content stays in the visible area while its row background
+	// spans the full column track.
+	[data-expanded-content] {
+		position: sticky;
+		inset-inline-start: $expanded-content-inset;
+		width: calc(var(--ds-table-visible-width, 100%) - 2 * $expanded-content-inset);
+		min-width: 0;
+	}
+}
+
+// The virtualized body is as tall as every row, so the sticky header can reach
+// the last one. Size containment keeps that height from growing ancestors whose
+// `min-height` is `auto` (e.g. a `flex: 1` wrapper); the table takes its height
+// from the parent only, which a virtualized table already requires.
+.virtualizedContainer {
+	contain: size;
+}
+
+// While the table overflows vertically, rows keep the scrollbar gutter free at
+// the inline end (see `useScrollbarGutter`), so columns never sit under an
+// overlay or hidden scrollbar.
+.dataTableContainer,
+.virtualizedContainer {
+	thead tr,
+	tbody tr {
+		box-sizing: border-box;
+		padding-inline-end: var(--ds-table-scrollbar-gutter, 0px);
+	}
+
+	// The outermost right sticky cell paints the gutter beside it, so scrolled
+	// content never shows between it and the scrollbar.
+	tr > [data-sticky='right']:last-child::after {
+		content: '';
+		position: absolute;
+		inset-block: 0;
+		inset-inline-start: 100%;
+		width: var(--ds-table-scrollbar-gutter, 0px);
+		background-color: inherit;
+	}
+
+	// Leaves the header row's bottom border visible under the painted gutter.
+	thead tr > [data-sticky='right']:last-child::after {
+		inset-block-end: 1px;
+	}
+}
+
+// Sticky cells inherit the row background (default, hover, selected, active,
+// dragging), so scrolled content never shows through. Zero specificity: row
+// and cell state styles win.
+:where(.dataTableContainer, .virtualizedContainer) {
+	thead tr {
+		background-color: inherit;
+	}
+
+	tbody tr {
+		background-color: var(--background);
+	}
+
+	[data-sticky] {
+		background-color: inherit;
+	}
+}
+
+.dataTableContainer {
+	tbody {
 		&:has(> .emptyStateRow > .emptyState) {
 			position: sticky;
 			inset-inline-start: 0;
@@ -80,17 +218,11 @@ $bulk-actions-reserved-space: 80px;
 		}
 	}
 
-	thead tr,
 	tbody tr {
 		display: flex;
 		width: 100%;
 	}
 
-	tbody tr {
-		padding-inline-end: var(--ds-table-body-scrollbar-compensation, 0px);
-	}
-
-	thead th,
 	tbody td {
 		display: flex;
 		align-items: center;
@@ -132,50 +264,4 @@ $bulk-actions-reserved-space: 80px;
 	justify-content: center;
 	align-items: center;
 	text-align: center;
-}
-
-.virtualizedContainer {
-	position: relative;
-	overflow-x: auto;
-	overflow-y: hidden;
-	display: flex;
-	flex-direction: column;
-	flex: 1;
-
-	@include scrollbars.scrollbar-on-hover;
-
-	> table {
-		display: flex;
-		flex-direction: column;
-		flex: 1;
-		min-height: 0;
-		width: max-content;
-		min-width: 100%;
-	}
-
-	thead {
-		display: block;
-		flex-shrink: 0;
-		overflow-y: hidden;
-	}
-
-	tbody {
-		flex: 1;
-		min-height: 0;
-		scrollbar-gutter: auto;
-	}
-
-	thead tr {
-		display: flex;
-		width: 100%;
-	}
-
-	tbody tr {
-		padding-inline-end: var(--ds-table-body-scrollbar-compensation, 0px);
-	}
-
-	thead th {
-		display: flex;
-		align-items: center;
-	}
 }
