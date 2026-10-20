@@ -5,7 +5,7 @@ import type { Row, RowSelectionState } from '@tanstack/react-table';
 import type { Virtualizer } from '@tanstack/react-virtual';
 import { DsTableBody } from '../components/ds-table-body-virtualized';
 
-type BodyVirtualizer = Virtualizer<HTMLTableSectionElement, HTMLTableRowElement>;
+type BodyVirtualizer = Virtualizer<HTMLElement, HTMLTableRowElement>;
 
 // Reproduce the frame the real virtualizer produces mid re-measure after a
 // `data` swap: count > 0 but getVirtualItems() returns []. See AR-71791.

@@ -39,7 +39,7 @@ const clientPointFromEvent = (event: Event): { x: number; y: number } | null => 
  */
 export const DsTableResizeHandle = <TData, TValue>({ header }: DsTableResizeHandleProps<TData, TValue>) => {
 	const {
-		resizeContainerRef,
+		scrollContainerRef,
 		onResizeHover,
 		onResizeDragStart,
 		onResizeReset,
@@ -60,7 +60,7 @@ export const DsTableResizeHandle = <TData, TValue>({ header }: DsTableResizeHand
 	const label = { ...defaultDsTableLocale, ...locale }.resizeColumn;
 
 	const measureCellRightOffset = (): number | null => {
-		const containerEl = resizeContainerRef?.current;
+		const containerEl = scrollContainerRef.current;
 		const cellEl = handleRef.current?.closest<HTMLElement>('th');
 		if (!containerEl || !cellEl) {
 			return null;

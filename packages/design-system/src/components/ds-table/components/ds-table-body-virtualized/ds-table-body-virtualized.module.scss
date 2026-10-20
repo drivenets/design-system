@@ -1,32 +1,13 @@
-@use '../../../../styles/scrollbars' as scrollbars;
-
 .body {
-	display: block;
 	position: relative;
-	overflow-y: auto;
-	overflow-x: hidden;
-	flex: 1;
-	min-height: 0;
-	scrollbar-gutter: auto;
-
-	@include scrollbars.scrollbar-on-hover;
+	display: block;
+	flex: 1 0 auto;
 
 	&:has(> .emptyStateRow > .emptyState) {
 		position: sticky;
 		inset-inline-start: 0;
 		max-width: var(--ds-table-visible-width, 100%);
 	}
-}
-
-// 1px row pinned at `top: <totalSize>` (set inline) so absolutely-positioned
-// rows extend the parent's scrollable overflow area.
-.sentinel {
-	position: absolute;
-	left: 0;
-	width: 1px;
-	height: 1px;
-	pointer-events: none;
-	visibility: hidden;
 }
 
 .emptyStateRow {
