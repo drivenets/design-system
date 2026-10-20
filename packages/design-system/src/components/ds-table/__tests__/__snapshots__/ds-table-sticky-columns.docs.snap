@@ -1,0 +1,1665 @@
+# DsTable docs snippets
+
+## Default
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  stickyColumns={{
+    left: [
+      'firstName'
+    ],
+    right: [
+      'status'
+    ]
+  }}
+/>
+
+### MCP manifest
+const Default = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['firstName'], right: ['status'] }} />;
+
+## With Row Actions
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  primaryRowActions={[
+    {
+      icon: 'edit',
+      label: 'Edit',
+      onClick: () => {}
+    },
+    {
+      icon: 'download',
+      label: 'Download',
+      onClick: () => {}
+    }
+  ]}
+  secondaryRowActions={[
+    {
+      icon: 'delete',
+      label: 'Delete',
+      onClick: () => {}
+    }
+  ]}
+  selectable
+  stickyColumns={{
+    left: [
+      'firstName'
+    ],
+    right: [
+      'status'
+    ]
+  }}
+/>
+
+### MCP manifest
+const WithRowActions = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['firstName'], right: ['status'] }}
+    selectable
+    primaryRowActions={[
+        { icon: 'edit', label: 'Edit', onClick: fn() },
+        { icon: 'download', label: 'Download', onClick: fn() },
+    ]}
+    secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]} />;
+
+## Column Display
+
+### Show code
+<DsTable
+  columnDisplay
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  primaryRowActions={[
+    {
+      icon: 'edit',
+      label: 'Edit',
+      onClick: () => {}
+    },
+    {
+      icon: 'download',
+      label: 'Download',
+      onClick: () => {}
+    }
+  ]}
+/>
+
+### MCP manifest
+const ColumnDisplay = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    columnDisplay
+    primaryRowActions={[
+        { icon: 'edit', label: 'Edit', onClick: fn() },
+        { icon: 'download', label: 'Download', onClick: fn() },
+    ]} />;
+
+## Column Display With Saved State
+
+### Show code
+{
+  args: {
+    columnDisplay: true,
+    primaryRowActions: [{
+      icon: 'edit',
+      label: 'Edit',
+      onClick: fn()
+    }, {
+      icon: 'download',
+      label: 'Download',
+      onClick: fn()
+    }]
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      lastName: false
+    });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+      left: ['firstName', 'lastName']
+    });
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} />;
+  }
+}
+
+### MCP manifest
+const ColumnDisplayWithSavedState = () => {
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+        left: ['firstName', 'lastName'],
+    });
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            columnDisplay
+            primaryRowActions={[
+                { icon: 'edit', label: 'Edit', onClick: fn() },
+                { icon: 'download', label: 'Download', onClick: fn() },
+            ]}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns} />
+    );
+};
+
+## Column Display With Column Groups
+
+### Show code
+{
+  args: {
+    columns: [{
+      id: 'identity',
+      header: 'Identity',
+      columns: [{
+        accessorKey: 'firstName',
+        header: 'First Name',
+        cell: info => info.getValue<string>(),
+        size: 160
+      }, {
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        cell: info => info.getValue<string>(),
+        size: 160
+      }]
+    }, {
+      id: 'activity',
+      header: 'Activity',
+      columns: [{
+        accessorKey: 'age',
+        header: 'Age',
+        cell: info => info.getValue<number>(),
+        size: 140
+      }, {
+        accessorKey: 'visits',
+        header: 'Visits',
+        cell: info => info.getValue<number>(),
+        size: 160
+      }, {
+        accessorKey: 'progress',
+        header: 'Profile Progress',
+        cell: info => `${String(info.getValue<number>())}%`,
+        size: 200
+      }]
+    }, {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: info => info.getValue(),
+      size: 160
+    }],
+    columnDisplay: true
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+      visits: false
+    });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({
+      left: ['identity']
+    });
+    return <DsTable {...args} columnVisibility={columnVisibility} onColumnVisibilityChange={setColumnVisibility} stickyColumns={stickyColumns} onStickyColumnsChange={setStickyColumns} />;
+  }
+}
+
+### MCP manifest
+const ColumnDisplayWithColumnGroups = () => {
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ visits: false });
+    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });
+
+    return (
+        <DsTable
+            columns={[
+                {
+                    id: 'identity',
+                    header: 'Identity',
+                    columns: [
+                        {
+                            accessorKey: 'firstName',
+                            header: 'First Name',
+                            cell: (info) => info.getValue<string>(),
+                            size: 160,
+                        },
+                        {
+                            accessorKey: 'lastName',
+                            header: 'Last Name',
+                            cell: (info) => info.getValue<string>(),
+                            size: 160,
+                        },
+                    ],
+                },
+                {
+                    id: 'activity',
+                    header: 'Activity',
+                    columns: [
+                        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },
+                        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },
+                        {
+                            accessorKey: 'progress',
+                            header: 'Profile Progress',
+                            cell: (info) => `${String(info.getValue<number>())}%`,
+                            size: 200,
+                        },
+                    ],
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            columnDisplay
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns} />
+    );
+};
+
+## Column Groups
+
+### Show code
+<DsTable
+  columns={[
+    {
+      columns: [
+        {
+          accessorKey: 'firstName',
+          cell: () => {},
+          header: 'First Name',
+          size: 160
+        },
+        {
+          accessorKey: 'lastName',
+          cell: () => {},
+          header: 'Last Name',
+          size: 160
+        }
+      ],
+      header: 'Identity',
+      id: 'identity'
+    },
+    {
+      columns: [
+        {
+          accessorKey: 'age',
+          cell: () => {},
+          header: 'Age',
+          size: 140
+        },
+        {
+          accessorKey: 'visits',
+          cell: () => {},
+          header: 'Visits',
+          size: 160
+        },
+        {
+          accessorKey: 'progress',
+          cell: () => {},
+          header: 'Profile Progress',
+          size: 200
+        }
+      ],
+      header: 'Activity',
+      id: 'activity'
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  stickyColumns={{
+    left: [
+      'identity'
+    ]
+  }}
+/>
+
+### MCP manifest
+const ColumnGroups = () => <DsTable
+    columns={[
+        {
+            id: 'identity',
+            header: 'Identity',
+            columns: [
+                {
+                    accessorKey: 'firstName',
+                    header: 'First Name',
+                    cell: (info) => info.getValue<string>(),
+                    size: 160,
+                },
+                {
+                    accessorKey: 'lastName',
+                    header: 'Last Name',
+                    cell: (info) => info.getValue<string>(),
+                    size: 160,
+                },
+            ],
+        },
+        {
+            id: 'activity',
+            header: 'Activity',
+            columns: [
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue<number>())}%`,
+                    size: 200,
+                },
+            ],
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['identity'] }} />;
+
+## Resizable
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onRowClick={() => {}}
+  resizableColumns
+  stickyColumns={{
+    left: [
+      'firstName',
+      'lastName'
+    ],
+    right: [
+      'status'
+    ]
+  }}
+/>
+
+### MCP manifest
+const Resizable = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    resizableColumns
+    stickyColumns={{ left: ['firstName', 'lastName'], right: ['status'] }} />;
+
+## Virtualized
+
+### Show code
+{
+  args: {
+    virtualized: true,
+    selectable: true,
+    stickyColumns: {
+      left: ['firstName'],
+      right: ['status']
+    }
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const [data] = useState(() => generatePersonData(0, 1_000, []).data);
+    return <DsTable {...args} data={data} />;
+  }
+}
+
+### MCP manifest
+const Virtualized = () => {
+    const [data] = useState(() => generatePersonData(0, 1_000, []).data);
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            onRowClick={fn()}
+            virtualized
+            selectable
+            stickyColumns={{ left: ['firstName'], right: ['status'] }}
+            data={data} />
+    );
+};
+
+## Expandable
+
+### Show code
+{
+  args: {
+    stickyColumns: {
+      left: ['firstName']
+    },
+    expandable: true
+  },
+  parameters: {
+    docs: {
+      source: {
+        type: 'code'
+      }
+    }
+  },
+  render: function Render(args) {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+    useEffect(() => {
+      tableRef.current?.expandRows(['1']);
+    }, []);
+    return <DsTable {...args} ref={tableRef} renderExpandedRow={row => <DsStack direction="column" gap="var(--xs)">
+                        <DsTypography variant="body-sm-semi-bold">
+                            Recent visits for {row.firstName} {row.lastName}
+                        </DsTypography>
+                        <DsTable columns={[{
+        accessorKey: 'firstName',
+        header: 'First Name',
+        size: 180
+      }, {
+        accessorKey: 'lastName',
+        header: 'Last Name',
+        size: 180
+      }, {
+        accessorKey: 'age',
+        header: 'Age',
+        size: 140
+      }, {
+        accessorKey: 'visits',
+        header: 'Visits',
+        size: 160
+      }, {
+        accessorKey: 'status',
+        header: 'Status',
+        size: 160
+      }]} data={defaultData.slice(0, 2)} stickyColumns={{
+        left: ['firstName']
+      }} />
+                    </DsStack>} />;
+  }
+}
+
+### MCP manifest
+const Expandable = () => {
+    const tableRef = useRef<DsTableApi<Person>>(null);
+
+    useEffect(() => {
+        tableRef.current?.expandRows(['1']);
+    }, []);
+
+    return (
+        <DsTable
+            columns={[
+                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+                {
+                    accessorKey: 'progress',
+                    header: 'Profile Progress',
+                    cell: (info) => `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            stickyColumns={{ left: ['firstName'] }}
+            expandable
+            ref={tableRef}
+            renderExpandedRow={(row) => (
+                <DsStack direction="column" gap="var(--xs)">
+                    <DsTypography variant="body-sm-semi-bold">
+                        Recent visits for {row.firstName} {row.lastName}
+                    </DsTypography>
+                    <DsTable
+                        columns={[
+                            { accessorKey: 'firstName', header: 'First Name', size: 180 },
+                            { accessorKey: 'lastName', header: 'Last Name', size: 180 },
+                            { accessorKey: 'age', header: 'Age', size: 140 },
+                            { accessorKey: 'visits', header: 'Visits', size: 160 },
+                            { accessorKey: 'status', header: 'Status', size: 160 },
+                        ]}
+                        data={defaultData.slice(0, 2)}
+                        stickyColumns={{ left: ['firstName'] }}
+                    />
+                </DsStack>
+            )} />
+    );
+};
+
+## Reorderable
+
+### Show code
+<DsTable
+  columns={[
+    {
+      accessorKey: 'firstName',
+      cell: () => {},
+      header: 'First Name',
+      size: 180
+    },
+    {
+      accessorKey: 'lastName',
+      cell: () => {},
+      header: 'Last Name',
+      size: 180
+    },
+    {
+      accessorKey: 'age',
+      cell: () => {},
+      header: 'Age',
+      size: 140
+    },
+    {
+      accessorKey: 'visits',
+      cell: () => {},
+      header: 'Visits',
+      size: 160
+    },
+    {
+      accessorKey: 'progress',
+      cell: () => {},
+      header: 'Profile Progress',
+      size: 200
+    },
+    {
+      accessorKey: 'status',
+      cell: () => {},
+      header: 'Status',
+      size: 160
+    }
+  ]}
+  data={[
+    {
+      age: 33,
+      firstName: 'Tanner',
+      id: '1',
+      lastName: 'Linsley',
+      progress: 75,
+      status: 'single',
+      visits: 100
+    },
+    {
+      age: 28,
+      firstName: 'Kevin',
+      id: '2',
+      lastName: 'Fine',
+      progress: 50,
+      status: 'relationship',
+      visits: 200
+    },
+    {
+      age: 45,
+      firstName: 'John',
+      id: '3',
+      lastName: 'Doe',
+      progress: 90,
+      status: 'complicated',
+      visits: 50
+    },
+    {
+      age: 30,
+      firstName: 'Jane',
+      id: '4',
+      lastName: 'Smith',
+      progress: 60,
+      status: 'single',
+      visits: 150
+    },
+    {
+      age: 22,
+      firstName: 'Peter',
+      id: '5',
+      lastName: 'Jones',
+      progress: 30,
+      status: 'relationship',
+      visits: 250
+    },
+    {
+      age: 38,
+      firstName: 'Mary',
+      id: '6',
+      lastName: 'Jane',
+      progress: 85,
+      status: 'complicated',
+      visits: 80
+    },
+    {
+      age: 50,
+      firstName: 'David',
+      id: '7',
+      lastName: 'Williams',
+      progress: 40,
+      status: 'single',
+      visits: 120
+    },
+    {
+      age: 25,
+      firstName: 'Sarah',
+      id: '8',
+      lastName: 'Brown',
+      progress: 70,
+      status: 'relationship',
+      visits: 180
+    },
+    {
+      age: 41,
+      firstName: 'Michael',
+      id: '9',
+      lastName: 'Davis',
+      progress: 20,
+      status: 'complicated',
+      visits: 95
+    },
+    {
+      age: 36,
+      firstName: 'Emily',
+      id: '10',
+      lastName: 'Miller',
+      progress: 55,
+      status: 'single',
+      visits: 110
+    },
+    {
+      age: 29,
+      firstName: 'Daniel',
+      id: '11',
+      lastName: 'Wilson',
+      progress: 80,
+      status: 'relationship',
+      visits: 220
+    },
+    {
+      age: 48,
+      firstName: 'Olivia',
+      id: '12',
+      lastName: 'Moore',
+      progress: 15,
+      status: 'complicated',
+      visits: 65
+    },
+    {
+      age: 31,
+      firstName: 'James',
+      id: '13',
+      lastName: 'Taylor',
+      progress: 95,
+      status: 'single',
+      visits: 135
+    },
+    {
+      age: 27,
+      firstName: 'Sophia',
+      id: '14',
+      lastName: 'Anderson',
+      progress: 25,
+      status: 'relationship',
+      visits: 170
+    },
+    {
+      age: 43,
+      firstName: 'Robert',
+      id: '15',
+      lastName: 'Thomas',
+      progress: 50,
+      status: 'complicated',
+      visits: 88
+    }
+  ]}
+  onOrderChange={() => {}}
+  onRowClick={() => {}}
+  reorderable
+  stickyColumns={{
+    left: [
+      'firstName'
+    ]
+  }}
+/>
+
+### MCP manifest
+const Reorderable = () => <DsTable
+    columns={[
+        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
+        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },
+        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },
+        {
+            accessorKey: 'progress',
+            header: 'Profile Progress',
+            cell: (info) => `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: ['firstName'] }}
+    reorderable
+    onOrderChange={fn()} />;
