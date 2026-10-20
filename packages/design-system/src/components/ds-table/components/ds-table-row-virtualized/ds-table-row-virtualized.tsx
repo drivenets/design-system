@@ -1,12 +1,13 @@
 import classnames from 'classnames';
 import styles from './ds-table-row-virtualized.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
-import { getBodyCellSizeStyle, isExplicitColumnWidth } from '../../utils/column-size';
+import { isEditingCell } from '../../utils/editing';
+import { getBodyCellLayoutProps } from '../../utils/sticky-columns';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 import { TableCell, TableRow } from '../core-table';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
 import { DsTableCell } from '../ds-table-cell';
-import { EXPANDER_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
+import { EXPANDER_COLUMN_ID, ROW_ACTIONS_COLUMN_ID, SELECT_COLUMN_ID } from '../../utils/constants';
 
 export const DsTableRowVirtualized = <TData,>({
 	row,
@@ -26,6 +27,7 @@ export const DsTableRowVirtualized = <TData,>({
 		onRowDoubleClick,
 		loading,
 		resizeSizingReady,
+		editing,
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
@@ -64,26 +66,25 @@ export const DsTableRowVirtualized = <TData,>({
 			onDoubleClick={isExpandedRowContent ? undefined : () => onRowDoubleClick?.(row.original)}
 		>
 			{isExpandedRowContent ? (
-				<TableCell>{renderExpandedRow?.(row.original)}</TableCell>
+				<TableCell>
+					<div data-expanded-content>{renderExpandedRow?.(row.original)}</div>
+				</TableCell>
 			) : (
 				<>
 					{row.getVisibleCells().map((cell) => {
-						const columnSizing = cell.getContext().table.getState().columnSizing;
-						const cellStyle = getBodyCellSizeStyle(
-							cell.column.id,
-							cell.column.getSize(),
-							isExplicitColumnWidth(cell.column, resizeSizingReady ? columnSizing : {}),
-							!!resizeSizingReady,
-						);
+						const { style: cellStyle, stickyAttributes } = getBodyCellLayoutProps(cell, !!resizeSizingReady);
 
 						return (
 							<TableCell
 								key={cell.id}
 								style={cellStyle}
+								{...stickyAttributes}
+								data-editing={isEditingCell(editing, cell) || undefined}
 								className={classnames(
 									styles.cell,
 									cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 									cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
+									cell.column.id === ROW_ACTIONS_COLUMN_ID && styles.rowActionsCell,
 									isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
 									typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 								)}

@@ -3,14 +3,15 @@
 .resizeOverlay {
 	position: absolute;
 	top: 0;
-	bottom: 0;
 	width: vars.$resize-divider-width;
+	height: 100%;
 	background: var(--border-light);
 	// `left` is the cell's right edge; nudge the divider right by 1px so its 2px
 	// band aligns flush with the 2px group border drawn from that edge rightward.
 	transform: translateX(calc(-50% + #{vars.$border-width}));
 	pointer-events: none;
-	z-index: 2;
+	// Above the sticky header.
+	z-index: 4;
 
 	&[data-resize-phase='dragging'] {
 		background: var(--border-action-primary);
