@@ -1,6 +1,6 @@
 ---
 name: to-plan
-description: After grill-me (or equivalent resolved decisions), write a concise execution plan to a tasks/*.md ticket file that /implement can consume. No interviews, no issue tracker, no requirement expansion.
+description: After grill-me (or equivalent resolved decisions), write a concise execution plan to a tasks/*.md ticket file that /implement can consume. No interviews, no issue tracker, no requirement expansion. Use when decisions are locked and the user says "write the plan", "to-plan", or wants a ticket file for /implement.
 ---
 
 Package locked decisions from the conversation into a short execution plan. **Do not plan for the user** — only record what was already decided.
@@ -58,7 +58,7 @@ Which skills to read fully per step (e.g. `component-scaffold`, `tdd`, `browser-
 
 ## Verify
 
-Checkers from [AGENTS.md#code-quality-checkers](../../AGENTS.md#code-quality-checkers) (and [Other packages](../../AGENTS.md#other-packages) when applicable).
+Checkers from [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers) (and [Other packages](../../../AGENTS.md#other-packages) when applicable).
 
 </plan-template>
 
