@@ -13830,7 +13830,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -14624,7 +14624,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -14654,6 +14654,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -15092,7 +15121,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -15886,7 +15915,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -15916,6 +15945,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -16340,7 +16398,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -17134,7 +17192,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -17164,6 +17222,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -17586,7 +17673,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -18380,7 +18467,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -18410,6 +18497,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -18853,7 +18969,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -19647,7 +19763,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -19677,6 +19793,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -20113,7 +20258,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -20907,7 +21052,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -20937,6 +21082,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -21366,7 +21540,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -22160,7 +22334,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -22190,6 +22364,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -22625,7 +22828,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -23419,7 +23622,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -23449,6 +23652,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -23873,7 +24105,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -24667,7 +24899,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -24697,6 +24929,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -25145,7 +25406,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -25939,7 +26200,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -25969,6 +26230,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -26441,7 +26731,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -27235,7 +27525,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -27265,6 +27555,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -27689,7 +28008,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -28483,7 +28802,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -28513,6 +28832,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -28712,6 +29060,1331 @@
         }
       ],
       "import": "import { DsButtonV3, DsStack, DsTable, DsTypography } from '@drivenets/design-system';\nimport { columns, defaultData } from './common/story-data';\nimport { fn } from 'storybook/test';"
+    },
+    "components-table-sticky-columns": {
+      "id": "components-table-sticky-columns",
+      "name": "DsTable",
+      "path": "./src/components/ds-table/stories/ds-table-sticky-columns.stories.tsx",
+      "jsDocTags": {},
+      "description": "Design system Table component",
+      "reactDocgen": {
+        "description": "Design system Table component",
+        "methods": [
+          {
+            "name": "selectRow",
+            "docblock": null,
+            "modifiers": [],
+            "params": [
+              {
+                "name": "rowId",
+                "optional": false,
+                "type": {
+                  "name": "string"
+                }
+              }
+            ],
+            "returns": null
+          },
+          {
+            "name": "deselectRow",
+            "docblock": null,
+            "modifiers": [],
+            "params": [
+              {
+                "name": "rowId",
+                "optional": false,
+                "type": {
+                  "name": "string"
+                }
+              }
+            ],
+            "returns": null
+          },
+          {
+            "name": "selectAllRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [],
+            "returns": null
+          },
+          {
+            "name": "deselectAllRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [],
+            "returns": null
+          },
+          {
+            "name": "selectRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [
+              {
+                "name": "rowIds",
+                "optional": false,
+                "type": {
+                  "name": "Array",
+                  "elements": [
+                    {
+                      "name": "string"
+                    }
+                  ],
+                  "raw": "string[]"
+                }
+              }
+            ],
+            "returns": null
+          },
+          {
+            "name": "getSelectedRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [],
+            "returns": null
+          },
+          {
+            "name": "expandRow",
+            "docblock": null,
+            "modifiers": [],
+            "params": [
+              {
+                "name": "rowId",
+                "optional": false,
+                "type": {
+                  "name": "string"
+                }
+              }
+            ],
+            "returns": null
+          },
+          {
+            "name": "collapseRow",
+            "docblock": null,
+            "modifiers": [],
+            "params": [
+              {
+                "name": "rowId",
+                "optional": false,
+                "type": {
+                  "name": "string"
+                }
+              }
+            ],
+            "returns": null
+          },
+          {
+            "name": "expandAllRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [],
+            "returns": null
+          },
+          {
+            "name": "collapseAllRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [],
+            "returns": null
+          },
+          {
+            "name": "expandRows",
+            "docblock": null,
+            "modifiers": [],
+            "params": [
+              {
+                "name": "rowIds",
+                "optional": false,
+                "type": {
+                  "name": "Array",
+                  "elements": [
+                    {
+                      "name": "string"
+                    }
+                  ],
+                  "raw": "string[]"
+                }
+              }
+            ],
+            "returns": null
+          },
+          {
+            "name": "getExpandedRowIds",
+            "docblock": null,
+            "modifiers": [],
+            "params": [],
+            "returns": null
+          }
+        ],
+        "displayName": "DsTable",
+        "definedInFile": "/home/runner/work/design-system/design-system/packages/design-system/src/components/ds-table/ds-table.tsx",
+        "actualName": "DsTable",
+        "exportName": "default",
+        "props": {
+          "ref": {
+            "required": false,
+            "tsType": {
+              "name": "ReactRefObject",
+              "raw": "React.RefObject<DsTableApi<TData> | null>",
+              "elements": [
+                {
+                  "name": "union",
+                  "raw": "DsTableApi<TData> | null",
+                  "elements": [
+                    {
+                      "name": "DsTableApi",
+                      "elements": [
+                        {
+                          "name": "TData"
+                        }
+                      ],
+                      "raw": "DsTableApi<TData>"
+                    },
+                    {
+                      "name": "null"
+                    }
+                  ]
+                }
+              ]
+            },
+            "description": "Ref to the table API"
+          },
+          "columns": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "ColumnDef",
+                  "elements": [
+                    {
+                      "name": "TData"
+                    },
+                    {
+                      "name": "TValue"
+                    }
+                  ],
+                  "raw": "ColumnDef<TData, TValue>"
+                }
+              ],
+              "raw": "ColumnDef<TData, TValue>[]"
+            },
+            "description": "Columns of the table"
+          },
+          "data": {
+            "required": true,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "TData"
+                }
+              ],
+              "raw": "TData[]"
+            },
+            "description": "Data of the table"
+          },
+          "controls": {
+            "required": false,
+            "tsType": {
+              "name": "ReactReactNode",
+              "raw": "React.ReactNode"
+            },
+            "description": "Optional content rendered in a pinned controls bar above the table header\n(e.g. filters, action buttons). Layout is owned by the consumer."
+          },
+          "virtualized": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
+          },
+          "virtualizedOptions": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "object",
+              "raw": "{\n\t/**\n\t * Estimate size of the table\n\t */\n\testimateSize?: number;\n\n\t/**\n\t * Overscan of the table\n\t */\n\toverscan?: number;\n}",
+              "signature": {
+                "properties": [
+                  {
+                    "key": "estimateSize",
+                    "value": {
+                      "name": "number",
+                      "required": false
+                    },
+                    "description": "Estimate size of the table"
+                  },
+                  {
+                    "key": "overscan",
+                    "value": {
+                      "name": "number",
+                      "required": false
+                    },
+                    "description": "Overscan of the table"
+                  }
+                ]
+              }
+            },
+            "description": "Options for the virtualized table"
+          },
+          "className": {
+            "required": false,
+            "tsType": {
+              "name": "string"
+            },
+            "description": "Class name of the table"
+          },
+          "onRowClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(row: TData) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "TData"
+                    },
+                    "name": "row"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Function to handle row click"
+          },
+          "onRowDoubleClick": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(row: TData) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "TData"
+                    },
+                    "name": "row"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Function to handle row double click"
+          },
+          "activeRowId": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "string | null",
+              "elements": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "null"
+                }
+              ]
+            },
+            "description": "ID of the currently active row (useful for showing drawer/panel associations)\nWhen set, the row with this ID will be visually highlighted with a persistent active state\n@example\n```tsx\nconst [activeRowId, setActiveRowId] = useState<string | null>(null);\nconst [isDrawerOpen, setIsDrawerOpen] = useState(false);\n\n<DsTable\n  activeRowId={isDrawerOpen ? activeRowId : null}\n  onRowClick={(row) => {\n    setActiveRowId(row.id);\n    setIsDrawerOpen(true);\n  }}\n/>\n```"
+          },
+          "emptyState": {
+            "required": false,
+            "tsType": {
+              "name": "ReactReactNode",
+              "raw": "React.ReactNode"
+            },
+            "description": "Replaces the inferred **Empty state**. When omitted, the table renders\n`DsEmptyState` as `noData` if `data` is empty, or `noMatches` if `data`\nhas rows but filters hide all of them."
+          },
+          "stickyHeader": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the table has sticky header"
+          },
+          "zebra": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the table has zebra stripes"
+          },
+          "bordered": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the table has bordered cells"
+          },
+          "fullWidth": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the table is full width"
+          },
+          "rowSize": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "'small' | 'medium' | 'large'",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "'small'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'medium'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'large'"
+                }
+              ]
+            },
+            "description": "Row size variant (small: 36px, medium: 48px, large: 64px)\n@default 'medium'"
+          },
+          "resizableColumns": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Enables resizing columns by dragging the right edge of a header cell.\nDouble-click a handle to restore the column's original width. Opt out per\ncolumn with `columnDef.enableResizing: false`. Leaf columns may set\n`minSize` and `maxSize`. Those bounds on a column group are ignored.\n@default false"
+          },
+          "columnSizing": {
+            "required": false,
+            "tsType": {
+              "name": "Record",
+              "elements": [
+                {
+                  "name": "string"
+                },
+                {
+                  "name": "number"
+                }
+              ],
+              "raw": "Record<string, number>"
+            },
+            "description": "Persisted column widths as a column id → width (px) map, e.g. a map saved\nfrom {@link onColumnSizingChange}. Pass it (typically on the next mount) to\nrestore widths; columns absent from the map are measured and sized\nautomatically. This seeds widths — live resizing still updates them\ninternally — so it is not a fully controlled value. Ids for the utility\ncolumns are ignored: select, expander, and reorder widths come from the\nmatching `*ColumnWidth` props; row actions and column display widths are\nfixed."
+          },
+          "onColumnSizingChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(columnSizing: Record<string, number>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Record",
+                      "elements": [
+                        {
+                          "name": "string"
+                        },
+                        {
+                          "name": "number"
+                        }
+                      ],
+                      "raw": "Record<string, number>"
+                    },
+                    "name": "columnSizing"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next column id → width (px) map when a resize finishes\n(drag end, double-click restore, or keyboard nudge). Use this to persist\nwidths across sessions. Select, expander, reorder, row actions, and column\ndisplay utility columns are omitted from the map."
+          },
+          "loading": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "When `true`, renders placeholder skeleton rows instead of the data. Column\nheaders stay intact and row interactions are disabled while loading.\n@default false"
+          },
+          "expandable": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "boolean | ((row: TData) => boolean)",
+              "elements": [
+                {
+                  "name": "boolean"
+                },
+                {
+                  "name": "unknown"
+                }
+              ]
+            },
+            "description": "Whether the table is expandable or if an individual row should be expandable"
+          },
+          "expandableColumnWidth": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "Width in px of the expander utility column. Ignored when `expandable` is\noff. Non-finite or `<= 0` falls back to the default. The column is not\nuser-resizable. Wins over a `columnSizing` entry for this column.\n@default 36"
+          },
+          "renderExpandedRow": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(row: TData) => React.ReactNode",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "TData"
+                    },
+                    "name": "row"
+                  }
+                ],
+                "return": {
+                  "name": "ReactReactNode",
+                  "raw": "React.ReactNode"
+                }
+              }
+            },
+            "description": "Function to render the expanded row"
+          },
+          "onTableCreated": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(table: Table<TData>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Table",
+                      "elements": [
+                        {
+                          "name": "TData"
+                        }
+                      ],
+                      "raw": "Table<TData>"
+                    },
+                    "name": "table"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Function to handle table creation"
+          },
+          "selectable": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "boolean | ((rowData: TData) => boolean)",
+              "elements": [
+                {
+                  "name": "boolean"
+                },
+                {
+                  "name": "unknown"
+                }
+              ]
+            },
+            "description": "Whether the table rows are selectable. Can be a boolean or a function that receives row data and returns whether it can be selected.\n@default false\n@example\n```tsx\n// Enable selection for all rows\nselectable={true}\n\n// Disable selection for rows where status is 'archived'\nselectable={(rowData) => rowData.status !== 'archived'}\n\n// Limit selection to max 3 rows (note: use state to track current selection)\nselectable={(rowData) => {\n  // This will be called for each row during render\n  const selectedIds = Object.keys(rowSelection).filter(id => rowSelection[id]);\n  return selectedIds.includes(rowData.id) || selectedIds.length < 3;\n}}\n```"
+          },
+          "selectableColumnWidth": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "Width in px of the select utility column. Ignored when `selectable` is\noff. Non-finite or `<= 0` falls back to the default. The column is not\nuser-resizable. Wins over a `columnSizing` entry for this column.\n@default 36"
+          },
+          "showSelectAllCheckbox": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether to show the select/deselect all checkbox in the header\n@default true"
+          },
+          "onSelectionChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(selectedRows: Record<string, boolean>) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Record",
+                      "elements": [
+                        {
+                          "name": "string"
+                        },
+                        {
+                          "name": "boolean"
+                        }
+                      ],
+                      "raw": "Record<string, boolean>"
+                    },
+                    "name": "selectedRows"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Function to handle selection change"
+          },
+          "onSortingChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(sorting: SortingState) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "SortingState"
+                    },
+                    "name": "sorting"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Function to handle sorting change"
+          },
+          "onScroll": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(params: ScrollParams) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ScrollParams"
+                    },
+                    "name": "params"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Function to handle scroll events in virtualized tables.\nCalled when the user scrolls within the table container.\n\n@param params - Scroll parameters containing scroll position and dimensions\n\n@example\n```tsx\nconst handleScroll = ({ scrollOffset, totalContentHeight, viewportHeight }) => {\n  const distanceFromBottom = totalContentHeight - scrollOffset - viewportHeight;\n  if (distanceFromBottom < 500) {\n    // Fetch more data when within 500px of bottom\n    fetchNextPage();\n  }\n};\n```"
+          },
+          "infiniteScroll": {
+            "required": false,
+            "tsType": {
+              "name": "InfiniteScrollConfig"
+            },
+            "description": "Configures infinite scroll for the virtualized table. The Table owns viewport/scroll\ndetection and the auto-fill loop; the consumer owns fetching, pagination state,\nerror handling, and retry.\n\nOnly takes effect when `virtualized` is `true`. Passing this prop without\n`virtualized` is ignored.\n\n@example\n```tsx\n<DsTable\n  virtualized\n  data={rows}\n  columns={columns}\n  infiniteScroll={{\n    hasMore,\n    isLoadingMore,\n    onLoadMore: fetchNextPage,\n  }}\n/>\n```"
+          },
+          "actions": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "Action",
+                  "elements": [
+                    {
+                      "name": "TData"
+                    }
+                  ],
+                  "raw": "Action<TData>"
+                }
+              ],
+              "raw": "Action<TData>[]"
+            },
+            "description": "Actions to be shown in the bulk actions"
+          },
+          "primaryRowActions": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "RowAction",
+                  "elements": [
+                    {
+                      "name": "TData"
+                    }
+                  ],
+                  "raw": "RowAction<TData>"
+                }
+              ],
+              "raw": "RowAction<TData>[]"
+            },
+            "description": "Primary actions shown as icon buttons on each row, in a trailing column sized\nto fit every declared primary action plus the \"more\" trigger"
+          },
+          "secondaryRowActions": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "union",
+                  "raw": "SecondaryRowActionLeaf<TData> | SecondaryRowActionBranch<TData>",
+                  "elements": [
+                    {
+                      "name": "intersection",
+                      "raw": "SecondaryRowActionBase<TData> & {\n\t/**\n\t * Function to be called when the action is clicked, receives the row data as parameter\n\t */\n\tonClick: (row: TData) => void;\n\tchildren?: never;\n}",
+                      "elements": [
+                        {
+                          "name": "intersection",
+                          "raw": "Omit<RowAction<TData>, 'icon' | 'onClick'> & {\n\t/**\n\t * Optional icon to be displayed for the action\n\t */\n\ticon?: IconType;\n\n\t/**\n\t * Optional className to apply custom styling to the action item\n\t */\n\tclassName?: string;\n}",
+                          "elements": [
+                            {
+                              "name": "Omit",
+                              "elements": [
+                                {
+                                  "name": "RowAction",
+                                  "elements": [
+                                    {
+                                      "name": "TData"
+                                    }
+                                  ],
+                                  "raw": "RowAction<TData>"
+                                },
+                                {
+                                  "name": "union",
+                                  "raw": "'icon' | 'onClick'",
+                                  "elements": [
+                                    {
+                                      "name": "literal",
+                                      "value": "'icon'"
+                                    },
+                                    {
+                                      "name": "literal",
+                                      "value": "'onClick'"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "raw": "Omit<RowAction<TData>, 'icon' | 'onClick'>"
+                            },
+                            {
+                              "name": "signature",
+                              "type": "object",
+                              "raw": "{\n\t/**\n\t * Optional icon to be displayed for the action\n\t */\n\ticon?: IconType;\n\n\t/**\n\t * Optional className to apply custom styling to the action item\n\t */\n\tclassName?: string;\n}",
+                              "signature": {
+                                "properties": [
+                                  {
+                                    "key": "icon",
+                                    "value": {
+                                      "name": "union",
+                                      "raw": "IconName | FunctionComponent<SVGProps<SVGSVGElement>>",
+                                      "elements": [
+                                        {
+                                          "name": "union",
+                                          "raw": "MaterialIconName | CustomIconName",
+                                          "elements": [
+                                            {
+                                              "name": "unknown"
+                                            },
+                                            {
+                                              "name": "unknown"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "FunctionComponent",
+                                          "elements": [
+                                            {
+                                              "name": "SVGProps",
+                                              "elements": [
+                                                {
+                                                  "name": "SVGSVGElement"
+                                                }
+                                              ],
+                                              "raw": "SVGProps<SVGSVGElement>"
+                                            }
+                                          ],
+                                          "raw": "FunctionComponent<SVGProps<SVGSVGElement>>"
+                                        }
+                                      ],
+                                      "required": false
+                                    },
+                                    "description": "Optional icon to be displayed for the action"
+                                  },
+                                  {
+                                    "key": "className",
+                                    "value": {
+                                      "name": "string",
+                                      "required": false
+                                    },
+                                    "description": "Optional className to apply custom styling to the action item"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "name": "signature",
+                          "type": "object",
+                          "raw": "{\n\t/**\n\t * Function to be called when the action is clicked, receives the row data as parameter\n\t */\n\tonClick: (row: TData) => void;\n\tchildren?: never;\n}",
+                          "signature": {
+                            "properties": [
+                              {
+                                "key": "onClick",
+                                "value": {
+                                  "name": "signature",
+                                  "type": "function",
+                                  "raw": "(row: TData) => void",
+                                  "signature": {
+                                    "arguments": [
+                                      {
+                                        "type": {
+                                          "name": "TData"
+                                        },
+                                        "name": "row"
+                                      }
+                                    ],
+                                    "return": {
+                                      "name": "void"
+                                    }
+                                  },
+                                  "required": true
+                                },
+                                "description": "Function to be called when the action is clicked, receives the row data as parameter"
+                              },
+                              {
+                                "key": "children",
+                                "value": {
+                                  "name": "never",
+                                  "required": false
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "name": "intersection",
+                      "raw": "SecondaryRowActionBase<TData> & {\n\t/**\n\t * Nested actions rendered as a cascading submenu. Mutually exclusive with `onClick`.\n\t * `hidden` and `disabled` on the parent apply to the whole submenu; a parent whose\n\t * children are all hidden is omitted.\n\t */\n\tchildren: SecondaryRowAction<TData>[];\n\tonClick?: never;\n}",
+                      "elements": [
+                        {
+                          "name": "intersection",
+                          "raw": "Omit<RowAction<TData>, 'icon' | 'onClick'> & {\n\t/**\n\t * Optional icon to be displayed for the action\n\t */\n\ticon?: IconType;\n\n\t/**\n\t * Optional className to apply custom styling to the action item\n\t */\n\tclassName?: string;\n}",
+                          "elements": [
+                            {
+                              "name": "Omit",
+                              "elements": [
+                                {
+                                  "name": "RowAction",
+                                  "elements": [
+                                    {
+                                      "name": "TData"
+                                    }
+                                  ],
+                                  "raw": "RowAction<TData>"
+                                },
+                                {
+                                  "name": "union",
+                                  "raw": "'icon' | 'onClick'",
+                                  "elements": [
+                                    {
+                                      "name": "literal",
+                                      "value": "'icon'"
+                                    },
+                                    {
+                                      "name": "literal",
+                                      "value": "'onClick'"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "raw": "Omit<RowAction<TData>, 'icon' | 'onClick'>"
+                            },
+                            {
+                              "name": "signature",
+                              "type": "object",
+                              "raw": "{\n\t/**\n\t * Optional icon to be displayed for the action\n\t */\n\ticon?: IconType;\n\n\t/**\n\t * Optional className to apply custom styling to the action item\n\t */\n\tclassName?: string;\n}",
+                              "signature": {
+                                "properties": [
+                                  {
+                                    "key": "icon",
+                                    "value": {
+                                      "name": "union",
+                                      "raw": "IconName | FunctionComponent<SVGProps<SVGSVGElement>>",
+                                      "elements": [
+                                        {
+                                          "name": "union",
+                                          "raw": "MaterialIconName | CustomIconName",
+                                          "elements": [
+                                            {
+                                              "name": "unknown"
+                                            },
+                                            {
+                                              "name": "unknown"
+                                            }
+                                          ]
+                                        },
+                                        {
+                                          "name": "FunctionComponent",
+                                          "elements": [
+                                            {
+                                              "name": "SVGProps",
+                                              "elements": [
+                                                {
+                                                  "name": "SVGSVGElement"
+                                                }
+                                              ],
+                                              "raw": "SVGProps<SVGSVGElement>"
+                                            }
+                                          ],
+                                          "raw": "FunctionComponent<SVGProps<SVGSVGElement>>"
+                                        }
+                                      ],
+                                      "required": false
+                                    },
+                                    "description": "Optional icon to be displayed for the action"
+                                  },
+                                  {
+                                    "key": "className",
+                                    "value": {
+                                      "name": "string",
+                                      "required": false
+                                    },
+                                    "description": "Optional className to apply custom styling to the action item"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        },
+                        {
+                          "name": "signature",
+                          "type": "object",
+                          "raw": "{\n\t/**\n\t * Nested actions rendered as a cascading submenu. Mutually exclusive with `onClick`.\n\t * `hidden` and `disabled` on the parent apply to the whole submenu; a parent whose\n\t * children are all hidden is omitted.\n\t */\n\tchildren: SecondaryRowAction<TData>[];\n\tonClick?: never;\n}",
+                          "signature": {
+                            "properties": [
+                              {
+                                "key": "children",
+                                "value": {
+                                  "name": "Array",
+                                  "elements": [
+                                    {
+                                      "name": "SecondaryRowAction"
+                                    }
+                                  ],
+                                  "raw": "SecondaryRowAction<TData>[]",
+                                  "required": true
+                                },
+                                "description": "Nested actions rendered as a cascading submenu. Mutually exclusive with `onClick`.\n`hidden` and `disabled` on the parent apply to the whole submenu; a parent whose\nchildren are all hidden is omitted."
+                              },
+                              {
+                                "key": "onClick",
+                                "value": {
+                                  "name": "never",
+                                  "required": false
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "raw": "SecondaryRowAction<TData>[]"
+            },
+            "description": "Secondary actions shown in a \"more\" dropdown on each row, in the same trailing column\nas `primaryRowActions`"
+          },
+          "reorderable": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Whether the table rows are reorderable via drag & drop\n@note This feature does not work when virtualization is enabled"
+          },
+          "reorderableColumnWidth": {
+            "required": false,
+            "tsType": {
+              "name": "number"
+            },
+            "description": "Width in px of the reorder utility column. Ignored when `reorderable` is\noff or the table is virtualized. Non-finite or `<= 0` falls back to the\ndefault. The column is not user-resizable. Wins over a `columnSizing`\nentry for this column.\n@default 60"
+          },
+          "onOrderChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(newData: TData[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "TData"
+                        }
+                      ],
+                      "raw": "TData[]"
+                    },
+                    "name": "newData"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Callback when the order of rows changes via drag & drop"
+          },
+          "columnFilters": {
+            "required": false,
+            "tsType": {
+              "name": "ColumnFiltersState"
+            },
+            "description": "External column filters state"
+          },
+          "onColumnFiltersChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(filters: ColumnFiltersState) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "ColumnFiltersState"
+                    },
+                    "name": "filters"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Callback when column filters change"
+          },
+          "columnDisplay": {
+            "required": false,
+            "tsType": {
+              "name": "boolean"
+            },
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+          },
+          "columnVisibility": {
+            "required": false,
+            "tsType": {
+              "name": "VisibilityState"
+            },
+            "description": "External column visibility state. When omitted, the table tracks visibility\nitself and still calls `onColumnVisibilityChange`.\n@example\n```tsx\nconst [columnVisibility, setColumnVisibility] = useState<VisibilityState>({\n  age: false, // hide age column\n  status: true, // show status column\n});\n\n<DsTable\n  columnVisibility={columnVisibility}\n  onColumnVisibilityChange={setColumnVisibility}\n/>\n```"
+          },
+          "onColumnVisibilityChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(visibility: VisibilityState) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "VisibilityState"
+                    },
+                    "name": "visibility"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
+          },
+          "collapsedColumnGroups": {
+            "required": false,
+            "tsType": {
+              "name": "Array",
+              "elements": [
+                {
+                  "name": "string"
+                }
+              ],
+              "raw": "string[]"
+            },
+            "description": "Controlled list of collapsed column-group ids. A group is collapsible when its\ncolumn def sets `meta.group.collapsible`; collapsing hides every leaf column in\nthe group except those marked `meta.keepVisibleWhenCollapsed`. Omit for\nuncontrolled behavior (seeded from `meta.group.defaultCollapsed`).\n\n@example\n```tsx\nconst [collapsed, setCollapsed] = useState<string[]>(['equipment']);\n\n<DsTable\n  collapsedColumnGroups={collapsed}\n  onCollapsedColumnGroupsChange={setCollapsed}\n/>\n```"
+          },
+          "onCollapsedColumnGroupsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(collapsedGroupIds: string[]) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "Array",
+                      "elements": [
+                        {
+                          "name": "string"
+                        }
+                      ],
+                      "raw": "string[]"
+                    },
+                    "name": "collapsedGroupIds"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Callback fired with the next list of collapsed group ids when a group's\ncollapse toggle is clicked."
+          },
+          "locale": {
+            "required": false,
+            "tsType": {
+              "name": "Partial",
+              "elements": [
+                {
+                  "name": "DsTableLocale"
+                }
+              ],
+              "raw": "Partial<DsTableLocale>"
+            },
+            "description": "Overrides for user-facing strings (e.g. column-group toggle labels). Merged\nover the built-in English defaults."
+          },
+          "onCellEdit": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(\n\trow: TData,\n\tcolumnId: string,\n\tvalue: TValue,\n\tsignal: AbortSignal,\n) => string | null | undefined | Promise<string | null | undefined>",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "TData"
+                    },
+                    "name": "row"
+                  },
+                  {
+                    "type": {
+                      "name": "string"
+                    },
+                    "name": "columnId"
+                  },
+                  {
+                    "type": {
+                      "name": "TValue"
+                    },
+                    "name": "value"
+                  },
+                  {
+                    "type": {
+                      "name": "AbortSignal"
+                    },
+                    "name": "signal"
+                  }
+                ],
+                "return": {
+                  "name": "union",
+                  "raw": "string | null | undefined | Promise<string | null | undefined>",
+                  "elements": [
+                    {
+                      "name": "string"
+                    },
+                    {
+                      "name": "null"
+                    },
+                    {
+                      "name": "undefined"
+                    },
+                    {
+                      "name": "Promise",
+                      "elements": [
+                        {
+                          "name": "union",
+                          "raw": "string | null | undefined",
+                          "elements": [
+                            {
+                              "name": "string"
+                            },
+                            {
+                              "name": "null"
+                            },
+                            {
+                              "name": "undefined"
+                            }
+                          ]
+                        }
+                      ],
+                      "raw": "Promise<string | null | undefined>"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Commits an edited cell value. Runs when the user confirms (check button or\nEnter) after `onCellValidate` passes. This is the authoritative commit: use it\nfor server-side validation and persistence. Return `void`/`null` to accept\n(closes the editor) or an error `string` to reject (keeps the cell open with\nthe message); may be async. While a returned Promise is pending the editor is\nlocked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or\nsuperseded by opening another cell, so in-flight requests can be cancelled."
+          },
+          "onCellValidate": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(row: TData, columnId: string, value: TValue) => string | null",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "TData"
+                    },
+                    "name": "row"
+                  },
+                  {
+                    "type": {
+                      "name": "string"
+                    },
+                    "name": "columnId"
+                  },
+                  {
+                    "type": {
+                      "name": "TValue"
+                    },
+                    "name": "value"
+                  }
+                ],
+                "return": {
+                  "name": "union",
+                  "raw": "string | null",
+                  "elements": [
+                    {
+                      "name": "string"
+                    },
+                    {
+                      "name": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "description": "Synchronous, per-keystroke validation for the active editor. Runs live on\nevery draft change and once more as a pre-commit gate before `onCellEdit`.\nReturn `null` to allow or an error `string` to reject. A live error is shown\ninline and disables the Confirm button; `onCellEdit` never runs while the\nvalue is invalid. Keep it pure and cheap — for async or server-side checks,\nuse `onCellEdit` instead."
+          }
+        }
+      },
+      "stories": [
+        {
+          "id": "components-table-sticky-columns--default",
+          "name": "Default",
+          "snippet": "const Default = () => <DsTable\n    columns={[\n        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n        {\n            accessorKey: 'progress',\n            header: 'Profile Progress',\n            cell: (info) => `${String(info.getValue())}%`,\n            size: 200,\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    stickyColumns={{ left: ['firstName'], right: ['status'] }} />;",
+          "description": "Keep key columns in view while the table scrolls horizontally. `left`\ncolumns stick to the left edge and `right` columns to the right edge, in\narray order. A divider shows on a sticky edge only while content is\nscrolled under it. Passing `stickyColumns` controls the state; omit it to\nlet the table keep its own. Sticky columns wider than the visible width are\nnot supported."
+        },
+        {
+          "id": "components-table-sticky-columns--with-row-actions",
+          "name": "With Row Actions",
+          "snippet": "const WithRowActions = () => <DsTable\n    columns={[\n        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n        {\n            accessorKey: 'progress',\n            header: 'Profile Progress',\n            cell: (info) => `${String(info.getValue())}%`,\n            size: 200,\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    stickyColumns={{ left: ['firstName'], right: ['status'] }}\n    selectable\n    primaryRowActions={[\n        { icon: 'edit', label: 'Edit', onClick: fn() },\n        { icon: 'download', label: 'Download', onClick: fn() },\n    ]}\n    secondaryRowActions={[{ icon: 'delete', label: 'Delete', onClick: fn() }]} />;",
+          "description": "Utility columns are always sticky: selection and expansion stay on the left\nbefore the consumer columns, and row actions stay on the right after them."
+        },
+        {
+          "id": "components-table-sticky-columns--column-display",
+          "name": "Column Display",
+          "snippet": "const ColumnDisplay = () => <DsTable\n    columns={[\n        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n        {\n            accessorKey: 'progress',\n            header: 'Profile Progress',\n            cell: (info) => `${String(info.getValue())}%`,\n            size: 200,\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    columnDisplay\n    primaryRowActions={[\n        { icon: 'edit', label: 'Edit', onClick: fn() },\n        { icon: 'download', label: 'Download', onClick: fn() },\n    ]} />;",
+          "description": "With `columnDisplay`, the Columns button in the header lists every column.\nIts checkbox shows or hides the column, and the sticky toggle next to it\nmakes the column sticky on the left. The toggle appears on hover or focus\nand stays visible while the column is sticky. A hidden sticky column stays listed in\n`stickyColumns` and is sticky again once shown."
+        },
+        {
+          "id": "components-table-sticky-columns--column-display-with-saved-state",
+          "name": "Column Display With Saved State",
+          "snippet": "const ColumnDisplayWithSavedState = () => {\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ lastName: false });\n    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n        left: ['firstName', 'lastName'],\n    });\n\n    return (\n        <DsTable\n            columns={[\n                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n                {\n                    accessorKey: 'progress',\n                    header: 'Profile Progress',\n                    cell: (info) => `${String(info.getValue())}%`,\n                    size: 200,\n                },\n                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n            ]}\n            data={defaultData}\n            onRowClick={fn()}\n            columnDisplay\n            primaryRowActions={[\n                { icon: 'edit', label: 'Edit', onClick: fn() },\n                { icon: 'download', label: 'Download', onClick: fn() },\n            ]}\n            columnVisibility={columnVisibility}\n            onColumnVisibilityChange={setColumnVisibility}\n            stickyColumns={stickyColumns}\n            onStickyColumnsChange={setStickyColumns} />\n    );\n};",
+          "description": "Pass `columnVisibility` and `stickyColumns` with their callbacks to restore\nand persist the user's choice. Here First Name and Last Name start sticky,\nand Last Name starts hidden, so showing it again makes it sticky right away."
+        },
+        {
+          "id": "components-table-sticky-columns--column-display-with-column-groups",
+          "name": "Column Display With Column Groups",
+          "snippet": "const ColumnDisplayWithColumnGroups = () => {\n    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({ visits: false });\n    const [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({ left: ['identity'] });\n\n    return (\n        <DsTable\n            columns={[\n                {\n                    id: 'identity',\n                    header: 'Identity',\n                    columns: [\n                        {\n                            accessorKey: 'firstName',\n                            header: 'First Name',\n                            cell: (info) => info.getValue<string>(),\n                            size: 160,\n                        },\n                        {\n                            accessorKey: 'lastName',\n                            header: 'Last Name',\n                            cell: (info) => info.getValue<string>(),\n                            size: 160,\n                        },\n                    ],\n                },\n                {\n                    id: 'activity',\n                    header: 'Activity',\n                    columns: [\n                        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },\n                        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },\n                        {\n                            accessorKey: 'progress',\n                            header: 'Profile Progress',\n                            cell: (info) => `${String(info.getValue<number>())}%`,\n                            size: 200,\n                        },\n                    ],\n                },\n                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n            ]}\n            data={defaultData}\n            onRowClick={fn()}\n            columnDisplay\n            columnVisibility={columnVisibility}\n            onColumnVisibilityChange={setColumnVisibility}\n            stickyColumns={stickyColumns}\n            onStickyColumnsChange={setStickyColumns} />\n    );\n};",
+          "description": "With column groups, only the top-level rows (a group or an ungrouped\ncolumn) have a sticky toggle, because making any leaf sticky makes its whole\ntop-level group sticky. Here the Identity group starts sticky and Visits\nstarts hidden."
+        },
+        {
+          "id": "components-table-sticky-columns--column-groups",
+          "name": "Column Groups",
+          "snippet": "const ColumnGroups = () => <DsTable\n    columns={[\n        {\n            id: 'identity',\n            header: 'Identity',\n            columns: [\n                {\n                    accessorKey: 'firstName',\n                    header: 'First Name',\n                    cell: (info) => info.getValue<string>(),\n                    size: 160,\n                },\n                {\n                    accessorKey: 'lastName',\n                    header: 'Last Name',\n                    cell: (info) => info.getValue<string>(),\n                    size: 160,\n                },\n            ],\n        },\n        {\n            id: 'activity',\n            header: 'Activity',\n            columns: [\n                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue<number>(), size: 140 },\n                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue<number>(), size: 160 },\n                {\n                    accessorKey: 'progress',\n                    header: 'Profile Progress',\n                    cell: (info) => `${String(info.getValue<number>())}%`,\n                    size: 200,\n                },\n            ],\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    stickyColumns={{ left: ['identity'] }} />;",
+          "description": "Listing a group id, or any leaf of a group, makes every leaf of that\ntop-level group sticky. The group header renders once and sticks with its leaves."
+        },
+        {
+          "id": "components-table-sticky-columns--resizable",
+          "name": "Resizable",
+          "snippet": "const Resizable = () => <DsTable\n    columns={[\n        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n        {\n            accessorKey: 'progress',\n            header: 'Profile Progress',\n            cell: (info) => `${String(info.getValue())}%`,\n            size: 200,\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    resizableColumns\n    stickyColumns={{ left: ['firstName', 'lastName'], right: ['status'] }} />;",
+          "description": "Sticky columns stay resizable. Resizing one moves the sticky columns after\nit live during the drag."
+        },
+        {
+          "id": "components-table-sticky-columns--virtualized",
+          "name": "Virtualized",
+          "snippet": "const Virtualized = () => {\n    const [data] = useState(() => generatePersonData(0, 1_000, []).data);\n\n    return (\n        <DsTable\n            columns={[\n                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n                {\n                    accessorKey: 'progress',\n                    header: 'Profile Progress',\n                    cell: (info) => `${String(info.getValue())}%`,\n                    size: 200,\n                },\n                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n            ]}\n            onRowClick={fn()}\n            virtualized\n            selectable\n            stickyColumns={{ left: ['firstName'], right: ['status'] }}\n            data={data} />\n    );\n};",
+          "description": "Sticky columns work with virtualization and infinite scroll. A virtualized\ntable takes its height from its parent, so the parent needs a bounded\nheight."
+        },
+        {
+          "id": "components-table-sticky-columns--expandable",
+          "name": "Expandable",
+          "snippet": "const Expandable = () => {\n    const tableRef = useRef<DsTableApi<Person>>(null);\n\n    useEffect(() => {\n        tableRef.current?.expandRows(['1']);\n    }, []);\n\n    return (\n        <DsTable\n            columns={[\n                { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n                { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n                { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n                {\n                    accessorKey: 'progress',\n                    header: 'Profile Progress',\n                    cell: (info) => `${String(info.getValue())}%`,\n                    size: 200,\n                },\n                { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n            ]}\n            data={defaultData}\n            onRowClick={fn()}\n            stickyColumns={{ left: ['firstName'] }}\n            expandable\n            ref={tableRef}\n            renderExpandedRow={(row) => (\n                <DsStack direction=\"column\" gap=\"var(--xs)\">\n                    <DsTypography variant=\"body-sm-semi-bold\">\n                        Recent visits for {row.firstName} {row.lastName}\n                    </DsTypography>\n                    <DsTable\n                        columns={[\n                            { accessorKey: 'firstName', header: 'First Name', size: 180 },\n                            { accessorKey: 'lastName', header: 'Last Name', size: 180 },\n                            { accessorKey: 'age', header: 'Age', size: 140 },\n                            { accessorKey: 'visits', header: 'Visits', size: 160 },\n                            { accessorKey: 'status', header: 'Status', size: 160 },\n                        ]}\n                        data={defaultData.slice(0, 2)}\n                        stickyColumns={{ left: ['firstName'] }}\n                    />\n                </DsStack>\n            )} />\n    );\n};",
+          "description": "Expanded row content stays in the visible area while the table scrolls\nhorizontally, and its background spans the full row. A nested table fits the\nvisible width, scrolls on its own and keeps its own sticky columns."
+        },
+        {
+          "id": "components-table-sticky-columns--reorderable",
+          "name": "Reorderable",
+          "snippet": "const Reorderable = () => <DsTable\n    columns={[\n        { accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },\n        { accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },\n        { accessorKey: 'visits', header: 'Visits', cell: (info) => info.getValue(), size: 160 },\n        {\n            accessorKey: 'progress',\n            header: 'Profile Progress',\n            cell: (info) => `${String(info.getValue())}%`,\n            size: 200,\n        },\n        { accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },\n    ]}\n    data={defaultData}\n    onRowClick={fn()}\n    stickyColumns={{ left: ['firstName'] }}\n    reorderable\n    onOrderChange={fn()} />;",
+          "description": "Drag-to-reorder keeps working: the drag handle column is sticky left, before\nthe consumer sticky columns."
+        }
+      ],
+      "import": "import { DsStack, DsTable, DsTypography } from '@drivenets/design-system';\nimport { defaultData } from './common/story-data';\nimport { fn } from 'storybook/test';"
     },
     "components-table-virtualized": {
       "id": "components-table-virtualized",
@@ -28948,7 +30621,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Whether the table is virtualized\n@default false"
+            "description": "Whether the table is virtualized. The table takes its height from its\nparent, so the parent needs a bounded height; without one the table\ncollapses to zero height.\n@default false"
           },
           "virtualizedOptions": {
             "required": false,
@@ -29742,7 +31415,7 @@
             "tsType": {
               "name": "boolean"
             },
-            "description": "Adds a Columns button to the header for showing and hiding columns. Uses\n`columnVisibility` / `onColumnVisibilityChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
+            "description": "Adds a Columns button to the header for showing and hiding columns and\nmaking them sticky on the left. A right sticky column reads as sticky, and\nits toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`\nand `stickyColumns` / `onStickyColumnsChange`; set\n`meta.columnDisplayLabel` on columns whose `header` is not a string.\n@default false"
           },
           "columnVisibility": {
             "required": false,
@@ -29772,6 +31445,35 @@
               }
             },
             "description": "Callback when column visibility changes"
+          },
+          "stickyColumns": {
+            "required": false,
+            "tsType": {
+              "name": "DsTableStickyColumns"
+            },
+            "description": "Columns kept in view during horizontal scroll. Omit for uncontrolled state;\npass it with `onStickyColumnsChange` to control it.\n\n- The reorder, expander and select columns are always sticky left, before\n  these columns. The row actions column (or, without row actions, the\n  `columnDisplay` column) is always sticky right, after them. Listing\n  their ids has no effect.\n- Listing a group id, or any leaf of a group, makes every leaf of that\n  top-level group sticky.\n- A sticky column without `size` renders at a fixed width (its\n  `getSize()`, 150px by default) instead of filling.\n- A column hidden via `columnVisibility` stays listed and is sticky again\n  when shown.\n- Sticky columns wider than the table viewport are not handled; keep their\n  total width below the visible width.\n\n@example\n```tsx\nconst [stickyColumns, setStickyColumns] = useState<DsTableStickyColumns>({\n  left: ['firstName'],\n  right: ['status'],\n});\n\n<DsTable\n  stickyColumns={stickyColumns}\n  onStickyColumnsChange={setStickyColumns}\n/>\n```"
+          },
+          "onStickyColumnsChange": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "function",
+              "raw": "(stickyColumns: DsTableStickyColumns) => void",
+              "signature": {
+                "arguments": [
+                  {
+                    "type": {
+                      "name": "DsTableStickyColumns"
+                    },
+                    "name": "stickyColumns"
+                  }
+                ],
+                "return": {
+                  "name": "void"
+                }
+              }
+            },
+            "description": "Called with the next sticky columns when a column is made sticky or not\nfrom the `columnDisplay` popup or through the TanStack column API (e.g.\n`column.pin('left')` in a header renderer). Contains consumer column ids\nonly, never utility column ids."
           },
           "collapsedColumnGroups": {
             "required": false,
@@ -32889,6 +34591,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5678
+    "durationMs": 5799
   }
 }

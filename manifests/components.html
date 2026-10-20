@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/103 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/103 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/103 without API description</a><span class="filter-pill ok" aria-disabled="true">627 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/627 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/104 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/104 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/104 without API description</a><span class="filter-pill ok" aria-disabled="true">637 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/637 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.7s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -20255,7 +20255,7 @@ status: (typeof systemStatuses)[number]</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-73-components-table-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-73-components-table-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-73-components-table-stories" class="badge ok as-toggle">5 stories</label>
         
@@ -20284,7 +20284,7 @@ status: (typeof systemStatuses)[number]</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20341,8 +20341,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -20556,6 +20558,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -20648,12 +20658,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -20839,7 +20883,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-74-components-table-active-row-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-74-components-table-active-row-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-74-components-table-active-row-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -20868,7 +20912,7 @@ buttons on the right. The controls bar stays fixed while the table scrolls.</div
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -20925,8 +20969,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -21140,6 +21186,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -21232,12 +21286,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -21424,7 +21512,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-75-components-table-filters-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-75-components-table-filters-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-75-components-table-filters-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -21453,7 +21541,7 @@ the drawer closes. Clicking the active row again toggles the drawer shut.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -21510,8 +21598,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -21725,6 +21815,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -21817,12 +21915,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -21959,7 +22091,7 @@ zebra?: boolean</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-76-components-table-column-groups-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-76-components-table-column-groups-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-76-components-table-column-groups-stories" class="badge ok as-toggle">5 stories · 4 incomplete</label>
         
@@ -21988,7 +22120,7 @@ zebra?: boolean</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22045,8 +22177,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -22260,6 +22394,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -22352,12 +22494,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -22551,7 +22727,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-77-components-table-columns-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-77-components-table-columns-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-77-components-table-columns-stories" class="badge ok as-toggle">4 stories · 1 incomplete</label>
         
@@ -22580,7 +22756,7 @@ only some are visible. Columns with `enableHiding: false` are listed as locked.<
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -22637,8 +22813,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -22852,6 +23030,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -22944,12 +23130,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -23164,7 +23384,7 @@ column at once.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-78-components-table-editable-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-78-components-table-editable-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-78-components-table-editable-stories" class="badge ok as-toggle">3 stories</label>
         
@@ -23193,7 +23413,7 @@ column at once.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23250,8 +23470,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -23465,6 +23687,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -23557,12 +23787,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -23909,7 +24173,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-79-components-table-expansion-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-79-components-table-expansion-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -23938,7 +24202,7 @@ the cell open or `void`/`null` to commit. The editor locks while saving, and
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -23995,8 +24259,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -24210,6 +24476,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -24302,12 +24576,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -24578,7 +24886,7 @@ after the table remounts.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-80-components-table-loading-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-80-components-table-loading-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-80-components-table-loading-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -24607,7 +24915,7 @@ after the table remounts.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -24664,8 +24972,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -24879,6 +25189,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -24971,12 +25289,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -25074,7 +25426,7 @@ of the default bar.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-81-components-table-resizable-columns-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-81-components-table-resizable-columns-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-81-components-table-resizable-columns-stories" class="badge ok as-toggle">6 stories</label>
         
@@ -25103,7 +25455,7 @@ of the default bar.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25160,8 +25512,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -25375,6 +25729,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -25467,12 +25829,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -25751,7 +26147,7 @@ width and has no resize handle.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-82-components-table-row-actions-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-82-components-table-row-actions-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-82-components-table-row-actions-stories" class="badge ok as-toggle">11 stories · 1 incomplete</label>
         
@@ -25780,7 +26176,7 @@ width and has no resize handle.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -25837,8 +26233,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -26052,6 +26450,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -26144,12 +26550,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -26688,7 +27128,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-83-components-table-search-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-83-components-table-search-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-83-components-table-search-stories" class="badge ok as-toggle">2 stories</label>
         
@@ -26717,7 +27157,7 @@ drag-handle column needs more (or less) room. It is not user-resizable.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -26774,8 +27214,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -26989,6 +27431,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -27081,12 +27531,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -27284,7 +27768,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-84-components-table-selection-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-84-components-table-selection-props" class="badge ok as-toggle">49 prop types</label>
         
         <label for="c-84-components-table-selection-stories" class="badge ok as-toggle">4 stories</label>
         
@@ -27313,7 +27797,7 @@ controlled via `columnFilters` / `onColumnFiltersChange`.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27370,8 +27854,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -27585,6 +28071,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -27677,12 +28171,46 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -27883,7 +28411,7 @@ once the cap is reached.</div>
   </div>
 </article>
 <article
-  id="components-table-virtualized"
+  id="components-table-sticky-columns"
   class="card 
   no-error
   no-info
@@ -27897,14 +28425,14 @@ once the cap is reached.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTable</h2>
       <div class="badges">
-        <label for="c-85-components-table-virtualized-props" class="badge ok as-toggle">47 prop types</label>
+        <label for="c-85-components-table-sticky-columns-props" class="badge ok as-toggle">49 prop types</label>
         
-        <label for="c-85-components-table-virtualized-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-85-components-table-sticky-columns-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
     </div>
-    <div class="meta" title="./src/components/ds-table/stories/ds-table-virtualized.stories.tsx">components-table-virtualized · ./src/components/ds-table/stories/ds-table-virtualized.stories.tsx</div>
+    <div class="meta" title="./src/components/ds-table/stories/ds-table-sticky-columns.stories.tsx">components-table-sticky-columns · ./src/components/ds-table/stories/ds-table-sticky-columns.stories.tsx</div>
     
     <div class="hint">Design system Table component</div>
     
@@ -27913,10 +28441,10 @@ once the cap is reached.</div>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-85-components-table-virtualized-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-85-components-table-sticky-columns-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-85-components-table-virtualized-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-85-components-table-sticky-columns-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -27926,7 +28454,7 @@ once the cap is reached.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">47 prop types</span>
+              <span class="badge ok">49 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -27983,8 +28511,10 @@ className?: string
 collapsedColumnGroups?: string[]
 
 /**
- * Adds a Columns button to the header for showing and hiding columns. Uses
- * `columnVisibility` / `onColumnVisibilityChange`; set
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
  * `meta.columnDisplayLabel` on columns whose `header` is not a string.
  * @default false
  */
@@ -28198,6 +28728,14 @@ onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
 onSortingChange?: (sorting: SortingState) =&gt; void
 
 /**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
  * Function to handle table creation
  */
 onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
@@ -28290,12 +28828,954 @@ selectableColumnWidth?: number
 showSelectAllCheckbox?: boolean
 
 /**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
  * Whether the table has sticky header
  */
 stickyHeader?: boolean
 
 /**
- * Whether the table is virtualized
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
+ * @default false
+ */
+virtualized?: boolean
+
+/**
+ * Options for the virtualized table
+ */
+virtualizedOptions?: {
+	/**
+	 * Estimate size of the table
+	 */
+	estimateSize?: number;
+
+	/**
+	 * Overscan of the table
+	 */
+	overscan?: number;
+}
+
+/**
+ * Whether the table has zebra stripes
+ */
+zebra?: boolean</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { DsStack, DsTable, DsTypography } from '@drivenets/design-system';
+import { defaultData } from './common/story-data';
+import { fn } from 'storybook/test';</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Keep key columns in view while the table scrolls horizontally. `left`
+columns stick to the left edge and `right` columns to the right edge, in
+array order. A divider shows on a sticky edge only while content is
+scrolled under it. Passing `stickyColumns` controls the state; omit it to
+let the table keep its own. Sticky columns wider than the visible width are
+not supported.</div>
+              <pre><code>const Default = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+        {
+            accessorKey: &#39;progress&#39;,
+            header: &#39;Profile Progress&#39;,
+            cell: (info) =&gt; `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: [&#39;firstName&#39;], right: [&#39;status&#39;] }} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Row Actions</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Utility columns are always sticky: selection and expansion stay on the left
+before the consumer columns, and row actions stay on the right after them.</div>
+              <pre><code>const WithRowActions = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+        {
+            accessorKey: &#39;progress&#39;,
+            header: &#39;Profile Progress&#39;,
+            cell: (info) =&gt; `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: [&#39;firstName&#39;], right: [&#39;status&#39;] }}
+    selectable
+    primaryRowActions={[
+        { icon: &#39;edit&#39;, label: &#39;Edit&#39;, onClick: fn() },
+        { icon: &#39;download&#39;, label: &#39;Download&#39;, onClick: fn() },
+    ]}
+    secondaryRowActions={[{ icon: &#39;delete&#39;, label: &#39;Delete&#39;, onClick: fn() }]} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Display</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">With `columnDisplay`, the Columns button in the header lists every column.
+Its checkbox shows or hides the column, and the sticky toggle next to it
+makes the column sticky on the left. The toggle appears on hover or focus
+and stays visible while the column is sticky. A hidden sticky column stays listed in
+`stickyColumns` and is sticky again once shown.</div>
+              <pre><code>const ColumnDisplay = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+        {
+            accessorKey: &#39;progress&#39;,
+            header: &#39;Profile Progress&#39;,
+            cell: (info) =&gt; `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    columnDisplay
+    primaryRowActions={[
+        { icon: &#39;edit&#39;, label: &#39;Edit&#39;, onClick: fn() },
+        { icon: &#39;download&#39;, label: &#39;Download&#39;, onClick: fn() },
+    ]} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Display With Saved State</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Pass `columnVisibility` and `stickyColumns` with their callbacks to restore
+and persist the user&#39;s choice. Here First Name and Last Name start sticky,
+and Last Name starts hidden, so showing it again makes it sticky right away.</div>
+              <pre><code>const ColumnDisplayWithSavedState = () =&gt; {
+    const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({ lastName: false });
+    const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+        left: [&#39;firstName&#39;, &#39;lastName&#39;],
+    });
+
+    return (
+        &lt;DsTable
+            columns={[
+                { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+                { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+                {
+                    accessorKey: &#39;progress&#39;,
+                    header: &#39;Profile Progress&#39;,
+                    cell: (info) =&gt; `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            columnDisplay
+            primaryRowActions={[
+                { icon: &#39;edit&#39;, label: &#39;Edit&#39;, onClick: fn() },
+                { icon: &#39;download&#39;, label: &#39;Download&#39;, onClick: fn() },
+            ]}
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns} /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Display With Column Groups</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">With column groups, only the top-level rows (a group or an ungrouped
+column) have a sticky toggle, because making any leaf sticky makes its whole
+top-level group sticky. Here the Identity group starts sticky and Visits
+starts hidden.</div>
+              <pre><code>const ColumnDisplayWithColumnGroups = () =&gt; {
+    const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({ visits: false });
+    const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({ left: [&#39;identity&#39;] });
+
+    return (
+        &lt;DsTable
+            columns={[
+                {
+                    id: &#39;identity&#39;,
+                    header: &#39;Identity&#39;,
+                    columns: [
+                        {
+                            accessorKey: &#39;firstName&#39;,
+                            header: &#39;First Name&#39;,
+                            cell: (info) =&gt; info.getValue&lt;string&gt;(),
+                            size: 160,
+                        },
+                        {
+                            accessorKey: &#39;lastName&#39;,
+                            header: &#39;Last Name&#39;,
+                            cell: (info) =&gt; info.getValue&lt;string&gt;(),
+                            size: 160,
+                        },
+                    ],
+                },
+                {
+                    id: &#39;activity&#39;,
+                    header: &#39;Activity&#39;,
+                    columns: [
+                        { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue&lt;number&gt;(), size: 140 },
+                        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue&lt;number&gt;(), size: 160 },
+                        {
+                            accessorKey: &#39;progress&#39;,
+                            header: &#39;Profile Progress&#39;,
+                            cell: (info) =&gt; `${String(info.getValue&lt;number&gt;())}%`,
+                            size: 200,
+                        },
+                    ],
+                },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            columnDisplay
+            columnVisibility={columnVisibility}
+            onColumnVisibilityChange={setColumnVisibility}
+            stickyColumns={stickyColumns}
+            onStickyColumnsChange={setStickyColumns} /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Column Groups</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Listing a group id, or any leaf of a group, makes every leaf of that
+top-level group sticky. The group header renders once and sticks with its leaves.</div>
+              <pre><code>const ColumnGroups = () =&gt; &lt;DsTable
+    columns={[
+        {
+            id: &#39;identity&#39;,
+            header: &#39;Identity&#39;,
+            columns: [
+                {
+                    accessorKey: &#39;firstName&#39;,
+                    header: &#39;First Name&#39;,
+                    cell: (info) =&gt; info.getValue&lt;string&gt;(),
+                    size: 160,
+                },
+                {
+                    accessorKey: &#39;lastName&#39;,
+                    header: &#39;Last Name&#39;,
+                    cell: (info) =&gt; info.getValue&lt;string&gt;(),
+                    size: 160,
+                },
+            ],
+        },
+        {
+            id: &#39;activity&#39;,
+            header: &#39;Activity&#39;,
+            columns: [
+                { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue&lt;number&gt;(), size: 140 },
+                { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue&lt;number&gt;(), size: 160 },
+                {
+                    accessorKey: &#39;progress&#39;,
+                    header: &#39;Profile Progress&#39;,
+                    cell: (info) =&gt; `${String(info.getValue&lt;number&gt;())}%`,
+                    size: 200,
+                },
+            ],
+        },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: [&#39;identity&#39;] }} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Resizable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Sticky columns stay resizable. Resizing one moves the sticky columns after
+it live during the drag.</div>
+              <pre><code>const Resizable = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+        {
+            accessorKey: &#39;progress&#39;,
+            header: &#39;Profile Progress&#39;,
+            cell: (info) =&gt; `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    resizableColumns
+    stickyColumns={{ left: [&#39;firstName&#39;, &#39;lastName&#39;], right: [&#39;status&#39;] }} /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Virtualized</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Sticky columns work with virtualization and infinite scroll. A virtualized
+table takes its height from its parent, so the parent needs a bounded
+height.</div>
+              <pre><code>const Virtualized = () =&gt; {
+    const [data] = useState(() =&gt; generatePersonData(0, 1_000, []).data);
+
+    return (
+        &lt;DsTable
+            columns={[
+                { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+                { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+                {
+                    accessorKey: &#39;progress&#39;,
+                    header: &#39;Profile Progress&#39;,
+                    cell: (info) =&gt; `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+            ]}
+            onRowClick={fn()}
+            virtualized
+            selectable
+            stickyColumns={{ left: [&#39;firstName&#39;], right: [&#39;status&#39;] }}
+            data={data} /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Expandable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Expanded row content stays in the visible area while the table scrolls
+horizontally, and its background spans the full row. A nested table fits the
+visible width, scrolls on its own and keeps its own sticky columns.</div>
+              <pre><code>const Expandable = () =&gt; {
+    const tableRef = useRef&lt;DsTableApi&lt;Person&gt;&gt;(null);
+
+    useEffect(() =&gt; {
+        tableRef.current?.expandRows([&#39;1&#39;]);
+    }, []);
+
+    return (
+        &lt;DsTable
+            columns={[
+                { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+                { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+                { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+                {
+                    accessorKey: &#39;progress&#39;,
+                    header: &#39;Profile Progress&#39;,
+                    cell: (info) =&gt; `${String(info.getValue())}%`,
+                    size: 200,
+                },
+                { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+            ]}
+            data={defaultData}
+            onRowClick={fn()}
+            stickyColumns={{ left: [&#39;firstName&#39;] }}
+            expandable
+            ref={tableRef}
+            renderExpandedRow={(row) =&gt; (
+                &lt;DsStack direction=&quot;column&quot; gap=&quot;var(--xs)&quot;&gt;
+                    &lt;DsTypography variant=&quot;body-sm-semi-bold&quot;&gt;
+                        Recent visits for {row.firstName} {row.lastName}
+                    &lt;/DsTypography&gt;
+                    &lt;DsTable
+                        columns={[
+                            { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, size: 180 },
+                            { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, size: 180 },
+                            { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, size: 140 },
+                            { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, size: 160 },
+                            { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, size: 160 },
+                        ]}
+                        data={defaultData.slice(0, 2)}
+                        stickyColumns={{ left: [&#39;firstName&#39;] }}
+                    /&gt;
+                &lt;/DsStack&gt;
+            )} /&gt;
+    );
+};</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Reorderable</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Drag-to-reorder keeps working: the drag handle column is sticky left, before
+the consumer sticky columns.</div>
+              <pre><code>const Reorderable = () =&gt; &lt;DsTable
+    columns={[
+        { accessorKey: &#39;firstName&#39;, header: &#39;First Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;lastName&#39;, header: &#39;Last Name&#39;, cell: (info) =&gt; info.getValue(), size: 180 },
+        { accessorKey: &#39;age&#39;, header: &#39;Age&#39;, cell: (info) =&gt; info.getValue(), size: 140 },
+        { accessorKey: &#39;visits&#39;, header: &#39;Visits&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+        {
+            accessorKey: &#39;progress&#39;,
+            header: &#39;Profile Progress&#39;,
+            cell: (info) =&gt; `${String(info.getValue())}%`,
+            size: 200,
+        },
+        { accessorKey: &#39;status&#39;, header: &#39;Status&#39;, cell: (info) =&gt; info.getValue(), size: 160 },
+    ]}
+    data={defaultData}
+    onRowClick={fn()}
+    stickyColumns={{ left: [&#39;firstName&#39;] }}
+    reorderable
+    onOrderChange={fn()} /&gt;;</code></pre>
+              
+            </div>
+        </div>
+    
+    
+  </div>
+</article>
+<article
+  id="components-table-virtualized"
+  class="card 
+  no-error
+  no-info
+  no-story-error
+  no-story-warning
+  
+  no-doc-error"
+  role="listitem"
+  aria-label="DsTable">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> DsTable</h2>
+      <div class="badges">
+        <label for="c-86-components-table-virtualized-props" class="badge ok as-toggle">49 prop types</label>
+        
+        <label for="c-86-components-table-virtualized-stories" class="badge ok as-toggle">8 stories</label>
+        
+        
+      </div>
+    </div>
+    <div class="meta" title="./src/components/ds-table/stories/ds-table-virtualized.stories.tsx">components-table-virtualized · ./src/components/ds-table/stories/ds-table-virtualized.stories.tsx</div>
+    
+    <div class="hint">Design system Table component</div>
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  
+  <input id="c-86-components-table-virtualized-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+  <input id="c-86-components-table-virtualized-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">49 prop types</span>
+            </div>
+            <pre><code>Component: src/components/ds-table/ds-table.tsx::default</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Actions to be shown in the bulk actions
+ */
+actions?: Action&lt;TData&gt;[]
+
+/**
+ * ID of the currently active row (useful for showing drawer/panel associations)
+ * When set, the row with this ID will be visually highlighted with a persistent active state
+ * @example
+ * ```tsx
+ * const [activeRowId, setActiveRowId] = useState&lt;string | null&gt;(null);
+ * const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+ * 
+ * &lt;DsTable
+ *   activeRowId={isDrawerOpen ? activeRowId : null}
+ *   onRowClick={(row) =&gt; {
+ *     setActiveRowId(row.id);
+ *     setIsDrawerOpen(true);
+ *   }}
+ * /&gt;
+ * ```
+ */
+activeRowId?: string | null
+
+/**
+ * Whether the table has bordered cells
+ */
+bordered?: boolean
+
+/**
+ * Class name of the table
+ */
+className?: string
+
+/**
+ * Controlled list of collapsed column-group ids. A group is collapsible when its
+ * column def sets `meta.group.collapsible`; collapsing hides every leaf column in
+ * the group except those marked `meta.keepVisibleWhenCollapsed`. Omit for
+ * uncontrolled behavior (seeded from `meta.group.defaultCollapsed`).
+ * 
+ * @example
+ * ```tsx
+ * const [collapsed, setCollapsed] = useState&lt;string[]&gt;([&#39;equipment&#39;]);
+ * 
+ * &lt;DsTable
+ *   collapsedColumnGroups={collapsed}
+ *   onCollapsedColumnGroupsChange={setCollapsed}
+ * /&gt;
+ * ```
+ */
+collapsedColumnGroups?: string[]
+
+/**
+ * Adds a Columns button to the header for showing and hiding columns and
+ * making them sticky on the left. A right sticky column reads as sticky, and
+ * its toggle clears it. Uses `columnVisibility` / `onColumnVisibilityChange`
+ * and `stickyColumns` / `onStickyColumnsChange`; set
+ * `meta.columnDisplayLabel` on columns whose `header` is not a string.
+ * @default false
+ */
+columnDisplay?: boolean
+
+/**
+ * External column filters state
+ */
+columnFilters?: ColumnFiltersState
+
+/**
+ * Columns of the table
+ */
+columns: ColumnDef&lt;TData, TValue&gt;[]
+
+/**
+ * Persisted column widths as a column id → width (px) map, e.g. a map saved
+ * from {@link onColumnSizingChange}. Pass it (typically on the next mount) to
+ * restore widths; columns absent from the map are measured and sized
+ * automatically. This seeds widths — live resizing still updates them
+ * internally — so it is not a fully controlled value. Ids for the utility
+ * columns are ignored: select, expander, and reorder widths come from the
+ * matching `*ColumnWidth` props; row actions and column display widths are
+ * fixed.
+ */
+columnSizing?: Record&lt;string, number&gt;
+
+/**
+ * External column visibility state. When omitted, the table tracks visibility
+ * itself and still calls `onColumnVisibilityChange`.
+ * @example
+ * ```tsx
+ * const [columnVisibility, setColumnVisibility] = useState&lt;VisibilityState&gt;({
+ *   age: false, // hide age column
+ *   status: true, // show status column
+ * });
+ * 
+ * &lt;DsTable
+ *   columnVisibility={columnVisibility}
+ *   onColumnVisibilityChange={setColumnVisibility}
+ * /&gt;
+ * ```
+ */
+columnVisibility?: VisibilityState
+
+/**
+ * Optional content rendered in a pinned controls bar above the table header
+ * (e.g. filters, action buttons). Layout is owned by the consumer.
+ */
+controls?: React.ReactNode
+
+/**
+ * Data of the table
+ */
+data: TData[]
+
+/**
+ * Replaces the inferred **Empty state**. When omitted, the table renders
+ * `DsEmptyState` as `noData` if `data` is empty, or `noMatches` if `data`
+ * has rows but filters hide all of them.
+ */
+emptyState?: React.ReactNode
+
+/**
+ * Whether the table is expandable or if an individual row should be expandable
+ */
+expandable?: boolean | ((row: TData) =&gt; boolean)
+
+/**
+ * Width in px of the expander utility column. Ignored when `expandable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+expandableColumnWidth?: number
+
+/**
+ * Whether the table is full width
+ */
+fullWidth?: boolean
+
+/**
+ * Configures infinite scroll for the virtualized table. The Table owns viewport/scroll
+ * detection and the auto-fill loop; the consumer owns fetching, pagination state,
+ * error handling, and retry.
+ * 
+ * Only takes effect when `virtualized` is `true`. Passing this prop without
+ * `virtualized` is ignored.
+ * 
+ * @example
+ * ```tsx
+ * &lt;DsTable
+ *   virtualized
+ *   data={rows}
+ *   columns={columns}
+ *   infiniteScroll={{
+ *     hasMore,
+ *     isLoadingMore,
+ *     onLoadMore: fetchNextPage,
+ *   }}
+ * /&gt;
+ * ```
+ */
+infiniteScroll?: InfiniteScrollConfig
+
+/**
+ * When `true`, renders placeholder skeleton rows instead of the data. Column
+ * headers stay intact and row interactions are disabled while loading.
+ * @default false
+ */
+loading?: boolean
+
+/**
+ * Overrides for user-facing strings (e.g. column-group toggle labels). Merged
+ * over the built-in English defaults.
+ */
+locale?: Partial&lt;DsTableLocale&gt;
+
+/**
+ * Commits an edited cell value. Runs when the user confirms (check button or
+ * Enter) after `onCellValidate` passes. This is the authoritative commit: use it
+ * for server-side validation and persistence. Return `void`/`null` to accept
+ * (closes the editor) or an error `string` to reject (keeps the cell open with
+ * the message); may be async. While a returned Promise is pending the editor is
+ * locked. `signal` is aborted when the edit is cancelled (Cancel/Escape) or
+ * superseded by opening another cell, so in-flight requests can be cancelled.
+ */
+onCellEdit?: (
+	row: TData,
+	columnId: string,
+	value: TValue,
+	signal: AbortSignal,
+) =&gt; string | null | undefined | Promise&lt;string | null | undefined&gt;
+
+/**
+ * Synchronous, per-keystroke validation for the active editor. Runs live on
+ * every draft change and once more as a pre-commit gate before `onCellEdit`.
+ * Return `null` to allow or an error `string` to reject. A live error is shown
+ * inline and disables the Confirm button; `onCellEdit` never runs while the
+ * value is invalid. Keep it pure and cheap — for async or server-side checks,
+ * use `onCellEdit` instead.
+ */
+onCellValidate?: (row: TData, columnId: string, value: TValue) =&gt; string | null
+
+/**
+ * Callback fired with the next list of collapsed group ids when a group&#39;s
+ * collapse toggle is clicked.
+ */
+onCollapsedColumnGroupsChange?: (collapsedGroupIds: string[]) =&gt; void
+
+/**
+ * Callback when column filters change
+ */
+onColumnFiltersChange?: (filters: ColumnFiltersState) =&gt; void
+
+/**
+ * Called with the next column id → width (px) map when a resize finishes
+ * (drag end, double-click restore, or keyboard nudge). Use this to persist
+ * widths across sessions. Select, expander, reorder, row actions, and column
+ * display utility columns are omitted from the map.
+ */
+onColumnSizingChange?: (columnSizing: Record&lt;string, number&gt;) =&gt; void
+
+/**
+ * Callback when column visibility changes
+ */
+onColumnVisibilityChange?: (visibility: VisibilityState) =&gt; void
+
+/**
+ * Callback when the order of rows changes via drag &amp; drop
+ */
+onOrderChange?: (newData: TData[]) =&gt; void
+
+/**
+ * Function to handle row click
+ */
+onRowClick?: (row: TData) =&gt; void
+
+/**
+ * Function to handle row double click
+ */
+onRowDoubleClick?: (row: TData) =&gt; void
+
+/**
+ * Function to handle scroll events in virtualized tables.
+ * Called when the user scrolls within the table container.
+ * 
+ * @param params - Scroll parameters containing scroll position and dimensions
+ * 
+ * @example
+ * ```tsx
+ * const handleScroll = ({ scrollOffset, totalContentHeight, viewportHeight }) =&gt; {
+ *   const distanceFromBottom = totalContentHeight - scrollOffset - viewportHeight;
+ *   if (distanceFromBottom &lt; 500) {
+ *     // Fetch more data when within 500px of bottom
+ *     fetchNextPage();
+ *   }
+ * };
+ * ```
+ */
+onScroll?: (params: ScrollParams) =&gt; void
+
+/**
+ * Function to handle selection change
+ */
+onSelectionChange?: (selectedRows: Record&lt;string, boolean&gt;) =&gt; void
+
+/**
+ * Function to handle sorting change
+ */
+onSortingChange?: (sorting: SortingState) =&gt; void
+
+/**
+ * Called with the next sticky columns when a column is made sticky or not
+ * from the `columnDisplay` popup or through the TanStack column API (e.g.
+ * `column.pin(&#39;left&#39;)` in a header renderer). Contains consumer column ids
+ * only, never utility column ids.
+ */
+onStickyColumnsChange?: (stickyColumns: DsTableStickyColumns) =&gt; void
+
+/**
+ * Function to handle table creation
+ */
+onTableCreated?: (table: Table&lt;TData&gt;) =&gt; void
+
+/**
+ * Primary actions shown as icon buttons on each row, in a trailing column sized
+ * to fit every declared primary action plus the &quot;more&quot; trigger
+ */
+primaryRowActions?: RowAction&lt;TData&gt;[]
+
+/**
+ * Ref to the table API
+ */
+ref?: React.RefObject&lt;DsTableApi&lt;TData&gt; | null&gt;
+
+/**
+ * Function to render the expanded row
+ */
+renderExpandedRow?: (row: TData) =&gt; React.ReactNode
+
+/**
+ * Whether the table rows are reorderable via drag &amp; drop
+ * @note This feature does not work when virtualization is enabled
+ */
+reorderable?: boolean
+
+/**
+ * Width in px of the reorder utility column. Ignored when `reorderable` is
+ * off or the table is virtualized. Non-finite or `&lt;= 0` falls back to the
+ * default. The column is not user-resizable. Wins over a `columnSizing`
+ * entry for this column.
+ * @default 60
+ */
+reorderableColumnWidth?: number
+
+/**
+ * Enables resizing columns by dragging the right edge of a header cell.
+ * Double-click a handle to restore the column&#39;s original width. Opt out per
+ * column with `columnDef.enableResizing: false`. Leaf columns may set
+ * `minSize` and `maxSize`. Those bounds on a column group are ignored.
+ * @default false
+ */
+resizableColumns?: boolean
+
+/**
+ * Row size variant (small: 36px, medium: 48px, large: 64px)
+ * @default &#39;medium&#39;
+ */
+rowSize?: &#39;small&#39; | &#39;medium&#39; | &#39;large&#39;
+
+/**
+ * Secondary actions shown in a &quot;more&quot; dropdown on each row, in the same trailing column
+ * as `primaryRowActions`
+ */
+secondaryRowActions?: SecondaryRowAction&lt;TData&gt;[]
+
+/**
+ * Whether the table rows are selectable. Can be a boolean or a function that receives row data and returns whether it can be selected.
+ * @default false
+ * @example
+ * ```tsx
+ * // Enable selection for all rows
+ * selectable={true}
+ * 
+ * // Disable selection for rows where status is &#39;archived&#39;
+ * selectable={(rowData) =&gt; rowData.status !== &#39;archived&#39;}
+ * 
+ * // Limit selection to max 3 rows (note: use state to track current selection)
+ * selectable={(rowData) =&gt; {
+ *   // This will be called for each row during render
+ *   const selectedIds = Object.keys(rowSelection).filter(id =&gt; rowSelection[id]);
+ *   return selectedIds.includes(rowData.id) || selectedIds.length &lt; 3;
+ * }}
+ * ```
+ */
+selectable?: boolean | ((rowData: TData) =&gt; boolean)
+
+/**
+ * Width in px of the select utility column. Ignored when `selectable` is
+ * off. Non-finite or `&lt;= 0` falls back to the default. The column is not
+ * user-resizable. Wins over a `columnSizing` entry for this column.
+ * @default 36
+ */
+selectableColumnWidth?: number
+
+/**
+ * Whether to show the select/deselect all checkbox in the header
+ * @default true
+ */
+showSelectAllCheckbox?: boolean
+
+/**
+ * Columns kept in view during horizontal scroll. Omit for uncontrolled state;
+ * pass it with `onStickyColumnsChange` to control it.
+ * 
+ * - The reorder, expander and select columns are always sticky left, before
+ *   these columns. The row actions column (or, without row actions, the
+ *   `columnDisplay` column) is always sticky right, after them. Listing
+ *   their ids has no effect.
+ * - Listing a group id, or any leaf of a group, makes every leaf of that
+ *   top-level group sticky.
+ * - A sticky column without `size` renders at a fixed width (its
+ *   `getSize()`, 150px by default) instead of filling.
+ * - A column hidden via `columnVisibility` stays listed and is sticky again
+ *   when shown.
+ * - Sticky columns wider than the table viewport are not handled; keep their
+ *   total width below the visible width.
+ * 
+ * @example
+ * ```tsx
+ * const [stickyColumns, setStickyColumns] = useState&lt;DsTableStickyColumns&gt;({
+ *   left: [&#39;firstName&#39;],
+ *   right: [&#39;status&#39;],
+ * });
+ * 
+ * &lt;DsTable
+ *   stickyColumns={stickyColumns}
+ *   onStickyColumnsChange={setStickyColumns}
+ * /&gt;
+ * ```
+ */
+stickyColumns?: DsTableStickyColumns
+
+/**
+ * Whether the table has sticky header
+ */
+stickyHeader?: boolean
+
+/**
+ * Whether the table is virtualized. The table takes its height from its
+ * parent, so the parent needs a bounded height; without one the table
+ * collapses to zero height.
  * @default false
  */
 virtualized?: boolean
@@ -28766,9 +30246,9 @@ virtualized row.</div>
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsTabs.Root</h2>
       <div class="badges">
-        <label for="c-86-components-tabs-err" class="badge err as-toggle">API error</label>
-        <label for="c-86-components-tabs-info" class="badge info as-toggle">1 info</label>
-        <label for="c-86-components-tabs-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-87-components-tabs-err" class="badge err as-toggle">API error</label>
+        <label for="c-87-components-tabs-info" class="badge info as-toggle">1 info</label>
+        <label for="c-87-components-tabs-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -28780,9 +30260,9 @@ virtualized row.</div>
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-86-components-tabs-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-86-components-tabs-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-86-components-tabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-87-components-tabs-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-87-components-tabs-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-87-components-tabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -29577,9 +31057,9 @@ selected count, total badge, and pin. This is the `DsTabsVerticalV2` layout.</di
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTag</h2>
       <div class="badges">
-        <label for="c-87-components-tag-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-88-components-tag-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-87-components-tag-stories" class="badge ok as-toggle">24 stories</label>
+        <label for="c-88-components-tag-stories" class="badge ok as-toggle">24 stories</label>
         
         
       </div>
@@ -29593,10 +31073,10 @@ selected count, total badge, and pin. This is the `DsTabsVerticalV2` layout.</di
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-87-components-tag-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-88-components-tag-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-87-components-tag-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-88-components-tag-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30008,9 +31488,9 @@ expanded state, so the consumer decides what the chevron reveals; `disabled` sup
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTagFilter</h2>
       <div class="badges">
-        <label for="c-88-components-tagfilter-props" class="badge ok as-toggle">8 prop types</label>
+        <label for="c-89-components-tagfilter-props" class="badge ok as-toggle">8 prop types</label>
         
-        <label for="c-88-components-tagfilter-stories" class="badge ok as-toggle">10 stories</label>
+        <label for="c-89-components-tagfilter-stories" class="badge ok as-toggle">10 stories</label>
         
         
       </div>
@@ -30024,10 +31504,10 @@ expanded state, so the consumer decides what the chevron reveals; `disabled` sup
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-88-components-tagfilter-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-89-components-tagfilter-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-88-components-tagfilter-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-89-components-tagfilter-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30388,9 +31868,9 @@ count stays stable between &quot;Show more (N)&quot; and &quot;Show less (N)&quo
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextarea</h2>
       <div class="badges">
-        <label for="c-89-components-textarea-props" class="badge ok as-toggle">15 prop types</label>
-        <label for="c-89-components-textarea-info" class="badge info as-toggle">1 info</label>
-        <label for="c-89-components-textarea-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-90-components-textarea-props" class="badge ok as-toggle">15 prop types</label>
+        <label for="c-90-components-textarea-info" class="badge info as-toggle">1 info</label>
+        <label for="c-90-components-textarea-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -30403,11 +31883,11 @@ count stays stable between &quot;Show more (N)&quot; and &quot;Show less (N)&quo
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-89-components-textarea-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-89-components-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-90-components-textarea-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-90-components-textarea-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-89-components-textarea-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-90-components-textarea-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30576,9 +32056,9 @@ beyond the limit, which is useful for length-restricted fields.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextInput</h2>
       <div class="badges">
-        <label for="c-90-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
-        <label for="c-90-components-textinput-info" class="badge info as-toggle">1 info</label>
-        <label for="c-90-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
+        <label for="c-91-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
+        <label for="c-91-components-textinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-91-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
         
         
       </div>
@@ -30591,11 +32071,11 @@ beyond the limit, which is useful for length-restricted fields.</div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-90-components-textinput-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-90-components-textinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-91-components-textinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-91-components-textinput-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-90-components-textinput-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-91-components-textinput-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -30996,9 +32476,9 @@ muted and non-interactive when the field is disabled.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsThreadItem</h2>
       <div class="badges">
-        <label for="c-91-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
-        <label for="c-91-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
-        <label for="c-91-components-comments-threaditem-stories" class="badge ok as-toggle">6 stories</label>
+        <label for="c-92-components-comments-threaditem-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-92-components-comments-threaditem-info" class="badge info as-toggle">1 info</label>
+        <label for="c-92-components-comments-threaditem-stories" class="badge ok as-toggle">6 stories</label>
         
         
       </div>
@@ -31011,11 +32491,11 @@ muted and non-interactive when the field is disabled.</div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-91-components-comments-threaditem-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-91-components-comments-threaditem-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-92-components-comments-threaditem-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-92-components-comments-threaditem-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-91-components-comments-threaditem-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-92-components-comments-threaditem-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -31253,9 +32733,9 @@ more-actions menu nor the resolve control is rendered.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTimePicker</h2>
       <div class="badges">
-        <label for="c-92-components-timepicker-props" class="badge ok as-toggle">19 prop types</label>
-        <label for="c-92-components-timepicker-info" class="badge info as-toggle">1 info</label>
-        <label for="c-92-components-timepicker-stories" class="badge ok as-toggle">6 stories · 3 incomplete</label>
+        <label for="c-93-components-timepicker-props" class="badge ok as-toggle">19 prop types</label>
+        <label for="c-93-components-timepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-93-components-timepicker-stories" class="badge ok as-toggle">6 stories · 3 incomplete</label>
         
         
       </div>
@@ -31268,11 +32748,11 @@ more-actions menu nor the resolve control is rendered.</div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-92-components-timepicker-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-92-components-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-93-components-timepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-93-components-timepicker-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-92-components-timepicker-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-93-components-timepicker-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -31520,9 +33000,9 @@ clamped, and the scroller only offers times within bounds.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToast</h2>
       <div class="badges">
-        <label for="c-93-components-toast-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-94-components-toast-props" class="badge ok as-toggle">7 prop types</label>
         
-        <label for="c-93-components-toast-stories" class="badge ok as-toggle">9 stories</label>
+        <label for="c-94-components-toast-stories" class="badge ok as-toggle">9 stories</label>
         
         
       </div>
@@ -31537,10 +33017,10 @@ This component is used within the Toaster render function</div>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-93-components-toast-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-94-components-toast-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-93-components-toast-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-94-components-toast-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -31964,9 +33444,9 @@ auto-dismiss, so they cannot also set `duration`.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsToggle</h2>
       <div class="badges">
-        <label for="c-94-components-toggle-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-95-components-toggle-props" class="badge ok as-toggle">10 prop types</label>
         
-        <label for="c-94-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-95-components-toggle-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -31980,10 +33460,10 @@ auto-dismiss, so they cannot also set `duration`.</div>
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-94-components-toggle-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-95-components-toggle-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-94-components-toggle-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-95-components-toggle-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -32157,9 +33637,9 @@ styled or composed content.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTooltip</h2>
       <div class="badges">
-        <label for="c-95-components-tooltip-props" class="badge ok as-toggle">31 prop types</label>
+        <label for="c-96-components-tooltip-props" class="badge ok as-toggle">31 prop types</label>
         
-        <label for="c-95-components-tooltip-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-96-components-tooltip-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -32174,10 +33654,10 @@ it wraps stays focusable, so the hint can explain why the button is unavailable.
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-95-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-96-components-tooltip-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-95-components-tooltip-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-96-components-tooltip-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -32463,8 +33943,8 @@ Hover and focus still report their intent through `onOpenChange`.</div>
       <h2><span class="status-dot dot-ok"></span> DsTopBarNavigation</h2>
       <div class="badges">
         <span class="badge">no API description</span>
-        <label for="c-96-components-topbarnavigation-info" class="badge info as-toggle">1 info</label>
-        <label for="c-96-components-topbarnavigation-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-97-components-topbarnavigation-info" class="badge info as-toggle">1 info</label>
+        <label for="c-97-components-topbarnavigation-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -32477,8 +33957,8 @@ Hover and focus still report their intent through `onOpenChange`.</div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-96-components-topbarnavigation-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-96-components-topbarnavigation-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-97-components-topbarnavigation-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-97-components-topbarnavigation-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -32963,9 +34443,9 @@ what each app does — the wide cards pair the branded SVG mark with a `descript
     <div class="title">
       <h2><span class="status-dot dot-err"></span> DsTree.Root</h2>
       <div class="badges">
-        <label for="c-97-components-tree-err" class="badge err as-toggle">API error</label>
-        <label for="c-97-components-tree-info" class="badge info as-toggle">1 info</label>
-        <label for="c-97-components-tree-stories" class="badge ok as-toggle">5 stories</label>
+        <label for="c-98-components-tree-err" class="badge err as-toggle">API error</label>
+        <label for="c-98-components-tree-info" class="badge info as-toggle">1 info</label>
+        <label for="c-98-components-tree-stories" class="badge ok as-toggle">5 stories</label>
         
         
       </div>
@@ -32977,9 +34457,9 @@ what each app does — the wide cards pair the branded SVG mark with a `descript
   </div>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
-  <input id="c-97-components-tree-err" class="tg tg-err" type="checkbox" hidden />
-  <input id="c-97-components-tree-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-97-components-tree-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-98-components-tree-err" class="tg tg-err" type="checkbox" hidden />
+  <input id="c-98-components-tree-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-98-components-tree-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
@@ -33398,9 +34878,9 @@ import { fn } from 'storybook/test';</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTypography</h2>
       <div class="badges">
-        <label for="c-98-components-typography-props" class="badge ok as-toggle">10 prop types</label>
-        <label for="c-98-components-typography-info" class="badge info as-toggle">1 info</label>
-        <label for="c-98-components-typography-stories" class="badge ok as-toggle">8 stories</label>
+        <label for="c-99-components-typography-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-99-components-typography-info" class="badge info as-toggle">1 info</label>
+        <label for="c-99-components-typography-stories" class="badge ok as-toggle">8 stories</label>
         
         
       </div>
@@ -33413,11 +34893,11 @@ import { fn } from 'storybook/test';</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-98-components-typography-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-98-components-typography-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-99-components-typography-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-99-components-typography-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-98-components-typography-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-99-components-typography-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -33609,9 +35089,9 @@ variant: keyof typeof typographyVariantConfig</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsUserCard</h2>
       <div class="badges">
-        <label for="c-99-components-usercard-props" class="badge ok as-toggle">5 prop types</label>
-        <label for="c-99-components-usercard-info" class="badge info as-toggle">1 info</label>
-        <label for="c-99-components-usercard-stories" class="badge ok as-toggle">3 stories</label>
+        <label for="c-100-components-usercard-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-100-components-usercard-info" class="badge info as-toggle">1 info</label>
+        <label for="c-100-components-usercard-stories" class="badge ok as-toggle">3 stories</label>
         
         
       </div>
@@ -33624,11 +35104,11 @@ variant: keyof typeof typographyVariantConfig</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-99-components-usercard-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-99-components-usercard-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-100-components-usercard-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-100-components-usercard-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-99-components-usercard-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-100-components-usercard-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -33748,9 +35228,9 @@ available width, keeping the header height stable regardless of content length.<
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsVerticalTabs</h2>
       <div class="badges">
-        <label for="c-100-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-101-components-verticaltabs-props" class="badge ok as-toggle">5 prop types</label>
         
-        <label for="c-100-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
+        <label for="c-101-components-verticaltabs-stories" class="badge ok as-toggle">4 stories</label>
         
         
       </div>
@@ -33764,10 +35244,10 @@ available width, keeping the header height stable regardless of content length.<
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
   
-  <input id="c-100-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-101-components-verticaltabs-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-100-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-101-components-verticaltabs-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -34027,9 +35507,9 @@ import { fn } from 'storybook/test';</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsWorkspaceLayout</h2>
       <div class="badges">
-        <label for="c-101-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
-        <label for="c-101-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
-        <label for="c-101-components-workspacelayout-stories" class="badge ok as-toggle">15 stories</label>
+        <label for="c-102-components-workspacelayout-props" class="badge ok as-toggle">1 prop type</label>
+        <label for="c-102-components-workspacelayout-info" class="badge info as-toggle">1 info</label>
+        <label for="c-102-components-workspacelayout-stories" class="badge ok as-toggle">15 stories</label>
         
         
       </div>
@@ -34042,11 +35522,11 @@ import { fn } from 'storybook/test';</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-101-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-101-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-102-components-workspacelayout-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-102-components-workspacelayout-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
-  <input id="c-101-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
+  <input id="c-102-components-workspacelayout-props" class="tg tg-props" type="checkbox" hidden />
 
   <div class="panels">
     
@@ -35145,8 +36625,8 @@ fillParent?: boolean = false</code></pre>
       <h2><span class="status-dot dot-ok"></span> SampleForm</h2>
       <div class="badges">
         <span class="badge">no API description</span>
-        <label for="c-102-examples-sampleform-info" class="badge info as-toggle">1 info</label>
-        <label for="c-102-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-103-examples-sampleform-info" class="badge info as-toggle">1 info</label>
+        <label for="c-103-examples-sampleform-stories" class="badge ok as-toggle">1 story</label>
         
         
       </div>
@@ -35159,8 +36639,8 @@ fillParent?: boolean = false</code></pre>
 
   <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
   
-  <input id="c-102-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
-  <input id="c-102-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
+  <input id="c-103-examples-sampleform-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-103-examples-sampleform-stories" class="tg tg-stories" type="checkbox" hidden />
   
   
   
