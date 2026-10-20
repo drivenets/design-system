@@ -76,12 +76,7 @@ A stale snapshot never means a wrong toolchain, only a slower start until the ne
 
 ## Storybook and visual checks
 
-The hook doesn't start Storybook — most sessions and Routines don't need it. When a task does, Claude runs `pnpm start` in the background and screenshots stories with the installed Chromium:
-
-```bash
-pnpm --filter @drivenets/design-system exec playwright screenshot --wait-for-selector "#storybook-root > *" \
-  "http://localhost:6006/iframe.html?id=<story-id>&viewMode=story" /tmp/story.png
-```
+The hook doesn't start Storybook — most sessions and Routines don't need it. When a task does, Claude runs `pnpm start` in the background and screenshots stories with the installed Chromium, as described in [PR screenshots](../../.agents/skills/create-pr/SCREENSHOTS.md).
 
 The session's HTTPS traffic goes through a proxy with its own CAs; the hook adds them (the certs in `~/.ccr/ca-bundle.crt` that aren't public Mozilla roots) to Chromium's certificate store so Google Fonts and icons render. Story IDs come from the DS MCP server (`docs-list` with `withStoryIds: true`). The VM pauses after a few idle minutes and background processes stop, so start Storybook again after resuming.
 
