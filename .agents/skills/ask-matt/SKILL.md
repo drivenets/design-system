@@ -6,22 +6,22 @@ disable-model-invocation: true
 
 # Ask Matt
 
-You don't remember every skill, so ask. This is the **flow** view — how the skills chain from idea to shipped component. The file-type → skill map (which reference to read when editing a given file) lives in [AGENTS.md](../../../AGENTS.md#project-skills).
+You don't remember every skill, so ask. This is the **flow** view — how the skills chain from idea to shipped component. The file-type → skill map (which reference to read when editing a given file) lives in [AGENTS.md](../../../AGENTS.md#design-system-package).
 
 ## Main flow: idea → ship
 
-The route most component work travels.
+The route most component work travels. With a ticket file, **`/implement`** runs steps 2–4 for you.
 
 1. **Sharpen** — **`/grill-me`** interviews you relentlessly, one question at a time, until every branch of the decision tree is resolved. Switch to **`/grill-with-docs`** when the work touches domain language or irreversible architecture: it challenges against `CONTEXT.md` + ADRs and updates them inline.
 2. **Plan** — **`/to-plan`** packages the locked decisions into a short execution plan for the build session. No re-interview, no scope invention — only what was decided.
-3. **Build** — scaffold with **`/component-scaffold`** (or **`/figma-to-component`** from a Figma URL), then build test-first with **`/tdd`**, stories with **`/storybook`**, behavior with **`/browser-tests`**, docs coverage with **`/docs-tests`**. Editing a specific file pulls its reference: `/component-api`, `/react-patterns`, `/ark-ui`, `/scss`, `/ts-standards`.
-4. **Ship** — **`/pr-prep`** runs the checks + changeset; **`/code-review`** does the two-axis (Standards + Spec) review of the diff before you push.
+3. **Build** — take before screenshots first ([create-pr](../create-pr/SCREENSHOTS.md)), then scaffold with **`/component-scaffold`** (or **`/figma-to-component`** from a Figma URL), then build test-first with **`/tdd`**, stories with **`/storybook`**, behavior with **`/browser-tests`**, docs coverage with **`/docs-tests`**. Editing a specific file pulls its reference: `/component-api`, `/react-patterns`, `/ark-ui`, `/scss`, `/ts-standards`.
+4. **Ship** — **`/pr-prep`** runs the checks + changeset; **`/code-review`** does the two-axis (Standards + Spec) review of the diff; **`/create-pr`** opens the PR with before/after screenshots.
 
 ## On-ramps
 
 A starting situation that generates work, then merges onto the main flow.
 
-- **Something's broken** → **`/diagnose`**: reproduce → minimize → hypothesize → instrument → fix, refusing to theorize until a **tight feedback loop** goes red on _this_ bug. Lock it down with a **`/tdd`** regression test.
+- **Something's broken** → small and obvious: **`/fix`** (regression test → minimal fix → PR). Unclear cause: **`/diagnose`**: reproduce → minimize → hypothesize → instrument → fix, refusing to theorize until a **tight feedback loop** goes red on _this_ bug. Lock it down with a **`/tdd`** regression test.
 - **Old Storybook `play` tests** → **`/migrate-story-tests`** converts them to **`/browser-tests`**.
 
 ## Codebase health
@@ -47,7 +47,6 @@ Model-invoked references — reach for them when the **words**, not the process,
 Off the main flow entirely.
 
 - **`/research`** — a **background agent** investigates a question against **primary sources** and leaves a cited Markdown file in the repo. Keep working while it reads.
-- **`/teach`** — learn a concept over multiple sessions, using the workspace as stateful scratch.
 - **`/get-pr-comments`** — fetch and summarize the active PR's review comments.
 - **`/deslop`** — strip AI-generated slop and fix style on a diff.
 - **`/write-a-skill`** — author a new skill in `.agents/skills/`.
