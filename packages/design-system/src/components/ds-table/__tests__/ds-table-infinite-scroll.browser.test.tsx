@@ -18,7 +18,7 @@ function generateTestData(count: number): Person[] {
 }
 
 const getScrollContainer = (): HTMLElement => {
-	const el = document.querySelector<HTMLElement>('[class*="virtualizedContainer"] tbody');
+	const el = document.querySelector<HTMLElement>('[class*="virtualizedContainer"]');
 	if (!el) {
 		throw new Error('Expected virtualized scroll container');
 	}
