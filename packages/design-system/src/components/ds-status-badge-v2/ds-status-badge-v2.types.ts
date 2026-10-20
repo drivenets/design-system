@@ -46,6 +46,13 @@ export interface DsStatusBadgeV2SharedProps {
 	 */
 	size?: StatusBadgeV2Size;
 
+	/**
+	 * Announces changes to screen readers (`role="status"`). Set it only on a badge that updates in place,
+	 * such as a job status, never on badges in lists or tables.
+	 * @default false
+	 */
+	live?: boolean;
+
 	className?: string;
 
 	style?: CSSProperties;

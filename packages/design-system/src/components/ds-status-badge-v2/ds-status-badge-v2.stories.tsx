@@ -59,6 +59,10 @@ const meta: Meta<typeof DsStatusBadgeV2> = {
 			options: statusBadgeV2Sizes,
 			description: 'Badge size',
 		},
+		live: {
+			control: 'boolean',
+			description: 'Announce changes to screen readers; only for badges that update in place',
+		},
 		className: { table: { disable: true } },
 		style: { table: { disable: true } },
 		ref: { table: { disable: true } },
@@ -72,6 +76,18 @@ export const Default: Story = {
 	args: {
 		phase: 'active',
 		label: 'Active',
+	},
+};
+
+/**
+ * Set `live` on a badge that changes in place (for example a running job) so screen readers announce
+ * the new status. Leave it off for badges in lists, cards and tables.
+ */
+export const Live: Story = {
+	args: {
+		phase: 'execution',
+		label: 'Testing',
+		live: true,
 	},
 };
 

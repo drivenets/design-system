@@ -14,6 +14,7 @@ const DsStatusBadgeV2 = ({
 	iconOnly = false,
 	variant = 'primary',
 	size = 'medium',
+	live = false,
 	className,
 	style,
 	ref,
@@ -23,6 +24,10 @@ const DsStatusBadgeV2 = ({
 	const hasIcon = resolvedIcon !== null;
 	const isTextOnly = !hasIcon;
 	const tooltipContent = iconOnly ? label : undefined;
+
+	// aria-label is not allowed on a role-less div, so a named static badge is exposed as an image.
+	const isNamed = iconOnly || ariaLabel !== undefined;
+	const role = live ? 'status' : isNamed ? 'img' : undefined;
 
 	const iconStyle =
 		size === 'small'
@@ -50,8 +55,8 @@ const DsStatusBadgeV2 = ({
 			ref={ref as Ref<HTMLDivElement>}
 			className={rootClass}
 			style={style}
-			role="status"
-			aria-label={ariaLabel ?? label}
+			role={role}
+			aria-label={role ? (ariaLabel ?? label) : undefined}
 		>
 			{hasIcon && (
 				<span className={styles.icon}>
