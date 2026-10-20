@@ -32,6 +32,44 @@ describe('DsFileUpload', () => {
 		});
 	});
 
+	describe('accessibility', () => {
+		const relativeLuminance = (cssColor: string) => {
+			const channels = (cssColor.match(/\d+(\.\d+)?/g) ?? []).slice(0, 3).map(Number);
+			const [r = 0, g = 0, b = 0] = channels.map((value) => {
+				const c = value / 255;
+				return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+			});
+			return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+		};
+
+		const contrastRatio = (foreground: string, background: string) => {
+			const [lighter, darker] = [relativeLuminance(foreground), relativeLuminance(background)].sort(
+				(a, b) => b - a,
+			);
+			return ((lighter ?? 0) + 0.05) / ((darker ?? 0) + 0.05);
+		};
+
+		it('should render the dropzone text with at least 4.5:1 contrast', async () => {
+			await page.render(<DsFileUpload adapter={fastAdapter()} dropzoneText="Drag the archive here, or" />);
+
+			const text = page.getByText('Drag the archive here, or').element();
+			const { color } = getComputedStyle(text);
+			const { backgroundColor } = getComputedStyle(text.closest('[data-part="dropzone"]') as HTMLElement);
+
+			expect(contrastRatio(color, backgroundColor)).toBeGreaterThanOrEqual(4.5);
+		});
+
+		it('should expose the select file trigger as the only control in the dropzone', async () => {
+			await page.render(<DsFileUpload adapter={fastAdapter()} />);
+
+			expect(page.getByRole('button').elements()).toHaveLength(1);
+
+			await userEvent.tab();
+
+			await expect.element(page.getByRole('button', { name: /select file/i })).toHaveFocus();
+		});
+	});
+
 	describe('upload lifecycle', () => {
 		it('should auto-upload file and show completion', async () => {
 			const onFileUploadComplete = vi.fn();
