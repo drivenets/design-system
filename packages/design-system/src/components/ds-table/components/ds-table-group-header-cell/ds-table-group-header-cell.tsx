@@ -3,7 +3,8 @@ import { DsButtonV3 } from '../../../ds-button-v3';
 import { TableHead } from '../core-table';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { getGroupColumnSizeStyle } from '../../grouping';
-import { getResizableHeaderStyle } from '../../utils/column-size';
+import { getColumnSizeStyle, getResizableHeaderStyle } from '../../utils/column-size';
+import { getStickyCellProps, isStickyCell } from '../../utils/sticky-columns';
 import { defaultDsTableLocale } from '../../ds-table.types';
 import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
@@ -18,9 +19,27 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 
 	const groupId = header.column.id;
 	const visibleLeafColumns = header.column.getLeafColumns().filter((leaf) => leaf.getIsVisible());
-	const groupStyle = resizeSizingReady
-		? getResizableHeaderStyle(header.id)
-		: getGroupColumnSizeStyle(visibleLeafColumns, {});
+	const { style: stickyStyle, ...stickyAttributes } = getStickyCellProps(
+		header.getContext().table,
+		visibleLeafColumns.map((leaf) => leaf.id),
+		!!resizeSizingReady,
+	);
+	const getSizeStyle = () => {
+		if (resizeSizingReady) {
+			return getResizableHeaderStyle(header.id);
+		}
+
+		// Sticky leaves render at a fixed width, so the group does too.
+		if (isStickyCell(stickyAttributes)) {
+			return getColumnSizeStyle(
+				visibleLeafColumns.reduce((sum, leaf) => sum + leaf.getSize(), 0),
+				true,
+			);
+		}
+
+		return getGroupColumnSizeStyle(visibleLeafColumns, {});
+	};
+	const groupStyle = { ...getSizeStyle(), ...stickyStyle };
 
 	const isCollapsible = header.column.columnDef.meta?.group?.collapsible ?? false;
 	const isCollapsed = collapsedColumnGroups?.includes(groupId) ?? false;
@@ -39,6 +58,7 @@ export const DsTableGroupHeaderCell = <TData, TValue>({
 			className={styles.groupHeaderCell}
 			style={groupStyle}
 			colSpan={header.colSpan}
+			{...stickyAttributes}
 		>
 			<div className={styles.groupHeaderContent}>
 				<DsTableHeaderLabel tooltipText={tooltipText}>
