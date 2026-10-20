@@ -46,11 +46,7 @@ export const DsTableRowActionsCell = <TData,>({ row }: DsTableRowActionsCellProp
 			})}
 			{hasSecondaryRowActions && (
 				<DsDropdownMenu.Root>
-					<DsDropdownMenu.Trigger
-						className={classnames(styles.rowActionIcon, styles.secondaryActionsTrigger)}
-						aria-label={moreRowActions}
-						asChild
-					>
+					<DsDropdownMenu.Trigger className={styles.rowActionIcon} aria-label={moreRowActions} asChild>
 						<button
 							type="button"
 							title={moreRowActions}

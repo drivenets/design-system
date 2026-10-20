@@ -18,6 +18,9 @@ const SELECT_ALL_OPTION: DsSelectOption = {
 	value: SELECT_ALL_VALUE,
 };
 
+const matchesSearch = (option: DsSelectOption, term: string) =>
+	option.label.toLowerCase().includes(term.toLowerCase());
+
 const DsSelect = ({
 	id,
 	options: userOptions,
@@ -38,14 +41,15 @@ const DsSelect = ({
 
 	const internalOptions = multiselectProps.multiple ? [SELECT_ALL_OPTION, ...userOptions] : userOptions;
 
+	// Keep every option in the collection so selected values still resolve while searching,
+	// but disable the hidden ones so keyboard navigation skips them.
 	const collection = createListCollection({
 		items: internalOptions,
 		itemToValue: (item) => item.value,
+		isItemDisabled: (item) => !matchesSearch(item, searchTerm),
 	});
 
-	const filteredOptions = internalOptions.filter((option) =>
-		option.label.toLowerCase().includes(searchTerm.toLowerCase()),
-	);
+	const filteredOptions = internalOptions.filter((option) => matchesSearch(option, searchTerm));
 
 	const normalizedValue = Array.isArray(value) ? value : [value].filter((value) => !!value);
 
@@ -194,7 +198,13 @@ const DsSelect = ({
 								<DsTextInput
 									placeholder="Search"
 									value={searchTerm}
-									onChange={(e) => setSearchTerm(e.target.value)}
+									onChange={(e) => {
+										setSearchTerm(e.target.value);
+
+										// The highlighted option may now be hidden. Reset it so the next ArrowDown
+										// starts from the first visible match.
+										select.clearHighlightValue();
+									}}
 									onKeyDown={(e) => {
 										// Prevent the select from opening/closing when pressing space in the search input.
 										if (e.key === ' ') {

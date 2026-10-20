@@ -59,11 +59,11 @@ Run these Figma MCP calls **in parallel**:
 
 Call `**list-all-documentation**` (or degraded substitute). Scan for an existing **Component** that matches the Figma frame.
 
-| Match                                              | Action                                                                                              |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| Exact / near match                                 | `**get-documentation`\*\* on that component — extend or compose; do not scaffold a duplicate folder |
-| Fuzzy (e.g. Figma "Primary Button" vs `ds-button`) | Stop and ask the user: extend existing vs new component                                             |
-| No match                                           | Continue to Step 3                                                                                  |
+| Match                                              | Action                                                                                                                                                                           |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Exact / near match                                 | `**get-documentation`\*\* on that component — extend or compose; do not scaffold a duplicate folder. Capture before screenshots first ([create-pr](../create-pr/SCREENSHOTS.md)) |
+| Fuzzy (e.g. Figma "Primary Button" vs `ds-button`) | Stop and ask the user: extend existing vs new component                                                                                                                          |
+| No match                                           | Continue to Step 3                                                                                                                                                               |
 
 **Degraded mode substitutes**
 

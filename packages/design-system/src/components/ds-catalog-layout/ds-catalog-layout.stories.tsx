@@ -53,6 +53,9 @@ const createCatalogLayoutStoryRouter = (Story: ComponentType, initialPath: strin
 	return createRouter({
 		routeTree: rootRoute.addChildren([indexRoute, automationRoute, plannedExecutionsRoute]),
 		history: createMemoryHistory({ initialEntries: [initialPath] }),
+		// Every router resets the window scroll to the top on render, which yanks the Autodocs
+		// page back up each time a story mounts. A predicate returning false skips that reset.
+		scrollRestoration: () => false,
 	});
 };
 
