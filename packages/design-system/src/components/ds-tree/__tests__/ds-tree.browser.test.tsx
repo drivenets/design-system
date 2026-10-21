@@ -536,6 +536,7 @@ type SortableTreeProps = Partial<Pick<DsTreeSortableProps, 'canDrop' | 'onCollec
 		| 'expandedValue'
 		| 'defaultExpandedValue'
 		| 'onExpandedChange'
+		| 'size'
 	> & {
 		nodes?: DsTreeNode[];
 		/** Keep rendering the initial collection instead of the `next` one reported on drop */
@@ -579,7 +580,6 @@ const SortableTree = ({
 // Generated SCSS typings make classes `string` in typecheck but `string | undefined` in plain eslint
 const byClass = (className: string | undefined) => `.${className ?? ''}`;
 
-// Rows are Ark `item` / `branch-control` parts; both carry the node id in `data-value`.
 const rowOf = (value: string) =>
 	document.querySelector(
 		`[data-value="${value}"]:is([data-part="item"], [data-part="branch-control"])`,
@@ -1201,6 +1201,67 @@ describe('DsTree.Sortable', () => {
 			expect(childOrder()).toEqual(ROOT_ORDER);
 		});
 
+		it('leaves a collapsed group collapsed when the consumer ignores an inside drop', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			const onExpandedChange = vi.fn();
+			await page.render(
+				<SortableTree
+					ignoreMoves
+					onCollectionChange={onCollectionChange}
+					onExpandedChange={onExpandedChange}
+				/>,
+			);
+
+			await drag('logs', 'monitoring', 0.5);
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				expect.objectContaining({ position: 'inside' }),
+			);
+			await nextFrame();
+			expect(onExpandedChange).not.toHaveBeenCalled();
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
+		});
+
+		it('keeps row refs attached while the indicator moves across rows', async () => {
+			const logsRef = vi.fn<(element: HTMLDivElement | null) => void>();
+			const collection = createDsTreeCollection<DsTreeNode>([
+				{ id: 'alerts', name: 'Alerts' },
+				{ id: 'dashboards', name: 'Dashboards' },
+				{ id: 'logs', name: 'Logs' },
+			]);
+
+			await page.render(
+				<DsTree.Root collection={collection}>
+					<DsTree.Sortable onCollectionChange={vi.fn()}>
+						<DsTree.Tree>
+							{collection.rootNode.children?.map((node, index) => (
+								<DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+									<DsTree.Item ref={node.id === 'logs' ? logsRef : undefined}>
+										<DsTree.DragHandle />
+										<DsTree.ItemText>{node.name}</DsTree.ItemText>
+									</DsTree.Item>
+								</DsTree.NodeProvider>
+							))}
+						</DsTree.Tree>
+					</DsTree.Sortable>
+				</DsTree.Root>,
+			);
+
+			expect(logsRef).toHaveBeenCalledOnce();
+
+			await startDrag('alerts');
+			await moveOver('dashboards', 0.8);
+			await expect.poll(dropIndicators).toEqual({ rows: ['dashboards:after'], containers: [] });
+			await moveOver('logs', 0.8);
+			await expect.poll(dropIndicators).toEqual({ rows: ['logs:after'], containers: [] });
+			await pressEscape();
+			await release();
+
+			expect(logsRef).toHaveBeenCalledOnce();
+			expect(logsRef).toHaveBeenCalledWith(rowOf('logs'));
+		});
+
 		it("ignores drops next to the node's own position", async () => {
 			const onCollectionChange = vi.fn<OnCollectionChange>();
 			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(() => true);
@@ -1371,7 +1432,7 @@ describe('DsTree.Sortable', () => {
 			await release();
 		});
 
-		it('keeps the dragged row, and a group with its subtree, in place behind a white mask', async () => {
+		it('dims the dragged row, and a group with its subtree, in place', async () => {
 			await page.render(<SortableTree />);
 
 			const opacityOf = (element: Element) => getComputedStyle(element).opacity;
@@ -1429,6 +1490,24 @@ describe('DsTree.Sortable', () => {
 				'indeterminate',
 			);
 			await expectPreview('monitoring', ['Monitoring'], 'unchecked');
+		});
+
+		it('portals the overlay out of the tree, hidden from assistive tech, with the tree size', async () => {
+			await page.render(<SortableTree size="small" />);
+
+			await startDrag('logs');
+			await expect.poll(dragPreview).not.toBeNull();
+
+			const preview = dragPreview() as HTMLElement;
+			expect(preview.closest('[data-scope="tree-view"][data-part="root"]')).toBeNull();
+			expect(preview).toHaveAttribute('aria-hidden', 'true');
+			expect(preview).toHaveAttribute('data-size', 'small');
+
+			const previewRow = preview.querySelector(byClass(styles.dragPreviewRow)) as HTMLElement;
+			expect(getComputedStyle(previewRow).paddingTop).toBe(getComputedStyle(rowOf('logs')).paddingTop);
+
+			await pressEscape();
+			await release();
 		});
 
 		it('settles the overlay with a drop animation after a cross-group move', async () => {

@@ -49,16 +49,16 @@ export const getDsTreeDropPosition = ({
 	return 'after';
 };
 
-export const isSameIndexPath = (a: IndexPath, b: IndexPath) =>
+const isSameIndexPath = (a: IndexPath, b: IndexPath) =>
 	a.length === b.length && a.every((value, index) => value === b[index]);
 
-export const isDescendantIndexPath = (ancestor: IndexPath, path: IndexPath) =>
+const isDescendantIndexPath = (ancestor: IndexPath, path: IndexPath) =>
 	path.length > ancestor.length && ancestor.every((value, index) => value === path[index]);
 
 /**
  * Destination for `collection.move`, in index coordinates from before the dragged node is removed.
  */
-export const getDsTreeMoveToIndexPath = (targetPath: IndexPath, position: DsTreeDropPosition): IndexPath => {
+const getDsTreeMoveToIndexPath = (targetPath: IndexPath, position: DsTreeDropPosition): IndexPath => {
 	if (position === 'inside') {
 		return [...targetPath, 0];
 	}
@@ -68,11 +68,7 @@ export const getDsTreeMoveToIndexPath = (targetPath: IndexPath, position: DsTree
 	return [...targetPath.slice(0, -1), position === 'after' ? targetIndex + 1 : targetIndex];
 };
 
-export const isDsTreeNoopMove = (
-	fromPath: IndexPath,
-	targetPath: IndexPath,
-	position: DsTreeDropPosition,
-) => {
+const isDsTreeNoopMove = (fromPath: IndexPath, targetPath: IndexPath, position: DsTreeDropPosition) => {
 	if (isSameIndexPath(fromPath, targetPath)) {
 		return true;
 	}

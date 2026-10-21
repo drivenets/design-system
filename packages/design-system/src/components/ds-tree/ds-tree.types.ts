@@ -200,9 +200,6 @@ export type DsTreeDropPosition = 'before' | 'after' | 'inside';
  * currently renders, so parents can be compared by identity or by `id`.
  */
 export interface DsTreeMoveDetails<T extends DsTreeNode = DsTreeNode> {
-	/**
-	 * Node being dragged
-	 */
 	node: T;
 	/**
 	 * Row the node is dropped on. For the empty area below the last row, this is the

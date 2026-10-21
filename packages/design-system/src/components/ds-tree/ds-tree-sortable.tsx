@@ -2,7 +2,6 @@ import {
 	createContext,
 	use,
 	useEffect,
-	useEffectEvent,
 	useId,
 	useRef,
 	useState,
@@ -30,6 +29,7 @@ import {
 	type DropAnimation,
 	type UniqueIdentifier,
 } from '@dnd-kit/core';
+import { Portal } from '@ark-ui/react/portal';
 import {
 	TreeView,
 	useTreeViewContext,
@@ -68,6 +68,7 @@ interface ActiveDrag {
 	value: string;
 	indexPath: number[];
 	hasCheckbox: boolean;
+	size: string | undefined;
 }
 
 interface DropIndicator {
@@ -81,9 +82,52 @@ interface DropState<T extends DsTreeNode> extends DropIndicator {
 	move: DsTreeMove<T>;
 }
 
+interface DsTreeSortableSnapshot<T extends DsTreeNode> {
+	active: ActiveDrag | null;
+	drop: DropState<T> | null;
+}
+
+interface PendingExpand {
+	node: string;
+	group: string;
+}
+
+const isSameDrop = (a: DropIndicator | null, b: DropIndicator | null) =>
+	a?.droppableId === b?.droppableId && a?.position === b?.position && a?.allowed === b?.allowed;
+
+// Rows subscribe to their own slice so moving the indicator re-renders only the rows it touches
+const createSortableStore = <T extends DsTreeNode>() => {
+	let snapshot: DsTreeSortableSnapshot<T> = { active: null, drop: null };
+	const listeners = new Set<() => void>();
+	const rows = new Map<string, HTMLElement>();
+
+	return {
+		rows,
+		getSnapshot: () => snapshot,
+		subscribe: (listener: () => void) => {
+			listeners.add(listener);
+
+			return () => {
+				listeners.delete(listener);
+			};
+		},
+		update: (next: Partial<DsTreeSortableSnapshot<T>>) => {
+			snapshot = { ...snapshot, ...next };
+			listeners.forEach((listener) => listener());
+		},
+		registerRow: (value: string, element: HTMLElement | null) => {
+			if (element) {
+				rows.set(value, element);
+			} else {
+				rows.delete(value);
+			}
+		},
+	};
+};
+
 interface DsTreeSortableContextValue {
-	activeValue: string | null;
-	drop: DropIndicator | null;
+	getSnapshot: () => { active: ActiveDrag | null; drop: DropIndicator | null };
+	subscribe: (listener: () => void) => () => void;
 	registerRow: (value: string, element: HTMLElement | null) => void;
 }
 
@@ -102,8 +146,21 @@ export const useDsTreeSortableContext = () => use(DsTreeSortableContext);
 const useDsTreeViewContext = <T extends DsTreeNode = DsTreeNode>() =>
 	useTreeViewContext() as UseTreeViewContext<T>;
 
-const isSameDrop = (a: DropIndicator | null, b: DropIndicator | null) =>
-	a?.droppableId === b?.droppableId && a?.position === b?.position && a?.allowed === b?.allowed;
+const useSortableSelector = <S,>(
+	select: (snapshot: ReturnType<DsTreeSortableContextValue['getSnapshot']>) => S,
+) => {
+	const sortable = use(DsTreeSortableContext);
+
+	return useSyncExternalStore(
+		sortable?.subscribe ?? subscribeNever,
+		() => select(sortable?.getSnapshot() ?? EMPTY_SNAPSHOT),
+		() => select(EMPTY_SNAPSHOT),
+	);
+};
+
+const EMPTY_SNAPSHOT = { active: null, drop: null };
+
+const subscribeNever = () => () => undefined;
 
 const subscribeReducedMotion = (onChange: () => void) => {
 	const query = window.matchMedia(REDUCED_MOTION_QUERY);
@@ -194,7 +251,12 @@ const DsTreeDragPreviewRow = ({ indexPath, level, hasCheckbox }: DsTreeDragPrevi
 };
 
 const DsTreeDragPreview = ({ active, rejected }: { active: ActiveDrag; rejected: boolean }) => (
-	<div className={styles.dragPreview} data-rejected={rejected ? '' : undefined}>
+	<div
+		className={styles.dragPreview}
+		data-size={active.size}
+		data-rejected={rejected ? '' : undefined}
+		aria-hidden="true"
+	>
 		<DsTreeDragPreviewRow indexPath={active.indexPath} level={0} hasCheckbox={active.hasCheckbox} />
 	</div>
 );
@@ -209,24 +271,21 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 	const rootEndId = `${useId()}-root-end`;
 	const prefersReducedMotion = usePrefersReducedMotion();
 
-	const [active, setActive] = useState<ActiveDrag | null>(null);
-	const [drop, setDrop] = useState<DropState<T> | null>(null);
+	const [store] = useState(createSortableStore<T>);
+	const { active, drop } = useSyncExternalStore(store.subscribe, store.getSnapshot, store.getSnapshot);
 
-	const rowsRef = useRef(new Map<string, HTMLElement>());
 	const pointerYRef = useRef(0);
 	const stopTrackingRef = useRef<(() => void) | null>(null);
+	const pendingExpandRef = useRef<PendingExpand | null>(null);
+	const expandRef = useRef(treeView.expand);
+
+	useEffect(() => {
+		expandRef.current = treeView.expand;
+	});
 
 	const sensors = useSensors(
 		useSensor(PointerSensor, { activationConstraint: { distance: ACTIVATION_DISTANCE } }),
 	);
-
-	const registerRow = (value: string, element: HTMLElement | null) => {
-		if (element) {
-			rowsRef.current.set(value, element);
-		} else {
-			rowsRef.current.delete(value);
-		}
-	};
 
 	// dnd-kit reports `over` a render late; `undefined` means the pointer already left that droppable
 	const resolveDrop = (
@@ -238,7 +297,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 		}
 
 		const value = String(overId);
-		const element = rowsRef.current.get(value);
+		const element = store.rows.get(value);
 
 		if (!element) {
 			return null;
@@ -299,18 +358,19 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 
 	const reset = () => {
 		stopTracking();
-		setActive(null);
-		setDrop(null);
+		store.update({ active: null, drop: null });
 	};
 
 	const handleDragStart = ({ active: dragged, activatorEvent }: DragStartEvent) => {
 		const value = String(dragged.id);
 		const indexPath = collection.getIndexPath(value);
+		const row = store.rows.get(value);
 
 		if (!indexPath) {
 			return;
 		}
 
+		pendingExpandRef.current = null;
 		pointerYRef.current = getClientY(activatorEvent);
 
 		const onPointerMove = (event: PointerEvent) => {
@@ -321,47 +381,64 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 		stopTrackingRef.current = () =>
 			window.removeEventListener('pointermove', onPointerMove, { capture: true });
 
-		setActive({
-			value,
-			indexPath,
-			hasCheckbox: Boolean(rowsRef.current.get(value)?.querySelector(NODE_CHECKBOX_SELECTOR)),
+		store.update({
+			active: {
+				value,
+				indexPath,
+				hasCheckbox: Boolean(row?.querySelector(NODE_CHECKBOX_SELECTOR)),
+				size: row?.closest<HTMLElement>('[data-size]')?.dataset.size,
+			},
 		});
 	};
 
 	const handleDragMove = ({ over }: DragMoveEvent) => {
-		if (!active) {
+		const current = store.getSnapshot();
+
+		if (!current.active) {
 			return;
 		}
 
-		const next = resolveDrop(active, over?.id);
+		const next = resolveDrop(current.active, over?.id);
 
-		if (next !== undefined) {
-			setDrop((prev) => (isSameDrop(prev, next) ? prev : next));
+		if (next !== undefined && !isSameDrop(current.drop, next)) {
+			store.update({ drop: next });
 		}
 	};
 
 	const handleDragEnd = ({ over }: DragEndEvent) => {
-		const resolved = active ? resolveDrop(active, over?.id) : null;
+		const current = store.getSnapshot();
+		const resolved = current.active ? resolveDrop(current.active, over?.id) : null;
 		// Released before `over` caught up with the pointer: drop on the slot the indicator shows
-		const result = resolved === undefined ? drop : resolved;
+		const result = resolved === undefined ? current.drop : resolved;
 		reset();
 
-		if (!active || !result?.allowed) {
+		if (!current.active || !result?.allowed) {
 			return;
 		}
 
 		const { move } = result;
 		const { details } = move;
+		const group = collection.getNodeValue(details.target);
 
-		if (
-			details.position === 'inside' &&
-			!treeView.expandedValue.includes(collection.getNodeValue(details.target))
-		) {
-			treeView.expand([collection.getNodeValue(details.target)]);
+		if (details.position === 'inside' && !treeView.expandedValue.includes(group)) {
+			pendingExpandRef.current = { node: current.active.value, group };
 		}
 
-		onCollectionChange(collection.move([active.indexPath], move.toIndexPath), details);
+		onCollectionChange(collection.move([current.active.indexPath], move.toIndexPath), details);
 	};
+
+	// Expand only once the consumer applies the move, so ignoring `next` leaves the group as it was
+	useEffect(() => {
+		const pending = pendingExpandRef.current;
+		pendingExpandRef.current = null;
+
+		const parentPath = pending && collection.getIndexPath(pending.node)?.slice(0, -1);
+		const parent = parentPath?.length ? collection.at(parentPath) : undefined;
+
+		if (pending && parent && collection.getNodeValue(parent) === pending.group) {
+			expandRef.current([pending.group]);
+		}
+	}, [collection]);
 
 	const autoExpandValue =
 		drop?.allowed &&
@@ -371,21 +448,19 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 			? drop.containerValue
 			: null;
 
-	const expandBranch = useEffectEvent((value: string) => treeView.expand([value]));
-
 	useEffect(() => {
 		if (!autoExpandValue) {
 			return;
 		}
 
-		const timeout = window.setTimeout(() => expandBranch(autoExpandValue), AUTO_EXPAND_DELAY);
+		const timeout = window.setTimeout(() => expandRef.current([autoExpandValue]), AUTO_EXPAND_DELAY);
 
 		return () => window.clearTimeout(timeout);
 	}, [autoExpandValue]);
 
 	useEffect(() => () => stopTrackingRef.current?.(), []);
 
-	const contextValue: DsTreeSortableContextValue = { activeValue: active?.value ?? null, drop, registerRow };
+	const contextValue: DsTreeSortableContextValue = store;
 
 	return (
 		<DsTreeSortableContext value={contextValue}>
@@ -404,12 +479,15 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 				{children}
 				<DsTreeRootDropZone
 					id={rootEndId}
-					registerRow={registerRow}
+					registerRow={store.registerRow}
 					isTarget={Boolean(drop?.allowed && drop.droppableId === rootEndId)}
 				/>
-				<DragOverlay dropAnimation={prefersReducedMotion ? null : DROP_ANIMATION}>
-					{active && <DsTreeDragPreview active={active} rejected={Boolean(drop && !drop.allowed)} />}
-				</DragOverlay>
+				{/* Portaled so a transformed ancestor (drawer, dialog) can't offset the fixed-position overlay */}
+				<Portal>
+					<DragOverlay dropAnimation={prefersReducedMotion ? null : DROP_ANIMATION}>
+						{active && <DsTreeDragPreview active={active} rejected={Boolean(drop && !drop.allowed)} />}
+					</DragOverlay>
+				</Portal>
 			</DndContext>
 		</DsTreeSortableContext>
 	);
@@ -421,13 +499,16 @@ const useDsTreeSortableRow = (ref: Ref<HTMLDivElement> | undefined) => {
 
 	const draggable = useDraggable({ id: value, disabled });
 	const { setNodeRef: setDroppableRef } = useDroppable({ id: value });
+	const dropPosition = useSortableSelector(({ drop }) =>
+		drop?.allowed && drop.droppableId === value ? drop.position : undefined,
+	);
+	const isSource = useSortableSelector(({ active }) => active?.value === value);
 
 	if (!sortable) {
 		throw new Error('DsTree sortable rows must render inside DsTree.Sortable');
 	}
 
-	const { drop, registerRow, activeValue } = sortable;
-	const isTarget = Boolean(drop?.allowed && drop.droppableId === value);
+	const { registerRow } = sortable;
 
 	const dragContext: DsTreeRowDragContextValue = {
 		setActivatorNodeRef: draggable.setActivatorNodeRef,
@@ -439,8 +520,8 @@ const useDsTreeSortableRow = (ref: Ref<HTMLDivElement> | undefined) => {
 		ref: mergeRefs<HTMLDivElement>(ref, draggable.setNodeRef, setDroppableRef, (element) =>
 			registerRow(value, element),
 		),
-		'data-drop': isTarget ? drop?.position : undefined,
-		'data-source': activeValue === value ? '' : undefined,
+		'data-drop': dropPosition,
+		'data-source': isSource ? '' : undefined,
 	};
 
 	return { rowProps, dragContext };
@@ -474,18 +555,15 @@ export const DsTreeSortableBranchControl = ({ ref, children, ...props }: ArkBran
 };
 
 export const useDsTreeSortableBranchAttributes = () => {
-	const sortable = use(DsTreeSortableContext);
 	const { value } = useTreeViewNodeContext();
-
-	if (!sortable) {
-		return {};
-	}
-
-	const { drop, activeValue } = sortable;
+	const isContainer = useSortableSelector(({ drop }) =>
+		Boolean(drop?.allowed && drop.containerValue === value),
+	);
+	const isSource = useSortableSelector(({ active }) => active?.value === value);
 
 	return {
-		'data-drop-container': drop?.allowed && drop.containerValue === value ? '' : undefined,
-		'data-source': activeValue === value ? '' : undefined,
+		'data-drop-container': isContainer ? '' : undefined,
+		'data-source': isSource ? '' : undefined,
 	};
 };
 
