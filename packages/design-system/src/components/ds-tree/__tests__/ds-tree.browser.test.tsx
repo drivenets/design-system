@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsFilterStatusIcon } from '../../ds-filter-status-icon';
 import { DsIcon } from '../../ds-icon';
 import { DsPopover } from '../../ds-popover';
 import { DsTree } from '../ds-tree';
+import styles from '../ds-tree.module.scss';
 import { createDsTreeCollection } from '../ds-tree.utils';
-import type { DsTreeNode } from '../ds-tree.types';
+import type { DsTreeDropPosition, DsTreeNode, DsTreeRootProps, DsTreeSortableProps } from '../ds-tree.types';
 
 const nodes: DsTreeNode[] = [
 	{
@@ -431,5 +432,1145 @@ describe('DsTree row parts forward injected props', () => {
 
 		await expect.element(page.getByRole('dialog', { name: /firewall actions/i })).toBeVisible();
 		await expect.element(row).toHaveAttribute('aria-expanded', 'true');
+	});
+});
+
+const sortableNodes: DsTreeNode[] = [
+	{
+		id: 'network',
+		name: 'Network',
+		children: [
+			{ id: 'router-1', name: 'Router Alpha' },
+			{ id: 'router-2', name: 'Router Beta' },
+			{ id: 'router-3', name: 'Router Gamma', disabled: true },
+		],
+	},
+	{ id: 'archive', name: 'Archive', children: [] },
+	{
+		id: 'monitoring',
+		name: 'Monitoring',
+		children: [
+			{ id: 'alerts', name: 'Alerts' },
+			{ id: 'dashboards', name: 'Dashboards' },
+		],
+	},
+	{ id: 'logs', name: 'Logs' },
+];
+
+const columnGroupNodes: DsTreeNode[] = [
+	{
+		id: 'general',
+		name: 'General',
+		children: [
+			{ id: 'name', name: 'Name' },
+			{ id: 'status', name: 'Status' },
+			{ id: 'created', name: 'Created' },
+		],
+	},
+	{
+		id: 'connectivity',
+		name: 'Connectivity',
+		children: [
+			{ id: 'ip-address', name: 'IP address' },
+			{ id: 'mac-address', name: 'MAC address' },
+		],
+	},
+	{ id: 'location', name: 'Location', children: [{ id: 'site', name: 'Site' }] },
+];
+
+// Same rule as the "Sortable same group only" story (column manager)
+const sameGroupOnly: DsTreeSortableProps['canDrop'] = ({ position, fromParent, toParent }) =>
+	position !== 'inside' && fromParent?.id === toParent?.id;
+
+type OnCollectionChange = DsTreeSortableProps['onCollectionChange'];
+
+const SortableTreeNode = ({
+	node,
+	indexPath,
+	withoutHandle,
+}: {
+	node: DsTreeNode;
+	indexPath: number[];
+	withoutHandle?: string[];
+}) => {
+	const handle = withoutHandle?.includes(node.id) ? null : <DsTree.DragHandle />;
+
+	return (
+		<DsTree.NodeProvider node={node} indexPath={indexPath}>
+			{node.children ? (
+				<DsTree.Branch>
+					<DsTree.BranchControl>
+						<DsTree.BranchIndicator />
+						{handle}
+						<DsTree.NodeCheckbox />
+						<DsTree.BranchText>{node.name}</DsTree.BranchText>
+					</DsTree.BranchControl>
+					<DsTree.BranchContent>
+						{node.children.map((child, index) => (
+							<SortableTreeNode
+								key={child.id}
+								node={child}
+								indexPath={[...indexPath, index]}
+								withoutHandle={withoutHandle}
+							/>
+						))}
+					</DsTree.BranchContent>
+				</DsTree.Branch>
+			) : (
+				<DsTree.Item>
+					{handle}
+					<DsTree.NodeCheckbox />
+					<DsTree.ItemText>{node.name}</DsTree.ItemText>
+				</DsTree.Item>
+			)}
+		</DsTree.NodeProvider>
+	);
+};
+
+type SortableTreeProps = Partial<Pick<DsTreeSortableProps, 'canDrop' | 'onCollectionChange'>> &
+	Pick<
+		DsTreeRootProps,
+		| 'onSelectionChange'
+		| 'onCheckedChange'
+		| 'defaultCheckedValue'
+		| 'expandedValue'
+		| 'defaultExpandedValue'
+		| 'onExpandedChange'
+	> & {
+		nodes?: DsTreeNode[];
+		/** Keep rendering the initial collection instead of the `next` one reported on drop */
+		ignoreMoves?: boolean;
+		withoutHandle?: string[];
+	};
+
+const SortableTree = ({
+	nodes = sortableNodes,
+	canDrop,
+	onCollectionChange,
+	ignoreMoves = false,
+	withoutHandle,
+	defaultExpandedValue = ['network'],
+	...rootProps
+}: SortableTreeProps) => {
+	const [collection, setCollection] = useState(() => createDsTreeCollection(nodes));
+
+	return (
+		<DsTree.Root collection={collection} defaultExpandedValue={defaultExpandedValue} {...rootProps}>
+			<DsTree.Sortable
+				canDrop={canDrop}
+				onCollectionChange={(next, details) => {
+					onCollectionChange?.(next, details);
+
+					if (!ignoreMoves) {
+						setCollection(next);
+					}
+				}}
+			>
+				<DsTree.Tree>
+					{collection.rootNode.children?.map((node, index) => (
+						<SortableTreeNode key={node.id} node={node} indexPath={[index]} withoutHandle={withoutHandle} />
+					))}
+				</DsTree.Tree>
+			</DsTree.Sortable>
+		</DsTree.Root>
+	);
+};
+
+// Rows are Ark `item` / `branch-control` parts; both carry the node id in `data-value`.
+const rowOf = (value: string) =>
+	document.querySelector(
+		`[data-value="${value}"]:is([data-part="item"], [data-part="branch-control"])`,
+	) as HTMLElement;
+
+const branchOf = (value: string) => rowOf(value).closest('[data-part="branch"]') as HTMLElement;
+
+const handleOf = (value: string) =>
+	rowOf(value).querySelector('button[aria-label^="Drag to reorder"]') as HTMLButtonElement;
+
+const rootDropZone = () => document.querySelector('[data-drop-zone="root-end"]') as HTMLElement;
+
+// The overlay clone has no a11y role or Ark part; its CSS module class is the only hook
+const dragPreview = () => document.querySelector<HTMLElement>(`.${styles.dragPreview}`);
+
+const childOrder = (value?: string) => {
+	const parent = value
+		? branchOf(value).querySelector(':scope > [data-part="branch-content"]')
+		: document.querySelector('[role="tree"]');
+
+	return Array.from(parent?.children ?? [])
+		.filter((element) => element.matches('[role="treeitem"]'))
+		.map((element) => element.getAttribute('data-value'));
+};
+
+/** Every drop indicator currently in the DOM: `value:position` row edges and tinted groups. */
+const dropIndicators = () => ({
+	rows: Array.from(document.querySelectorAll('[data-drop]')).map(
+		(element) =>
+			`${element.getAttribute('data-value') ?? element.getAttribute('data-drop-zone') ?? ''}:${element.getAttribute('data-drop') ?? ''}`,
+	),
+	containers: Array.from(document.querySelectorAll('[data-drop-container]')).map((element) =>
+		element.getAttribute('data-value'),
+	),
+});
+
+const noIndicators = { rows: [], containers: [] };
+
+const isTransparent = (color: string) => color === 'rgba(0, 0, 0, 0)' || color === 'transparent';
+
+const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const pointer = { x: 0, y: 0 };
+
+const firePointer = (type: string, target: EventTarget, clientX: number, clientY: number) => {
+	pointer.x = clientX;
+	pointer.y = clientY;
+	target.dispatchEvent(
+		new PointerEvent(type, { clientX, clientY, bubbles: true, isPrimary: true, button: 0, pointerId: 1 }),
+	);
+};
+
+/** Presses `from` (the row's drag handle by default) and moves past the 4px activation distance. */
+const startDrag = async (value: string, from: Element = handleOf(value)) => {
+	const rect = from.getBoundingClientRect();
+	const x = rect.left + rect.width / 2;
+	const y = rect.top + rect.height / 2;
+
+	firePointer('pointerdown', from, x, y);
+	firePointer('pointermove', document, x, y + 6);
+	await nextFrame();
+};
+
+/** Moves the pointer to `ratio` of the target's height: 0 is its top edge, 1 its bottom edge. */
+const moveOver = async (target: string | HTMLElement, ratio: number) => {
+	const rect = (typeof target === 'string' ? rowOf(target) : target).getBoundingClientRect();
+
+	firePointer('pointermove', document, pointer.x, rect.top + rect.height * ratio);
+	await nextFrame();
+};
+
+const release = async () => {
+	firePointer('pointerup', document, pointer.x, pointer.y);
+	await nextFrame();
+};
+
+const pressEscape = async () => {
+	document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', bubbles: true }));
+	await nextFrame();
+};
+
+const drag = async (value: string, target: string | HTMLElement, ratio: number) => {
+	await startDrag(value);
+	await moveOver(target, ratio);
+	await release();
+};
+
+const node = (id: string): unknown => expect.objectContaining({ id });
+
+const moveDetails = (details: {
+	node: string;
+	target: string;
+	position: DsTreeDropPosition;
+	fromParent: string | null;
+	toParent: string | null;
+}) => ({
+	node: node(details.node),
+	target: node(details.target),
+	position: details.position,
+	fromParent: details.fromParent === null ? null : node(details.fromParent),
+	toParent: details.toParent === null ? null : node(details.toParent),
+});
+
+const ROOT_ORDER = ['network', 'archive', 'monitoring', 'logs'];
+const NETWORK_ORDER = ['router-1', 'router-2', 'router-3'];
+
+describe('DsTree.Sortable', () => {
+	describe('drag activation', () => {
+		it('leaves rows plain and non-draggable without Sortable', async () => {
+			const onSelectionChange = vi.fn();
+			const collection = createDsTreeCollection(sortableNodes);
+
+			await page.render(
+				<DsTree.Root
+					collection={collection}
+					defaultExpandedValue={['network']}
+					onSelectionChange={onSelectionChange}
+				>
+					<DsTree.Tree>
+						{collection.rootNode.children?.map((child, index) => (
+							<SortableTreeNode key={child.id} node={child} indexPath={[index]} />
+						))}
+					</DsTree.Tree>
+				</DsTree.Root>,
+			);
+
+			await expect.element(getTreeItem('logs')).toBeVisible();
+			expect(page.getByRole('button', { name: /drag to reorder/i }).elements()).toHaveLength(0);
+			expect(rootDropZone()).toBeNull();
+
+			await startDrag('logs', rowOf('logs'));
+			await moveOver('archive', 0.1);
+			await release();
+
+			expect(document.querySelector('[data-source], [data-drop], [data-drop-container]')).toBeNull();
+			expect(dragPreview()).toBeNull();
+			expect(childOrder()).toEqual(ROOT_ORDER);
+
+			await getTreeItem('logs').click();
+			await expect.element(getTreeItem('logs')).toHaveAttribute('aria-selected', 'true');
+		});
+
+		it('starts a drag only from the drag handle', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} withoutHandle={['archive']} />);
+
+			expect(handleOf('archive')).toBeNull();
+
+			await startDrag('archive', rowOf('archive'));
+			await moveOver('logs', 0.8);
+			await release();
+
+			await startDrag('logs', rowOf('logs').querySelector('[data-part="item-text"]') as HTMLElement);
+			await moveOver('network', 0.1);
+			expect(document.querySelector('[data-source]')).toBeNull();
+			expect(dragPreview()).toBeNull();
+			await release();
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder()).toEqual(ROOT_ORDER);
+
+			await startDrag('logs');
+			await expect.element(page.elementLocator(rowOf('logs'))).toHaveAttribute('data-source');
+			expect(dragPreview()).not.toBeNull();
+			await pressEscape();
+			await release();
+		});
+
+		it('keeps row presses selecting, expanding and checking inside Sortable', async () => {
+			const onCheckedChange = vi.fn();
+			await page.render(<SortableTree onCheckedChange={onCheckedChange} />);
+
+			await page.getByText('Logs').click();
+			await expect.element(getTreeItem('logs')).toHaveAttribute('aria-selected', 'true');
+
+			await page.getByText('Monitoring').click();
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'true');
+
+			await getTreeItem('logs').getByRole('checkbox').click();
+			expect(onCheckedChange).toHaveBeenCalledWith(expect.objectContaining({ checkedValue: ['logs'] }));
+
+			expect(document.querySelector('[data-source]')).toBeNull();
+		});
+
+		it('does not select or expand when the handle is clicked without dragging', async () => {
+			const onSelectionChange = vi.fn();
+			const onExpandedChange = vi.fn();
+			await page.render(
+				<SortableTree onSelectionChange={onSelectionChange} onExpandedChange={onExpandedChange} />,
+			);
+
+			await page.getByRole('button', { name: 'Drag to reorder Logs' }).click();
+			await page.getByRole('button', { name: 'Drag to reorder Monitoring' }).click();
+
+			await expect.element(getTreeItem('logs')).toHaveAttribute('aria-selected', 'false');
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
+			expect(onSelectionChange).not.toHaveBeenCalled();
+			expect(onExpandedChange).not.toHaveBeenCalled();
+		});
+
+		it('disables the handle of a disabled node so it cannot be dragged', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await expect.element(page.getByRole('button', { name: 'Drag to reorder Router Gamma' })).toBeDisabled();
+
+			await startDrag('router-3');
+			await moveOver('logs', 0.8);
+			expect(document.querySelector('[data-source]')).toBeNull();
+			expect(dragPreview()).toBeNull();
+			await release();
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder('network')).toEqual(NETWORK_ORDER);
+		});
+	});
+
+	describe('drop zones', () => {
+		it('drops after the bottom part of a row, under the same parent', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('router-1');
+			await moveOver('router-3', 0.2);
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-3:before'], containers: ['network'] });
+
+			await moveOver('router-3', 0.8);
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-3:after'], containers: ['network'] });
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-1',
+					target: 'router-3',
+					position: 'after',
+					fromParent: 'network',
+					toParent: 'network',
+				}),
+			);
+			expect(childOrder('network')).toEqual(['router-2', 'router-3', 'router-1']);
+		});
+
+		it('drops before the top part of a root-level row, marked by the line alone', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('logs');
+			await moveOver('archive', 0.1);
+			await expect.poll(dropIndicators).toEqual({ rows: ['archive:before'], containers: [] });
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'logs',
+					target: 'archive',
+					position: 'before',
+					fromParent: null,
+					toParent: null,
+				}),
+			);
+			expect(childOrder()).toEqual(['network', 'logs', 'archive', 'monitoring']);
+			await expect.poll(dropIndicators).toEqual(noIndicators);
+		});
+
+		it('offers before, inside and after on a collapsed group, and expands it on an inside drop', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('router-1');
+			await moveOver('monitoring', 0.1);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:before'], containers: [] });
+
+			await moveOver('monitoring', 0.9);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:after'], containers: [] });
+
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-1',
+					target: 'monitoring',
+					position: 'inside',
+					fromParent: 'network',
+					toParent: 'monitoring',
+				}),
+			);
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'true');
+			expect(childOrder('monitoring')).toEqual(['router-1', 'alerts', 'dashboards']);
+			await expect.element(getTreeItem('router-1')).toBeVisible();
+		});
+
+		it('treats the bottom edge of an expanded group as inside, never after', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('logs');
+			await moveOver('network', 0.1);
+			await expect.poll(dropIndicators).toEqual({ rows: ['network:before'], containers: [] });
+
+			await moveOver('network', 0.95);
+			await expect.poll(dropIndicators).toEqual({ rows: ['network:inside'], containers: ['network'] });
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'logs',
+					target: 'network',
+					position: 'inside',
+					fromParent: null,
+					toParent: 'network',
+				}),
+			);
+			expect(childOrder('network')).toEqual(['logs', ...NETWORK_ORDER]);
+		});
+
+		it('drops into an empty group, which then expands and collapses like any branch', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('router-1');
+			await moveOver('archive', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['archive:inside'], containers: ['archive'] });
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-1',
+					target: 'archive',
+					position: 'inside',
+					fromParent: 'network',
+					toParent: 'archive',
+				}),
+			);
+			await expect.element(getTreeItem('archive')).toHaveAttribute('aria-expanded', 'true');
+			expect(childOrder('archive')).toEqual(['router-1']);
+			await expect.element(getTreeItem('router-1')).toBeVisible();
+
+			await page.getByText('Archive').click();
+			await expect.element(getTreeItem('archive')).toHaveAttribute('aria-expanded', 'false');
+			await expect.poll(() => rowOf('router-1').checkVisibility()).toBe(false);
+		});
+
+		it('never nests under a leaf: its halves are before and after', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('archive');
+			await moveOver('logs', 0.45);
+			await expect.poll(dropIndicators).toEqual({ rows: ['logs:before'], containers: [] });
+
+			await moveOver('logs', 0.55);
+			await expect.poll(dropIndicators).toEqual({ rows: ['logs:after'], containers: [] });
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({ node: 'archive', target: 'logs', position: 'after', fromParent: null, toParent: null }),
+			);
+			expect(childOrder()).toEqual(['network', 'monitoring', 'logs', 'archive']);
+		});
+
+		it('moves a node out of a group to the root level', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await drag('router-2', 'logs', 0.8);
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-2',
+					target: 'logs',
+					position: 'after',
+					fromParent: 'network',
+					toParent: null,
+				}),
+			);
+			expect(childOrder()).toEqual([...ROOT_ORDER, 'router-2']);
+			expect(childOrder('network')).toEqual(['router-1', 'router-3']);
+		});
+
+		it('appends to the root list from the empty space below the last row', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('router-1');
+			await moveOver(rootDropZone(), 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['root-end:after'], containers: [] });
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-1',
+					target: 'logs',
+					position: 'after',
+					fromParent: 'network',
+					toParent: null,
+				}),
+			);
+			expect(childOrder()).toEqual([...ROOT_ORDER, 'router-1']);
+		});
+
+		it('ignores rows that stay mounted inside a collapsed group', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			const alerts = page.getByText('Alerts');
+
+			await page.getByText('Monitoring').click();
+			await expect.element(alerts).toBeVisible();
+			await page.getByText('Monitoring').click();
+			await expect.element(alerts).not.toBeVisible();
+			await expect.element(alerts).toBeInTheDocument();
+
+			await startDrag('router-1');
+
+			const seen = new Set<string>();
+			const { top } = rowOf('monitoring').getBoundingClientRect();
+			const { bottom } = rowOf('logs').getBoundingClientRect();
+
+			for (let y = top + 1; y < bottom; y += 3) {
+				firePointer('pointermove', document, pointer.x, y);
+				await nextFrame();
+				dropIndicators().rows.forEach((row) => seen.add(row));
+				dropIndicators().containers.forEach((container) => seen.add(String(container)));
+			}
+
+			expect(Array.from(seen).filter((entry) => /alerts|dashboards/.test(entry))).toEqual([]);
+			expect(seen).toContain('logs:before');
+
+			await moveOver('logs', 0.2);
+			await release();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'router-1',
+					target: 'logs',
+					position: 'before',
+					fromParent: 'network',
+					toParent: null,
+				}),
+			);
+		});
+
+		it('drops on the slot the indicator shows when released before it catches up', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('archive');
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+
+			// Release in the same task as the last move, before React renders the slot under the pointer
+			const rect = rowOf('network').getBoundingClientRect();
+			firePointer('pointermove', document, pointer.x, rect.top + rect.height * 0.1);
+			firePointer('pointerup', document, pointer.x, pointer.y);
+			await nextFrame();
+
+			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
+				expect.anything(),
+				moveDetails({
+					node: 'archive',
+					target: 'monitoring',
+					position: 'inside',
+					fromParent: null,
+					toParent: 'monitoring',
+				}),
+			);
+			expect(childOrder('monitoring')).toEqual(['archive', 'alerts', 'dashboards']);
+		});
+	});
+
+	describe('auto-expand', () => {
+		it('expands a collapsed group after hovering its inside zone for ~500ms', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
+
+			await startDrag('logs');
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+			const hoverStart = performance.now();
+			expect(getTreeItem('monitoring').element()).toHaveAttribute('aria-expanded', 'false');
+
+			await expect
+				.poll(() => getTreeItem('monitoring').element().getAttribute('aria-expanded'), { timeout: 2000 })
+				.toBe('true');
+			expect(performance.now() - hoverStart).toBeGreaterThan(400);
+			expect(dragPreview()).not.toBeNull();
+
+			await pressEscape();
+			await release();
+			expect(onCollectionChange).not.toHaveBeenCalled();
+		});
+
+		it('keeps the hover timer running while the tree re-renders', async () => {
+			function Ticking() {
+				const [tick, setTick] = useState(0);
+
+				useEffect(() => {
+					const interval = setInterval(() => setTick((value) => value + 1), 50);
+
+					return () => clearInterval(interval);
+				}, []);
+
+				return (
+					<>
+						<div data-ticks={tick} />
+						<SortableTree canDrop={() => tick >= 0} />
+					</>
+				);
+			}
+
+			await page.render(<Ticking />);
+
+			await startDrag('logs');
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+			const ticksAtHover = Number(document.querySelector('[data-ticks]')?.getAttribute('data-ticks'));
+
+			await expect
+				.poll(() => getTreeItem('monitoring').element().getAttribute('aria-expanded'), { timeout: 2000 })
+				.toBe('true');
+			expect(Number(document.querySelector('[data-ticks]')?.getAttribute('data-ticks'))).toBeGreaterThan(
+				ticksAtHover + 3,
+			);
+
+			await pressEscape();
+			await release();
+		});
+
+		it('does not expand a group whose inside slot canDrop rejects', async () => {
+			const onExpandedChange = vi.fn();
+			await page.render(
+				<SortableTree
+					canDrop={({ position }) => position !== 'inside'}
+					onExpandedChange={onExpandedChange}
+				/>,
+			);
+
+			await startDrag('logs');
+			await moveOver('monitoring', 0.5);
+			await expect.poll(() => dragPreview()?.hasAttribute('data-rejected')).toBe(true);
+
+			await wait(800);
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
+
+			await release();
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
+			expect(onExpandedChange).not.toHaveBeenCalled();
+		});
+
+		it('reports the expansion through onExpandedChange under a controlled expandedValue', async () => {
+			const onExpandedChange = vi.fn();
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+
+			function ControlledExpanded() {
+				const [expandedValue, setExpandedValue] = useState(['network']);
+
+				return (
+					<SortableTree
+						expandedValue={expandedValue}
+						onExpandedChange={(details) => {
+							onExpandedChange(details.expandedValue);
+							setExpandedValue(details.expandedValue);
+						}}
+						onCollectionChange={onCollectionChange}
+					/>
+				);
+			}
+
+			await page.render(<ControlledExpanded />);
+
+			await drag('router-1', 'monitoring', 0.5);
+
+			expect(onCollectionChange).toHaveBeenCalledOnce();
+			expect(onExpandedChange).toHaveBeenCalledExactlyOnceWith(
+				expect.arrayContaining(['network', 'monitoring']),
+			);
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'true');
+			await expect.element(getTreeItem('router-1')).toBeVisible();
+		});
+	});
+
+	describe('move rules', () => {
+		it('reports the moved collection without mutating the rendered one', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(<SortableTree ignoreMoves onCollectionChange={onCollectionChange} />);
+
+			await drag('logs', 'network', 0.1);
+
+			expect(onCollectionChange).toHaveBeenCalledOnce();
+			const [next] = onCollectionChange.mock.calls[0] ?? [];
+			expect(next?.rootNode.children?.map((child) => child.id)).toEqual([
+				'logs',
+				'network',
+				'archive',
+				'monitoring',
+			]);
+
+			expect(sortableNodes.map((child) => child.id)).toEqual(ROOT_ORDER);
+			await getTreeItem('archive').click();
+			await expect.element(getTreeItem('archive')).toHaveAttribute('aria-selected', 'true');
+			expect(childOrder()).toEqual(ROOT_ORDER);
+		});
+
+		it("ignores drops next to the node's own position", async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(() => true);
+			await page.render(<SortableTree canDrop={canDrop} onCollectionChange={onCollectionChange} />);
+
+			await startDrag('router-2');
+
+			for (const [target, ratio] of [
+				['router-3', 0.2],
+				['router-1', 0.8],
+				['router-2', 0.5],
+			] as const) {
+				// Show a real slot first so the empty state below is a re-render, not a stale DOM
+				await moveOver('logs', 0.2);
+				await expect.poll(dropIndicators).toEqual({ rows: ['logs:before'], containers: [] });
+
+				await moveOver(target, ratio);
+				await expect.poll(dropIndicators).toEqual(noIndicators);
+				expect(dragPreview()).not.toHaveAttribute('data-rejected');
+			}
+
+			await release();
+
+			const neighborTargets = canDrop.mock.calls.filter(([details]) => details.target.id !== 'logs');
+			expect(neighborTargets).toEqual([]);
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder('network')).toEqual(NETWORK_ORDER);
+		});
+
+		it('rejects slots canDrop refuses: no indicator, not-allowed cursor, no drop', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(
+				(details) => details.target.id !== 'archive',
+			);
+			await page.render(<SortableTree canDrop={canDrop} onCollectionChange={onCollectionChange} />);
+
+			await startDrag('logs');
+			await moveOver('monitoring', 0.1);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:before'], containers: [] });
+			expect(dragPreview()).not.toHaveAttribute('data-rejected');
+			expect(getComputedStyle(dragPreview() as HTMLElement).cursor).not.toBe('not-allowed');
+
+			await moveOver('archive', 0.1);
+			await expect.poll(dropIndicators).toEqual(noIndicators);
+			expect(canDrop).toHaveBeenLastCalledWith(
+				moveDetails({
+					node: 'logs',
+					target: 'archive',
+					position: 'before',
+					fromParent: null,
+					toParent: null,
+				}),
+			);
+			expect(dragPreview()).toHaveAttribute('data-rejected');
+			expect(getComputedStyle(dragPreview() as HTMLElement).cursor).toBe('not-allowed');
+
+			await moveOver('archive', 0.5);
+			await expect.poll(() => canDrop.mock.lastCall?.[0].position).toBe('inside');
+			expect(dropIndicators()).toEqual(noIndicators);
+			await release();
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder()).toEqual(ROOT_ORDER);
+			await expect.element(getTreeItem('archive')).toHaveAttribute('aria-expanded', 'false');
+		});
+
+		it('never drops a group into itself or its descendants, even when canDrop allows it', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(() => true);
+			await page.render(<SortableTree canDrop={canDrop} onCollectionChange={onCollectionChange} />);
+
+			await startDrag('network');
+			await moveOver('logs', 0.8);
+			await expect.poll(dropIndicators).toEqual({ rows: ['logs:after'], containers: [] });
+			expect(canDrop).toHaveBeenCalledWith(
+				moveDetails({ node: 'network', target: 'logs', position: 'after', fromParent: null, toParent: null }),
+			);
+
+			for (const [target, ratio] of [
+				['router-1', 0.2],
+				['router-2', 0.8],
+			] as const) {
+				await moveOver(target, ratio);
+				await expect.poll(() => dragPreview()?.hasAttribute('data-rejected')).toBe(true);
+				expect(dropIndicators()).toEqual(noIndicators);
+			}
+
+			await release();
+
+			const subtreeTargets = canDrop.mock.calls.filter(([details]) =>
+				['network', ...NETWORK_ORDER].includes(details.target.id),
+			);
+			expect(subtreeTargets).toEqual([]);
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder()).toEqual(ROOT_ORDER);
+			expect(childOrder('network')).toEqual(NETWORK_ORDER);
+		});
+
+		it('cancels on Escape without moving, expanding or leaving indicators behind', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			const onExpandedChange = vi.fn();
+			await page.render(
+				<SortableTree onCollectionChange={onCollectionChange} onExpandedChange={onExpandedChange} />,
+			);
+
+			await startDrag('router-1');
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+
+			await pressEscape();
+			await expect
+				.poll(() => document.querySelector('[data-source], [data-drop], [data-drop-container]'))
+				.toBeNull();
+			await expect.poll(dragPreview).toBeNull();
+
+			// Past the auto-expand delay: the cancelled hover must not expand the group
+			await wait(700);
+			await release();
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(onExpandedChange).not.toHaveBeenCalled();
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
+			expect(childOrder('network')).toEqual(NETWORK_ORDER);
+			expect(childOrder()).toEqual(ROOT_ORDER);
+		});
+	});
+
+	describe('feedback', () => {
+		it('tints the receiving group with a rail and draws a line on the row edge', async () => {
+			await page.render(<SortableTree />);
+
+			await startDrag('logs');
+			await moveOver('router-2', 0.2);
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:before'], containers: ['network'] });
+
+			const group = getComputedStyle(branchOf('network'));
+			expect(isTransparent(group.backgroundColor)).toBe(false);
+			expect(group.boxShadow).toMatch(/2px 0px 0px 0px inset/);
+
+			const beforeLine = getComputedStyle(rowOf('router-2'), '::before');
+			expect(beforeLine.height).toBe('2px');
+			expect(beforeLine.top).toBe('0px');
+			expect(isTransparent(beforeLine.backgroundColor)).toBe(false);
+
+			await moveOver('router-2', 0.8);
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:after'], containers: ['network'] });
+			expect(getComputedStyle(rowOf('router-2'), '::before').bottom).toBe('0px');
+
+			// Inside is carried by the group highlight alone
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+			expect(getComputedStyle(rowOf('monitoring'), '::before').content).toBe('none');
+			expect(isTransparent(getComputedStyle(branchOf('monitoring')).backgroundColor)).toBe(false);
+			expect(isTransparent(getComputedStyle(branchOf('network')).backgroundColor)).toBe(true);
+
+			// Root-level slots show only the line
+			await moveOver('network', 0.1);
+			await expect.poll(dropIndicators).toEqual({ rows: ['network:before'], containers: [] });
+			expect(getComputedStyle(rowOf('network'), '::before').height).toBe('2px');
+			expect(isTransparent(getComputedStyle(branchOf('network')).backgroundColor)).toBe(true);
+
+			await pressEscape();
+			await release();
+		});
+
+		it('keeps the dragged row, and a group with its subtree, in place as a hatched slot', async () => {
+			await page.render(<SortableTree />);
+
+			const textOf = (value: string) =>
+				rowOf(value).querySelector('[data-part="item-text"], [data-part="branch-text"]') as HTMLElement;
+
+			await startDrag('router-1');
+			await expect.element(page.elementLocator(rowOf('router-1'))).toHaveAttribute('data-source');
+			expect(getComputedStyle(rowOf('router-1')).backgroundImage).toContain('repeating-linear-gradient');
+			expect(getComputedStyle(textOf('router-1')).visibility).toBe('hidden');
+			expect(getComputedStyle(textOf('router-2')).visibility).toBe('visible');
+			await pressEscape();
+			await release();
+			await expect.poll(() => document.querySelector('[data-source]')).toBeNull();
+			expect(getComputedStyle(textOf('router-1')).visibility).toBe('visible');
+
+			await startDrag('network');
+			await expect.element(page.elementLocator(branchOf('network'))).toHaveAttribute('data-source');
+			expect(getComputedStyle(branchOf('network')).backgroundImage).toContain('repeating-linear-gradient');
+			for (const value of ['network', 'router-1', 'router-2', 'router-3']) {
+				expect(getComputedStyle(textOf(value)).visibility).toBe('hidden');
+			}
+			expect(getComputedStyle(textOf('logs')).visibility).toBe('visible');
+			await pressEscape();
+			await release();
+		});
+
+		it('shows a clone of the dragged row, with its checkbox state, in the overlay', async () => {
+			await page.render(<SortableTree defaultCheckedValue={['router-1']} />);
+
+			const expectPreview = async (value: string, name: string, state: string) => {
+				await startDrag(value);
+				await expect.poll(dragPreview).not.toBeNull();
+
+				const preview = page.elementLocator(dragPreview() as HTMLElement);
+				await expect.element(preview.getByText(name)).toBeVisible();
+				expect(dragPreview()?.querySelector(`.${styles.dragHandle}`)).not.toBeNull();
+				expect(dragPreview()?.querySelector('[data-state]')).toHaveAttribute('data-state', state);
+				expect(getComputedStyle(dragPreview() as HTMLElement).boxShadow).toMatch(/2px 0px 0px 0px inset/);
+
+				await pressEscape();
+				await release();
+				await expect.poll(dragPreview).toBeNull();
+			};
+
+			await expectPreview('router-1', 'Router Alpha', 'checked');
+			await expectPreview('logs', 'Logs', 'unchecked');
+			await expectPreview('network', 'Network', 'indeterminate');
+		});
+
+		it('settles the overlay with a drop animation after a cross-group move', async () => {
+			const consoleError = vi.spyOn(console, 'error');
+
+			try {
+				await page.render(<SortableTree />);
+
+				await drag('router-1', 'logs', 0.8);
+
+				expect(childOrder()).toEqual([...ROOT_ORDER, 'router-1']);
+				expect(dragPreview()).not.toBeNull();
+				await expect.poll(dragPreview, { timeout: 1000 }).toBeNull();
+
+				expect(rowOf('router-1')).not.toHaveAttribute('data-source');
+				expect(getComputedStyle(rowOf('router-1')).opacity).toBe('1');
+				expect(consoleError).not.toHaveBeenCalled();
+			} finally {
+				consoleError.mockRestore();
+			}
+		});
+
+		it('drops without animation when the user prefers reduced motion', async () => {
+			const matchMedia = window.matchMedia.bind(window);
+			const spy = vi.spyOn(window, 'matchMedia').mockImplementation((query) =>
+				query.includes('prefers-reduced-motion')
+					? ({
+							matches: true,
+							media: query,
+							onchange: null,
+							addEventListener: () => {},
+							removeEventListener: () => {},
+							addListener: () => {},
+							removeListener: () => {},
+							dispatchEvent: () => false,
+						} as MediaQueryList)
+					: matchMedia(query),
+			);
+
+			try {
+				await page.render(<SortableTree />);
+
+				await drag('router-1', 'logs', 0.8);
+
+				expect(childOrder()).toEqual([...ROOT_ORDER, 'router-1']);
+				expect(dragPreview()).toBeNull();
+			} finally {
+				spy.mockRestore();
+			}
+		});
+
+		it('auto-scrolls the container only within the outer 10% of its height', async () => {
+			const columns = Array.from({ length: 30 }, (_, index) => ({
+				id: `column-${String(index)}`,
+				name: `Column ${String(index)}`,
+			}));
+
+			await page.render(
+				<div data-scroller style={{ height: 200, overflow: 'auto' }}>
+					<SortableTree nodes={columns} />
+				</div>,
+			);
+
+			const scroller = document.querySelector('[data-scroller]') as HTMLElement;
+
+			await startDrag('column-1');
+			await moveOver(scroller, 0.5);
+			await wait(300);
+			expect(scroller.scrollTop).toBe(0);
+
+			await moveOver(scroller, 0.85);
+			await wait(300);
+			expect(scroller.scrollTop).toBe(0);
+
+			await moveOver(scroller, 0.95);
+			await expect.poll(() => scroller.scrollTop).toBeGreaterThan(0);
+
+			await pressEscape();
+			await release();
+		});
+	});
+
+	describe('same group only (column manager)', () => {
+		it('reorders columns within their group and groups among themselves', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(
+				<SortableTree
+					nodes={columnGroupNodes}
+					defaultExpandedValue={['general', 'connectivity', 'location']}
+					canDrop={sameGroupOnly}
+					onCollectionChange={onCollectionChange}
+				/>,
+			);
+
+			await drag('name', 'status', 0.8);
+			expect(childOrder('general')).toEqual(['status', 'name', 'created']);
+
+			await drag('connectivity', 'general', 0.1);
+			expect(childOrder()).toEqual(['connectivity', 'general', 'location']);
+
+			expect(onCollectionChange).toHaveBeenCalledTimes(2);
+		});
+
+		it('rejects moving a column to another group or nesting it', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			await page.render(
+				<SortableTree
+					nodes={columnGroupNodes}
+					defaultExpandedValue={['general', 'connectivity', 'location']}
+					canDrop={sameGroupOnly}
+					onCollectionChange={onCollectionChange}
+				/>,
+			);
+
+			await startDrag('name');
+
+			for (const [target, ratio] of [
+				['ip-address', 0.2],
+				['connectivity', 0.5],
+				['location', 0.1],
+				['location', 0.5],
+			] as const) {
+				await moveOver('created', 0.8);
+				await expect.poll(dropIndicators).toEqual({ rows: ['created:after'], containers: ['general'] });
+
+				await moveOver(target, ratio);
+				await expect.poll(dropIndicators).toEqual(noIndicators);
+				expect(dragPreview()).toHaveAttribute('data-rejected');
+			}
+
+			await release();
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder('general')).toEqual(['name', 'status', 'created']);
+			expect(childOrder('connectivity')).toEqual(['ip-address', 'mac-address']);
+		});
+	});
+});
+
+describe('DsTree empty group', () => {
+	it('renders an empty group as an unchecked branch that toggles its own value', async () => {
+		const onCheckedChange = vi.fn();
+		const collection = createDsTreeCollection<DsTreeNode>([{ id: 'archive', name: 'Archive', children: [] }]);
+
+		await page.render(
+			<DsTree.Root collection={collection} onCheckedChange={onCheckedChange}>
+				<DsTree.Tree>
+					{collection.rootNode.children?.map((node, index) => (
+						<CheckboxTreeNode key={node.id} node={node} indexPath={[index]} />
+					))}
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+
+		const checkbox = page.getByRole('checkbox');
+		await expect.element(checkbox).toHaveAttribute('aria-checked', 'false');
+
+		await checkbox.click();
+
+		expect(onCheckedChange).toHaveBeenCalledWith(expect.objectContaining({ checkedValue: ['archive'] }));
+		await expect.element(checkbox).toHaveAttribute('aria-checked', 'true');
+
+		await page.getByText('Archive').click();
+		await expect.element(getTreeItem('archive')).toHaveAttribute('aria-expanded', 'true');
 	});
 });

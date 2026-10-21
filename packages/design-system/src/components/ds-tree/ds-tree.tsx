@@ -1,8 +1,18 @@
-import { TreeView } from '@ark-ui/react/tree-view';
+import { TreeView, useTreeViewNodeContext } from '@ark-ui/react/tree-view';
+import type { MouseEvent } from 'react';
 import classNames from 'classnames';
 
 import { DsIcon } from '../ds-icon';
 import styles from './ds-tree.module.scss';
+import {
+	DsTreeDragHandle,
+	DsTreeSortable,
+	DsTreeSortableBranchControl,
+	DsTreeSortableItem,
+	useDsTreeSortableBranchAttributes,
+	useDsTreeSortableContext,
+	useDsTreeViewContext,
+} from './ds-tree-sortable';
 import type {
 	DsTreeBranchContentProps,
 	DsTreeBranchControlProps,
@@ -79,17 +89,30 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (
 	</TreeView.Tree>
 );
 
-const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => (
-	<TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}>
-		{children}
-	</TreeView.Branch>
-);
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => {
+	const sortableAttributes = useDsTreeSortableBranchAttributes();
 
-const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => (
-	<TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}>
-		{children}
-	</TreeView.BranchControl>
-);
+	return (
+		<TreeView.Branch
+			{...rest}
+			{...sortableAttributes}
+			className={classNames(styles.branch, className)}
+			style={style}
+		>
+			{children}
+		</TreeView.Branch>
+	);
+};
+
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => {
+	const Control = useDsTreeSortableContext() ? DsTreeSortableBranchControl : TreeView.BranchControl;
+
+	return (
+		<Control {...rest} className={classNames(styles.branchControl, className)} style={style}>
+			{children}
+		</Control>
+	);
+};
 
 const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) => (
 	<TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}>
@@ -113,11 +136,15 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />
 );
 
-const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => (
-	<TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
-		{children}
-	</TreeView.Item>
-);
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => {
+	const Item = useDsTreeSortableContext() ? DsTreeSortableItem : TreeView.Item;
+
+	return (
+		<Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
+			{children}
+		</Item>
+	);
+};
 
 const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (
 	<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>
@@ -131,18 +158,59 @@ const DsTreeItemIndicator = ({ className, style }: DsTreeItemIndicatorProps) => 
 	</span>
 );
 
-const DsTreeNodeCheckbox = ({ className, style }: DsTreeNodeCheckboxProps) => (
-	<TreeView.NodeCheckbox className={classNames(styles.nodeCheckbox, className)} style={style}>
-		<div className={styles.nodeCheckboxBox}>
-			<TreeView.NodeCheckboxIndicator
-				className={styles.nodeCheckboxIndicator}
-				indeterminate={<DsIcon icon="check_indeterminate_small" size="tiny" variant="outlined" />}
-			>
-				<DsIcon icon="check_small" size="tiny" variant="outlined" />
-			</TreeView.NodeCheckboxIndicator>
-		</div>
-	</TreeView.NodeCheckbox>
-);
+// Ark derives branch checked state from descendants, so an empty group would always read as checked.
+const useEmptyBranchChecked = () => {
+	const treeView = useDsTreeViewContext();
+	const { value, indexPath, isBranch, disabled } = useTreeViewNodeContext();
+	const node = treeView.collection.at(indexPath);
+
+	if (!isBranch || !node || treeView.collection.getNodeChildren(node).length > 0) {
+		return null;
+	}
+
+	const checked = treeView.checkedValue.includes(value);
+
+	return {
+		checked,
+		props: {
+			'data-state': checked ? 'checked' : 'unchecked',
+			'aria-checked': checked,
+			onClickCapture: (event: MouseEvent<HTMLSpanElement>) => {
+				event.stopPropagation();
+
+				if (!disabled) {
+					treeView.toggleChecked(value, false);
+				}
+			},
+		},
+	};
+};
+
+const DsTreeNodeCheckbox = ({ className, style }: DsTreeNodeCheckboxProps) => {
+	const emptyBranch = useEmptyBranchChecked();
+	const checkIcon = <DsIcon icon="check_small" size="tiny" variant="outlined" />;
+
+	return (
+		<TreeView.NodeCheckbox
+			{...emptyBranch?.props}
+			className={classNames(styles.nodeCheckbox, className)}
+			style={style}
+		>
+			<div className={styles.nodeCheckboxBox}>
+				{emptyBranch ? (
+					emptyBranch.checked && checkIcon
+				) : (
+					<TreeView.NodeCheckboxIndicator
+						className={styles.nodeCheckboxIndicator}
+						indeterminate={<DsIcon icon="check_indeterminate_small" size="tiny" variant="outlined" />}
+					>
+						{checkIcon}
+					</TreeView.NodeCheckboxIndicator>
+				)}
+			</div>
+		</TreeView.NodeCheckbox>
+	);
+};
 
 const DsTreeItemAction = ({ className, style, children, onClick }: DsTreeItemActionProps) => (
 	<button
@@ -191,4 +259,6 @@ export const DsTree = {
 	ItemIndicator: DsTreeItemIndicator,
 	ItemAction: DsTreeItemAction,
 	NodeCheckbox: DsTreeNodeCheckbox,
+	Sortable: DsTreeSortable,
+	DragHandle: DsTreeDragHandle,
 };

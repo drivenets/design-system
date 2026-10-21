@@ -347,3 +347,137 @@ const WithStatusIcons = args => {
         </DsTree.Root>
     );
 };
+
+## Sortable
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const Sortable = () => {
+    const [collection, setCollection] = useState(() => createDsTreeCollection(sortableNodes));
+
+    return (
+        <DsTree.Root
+            size="medium"
+            collection={collection}
+            defaultExpandedValue={['network', 'routers']}
+            onCheckedChange={fn()}>
+            <DsTree.Sortable onCollectionChange={(next) => setCollection(next)}>
+                <DsTree.Tree>
+                    {collection.rootNode.children?.map((node, index) => (
+                        <SortableDsTreeNode key={node.id} node={node} indexPath={[index]} />
+                    ))}
+                </DsTree.Tree>
+            </DsTree.Sortable>
+        </DsTree.Root>
+    );
+};
+
+## Sortable same group only
+
+### Show code
+import { DsTree, createDsTreeCollection } from '@drivenets/design-system';
+
+const collection = createDsTreeCollection([
+    {
+        id: 'network',
+        name: 'Network',
+        children: [
+            { id: 'routers', name: 'Routers', children: [...] },
+            { id: 'switches', name: 'Switches', children: [...] },
+            { id: 'firewall-1', name: 'Firewall Primary' },
+        ],
+    },
+    { id: 'monitoring', name: 'Monitoring', children: [...] },
+]);
+
+<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+    <DsTree.Tree>
+        {collection.rootNode.children?.map((node, index) => (
+            <DsTree.NodeProvider key={node.id} node={node} indexPath={[index]}>
+                {node.children ? (
+                    <DsTree.Branch>
+                        <DsTree.BranchControl>
+                            <DsTree.BranchIndicator />
+                            <DsTree.BranchText>{node.name}</DsTree.BranchText>
+                        </DsTree.BranchControl>
+                        <DsTree.BranchContent>
+                            <DsTree.BranchIndentGuide />
+                            {/* recursive children */}
+                        </DsTree.BranchContent>
+                    </DsTree.Branch>
+                ) : (
+                    <DsTree.Item>
+                        <DsTree.ItemIndicator />
+                        <DsTree.ItemText>{node.name}</DsTree.ItemText>
+                    </DsTree.Item>
+                )}
+            </DsTree.NodeProvider>
+        ))}
+    </DsTree.Tree>
+</DsTree.Root>
+
+### MCP manifest
+const SortableSameGroupOnly = () => {
+    const [collection, setCollection] = useState(() => createDsTreeCollection(columnGroupNodes));
+
+    return (
+        <DsTree.Root
+            size="medium"
+            collection={collection}
+            defaultExpandedValue={['general', 'connectivity', 'location']}
+            defaultCheckedValue={['name', 'status', 'ip-address', 'site']}>
+            <DsTree.Sortable
+                canDrop={({ position, fromParent, toParent }) =>
+                    position !== 'inside' && fromParent?.id === toParent?.id
+                }
+                onCollectionChange={(next) => setCollection(next)}>
+                <DsTree.Tree>
+                    {collection.rootNode.children?.map((node, index) => (
+                        <SortableDsTreeNode key={node.id} node={node} indexPath={[index]} />
+                    ))}
+                </DsTree.Tree>
+            </DsTree.Sortable>
+        </DsTree.Root>
+    );
+};
