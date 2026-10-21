@@ -1330,7 +1330,7 @@ describe('DsTree.Sortable', () => {
 	});
 
 	describe('feedback', () => {
-		it('tints the receiving group with a rail and draws a line on the row edge', async () => {
+		it('tints the receiving group with a rail and draws a dashed line on the row edge', async () => {
 			await page.render(<SortableTree />);
 
 			await startDrag('logs');
@@ -1342,9 +1342,11 @@ describe('DsTree.Sortable', () => {
 			expect(group.boxShadow).toMatch(/2px 0px 0px 0px inset/);
 
 			const beforeLine = getComputedStyle(rowOf('router-2'), '::before');
-			expect(beforeLine.height).toBe('2px');
+			expect(beforeLine.borderTopStyle).toBe('dashed');
+			expect(beforeLine.borderTopWidth).toBe('1px');
 			expect(beforeLine.top).toBe('0px');
-			expect(isTransparent(beforeLine.backgroundColor)).toBe(false);
+			// Starts at the row's content, so the line shows the depth the node lands at
+			expect(beforeLine.left).toBe(getComputedStyle(rowOf('router-2')).paddingLeft);
 
 			await moveOver('router-2', 0.8);
 			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:after'], containers: ['network'] });
@@ -1360,36 +1362,36 @@ describe('DsTree.Sortable', () => {
 			// Root-level slots show only the line
 			await moveOver('network', 0.1);
 			await expect.poll(dropIndicators).toEqual({ rows: ['network:before'], containers: [] });
-			expect(getComputedStyle(rowOf('network'), '::before').height).toBe('2px');
+			expect(getComputedStyle(rowOf('network'), '::before').borderTopStyle).toBe('dashed');
 			expect(isTransparent(getComputedStyle(branchOf('network')).backgroundColor)).toBe(true);
 
 			await pressEscape();
 			await release();
 		});
 
-		it('keeps the dragged row, and a group with its subtree, in place as a hatched slot', async () => {
+		it('keeps the dragged row, and a group with its subtree, in place behind a white mask', async () => {
 			await page.render(<SortableTree />);
 
-			const textOf = (value: string) =>
-				rowOf(value).querySelector('[data-part="item-text"], [data-part="branch-text"]') as HTMLElement;
+			const opacityOf = (element: Element) => getComputedStyle(element).opacity;
 
 			await startDrag('router-1');
 			await expect.element(page.elementLocator(rowOf('router-1'))).toHaveAttribute('data-source');
-			expect(getComputedStyle(rowOf('router-1')).backgroundImage).toContain('repeating-linear-gradient');
-			expect(getComputedStyle(textOf('router-1')).visibility).toBe('hidden');
-			expect(getComputedStyle(textOf('router-2')).visibility).toBe('visible');
+			expect(opacityOf(rowOf('router-1'))).toBe('0.3');
+			expect(opacityOf(rowOf('router-2'))).toBe('1');
+			await expect.element(getTreeItem('router-1').getByText('Router Alpha')).toBeVisible();
 			await pressEscape();
 			await release();
 			await expect.poll(() => document.querySelector('[data-source]')).toBeNull();
-			expect(getComputedStyle(textOf('router-1')).visibility).toBe('visible');
+			expect(opacityOf(rowOf('router-1'))).toBe('1');
 
 			await startDrag('network');
 			await expect.element(page.elementLocator(branchOf('network'))).toHaveAttribute('data-source');
-			expect(getComputedStyle(branchOf('network')).backgroundImage).toContain('repeating-linear-gradient');
-			for (const value of ['network', 'router-1', 'router-2', 'router-3']) {
-				expect(getComputedStyle(textOf(value)).visibility).toBe('hidden');
-			}
-			expect(getComputedStyle(textOf('logs')).visibility).toBe('visible');
+			expect(opacityOf(branchOf('network'))).toBe('0.3');
+			// The group block carries the mask once; its header and children must not dim it again
+			expect(opacityOf(rowOf('network'))).toBe('1');
+			expect(opacityOf(rowOf('router-1'))).toBe('1');
+			expect(opacityOf(rowOf('logs'))).toBe('1');
+			await expect.element(getTreeItem('router-2').getByText('Router Beta')).toBeVisible();
 			await pressEscape();
 			await release();
 		});
@@ -1397,24 +1399,34 @@ describe('DsTree.Sortable', () => {
 		it('shows a clone of the dragged row, with its checkbox state, in the overlay', async () => {
 			await page.render(<SortableTree defaultCheckedValue={['router-1']} />);
 
-			const expectPreview = async (value: string, name: string, state: string) => {
+			const expectPreview = async (value: string, names: string[], state: string) => {
 				await startDrag(value);
 				await expect.poll(dragPreview).not.toBeNull();
 
-				const preview = page.elementLocator(dragPreview() as HTMLElement);
-				await expect.element(preview.getByText(name)).toBeVisible();
-				expect(dragPreview()?.querySelector(byClass(styles.dragHandle))).not.toBeNull();
-				expect(dragPreview()?.querySelector('[data-state]')).toHaveAttribute('data-state', state);
-				expect(getComputedStyle(dragPreview() as HTMLElement).boxShadow).toMatch(/2px 0px 0px 0px inset/);
+				const preview = dragPreview() as HTMLElement;
+				const rows = Array.from(preview.querySelectorAll(byClass(styles.dragPreviewRow)));
+				expect(rows.map((row) => row.querySelector(byClass(styles.itemText))?.textContent)).toEqual(names);
+				expect(rows.every((row) => row.querySelector(byClass(styles.dragHandle)))).toBe(true);
+				expect(preview.querySelector('[data-state]')).toHaveAttribute('data-state', state);
+
+				const style = getComputedStyle(preview);
+				expect(style.opacity).toBe('0.85');
+				expect(style.borderTopWidth).toBe('1px');
+				expect(style.boxShadow).not.toBe('none');
 
 				await pressEscape();
 				await release();
 				await expect.poll(dragPreview).toBeNull();
 			};
 
-			await expectPreview('router-1', 'Router Alpha', 'checked');
-			await expectPreview('logs', 'Logs', 'unchecked');
-			await expectPreview('network', 'Network', 'indeterminate');
+			await expectPreview('router-1', ['Router Alpha'], 'checked');
+			await expectPreview('logs', ['Logs'], 'unchecked');
+			await expectPreview(
+				'network',
+				['Network', 'Router Alpha', 'Router Beta', 'Router Gamma'],
+				'indeterminate',
+			);
+			await expectPreview('monitoring', ['Monitoring'], 'unchecked');
 		});
 
 		it('settles the overlay with a drop animation after a cross-group move', async () => {

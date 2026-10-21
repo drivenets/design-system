@@ -8,6 +8,7 @@ import {
 	useState,
 	useSyncExternalStore,
 	type ComponentProps,
+	type CSSProperties,
 	type MouseEvent,
 	type Ref,
 } from 'react';
@@ -141,38 +142,62 @@ const DsTreeRootDropZone = ({ id, isTarget, registerRow }: DsTreeRootDropZonePro
 	);
 };
 
-const DsTreeDragPreview = ({ active, rejected }: { active: ActiveDrag; rejected: boolean }) => {
+interface DsTreeDragPreviewRowProps {
+	indexPath: number[];
+	level: number;
+	hasCheckbox: boolean;
+}
+
+const DsTreeDragPreviewRow = ({ indexPath, level, hasCheckbox }: DsTreeDragPreviewRowProps) => {
 	const treeView = useDsTreeViewContext();
-	const node = treeView.collection.at(active.indexPath);
+	const node = treeView.collection.at(indexPath);
 
 	if (!node) {
 		return null;
 	}
 
-	const { checked } = treeView.getNodeState({ node, indexPath: active.indexPath });
+	const { checked, expanded } = treeView.getNodeState({ node, indexPath });
 	const checkboxState = checked === true ? 'checked' : checked === false ? 'unchecked' : 'indeterminate';
+	const children = expanded ? treeView.collection.getNodeChildren(node) : [];
 
 	return (
-		<div className={styles.dragPreview} data-rejected={rejected ? '' : undefined}>
-			<span className={styles.dragHandle} aria-hidden="true">
-				<DsIcon icon="drag_indicator" size="tiny" />
-			</span>
-
-			{active.hasCheckbox && (
-				<span className={styles.nodeCheckbox} data-state={checkboxState} aria-hidden="true">
-					<span className={styles.nodeCheckboxBox}>
-						{checkboxState === 'checked' && <DsIcon icon="check_small" size="tiny" variant="outlined" />}
-						{checkboxState === 'indeterminate' && (
-							<DsIcon icon="check_indeterminate_small" size="tiny" variant="outlined" />
-						)}
-					</span>
+		<>
+			<div className={styles.dragPreviewRow} style={{ '--ds-tree-preview-level': level } as CSSProperties}>
+				<span className={styles.dragHandle} aria-hidden="true">
+					<DsIcon icon="drag_indicator" size="tiny" />
 				</span>
-			)}
 
-			<span className={styles.itemText}>{node.name}</span>
-		</div>
+				{hasCheckbox && (
+					<span className={styles.nodeCheckbox} data-state={checkboxState} aria-hidden="true">
+						<span className={styles.nodeCheckboxBox}>
+							{checkboxState === 'checked' && <DsIcon icon="check_small" size="tiny" variant="outlined" />}
+							{checkboxState === 'indeterminate' && (
+								<DsIcon icon="check_indeterminate_small" size="tiny" variant="outlined" />
+							)}
+						</span>
+					</span>
+				)}
+
+				<span className={styles.itemText}>{node.name}</span>
+			</div>
+
+			{children.map((child, index) => (
+				<DsTreeDragPreviewRow
+					key={treeView.collection.getNodeValue(child)}
+					indexPath={[...indexPath, index]}
+					level={level + 1}
+					hasCheckbox={hasCheckbox}
+				/>
+			))}
+		</>
 	);
 };
+
+const DsTreeDragPreview = ({ active, rejected }: { active: ActiveDrag; rejected: boolean }) => (
+	<div className={styles.dragPreview} data-rejected={rejected ? '' : undefined}>
+		<DsTreeDragPreviewRow indexPath={active.indexPath} level={0} hasCheckbox={active.hasCheckbox} />
+	</div>
+);
 
 const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 	children,

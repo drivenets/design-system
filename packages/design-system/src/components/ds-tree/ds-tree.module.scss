@@ -4,8 +4,10 @@ $indent-per-level: 12px;
 $half-icon: calc(var(--icon-width-tiny) * 0.5);
 $transition-duration: 0.2s;
 $drag-handle-size: 24px;
-$drop-line-width: 2px;
-$source-stripe-gap: 7px;
+$drop-rail-width: 2px;
+$source-opacity: 0.3;
+$drag-preview-opacity: 0.85;
+$drag-preview-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
 
 @mixin node-row {
 	display: flex;
@@ -71,9 +73,8 @@ $source-stripe-gap: 7px;
 		content: '';
 		position: absolute;
 		z-index: 3;
-		inset-inline: 0;
-		height: $drop-line-width;
-		background: var(--background-primary);
+		inset-inline: var(--ds-tree-offset, var(--3xs)) var(--3xs);
+		border-top: 1px dashed var(--border);
 		pointer-events: none;
 	}
 }
@@ -90,15 +91,6 @@ $source-stripe-gap: 7px;
 
 	&[data-drop='after']::before {
 		bottom: 0;
-	}
-}
-
-@mixin source-slot($stripe) {
-	background: repeating-linear-gradient(-45deg, $stripe 0 1px, transparent 1px $source-stripe-gap);
-	box-shadow: inset 0 0 0 1px var(--border-secondary);
-
-	> * {
-		visibility: hidden;
 	}
 }
 
@@ -119,7 +111,8 @@ $source-stripe-gap: 7px;
 
 	&[data-size='medium'] {
 		.branchControl,
-		.item {
+		.item,
+		.dragPreviewRow {
 			padding-block: var(--xs);
 		}
 
@@ -131,7 +124,8 @@ $source-stripe-gap: 7px;
 
 	&[data-size='small'] {
 		.branchControl,
-		.item {
+		.item,
+		.dragPreviewRow {
 			padding-block: var(--2xs);
 		}
 
@@ -153,11 +147,11 @@ $source-stripe-gap: 7px;
 	&[data-drop-container] {
 		border-radius: 4px;
 		background: var(--background-action-tertiary-hover);
-		box-shadow: inset $drop-line-width 0 0 var(--background-primary);
+		box-shadow: inset $drop-rail-width 0 0 var(--background-primary);
 	}
 
 	&[data-source] {
-		@include source-slot(var(--border-secondary));
+		opacity: $source-opacity;
 	}
 }
 
@@ -220,13 +214,8 @@ $source-stripe-gap: 7px;
 	@include drop-line-edges;
 
 	&[data-source] {
-		@include source-slot(var(--border-secondary));
+		opacity: $source-opacity;
 	}
-}
-
-.branch[data-drop-container] .item[data-source],
-.branch[data-drop-container] .branch[data-source] {
-	@include source-slot(var(--border-secondary-hover));
 }
 
 .itemText {
@@ -361,17 +350,14 @@ $source-stripe-gap: 7px;
 
 .dragPreview {
 	display: flex;
-	align-items: center;
-	gap: var(--3xs);
+	flex-direction: column;
 	box-sizing: border-box;
-	height: 100%;
-	padding-inline: var(--3xs);
+	min-height: 100%;
+	border: 1px solid var(--border-action-primary);
 	border-radius: 4px;
 	background: var(--background);
-	box-shadow:
-		inset $drop-line-width 0 0 var(--background-primary),
-		0 0 0 1px var(--shadow-weak),
-		0 8px 24px var(--shadow-moderate);
+	box-shadow: $drag-preview-shadow;
+	opacity: $drag-preview-opacity;
 	color: var(--font-secondary);
 	cursor: grabbing;
 
@@ -381,6 +367,22 @@ $source-stripe-gap: 7px;
 
 	&[data-rejected] {
 		cursor: not-allowed;
+	}
+}
+
+.dragPreviewRow {
+	--ds-tree-depth: var(--ds-tree-preview-level);
+	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
+	--ds-tree-icon-offset: calc(#{$half-icon} * var(--ds-tree-depth));
+
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+	padding-inline: calc(var(--3xs) + var(--ds-tree-indent-offset) + var(--ds-tree-icon-offset)) var(--3xs);
+
+	&:first-child .dragHandle {
+		border-radius: 4px;
+		background: var(--background-tertiary-selected-weak);
 	}
 }
 
