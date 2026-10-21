@@ -576,6 +576,9 @@ const SortableTree = ({
 	);
 };
 
+// Generated SCSS typings make classes `string` in typecheck but `string | undefined` in plain eslint
+const byClass = (className: string | undefined) => `.${className ?? ''}`;
+
 // Rows are Ark `item` / `branch-control` parts; both carry the node id in `data-value`.
 const rowOf = (value: string) =>
 	document.querySelector(
@@ -584,13 +587,14 @@ const rowOf = (value: string) =>
 
 const branchOf = (value: string) => rowOf(value).closest('[data-part="branch"]') as HTMLElement;
 
+// The handle is hidden from assistive tech while drag is pointer-only, so it has no role to query
 const handleOf = (value: string) =>
-	rowOf(value).querySelector('button[aria-label^="Drag to reorder"]') as HTMLButtonElement;
+	rowOf(value).querySelector(byClass(styles.dragHandle)) as HTMLButtonElement;
 
 const rootDropZone = () => document.querySelector('[data-drop-zone="root-end"]') as HTMLElement;
 
 // The overlay clone has no a11y role or Ark part; its CSS module class is the only hook
-const dragPreview = () => document.querySelector<HTMLElement>(`.${styles.dragPreview}`);
+const dragPreview = () => document.querySelector<HTMLElement>(byClass(styles.dragPreview));
 
 const childOrder = (value?: string) => {
 	const parent = value
@@ -706,7 +710,7 @@ describe('DsTree.Sortable', () => {
 			);
 
 			await expect.element(getTreeItem('logs')).toBeVisible();
-			expect(page.getByRole('button', { name: /drag to reorder/i }).elements()).toHaveLength(0);
+			expect(document.querySelector(byClass(styles.dragHandle))).toBeNull();
 			expect(rootDropZone()).toBeNull();
 
 			await startDrag('logs', rowOf('logs'));
@@ -770,8 +774,10 @@ describe('DsTree.Sortable', () => {
 				<SortableTree onSelectionChange={onSelectionChange} onExpandedChange={onExpandedChange} />,
 			);
 
-			await page.getByRole('button', { name: 'Drag to reorder Logs' }).click();
-			await page.getByRole('button', { name: 'Drag to reorder Monitoring' }).click();
+			await expect.element(page.getByRole('treeitem', { name: 'Logs', exact: true })).toBeInTheDocument();
+
+			await page.elementLocator(handleOf('logs')).click();
+			await page.elementLocator(handleOf('monitoring')).click();
 
 			await expect.element(getTreeItem('logs')).toHaveAttribute('aria-selected', 'false');
 			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'false');
@@ -783,7 +789,7 @@ describe('DsTree.Sortable', () => {
 			const onCollectionChange = vi.fn<OnCollectionChange>();
 			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
 
-			await expect.element(page.getByRole('button', { name: 'Drag to reorder Router Gamma' })).toBeDisabled();
+			expect(handleOf('router-3')).toBeDisabled();
 
 			await startDrag('router-3');
 			await moveOver('logs', 0.8);
@@ -975,6 +981,7 @@ describe('DsTree.Sortable', () => {
 			await startDrag('router-1');
 			await moveOver(rootDropZone(), 0.5);
 			await expect.poll(dropIndicators).toEqual({ rows: ['root-end:after'], containers: [] });
+			expect(getComputedStyle(rootDropZone(), '::before').top).toBe('0px');
 			await release();
 
 			expect(onCollectionChange).toHaveBeenCalledExactlyOnceWith(
@@ -1396,7 +1403,7 @@ describe('DsTree.Sortable', () => {
 
 				const preview = page.elementLocator(dragPreview() as HTMLElement);
 				await expect.element(preview.getByText(name)).toBeVisible();
-				expect(dragPreview()?.querySelector(`.${styles.dragHandle}`)).not.toBeNull();
+				expect(dragPreview()?.querySelector(byClass(styles.dragHandle))).not.toBeNull();
 				expect(dragPreview()?.querySelector('[data-state]')).toHaveAttribute('data-state', state);
 				expect(getComputedStyle(dragPreview() as HTMLElement).boxShadow).toMatch(/2px 0px 0px 0px inset/);
 
@@ -1572,5 +1579,47 @@ describe('DsTree empty group', () => {
 
 		await page.getByText('Archive').click();
 		await expect.element(getTreeItem('archive')).toHaveAttribute('aria-expanded', 'true');
+	});
+
+	it('counts a nested empty group toward its parent checked state', async () => {
+		const onCheckedChange = vi.fn<NonNullable<DsTreeRootProps['onCheckedChange']>>();
+		const collection = createDsTreeCollection<DsTreeNode>([
+			{
+				id: 'network',
+				name: 'Network',
+				children: [
+					{ id: 'router-1', name: 'Router Alpha' },
+					{ id: 'archive', name: 'Archive', children: [] },
+				],
+			},
+		]);
+
+		await page.render(
+			<DsTree.Root
+				collection={collection}
+				defaultExpandedValue={['network']}
+				onCheckedChange={onCheckedChange}
+			>
+				<DsTree.Tree>
+					{collection.rootNode.children?.map((node, index) => (
+						<CheckboxTreeNode key={node.id} node={node} indexPath={[index]} />
+					))}
+				</DsTree.Tree>
+			</DsTree.Root>,
+		);
+
+		const parent = getTreeItem('network').getByRole('checkbox').first();
+		await expect.element(parent).toHaveAttribute('aria-checked', 'false');
+
+		await getTreeItem('router-1').getByRole('checkbox').click();
+		await expect.element(parent).toHaveAttribute('aria-checked', 'mixed');
+
+		await parent.click();
+
+		expect([...(onCheckedChange.mock.lastCall?.[0].checkedValue ?? [])].sort()).toEqual([
+			'archive',
+			'router-1',
+		]);
+		await expect.element(parent).toHaveAttribute('aria-checked', 'true');
 	});
 });

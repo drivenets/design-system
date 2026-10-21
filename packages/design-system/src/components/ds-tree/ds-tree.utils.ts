@@ -12,11 +12,12 @@ export const createDsTreeCollection = <T extends DsTreeNode>(nodes: T[]) =>
 	createTreeCollection<T>({
 		nodeToValue: (node) => node.id,
 		nodeToString: (node) => node.name,
-		// Ark only treats nodes with at least one child as branches; an empty group must stay a branch
-		nodeToChildrenCount: (node) => (Array.isArray(node.children) ? node.children.length : undefined),
 		// Ark requires rootNode typed as T; the root is a synthetic container never exposed to consumers
 		rootNode: { id: 'ROOT', name: '', children: nodes } as unknown as T,
 	});
+
+// Ark only counts nodes with children as branches; an empty group (`children: []`) still accepts drops
+export const isDsTreeGroup = (node: DsTreeNode) => Array.isArray(node.children);
 
 export interface DsTreeDropPositionOptions {
 	pointerY: number;

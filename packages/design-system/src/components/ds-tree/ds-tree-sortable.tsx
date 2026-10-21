@@ -23,6 +23,7 @@ import {
 	useSensors,
 	type DragEndEvent,
 	type DragMoveEvent,
+	type Announcements,
 	type DragStartEvent,
 	type DraggableSyntheticListeners,
 	type DropAnimation,
@@ -45,7 +46,7 @@ import type {
 	DsTreeNode,
 	DsTreeSortableProps,
 } from './ds-tree.types';
-import { getDsTreeDropPosition, getDsTreeMove, type DsTreeMove } from './ds-tree.utils';
+import { getDsTreeDropPosition, getDsTreeMove, isDsTreeGroup, type DsTreeMove } from './ds-tree.utils';
 
 const ACTIVATION_DISTANCE = 4;
 const AUTO_EXPAND_DELAY = 500;
@@ -54,7 +55,13 @@ const DROP_ANIMATION: DropAnimation = { duration: 200, easing: 'cubic-bezier(0.3
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const NODE_CHECKBOX_SELECTOR = '[data-scope="tree-view"][data-part="node-checkbox"]';
 
-const DEFAULT_LOCALE = { label: 'Drag to reorder' };
+// Drag is pointer-only for now; dnd-kit's default announcements would read raw node ids in English
+const SILENT_ANNOUNCEMENTS: Announcements = {
+	onDragStart: () => undefined,
+	onDragOver: () => undefined,
+	onDragEnd: () => undefined,
+	onDragCancel: () => undefined,
+};
 
 interface ActiveDrag {
 	value: string;
@@ -62,17 +69,20 @@ interface ActiveDrag {
 	hasCheckbox: boolean;
 }
 
-interface DropState {
+interface DropIndicator {
 	droppableId: UniqueIdentifier;
 	position: DsTreeDropPosition;
 	containerValue: string | null;
 	allowed: boolean;
-	move: DsTreeMove<DsTreeNode>;
+}
+
+interface DropState<T extends DsTreeNode> extends DropIndicator {
+	move: DsTreeMove<T>;
 }
 
 interface DsTreeSortableContextValue {
 	activeValue: string | null;
-	drop: DropState | null;
+	drop: DropIndicator | null;
 	registerRow: (value: string, element: HTMLElement | null) => void;
 }
 
@@ -80,7 +90,6 @@ interface DsTreeRowDragContextValue {
 	setActivatorNodeRef: (element: HTMLElement | null) => void;
 	listeners: DraggableSyntheticListeners;
 	disabled: boolean;
-	name: string;
 }
 
 const DsTreeSortableContext = createContext<DsTreeSortableContextValue | null>(null);
@@ -89,10 +98,10 @@ const DsTreeRowDragContext = createContext<DsTreeRowDragContextValue | null>(nul
 export const useDsTreeSortableContext = () => use(DsTreeSortableContext);
 
 // Ark types the context collection as `any`
-export const useDsTreeViewContext = <T extends DsTreeNode = DsTreeNode>() =>
+const useDsTreeViewContext = <T extends DsTreeNode = DsTreeNode>() =>
 	useTreeViewContext() as UseTreeViewContext<T>;
 
-const isSameDrop = (a: DropState | null, b: DropState | null) =>
+const isSameDrop = (a: DropIndicator | null, b: DropIndicator | null) =>
 	a?.droppableId === b?.droppableId && a?.position === b?.position && a?.allowed === b?.allowed;
 
 const subscribeReducedMotion = (onChange: () => void) => {
@@ -176,7 +185,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 	const prefersReducedMotion = usePrefersReducedMotion();
 
 	const [active, setActive] = useState<ActiveDrag | null>(null);
-	const [drop, setDrop] = useState<DropState | null>(null);
+	const [drop, setDrop] = useState<DropState<T> | null>(null);
 
 	const rowsRef = useRef(new Map<string, HTMLElement>());
 	const pointerYRef = useRef(0);
@@ -198,7 +207,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 	const resolveDrop = (
 		dragged: ActiveDrag,
 		overId: UniqueIdentifier | undefined,
-	): DropState | null | undefined => {
+	): DropState<T> | null | undefined => {
 		if (overId === undefined) {
 			return null;
 		}
@@ -235,7 +244,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 			position = getDsTreeDropPosition({
 				pointerY,
 				rect,
-				isBranch: collection.isBranchNode(target),
+				isBranch: isDsTreeGroup(target),
 				isExpanded: treeView.expandedValue.includes(value),
 			});
 		}
@@ -317,7 +326,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 		}
 
 		const { move } = result;
-		const { details } = move as unknown as DsTreeMove<T>;
+		const { details } = move;
 
 		if (
 			details.position === 'inside' &&
@@ -360,6 +369,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 				collisionDetection={pointerWithin}
 				measuring={{ droppable: { strategy: MeasuringStrategy.Always } }}
 				autoScroll={{ threshold: { x: 0, y: AUTO_SCROLL_EDGE } }}
+				accessibility={{ announcements: SILENT_ANNOUNCEMENTS }}
 				onDragStart={handleDragStart}
 				onDragMove={handleDragMove}
 				onDragOver={handleDragMove}
@@ -381,32 +391,31 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 };
 
 const useDsTreeSortableRow = (ref: Ref<HTMLDivElement> | undefined) => {
-	const treeView = useDsTreeViewContext();
-	const nodeState = useTreeViewNodeContext();
 	const sortable = use(DsTreeSortableContext);
-	const { value, disabled, indexPath } = nodeState;
+	const { value, disabled } = useTreeViewNodeContext();
 
 	const draggable = useDraggable({ id: value, disabled });
 	const { setNodeRef: setDroppableRef } = useDroppable({ id: value });
 
-	const drop = sortable?.drop;
-	const registerRow = sortable?.registerRow;
+	if (!sortable) {
+		throw new Error('DsTree sortable rows must render inside DsTree.Sortable');
+	}
+
+	const { drop, registerRow, activeValue } = sortable;
 	const isTarget = Boolean(drop?.allowed && drop.droppableId === value);
-	const node = treeView.collection.at(indexPath);
 
 	const dragContext: DsTreeRowDragContextValue = {
 		setActivatorNodeRef: draggable.setActivatorNodeRef,
 		listeners: draggable.listeners,
 		disabled,
-		name: node?.name ?? '',
 	};
 
 	const rowProps = {
 		ref: mergeRefs<HTMLDivElement>(ref, draggable.setNodeRef, setDroppableRef, (element) =>
-			registerRow?.(value, element),
+			registerRow(value, element),
 		),
 		'data-drop': isTarget ? drop?.position : undefined,
-		'data-source': sortable?.activeValue === value ? '' : undefined,
+		'data-source': activeValue === value ? '' : undefined,
 	};
 
 	return { rowProps, dragContext };
@@ -455,24 +464,23 @@ export const useDsTreeSortableBranchAttributes = () => {
 	};
 };
 
-const DsTreeDragHandle = ({ className, style, locale }: DsTreeDragHandleProps) => {
+const DsTreeDragHandle = ({ className, style }: DsTreeDragHandleProps) => {
 	const drag = use(DsTreeRowDragContext);
 
 	if (!drag) {
 		return null;
 	}
 
-	const label = locale?.label ?? DEFAULT_LOCALE.label;
-
+	// Pointer-only for now: a labelled handle would add "drag" to every treeitem's accessible name
 	return (
 		<button
 			ref={drag.setActivatorNodeRef}
 			type="button"
 			tabIndex={-1}
+			aria-hidden="true"
 			className={classNames(styles.dragHandle, className)}
 			style={style}
 			disabled={drag.disabled}
-			aria-label={`${label} ${drag.name}`}
 			{...drag.listeners}
 			onClick={(event: MouseEvent<HTMLButtonElement>) => event.stopPropagation()}
 		>

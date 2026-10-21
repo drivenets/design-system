@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { DsTreeNode } from './ds-tree.types';
-import { createDsTreeCollection, getDsTreeDropPosition, getDsTreeMove } from './ds-tree.utils';
+import { createDsTreeCollection, getDsTreeDropPosition, getDsTreeMove, isDsTreeGroup } from './ds-tree.utils';
 
 const nodes: DsTreeNode[] = [
 	{
@@ -51,14 +51,14 @@ describe('getDsTreeDropPosition', () => {
 	});
 });
 
-describe('createDsTreeCollection', () => {
-	it('treats a group with no children as a branch', () => {
+describe('isDsTreeGroup', () => {
+	it('treats a group with no children as a group', () => {
 		const collection = createDsTreeCollection(nodes);
 		const empty = collection.findNode('empty');
 		const leaf = collection.findNode('b');
 
-		expect(empty && collection.isBranchNode(empty)).toBe(true);
-		expect(leaf && collection.isBranchNode(leaf)).toBe(false);
+		expect(empty && isDsTreeGroup(empty)).toBe(true);
+		expect(leaf && isDsTreeGroup(leaf)).toBe(false);
 	});
 });
 

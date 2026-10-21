@@ -240,12 +240,4 @@ export interface DsTreeSortableProps<T extends DsTreeNode = DsTreeNode> {
 	onCollectionChange: (collection: DsTreeRootProps<T>['collection'], details: DsTreeMoveDetails<T>) => void;
 }
 
-export interface DsTreeDragHandleProps extends DsTreeBaseProps {
-	locale?: {
-		/**
-		 * Accessible label, followed by the node name.
-		 * @default 'Drag to reorder'
-		 */
-		label?: string;
-	};
-}
+export type DsTreeDragHandleProps = DsTreeBaseProps;
