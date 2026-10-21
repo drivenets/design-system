@@ -107,6 +107,31 @@ Prefer the highest layer that fits: **semantic > alias > primitive**.
 If you are editing a component and find yourself typing `--color-dap-*` or a bare alias, stop and look
 for a semantic token first.
 
+## Action text pairings (WCAG AA)
+
+Links and action text (back links, "Browse catalog" style links, host links in tables) use
+`--font-action` at rest and `--font-action-hover` on hover. Both meet WCAG 2.1 AA for normal-size text
+(4.5:1) on every light surface the DS ships, so they are safe directly on the page background as well
+as on cards and tinted states.
+
+| Background                                                                                                                     | `--font-action` | `--font-action-hover` |
+| ------------------------------------------------------------------------------------------------------------------------------ | --------------- | --------------------- |
+| `--background` (white)                                                                                                         | 6.34:1          | 8.38:1                |
+| `--background-page`, `--background-secondary`                                                                                 | 5.81:1          | 7.69:1                |
+| `--background-secondary-hover`, `--background-primary-subtle-hover`, `--background-action-tertiary-hover`, `--background-info` | 5.56:1          | 7.35:1                |
+| `--background-primary-subtle-active`                                                                                           | 4.79:1          | 6.34:1                |
+
+Rules:
+
+- Use `--font-action` / `--font-action-hover` for action text. Do not substitute `--icon-action` or
+  `--primary-700-default` for text: those stay on blue-700, which is only 4.49:1 on `--background-page`
+  and is meant for icons and non-text UI (3:1).
+- Do not place action text on backgrounds darker than `--background-primary-subtle-active` (blue-100)
+  without checking contrast.
+- WCAG ratios are not rounded: 4.49:1 fails.
+
+These pairings are pinned by `tests/color-contrast.unit.test.ts`.
+
 ## 1. Primitive (DAP-root-colors)
 
 The raw palette. See [Which layer should I use?](#which-layer-should-i-use) — only reach for primitive
