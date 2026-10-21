@@ -1,5 +1,25 @@
 # @drivenets/design-system
 
+## 0.24.0
+
+### Minor Changes
+
+- 4d93895: Show a `DsTooltip` on a disabled `DsButtonV3` on hover and keyboard focus, so it can explain why the button is unavailable.
+- 0a2f456: Add sticky columns to `DsTable`, set with `stickyColumns` or from the `columnDisplay` Columns button.
+
+  - `DsTable` now scrolls both ways in one container, with a sticky header, so the vertical scrollbar stays at the visible right edge.
+  - A virtualized `DsTable` takes its height from its parent; without a bounded height it collapses to zero height.
+  - The row actions column is narrower, matching Figma.
+  - The `columnDisplay` Columns button and popup match Figma.
+
+- 6daf328: Add `state` (`'disabled'` or `'comingSoon'`) and `tooltip` to `DsMainMenu` utility links, so a link can be listed as unavailable with an explanation.
+- ad16bf5: Add `columnDisplay` to `DsTable`: a Columns button in the header that shows and hides columns.
+- a15a2bf: Add `getExpandedRowIds()` to the `DsTable` API, so the expanded rows can be saved and restored with `expandRows()`.
+
+### Patch Changes
+
+- 3e83c6f: Fix keyboard selection in `DsSelect` search mode: arrow keys, Home, End and Enter now only reach options that match the search.
+
 ## 0.23.1
 
 ### Patch Changes
