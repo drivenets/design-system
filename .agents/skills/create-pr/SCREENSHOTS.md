@@ -25,4 +25,4 @@ Images never go into the PR branch. They go on the `pr-screenshots` branch of yo
 .agents/skills/create-pr/scripts/upload-screenshots.sh AR-1234 before-long-content.png after-long-content.png
 ```
 
-The script commits to `origin/pr-screenshots` without checking it out, pushes, and prints one URL per file, pinned to the commit SHA. Paste them into the body's before/after table with `width="420"` and an `alt` that says what is wrong / what changed.
+The script commits to `origin/pr-screenshots` without checking it out, pushes, and prints one URL per file, pinned to the commit SHA. When `origin` isn't your fork (Routines check out `drivenets/design-system`), name the fork with `--repo <owner>/design-system`; `--branch` picks another branch. Paste them into the body's before/after table with `width="420"` and an `alt` that says what is wrong / what changed.
