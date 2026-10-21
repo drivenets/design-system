@@ -606,7 +606,7 @@ const childOrder = (value?: string) => {
 		.map((element) => element.getAttribute('data-value'));
 };
 
-/** Every drop indicator currently in the DOM: `value:position` row edges and tinted groups. */
+/** Every drop indicator currently in the DOM: `value:position` row edges and receiving groups. */
 const dropIndicators = () => ({
 	rows: Array.from(document.querySelectorAll('[data-drop]')).map(
 		(element) =>
@@ -1330,40 +1330,42 @@ describe('DsTree.Sortable', () => {
 	});
 
 	describe('feedback', () => {
-		it('tints the receiving group with a rail and draws a dashed line on the row edge', async () => {
+		it('marks the slot with a dashed line alone, indented to the depth the node lands at', async () => {
 			await page.render(<SortableTree />);
+
+			const lineOf = (value: string) => getComputedStyle(rowOf(value), '::before');
+			const expectNoGroupHighlight = (value: string) => {
+				const group = getComputedStyle(branchOf(value));
+				expect(isTransparent(group.backgroundColor)).toBe(true);
+				expect(group.boxShadow).toBe('none');
+			};
 
 			await startDrag('logs');
 			await moveOver('router-2', 0.2);
 			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:before'], containers: ['network'] });
-
-			const group = getComputedStyle(branchOf('network'));
-			expect(isTransparent(group.backgroundColor)).toBe(false);
-			expect(group.boxShadow).toMatch(/2px 0px 0px 0px inset/);
-
-			const beforeLine = getComputedStyle(rowOf('router-2'), '::before');
-			expect(beforeLine.borderTopStyle).toBe('dashed');
-			expect(beforeLine.borderTopWidth).toBe('1px');
-			expect(beforeLine.top).toBe('0px');
-			// Starts at the row's content, so the line shows the depth the node lands at
-			expect(beforeLine.left).toBe(getComputedStyle(rowOf('router-2')).paddingLeft);
+			expect(lineOf('router-2').borderTopStyle).toBe('dashed');
+			expect(lineOf('router-2').borderTopWidth).toBe('1px');
+			expect(lineOf('router-2').top).toBe('0px');
+			expect(lineOf('router-2').left).toBe(getComputedStyle(rowOf('router-2')).paddingLeft);
+			expectNoGroupHighlight('network');
 
 			await moveOver('router-2', 0.8);
 			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:after'], containers: ['network'] });
-			expect(getComputedStyle(rowOf('router-2'), '::before').bottom).toBe('0px');
+			expect(lineOf('router-2').bottom).toBe('0px');
 
-			// Inside is carried by the group highlight alone
+			// Inside lands as the first child: the line sits under the group row, at its children's indent
 			await moveOver('monitoring', 0.5);
 			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
-			expect(getComputedStyle(rowOf('monitoring'), '::before').content).toBe('none');
-			expect(isTransparent(getComputedStyle(branchOf('monitoring')).backgroundColor)).toBe(false);
-			expect(isTransparent(getComputedStyle(branchOf('network')).backgroundColor)).toBe(true);
+			expect(lineOf('monitoring').borderTopStyle).toBe('dashed');
+			expect(lineOf('monitoring').bottom).toBe('0px');
+			expect(parseFloat(lineOf('monitoring').left)).toBeGreaterThan(
+				parseFloat(getComputedStyle(rowOf('monitoring')).paddingLeft),
+			);
+			expectNoGroupHighlight('monitoring');
 
-			// Root-level slots show only the line
 			await moveOver('network', 0.1);
 			await expect.poll(dropIndicators).toEqual({ rows: ['network:before'], containers: [] });
-			expect(getComputedStyle(rowOf('network'), '::before').borderTopStyle).toBe('dashed');
-			expect(isTransparent(getComputedStyle(branchOf('network')).backgroundColor)).toBe(true);
+			expect(lineOf('network').borderTopStyle).toBe('dashed');
 
 			await pressEscape();
 			await release();

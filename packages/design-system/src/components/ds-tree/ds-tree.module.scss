@@ -4,7 +4,6 @@ $indent-per-level: 12px;
 $half-icon: calc(var(--icon-width-tiny) * 0.5);
 $transition-duration: 0.2s;
 $drag-handle-size: 24px;
-$drop-rail-width: 2px;
 $source-opacity: 0.3;
 $drag-preview-opacity: 0.85;
 $drag-preview-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
@@ -80,8 +79,7 @@ $drag-preview-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
 }
 
 @mixin drop-line-edges {
-	&[data-drop='before'],
-	&[data-drop='after'] {
+	&[data-drop] {
 		@include drop-line;
 	}
 
@@ -89,8 +87,14 @@ $drag-preview-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
 		top: 0;
 	}
 
-	&[data-drop='after']::before {
+	&[data-drop='after']::before,
+	&[data-drop='inside']::before {
 		bottom: 0;
+	}
+
+	// Inside lands as the first child, so the line is indented one level deeper
+	&[data-drop='inside']::before {
+		inset-inline-start: calc(var(--ds-tree-offset) + #{$indent-per-level} + #{$half-icon});
 	}
 }
 
@@ -143,12 +147,6 @@ $drag-preview-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.22);
 
 .branch {
 	position: relative;
-
-	&[data-drop-container] {
-		border-radius: 4px;
-		background: var(--background-action-tertiary-hover);
-		box-shadow: inset $drop-rail-width 0 0 var(--background-primary);
-	}
 
 	&[data-source] {
 		opacity: $source-opacity;
