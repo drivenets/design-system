@@ -237,4 +237,9 @@ export interface DsTreeSortableProps<T extends DsTreeNode = DsTreeNode> {
 	onCollectionChange: (collection: DsTreeRootProps<T>['collection'], details: DsTreeMoveDetails<T>) => void;
 }
 
-export type DsTreeDragHandleProps = DsTreeBaseProps;
+export interface DsTreeDragHandleProps extends DsTreeBaseProps {
+	/**
+	 * Ref forwarded to the drag handle button
+	 */
+	ref?: Ref<HTMLButtonElement>;
+}

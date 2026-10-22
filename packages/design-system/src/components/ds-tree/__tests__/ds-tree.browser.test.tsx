@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
+import { DsDialog } from '../../ds-dialog';
 import { DsFilterStatusIcon } from '../../ds-filter-status-icon';
 import { DsIcon } from '../../ds-icon';
 import { DsPopover } from '../../ds-popover';
@@ -596,6 +597,11 @@ const rootDropZone = () => document.querySelector('[data-drop-zone="root-end"]')
 // The overlay clone has no a11y role or Ark part; its CSS module class is the only hook
 const dragPreview = () => document.querySelector<HTMLElement>(byClass(styles.dragPreview));
 
+const previewNames = () =>
+	Array.from(dragPreview()?.querySelectorAll(byClass(styles.itemText)) ?? []).map(
+		(element) => element.textContent,
+	);
+
 const childOrder = (value?: string) => {
 	const parent = value
 		? branchOf(value).querySelector(':scope > [data-part="branch-content"]')
@@ -781,6 +787,14 @@ describe('DsTree.Sortable', () => {
 			expect(onCheckedChange).toHaveBeenCalledWith(expect.objectContaining({ checkedValue: ['logs'] }));
 
 			expect(document.querySelector('[data-source]')).toBeNull();
+		});
+
+		it('keeps focus off the hidden handle when it is pressed', async () => {
+			await page.render(<SortableTree />);
+
+			await page.elementLocator(handleOf('logs')).click();
+
+			expect(document.activeElement).not.toBe(handleOf('logs'));
 		});
 
 		it('does not select or expand when the handle is clicked without dragging', async () => {
@@ -1325,6 +1339,26 @@ describe('DsTree.Sortable', () => {
 			expect(logsRef).toHaveBeenCalledWith(rowOf('logs'));
 		});
 
+		it('evaluates canDrop once per slot while the pointer moves within it', async () => {
+			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(() => true);
+			await page.render(<SortableTree canDrop={canDrop} />);
+
+			await startDrag('logs');
+
+			for (const ratio of [0.1, 0.15, 0.2]) {
+				await moveOver('router-2', ratio);
+			}
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:before'], containers: ['network'] });
+
+			const slotCalls = canDrop.mock.calls.filter(
+				([details]) => details.target.id === 'router-2' && details.position === 'before',
+			);
+			expect(slotCalls).toHaveLength(1);
+
+			await pressEscape();
+			await release();
+		});
+
 		it("ignores drops next to the node's own position", async () => {
 			const onCollectionChange = vi.fn<OnCollectionChange>();
 			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(() => true);
@@ -1573,6 +1607,29 @@ describe('DsTree.Sortable', () => {
 			await release();
 		});
 
+		it('shows the drag preview above a DsDialog that contains the tree', async () => {
+			await page.render(
+				<DsDialog open title="Columns">
+					<SortableTree />
+				</DsDialog>,
+			);
+
+			await expect.element(page.getByRole('dialog', { name: 'Columns' })).toBeVisible();
+			await startDrag('logs');
+			await expect.poll(dragPreview).not.toBeNull();
+
+			// Both are body-level stacking contexts; elementFromPoint can't be used since the modal disables body pointer events
+			const overlayLayer = (dragPreview() as HTMLElement).parentElement as HTMLElement;
+			const dialogLayer = page.getByRole('dialog', { name: 'Columns' }).element() as HTMLElement;
+			expect(overlayLayer.parentElement).toBe(document.body);
+			expect(Number(getComputedStyle(overlayLayer).zIndex)).toBeGreaterThan(
+				Number(getComputedStyle(dialogLayer).zIndex),
+			);
+
+			await pressEscape();
+			await release();
+		});
+
 		it('settles the overlay with a drop animation after a cross-group move', async () => {
 			const consoleError = vi.spyOn(console, 'error');
 
@@ -1582,7 +1639,7 @@ describe('DsTree.Sortable', () => {
 				await drag('router-1', 'logs', 0.8);
 
 				expect(childOrder()).toEqual([...ROOT_ORDER, 'router-1']);
-				expect(dragPreview()).not.toBeNull();
+				expect(previewNames()).toEqual(['Router Alpha']);
 				await expect.poll(dragPreview, { timeout: 1000 }).toBeNull();
 
 				expect(rowOf('router-1')).not.toHaveAttribute('data-source');
@@ -1591,6 +1648,43 @@ describe('DsTree.Sortable', () => {
 			} finally {
 				consoleError.mockRestore();
 			}
+		});
+
+		it('keeps showing the dragged row while the overlay settles after the last child leaves its group', async () => {
+			await page.render(<SortableTree defaultExpandedValue={['network', 'monitoring']} />);
+
+			await drag('dashboards', 'logs', 0.8);
+
+			expect(childOrder('monitoring')).toEqual(['alerts']);
+			expect(previewNames()).toEqual(['Dashboards']);
+			await expect.poll(dragPreview, { timeout: 1000 }).toBeNull();
+		});
+
+		it('drops into a collapsed group without settling the overlay toward the viewport corner', async () => {
+			await page.render(<SortableTree defaultExpandedValue={['network', 'monitoring']} />);
+
+			// Collapsing keeps the group's rows mounted, so the moved row lands in hidden content
+			await page.getByText('Monitoring').click();
+			await expect
+				.poll(() => getTreeItem('monitoring').element().getAttribute('aria-expanded'))
+				.toBe('false');
+			await waitForStableLayout(rowOf('logs'));
+
+			await startDrag('logs');
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+			const releasedTop = (dragPreview() as HTMLElement).getBoundingClientRect().top;
+			await release();
+
+			for (let frame = 0; frame < 10 && dragPreview(); frame++) {
+				expect((dragPreview() as HTMLElement).getBoundingClientRect().top).toBeGreaterThanOrEqual(
+					releasedTop,
+				);
+				await nextFrame();
+			}
+			expect(dragPreview()).toBeNull();
+			expect(childOrder('monitoring')).toEqual(['logs', 'alerts', 'dashboards']);
+			await expect.element(getTreeItem('monitoring')).toHaveAttribute('aria-expanded', 'true');
 		});
 
 		it('drops without animation when the user prefers reduced motion', async () => {
