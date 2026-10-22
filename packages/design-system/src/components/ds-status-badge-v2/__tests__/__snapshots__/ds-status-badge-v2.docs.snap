@@ -15,10 +15,10 @@ const Default = () => <DsStatusBadgeV2 phase="active" label="Active" />;
 
 ### Show code
 <DsStatusBadgeV2
+  aria-live="polite"
   label="Testing"
-  live
   phase="execution"
 />
 
 ### MCP manifest
-const Live = () => <DsStatusBadgeV2 phase="execution" label="Testing" live />;
+const Live = () => <DsStatusBadgeV2 phase="execution" label="Testing" aria-live="polite" />;
