@@ -620,13 +620,13 @@
 <header>
   <div class="wrap">
     <h1>Manifest Debugger</h1>
-    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/104 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/104 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/104 without API description</a><span class="filter-pill ok" aria-disabled="true">637 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/637 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><a class="filter-pill err" data-k="errors" href="#filter-errors">5/104 API errors</a><a class="filter-pill info" data-k="infos" href="#filter-infos">60/104 infos</a><a class="filter-pill" data-k="no-api" href="#filter-no-api">2/104 without API description</a><span class="filter-pill ok" aria-disabled="true">638 stories ok</span><a class="filter-pill info" data-k="story-warnings" href="#filter-story-warnings">13/638 incomplete snippets</a><a class="filter-pill ok" data-k="docs" href="#filter-docs">6 docs ok</a></div>
   </div>
 </header>
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.3s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -19519,9 +19519,9 @@ style?: CSSProperties</code></pre>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsStatusBadgeV2</h2>
       <div class="badges">
-        <label for="c-70-components-statusbadgev2-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-70-components-statusbadgev2-props" class="badge ok as-toggle">10 prop types</label>
         <label for="c-70-components-statusbadgev2-info" class="badge info as-toggle">1 info</label>
-        <label for="c-70-components-statusbadgev2-stories" class="badge ok as-toggle">1 story</label>
+        <label for="c-70-components-statusbadgev2-stories" class="badge ok as-toggle">2 stories</label>
         
         
       </div>
@@ -19555,11 +19555,17 @@ style?: CSSProperties</code></pre>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">9 prop types</span>
+              <span class="badge ok">10 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-status-badge-v2/ds-status-badge-v2.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
             <pre><code>aria-label?: string
+
+/**
+ * Announces label changes to screen readers. Set it only on a badge that updates in place,
+ * such as a job status; never on badges in lists, cards or tables.
+ */
+aria-live?: &#39;polite&#39; | &#39;assertive&#39;
 
 className?: string
 
@@ -19613,6 +19619,17 @@ variant?: (typeof statusBadgeV2Variants)[number] = &#39;primary&#39;</code></pre
               
               
               <pre><code>const Default = () =&gt; &lt;DsStatusBadgeV2 phase=&quot;active&quot; label=&quot;Active&quot; /&gt;;</code></pre>
+              
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Live</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              <div class="hint">Set `aria-live=&quot;polite&quot;` on a badge that changes in place (for example a running job) so screen readers
+announce the new status. Leave it off for badges in lists, cards and tables.</div>
+              <pre><code>const Live = () =&gt; &lt;DsStatusBadgeV2 phase=&quot;execution&quot; label=&quot;Testing&quot; aria-live=&quot;polite&quot; /&gt;;</code></pre>
               
             </div>
         </div>

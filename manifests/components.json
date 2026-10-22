@@ -13283,6 +13283,24 @@
             },
             "description": ""
           },
+          "aria-live": {
+            "required": false,
+            "tsType": {
+              "name": "union",
+              "raw": "'polite' | 'assertive'",
+              "elements": [
+                {
+                  "name": "literal",
+                  "value": "'polite'"
+                },
+                {
+                  "name": "literal",
+                  "value": "'assertive'"
+                }
+              ]
+            },
+            "description": "Announces label changes to screen readers. Set it only on a badge that updates in place,\nsuch as a job status; never on badges in lists, cards or tables."
+          },
           "iconOnly": {
             "defaultValue": {
               "value": "false",
@@ -13297,6 +13315,12 @@
           "id": "components-statusbadgev2--default",
           "name": "Default",
           "snippet": "const Default = () => <DsStatusBadgeV2 phase=\"active\" label=\"Active\" />;"
+        },
+        {
+          "id": "components-statusbadgev2--live",
+          "name": "Live",
+          "snippet": "const Live = () => <DsStatusBadgeV2 phase=\"execution\" label=\"Testing\" aria-live=\"polite\" />;",
+          "description": "Set `aria-live=\"polite\"` on a badge that changes in place (for example a running job) so screen readers\nannounce the new status. Leave it off for badges in lists, cards and tables."
         }
       ],
       "import": "import { DsIcon, DsStack, DsStatusBadgeV2, DsTypography } from '@drivenets/design-system';"
@@ -34591,6 +34615,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5339
+    "durationMs": 5871
   }
 }
