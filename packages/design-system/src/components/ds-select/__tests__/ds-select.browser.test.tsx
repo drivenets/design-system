@@ -699,6 +699,41 @@ describe('DsSelect', () => {
 			expect(isUnobstructed(page.getByPlaceholder('Search'))).toBe(true);
 		};
 
+		const expectListboxToOwnOnlyOptions = () => {
+			const listbox = page.getByRole('listbox').element();
+
+			expect([...listbox.children].map((child) => child.getAttribute('role'))).toEqual(
+				Array.from(listbox.children, () => 'option'),
+			);
+		};
+
+		it('should keep the search input outside the listbox', async () => {
+			await page.render(<ControlledSelectHarness options={workflowOptions} style={{ width: '250px' }} />);
+
+			await page.getByRole('combobox').click();
+
+			const searchInput = page.getByPlaceholder('Search');
+			await expect.element(searchInput).toBeVisible();
+
+			expect(page.getByRole('listbox').element().contains(searchInput.element())).toBe(false);
+			expectListboxToOwnOnlyOptions();
+		});
+
+		it('should keep the selected chips outside the listbox in multi select mode', async () => {
+			await page.render(
+				<ControlledSelectHarness options={workflowOptions} multiple style={{ width: '250px' }} />,
+			);
+
+			await page.getByRole('combobox').click();
+			await page.getByRole('option', { name: exactAriaName('Workflow 1') }).click();
+
+			const clearAll = page.getByRole('button', { name: 'Clear All' });
+			await expect.element(clearAll).toBeVisible();
+
+			expect(page.getByRole('listbox').element().contains(clearAll.element())).toBe(false);
+			expectListboxToOwnOnlyOptions();
+		});
+
 		it('should keep the search input visible on first open and on reopen with the selected option scrolled into view', async () => {
 			await page.render(
 				<ControlledSelectHarness
