@@ -1,5 +1,16 @@
 # @drivenets/design-system
 
+## 0.25.0
+
+### Minor Changes
+
+- 120cd46: Stop static `DsStatusBadgeV2` badges from acting as screen reader live regions, and accept `aria-live` for badges that update in place.
+
+### Patch Changes
+
+- 3d2d3a7: Fix the required asterisk in `DsFormControl` sitting too close to the label text.
+- 14fe429: Fix `DsSelect` failing the axe `aria-required-children` check when it shows the search input or the multi-select chips.
+
 ## 0.24.0
 
 ### Minor Changes
