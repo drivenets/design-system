@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { type UseSelectReturn, Select, createListCollection, useSelect } from '@ark-ui/react/select';
 import { Portal } from '@ark-ui/react/portal';
 import classNames from 'classnames';
@@ -38,7 +38,9 @@ const DsSelect = ({
 }: DsSelectProps) => {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [showAllItems, setShowAllItems] = useState(false);
+	const listId = useId();
 
+	const hasSearch = userOptions.length > SEARCH_THRESHOLD;
 	const internalOptions = multiselectProps.multiple ? [SELECT_ALL_OPTION, ...userOptions] : userOptions;
 
 	// Keep every option in the collection so selected values still resolve while searching,
@@ -196,11 +198,20 @@ const DsSelect = ({
 			<Portal>
 				<Select.Positioner className={styles.viewport}>
 					<Select.Content className={styles.content}>
-						{userOptions.length > SEARCH_THRESHOLD && (
+						{hasSearch && (
 							<div className={styles.searchInput}>
 								<DsTextInput
 									placeholder="Search"
 									value={searchTerm}
+									slotProps={{
+										input: {
+											'aria-autocomplete': 'list',
+											'aria-controls': listId,
+											'aria-activedescendant': select.highlightedItem
+												? select.getItemProps({ item: select.highlightedItem }).id
+												: undefined,
+										},
+									}}
 									onChange={(e) => {
 										setSearchTerm(e.target.value);
 
@@ -231,7 +242,8 @@ const DsSelect = ({
 							/>
 						)}
 
-						<Select.List>
+						{/* Focus the list, not the first chip, so screen readers announce `aria-activedescendant`. */}
+						<Select.List id={listId} data-autofocus={hasSearch ? undefined : ''}>
 							{filteredOptions.map((item) => {
 								const checked = getItemCheckedState({ item, select, options: internalOptions });
 
