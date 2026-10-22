@@ -14,6 +14,19 @@ describe('DsTextInput', () => {
 		await expect.element(input).toHaveValue('Hello World');
 	});
 
+	it('forwards slotProps.input ARIA attributes and role to the input', async () => {
+		await page.render(
+			<DsTextInput
+				placeholder="Search"
+				slotProps={{ input: { role: 'combobox', 'aria-expanded': true, 'aria-controls': 'results' } }}
+			/>,
+		);
+
+		const input = page.getByRole('combobox', { name: 'Search' });
+		await expect.element(input).toHaveAttribute('aria-expanded', 'true');
+		await expect.element(input).toHaveAttribute('aria-controls', 'results');
+	});
+
 	it('supports external, typed, and cleared controlled updates', async () => {
 		function Controlled() {
 			const [value, setValue] = useState('initial value');
