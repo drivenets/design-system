@@ -10,7 +10,6 @@ export const DoneIllustration: FC<SVGProps<SVGSVGElement>> = (props) => (
 		xmlns="http://www.w3.org/2000/svg"
 		{...props}
 	>
-		<rect width="250" height="200" fill="var(--background)" />
 		<IllustrationClouds />
 		<path
 			d="M172.5 45V51"

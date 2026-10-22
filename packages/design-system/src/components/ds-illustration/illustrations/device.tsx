@@ -10,7 +10,6 @@ export const DeviceIllustration: FC<SVGProps<SVGSVGElement>> = (props) => (
 		xmlns="http://www.w3.org/2000/svg"
 		{...props}
 	>
-		<rect width="250" height="200" fill="var(--background)" />
 		<IllustrationClouds />
 		<path
 			d="M143.375 63H109.625C106.518 63 104 65.2565 104 68.04V78.96C104 81.7435 106.518 84 109.625 84H143.375C146.482 84 149 81.7435 149 78.96V68.04C149 65.2565 146.482 63 143.375 63Z"
