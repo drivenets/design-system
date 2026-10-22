@@ -654,6 +654,22 @@ const moveOver = async (target: string | HTMLElement, ratio: number) => {
 	await nextFrame();
 };
 
+/** Waits out the expand animation, until `element` stops moving between frames. */
+const waitForStableLayout = async (element: Element) => {
+	let previous = Number.NaN;
+
+	await expect
+		.poll(async () => {
+			const top = element.getBoundingClientRect().top;
+			const stable = top === previous;
+			previous = top;
+			await nextFrame();
+
+			return stable;
+		})
+		.toBe(true);
+};
+
 const release = async () => {
 	firePointer('pointerup', document, pointer.x, pointer.y);
 	await nextFrame();
@@ -1088,6 +1104,53 @@ describe('DsTree.Sortable', () => {
 			await pressEscape();
 			await release();
 			expect(onCollectionChange).not.toHaveBeenCalled();
+		});
+
+		it('keeps auto-expanding later groups after an earlier group expands and pushes them down', async () => {
+			const nestedNodes: DsTreeNode[] = [
+				{
+					id: 'network',
+					name: 'Network',
+					children: [
+						{
+							id: 'routers',
+							name: 'Routers',
+							children: [
+								{ id: 'router-1', name: 'Router Alpha' },
+								{ id: 'router-2', name: 'Router Beta' },
+							],
+						},
+						{ id: 'firewall-1', name: 'Firewall Primary' },
+					],
+				},
+				{ id: 'archive', name: 'Archive', children: [] },
+				{
+					id: 'monitoring',
+					name: 'Monitoring',
+					children: [{ id: 'alerts', name: 'Alerts' }],
+				},
+				{ id: 'logs', name: 'Logs' },
+			];
+			const expandedOf = (value: string) => getTreeItem(value).element().getAttribute('aria-expanded');
+
+			await page.render(<SortableTree nodes={nestedNodes} defaultExpandedValue={['network', 'routers']} />);
+
+			// Collapsing keeps the rows mounted, so expanding again registers no new drop targets
+			await page.getByText('Network').click();
+			await expect.poll(() => expandedOf('network')).toBe('false');
+			await waitForStableLayout(rowOf('monitoring'));
+
+			await startDrag('logs');
+			await moveOver('network', 0.5);
+			await expect.poll(() => expandedOf('network'), { timeout: 2000 }).toBe('true');
+			await waitForStableLayout(rowOf('monitoring'));
+
+			await moveOver('monitoring', 0.5);
+			await expect.poll(dropIndicators).toEqual({ rows: ['monitoring:inside'], containers: ['monitoring'] });
+			await expect.poll(() => expandedOf('monitoring'), { timeout: 2000 }).toBe('true');
+
+			await pressEscape();
+			await release();
 		});
 
 		it('keeps the hover timer running while the tree re-renders', async () => {
