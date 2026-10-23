@@ -238,8 +238,5 @@ export interface DsTreeSortableProps<T extends DsTreeNode = DsTreeNode> {
 }
 
 export interface DsTreeDragHandleProps extends DsTreeBaseProps {
-	/**
-	 * Ref forwarded to the drag handle button
-	 */
 	ref?: Ref<HTMLButtonElement>;
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import { DsDialog } from '../../ds-dialog';
+import { DsDropdownMenu } from '../../ds-dropdown-menu';
 import { DsFilterStatusIcon } from '../../ds-filter-status-icon';
 import { DsIcon } from '../../ds-icon';
 import { DsPopover } from '../../ds-popover';
@@ -597,6 +598,12 @@ const rootDropZone = () => document.querySelector('[data-drop-zone="root-end"]')
 // The overlay clone has no a11y role or Ark part; its CSS module class is the only hook
 const dragPreview = () => document.querySelector<HTMLElement>(byClass(styles.dragPreview));
 
+/** The `<body>` child holding `element`: the stacking context it is layered by. */
+const bodyLayerOf = (element: Element) =>
+	Array.from(document.body.children).find((child) => child.contains(element)) as HTMLElement;
+
+const zIndexOf = (element: Element) => Number(getComputedStyle(element).zIndex);
+
 const previewNames = () =>
 	Array.from(dragPreview()?.querySelectorAll(byClass(styles.itemText)) ?? []).map(
 		(element) => element.textContent,
@@ -1070,6 +1077,74 @@ describe('DsTree.Sortable', () => {
 			);
 		});
 
+		it('resolves a fast release against the collection the consumer changed mid-drag', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			let insertHiddenRoot = () => {};
+
+			const ChangingTree = () => {
+				const [collection, setCollection] = useState(() => createDsTreeCollection(sortableNodes));
+
+				useEffect(() => {
+					insertHiddenRoot = () =>
+						setCollection(createDsTreeCollection([{ id: 'hidden', name: 'Hidden' }, ...sortableNodes]));
+				}, []);
+
+				return (
+					<DsTree.Root collection={collection} defaultExpandedValue={['network']}>
+						<DsTree.Sortable onCollectionChange={onCollectionChange}>
+							<DsTree.Tree>
+								{collection.rootNode.children?.map((node, index) =>
+									// Rendering nothing for it shifts every index path without moving a row
+									node.id === 'hidden' ? null : (
+										<SortableTreeNode key={node.id} node={node} indexPath={[index]} />
+									),
+								)}
+							</DsTree.Tree>
+						</DsTree.Sortable>
+					</DsTree.Root>
+				);
+			};
+
+			await page.render(<ChangingTree />);
+
+			await startDrag('logs');
+			await moveOver('router-2', 0.2);
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:before'], containers: ['network'] });
+
+			insertHiddenRoot();
+			await nextFrame();
+
+			// Release in the same task as a move away, before dnd-kit reports the new `over`
+			const rect = rowOf('logs').getBoundingClientRect();
+			firePointer('pointermove', document, pointer.x, rect.top + rect.height / 2);
+			firePointer('pointerup', document, pointer.x, pointer.y);
+			await nextFrame();
+
+			expect(onCollectionChange).toHaveBeenCalledOnce();
+			const [next, details] = onCollectionChange.mock.calls[0] ?? [];
+			expect(next?.rootNode.children?.map((child) => child.id)).toEqual([
+				'hidden',
+				'network',
+				'archive',
+				'monitoring',
+			]);
+			expect(next?.rootNode.children?.[1]?.children?.map((child) => child.id)).toEqual([
+				'router-1',
+				'logs',
+				'router-2',
+				'router-3',
+			]);
+			expect(details).toEqual(
+				moveDetails({
+					node: 'logs',
+					target: 'router-2',
+					position: 'before',
+					fromParent: null,
+					toParent: 'network',
+				}),
+			);
+		});
+
 		it('drops on the slot the indicator shows when released before it catches up', async () => {
 			const onCollectionChange = vi.fn<OnCollectionChange>();
 			await page.render(<SortableTree onCollectionChange={onCollectionChange} />);
@@ -1359,6 +1434,33 @@ describe('DsTree.Sortable', () => {
 			await release();
 		});
 
+		it('re-checks canDrop when the consumer passes a new one mid-drag', async () => {
+			const onCollectionChange = vi.fn<OnCollectionChange>();
+			let lock = () => {};
+
+			const LockingTree = () => {
+				const [locked, setLocked] = useState(false);
+				useEffect(() => {
+					lock = () => setLocked(true);
+				}, []);
+
+				return <SortableTree canDrop={() => !locked} onCollectionChange={onCollectionChange} />;
+			};
+
+			await page.render(<LockingTree />);
+
+			await startDrag('logs');
+			await moveOver('router-2', 0.2);
+			await expect.poll(dropIndicators).toEqual({ rows: ['router-2:before'], containers: ['network'] });
+
+			lock();
+			await nextFrame();
+			await release();
+
+			expect(onCollectionChange).not.toHaveBeenCalled();
+			expect(childOrder('network')).toEqual(NETWORK_ORDER);
+		});
+
 		it("ignores drops next to the node's own position", async () => {
 			const onCollectionChange = vi.fn<OnCollectionChange>();
 			const canDrop = vi.fn<NonNullable<DsTreeSortableProps['canDrop']>>(() => true);
@@ -1619,12 +1721,32 @@ describe('DsTree.Sortable', () => {
 			await expect.poll(dragPreview).not.toBeNull();
 
 			// Both are body-level stacking contexts; elementFromPoint can't be used since the modal disables body pointer events
-			const overlayLayer = (dragPreview() as HTMLElement).parentElement as HTMLElement;
-			const dialogLayer = page.getByRole('dialog', { name: 'Columns' }).element() as HTMLElement;
-			expect(overlayLayer.parentElement).toBe(document.body);
-			expect(Number(getComputedStyle(overlayLayer).zIndex)).toBeGreaterThan(
-				Number(getComputedStyle(dialogLayer).zIndex),
+			const dialogLayer = bodyLayerOf(page.getByRole('dialog', { name: 'Columns' }).element());
+			expect(zIndexOf(bodyLayerOf(dragPreview() as HTMLElement))).toBeGreaterThan(zIndexOf(dialogLayer));
+
+			await pressEscape();
+			await release();
+		});
+
+		it('shows the drag preview above a dropdown surface that contains the tree', async () => {
+			await page.render(
+				<DsDropdownMenu.Root open>
+					<DsDropdownMenu.Trigger>
+						<span>Columns</span>
+					</DsDropdownMenu.Trigger>
+					<DsDropdownMenu.Content>
+						<SortableTree />
+					</DsDropdownMenu.Content>
+				</DsDropdownMenu.Root>,
 			);
+
+			await expect.element(getTreeItem('logs')).toBeVisible();
+			await startDrag('logs');
+			await expect.poll(dragPreview).not.toBeNull();
+
+			const menuLayer = bodyLayerOf(rowOf('logs'));
+			expect(zIndexOf(menuLayer)).toBeGreaterThan(0);
+			expect(zIndexOf(bodyLayerOf(dragPreview() as HTMLElement))).toBeGreaterThan(zIndexOf(menuLayer));
 
 			await pressEscape();
 			await release();

@@ -53,8 +53,6 @@ const ACTIVATION_DISTANCE = 4;
 const AUTO_EXPAND_DELAY = 500;
 const AUTO_SCROLL_EDGE = 0.1;
 const REMEASURE_INTERVAL = 100;
-// Above DsDialog/DsDrawer/DsPopover layers (≤ 1200), so a tree inside them still shows the drag preview
-const DRAG_OVERLAY_Z_INDEX = 1300;
 const DROP_ANIMATION: DropAnimation = { duration: 200, easing: 'cubic-bezier(0.32, 0.72, 0, 1)' };
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 const NODE_CHECKBOX_SELECTOR = '[data-scope="tree-view"][data-part="node-checkbox"]';
@@ -85,7 +83,8 @@ interface ActiveDrag {
 
 interface ResolvedDrop<T extends DsTreeNode> {
 	key: string;
-	collection: unknown;
+	collection: UseTreeViewContext<T>['collection'];
+	canDrop: DsTreeSortableProps<T>['canDrop'];
 	result: DropState<T> | null;
 }
 
@@ -309,36 +308,41 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 			return undefined;
 		}
 
-		let targetPath: number[] | undefined;
-		let position: DsTreeDropPosition;
+		const target = value === rootEndId ? undefined : collection.findNode(value);
 
-		if (value === rootEndId) {
-			const rootCount = collection.getNodeChildren(collection.rootNode).length;
-			targetPath = rootCount > 0 ? [rootCount - 1] : undefined;
-			position = 'after';
-		} else {
-			targetPath = collection.getIndexPath(value);
-			const target = targetPath && collection.at(targetPath);
-
-			if (!target) {
-				return null;
-			}
-
-			position = getDsTreeDropPosition({
-				pointerY,
-				rect,
-				isBranch: isDsTreeGroup(target),
-				isExpanded: treeView.expandedValue.includes(value),
-			});
+		if (value !== rootEndId && !target) {
+			return null;
 		}
 
+		const position: DsTreeDropPosition = target
+			? getDsTreeDropPosition({
+					pointerY,
+					rect,
+					isBranch: isDsTreeGroup(target),
+					isExpanded: treeView.expandedValue.includes(value),
+				})
+			: 'after';
+
+		return resolveSlot(dragged, overId, position);
+	};
+
+	// Cached per slot for the drag, and recomputed against the live collection and `canDrop` when either changes
+	const resolveSlot = (
+		dragged: ActiveDrag,
+		overId: UniqueIdentifier,
+		position: DsTreeDropPosition,
+	): DropState<T> | null => {
 		const key = `${String(overId)}:${position}`;
 		const cached = resolvedRef.current;
 
-		if (cached?.key === key && cached.collection === collection) {
+		if (cached?.key === key && cached.collection === collection && cached.canDrop === canDrop) {
 			return cached.result;
 		}
 
+		const value = String(overId);
+		const rootCount = collection.getNodeChildren(collection.rootNode).length;
+		const targetPath =
+			value === rootEndId ? (rootCount > 0 ? [rootCount - 1] : undefined) : collection.getIndexPath(value);
 		const fromPath = collection.getIndexPath(dragged.value);
 		const move = fromPath && targetPath && getDsTreeMove(collection, fromPath, targetPath, position);
 		let result: DropState<T> | null = null;
@@ -355,7 +359,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 			};
 		}
 
-		resolvedRef.current = { key, collection, result };
+		resolvedRef.current = { key, collection, canDrop, result };
 
 		return result;
 	};
@@ -371,7 +375,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 		store.update({ active: null, drop: null });
 	};
 
-	const getPreviewRows = (value: string): DsTreePreviewRow[] => {
+	const getPreviewRows = (value: string, hasCheckbox: boolean): DsTreePreviewRow[] => {
 		const rows: DsTreePreviewRow[] = [];
 		const startPath = collection.getIndexPath(value);
 
@@ -387,7 +391,7 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 				value: collection.getNodeValue(node),
 				name: node.name,
 				level,
-				checkbox: toPreviewCheckbox(checked),
+				checkbox: hasCheckbox ? toPreviewCheckbox(checked) : null,
 			});
 
 			if (expanded) {
@@ -405,17 +409,14 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 	const handleDragStart = ({ active: dragged, activatorEvent }: DragStartEvent) => {
 		const value = String(dragged.id);
 		const row = store.rows.get(value);
-		const preview = getPreviewRows(value);
+		const preview = getPreviewRows(value, Boolean(row?.querySelector(NODE_CHECKBOX_SELECTOR)));
 
 		if (preview.length === 0) {
 			return;
 		}
 
-		const hasCheckbox = Boolean(row?.querySelector(NODE_CHECKBOX_SELECTOR));
-
 		pendingExpandRef.current = null;
 		resolvedRef.current = null;
-		store.update({ skipDropAnimation: false });
 		pointerYRef.current = getClientY(activatorEvent);
 
 		const onPointerMove = (event: PointerEvent) => {
@@ -427,11 +428,8 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 			window.removeEventListener('pointermove', onPointerMove, { capture: true });
 
 		store.update({
-			active: {
-				value,
-				size: row?.closest<HTMLElement>('[data-size]')?.dataset.size,
-				preview: hasCheckbox ? preview : preview.map((previewRow) => ({ ...previewRow, checkbox: null })),
-			},
+			active: { value, size: row?.closest<HTMLElement>('[data-size]')?.dataset.size, preview },
+			skipDropAnimation: false,
 		});
 	};
 
@@ -451,9 +449,13 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 
 	const handleDragEnd = ({ over }: DragEndEvent) => {
 		const current = store.getSnapshot();
-		const resolved = current.active ? resolveDrop(current.active, over?.id) : null;
+		const { active: dragged, drop: shown } = current;
+		const resolved = dragged ? resolveDrop(dragged, over?.id) : null;
 		// Released before `over` caught up with the pointer: drop on the slot the indicator shows
-		const result = resolved === undefined ? current.drop : resolved;
+		const result =
+			resolved === undefined && dragged && shown
+				? resolveSlot(dragged, shown.droppableId, shown.position)
+				: (resolved ?? null);
 		reset();
 
 		const fromPath = current.active && collection.getIndexPath(current.active.value);
@@ -535,12 +537,11 @@ const DsTreeSortable = <T extends DsTreeNode = DsTreeNode>({
 				/>
 				{/* Portaled so a transformed ancestor (drawer, dialog) can't offset the fixed-position overlay */}
 				<Portal>
-					<DragOverlay
-						zIndex={DRAG_OVERLAY_Z_INDEX}
-						dropAnimation={prefersReducedMotion || skipDropAnimation ? null : DROP_ANIMATION}
-					>
-						{active && <DsTreeDragPreview active={active} rejected={Boolean(drop && !drop.allowed)} />}
-					</DragOverlay>
+					<div className={styles.dragLayer}>
+						<DragOverlay dropAnimation={prefersReducedMotion || skipDropAnimation ? null : DROP_ANIMATION}>
+							{active && <DsTreeDragPreview active={active} rejected={Boolean(drop && !drop.allowed)} />}
+						</DragOverlay>
+					</div>
 				</Portal>
 			</DndContext>
 		</DsTreeSortableContext>
