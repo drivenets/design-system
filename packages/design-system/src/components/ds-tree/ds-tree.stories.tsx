@@ -1,5 +1,5 @@
 // cSpell:words dslam Gbps mgmt msan roadm
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
 
@@ -505,6 +505,353 @@ export const WithStatusIcons: Story = {
 						/>
 					))}
 				</DsTree.Tree>
+			</DsTree.Root>
+		);
+	},
+};
+
+/**
+ * Wrap `DsTree.Tree` in `DsTree.Sortable` to let users reorder nodes at any depth by dragging
+ * the `DsTree.DragHandle`: before or after any row, into a group as its first child, or out to
+ * the root level. Drop below the last row to append to the root list. The tree stays controlled:
+ * store the collection passed to `onCollectionChange` and render from it. Disabled nodes can't be
+ * dragged, and the empty "Archive" group accepts drops.
+ */
+export const Sortable: Story = {
+	args: {
+		size: 'medium',
+	},
+	parameters: {
+		docs: {
+			source: {
+				code: `
+import { useState, type ReactNode } from 'react';
+import { DsTree, createDsTreeCollection, type DsTreeNode } from '@drivenets/design-system';
+
+export const SortableTree = () => {
+	const [collection, setCollection] = useState(() =>
+		createDsTreeCollection<DsTreeNode>([
+			{
+				id: 'network',
+				name: 'Network',
+				children: [
+					{
+						id: 'routers',
+						name: 'Routers',
+						children: [
+							{ id: 'router-1', name: 'Router Alpha' },
+							{ id: 'router-2', name: 'Router Beta' },
+							{ id: 'router-3', name: 'Router Gamma', disabled: true },
+						],
+					},
+					{ id: 'firewall-1', name: 'Firewall Primary' },
+					{ id: 'firewall-2', name: 'Firewall Secondary' },
+				],
+			},
+			{ id: 'archive', name: 'Archive', children: [] },
+			{
+				id: 'monitoring',
+				name: 'Monitoring',
+				children: [
+					{ id: 'alerts', name: 'Alerts' },
+					{ id: 'dashboards', name: 'Dashboards' },
+				],
+			},
+			{ id: 'logs', name: 'Logs' },
+		]),
+	);
+
+	const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (
+		<DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>
+			{node.children ? (
+				<DsTree.Branch>
+					<DsTree.BranchControl>
+						<DsTree.BranchIndicator />
+						<DsTree.DragHandle />
+						<DsTree.NodeCheckbox />
+						<DsTree.BranchText>{node.name}</DsTree.BranchText>
+					</DsTree.BranchControl>
+
+					<DsTree.BranchContent>
+						<DsTree.BranchIndentGuide />
+						{node.children.map((child, index) => renderNode(child, [...indexPath, index]))}
+					</DsTree.BranchContent>
+				</DsTree.Branch>
+			) : (
+				<DsTree.Item>
+					<DsTree.ItemIndicator />
+					<DsTree.DragHandle />
+					<DsTree.NodeCheckbox />
+					<DsTree.ItemText>{node.name}</DsTree.ItemText>
+				</DsTree.Item>
+			)}
+		</DsTree.NodeProvider>
+	);
+
+	return (
+		<DsTree.Root
+			size="medium"
+			collection={collection}
+			defaultExpandedValue={['network', 'routers']}
+		>
+			<DsTree.Sortable onCollectionChange={(next) => setCollection(next)}>
+				<DsTree.Tree>
+					{collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}
+				</DsTree.Tree>
+			</DsTree.Sortable>
+		</DsTree.Root>
+	);
+};`,
+			},
+		},
+	},
+	render: function Render(args) {
+		const [collection, setCollection] = useState(() =>
+			createDsTreeCollection<DsTreeNode>([
+				{
+					id: 'network',
+					name: 'Network',
+					children: [
+						{
+							id: 'routers',
+							name: 'Routers',
+							children: [
+								{ id: 'router-1', name: 'Router Alpha' },
+								{ id: 'router-2', name: 'Router Beta' },
+								{ id: 'router-3', name: 'Router Gamma', disabled: true },
+							],
+						},
+						{ id: 'firewall-1', name: 'Firewall Primary' },
+						{ id: 'firewall-2', name: 'Firewall Secondary' },
+					],
+				},
+				{ id: 'archive', name: 'Archive', children: [] },
+				{
+					id: 'monitoring',
+					name: 'Monitoring',
+					children: [
+						{ id: 'alerts', name: 'Alerts' },
+						{ id: 'dashboards', name: 'Dashboards' },
+					],
+				},
+				{ id: 'logs', name: 'Logs' },
+			]),
+		);
+
+		const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (
+			<DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>
+				{node.children ? (
+					<DsTree.Branch>
+						<DsTree.BranchControl>
+							<DsTree.BranchIndicator />
+							<DsTree.DragHandle />
+							<DsTree.NodeCheckbox />
+							<DsTree.BranchText>{node.name}</DsTree.BranchText>
+						</DsTree.BranchControl>
+
+						<DsTree.BranchContent>
+							<DsTree.BranchIndentGuide />
+							{node.children.map((child, index) => renderNode(child, [...indexPath, index]))}
+						</DsTree.BranchContent>
+					</DsTree.Branch>
+				) : (
+					<DsTree.Item>
+						<DsTree.ItemIndicator />
+						<DsTree.DragHandle />
+						<DsTree.NodeCheckbox />
+						<DsTree.ItemText>{node.name}</DsTree.ItemText>
+					</DsTree.Item>
+				)}
+			</DsTree.NodeProvider>
+		);
+
+		return (
+			<DsTree.Root size={args.size} collection={collection} defaultExpandedValue={['network', 'routers']}>
+				<DsTree.Sortable onCollectionChange={(next) => setCollection(next)}>
+					<DsTree.Tree>
+						{collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}
+					</DsTree.Tree>
+				</DsTree.Sortable>
+			</DsTree.Root>
+		);
+	},
+};
+
+/**
+ * Use `canDrop` to restrict where nodes may land. Here, as in a column manager, columns reorder
+ * only within their own group and groups only among themselves: moving between groups or nesting
+ * is rejected with a not-allowed cursor and no drop indicator.
+ */
+export const SortableSameGroupOnly: Story = {
+	name: 'Sortable same group only',
+	args: {
+		size: 'medium',
+	},
+	parameters: {
+		docs: {
+			source: {
+				code: `
+import { useState, type ReactNode } from 'react';
+import { DsTree, createDsTreeCollection, type DsTreeNode } from '@drivenets/design-system';
+
+export const ColumnManagerTree = () => {
+	const [collection, setCollection] = useState(() =>
+		createDsTreeCollection<DsTreeNode>([
+			{
+				id: 'general',
+				name: 'General',
+				children: [
+					{ id: 'name', name: 'Name' },
+					{ id: 'status', name: 'Status' },
+					{ id: 'created', name: 'Created' },
+				],
+			},
+			{
+				id: 'connectivity',
+				name: 'Connectivity',
+				children: [
+					{ id: 'ip-address', name: 'IP address' },
+					{ id: 'mac-address', name: 'MAC address' },
+					{ id: 'vlan', name: 'VLAN' },
+				],
+			},
+			{
+				id: 'location',
+				name: 'Location',
+				children: [
+					{ id: 'site', name: 'Site' },
+					{ id: 'rack', name: 'Rack' },
+				],
+			},
+		]),
+	);
+
+	const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (
+		<DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>
+			{node.children ? (
+				<DsTree.Branch>
+					<DsTree.BranchControl>
+						<DsTree.BranchIndicator />
+						<DsTree.DragHandle />
+						<DsTree.NodeCheckbox />
+						<DsTree.BranchText>{node.name}</DsTree.BranchText>
+					</DsTree.BranchControl>
+
+					<DsTree.BranchContent>
+						<DsTree.BranchIndentGuide />
+						{node.children.map((child, index) => renderNode(child, [...indexPath, index]))}
+					</DsTree.BranchContent>
+				</DsTree.Branch>
+			) : (
+				<DsTree.Item>
+					<DsTree.ItemIndicator />
+					<DsTree.DragHandle />
+					<DsTree.NodeCheckbox />
+					<DsTree.ItemText>{node.name}</DsTree.ItemText>
+				</DsTree.Item>
+			)}
+		</DsTree.NodeProvider>
+	);
+
+	return (
+		<DsTree.Root
+			size="medium"
+			collection={collection}
+			defaultExpandedValue={['general', 'connectivity', 'location']}
+			defaultCheckedValue={['name', 'status', 'ip-address', 'site']}
+		>
+			<DsTree.Sortable
+				canDrop={({ position, fromParent, toParent }) =>
+					position !== 'inside' && fromParent?.id === toParent?.id
+				}
+				onCollectionChange={(next) => setCollection(next)}
+			>
+				<DsTree.Tree>
+					{collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}
+				</DsTree.Tree>
+			</DsTree.Sortable>
+		</DsTree.Root>
+	);
+};`,
+			},
+		},
+	},
+	render: function Render(args) {
+		const [collection, setCollection] = useState(() =>
+			createDsTreeCollection<DsTreeNode>([
+				{
+					id: 'general',
+					name: 'General',
+					children: [
+						{ id: 'name', name: 'Name' },
+						{ id: 'status', name: 'Status' },
+						{ id: 'created', name: 'Created' },
+					],
+				},
+				{
+					id: 'connectivity',
+					name: 'Connectivity',
+					children: [
+						{ id: 'ip-address', name: 'IP address' },
+						{ id: 'mac-address', name: 'MAC address' },
+						{ id: 'vlan', name: 'VLAN' },
+					],
+				},
+				{
+					id: 'location',
+					name: 'Location',
+					children: [
+						{ id: 'site', name: 'Site' },
+						{ id: 'rack', name: 'Rack' },
+					],
+				},
+			]),
+		);
+
+		const renderNode = (node: DsTreeNode, indexPath: number[]): ReactNode => (
+			<DsTree.NodeProvider key={node.id} node={node} indexPath={indexPath}>
+				{node.children ? (
+					<DsTree.Branch>
+						<DsTree.BranchControl>
+							<DsTree.BranchIndicator />
+							<DsTree.DragHandle />
+							<DsTree.NodeCheckbox />
+							<DsTree.BranchText>{node.name}</DsTree.BranchText>
+						</DsTree.BranchControl>
+
+						<DsTree.BranchContent>
+							<DsTree.BranchIndentGuide />
+							{node.children.map((child, index) => renderNode(child, [...indexPath, index]))}
+						</DsTree.BranchContent>
+					</DsTree.Branch>
+				) : (
+					<DsTree.Item>
+						<DsTree.ItemIndicator />
+						<DsTree.DragHandle />
+						<DsTree.NodeCheckbox />
+						<DsTree.ItemText>{node.name}</DsTree.ItemText>
+					</DsTree.Item>
+				)}
+			</DsTree.NodeProvider>
+		);
+
+		return (
+			<DsTree.Root
+				size={args.size}
+				collection={collection}
+				defaultExpandedValue={['general', 'connectivity', 'location']}
+				defaultCheckedValue={['name', 'status', 'ip-address', 'site']}
+			>
+				<DsTree.Sortable
+					canDrop={({ position, fromParent, toParent }) =>
+						position !== 'inside' && fromParent?.id === toParent?.id
+					}
+					onCollectionChange={(next) => setCollection(next)}
+				>
+					<DsTree.Tree>
+						{collection.rootNode.children?.map((node, index) => renderNode(node, [index]))}
+					</DsTree.Tree>
+				</DsTree.Sortable>
 			</DsTree.Root>
 		);
 	},

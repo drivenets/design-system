@@ -1,8 +1,13 @@
 @use '../../styles/typography';
+@use '../../styles/shared/dropdown';
 
 $indent-per-level: 12px;
 $half-icon: calc(var(--icon-width-tiny) * 0.5);
 $transition-duration: 0.2s;
+$drag-handle-size: 24px;
+$source-opacity: 0.3;
+$drag-preview-opacity: 0.85;
+$drag-preview-shadow: 0 2px 6px 0 var(--shadow-moderate);
 
 @mixin node-row {
 	display: flex;
@@ -61,6 +66,39 @@ $transition-duration: 0.2s;
 	}
 }
 
+@mixin drop-line {
+	position: relative;
+
+	&::before {
+		content: '';
+		position: absolute;
+		z-index: 3;
+		inset-inline: var(--ds-tree-offset, var(--3xs)) var(--3xs);
+		border-top: 1px dashed var(--border);
+		pointer-events: none;
+	}
+}
+
+@mixin drop-line-edges {
+	&[data-drop] {
+		@include drop-line;
+	}
+
+	&[data-drop='before']::before {
+		top: 0;
+	}
+
+	&[data-drop='after']::before,
+	&[data-drop='inside']::before {
+		bottom: 0;
+	}
+
+	// Inside lands as the first child, so the line is indented one level deeper
+	&[data-drop='inside']::before {
+		inset-inline-start: calc(var(--ds-tree-offset) + #{$indent-per-level} + #{$half-icon});
+	}
+}
+
 @mixin node-text {
 	flex: 1;
 	display: inline-flex;
@@ -75,10 +113,15 @@ $transition-duration: 0.2s;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+}
 
+// The drag preview is portaled out of the root, so it carries the tree size itself
+.root,
+.dragPreview {
 	&[data-size='medium'] {
 		.branchControl,
-		.item {
+		.item,
+		.dragPreviewRow {
 			padding-block: var(--xs);
 		}
 
@@ -90,7 +133,8 @@ $transition-duration: 0.2s;
 
 	&[data-size='small'] {
 		.branchControl,
-		.item {
+		.item,
+		.dragPreviewRow {
 			padding-block: var(--2xs);
 		}
 
@@ -108,10 +152,15 @@ $transition-duration: 0.2s;
 
 .branch {
 	position: relative;
+
+	&[data-source] {
+		opacity: $source-opacity;
+	}
 }
 
 .branchControl {
 	@include node-row;
+	@include drop-line-edges;
 }
 
 .branchIndicator {
@@ -165,6 +214,11 @@ $transition-duration: 0.2s;
 
 .item {
 	@include node-row;
+	@include drop-line-edges;
+
+	&[data-source] {
+		opacity: $source-opacity;
+	}
 }
 
 .itemText {
@@ -256,6 +310,89 @@ $transition-duration: 0.2s;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+.dragHandle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: $drag-handle-size;
+	height: $drag-handle-size;
+	margin-block: calc((var(--icon-width-tiny) - #{$drag-handle-size}) / 2);
+	border: none;
+	border-radius: 4px;
+	padding: 0;
+	background: transparent;
+	color: var(--icon-secondary);
+	cursor: grab;
+	touch-action: none;
+
+	&:active {
+		cursor: grabbing;
+	}
+
+	&:disabled {
+		color: var(--icon-disabled);
+	}
+}
+
+.rootDropZone {
+	flex: 1 0 auto;
+	min-height: var(--xl);
+
+	&[data-drop] {
+		@include drop-line;
+
+		&::before {
+			top: 0;
+		}
+	}
+}
+
+// Above dropdown surfaces (e.g. a column chooser), so a tree inside one still shows its drag preview
+.dragLayer {
+	position: fixed;
+	inset: 0 auto auto 0;
+	z-index: dropdown.$dropdown-z-index + 1;
+}
+
+.dragPreview {
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	min-height: 100%;
+	border: 1px solid var(--border-action-primary);
+	border-radius: 4px;
+	background: var(--background);
+	box-shadow: $drag-preview-shadow;
+	opacity: $drag-preview-opacity;
+	color: var(--font-secondary);
+	cursor: grabbing;
+
+	.dragHandle {
+		cursor: inherit;
+	}
+
+	&[data-rejected] {
+		cursor: not-allowed;
+	}
+}
+
+.dragPreviewRow {
+	--ds-tree-depth: var(--ds-tree-preview-level);
+	--ds-tree-indent-offset: calc(#{$indent-per-level} * var(--ds-tree-depth));
+	--ds-tree-icon-offset: calc(#{$half-icon} * var(--ds-tree-depth));
+
+	display: flex;
+	align-items: center;
+	gap: var(--3xs);
+	padding-inline: calc(var(--3xs) + var(--ds-tree-indent-offset) + var(--ds-tree-icon-offset)) var(--3xs);
+
+	&:first-child .dragHandle {
+		border-radius: 4px;
+		background: var(--background-tertiary-selected-weak);
+	}
 }
 
 @keyframes ds-tree-expand {

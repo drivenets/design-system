@@ -188,3 +188,55 @@ export interface DsTreeItemActionProps extends DsTreeBasePropsWithChildren {
 	 */
 	onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
 }
+
+/**
+ * Where a dragged node lands relative to the drop target: as its previous sibling,
+ * its next sibling, or its first child (groups only).
+ */
+export type DsTreeDropPosition = 'before' | 'after' | 'inside';
+
+/**
+ * Describes a drag-and-drop move. Nodes are the objects of the collection the tree
+ * currently renders, so parents can be compared by identity or by `id`.
+ */
+export interface DsTreeMoveDetails<T extends DsTreeNode = DsTreeNode> {
+	node: T;
+	/**
+	 * Row the node is dropped on. For the empty area below the last row, this is the
+	 * last root-level node with `position: 'after'`.
+	 */
+	target: T;
+	position: DsTreeDropPosition;
+	/**
+	 * Group the node is moved out of, or `null` when it sits at the root level.
+	 */
+	fromParent: T | null;
+	/**
+	 * Group the node is moved into, or `null` for the root level. Equals `target`
+	 * when `position` is `inside`.
+	 */
+	toParent: T | null;
+}
+
+export interface DsTreeSortableProps<T extends DsTreeNode = DsTreeNode> {
+	/**
+	 * The `DsTree.Tree` to make sortable. Rows become draggable from a `DsTree.DragHandle`.
+	 */
+	children?: ReactNode;
+	/**
+	 * Decides whether a slot accepts the dragged node, evaluated while hovering. Return
+	 * `false` to show no drop indicator and a not-allowed cursor; dropping there does
+	 * nothing. Dropping a node into itself or its descendants, dragging a disabled node,
+	 * and drops that keep the current order are always ignored and never reach this check.
+	 */
+	canDrop?: (details: DsTreeMoveDetails<T>) => boolean;
+	/**
+	 * Called once per successful drop with the moved collection. The passed-in collection
+	 * is never mutated: store `collection` and pass it back to `DsTree.Root` to apply the move.
+	 */
+	onCollectionChange: (collection: DsTreeRootProps<T>['collection'], details: DsTreeMoveDetails<T>) => void;
+}
+
+export interface DsTreeDragHandleProps extends DsTreeBaseProps {
+	ref?: Ref<HTMLButtonElement>;
+}

@@ -3,6 +3,14 @@ import classNames from 'classnames';
 
 import { DsIcon } from '../ds-icon';
 import styles from './ds-tree.module.scss';
+import {
+	DsTreeDragHandle,
+	DsTreeSortable,
+	DsTreeSortableBranchControl,
+	DsTreeSortableItem,
+	useDsTreeSortableBranchAttributes,
+	useDsTreeSortableContext,
+} from './ds-tree-sortable';
 import type {
 	DsTreeBranchContentProps,
 	DsTreeBranchControlProps,
@@ -79,17 +87,30 @@ const DsTreeTree = ({ className, style, children }: DsTreeTreeProps) => (
 	</TreeView.Tree>
 );
 
-const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => (
-	<TreeView.Branch {...rest} className={classNames(styles.branch, className)} style={style}>
-		{children}
-	</TreeView.Branch>
-);
+const DsTreeBranch = ({ className, style, children, ...rest }: DsTreeBranchProps) => {
+	const sortableAttributes = useDsTreeSortableBranchAttributes();
 
-const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => (
-	<TreeView.BranchControl {...rest} className={classNames(styles.branchControl, className)} style={style}>
-		{children}
-	</TreeView.BranchControl>
-);
+	return (
+		<TreeView.Branch
+			{...rest}
+			{...sortableAttributes}
+			className={classNames(styles.branch, className)}
+			style={style}
+		>
+			{children}
+		</TreeView.Branch>
+	);
+};
+
+const DsTreeBranchControl = ({ className, style, children, ...rest }: DsTreeBranchControlProps) => {
+	const Control = useDsTreeSortableContext() ? DsTreeSortableBranchControl : TreeView.BranchControl;
+
+	return (
+		<Control {...rest} className={classNames(styles.branchControl, className)} style={style}>
+			{children}
+		</Control>
+	);
+};
 
 const DsTreeBranchIndicator = ({ className, style, children }: DsTreeBranchIndicatorProps) => (
 	<TreeView.BranchIndicator className={classNames(styles.branchIndicator, className)} style={style}>
@@ -113,11 +134,15 @@ const DsTreeBranchIndentGuide = ({ className, style }: DsTreeBranchIndentGuidePr
 	<TreeView.BranchIndentGuide className={classNames(styles.branchIndentGuide, className)} style={style} />
 );
 
-const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => (
-	<TreeView.Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
-		{children}
-	</TreeView.Item>
-);
+const DsTreeItem = ({ className, style, children, onClick, ...rest }: DsTreeItemProps) => {
+	const Item = useDsTreeSortableContext() ? DsTreeSortableItem : TreeView.Item;
+
+	return (
+		<Item {...rest} className={classNames(styles.item, className)} style={style} onClick={onClick}>
+			{children}
+		</Item>
+	);
+};
 
 const DsTreeItemText = ({ className, style, children, ...rest }: DsTreeItemTextProps) => (
 	<TreeView.ItemText {...rest} className={classNames(styles.itemText, className)} style={style}>
@@ -191,4 +216,6 @@ export const DsTree = {
 	ItemIndicator: DsTreeItemIndicator,
 	ItemAction: DsTreeItemAction,
 	NodeCheckbox: DsTreeNodeCheckbox,
+	Sortable: DsTreeSortable,
+	DragHandle: DsTreeDragHandle,
 };
