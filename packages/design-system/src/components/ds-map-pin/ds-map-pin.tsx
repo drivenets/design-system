@@ -3,7 +3,8 @@ import { MAX_VISIBLE_COUNT, mapPinGeometry } from './ds-map-pin.config';
 import type { DsMapPinProps } from './ds-map-pin.types';
 import styles from './ds-map-pin.module.scss';
 
-const formatCount = (count: number) => (count > MAX_VISIBLE_COUNT ? `${MAX_VISIBLE_COUNT}+` : String(count));
+const formatCount = (count: number) =>
+	count > MAX_VISIBLE_COUNT ? `${String(MAX_VISIBLE_COUNT)}+` : String(count);
 
 /**
  * @summary Marker for one site on a map: category color, planning ring and a short code or count.
@@ -46,7 +47,7 @@ const DsMapPin = ({
 				className={styles.graphic}
 				width={width}
 				height={height}
-				viewBox={`0 0 ${width} ${height}`}
+				viewBox={`0 0 ${String(width)} ${String(height)}`}
 				aria-hidden="true"
 				focusable="false"
 			>
