@@ -654,7 +654,7 @@ describe('DsTable sticky columns', () => {
 			expect(gutterPoint?.closest('td')).toBe(actionsCell);
 		});
 
-		it('clears the right divider when content stops overflowing after web fonts load', async () => {
+		it('keeps icon text that has not loaded yet from overflowing the table', async () => {
 			await page.render(
 				<Frame>
 					<DsTable columns={wideColumns.slice(0, 1)} data={rows} {...rowActions} />
@@ -663,22 +663,38 @@ describe('DsTable sticky columns', () => {
 
 			const container = getScrollContainer();
 			const edgeHeader = getHeaderCell(ROW_ACTIONS_COLUMN_ID);
-			expect(hasDivider(edgeHeader)).toBe(false);
+			const actionButton = getBodyCell(ROW_ACTIONS_COLUMN_ID).querySelector('button');
+			if (!actionButton) {
+				throw new Error('Expected a row action button');
+			}
 
-			// Icon ligature text renders as wide words until the icon font loads: it spills
-			// past the last cell without resizing the table or its scroll container.
+			// Icon ligature text renders as wide words until the icon font loads.
 			const spill = document.createElement('span');
 			spill.style.whiteSpace = 'nowrap';
-			spill.textContent = 'more_vert '.repeat(10);
-			getBodyCell(ROW_ACTIONS_COLUMN_ID).append(spill);
+			spill.textContent = 'more_vert '.repeat(30);
+			actionButton.append(spill);
 			container.dispatchEvent(new Event('scroll'));
-			await expect.poll(() => hasDivider(edgeHeader)).toBe(true);
 
-			spill.remove();
-			document.fonts.dispatchEvent(new Event('loadingdone'));
-
-			await expect.poll(() => hasDivider(edgeHeader)).toBe(false);
 			expect(container.scrollWidth).toBe(container.clientWidth);
+			expect(hasDivider(edgeHeader)).toBe(false);
+		});
+
+		it('mounts and unmounts without `document.fonts` (e.g. jsdom)', async () => {
+			Object.defineProperty(document, 'fonts', { configurable: true, value: undefined });
+
+			try {
+				const screen = await page.render(
+					<Frame>
+						<DsTable columns={wideColumns} data={rows} {...rowActions} />
+					</Frame>,
+				);
+
+				await expect.element(page.getByRole('table')).toBeVisible();
+				await screen.unmount();
+				await expect.element(page.getByRole('table')).not.toBeInTheDocument();
+			} finally {
+				Reflect.deleteProperty(document, 'fonts');
+			}
 		});
 
 		it('does not shift layout when a divider toggles', async () => {
