@@ -53,6 +53,12 @@ export interface DsStatusBadgeV2SharedProps {
 	ref?: Ref<HTMLElement>;
 
 	'aria-label'?: string;
+
+	/**
+	 * Announces label changes to screen readers. Set it only on a badge that updates in place,
+	 * such as a job status; never on badges in lists, cards or tables.
+	 */
+	'aria-live'?: 'polite' | 'assertive';
 }
 
 /**

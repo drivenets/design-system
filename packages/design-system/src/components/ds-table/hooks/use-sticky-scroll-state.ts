@@ -38,14 +38,9 @@ export const useStickyScrollState = (containerRef: RefObject<HTMLElement | null>
 			resizeObserver.observe(table);
 		}
 
-		// Icon ligatures render as wide text until their font loads, overflowing the
-		// last cell without resizing any observed box; re-measure once fonts settle.
-		document.fonts.addEventListener('loadingdone', sync);
-
 		return () => {
 			container.removeEventListener('scroll', sync);
 			resizeObserver.disconnect();
-			document.fonts.removeEventListener('loadingdone', sync);
 		};
 	}, [containerRef]);
 };

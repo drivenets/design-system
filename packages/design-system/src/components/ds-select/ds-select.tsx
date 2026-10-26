@@ -59,6 +59,9 @@ const DsSelect = ({
 		multiple: multiselectProps.multiple,
 		value: normalizedValue,
 
+		// A listbox may only own options, so the search input and chips sit in a dialog around `Select.List`.
+		composite: false,
+
 		// Override Ark's auto-generated trigger id if an id provided by the user.
 		// See: https://github.com/chakra-ui/zag/blob/f6e079095/packages/machines/select/src/select.dom.ts#L5
 		ids: { trigger: id },
@@ -228,26 +231,30 @@ const DsSelect = ({
 							/>
 						)}
 
-						{filteredOptions.map((item) => {
-							const checked = getItemCheckedState({ item, select, options: internalOptions });
+						<Select.List>
+							{filteredOptions.map((item) => {
+								const checked = getItemCheckedState({ item, select, options: internalOptions });
 
-							return (
-								<DsTypography
-									variant="body-sm-reg"
-									asChild
-									key={collection.getItemValue(item)}
-									className={styles.item}
-								>
-									<Select.Item item={item}>
-										{multiselectProps.multiple && <DsCheckbox checked={checked} />}
-										{item.icon && <DsIcon className={styles.itemIcon} icon={item.icon} aria-hidden="true" />}
-										<Select.ItemText>
-											{renderOption && item.value !== SELECT_ALL_VALUE ? renderOption(item) : item.label}
-										</Select.ItemText>
-									</Select.Item>
-								</DsTypography>
-							);
-						})}
+								return (
+									<DsTypography
+										variant="body-sm-reg"
+										asChild
+										key={collection.getItemValue(item)}
+										className={styles.item}
+									>
+										<Select.Item item={item}>
+											{multiselectProps.multiple && <DsCheckbox checked={checked} />}
+											{item.icon && (
+												<DsIcon className={styles.itemIcon} icon={item.icon} aria-hidden="true" />
+											)}
+											<Select.ItemText>
+												{renderOption && item.value !== SELECT_ALL_VALUE ? renderOption(item) : item.label}
+											</Select.ItemText>
+										</Select.Item>
+									</DsTypography>
+								);
+							})}
+						</Select.List>
 					</Select.Content>
 				</Select.Positioner>
 			</Portal>
