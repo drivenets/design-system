@@ -8,11 +8,11 @@ A Routine belongs to one person's claude.ai account: it runs as that person and 
 
 ## Current Routines
 
-| Routine                                     | Schedule                       | What it does                                                                                                     | Owner            | Status |
-| ------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------- | ---------------- | ------ |
-| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw    | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack                   | `@iromanchuk-dn` | on     |
-| [Weekly release](weekly-release.md)         | Wednesdays 08:57 Europe/Warsaw | Merges the Release PR, waits for npm publish, posts the announcement and the DAP bump request                    | `@iromanchuk-dn` | on     |
-| [Request triage](request-triage.md)         | Hourly 08–19 Israel, Sun–Fri   | Triages DS Bug tickets, asks reporters for missing info, opens fix and feature PRs and follows them until merged | `@iromanchuk-dn` | on     |
+| Routine                                     | Schedule                       | What it does                                                                                                                        | Owner            | Status |
+| ------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------ |
+| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw    | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack                                      | `@iromanchuk-dn` | on     |
+| [Weekly release](weekly-release.md)         | Wednesdays 08:57 Europe/Warsaw | Merges the Release PR, waits for npm publish, posts the announcement and the DAP bump request                                       | `@iromanchuk-dn` | on     |
+| [Request triage](request-triage.md)         | Hourly 08–19 Israel, Sun–Fri   | Triages DS Bug tickets, asks reporters for missing info, opens fix and feature PRs, follows them until merged and closes the ticket | `@iromanchuk-dn` | on     |
 
 Status mirrors each instructions file's [Routine switch](#routine-switch).
 

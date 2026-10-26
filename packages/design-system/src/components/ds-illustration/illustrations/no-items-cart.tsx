@@ -10,7 +10,6 @@ export const NoItemsCartIllustration: FC<SVGProps<SVGSVGElement>> = (props) => (
 		xmlns="http://www.w3.org/2000/svg"
 		{...props}
 	>
-		<rect width="250" height="200" fill="var(--background)" />
 		<IllustrationClouds />
 		<path
 			d="M167 148H189.428M64 148H85.4541H64ZM51.1279 148H58H51.1279ZM194.128 148H197H194.128Z"

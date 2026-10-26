@@ -1,4 +1,5 @@
 import type { Ref } from 'react';
+import { Root as VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import classNames from 'classnames';
 import styles from './ds-status-badge-v2.module.scss';
 import type { DsStatusBadgeV2BaseProps } from './ds-status-badge-v2.types';
@@ -18,11 +19,16 @@ const DsStatusBadgeV2 = ({
 	style,
 	ref,
 	'aria-label': ariaLabel,
+	'aria-live': ariaLive,
 }: DsStatusBadgeV2BaseProps) => {
 	const resolvedIcon = icon === null ? null : (icon ?? phaseIconMap[phase]);
 	const hasIcon = resolvedIcon !== null;
 	const isTextOnly = !hasIcon;
 	const tooltipContent = iconOnly ? label : undefined;
+
+	// Icon-only and custom-named badges expose their name as hidden text: aria-label isn't allowed
+	// on a role-less div, and changes to it aren't announced by live regions.
+	const hasHiddenName = iconOnly || ariaLabel !== undefined;
 
 	const iconStyle =
 		size === 'small'
@@ -50,8 +56,8 @@ const DsStatusBadgeV2 = ({
 			ref={ref as Ref<HTMLDivElement>}
 			className={rootClass}
 			style={style}
-			role="status"
-			aria-label={ariaLabel ?? label}
+			aria-live={ariaLive}
+			aria-atomic={ariaLive ? true : undefined}
 		>
 			{hasIcon && (
 				<span className={styles.icon}>
@@ -60,10 +66,12 @@ const DsStatusBadgeV2 = ({
 			)}
 
 			{!iconOnly && (
-				<DsTypography className={styles.label} variant="body-xs-reg">
+				<DsTypography className={styles.label} variant="body-xs-reg" aria-hidden={hasHiddenName || undefined}>
 					{label}
 				</DsTypography>
 			)}
+
+			{hasHiddenName && <VisuallyHidden>{ariaLabel ?? label}</VisuallyHidden>}
 		</div>
 	);
 

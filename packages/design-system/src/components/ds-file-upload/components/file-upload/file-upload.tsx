@@ -53,7 +53,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({
 			onFileAccept={onFileAccept}
 			onFileReject={onFileReject}
 		>
+			{/* Ark makes the dropzone a button around the trigger button (axe nested-interactive); keep the trigger as the only control. */}
 			<ArkUiFileUpload.Dropzone
+				role="group"
+				tabIndex={-1}
 				className={classNames(styles.dropzone, {
 					[styles.dropzoneCompact]: compact,
 				})}
