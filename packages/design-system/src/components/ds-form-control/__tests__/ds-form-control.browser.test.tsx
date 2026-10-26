@@ -99,6 +99,21 @@ describe('DsFormControl with TextInput', () => {
 		await expectTypeAndClear('Input label');
 	});
 
+	it('should space the required asterisk 4px from the label text', async () => {
+		await page.render(
+			<DsFormControl label="Input label" required>
+				<DsFormControl.TextInput placeholder="Input" />
+			</DsFormControl>,
+		);
+
+		const label = page.getByText('Input label', { exact: true }).element();
+		const asterisk = getComputedStyle(label, '::after');
+		const gap = parseFloat(asterisk.marginLeft) + (parseFloat(asterisk.left) || 0);
+
+		expect(asterisk.content).toBe('"*"');
+		expect(gap).toBe(4);
+	});
+
 	it('should render a description alongside the input', async () => {
 		await page.render(
 			<DsFormControl label="Input label" required style={{ width: '300px' }}>

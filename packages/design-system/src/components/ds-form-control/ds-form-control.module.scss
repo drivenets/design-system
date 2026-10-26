@@ -48,7 +48,7 @@ $form-control-description-max-height: calc(
 		content: '*';
 		position: relative;
 		top: -1px;
-		right: -1px;
+		margin-left: var(--3xs);
 		color: var(--icon-error);
 	}
 
