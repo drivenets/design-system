@@ -3,7 +3,21 @@ import { getStorybookUrl } from './storybook-url';
 
 export interface ReadShowCodeSnippetOptions {
 	docsStoryId: string;
+	storyId: string;
 	storyName: string;
+}
+
+interface StorySourceParameters {
+	__isArgsStory?: boolean;
+	docs?: { source?: { code?: string; type?: string } };
+}
+
+interface StorybookPreviewWindow {
+	__STORYBOOK_PREVIEW__: {
+		storyStoreValue: {
+			loadStory: (options: { storyId: string }) => Promise<{ parameters: StorySourceParameters }>;
+		};
+	};
 }
 
 const NAVIGATION_TIMEOUT_MS = 60_000;
@@ -50,9 +64,27 @@ async function getDocsIframe(page: Page): Promise<Frame> {
 	return frame;
 }
 
+// Same rule as Storybook's Source block: args stories show a JSX snippet emitted after they render.
+async function usesRenderedSnippet(frame: Frame, storyId: string): Promise<boolean> {
+	const parameters = await frame.evaluate(async (id) => {
+		const { __STORYBOOK_PREVIEW__: preview } = window as unknown as StorybookPreviewWindow;
+		const story = await preview.storyStoreValue.loadStory({ storyId: id });
+
+		return story.parameters;
+	}, storyId);
+	const source = parameters.docs?.source ?? {};
+	const type = source.type ?? 'auto';
+
+	if (source.code !== undefined) {
+		return false;
+	}
+
+	return type === 'dynamic' || (type === 'auto' && Boolean(parameters.__isArgsStory));
+}
+
 export async function readShowCodeSnippet(
 	page: Page,
-	{ docsStoryId, storyName }: ReadShowCodeSnippetOptions,
+	{ docsStoryId, storyId, storyName }: ReadShowCodeSnippetOptions,
 ): Promise<string> {
 	await ensureDocsPage(page, docsStoryId);
 
@@ -88,6 +120,23 @@ export async function readShowCodeSnippet(
 		});
 	} catch {
 		throw new Error(`Show code panel is empty for story "${storyName}" in ${docsStoryId}`);
+	}
+
+	// Until the JSX snippet arrives, the panel shows the raw CSF story object (`{ args, render }`).
+	if (await usesRenderedSnippet(frame, storyId)) {
+		try {
+			await frame.waitForFunction(
+				(element) => element.textContent.trimStart().startsWith('<'),
+				sourceHandle,
+				{
+					timeout: SOURCE_PANEL_TIMEOUT_MS,
+				},
+			);
+		} catch {
+			throw new Error(
+				`Show code panel never showed the JSX snippet for story "${storyName}" in ${docsStoryId}`,
+			);
+		}
 	}
 
 	return (await source.innerText()).trim();
