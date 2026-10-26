@@ -51,6 +51,13 @@ const registry: Record<string, FieldInfo> = {
 		invalid: true,
 		data: 'options={[]}',
 	},
+	autocompleteTags: {
+		component: 'DsAutocomplete',
+		size: true,
+		large: true,
+		invalid: true,
+		data: 'multiple options={[]} value={[]}',
+	},
 };
 
 const instance = figma.selectedInstance;
@@ -84,6 +91,7 @@ const inputType =
 				time: 'time',
 				'autocomplete-search': 'autocompleteSearch',
 				'autocomplete-combobox': 'autocompleteCombobox',
+				'autocomplete-tags': 'autocompleteTags',
 			})
 		: 'text') ?? 'text';
 

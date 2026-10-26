@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { describe, expect, it, vi } from 'vitest';
-import { page } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 import { DsAutocomplete } from '../ds-autocomplete';
 import type { DsAutocompleteOption } from '../ds-autocomplete.types';
 import { DsIcon } from '../../ds-icon';
@@ -399,5 +399,272 @@ describe('DsAutocomplete', () => {
 		await page.getByRole('option', { name: /Cherry/i }).click();
 
 		await expect.element(page.getByRole('combobox')).toHaveValue('Cherry');
+	});
+
+	describe('multiple', () => {
+		const tagOptions: DsAutocompleteOption[] = [
+			{ value: 'production', label: 'Production' },
+			{ value: 'staging', label: 'Staging' },
+			{ value: 'security', label: 'Security' },
+			{ value: 'compliance', label: 'Compliance' },
+		];
+
+		const TagsHarness = ({
+			initialValue = [],
+			creatable = true,
+			disabled,
+			onValueChange,
+			onCreate,
+		}: {
+			initialValue?: string[];
+			creatable?: boolean;
+			disabled?: boolean;
+			onValueChange?: (value: string[]) => void;
+			onCreate?: (name: string) => void;
+		}) => {
+			const [options, setOptions] = useState(tagOptions);
+			const [value, setValue] = useState(initialValue);
+
+			return (
+				<DsAutocomplete
+					multiple
+					options={options}
+					value={value}
+					disabled={disabled}
+					style={{ width: '400px' }}
+					onValueChange={(nextValue) => {
+						setValue(nextValue);
+						onValueChange?.(nextValue);
+					}}
+					onCreate={
+						creatable
+							? (name) => {
+									setOptions((current) => [...current, { value: name, label: name }]);
+									onCreate?.(name);
+								}
+							: undefined
+					}
+				/>
+			);
+		};
+
+		const tag = (label: string) => page.getByRole('button', { name: label, exact: true });
+
+		// DsTag's root is a `role="button"`, which hides its nested remove button from the accessibility tree.
+		const removeButton = (label: string) => page.getByLabelText(`Remove ${label}`);
+
+		it('should toggle options from the list and keep it open', async () => {
+			const onValueChange = vi.fn();
+			await page.render(<TagsHarness onValueChange={onValueChange} />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+
+			await page.getByRole('option', { name: 'Staging' }).click();
+			expect(onValueChange).toHaveBeenLastCalledWith(['staging']);
+			await expect.element(tag('Staging')).toBeVisible();
+			await expect
+				.element(page.getByRole('option', { name: 'Staging' }))
+				.toHaveAttribute('aria-selected', 'true');
+			await expect.element(input).toHaveFocus();
+
+			await page.getByRole('option', { name: 'Security' }).click();
+			expect(onValueChange).toHaveBeenLastCalledWith(['staging', 'security']);
+
+			await page.getByRole('option', { name: 'Staging' }).click();
+			expect(onValueChange).toHaveBeenLastCalledWith(['security']);
+			await expect.element(tag('Staging')).not.toBeInTheDocument();
+		});
+
+		it('should offer a create row only for text that matches no option', async () => {
+			await page.render(<TagsHarness />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+
+			await input.fill('sta');
+			await expect.element(page.getByRole('option', { name: 'Staging' })).toBeVisible();
+			await expect.element(page.getByRole('option', { name: 'Production' })).not.toBeInTheDocument();
+			await expect.element(page.getByRole('option', { name: "Create new tag 'sta'" })).toBeVisible();
+
+			await input.fill('STAGING');
+			await expect.element(page.getByRole('option', { name: /Create new tag/ })).not.toBeInTheDocument();
+		});
+
+		it('should create a tag from the create row', async () => {
+			const onValueChange = vi.fn();
+			const onCreate = vi.fn();
+			await page.render(<TagsHarness onValueChange={onValueChange} onCreate={onCreate} />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('  Nightly  ');
+			await page.getByRole('option', { name: "Create new tag 'Nightly'" }).click();
+
+			expect(onCreate).toHaveBeenCalledWith('Nightly');
+			expect(onValueChange).toHaveBeenLastCalledWith(['Nightly']);
+			await expect.element(tag('Nightly')).toBeVisible();
+			await expect.element(input).toHaveValue('');
+		});
+
+		it('should add the matching option on Enter without a highlighted row', async () => {
+			const onValueChange = vi.fn();
+			const onCreate = vi.fn();
+			await page.render(
+				<TagsHarness initialValue={['production']} onValueChange={onValueChange} onCreate={onCreate} />,
+			);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+
+			await input.fill('security');
+			await userEvent.keyboard('{Enter}');
+			expect(onValueChange).toHaveBeenLastCalledWith(['production', 'security']);
+			await expect.element(input).toHaveValue('');
+
+			await input.fill('PRODUCTION');
+			await userEvent.keyboard('{Enter}');
+			expect(onValueChange).toHaveBeenCalledTimes(1);
+			await expect.element(input).toHaveValue('');
+
+			await userEvent.keyboard('{Enter}');
+			expect(onValueChange).toHaveBeenCalledTimes(1);
+			expect(onCreate).not.toHaveBeenCalled();
+		});
+
+		it('should create a tag on Enter when the text matches no option', async () => {
+			const onValueChange = vi.fn();
+			const onCreate = vi.fn();
+			await page.render(<TagsHarness onValueChange={onValueChange} onCreate={onCreate} />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('Nightly');
+			await userEvent.keyboard('{Enter}');
+
+			expect(onCreate).toHaveBeenCalledWith('Nightly');
+			expect(onValueChange).toHaveBeenLastCalledWith(['Nightly']);
+		});
+
+		it('should select the highlighted row with the keyboard and stop at the create row', async () => {
+			const onValueChange = vi.fn();
+			const onCreate = vi.fn();
+			await page.render(<TagsHarness onValueChange={onValueChange} onCreate={onCreate} />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('s');
+			await userEvent.keyboard('{ArrowDown}');
+			await userEvent.keyboard('{Enter}');
+			expect(onValueChange).toHaveBeenLastCalledWith(['staging']);
+
+			await input.fill('se');
+			await userEvent.keyboard('{ArrowDown}{ArrowDown}{ArrowDown}{ArrowDown}');
+			await userEvent.keyboard('{Enter}');
+			expect(onCreate).toHaveBeenCalledWith('se');
+		});
+
+		it('should turn text before a comma into a tag and keep the rest', async () => {
+			const onValueChange = vi.fn();
+			await page.render(<TagsHarness onValueChange={onValueChange} />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('staging, Night');
+
+			expect(onValueChange).toHaveBeenLastCalledWith(['staging']);
+			await expect.element(input).toHaveValue('Night');
+		});
+
+		it('should add every pasted comma-separated name', async () => {
+			const onValueChange = vi.fn();
+			const onCreate = vi.fn();
+			await page.render(
+				<TagsHarness initialValue={['security']} onValueChange={onValueChange} onCreate={onCreate} />,
+			);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+
+			const clipboardData = new DataTransfer();
+			clipboardData.setData('text', 'staging, , Nightly ,SECURITY, nightly');
+			input
+				.element()
+				.dispatchEvent(new ClipboardEvent('paste', { clipboardData, bubbles: true, cancelable: true }));
+
+			expect(onCreate).toHaveBeenCalledExactlyOnceWith('Nightly');
+			expect(onValueChange).toHaveBeenLastCalledWith(['security', 'staging', 'Nightly']);
+			await expect.element(input).toHaveValue('');
+		});
+
+		it('should only pick existing options without onCreate', async () => {
+			const onValueChange = vi.fn();
+			await page.render(<TagsHarness creatable={false} onValueChange={onValueChange} />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('Nightly');
+
+			await expect.element(page.getByText('No matching tags')).toBeVisible();
+			await userEvent.keyboard('{Enter}');
+			await input.fill('Nightly, other');
+
+			expect(onValueChange).not.toHaveBeenCalled();
+		});
+
+		it('should remove tags with the remove button and Backspace', async () => {
+			const onValueChange = vi.fn();
+			await page.render(
+				<TagsHarness initialValue={['production', 'staging', 'security']} onValueChange={onValueChange} />,
+			);
+
+			await tag('Staging').hover();
+			await removeButton('Staging').click();
+			expect(onValueChange).toHaveBeenLastCalledWith(['production', 'security']);
+			await expect.element(page.getByRole('listbox')).not.toBeInTheDocument();
+
+			await page.getByRole('combobox').click();
+			await userEvent.keyboard('{Backspace}');
+			expect(onValueChange).toHaveBeenLastCalledWith(['production']);
+		});
+
+		it('should keep the list open when removing a tag while it is open', async () => {
+			const onValueChange = vi.fn();
+			await page.render(
+				<TagsHarness initialValue={['production', 'staging']} onValueChange={onValueChange} />,
+			);
+
+			await page.getByRole('combobox').click();
+			await expect.element(page.getByRole('listbox')).toBeVisible();
+
+			await tag('Staging').hover();
+			await removeButton('Staging').click();
+
+			expect(onValueChange).toHaveBeenLastCalledWith(['production']);
+			await expect.element(page.getByRole('listbox')).toBeVisible();
+		});
+
+		it('should clear the text and close the list on Escape, keeping focus', async () => {
+			await page.render(<TagsHarness />);
+
+			const input = page.getByRole('combobox');
+			await input.click();
+			await input.fill('sta');
+			await expect.element(page.getByRole('listbox')).toBeVisible();
+
+			await userEvent.keyboard('{Escape}');
+
+			await expect.element(input).toHaveValue('');
+			await expect.element(input).toHaveFocus();
+			await expect.element(page.getByRole('listbox')).not.toBeInTheDocument();
+		});
+
+		it('should not allow changes while disabled', async () => {
+			await page.render(<TagsHarness initialValue={['production']} disabled />);
+
+			await expect.element(page.getByRole('combobox')).toBeDisabled();
+			await expect.element(tag('Production')).toBeVisible();
+			await expect.element(removeButton('Production')).not.toBeInTheDocument();
+		});
 	});
 });
