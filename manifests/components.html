@@ -626,7 +626,7 @@
 <main>
   <div class="wrap">
     <div class="note info" style="margin-bottom: 16px;">
-            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>5.8s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>6.1s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
             <pre><code>typescript: {
   reactDocgen: 'react-docgen-typescript',
 }</code></pre>
@@ -32073,7 +32073,7 @@ beyond the limit, which is useful for length-restricted fields.</div>
     <div class="title">
       <h2><span class="status-dot dot-ok"></span> DsTextInput</h2>
       <div class="badges">
-        <label for="c-91-components-textinput-props" class="badge ok as-toggle">23 prop types</label>
+        <label for="c-91-components-textinput-props" class="badge ok as-toggle">24 prop types</label>
         <label for="c-91-components-textinput-info" class="badge info as-toggle">1 info</label>
         <label for="c-91-components-textinput-stories" class="badge ok as-toggle">11 stories</label>
         
@@ -32109,7 +32109,7 @@ beyond the limit, which is useful for length-restricted fields.</div>
           <div class="note ok">
             <div class="row">
               <span class="ex-name">Prop types <small>(react-docgen)</small></span>
-              <span class="badge ok">23 prop types</span>
+              <span class="badge ok">24 prop types</span>
             </div>
             <pre><code>Component: src/components/ds-text-input/ds-text-input.tsx::default</code></pre>
             <pre><code>Props:</code></pre>
@@ -32206,6 +32206,16 @@ ref?: React.Ref&lt;HTMLInputElement&gt;
  * @default default
  */
 size?: (typeof textInputSizes)[number] = &#39;default&#39;
+
+/**
+ * Props forwarded to nested sub-components.
+ */
+slotProps?: {
+	/**
+	 * ARIA attributes and role forwarded to the `&lt;input&gt;` element, for example to make it a combobox.
+	 */
+	input?: React.AriaAttributes &amp; { role?: React.AriaRole };
+}
 
 /**
  * Optional render slots for customizing parts of the input.

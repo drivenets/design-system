@@ -32608,6 +32608,51 @@
               }
             },
             "description": "Optional render slots for customizing parts of the input."
+          },
+          "slotProps": {
+            "required": false,
+            "tsType": {
+              "name": "signature",
+              "type": "object",
+              "raw": "{\n\t/**\n\t * ARIA attributes and role forwarded to the `<input>` element, for example to make it a combobox.\n\t */\n\tinput?: React.AriaAttributes & { role?: React.AriaRole };\n}",
+              "signature": {
+                "properties": [
+                  {
+                    "key": "input",
+                    "value": {
+                      "name": "intersection",
+                      "raw": "React.AriaAttributes & { role?: React.AriaRole }",
+                      "elements": [
+                        {
+                          "name": "ReactAriaAttributes",
+                          "raw": "React.AriaAttributes"
+                        },
+                        {
+                          "name": "signature",
+                          "type": "object",
+                          "raw": "{ role?: React.AriaRole }",
+                          "signature": {
+                            "properties": [
+                              {
+                                "key": "role",
+                                "value": {
+                                  "name": "ReactAriaRole",
+                                  "raw": "React.AriaRole",
+                                  "required": false
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "required": false
+                    },
+                    "description": "ARIA attributes and role forwarded to the `<input>` element, for example to make it a combobox."
+                  }
+                ]
+              }
+            },
+            "description": "Props forwarded to nested sub-components."
           }
         }
       },
@@ -34615,6 +34660,6 @@
   },
   "meta": {
     "docgen": "react-docgen",
-    "durationMs": 5751
+    "durationMs": 6120
   }
 }
