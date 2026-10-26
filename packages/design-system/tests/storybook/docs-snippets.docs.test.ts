@@ -107,6 +107,7 @@ async function buildComponentDocsSnapshot(page: Page, component: ManifestCompone
 	for (const story of component.stories ?? []) {
 		const showCode = await readShowCodeSnippet(page, {
 			docsStoryId: `${component.id}--docs`,
+			storyId: story.id,
 			storyName: story.name,
 		});
 		const manifestSnippet = await getStorySnippet(component.id, story.name);
