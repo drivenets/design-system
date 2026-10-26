@@ -8,11 +8,11 @@ A Routine belongs to one person's claude.ai account: it runs as that person and 
 
 ## Current Routines
 
-| Routine                                     | Schedule                       | What it does                                                                                                     | Owner            | Status |
-| ------------------------------------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------- | ---------------- | ------ |
-| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw    | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack                   | `@iromanchuk-dn` | on     |
-| [Weekly release](weekly-release.md)         | Wednesdays 08:57 Europe/Warsaw | Merges the Release PR, waits for npm publish, posts the announcement and the DAP bump request                    | `@iromanchuk-dn` | on     |
-| [Request triage](request-triage.md)         | Hourly 08–19 Israel, Sun–Fri   | Triages DS Bug tickets, asks reporters for missing info, opens fix and feature PRs and follows them until merged | `@iromanchuk-dn` | on     |
+| Routine                                     | Schedule                       | What it does                                                                                                                        | Owner            | Status |
+| ------------------------------------------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------ |
+| [Flaky test tracker](flaky-test-tracker.md) | Mondays 07:58 Europe/Warsaw    | Finds flaky tests in `PR Checks`, files Bugs under AR-58393, fixes clear cases, posts to Slack                                      | `@iromanchuk-dn` | on     |
+| [Weekly release](weekly-release.md)         | Wednesdays 08:57 Europe/Warsaw | Merges the Release PR, waits for npm publish, posts the announcement and the DAP bump request                                       | `@iromanchuk-dn` | on     |
+| [Request triage](request-triage.md)         | Hourly 08–19 Israel, Sun–Fri   | Triages DS Bug tickets, asks reporters for missing info, opens fix and feature PRs, follows them until merged and closes the ticket | `@iromanchuk-dn` | on     |
 
 Status mirrors each instructions file's [Routine switch](#routine-switch).
 
@@ -102,19 +102,19 @@ Otherwise follow the file exactly. It is the source of truth for when to skip, h
 
 ## Request triage
 
-| Field         | Value                                                                                                                  |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Name          | `Request triage (design-system)`                                                                                       |
-| Trigger ID    | `trig_01KF3kEy9z9exh4Mmnk6u7PP` (owner's account)                                                                      |
-| Schedule      | `CRON_TZ=Asia/Jerusalem 0 8-19 * * 0-5`                                                                                |
-| Model         | Opus 5.5 (`claude-opus-5-5`): in shadow tests Sonnet stopped after writing a failing test, Opus finished the fix       |
-| Environment   | `design-system`                                                                                                        |
-| Repository    | `drivenets/design-system`, default branch                                                                              |
-| Session       | A new session on every run                                                                                             |
-| Connectors    | Atlassian (Jira), Figma, Slack. Remove every other connector. GitHub access comes from the Claude GitHub App.          |
-| Notifications | Off (it runs hourly). Auto-fix on PR create: on                                                                        |
-| Instructions  | [request-triage.md](request-triage.md)                                                                                 |
-| Output        | Comments and `ds-bot*` labels on DS Bug tickets, `claude/ar-*` PRs labeled `ds-bot`, `#design-system-ai-notifications` |
+| Field         | Value                                                                                                                              |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Name          | `Request triage (design-system)`                                                                                                   |
+| Trigger ID    | `trig_01KF3kEy9z9exh4Mmnk6u7PP` (owner's account)                                                                                  |
+| Schedule      | `CRON_TZ=Asia/Jerusalem 0 8-19 * * 0-5`                                                                                            |
+| Model         | Opus 5.5 (`claude-opus-5-5`): in shadow tests Sonnet stopped after writing a failing test, Opus finished the fix                   |
+| Environment   | `design-system`                                                                                                                    |
+| Repository    | `drivenets/design-system`, default branch; second repository: the owner's fork (`iromanchuk-dn/design-system`), for PR screenshots |
+| Session       | A new session on every run                                                                                                         |
+| Connectors    | Atlassian (Jira), Figma, Slack. Remove every other connector. GitHub access comes from the Claude GitHub App.                      |
+| Notifications | Off (it runs hourly). Auto-fix on PR create: on                                                                                    |
+| Instructions  | [request-triage.md](request-triage.md)                                                                                             |
+| Output        | Comments and `ds-bot*` labels on DS Bug tickets, `claude/ar-*` PRs labeled `ds-bot`, `#design-system-ai-notifications`             |
 
 Stored prompt:
 
@@ -130,7 +130,7 @@ If its YAML front matter does not contain exactly `enabled: true`, end the sessi
 Otherwise follow the file exactly. It is the source of truth for which Jira tickets to pick up, what to ask reporters, what to implement and how to open PRs. Its Mode setting decides whether you may write anything.
 ```
 
-Extra setup for this Routine: the owner needs a Figma Dev or Full seat in the Drivenets Figma org (a View seat allows only a few MCP calls a month), and the `ds-bot` label must exist in the GitHub repo (`gh label create ds-bot -R drivenets/design-system --description "Opened by the Request triage Routine"`). To test changes, set the Mode to `shadow` in a PR and use **Run now**: it processes only the shadow tickets and writes nothing.
+Extra setup for this Routine: the owner needs a Figma Dev or Full seat in the Drivenets Figma org (a View seat allows only a few MCP calls a month), and the `ds-bot` label must exist in the GitHub repo (`gh label create ds-bot -R drivenets/design-system --description "Opened by the Request triage Routine"`). PR screenshots go to the owner's fork: add it as the Routine's second repository, give the Claude GitHub App access to it, and put its name in the Screenshots setting of [request-triage.md](request-triage.md#settings). To test changes, set the Mode to `shadow` in a PR and use **Run now**: it processes only the shadow tickets and writes nothing.
 
 ## Creating or taking over a Routine
 

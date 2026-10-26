@@ -21,4 +21,14 @@ describe('React CJS export', () => {
 
 		expect(typeof DsButton).toBe('function');
 	});
+
+	it('should export createColumnHelper in CJS', async () => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		// @ts-ignore - Will exist when running the test.
+		const { createColumnHelper } = (await import(packageCjs)) as {
+			createColumnHelper: unknown;
+		};
+
+		expect(typeof createColumnHelper).toBe('function');
+	});
 });

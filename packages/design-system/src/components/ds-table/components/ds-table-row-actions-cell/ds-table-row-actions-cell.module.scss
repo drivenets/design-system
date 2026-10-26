@@ -16,6 +16,8 @@
 	justify-content: center;
 	width: 36px;
 	height: 36px;
+	// Icon ligatures render as wide text until the icon font loads; keep it inside the button.
+	overflow: hidden;
 	border: none;
 	border-radius: 50%;
 	background: none;

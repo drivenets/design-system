@@ -10,7 +10,6 @@ export const NoDeviceIllustration: FC<SVGProps<SVGSVGElement>> = (props) => (
 		xmlns="http://www.w3.org/2000/svg"
 		{...props}
 	>
-		<rect width="250" height="200" fill="var(--background)" />
 		<IllustrationClouds />
 		<g transform="translate(51 19)">
 			<g transform="translate(18.368 47.899)">
