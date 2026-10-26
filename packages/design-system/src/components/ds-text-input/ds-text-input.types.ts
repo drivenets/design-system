@@ -117,4 +117,14 @@ export interface DsTextInputProps {
 		 */
 		endAdornment?: React.ReactNode;
 	};
+
+	/**
+	 * Props forwarded to nested sub-components.
+	 */
+	slotProps?: {
+		/**
+		 * ARIA attributes and role forwarded to the `<input>` element, for example to make it a combobox.
+		 */
+		input?: React.AriaAttributes & { role?: React.AriaRole };
+	};
 }
