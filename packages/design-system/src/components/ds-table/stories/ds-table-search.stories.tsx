@@ -10,6 +10,7 @@ import DsTable from '../ds-table';
 import { columns, defaultData, type Person, type Status } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import { StatusItem } from './components';
+import { type dsTableFeatures } from '../ds-table-features';
 
 const meta: Meta<typeof DsTable<Person, unknown>> = {
 	title: 'Components/Table/Search',
@@ -109,7 +110,7 @@ export const TabFilters: Story = {
 			}
 		};
 
-		const statusColumnDef: ColumnDef<Person> = {
+		const statusColumnDef: ColumnDef<typeof dsTableFeatures, Person> = {
 			accessorKey: 'status',
 			header: 'Status',
 			cell: (info) => {

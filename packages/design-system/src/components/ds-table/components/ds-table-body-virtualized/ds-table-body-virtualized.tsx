@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type RefObject, type ReactNode } from 'react';
-import { type Row, type RowSelectionState } from '@tanstack/react-table';
+import { type Row, type RowSelectionState, type RowData } from '@tanstack/react-table';
 import { useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
@@ -8,8 +8,9 @@ import { TableBody, TableRow, TableCell } from '../core-table';
 import { useInfiniteScroll } from './use-infinite-scroll';
 import { useBodyOffsetTop } from './use-body-offset-top';
 import { useDsTableContext } from '../../context/ds-table-context';
+import type { DsTableFeatures } from '../../ds-table-features';
 
-export const DsTableBodyVirtualized = <TData,>({
+export const DsTableBodyVirtualized = <TData extends RowData>({
 	table,
 	emptyState,
 	estimateSize,
@@ -87,10 +88,11 @@ export const DsTableBodyVirtualized = <TData,>({
 		},
 	});
 
+	// `useTable` returns a new `table` on every DsTable render, so rows are re-measured once per render.
 	useLayoutEffect(() => {
 		rowVirtualizer.measure();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [table.getState()]);
+	}, [table]);
 
 	return (
 		<DsTableBody
@@ -105,20 +107,20 @@ export const DsTableBodyVirtualized = <TData,>({
 	);
 };
 
-interface DsTableBodyProps<TData> {
+interface DsTableBodyProps<TData extends RowData> {
 	ref: RefObject<HTMLTableSectionElement | null>;
 	rowVirtualizer: Virtualizer<HTMLElement, HTMLTableRowElement>;
 	rowsMapRef: RefObject<Map<string, HTMLTableRowElement>>;
 	rowHeightsMapRef: RefObject<Map<string, number>>;
 	rowsAndExpandedRowContent: {
-		row: Row<TData>;
+		row: Row<DsTableFeatures, TData>;
 		isExpandedRowContent?: boolean;
 	}[];
 	emptyState?: ReactNode;
 	rowSelection: RowSelectionState;
 }
 
-export function DsTableBody<TData>({
+export function DsTableBody<TData extends RowData>({
 	ref,
 	rowVirtualizer,
 	rowsMapRef,

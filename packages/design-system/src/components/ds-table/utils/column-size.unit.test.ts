@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { defaultColumnSizing } from '@tanstack/react-table';
+import { getDefaultColumnSizingColumnDef } from '@tanstack/react-table/static-functions';
 import {
 	clampColumnSize,
 	clampColumnSizing,
@@ -28,6 +28,8 @@ import {
 	RESIZE_MIN_COLUMN_WIDTH,
 	SELECT_COLUMN_ID,
 } from './constants';
+
+const defaultColumnSizing = getDefaultColumnSizingColumnDef();
 
 describe('isExplicitColumnWidth', () => {
 	it('returns false for an unsized column with no sizing entry (fill column)', () => {

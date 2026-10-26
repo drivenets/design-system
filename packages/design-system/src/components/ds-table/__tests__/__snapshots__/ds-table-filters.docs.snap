@@ -7,6 +7,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import {
     DsTable,
     DsTagFilter,
+    type dsTableFeatures,
     createCheckboxFilterAdapter,
     useTableFilters,
 } from '@drivenets/design-system';
@@ -47,7 +48,7 @@ const siteFilter = createCheckboxFilterAdapter<DeviceRow>({
     selectAll: true,
 });
 
-const columns: ColumnDef<DeviceRow>[] = [
+const columns: ColumnDef<typeof dsTableFeatures, DeviceRow>[] = [
     { id: 'name', accessorKey: 'name', header: 'Name' },
     { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
     { id: 'site', accessorKey: 'site', header: 'Site', meta: { filter: { adapterId: 'site' } } },
@@ -120,6 +121,7 @@ import {
     DsTagFilter,
     type CheckboxFilterItem,
     type FilterState,
+    type dsTableFeatures,
     createCheckboxFilterAdapter,
     useTableFilters,
 } from '@drivenets/design-system';
@@ -143,7 +145,7 @@ const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
     selectAll: true,
 });
 
-const columns: ColumnDef<DeviceRow>[] = [
+const columns: ColumnDef<typeof dsTableFeatures, DeviceRow>[] = [
     { id: 'name', accessorKey: 'name', header: 'Name' },
     { id: 'type', accessorKey: 'type', header: 'Type', meta: { filter: { adapterId: 'type' } } },
     { id: 'site', accessorKey: 'site', header: 'Site' },

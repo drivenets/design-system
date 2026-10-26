@@ -1,12 +1,13 @@
-import type { Column, VisibilityState } from '@tanstack/react-table';
+import type { Column, ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import { BUILTIN_COLUMN_IDS } from '../../utils/constants';
 import type {
 	ColumnDisplayCheckedState,
 	ColumnDisplayNode,
 	ColumnDisplayToggleTarget,
 } from './ds-table-column-display.types';
+import type { DsTableFeatures } from '../../ds-table-features';
 
-const getColumnLabel = <TData>(column: Column<TData>): string => {
+const getColumnLabel = <TData extends RowData>(column: Column<DsTableFeatures, TData>): string => {
 	const { header, meta } = column.columnDef;
 
 	if (meta?.columnDisplayLabel) {
@@ -18,7 +19,7 @@ const getColumnLabel = <TData>(column: Column<TData>): string => {
 
 export const getCheckedState = (
 	leafIds: string[],
-	visibility: VisibilityState,
+	visibility: ColumnVisibilityState,
 ): ColumnDisplayCheckedState => {
 	const shownCount = leafIds.filter((id) => visibility[id] !== false).length;
 
@@ -29,7 +30,10 @@ export const getCheckedState = (
 	return shownCount === 0 ? false : 'indeterminate';
 };
 
-const buildNode = <TData>(column: Column<TData>, visibility: VisibilityState): ColumnDisplayNode => {
+const buildNode = <TData extends RowData>(
+	column: Column<DsTableFeatures, TData>,
+	visibility: ColumnVisibilityState,
+): ColumnDisplayNode => {
 	const leafIds = column.getLeafColumns().map((leaf) => leaf.id);
 	const leafIdsToToggle = column
 		.getLeafColumns()
@@ -52,9 +56,9 @@ const buildNode = <TData>(column: Column<TData>, visibility: VisibilityState): C
  * the table's own utility columns. `visibility` is the consumer-facing state, so
  * a column hidden only by a collapsed group still reads as checked.
  */
-export const getColumnDisplayTree = <TData>(
-	columns: Column<TData>[],
-	visibility: VisibilityState,
+export const getColumnDisplayTree = <TData extends RowData>(
+	columns: Column<DsTableFeatures, TData>[],
+	visibility: ColumnVisibilityState,
 ): ColumnDisplayNode[] =>
 	columns
 		.filter((column) => !BUILTIN_COLUMN_IDS.has(column.id))
@@ -65,7 +69,7 @@ export const getColumnDisplayTree = <TData>(
  */
 export const getAllColumnsTarget = (
 	tree: ColumnDisplayNode[],
-	visibility: VisibilityState,
+	visibility: ColumnVisibilityState,
 ): ColumnDisplayToggleTarget => {
 	const leafIdsToToggle = tree.flatMap((node) => node.leafIdsToToggle);
 
@@ -108,7 +112,7 @@ export const filterColumnDisplayTree = (nodes: ColumnDisplayNode[], query: strin
 export const getToggleVisibilityUpdate = ({
 	leafIdsToToggle,
 	checked,
-}: ColumnDisplayToggleTarget): VisibilityState => {
+}: ColumnDisplayToggleTarget): ColumnVisibilityState => {
 	const visible = checked !== true;
 
 	return Object.fromEntries(leafIdsToToggle.map((id) => [id, visible]));

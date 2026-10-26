@@ -4,6 +4,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsTagFilter } from '../../ds-tag-filter';
 import { createCheckboxFilterAdapter, useTableFilters } from '../filters';
+import { type dsTableFeatures } from '../ds-table-features';
 
 type DeviceRow = {
 	id: string;
@@ -34,7 +35,7 @@ const typeFilter = createCheckboxFilterAdapter<DeviceRow, DeviceRow['type']>({
 	locale: { searchPlaceholder: 'Search role' },
 });
 
-const baseColumns: ColumnDef<DeviceRow>[] = [
+const baseColumns: ColumnDef<typeof dsTableFeatures, DeviceRow>[] = [
 	{ id: 'name', accessorKey: 'name', header: 'Name', cell: (info) => info.getValue() },
 	{
 		id: 'type',

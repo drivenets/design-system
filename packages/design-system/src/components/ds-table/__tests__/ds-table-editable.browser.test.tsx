@@ -9,6 +9,7 @@ import {
 	DsTableEditCellSelect,
 	DsTableEditCellText,
 } from '../components/edit/cell-editors';
+import { type dsTableFeatures } from '../ds-table-features';
 
 interface TestRow {
 	id: string;
@@ -38,19 +39,23 @@ interface WrapperProps {
 const TableWrapper = ({ onCellEdit, onRowClick, onRowDoubleClick }: WrapperProps) => {
 	const [rows, setRows] = useState(initialRows);
 
-	const columns: ColumnDef<TestRow>[] = [
+	const columns: ColumnDef<typeof dsTableFeatures, TestRow>[] = [
 		{
 			accessorKey: 'firstName',
 			header: 'First Name',
 			cell: (info) => info.getValue(),
-			editCell: (info: CellContext<TestRow, string>) => <DsTableEditCellText cellContext={info} />,
+			editCell: (info: CellContext<typeof dsTableFeatures, TestRow, string>) => (
+				<DsTableEditCellText cellContext={info} />
+			),
 		},
 		{
 			accessorKey: 'age',
 			header: 'Age',
 			cell: (info) => info.getValue(),
-			editCell: (info: CellContext<TestRow, number>) => <DsTableEditCellNumber cellContext={info} />,
-			editDisabled: (info: CellContext<TestRow, number>) => {
+			editCell: (info: CellContext<typeof dsTableFeatures, TestRow, number>) => (
+				<DsTableEditCellNumber cellContext={info} />
+			),
+			editDisabled: (info: CellContext<typeof dsTableFeatures, TestRow, number>) => {
 				if (info.row.original.id === '1') {
 					return { reason: 'Age is locked' };
 				}
@@ -64,7 +69,7 @@ const TableWrapper = ({ onCellEdit, onRowClick, onRowDoubleClick }: WrapperProps
 			accessorKey: 'status',
 			header: 'Status',
 			cell: (info) => info.getValue(),
-			editCell: (info: CellContext<TestRow, string>) => (
+			editCell: (info: CellContext<typeof dsTableFeatures, TestRow, string>) => (
 				<DsTableEditCellSelect cellContext={info} options={statusOptions} />
 			),
 		},
@@ -72,7 +77,9 @@ const TableWrapper = ({ onCellEdit, onRowClick, onRowDoubleClick }: WrapperProps
 			accessorKey: 'active',
 			header: 'Active',
 			cell: (info) => ((info.getValue() as boolean) ? 'Yes' : 'No'),
-			editCell: (info: CellContext<TestRow, boolean>) => <DsTableEditCellCheckbox cellContext={info} />,
+			editCell: (info: CellContext<typeof dsTableFeatures, TestRow, boolean>) => (
+				<DsTableEditCellCheckbox cellContext={info} />
+			),
 		},
 	];
 
@@ -154,12 +161,14 @@ interface AsyncEditWrapperProps {
 const AsyncEditWrapper = ({ save, onCommitted }: AsyncEditWrapperProps) => {
 	const [rows, setRows] = useState(initialRows);
 
-	const columns: ColumnDef<TestRow>[] = [
+	const columns: ColumnDef<typeof dsTableFeatures, TestRow>[] = [
 		{
 			accessorKey: 'firstName',
 			header: 'First Name',
 			cell: (info) => info.getValue(),
-			editCell: (info: CellContext<TestRow, string>) => <DsTableEditCellText cellContext={info} />,
+			editCell: (info: CellContext<typeof dsTableFeatures, TestRow, string>) => (
+				<DsTableEditCellText cellContext={info} />
+			),
 		},
 	];
 

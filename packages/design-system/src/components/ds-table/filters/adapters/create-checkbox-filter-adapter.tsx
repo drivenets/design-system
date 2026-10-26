@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Row } from '@tanstack/react-table';
+import type { Row, RowData } from '@tanstack/react-table';
 import type { FilterAdapter } from '../types/filter-adapter.types';
 import {
 	type CheckboxFilterItem,
@@ -7,8 +7,9 @@ import {
 	CheckboxFilter,
 } from '../components/checkbox-filter';
 import { createFilterAdapter } from './create-filter-adapter';
+import type { DsTableFeatures } from '../../ds-table-features';
 
-export interface CheckboxFilterAdapterConfig<TData, TValue> {
+export interface CheckboxFilterAdapterConfig<TData extends RowData, TValue> {
 	/** Unique id, should match the column `accessorKey`. */
 	id: string;
 	label: string;
@@ -20,7 +21,7 @@ export interface CheckboxFilterAdapterConfig<TData, TValue> {
 	chipLabelTemplate?: (item: CheckboxFilterItem<TValue>) => string;
 	cellRenderer?: (value: TValue) => ReactNode;
 	/** @default (row) => row.getValue(id) */
-	getRowValue?: (row: Row<TData>) => TValue;
+	getRowValue?: (row: Row<DsTableFeatures, TData>) => TValue;
 	/** Show a search input above the list. @default false */
 	searchable?: boolean;
 	/** Show an "All" toggle that selects / clears every (visible) item. @default false */
@@ -32,7 +33,7 @@ export interface CheckboxFilterAdapterConfig<TData, TValue> {
  * Multi-select inclusion filter: empty selection shows every row, selected
  * items show only those rows.
  */
-export function createCheckboxFilterAdapter<TData, TValue = string>(
+export function createCheckboxFilterAdapter<TData extends RowData, TValue = string>(
 	config: CheckboxFilterAdapterConfig<TData, TValue>,
 ): FilterAdapter<TData, CheckboxFilterItem<TValue>[], TValue> {
 	const {

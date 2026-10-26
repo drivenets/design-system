@@ -5,10 +5,11 @@ import { DsIcon } from '../../../../ds-icon';
 import { useCellEditor } from '../../../hooks/use-cell-editor';
 import styles from './cell-editors.module.scss';
 import { TableEditFormControl } from './table-edit-form-control';
+import type { DsTableFeatures } from '../../../ds-table-features';
 
 export interface DsTableEditCellTextProps<TData extends RowData> {
 	/** TanStack Table cell context from `ColumnDef.editCell`. */
-	cellContext: CellContext<TData, string>;
+	cellContext: CellContext<DsTableFeatures, TData, string>;
 	placeholder?: string;
 	maxLength?: number;
 }

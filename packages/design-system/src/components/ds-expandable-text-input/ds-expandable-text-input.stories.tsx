@@ -3,7 +3,7 @@ import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsExpandableTextInput } from './ds-expandable-text-input';
 import { textInputSizes } from '../ds-text-input';
-import { DsTable } from '../ds-table';
+import { DsTable, type dsTableFeatures } from '../ds-table';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsStack } from '../ds-stack';
 
@@ -124,7 +124,7 @@ type Person = {
 	age: number;
 };
 
-const columns: ColumnDef<Person>[] = [
+const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 	{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue() },

@@ -4,7 +4,7 @@
  *
  * @example
  * ```tsx
- * const columns: ColumnDef<Row>[] = [
+ * const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
  *   {
  *     id: 'equipment',
  *     header: 'Equipment',

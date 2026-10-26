@@ -1,10 +1,11 @@
 import type { CellContext, RowData } from '@tanstack/react-table';
 import { DsCheckbox } from '../../../../ds-checkbox';
 import { useCellEditor } from '../../../hooks/use-cell-editor';
+import type { DsTableFeatures } from '../../../ds-table-features';
 
 export interface DsTableEditCellCheckboxProps<TData extends RowData> {
 	/** TanStack Table cell context from `ColumnDef.editCell`. */
-	cellContext: CellContext<TData, boolean>;
+	cellContext: CellContext<DsTableFeatures, TData, boolean>;
 	disabled?: boolean;
 }
 

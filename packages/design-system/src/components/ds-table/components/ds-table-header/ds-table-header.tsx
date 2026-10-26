@@ -1,4 +1,4 @@
-import { flexRender } from '@tanstack/react-table';
+import { flexRender, type RowData } from '@tanstack/react-table';
 import classnames from 'classnames';
 import { DsIcon } from '../../../ds-icon';
 import { TableHead, TableHeader, TableRow } from '../core-table';
@@ -18,7 +18,7 @@ import { DsTableHeaderLabel } from '../ds-table-header-label';
 import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import { isFirstLeafColumnOfGroup } from '../../grouping';
 
-const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
+const DsTableHeader = <TData extends RowData>({ table }: DsTableHeaderProps<TData>) => {
 	const { bordered, virtualized, resizableColumns, resizeSizingReady, columnDisplay } = useDsTableContext<
 		TData,
 		unknown
@@ -36,7 +36,7 @@ const DsTableHeader = <TData,>({ table }: DsTableHeaderProps<TData>) => {
 					)}
 				>
 					{headerGroup.headers.map((header) => {
-						const columnSizing = table.getState().columnSizing;
+						const columnSizing = table.store.state.columnSizing;
 						const { style: stickyStyle, ...stickyAttributes } = getStickyCellProps(
 							table,
 							header.column

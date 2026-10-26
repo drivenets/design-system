@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import type React from 'react';
 import classnames from 'classnames';
 import { useSortable } from '@dnd-kit/sortable';
@@ -54,7 +55,7 @@ const DsRowDragHandle = ({
 	);
 };
 
-const DsTableRow = <TData,>({ ref, row, isSelected }: DsTableRowProps<TData>) => {
+const DsTableRow = <TData extends RowData>({ ref, row, isSelected }: DsTableRowProps<TData>) => {
 	const {
 		reorderable,
 		onRowClick,

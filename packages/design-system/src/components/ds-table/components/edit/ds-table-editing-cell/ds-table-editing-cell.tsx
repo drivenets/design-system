@@ -1,12 +1,14 @@
 import { useEffect, useRef, type SubmitEvent } from 'react';
-import { flexRender } from '@tanstack/react-table';
+import { flexRender, type RowData } from '@tanstack/react-table';
 import { DsButtonV3 } from '../../../../ds-button-v3';
 import { DsStack } from '../../../../ds-stack';
 import { useDsTableContext } from '../../../context/ds-table-context';
 import styles from './ds-table-editing-cell.module.scss';
 import type { DsTableEditingCellProps } from './ds-table-editing-cell.types';
 
-export const DsTableEditingCell = <TData, TValue>({ cell }: DsTableEditingCellProps<TData, TValue>) => {
+export const DsTableEditingCell = <TData extends RowData, TValue>({
+	cell,
+}: DsTableEditingCellProps<TData, TValue>) => {
 	const { commit, cancel, editing } = useDsTableContext<TData, TValue>();
 	const columnDef = cell.column.columnDef;
 	const editAnchorRef = useRef<HTMLDivElement>(null);

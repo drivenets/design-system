@@ -49,6 +49,28 @@ describe('DsTable Virtualized', () => {
 		await expect.element(page.getByRole('status')).toHaveTextContent('No matching records found.');
 	});
 
+	it('lays out rows that arrive after the first render one below another', async () => {
+		const { rerender } = await page.render(
+			<div style={{ height: '400px' }}>
+				<DsTable columns={columns} data={[]} virtualized />
+			</div>,
+		);
+
+		await rerender(
+			<div style={{ height: '400px' }}>
+				<DsTable columns={columns} data={largeData} virtualized />
+			</div>,
+		);
+
+		await expect.element(page.getByText('First2', { exact: true })).toBeInTheDocument();
+		await expect
+			.poll(() => {
+				const [first, second] = document.querySelectorAll('tbody tr');
+				return (second?.getBoundingClientRect().top ?? 0) - (first?.getBoundingClientRect().top ?? 0);
+			})
+			.toBeGreaterThan(0);
+	});
+
 	it('should persist selection through scroll', async () => {
 		await page.render(
 			<div style={{ height: '400px' }}>

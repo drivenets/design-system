@@ -6,8 +6,9 @@ import { DsStack } from '../../ds-stack';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
+import { type dsTableFeatures } from '../ds-table-features';
 
-const buildColumns = (identityDefaultCollapsed = false): ColumnDef<Person>[] => [
+const buildColumns = (identityDefaultCollapsed = false): ColumnDef<typeof dsTableFeatures, Person>[] => [
 	{
 		id: 'identity',
 		header: 'Identity',

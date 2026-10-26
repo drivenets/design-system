@@ -1,4 +1,4 @@
-import { flexRender } from '@tanstack/react-table';
+import { flexRender, type RowData } from '@tanstack/react-table';
 import { DsButtonV3 } from '../../../ds-button-v3';
 import { TableHead } from '../core-table';
 import { useDsTableContext } from '../../context/ds-table-context';
@@ -11,7 +11,7 @@ import { DsTableResizeHandle } from '../ds-table-resize-handle';
 import type { DsTableGroupHeaderCellProps } from './ds-table-group-header-cell.types';
 import styles from './ds-table-group-header-cell.module.scss';
 
-export const DsTableGroupHeaderCell = <TData, TValue>({
+export const DsTableGroupHeaderCell = <TData extends RowData, TValue>({
 	header,
 }: DsTableGroupHeaderCellProps<TData, TValue>) => {
 	const { collapsedColumnGroups, onToggleColumnGroup, locale, resizableColumns, resizeSizingReady } =

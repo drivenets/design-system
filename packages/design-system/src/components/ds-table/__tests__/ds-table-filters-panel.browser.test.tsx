@@ -10,6 +10,7 @@ import { DsTypography } from '../../ds-typography';
 import { DsTagFilter } from '../../ds-tag-filter';
 import { useTableFilters } from '../filters';
 import { type Workflow, workflowFilters } from '../stories/filters-panel/workflow-filters.config';
+import { type dsTableFeatures } from '../ds-table-features';
 
 /**
  * The story `render` is 100+ lines of modal + vertical-tabs layout. These tests
@@ -31,7 +32,7 @@ const sampleUsers = [
 	{ name: 'Neil Sims', colorIndex: 2 },
 ] as const;
 
-const columns: ColumnDef<Workflow>[] = [
+const columns: ColumnDef<typeof dsTableFeatures, Workflow>[] = [
 	{ id: 'status', accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },
 	{ id: 'name', accessorKey: 'name', header: 'Name', cell: (info) => info.getValue() },
 	{

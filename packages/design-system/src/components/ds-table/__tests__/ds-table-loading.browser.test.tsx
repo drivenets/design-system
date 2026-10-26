@@ -4,6 +4,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 import { SKELETON_ROW_COUNT } from '../utils/constants';
+import { type dsTableFeatures } from '../ds-table-features';
 
 const getDataRows = () => page.getByRole('row').all().slice(1);
 
@@ -38,7 +39,7 @@ describe('DsTable loading', () => {
 	});
 
 	it('renders a column-defined custom loadingCell while loading', async () => {
-		const customColumns: ColumnDef<Person>[] = columns.map((column, index) =>
+		const customColumns: ColumnDef<typeof dsTableFeatures, Person>[] = columns.map((column, index) =>
 			index === 0
 				? Object.assign({}, column, { loadingCell: () => <span data-testid="custom-loading-cell" /> })
 				: column,

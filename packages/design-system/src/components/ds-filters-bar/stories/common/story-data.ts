@@ -1,5 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { DsFilterField, DsFilterOption, DsFiltersBarSavedFilter } from '../../ds-filters-bar.types';
+import { type dsTableFeatures } from '../../../ds-table';
 
 /**
  * The day the date presets count back from, fixed so the rows each preset matches never change.
@@ -149,7 +150,7 @@ export const devices: ReadonlyArray<DeviceRow> = deviceTuples.map(
 const labelOf = (options: ReadonlyArray<DsFilterOption>, value: string) =>
 	options.find((option) => option.value === value)?.label ?? value;
 
-export const deviceColumns: Array<ColumnDef<DeviceRow>> = [
+export const deviceColumns: Array<ColumnDef<typeof dsTableFeatures, DeviceRow>> = [
 	{ accessorKey: 'name', header: 'Name' },
 	{
 		accessorKey: 'status',

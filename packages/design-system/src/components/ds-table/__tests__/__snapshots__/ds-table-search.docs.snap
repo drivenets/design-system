@@ -108,7 +108,7 @@ const AdvancedSearch = args => {
           return 'person';
       }
     };
-    const statusColumnDef: ColumnDef<Person> = {
+    const statusColumnDef: ColumnDef<typeof dsTableFeatures, Person> = {
       accessorKey: 'status',
       header: 'Status',
       cell: info => {
@@ -158,7 +158,7 @@ const TabFilters = args => {
         }
     };
 
-    const statusColumnDef: ColumnDef<Person> = {
+    const statusColumnDef: ColumnDef<typeof dsTableFeatures, Person> = {
         accessorKey: 'status',
         header: 'Status',
         cell: (info) => {

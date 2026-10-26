@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import type React from 'react';
 import classnames from 'classnames';
 import { DsButton } from '../../../ds-button';
@@ -6,7 +7,7 @@ import stylesShared from '../../styles/shared/ds-table-shared.module.scss';
 import type { DsTableRowExpandableCellProps } from './ds-table-row-expandable-cell.types';
 import styles from './ds-table-row-expandable-cell.module.scss';
 
-export const DsTableRowExpandableCell = <TData,>({
+export const DsTableRowExpandableCell = <TData extends RowData>({
 	row,
 	buttonClassName,
 }: DsTableRowExpandableCellProps<TData>) => {

@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import {
 	useEffect,
 	useRef,
@@ -37,7 +38,9 @@ const clientPointFromEvent = (event: Event): { x: number; y: number } | null => 
  * leaves. As a focusable `separator`, Arrow keys nudge the width (Shift for a
  * larger step) for keyboard operability (WCAG 2.1.1).
  */
-export const DsTableResizeHandle = <TData, TValue>({ header }: DsTableResizeHandleProps<TData, TValue>) => {
+export const DsTableResizeHandle = <TData extends RowData, TValue>({
+	header,
+}: DsTableResizeHandleProps<TData, TValue>) => {
 	const {
 		scrollContainerRef,
 		onResizeHover,

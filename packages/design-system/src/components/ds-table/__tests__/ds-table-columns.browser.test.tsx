@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ColumnDef, VisibilityState } from '@tanstack/react-table';
+import type { ColumnDef, ColumnVisibilityState } from '@tanstack/react-table';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsCheckbox } from '../../ds-checkbox';
@@ -8,6 +8,7 @@ import DsTable from '../ds-table';
 import type { DsDataTableProps } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 import { COLUMN_DISPLAY_COLUMN_ID } from '../utils/constants';
+import { type dsTableFeatures } from '../ds-table-features';
 
 type SizedRow = { id: string; firstName: string; lastName: string };
 
@@ -38,7 +39,7 @@ describe('DsTable - Columns', () => {
 
 	it('should toggle column visibility', async () => {
 		function ColumnHidingWrapper() {
-			const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+			const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({
 				age: true,
 				visits: true,
 				status: true,
@@ -102,7 +103,7 @@ describe('DsTable - Columns', () => {
 	});
 
 	it('keeps an authored 150px column fixed while an unsized sibling fills', async () => {
-		const sizedColumns: ColumnDef<SizedRow>[] = [
+		const sizedColumns: ColumnDef<typeof dsTableFeatures, SizedRow>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', size: 150 },
 			{ accessorKey: 'lastName', header: 'Last Name' },
 		];
@@ -123,7 +124,7 @@ describe('DsTable - Columns', () => {
 	});
 
 	describe('column display', () => {
-		const groupedColumns: ColumnDef<Person>[] = [
+		const groupedColumns: ColumnDef<typeof dsTableFeatures, Person>[] = [
 			{
 				id: 'identity',
 				header: 'Identity',
@@ -199,7 +200,7 @@ describe('DsTable - Columns', () => {
 			const onColumnVisibilityChange = vi.fn();
 
 			function ControlledTable() {
-				const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+				const [columnVisibility, setColumnVisibility] = useState<ColumnVisibilityState>({});
 
 				return (
 					<div style={{ padding: HARNESS_OFFSET_PX }}>

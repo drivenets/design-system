@@ -7,8 +7,9 @@ import { DsButtonV3 } from '../../ds-button-v3';
 import { columns, defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
 import styles from './ds-table.stories.module.scss';
+import { type dsTableFeatures } from '../ds-table-features';
 
-const horizontalScrollColumns: ColumnDef<Person>[] = [
+const horizontalScrollColumns: ColumnDef<typeof dsTableFeatures, Person>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 250 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 250 },
 	{ accessorKey: 'age', header: 'Age (years)', cell: (info) => info.getValue(), size: 200 },

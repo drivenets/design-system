@@ -4,6 +4,7 @@ import { page } from 'vitest/browser';
 import type { Row, RowSelectionState } from '@tanstack/react-table';
 import type { Virtualizer } from '@tanstack/react-virtual';
 import { DsTableBody } from '../components/ds-table-body-virtualized';
+import { type dsTableFeatures } from '../ds-table-features';
 
 type BodyVirtualizer = Virtualizer<HTMLElement, HTMLTableRowElement>;
 
@@ -32,7 +33,7 @@ describe('DsTableBody (virtualized)', () => {
 					{...baseProps}
 					rowVirtualizer={createEmptyItemsVirtualizer()}
 					// data present (count > 0) — row content is never read in this branch
-					rowsAndExpandedRowContent={[{ row: {} as Row<unknown> }]}
+					rowsAndExpandedRowContent={[{ row: {} as Row<typeof dsTableFeatures, Record<string, unknown>> }]}
 				/>
 			</table>,
 		);

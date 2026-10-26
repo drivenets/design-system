@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { DsIcon } from '../../ds-icon';
 import DsTable from '../ds-table';
+import { type dsTableFeatures } from '../ds-table-features';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { DsModal } from '../../ds-modal';
 import { DsStack } from '../../ds-stack';
@@ -25,7 +26,7 @@ const sampleUsers = [
 	{ name: 'Neil Sims', colorIndex: 2 },
 ] as const;
 
-const columns: ColumnDef<Workflow>[] = [
+const columns: ColumnDef<typeof dsTableFeatures, Workflow>[] = [
 	{
 		id: 'status',
 		accessorKey: 'status',

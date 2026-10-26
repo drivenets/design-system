@@ -1,5 +1,5 @@
 import { type ReactNode, useState } from 'react';
-import type { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { CellContext, ColumnDef, RowData } from '@tanstack/react-table';
 import type { TagFilterItem } from '../../../ds-tag-filter';
 import type {
 	AnyAdapter,
@@ -10,6 +10,7 @@ import type {
 	FilterState,
 	ResolvedColumnFilter,
 } from '../types/filter-adapter.types';
+import type { DsTableFeatures } from '../../ds-table-features';
 
 const resolveColumnAdapterId = (
 	meta: ColumnFilterMeta | ResolvedColumnFilter | undefined,
@@ -26,16 +27,16 @@ const resolveColumnAdapterId = (
 	return meta.adapterId;
 };
 
-export interface UseTableFiltersOptions<TData, TValue, TCellValue> {
+export interface UseTableFiltersOptions<TData extends RowData, TValue, TCellValue> {
 	filterAdapters: FilterAdapter<TData, TValue, TCellValue>[] | AnyAdapter[];
-	baseColumns?: ColumnDef<TData>[];
+	baseColumns?: ColumnDef<DsTableFeatures, TData>[];
 	/** Controlled applied filters, keyed by adapter id. Pair with `onFiltersChange`. */
 	appliedFilters?: FilterState<TValue>;
 	/** Fires from `applyFilters`, `deleteChip`, and `clearAll` in controlled mode. */
 	onFiltersChange?: (filters: FilterState<TValue>) => void;
 }
 
-export interface UseTableFiltersResult<TData, TValue> {
+export interface UseTableFiltersResult<TData extends RowData, TValue> {
 	/** Draft filter state (uncommitted). */
 	filterState: FilterState<TValue>;
 	/** Applied filters mapped to TanStack's column-filters shape. */
@@ -45,7 +46,7 @@ export interface UseTableFiltersResult<TData, TValue> {
 	/** Filter-nav items with active counts. */
 	filterNavItems: FilterNavItem[];
 	/** `baseColumns` with `filterFn`, cell renderer and per-column meta wired in. */
-	enhancedColumns: ColumnDef<TData>[];
+	enhancedColumns: ColumnDef<DsTableFeatures, TData>[];
 	handlers: {
 		/** Update a filter's draft value. */
 		updateFilter: (filterId: string, value: TValue) => void;
@@ -73,7 +74,7 @@ export interface UseTableFiltersResult<TData, TValue> {
  * column wiring. Uncontrolled by default; pass `appliedFilters` +
  * `onFiltersChange` for URL-driven / external state.
  */
-export function useTableFilters<TData, TValue, TCellValue>({
+export function useTableFilters<TData extends RowData, TValue, TCellValue>({
 	filterAdapters,
 	baseColumns,
 	appliedFilters: externalAppliedFilters,
@@ -114,7 +115,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 		count: adapter.getActiveFiltersCount(draftFilters[adapter.id] as TValue),
 	}));
 
-	const enhancedColumns: ColumnDef<TData>[] = !baseColumns
+	const enhancedColumns: ColumnDef<DsTableFeatures, TData>[] = !baseColumns
 		? []
 		: baseColumns.map((col) => {
 				const metaFilter = col.meta?.filter as ColumnFilterMeta | undefined;
@@ -144,7 +145,7 @@ export function useTableFilters<TData, TValue, TCellValue>({
 					...col,
 					filterFn: adapter.columnFilterFn,
 					...(cellRenderer && {
-						cell: (info: CellContext<TData, TCellValue>) => cellRenderer(info.getValue()),
+						cell: (info: CellContext<DsTableFeatures, TData>) => cellRenderer(info.getValue<TCellValue>()),
 					}),
 					...(resolvedFilter && {
 						meta: {

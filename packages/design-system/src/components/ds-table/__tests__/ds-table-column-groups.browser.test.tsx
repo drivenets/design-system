@@ -3,6 +3,7 @@ import { page } from 'vitest/browser';
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
+import { type dsTableFeatures } from '../ds-table-features';
 
 type Row = {
 	id: string;
@@ -16,7 +17,7 @@ const rows: Row[] = [
 	{ id: '2', firstName: 'Kevin', lastName: 'Fine', age: 28 },
 ];
 
-const buildColumns = (defaultCollapsed = false): ColumnDef<Row>[] => [
+const buildColumns = (defaultCollapsed = false): ColumnDef<typeof dsTableFeatures, Row>[] => [
 	{
 		id: 'identity',
 		header: 'Identity',

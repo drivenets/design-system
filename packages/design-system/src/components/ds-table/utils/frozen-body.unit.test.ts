@@ -1,11 +1,15 @@
 import { describe, expect, it } from 'vitest';
 import type { Table as TanstackTable } from '@tanstack/react-table';
 import { areBodiesFrozen } from './frozen-body';
+import { type dsTableFeatures } from '../ds-table-features';
 
 type Row = { id: string };
 
-const tableResizing = (isResizingColumn: string | false): TanstackTable<Row> =>
-	({ getState: () => ({ columnSizingInfo: { isResizingColumn } }) }) as unknown as TanstackTable<Row>;
+const tableResizing = (isResizingColumn: string | false): TanstackTable<typeof dsTableFeatures, Row> =>
+	({ store: { state: { columnResizing: { isResizingColumn } } } }) as unknown as TanstackTable<
+		typeof dsTableFeatures,
+		Row
+	>;
 
 describe('areBodiesFrozen', () => {
 	it('never freezes when no column is being resized', () => {
@@ -34,7 +38,7 @@ describe('areBodiesFrozen', () => {
 		expect(areBodiesFrozen(prev, next)).toBe(false);
 	});
 
-	it('ignores the identity of the stable table instance', () => {
+	it('ignores the table identity, which changes on every render', () => {
 		const rowSelection = {};
 		const prev = { table: tableResizing('firstName'), rowSelection };
 		const next = { table: tableResizing('firstName'), rowSelection };

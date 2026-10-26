@@ -8,6 +8,7 @@ import {
 	SELECT_COLUMN_ID,
 	SELECT_COLUMN_WIDTH,
 } from '../utils/constants';
+import { type dsTableFeatures } from '../ds-table-features';
 
 type Row = {
 	id: string;
@@ -28,13 +29,13 @@ const virtualizedRows: Row[] = Array.from({ length: 40 }, (_, i) => ({
 	age: 20 + (i % 50),
 }));
 
-const sizedColumns: ColumnDef<Row>[] = [
+const sizedColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
 	{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 120 },
 ];
 
-const groupedColumns: ColumnDef<Row>[] = [
+const groupedColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 	{
 		id: 'identity',
 		header: 'Identity',
@@ -246,7 +247,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('omits the handle for a column with enableResizing: false', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
 			{
 				accessorKey: 'lastName',
@@ -271,7 +272,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not shrink a column below the minimum width', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 64 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
 		];
@@ -283,7 +284,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps the drag overlay on the cell edge when shrinking past the minimum width', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 64 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
 		];
@@ -314,7 +315,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not shrink a column below its minSize', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: 'First Name',
@@ -332,7 +333,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not grow a column past its maxSize', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: 'First Name',
@@ -350,7 +351,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps the drag overlay on the cell edge when growing past maxSize', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: 'First Name',
@@ -388,7 +389,7 @@ describe('DsTable - resizable columns', () => {
 
 	it('fires onColumnSizingChange with clamped widths on drag', async () => {
 		const onColumnSizingChange = vi.fn();
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: 'First Name',
@@ -551,7 +552,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps fixed width styles when resized through TanStack’s default size (150)', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 140 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
 		];
@@ -608,7 +609,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps the drag overlay on the cell right edge after horizontal scroll', async () => {
-		const wideColumns: ColumnDef<Row>[] = [
+		const wideColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 400 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 400 },
 			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 400 },
@@ -644,7 +645,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps the drag overlay aligned with a group boundary', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			...groupedColumns,
 			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 120 },
 		];
@@ -819,7 +820,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not introduce horizontal overflow when seeding two fill columns', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -841,7 +842,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not introduce horizontal overflow when hovering the last fill-column handle', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -871,7 +872,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not introduce horizontal overflow when seeding three fill columns', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue() },
@@ -894,7 +895,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('does not introduce horizontal overflow when seeding a virtualized table with a vertical scrollbar', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -916,7 +917,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('keeps outer horizontal scroll when virtualized authored widths exceed the container', async () => {
-		const wideColumns: ColumnDef<Row>[] = [
+		const wideColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 400 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 400 },
 			{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 400 },
@@ -939,7 +940,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('fills the container when seeding grouped fill columns in a wide container', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{
 				id: 'identity',
 				header: 'Identity',
@@ -986,7 +987,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('returns fill columns to flex when resizing is turned off', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 200 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -1001,7 +1002,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('restores a persisted 150px width instead of falling back to a fill column', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -1014,7 +1015,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('restores a persisted non-default width on mount', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 		];
@@ -1075,7 +1076,7 @@ describe('DsTable - resizable columns', () => {
 	});
 
 	it('clamps keyboard resizing at the minimum width', async () => {
-		const columns: ColumnDef<Row>[] = [
+		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 64 },
 			{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 200 },
 		];

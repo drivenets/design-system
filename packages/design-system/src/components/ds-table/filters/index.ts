@@ -1,5 +1,3 @@
-import './types/column-meta.augmentation';
-
 export * from './adapters';
 export * from './types/filter-adapter.types';
 export * from './hooks';

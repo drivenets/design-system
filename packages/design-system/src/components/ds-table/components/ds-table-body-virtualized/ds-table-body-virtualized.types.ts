@@ -1,12 +1,13 @@
 import { type ReactNode } from 'react';
-import { type RowSelectionState, type Table } from '@tanstack/react-table';
+import { type RowSelectionState, type Table, type RowData } from '@tanstack/react-table';
+import type { DsTableFeatures } from '../../ds-table-features';
 
-export interface DsTableBodyVirtualizedProps<TData> {
+export interface DsTableBodyVirtualizedProps<TData extends RowData> {
 	/**
 	 * TanStack Table instance driving the body. Provides row models, visible rows,
 	 * and column state.
 	 */
-	table: Table<TData>;
+	table: Table<DsTableFeatures, TData>;
 	/**
 	 * Optional content rendered in place of rows when the table has no data.
 	 */

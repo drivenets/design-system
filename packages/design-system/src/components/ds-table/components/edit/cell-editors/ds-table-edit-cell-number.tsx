@@ -4,10 +4,11 @@ import { DsFormControl } from '../../../../ds-form-control';
 import { useCellEditor } from '../../../hooks/use-cell-editor';
 import styles from './cell-editors.module.scss';
 import { TableEditFormControl } from './table-edit-form-control';
+import type { DsTableFeatures } from '../../../ds-table-features';
 
 export interface DsTableEditCellNumberProps<TData extends RowData> {
 	/** TanStack Table cell context from `ColumnDef.editCell`. */
-	cellContext: CellContext<TData, number>;
+	cellContext: CellContext<DsTableFeatures, TData, number>;
 	min?: number;
 	max?: number;
 	step?: number;

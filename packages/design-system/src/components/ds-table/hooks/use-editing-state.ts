@@ -1,19 +1,20 @@
 import { useCallback, useRef, useState } from 'react';
-import type { Cell } from '@tanstack/react-table';
+import type { Cell, RowData } from '@tanstack/react-table';
 import type { DsDataTableProps } from '../ds-table.types';
+import type { DsTableFeatures } from '../ds-table-features';
 
-export interface EditingState<TData, TValue> {
-	cell: Cell<TData, TValue>;
+export interface EditingState<TData extends RowData, TValue> {
+	cell: Cell<DsTableFeatures, TData, TValue>;
 	draftValue: TValue;
 	error: string | null;
 	/** True while an async `onCellEdit` commit Promise is pending for this cell. */
 	pending: boolean;
 }
 
-export interface UseEditingStateResult<TData, TValue> {
+export interface UseEditingStateResult<TData extends RowData, TValue> {
 	/** The cell currently in edit mode, if any. */
 	editing: EditingState<TData, TValue> | null;
-	beginEdit: (cell: Cell<TData, TValue>) => void;
+	beginEdit: (cell: Cell<DsTableFeatures, TData, TValue>) => void;
 	setDraft: (value: TValue) => void;
 	commit: (overrideValue?: TValue) => void;
 	cancel: () => void;
@@ -33,7 +34,7 @@ const extractErrorMessage = (reason: unknown, fallback: string): string =>
  * Hoisted editing state for single-cell-at-a-time inline editing.
  * Surfaced on DsTableContext so cell renderers and editors share one provider.
  */
-export const useEditingState = <TData, TValue>(
+export const useEditingState = <TData extends RowData, TValue>(
 	onCellEdit: DsDataTableProps<TData, TValue>['onCellEdit'],
 	onCellValidate: DsDataTableProps<TData, TValue>['onCellValidate'],
 ): UseEditingStateResult<TData, TValue> => {
@@ -64,7 +65,7 @@ export const useEditingState = <TData, TValue>(
 	}, []);
 
 	const beginEdit = useCallback(
-		(cell: Cell<TData, TValue>) => {
+		(cell: Cell<DsTableFeatures, TData, TValue>) => {
 			const current = editingRef.current;
 			if (current) {
 				const isSameCell = current.cell.row.id === cell.row.id && current.cell.column.id === cell.column.id;

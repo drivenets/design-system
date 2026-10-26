@@ -1,11 +1,12 @@
-import type { Table } from '@tanstack/react-table';
+import type { Table, RowData } from '@tanstack/react-table';
+import type { DsTableFeatures } from '../../ds-table-features';
 
-export interface DsTableColumnDisplayProps<TData> {
+export interface DsTableColumnDisplayProps<TData extends RowData> {
 	/**
 	 * TanStack Table instance. Supplies the column tree and applies visibility
 	 * changes through the table's `onColumnVisibilityChange`.
 	 */
-	table: Table<TData>;
+	table: Table<DsTableFeatures, TData>;
 }
 
 export type ColumnDisplayCheckedState = boolean | 'indeterminate';

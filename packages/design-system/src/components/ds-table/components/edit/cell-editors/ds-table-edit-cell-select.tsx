@@ -4,10 +4,11 @@ import { type DsSelectOption } from '../../../../ds-select';
 import { useCellEditor } from '../../../hooks/use-cell-editor';
 import styles from './cell-editors.module.scss';
 import { TableEditFormControl } from './table-edit-form-control';
+import type { DsTableFeatures } from '../../../ds-table-features';
 
 export interface DsTableEditCellSelectProps<TData extends RowData> {
 	/** TanStack Table cell context from `ColumnDef.editCell`. */
-	cellContext: CellContext<TData, string>;
+	cellContext: CellContext<DsTableFeatures, TData, string>;
 	options: DsSelectOption[];
 	placeholder?: string;
 }

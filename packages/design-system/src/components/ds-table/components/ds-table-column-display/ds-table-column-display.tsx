@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import { type MouseEvent, useId, useState } from 'react';
 import { Popover } from '@ark-ui/react/popover';
 import { Portal } from '@ark-ui/react/portal';
@@ -28,7 +29,7 @@ const POPOVER_GUTTER_PX = 4;
 // popover would otherwise reach the header cell's click handlers.
 const stopPropagation = (event: MouseEvent) => event.stopPropagation();
 
-const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
+const ColumnDisplayPanel = <TData extends RowData>({ table }: DsTableColumnDisplayProps<TData>) => {
 	const { locale, columnVisibility } = useDsTableContext<TData, unknown>();
 	const { searchColumns, allColumns, stickyColumn } = { ...defaultDsTableLocale, ...locale };
 	const searchId = useId();
@@ -58,7 +59,7 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
 				itemLabel={node.label}
 				locale={{ pin: stickyColumn }}
 				pinned={column.getIsPinned() !== false}
-				onPinnedChange={(sticky) => column.pin(sticky ? 'left' : false)}
+				onPinnedChange={(sticky) => column.pin(sticky ? 'start' : false)}
 			/>
 		);
 	};
@@ -127,7 +128,7 @@ const ColumnDisplayPanel = <TData,>({ table }: DsTableColumnDisplayProps<TData>)
  * column with a checkbox and a sticky toggle per top-level row, plus a search
  * field and an "All columns" toggle.
  */
-export const DsTableColumnDisplay = <TData,>({ table }: DsTableColumnDisplayProps<TData>) => {
+export const DsTableColumnDisplay = <TData extends RowData>({ table }: DsTableColumnDisplayProps<TData>) => {
 	const { locale } = useDsTableContext<TData, unknown>();
 	const label = { ...defaultDsTableLocale, ...locale }.columns;
 	const [open, setOpen] = useState(false);

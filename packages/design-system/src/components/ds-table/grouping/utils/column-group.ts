@@ -3,9 +3,11 @@ import {
 	type Column,
 	type ColumnDef,
 	type ColumnSizingState,
-	type VisibilityState,
+	type ColumnVisibilityState,
+	type RowData,
 } from '@tanstack/react-table';
 import { isExplicitColumnWidth } from '../../utils/column-size';
+import type { DsTableFeatures } from '../../ds-table-features';
 
 /**
  * Builds the flex style for a group header cell so it lines up with the combined
@@ -15,8 +17,8 @@ import { isExplicitColumnWidth } from '../../utils/column-size';
  * `flexGrow`, mirroring how {@link getColumnSizeStyle} sizes leaf cells so both
  * header rows distribute free space identically.
  */
-export const getGroupColumnSizeStyle = <TData, TValue>(
-	leafColumns: Column<TData, TValue>[],
+export const getGroupColumnSizeStyle = <TData extends RowData, TValue>(
+	leafColumns: Column<DsTableFeatures, TData, TValue>[],
 	columnSizing: ColumnSizingState,
 ): CSSProperties => {
 	let fixedWidth = 0;
@@ -42,7 +44,9 @@ export const getGroupColumnSizeStyle = <TData, TValue>(
  * Whether a column is the first visible leaf of its parent group. Used to draw a
  * single side border at the start of each group in both the header and body.
  */
-export const isFirstLeafColumnOfGroup = <TData, TValue>(column: Column<TData, TValue>): boolean => {
+export const isFirstLeafColumnOfGroup = <TData extends RowData, TValue>(
+	column: Column<DsTableFeatures, TData, TValue>,
+): boolean => {
 	const parent = column.parent;
 	if (!parent) {
 		return false;
@@ -53,23 +57,26 @@ export const isFirstLeafColumnOfGroup = <TData, TValue>(column: Column<TData, TV
 	return visibleLeaves[0]?.id === column.id;
 };
 
-type GroupColumnDef<TData, TValue> = ColumnDef<TData, TValue> & {
+type GroupColumnDef<TData extends RowData, TValue> = ColumnDef<DsTableFeatures, TData, TValue> & {
 	id?: string;
 	accessorKey?: string;
-	columns?: ColumnDef<TData, TValue>[];
+	columns?: ColumnDef<DsTableFeatures, TData, TValue>[];
 };
 
-const getLeafColumnId = <TData, TValue>(def: GroupColumnDef<TData, TValue>): string | undefined =>
-	def.id ?? def.accessorKey;
+const getLeafColumnId = <TData extends RowData, TValue>(
+	def: GroupColumnDef<TData, TValue>,
+): string | undefined => def.id ?? def.accessorKey;
 
 /**
  * Collects the ids of groups declared with `meta.group.defaultCollapsed`, used to
  * seed the uncontrolled collapse state.
  */
-export const getInitialCollapsedGroups = <TData, TValue>(columns: ColumnDef<TData, TValue>[]): string[] => {
+export const getInitialCollapsedGroups = <TData extends RowData, TValue>(
+	columns: ColumnDef<DsTableFeatures, TData, TValue>[],
+): string[] => {
 	const collapsed: string[] = [];
 
-	const visit = (defs: ColumnDef<TData, TValue>[]) => {
+	const visit = (defs: ColumnDef<DsTableFeatures, TData, TValue>[]) => {
 		for (const def of defs as GroupColumnDef<TData, TValue>[]) {
 			if (def.columns) {
 				if (def.id && def.meta?.group?.defaultCollapsed) {
@@ -86,17 +93,17 @@ export const getInitialCollapsedGroups = <TData, TValue>(columns: ColumnDef<TDat
 };
 
 /**
- * Maps collapsed groups to a {@link VisibilityState} that hides every leaf column
+ * Maps collapsed groups to a {@link ColumnVisibilityState} that hides every leaf column
  * inside a collapsed group except those flagged `meta.keepVisibleWhenCollapsed`.
  * Layered on top of the consumer's own visibility so collapse never mutates it.
  */
-export const getCollapsedColumnVisibility = <TData, TValue>(
-	columns: ColumnDef<TData, TValue>[],
+export const getCollapsedColumnVisibility = <TData extends RowData, TValue>(
+	columns: ColumnDef<DsTableFeatures, TData, TValue>[],
 	collapsedGroupIds: string[],
-): VisibilityState => {
-	const visibility: VisibilityState = {};
+): ColumnVisibilityState => {
+	const visibility: ColumnVisibilityState = {};
 
-	const visit = (defs: ColumnDef<TData, TValue>[], isInsideCollapsedGroup: boolean) => {
+	const visit = (defs: ColumnDef<DsTableFeatures, TData, TValue>[], isInsideCollapsedGroup: boolean) => {
 		for (const def of defs as GroupColumnDef<TData, TValue>[]) {
 			if (def.columns) {
 				const isGroupCollapsed = isInsideCollapsedGroup || (!!def.id && collapsedGroupIds.includes(def.id));

@@ -1,3 +1,4 @@
+import type { RowData } from '@tanstack/react-table';
 import type { MouseEvent } from 'react';
 import { DsButtonV3 } from '../../../../ds-button-v3';
 import { DsIcon } from '../../../../ds-icon';
@@ -6,7 +7,7 @@ import styles from './ds-table-editable-cell.module.scss';
 import type { DsTableEditableCellProps } from './ds-table-editable-cell.types';
 import { useDsTableContext } from '../../../context/ds-table-context';
 
-export const DsTableEditableCell = <TData, TValue>({
+export const DsTableEditableCell = <TData extends RowData, TValue>({
 	cell,
 	children,
 }: DsTableEditableCellProps<TData, TValue>) => {

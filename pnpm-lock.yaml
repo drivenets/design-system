@@ -441,6 +441,9 @@ importers:
       '@tanstack/react-router':
         specifier: ^1.170.41
         version: 1.170.42(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@tanstack/table-core':
+        specifier: ^9.3.1
+        version: 9.3.1
       '@tsdown/css':
         specifier: ^0.23.0
         version: 0.23.0(jiti@2.7.0)(postcss-modules@6.0.1(postcss@8.5.28))(postcss@8.5.28)(sass-embedded@1.105.1)(sass@1.104.0)(tsdown@0.23.1)(yaml@2.9.0)
