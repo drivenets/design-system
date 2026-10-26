@@ -1,5 +1,11 @@
 # @drivenets/design-system
 
+## 0.24.1
+
+### Patch Changes
+
+- aa74058: Fix `DsTable` throwing on mount in jsdom tests, and stop its row actions from briefly overflowing the table while the icon font loads.
+
 ## 0.24.0
 
 ### Minor Changes
