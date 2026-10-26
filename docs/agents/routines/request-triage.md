@@ -222,7 +222,7 @@ Each time you move a ticket to `In Progress` or `In Review`, also put it in the 
 Auto-fix wakes the session that opened the PR when the PR is merged. That session then closes the ticket; Jira has no `Done` status for Bugs, so done means `Closed`:
 
 1. If the ticket is still in `In Review` (the PR merged before anyone saw the approval), first move it to `Pending Merge` as in [step 0](#0-follow-up-on-open-prs) item 5, without its comment.
-2. Transition `Pending Merge` → `Closed` with resolution `Resolved`.
+2. Transition `Pending Merge` → `Closed` without passing a resolution: the transition sets `Resolved` itself, and Jira rejects it when one is passed.
 3. Comment with the PR link and the merge date. Keep the labels.
 
 Look the [version](#settings) up again for these transitions: the one from the session's run may be days old. If the ticket is in any other status (a person moved it, or step 9 couldn't), or a transition asks for fields you can't fill, stop there and say so in the comment. When the PR is closed without merging, comment on the ticket, add `ds-bot:needs-human`, and leave the status.
