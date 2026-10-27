@@ -734,6 +734,54 @@ describe('DsSelect', () => {
 			expectListboxToOwnOnlyOptions();
 		});
 
+		const expectFocusToAnnounceHighlightedOption = async () => {
+			await expect.poll(() => document.querySelector('[role="option"][data-highlighted]')).not.toBeNull();
+
+			const highlightedId = document.querySelector('[role="option"][data-highlighted]')?.id;
+			expect(document.activeElement?.getAttribute('aria-activedescendant')).toBe(highlightedId);
+		};
+
+		it('should announce the highlighted option from the focused element without search', async () => {
+			await page.render(<ControlledSelectHarness options={countryOptions} style={{ width: '250px' }} />);
+
+			await page.getByRole('combobox').click();
+			await expect.element(page.getByRole('listbox')).toHaveFocus();
+			await userEvent.keyboard('{ArrowDown}');
+
+			await expectFocusToAnnounceHighlightedOption();
+		});
+
+		it('should announce the highlighted option from the search input', async () => {
+			await page.render(<ControlledSelectHarness options={workflowOptions} style={{ width: '250px' }} />);
+
+			await page.getByRole('combobox').click();
+			await expect.element(page.getByPlaceholder('Search')).toHaveFocus();
+			await userEvent.keyboard('{ArrowDown}');
+
+			await expectFocusToAnnounceHighlightedOption();
+			expect(page.getByPlaceholder('Search').element().getAttribute('aria-controls')).toBe(
+				page.getByRole('listbox').element().id,
+			);
+		});
+
+		it('should announce the highlighted option when reopening a multi select with chips', async () => {
+			await page.render(
+				<ControlledSelectHarness options={countryOptions} multiple style={{ width: '250px' }} />,
+			);
+
+			const trigger = page.getByRole('combobox');
+
+			await trigger.click();
+			await page.getByRole('option', { name: 'Japan' }).click();
+			await userEvent.keyboard('{Escape}');
+
+			await trigger.click();
+			await expect.element(page.getByRole('button', { name: 'Clear All' })).toBeVisible();
+			await userEvent.keyboard('{ArrowDown}');
+
+			await expectFocusToAnnounceHighlightedOption();
+		});
+
 		it('should keep the search input visible on first open and on reopen with the selected option scrolled into view', async () => {
 			await page.render(
 				<ControlledSelectHarness
