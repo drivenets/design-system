@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{n as t,t as n}from"./equal-COyPOATC.js";function r(e,n,r){let i=[],a;return o=>{let s=e(o);return(s.length!==i.length||s.some((e,n)=>!t(i[n],e)))&&(i=s,a=n(s,o),r?.onChange?.(a)),a}}function i(){return(i=e((()=>{n()})))()}export{r as n,i as t};
