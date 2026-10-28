@@ -1,5 +1,22 @@
 # @drivenets/design-system
 
+## 0.25.0
+
+### Minor Changes
+
+- 120cd46: Stop static `DsStatusBadgeV2` badges from acting as screen reader live regions, and accept `aria-live` for badges that update in place.
+- 98906e9: Add `slotProps.input` to `DsTextInput` to set ARIA attributes and `role` on its `<input>`.
+
+### Patch Changes
+
+- 1515343: Fix `DsTable` throwing on mount in jsdom tests, and stop its row actions from briefly overflowing the table while the icon font loads.
+- 3fc7cfd: Fix low-contrast dropzone text in `DsFileUpload`, and make its select-file button the dropzone's only keyboard and screen-reader control.
+- 13c549d: Darken `--font-action` and `--font-action-hover` to meet AA text contrast on `--background-page`.
+- 3d2d3a7: Fix the required asterisk in `DsFormControl` sitting too close to the label text.
+- b0297ff: Fix `DsIllustration` and `DsEmptyState` illustrations showing a white tile on non-white surfaces.
+- 15540a8: Fix screen readers not announcing the highlighted `DsSelect` option while typing in its search field or after reopening a multi-select with chips.
+- 14fe429: Fix `DsSelect` failing the axe `aria-required-children` check when it shows the search input or the multi-select chips.
+
 ## 0.24.0
 
 ### Minor Changes
