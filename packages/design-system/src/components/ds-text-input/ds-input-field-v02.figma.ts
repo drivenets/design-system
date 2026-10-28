@@ -77,7 +77,7 @@ const state = instance.getEnum('state', {
 	error: 'error',
 });
 
-const part = instance.findInstance('DAP-part_InputType_v01', { traverseInstances: true });
+const part = instance.findInstance('Part_InputType_v01', { traverseInstances: true });
 const inputType =
 	(part.type === 'INSTANCE'
 		? part.getEnum('inputType', {
