@@ -133,11 +133,7 @@ const Editable = () => {
 
     const progressPresets = [25, 50, 75, 100];
 
-    const ProgressEditor = ({
-        cellContext,
-    }: {
-        cellContext: DsCellContext<Person, number>;
-    }) => {
+    const ProgressEditor = ({ cellContext }: { cellContext: DsCellContext<Person, number> }) => {
         const { value, setValue, error } = useCellEditor<Person, number>({ cellContext });
 
         return (
@@ -227,9 +223,7 @@ const Editable = () => {
             accessorKey: 'progress',
             header: 'Profile Progress',
             cell: (info) => <span className={editableStyles.tagDisplay}>{`${String(info.getValue())}%`}</span>,
-            editCell: (info: DsCellContext<Person, number>) => (
-                <ProgressEditor cellContext={info} />
-            ),
+            editCell: (info: DsCellContext<Person, number>) => <ProgressEditor cellContext={info} />,
         },
     ];
 
