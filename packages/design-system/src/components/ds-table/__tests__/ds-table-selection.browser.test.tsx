@@ -54,6 +54,36 @@ describe('DsTable Selection', () => {
 		}
 	});
 
+	it('should reflect none, some, and all selected rows in the header checkbox', async () => {
+		await page.render(<DsTable columns={columns} data={defaultData.slice(0, 3)} selectable />);
+
+		const headerRoot = page.elementLocator(
+			document.querySelector(`th ${CHECKBOX_ROOT_LABEL}`) as HTMLElement,
+		);
+		const rowRoot = (rowNumber: number) =>
+			page.elementLocator(
+				document.querySelector(
+					`tbody tr:nth-child(${String(rowNumber)}) ${CHECKBOX_ROOT_LABEL}`,
+				) as HTMLElement,
+			);
+
+		await expect.element(headerRoot).toHaveAttribute('data-state', 'unchecked');
+
+		await rowRoot(1).click();
+		await expect.element(headerRoot).toHaveAttribute('data-state', 'indeterminate');
+
+		await rowRoot(2).click();
+		await rowRoot(3).click();
+		await expect.element(headerRoot).toHaveAttribute('data-state', 'checked');
+
+		await rowRoot(1).click();
+		await expect.element(headerRoot).toHaveAttribute('data-state', 'indeterminate');
+
+		await rowRoot(2).click();
+		await rowRoot(3).click();
+		await expect.element(headerRoot).toHaveAttribute('data-state', 'unchecked');
+	});
+
 	it('should not propagate checkbox click or double click to the row', async () => {
 		const onRowClick = vi.fn();
 		const onRowDoubleClick = vi.fn();

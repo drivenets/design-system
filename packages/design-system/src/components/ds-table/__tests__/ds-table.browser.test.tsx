@@ -1,9 +1,35 @@
+import type { ColumnDef } from '@tanstack/react-table';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
 import { columns, defaultData } from '../stories/common/story-data';
 
 const getDataRows = () => page.getByRole('row').all().slice(1);
+
+type Release = {
+	id: string;
+	name: string;
+	releasedAt: Date;
+};
+
+const releaseColumns: ColumnDef<Release>[] = [
+	{
+		accessorKey: 'name',
+		header: 'Name',
+	},
+	{
+		accessorKey: 'releasedAt',
+		header: 'Released At',
+		cell: (info) => info.getValue<Date>().toISOString().slice(0, 10),
+	},
+];
+
+const releaseData: Release[] = [
+	{ id: '1', name: 'Beta', releasedAt: new Date('2024-03-15') },
+	{ id: '2', name: 'Alpha', releasedAt: new Date('2023-11-02') },
+	{ id: '3', name: 'Gamma', releasedAt: new Date('2025-06-20') },
+	{ id: '4', name: 'Delta', releasedAt: new Date('2024-01-08') },
+];
 
 describe('DsTable', () => {
 	it('should render all rows and column headers, and handle row click', async () => {
@@ -37,6 +63,51 @@ describe('DsTable', () => {
 		await firstNameHeader.click();
 
 		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Tanner');
+	});
+
+	it('should sort a number column descending first, then ascending', async () => {
+		await page.render(<DsTable columns={columns} data={defaultData} />);
+
+		const ageHeader = page.getByText('Age');
+
+		await ageHeader.click();
+
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('David');
+
+		await ageHeader.click();
+
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Peter');
+	});
+
+	it('should sort a date column descending first, then ascending', async () => {
+		await page.render(<DsTable columns={releaseColumns} data={releaseData} />);
+
+		const releasedAtHeader = page.getByText('Released At');
+
+		await releasedAtHeader.click();
+
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Gamma');
+
+		await releasedAtHeader.click();
+
+		await expect.element(page.getByRole('row').nth(1)).toMatchTextContent('Alpha');
+	});
+
+	it('should call onSortingChange with the sorting state on each header click', async () => {
+		const onSortingChange = vi.fn();
+
+		await page.render(<DsTable columns={columns} data={defaultData} onSortingChange={onSortingChange} />);
+
+		const firstNameHeader = page.getByText('First Name');
+
+		await firstNameHeader.click();
+
+		expect(onSortingChange).toHaveBeenLastCalledWith([{ id: 'firstName', desc: false }]);
+
+		await firstNameHeader.click();
+
+		expect(onSortingChange).toHaveBeenLastCalledWith([{ id: 'firstName', desc: true }]);
+		expect(onSortingChange).toHaveBeenCalledTimes(2);
 	});
 
 	it('should show empty state when no data is provided', async () => {

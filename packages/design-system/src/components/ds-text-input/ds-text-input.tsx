@@ -27,6 +27,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 	readOnly = false,
 	tabIndex,
 	slots,
+	slotProps,
 }) => {
 	const InputWrapper = slots?.inputWrapper ?? Fragment;
 
@@ -51,6 +52,7 @@ const DsTextInput: FC<DsTextInputProps> = ({
 			{slots?.startAdornment && <div className={styles.adornment}>{slots.startAdornment}</div>}
 			<InputWrapper>
 				<input
+					{...slotProps?.input}
 					id={id}
 					ref={ref}
 					name={name}
