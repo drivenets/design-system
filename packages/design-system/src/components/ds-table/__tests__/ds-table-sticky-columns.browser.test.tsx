@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
-import type { CellContext, ColumnDef, ColumnVisibilityState } from '@tanstack/react-table';
+import type { ColumnVisibilityState } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import type { DsTableStickyColumns } from '../ds-table.types';
 import type { ScrollParams } from '../components/ds-table-body-virtualized';
@@ -14,7 +14,7 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from '../utils/constants';
-import { type dsTableFeatures } from '../ds-table-features';
+import { type DsColumnDef, type DsCellContext } from '../ds-table-features';
 
 type Row = {
 	id: string;
@@ -37,7 +37,7 @@ const generateRows = (count: number): Row[] =>
 
 const rows = generateRows(6);
 
-const wideColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+const wideColumns: DsColumnDef<Row>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 160 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 160 },
 	{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 200 },
@@ -45,7 +45,7 @@ const wideColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 	{ accessorKey: 'status', header: 'Status', cell: (info) => info.getValue(), size: 160 },
 ];
 
-const groupedColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+const groupedColumns: DsColumnDef<Row>[] = [
 	{
 		id: 'identity',
 		header: 'Identity',
@@ -60,7 +60,7 @@ const groupedColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
 ];
 
 /** Columns whose Age header pins Age to the left through the TanStack column API. */
-const columnsWithAgePin: ColumnDef<typeof dsTableFeatures, Row>[] = wideColumns.map((column) =>
+const columnsWithAgePin: DsColumnDef<Row>[] = wideColumns.map((column) =>
 	'accessorKey' in column && column.accessorKey === 'age'
 		? {
 				...column,
@@ -755,7 +755,7 @@ describe('DsTable sticky columns', () => {
 
 	describe('sizing', () => {
 		it('renders a sticky fill column at its fixed size', async () => {
-			const fillColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+			const fillColumns: DsColumnDef<Row>[] = [
 				{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue() },
 				{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue() },
 				{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue() },
@@ -905,13 +905,11 @@ describe('DsTable sticky columns', () => {
 
 	describe('editing', () => {
 		it('paints the inline editor above neighboring sticky cells', async () => {
-			const editableColumns: ColumnDef<typeof dsTableFeatures, Row>[] = wideColumns.map((column) =>
+			const editableColumns: DsColumnDef<Row>[] = wideColumns.map((column) =>
 				'accessorKey' in column && column.accessorKey === 'visits'
 					? {
 							...column,
-							editCell: (info: CellContext<typeof dsTableFeatures, Row, string>) => (
-								<DsTableEditCellText cellContext={info} />
-							),
+							editCell: (info: DsCellContext<Row, string>) => <DsTableEditCellText cellContext={info} />,
 						}
 					: column,
 			);

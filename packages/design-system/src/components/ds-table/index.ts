@@ -6,7 +6,8 @@ export type { DsColumnGroupMeta } from './grouping';
 export type { DsTableEditDisabledResult } from './ds-table-column.types';
 
 export { default as DsTable } from './ds-table';
-export { dsTableFeatures } from './ds-table-features';
+export { dsTableFeatures, createDsColumnHelper } from './ds-table-features';
+export type { DsColumnDef, DsCellContext } from './ds-table-features';
 export * from './ds-table.types';
 
 export { createColumnHelper } from '@tanstack/react-table';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ColumnDef, ColumnVisibilityState } from '@tanstack/react-table';
+import type { ColumnVisibilityState } from '@tanstack/react-table';
 import { describe, expect, it, vi } from 'vitest';
 import { page, userEvent } from 'vitest/browser';
 import { DsCheckbox } from '../../ds-checkbox';
@@ -8,7 +8,7 @@ import DsTable from '../ds-table';
 import type { DsDataTableProps } from '../ds-table.types';
 import { columns, defaultData, type Person } from '../stories/common/story-data';
 import { COLUMN_DISPLAY_COLUMN_ID } from '../utils/constants';
-import { type dsTableFeatures } from '../ds-table-features';
+import { createDsColumnHelper, type DsColumnDef } from '../ds-table-features';
 
 type SizedRow = { id: string; firstName: string; lastName: string };
 
@@ -35,6 +35,24 @@ describe('DsTable - Columns', () => {
 
 		await expect.element(page.getByText('75%')).toBeVisible();
 		await expect.element(page.getByText('single').first()).toBeVisible();
+	});
+
+	it('renders columns built with createDsColumnHelper', async () => {
+		const columnHelper = createDsColumnHelper<SizedRow>();
+		const helperColumns = columnHelper.columns([
+			columnHelper.accessor('firstName', { header: 'First name' }),
+			columnHelper.accessor('lastName', {
+				header: 'Last name',
+				cell: (info) => info.getValue().toUpperCase(),
+			}),
+		]);
+
+		await page.render(
+			<DsTable columns={helperColumns} data={[{ id: '1', firstName: 'Jane', lastName: 'Doe' }]} />,
+		);
+
+		expect(getHeaderCell('firstName')).toHaveTextContent('First name');
+		await expect.element(page.getByRole('cell', { name: 'DOE' })).toBeVisible();
 	});
 
 	it('should toggle column visibility', async () => {
@@ -103,7 +121,7 @@ describe('DsTable - Columns', () => {
 	});
 
 	it('keeps an authored 150px column fixed while an unsized sibling fills', async () => {
-		const sizedColumns: ColumnDef<typeof dsTableFeatures, SizedRow>[] = [
+		const sizedColumns: DsColumnDef<SizedRow>[] = [
 			{ accessorKey: 'firstName', header: 'First Name', size: 150 },
 			{ accessorKey: 'lastName', header: 'Last Name' },
 		];
@@ -124,7 +142,7 @@ describe('DsTable - Columns', () => {
 	});
 
 	describe('column display', () => {
-		const groupedColumns: ColumnDef<typeof dsTableFeatures, Person>[] = [
+		const groupedColumns: DsColumnDef<Person>[] = [
 			{
 				id: 'identity',
 				header: 'Identity',

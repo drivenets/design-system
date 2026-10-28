@@ -1,8 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { page } from 'vitest/browser';
-import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
-import { type dsTableFeatures } from '../ds-table-features';
+import { type DsColumnDef } from '../ds-table-features';
 
 type Row = {
 	id: string;
@@ -50,7 +49,7 @@ const expectEllipsis = (label: HTMLElement): void => {
 
 describe('DsTable header label ellipsis', () => {
 	it('ellipsizes a long Leaf column header and shows a tooltip while truncated', async () => {
-		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+		const columns: DsColumnDef<Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: LONG_LEAF_HEADER,
@@ -79,7 +78,7 @@ describe('DsTable header label ellipsis', () => {
 	});
 
 	it('does not show a tooltip when a Leaf column header label fits', async () => {
-		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+		const columns: DsColumnDef<Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: SHORT_LEAF_HEADER,
@@ -100,7 +99,7 @@ describe('DsTable header label ellipsis', () => {
 	});
 
 	it('ellipsizes a long Column group label and shows a tooltip while truncated', async () => {
-		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+		const columns: DsColumnDef<Row>[] = [
 			{
 				id: 'identity',
 				header: LONG_GROUP_HEADER,
@@ -136,7 +135,7 @@ describe('DsTable header label ellipsis', () => {
 
 	it('does not derive a tooltip from nested custom header content', async () => {
 		const hiddenExtra = 'internal-column-id';
-		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+		const columns: DsColumnDef<Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: () => (
@@ -171,7 +170,7 @@ describe('DsTable header label ellipsis', () => {
 	});
 
 	it('does not reserve sort-icon space until the column is sorted', async () => {
-		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+		const columns: DsColumnDef<Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: 'First Name',
@@ -201,7 +200,7 @@ describe('DsTable header label ellipsis', () => {
 	});
 
 	it('keeps the Resize handle hit target past the cell edge when the header is truncated', async () => {
-		const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+		const columns: DsColumnDef<Row>[] = [
 			{
 				accessorKey: 'firstName',
 				header: LONG_LEAF_HEADER,

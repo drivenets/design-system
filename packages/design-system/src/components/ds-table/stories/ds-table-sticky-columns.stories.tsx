@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useRef, useState } from 'react';
 import { fn } from 'storybook/test';
-import type { ColumnDef, ColumnVisibilityState } from '@tanstack/react-table';
+import type { ColumnVisibilityState } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import type { DsTableApi, DsTableStickyColumns } from '../ds-table.types';
 import { DsStack } from '../../ds-stack';
@@ -10,9 +10,9 @@ import { defaultData, type Person } from './common/story-data';
 import { generatePersonData } from './common/story-data-generator';
 import { fullHeightDecorator } from './common/story-decorators';
 import styles from './ds-table-sticky-columns.stories.module.scss';
-import { type dsTableFeatures } from '../ds-table-features';
+import { type DsColumnDef } from '../ds-table-features';
 
-const wideColumns: ColumnDef<typeof dsTableFeatures, Person>[] = [
+const wideColumns: DsColumnDef<Person>[] = [
 	{ accessorKey: 'firstName', header: 'First Name', cell: (info) => info.getValue(), size: 180 },
 	{ accessorKey: 'lastName', header: 'Last Name', cell: (info) => info.getValue(), size: 180 },
 	{ accessorKey: 'age', header: 'Age', cell: (info) => info.getValue(), size: 140 },

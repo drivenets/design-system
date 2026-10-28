@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { type ColumnDef, constructTable } from '@tanstack/react-table';
+import { constructTable } from '@tanstack/react-table';
 import { storeReactivityBindings } from '@tanstack/table-core/store-reactivity-bindings';
 import { SELECT_COLUMN_ID } from '../../utils/constants';
 import {
@@ -9,20 +9,20 @@ import {
 	getColumnDisplayTree,
 	getToggleVisibilityUpdate,
 } from './ds-table-column-display.utils';
-import { dsTableFeatures } from '../../ds-table-features';
+import { dsTableFeatures, type DsColumnDef } from '../../ds-table-features';
 
 type Row = { id: string };
 
 const testFeatures = { ...dsTableFeatures, coreReactivityFeature: storeReactivityBindings() };
 
-const getAllColumns = (columns: ColumnDef<typeof dsTableFeatures, Row>[]) =>
+const getAllColumns = (columns: DsColumnDef<Row>[]) =>
 	constructTable<typeof dsTableFeatures, Row>({
 		features: testFeatures,
 		data: [],
 		columns,
 	}).getAllColumns();
 
-const columns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+const columns: DsColumnDef<Row>[] = [
 	{ id: SELECT_COLUMN_ID },
 	{
 		id: 'identity',

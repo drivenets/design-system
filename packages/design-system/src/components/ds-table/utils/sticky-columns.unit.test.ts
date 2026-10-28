@@ -15,18 +15,18 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from './constants';
-import { dsTableFeatures } from '../ds-table-features';
+import { dsTableFeatures, type DsColumnDef } from '../ds-table-features';
 
 type Row = { id: string; firstName: string; lastName: string; age: number; status: string };
 
-const flatColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+const flatColumns: DsColumnDef<Row>[] = [
 	{ accessorKey: 'firstName', size: 160 },
 	{ accessorKey: 'lastName', size: 140 },
 	{ accessorKey: 'age', size: 100 },
 	{ accessorKey: 'status', size: 120 },
 ];
 
-const groupedColumns: ColumnDef<typeof dsTableFeatures, Row>[] = [
+const groupedColumns: DsColumnDef<Row>[] = [
 	{
 		id: 'identity',
 		header: 'Identity',
@@ -42,7 +42,7 @@ const RIGHT_UTILITIES = [ROW_ACTIONS_COLUMN_ID, COLUMN_DISPLAY_COLUMN_ID];
 const testFeatures = { ...dsTableFeatures, coreReactivityFeature: storeReactivityBindings() };
 
 const createTestTable = (
-	columns: ColumnDef<typeof dsTableFeatures, Row>[],
+	columns: DsColumnDef<Row>[],
 	columnPinning: Partial<ColumnPinningState>,
 	columnVisibility: ColumnVisibilityState = {},
 	columnSizing: ColumnSizingState = {},

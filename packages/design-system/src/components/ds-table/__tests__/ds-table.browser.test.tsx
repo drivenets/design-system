@@ -1,9 +1,8 @@
-import type { ColumnDef } from '@tanstack/react-table';
 import { describe, expect, it, vi } from 'vitest';
 import { page } from 'vitest/browser';
 import DsTable from '../ds-table';
 import { columns, defaultData } from '../stories/common/story-data';
-import { type dsTableFeatures } from '../ds-table-features';
+import { type DsColumnDef } from '../ds-table-features';
 
 const getDataRows = () => page.getByRole('row').all().slice(1);
 
@@ -13,7 +12,7 @@ type Release = {
 	releasedAt: Date;
 };
 
-const releaseColumns: ColumnDef<typeof dsTableFeatures, Release>[] = [
+const releaseColumns: DsColumnDef<Release>[] = [
 	{
 		accessorKey: 'name',
 		header: 'Name',

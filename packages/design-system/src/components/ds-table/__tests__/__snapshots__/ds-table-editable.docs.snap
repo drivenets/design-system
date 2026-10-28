@@ -32,7 +32,7 @@
     const ProgressEditor = ({
       cellContext
     }: {
-      cellContext: CellContext<typeof dsTableFeatures, Person, number>;
+      cellContext: DsCellContext<Person, number>;
     }) => {
       const {
         value,
@@ -48,7 +48,7 @@
                     <DsFormControl.NumberInput value={value} min={0} max={100} onValueChange={setValue} />
                 </DsFormControl>;
     };
-    const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [{
+    const columns: DsColumnDef<Person>[] = [{
       accessorKey: 'id',
       header: 'ID',
       size: 60,
@@ -57,25 +57,25 @@
       accessorKey: 'firstName',
       header: 'First Name',
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+      editCell: (info: DsCellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
     }, {
       accessorKey: 'lastName',
       header: 'Last Name',
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+      editCell: (info: DsCellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
     }, {
       accessorKey: 'age',
       header: 'Age',
       size: 100,
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} max={120} />
+      editCell: (info: DsCellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} max={120} />
     }, {
       accessorKey: 'visits',
       header: 'Visits',
       size: 100,
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
-      editDisabled: (info: CellContext<typeof dsTableFeatures, Person, number>) => {
+      editCell: (info: DsCellContext<Person, number>) => <DsTableEditCellNumber cellContext={info} min={0} />,
+      editDisabled: (info: DsCellContext<Person, number>) => {
         if (info.row.original.status === 'complicated') {
           return {
             reason: 'Visits are locked while the status is “Complicated”.'
@@ -91,12 +91,12 @@
       header: 'Status',
       size: 160,
       cell: info => statusLabels[info.getValue() as Status],
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => <DsTableEditCellSelect cellContext={info} options={statusOptions} />
+      editCell: (info: DsCellContext<Person, string>) => <DsTableEditCellSelect cellContext={info} options={statusOptions} />
     }, {
       accessorKey: 'progress',
       header: 'Profile Progress',
       cell: info => <span className={editableStyles.tagDisplay}>{`${String(info.getValue())}%`}</span>,
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, number>) => <ProgressEditor cellContext={info} />
+      editCell: (info: DsCellContext<Person, number>) => <ProgressEditor cellContext={info} />
     }];
     return <DsTable {...args} data={data} columns={columns} selectable onRowClick={fn()} primaryRowActions={[{
       icon: 'delete_outline',
@@ -136,7 +136,7 @@ const Editable = () => {
     const ProgressEditor = ({
         cellContext,
     }: {
-        cellContext: CellContext<typeof dsTableFeatures, Person, number>;
+        cellContext: DsCellContext<Person, number>;
     }) => {
         const { value, setValue, error } = useCellEditor<Person, number>({ cellContext });
 
@@ -164,7 +164,7 @@ const Editable = () => {
         );
     };
 
-    const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [
+    const columns: DsColumnDef<Person>[] = [
         {
             accessorKey: 'id',
             header: 'ID',
@@ -175,7 +175,7 @@ const Editable = () => {
             accessorKey: 'firstName',
             header: 'First Name',
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => (
+            editCell: (info: DsCellContext<Person, string>) => (
                 <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
             ),
         },
@@ -183,7 +183,7 @@ const Editable = () => {
             accessorKey: 'lastName',
             header: 'Last Name',
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => (
+            editCell: (info: DsCellContext<Person, string>) => (
                 <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
             ),
         },
@@ -192,7 +192,7 @@ const Editable = () => {
             header: 'Age',
             size: 100,
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, number>) => (
+            editCell: (info: DsCellContext<Person, number>) => (
                 <DsTableEditCellNumber cellContext={info} min={0} max={120} />
             ),
         },
@@ -201,10 +201,10 @@ const Editable = () => {
             header: 'Visits',
             size: 100,
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, number>) => (
+            editCell: (info: DsCellContext<Person, number>) => (
                 <DsTableEditCellNumber cellContext={info} min={0} />
             ),
-            editDisabled: (info: CellContext<typeof dsTableFeatures, Person, number>) => {
+            editDisabled: (info: DsCellContext<Person, number>) => {
                 if (info.row.original.status === 'complicated') {
                     return { reason: 'Visits are locked while the status is “Complicated”.' };
                 }
@@ -219,7 +219,7 @@ const Editable = () => {
             header: 'Status',
             size: 160,
             cell: (info) => statusLabels[info.getValue() as Status],
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => (
+            editCell: (info: DsCellContext<Person, string>) => (
                 <DsTableEditCellSelect cellContext={info} options={statusOptions} />
             ),
         },
@@ -227,7 +227,7 @@ const Editable = () => {
             accessorKey: 'progress',
             header: 'Profile Progress',
             cell: (info) => <span className={editableStyles.tagDisplay}>{`${String(info.getValue())}%`}</span>,
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, number>) => (
+            editCell: (info: DsCellContext<Person, number>) => (
                 <ProgressEditor cellContext={info} />
             ),
         },
@@ -278,7 +278,7 @@ const Editable = () => {
       const result = fieldSchema.safeParse(value);
       return result.success ? null : result.error.issues[0]?.message ?? null;
     };
-    const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [{
+    const columns: DsColumnDef<Person>[] = [{
       accessorKey: 'id',
       header: 'ID',
       size: 60,
@@ -287,12 +287,12 @@ const Editable = () => {
       accessorKey: 'firstName',
       header: 'First Name',
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+      editCell: (info: DsCellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
     }, {
       accessorKey: 'lastName',
       header: 'Last Name',
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
+      editCell: (info: DsCellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
     }];
     return <DsTable {...args} data={data} columns={columns} onCellValidate={(_row, columnId, value) => validateField(columnId, value)} onCellEdit={(row, columnId, value) => {
       setData(rows => rows.map(person => person.id === row.id ? {
@@ -322,7 +322,7 @@ const LiveValidation = () => {
         return result.success ? null : (result.error.issues[0]?.message ?? null);
     };
 
-    const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [
+    const columns: DsColumnDef<Person>[] = [
         {
             accessorKey: 'id',
             header: 'ID',
@@ -333,7 +333,7 @@ const LiveValidation = () => {
             accessorKey: 'firstName',
             header: 'First Name',
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => (
+            editCell: (info: DsCellContext<Person, string>) => (
                 <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
             ),
         },
@@ -341,7 +341,7 @@ const LiveValidation = () => {
             accessorKey: 'lastName',
             header: 'Last Name',
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => (
+            editCell: (info: DsCellContext<Person, string>) => (
                 <DsTableEditCellText cellContext={info} placeholder="Enter last name" />
             ),
         },
@@ -395,7 +395,7 @@ const LiveValidation = () => {
         reject(new DOMException('Aborted', 'AbortError'));
       });
     });
-    const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [{
+    const columns: DsColumnDef<Person>[] = [{
       accessorKey: 'id',
       header: 'ID',
       size: 60,
@@ -404,7 +404,7 @@ const LiveValidation = () => {
       accessorKey: 'firstName',
       header: 'First Name',
       cell: info => info.getValue(),
-      editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
+      editCell: (info: DsCellContext<Person, string>) => <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
     }, {
       accessorKey: 'lastName',
       header: 'Last Name',
@@ -448,7 +448,7 @@ const ValidateOnAsyncSave = () => {
             });
         });
 
-    const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [
+    const columns: DsColumnDef<Person>[] = [
         {
             accessorKey: 'id',
             header: 'ID',
@@ -459,7 +459,7 @@ const ValidateOnAsyncSave = () => {
             accessorKey: 'firstName',
             header: 'First Name',
             cell: (info) => info.getValue(),
-            editCell: (info: CellContext<typeof dsTableFeatures, Person, string>) => (
+            editCell: (info: DsCellContext<Person, string>) => (
                 <DsTableEditCellText cellContext={info} placeholder="Enter first name" />
             ),
         },

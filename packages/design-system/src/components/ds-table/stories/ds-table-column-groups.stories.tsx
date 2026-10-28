@@ -1,14 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
 import DsTable from '../ds-table';
 import { DsStack } from '../../ds-stack';
 import { DsButtonV3 } from '../../ds-button-v3';
 import { defaultData, type Person } from './common/story-data';
 import { fullHeightDecorator } from './common/story-decorators';
-import { type dsTableFeatures } from '../ds-table-features';
+import { type DsColumnDef } from '../ds-table-features';
 
-const buildColumns = (identityDefaultCollapsed = false): ColumnDef<typeof dsTableFeatures, Person>[] => [
+const buildColumns = (identityDefaultCollapsed = false): DsColumnDef<Person>[] => [
 	{
 		id: 'identity',
 		header: 'Identity',

@@ -4,6 +4,7 @@ import {
 	columnResizingFeature,
 	columnSizingFeature,
 	columnVisibilityFeature,
+	createColumnHelper,
 	createExpandedRowModel,
 	createFilteredRowModel,
 	createSortedRowModel,
@@ -21,6 +22,11 @@ import {
 	sortFn_datetime,
 	sortFn_text,
 	tableFeatures,
+	type CellContext,
+	type CellData,
+	type ColumnDef,
+	type ColumnHelper,
+	type RowData,
 	type TableFeature,
 } from '@tanstack/react-table';
 import './ds-table-column.types';
@@ -35,13 +41,12 @@ export interface DsColumnMeta
 	extends DsColumnFilteringMeta, DsColumnGroupingMeta, DsColumnDisplayMeta, DsColumnSizeMeta {}
 
 /**
- * TanStack Table features `DsTable` registers. Pass `typeof dsTableFeatures` as the first
- * type argument of `ColumnDef`, `createColumnHelper`, `Row`, and other TanStack types.
+ * TanStack Table features `DsTable` registers. Column defs use `DsColumnDef`; pass
+ * `typeof dsTableFeatures` as the first type argument of other TanStack types such as `Row`.
  *
  * @example
  * ```tsx
- * const columns: ColumnDef<typeof dsTableFeatures, Person>[] = [...];
- * const columnHelper = createColumnHelper<typeof dsTableFeatures, Person>();
+ * const row: Row<typeof dsTableFeatures, Person> = table.getRow(id);
  * ```
  */
 export const dsTableFeatures = tableFeatures({
@@ -71,3 +76,36 @@ export const dsTableFeatures = tableFeatures({
 });
 
 export type DsTableFeatures = typeof dsTableFeatures;
+
+/**
+ * A `DsTable` column definition.
+ *
+ * @example
+ * ```tsx
+ * const columns: DsColumnDef<Person>[] = [{ accessorKey: 'name', header: 'Name' }];
+ * ```
+ */
+export type DsColumnDef<TData extends RowData, TValue extends CellData = unknown> = ColumnDef<
+	DsTableFeatures,
+	TData,
+	TValue
+>;
+
+/** Cell context passed to `cell`, `editCell`, and other `DsColumnDef` callbacks. */
+export type DsCellContext<TData extends RowData, TValue extends CellData = unknown> = CellContext<
+	DsTableFeatures,
+	TData,
+	TValue
+>;
+
+/**
+ * TanStack's `createColumnHelper` bound to `DsTable` features.
+ *
+ * @example
+ * ```tsx
+ * const columnHelper = createDsColumnHelper<Person>();
+ * const columns = columnHelper.columns([columnHelper.accessor('name', { header: 'Name' })]);
+ * ```
+ */
+export const createDsColumnHelper = <TData extends RowData>(): ColumnHelper<DsTableFeatures, TData> =>
+	createColumnHelper<DsTableFeatures, TData>();

@@ -1,7 +1,6 @@
 import { useState, type ButtonHTMLAttributes, type ComponentType, type ReactNode } from 'react';
 import classNames from 'classnames';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import type { ColumnDef } from '@tanstack/react-table';
 import {
 	createMemoryHistory,
 	createRootRoute,
@@ -15,7 +14,7 @@ import { DsTypography } from '../ds-typography';
 import { DsTextInput } from '../ds-text-input';
 import { DsButtonV3 } from '../ds-button-v3';
 import { DsSplitButton } from '../ds-split-button';
-import { DsTable, type dsTableFeatures } from '../ds-table';
+import { DsTable, type DsColumnDef } from '../ds-table';
 import { DsAvatar } from '../ds-avatar';
 import { DsBreadcrumb, type DsBreadcrumbItem } from '../ds-breadcrumb';
 import { DsIcon, type IconType } from '../ds-icon';
@@ -65,7 +64,7 @@ const withTanStackRouter = (Story: ComponentType, initialPath = '/planned-execut
 
 type CatalogRow = { id: string; name: string; status: string };
 
-const catalogColumns: ColumnDef<typeof dsTableFeatures, CatalogRow>[] = [
+const catalogColumns: DsColumnDef<CatalogRow>[] = [
 	{ accessorKey: 'name', header: 'Name', cell: (info) => info.getValue() },
 	{ accessorKey: 'status', header: 'Status', cell: (info) => info.getValue() },
 ];
