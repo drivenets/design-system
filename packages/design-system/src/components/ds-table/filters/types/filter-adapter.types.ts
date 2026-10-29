@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
-import type { Row, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { TagFilterItem } from '../../../ds-tag-filter';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsRow } from '../../ds-table-features';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyAdapter = FilterAdapter<any, any, any>;
@@ -18,7 +18,7 @@ export interface FilterAdapter<TData extends RowData, TFilterValue, TCellValue =
 	/** Initial / reset value. */
 	initialValue: TFilterValue;
 	/** TanStack `filterFn` — returns whether a row matches the current value. */
-	columnFilterFn: (row: Row<DsTableFeatures, TData>, columnId: string, filterValue: TFilterValue) => boolean;
+	columnFilterFn: (row: DsRow<TData>, columnId: string, filterValue: TFilterValue) => boolean;
 	/** Optional cell renderer; receives the cell value, not the filter value. */
 	cellRenderer?: (value: TCellValue) => ReactNode;
 	/**

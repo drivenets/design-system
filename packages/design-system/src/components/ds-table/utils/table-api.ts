@@ -1,10 +1,8 @@
-import type { RowData, RowSelectionState, Table } from '@tanstack/react-table';
+import type { RowData, RowSelectionState } from '@tanstack/react-table';
 import type { DsTableApi } from '../ds-table.types';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { DsTableInstance } from '../ds-table-features';
 
-export const createTableApi = <TData extends RowData>(
-	table: Table<DsTableFeatures, TData>,
-): DsTableApi<TData> => ({
+export const createTableApi = <TData extends RowData>(table: DsTableInstance<TData>): DsTableApi<TData> => ({
 	selectRow: (rowId: string) => {
 		table.getRow(rowId).toggleSelected(true);
 	},

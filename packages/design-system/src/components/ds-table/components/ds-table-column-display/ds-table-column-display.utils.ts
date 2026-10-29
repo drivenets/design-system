@@ -1,13 +1,13 @@
-import type { Column, ColumnVisibilityState, RowData } from '@tanstack/react-table';
+import type { ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import { BUILTIN_COLUMN_IDS } from '../../utils/constants';
 import type {
 	ColumnDisplayCheckedState,
 	ColumnDisplayNode,
 	ColumnDisplayToggleTarget,
 } from './ds-table-column-display.types';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsColumn } from '../../ds-table-features';
 
-const getColumnLabel = <TData extends RowData>(column: Column<DsTableFeatures, TData>): string => {
+const getColumnLabel = <TData extends RowData>(column: DsColumn<TData>): string => {
 	const { header, meta } = column.columnDef;
 
 	if (meta?.columnDisplayLabel) {
@@ -31,7 +31,7 @@ export const getCheckedState = (
 };
 
 const buildNode = <TData extends RowData>(
-	column: Column<DsTableFeatures, TData>,
+	column: DsColumn<TData>,
 	visibility: ColumnVisibilityState,
 ): ColumnDisplayNode => {
 	const leafIds = column.getLeafColumns().map((leaf) => leaf.id);
@@ -57,7 +57,7 @@ const buildNode = <TData extends RowData>(
  * a column hidden only by a collapsed group still reads as checked.
  */
 export const getColumnDisplayTree = <TData extends RowData>(
-	columns: Column<DsTableFeatures, TData>[],
+	columns: DsColumn<TData>[],
 	visibility: ColumnVisibilityState,
 ): ColumnDisplayNode[] =>
 	columns

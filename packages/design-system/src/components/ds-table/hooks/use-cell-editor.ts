@@ -1,14 +1,14 @@
 import { type KeyboardEventHandler, type MouseEvent, type MouseEventHandler } from 'react';
-import type { CellContext, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import { useDsTableContext } from '../context/ds-table-context';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { DsCellContext } from '../ds-table-features';
 
 export interface UseCellEditorOptions<TData extends RowData, TValue> {
 	/**
 	 * The TanStack Table CellContext for this cell. Pass through
 	 * the argument received in `ColumnDef.editCell`.
 	 */
-	cellContext: CellContext<DsTableFeatures, TData, TValue>;
+	cellContext: DsCellContext<TData, TValue>;
 }
 
 export interface UseCellEditorContainerProps {

@@ -1,5 +1,5 @@
-import type { RowData, Table as TanstackTable } from '@tanstack/react-table';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { RowData } from '@tanstack/react-table';
+import type { DsTableInstance } from '../ds-table-features';
 
 /**
  * `React.memo` comparator for the table body during a column-resize drag.
@@ -13,8 +13,8 @@ import type { DsTableFeatures } from '../ds-table-features';
  * dropped.
  */
 export const areBodiesFrozen = <T extends RowData>(
-	prev: { table: TanstackTable<DsTableFeatures, T> },
-	next: { table: TanstackTable<DsTableFeatures, T> },
+	prev: { table: DsTableInstance<T> },
+	next: { table: DsTableInstance<T> },
 ): boolean => {
 	if (!next.table.store.state.columnResizing.isResizingColumn) {
 		return false;

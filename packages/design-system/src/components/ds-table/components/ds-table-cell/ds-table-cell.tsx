@@ -1,4 +1,4 @@
-import { type Cell, flexRender, type RowData } from '@tanstack/react-table';
+import { flexRender, type RowData } from '@tanstack/react-table';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { ROW_ACTIONS_COLUMN_ID } from '../../utils/constants';
 import { DsTableRowActionsCell } from '../ds-table-row-actions-cell';
@@ -6,7 +6,7 @@ import { DsTableEditableCell } from '../edit/ds-table-editable-cell';
 import { DsTableEditingCell } from '../edit/ds-table-editing-cell';
 import styles from './ds-table-cell.module.scss';
 import type { DsTableCellProps } from './ds-table-cell.types';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsCell } from '../../ds-table-features';
 
 export const DsTableCell = <TData extends RowData, TValue>({
 	row,
@@ -25,7 +25,7 @@ export const DsTableCell = <TData extends RowData, TValue>({
 };
 
 interface CellContentProps<TData extends RowData, TValue> {
-	cell: Cell<DsTableFeatures, TData, TValue>;
+	cell: DsCell<TData, TValue>;
 	isCellBeingEdited: boolean;
 }
 

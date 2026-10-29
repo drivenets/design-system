@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react';
-import type { Cell, Column, ColumnPinningState, Table, RowData } from '@tanstack/react-table';
+import type { ColumnPinningState, RowData } from '@tanstack/react-table';
 import type { DsTableStickyColumns } from '../ds-table.types';
 import { getBodyCellSizeStyle, getColumnSizeCssVar, isExplicitColumnWidth } from './column-size';
 import {
@@ -10,7 +10,7 @@ import {
 	ROW_ACTIONS_COLUMN_ID,
 	SELECT_COLUMN_ID,
 } from './constants';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { DsCell, DsColumn, DsTableInstance } from '../ds-table-features';
 
 /** Visual order of the always-sticky left utility columns (matches `getAugmentedColumns`). */
 const LEFT_UTILITY_COLUMN_IDS = [REORDER_COLUMN_ID, EXPANDER_COLUMN_ID, SELECT_COLUMN_ID] as const;
@@ -130,7 +130,7 @@ const toCssLength = (value: string | number): string =>
 	typeof value === 'number' ? `${String(value)}px` : value;
 
 const sizeExpression = <TData extends RowData>(
-	columns: Column<DsTableFeatures, TData>[],
+	columns: DsColumn<TData>[],
 	resizeSizingReady: boolean,
 ): string | number => {
 	if (columns.length === 0) {
@@ -158,8 +158,8 @@ export interface StickyCellProps {
  * divider.
  */
 const computeStickyCellProps = <TData extends RowData>(
-	leftColumns: Column<DsTableFeatures, TData>[],
-	rightColumns: Column<DsTableFeatures, TData>[],
+	leftColumns: DsColumn<TData>[],
+	rightColumns: DsColumn<TData>[],
 	leafIds: readonly string[],
 	resizeSizingReady: boolean,
 ): StickyCellProps => {
@@ -219,7 +219,7 @@ interface StickyPropsCache {
 const stickyPropsCaches = new WeakMap<object, StickyPropsCache>();
 
 export const getStickyCellProps = <TData extends RowData>(
-	table: Table<DsTableFeatures, TData>,
+	table: DsTableInstance<TData>,
 	leafIds: readonly string[],
 	resizeSizingReady: boolean,
 ): StickyCellProps => {
@@ -268,7 +268,7 @@ export interface BodyCellLayoutProps {
  * width so the offsets of the sticky cells after them stay correct.
  */
 export const getBodyCellLayoutProps = <TData extends RowData>(
-	cell: Cell<DsTableFeatures, TData>,
+	cell: DsCell<TData>,
 	resizeSizingReady: boolean,
 ): BodyCellLayoutProps => {
 	const table = cell.getContext().table;

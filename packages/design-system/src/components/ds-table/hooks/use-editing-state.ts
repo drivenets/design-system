@@ -1,10 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
-import type { Cell, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { DsDataTableProps } from '../ds-table.types';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { DsCell } from '../ds-table-features';
 
 export interface EditingState<TData extends RowData, TValue> {
-	cell: Cell<DsTableFeatures, TData, TValue>;
+	cell: DsCell<TData, TValue>;
 	draftValue: TValue;
 	error: string | null;
 	/** True while an async `onCellEdit` commit Promise is pending for this cell. */
@@ -14,7 +14,7 @@ export interface EditingState<TData extends RowData, TValue> {
 export interface UseEditingStateResult<TData extends RowData, TValue> {
 	/** The cell currently in edit mode, if any. */
 	editing: EditingState<TData, TValue> | null;
-	beginEdit: (cell: Cell<DsTableFeatures, TData, TValue>) => void;
+	beginEdit: (cell: DsCell<TData, TValue>) => void;
 	setDraft: (value: TValue) => void;
 	commit: (overrideValue?: TValue) => void;
 	cancel: () => void;
@@ -65,7 +65,7 @@ export const useEditingState = <TData extends RowData, TValue>(
 	}, []);
 
 	const beginEdit = useCallback(
-		(cell: Cell<DsTableFeatures, TData, TValue>) => {
+		(cell: DsCell<TData, TValue>) => {
 			const current = editingRef.current;
 			if (current) {
 				const isSameCell = current.cell.row.id === cell.row.id && current.cell.column.id === cell.column.id;

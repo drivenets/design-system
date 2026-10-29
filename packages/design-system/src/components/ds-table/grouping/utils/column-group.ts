@@ -1,13 +1,7 @@
 import type { CSSProperties } from 'react';
-import {
-	type Column,
-	type ColumnDef,
-	type ColumnSizingState,
-	type ColumnVisibilityState,
-	type RowData,
-} from '@tanstack/react-table';
+import { type ColumnSizingState, type ColumnVisibilityState, type RowData } from '@tanstack/react-table';
 import { isExplicitColumnWidth } from '../../utils/column-size';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsColumn, DsColumnDef } from '../../ds-table-features';
 
 /**
  * Builds the flex style for a group header cell so it lines up with the combined
@@ -18,7 +12,7 @@ import type { DsTableFeatures } from '../../ds-table-features';
  * header rows distribute free space identically.
  */
 export const getGroupColumnSizeStyle = <TData extends RowData, TValue>(
-	leafColumns: Column<DsTableFeatures, TData, TValue>[],
+	leafColumns: DsColumn<TData, TValue>[],
 	columnSizing: ColumnSizingState,
 ): CSSProperties => {
 	let fixedWidth = 0;
@@ -45,7 +39,7 @@ export const getGroupColumnSizeStyle = <TData extends RowData, TValue>(
  * single side border at the start of each group in both the header and body.
  */
 export const isFirstLeafColumnOfGroup = <TData extends RowData, TValue>(
-	column: Column<DsTableFeatures, TData, TValue>,
+	column: DsColumn<TData, TValue>,
 ): boolean => {
 	const parent = column.parent;
 	if (!parent) {
@@ -57,10 +51,10 @@ export const isFirstLeafColumnOfGroup = <TData extends RowData, TValue>(
 	return visibleLeaves[0]?.id === column.id;
 };
 
-type GroupColumnDef<TData extends RowData, TValue> = ColumnDef<DsTableFeatures, TData, TValue> & {
+type GroupColumnDef<TData extends RowData, TValue> = DsColumnDef<TData, TValue> & {
 	id?: string;
 	accessorKey?: string;
-	columns?: ColumnDef<DsTableFeatures, TData, TValue>[];
+	columns?: DsColumnDef<TData, TValue>[];
 };
 
 const getLeafColumnId = <TData extends RowData, TValue>(
@@ -72,11 +66,11 @@ const getLeafColumnId = <TData extends RowData, TValue>(
  * seed the uncontrolled collapse state.
  */
 export const getInitialCollapsedGroups = <TData extends RowData, TValue>(
-	columns: ColumnDef<DsTableFeatures, TData, TValue>[],
+	columns: DsColumnDef<TData, TValue>[],
 ): string[] => {
 	const collapsed: string[] = [];
 
-	const visit = (defs: ColumnDef<DsTableFeatures, TData, TValue>[]) => {
+	const visit = (defs: DsColumnDef<TData, TValue>[]) => {
 		for (const def of defs as GroupColumnDef<TData, TValue>[]) {
 			if (def.columns) {
 				if (def.id && def.meta?.group?.defaultCollapsed) {
@@ -98,12 +92,12 @@ export const getInitialCollapsedGroups = <TData extends RowData, TValue>(
  * Layered on top of the consumer's own visibility so collapse never mutates it.
  */
 export const getCollapsedColumnVisibility = <TData extends RowData, TValue>(
-	columns: ColumnDef<DsTableFeatures, TData, TValue>[],
+	columns: DsColumnDef<TData, TValue>[],
 	collapsedGroupIds: string[],
 ): ColumnVisibilityState => {
 	const visibility: ColumnVisibilityState = {};
 
-	const visit = (defs: ColumnDef<DsTableFeatures, TData, TValue>[], isInsideCollapsedGroup: boolean) => {
+	const visit = (defs: DsColumnDef<TData, TValue>[], isInsideCollapsedGroup: boolean) => {
 		for (const def of defs as GroupColumnDef<TData, TValue>[]) {
 			if (def.columns) {
 				const isGroupCollapsed = isInsideCollapsedGroup || (!!def.id && collapsedGroupIds.includes(def.id));

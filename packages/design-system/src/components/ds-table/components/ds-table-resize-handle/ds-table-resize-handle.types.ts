@@ -1,5 +1,5 @@
-import type { Header, RowData } from '@tanstack/react-table';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { RowData } from '@tanstack/react-table';
+import type { DsHeader } from '../../ds-table-features';
 
 /**
  * Props for the column resize handle rendered on the right edge of a resizable
@@ -11,5 +11,5 @@ export interface DsTableResizeHandleProps<TData extends RowData, TValue> {
 	 * handle uses TanStack's resize handler, which scales that group's leaf
 	 * columns.
 	 */
-	header: Header<DsTableFeatures, TData, TValue>;
+	header: DsHeader<TData, TValue>;
 }

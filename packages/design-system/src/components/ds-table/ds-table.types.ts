@@ -1,17 +1,10 @@
 import type React from 'react';
 import './ds-table-column.types';
-import type {
-	ColumnDef,
-	ColumnFiltersState,
-	SortingState,
-	Table,
-	ColumnVisibilityState,
-	RowData,
-} from '@tanstack/react-table';
+import type { ColumnFiltersState, SortingState, ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import type { IconType } from '../ds-icon';
 import type { RowAction, SecondaryRowAction } from './components/ds-table-row-actions-cell';
 import type { InfiniteScrollConfig, ScrollParams } from './components/ds-table-body-virtualized';
-import type { DsTableFeatures } from './ds-table-features';
+import type { DsColumnDef, DsTableInstance } from './ds-table-features';
 
 /**
  * Row size variants based on Figma design specifications
@@ -298,7 +291,7 @@ export interface DsDataTableProps<TData extends RowData, TValue> {
 	/**
 	 * Columns of the table
 	 */
-	columns: ColumnDef<DsTableFeatures, TData, TValue>[];
+	columns: DsColumnDef<TData, TValue>[];
 
 	/**
 	 * Data of the table
@@ -458,7 +451,7 @@ export interface DsDataTableProps<TData extends RowData, TValue> {
 	/**
 	 * Function to handle table creation
 	 */
-	onTableCreated?: (table: Table<DsTableFeatures, TData>) => void;
+	onTableCreated?: (table: DsTableInstance<TData>) => void;
 
 	/**
 	 * Whether the table rows are selectable. Can be a boolean or a function that receives row data and returns whether it can be selected.

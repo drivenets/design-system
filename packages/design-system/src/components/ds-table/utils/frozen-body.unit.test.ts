@@ -1,15 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import type { Table as TanstackTable } from '@tanstack/react-table';
 import { areBodiesFrozen } from './frozen-body';
-import { type dsTableFeatures } from '../ds-table-features';
+import type { DsTableInstance } from '../ds-table-features';
 
 type Row = { id: string };
 
-const tableResizing = (isResizingColumn: string | false): TanstackTable<typeof dsTableFeatures, Row> =>
-	({ store: { state: { columnResizing: { isResizingColumn } } } }) as unknown as TanstackTable<
-		typeof dsTableFeatures,
-		Row
-	>;
+const tableResizing = (isResizingColumn: string | false): DsTableInstance<Row> =>
+	({ store: { state: { columnResizing: { isResizingColumn } } } }) as unknown as DsTableInstance<Row>;
 
 describe('areBodiesFrozen', () => {
 	it('never freezes when no column is being resized', () => {

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type RefObject, type ReactNode } from 'react';
-import { type Row, type RowSelectionState, type RowData } from '@tanstack/react-table';
+import { type RowSelectionState, type RowData } from '@tanstack/react-table';
 import { useVirtualizer, type Virtualizer } from '@tanstack/react-virtual';
 import styles from './ds-table-body-virtualized.module.scss';
 import { DsTableRowVirtualized } from '../ds-table-row-virtualized';
@@ -8,7 +8,7 @@ import { TableBody, TableRow, TableCell } from '../core-table';
 import { useInfiniteScroll } from './use-infinite-scroll';
 import { useBodyOffsetTop } from './use-body-offset-top';
 import { useDsTableContext } from '../../context/ds-table-context';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsRow } from '../../ds-table-features';
 
 export const DsTableBodyVirtualized = <TData extends RowData>({
 	table,
@@ -113,7 +113,7 @@ interface DsTableBodyProps<TData extends RowData> {
 	rowsMapRef: RefObject<Map<string, HTMLTableRowElement>>;
 	rowHeightsMapRef: RefObject<Map<string, number>>;
 	rowsAndExpandedRowContent: {
-		row: Row<DsTableFeatures, TData>;
+		row: DsRow<TData>;
 		isExpandedRowContent?: boolean;
 	}[];
 	emptyState?: ReactNode;

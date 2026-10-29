@@ -1,16 +1,16 @@
-import type { CellContext, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import { DsFormControl } from '../../../../ds-form-control';
 import { DsIcon } from '../../../../ds-icon';
 import { useCellEditor } from '../../../hooks/use-cell-editor';
 import styles from './cell-editors.module.scss';
 import { TableEditFormControl } from './table-edit-form-control';
-import type { DsTableFeatures } from '../../../ds-table-features';
+import type { DsCellContext } from '../../../ds-table-features';
 
 export type DsTableEditCellDateValue = Date | null;
 
 export interface DsTableEditCellDateProps<TData extends RowData> {
 	/** TanStack Table cell context from `ColumnDef.editCell`. */
-	cellContext: CellContext<DsTableFeatures, TData, DsTableEditCellDateValue>;
+	cellContext: DsCellContext<TData, DsTableEditCellDateValue>;
 	min?: Date;
 	max?: Date;
 	placeholder?: string;

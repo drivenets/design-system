@@ -1,15 +1,15 @@
 import { useMemo } from 'react';
-import type { ColumnDef, ColumnVisibilityState, RowData } from '@tanstack/react-table';
+import type { ColumnVisibilityState, RowData } from '@tanstack/react-table';
 import { useControlled } from '../../../../utils/use-controlled';
 import { getCollapsedColumnVisibility, getInitialCollapsedGroups } from '../utils/column-group';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsColumnDef } from '../../ds-table-features';
 
 interface UseColumnGroupsParams<TData extends RowData, TValue> {
 	/**
 	 * Consumer-provided columns (before utility columns are injected). Group defs
 	 * nest child columns via `columns`.
 	 */
-	columns: ColumnDef<DsTableFeatures, TData, TValue>[];
+	columns: DsColumnDef<TData, TValue>[];
 
 	/**
 	 * Controlled list of collapsed group ids. When provided, the table no longer

@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
 	constructTable,
-	type ColumnDef,
 	type ColumnPinningState,
 	type ColumnSizingState,
 	type ColumnVisibilityState,
@@ -114,10 +113,7 @@ describe('resolveColumnPinning', () => {
 	});
 
 	it('matches group leaves by the id TanStack derives from a dotted accessor key', () => {
-		const columns: ColumnDef<
-			typeof dsTableFeatures,
-			{ id: string; address: { city: string; zip: string } }
-		>[] = [
+		const columns: DsColumnDef<{ id: string; address: { city: string; zip: string } }>[] = [
 			{
 				id: 'address',
 				columns: [{ accessorKey: 'address.city' }, { accessorKey: 'address.zip' }],

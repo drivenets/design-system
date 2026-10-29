@@ -1,6 +1,6 @@
-import type { Row, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { IconType } from '../../../ds-icon';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsRow } from '../../ds-table-features';
 
 /**
  * Represents an action that can be performed on a single row
@@ -84,5 +84,5 @@ export interface DsTableRowActionsCellProps<TData extends RowData> {
 	/**
 	 * The row whose actions are rendered
 	 */
-	row: Row<DsTableFeatures, TData>;
+	row: DsRow<TData>;
 }

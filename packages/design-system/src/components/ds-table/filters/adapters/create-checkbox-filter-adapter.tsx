@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { Row, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import type { FilterAdapter } from '../types/filter-adapter.types';
 import {
 	type CheckboxFilterItem,
@@ -7,7 +7,7 @@ import {
 	CheckboxFilter,
 } from '../components/checkbox-filter';
 import { createFilterAdapter } from './create-filter-adapter';
-import type { DsTableFeatures } from '../../ds-table-features';
+import type { DsRow } from '../../ds-table-features';
 
 export interface CheckboxFilterAdapterConfig<TData extends RowData, TValue> {
 	/** Unique id, should match the column `accessorKey`. */
@@ -21,7 +21,7 @@ export interface CheckboxFilterAdapterConfig<TData extends RowData, TValue> {
 	chipLabelTemplate?: (item: CheckboxFilterItem<TValue>) => string;
 	cellRenderer?: (value: TValue) => ReactNode;
 	/** @default (row) => row.getValue(id) */
-	getRowValue?: (row: Row<DsTableFeatures, TData>) => TValue;
+	getRowValue?: (row: DsRow<TData>) => TValue;
 	/** Show a search input above the list. @default false */
 	searchable?: boolean;
 	/** Show an "All" toggle that selects / clears every (visible) item. @default false */

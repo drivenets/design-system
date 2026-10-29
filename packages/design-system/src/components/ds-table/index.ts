@@ -7,7 +7,21 @@ export type { DsTableEditDisabledResult } from './ds-table-column.types';
 
 export { default as DsTable } from './ds-table';
 export { dsTableFeatures, createDsColumnHelper } from './ds-table-features';
-export type { DsColumnDef, DsCellContext } from './ds-table-features';
+export type {
+	DsCell,
+	DsCellContext,
+	DsColumn,
+	DsColumnDef,
+	DsColumnHelper,
+	DsFilterFn,
+	DsHeader,
+	DsHeaderContext,
+	DsHeaderGroup,
+	DsRow,
+	DsSortFn,
+	DsTableInstance,
+	DsTableState,
+} from './ds-table-features';
 export * from './ds-table.types';
 
 export { createColumnHelper } from '@tanstack/react-table';

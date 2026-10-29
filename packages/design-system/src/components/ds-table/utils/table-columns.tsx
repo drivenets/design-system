@@ -1,4 +1,4 @@
-import type { ColumnDef, RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import { DsSkeletonText } from '../../ds-skeleton';
 import { DsTableHeaderSelectableCell } from '../components/ds-table-header-selectable-cell';
 import { DsTableRowActionsHeader } from '../components/ds-table-row-actions-cell';
@@ -17,7 +17,7 @@ import {
 	SELECT_COLUMN_WIDTH,
 	SKELETON_ROW_COUNT,
 } from './constants';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { DsColumnDef } from '../ds-table-features';
 
 export type GetAugmentedColumnsOptions = {
 	selectable: boolean;
@@ -40,8 +40,8 @@ const EXPLICIT_SIZE_META = { hasExplicitSize: true } as const;
  * unsized leaves are returned as-is.
  */
 const stampExplicitSize = <TData extends RowData, TValue>(
-	columns: readonly ColumnDef<DsTableFeatures, TData, TValue>[],
-): ColumnDef<DsTableFeatures, TData, TValue>[] =>
+	columns: readonly DsColumnDef<TData, TValue>[],
+): DsColumnDef<TData, TValue>[] =>
 	columns.map((column) => {
 		if ('columns' in column && column.columns) {
 			return { ...column, columns: stampExplicitSize(column.columns) };
@@ -70,7 +70,7 @@ const pinUtilityColumnSize = (width: number) => ({
  * actions or column display.
  */
 export const getAugmentedColumns = <TData extends RowData, TValue>(
-	columns: ColumnDef<DsTableFeatures, TData, TValue>[],
+	columns: DsColumnDef<TData, TValue>[],
 	{
 		selectable,
 		expandable,
@@ -83,8 +83,8 @@ export const getAugmentedColumns = <TData extends RowData, TValue>(
 		rowActionsColumnWidth = 0,
 		columnDisplay = false,
 	}: GetAugmentedColumnsOptions,
-): ColumnDef<DsTableFeatures, TData, TValue>[] => {
-	const augmentedColumns: ColumnDef<DsTableFeatures, TData, TValue>[] = stampExplicitSize(columns);
+): DsColumnDef<TData, TValue>[] => {
+	const augmentedColumns: DsColumnDef<TData, TValue>[] = stampExplicitSize(columns);
 
 	if (selectable) {
 		const width = resolveUtilityColumnWidth(selectableColumnWidth, SELECT_COLUMN_WIDTH);
@@ -165,8 +165,8 @@ export const getAugmentedColumns = <TData extends RowData, TValue>(
  * Group columns are cloned with the same transform applied to their children.
  */
 export const toSkeletonColumns = <TData extends RowData, TValue>(
-	columns: readonly ColumnDef<DsTableFeatures, TData, TValue>[],
-): ColumnDef<DsTableFeatures, TData, TValue>[] =>
+	columns: readonly DsColumnDef<TData, TValue>[],
+): DsColumnDef<TData, TValue>[] =>
 	columns.map((column) =>
 		'columns' in column && column.columns
 			? { ...column, columns: toSkeletonColumns(column.columns) }

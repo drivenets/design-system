@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import type { Table } from '@tanstack/react-table';
 import { createTableApi } from './table-api';
-import { type dsTableFeatures } from '../ds-table-features';
+import type { DsTableInstance } from '../ds-table-features';
 
 type Person = { id: string; name: string };
 
@@ -27,7 +26,7 @@ const createMockTable = () => {
 		setRowSelection,
 		setExpanded,
 		getFilteredSelectedRowModel,
-	} as unknown as Table<typeof dsTableFeatures, Person>;
+	} as unknown as DsTableInstance<Person>;
 
 	return {
 		table,
@@ -97,7 +96,7 @@ describe('createTableApi', () => {
 					createRow('d', true, true),
 				],
 			}),
-		} as unknown as Table<typeof dsTableFeatures, Person>;
+		} as unknown as DsTableInstance<Person>;
 
 		expect(createTableApi(table).getExpandedRowIds()).toEqual(['a', 'd']);
 	});

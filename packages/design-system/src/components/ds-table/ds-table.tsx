@@ -4,10 +4,8 @@ import { useImperativeHandle, useMemo } from 'react';
 import {
 	type RowSelectionState,
 	type ColumnFiltersState,
-	type ColumnDef,
 	type ColumnPinningState,
 	type SortingState,
-	type Table as TanstackTable,
 	useTable,
 	type ColumnVisibilityState,
 } from '@tanstack/react-table';
@@ -19,7 +17,7 @@ import { DsTableResizeOverlay } from './components/ds-table-resize-overlay';
 import styles from './ds-table.module.scss';
 import type { DsDataTableProps, DsTableRowSize, DsTableStickyColumns } from './ds-table.types';
 import { applyDsTableDefaults } from './ds-table-defaults';
-import { dsTableFeatures, type DsTableFeatures } from './ds-table-features';
+import { dsTableFeatures, type DsColumnDef, type DsTableInstance } from './ds-table-features';
 import { DsTableRow } from './components/ds-table-row';
 import { useDragAndDrop } from './hooks/use-drag-and-drop';
 import { useColumnResize } from './hooks/use-column-resize';
@@ -90,7 +88,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 	} = tableProps;
 	// Column defs are invariant in `TValue`; widen like TanStack's `columnHelper.columns`.
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const columnsProp: ColumnDef<DsTableFeatures, TData, any>[] = rawColumns;
+	const columnsProp: DsColumnDef<TData, any>[] = rawColumns;
 	const [data, setData] = React.useState(tableData);
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [internalColumnFilters, setInternalColumnFilters] = React.useState<ColumnFiltersState>([]);
@@ -357,7 +355,7 @@ const DsTable = <TData extends { id: string }, TValue>(props: DsDataTableProps<T
 };
 
 interface DsTableRowsBodyProps<TData extends { id: string }> {
-	table: TanstackTable<DsTableFeatures, TData>;
+	table: DsTableInstance<TData>;
 	rowSelection: RowSelectionState;
 	emptyState?: React.ReactNode;
 	SortableWrapper: React.ComponentType<React.PropsWithChildren>;

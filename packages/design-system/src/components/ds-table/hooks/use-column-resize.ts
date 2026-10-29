@@ -11,7 +11,6 @@ import type {
 	columnResizingState,
 	ColumnSizingState,
 	OnChangeFn,
-	Table,
 	ColumnVisibilityState,
 	RowData,
 } from '@tanstack/react-table';
@@ -31,7 +30,7 @@ import {
 import { BUILTIN_COLUMN_IDS, RESIZE_DIVIDER_WIDTH, RESIZE_MIN_COLUMN_WIDTH } from '../utils/constants';
 import type { DsTableResizePhase } from '../context/ds-table-context';
 import { getColumnTrackWidth, getReservedScrollbarWidth, useScrollbarGutter } from './use-scrollbar-gutter';
-import type { DsTableFeatures } from '../ds-table-features';
+import type { DsTableInstance } from '../ds-table-features';
 
 const TRACK_MATCH_PX = 3;
 
@@ -113,7 +112,7 @@ export interface UseColumnResizeResult<TData extends RowData> {
 		columnSizing: ColumnSizingState;
 		columnResizing: columnResizingState;
 	};
-	bind: (table: Table<DsTableFeatures, TData>) => UseColumnResizeBindResult;
+	bind: (table: DsTableInstance<TData>) => UseColumnResizeBindResult;
 }
 
 /**
@@ -166,7 +165,7 @@ export const useColumnResize = <TData extends RowData>({
 	const utilityTrackWidthRef = useRef(utilityTrackWidth);
 	utilityTrackWidthRef.current = utilityTrackWidth;
 	const prevUtilityTrackWidthRef = useRef<number | null>(null);
-	const tableRef = useRef<Table<DsTableFeatures, TData> | null>(null);
+	const tableRef = useRef<DsTableInstance<TData> | null>(null);
 
 	const columnSizingRef = useRef(columnSizing);
 	columnSizingRef.current = columnSizing;
@@ -452,7 +451,7 @@ export const useColumnResize = <TData extends RowData>({
 		[enabled, handleColumnSizingChange, handleColumnResizingChange],
 	);
 
-	const bind = (table: Table<DsTableFeatures, TData>): UseColumnResizeBindResult => {
+	const bind = (table: DsTableInstance<TData>): UseColumnResizeBindResult => {
 		tableRef.current = table;
 		leafSizeBoundsRef.current = table.getAllLeafColumns();
 

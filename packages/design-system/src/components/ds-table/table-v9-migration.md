@@ -4,40 +4,44 @@
 
 ## Column definitions
 
-### Type column defs with `DsColumnDef`
+### Use the `Ds*` types instead of TanStack's
 
-In v9, TanStack's `ColumnDef`, `CellContext`, and `createColumnHelper` take the table's features as their first type argument. Use the `DsTable` aliases so you don't have to pass it:
+In v9, TanStack's types take the table's features as their first type argument. `@drivenets/design-system` exports a `Ds*` version of each type that already has `DsTable`'s features filled in, so you only pass your row type:
+
+| TanStack v8                    | `@drivenets/design-system`       |
+| ------------------------------ | -------------------------------- |
+| `ColumnDef<TData, TValue>`     | `DsColumnDef<TData, TValue>`     |
+| `CellContext<TData, TValue>`   | `DsCellContext<TData, TValue>`   |
+| `HeaderContext<TData, TValue>` | `DsHeaderContext<TData, TValue>` |
+| `Table<TData>`                 | `DsTableInstance<TData>`         |
+| `TableState`                   | `DsTableState`                   |
+| `Row<TData>`                   | `DsRow<TData>`                   |
+| `Cell<TData, TValue>`          | `DsCell<TData, TValue>`          |
+| `Column<TData, TValue>`        | `DsColumn<TData, TValue>`        |
+| `Header<TData, TValue>`        | `DsHeader<TData, TValue>`        |
+| `HeaderGroup<TData>`           | `DsHeaderGroup<TData>`           |
+| `FilterFn<TData>`              | `DsFilterFn<TData>`              |
+| `SortingFn<TData>`             | `DsSortFn<TData>`                |
+| `ColumnHelper<TData>`          | `DsColumnHelper<TData>`          |
+| `createColumnHelper<TData>()`  | `createDsColumnHelper<TData>()`  |
 
 ```tsx
 // before
-import type { CellContext, ColumnDef } from '@tanstack/react-table';
+import type { CellContext, ColumnDef, Row } from '@tanstack/react-table';
 import { createColumnHelper } from '@drivenets/design-system';
 
 const columns: ColumnDef<Person>[] = [...];
 const editCell = (info: CellContext<Person, string>) => ...;
+const renderName = (row: Row<Person>) => row.original.name;
 const columnHelper = createColumnHelper<Person>();
 
 // after
-import { createDsColumnHelper, type DsCellContext, type DsColumnDef } from '@drivenets/design-system';
+import { createDsColumnHelper, type DsCellContext, type DsColumnDef, type DsRow } from '@drivenets/design-system';
 
 const columns: DsColumnDef<Person>[] = [...];
 const editCell = (info: DsCellContext<Person, string>) => ...;
+const renderName = (row: DsRow<Person>) => row.original.name;
 const columnHelper = createDsColumnHelper<Person>();
-```
-
-For any other TanStack type, such as `Row` or `Table`, pass `typeof dsTableFeatures` as the first type argument:
-
-```tsx
-// before
-import type { Row } from '@tanstack/react-table';
-
-const renderName = (row: Row<Person>) => row.original.name;
-
-// after
-import type { Row } from '@tanstack/react-table';
-import type { dsTableFeatures } from '@drivenets/design-system';
-
-const renderName = (row: Row<typeof dsTableFeatures, Person>) => row.original.name;
 ```
 
 ### Build helper columns with `columnHelper.columns`
