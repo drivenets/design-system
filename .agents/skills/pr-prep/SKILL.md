@@ -29,7 +29,7 @@ Categorize files by type:
 
 ### Step 2: Run checkers on changed files only
 
-Run `pnpm agent:check` ([AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers)). It covers lint, typecheck, tests, Figma Code Connect parsing and changeset presence for the diff. Run each command its HINT lines print.
+Run `pnpm agent:check --full` ([AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers)). It covers lint, typecheck, tests, Figma Code Connect parsing, changeset presence, and the docs snippet and visual tests when they apply. Visual tests need the Playwright server; if you can't start it, report them as not verified.
 
 For new components or substantial interaction/behavior changes, confirm an updated `*.browser.test.tsx` exists under the component's `__tests__/` when appropriate.
 
@@ -37,7 +37,7 @@ For new components or substantial interaction/behavior changes, confirm an updat
 
 Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../docs-tests/SKILL.md):
 
-1. **Show code + manifest (primary)** — `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run`.
+1. **Show code + manifest (primary)** — the docs tests `agent:check --full` ran in Step 2.
 2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
 
 Add the component's kebab folder suffix (without the `ds-` prefix, e.g. `button-v3`) to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
@@ -102,6 +102,7 @@ PR Preparation Report
 [PASS/FAIL] Tests ................. {details}
 [PASS/FAIL] Show code (docs tests) . {details}
 [PASS/FAIL] MCP manifest snippets . {details}
+[PASS/FAIL] Visual tests .......... {details}
 [PASS/FAIL] Figma Code Connect .... {details}
 [PASS/FAIL] Rule violations ....... {details}
 [PASS/FAIL] No !important ........ {details}
@@ -116,7 +117,7 @@ PR Preparation Report
 [PASS/FAIL] No comment slop .... {details}
 [PASS/FAIL] Changeset ............ {details}
 
-{N}/18 checks passed.
+{N}/19 checks passed.
 ```
 
 If all pass, open the PR with [create-pr](../create-pr/SKILL.md). If any fail, list the specific files and lines that need fixing.

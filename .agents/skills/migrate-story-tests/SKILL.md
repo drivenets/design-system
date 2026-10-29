@@ -92,7 +92,7 @@ After migrating all play functions:
 
 ### Step 4: Verify
 
-Run `pnpm agent:check`. It runs the component's browser tests, lint and typecheck; all must pass before the migration is complete.
+Run `pnpm agent:check`. It runs the component's browser tests, lint and typecheck; all must pass before the migration is complete. The story edits add a docs-tests HINT: run the command it prints.
 
 ### Step 5: Report
 
