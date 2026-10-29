@@ -1,7 +1,6 @@
 ---
 name: react-patterns
 description: React patterns for design-system TSX including ds-* components, subcomponents, *.stories.tsx, and __tests__/*.browser.test.tsx. Use when editing hooks, useState, useEffect, ref prop, memoization, controlled state, or event handlers in @drivenets/design-system.
-user-invocable: false
 ---
 
 # React Patterns Skill

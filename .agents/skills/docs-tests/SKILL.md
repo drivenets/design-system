@@ -1,7 +1,6 @@
 ---
 name: docs-tests
 description: Write and run Storybook docs snippet tests (`*.docs.test.ts`) for Show code and MCP manifest verification against production storybook-static. Use when adding or editing docs tests or verifying Autodocs snippets after story changes.
-user-invocable: false
 ---
 
 # Docs Tests Skill
