@@ -14,6 +14,8 @@ $autocomplete-outline-offset: 2px;
 $autocomplete-rotation-open: 180deg;
 $autocomplete-opacity-hidden: 0;
 $autocomplete-opacity-visible: 1;
+$autocomplete-border-width: 1px;
+$autocomplete-tags-row-height: 28px;
 $autocomplete-tags-input-min-width: 80px;
 $autocomplete-tags-dropdown-max-height: 240px;
 
@@ -55,22 +57,24 @@ $autocomplete-tags-dropdown-max-height: 240px;
 	}
 
 	&.multiple {
-		--autocomplete-tags-row-height: calc(#{input.$input-text-height-default} - 2 * var(--4xs) - 2px);
+		--autocomplete-tags-row-height: #{$autocomplete-tags-row-height};
 
 		align-items: flex-start;
 		gap: var(--xs);
 		height: auto;
 		max-height: none;
-		padding-block: var(--4xs);
+		padding-block: calc(var(--xs) - #{$autocomplete-border-width});
 
 		&.small {
-			--autocomplete-tags-row-height: calc(#{input.$input-text-height-small} - 2px);
+			--autocomplete-tags-row-height: calc(
+				#{input.$input-text-height-small} - 2 * #{$autocomplete-border-width}
+			);
 
 			padding-block: 0;
 		}
 
 		&.large {
-			--autocomplete-tags-row-height: calc(#{input.$input-text-height-large} - 2 * var(--4xs) - 2px);
+			padding-block: calc(var(--xs) + var(--4xs) - #{$autocomplete-border-width});
 		}
 
 		.iconContainer {
@@ -84,7 +88,7 @@ $autocomplete-tags-dropdown-max-height: 240px;
 	flex: 1;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--3xs) var(--xs);
+	gap: var(--xs);
 	min-width: 0;
 	min-height: var(--autocomplete-tags-row-height);
 

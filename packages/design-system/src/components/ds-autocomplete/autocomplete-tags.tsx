@@ -221,7 +221,7 @@ export const AutocompleteTags = ({
 							<DsTag
 								key={tagValue}
 								label={label}
-								size={size === 'small' ? 'small' : 'medium'}
+								size="small"
 								disabled={disabled}
 								locale={{ deleteAriaLabel: removeTagAriaLabel(label) }}
 								onDelete={() => removeTag(tagValue)}
