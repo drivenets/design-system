@@ -1,0 +1,110 @@
+@use '../../styles/typography';
+
+$hover-scale: 1.1;
+$state-outline-width: 2px;
+$ring-width: 2px;
+$small-content-font-size: 10px;
+$z-index-selected: 1;
+$z-index-hover: 2;
+$z-index-dragging: 3;
+
+.pin {
+	--map-pin-color: var(--background-primary);
+
+	display: block;
+	position: relative;
+	padding: 0;
+	border: 0;
+	background: none;
+	line-height: 0;
+	cursor: pointer;
+	transform-origin: 50% 100%;
+	transition: transform 0.2s;
+	appearance: none;
+
+	&[data-category='access-site'] {
+		--map-pin-color: var(--schema-orange);
+	}
+
+	&[data-category='fiber-broadband'] {
+		--map-pin-color: var(--schema-teal);
+	}
+
+	&[data-category='carrier-ethernet'] {
+		--map-pin-color: var(--schema-pink);
+	}
+
+	&[data-planning='planned'] .ring {
+		stroke-dasharray: 0 4;
+		stroke-linecap: round;
+	}
+
+	&[data-planning='designed'] .ring {
+		stroke-dasharray: 9 5;
+	}
+
+	&[data-size='small'] .content {
+		font-size: $small-content-font-size;
+	}
+
+	&[aria-current='true'] {
+		z-index: $z-index-selected;
+
+		.outline {
+			stroke: var(--border-action-primary);
+			stroke-width: $state-outline-width * 2;
+		}
+	}
+
+	&:hover {
+		z-index: $z-index-hover;
+		transform: scale($hover-scale);
+	}
+
+	&[data-dragging] {
+		z-index: $z-index-dragging;
+
+		.outline {
+			fill: var(--background-secondary);
+			stroke: var(--border-contrast);
+			stroke-width: $state-outline-width * 2;
+		}
+	}
+
+	&:focus-visible {
+		outline: 2px solid var(--outline-moderate);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		transition: none;
+	}
+}
+
+.graphic {
+	display: block;
+	overflow: visible;
+}
+
+.outline {
+	fill: var(--background);
+	stroke: none;
+	paint-order: stroke;
+}
+
+.core {
+	fill: var(--map-pin-color);
+}
+
+.ring {
+	fill: none;
+	stroke: var(--map-pin-color);
+	stroke-width: $ring-width;
+}
+
+.content {
+	@include typography.body-xs-md;
+	fill: var(--font-on-action);
+	text-anchor: middle;
+	dominant-baseline: central;
+}
