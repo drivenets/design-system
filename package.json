@@ -29,7 +29,8 @@
 		"changelog": "changeset",
 		"prepare": "husky",
 		"pre-commit": "lint-staged",
-		"ci:local": "pnpm lint --affected && pnpm typecheck --affected && pnpm format:check && pnpm test:coverage --affected && pnpm test:storybook-docs --affected && pnpm build --affected && pnpm lint:build --affected && pnpm test:requires-build --affected && pnpm lint:versions && pnpm lint:spell && pnpm lint:unused && pnpm lint:dedupe && pnpm figma:lint"
+		"ci:local": "pnpm lint --affected && pnpm typecheck --affected && pnpm format:check && pnpm test:coverage --affected && pnpm test:storybook-docs --affected && pnpm build --affected && pnpm lint:build --affected && pnpm test:requires-build --affected && pnpm lint:versions && pnpm lint:spell && pnpm lint:unused && pnpm lint:dedupe && pnpm figma:lint",
+		"agent:check": "node .github/scripts/agent-check.ts"
 	},
 	"devDependencies": {
 		"@changesets/cli": "^3.0.3",
