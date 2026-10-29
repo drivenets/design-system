@@ -24,8 +24,10 @@ const DS_PACKAGE = '@drivenets/design-system';
 const UPSTREAM_REPO_PATTERN = /[:/]drivenets\/design-system(\.git)?$/;
 const VISUAL_SERVER_PORT = Number(process.env.PW_SERVER_PORT ?? '3000');
 const VISUAL_SERVER_TIMEOUT_MS = 1000;
+const OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
 const SCRIPT_FILE = /\.[cm]?[jt]sx?$/;
+const CODE_FILE = /\.([cm]?[jt]sx?|scss)$/;
 const FIGMA_FILE = /\.figma(\.batch)?\.tsx?$/;
 const COMPONENT_DIR = /^packages\/design-system\/src\/components\/[^/]+(?=\/)/;
 const STORY_FILE = /\.stories\.tsx?$/;
@@ -160,11 +162,39 @@ function runTypecheck(): StepResult[] {
 function runTests(): StepResult[] {
 	const steps = changedPackages
 		.filter((pkg) => pkg.scripts.test)
-		.map((pkg) =>
-			runPackageScript(`tests ${pkg.name}`, pkg, 'test', ['--run', '--changed', base, '--passWithNoTests']),
-		);
+		.map((pkg) => {
+			const name = `tests ${pkg.name}`;
+			const args = ['--run', '--passWithNoTests'];
+
+			if (pkg.name !== DS_PACKAGE) {
+				return runPackageScript(name, pkg, 'test', [...args, '--changed', base]);
+			}
+
+			const dirs = getDesignSystemTestDirs(pkg);
+
+			if (dirs.length === 0) {
+				return skip(name, 'no code changed');
+			}
+
+			return runPackageScript(
+				name,
+				pkg,
+				'test',
+				dirs.includes('') ? args : [...args, ...dirs.map((dir) => `${dir}/`)],
+			);
+		});
 
 	return steps.length > 0 ? steps : [skip('tests', 'no package with tests changed')];
+}
+
+// `vitest --changed` crashes in the browser projects (Vite's SCSS compiler isn't set up while it maps
+// related files), so design-system tests run by the folders that changed.
+function getDesignSystemTestDirs(pkg: WorkspacePackage) {
+	const dirs = changedFiles
+		.filter((file) => file.startsWith(`${pkg.dir}/`) && CODE_FILE.test(file))
+		.map((file) => path.relative(pkg.dir, COMPONENT_DIR.exec(file)?.[0] ?? path.dirname(file)));
+
+	return [...new Set(dirs)];
 }
 
 function runFigmaLint(): StepResult {
@@ -262,9 +292,18 @@ function runPackageScript(name: string, pkg: WorkspacePackage, script: string, a
 }
 
 function run(name: string, command: string, args: string[]): StepResult {
-	console.log(`\n▶ ${name}: ${command} ${args.join(' ')}`);
+	console.log(`▶ ${name}: ${command} ${args.join(' ')}`);
 
-	const { status } = spawnSync(command, args, { cwd: ROOT_DIR, stdio: 'inherit' });
+	// Output is printed only on failure: passing runs (e.g. figma:lint's parsed JSON) would flood an agent's context.
+	const { status, stdout, stderr } = spawnSync(command, args, {
+		cwd: ROOT_DIR,
+		encoding: 'utf8',
+		maxBuffer: OUTPUT_MAX_BYTES,
+	});
+
+	if (status !== 0) {
+		console.log(stdout + stderr);
+	}
 
 	return { name, status: status === 0 ? 'pass' : 'fail', detail: '' };
 }
