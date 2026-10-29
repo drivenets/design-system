@@ -1,5 +1,4 @@
 import fs from 'node:fs';
-import net from 'node:net';
 import path from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { parseArgs } from 'node:util';
@@ -34,7 +33,7 @@ const DS_PACKAGE = '@drivenets/design-system';
 const DS_DIR = 'packages/design-system';
 const UPSTREAM_REPO_PATTERN = /[:/]drivenets\/design-system(\.git)?$/;
 const VISUAL_SERVER_PORT = Number(process.env.PW_SERVER_PORT ?? '3000');
-const VISUAL_SERVER_TIMEOUT_MS = 1000;
+const VISUAL_SERVER_TIMEOUT_MS = 2000;
 const OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 const NO_TESTS_FOUND = 'No test files found';
 const SKIP_CHANGELOG_NOTE = 'the PR needs the `skip changelog` label';
@@ -49,6 +48,10 @@ const SHARED_CONFIG_FILES = new Set([
 	'turbo.json',
 ]);
 
+const PACKAGE_CONFIG_FILE =
+	/^packages\/[^/]+\/(package\.json|eslint\.config\.[cm]?[jt]s|tsconfig[^/]*\.json|vitest\.config\.[cm]?[jt]s)$/;
+const DOCS_TESTS_INPUT =
+	/^packages\/design-system\/(.*\.stories\.tsx?|.*\/stories\/.*|.*\.docs\.(test\.ts|snap)|tests\/storybook\/.*)$/;
 const SCRIPT_FILE = /\.[cm]?[jt]sx?$/;
 const CODE_FILE = /\.([cm]?[jt]sx?|scss)$/;
 const TEST_FILE = /\.test\.tsx?$/;
@@ -102,9 +105,8 @@ if (changedFiles.length === 0) {
 }
 
 if (fullCheckPackages.length > 0) {
-	const reason = sharedConfigChanged ? 'shared config changed' : 'depend on a changed package';
 	console.log(
-		`Full lint, typecheck and tests (${reason}): ${fullCheckPackages.map((pkg) => pkg.name).join(', ')}`,
+		`Full lint, typecheck and tests (config or a dependency changed): ${fullCheckPackages.map((pkg) => pkg.name).join(', ')}`,
 	);
 }
 
@@ -123,14 +125,15 @@ printSummary(results);
 process.exit(results.some((result) => result.status === 'fail') ? 1 : 0);
 
 function findBase() {
-	const upstream = git('remote', '-v')
+	let upstream = git('remote', '-v')
 		.split('\n')
 		.map((line) => line.split(/\s+/))
 		.find(([, url, kind]) => kind === '(fetch)' && url !== undefined && UPSTREAM_REPO_PATTERN.test(url))?.[0];
 
 	if (!upstream) {
-		throw new Error(
-			'No git remote points at drivenets/design-system. Add one, e.g. `git remote add drivenets <url>`.',
+		upstream = 'origin';
+		console.warn(
+			'No git remote points at drivenets/design-system; diffing against origin/main, which may be stale.',
 		);
 	}
 
@@ -140,7 +143,12 @@ function findBase() {
 		console.warn(`Could not fetch ${upstream}/main; using the local copy.`);
 	}
 
-	return git('merge-base', 'HEAD', `${upstream}/main`);
+	try {
+		return git('merge-base', 'HEAD', `${upstream}/main`);
+	} catch {
+		console.error(`Can't find ${upstream}/main. Run \`git fetch ${upstream} main\`, then rerun.`);
+		process.exit(1);
+	}
 }
 
 function getChangedFiles(baseRef: string) {
@@ -194,16 +202,28 @@ function getFullCheckPackages() {
 		grew = dependents.length > 0;
 	}
 
-	return packages.filter((pkg) => affected.has(pkg.name) && !changedPackages.includes(pkg));
+	return packages.filter(
+		(pkg) =>
+			changedFiles.some((file) => isInPackage(pkg, file) && PACKAGE_CONFIG_FILE.test(file)) ||
+			(affected.has(pkg.name) && !changedPackages.includes(pkg)),
+	);
 }
 
 function runLint(): StepResult[] {
+	const lintRoot = sharedConfigChanged || changedFiles.includes('eslint.config.ts');
 	const files = existingFiles.filter(
-		(file) => SCRIPT_FILE.test(file) && !fullCheckPackages.some((pkg) => isInPackage(pkg, file)),
+		(file) =>
+			SCRIPT_FILE.test(file) &&
+			!fullCheckPackages.some((pkg) => isInPackage(pkg, file)) &&
+			!(lintRoot && !file.startsWith('packages/')),
 	);
 	const steps = fullCheckPackages
 		.filter((pkg) => pkg.scripts.lint)
 		.map((pkg) => runPackageScript(`lint ${pkg.name}`, pkg, 'lint'));
+
+	if (lintRoot) {
+		steps.push(run('lint root', 'pnpm', ['lint:root']));
+	}
 
 	if (files.length > 0) {
 		steps.unshift(runEslint(files));
@@ -239,10 +259,11 @@ function runTypecheck(): StepResult[] {
 		.filter((pkg) => pkg.scripts.typecheck)
 		.map((pkg) => runPackageScript(`typecheck ${pkg.name}`, pkg, 'typecheck'));
 
-	if (
-		sharedConfigChanged ||
-		changedFiles.some((file) => !file.startsWith('packages/') && SCRIPT_FILE.test(file))
-	) {
+	const rootChanged = changedFiles.some(
+		(file) => file === 'tsconfig.json' || (!file.startsWith('packages/') && SCRIPT_FILE.test(file)),
+	);
+
+	if (sharedConfigChanged || rootChanged) {
 		steps.push(run('typecheck root', 'pnpm', ['typecheck:root']));
 	}
 
@@ -359,8 +380,8 @@ function getChangesetPackageNames() {
 }
 
 function runDocsTests(): StepResult {
-	if (!changedFiles.some((file) => file.startsWith(`${DS_DIR}/`) && STORY_FILE.test(file))) {
-		return skip('docs tests', 'no stories changed');
+	if (!changedFiles.some((file) => DOCS_TESTS_INPUT.test(file))) {
+		return skip('docs tests', 'no stories or docs snapshots changed');
 	}
 
 	if (!options.full) {
@@ -391,7 +412,7 @@ async function runVisualTests(): Promise<StepResult> {
 		);
 	}
 
-	if (!(await isPortOpen(VISUAL_SERVER_PORT))) {
+	if (!(await isVisualServerUp())) {
 		return {
 			name: 'visual tests',
 			status: 'fail',
@@ -452,20 +473,17 @@ function hint(name: string, command: string): StepResult {
 	return { name, status: 'hint', detail: `not run: ${command}, or pnpm agent:check --full` };
 }
 
-function isPortOpen(port: number) {
-	return new Promise<boolean>((resolve) => {
-		const socket = net.connect({ host: '127.0.0.1', port, timeout: VISUAL_SERVER_TIMEOUT_MS });
+// Probe over HTTP: Docker's port proxy accepts TCP connections before the server listens.
+async function isVisualServerUp() {
+	try {
+		const response = await fetch(`http://127.0.0.1:${VISUAL_SERVER_PORT.toString()}/`, {
+			signal: AbortSignal.timeout(VISUAL_SERVER_TIMEOUT_MS),
+		});
 
-		socket.once('connect', () => {
-			socket.destroy();
-			resolve(true);
-		});
-		socket.once('error', () => resolve(false));
-		socket.once('timeout', () => {
-			socket.destroy();
-			resolve(false);
-		});
-	});
+		return response.ok;
+	} catch {
+		return false;
+	}
 }
 
 function printSummary(steps: StepResult[]) {

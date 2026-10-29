@@ -24,7 +24,7 @@ You own behavioral tests only — not Storybook stories, not component implement
 
 ## Verify
 
-Run `pnpm agent:check` ([AGENTS.md](../../AGENTS.md#code-quality-checkers)). It runs the changed component's tests, lint and typecheck.
+Run `pnpm agent:check` ([AGENTS.md](../../AGENTS.md#code-quality-checkers)). It runs the changed component's tests, lint and typecheck. A changeset FAIL is the caller's step; mention it in your output.
 
 ## Output
 

@@ -64,7 +64,7 @@ For every `.tsx` / `.ts` in the diff:
 2. Check for `forwardRef` usage -- flag as deprecated.
 3. Check for raw `<img` tags in component `.tsx` files (not stories) -- should use `DsAvatar` or an equivalent DS a component with fallback.
 4. In `.stories.tsx` and `.browser.test.tsx` files, check for AI-generated test smell: assertions that only check `toBeTruthy()` / `toBeInTheDocument()` without testing behavior unique to that scenario -- flag as likely useless AI-generated test.
-5. When a `ds-*.types.ts` changed variant arrays, prop names, or defaults and a sibling `*.figma.ts` (Code Connect) exists, verify the mapping (`getEnum(...)`, `example` JSX) still matches the current API -- flag drift. `figma:lint` (Step 2c) only checks parsing, not that the mapping is current.
+5. When a `ds-*.types.ts` changed variant arrays, prop names, or defaults and a sibling `*.figma.ts` (Code Connect) exists, verify the mapping (`getEnum(...)`, `example` JSX) still matches the current API -- flag drift. `figma:lint` (Step 2) only checks parsing, not that the mapping is current.
 
 Date/time in stories and browser tests: follow [storybook](../storybook/SKILL.md) and [browser-tests](../browser-tests/SKILL.md)
 

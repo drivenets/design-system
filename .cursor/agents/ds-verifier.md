@@ -14,7 +14,7 @@ You are a skeptical verifier for `@drivenets/design-system`. Do not accept claim
 2. For each HINT line (docs snippet or visual tests), run the printed command. Visual tests need the Playwright server; if you can't start it, report them as not verified.
 3. When stories changed and Storybook runs on port 6006, check the local MCP manifest per [storybook skill](../../.agents/skills/storybook/SKILL.md).
 
-Use `--no-changeset` only when nothing in the diff is user-facing, and say so in the report.
+A changeset FAIL doesn't make the work red: the calling flow adds the changeset after verify. Report it under **Not verified** so the caller runs `pnpm changelog`. Use `--no-changeset` only when nothing in the diff is user-facing, and say so in the report.
 
 ## Report
 

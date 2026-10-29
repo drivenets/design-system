@@ -14,7 +14,7 @@ It checks what the branch changed (commits plus uncommitted and untracked files)
 - `figma:lint` when a `*.figma.ts` changed
 - changeset check: fails when a published package's `src/` (not stories, tests, Code Connect or docs) or `package.json` changed and no `.changeset/*.md` names that package. Fix with `pnpm changelog`, or pass `--no-changeset` when the change isn't user-facing (refactor, internal tooling); the PR then needs the `skip changelog` label.
 
-When shared config (root `package.json`, lockfile, `tsconfig.base.json`, `eslint.config.base.ts`, `turbo.json`) changed, or a package depends on a changed workspace package, it runs that package's full lint, typecheck and tests.
+It runs a package's full lint, typecheck and tests when shared config changed (root `package.json`, lockfile, `pnpm-workspace.yaml`, `tsconfig.base.json`, `eslint.config.base.ts`, `turbo.json`), when the package's own `package.json`, eslint, tsconfig or vitest config changed, or when it depends on a changed workspace package.
 
 It prints one PASS / FAIL / SKIP / HINT line per step, shows a step's output only when it fails, and exits non-zero on any failure. A HINT is a slower check that applies to this diff; the line gives the command. `pnpm agent:check --full` runs them too:
 
@@ -84,6 +84,8 @@ ds-{name}/
 **Primitives:** Ark UI first → TanStack for data-heavy → custom last. Radix: existing only.
 
 ## Other packages
+
+The commands below are for iterating on one package; `pnpm agent:check` is the check before you report done.
 
 ### `@drivenets/eslint-plugin-design-system`
 
