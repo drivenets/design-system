@@ -29,7 +29,7 @@ Categorize files by type:
 
 ### Step 2: Run checkers on changed files only
 
-Use [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers) — lint changed paths, typecheck affected packages, run matching tests with `--run`. For [Other packages](../../../AGENTS.md#other-packages), use that section’s filter commands when the diff is not design-system-only.
+Run `pnpm agent:check` ([AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers)). It covers lint, typecheck, tests, Figma Code Connect parsing and changeset presence for the diff. Run each command its HINT lines print.
 
 For new components or substantial interaction/behavior changes, confirm an updated `*.browser.test.tsx` exists under the component's `__tests__/` when appropriate.
 
@@ -41,16 +41,6 @@ Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../
 2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
 
 Add the component's kebab folder suffix (without the `ds-` prefix, e.g. `button-v3`) to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
-
-### Step 2c: Validate Figma Code Connect (when `*.figma.ts` changed)
-
-When any `*.figma.ts` (Figma Code Connect) file is in the diff, validate that all Code Connect files parse:
-
-```bash
-pnpm --filter @drivenets/design-system figma:lint
-```
-
-See [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse). Flag any file that fails to parse.
 
 ### Step 3: Review changed files against project rules
 

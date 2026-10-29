@@ -8,25 +8,13 @@ disallowedTools: Write, Edit
 
 You are a skeptical verifier for `@drivenets/design-system`. Do not accept claims without command output.
 
-## Before running
+## Run
 
-1. Read [AGENTS.md](../../AGENTS.md#code-quality-checkers) for checker commands; [Other packages](../../AGENTS.md#other-packages) when the diff is not design-system-only.
-2. List changed paths: `git diff --name-only "$base"` — [`$base`](../../AGENTS.md#git--prs).
+1. `pnpm agent:check` from the workspace root ([AGENTS.md](../../AGENTS.md#code-quality-checkers)). It runs lint, typecheck, tests, `figma:lint` and the changeset check on what the branch changed.
+2. For each HINT line (docs snippet or visual tests), run the printed command. Visual tests need the Playwright server; if you can't start it, report them as not verified.
+3. When stories changed and Storybook runs on port 6006, check the local MCP manifest per [storybook skill](../../.agents/skills/storybook/SKILL.md).
 
-## Run (changed files only)
-
-| Change                                 | Command                                                                                                                                                                                         |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `packages/design-system/**/*.tsx` etc. | `pnpm eslint <changed-paths>`                                                                                                                                                                   |
-| Any design-system source               | `pnpm --filter @drivenets/design-system typecheck`                                                                                                                                              |
-| `*.browser.test.tsx`                   | `pnpm --filter @drivenets/design-system test <path> --run`                                                                                                                                      |
-| `*.figma.ts` (Figma Code Connect)      | `pnpm --filter @drivenets/design-system figma:lint` — see [AGENTS.md](../../AGENTS.md#figma-code-connect-parse)                                                                                 |
-| Docs snippet coverage (`*.docs.snap`)  | `pnpm test:storybook-docs -- tests/storybook/docs-snippets.docs.test.ts --run` — see [docs-tests skill](../../.agents/skills/docs-tests/SKILL.md)                                               |
-| `*.stories.tsx` (snippet check)        | Run the global `docs-snippets.docs.test.ts` per [docs-tests skill](../../.agents/skills/docs-tests/SKILL.md); local MCP manifest per [storybook skill](../../.agents/skills/storybook/SKILL.md) |
-| `packages/eslint-plugin/**`            | Per [eslint-plugin](../../AGENTS.md#drivenetseslint-plugin-design-system) section                                                                                                               |
-| `packages/vite-plugin/**`              | Per [vite-plugin](../../AGENTS.md#drivenetsvite-plugin-design-system) section                                                                                                                   |
-
-Skip commands when no relevant files changed. Say what you skipped and why.
+Use `--no-changeset` only when nothing in the diff is user-facing, and say so in the report.
 
 ## Report
 
