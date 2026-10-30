@@ -56,7 +56,7 @@ Behavioral coverage lives in `*.browser.test.tsx`. Delegate to the `ds-browser-t
 ## Step 4 — Verify (do not skip)
 
 1. `ds-verifier` subagent (readonly) — lint, typecheck, tests on **changed paths only** per [AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers). Never mark done while red.
-2. `ds-review` subagent (readonly) — reviews the branch diff for rule violations the checkers can't catch (forwardRef, cross-component imports, hardcoded colors, AI test slop, stale Code Connect). Returns ≤10 findings.
+2. `ds-review` subagent (readonly) — reviews the branch diff for rule violations the checkers can't catch (cross-component imports, AI test slop, stale Code Connect). Returns ≤10 findings.
 
 Fix findings from both, then re-run. Do not proceed while either is red.
 

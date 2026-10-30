@@ -5,119 +5,31 @@ description: Prepare a PR for submission by running all checks, validating stori
 
 # PR Preparation Skill
 
-Automate the pre-submission checklist from the `code-review` skill.
+Runs the checks, the review and the changeset wording check before [create-pr](../create-pr/SKILL.md). Set `$base` first ([AGENTS.md#git--prs](../../../AGENTS.md#git--prs)).
 
 ## Steps
 
-### Step 1: Identify changed files
+### Step 1: Run the checks
 
-Set `$base` first ([AGENTS.md#git--prs](../../../AGENTS.md#git--prs)); every diff below uses it.
+Run `pnpm agent:check --full` ([AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers)). It covers lint (ESLint and stylelint), typecheck, tests, Figma Code Connect parsing, changeset presence, and the docs snippet and visual tests when they apply. Visual tests need the Playwright server; if you can't start it, report them as not verified.
 
-```bash
-git diff "$base" --name-only
-```
+### Step 2: Review the diff
 
-Categorize files by type:
+Apply [code-review](../code-review/SKILL.md) to the full diff: its file → skill table, checklist and comment check.
 
-- `*.tsx` / `*.ts` -- TypeScript source files
-- `*.stories.tsx` -- Story files
-- `*.module.scss` -- Style files
-- `*.test.ts` / `*.test.tsx` -- Test files
-- `*.browser.test.tsx` -- Vitest browser tests (live next to components under `__tests__/`)
-- `*.figma.ts` -- Figma Code Connect files
-- `.changeset/*.md` -- Changeset files
+### Step 3: Check the changeset wording
 
-### Step 2: Run checkers on changed files only
+Read each `.changeset/*.md` the branch adds. Each is one user-facing sentence ("Add X to Y" or "Fix X in Y") with no cause, mechanism, or internals — see [AGENTS.md](../../../AGENTS.md#comments--changesets). If `agent:check` reports a missing changeset and the change is user-facing, run `pnpm changelog`. Use the `skip changelog` label only for CI, test, docs or tooling changes, never for bug fixes.
 
-Run `pnpm agent:check --full` ([AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers)). It covers lint, typecheck, tests, Figma Code Connect parsing, changeset presence, and the docs snippet and visual tests when they apply. Visual tests need the Playwright server; if you can't start it, report them as not verified.
-
-For new components or substantial interaction/behavior changes, confirm an updated `*.browser.test.tsx` exists under the component's `__tests__/` when appropriate.
-
-### Step 2b: Verify story snippets (when `*.stories.tsx` changed)
-
-Per [storybook](../storybook/SKILL.md) Snippet verification and [docs-tests](../docs-tests/SKILL.md):
-
-1. **Show code + manifest (primary)** — the docs tests `agent:check --full` ran in Step 2.
-2. **MCP agent tooling (secondary)** — if Storybook is on port 6006, `get-documentation-for-story` via local MCP; else **SKIP**.
-
-Add the component's kebab folder suffix (without the `ds-` prefix, e.g. `button-v3`) to the `COMPONENTS` allowlist in the global `docs-snippets.docs.test.ts` when introducing stories for a component not yet covered.
-
-### Step 3: Review changed files against project rules
-
-Read the matching skill(s) from the [code-review file → skill table](../code-review/SKILL.md#code-review-process) for paths in the diff. Flag violations found in the diff.
-
-### Step 4: Validate SCSS files
-
-For every `.module.scss` in the diff:
-
-1. Search for `!important` -- flag any occurrence.
-2. Search for hardcoded colors (hex values like `#xxx`) -- flag any not in a comment.
-3. Search for `:global` -- flag any occurrence.
-4. Search for `overflow: hidden` or `overflow: auto` -- flag for manual review (may be masking a layout bug).
-5. Search for `-webkit-` prefixed properties -- flag any without a standard CSS fallback or `@supports` guard (e.g., `-webkit-scrollbar` without `scrollbar-width: none`).
-
-### Step 5: Validate TypeScript files
-
-For every `.tsx` / `.ts` in the diff:
-
-1. Check for cross-component imports (importing from `../ds-other-component/`) -- flag as violation. Only allow main components imports, not utilities or subcomponents.
-2. Check for `forwardRef` usage -- flag as deprecated.
-3. Check for raw `<img` tags in component `.tsx` files (not stories) -- should use `DsAvatar` or an equivalent DS a component with fallback.
-4. In `.stories.tsx` and `.browser.test.tsx` files, check for AI-generated test smell: assertions that only check `toBeTruthy()` / `toBeInTheDocument()` without testing behavior unique to that scenario -- flag as likely useless AI-generated test.
-5. When a `ds-*.types.ts` changed variant arrays, prop names, or defaults and a sibling `*.figma.ts` (Code Connect) exists, verify the mapping (`getEnum(...)`, `example` JSX) still matches the current API -- flag drift. `figma:lint` (Step 2) only checks parsing, not that the mapping is current.
-
-Date/time in stories and browser tests: follow [storybook](../storybook/SKILL.md) and [browser-tests](../browser-tests/SKILL.md)
-
-### Step 5b: Review new comments
-
-List every comment line the branch adds:
-
-```bash
-git diff "$base" -U0 -- '*.ts' '*.tsx' '*.scss' \
-  | grep -E '^\+(.*[^:])?//|^\+.*/\*|^\+\s*\*'
-```
-
-For each, keep it only if it states a _why_ the code can't show ([AGENTS.md](../../../AGENTS.md#comments--changesets)). Flag the rest — narration of the code or the change, ticket IDs, multi-line walkthroughs. Public JSDoc on props, components, and stories is exempt from "default none", but not from "no internals".
-
-### Step 6: Check changeset
-
-```bash
-ls .changeset/*.md 2>/dev/null | grep -v README
-```
-
-- If no changeset file exists and this PR has user-facing changes, prompt the user to run `pnpm changelog`.
-- If a changeset exists, read it and verify it is one user-facing sentence ("Add X to Y" or "Fix X in Y") with no cause, mechanism, or internals — see [AGENTS.md](../../../AGENTS.md#comments--changesets).
-- Remind: use `skip changelog` label only for CI/test/docs changes, never for bug fixes.
-
-### Step 7: Output report
-
-Present a pass/fail checklist:
+### Step 4: Output report
 
 ```
 PR Preparation Report
 =====================
 
-[PASS/FAIL] Lint .................. {details}
-[PASS/FAIL] Typecheck ............. {details}
-[PASS/FAIL] Tests ................. {details}
-[PASS/FAIL] Show code (docs tests) . {details}
-[PASS/FAIL] MCP manifest snippets . {details}
-[PASS/FAIL] Visual tests .......... {details}
-[PASS/FAIL] Figma Code Connect .... {details}
-[PASS/FAIL] Rule violations ....... {details}
-[PASS/FAIL] No !important ........ {details}
-[PASS/FAIL] No hardcoded colors .. {details}
-[PASS/FAIL] No :global ........... {details}
-[PASS/FAIL] No cross-component ... {details}
-[PASS/FAIL] No forwardRef ........ {details}
-[PASS/FAIL] No overflow:hidden ... {details}
-[PASS/FAIL] No raw <img> ........ {details}
-[PASS/FAIL] No webkit-only ..... {details}
-[PASS/FAIL] No AI test slop .... {details}
-[PASS/FAIL] No comment slop .... {details}
-[PASS/FAIL] Changeset ............ {details}
-
-{N}/19 checks passed.
+[PASS/FAIL] agent:check --full .. {failed steps; HINT or not-verified steps}
+[PASS/FAIL] Review .............. {findings, or none}
+[PASS/FAIL] Changeset wording ... {details, or skip changelog}
 ```
 
 If all pass, open the PR with [create-pr](../create-pr/SKILL.md). If any fail, list the specific files and lines that need fixing.

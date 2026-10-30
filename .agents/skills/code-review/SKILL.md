@@ -5,6 +5,8 @@ description: Apply when preparing a PR, reviewing code changes, running git diff
 
 # PR Workflow & Code Review
 
+This skill holds the review checks that need judgement. Lint, typecheck, tests, Figma Code Connect parsing and changeset presence run in `pnpm agent:check` ([AGENTS.md#code-quality-checkers](../../../AGENTS.md#code-quality-checkers)); don't repeat them by hand.
+
 ## Git & PR Workflow
 
 Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.md#git--prs). PR title, body, screenshots and labels: [create-pr](../create-pr/SKILL.md). Changeset wording: [AGENTS.md#comments--changesets](../../../AGENTS.md#comments--changesets).
@@ -29,10 +31,17 @@ Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.
 | `*.browser.test.tsx`             | [browser-tests](../browser-tests/SKILL.md)                                           |
 | `*.docs.test.ts` / `*.docs.snap` | [docs-tests](../docs-tests/SKILL.md)                                                 |
 | `*.module.scss`                  | [scss](../scss/SKILL.md)                                                             |
-| `*.figma.ts` (Code Connect)      | [figma-to-component](../figma-to-component/SKILL.md); validate parse (see step 3)    |
+| `*.figma.ts` (Code Connect)      | [figma-to-component](../figma-to-component/SKILL.md)                                 |
 
-3. When any `*.figma.ts` (Figma Code Connect) file is in the diff, validate that all Code Connect files still parse: `pnpm --filter @drivenets/design-system figma:lint` (see [AGENTS.md#figma-code-connect-parse](../../../AGENTS.md#figma-code-connect-parse)). Flag any file that fails to parse.
-4. Flag only clear, high-severity issues (max 10 inline comments). Separately, list every comment or changeset that fails [Comments & changesets](../../../AGENTS.md#comments--changesets) as one grouped finding; it doesn't count toward the cap.
+3. Check the diff against the [checklist](#checklist).
+4. Flag only clear, high-severity issues (max 10 inline comments). Separately, list every added comment that fails [Comments & changesets](../../../AGENTS.md#comments--changesets) as one grouped finding; it doesn't count toward the cap. To list the added comments:
+
+   ```bash
+   git diff "$base" -U0 -- '*.ts' '*.tsx' '*.scss' \
+     | grep -E '^\+(.*[^:])?//|^\+.*/\*|^\+\s*\*'
+   ```
+
+   Keep a comment only if it states a _why_ the code can't show. Public JSDoc on props, components, and stories is exempt from "default none", but not from "no internals".
 
 ### Inline comment format
 
@@ -48,29 +57,14 @@ Branch, commit, fork and force-push rules: [AGENTS.md#git--prs](../../../AGENTS.
 
 ---
 
-## PR Checklist
+## Checklist
 
-Before submitting a PR:
+Checks no tool or linked skill covers:
 
-- [ ] Changelog added (`pnpm changelog`): one user-facing sentence
-- [ ] Before/after screenshots when the diff changes what renders ([create-pr](../create-pr/SKILL.md))
-- [ ] New comments explain a _why_ the code can't show; none narrate the code or the change
-- [ ] Behavioral coverage in `*.browser.test.tsx` where interactions matter
-- [ ] Browser tests use a11y queries (no test-ids unless unavoidable)
-- [ ] CSS uses design tokens, no `!important`
-- [ ] No inline styles in stories
-- [ ] Props layer doesn't expose library internals
-- [ ] Types exported from `.types.ts` with variant arrays
-- [ ] Code is well-spaced and readable
-- [ ] Matches Figma design
-- [ ] Figma Code Connect parses (`pnpm --filter @drivenets/design-system figma:lint`) when `*.figma.ts` changed
-- [ ] Sibling `*.figma.ts` mapping still matches the component API when props/variants/defaults changed (parse alone won't catch drift)
-- [ ] Storybook examples show all states (controlled + localized)
-- [ ] No cross-component internal imports
-- [ ] No unnecessary `useMemo`/`useCallback` (except under `ds-table/` — excluded from React Compiler; see [react-patterns](../react-patterns/SKILL.md))
-- [ ] Check Ark UI for existing primitives before custom implementation
-- [ ] No `overflow: hidden` as a band-aid for layout bugs
-- [ ] No raw `<img>` — use DS components (e.g., `DsAvatar`) with fallback
+- [ ] Matches the Figma design
+- [ ] New or changed interactions have behavioral coverage in `*.browser.test.tsx` ([browser-tests](../browser-tests/SKILL.md))
+- [ ] Sibling `*.figma.ts` mapping (`getEnum(...)`, `example` JSX) still matches the component API when props, variants or defaults changed; `agent:check` only checks that it parses
+- [ ] No cross-component internal imports: import another component's main export, not its utilities or subcomponents
+- [ ] Ark UI checked for an existing primitive before a custom implementation
+- [ ] No `overflow: hidden` as a band-aid for a layout bug
 - [ ] No leftover code from abandoned implementation approaches
-- [ ] No `-webkit-*` without cross-browser fallback or `@supports` guard
-- [ ] AI-generated tests actually assert meaningful behavior (not duplicate/trivial)

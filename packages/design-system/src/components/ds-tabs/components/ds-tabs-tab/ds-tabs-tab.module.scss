@@ -203,6 +203,7 @@ $disabled-opacity: 0.5;
 	align-items: center;
 	justify-content: center;
 	flex-shrink: 0;
+	// stylelint-disable-next-line declaration-no-important -- stays neutral inside a selected tab
 	color: var(--font-main) !important;
 	cursor: pointer;
 	border-radius: var(--3xs);

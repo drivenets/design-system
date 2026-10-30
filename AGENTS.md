@@ -9,12 +9,13 @@ pnpm agent:check
 It checks what the branch changed (commits plus uncommitted and untracked files) against the [diff base](#git--prs), and runs:
 
 - eslint on changed JS/TS files
+- stylelint on changed SCSS files
 - typecheck for each changed package, and root `tsc` when root scripts changed
 - tests: the changed component folders in design-system (all of its tests when shared code like hooks, utils or styles changed), `vitest --changed` in other packages
 - `figma:lint` when a `*.figma.ts` changed
 - changeset check: fails when a published package's `src/` (not stories, tests, Code Connect or docs) or `package.json` changed and no `.changeset/*.md` names that package. Fix with `pnpm changelog`, or pass `--no-changeset` when the change isn't user-facing (refactor, internal tooling); the PR then needs the `skip changelog` label.
 
-It runs a package's full lint, typecheck and tests when shared config changed (root `package.json`, lockfile, `pnpm-workspace.yaml`, `tsconfig.base.json`, `eslint.config.base.ts`, `turbo.json`), when the package's own `package.json`, eslint, tsconfig or vitest config changed, or when it depends on a changed workspace package.
+It runs a package's full lint, typecheck and tests when shared config changed (root `package.json`, lockfile, `pnpm-workspace.yaml`, `tsconfig.base.json`, `eslint.config.base.ts`, `turbo.json`), when the package's own `package.json`, eslint, stylelint, tsconfig or vitest config changed, or when it depends on a changed workspace package.
 
 It prints one PASS / FAIL / SKIP / HINT line per step, shows a step's output only when it fails, and exits non-zero on any failure. A HINT is a slower check that applies to this diff; the line gives the command. `pnpm agent:check --full` runs them too:
 
@@ -121,7 +122,7 @@ Applies to every package. Comments drift from the code and every future reader p
 - Never: restate what the code does, narrate the change (`now`, `previously`, `fixed`, `changed to`), ticket IDs, multi-line walkthroughs.
 - `TODO` only with a linked issue.
 - Public JSDoc (props, components, stories) is consumer docs — follow [`component-api`](.agents/skills/component-api/SKILL.md) and [`storybook`](.agents/skills/storybook/SKILL.md). Describe behavior, not internals.
-- Before finishing, run the [`pr-prep` Step 5b](.agents/skills/pr-prep/SKILL.md#step-5b-review-new-comments) command and delete each added comment that fails this bar.
+- Before finishing, run the [`code-review` comment check](.agents/skills/code-review/SKILL.md#code-review-process) and delete each added comment that fails this bar.
 
 | Bad                                                                | Good                                                                    |
 | ------------------------------------------------------------------ | ----------------------------------------------------------------------- |

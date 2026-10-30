@@ -10,6 +10,21 @@ import vitest from '@vitest/eslint-plugin';
 import globals from 'globals';
 import gitignore from 'eslint-config-flat-gitignore';
 
+const noEnums = {
+	selector: 'TSEnumDeclaration',
+	message: 'Enums are not allowed. Use union types instead.',
+};
+
+const noForwardRef = {
+	selector: "CallExpression[callee.name='forwardRef'], CallExpression[callee.property.name='forwardRef']",
+	message: '`forwardRef` is not needed in React 19. Accept `ref` as a regular prop instead.',
+};
+
+const noRawImg = {
+	selector: "JSXOpeningElement[name.name='img']",
+	message: 'Use a DS component with a fallback (e.g. `DsAvatar`) instead of a raw `<img>`.',
+};
+
 export default defineConfig(
 	gitignore({
 		files: collectGitignores(),
@@ -109,13 +124,7 @@ export default defineConfig(
 				},
 			],
 
-			'no-restricted-syntax': [
-				'error',
-				{
-					selector: 'TSEnumDeclaration',
-					message: 'Enums are not allowed. Use union types instead.',
-				},
-			],
+			'no-restricted-syntax': ['error', noEnums, noForwardRef],
 
 			'unicorn/filename-case': [
 				'error',
@@ -151,6 +160,8 @@ export default defineConfig(
 					includeTypes: true,
 				},
 			],
+
+			'no-restricted-syntax': ['error', noEnums, noForwardRef, noRawImg],
 		},
 	},
 
