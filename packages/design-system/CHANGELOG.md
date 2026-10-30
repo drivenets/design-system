@@ -1,5 +1,15 @@
 # @drivenets/design-system
 
+## 0.26.0
+
+### Minor Changes
+
+- 102842d: Add drag-and-drop sorting to `DsTree` with `DsTree.Sortable`, and to the `DsTable` Columns popup with `reorderableColumns`.
+
+### Patch Changes
+
+- fe93a92: Fix the `DsTag` delete button being hidden until the tag is hovered or focused.
+
 ## 0.25.0
 
 ### Minor Changes
