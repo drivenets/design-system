@@ -554,16 +554,18 @@ describe('DsTable sticky columns', () => {
 				</Frame>,
 			);
 			await openColumnDisplay();
-			await page.getByPlaceholder('Search').hover();
+
+			const allColumns = page.getByRole('checkbox', { name: 'All columns', exact: true });
+			await allColumns.hover();
 
 			await expect.poll(() => getComputedStyle(stickyToggle('Age').element()).opacity).toBe('0');
 			expect(getComputedStyle(stickyToggle('First Name').element()).opacity).toBe('1');
 
-			await page.getByRole('checkbox', { name: 'Age', exact: true }).hover();
+			await page.getByRole('treeitem').filter({ hasText: 'Age' }).hover();
 
 			await expect.poll(() => getComputedStyle(stickyToggle('Age').element()).opacity).toBe('1');
 
-			await page.getByPlaceholder('Search').hover();
+			await allColumns.hover();
 			await expect.poll(() => getComputedStyle(stickyToggle('Visits').element()).opacity).toBe('0');
 
 			stickyToggle('Visits').element().focus();
@@ -769,6 +771,47 @@ describe('DsTable sticky columns', () => {
 			expect(getHeaderCell('firstName').getBoundingClientRect().width).toBeCloseTo(150, 0);
 			expect(getBodyCell('firstName').getBoundingClientRect().width).toBeCloseTo(150, 0);
 			expect(getHeaderCell('lastName').getBoundingClientRect().width).toBeGreaterThan(150);
+		});
+
+		it('fills the row with the last sticky column once every column is sticky', async () => {
+			const fillGroups: ColumnDef<Row>[] = [
+				{
+					id: 'identity',
+					header: 'Identity',
+					columns: [
+						{ accessorKey: 'firstName', header: 'First Name' },
+						{ accessorKey: 'lastName', header: 'Last Name' },
+					],
+				},
+				{ id: 'activity', header: 'Activity', columns: [{ accessorKey: 'visits', header: 'Visits' }] },
+				{ accessorKey: 'age', header: 'Age' },
+			];
+
+			await page.render(
+				<Frame width={1200}>
+					<DsTable
+						columns={fillGroups}
+						data={rows}
+						columnDisplay
+						stickyColumns={{ left: ['identity', 'age', 'activity'] }}
+					/>
+				</Frame>,
+			);
+
+			const tableRight = getHeaderCell(COLUMN_DISPLAY_COLUMN_ID)
+				.closest('table')
+				?.getBoundingClientRect().right;
+			const rowEnds = [...document.querySelectorAll('thead tr, tbody tr:first-child')].map(
+				(row) => row.lastElementChild?.getBoundingClientRect().right,
+			);
+
+			expect(rowEnds).toEqual(rowEnds.map(() => tableRight));
+			expect(getHeaderCell('firstName').getBoundingClientRect().width).toBeCloseTo(150, 0);
+			expect(getHeaderCell('visits').getBoundingClientRect().width).toBeGreaterThan(150);
+			expect(getHeaderCell('activity').getBoundingClientRect().right).toBeCloseTo(
+				getHeaderCell('visits').getBoundingClientRect().right,
+				0,
+			);
 		});
 
 		it('moves later sticky columns live while a sticky column is resized', async () => {

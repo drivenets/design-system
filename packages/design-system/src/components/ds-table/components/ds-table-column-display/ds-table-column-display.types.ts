@@ -1,4 +1,5 @@
 import type { Table } from '@tanstack/react-table';
+import type { DsTreeNode } from '../../../ds-tree';
 
 export interface DsTableColumnDisplayProps<TData> {
 	/**
@@ -10,23 +11,17 @@ export interface DsTableColumnDisplayProps<TData> {
 
 export type ColumnDisplayCheckedState = boolean | 'indeterminate';
 
-/**
- * One row of the column display list: a leaf column or a column group.
- */
-export interface ColumnDisplayNode {
-	id: string;
-	label: string;
-	/**
-	 * Leaf column ids the row toggles: the leaf itself, or a group's descendant
-	 * leaves. Leaves with `enableHiding: false` are left out.
-	 */
+/** One row of the column display tree: a leaf column or a column group. */
+export interface ColumnDisplayNode extends DsTreeNode {
+	leafIds: string[];
+	/** `leafIds` without the `enableHiding: false` ones. */
 	leafIdsToToggle: string[];
-	checked: ColumnDisplayCheckedState;
-	/**
-	 * Nothing to toggle, so the row renders checked, disabled, and with a lock.
-	 */
 	locked: boolean;
-	children: ColumnDisplayNode[];
+	// A group is sticky when any one of its leaves is
+	sticky: boolean;
+	children?: ColumnDisplayNode[];
 }
 
-export type ColumnDisplayToggleTarget = Pick<ColumnDisplayNode, 'leafIdsToToggle' | 'checked' | 'locked'>;
+export type ColumnDisplayToggleTarget = Pick<ColumnDisplayNode, 'leafIdsToToggle' | 'locked'> & {
+	checked: ColumnDisplayCheckedState;
+};

@@ -3,7 +3,7 @@ import styles from './ds-table-row-virtualized.module.scss';
 import { useDsTableContext } from '../../context/ds-table-context';
 import { isEditingCell } from '../../utils/editing';
 import { getBodyCellLayoutProps } from '../../utils/sticky-columns';
-import { isFirstLeafColumnOfGroup } from '../../grouping';
+import { getGroupBoundaryColumnIds } from '../../grouping';
 import { TableCell, TableRow } from '../core-table';
 import type { DsTableRowVirtualizedProps } from './ds-table-row-virtualized.types';
 import { DsTableCell } from '../ds-table-cell';
@@ -31,6 +31,8 @@ export const DsTableRowVirtualized = <TData,>({
 	} = useDsTableContext<TData, unknown>();
 	const isExpanded = row.getIsExpanded();
 	const isActive = activeRowId === row.id;
+	const visibleCells = row.getVisibleCells();
+	const groupBoundaryIds = getGroupBoundaryColumnIds(visibleCells.map((cell) => cell.column));
 
 	return (
 		<TableRow
@@ -71,7 +73,7 @@ export const DsTableRowVirtualized = <TData,>({
 				</TableCell>
 			) : (
 				<>
-					{row.getVisibleCells().map((cell) => {
+					{visibleCells.map((cell) => {
 						const { style: cellStyle, stickyAttributes } = getBodyCellLayoutProps(cell, !!resizeSizingReady);
 
 						return (
@@ -85,7 +87,7 @@ export const DsTableRowVirtualized = <TData,>({
 									cell.column.id === EXPANDER_COLUMN_ID && styles.expandableCell,
 									cell.column.id === SELECT_COLUMN_ID && styles.selectableCell,
 									cell.column.id === ROW_ACTIONS_COLUMN_ID && styles.rowActionsCell,
-									isFirstLeafColumnOfGroup(cell.column) && styles.groupStart,
+									groupBoundaryIds.has(cell.column.id) && styles.groupStart,
 									typeof cell.column.columnDef.editCell === 'function' && styles.editableCell,
 								)}
 							>

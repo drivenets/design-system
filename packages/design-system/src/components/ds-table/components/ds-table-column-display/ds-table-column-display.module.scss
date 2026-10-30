@@ -1,6 +1,9 @@
-@use '../../../../styles/mixin' as mixins;
 @use '../../../../styles/scrollbars' as scrollbars;
 @use '../../../../styles/shared/dropdown';
+
+$indent-per-level: calc(var(--lg) + var(--sm));
+// Figma's `Part_DisplayItem` row, taller than DsTree's medium density
+$row-height: 38px;
 
 .content {
 	--column-display-min-width: 240px;
@@ -32,35 +35,20 @@
 	color: var(--icon-main);
 }
 
-.header {
-	padding: var(--xs);
-}
-
-// Rows sit edge to edge, so their hover highlights touch. The list keeps a
-// thin inset so the scroll container doesn't clip a focused row's ring.
-.list,
-.children {
-	display: flex;
-	flex-direction: column;
-	margin: 0;
-	list-style: none;
-}
-
 .list {
 	@include scrollbars.scrollbar-on-hover;
+
+	--ds-tree-row-start: var(--xs);
+	--ds-tree-indent-per-level: #{$indent-per-level};
 
 	max-height: var(--column-display-list-max-height);
 	padding: var(--4xs);
 	overflow-y: auto;
 }
 
-.children {
-	padding: 0 0 0 var(--lg);
-}
-
-.item {
-	display: flex;
-	flex-direction: column;
+.list .row {
+	min-height: $row-height;
+	padding-inline-end: var(--sm);
 }
 
 // The sticky toggle shows on hover or keyboard focus, and stays while the
@@ -69,6 +57,17 @@
 	.row:not(:hover, :focus-within) .stickyToggle:not([aria-pressed='true']) {
 		opacity: 0;
 	}
+}
+
+.checkbox {
+	flex-shrink: 0;
+	width: var(--md);
+	height: var(--md);
+	margin-inline-end: var(--3xs);
+}
+
+.label {
+	color: var(--font-main);
 }
 
 // Lines up with the list rows, which sit inside the list's inset.
@@ -81,8 +80,4 @@
 .content .divider {
 	width: auto;
 	margin: 0 var(--xs) var(--4xs);
-}
-
-.visuallyHidden {
-	@include mixins.visually-hidden;
 }

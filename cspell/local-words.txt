@@ -47,6 +47,7 @@ OKCAOKLU
 ondark
 onwarn
 oxfmtrc
+ownedby
 pipefail
 prss
 reorderable
