@@ -283,12 +283,23 @@ describe('DsTag key-value variant', () => {
 		expect(textWidth(value)).toBeGreaterThan(width(value) + 1);
 	});
 
-	it('fires onDelete from the revealed delete button', async () => {
+	it('shows an enabled delete button in the default state, without hover or focus', async () => {
 		const onDelete = vi.fn();
 		await page.render(<DsTag variant="key-value" label="Category" value="Networking" onDelete={onDelete} />);
 
-		// Delete button is hidden until the tag is hovered/focused.
-		await page.getByRole('button', { name: 'Category' }).hover();
+		const deleteButton = page.getByRole('button', { name: 'Delete tag' });
+		await expect.element(deleteButton).toBeVisible();
+		await expect.element(deleteButton).toBeEnabled();
+		expect(getComputedStyle(deleteButton.element()).opacity).toBe('1');
+
+		await deleteButton.click();
+
+		expect(onDelete).toHaveBeenCalledOnce();
+	});
+
+	it('fires onDelete from the delete button', async () => {
+		const onDelete = vi.fn();
+		await page.render(<DsTag variant="key-value" label="Category" value="Networking" onDelete={onDelete} />);
 
 		const deleteButton = page.getByRole('button', { name: 'Delete tag' });
 		await expect.element(deleteButton).toBeVisible();
@@ -489,7 +500,7 @@ describe('DsTag operator slot is variant scoped', () => {
 });
 
 describe('DsTag expand chevron', () => {
-	it('renders only with onExpandClick and stays visible without hover, unlike delete', async () => {
+	it('renders only with onExpandClick and stays visible without hover, like delete', async () => {
 		const { rerender } = await page.render(<DsTag label="Region" onDelete={vi.fn()} />);
 
 		await expect.element(page.getByRole('button', { name: 'Expand' })).not.toBeInTheDocument();
@@ -498,11 +509,6 @@ describe('DsTag expand chevron', () => {
 
 		await expect.element(page.getByRole('button', { name: 'Expand' })).toBeVisible();
 
-		// The delete button is mounted but `visibility: hidden` until hover; the chevron never is.
-		await expect
-			.element(page.getByRole('button', { name: 'Delete tag', includeHidden: true }))
-			.not.toBeVisible();
-		await page.getByRole('button', { name: 'Region' }).hover();
 		await expect.element(page.getByRole('button', { name: 'Delete tag' })).toBeVisible();
 		await expect.element(page.getByRole('button', { name: 'Expand' })).toBeVisible();
 	});
