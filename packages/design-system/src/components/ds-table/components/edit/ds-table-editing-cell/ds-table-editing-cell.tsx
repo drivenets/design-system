@@ -1,5 +1,5 @@
 import { useEffect, useRef, type SubmitEvent } from 'react';
-import { flexRender, type RowData } from '@tanstack/react-table';
+import type { RowData } from '@tanstack/react-table';
 import { DsButtonV3 } from '../../../../ds-button-v3';
 import { DsStack } from '../../../../ds-stack';
 import { useDsTableContext } from '../../../context/ds-table-context';
@@ -10,7 +10,7 @@ export const DsTableEditingCell = <TData extends RowData, TValue>({
 	cell,
 }: DsTableEditingCellProps<TData, TValue>) => {
 	const { commit, cancel, editing } = useDsTableContext<TData, TValue>();
-	const columnDef = cell.column.columnDef;
+	const EditCell = cell.column.columnDef.editCell;
 	const editAnchorRef = useRef<HTMLDivElement>(null);
 
 	const isActiveCell = editing?.cell.id === cell.id;
@@ -51,7 +51,7 @@ export const DsTableEditingCell = <TData extends RowData, TValue>({
 			<form className={styles.overlay} onSubmit={handleSubmit}>
 				<DsStack direction="row" gap="var(--3xs)" alignItems="flex-start" width="100%" className={styles.row}>
 					<DsStack flex="1 1 auto" className={styles.slot}>
-						{columnDef.editCell ? flexRender(columnDef.editCell, cell.getContext()) : null}
+						{EditCell ? <EditCell {...cell.getContext()} /> : null}
 					</DsStack>
 					<DsStack direction="row" gap="var(--3xs)" className={styles.actions}>
 						<DsButtonV3
