@@ -15,7 +15,6 @@ $autocomplete-rotation-open: 180deg;
 $autocomplete-opacity-hidden: 0;
 $autocomplete-opacity-visible: 1;
 $autocomplete-border-width: 1px;
-$autocomplete-tags-row-height: 28px;
 $autocomplete-tags-input-min-width: 80px;
 $autocomplete-tags-dropdown-max-height: 240px;
 
@@ -57,24 +56,21 @@ $autocomplete-tags-dropdown-max-height: 240px;
 	}
 
 	&.multiple {
-		--autocomplete-tags-row-height: #{$autocomplete-tags-row-height};
+		--autocomplete-tags-row-height: calc(
+			#{input.$input-text-height-small} - 2 * #{$autocomplete-border-width}
+		);
 
 		align-items: flex-start;
 		gap: var(--xs);
 		height: auto;
 		max-height: none;
-		padding-block: calc(var(--xs) - #{$autocomplete-border-width});
 
 		&.small {
-			--autocomplete-tags-row-height: calc(
-				#{input.$input-text-height-small} - 2 * #{$autocomplete-border-width}
-			);
-
 			padding-block: 0;
 		}
 
 		&.large {
-			padding-block: calc(var(--xs) + var(--4xs) - #{$autocomplete-border-width});
+			padding-block: calc(var(--xs) + var(--4xs));
 		}
 
 		.iconContainer {
